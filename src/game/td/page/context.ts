@@ -14,6 +14,7 @@ export type Session = {
   map: any;
   started: boolean;
   perfectWaves: number;
+  flyerHint?: boolean; // the "flyers pass over blockers" notice was shown this run
   keyboardSlots: Slot[];
   favLevels: Record<string, number>; // blessing levels this run was built with
   boost: RunBoost | null; // shard boost this run was built with

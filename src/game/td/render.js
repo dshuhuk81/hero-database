@@ -188,6 +188,10 @@ export async function createRenderer(canvas, game, options = {}) {
   // Full-body sprites stand on the path: the build script leaves a 10% margin under the
   // figure, so anchor at 0.9 height and put the feet a little below the path centre line.
   const FULL_SPRITE_FEET = 6;
+  // Flyers hover above a faint ground shadow and bob, so they read as airborne
+  // (they pass over blockers; only platform heroes can hit them).
+  const FLYER_LIFT = 18;
+  const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
   for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
     PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
@@ -740,11 +744,11 @@ export async function createRenderer(canvas, game, options = {}) {
     if (fullTex) {
       const size = fullSpriteSize(kind);
       const shadow = new PIXI.Graphics();
-      shadow.ellipse(0, FULL_SPRITE_FEET, size * 0.3, size * 0.08).fill({ color: 0x000000, alpha: 0.45 });
+      shadow.ellipse(0, FULL_SPRITE_FEET, size * (unit.flying ? 0.22 : 0.3), size * (unit.flying ? 0.06 : 0.08)).fill({ color: 0x000000, alpha: unit.flying ? 0.25 : 0.45 });
       c.addChild(shadow);
       const sp = new PIXI.Sprite(fullTex);
       sp.anchor.set(0.5, 0.9);
-      sp.y = FULL_SPRITE_FEET;
+      sp.y = FULL_SPRITE_FEET - (unit.flying ? FLYER_LIFT : 0);
       sp.width = size; sp.height = size;
       c._fullSprite = sp;
       c._fullScale = sp.scale.x;
@@ -889,6 +893,7 @@ export async function createRenderer(canvas, game, options = {}) {
     }
     c._lastX = unit.x;
     c.position.set(unit.x, unit.y);
+    if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
 
@@ -961,7 +966,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const g = new PIXI.Graphics();
     for (const unit of game.enemies) {
       const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
-      const top = fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9;
+      const top = (fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9) - (unit.flying ? FLYER_LIFT : 0);
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
     }
     for (const unit of game.heroes) {

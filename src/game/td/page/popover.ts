@@ -3,31 +3,7 @@
 import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 import { classIcon } from "../assets.js";
-
-// What Awakening adds to each ultimate (numbers mirror castUltimate in sim.js).
-const AWAKEN_TEXT: Record<string, string> = {
-  shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
-  expose: "enemies take extra damage for 7s instead of 4s",
-  mass_taunt: "taunt reaches 3.5x range instead of 2.5x, slow lasts 5s",
-  drain_field: "heals herself for 35% instead of 15%",
-  knockback: "pushes up to 5 enemies 140px instead of 3 enemies 80px",
-  war_cry: "cleave deals 50% more damage, slow lasts 4s",
-  lifesteal_cleave: "heals for 30% of the damage dealt instead of 15%",
-  venom_cleave: "cleave radius 100px, extra damage taken lasts 8s",
-  shadow_step: "also strikes the second weakest enemy",
-  claw_sweep: "splash radius 90px instead of 55px",
-  rapid_strike: "5 hits instead of 3",
-  chain_lightning: "4 bounces instead of 2",
-  rebirth_flame: "blast radius 110px, heals herself for 40% instead of 20%",
-  weaken_burst: "blast radius 110px instead of 72px",
-  moon_barrage: "5 shots instead of 3, ally buff lasts 8s",
-  piercing_shot: "90% damage per enemy hit instead of 55%, twice the range",
-  petrify_shot: "petrifies 5 enemies for 4s instead of 3 for 3s",
-  fortune_shower: "ally buff lasts 8s and every cast pays 15 gold",
-  fate_link: "allies gain 60% ultimate charge instead of 30%",
-  valkyrie_call: "revived heroes return at full health",
-  soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
-};
+import { AWAKEN_TEXT } from "../skills.js";
 
 export function createPopover(ctx: PageContext) {
   const { q, state, data, maxLevel } = ctx;

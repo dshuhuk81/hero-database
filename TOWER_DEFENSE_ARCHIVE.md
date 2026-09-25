@@ -230,3 +230,7 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 - Scope: balance bots that buy blessings (so `td:sweep` measures real progression), pacing check (trunk about 128 runs, a class branch 11 to 21 runs with two heroes), endless waves as the power sink, maybe a cap on vertical bonuses. Later, if class branches feel alike: per-hero capstones.
 - Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
 - Also decide: endless earns Favor per wave with no cap (farmable), left open by M1.
+
+## Roadmap M2: Browser experience - full screen mode (done September 25, 2026)
+- is there a full screen mode available?
+- Done (September 25, 2026): there was none. The top bar now has a full screen button (next to Pause; F toggles, Escape exits) that puts the whole game shell in browser full screen, panels and overlays included. The canvas refits through the existing ResizeObserver. The button hides where the browser can't do element full screen (iPhone Safari only allows it for video); there, "Add to Home Screen" is the closest option. Checked in Chromium: enter, exit and F work, and the top bar still fits at 360 px wide (only the dev-only DBG button makes it tight).

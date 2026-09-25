@@ -204,7 +204,12 @@ export function createHud(ctx: PageContext) {
     if (game.startWave()) {
       pause.remove("manual"); // starting a wave is an explicit resume
       syncPauseButton();
-      ctx.notice(bossWave(game, game.wave) ? `${bossName()} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
+      // Flyers look like ground units to new players: the first flyer wave of a run explains them.
+      const flyers = !session.flyerHint && game.waves[game.wave - 1]?.spawns.some((group: any) => group.kind === "flyer");
+      if (flyers) session.flyerHint = true;
+      ctx.notice(bossWave(game, game.wave) ? `${bossName()} has entered ${session.map.name}.`
+        : flyers ? `Wave ${game.wave}: flyers pass over blockers. Only heroes on platform rings can hit them.`
+        : `Wave ${game.wave} incoming. Heroes attack automatically.`);
     }
     syncMainAction();
     renderPreview();

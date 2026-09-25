@@ -8,10 +8,6 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-### M2: Browser Experience (done, uncommitted)
-- is there a full screen mode available?
-- Done (September 25, 2026): there was none. The top bar now has a full screen button (next to Pause; F toggles, Escape exits) that puts the whole game shell in browser full screen, panels and overlays included. The canvas refits through the existing ResizeObserver. The button hides where the browser can't do element full screen (iPhone Safari only allows it for video); there, "Add to Home Screen" is the closest option. Checked in Chromium: enter, exit and F work, and the top bar still fits at 360 px wide (only the dev-only DBG button makes it tight).
-
 ### M3: Divine Blessings tuning (next)
 
 - The tree itself shipped (archive, [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md) section 7). This milestone is the follow-up once endless mode exists.
