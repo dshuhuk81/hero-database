@@ -62,7 +62,7 @@ export const MAP_SCENES = {
     fragments: { count: 60, color: 0x8c7d64, edge: 0xd6c6a2 },
     labels: { spawn: ["SPAWN", 0xd7c2f0], base: ["SANCTUARY", 0xf2dc9c], integrity: 0xe6d6b4, stroke: 0x241a10 },
     glow: { spawn: 0xa88be0, base: 0xffd98a, hit: 0xffb08a, ring: 0xf0c191, place: 0xf0d59a, dust: 0xcdb892, mote: 0xf6e2a8 },
-    pad: { platformTint: 0xe6dcc8, road: 0xd2a85a, platform: 0xb49be0, highlight: 0xf8e2a6 },
+    pad: { platformTint: 0xaebbd6, road: 0xd2a85a, platform: 0x9fb2e0, highlight: 0xf8e2a6 },
   },
 };
 
@@ -97,8 +97,8 @@ export function createMapScene(PIXI, game, {
   }
 
   // One stroke per route; merged lanes are drawn once, so translucent layers do not double up.
-  function strokePath(g, width, color, alpha = 1) {
-    for (const points of strokes) {
+  function strokePath(g, width, color, alpha = 1, routes = strokes) {
+    for (const points of routes) {
       g.moveTo(points[0][0], points[0][1]);
       for (let i = 1; i < points.length; i++) g.lineTo(points[i][0], points[i][1]);
       g.stroke({ width, color, alpha, cap: "round", join: "round" });
@@ -110,12 +110,16 @@ export function createMapScene(PIXI, game, {
   const road = graphic(ground);
   if (textures.road) {
     for (const [width, color, alpha] of theme.road.bed) strokePath(road, width, color, alpha);
-    const mask = graphic(ground);
-    strokePath(mask, 70, 0xffffff);
-    const surface = add(ground, new PIXI.TilingSprite({ texture: textures.road, width: 960, height: 540 }));
-    surface.tileScale.set(0.12);
-    surface.tint = theme.road.tint; // grading keeps pale stone within the terrain's value range
-    surface.mask = mask;
+    // One masked surface per route: overlapping strokes inside a single mask cancel out
+    // where lanes merge. The tiling is world-aligned, so the surfaces meet without a seam.
+    for (const route of strokes) {
+      const mask = graphic(ground);
+      strokePath(mask, 70, 0xffffff, 1, [route]);
+      const surface = add(ground, new PIXI.TilingSprite({ texture: textures.road, width: 960, height: 540 }));
+      surface.tileScale.set(0.12);
+      surface.tint = theme.road.tint; // grading keeps pale stone within the terrain's value range
+      surface.mask = mask;
+    }
   } else {
     strokePath(road, 84, 0x141c23, 0.32);
     strokePath(road, 76, 0x333c40, 0.65);

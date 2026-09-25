@@ -10,6 +10,7 @@ import { TowerDefenseGame } from "../../src/game/td/sim.js";
 import heroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
+import { playRun, SQUADS } from "./td-runner.mjs";
 
 export const WAVE_TYPES = {
   swarm: [{ kind: "grunt", count: 24, gapMs: 150 }],
@@ -21,6 +22,15 @@ export const WAVE_TYPES = {
 export const CLASSES = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 export const ROAD = ["Tank", "Warrior", "Assassin"];
 export const PARTNER = { road: "yuelao", platform: "prometheus" };
+// Design intent (TOWER_DEFENSE_ROADMAP.md M6): the class each wave type should call for.
+// Flyers have no road answer and every road class holds the lone boss, so those are unset.
+export const EXPECTED = {
+  swarm: { road: "Warrior", platform: "Mage" },
+  armored: { road: "Tank", platform: "Mage" },
+  runner: { road: "Assassin" },
+  flyer: { platform: "Archer" },
+  boss: { platform: "Archer" },
+};
 const LIMIT_SECONDS = 90;
 
 const nearestRing = (rings, [x, y]) => rings.reduce((best, ring, i) => (Math.hypot(ring[0] - x, ring[1] - y) < Math.hypot(rings[best][0] - x, rings[best][1] - y) ? i : best), 0);
@@ -86,4 +96,33 @@ export function printMatrix(matrix) {
   for (const [waveType, row] of Object.entries(matrix)) {
     console.log(waveType.padEnd(10) + CLASSES.map((c) => `${Math.round(row[c] * 100)}%`.padStart(10)).join("") + `   ${bestClass(row, "road")} / ${bestClass(row, "platform")}`);
   }
+}
+
+// Squad checks over full runs (bot policy in td-runner.mjs).
+const classOf = Object.fromEntries(heroes.map((h) => [h.id, h.class]));
+
+// Mean endless wave reached over every map and `seeds`.
+export function endlessDepth(ids, seeds = [99, 100]) {
+  let sum = 0;
+  for (const map of maps) for (const seed of seeds) sum += playRun(ids, seed, map, { mode: "endless" }).wave;
+  return sum / (maps.length * seeds.length);
+}
+
+// Endless depth of the mixed balance squad, and without each class it fields.
+export function classRemoval(squad = SQUADS["balanced (S-tier core)"]) {
+  const out = { full: endlessDepth(squad) };
+  for (const cls of CLASSES) {
+    const ids = squad.filter((id) => classOf[id] !== cls);
+    if (ids.length < squad.length) out[cls] = endlessDepth(ids);
+  }
+  return out;
+}
+
+// 10-wave result per map for a squad of every hero of one class: "W<lives>" or "L<wave>".
+export function monoClass(cls, seed = 99) {
+  const ids = heroes.filter((h) => h.class === cls).map((h) => h.id);
+  return maps.map((map) => {
+    const run = playRun(ids, seed, map);
+    return { map: map.id, won: run.won, label: run.won ? `W${run.lives}` : `L${run.wave}` };
+  });
 }

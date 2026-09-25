@@ -40,6 +40,7 @@
     "test:tower-defense": "node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-hero-audio.mjs && node scripts/test-td-save.mjs && node scripts/test-td-sim.mjs",
     "test:td-balance": "node scripts/test-td-balance.mjs",
     "td:sweep": "node scripts/td-balance-sweep.mjs",
+    "td:classes": "node scripts/td-classes.mjs",
     "r2:cors": "node scripts/r2-cors.mjs",
     "td:hero-audio": "node scripts/add-hero-audio.js",
     "check": "astro check"

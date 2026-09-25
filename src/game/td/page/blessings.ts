@@ -21,6 +21,7 @@ const GLYPHS: Record<string, string> = {
   synergyTag: "Bond", wave1Speed: "Slow", upgradeDiscount: "Cost", clearBonus: "Clear", contactRange: "Wall",
   extraOffer: "+1", bossDamage: "Boss", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   startLevel: "Lv2", blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
+  cleave: "Cleave", dash: "Dash", splash: "AoE", pierce: "Pierce",
   ultPower: "Pow", awakenDiscount: "Rite", awakenBonus: "Apex",
 };
 

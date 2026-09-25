@@ -13,6 +13,8 @@ assert.equal(resolveDamage(100, 79503, "true", false), 100, "true damage");
 assert.deepEqual(Array.from({ length: 8 }, createRng(42)), Array.from({ length: 8 }, createRng(42)), "seeded RNG");
 assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 50 }, "path interpolation");
 
+const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
+
 const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
 assert.equal(game.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]), true, "valid team");
 game.gold = 10000;
@@ -68,7 +70,7 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.ok(g.heroes[0].hpLeft === g.heroes[0].hp, "flyer never fights blockers");
 }
 
-// Enemy archers stop and shoot from range instead of contact.
+// Enemy archers stop and shoot from range instead of contact, for holdSeconds.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 13 });
   g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
@@ -84,6 +86,11 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.ok(distance > 42 && distance <= archer.attackRange, `archer fires from range (${Math.round(distance)}px)`);
   for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
   assert.ok(Math.hypot(archer.x - nuwa.x, archer.y - nuwa.y) > 42, "archer holds position at range");
+  // After holdSeconds it closes in and is blocked in contact like a melee enemy (no standoff).
+  archer.hp = archer.maxHp = 1e9;
+  for (let i = 0; i < 60 * (tuning.enemies.archer.holdSeconds + 5); i += 1) g.step(1 / 60);
+  assert.ok(Math.hypot(archer.x - nuwa.x, archer.y - nuwa.y) <= 42 + 1e-6, "archer closes in after holdSeconds");
+  assert.equal(archer.held, true, "and the blocker holds it");
 }
 
 // Blocker death frees enemies and fires a death event.
@@ -1531,7 +1538,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.deepEqual(buildWave(waves, 37, "endless", tuning.waveGen), buildWave(waves, 37, "endless", tuning.waveGen), "generator is deterministic");
   assert.ok(isBossWave(35, "endless") && !isBossWave(36, "endless"), "endless boss cadence");
   const count = (w) => w.spawns.reduce((sum, g) => sum + g.count, 0);
-  assert.ok(count(buildWave(waves, 29, "endless", tuning.waveGen)) > count(long[18]), "later waves bring more enemies");
+  // Waves 19 and 27 cycle the same base wave, eight waves apart.
+  assert.ok(count(buildWave(waves, 27, "endless", tuning.waveGen)) > count(long[18]), "later waves bring more enemies");
 
   // Mid-boss stat scale reaches the boss and Lilith's children.
   const lilithMap = maps.find((m) => m.boss === "lilith");
@@ -1557,6 +1565,141 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(endless.complete, false, "endless does not end on a cleared wave");
   assert.ok(endless.wavePreview(), "endless always previews the next wave");
   assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "bogus" }).mode, "classic", "unknown mode falls back to classic");
+}
+
+// --- M6 class kits (tuning.classes): each class attacks, blocks and supports in its own way ---
+{
+  const setup = (...ids) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 140 });
+    g.gold = 1e6;
+    for (const id of ids) {
+      const base = heroes.find((h) => h.id === id);
+      const rings = base.slot === "road" ? maps[0].roadSlots : maps[0].platformSlots;
+      for (let i = 0; i < rings.length && !g.place(id, base.slot, i); i += 1);
+    }
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    for (const hero of g.heroes) hero.critChance = 0;
+    return { g, units: ids.map((id) => g.heroes.find((h) => h.id === id)) };
+  };
+  const enemyAt = (g, kind, x, y, hp = 1e6) => { const e = g.spawnEnemy(kind); e.x = x; e.y = y; e.hp = e.maxHp = hp; return e; };
+  const hurt = (e) => e.hp < e.maxHp;
+  const kit = tuning.classes;
+
+  // Enemy resistances: armored kinds carry their own magic resistance (magic beats armor).
+  {
+    const { g } = setup("zeus");
+    const brute = g.spawnEnemy("brute");
+    assert.equal(brute.magicRes, tuning.enemies.brute.magicRes, "brute magic resistance from tuning");
+    assert.ok(brute.magicRes < brute.armor, "brutes are armored, not warded");
+  }
+
+  // Mage splash: enemies next to the target take a share, farther ones none.
+  {
+    const { g, units: [mage] } = setup("phoenix");
+    assert.equal(mage.damageType, "magical", "Mages deal magic damage");
+    const t = enemyAt(g, "grunt", mage.x + 60, mage.y);
+    const near = enemyAt(g, "grunt", t.x + kit.Mage.splash.radius - 5, t.y);
+    const far = enemyAt(g, "grunt", t.x + kit.Mage.splash.radius + 30, t.y);
+    assert.equal(g.basicAttack(mage, t), true);
+    assert.ok(hurt(t) && hurt(near), "splash hits the target and its neighbour");
+    assert.ok(!hurt(far), "splash stops at its radius");
+    assert.ok(t.maxHp - t.hp > near.maxHp - near.hp, "neighbours take a share");
+    assert.ok(g.effects.some((e) => e.type === "splash" && e.radius === kit.Mage.splash.radius), "splash effect at its real radius");
+  }
+
+  // Zeus (basic "chain"): bounces enemy to enemy instead of splashing.
+  {
+    const { g, units: [zeus] } = setup("zeus");
+    assert.equal(zeus.basic, "chain");
+    const t = enemyAt(g, "grunt", zeus.x + 60, zeus.y);
+    const a = enemyAt(g, "grunt", t.x + 80, t.y);
+    const b = enemyAt(g, "grunt", a.x + 80, a.y);
+    const c = enemyAt(g, "grunt", b.x + 80, b.y);
+    g.basicAttack(zeus, t);
+    assert.ok(hurt(t) && hurt(a) && hurt(b), "chain reaches two bounces");
+    assert.ok(!hurt(c), `chain stops after ${kit.Mage.chain.falloff.length} bounces`);
+  }
+
+  // Warrior cleave: up to `targets` enemies next to the target.
+  {
+    const { g, units: [warrior] } = setup("amunra");
+    const t = enemyAt(g, "grunt", warrior.x + 30, warrior.y);
+    const others = Array.from({ length: kit.Warrior.cleave.targets + 2 }, (_, i) => enemyAt(g, "grunt", t.x + Math.cos(i) * 20, t.y + Math.sin(i) * 20));
+    g.basicAttack(warrior, t);
+    assert.equal(others.filter(hurt).length, kit.Warrior.cleave.targets, "cleave hits exactly its target count");
+    assert.ok(g.effects.some((e) => e.type === "cleave"), "cleave effect");
+  }
+
+  // Archer: pierces armor, bonus against flyers, snipes the toughest enemy in range.
+  {
+    const { g, units: [archer] } = setup("artemis");
+    const value = g.attackValue(archer);
+    const brute = enemyAt(g, "brute", archer.x + 60, archer.y);
+    g.basicAttack(archer, brute);
+    close(brute.maxHp - brute.hp, resolveDamage(value, brute.armor * (1 - kit.Archer.pierce), archer.damageType), "armor pierce");
+    const flyer = enemyAt(g, "flyer", archer.x + 60, archer.y);
+    g.basicAttack(archer, flyer);
+    close(flyer.maxHp - flyer.hp, resolveDamage(value * (1 + kit.Archer.airBonus), flyer.armor * (1 - kit.Archer.pierce), archer.damageType), "anti-air bonus");
+    g.enemies = [];
+    enemyAt(g, "grunt", archer.x + 40, archer.y, 50);
+    const tough = enemyAt(g, "grunt", archer.x + 50, archer.y, 5000);
+    assert.equal(g.findTarget(archer), tough, "Archers snipe the toughest enemy");
+  }
+
+  // Assassin dash: strikes a loose enemy beyond its range, leaves held ones to the line.
+  {
+    const { g, units: [nyx] } = setup("nyx");
+    const loose = enemyAt(g, "runner", nyx.x + (nyx.range + kit.Assassin.dash) / 2, nyx.y);
+    assert.equal(g.findTarget(nyx), loose, "dash reaches a loose enemy");
+    loose.held = true;
+    assert.equal(g.findTarget(nyx), null, "a held enemy beyond range is left alone");
+    loose.held = false;
+    g.basicAttack(nyx, loose);
+    assert.ok(g.effects.some((e) => e.type === "dash"), "dash trail effect");
+    close(loose.maxHp - loose.hp, resolveDamage(g.attackValue(nyx) * (1 + kit.Assassin.looseBonus), loose.armor, nyx.damageType), "runners take the full loose bonus");
+  }
+
+  // Tank ultimate holds every ground enemy in taunt range; flyers are not held.
+  {
+    const { g, units: [tank] } = setup("momus");
+    const grunt = enemyAt(g, "grunt", tank.x + tank.range, tank.y);
+    const flyer = enemyAt(g, "flyer", tank.x + 20, tank.y);
+    g.castUltimate(tank, grunt);
+    assert.ok(grunt.stunnedUntil >= g.time + kit.Tank.hold - 1e-9, "Tank ultimate holds ground enemies");
+    assert.ok(!(flyer.stunnedUntil > g.time), "flyers are not held");
+    assert.ok(g.effects.some((e) => e.type === "hold"), "hold effect");
+  }
+
+  // Assassin veil: after its ultimate the blocked enemy stays blocked but deals no damage.
+  {
+    const { g, units: [nyx] } = setup("nyx");
+    const grunt = enemyAt(g, "grunt", nyx.x - 20, nyx.y);
+    grunt.distance = 50;
+    g.castUltimate(nyx, grunt);
+    assert.equal(g.isVeiled(nyx), true, "veiled after the ultimate");
+    const hp = nyx.hpLeft, distance = grunt.distance;
+    for (let i = 0; i < 60; i += 1) g.step(1 / 60);
+    assert.equal(nyx.hpLeft, hp, "veiled Assassin takes no damage");
+    assert.equal(grunt.distance, distance, "the blocked enemy stays blocked");
+    for (let i = 0; i < 60 * kit.Assassin.veil.seconds; i += 1) g.step(1 / 60);
+    assert.equal(g.isVeiled(nyx), false, "veil ends");
+  }
+
+  // Support: heals the most injured ally in range; otherwise a weak attack.
+  {
+    const { g, units: [support, tank] } = setup("caishen", "nuwa");
+    assert.ok(Math.hypot(support.x - tank.x, support.y - tank.y) <= support.range, "test layout: ally in range");
+    const grunt = enemyAt(g, "grunt", support.x + 60, support.y);
+    tank.hpLeft = tank.hp / 2;
+    g.basicAttack(support, grunt);
+    assert.ok(tank.hpLeft > tank.hp / 2, "heal pulse on the injured ally");
+    assert.ok(!hurt(grunt), "healing replaces the attack");
+    assert.ok(g.effects.some((e) => e.type === "beam"), "heal beam effect");
+    tank.hpLeft = tank.hp;
+    g.basicAttack(support, grunt);
+    close(grunt.maxHp - grunt.hp, resolveDamage(g.attackValue(support) * kit.Support.damageShare, grunt.armor, support.damageType), "weak attack when nobody is hurt");
+    assert.equal(g.basicAttack(support, null), false, "nothing to do: attack stays ready");
+  }
 }
 
 console.log("Tower defense checks passed");

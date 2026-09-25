@@ -1,6 +1,6 @@
 // Hero popover: anchored next to the selected unit (sheet fallback), upgrade,
 // rotate and details. Buttons are updated in place so focus survives game events.
-import { placePopover, worldToLocal } from "../ui.js";
+import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 
 // What Awakening adds to each ultimate (numbers mirror castUltimate in sim.js).
@@ -166,6 +166,8 @@ export function createPopover(ctx: PageContext) {
   function detailsHtml(unit: any) {
     const game = state.session!.game;
     const lines: string[] = [];
+    const role = (CLASS_ROLES as Record<string, string>)[unit.class];
+    if (role) lines.push(`<p class="td-aura-line">${unit.class}: ${role}</p>`);
     const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
     if (unit.ability === "aura") {
       const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);

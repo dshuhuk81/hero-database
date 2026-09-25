@@ -242,8 +242,8 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Path: tiled stone texture (when loaded) or 4-layer Graphics fallback
     const strokes = routeStrokes(game.map);
-    function tracePaths(g) {
-      for (const pts of strokes) {
+    function tracePaths(g, routes = strokes) {
+      for (const pts of routes) {
         g.moveTo(pts[0][0], pts[0][1]);
         for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
       }
@@ -261,15 +261,17 @@ export async function createRenderer(canvas, game, options = {}) {
     if (pathTileTex) {
       // Gold border aura (peeks out past tile mask edges)
       pathStroke(88, 0xc9a227, 0.22);
-      // TilingSprite masked to path shape
-      const pathMask = new PIXI.Graphics();
-      pathMask.setStrokeStyle({ width: 74, color: 0xffffff, alpha: 1, cap: "round", join: "round" });
-      tracePaths(pathMask);
-      pathMask.stroke();
-      const ts = new PIXI.TilingSprite({ texture: pathTileTex, width: 960, height: 540 });
-      ts.tileScale.set(0.12); // ~2-3 stones visible across 74px path width
-      ts.mask = pathMask;
-      layerBg.addChild(ts);
+      // TilingSprite masked to path shape, one per route (overlaps inside one mask cancel out)
+      for (const route of strokes) {
+        const pathMask = new PIXI.Graphics();
+        pathMask.setStrokeStyle({ width: 74, color: 0xffffff, alpha: 1, cap: "round", join: "round" });
+        tracePaths(pathMask, [route]);
+        pathMask.stroke();
+        const ts = new PIXI.TilingSprite({ texture: pathTileTex, width: 960, height: 540 });
+        ts.tileScale.set(0.12); // ~2-3 stones visible across 74px path width
+        ts.mask = pathMask;
+        layerBg.addChild(ts);
+      }
       // Thin gold center accent on top
       pathStroke(3, 0xfacc15, 0.52);
     } else {
@@ -572,6 +574,8 @@ export async function createRenderer(canvas, game, options = {}) {
 
   function updateHeroSprite(unit, container) {
     container.position.set(unit.x, unit.y);
+    // Assassin veil (class ultimate): translucent while nothing can hurt it.
+    container.alpha = game.isVeiled?.(unit) ? 0.45 : 1;
 
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
@@ -1014,6 +1018,18 @@ export async function createRenderer(canvas, game, options = {}) {
     }
     if (effect.type === "shot") {
       spawnParticle("trace_01", (effect.x1 + effect.x2) / 2, (effect.y1 + effect.y2) / 2, { size: 26, life: 0.2, tint: baseTint });
+    } else if (effect.type === "splash") {
+      spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: "purple" });
+    } else if (effect.type === "cleave") {
+      spawnParticle("slash_04", effect.x, effect.y, { size: effect.radius * 1.6, life: 0.3, rot: Math.random() * Math.PI * 2, tint: "gold" });
+    } else if (effect.type === "dash") {
+      for (let i = 1; i <= 3; i++) spawnParticle("trace_01", effect.x1 + (effect.x2 - effect.x1) * i / 4, effect.y1 + (effect.y2 - effect.y1) * i / 4, { size: 22, life: 0.25, tint: "purple" });
+    } else if (effect.type === "beam") {
+      spawnParticle("light_01", effect.x2, effect.y2, { size: 30, life: 0.45, vy: -30, tint: "green" });
+    } else if (effect.type === "hold") {
+      spawnParticle("twirl_01", effect.x, effect.y, { size: effect.radius * 1.4, life: 0.8, vr: 3, tint: "gold" });
+    } else if (effect.type === "veil") {
+      spawnParticle("twirl_01", effect.x, effect.y, { size: 70, life: 0.6, vr: -5, tint: "purple" });
     } else if (effect.type === "hit" && effect.melee) {
       spawnParticle("slash_04", effect.x, effect.y, { size: 56, life: 0.35, rot: Math.random() * Math.PI * 2, tint: "gold" });
       for (let i = 0; i < 3; i++) spawnParticle("spark_04", effect.x, effect.y, { size: 18, life: 0.4, vx: rand(160), vy: rand(160), tint: "gold" });
@@ -1105,13 +1121,31 @@ export async function createRenderer(canvas, game, options = {}) {
     layerFx.removeChildren();
     for (const effect of game.effects) {
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
+      if (effect.type === "veil") continue; // the hero token turns translucent instead (particles mark the start)
       if (hasHeroFx(effect)) continue;
       if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
       const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : palette.gold;
       const g = new PIXI.Graphics();
       g.setStrokeStyle({ width: 2, color, alpha: reducedMotion ? 0.5 : Math.min(1, effect.life * 6) });
+      const fade = reducedMotion ? 0.5 : Math.min(1, effect.life * 4);
       if (effect.type === "shot") {
         g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke();
+      } else if (effect.type === "dash" || effect.type === "beam") {
+        // Class kits (M6): Assassin dash trail, Support heal beam.
+        const beam = effect.type === "beam";
+        g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2)
+          .stroke({ width: beam ? 3 : 5, color: beam ? TINTS.green : color, alpha: fade * (beam ? 0.8 : 0.6), cap: "round" });
+      } else if (effect.type === "splash" || effect.type === "cleave" || effect.type === "hold") {
+        // Mage splash area, Warrior cleave arc, Tank hold zone: drawn at their real radius.
+        const r = effect.radius;
+        if (effect.type === "cleave") {
+          const facing = Math.atan2(effect.y - (effect.sourceY ?? effect.y), effect.x - (effect.sourceX ?? effect.x));
+          g.arc(effect.sourceX ?? effect.x, effect.sourceY ?? effect.y, Math.hypot(effect.x - effect.sourceX, effect.y - effect.sourceY) || r, facing - 0.9, facing + 0.9)
+            .stroke({ width: 6, color: TINTS.gold, alpha: fade * 0.8, cap: "round" });
+        } else {
+          g.circle(effect.x, effect.y, r).fill({ color, alpha: fade * (effect.type === "hold" ? 0.12 : 0.18) });
+          g.circle(effect.x, effect.y, r).stroke({ width: 2, color, alpha: fade * 0.7 });
+        }
       } else {
         const tierName = effectTier(effect);
         const tier = FX_TIERS[tierName];

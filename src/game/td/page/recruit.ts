@@ -49,8 +49,8 @@ export function createRecruit(ctx: PageContext) {
     const road = slot.type === "road";
     sheetKicker.textContent = `${road ? "Road" : "Platform"} ring ${slot.index + 1}`;
     sheetNote.textContent = road
-      ? "Tanks, Warriors, and Assassins block ground enemies here."
-      : "Mages, Archers, and Supports attack from range here.";
+      ? "Tanks hold the line, Warriors cleave groups, Assassins catch enemies that slip through."
+      : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.";
     sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +

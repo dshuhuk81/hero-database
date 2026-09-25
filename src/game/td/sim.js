@@ -427,7 +427,11 @@ export class TowerDefenseGame {
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
       if (target) {
-        enemy.held = enemy.attackRange === undefined; // stopped by a blocker (melee contact)
+        const ranged = this.shootsFromRange(enemy);
+        enemy.held = !ranged; // stopped by a blocker (melee contact)
+        // Ranged enemies hold position for holdSeconds, then close in (no endless standoff
+        // against a healed blocker nobody else can reach).
+        if (ranged) enemy.rangedTime = (enemy.rangedTime ?? 0) + dt;
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
           const mods = this.modifiers();
@@ -571,10 +575,15 @@ export class TowerDefenseGame {
       facing: hero.rotation || 0, range: hero.range, ...effect });
   }
 
+  // Ranged enemies (attackRange) shoot from distance until their holdSeconds run out.
+  shootsFromRange(enemy) {
+    return enemy.attackRange !== undefined && (enemy.rangedTime ?? 0) < (enemy.holdSeconds ?? Infinity);
+  }
+
   findEnemyTarget(enemy) {
-    // Ranged enemies (attackRange) stop and shoot from distance; melee needs contact.
-    const reach = enemy.attackRange ?? 42 + (this.favor.contactRangeBonus || 0);
-    const melee = enemy.attackRange === undefined;
+    // Ranged enemies stop and shoot from distance; melee (and ranged past their hold) needs contact.
+    const melee = !this.shootsFromRange(enemy);
+    const reach = melee ? 42 + (this.favor.contactRangeBonus || 0) : enemy.attackRange;
     const limits = this.tuning.blocking?.blockLimit;
     let best = null;
     for (const hero of this.heroes) {
@@ -737,6 +746,21 @@ export class TowerDefenseGame {
     return dash ? dash + (this.classBonus(hero).dash || 0) : 0;
   }
 
+  // Class kit numbers with their class blessings (blessingTree *_special), for sim and UI.
+  splashRadius(hero) {
+    const splash = this.kit(hero).splash;
+    return splash ? splash.radius * (1 + (this.classBonus(hero).splash || 0)) : 0;
+  }
+
+  cleaveShare(hero) {
+    const cleave = this.kit(hero).cleave;
+    return cleave ? cleave.share + (this.classBonus(hero).cleave || 0) : 0;
+  }
+
+  pierceFor(hero) {
+    return Math.min(1, (this.kit(hero).pierce || 0) + (this.classBonus(hero).pierce || 0));
+  }
+
   // Tank passive: a share of incoming damage is shrugged off.
   guardFor(hero) {
     return Math.min(0.9, (this.kit(hero).guard || 0) + (this.classBonus(hero).guard || 0));
@@ -764,7 +788,7 @@ export class TowerDefenseGame {
     if (!target) return false;
     const mods = this.modifiers();
     const crit = this.rng() < hero.critChance + mods.crit + (cb.crit || 0);
-    const pierce = Math.min(1, (kit.pierce || 0) + (cb.pierce || 0));
+    const pierce = this.pierceFor(hero);
     const value = this.attackValue(hero);
     // Archer anti-air (kit airBonus). Assassins hunt enemies nobody holds (kit looseBonus),
     // scaled by (speed / kit.looseSpeed) squared, so runners take the full bonus and slow
@@ -795,13 +819,13 @@ export class TowerDefenseGame {
         from = next;
       }
     } else if (kit.splash) {
-      const radius = kit.splash.radius * (1 + (cb.splash || 0));
+      const radius = this.splashRadius(hero);
       this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
       for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
     } else if (kit.cleave) {
       const victims = others(kit.cleave.radius).slice(0, kit.cleave.targets);
       this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius: kit.cleave.radius, life: 0.3, color: "gold" });
-      for (const e of victims) strike(e, kit.cleave.share + (cb.cleave || 0), { showShot: false, showHit: false });
+      for (const e of victims) strike(e, this.cleaveShare(hero), { showShot: false, showHit: false });
     }
     if (kit.veil && this.isVeiled(hero)) {
       const extra = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= Math.max(hero.range, this.dashReach(hero)))
@@ -1109,7 +1133,7 @@ export class TowerDefenseGame {
     }
     if (kit.veil) {
       hero.veilUntil = this.time + kit.veil.seconds;
-      this.emitHeroEffect(hero, { type: "veil", x: hero.x, y: hero.y, life: kit.veil.seconds, color: "purple" });
+      this.emitHeroEffect(hero, { type: "veil", x: hero.x, y: hero.y, life: 0.6, color: "purple" });
     }
   }
 

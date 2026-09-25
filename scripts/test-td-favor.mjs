@@ -74,8 +74,8 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const full = Object.fromEntries(mythic.map((n) => [n.id, n.maxLevel]));
   assert.equal(canBuy(node("startLevel").id, {}).ok, false, "Divine I needs points");
   assert.equal(canBuy(node("startLevel").id, full).ok, true, "Divine I open after Mythic");
-  assert.equal(canBuy(node("rangeFlat").id, full).ok, false, "Divine II needs Divine I");
-  const withD2 = { ...full, [node("startLevel").id]: 1, [node("rangeFlat").id]: 1 };
+  assert.equal(canBuy(node("splash").id, full).ok, false, "Divine II needs Divine I");
+  const withD2 = { ...full, [node("startLevel").id]: 1, [node("splash").id]: 1 };
   assert.ok(pointsIn(withD2, cls) >= node("ultCharge").requiresPoints, "enough points for Divine III");
   assert.equal(canBuy(node("ultCharge").id, withD2).ok, true);
   const pickedSurge = { ...withD2, [node("ultCharge").id]: 1 };
@@ -177,7 +177,17 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
   assert.equal(place(make(lv("Tank", "hp")), tank).hp, Math.round(pt.hp * (1 + classNode("Tank", "hp").effect.value * 5)), "tank HP");
   assert.equal(place(make(lv("Mage", "range")), mage).range, Math.round(mage.range * (1 + classNode("Mage", "range").effect.value * 5)), "range %");
-  assert.equal(place(make(lv("Mage", "rangeFlat")), mage).range, mage.range + classNode("Mage", "rangeFlat").effect.value, "Far Sight");
+  // Class specials strengthen the class kit (M6).
+  const wide = make(lv("Mage", "splash"));
+  close(wide.splashRadius(place(wide, mage)), tuning.classes.Mage.splash.radius * (1 + classNode("Mage", "splash").effect.value), "Wide Blast");
+  close(plainGame.splashRadius(pm), tuning.classes.Mage.splash.radius, "plain splash radius");
+  const breaker = make(lv("Archer", "pierce"));
+  close(breaker.pierceFor(place(breaker, archer)), tuning.classes.Archer.pierce + classNode("Archer", "pierce").effect.value, "Armor Breaker");
+  const sweep = make(lv("Warrior", "cleave"));
+  close(sweep.cleaveShare(place(sweep, warrior)), tuning.classes.Warrior.cleave.share + classNode("Warrior", "cleave").effect.value, "Sweeping Blows");
+  const reach = make(lv("Assassin", "dash"));
+  assert.equal(reach.dashReach(place(reach, assassin)), tuning.classes.Assassin.dash + classNode("Assassin", "dash").effect.value, "Shadow Reach");
+  assert.equal(reach.dashReach(place(reach, mage)), 0, "only Assassins dash");
 
   const early = make(lv("Archer", "startLevel"));
   const a = place(early, archer);
@@ -186,8 +196,6 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(early.upgradeInfo(a.entityId).needsFocus, true, "the focus is still chosen at level 3");
   assert.equal(place(early, mage).level, 1, "other classes enter at level 1");
 
-  close(make(lv("Assassin", "execute")).executeThreshold({ class: "Assassin" }), 0.35 + classNode("Assassin", "execute").effect.value, "execute");
-  close(make(lv("Assassin", "execute")).executeThreshold({ class: "Mage" }), 0.35, "execute only for assassins");
 
   const surge = make(lv("Mage", "ultCharge"));
   close(surge.ultChargeRate({ class: "Mage" }), 1 + classNode("Mage", "ultCharge").effect.value, "class ult charge");
@@ -196,18 +204,18 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const heal = make(lv("Support", "support"));
   close(heal.healFraction({ class: "Support" }), tuning.support.healFraction * (1 + classNode("Support", "support").effect.value), "support heals");
 
-  // Hold the Pass: a Warrior engages one more melee enemy before the next walks past.
-  const engagedUntilFull = (levels) => {
+  // Unbreakable Line: a Tank engages one more melee enemy before the next walks past.
+  const engagedUntilFull = (levels, hero) => {
     const game = make(levels);
-    const w = place(game, warrior);
+    const w = place(game, hero);
     game.engaged = new Map();
     let caught = 0;
     while (game.findEnemyTarget({ x: w.x + 5, y: w.y }) && caught < 10) caught += 1;
     return caught;
   };
-  assert.equal(engagedUntilFull({}), tuning.blocking.blockLimit.Warrior, "default Warrior limit");
-  assert.equal(engagedUntilFull(lv("Warrior", "blockLimit")), tuning.blocking.blockLimit.Warrior + 1, "Hold the Pass +1");
-  assert.equal(engagedUntilFull(lv("Tank", "blockLimit")), tuning.blocking.blockLimit.Warrior, "Tank blessing leaves Warriors alone");
+  assert.equal(engagedUntilFull({}, tank), tuning.blocking.blockLimit.Tank, "default Tank limit");
+  assert.equal(engagedUntilFull(lv("Tank", "blockLimit"), tank), tuning.blocking.blockLimit.Tank + 1, "Unbreakable Line +1");
+  assert.equal(engagedUntilFull(lv("Tank", "blockLimit"), warrior), tuning.blocking.blockLimit.Warrior, "Tank blessing leaves Warriors alone");
 
   const rite = make(lv("Tank", "awakenDiscount"));
   const tu = place(rite, tank);

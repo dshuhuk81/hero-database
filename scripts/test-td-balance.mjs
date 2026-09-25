@@ -3,6 +3,7 @@
 // first virtue offered) and reports duration, spending, leaks, and win rate.
 // Run with: npm run test:td-balance
 import { maps, playRun, SQUADS } from "./lib/td-runner.mjs";
+import { bestClass, classMatrix, EXPECTED, printMatrix } from "./lib/td-class-matrix.mjs";
 
 console.log("map".padEnd(20), "squad".padEnd(30), "result  lives  leaks  score  spent  duration");
 let wins = 0;
@@ -35,5 +36,14 @@ for (const map of maps) {
   if (longWins < 1 || longWins >= long.length) throw new Error(`Balance: 20-wave mode on ${map.id} should have winners and losers, got ${longWins}/${long.length}`);
   if (endless.some((run) => !run.complete)) throw new Error(`Balance: an endless run on ${map.id} hit the wave guard (runaway)`);
   if (deepest <= 20) throw new Error(`Balance: no endless run on ${map.id} got past wave 20 (best ${deepest})`);
+}
+// Class identity (M6): each wave type calls for its class (design intent in EXPECTED).
+const matrix = classMatrix();
+printMatrix(matrix);
+for (const [waveType, want] of Object.entries(EXPECTED)) {
+  for (const [group, cls] of Object.entries(want)) {
+    const got = bestClass(matrix[waveType], group);
+    if (got !== cls) throw new Error(`Class matrix: ${waveType} should call for a ${cls} on ${group} rings, best is ${got}`);
+  }
 }
 console.log("Tower defense balance checks passed");

@@ -48,15 +48,14 @@ I realize that the "system" only to place 5 heroes is not very rewarding. At the
 - Difficulty `enemyHp` 2 -> 2.75 (more heroes made runs much easier). Bot squads in `scripts/lib/td-runner.mjs` are now priority lists that fill every ring (the first five are the old squad). 10 waves: 8/10 wins, 1 perfect; mixed squads now beat all-platform, which was the top squad before. 20 waves: Moonlit 1/5, Verdant 4/5. Endless: Moonlit 10-21, Verdant 10-37.
 - Open: leaks barely drop with more HP. Rushers get past mainly because of the block limit (Tank 3, Warrior 2, Assassin 1), not because blockers die. If rushers still leak in real play, raise the block limits or slow runners on contact. The road-wall squad still loses (it has no damage platforms).
 
-### M6: Class identity (large, concept agreed, not started)
+### M6: Class identity (done, uncommitted; two criteria partly open)
 
 - Goal: every class has a unique, visible job on the battlefield, and which classes you place changes the outcome.
-- Done when: the three measurable checks under "Done criteria" pass in `test:td-balance`, and each class is recognizable in play from its basic attack alone.
+- Done when: the three measurable checks under "Done criteria" pass, and each class is recognizable in play from its basic attack alone.
+- Done (September 25, 2026): class kits live in `tuning.classes` and shape every basic attack (`basicAttack` in `sim.js`), plus a class part in every ultimate (`classUltimate`). Details and measured results under "Shipped" below. `npm run td:classes` prints all three criteria; `test:td-balance` asserts criterion 1.
+- Open: criterion 2 fails for Warriors (the squad does as well without them), criterion 3 fails on Verdant (three Mages alone win there on every seed, Verdant is the easiest map overall). Next tuning ideas under "Shipped".
 
 **Original notes (September 25, 2026).** While playing there is no real difference which class goes on the battlefield. Ideas: Tanks only block and survive, little damage, maybe a defense attribute, ultimate makes them invincible. Archers are slow, long range, big single shots, ultimate hits several enemies. Mages deal area and chain damage, high damage but slow, ultimate is a devastating area attack or a channeled beam. Assassins block 1 and deal damage, ultimate makes them untargetable while striking +1 enemy several times. Warriors have decent HP and attack, block +1, ultimate hits several enemies. Supports deal no damage; they heal, buff and revive.
-
-## M7: Remove the ratings from the hero and hero selection
-- i dont find them very helpful and i dont think we should display them. 
 
 **Diagnosis (sim audit, September 25, 2026).**
 
@@ -75,14 +74,6 @@ I realize that the "system" only to place 5 heroes is not very rewarding. At the
   DPS spread is narrow (24 to 47). Mages attack fastest (the opposite of the concept) and Supports have the highest base attack (38.7).
 - Class identity shows only in the ultimate (every 15 to 27 s), so about 95% of the fight looks the same for every class.
 - Enemies don't ask for specific classes: no enemy has `magicRes`, so magic vs. physical doesn't matter, and nothing punishes single-target damage against swarms. Flyers are the only real counter (road vs. platform).
-
-## M8: Details in the Game & Divine Blessing tree UX/UI
-- we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
-- The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
-
-## M9: Others
-- It should be possible to remove (sell) heroes from the battlefield.
-- Some enemies just rush through tanks and assassins without being stopped.
 
 **Principles.**
 
@@ -122,15 +113,46 @@ I realize that the "system" only to place 5 heroes is not very rewarding. At the
 2. Removing any one class from a mixed squad lowers the score noticeably.
 3. Squads of only one class lose.
 
-**Steps.**
+**Shipped (September 25, 2026).**
 
-1. Enemy traits (`magicRes`, swarm and armored waves).
-2. Basic-attack rules and passives per class in `sim.js`.
-3. Visuals per class in `render.js` (projectile types, effects).
-4. Pricing model and rebalance (`build-game-balance.mjs`, `td:sweep`).
-5. Blessing branch remap.
+Class kits (`tuning.classes`, applied after pricing in `build-game-balance.mjs`):
 
-Steps 1 and 2 are the core; without step 1, step 2 only changes how classes look.
+| Class | Basic attack / passive | Class part of the ultimate | Visual |
+|---|---|---|---|
+| Tank | Damage x0.6, blocks 3, guard: takes 30% less damage from enemy attacks | Holds (stuns) every ground enemy within 1.8x its range for 2 s | Gold hold zone |
+| Warrior | Damage x1.4, blocks 2, cleave: up to 5 enemies within 65 px of the target take 70% | (hero skills unchanged) | Cleave arc |
+| Assassin | Damage x1.1, blocks 1, dash: strikes loose (not held, not stunned) enemies up to 170 px away, furthest along first; +160% damage on loose enemies, scaled by (speed / runner speed) squared | Veil: untargetable for 3 s, the blocked enemy stays blocked but deals no damage, each attack strikes 1 extra enemy | Dash trail, translucent token |
+| Mage | Magic damage for all Mages, damage x0.6, attack speed x0.55 capped at 0.75/s (heavier hits), splash 35% within 42 px; Zeus chains instead (2 bounces, 60% and 35%) | (hero skills unchanged) | Splash area, lightning chain |
+| Archer | Range 210, attack speed x0.5 capped at 0.7/s, +10% crit, pierces 35% of armor or magic resistance, +100% vs flyers, targets the toughest enemy in range | (hero skills unchanged) | (hero shots) |
+| Support | Range 220, heals the most injured ally in range for 3x attack each attack; with nobody hurt a 35% attack; passive aura +35% attack | (hero skills unchanged) | Heal beam |
+
+- Warriors and Assassins went back to hpMult/armorMult 1.2 (M5 had 1.7/1.5); Tanks keep 1.7/1.5. Road heroes were too durable for Tanks and heals to matter.
+- Enemies: own `magicRes` for armored kinds (brute armor 200 / magic resistance 30, boss 200/90, brood 110/40); flyer HP 90 -> 70 (they caused 81% of all leaks, which made anti-air the only thing that mattered); brute attack 60 -> 80; wave 6 grunts are now a swarm (16 at 220 ms); runners in waves 7 and 9 went 14 -> 18.
+- Enemy archers shoot from range for `holdSeconds` (8), then close in and get blocked in contact. Without this a healed Tank that nobody else could reach made the wave run forever (soft-lock).
+- Pricing: `valueDps` per class scales DPS before ranking (Mage 1.5, Warrior 1.5, Assassin 1.3, Archer 1.1, Tank 0.6).
+- Blessing specials remapped (ids unchanged, saves keep them): Warrior Sweeping Blows (+20% cleave share), Assassin Shadow Reach (+40 px dash), Mage Wide Blast (+30% splash radius), Archer Armor Breaker (+20% pierce). Tank Unbreakable Line and Support Blessed Hands already fit.
+- Difficulty `enemyHp` 2.75 -> 3.75 (sweep candidate on all three maps).
+- Bots: Supports take the free ring whose aura covers the most uncovered allies; a wave running 120 s counts as a standoff loss.
+- UI: class role line in hero details (`CLASS_ROLES` in `ui.js`), recruit sheet notes, a Classes article in How to play.
+
+Results (`npm run td:classes`):
+
+1. Matrix, scored per ring type (a road hero with a fixed healer behind it, scored by enemies stopped; a platform hero with a fixed Tank in front, scored by HP it destroyed). All intended picks win: swarm Warrior / Mage, armored Tank / Mage, runner Assassin, flyer Archer, boss Archer. Supports never win alone (by design, their value is criterion 2). The original wording "a different class per wave type" can't hold with five wave types and two ring types, so it is checked per ring type.
+2. Mixed squad (balanced), endless depth over 3 maps x 2 seeds: full 28.0; without Tank 24.0, Assassin 26.7, Mage 10.0, Archer 20.8, Support 21.7, Warrior 28.5 (no loss).
+3. One-class squads lose everywhere except Mage on Verdant (wins on 5/5 seeds).
+
+Next tuning ideas: give Warriors something only they do in full runs (their cleave only pays off where enemies bunch at the line; more swarm pressure, or letting cleave hit enemies held by neighbouring blockers); tune Verdant separately (every squad does best there).
+
+## M7: Remove the ratings from the hero and hero selection
+- i dont find them very helpful and i dont think we should display them.
+
+## M8: Details in the Game & Divine Blessing tree UX/UI
+- we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
+- The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
+
+## M9: Others
+- It should be possible to remove (sell) heroes from the battlefield.
+- Some enemies just rush through tanks and assassins without being stopped.
 
 ## Research notes (September 25, 2026)
 
@@ -146,6 +168,7 @@ Steps 1 and 2 are the core; without step 1, step 2 only changes how classes look
 npm run test:tower-defense      # headless combat/upgrade/virtue checks
 npm run test:td-balance         # 5-squad balance harness
 npm run td:sweep                # difficulty sweep (enemy HP steps x squads x maps)
+npm run td:classes              # class identity report (M6 criteria: matrix, class removal, one-class squads)
 npm run build:game-balance      # regenerate hero balance (re-ranks all heroes)
 npm run check                   # astro check (TD code is type-clean; rest of site not yet)
 

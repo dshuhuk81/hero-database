@@ -51,12 +51,19 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
   const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
-      // deploy every affordable, not-yet-deployed squad member that has a free ring
+      // deploy every affordable, not-yet-deployed squad member that has a free ring;
+      // Supports take the free ring whose aura covers the most allies no other Support
+      // covers yet (auras don't stack)
       for (const id of ids) {
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
         if (g.gold < g.deployCost(id)) continue;
-        for (let i = 0; i < slotCount[base.slot]; i += 1) {
+        const rings = Array.from({ length: slotCount[base.slot] }, (_, i) => i);
+        if (base.class === "Support") {
+          const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
+          rings.sort((a, b) => covered(b) - covered(a) || a - b);
+        }
+        for (const i of rings) {
           const before = g.gold;
           if (g.place(id, base.slot, i)) { spent += before - g.gold; break; }
         }

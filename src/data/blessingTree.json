@@ -476,7 +476,7 @@
     {
       "tree": "Warrior",
       "id": "warrior_special",
-      "name": "Hold the Pass",
+      "name": "Sweeping Blows",
       "stage": "Divine II",
       "row": 3,
       "col": 0.5,
@@ -487,10 +487,10 @@
         "warrior_ascension"
       ],
       "effect": {
-        "type": "blockLimit",
-        "value": 1
+        "type": "cleave",
+        "value": 0.2
       },
-      "text": "Warriors hold {v} more enemy at once."
+      "text": "Warrior cleave hits +{p} of the main hit."
     },
     {
       "tree": "Warrior",
@@ -650,7 +650,7 @@
     {
       "tree": "Assassin",
       "id": "assassin_special",
-      "name": "Killing Instinct",
+      "name": "Shadow Reach",
       "stage": "Divine II",
       "row": 3,
       "col": 0.5,
@@ -661,10 +661,10 @@
         "assassin_ascension"
       ],
       "effect": {
-        "type": "execute",
-        "value": 0.1
+        "type": "dash",
+        "value": 40
       },
-      "text": "Assassin execute threshold +{p} HP."
+      "text": "Assassins dash {v} px further to loose enemies."
     },
     {
       "tree": "Assassin",
@@ -824,7 +824,7 @@
     {
       "tree": "Mage",
       "id": "mage_special",
-      "name": "Far Sight",
+      "name": "Wide Blast",
       "stage": "Divine II",
       "row": 3,
       "col": 0.5,
@@ -835,10 +835,10 @@
         "mage_ascension"
       ],
       "effect": {
-        "type": "rangeFlat",
-        "value": 20
+        "type": "splash",
+        "value": 0.3
       },
-      "text": "Mages +{v} px range."
+      "text": "Mage splash radius +{p}."
     },
     {
       "tree": "Mage",
@@ -998,7 +998,7 @@
     {
       "tree": "Archer",
       "id": "archer_special",
-      "name": "Keen Eye",
+      "name": "Armor Breaker",
       "stage": "Divine II",
       "row": 3,
       "col": 0.5,
@@ -1009,10 +1009,10 @@
         "archer_ascension"
       ],
       "effect": {
-        "type": "crit",
-        "value": 0.08
+        "type": "pierce",
+        "value": 0.2
       },
-      "text": "Archers +{p} crit chance."
+      "text": "Archer shots ignore {p} more armor."
     },
     {
       "tree": "Archer",
