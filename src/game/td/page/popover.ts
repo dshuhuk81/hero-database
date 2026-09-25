@@ -2,6 +2,7 @@
 // rotate and details. Buttons are updated in place so focus survives game events.
 import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
+import { classIcon } from "../assets.js";
 
 // What Awakening adds to each ultimate (numbers mirror castUltimate in sim.js).
 const AWAKEN_TEXT: Record<string, string> = {
@@ -34,6 +35,7 @@ export function createPopover(ctx: PageContext) {
   const popover = q("[data-td-popover]");
   const popName = q("[data-pop-name]");
   const popLevel = q("[data-pop-level]");
+  const popClassIcon = q<HTMLImageElement>("[data-pop-class-icon]");
   const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
   const popHp = q("[data-pop-hp]");
   const popAtk = q("[data-pop-atk]");
@@ -110,6 +112,7 @@ export function createPopover(ctx: PageContext) {
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
+    if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
     popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";

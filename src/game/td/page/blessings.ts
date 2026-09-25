@@ -5,6 +5,7 @@
 import { TREE, CLASSES, canBuy, findNode, levelCost, nodeCurrency, pointsIn } from "../favor.js";
 import type { PageContext } from "./context";
 import { availableFavor, availableInsight } from "./save";
+import { classIconImg } from "../assets.js";
 
 const U = 84; // grid unit in world px
 const NODE = 60; // node button size
@@ -102,9 +103,12 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
   }
 
   function labelsHtml() {
-    const trunk = `<div class="td-bgraph-label td-bgraph-label--trunk" style="left:${px(TRUNK_X + TRUNK_COLS / 2)}px;top:${px(-0.35)}px">Divine trunk <small>Favor</small></div>`;
+    // Name on top, currency underneath; class branches lead with their class icon.
+    const trunk = `<div class="td-bgraph-label td-bgraph-label--trunk" style="left:${px(TRUNK_X + TRUNK_COLS / 2)}px;top:${px(-0.3)}px">` +
+      `<span class="td-bgraph-label-text"><strong>Divine trunk</strong><small>${availableFavor(store.data)} Favor</small></span></div>`;
     const branches = CLASSES.map((cls: string, index: number) =>
-      `<div class="td-bgraph-label" style="left:${px(branchX(index) + BRANCH_COLS / 2)}px;top:${px(BRANCH_TOP - 0.55)}px;--edge:var(--td-class-${cls.toLowerCase()})">${cls} <small>${availableInsight(store.data, cls)} Insight</small></div>`).join("");
+      `<div class="td-bgraph-label" style="left:${px(branchX(index) + BRANCH_COLS / 2)}px;top:${px(BRANCH_TOP - 0.4)}px;--edge:var(--td-class-${cls.toLowerCase()})">` +
+      `${classIconImg(cls, 26)}<span class="td-bgraph-label-text"><strong>${cls}</strong><small>${availableInsight(store.data, cls)} Insight</small></span></div>`).join("");
     return trunk + branches;
   }
 
@@ -127,25 +131,27 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     const check = canBuy(node.id, store.data.favLevels);
     const cost = level < node.maxLevel ? levelCost(node, level + 1) : 0;
     const have = available(node);
-    const where = node.tree === "trunk" ? "Divine trunk" : `${node.tree} - ${node.stage}`;
+    const where = node.tree === "trunk" ? "Divine trunk" : `${classIconImg(node.tree, 18)}${node.tree} - ${node.stage}`;
     const pending = !deps.appliesNow() && !!state.session && (state.session.favLevels[node.id] || 0) !== level;
-    const exclusive = node.exclusive ? `<p class="td-favor-note">Pick one: ${nodes.filter((n) => n.tree === node.tree && n.exclusive === node.exclusive).map((n) => n.name).join(" or ")}.</p>` : "";
+    const exclusive = node.exclusive ? `<p class="td-bdetail-note">Pick one: ${nodes.filter((n) => n.tree === node.tree && n.exclusive === node.exclusive).map((n) => n.name).join(" or ")}.</p>` : "";
+    // Label above its text, so long effects wrap cleanly instead of flowing under the label.
+    const row = (label: string, text: string) => `<div class="td-bdetail-row"><span class="td-bdetail-k">${label}</span><p>${text}</p></div>`;
     let action = "";
     if (level >= node.maxLevel) action = `<p class="td-bdetail-state">Fully unlocked.</p>`;
-    else if (!check.ok) action = `<p class="td-bdetail-state">${check.reason}</p>`;
+    else if (!check.ok) action = row("Locked", check.reason);
     else action = `<button type="button" class="action-button action-button--primary td-bdetail-buy" data-bbuy="${node.id}"${have < cost ? " disabled" : ""}>` +
       `<span>${level ? `Level ${level + 1}` : "Unlock"}</span><span>${cost} ${currencyName(node)}</span></button>` +
       (have < cost ? `<p class="td-bdetail-state">Need ${cost - have} more ${currencyName(node)}.</p>` : "");
-    return `<p class="td-label">${where}</p><h3>${node.name}</h3>` +
+    return `<p class="td-label td-bdetail-where">${where}</p><h3>${node.name}</h3>` +
       `<p class="td-bdetail-level">Level ${level} of ${node.maxLevel}${pending ? ` <span class="td-wave-chip td-wave-chip--pending">From next run</span>` : ""}</p>` +
-      (level ? `<p><span class="td-bdetail-k">Now</span> ${effectText(node, level)}</p>` : "") +
-      (level < node.maxLevel ? `<p><span class="td-bdetail-k">${level ? "Next" : "Gives"}</span> ${effectText(node, level + 1)}</p>` : "") +
+      (level ? row("Now", effectText(node, level)) : "") +
+      (level < node.maxLevel ? row(level ? "Next" : "Gives", effectText(node, level + 1)) : "") +
       exclusive + action;
   }
 
   function summaryHtml() {
     const insight = CLASSES.map((cls: string) =>
-      `<span class="td-bchip" style="--edge:var(--td-class-${cls.toLowerCase()})">${cls} <b>${availableInsight(store.data, cls)}</b></span>`).join("");
+      `<span class="td-bchip" style="--edge:var(--td-class-${cls.toLowerCase()})">${classIconImg(cls, 16)}${cls} <b>${availableInsight(store.data, cls)}</b></span>`).join("");
     const refund = store.data.refundNotice
       ? `<p class="td-favor-note td-bnotice">The Divine Blessings were rebuilt: ${store.data.refundNotice} Favor from your earlier purchases was refunded. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
     return `<div class="td-bsummary"><span class="td-bchip td-bchip--favor"><b>${availableFavor(store.data)}</b> Favor</span>${insight}</div>` +
@@ -166,15 +172,25 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     if (world) world.style.transform = `translate(${view.x}px, ${view.y}px) scale(${view.scale})`;
   }
 
-  function fit() {
+  // Whole tree in view. On first open a narrow screen would shrink it past reading size,
+  // so it starts at READABLE_SCALE on the Divine trunk instead (Fit still shows all).
+  const READABLE_SCALE = 0.55;
+  function fit(initial = false) {
     const viewport = host.querySelector<HTMLElement>(".td-bgraph");
     if (!viewport) return;
     const w = viewport.clientWidth;
     const h = viewport.clientHeight;
     if (!w || !h) return;
-    view.scale = Math.max(0.18, Math.min(1, w / worldW, h / worldH));
-    view.x = (w - worldW * view.scale) / 2;
-    view.y = Math.max(0, (h - worldH * view.scale) / 2);
+    const whole = Math.min(1, w / worldW, h / worldH);
+    if (initial && whole < READABLE_SCALE) {
+      view.scale = READABLE_SCALE;
+      view.x = w / 2 - px(TRUNK_X + TRUNK_COLS / 2) * view.scale;
+      view.y = 0;
+    } else {
+      view.scale = Math.max(0.18, whole);
+      view.x = (w - worldW * view.scale) / 2;
+      view.y = Math.max(0, (h - worldH * view.scale) / 2);
+    }
     fitted = true;
     applyView();
   }
@@ -211,7 +227,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       `<button type="button" class="td-icon-button td-icon-button--small" data-bzoom="out" aria-label="Zoom out">-</button>` +
       `<button type="button" class="td-icon-button td-icon-button--small" data-bzoom="fit" aria-label="Fit the whole tree">Fit</button></div></div>` +
       `<aside class="td-bdetail" aria-live="polite">${detailHtml()}</aside></div>` + resetHtml();
-    if (!fitted) requestAnimationFrame(fit);
+    if (!fitted) requestAnimationFrame(() => fit(true));
     else applyView();
     if (focusedId) host.querySelector<HTMLElement>(`[data-bnode="${focusedId}"]`)?.focus({ preventScroll: true });
   }
@@ -332,7 +348,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
   });
 
   // The graph cannot measure itself while its tab is hidden; fit once it shows.
-  function ensureFit() { if (!fitted) requestAnimationFrame(fit); }
+  function ensureFit() { if (!fitted) requestAnimationFrame(() => fit(true)); }
 
   return { render, ensureFit };
 }

@@ -1,6 +1,6 @@
 // Recruitment sheet (opens from an empty ring) and battlefield input. Pointer,
 // touch and keyboard all go through activateSlot.
-import { tdAsset } from "../assets.js";
+import { classIconImg, tdAsset } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { slotHitRadius } from "../ui.js";
 import anims from "../../../data/tdHeroAnims.json";
@@ -54,7 +54,7 @@ export function createRecruit(ctx: PageContext) {
     sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
-      `<span class="td-card-copy"><strong>${hero.name}</strong><small data-place-reason></small></span></button>`).join("");
+      `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("");
     update();
     previewId = "";
     const first = sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetList.querySelector<HTMLButtonElement>("button");

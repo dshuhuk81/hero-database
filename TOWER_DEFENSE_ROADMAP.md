@@ -8,7 +8,7 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-**Status September 25, 2026.** M1, M5, M6, M7 and M9 are done and archived. Next up: M4, then M8. M3 (sound pass) only needs your listening now; M2 (leaderboard) comes last.
+**Status September 25, 2026.** M1, M5, M6, M7 and M9 are done and archived. Next up: M4 (M8 done, not yet committed). M3 (sound pass) only needs your listening now; M2 (leaderboard) comes last.
 
 ### M4: Divine Blessings tuning (next)
 
@@ -18,9 +18,12 @@ Map work is handled separately and archived. Only open work is listed here; done
 - Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
 - Also decide: endless earns Favor per wave with no cap (farmable), left open by M1.
 
-### M8: Details in the Game & Divine Blessing tree UX/UI
+### M8: Details in the Game & Divine Blessing tree UX/UI (done, uncommitted)
 - we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
 - The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
+- Done (September 25, 2026): class icons come from R2 `icons/classes/{class}.webp` (the hexagon icons the boss and summon calendar pages already use; the hero JSON only has the class name). Helpers `classIcon` / `classIconImg` in `assets.js`, loaded through the same R2 base as TD assets.
+- Icons now on: Blessings class branch labels, Insight chips, the detail panel header, the hero popover title and recruit cards.
+- Blessings readability: branch labels show icon, class name and Insight on its own line (the trunk label shows Favor the same way); detail panel puts "Gives", "Now", "Next" and "Locked" labels above their text, so long effects wrap cleanly; lock reasons are a labelled block instead of faint small print. Narrow screens open the tree at a readable zoom on the Divine trunk instead of fitting everything at about 18%; Fit still shows the whole tree.
 
 ### M2: Leaderboard (large, needs design first)
 
