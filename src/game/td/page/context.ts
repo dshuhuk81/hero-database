@@ -39,6 +39,7 @@ export type PageActions = {
   updateHud(): void;
   syncMainAction(): void;
   renderPreview(): void;
+  playSound(kind: string): void;
   questName(quest: any): string;
   renderDeck(): void;
   cancelDeploy(): void;

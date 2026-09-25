@@ -4,6 +4,12 @@ import type { PageContext } from "./context";
 
 const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear" };
 
+const AUTO_NEXT_KEY = "td:autonext";
+const AUTO_NEXT_MS = 10000;
+// Gold jumps at least this big (wave clear, quest) count up with a "+N" float; kill gold updates instantly.
+const GOLD_TWEEN_MIN = 25;
+const GOLD_TWEEN_MS = 600;
+
 const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes" };
 
 export function createHud(ctx: PageContext) {
@@ -14,7 +20,18 @@ export function createHud(ctx: PageContext) {
   const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
   const pauseButton = q<HTMLButtonElement>("[data-td-pause]");
   const speedButton = q<HTMLButtonElement>("[data-td-speed]");
+  const autoButton = q<HTMLButtonElement>("[data-td-auto]");
+  const goldEl = q("[data-td-gold]");
+  const goldFloatEl = q("[data-td-gold-float]");
   let speed = 1;
+  let autoNext = false;
+  try { autoNext = localStorage.getItem(AUTO_NEXT_KEY) === "1"; } catch {}
+  // Between-wave countdown (5E): armed once per cleared wave, frozen while held.
+  let autoWave = -1;
+  let autoLeft = AUTO_NEXT_MS;
+  let lastFrame = 0;
+  let shownGold = 0;
+  let goldTween: { from: number; to: number; start: number } | null = null;
   let deckKey = "";
   let lastQuestTick = 0;
   let bossPlateTimer = 0;
@@ -22,7 +39,7 @@ export function createHud(ctx: PageContext) {
   function update() {
     const game = state.session?.game;
     if (!game) return;
-    q("[data-td-gold]").textContent = String(game.gold);
+    updateGold(game.gold);
     q("[data-td-lives]").textContent = String(game.lives);
     q("[data-td-wave]").textContent = String(game.wave);
     q("[data-td-score]").textContent = game.score.toLocaleString();
@@ -45,7 +62,39 @@ export function createHud(ctx: PageContext) {
       return;
     }
     mainAction.disabled = false;
-    mainAction.textContent = game.wave === totalWaves - 1 ? `Face ${bossName}` : `Start wave ${game.wave + 1}`;
+    const label = game.wave === totalWaves - 1 ? `Face ${bossName}` : `Start wave ${game.wave + 1}`;
+    mainAction.textContent = countdownActive() ? `${label} - ${Math.ceil(autoLeft / 1000)}s` : label;
+  }
+
+  function updateGold(gold: number) {
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const gain = gold - (goldTween?.to ?? shownGold);
+    if (gain >= GOLD_TWEEN_MIN && state.session?.started) {
+      goldFloatEl.textContent = `+${gain}`;
+      goldFloatEl.classList.remove("is-playing");
+      void goldFloatEl.offsetWidth; // restart the float animation
+      goldFloatEl.classList.add("is-playing");
+      if (!reduced) { goldTween = { from: shownGold, to: gold, start: performance.now() }; return; }
+    }
+    if (goldTween && gold > goldTween.to) { goldTween.to = gold; return; } // kill gold during a count-up
+    goldTween = null;
+    shownGold = gold;
+    goldEl.textContent = String(gold);
+  }
+
+  function countdownActive() {
+    const session = state.session;
+    const game = session?.game;
+    return autoNext && !!session?.started && !!game && !game.running && !game.complete && game.wave > 0 && autoWave === game.wave;
+  }
+
+  // Held while the player is deciding: blessing offer, a panel or manual pause, the recruit sheet.
+  const countdownHeld = (game: any) => !!game.virtueOffer || pause.paused || !!state.pendingSlot;
+
+  function syncAutoButton() {
+    autoButton.setAttribute("aria-pressed", String(autoNext));
+    autoButton.classList.toggle("is-on", autoNext);
+    autoButton.title = autoNext ? "Auto-start next wave after 10 seconds: on" : "Auto-start next wave after 10 seconds: off";
   }
 
   const questName = (quest: any) => QUEST_NAMES[quest.type] ?? quest.type;
@@ -188,10 +237,38 @@ export function createHud(ctx: PageContext) {
     speedButton.setAttribute("aria-label", `Game speed ${speed}x`);
   });
 
-  // Speed clear counts down once the last enemy has spawned; 4 text updates a second.
-  function tick(now: number) {
+  autoButton.addEventListener("click", () => {
+    autoNext = !autoNext;
+    try { localStorage.setItem(AUTO_NEXT_KEY, autoNext ? "1" : "0"); } catch {}
+    syncAutoButton();
     const game = state.session?.game;
-    if (!game?.running || game.quest?.type !== "speedClear" || game.quest.status !== "active" || now - lastQuestTick <= 250) return;
+    if (autoNext && game) { autoWave = game.wave; autoLeft = AUTO_NEXT_MS; } // toggling on mid-break starts a fresh 10s
+    syncMainAction();
+  });
+  syncAutoButton();
+
+  function tick(now: number) {
+    const dt = lastFrame ? now - lastFrame : 0;
+    lastFrame = now;
+    const game = state.session?.game;
+    if (!game) return;
+    if (goldTween) {
+      const t = Math.min(1, (now - goldTween.start) / GOLD_TWEEN_MS);
+      shownGold = Math.round(goldTween.from + (goldTween.to - goldTween.from) * (1 - (1 - t) ** 3));
+      goldEl.textContent = String(shownGold);
+      if (t >= 1) goldTween = null;
+    }
+    // A new break (wave cleared) arms a fresh countdown; a running wave disarms it.
+    if (game.running) autoWave = -1;
+    else if (game.wave > 0 && autoWave !== game.wave) { autoWave = game.wave; autoLeft = AUTO_NEXT_MS; }
+    if (countdownActive() && !countdownHeld(game)) {
+      const before = Math.ceil(autoLeft / 1000);
+      autoLeft -= dt;
+      if (autoLeft <= 0) { autoWave = -1; mainAction.click(); }
+      else if (Math.ceil(autoLeft / 1000) !== before) syncMainAction();
+    }
+    // Speed clear counts down once the last enemy has spawned; 4 text updates a second.
+    if (!game.running || game.quest?.type !== "speedClear" || game.quest.status !== "active" || now - lastQuestTick <= 250) return;
     lastQuestTick = now;
     previewEl.innerHTML = questChip(game);
   }

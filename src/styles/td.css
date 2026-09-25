@@ -475,3 +475,14 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
   .td-boss-plate-art { width: 44px; height: 44px; }
   .td-boss-plate-text strong { font-size: var(--text-lg); }
 }
+/* Between-wave pacing (5E): gold count-up float and the auto-next toggle */
+.td-stat--gold { position: relative; }
+.td-gold-float { position: absolute; left: 0; top: 0; padding-right: var(--space-2); background: var(--bg-raised); color: var(--accent-gold); font-size: var(--text-2xs); font-style: normal; font-weight: var(--weight-bold); line-height: inherit; white-space: nowrap; opacity: 0; pointer-events: none; }
+.td-gold-float.is-playing { animation: td-gold-float 1.2s ease-out forwards; }
+@keyframes td-gold-float { 0% { opacity: 0; transform: translateY(4px); } 12% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .td-gold-float.is-playing { animation-name: td-gold-fade; }
+  @keyframes td-gold-fade { 0%, 100% { opacity: 0; } 10%, 75% { opacity: 1; } }
+}
+.td-auto-button { width: auto; min-width: 44px; padding: 0 var(--space-2); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+.td-auto-button.is-on { border-color: var(--accent-gold); color: var(--accent-gold); }

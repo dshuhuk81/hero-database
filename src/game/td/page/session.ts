@@ -139,6 +139,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (revived) ctx.notice(`${reviver?.name ?? "A hero"} revived ${revived.name} (level 1, half health).`);
     }
     if (type === "clear" && game.waveStats) {
+      ctx.actions.playSound("clear");
       const stats = game.waveStats;
       if (stats.leaks === 0) session.perfectWaves += 1;
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;

@@ -476,9 +476,9 @@ export async function createRenderer(canvas, game, options = {}) {
     container.addChild(sp);
     container._img = sp;
 
+    // Border doubles as the level display (drawLevelBorder).
     const border = new PIXI.Graphics();
-    border.setStrokeStyle({ width: 2, color: palette.gold });
-    border.circle(0, 0, 26).stroke();
+    container._border = border;
     container.addChild(border);
 
     const facing = new PIXI.Graphics();
@@ -489,11 +489,17 @@ export async function createRenderer(canvas, game, options = {}) {
     container._ultRing = ultRing;
     container.addChild(ultRing);
 
-    const lvlText = new PIXI.Text({ text: "", style: { fill: palette.gold, fontSize: 11, fontWeight: "700" } });
-    lvlText.anchor.set(0.5, 1);
-    lvlText.position.set(0, -36);
+    // Level number disc sitting on the border at bottom-right.
+    const badge = new PIXI.Container();
+    badge.position.set(19, 19);
+    const disc = new PIXI.Graphics();
+    disc.circle(0, 0, 8).fill(palette.gold).stroke({ width: 1.5, color: 0x13111c });
+    const lvlText = new PIXI.Text({ text: "1", style: { fill: 0x13111c, fontSize: 11, fontWeight: "800" } });
+    lvlText.anchor.set(0.5);
+    lvlText.position.set(0, 0.5);
+    badge.addChild(disc, lvlText);
     container._lvlText = lvlText;
-    container.addChild(lvlText);
+    container.addChild(badge);
 
     return container;
   }
@@ -530,8 +536,33 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
 
-    // Level badge
-    container._lvlText.text = (unit.level || 1) > 1 ? `Lv${unit.level}` : "";
+    // Level: segmented border + number disc, redrawn only when the level changes.
+    const level = unit.level || 1;
+    if (container._level !== level) {
+      container._level = level;
+      container._lvlText.text = String(level);
+      drawLevelBorder(container._border, level);
+    }
+  }
+
+  // One arc per level; owned levels solid gold. At max level the ring closes and glows.
+  function drawLevelBorder(g, level) {
+    const maxLevel = game.tuning.upgrades?.maxLevel ?? 4;
+    g.clear();
+    g.filters = null;
+    if (level >= maxLevel) {
+      g.circle(0, 0, 26).stroke({ width: 3, color: palette.gold });
+      if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 8, outerStrength: 1.2, color: palette.gold })];
+      return;
+    }
+    const gap = 0.22;
+    const span = (Math.PI * 2) / maxLevel;
+    for (let i = 0; i < maxLevel; i++) {
+      const start = -Math.PI * 0.75 + i * span + gap / 2; // gaps at the diagonals; the badge sits in one
+      const owned = i < level;
+      g.moveTo(Math.cos(start) * 26, Math.sin(start) * 26);
+      g.arc(0, 0, 26, start, start + span - gap).stroke({ width: owned ? 3 : 2, color: palette.gold, alpha: owned ? 1 : 0.3 });
+    }
   }
 
   // ------------------------------------------------------------------

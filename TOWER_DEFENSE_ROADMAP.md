@@ -7,9 +7,9 @@ Last updated: September 24, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](T
 | # | Item | Why |
 |---|------|-----|
 | 1 | **P3 Two new maps** skip | Crimson Forge (parallel lanes) + Frozen Citadel (spiral); add to `tdMaps.json` |
-| 2 | **UI Issue 06** - Level badge | Integrate into hero circle border instead of floating text |
-| 3 | **5E Between-wave pacing** | Wave-clear chime, gold-inflow animation, auto-next countdown |
-| 4 | **AI sprites** | Hand spec at `src/game/td/sprite-spec-for-ai.md` to AI agent; drop into `public/td/enemies/` or use `https://comfy.org/workflows/templates-sprite_sheet-fe5600667e2c/` or `https://giventofly.github.io/pixelit/` |
+| 2 | **AI sprites** | Hand spec at `src/game/td/sprite-spec-for-ai.md` to AI agent or finde a workflow to create 2d sprite assets to use from the original game 3d art images (like the ones we use for portraits on the r2 server); drop into `public/td/enemies/` or use `https://comfy.org/workflows/templates-sprite_sheet-fe5600667e2c/` or `https://giventofly.github.io/pixelit/` |
+| 3 | **Map Art and Map Upgrades** | How can we elevate the map artstyle to be more haptic? Do we need another game engine? What are the possibilities? Phaser? If not, ignore for the time being.
+
 
 ## Dev commands
 

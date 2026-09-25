@@ -10,11 +10,12 @@ const { waveCount, isDev } = Astro.props;
 <section class="td-play" data-td-play aria-label="Tower defense game" hidden>
   <div class="td-topbar">
     <div class="td-stats">
-      <div class="td-stat"><span>Gold</span><strong data-td-gold>0</strong></div>
+      <div class="td-stat td-stat--gold"><span>Gold</span><strong data-td-gold>0</strong><em class="td-gold-float" data-td-gold-float aria-hidden="true"></em></div>
       <div class="td-stat"><span>Lives</span><strong data-td-lives>0</strong></div>
       <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/{waveCount}</strong></div>
     </div>
     <div class="td-top-actions">
+      <button class="td-icon-button td-auto-button" type="button" data-td-auto aria-pressed="false" aria-label="Auto-start next wave">Auto</button>
       <button class="td-icon-button" type="button" data-td-speed aria-label="Game speed 1x">1x</button>
       <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game" aria-pressed="false">
         <svg class="td-icon td-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>

@@ -169,6 +169,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     updateHud: hud.update,
     syncMainAction: hud.syncMainAction,
     renderPreview: hud.renderPreview,
+    playSound: (kind: string) => audio.play(kind),
     questName: hud.questName,
     renderDeck: hud.renderDeck,
     cancelDeploy: hud.cancelDeploy,
