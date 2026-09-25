@@ -8,6 +8,10 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
+### M1: add a priority first for each hero when placed
+- when a hero is placed we should toggle icons what the hero should target first: 1) ground 2) flying 3) boss 4) highest hp 5) last enemy 6) first enemy
+(little interactive icon buttons should do that) -> reference Infinitode2
+
 ### M3: Divine Blessings tuning (next)
 
 - The tree itself shipped (archive, [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md) section 7). This milestone is the follow-up once endless mode exists.
@@ -67,5 +71,10 @@ node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new 
 
 Replays were dropped (September 25, 2026). Open items left by archived milestones:
 
-- M6 criterion 2: the mixed squad does as well without Warriors (endless 28.5 vs 28.0). Give Warriors something only they do in full runs, e.g. more swarm pressure, or cleave that also hits enemies held by neighbouring blockers. Check with `npm run td:classes`.
+- M6 criterion 2: closed September 25, 2026 by the Support change below (endless without Warriors 16.3 vs 20.7 with them). Without Tanks is still close (20.3); check with `npm run td:classes`.
 - M6 criterion 3: three Mages alone win Verdant on every seed; Verdant is the easiest map for every squad and needs its own tuning.
+
+**Player feedback (September 25, 2026):**
+
+- "Can't stop these enemies": they were flyers, which pass over blockers by design but looked like ground units. Flyers now hover above a faint shadow and bob, and the first flyer wave of a run says that only platform heroes can hit them. Rule unchanged.
+- "Support heals too strong, range too big": Support range 220 -> 170 (just above Mages, below Archers), heal per attack 3x -> 1.8x attack (Caishen about 93 -> 56 health per second). Mixed squad endless 24.2 -> 20.7; Supports still count (without them 19.7).

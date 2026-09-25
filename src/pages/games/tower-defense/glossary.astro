@@ -1,0 +1,14 @@
+---
+export const prerender = true;
+import GameLayout from "../../../layouts/GameLayout.astro";
+import TdGlossary from "../../../components/td/TdGlossary.astro";
+
+const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
+---
+
+<GameLayout
+  title="Tower Defense Glossary | Motto Immortal"
+  description="Every hero and enemy in the Motto Immortal tower defense game: classes, attributes, ultimates and enemy stats."
+>
+  <TdGlossary assetBase={R2_BASE} />
+</GameLayout>

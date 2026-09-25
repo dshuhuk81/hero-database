@@ -257,6 +257,7 @@ assert.equal(game.wave, 1, "wave advances once");
   g.place("zeus", "platform", 1);
   const [caishen, zeus] = g.heroes;
   caishen.aps = 0; // isolate zeus's damage from the support's own attacks
+  caishen.x = zeus.x - 100; caishen.y = zeus.y; // well inside the aura, whatever the ring spacing
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("brute");
   const brute = g.enemies[0];

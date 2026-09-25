@@ -4,6 +4,7 @@
 
 // What each ultimate does before Awakening. Every ultimate hits for 250% of attack
 // times the hero's ultimate power, unless the text says otherwise.
+/** @type {Record<string, string>} */
 export const SKILL_TEXT = {
   shield_wall: "Slows every enemy within 1.8x her range for 3s and heals road allies in range for 15% of their max health.",
   expose: "Slows every enemy within 1.8x his range for 3s and exposes them: they take 20% more damage for 4s.",
@@ -29,6 +30,7 @@ export const SKILL_TEXT = {
 };
 
 // What Awakening adds to each ultimate.
+/** @type {Record<string, string>} */
 export const AWAKEN_TEXT = {
   shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
   expose: "enemies take extra damage for 7s instead of 4s",
@@ -54,12 +56,14 @@ export const AWAKEN_TEXT = {
 };
 
 // Class part added on top of every hero ultimate (classUltimate in sim.js).
+/** @type {Record<string, string>} */
 export const CLASS_ULT_TEXT = {
   Tank: "Tank: also pins every ground enemy within 1.8x range in place for 2s.",
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 
 // Enemy kinds in the order players meet them; stats come from tuning.enemies.
+/** @type {Record<string, { name: string, text: string }>} */
 export const ENEMY_INFO = {
   grunt: { name: "Grunt", text: "The basic foot soldier. Walks the path, stops at road heroes and fights them in melee." },
   runner: { name: "Runner", text: "Fast and fragile. Slips past full blockers quickly; Assassins hit fast enemies nobody holds hardest." },

@@ -401,6 +401,47 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-save-status.is-error { color: var(--accent-gold); }
 
 /* ============================================================
+   Glossary page (/games/tower-defense/glossary): heroes and enemies
+   ============================================================ */
+
+.td-glossary-body .td-tabs { padding: 0; }
+.td-glossary-panel { display: grid; gap: var(--space-8); padding-top: var(--space-6); }
+.td-glossary-panel[hidden] { display: none; }
+.td-glossary-panel h2 { margin: 0 0 var(--space-4); color: var(--text-bright); font-size: var(--text-xl); font-weight: var(--weight-bold); }
+.td-glossary-lead { max-width: 70ch; margin: calc(-1 * var(--space-2)) 0 var(--space-4); color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
+.td-glossary-terms { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3) var(--space-6); margin: 0; }
+.td-glossary-terms dt { color: var(--text-bright); font-size: var(--text-sm); font-weight: var(--weight-bold); }
+.td-glossary-terms dd { margin: 2px 0 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
+.td-glossary-classes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); }
+.td-glossary-class, .td-glossary-card { display: grid; align-content: start; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); }
+.td-glossary-class { gap: var(--space-1); }
+.td-glossary-class h3, .td-glossary-card h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--text-bright); font-size: var(--text-lg); font-weight: var(--weight-bold); }
+.td-glossary-class img, .td-glossary-meta img { object-fit: contain; }
+.td-glossary-class p, .td-glossary-card > p { margin: 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
+.td-glossary-meta { display: flex; align-items: center; gap: var(--space-1); margin: 2px 0 0; color: var(--text-muted); font-size: var(--text-xs); }
+.td-glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-4); }
+.td-glossary-card-head { display: flex; align-items: center; gap: var(--space-3); }
+.td-glossary-card-head > div { flex: 1; min-width: 0; }
+.td-glossary-portrait { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; background: var(--td-stage-bg); object-fit: cover; }
+.td-glossary-portrait--enemy { border-radius: var(--radius-md); object-fit: contain; }
+.td-glossary-cost { display: grid; justify-items: end; color: var(--accent-gold); font-size: var(--text-lg); font-weight: var(--weight-bold); line-height: 1.1; }
+.td-glossary-cost small { color: var(--text-muted); font-size: var(--text-xs); font-weight: 400; }
+.td-glossary-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; }
+.td-glossary-stats div { min-width: 0; padding: var(--space-2); border-radius: var(--radius-sm); background: rgba(255, 255, 255, .03); }
+.td-glossary-stats dt { color: var(--text-muted); font-size: var(--text-xs); }
+.td-glossary-stats dd { margin: 0; color: var(--text-primary); font-size: var(--text-sm); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.td-glossary-skill { display: grid; gap: var(--space-1); padding-top: var(--space-3); border-top: 1px solid var(--border-subtle); }
+.td-glossary-skill .td-label { margin: 0; }
+.td-glossary-skill h4 { margin: 0; color: var(--text-bright); font-size: var(--text-base); }
+.td-glossary-skill p:not(.td-label) { margin: 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
+.td-glossary-note, .td-glossary-skill .td-glossary-note { margin: 0; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--leading-normal); }
+.td-glossary-tags { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.td-glossary-tags li { padding: 2px var(--space-2); border: 1px solid var(--border-subtle); border-radius: 999px; color: var(--text-muted); font-size: var(--text-xs); }
+@media (max-width: 600px) {
+  .td-glossary-grid, .td-glossary-classes { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
    Responsive layouts
    ============================================================ */
 

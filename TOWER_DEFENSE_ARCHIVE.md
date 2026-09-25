@@ -234,3 +234,11 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 ## Roadmap M2: Browser experience - full screen mode (done September 25, 2026)
 - is there a full screen mode available?
 - Done (September 25, 2026): there was none. The top bar now has a full screen button (next to Pause; F toggles, Escape exits) that puts the whole game shell in browser full screen, panels and overlays included. The canvas refits through the existing ResizeObserver. The button hides where the browser can't do element full screen (iPhone Safari only allows it for video); there, "Add to Home Screen" is the closest option. Checked in Chromium: enter, exit and F work, and the top bar still fits at 360 px wide (only the dev-only DBG button makes it tight).
+
+## Roadmap M10: Glossary page - heroes and enemies (done September 25, 2026)
+- Goal: one page that explains what every hero and enemy is, which attributes it has and what its skills do.
+- Done (September 25, 2026): `/games/tower-defense/glossary` (`src/pages/games/tower-defense/glossary.astro` -> `src/components/td/TdGlossary.astro`, enemy cards in `TdEnemyCard.astro`), linked from the lobby ("Glossary"). Two tabs (arrow keys and `#heroes` / `#enemies` work):
+  - Heroes: attribute definitions (road/platform, cost, health, attack, attacks per second, range, damage type, armor and magic res, crit, ult charge, ult power, synergy tags, Awakening), the six classes with their role and block limit, and a card per roster hero with level-1 stats, ultimate name and effect, the class part of the ultimate (Tank pin, Assassin veil), the Awakened upgrade and synergy tags.
+  - Enemies: attribute definitions, a card per enemy kind (Grunt, Runner, Flyer, Archer, Brute) with wave-1 health, speed, armor and magic res with their damage reduction, attack, lives lost, gold and first wave, then the bosses (Baphomet, Lilith) and Lilith's Children.
+- Numbers are read at build time from `gameBalance.json`, `gameBalance.tuning.json`, `tdWaves.json` and `tdMaps.json`. Ultimate and enemy text lives in `src/game/td/skills.js` (the Awakening text moved there from the popover, which now imports it); update it together with `castUltimate` in `sim.js`.
+- Checked in Chromium at 1280 and 375 px: tabs switch, sprites and portraits load, no horizontal scroll, no console errors.
