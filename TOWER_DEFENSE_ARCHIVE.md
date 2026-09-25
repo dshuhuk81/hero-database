@@ -54,3 +54,22 @@ One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave r
 - **Ultimates audit**: every-variant edge-case tests plus four fixes (corpse targeting, knockback position, chain lightning double hits, actions after the run ended). Details in `docs/tower-defense-ui-plan.md` M5
 - **Blocking balance**: block limit per blocker (Tank 3, Warrior 2, Assassin 1). Mixed squads now match all-platform squads at the live difficulty; details in `docs/tower-defense-ui-plan.md` M5
 - **Anubis**: 21st TD hero, Featherfall Judgment (stun + kill refund); details in `docs/tower-defense-ui-plan.md` M5
+- **Road ultimates skip flyers**: matches basic attacks (decision); wins unchanged
+- **Animated heroes**: recruit sheet preview plays the in-game Spine idle loop (pre-rendered sprite sheets)
+- **Tooling**: `npm run check` (`astro check`)
+
+## Map work (archived September 25, 2026, handled separately)
+Map items moved out of the roadmap; the owner does maps separately.
+- P3 Two new maps: Crimson Forge (parallel lanes) + Frozen Citadel (spiral), skipped
+- Map art: no engine switch needed; brief in `docs/tower-defense-map-art-audit.md`
+- Map changes list: (1) done: late-loading full-body enemy sprites now replace fallback art; (2) visible spawn and base (paths 8-11% shorter, needs balance approval); (3) Moonlit Pass art pass; (4) Verdant Crossing art pass; (5) polish and profiling; (6) multiple spawn points
+
+**Map art: no new engine.** PixiJS 8 is already a full WebGL 2D renderer. Phaser would add scenes, physics and input helpers, none of which are the gap, and would mean rewriting `render.js` (about 1,000 lines). The flat look comes from the art setup: both maps share one world-map image, the path is a uniform tiled cobble band with a gold halo and a centerline, there are no shadows, props or ambient motion. Possible upgrades inside Pixi when this comes back: one background per map, a soft drop shadow and worn edges on the path (blurred mask), scenery sprites along the path sorted by y, unit drop shadows, ambient particles (mist, fireflies, embers), color grading per map (`pixi-filters` AdjustmentFilter, Godray, Bloom), animated portals.
+
+## Awakening (September 25, 2026)
+- Step after level 4 (`tuning.awakening`: 220 gold, +15% attack, +25% health on top of level 4), lost on death like levels, once per deployed unit
+- Every ultimate gets an approved upgrade (table in `AWAKEN_TEXT`, `src/game/td/page/popover.ts`; numbers in `castUltimate`, `sim.js`); Caishen's awakened ultimate pays 15 gold per cast
+- Popover: Awaken button with stat and ultimate preview, "Awakened" state; token: radiant double ring and star badge; burst effect and upgrade sound
+- Balance (5 squads x 2 maps x 3 seeds, enemyHp 2 / 2.5 / 3): wins identical with and without Awakening; all-platform keeps more lives (20.0 -> 22.5 at x2); bots awakened 52 times in 90 runs
+- Tests: awakening path, loss on death, every awakened ultimate against a crowd, specific numbers (Zeus bounces, Medusa and Poseidon targets, Caishen gold, Horus hits)
+

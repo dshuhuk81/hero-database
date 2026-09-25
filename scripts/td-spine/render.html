@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Frame renderer for render-sheets.cjs: plays one hero's Spine 4.0 idle loop and
+     exposes renderFrame(t) so the script can capture exact frames. -->
+<html><head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@esotericsoftware/spine-player@4.0.31/dist/spine-player.css">
+<script src="https://cdn.jsdelivr.net/npm/@esotericsoftware/spine-player@4.0.31/dist/iife/spine-player.js"></script>
+<style>html, body { margin: 0; background: transparent; } #p { width: 512px; height: 512px; }</style>
+</head><body>
+<div id="p"></div>
+<script>
+const params = new URLSearchParams(location.search);
+const dir = params.get("dir");
+const skel = params.get("skel");
+const atlas = params.get("atlas");
+const config = {
+  atlasUrl: `${dir}/${atlas}`, premultipliedAlpha: true, alpha: true,
+  backgroundColor: "#00000000", showControls: false, preserveDrawingBuffer: true,
+  success: (player) => {
+    const names = player.skeleton.data.animations.map((a) => a.name);
+    const name = names.includes("idle") ? "idle" : names[0];
+    player.setAnimation(name, true);
+    player.pause();
+    window.anim = { name, duration: player.skeleton.data.findAnimation(name).duration, names };
+  },
+  error: (_, message) => { window.failed = message; },
+};
+config[skel.endsWith(".json") ? "jsonUrl" : "skelUrl"] = `${dir}/${skel}`;
+window.player = new spine.SpinePlayer("p", config);
+// Poses the skeleton at time t and draws one frame into the canvas.
+window.renderFrame = (t) => {
+  const p = window.player;
+  const track = p.animationState.getCurrent(0);
+  track.trackTime = t;
+  p.animationState.apply(p.skeleton);
+  p.skeleton.updateWorldTransform();
+  p.drawFrame(false);
+  return p.canvas.toDataURL("image/png");
+};
+</script>
+</body></html>

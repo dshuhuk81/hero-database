@@ -20,6 +20,7 @@
   "difficulty": { "enemyHp": 2 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.1 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2 },
+  "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
   "virtueEffects": {
     "Wildness": { "type": "atk", "value": 0.15, "label": "All heroes deal +15% attack damage." },
     "Desire": { "type": "atk", "value": 0.1, "label": "All heroes deal +10% attack damage." },

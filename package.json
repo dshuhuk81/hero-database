@@ -41,7 +41,8 @@
     "test:td-balance": "node scripts/test-td-balance.mjs",
     "td:sweep": "node scripts/td-balance-sweep.mjs",
     "r2:cors": "node scripts/r2-cors.mjs",
-    "td:hero-audio": "node scripts/add-hero-audio.js"
+    "td:hero-audio": "node scripts/add-hero-audio.js",
+    "check": "astro check"
   },
   "engines": {
     "node": ">=22.12.0"
@@ -53,7 +54,9 @@
     "express": "^4.18.2"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.1",
-    "@aws-sdk/client-s3": "^3.1030.0"
+    "@aws-sdk/client-s3": "^3.1030.0",
+    "typescript": "^6.0.3"
   }
 }

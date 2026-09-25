@@ -486,3 +486,14 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 }
 .td-auto-button { width: auto; min-width: 44px; padding: 0 var(--space-2); font-size: var(--text-xs); font-weight: var(--weight-bold); }
 .td-auto-button.is-on { border-color: var(--accent-gold); color: var(--accent-gold); }
+/* Recruit sheet preview: in-game Spine idle loop as a sprite sheet (scripts/td-spine/) */
+.td-sheet-preview { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: radial-gradient(circle at 30% 60%, rgba(250, 204, 21, .08), transparent 60%), var(--bg-surface); }
+.td-anim { --td-anim-size: 112px; flex: 0 0 auto; width: var(--td-anim-size); height: var(--td-anim-size); background-repeat: no-repeat; background-size: calc(var(--td-anim-size) * var(--td-anim-frames, 24)) var(--td-anim-size); animation: td-anim var(--td-anim-duration, 2.67s) steps(var(--td-anim-frames, 24)) infinite; }
+@keyframes td-anim { from { background-position: 0 0; } to { background-position: calc(var(--td-anim-size) * var(--td-anim-frames, 24) * -1) 0; } }
+.td-sheet-preview-copy { display: grid; gap: 2px; min-width: 0; }
+.td-sheet-preview-copy strong { color: var(--text-bright); font-size: var(--text-base); }
+.td-sheet-preview-copy small { color: var(--text-muted); font-size: var(--text-2xs); line-height: var(--leading-normal); }
+.td-sheet-preview-ult { color: var(--accent-gold) !important; }
+.td-sheet.is-below .td-sheet-preview { display: none; }
+@media (max-height: 560px) { .td-sheet-preview { display: none; } }
+@media (prefers-reduced-motion: reduce) { .td-anim { animation: none; } }

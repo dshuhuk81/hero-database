@@ -6,6 +6,7 @@ import { tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
+import { createMoonlitScene } from "./moonlit-scene.js";
 
 const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs";
 const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs";
@@ -48,11 +49,13 @@ export const FX_TIERS = {
 
 export function effectTier(effect) {
   if (effect.type === "boss" || effect.type === "bossDown") return "epic";
-  if (effect.type === "ult" || (effect.type === "hit" && effect.crit)) return "major";
+  if (effect.type === "ult" || effect.type === "awaken" || (effect.type === "hit" && effect.crit)) return "major";
   return "minor";
 }
 
 export async function createRenderer(canvas, game, options = {}) {
+  const isMoonlit = game.map.art === "moonlit-sanctuary-v1";
+  let moonlitScene = null;
   const [PIXI, glowMod] = await Promise.all([
     import(/* @vite-ignore */ PIXI_CDN),
     import(/* @vite-ignore */ GLOW_CDN).catch(() => null),
@@ -90,15 +93,17 @@ export async function createRenderer(canvas, game, options = {}) {
   // Layer order (added in order = drawn back to front)
   const layerBgTex  = new PIXI.Container(); // game-art background panels
   const layerBg     = new PIXI.Container(); // path, grid
+  const layerStructures = new PIXI.Container(); // physical gate/base foundations
   const layerSlots  = new PIXI.Container(); // slot rings
   const layerRanges = new PIXI.Container(); // range preview rings
   const layerLinks  = new PIXI.Container(); // aura + synergy links
   const layerUnits  = new PIXI.Container(); // enemies + heroes
+  const layerForeground = new PIXI.Container(); // doorway faces occlude entering units
   const layerBars   = new PIXI.Container(); // hp bars (redrawn each frame)
   const layerFx     = new PIXI.Container(); // shot tracers, hit rings
   const layerParts  = new PIXI.Container(); // particles
   const layerHud    = new PIXI.Container(); // portals, labels
-  for (const l of [layerBgTex, layerBg, layerSlots, layerRanges, layerLinks, layerUnits, layerBars, layerFx, layerParts, layerHud]) {
+  for (const l of [layerBgTex, layerBg, layerStructures, layerSlots, layerRanges, layerLinks, layerUnits, layerForeground, layerBars, layerFx, layerParts, layerHud]) {
     stage.addChild(l);
   }
 
@@ -179,12 +184,14 @@ export async function createRenderer(canvas, game, options = {}) {
 
   // Slot art sprites (road = gold glow, platform = purple glow). Falls back to Graphics if absent.
   const slotTextures = new Map(); // "road" | "platform" -> PIXI.Texture
-  PIXI.Assets.load(tdAsset("spritePlatform.webp")).then((t) => slotTextures.set("road", t)).catch(() => {});
-  PIXI.Assets.load(tdAsset("sprite.webp")).then((t) => slotTextures.set("platform", t)).catch(() => {});
+  if (!isMoonlit) {
+    PIXI.Assets.load(tdAsset("spritePlatform.webp")).then((t) => slotTextures.set("road", t)).catch(() => {});
+    PIXI.Assets.load(tdAsset("sprite.webp")).then((t) => slotTextures.set("platform", t)).catch(() => {});
+  }
 
   // Path tile texture (mossy stone, seamless). Rebuilds bg once when it loads.
   let pathTileTex = null;
-  PIXI.Assets.load(tdAsset("spriteRoad.webp")).then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
+  if (!isMoonlit) PIXI.Assets.load(tdAsset("spriteRoad.webp")).then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
 
   // ------------------------------------------------------------------
   // Resize: fit the 960x540 world into the parent's width AND height
@@ -210,6 +217,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Static background: grid lines + path
   // ------------------------------------------------------------------
   function buildBg() {
+    if (isMoonlit) return;
     layerBg.removeChildren();
 
     // Grid (very subtle - bg art provides the visual depth)
@@ -261,6 +269,23 @@ export async function createRenderer(canvas, game, options = {}) {
   // Background art panels (game-extracted stage textures, async)
   // ------------------------------------------------------------------
   async function buildBgTexture() {
+    if (isMoonlit) {
+      // Local versioned artwork ships with the page, including localhost previews.
+      // Awaited before exposing the playable canvas: no flash of untextured ground.
+      const ground = new PIXI.Graphics().rect(0, 0, 960, 540).fill(0x202e3d);
+      layerBgTex.addChild(ground);
+      try {
+        const tex = await PIXI.Assets.load("/td/maps/moonlit-terrain-v1.png");
+        const spr = new PIXI.Sprite(tex);
+        spr.width = 960;
+        spr.height = 540;
+        layerBgTex.addChild(spr);
+        layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x08101c, alpha: 0.14 }));
+      } catch (error) {
+        console.warn("Moonlit terrain could not load; using the stone ground fallback.", error);
+      }
+      return;
+    }
     // World map 2048x2048: scale width to 960, crop height to show mountains + city
     try {
       const tex = await PIXI.Assets.load(tdAsset("bg/worldmap.webp"));
@@ -281,8 +306,14 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   // Slots (semi-static: rebuild when hero placement changes)
   // ------------------------------------------------------------------
+  let slotState = "";
   function buildSlots() {
-    layerSlots.removeChildren();
+    if (moonlitScene) {
+      const next = `${game.heroes.map((h) => `${h.slotType}:${h.slotIndex}`).join(",")}|${game.focusedSlot?.type}:${game.focusedSlot?.index}`;
+      if (next === slotState) return;
+      slotState = next;
+      layerSlots.removeChildren().forEach((child) => child.destroy({ children: true }));
+    } else layerSlots.removeChildren();
     game.map.roadSlots.forEach(([x, y], i) => {
       const occupied  = game.heroes.some((h) => h.slotType === "road" && h.slotIndex === i);
       const focused   = game.focusedSlot?.type === "road" && game.focusedSlot.index === i;
@@ -296,6 +327,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function drawSlot(container, x, y, type, occupied, highlighted) {
+    if (moonlitScene) { moonlitScene.drawSlot(container, x, y, type, occupied, highlighted); return; }
     const color  = type === "road" ? palette.gold : palette.purple;
     const radius = type === "road" ? 27 : 24;
     const tex    = slotTextures.get(type);
@@ -431,6 +463,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Portals (entrance / exit)
   // ------------------------------------------------------------------
   function buildPortals() {
+    if (isMoonlit) return;
     const entrance = game.map.path[0];
     const exit     = game.map.path.at(-1);
     drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE");
@@ -516,6 +549,7 @@ export async function createRenderer(canvas, game, options = {}) {
     lvlText.position.set(0, 0.5);
     badge.addChild(disc, lvlText);
     container._lvlText = lvlText;
+    container._badgeDisc = disc;
     container.addChild(badge);
 
     return container;
@@ -549,10 +583,12 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Level: segmented border + number disc, redrawn only when the level changes.
     const level = unit.level || 1;
-    if (container._level !== level) {
-      container._level = level;
-      container._lvlText.text = String(level);
-      drawLevelBorder(container._border, level);
+    const key = `${level}${unit.awakened ? "a" : ""}`;
+    if (container._level !== key) {
+      container._level = key;
+      container._lvlText.text = unit.awakened ? "\u2605" : String(level);
+      container._badgeDisc.clear().circle(0, 0, 8).fill(unit.awakened ? 0xfff4c2 : palette.gold).stroke({ width: 1.5, color: 0x13111c });
+      drawLevelBorder(container._border, level, unit.awakened);
     }
   }
 
@@ -581,10 +617,17 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   // One arc per level; owned levels solid gold. At max level the ring closes and glows.
-  function drawLevelBorder(g, level) {
+  function drawLevelBorder(g, level, awakened = false) {
     const maxLevel = game.tuning.upgrades?.maxLevel ?? 4;
     g.clear();
     g.filters = null;
+    if (awakened) {
+      // Awakened: radiant double ring with a stronger glow.
+      g.circle(0, 0, 26).stroke({ width: 3, color: 0xfff4c2 });
+      g.circle(0, 0, 30).stroke({ width: 1.5, color: palette.gold, alpha: 0.8 });
+      if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 14, outerStrength: 2, color: 0xffe27a })];
+      return;
+    }
     if (level >= maxLevel) {
       g.circle(0, 0, 26).stroke({ width: 3, color: palette.gold });
       if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 8, outerStrength: 1.2, color: palette.gold })];
@@ -608,16 +651,34 @@ export async function createRenderer(canvas, game, options = {}) {
   function syncEnemies() {
     const seen = new Set();
     for (const unit of game.enemies) {
+      if (isMoonlit && unit.dead && unit.exitReason === "base") continue;
       seen.add(unit.entityId);
-      if (!enemyContainers.has(unit.entityId)) {
+      const existing = enemyContainers.get(unit.entityId);
+      // Full-body art that finished loading after this enemy spawned: rebuild so it converges.
+      const stale = existing && !existing._fullSprite && fullBodyTextures.has(unit.kind);
+      if (!existing || stale) {
         const c = buildEnemyContainer(unit);
+        c.tdEnemy = unit;
         enemyContainers.set(unit.entityId, c);
-        layerUnits.addChild(c);
+        if (stale) {
+          layerUnits.addChildAt(c, layerUnits.getChildIndex(existing));
+          layerUnits.removeChild(existing);
+          existing.destroy({ children: true });
+        } else layerUnits.addChild(c);
       }
       updateEnemyContainer(unit, enemyContainers.get(unit.entityId));
+      if (isMoonlit) {
+        // Units emerge from the breach and pass inside the base, instead of dying there.
+        enemyContainers.get(unit.entityId).alpha = Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.path.total - unit.distance) / 24));
+      }
     }
     for (const [id, c] of enemyContainers) {
       if (!seen.has(id)) {
+        if (isMoonlit && c.tdEnemy?.exitReason === "base") {
+          c.destroy({ children: true });
+          enemyContainers.delete(id);
+          continue;
+        }
         // Move to dying pool for death-fade instead of instant removal
         dyingPool.set(id, { c, timer: 0.3 });
         enemyContainers.delete(id);
@@ -943,6 +1004,13 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("flare_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1, tint: "red" });
       spawnParticle("twirl_01", effect.x, effect.y, { size: 55 * tier.burst, life: 1.1, vr: 4, tint: "red" });
       spawnParticle("flame_04", effect.x, effect.y, { size: 48 * tier.burst, life: 1, vy: -70, tint: "red" });
+    } else if (effect.type === "awaken") {
+      spawnParticle("flare_01", effect.x, effect.y, { size: 110, life: 0.9, tint: "white" });
+      spawnParticle("twirl_01", effect.x, effect.y, { size: 90, life: 1, vr: 5, tint: "gold" });
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        spawnParticle("star_03", effect.x, effect.y, { size: 22, life: 0.9, vx: Math.cos(angle) * 120, vy: Math.sin(angle) * 120 - 30, vr: 3, tint: "gold" });
+      }
     } else if (effect.type === "bossDown") {
       spawnParticle("flare_01", effect.x, effect.y, { size: 90 * tier.burst, life: 1.2, tint: "white" });
       spawnParticle("twirl_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1.3, vr: -5, tint: "gold" });
@@ -1005,6 +1073,7 @@ export async function createRenderer(canvas, game, options = {}) {
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
     for (const effect of game.effects) {
+      if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
       if (hasHeroFx(effect)) continue;
       if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
       const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : palette.gold;
@@ -1049,6 +1118,7 @@ export async function createRenderer(canvas, game, options = {}) {
     drawBars();
     drawEffects(now);
     applyImpact(now);
+    moonlitScene?.draw(now);
     app.renderer.render(stage);
   }
 
@@ -1056,7 +1126,16 @@ export async function createRenderer(canvas, game, options = {}) {
   // Initial one-time setup (static layers built here, not in draw loop)
   // ------------------------------------------------------------------
   resize();
-  buildBgTexture(); // fire-and-forget; panels load async behind path layer
+  if (isMoonlit) {
+    const [spawnTexture, baseTexture, roadTexture, padTexture] = await Promise.all([
+      PIXI.Assets.load("/td/maps/moonlit-spawn-v1.png").catch((error) => { console.warn("Moonlit spawn art unavailable; using stone gate fallback.", error); return null; }),
+      PIXI.Assets.load("/td/maps/moonlit-base-v1.png").catch((error) => { console.warn("Moonlit base art unavailable; using sanctuary fallback.", error); return null; }),
+      PIXI.Assets.load("/td/maps/moonlit-road-v1.png").catch((error) => { console.warn("Moonlit road art unavailable; using stone paving fallback.", error); return null; }),
+      PIXI.Assets.load("/td/maps/moonlit-pad-v1.png").catch((error) => { console.warn("Moonlit pad art unavailable; using carved pad fallback.", error); return null; }),
+      buildBgTexture(),
+    ]);
+    moonlitScene = createMoonlitScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, pad: padTexture } });
+  } else buildBgTexture();
   buildBg();
   buildPortals();
 
@@ -1064,6 +1143,7 @@ export async function createRenderer(canvas, game, options = {}) {
   function destroy() {
     if (destroyed) return;
     destroyed = true;
+    moonlitScene?.destroy?.();
     // Removes the canvas from the DOM; shared textures stay in the Assets cache for the next run.
     app.destroy({ removeView: true }, { children: true });
   }

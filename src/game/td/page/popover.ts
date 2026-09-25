@@ -3,6 +3,31 @@
 import { placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 
+// What Awakening adds to each ultimate (numbers mirror castUltimate in sim.js).
+const AWAKEN_TEXT: Record<string, string> = {
+  shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
+  expose: "enemies take extra damage for 7s instead of 4s",
+  mass_taunt: "taunt reaches 3.5x range instead of 2.5x, slow lasts 5s",
+  drain_field: "heals herself for 35% instead of 15%",
+  knockback: "pushes up to 5 enemies 140px instead of 3 enemies 80px",
+  war_cry: "cleave deals 50% more damage, slow lasts 4s",
+  lifesteal_cleave: "heals for 30% of the damage dealt instead of 15%",
+  venom_cleave: "cleave radius 100px, extra damage taken lasts 8s",
+  shadow_step: "also strikes the second weakest enemy",
+  claw_sweep: "splash radius 90px instead of 55px",
+  rapid_strike: "5 hits instead of 3",
+  chain_lightning: "4 bounces instead of 2",
+  rebirth_flame: "blast radius 110px, heals herself for 40% instead of 20%",
+  weaken_burst: "blast radius 110px instead of 72px",
+  moon_barrage: "5 shots instead of 3, ally buff lasts 8s",
+  piercing_shot: "90% damage per enemy hit instead of 55%, twice the range",
+  petrify_shot: "petrifies 5 enemies for 4s instead of 3 for 3s",
+  fortune_shower: "ally buff lasts 8s and every cast pays 15 gold",
+  fate_link: "allies gain 60% ultimate charge instead of 30%",
+  valkyrie_call: "revived heroes return at full health",
+  soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
+};
+
 export function createPopover(ctx: PageContext) {
   const { q, state, data, maxLevel } = ctx;
   const stageEl = q("[data-td-stage]");
@@ -78,11 +103,19 @@ export function createPopover(ctx: PageContext) {
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
-    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}`;
+    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.awakened ? " - Awakened" : ""}`;
     updateHealth(unit);
     updateStats(unit);
     const info = game.upgradeInfo(unit.entityId);
-    if (info.ok) {
+    const awakenText = AWAKEN_TEXT[unit.variant] ? ` ${unit.skillName ?? "Ultimate"}: ${AWAKEN_TEXT[unit.variant]}.` : "";
+    if (info.awaken) {
+      popUpgrade.disabled = !info.ok;
+      popUpgradeLabel.textContent = "Awaken";
+      popCost.textContent = `${info.cost} gold`;
+      popPreview.textContent = info.ok
+        ? `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.${awakenText}`
+        : `Needs ${info.cost} gold, you have ${game.gold}.${awakenText}`;
+    } else if (info.ok) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
       popCost.textContent = `${info.cost} gold`;
@@ -91,9 +124,9 @@ export function createPopover(ctx: PageContext) {
       popPreview.textContent = `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.nextAtk * boost)}, health ${unit.hp} to ${info.nextHp}.`;
     } else if (unit.level >= maxLevel) {
       popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = "Max level";
+      popUpgradeLabel.textContent = unit.awakened ? "Awakened" : "Max level";
       popCost.textContent = "";
-      popPreview.textContent = "This hero is at the level cap.";
+      popPreview.textContent = unit.awakened ? `Fully upgraded.${awakenText}` : "This hero is at the level cap.";
     } else if (Number.isFinite(info.cost)) {
       popUpgrade.disabled = true;
       popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
@@ -127,12 +160,12 @@ export function createPopover(ctx: PageContext) {
       lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
     }
     if (unit.variant === "valkyrie_call") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free ring at level 1 with half health. Heals nearby allies when nobody can be revived.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free ring at level 1 with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
     }
     if (unit.variant === "soul_drain") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for 2 seconds. A kill refunds 60% of the charge.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakened ? 3 : 2} seconds. A kill refunds ${unit.awakened ? 80 : 60}% of the charge.</p>`);
     }
-    lines.push(`<p>Levels belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
+    lines.push(`<p>Levels and Awakening belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
     return lines.join("");
   }
 
@@ -178,7 +211,7 @@ export function createPopover(ctx: PageContext) {
     const session = state.session;
     if (!session || state.selectedEntityId === null) return;
     const result = session.game.upgrade(state.selectedEntityId);
-    if (result.ok) ctx.notice(`${result.hero.name} reached level ${result.hero.level}.`);
+    if (result.ok) ctx.notice(result.awaken ? `${result.hero.name} has awakened.` : `${result.hero.name} reached level ${result.hero.level}.`);
     else ctx.notice(result.reason || "Upgrade unavailable.");
   });
   q("[data-pop-rotate]").addEventListener("click", () => {

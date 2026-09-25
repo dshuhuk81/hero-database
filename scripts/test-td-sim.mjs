@@ -357,11 +357,15 @@ function runWaveOne(g) {
   assert.equal(nuwa.level, 2, "mid-wave upgrade applied");
   g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
   assert.equal(g.running, false, "wave cleared");
-  g.upgrade(nuwa.entityId); g.upgrade(nuwa.entityId); g.upgrade(nuwa.entityId);
+  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(nuwa.entityId).ok);
   assert.equal(nuwa.level, tuning.upgrades.maxLevel, "level cap reached");
-  const capped = g.upgrade(nuwa.entityId);
-  assert.equal(capped.ok, false, "level cap rejects further upgrades");
-  assert.ok(capped.reason.includes("cap"), "cap reason is stated");
+  const capped = g.upgradeInfo(nuwa.entityId);
+  assert.equal(capped.awaken, true, "past the level cap only Awakening is offered");
+  g.gold = 10000;
+  g.upgrade(nuwa.entityId);
+  const done = g.upgrade(nuwa.entityId);
+  assert.equal(done.ok, false, "nothing after Awakening");
+  assert.ok(done.reason.includes("fully upgraded"), "reason is stated");
 }
 
 // A fallen hero re-enters at level 1.
@@ -1075,6 +1079,66 @@ function runWaveOne(g) {
   assert.ok(Math.abs(lost(near) - lost(a)) < lost(a) * 0.3, "enemy inside the blast is not hit again by the bounce");
 }
 
+// Entering Moonlit's visible sanctuary damages the base exactly once, without a kill reward.
+{
+  const map = maps.find((entry) => entry.id === "moonlit-pass");
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 104 });
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("runner");
+  const enemy = g.enemies[0];
+  assert.deepEqual({ x: enemy.x, y: enemy.y }, map.spawn, "enemy emerges from the visible spawn");
+  const lives = g.lives;
+  const score = g.score;
+  const dt = 1 / 60;
+  enemy.distance = g.path.total - enemy.speed * dt * 1.5;
+  g.step(dt);
+  assert.equal(g.lives, lives, "approaching the doorway does not damage the base early");
+  g.step(dt);
+  assert.equal(g.lives, lives - enemy.damage, "crossing the doorway removes enemy damage from integrity");
+  assert.equal(enemy.exitReason, "base", "renderer can distinguish ingress from death");
+  assert.deepEqual({ x: enemy.x, y: enemy.y }, map.base, "movement terminates inside the base");
+  const hits = g.effects.filter((effect) => effect.type === "baseHit");
+  assert.equal(hits.length, 1, "one breach produces one base impact");
+  assert.equal(hits[0].enemyId, enemy.entityId, "impact identifies the entering enemy");
+  assert.equal(hits[0].damage, enemy.damage, "impact reports actual integrity loss");
+  assert.equal(g.score, score, "entering the base does not award kill score");
+  assert.equal(g.waveStats.kills, 0, "entering the base does not count as a kill");
+  assert.equal(g.waveStats.leaks, 1, "entry still counts for wave statistics and quests");
+  g.step(dt);
+  assert.equal(g.lives, lives - enemy.damage, "removed enemy cannot damage the base again");
+}
+
+// Final-life impacts arrive before finish; invincibility reports zero damage; legacy maps stay unchanged.
+for (const scenario of ["last-life", "invincible", "legacy"]) {
+  const map = maps.find((entry) => entry.id === (scenario === "legacy" ? "verdant-crossing" : "moonlit-pass"));
+  const order = [];
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105,
+    onChange: (type) => { if (type === "finish") order.push(type); } });
+  g.onEffect = (effect) => { if (effect.type === "baseHit") order.push(effect.type); };
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.lives = 1;
+  g.difficulty.invincible = scenario === "invincible";
+  g.spawnEnemy("brute");
+  const enemy = g.enemies[0];
+  enemy.damage = 5;
+  enemy.distance = g.path.total - 0.01;
+  g.step(1 / 60);
+  const hit = g.effects.find((effect) => effect.type === "baseHit");
+  if (scenario === "legacy") {
+    assert.equal(hit, undefined, "Verdant does not emit sanctuary effects");
+    assert.equal(enemy.exitReason, undefined, "legacy removal behavior stays intact");
+    assert.equal(g.lives, 0, "legacy leak still deducts lives");
+  } else if (scenario === "invincible") {
+    assert.equal(g.lives, 1, "debug invincibility protects integrity");
+    assert.equal(hit.damage, 0, "invincible ingress cannot trigger false damage feedback");
+  } else {
+    assert.equal(hit.damage, 1, "overkill effect is capped to actual remaining integrity");
+    assert.equal(g.complete, true, "last-life breach ends the run");
+    assert.deepEqual(order, ["baseHit", "finish"], "final impact is emitted before the result screen");
+    assert.ok(hit.life > 0, "final impact survives the finishing simulation step");
+  }
+}
+
 // Nothing changes after the run is over, even later in the same step.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 100 });
@@ -1094,6 +1158,107 @@ function runWaveOne(g) {
   assert.equal(g.complete, true, "run lost on the leak");
   assert.equal(g.score, score, "no score after the run ended");
   assert.equal(zeus.ultClock > zeus.ultCooldown, true, "no ultimate after the run ended");
+}
+
+// Road heroes' ultimates skip flyers (damage, slows, pushes, debuffs); platform ultimates still hit them.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 103 });
+  g.gold = 100000;
+  g.place("amunra", "road", 0); g.place("momus", "road", 2); g.place("zeus", "platform", 0);
+  const [amunra, momus, zeus] = ["amunra", "momus", "zeus"].map((id) => g.heroes.find((h) => h.id === id));
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("grunt"); g.spawnEnemy("flyer");
+  const [grunt, flyer] = g.enemies;
+  for (const e of g.enemies) { e.hp = e.maxHp = 1e9; e.x = amunra.x + 20; e.y = amunra.y; }
+  g.castUltimate(amunra, grunt);
+  assert.ok(grunt.hp < 1e9, "warrior cleave hits the ground enemy");
+  assert.equal(flyer.hp, 1e9, "warrior cleave skips the flyer");
+  flyer.slow = 0; flyer.x = momus.x + 10; flyer.y = momus.y;
+  g.castUltimate(momus, grunt);
+  assert.equal(flyer.slow, 0, "tank taunt does not slow flyers");
+  flyer.x = zeus.x + 20; flyer.y = zeus.y;
+  g.castUltimate(zeus, flyer);
+  assert.ok(flyer.hp < 1e9, "platform ultimate still hits flyers");
+}
+
+// --- Awakening: level-5 step (tuning.awakening), stronger ultimate, lost on death ---
+{
+  const aw = tuning.awakening;
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 104 });
+  g.gold = 100000;
+  g.place("zeus", "platform", 0);
+  const zeus = g.heroes[0];
+  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(g.upgrade(zeus.entityId).ok);
+  const info = g.upgradeInfo(zeus.entityId);
+  assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
+  assert.equal(info.cost, aw.cost);
+  const atk = zeus.atk, hp = zeus.hp, gold = g.gold;
+  assert.ok(g.upgrade(zeus.entityId).ok);
+  assert.equal(zeus.awakened, true);
+  assert.equal(zeus.level, tuning.upgrades.maxLevel, "awakening does not add a level");
+  assert.equal(g.gold, gold - aw.cost);
+  assert.equal(zeus.atk, Math.round(atk * (1 + aw.attackBonus)), "attack bonus");
+  assert.ok(Math.abs(zeus.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
+  assert.equal(g.upgradeInfo(zeus.entityId).ok, false, "only once");
+  g.damageHero(zeus, zeus.hpLeft + 1, null);
+  assert.ok(g.place("zeus", "platform", 0));
+  const back = g.heroes.find((h) => h.id === "zeus");
+  assert.equal(!!back.awakened, false, "lost on death");
+  assert.equal(back.level, 1);
+}
+
+// Every roster ultimate still survives the edge cases when awakened.
+{
+  for (const id of heroes.map((h) => h.id)) {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 105 });
+    g.gold = 100000;
+    const base = g.heroesById.get(id);
+    g.place(id, base.slot, 0);
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const hero = g.heroes[0];
+    hero.awakened = true;
+    for (const k of ["grunt", "runner", "flyer", "archer", "brute", "grunt"]) g.spawnEnemy(k);
+    for (const e of g.enemies) { e.x = hero.x + 20; e.y = hero.y; }
+    hero.hpLeft = hero.hp * 0.5;
+    assert.doesNotThrow(() => g.castUltimate(hero, g.enemies[0]), `${id} awakened ult`);
+    for (const e of g.enemies) assert.ok(Number.isFinite(e.hp) && Number.isFinite(e.x), `${id} awakened state finite`);
+    for (const h of g.heroes) assert.ok(h.hpLeft <= h.hp + 1e-9, `${id} awakened no overheal`);
+  }
+}
+
+// Awakened numbers for a few ultimates: more hits, bounces, targets, gold, revive health.
+{
+  const setup = (id, awakened, count = 6) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 106 });
+    g.gold = 100000;
+    const base = g.heroesById.get(id);
+    g.place(id, base.slot, 0);
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const hero = g.heroes[0];
+    hero.awakened = awakened;
+    hero.rotation = 0;
+    for (let i = 0; i < count; i += 1) g.spawnEnemy("brute");
+    g.enemies.forEach((e, i) => { e.hp = e.maxHp = 1e9; e.x = hero.x + 30 + i * 60; e.y = hero.y; e.distance = 500 - i; });
+    return { g, hero };
+  };
+  const hitCount = (g) => g.enemies.filter((e) => e.hp < 1e9).length;
+  let r = setup("zeus", false); r.g.castUltimate(r.hero, r.g.enemies[0]); const zeusNormal = hitCount(r.g);
+  r = setup("zeus", true); r.g.castUltimate(r.hero, r.g.enemies[0]);
+  assert.equal(hitCount(r.g), zeusNormal + 2, "awakened Zeus bounces twice more");
+  for (const [id, normal, awake] of [["medusa", 3, 5], ["poseidon", 3, 5]]) {
+    r = setup(id, false); for (const e of r.g.enemies) { e.x = r.hero.x + 25; e.y = r.hero.y; } r.g.castUltimate(r.hero, r.g.enemies[0]);
+    assert.equal(hitCount(r.g), normal, `${id} normal targets`);
+    r = setup(id, true); for (const e of r.g.enemies) { e.x = r.hero.x + 25; e.y = r.hero.y; } r.g.castUltimate(r.hero, r.g.enemies[0]);
+    assert.equal(hitCount(r.g), awake, `${id} awakened targets`);
+  }
+  r = setup("caishen", true, 1);
+  const gold = r.g.gold; r.g.castUltimate(r.hero, r.g.enemies[0]);
+  assert.equal(r.g.gold, gold + 15, "awakened Caishen pays 15 gold");
+  r = setup("horus", true, 1);
+  const horus = r.hero; const e = r.g.enemies[0];
+  const single = r.g.attackValue(horus) * 2.5 * horus.ultPower * 0.5;
+  r.g.castUltimate(horus, e);
+  assert.ok(Math.abs((1e9 - e.hp) - single * 5 * (e.exposed > r.g.time ? 1.2 : 1)) < 1, "awakened Horus hits 5 times");
 }
 
 // Anubis, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.

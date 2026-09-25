@@ -37,6 +37,7 @@ export function isFavorNodeActive(node) {
 // Start resources are folded into run; everything else is read by the
 // simulator from tuning.favor. `boost` is a pending run-end shard (6C):
 // { type: "gold", gold } or { type: "virtue", virtue }.
+/** @param {any} tuning @param {string[]} unlockedNodes @param {{ type: string, gold?: number, virtue?: string } | null} [boost] */
 export function buildRunTuning(tuning, unlockedNodes, boost = null) {
   const bonuses = applyFavorTree(unlockedNodes, tuning);
   const run = {

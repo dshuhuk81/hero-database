@@ -1,7 +1,12 @@
 // Recruitment sheet (opens from an empty ring) and battlefield input. Pointer,
 // touch and keyboard all go through activateSlot.
+import { tdAsset } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { slotHitRadius } from "../ui.js";
+import anims from "../../../data/tdHeroAnims.json";
+
+// Idle loop sprite sheets rendered from the game's Spine data (scripts/td-spine/).
+const ANIM_VERSION = "v1";
 import type { PageContext, Session, Slot } from "./context";
 
 export function createRecruit(ctx: PageContext) {
@@ -11,7 +16,27 @@ export function createRecruit(ctx: PageContext) {
   const sheetKicker = q("[data-td-sheet-kicker]");
   const sheetNote = q("[data-td-sheet-note]");
   const sheetList = q("[data-td-sheet-list]");
+  const previewEl = q("[data-td-sheet-preview]");
+  const animEl = q("[data-td-anim]");
   let lastPointerType = "mouse";
+  let previewId = "";
+
+  // Preview strip: the hovered or focused hero's in-game idle animation.
+  function preview(heroId: string) {
+    const hero = heroById.get(heroId);
+    const anim = (anims as Record<string, { frames: number; duration: number }>)[heroId];
+    if (!hero || heroId === previewId) return;
+    previewId = heroId;
+    previewEl.hidden = !anim;
+    if (!anim) return;
+    animEl.style.backgroundImage = `url("${tdAsset(`anims/${heroId}-idle-${ANIM_VERSION}.webp`)}")`;
+    animEl.style.setProperty("--td-anim-frames", String(anim.frames));
+    animEl.style.setProperty("--td-anim-duration", `${anim.duration}s`);
+    q("[data-td-preview-name]").textContent = hero.name;
+    q("[data-td-preview-sub]").textContent = `${hero.class} - tier ${hero.tier} - ${hero.cost} gold`;
+    const skill = data.tuning.heroSkills?.[heroId]?.skillName;
+    q("[data-td-preview-ult]").textContent = skill ? `Ultimate: ${skill}` : "";
+  }
 
   function open(slot: Slot) {
     const session = state.session;
@@ -32,6 +57,9 @@ export function createRecruit(ctx: PageContext) {
       `<span class="td-card-copy"><strong>${hero.name}</strong><small data-place-reason></small></span>` +
       `<span class="td-tier" data-tier="${hero.tier}">${hero.tier}</span></button>`).join("");
     update();
+    previewId = "";
+    const first = sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetList.querySelector<HTMLButtonElement>("button");
+    if (first) preview(first.dataset.placeHero!);
     const [x] = (road ? session.map.roadSlots : session.map.platformSlots)[slot.index];
     sheetEl.classList.toggle("is-left", x > 480);
     // Portrait: keep the map visible by docking the list into the space below it.
@@ -122,6 +150,12 @@ export function createRecruit(ctx: PageContext) {
   }
 
   q("[data-td-sheet-close]").addEventListener("click", () => close());
+  const previewFrom = (event: Event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
+    if (button) preview(button.dataset.placeHero!);
+  };
+  sheetList.addEventListener("pointerover", previewFrom);
+  sheetList.addEventListener("focusin", previewFrom);
   sheetList.addEventListener("click", (event) => {
     const session = state.session;
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");

@@ -93,6 +93,8 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     else if (effect.type === "hit") audio.play("attack", effect.heroId);
     else if (effect.type === "ult") { audio.play("attack", effect.heroId); audio.play("ultimate", effect.heroId); }
     else if (effect.type === "boss") hud.bossIntro();
+    else if (effect.type === "awaken") audio.play("upgrade");
+    else if (effect.type === "baseHit" && effect.damage > 0) audio.play("heavy");
   }
   volumeSlider.value = String(Math.round(audio.volume * 100));
   function syncAudioUi() {

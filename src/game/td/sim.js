@@ -156,10 +156,11 @@ export class TowerDefenseGame {
     return totals;
   }
 
-  maxHpFor(baseHp, level, heroClass) {
+  maxHpFor(baseHp, level, heroClass, awakened = false) {
     const tuning = this.tuning.upgrades;
     const favorHp = (this.favor.heroHpBonus || 0) + (heroClass === "Tank" ? this.favor.tankHpBonus || 0 : 0);
-    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp));
+    const awake = awakened ? 1 + (this.tuning.awakening?.healthBonus || 0) : 1;
+    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp) * awake);
   }
 
   rangeFor(base) {
@@ -217,7 +218,7 @@ export class TowerDefenseGame {
     if (hpGain > 0) {
       // Apply the health bonus to already-deployed heroes, granted as current health.
       for (const hero of this.heroes) {
-        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class);
+        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class, hero.awakened);
         hero.hpLeft += next - hero.hp;
         hero.hp = next;
       }
@@ -229,7 +230,16 @@ export class TowerDefenseGame {
     if (!hero) return { ok: false, reason: "No hero selected." };
     const tuning = this.tuning.upgrades;
     if (this.complete) return { ok: false, reason: "Run is over.", hero };
-    if (hero.level >= tuning.maxLevel) return { ok: false, reason: `${hero.name} is at the level cap (${tuning.maxLevel}).`, hero };
+    if (hero.level >= tuning.maxLevel) {
+      // Awakening: one step past the level cap. Lost when the hero falls, like levels.
+      const awakening = this.tuning.awakening;
+      if (!awakening || hero.awakened) return { ok: false, reason: `${hero.name} is fully upgraded.`, hero };
+      const cost = awakening.cost;
+      const nextAtk = Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * (hero.level - 1)) * (1 + awakening.attackBonus));
+      const nextHp = this.maxHpFor(hero.baseHp, hero.level, hero.class, true);
+      if (this.gold < cost) return { ok: false, awaken: true, reason: `Needs ${cost} gold, you have ${this.gold}.`, hero, cost, nextAtk, nextHp };
+      return { ok: true, awaken: true, hero, cost, nextAtk, nextHp };
+    }
     const cost = tuning.costs[hero.level];
     const nextAtk = Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * hero.level));
     const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1, hero.class);
@@ -243,7 +253,10 @@ export class TowerDefenseGame {
     const tuning = this.tuning.upgrades;
     this.gold -= info.cost;
     this.totalGoldSpent += info.cost;
-    info.hero.level += 1;
+    if (info.awaken) {
+      info.hero.awakened = true;
+      this.emitHeroEffect(info.hero, { type: "awaken", x: info.hero.x, y: info.hero.y, life: 0.9, color: "gold" });
+    } else info.hero.level += 1;
     const hpGain = info.nextHp - info.hero.hp;
     info.hero.atk = info.nextAtk;
     info.hero.hp = info.nextHp;
@@ -362,7 +375,14 @@ export class TowerDefenseGame {
         enemy.x = point.x; enemy.y = point.y;
         if (enemy.distance >= this.path.total) {
           enemy.dead = true;
+          const previousLives = this.lives;
           if (!this.difficulty.invincible) this.lives = Math.max(0, this.lives - enemy.damage);
+          if (this.map.base) {
+            enemy.exitReason = "base";
+            // Emit before finish: the final breach must still reach the renderer/audio.
+            this.emit({ type: "baseHit", enemyId: enemy.entityId, damage: previousLives - this.lives,
+              x: this.map.base.x, y: this.map.base.y, life: 0.65, color: "red" });
+          }
           if (this.waveStats) this.waveStats.leaks += 1;
           this.totalLeaks += 1;
           if (this.quest?.type === "noLeaks") this.failQuest();
@@ -599,18 +619,27 @@ export class TowerDefenseGame {
   castUltimate(hero, target) {
     const power = this.attackValue(hero) * 2.5 * hero.ultPower;
     const variant = hero.variant;
+    // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.
+    const foes = hero.slotType === "road" ? this.enemies.filter((e) => !e.flying) : this.enemies;
+    // Awakened heroes (level 5 step, tuning.awakening) get the approved per-ultimate upgrade.
+    const aw = !!hero.awakened;
 
     if (variant === "shadow_step") {
       // Nyx: phase to lowest-HP enemy, execute it, slow nearby
-      this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
-      this.enemies.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
+      // Awakened: also strikes the second weakest enemy.
+      const struck = aw ? foes.filter((e) => !e.dead).sort((a, b) => a.hp - b.hp).slice(0, 2) : [target];
+      if (!struck.includes(target)) struck[0] = target;
+      for (const victim of struck) {
+        this.hit(victim, victim.hp / victim.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
+        foes.filter((e) => !e.dead && Math.hypot(victim.x - e.x, victim.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
+      }
     } else if (variant === "soul_drain") {
       // Anubis, Featherfall Judgment: drain the weakest enemy (his attack target as an
       // Assassin), stun it for 2s, 450% ATK (1.8x the standard ultimate). A kill hands
       // back 60% of the charge (the skill restores 600 of 1000 Energy).
       this.hit(target, power * 1.8, hero);
-      if (target.dead) hero.ultRefund = hero.ultCooldown * 0.6;
-      else target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + 2);
+      if (target.dead) hero.ultRefund = hero.ultCooldown * (aw ? 0.8 : 0.6);
+      else target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + (aw ? 3 : 2));
     } else if (variant === "valkyrie_call") {
       // Freya: revive the most recent eligible fallen hero at 50% HP; fallback heal if none.
       // Eligible: not already back on the field, ring still free, and room in the team.
@@ -621,7 +650,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * 0.5), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
+        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
@@ -635,22 +664,22 @@ export class TowerDefenseGame {
       }
     } else if (variant === "knockback") {
       // Poseidon: cleave + push up to 3 enemies back on path (sorted by furthest progress = most dangerous first)
-      const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
-      const victims = (cone.length ? cone : around).sort((a, b) => b.distance - a.distance).slice(0, 3);
+      const victims = (cone.length ? cone : around).sort((a, b) => b.distance - a.distance).slice(0, aw ? 5 : 3);
       victims.forEach((e) => {
         this.hit(e, power, hero);
         // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
-        e.distance = Math.max(0, e.distance - 80);
+        e.distance = Math.max(0, e.distance - (aw ? 140 : 80));
         const point = pointOnPath(this.map.path, e.distance);
         e.x = point.x; e.y = point.y;
       });
     } else if (variant === "petrify_shot") {
       // Gaze catches distinct enemies in the facing cone, furthest along first.
       const skill = this.tuning.heroSkills?.[hero.id];
-      const limit = Math.max(1, Math.floor(skill?.petrifyTargets ?? 3));
-      const duration = Math.max(0, skill?.petrifyDuration ?? 3);
-      const victims = this.enemies.filter(e => !e.dead
+      const limit = Math.max(1, Math.floor(skill?.petrifyTargets ?? 3)) + (aw ? 2 : 0);
+      const duration = Math.max(0, skill?.petrifyDuration ?? 3) + (aw ? 1 : 0);
+      const victims = foes.filter(e => !e.dead
         && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e))
         .sort((a, b) => b.distance - a.distance).slice(0, limit);
       if (!victims.length) return false; // Keep the ultimate ready until she faces a target.
@@ -664,84 +693,86 @@ export class TowerDefenseGame {
       return;
     } else if (variant === "shield_wall") {
       // Nuwa: taunt + heal nearby road allies
-      this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = aw ? 4 : 3; });
       this.heroes.filter((a) => a.slotType === "road" && Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-        a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * 0.15);
+        a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * (aw ? 0.3 : 0.15));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
       // Prometheus: taunt + expose enemies (take +20% damage for 4s, see hit())
-      this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = this.time + 4; });
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = this.time + (aw ? 7 : 4); });
     } else if (variant === "mass_taunt") {
       // Momus: wide taunt (2.5x range)
-      this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 2.5).forEach((e) => { e.slow = 3; });
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * (aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
     } else if (variant === "drain_field") {
       // Demeter: taunt + self heal
-      this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
-      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * 0.15);
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
+      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * (aw ? 0.35 : 0.15));
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "war_cry") {
       // Amunra: cleave + slow hit enemies
-      const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
-      (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.slow = 2; });
+      (cone.length ? cone : around).forEach((e) => { this.hit(e, power * (aw ? 1.5 : 1), hero); e.slow = aw ? 4 : 2; });
       this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "gold" });
     } else if (variant === "lifesteal_cleave") {
       // Set: cleave + heal self for 15% of power per target hit
-      const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
       const targets = cone.length ? cone : around;
       targets.forEach((e) => this.hit(e, power, hero));
       if (targets.length > 0) {
-        hero.hpLeft = Math.min(hero.hp, hero.hpLeft + power * targets.length * 0.15);
+        hero.hpLeft = Math.min(hero.hp, hero.hpLeft + power * targets.length * (aw ? 0.3 : 0.15));
         this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.4, color: "green" });
       }
     } else if (variant === "venom_cleave") {
       // Jormungandr: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
-      const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= (aw ? 100 : 72));
       const cone = around.filter((e) => this.inCone(hero, e));
-      (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
+      (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + (aw ? 8 : 4); });
     } else if (variant === "claw_sweep") {
       // Bastet: execute target + AoE execute around it
       const execMult = target.hp / target.maxHp < this.executeThreshold(hero) ? 1.8 : 1;
       this.hit(target, power * execMult, hero);
-      this.enemies.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= 55).forEach((e) => {
+      foes.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 90 : 55)).forEach((e) => {
         this.hit(e, power * (e.hp / e.maxHp < this.executeThreshold(hero) ? 1.8 : 0.7), hero);
       });
     } else if (variant === "rapid_strike") {
       // Horus: 3 rapid hits at 50% power
-      for (let i = 0; i < 3; i += 1) if (!target.dead) this.hit(target, power * 0.5, hero);
+      for (let i = 0; i < (aw ? 5 : 3); i += 1) if (!target.dead) this.hit(target, power * 0.5, hero);
     } else if (variant === "chain_lightning") {
       // Zeus: nuke primary cluster + bounce to 2 nearest others
-      const blasted = this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72);
+      const blasted = foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72);
       blasted.forEach((e) => this.hit(e, power, hero));
-      // Bounces jump to enemies the blast missed.
-      const b1cands = this.enemies.filter((e) => !e.dead && !blasted.includes(e) && Math.hypot(target.x - e.x, target.y - e.y) <= 140);
-      b1cands.sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
-      const b1 = b1cands[0];
-      if (b1) {
-        this.hit(b1, power * 0.7, hero);
-        this.emitHeroEffect(hero, { type: "shot", x1: target.x, y1: target.y, x2: b1.x, y2: b1.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
-        const b2cands = this.enemies.filter((e) => !e.dead && !blasted.includes(e) && e !== b1 && Math.hypot(b1.x - e.x, b1.y - e.y) <= 140);
-        b2cands.sort((a, b) => Math.hypot(b1.x - a.x, b1.y - a.y) - Math.hypot(b1.x - b.x, b1.y - b.y));
-        const b2 = b2cands[0];
-        if (b2) { this.hit(b2, power * 0.45, hero); this.emitHeroEffect(hero, { type: "shot", x1: b1.x, y1: b1.y, x2: b2.x, y2: b2.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" }); }
+      // Bounces jump from enemy to enemy, skipping anyone already hit; each one weaker.
+      const falloff = aw ? [0.7, 0.45, 0.3, 0.2] : [0.7, 0.45];
+      const struck = [...blasted];
+      let from = target;
+      for (const mult of falloff) {
+        const next = foes.filter((e) => !e.dead && !struck.includes(e) && Math.hypot(from.x - e.x, from.y - e.y) <= 140)
+          .sort((a, b) => Math.hypot(from.x - a.x, from.y - a.y) - Math.hypot(from.x - b.x, from.y - b.y))[0];
+        if (!next) break;
+        this.hit(next, power * mult, hero);
+        this.emitHeroEffect(hero, { type: "shot", x1: from.x, y1: from.y, x2: next.x, y2: next.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
+        struck.push(next);
+        from = next;
       }
     } else if (variant === "rebirth_flame") {
       // Phoenix: nuke + self heal for 20% max HP
-      this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => this.hit(e, power, hero));
-      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * 0.2);
+      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
+      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * (aw ? 0.4 : 0.2));
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "weaken_burst") {
       // Fengyi: nuke + expose hit targets
-      this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
+      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
     } else if (variant === "moon_barrage") {
       // Diana: volley + grant atk buff to nearby allies
-      const spread = this.enemies.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, 2);
+      const shots = aw ? 5 : 3;
+      const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, shots - 1);
       const victims = [target, ...spread];
-      for (let i = 0; i < 3; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
+      for (let i = 0; i < shots; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-        a.buffUntil = Math.max(a.buffUntil || 0, this.time + 5);
+        a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
       });
     } else if (variant === "piercing_shot") {
@@ -749,41 +780,46 @@ export class TowerDefenseGame {
       const dx = target.x - hero.x; const dy = target.y - hero.y;
       const len = Math.hypot(dx, dy) || 1;
       const ux = dx / len; const uy = dy / len;
-      this.enemies.filter((e) => !e.dead && !(e.flying && hero.slotType === "road")).forEach((e) => {
+      foes.filter((e) => !e.dead).forEach((e) => {
         const ex = e.x - hero.x; const ey = e.y - hero.y;
         const proj = ex * ux + ey * uy;
-        if (proj < 0 || proj > hero.range * 1.5) return;
-        if (Math.abs(ex * uy - ey * ux) <= 18) this.hit(e, power * 0.55, hero);
+        if (proj < 0 || proj > hero.range * (aw ? 2 : 1.5)) return;
+        if (Math.abs(ex * uy - ey * ux) <= 18) this.hit(e, power * (aw ? 0.9 : 0.55), hero);
       });
     } else if (variant === "fortune_shower") {
       // Caishen: heal all allies + grant atk buff together
       const fraction = this.support.healFraction * (1 + this.modifiers().heal);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
         a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * fraction);
-        a.buffUntil = Math.max(a.buffUntil || 0, this.time + 5);
+        a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
       });
+      if (aw) {
+        this.gold += 15; // awakened Fortune Shower pays out
+        this.totalGoldEarned += 15;
+        if (this.waveStats) this.waveStats.goldEarned += 15;
+      }
     } else if (variant === "fate_link") {
       // Yuelao: heal allies + accelerate their ult charge by 30%
       const fraction = this.support.healFraction * (1 + this.modifiers().heal);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
         a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * fraction);
-        a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * 0.3);
+        a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * (aw ? 0.6 : 0.3));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else {
       // Generic class fallback (no variant)
       if (hero.ability === "taunt") {
-        this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
+        foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
       } else if (hero.ability === "cleave") {
-        const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+        const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
         const cone = around.filter((e) => this.inCone(hero, e));
         (cone.length ? cone : around).forEach((e) => this.hit(e, power, hero));
       } else if (hero.ability === "nuke") {
-        this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => this.hit(e, power, hero));
+        foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => this.hit(e, power, hero));
       } else if (hero.ability === "volley") {
-        const spread = this.enemies.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, 2);
+        const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, 2);
         const victims = [target, ...spread];
         for (let i = 0; i < 3; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
       } else if (hero.ability === "aura") {
