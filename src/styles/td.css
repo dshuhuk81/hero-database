@@ -31,6 +31,9 @@
   color: var(--text-primary);
 }
 .td-shell [hidden] { display: none !important; }
+.td-shell:fullscreen { height: 100dvh; background: var(--bg-base); }
+.td-fullscreen-button .td-icon-compress, .td-fullscreen-button.is-on .td-icon-expand { display: none; }
+.td-fullscreen-button.is-on .td-icon-compress { display: block; }
 
 /* Shared type ------------------------------------------------------------ */
 .td-kicker, .td-label { color: var(--accent-gold); font-size: var(--text-xs); font-weight: var(--weight-bold); letter-spacing: var(--tracking-widest); text-transform: uppercase; }

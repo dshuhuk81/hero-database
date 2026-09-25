@@ -207,3 +207,26 @@ Next tuning ideas: give Warriors something only they do in full runs (their clea
 - Done (September 25, 2026): class icons come from R2 `icons/classes/{class}.webp` (the hexagon icons the boss and summon calendar pages already use; the hero JSON only has the class name). Helpers `classIcon` / `classIconImg` in `assets.js`, loaded through the same R2 base as TD assets.
 - Icons now on: Blessings class branch labels, Insight chips, the detail panel header, the hero popover title and recruit cards.
 - Blessings readability: branch labels show icon, class name and Insight on its own line (the trunk label shows Favor the same way); detail panel puts "Gives", "Now", "Next" and "Locked" labels above their text, so long effects wrap cleanly; lock reasons are a labelled block instead of faint small print. Narrow screens open the tree at a readable zoom on the Divine trunk instead of fitting everything at about 18%; Fit still shows the whole tree.
+
+## Roadmap M1 (second round): Tuning and bugfixing - spawn spacing, endless ramp, training (done September 25, 2026)
+- Sometime enemies spawn way too close to each other. it looks like a huge asset moving at once. we should add a small delay after one enemy spawned so that they get a bit more space in between. or maybe vary the spawn.
+- in endless mode after wave 22 its only like pressing : NEXT wave but it became too easy. we should do something about it.
+it could be a huge structural change for gameplay but maybe it should be so hard that you need to play another round in order to get something new or unlock a perk.
+- after a hero is awakened you cant do much with the heroes.
+currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgrade those three everytime but it cost a bit more gold?
+- Done (September 25, 2026), decisions: compounding endless ramp, training only after Awakening, range training capped at 3.
+- Spawn spacing: enemies spawned only 9 to 30 px apart (sprites are 44 px wide; the wave-6 swarm was 9 px). Now enemies on one lane keep at least `waveGen.minSpacing` (18 px) apart, converted per enemy speed, and spread sideways in a fixed pattern (up to 14 px off the path centre, `SWAY` in `sim.js`), so packs read as a crowd. Several entrances already alternate, so multi-lane maps rarely need the extra gap.
+- Endless: from wave 21 enemy HP and attack compound by `waveGen.endlessRamp` (8% per wave; wave 30 about 2.2x, wave 40 about 4.7x). Balanced squad with every blessing maxed: waves 60 to 85 before, 35 to 40 now; without blessings runs end at waves 5 to 33. Going deeper now needs the blessing tree (M4).
+- Training: after Awakening, "Train" offers attack (+8%), health (+12%) or range (+8% of base, at most 3 times); cost 120 gold, x1.3 per training (`tuning.training`). Uses the level-focus picker in the popover; bots spend spare gold on it too.
+- Side effect: the spacing made Warriors and Assassins tie against runners in the class matrix; Assassin `looseBonus` 1.6 -> 2.2 restores the M6 picks.
+
+### M2: Browser Experience
+- is there a full screen mode available?
+
+### M3: Divine Blessings tuning (next)
+
+- The tree itself shipped (archive, [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md) section 7). This milestone is the follow-up once endless mode exists.
+- Goal: full progression is needed somewhere. Today the full tree wins at about 4 to 5x enemy HP while the 10-wave mode runs at 2x.
+- Scope: balance bots that buy blessings (so `td:sweep` measures real progression), pacing check (trunk about 128 runs, a class branch 11 to 21 runs with two heroes), endless waves as the power sink, maybe a cap on vertical bonuses. Later, if class branches feel alike: per-hero capstones.
+- Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
+- Also decide: endless earns Favor per wave with no cap (farmable), left open by M1.

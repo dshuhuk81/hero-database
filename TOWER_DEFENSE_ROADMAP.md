@@ -8,20 +8,9 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-### M1: Tuning and Bugfixing (done, uncommitted)
-- Sometime enemies spawn way too close to each other. it looks like a huge asset moving at once. we should add a small delay after one enemy spawned so that they get a bit more space in between. or maybe vary the spawn.
-- in endless mode after wave 22 its only like pressing : NEXT wave but it became too easy. we should do something about it.
-it could be a huge structural change for gameplay but maybe it should be so hard that you need to play another round in order to get something new or unlock a perk.
-- after a hero is awakened you cant do much with the heroes.
-currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgrade those three everytime but it cost a bit more gold?
-- Done (September 25, 2026), decisions: compounding endless ramp, training only after Awakening, range training capped at 3.
-- Spawn spacing: enemies spawned only 9 to 30 px apart (sprites are 44 px wide; the wave-6 swarm was 9 px). Now enemies on one lane keep at least `waveGen.minSpacing` (18 px) apart, converted per enemy speed, and spread sideways in a fixed pattern (up to 14 px off the path centre, `SWAY` in `sim.js`), so packs read as a crowd. Several entrances already alternate, so multi-lane maps rarely need the extra gap.
-- Endless: from wave 21 enemy HP and attack compound by `waveGen.endlessRamp` (8% per wave; wave 30 about 2.2x, wave 40 about 4.7x). Balanced squad with every blessing maxed: waves 60 to 85 before, 35 to 40 now; without blessings runs end at waves 5 to 33. Going deeper now needs the blessing tree (M4).
-- Training: after Awakening, "Train" offers attack (+8%), health (+12%) or range (+8% of base, at most 3 times); cost 120 gold, x1.3 per training (`tuning.training`). Uses the level-focus picker in the popover; bots spend spare gold on it too.
-- Side effect: the spacing made Warriors and Assassins tie against runners in the class matrix; Assassin `looseBonus` 1.6 -> 2.2 restores the M6 picks.
-
-### M2: Browser Experience
+### M2: Browser Experience (done, uncommitted)
 - is there a full screen mode available?
+- Done (September 25, 2026): there was none. The top bar now has a full screen button (next to Pause; F toggles, Escape exits) that puts the whole game shell in browser full screen, panels and overlays included. The canvas refits through the existing ResizeObserver. The button hides where the browser can't do element full screen (iPhone Safari only allows it for video); there, "Add to Home Screen" is the closest option. Checked in Chromium: enter, exit and F work, and the top bar still fits at 360 px wide (only the dev-only DBG button makes it tight).
 
 ### M3: Divine Blessings tuning (next)
 

@@ -233,6 +233,34 @@ export function createHud(ctx: PageContext) {
   });
 
   pauseButton.addEventListener("click", () => { pause.toggle("manual"); syncPauseButton(); });
+
+  // Full screen for the whole game shell (board, panels, overlays). Hidden where the
+  // browser can't do element full screen (iPhone Safari). F toggles, Escape exits.
+  const fullscreenButton = q<HTMLButtonElement>("[data-td-fullscreen]");
+  const shell = fullscreenButton.closest<HTMLElement>("[data-td-root]")!;
+  const doc = document as any;
+  fullscreenButton.hidden = !(document.fullscreenEnabled || doc.webkitFullscreenEnabled);
+  const isFullscreen = () => (document.fullscreenElement || doc.webkitFullscreenElement) === shell;
+  function toggleFullscreen() {
+    const request = isFullscreen()
+      ? (document.exitFullscreen ?? doc.webkitExitFullscreen)?.call(document)
+      : (shell.requestFullscreen ?? (shell as any).webkitRequestFullscreen)?.call(shell, { navigationUI: "hide" });
+    request?.catch?.(() => ctx.notice("Full screen is not available here."));
+  }
+  function syncFullscreenButton() {
+    const on = isFullscreen();
+    fullscreenButton.setAttribute("aria-pressed", String(on));
+    fullscreenButton.setAttribute("aria-label", on ? "Exit full screen" : "Enter full screen");
+    fullscreenButton.classList.toggle("is-on", on);
+  }
+  fullscreenButton.addEventListener("click", toggleFullscreen);
+  document.addEventListener("fullscreenchange", syncFullscreenButton);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenButton);
+  document.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() !== "f" || event.metaKey || event.ctrlKey || event.altKey || fullscreenButton.hidden) return;
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+    toggleFullscreen();
+  });
   speedButton.addEventListener("click", () => {
     speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
     speedButton.textContent = `${speed}x`;

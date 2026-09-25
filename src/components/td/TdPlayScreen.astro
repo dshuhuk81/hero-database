@@ -21,6 +21,10 @@ const { waveCount, isDev } = Astro.props;
         <svg class="td-icon td-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
         <svg class="td-icon td-icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" /></svg>
       </button>
+      <button class="td-icon-button td-fullscreen-button" type="button" data-td-fullscreen aria-label="Enter full screen" aria-pressed="false" hidden>
+        <svg class="td-icon td-icon-expand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" /></svg>
+        <svg class="td-icon td-icon-compress" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" /></svg>
+      </button>
       {isDev && <button class="td-icon-button td-debug-toggle" type="button" data-td-debug-toggle aria-label="Toggle debug panel" aria-pressed="false">DBG</button>}
       <button class="td-icon-button" type="button" data-td-open="menu" aria-label="Open menu">
         <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="6" width="16" height="2" rx="1" /><rect x="4" y="11" width="16" height="2" rx="1" /><rect x="4" y="16" width="16" height="2" rx="1" /></svg>
