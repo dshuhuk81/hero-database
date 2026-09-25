@@ -2,8 +2,8 @@
   "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya", "anubis"],
   "classes": {
     "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 0.6, "valueDps": 0.6, "guard": 0.3, "hold": 2 },
-    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.15, "valueDps": 1.4, "cleave": { "share": 0.6, "radius": 60, "targets": 3 } },
-    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.3, "valueDps": 1.3, "dash": 170, "looseBonus": 0.8, "veil": { "seconds": 3, "extraTargets": 1 } },
+    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.4, "valueDps": 1.5, "cleave": { "share": 0.7, "radius": 65, "targets": 5 } },
+    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.1, "valueDps": 1.3, "dash": 170, "looseBonus": 1.6, "looseSpeed": 76, "veil": { "seconds": 3, "extraTargets": 1 } },
     "Mage": { "slot": "platform", "range": 160, "ability": "nuke", "apsMult": 0.55, "maxAps": 0.75, "dpsMult": 0.8, "damageType": "magical", "valueDps": 1.5, "splash": { "share": 0.45, "radius": 42 }, "chain": { "falloff": [0.6, 0.35], "reach": 110 } },
     "Support": { "slot": "platform", "range": 150, "ability": "aura", "valueDps": 1, "damageShare": 0.35, "heal": 1.5 },
     "Archer": { "slot": "platform", "range": 210, "ability": "volley", "apsMult": 0.5, "maxAps": 0.7, "valueDps": 1.1, "pierce": 0.5, "crit": 0.1, "airBonus": 1, "target": "strongest" }

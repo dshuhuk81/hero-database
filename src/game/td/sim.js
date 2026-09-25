@@ -766,10 +766,13 @@ export class TowerDefenseGame {
     const crit = this.rng() < hero.critChance + mods.crit + (cb.crit || 0);
     const pierce = Math.min(1, (kit.pierce || 0) + (cb.pierce || 0));
     const value = this.attackValue(hero);
-    // Archer anti-air (kit airBonus) and Assassin strikes on enemies nobody holds (kit looseBonus).
+    // Archer anti-air (kit airBonus). Assassins hunt enemies nobody holds (kit looseBonus),
+    // scaled by (speed / kit.looseSpeed) squared, so runners take the full bonus and slow
+    // walkers little of it.
     const strike = (enemy, share, opts = {}) => {
       const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce);
-      const bonus = 1 + (enemy.flying ? kit.airBonus || 0 : 0) + (kit.looseBonus && !enemy.held ? kit.looseBonus : 0);
+      const loose = kit.looseBonus && !enemy.held ? kit.looseBonus * (kit.looseSpeed ? Math.min(1, enemy.speed / kit.looseSpeed) ** 2 : 1) : 0;
+      const bonus = 1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose;
       this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts });
     };
     if (kit.dash && Math.hypot(hero.x - target.x, hero.y - target.y) > hero.range) {

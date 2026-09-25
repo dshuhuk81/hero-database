@@ -150,12 +150,12 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
               </div>
             </>
           );
-          return hero.hasDetailPage ? (
+          return hero.status === "released" ? (
             <a href={`/heroes/${hero.id}`} class="spotlight-card">
               {content}
             </a>
           ) : (
-            <div class="spotlight-card">
+            <div class="spotlight-card is-disabled">
               {content}
             </div>
           );

@@ -22,9 +22,17 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 
 - **Map 1 — Moonlit Pass:** implemented, map id `moonlit-pass`, art key `moonlit-sanctuary-v1`. Cool moonlit stone and celestial ruins. Keep its v1 art assignment.
 - **Map 2 — Verdant Crossing:** implemented, map id `verdant-crossing`, art key still `verdant-shrine-v1`, but its active images are **v2**. The art key is not the asset version. The `verdant-*-v1.png` files are historical procedural adaptations; do not reconnect them. The painted guardian is already in the v2 background, and roots are in the building sprites. Do not add the old vector guardian/root overlays on top.
-- **Map 3 — Sunscar Ruins:** all five images exist; the playable map, route, deployment slots and scene configuration have **not yet been implemented**. Desert solar ruins, sandstone, windblown sand and aged gold. The solar astrolabe landmark is already painted into the upper-right background corner. Asset creation alone does not make this map available in the lobby.
+- **Map 3 - Sunscar Ruins:** implemented, map id `sunscar-ruins`, art key `sunscar-sanctuary-v1`. Desert solar ruins, sandstone, windblown sand and aged gold; the solar astrolabe is painted into the upper-right background corner. First map with **two entrances**: gates at (80, 140) and (80, 320) on the west edge, between the painted pillars. Both lanes run east and meet head-on at the junction (470, 230), then share one trunk that zigzags to the sanctuary at (860, 340). Spawns alternate between the gates. A central island between the lanes holds two platforms that reach both lanes with average range (~90). Boss and music reuse Map 1 (Baphomet, `bg_music_map1`) until dedicated ones exist.
 
-## Required asset mapping when implementing Map 3
+## Multi-entrance maps (`lanes`)
+
+A map with more than one entrance replaces top-level `spawn` + `path` with `lanes: [{ spawn, path }, ...]` ([src/game/td/lanes.js](src/game/td/lanes.js) `mapLanes`). Rules, checked by `test-td-sim.mjs`:
+
+- Every lane is a full route from its own gate to `base` and all lanes must be exactly the same length (targeting ranks enemies by distance walked).
+- Lanes merge into a shared tail; `routeStrokes` draws that shared part once, so the road is not painted twice.
+- The wave's spawn queue alternates lanes, so each gate sends an even share.
+
+## Map 3 asset mapping (implemented)
 
 Add a Sunscar scene entry using the existing scene contract and connect the new map's `art` value to that entry. Suggested identifiers are `sunscar-ruins` for the map and `sunscar-sanctuary-v1` for the scene; these identifiers are proposed, not existing registrations.
 
@@ -38,9 +46,9 @@ assets: {
 }
 ```
 
-Compose the route and slots on the quiet floor of the 960×540 logical board. Keep them clear of perimeter masonry and the upper-right astrolabe. Inspect the actual images before choosing coordinates; no Map 3 doorway or slot positions have been approved or encoded. Preserve sprite transparency and aspect ratio, and align visible doorway thresholds with simulation endpoints. Use biome-appropriate tinting so sandstone does not inherit Verdant's green grade.
+Compose the route and slots on the quiet floor of the 960×540 logical board. Keep them clear of perimeter masonry and the upper-right astrolabe. Coordinates were chosen from a grid overlay of the terrain; the encoded positions are in `tdMaps.json`. Preserve sprite transparency and aspect ratio, and align visible doorway thresholds with simulation endpoints. Use biome-appropriate tinting so sandstone does not inherit Verdant's green grade.
 
-Validate road repeats, building scale, hero readability and selection clearance in the rendered map. The Sunscar PNGs have been visually inspected and decoded, and the three isolated sprites have real alpha; in-game composition and tiling are not yet validated. If adding a playable map or changing geometry, follow the gameplay checks in the art audit. The user runs the production build.
+Validate road repeats, building scale, hero readability and selection clearance in the rendered map. The Sunscar PNGs have been visually inspected and decoded, and the three isolated sprites have real alpha; a static composite of the layout was checked; live in-game rendering still needs a look in the browser. If adding a playable map or changing geometry, follow the gameplay checks in the art audit. The user runs the production build.
 
 ## Production references
 
