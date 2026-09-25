@@ -53,3 +53,4 @@ One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave r
 ## M5 Gameplay (September 25, 2026)
 - **Ultimates audit**: every-variant edge-case tests plus four fixes (corpse targeting, knockback position, chain lightning double hits, actions after the run ended). Details in `docs/tower-defense-ui-plan.md` M5
 - **Blocking balance**: block limit per blocker (Tank 3, Warrior 2, Assassin 1). Mixed squads now match all-platform squads at the live difficulty; details in `docs/tower-defense-ui-plan.md` M5
+- **Anubis**: 21st TD hero, Featherfall Judgment (stun + kill refund); details in `docs/tower-defense-ui-plan.md` M5

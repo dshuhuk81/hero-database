@@ -342,8 +342,8 @@ export class TowerDefenseGame {
       if (enemy.dead) continue;
       enemy.held = false;
       enemy.slow = Math.max(0, enemy.slow - dt);
-      // Petrification stops movement and attacks; simulation time still advances.
-      if ((enemy.petrifiedUntil ?? 0) > this.time) continue;
+      // Petrification and stuns stop movement and attacks; simulation time still advances.
+      if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
       if (target) {
         enemy.held = enemy.attackRange === undefined; // stopped by a blocker (melee contact)
@@ -388,7 +388,10 @@ export class TowerDefenseGame {
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
       if (ultTarget && hero.ultClock >= hero.ultCooldown / this.ultChargeRate()) {
-        if (this.castUltimate(hero, ultTarget) !== false) hero.ultClock = 0;
+        if (this.castUltimate(hero, ultTarget) !== false) {
+          hero.ultClock = hero.ultRefund || 0; // some ultimates hand back part of their charge
+          hero.ultRefund = 0;
+        }
       }
     }
 
@@ -601,6 +604,13 @@ export class TowerDefenseGame {
       // Nyx: phase to lowest-HP enemy, execute it, slow nearby
       this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
       this.enemies.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
+    } else if (variant === "soul_drain") {
+      // Anubis, Featherfall Judgment: drain the weakest enemy (his attack target as an
+      // Assassin), stun it for 2s, 450% ATK (1.8x the standard ultimate). A kill hands
+      // back 60% of the charge (the skill restores 600 of 1000 Energy).
+      this.hit(target, power * 1.8, hero);
+      if (target.dead) hero.ultRefund = hero.ultCooldown * 0.6;
+      else target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + 2);
     } else if (variant === "valkyrie_call") {
       // Freya: revive the most recent eligible fallen hero at 50% HP; fallback heal if none.
       // Eligible: not already back on the field, ring still free, and room in the team.

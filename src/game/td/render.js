@@ -849,8 +849,9 @@ export async function createRenderer(canvas, game, options = {}) {
   function updateEnemyOverlays(unit, c) {
     const petrified = (unit.petrifiedUntil ?? 0) > game.time;
     c._stoneOverlay.visible = petrified;
+    const stunned = !petrified && (unit.stunnedUntil ?? 0) > game.time;
     for (const sprite of [c._fullSprite, c._portraitSprite, c._bossSprite, c._enemySprite]) {
-      if (sprite) sprite.tint = petrified ? 0x9ba39f : 0xffffff;
+      if (sprite) sprite.tint = petrified ? 0x9ba39f : stunned ? 0xb9a8ff : 0xffffff;
     }
 
     // Hit-flash: white overlay for 2 frames

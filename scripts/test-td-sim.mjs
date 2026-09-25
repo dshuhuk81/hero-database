@@ -1096,6 +1096,32 @@ function runWaveOne(g) {
   assert.equal(zeus.ultClock > zeus.ultCooldown, true, "no ultimate after the run ended");
 }
 
+// Anubis, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 102 });
+  g.gold = 10000;
+  assert.ok(g.place("anubis", "road", 0), "anubis is playable");
+  const anubis = g.heroes[0];
+  assert.equal(anubis.variant, "soul_drain");
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("brute");
+  const tough = g.enemies[0];
+  tough.hp = tough.maxHp = 1e9; tough.x = anubis.x + 20; tough.y = anubis.y;
+  g.castUltimate(anubis, tough);
+  assert.ok(tough.stunnedUntil > g.time + 1.9, "survivor stunned for 2s");
+  const pos = tough.distance;
+  for (let i = 0; i < 60; i += 1) g.step(1 / 60);
+  assert.equal(tough.distance, pos, "stunned enemy does not move");
+  g.spawnEnemy("grunt");
+  const weak = g.enemies.at(-1);
+  weak.hp = 1; weak.x = anubis.x + 10; weak.y = anubis.y; weak.distance = pos + 1;
+  anubis.attackClock = 99; // only the ultimate acts
+  anubis.ultClock = anubis.ultCooldown + 1;
+  g.step(1 / 60);
+  assert.ok(weak.dead, "ultimate killed the weakest enemy");
+  assert.ok(Math.abs(anubis.ultClock - anubis.ultCooldown * 0.6) < 0.05, "kill refunds 60% of the charge");
+}
+
 // --- M5 blocking switches (tuning.blocking; absent = old behavior) ---
 {
   const setup = (blocking) => {

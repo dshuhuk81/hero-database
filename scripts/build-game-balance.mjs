@@ -17,7 +17,7 @@ const roster = tuning.roster.map((id) => {
   if (!hero.stats || !hero.baseAttackRate || !hero.bossUltimatesPer90s) throw new Error(`Incomplete tower-defense hero: ${id}`);
   return hero;
 });
-if (roster.length !== 20) throw new Error(`Expected 20 heroes, found ${roster.length}`);
+if (roster.length < 2) throw new Error(`Roster too small: ${roster.length}`);
 
 function ranks(values) {
   const sorted = [...values].sort((a, b) => a - b);

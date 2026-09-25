@@ -129,6 +129,9 @@ export function createPopover(ctx: PageContext) {
     if (unit.variant === "valkyrie_call") {
       lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free ring at level 1 with half health. Heals nearby allies when nobody can be revived.</p>`);
     }
+    if (unit.variant === "soul_drain") {
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for 2 seconds. A kill refunds 60% of the charge.</p>`);
+    }
     lines.push(`<p>Levels belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
     return lines.join("");
   }

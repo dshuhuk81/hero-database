@@ -1,5 +1,5 @@
 {
-  "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya"],
+  "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya", "anubis"],
   "classes": {
     "Tank": { "slot": "road", "range": 60, "ability": "taunt" },
     "Warrior": { "slot": "road", "range": 70, "ability": "cleave" },
@@ -80,6 +80,7 @@
     "medusa":       { "skillName": "Petrifying Gaze",      "variant": "petrify_shot", "petrifyTargets": 3, "petrifyDuration": 3 },
     "caishen":      { "skillName": "Fortune Shower",       "variant": "fortune_shower" },
     "yuelao":       { "skillName": "Fate Link",            "variant": "fate_link" },
-    "freya":        { "skillName": "Valkyrie's Call",      "variant": "valkyrie_call" }
+    "freya":        { "skillName": "Valkyrie's Call",      "variant": "valkyrie_call" },
+    "anubis":       { "skillName": "Featherfall Judgment", "variant": "soul_drain" }
   }
 }
