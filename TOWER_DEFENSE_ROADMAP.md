@@ -8,7 +8,7 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-**Status September 25, 2026.** M1, M5, M6 and M7 are done and archived. Next up: M4, then M8 and M9. M2 (leaderboard) and M3 (sound pass) come last.
+**Status September 25, 2026.** M1, M5, M6 and M7 are done and archived. Next up: M4, then M8 (M9 done, not yet committed). M2 (leaderboard) and M3 (sound pass) come last.
 
 ### M4: Divine Blessings tuning (next)
 
@@ -22,9 +22,12 @@ Map work is handled separately and archived. Only open work is listed here; done
 - we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
 - The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
 
-### M9: Others
+### M9: Others (done, uncommitted)
 - It should be possible to remove (sell) heroes from the battlefield.
 - Some enemies just rush through tanks and assassins without being stopped.
+- Done (September 25, 2026), decisions: refund 50% of everything spent, selling allowed anytime, rushers get slowed instead of higher block limits.
+- Sell: `sell(entityId)` / `sellValue` in `sim.js`; each unit tracks `invested` (deploy, upgrades, Awakening), refund `tuning.run.sellRefund` (0.5). A sold hero is not "fallen" (no revive, no redeploy discount); a named kill-quest hero that is sold fails that quest. Popover has a Sell button that needs a second tap ("Confirm +X"). Help text updated.
+- Rushers: the cause was the block limit (a bot-run tally found enemies passing a full blocker in over 99% of cases; the rings sit on the path). Enemies squeezing past a full blocker now move at `tuning.blocking.passSlowFactor` (0.8) for `passSlow` (1.5 s), separate from skill slows. A stronger slow (0.55) made Warriors beat Assassins against runners in the class matrix; 0.8 keeps the M6 picks.
 
 ### M2: Leaderboard (large, needs design first)
 
@@ -70,6 +73,5 @@ node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new 
 
 Replays were dropped (September 25, 2026). Open items left by archived milestones:
 
-- M5: rushers get past mainly because of the block limit (Tank 3, Warrior 2, Assassin 1), not because blockers die. If they still leak in real play, raise the block limits or slow runners on contact.
 - M6 criterion 2: the mixed squad does as well without Warriors (endless 28.5 vs 28.0). Give Warriors something only they do in full runs, e.g. more swarm pressure, or cleave that also hits enemies held by neighbouring blockers. Check with `npm run td:classes`.
 - M6 criterion 3: three Mages alone win Verdant on every seed; Verdant is the easiest map for every squad and needs its own tuning.

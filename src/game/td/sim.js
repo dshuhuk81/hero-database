@@ -159,6 +159,7 @@ export class TowerDefenseGame {
       placed.atk = this.atkFor(placed, startLevel);
       placed.hp = placed.hpLeft = this.maxHpFor(base.hp, startLevel, base.class);
     }
+    this.heroes.at(-1).invested = cost; // deploy, upgrades and awakening paid for this unit (sell refund)
     if (this.running) this.waveHeroes?.set(this.heroes.at(-1).entityId, base.class);
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
@@ -314,6 +315,7 @@ export class TowerDefenseGame {
     }
     this.gold -= info.cost;
     this.totalGoldSpent += info.cost;
+    info.hero.invested = (info.hero.invested || 0) + info.cost;
     if (info.awaken) {
       info.hero.awakened = true;
       this.emitHeroEffect(info.hero, { type: "awaken", x: info.hero.x, y: info.hero.y, life: 0.9, color: "gold" });
@@ -342,6 +344,28 @@ export class TowerDefenseGame {
       }
     }
     return bestAngle;
+  }
+
+  // Selling refunds tuning.run.sellRefund of what was paid for this unit (deploy, upgrades,
+  // awakening); allowed anytime. A revived unit was free, so it sells for nothing.
+  sellValue(entityId) {
+    const hero = this.heroes.find((item) => item.entityId === entityId);
+    return hero ? Math.floor((hero.invested || 0) * (this.tuning.run.sellRefund ?? 0.5)) : 0;
+  }
+
+  sell(entityId) {
+    const hero = this.heroes.find((item) => item.entityId === entityId);
+    if (!hero || this.complete) return { ok: false };
+    const refund = this.sellValue(entityId);
+    this.heroes = this.heroes.filter((item) => item !== hero);
+    this.team = this.team.filter((id) => id !== hero.id);
+    this.gold += refund;
+    this.totalGoldSpent -= refund;
+    // A named hero that leaves before its kill quest is done fails it, like a fall.
+    if (this.quest?.type === "heroKills" && this.quest.heroEntityId === hero.entityId && this.quest.kills < this.quest.target) this.failQuest();
+    this.emit({ type: "sell", heroId: hero.id, x: hero.x, y: hero.y, life: 0.6, color: "gold" });
+    this.onChange("sell", this);
+    return { ok: true, hero, refund };
   }
 
   rotate(entityId) {
@@ -423,6 +447,7 @@ export class TowerDefenseGame {
       if (enemy.dead) continue;
       enemy.held = false;
       enemy.slow = Math.max(0, enemy.slow - dt);
+      enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
@@ -443,7 +468,12 @@ export class TowerDefenseGame {
           enemy.attackClock = enemy.attackPeriod || 0.9;
         }
       } else {
-        enemy.distance += enemy.speed * (enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1) * dt;
+        // Walking past a full blocker costs time: a milder slow (passSlowFactor) for passSlow
+        // seconds, separate from skill slows; the stronger of the two applies.
+        const blocking = this.tuning.blocking ?? {};
+        if (enemy.brushed) enemy.squeeze = Math.max(enemy.squeeze, blocking.passSlow || 0);
+        const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1);
+        enemy.distance += enemy.speed * pace * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance);
         enemy.x = point.x; enemy.y = point.y;
@@ -586,12 +616,17 @@ export class TowerDefenseGame {
     const reach = melee ? 42 + (this.favor.contactRangeBonus || 0) : enemy.attackRange;
     const limits = this.tuning.blocking?.blockLimit;
     let best = null;
+    enemy.brushed = false;
     for (const hero of this.heroes) {
       if (hero.slotType !== "road" || hero.hpLeft <= 0) continue;
-      // Block limit: a blocker that already holds its share lets further melee enemies walk past.
-      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) : undefined;
-      if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) continue;
       const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
+      // Block limit: a blocker that already holds its share lets further melee enemies walk
+      // past, but they brush against it (step() slows them, tuning.blocking.passSlow).
+      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) : undefined;
+      if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) {
+        if (distance <= reach) enemy.brushed = true;
+        continue;
+      }
       if (distance <= reach && (!best || distance < best.distance)) best = { hero, distance };
     }
     if (best && melee && this.engaged) this.engaged.set(best.hero, (this.engaged.get(best.hero) || 0) + 1);

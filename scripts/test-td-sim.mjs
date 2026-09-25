@@ -1702,4 +1702,40 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
 }
 
+// --- M9: selling heroes and slowing enemies that squeeze past a full blocker ---
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 150 });
+  g.gold = 1000;
+  g.place("nuwa", "road", 0);
+  const nuwa = g.heroes[0];
+  const deploy = heroes.find((h) => h.id === "nuwa").cost;
+  const up = g.upgrade(nuwa.entityId);
+  assert.equal(nuwa.invested, deploy + up.cost, "invested tracks deploy and upgrades");
+  assert.equal(g.sellValue(nuwa.entityId), Math.floor((deploy + up.cost) * tuning.run.sellRefund), "refund is the sell share");
+  const gold = g.gold;
+  g.startWave(); // selling works mid-wave too
+  const result = g.sell(nuwa.entityId);
+  assert.equal(result.ok, true);
+  assert.equal(g.gold, gold + result.refund, "refund paid");
+  assert.equal(g.heroes.length, 0, "unit leaves the field");
+  assert.equal(g.fallenHeroes.length, 0, "a sold hero did not fall (no revive, no redeploy discount)");
+  assert.equal(g.deployCost("nuwa"), deploy, "redeploy at full price");
+  assert.equal(g.place("nuwa", "road", 0), true, "ring and hero free again");
+  assert.equal(g.sell(-1).ok, false, "unknown unit");
+}
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 151 });
+  g.gold = 1000;
+  g.place("nyx", "road", 0); // Assassin: holds 1
+  const nyx = g.heroes[0];
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  const held = g.spawnEnemy("grunt"); const passer = g.spawnEnemy("grunt");
+  for (const e of [held, passer]) { e.hp = e.maxHp = 1e9; e.x = nyx.x; e.y = nyx.y; }
+  nyx.attackClock = 99; nyx.ultClock = -99;
+  g.step(1 / 60);
+  assert.equal(held.held, true, "the first enemy is held");
+  assert.equal(passer.held, false, "the second walks past the full blocker");
+  assert.ok(passer.squeeze >= tuning.blocking.passSlow - 1 / 60, "and is slowed while squeezing by");
+}
+
 console.log("Tower defense checks passed");

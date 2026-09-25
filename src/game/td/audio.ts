@@ -22,6 +22,20 @@ const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: 
   diana: { voice: "diana_voice", attack: "diana_attack", ultimate: "diana_ultimate" },
   anubis: { voice: "anubis_voice", attack: "anubis_attack", ultimate: "anubis_ultimate" },
   fengyi: { voice: "fengyi_voice", attack: "fengyi_attack", ultimate: "fengyi_ultimate" },
+  amunra: { voice: "amunra_voice", attack: "amunra_attack", ultimate: "amunra_ultimate" },
+  artemis: { voice: "artemis_voice", attack: "artemis_attack", ultimate: "artemis_ultimate" },
+  bastet: { voice: "bastet_voice", attack: "bastet_attack", ultimate: "bastet_ultimate" },
+  freya: { voice: "freya_voice", attack: "freya_attack", ultimate: "freya_ultimate" },
+  horus: { voice: "horus_voice", attack: "horus_attack", ultimate: "horus_ultimate" },
+  jormungandr: { voice: "jormungandr_voice", attack: "jormungandr_attack", ultimate: "jormungandr_ultimate" },
+  medusa: { voice: "medusa_voice", attack: "medusa_attack", ultimate: "medusa_ultimate" },
+  momus: { voice: "momus_voice", attack: "momus_attack", ultimate: "momus_ultimate" },
+  nuwa: { voice: "nuwa_voice", attack: "nuwa_attack", ultimate: "nuwa_ultimate" },
+  nyx: { voice: "nyx_voice", attack: "nyx_attack", ultimate: "nyx_ultimate" },
+  phoenix: { voice: "phoenix_voice", attack: "phoenix_attack", ultimate: "phoenix_ultimate" },
+  prometheus: { voice: "prometheus_voice", attack: "prometheus_attack", ultimate: "prometheus_ultimate" },
+  set: { voice: "set_voice", attack: "set_attack", ultimate: "set_ultimate" },
+  yuelao: { voice: "yuelao_voice", attack: "yuelao_attack", ultimate: "yuelao_ultimate" },
 };
 
 const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };

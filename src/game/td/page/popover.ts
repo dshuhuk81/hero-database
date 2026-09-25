@@ -47,6 +47,8 @@ export function createPopover(ctx: PageContext) {
   const popDetailsButton = q<HTMLButtonElement>("[data-pop-details]");
   const popDetails = q("[data-pop-details-body]");
   const popFocus = q("[data-pop-focus]");
+  const popSell = q<HTMLButtonElement>("[data-pop-sell]");
+  let sellArmed = false; // selling needs a second tap to confirm
   const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
   let lastHealthUpdate = 0;
@@ -63,6 +65,7 @@ export function createPopover(ctx: PageContext) {
     popDetails.hidden = true;
     popDetailsButton.setAttribute("aria-expanded", "false");
     focusOpen = false;
+    sellArmed = false;
     popover.hidden = false;
     update(unit);
     position();
@@ -108,6 +111,10 @@ export function createPopover(ctx: PageContext) {
     const game = state.session!.game;
     popName.textContent = unit.name;
     popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}`;
+    const refund = game.sellValue(unit.entityId);
+    popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
+    popSell.classList.toggle("is-armed", sellArmed);
+    popSell.title = `Remove ${unit.name} from the field for ${refund} gold (half of what it cost).`;
     updateHealth(unit);
     updateStats(unit);
     const info = game.upgradeInfo(unit.entityId);
@@ -260,6 +267,19 @@ export function createPopover(ctx: PageContext) {
   });
   q("[data-pop-rotate]").addEventListener("click", () => {
     if (state.session && state.selectedEntityId !== null) state.session.game.rotate(state.selectedEntityId);
+  });
+  popSell.addEventListener("click", () => {
+    const session = state.session;
+    if (!session || state.selectedEntityId === null) return;
+    if (!sellArmed) {
+      sellArmed = true;
+      const unit = findUnit(state.selectedEntityId);
+      if (unit) update(unit);
+      return;
+    }
+    sellArmed = false;
+    const result = session.game.sell(state.selectedEntityId);
+    if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} gold. The ring is free again.`);
   });
   q("[data-pop-close]").addEventListener("click", () => close());
   popDetailsButton.addEventListener("click", () => {
