@@ -33,7 +33,7 @@ export function createRecruit(ctx: PageContext) {
     animEl.style.setProperty("--td-anim-frames", String(anim.frames));
     animEl.style.setProperty("--td-anim-duration", `${anim.duration}s`);
     q("[data-td-preview-name]").textContent = hero.name;
-    q("[data-td-preview-sub]").textContent = `${hero.class} - tier ${hero.tier} - ${hero.cost} gold`;
+    q("[data-td-preview-sub]").textContent = `${hero.class} - ${hero.cost} gold`;
     const skill = data.tuning.heroSkills?.[heroId]?.skillName;
     q("[data-td-preview-ult]").textContent = skill ? `Ultimate: ${skill}` : "";
   }
@@ -54,8 +54,7 @@ export function createRecruit(ctx: PageContext) {
     sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
-      `<span class="td-card-copy"><strong>${hero.name}</strong><small data-place-reason></small></span>` +
-      `<span class="td-tier" data-tier="${hero.tier}">${hero.tier}</span></button>`).join("");
+      `<span class="td-card-copy"><strong>${hero.name}</strong><small data-place-reason></small></span></button>`).join("");
     update();
     previewId = "";
     const first = sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetList.querySelector<HTMLButtonElement>("button");

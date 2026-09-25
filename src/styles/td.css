@@ -177,7 +177,7 @@
 .td-sheet-note { margin: 0; color: var(--text-muted); font-size: var(--text-2xs); line-height: var(--leading-normal); }
 .td-sheet-list { flex: 1; min-height: 0; display: grid; align-content: start; gap: var(--space-2); overflow-y: auto; scrollbar-color: var(--border-medium) transparent; }
 
-.td-hero-card { width: 100%; min-height: 52px; display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
+.td-hero-card { width: 100%; min-height: 52px; display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
 .td-hero-card:hover:not(:disabled), .td-hero-card:focus-visible { border-color: var(--accent-gold); }
 .td-hero-card:disabled { cursor: not-allowed; }
 .td-hero-card.is-unavailable img { filter: grayscale(.8); opacity: .6; }
@@ -186,10 +186,6 @@
 .td-card-copy { min-width: 0; display: grid; gap: 2px; }
 .td-card-copy strong { overflow: hidden; color: var(--text-bright); font-size: var(--text-sm); text-overflow: ellipsis; white-space: nowrap; }
 .td-card-copy small { color: var(--text-muted); font-size: var(--text-2xs); }
-.td-tier { min-width: 28px; padding: 3px 6px; border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--text-2xs); text-align: center; }
-.td-tier[data-tier="S+"] { background: linear-gradient(135deg, var(--tier-splus-from), var(--tier-splus-to)); color: var(--tier-splus-text); }
-.td-tier[data-tier="S"] { background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to)); color: var(--tier-s-text); }
-.td-tier[data-tier="A+"] { background: linear-gradient(135deg, var(--tier-aplus-from), var(--tier-aplus-to)); color: var(--tier-aplus-text); }
 
 /* Run blessing offer and results (cover the stage) */
 .td-blessing-modal, .td-result { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: var(--space-3); box-sizing: border-box; background: color-mix(in srgb, var(--bg-base) 72%, transparent); backdrop-filter: blur(4px); }
