@@ -1,0 +1,1271 @@
+{
+  "version": 2,
+  "costGrowth": 1.35,
+  "reset": {
+    "favorCost": 150
+  },
+  "insight": {
+    "perWave": 2,
+    "killsPerPoint": 5
+  },
+  "classes": [
+    "Tank",
+    "Warrior",
+    "Assassin",
+    "Mage",
+    "Archer",
+    "Support"
+  ],
+  "nodes": [
+    {
+      "tree": "trunk",
+      "id": "demeter_bounty",
+      "name": "Demeter's Bounty",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 30,
+      "effect": {
+        "type": "startingGold",
+        "value": 10
+      },
+      "text": "Starting gold +{v}."
+    },
+    {
+      "tree": "trunk",
+      "id": "freya_blessing",
+      "name": "Freya's Blessing",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 3,
+      "cost": 40,
+      "effect": {
+        "type": "lives",
+        "value": 1
+      },
+      "text": "Max lives +{v}."
+    },
+    {
+      "tree": "trunk",
+      "id": "horus_sight",
+      "name": "Horus's Sight",
+      "row": 0,
+      "col": 2,
+      "maxLevel": 1,
+      "cost": 30,
+      "effect": {
+        "type": "showHp",
+        "value": 1
+      },
+      "text": "Wave preview shows enemy total HP."
+    },
+    {
+      "tree": "trunk",
+      "id": "jormungandr_hide",
+      "name": "Jormungandr's Hide",
+      "row": 0,
+      "col": 3,
+      "maxLevel": 5,
+      "cost": 40,
+      "effect": {
+        "type": "heroHp",
+        "value": 0.02
+      },
+      "text": "All heroes +{p} max HP."
+    },
+    {
+      "tree": "trunk",
+      "id": "caishen_treasury",
+      "name": "Caishen's Treasury",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 80,
+      "requiresPoints": 6,
+      "effect": {
+        "type": "killGold",
+        "value": 0.03
+      },
+      "text": "Kill gold +{p}."
+    },
+    {
+      "tree": "trunk",
+      "id": "amunra_surge",
+      "name": "Amunra's Surge",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 100,
+      "requiresPoints": 6,
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.03
+      },
+      "text": "Ultimates charge {p} faster."
+    },
+    {
+      "tree": "trunk",
+      "id": "yuelao_bond",
+      "name": "Yuelao's Bond",
+      "row": 1,
+      "col": 2,
+      "maxLevel": 4,
+      "cost": 90,
+      "requiresPoints": 6,
+      "effect": {
+        "type": "synergyTag",
+        "value": 0.005
+      },
+      "text": "Synergy bonus per shared tag +{p}."
+    },
+    {
+      "tree": "trunk",
+      "id": "nyx_veil",
+      "name": "Nyx's Veil",
+      "row": 1,
+      "col": 3,
+      "maxLevel": 3,
+      "cost": 60,
+      "requiresPoints": 6,
+      "effect": {
+        "type": "wave1Speed",
+        "value": 0.08
+      },
+      "text": "Wave 1 enemies move {p} slower."
+    },
+    {
+      "tree": "trunk",
+      "id": "zeus_dominion",
+      "name": "Zeus's Dominion",
+      "row": 2,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 200,
+      "requiresPoints": 16,
+      "effect": {
+        "type": "upgradeDiscount",
+        "value": 0.03
+      },
+      "text": "Upgrade costs -{p}."
+    },
+    {
+      "tree": "trunk",
+      "id": "poseidon_tide",
+      "name": "Poseidon's Tide",
+      "row": 2,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 180,
+      "requiresPoints": 16,
+      "effect": {
+        "type": "clearBonus",
+        "value": 0.06
+      },
+      "text": "Wave-clear gold +{p}."
+    },
+    {
+      "tree": "trunk",
+      "id": "nuwa_wall",
+      "name": "Nuwa's Wall",
+      "row": 2,
+      "col": 2,
+      "maxLevel": 4,
+      "cost": 150,
+      "requiresPoints": 16,
+      "effect": {
+        "type": "contactRange",
+        "value": 2
+      },
+      "text": "Road blockers +{v} px contact range."
+    },
+    {
+      "tree": "trunk",
+      "id": "fengyi_favor",
+      "name": "Fengyi's Favor",
+      "row": 2,
+      "col": 3,
+      "maxLevel": 1,
+      "cost": 900,
+      "requiresPoints": 16,
+      "effect": {
+        "type": "extraOffer",
+        "value": 1
+      },
+      "text": "Blessing offers show {v} more option."
+    },
+    {
+      "tree": "trunk",
+      "id": "anubis_judgment",
+      "name": "Anubis's Judgment",
+      "row": 3,
+      "col": 1,
+      "maxLevel": 4,
+      "cost": 400,
+      "requiresPoints": 28,
+      "effect": {
+        "type": "bossDamage",
+        "value": 0.05
+      },
+      "text": "Heroes deal +{p} damage to bosses."
+    },
+    {
+      "tree": "trunk",
+      "id": "set_command",
+      "name": "Set's Command",
+      "row": 3,
+      "col": 2,
+      "maxLevel": 1,
+      "cost": 3000,
+      "requiresPoints": 28,
+      "effect": {
+        "type": "teamSize",
+        "value": 1
+      },
+      "text": "Deploy up to {v} more hero."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Tanks +{p} attack."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Tanks +{p} max HP."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Tanks +{p} attack speed."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Tanks +{p} range."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Tanks enter the field at level 2."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_special",
+      "name": "Unbreakable Line",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "tank_ascension"
+      ],
+      "effect": {
+        "type": "blockLimit",
+        "value": 1
+      },
+      "text": "Tanks hold {v} more enemy at once."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "tank_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Tanks' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "tank_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Tanks' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "tank_surge",
+        "tank_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Tanks awaken for {p} less gold."
+    },
+    {
+      "tree": "Tank",
+      "id": "tank_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "tank_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened tanks gain +{p} attack and max HP."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Warriors +{p} attack."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Warriors +{p} max HP."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Warriors +{p} attack speed."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Warriors +{p} range."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Warriors enter the field at level 2."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_special",
+      "name": "Hold the Pass",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "warrior_ascension"
+      ],
+      "effect": {
+        "type": "blockLimit",
+        "value": 1
+      },
+      "text": "Warriors hold {v} more enemy at once."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "warrior_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Warriors' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "warrior_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Warriors' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "warrior_surge",
+        "warrior_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Warriors awaken for {p} less gold."
+    },
+    {
+      "tree": "Warrior",
+      "id": "warrior_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "warrior_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened warriors gain +{p} attack and max HP."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Assassins +{p} attack."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Assassins +{p} max HP."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Assassins +{p} attack speed."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Assassins +{p} range."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Assassins enter the field at level 2."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_special",
+      "name": "Killing Instinct",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "assassin_ascension"
+      ],
+      "effect": {
+        "type": "execute",
+        "value": 0.1
+      },
+      "text": "Assassin execute threshold +{p} HP."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "assassin_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Assassins' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "assassin_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Assassins' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "assassin_surge",
+        "assassin_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Assassins awaken for {p} less gold."
+    },
+    {
+      "tree": "Assassin",
+      "id": "assassin_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "assassin_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened assassins gain +{p} attack and max HP."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Mages +{p} attack."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Mages +{p} max HP."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Mages +{p} attack speed."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Mages +{p} range."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Mages enter the field at level 2."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_special",
+      "name": "Far Sight",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "mage_ascension"
+      ],
+      "effect": {
+        "type": "rangeFlat",
+        "value": 20
+      },
+      "text": "Mages +{v} px range."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "mage_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Mages' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "mage_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Mages' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "mage_surge",
+        "mage_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Mages awaken for {p} less gold."
+    },
+    {
+      "tree": "Mage",
+      "id": "mage_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "mage_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened mages gain +{p} attack and max HP."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Archers +{p} attack."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Archers +{p} max HP."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Archers +{p} attack speed."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Archers +{p} range."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Archers enter the field at level 2."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_special",
+      "name": "Keen Eye",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "archer_ascension"
+      ],
+      "effect": {
+        "type": "crit",
+        "value": 0.08
+      },
+      "text": "Archers +{p} crit chance."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "archer_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Archers' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "archer_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Archers' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "archer_surge",
+        "archer_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Archers awaken for {p} less gold."
+    },
+    {
+      "tree": "Archer",
+      "id": "archer_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "archer_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened archers gain +{p} attack and max HP."
+    },
+    {
+      "tree": "Support",
+      "id": "support_might",
+      "name": "Might",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "atk",
+        "value": 0.02
+      },
+      "text": "Supports +{p} attack."
+    },
+    {
+      "tree": "Support",
+      "id": "support_vigor",
+      "name": "Vigor",
+      "stage": "Mythic",
+      "row": 0,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "hp",
+        "value": 0.03
+      },
+      "text": "Supports +{p} max HP."
+    },
+    {
+      "tree": "Support",
+      "id": "support_swiftness",
+      "name": "Swiftness",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "aps",
+        "value": 0.02
+      },
+      "text": "Supports +{p} attack speed."
+    },
+    {
+      "tree": "Support",
+      "id": "support_reach",
+      "name": "Reach",
+      "stage": "Mythic",
+      "row": 1,
+      "col": 1,
+      "maxLevel": 5,
+      "cost": 5,
+      "effect": {
+        "type": "range",
+        "value": 0.02
+      },
+      "text": "Supports +{p} range."
+    },
+    {
+      "tree": "Support",
+      "id": "support_ascension",
+      "name": "Early Ascension",
+      "stage": "Divine I",
+      "row": 2,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 40,
+      "requiresPoints": 8,
+      "effect": {
+        "type": "startLevel",
+        "value": 1
+      },
+      "text": "Supports enter the field at level 2."
+    },
+    {
+      "tree": "Support",
+      "id": "support_special",
+      "name": "Blessed Hands",
+      "stage": "Divine II",
+      "row": 3,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 60,
+      "requiresPoints": 12,
+      "requires": [
+        "support_ascension"
+      ],
+      "effect": {
+        "type": "support",
+        "value": 0.25
+      },
+      "text": "Support heals and attack auras +{p}."
+    },
+    {
+      "tree": "Support",
+      "id": "support_surge",
+      "name": "Surge",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "support_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultCharge",
+        "value": 0.15
+      },
+      "text": "Supports' ultimates charge {p} faster."
+    },
+    {
+      "tree": "Support",
+      "id": "support_wrath",
+      "name": "Wrath",
+      "stage": "Divine III",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 1,
+      "cost": 80,
+      "requiresPoints": 16,
+      "requires": [
+        "support_special"
+      ],
+      "exclusive": "d3",
+      "effect": {
+        "type": "ultPower",
+        "value": 0.15
+      },
+      "text": "Supports' ultimates hit {p} harder."
+    },
+    {
+      "tree": "Support",
+      "id": "support_rite",
+      "name": "Divine Rite",
+      "stage": "Divine IV",
+      "row": 5,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 100,
+      "requiresPoints": 18,
+      "requiresAny": [
+        "support_surge",
+        "support_wrath"
+      ],
+      "effect": {
+        "type": "awakenDiscount",
+        "value": 0.3
+      },
+      "text": "Supports awaken for {p} less gold."
+    },
+    {
+      "tree": "Support",
+      "id": "support_apotheosis",
+      "name": "Apotheosis",
+      "stage": "Divine V",
+      "row": 6,
+      "col": 0.5,
+      "maxLevel": 1,
+      "cost": 140,
+      "requiresPoints": 20,
+      "requires": [
+        "support_rite"
+      ],
+      "effect": {
+        "type": "awakenBonus",
+        "value": 0.15
+      },
+      "text": "Awakened supports gain +{p} attack and max HP."
+    }
+  ]
+}

@@ -1,7 +1,5 @@
 ---
 // Debug panel (dev builds only): difficulty knobs and shortcuts. Controlled by src/game/td/page/debug.ts.
-interface Props { waveCount: number; }
-const { waveCount } = Astro.props;
 ---
 
 <section class="td-debug" data-td-debug aria-label="Debug panel" hidden>
@@ -26,7 +24,7 @@ const { waveCount } = Astro.props;
   <div class="td-debug-actions">
     <button type="button" data-debug-action="gold">+500 gold</button>
     <button type="button" data-debug-action="favor">+500 Favor</button>
-    <label class="td-debug-wave">Wave <input type="number" min="1" max={waveCount} value="1" data-debug-wave /></label>
+    <label class="td-debug-wave">Wave <input type="number" min="1" value="1" data-debug-wave /></label>
     <button type="button" data-debug-action="jump">Jump</button>
     <button type="button" data-debug-action="win">Win now</button>
     <button type="button" data-debug-action="lose">Lose now</button>

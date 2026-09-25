@@ -31,7 +31,7 @@ const previews = maps.map((entry: any) => ({
     <div class="td-lobby-copy">
       <p class="td-kicker">Motto Immortal - Field exercise</p>
       <h1 id="td-lobby-title">Tower Defense</h1>
-      <p>Deploy up to {maxTeam} heroes and survive {waveCount} waves. Each battlefield ends with its own boss.</p>
+      <p>Deploy up to {maxTeam} heroes and hold the line. Each battlefield has its own boss.</p>
     </div>
 
     <div class="td-map-cards" role="group" aria-label="Choose battlefield" data-td-maps>
@@ -49,7 +49,7 @@ const previews = maps.map((entry: any) => ({
           </svg>
           <span class="td-map-card-copy">
             <strong>{preview.name}</strong>
-            <small class="td-map-card-boss">Final boss: {preview.bossName}</small>
+            <small class="td-map-card-boss">Boss: {preview.bossName}</small>
             <small data-map-best={preview.id}>No runs yet</small>
           </span>
         </button>

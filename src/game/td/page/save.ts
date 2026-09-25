@@ -1,5 +1,6 @@
 // Saved progress (localStorage td:v1) and the save code / save file export and import.
 import type { PageContext } from "./context";
+import { legacyRefund, spentByCurrency } from "../favor.js";
 
 export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number };
 
@@ -11,14 +12,29 @@ export type SaveData = {
   bestWave: number;
   lastTeam: string[];
   perfectDefense: boolean;
-  favor: number;
-  favTree: string[];
+  favor: number; // Favor earned in total; available = favor - spent on blessings - resetSpent
+  favLevels: Record<string, number>; // Divine Blessings node levels (blessingTree.json)
+  insight: Record<string, number>; // Insight earned in total per hero class
+  resetSpent: number; // Favor paid for blessing resets
+  refundNotice: number; // Favor refunded from the first tree, shown once in the Blessings panel
   mapBests: Record<string, MapRun>;
   mapTop: Record<string, { score: number; wave: number }>;
   nextRunBoost: RunBoost | null;
 };
 
 export type SaveStore = { data: SaveData; persist(): void };
+
+export type RunMode = "classic" | "long" | "endless";
+
+// mapBests/mapTop key: classic runs keep the plain map id (older saves), other modes
+// append the mode ("moonlit-pass@long"), so td:v1 stays readable by older builds.
+export const runKey = (mapId: string, mode: RunMode) => (mode === "classic" ? mapId : `${mapId}@${mode}`);
+
+// Best score in a mode across all maps. bestScore stays the classic record.
+export function modeBest(save: SaveData, mode: RunMode): number {
+  const scores = Object.entries(save.mapTop).filter(([key]) => mode === "classic" ? !key.includes("@") : key.endsWith(`@${mode}`)).map(([, top]) => top.score);
+  return Math.max(mode === "classic" ? save.bestScore : 0, 0, ...scores);
+}
 
 type SaveRules = { heroIds: Set<string>; maxTeam: number };
 
@@ -28,10 +44,14 @@ export const SAVE_FILE_VERSION = 1;
 
 const isRecord = (value: unknown): value is Record<string, any> => !!value && typeof value === "object" && !Array.isArray(value);
 const hasScore = (run: unknown): run is { score: number } => isRecord(run) && Number.isFinite(run.score);
+// Non-negative whole numbers keyed by id (node levels, Insight per class).
+const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
+  ? Object.fromEntries(Object.entries(value).filter(([, n]) => Number.isFinite(n) && n > 0).map(([id, n]) => [id, Math.floor(n as number)]))
+  : {};
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favTree: [], mapBests: {}, mapTop: {}, nextRunBoost: null };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, mapBests: {}, mapTop: {}, nextRunBoost: null };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -50,7 +70,13 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
     lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => rules.heroIds.has(id)).slice(0, rules.maxTeam) : [],
     perfectDefense: !!candidate.perfectDefense,
     favor: Number(candidate.favor) || 0,
-    favTree: Array.isArray(candidate.favTree) ? [...new Set<string>(candidate.favTree.filter((id: unknown) => typeof id === "string"))] : [],
+    favLevels: pickCounts(candidate.favLevels),
+    insight: pickCounts(candidate.insight),
+    resetSpent: Math.max(0, Number(candidate.resetSpent) || 0),
+    // The first tree (favTree: bought node ids) was replaced; its Favor is refunded once.
+    refundNotice: Array.isArray(candidate.favTree) && !isRecord(candidate.favLevels)
+      ? legacyRefund(candidate.favTree.filter((id: unknown) => typeof id === "string"))
+      : Math.max(0, Number(candidate.refundNotice) || 0),
     mapBests: pickRuns(candidate.mapBests),
     mapTop: pickRuns(candidate.mapTop),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
@@ -175,8 +201,12 @@ export function createSavePanel(ctx: PageContext) {
   return { render };
 }
 
-// Favor earned minus the cost of every unlocked node.
-export function availableFavor(save: SaveData, tree: { id: string; cost: number }[]) {
-  const spent = save.favTree.reduce((sum, id) => sum + (tree.find((node) => node.id === id)?.cost || 0), 0);
-  return (save.favor || 0) - spent;
+// Favor earned minus blessing levels bought and resets paid.
+export function availableFavor(save: SaveData) {
+  return (save.favor || 0) - (spentByCurrency(save.favLevels).favor || 0) - (save.resetSpent || 0);
+}
+
+// Insight of one class earned minus what its branch cost.
+export function availableInsight(save: SaveData, cls: string) {
+  return (save.insight?.[cls] || 0) - ((spentByCurrency(save.favLevels) as Record<string, number>)[cls] || 0);
 }

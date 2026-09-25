@@ -23,10 +23,15 @@
     <div><dt>Range</dt><dd data-pop-range></dd></div>
     <div><dt>Crit</dt><dd data-pop-crit></dd></div>
   </dl>
-  <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade>
+  <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
     <span data-pop-upgrade-label>Upgrade</span>
     <span class="td-pop-cost" data-pop-cost></span>
   </button>
+  <div class="td-pop-focus" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
+    <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
+    <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
+    <button class="td-pop-focus-option" type="button" data-focus="range"><strong>Range <span data-focus-bonus="range"></span></strong><small data-focus-text="range"></small></button>
+  </div>
   <p class="td-pop-preview" data-pop-preview></p>
   <div class="td-pop-actions">
     <button class="action-button action-button--quiet" type="button" data-pop-rotate>Rotate</button>

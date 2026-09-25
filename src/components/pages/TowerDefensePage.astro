@@ -1,11 +1,10 @@
 ---
-import favorTree from "../../data/favorTree.json";
 import TdLobby from "../td/TdLobby.astro";
 import TdPlayScreen from "../td/TdPlayScreen.astro";
 import TdPanels from "../td/TdPanels.astro";
 interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; bosses: Record<string, any>; }
 const { assetBase, heroes, tuning, maps, waves, bosses } = Astro.props;
-const payload = { assetBase, heroes, tuning, maps, waves, bosses, favorTree };
+const payload = { assetBase, heroes, tuning, maps, waves, bosses };
 const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.boss ?? "baphomet"]?.name ?? "Baphomet"]));
 const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
 const maxTeam = tuning.run.maxTeam ?? 5;
@@ -14,7 +13,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
 <div class="td-shell" data-td-root data-screen="lobby">
   <TdLobby maps={maps} maxTeam={maxTeam} waveCount={waves.length} bossNames={bossNames} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
-  <TdPanels maxTeam={maxTeam} maps={maps} bossNames={bossNames} />
+  <TdPanels maxTeam={maxTeam} maps={maps} bossNames={bossNames} waveCount={waves.length} />
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
@@ -26,7 +25,8 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   import { setAssetBase } from "../../game/td/assets.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
-  import { availableFavor, createSavePanel, createSaveStore } from "../../game/td/page/save";
+  import { availableFavor, createSavePanel, createSaveStore, runKey, type RunMode } from "../../game/td/page/save";
+  import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
   import { createDebugPanel } from "../../game/td/page/debug";
@@ -49,10 +49,12 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
   const store = createSaveStore({ heroIds: new Set(heroById.keys()), maxTeam });
-  const state: PageState = { session: null, selectedMap: maps[0], selectedEntityId: null, deployHeroId: "", pendingSlot: null };
+  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
     state.selectedMap = maps.find((entry) => entry.id === savedMapId) ?? maps[0];
+    const savedMode = localStorage.getItem("td:mode");
+    if (isRunMode(savedMode)) state.selectedMode = savedMode as RunMode;
   } catch {}
 
   const pause = createPauseController((paused: boolean) => {
@@ -73,7 +75,6 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   const ctx: PageContext = {
     root, q, data, heroById, maxTeam,
     maxLevel: data.tuning.upgrades?.maxLevel ?? 4,
-    totalWaves: data.waves.length,
     bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
     blessingNames: data.tuning.virtueBlessings || {},
     store, state, pause,
@@ -136,7 +137,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     const boostEl = q("[data-td-next-boost]");
     boostEl.hidden = !boost;
     if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
-    q("[data-td-favor-count]").textContent = `(${availableFavor(store.data, data.favorTree || [])})`;
+    q("[data-td-favor-count]").textContent = `(${availableFavor(store.data)})`;
   }
 
   q("[data-td-maps]").addEventListener("click", (event) => {
@@ -147,7 +148,31 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     try { localStorage.setItem("td:map", map.id); } catch {}
     renderLobby();
   });
-  q("[data-td-play-start]").addEventListener("click", () => { actions.startSession(state.selectedMap); });
+  // Run length step: Play opens it for the selected map; picking a length starts the run.
+  function openModePicker(opener: HTMLElement) {
+    const map = state.selectedMap;
+    q("[data-td-mode-map]").textContent = `${map.name} - Boss: ${ctx.bossFor(map).name}`;
+    let last: HTMLButtonElement | null = null;
+    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
+      const mode = button.dataset.modeId as RunMode;
+      const isLast = mode === state.selectedMode;
+      button.classList.toggle("is-selected", isLast);
+      if (isLast) last = button;
+      const top = store.data.mapTop[runKey(map.id, mode)];
+      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
+    });
+    actions.openPanel("mode", opener);
+    (last as HTMLButtonElement | null)?.focus({ preventScroll: true });
+  }
+  q("[data-td-modes]").addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-mode-id]");
+    if (!button || !isRunMode(button.dataset.modeId)) return;
+    state.selectedMode = button.dataset.modeId as RunMode;
+    try { localStorage.setItem("td:mode", state.selectedMode); } catch {}
+    actions.closePanel(false);
+    actions.startSession(state.selectedMap);
+  });
+  q("[data-td-play-start]").addEventListener("click", (event) => { openModePicker(event.currentTarget as HTMLElement); });
 
   // ------------------------------------------------------------------
   // Page modules

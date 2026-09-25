@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { createRng, pointOnPath, resolveDamage, TowerDefenseGame } from "../src/game/td/sim.js";
-import { computeFavor, applyFavorTree, canUnlock } from "../src/game/td/favor.js";
+import { computeFavor } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import waves from "../src/data/tdWaves.json" with { type: "json" };
-import favorTreeData from "../src/data/favorTree.json" with { type: "json" };
+import { buildWave, isBossWave, wavesForMode } from "../src/game/td/waves.js";
 
 assert.equal(resolveDamage(100, 260, "physical", false), 50, "physical mitigation");
 assert.equal(resolveDamage(100, 79503, "true", false), 100, "true damage");
@@ -152,7 +152,7 @@ assert.equal(game.wave, 1, "wave advances once");
   let upgraded = false;
   while (!g.complete) {
     if (!g.running) {
-      for (const hero of g.heroes) if (g.upgrade(hero.entityId).ok) upgraded = true;
+      for (const hero of g.heroes) if (g.upgrade(hero.entityId, "attack").ok) upgraded = true;
       g.startWave();
     }
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
@@ -357,7 +357,7 @@ function runWaveOne(g) {
   assert.equal(nuwa.level, 2, "mid-wave upgrade applied");
   g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
   assert.equal(g.running, false, "wave cleared");
-  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(nuwa.entityId).ok);
+  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(nuwa.entityId, "health").ok);
   assert.equal(nuwa.level, tuning.upgrades.maxLevel, "level cap reached");
   const capped = g.upgradeInfo(nuwa.entityId);
   assert.equal(capped.awaken, true, "past the level cap only Awakening is offered");
@@ -413,34 +413,7 @@ function runWaveOne(g) {
   assert.equal(result, 50, "loss at wave 5 earns 50 Favor");
 }
 
-// favor_tree_startgold: Demeter's Bounty adds 25 to startingGoldBonus.
-{
-  const bonuses = applyFavorTree(["demeter_bounty"], tuning);
-  assert.equal(bonuses.startingGoldBonus, 25, "Demeter's Bounty adds startingGoldBonus 25");
-  const adjustedGold = tuning.run.startingGold + bonuses.startingGoldBonus;
-  assert.equal(adjustedGold, 365, "startingGold 340 + 25 = 365");
-}
-
-// favor_tree_requires: a node unlocks once requiresMin of its required nodes are owned (value read from the tree).
-{
-  const node = favorTreeData.find((entry) => entry.id === "nuwa_wall");
-  const need = node.requiresMin;
-  assert.equal(canUnlock("nuwa_wall", [], favorTreeData), false, "tier 2 node blocked with no tier 1 nodes");
-  assert.equal(canUnlock("nuwa_wall", node.requires.slice(0, need - 1), favorTreeData), false, `tier 2 blocked with ${need - 1} tier 1 nodes`);
-  assert.equal(canUnlock("nuwa_wall", node.requires.slice(0, need), favorTreeData), true, `tier 2 unlockable with ${need} tier 1 nodes`);
-}
-
-// favor_unknown_id_dropped: unknown ids produce no bonuses.
-{
-  const bonuses = applyFavorTree(["nonexistent_node"], tuning);
-  assert.equal(Object.keys(bonuses).length, 0, "unknown node id produces no bonuses");
-}
-
-// favor_no_stacking: duplicate id applies effect once.
-{
-  const bonuses = applyFavorTree(["demeter_bounty", "demeter_bounty"], tuning);
-  assert.equal(bonuses.startingGoldBonus, 25, "duplicate node id applies effect once");
-}
+// Divine Blessings tree rules and effects: scripts/test-td-favor.mjs.
 
 // --- 5B virtue pairs ---
 
@@ -1249,7 +1222,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.gold = 100000;
   g.place("zeus", "platform", 0);
   const zeus = g.heroes[0];
-  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(g.upgrade(zeus.entityId).ok);
+  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(g.upgrade(zeus.entityId, "range").ok);
   const info = g.upgradeInfo(zeus.entityId);
   assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
   assert.equal(info.cost, aw.cost);
@@ -1462,6 +1435,95 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.effects.some((e) => e.type === "bossDown"));
   g.step(1 / 60);
   assert.ok(!g.enemies.some((e) => e.entityId === boss.entityId), "dead lilith leaves the field");
+}
+
+// --- Level focus: the step to focus.level asks for attack, health or range ---
+{
+  const f = tuning.upgrades.focus;
+  const setup = () => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
+    g.gold = 10000;
+    g.place("zeus", "platform", 0);
+    const zeus = g.heroes[0];
+    while (zeus.level < f.level - 1) assert.ok(g.upgrade(zeus.entityId).ok, "levels before the focus need no choice");
+    return { g, zeus };
+  };
+  let { g, zeus } = setup();
+  const info = g.upgradeInfo(zeus.entityId);
+  assert.equal(info.needsFocus, true, "focus level asks for a choice");
+  const gold = g.gold;
+  const refused = g.upgrade(zeus.entityId);
+  assert.equal(refused.ok, false, "no upgrade without a focus");
+  assert.ok(refused.reason.includes("focus"));
+  assert.equal(g.gold, gold, "refused choice costs nothing");
+  assert.equal(g.upgrade(zeus.entityId, "speed").ok, false, "unknown focus rejected");
+  // Each option previews and applies only its own stat.
+  const plain = { atk: info.nextAtk, hp: info.nextHp, range: zeus.range };
+  for (const focus of ["attack", "health", "range"]) {
+    ({ g, zeus } = setup());
+    const option = g.upgradeInfo(zeus.entityId).focusOptions[focus];
+    assert.ok(g.upgrade(zeus.entityId, focus).ok);
+    assert.equal(zeus.focus, focus);
+    assert.equal(zeus.level, f.level);
+    assert.equal(zeus.atk, option.nextAtk); assert.equal(zeus.hp, option.nextHp); assert.equal(zeus.range, option.nextRange);
+    assert.equal(zeus.atk > plain.atk, focus === "attack", `${focus}: attack bonus only for attack`);
+    assert.equal(zeus.hp > plain.hp, focus === "health", `${focus}: health bonus only for health`);
+    assert.equal(zeus.range > plain.range, focus === "range", `${focus}: range bonus only for range`);
+    // The focus carries into later levels and Awakening, and is asked only once.
+    const next = g.upgradeInfo(zeus.entityId);
+    assert.ok(!next.needsFocus, "focus is asked once");
+    while (zeus.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(zeus.entityId).ok);
+    assert.ok(g.upgrade(zeus.entityId).ok, "awaken");
+    const expected = Math.round(zeus.baseAtk * (1 + tuning.upgrades.attackPerLevel * (zeus.level - 1)) * (1 + tuning.awakening.attackBonus) * (focus === "attack" ? 1 + f.attack : 1));
+    assert.equal(zeus.atk, expected, `${focus}: attack focus kept through awakening`);
+  }
+  // A fallen hero re-enters without its focus.
+  ({ g, zeus } = setup());
+  g.upgrade(zeus.entityId, "attack");
+  g.place("nuwa", "road", 0);
+  const nuwa = g.heroes.find((h) => h.id === "nuwa");
+  assert.equal(nuwa.focus, undefined, "new units start without a focus");
+}
+
+// --- M2 run modes: 20 waves and endless ---
+{
+  const bossAt = (table) => table.flatMap((w, i) => (w.spawns.some((g) => g.kind === "boss") ? [i + 1] : []));
+  assert.deepEqual(wavesForMode(waves, "classic"), waves, "classic keeps tdWaves.json");
+  const long = wavesForMode(waves, "long", tuning.waveGen);
+  assert.equal(long.length, 20, "20-wave table");
+  assert.deepEqual(bossAt(long), [5, 10, 15, 20], "boss every 5th wave");
+  const bossScale = (w) => w.spawns.find((g) => g.kind === "boss").scale ?? 1;
+  assert.deepEqual([5, 10, 15, 20].map((n) => bossScale(long[n - 1])), [tuning.waveGen.midBossScale, tuning.waveGen.midBossScale, tuning.waveGen.midBossScale, 1], "mid bosses scaled, final boss full");
+  assert.deepEqual(long.slice(0, 4), waves.slice(0, 4), "early waves unchanged");
+  assert.deepEqual(buildWave(waves, 37, "endless", tuning.waveGen), buildWave(waves, 37, "endless", tuning.waveGen), "generator is deterministic");
+  assert.ok(isBossWave(35, "endless") && !isBossWave(36, "endless"), "endless boss cadence");
+  const count = (w) => w.spawns.reduce((sum, g) => sum + g.count, 0);
+  assert.ok(count(buildWave(waves, 29, "endless", tuning.waveGen)) > count(long[18]), "later waves bring more enemies");
+
+  // Mid-boss stat scale reaches the boss and Lilith's children.
+  const lilithMap = maps.find((m) => m.boss === "lilith");
+  const g = new TowerDefenseGame({ heroes, tuning, map: lilithMap, waves, mode: "long", seed: 3 });
+  assert.equal(g.totalWaves, 20, "long mode total");
+  g.wave = 4; g.startWave();
+  g.spawnQueue.find((e) => e.kind === "boss").at = 0;
+  g.step(1 / 60);
+  const boss = g.enemies.find((e) => e.kind === "boss");
+  assert.equal(boss.statScale, tuning.waveGen.midBossScale, "wave 5 boss scaled");
+  const child = g.enemies.find((e) => e.parentId === boss.entityId);
+  assert.equal(child.statScale, tuning.waveGen.midBossScale, "children share the boss scale");
+
+  // A finite long run ends in a win after wave 20; endless keeps going.
+  const finish = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "long", seed: 5 });
+  finish.wave = 19; finish.startWave(); finish.spawnQueue = []; finish.enemies = [];
+  finish.step(1 / 60);
+  assert.equal(finish.won, true, "long mode won after wave 20");
+  const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "endless", seed: 5 });
+  assert.equal(endless.totalWaves, Infinity, "endless total");
+  endless.wave = 29; endless.startWave(); endless.spawnQueue = []; endless.enemies = [];
+  endless.step(1 / 60);
+  assert.equal(endless.complete, false, "endless does not end on a cleared wave");
+  assert.ok(endless.wavePreview(), "endless always previews the next wave");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "bogus" }).mode, "classic", "unknown mode falls back to classic");
 }
 
 console.log("Tower defense checks passed");

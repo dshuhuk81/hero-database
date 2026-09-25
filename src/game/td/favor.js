@@ -1,4 +1,10 @@
-import tree from "../../data/favorTree.json" with { type: "json" };
+import blessingTree from "../../data/blessingTree.json" with { type: "json" };
+
+// Divine Blessings 2.0 (docs/tower-defense-blessings-research.md): a Divine trunk
+// paid with Favor plus one branch per hero class paid with that class's Insight.
+// Nodes have levels; `levels` is { nodeId: level } from the save.
+export const TREE = blessingTree;
+export const CLASSES = blessingTree.classes;
 
 export function computeFavor(runStats, tuning) {
   const earn = tuning.favorEarn;
@@ -9,41 +15,136 @@ export function computeFavor(runStats, tuning) {
   return total;
 }
 
-export function applyFavorTree(unlockedNodes, tuning) {
-  const seen = new Set();
-  const bonuses = {};
-  for (const id of unlockedNodes) {
-    if (seen.has(id)) continue;
-    seen.add(id);
-    const node = tree.find((n) => n.id === id);
-    if (!node) continue;
-    applyEffect(bonuses, node.effect);
+// Insight per class from the sim's run log ({ Tank: { waves, kills } }): one per
+// wave a hero of that class was on the field at wave clear, one per killsPerPoint kills.
+export function computeInsight(log, tree = TREE) {
+  const cfg = tree.insight;
+  const out = {};
+  for (const [cls, entry] of Object.entries(log || {})) {
+    const points = (entry.waves || 0) * cfg.perWave + Math.floor((entry.kills || 0) / cfg.killsPerPoint);
+    if (points > 0) out[cls] = points;
+  }
+  return out;
+}
+
+export const findNode = (id, tree = TREE) => tree.nodes.find((node) => node.id === id);
+
+// The currency a node is paid with: "favor" for the trunk, else the class name.
+export const nodeCurrency = (node) => (node.tree === "trunk" ? "favor" : node.tree);
+
+// Price of buying `level` (1-based) of a node.
+export function levelCost(node, level, tree = TREE) {
+  return Math.round(node.cost * tree.costGrowth ** (level - 1));
+}
+
+// Total spent on a node up to `level`.
+export function nodeSpent(node, level, tree = TREE) {
+  let sum = 0;
+  for (let i = 1; i <= level; i += 1) sum += levelCost(node, i, tree);
+  return sum;
+}
+
+// Spent per currency: { favor, Tank, Warrior, ... }.
+export function spentByCurrency(levels, tree = TREE) {
+  const spent = { favor: 0 };
+  for (const [id, level] of Object.entries(levels || {})) {
+    const node = findNode(id, tree);
+    if (!node || !level) continue;
+    const key = nodeCurrency(node);
+    spent[key] = (spent[key] || 0) + nodeSpent(node, Math.min(level, node.maxLevel), tree);
+  }
+  return spent;
+}
+
+// Levels bought in one tree ("trunk" or a class); deeper stages need a number of them.
+export function pointsIn(levels, treeName, tree = TREE) {
+  let sum = 0;
+  for (const [id, level] of Object.entries(levels || {})) {
+    const node = findNode(id, tree);
+    if (node?.tree === treeName) sum += Math.min(level || 0, node.maxLevel);
+  }
+  return sum;
+}
+
+// Whether the next level of a node can be bought, ignoring the price.
+// Returns { ok, reason } so the UI can explain a locked node.
+export function canBuy(nodeId, levels, tree = TREE) {
+  const node = findNode(nodeId, tree);
+  if (!node) return { ok: false, reason: "Unknown blessing." };
+  const owned = levels?.[nodeId] || 0;
+  if (owned >= node.maxLevel) return { ok: false, reason: "Fully unlocked." };
+  const have = (id) => (levels?.[id] || 0) > 0;
+  const need = node.requiresPoints || 0;
+  const points = pointsIn(levels, node.tree, tree);
+  if (points < need) return { ok: false, reason: `Needs ${need} levels in this tree (${points} so far).` };
+  const missing = (node.requires || []).filter((id) => !have(id));
+  if (missing.length) return { ok: false, reason: `Needs ${missing.map((id) => findNode(id, tree)?.name ?? id).join(" and ")}.` };
+  if (node.requiresAny?.length && !node.requiresAny.some(have)) {
+    return { ok: false, reason: `Needs ${node.requiresAny.map((id) => findNode(id, tree)?.name ?? id).join(" or ")}.` };
+  }
+  if (node.exclusive) {
+    const rival = tree.nodes.find((other) => other.id !== nodeId && other.tree === node.tree && other.exclusive === node.exclusive && have(other.id));
+    if (rival) return { ok: false, reason: `Excludes ${rival.name}; pick one of the two.` };
+  }
+  return { ok: true, reason: "" };
+}
+
+// Old saves stored bought node ids of the first tree (favTree, 12 nodes). Those are
+// refunded: dropping them frees the Favor, because available Favor is earned minus
+// spent. The old prices only serve the one-time "refunded" notice.
+const LEGACY_COSTS = { demeter_bounty: 25, freya_blessing: 25, horus_sight: 25, jormungandr_hide: 25, nuwa_wall: 60, zeus_dominion: 60, caishen_treasury: 60, bastet_edge: 60, amunra_surge: 120, yuelao_bond: 120, poseidon_tide: 120, nyx_veil: 120 };
+export function legacyRefund(favTree) {
+  return (favTree || []).reduce((sum, id) => sum + (LEGACY_COSTS[id] || 0), 0);
+}
+
+// Tuning bonuses from the bought levels. Global ones sit on the object, class
+// ones under classBonus[className]; the simulator reads both from tuning.favor.
+export function applyBlessings(levels, tree = TREE) {
+  const bonuses = { classBonus: {} };
+  const add = (target, key, value) => { target[key] = (target[key] || 0) + value; };
+  for (const [id, rawLevel] of Object.entries(levels || {})) {
+    const node = findNode(id, tree);
+    if (!node || !rawLevel) continue;
+    const level = Math.min(rawLevel, node.maxLevel);
+    const value = node.effect.value * level;
+    if (node.tree !== "trunk") {
+      const cls = (bonuses.classBonus[node.tree] ||= {});
+      add(cls, node.effect.type, value);
+      continue;
+    }
+    switch (node.effect.type) {
+      case "startingGold": add(bonuses, "startingGoldBonus", value); break;
+      case "lives": add(bonuses, "livesBonus", value); break;
+      case "showHp": bonuses.showEnemyHp = true; break;
+      case "heroHp": add(bonuses, "heroHpBonus", value); break;
+      case "killGold": add(bonuses, "killGoldBonus", value); break;
+      case "ultCharge": add(bonuses, "ultChargeBonus", value); break;
+      case "synergyTag": add(bonuses, "synergyTagBonus", value); break;
+      case "wave1Speed": add(bonuses, "wave1SpeedDebuff", value); break;
+      case "upgradeDiscount": add(bonuses, "upgradeDiscount", value); break;
+      case "clearBonus": add(bonuses, "clearBonus", value); break;
+      case "contactRange": add(bonuses, "contactRangeBonus", value); break;
+      case "extraOffer": add(bonuses, "extraOffer", value); break;
+      case "bossDamage": add(bonuses, "bossDamage", value); break;
+      case "teamSize": add(bonuses, "teamSizeBonus", value); break;
+      default: break;
+    }
   }
   return bonuses;
 }
 
-// Effect types the simulator consumes. Nodes with other types are shown as
-// "Not active yet" and cannot be purchased.
-export const ACTIVE_FAVOR_EFFECTS = [
-  "startingGold", "lives", "showHp", "heroHp", "tankHp", "mageRange",
-  "killGold", "assassinExecute", "ultCharge", "synergyTag", "contactRange", "wave1Speed",
-];
-
-export function isFavorNodeActive(node) {
-  return !!node && ACTIVE_FAVOR_EFFECTS.includes(node.effect?.type);
-}
-
-// Snapshot of tuning for one run with the unlocked Favor nodes applied.
-// Start resources are folded into run; everything else is read by the
+// Snapshot of tuning for one run with the bought blessings applied. Start
+// resources and team size are folded into run; everything else is read by the
 // simulator from tuning.favor. `boost` is a pending run-end shard (6C):
 // { type: "gold", gold } or { type: "virtue", virtue }.
-/** @param {any} tuning @param {string[]} unlockedNodes @param {{ type: string, gold?: number, virtue?: string } | null} [boost] */
-export function buildRunTuning(tuning, unlockedNodes, boost = null) {
-  const bonuses = applyFavorTree(unlockedNodes, tuning);
+/** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, gold?: number, virtue?: string } | null} [boost] */
+export function buildRunTuning(tuning, levels, boost = null) {
+  const bonuses = applyBlessings(levels);
   const run = {
     ...tuning.run,
     startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0) + (boost?.type === "gold" ? boost.gold : 0),
     lives: tuning.run.lives + (bonuses.livesBonus || 0),
+    maxTeam: (tuning.run.maxTeam ?? 5) + (bonuses.teamSizeBonus || 0),
   };
   if (boost?.type === "virtue") run.startVirtue = boost.virtue;
   return { ...tuning, favor: bonuses, run };
@@ -58,57 +159,4 @@ export function shardEligible(wave, tuning) {
 export function shardFavor(earnedFavor, tuning) {
   const cfg = tuning.shards;
   return Math.max(cfg.favorMin, Math.round(earnedFavor * cfg.favorPct));
-}
-
-export function canUnlock(nodeId, unlockedNodes, nodes) {
-  const src = nodes || tree;
-  const node = src.find((n) => n.id === nodeId);
-  if (!node) return false;
-  if (unlockedNodes.includes(nodeId)) return false;
-  if (!node.requires || node.requires.length === 0) return true;
-  const met = unlockedNodes.filter((id) => node.requires.includes(id)).length;
-  return met >= (node.requiresMin !== undefined ? node.requiresMin : node.requires.length);
-}
-
-function applyEffect(bonuses, effect) {
-  switch (effect.type) {
-    case "startingGold":
-      bonuses.startingGoldBonus = (bonuses.startingGoldBonus || 0) + effect.value;
-      break;
-    case "lives":
-      bonuses.livesBonus = (bonuses.livesBonus || 0) + effect.value;
-      break;
-    case "showHp":
-      bonuses.showEnemyHp = true;
-      break;
-    case "heroHp":
-      bonuses.heroHpBonus = (bonuses.heroHpBonus || 0) + effect.value;
-      break;
-    case "tankHp":
-      bonuses.tankHpBonus = (bonuses.tankHpBonus || 0) + effect.value;
-      break;
-    case "mageRange":
-      bonuses.mageRangeBonus = (bonuses.mageRangeBonus || 0) + effect.value;
-      break;
-    case "killGold":
-      bonuses.killGoldBonus = (bonuses.killGoldBonus || 0) + effect.value;
-      break;
-    case "assassinExecute":
-      bonuses.assassinExecuteThreshold = effect.value;
-      break;
-    case "ultCharge":
-      bonuses.ultChargeBonus = (bonuses.ultChargeBonus || 0) + effect.value;
-      break;
-    case "synergyTag":
-      bonuses.synergyTagBonus = (bonuses.synergyTagBonus || 0) + effect.value;
-      break;
-    case "contactRange":
-      bonuses.contactRangeBonus = (bonuses.contactRangeBonus || 0) + effect.value;
-      break;
-    case "wave1Speed":
-      bonuses.wave1SpeedDebuff = effect.value;
-      break;
-    default:
-      break;
-  }
 }

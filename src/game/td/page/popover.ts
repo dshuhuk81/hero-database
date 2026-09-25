@@ -46,6 +46,9 @@ export function createPopover(ctx: PageContext) {
   const popPreview = q("[data-pop-preview]");
   const popDetailsButton = q<HTMLButtonElement>("[data-pop-details]");
   const popDetails = q("[data-pop-details-body]");
+  const popFocus = q("[data-pop-focus]");
+  const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
+  let focusOpen = false; // level-focus picker shown under the upgrade button
   let lastHealthUpdate = 0;
 
   const findUnit = (entityId: number | null) => state.session?.game.heroes.find((unit: any) => unit.entityId === entityId);
@@ -59,6 +62,7 @@ export function createPopover(ctx: PageContext) {
     session.game.uiSelected = unit.entityId;
     popDetails.hidden = true;
     popDetailsButton.setAttribute("aria-expanded", "false");
+    focusOpen = false;
     popover.hidden = false;
     update(unit);
     position();
@@ -103,7 +107,7 @@ export function createPopover(ctx: PageContext) {
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
-    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.awakened ? " - Awakened" : ""}`;
+    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}`;
     updateHealth(unit);
     updateStats(unit);
     const info = game.upgradeInfo(unit.entityId);
@@ -115,6 +119,21 @@ export function createPopover(ctx: PageContext) {
       popPreview.textContent = info.ok
         ? `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.${awakenText}`
         : `Needs ${info.cost} gold, you have ${game.gold}.${awakenText}`;
+    } else if (info.ok && info.needsFocus) {
+      // Level focus: the upgrade button opens three options, each previews its own gain.
+      popUpgrade.disabled = false;
+      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popCost.textContent = `${info.cost} gold`;
+      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
+      const f = data.tuning.upgrades.focus;
+      const texts: Record<string, string> = {
+        attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.focusOptions.attack.nextAtk * boost)} (${Math.round(info.nextAtk * boost)} without focus)`,
+        health: `Health ${unit.hp} to ${info.focusOptions.health.nextHp} (${info.nextHp} without focus)`,
+        range: `Range ${Math.round(unit.range)} to ${info.focusOptions.range.nextRange}`,
+      };
+      for (const [focus, text] of Object.entries(texts)) q(`[data-focus-text="${focus}"]`).textContent = text;
+      for (const focus of Object.keys(texts)) q(`[data-focus-bonus="${focus}"]`).textContent = `+${Math.round(f[focus] * 100)}%`;
+      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Level ${f.level} adds a focus of your choice: attack, health or range.`;
     } else if (info.ok) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
@@ -138,6 +157,9 @@ export function createPopover(ctx: PageContext) {
       popCost.textContent = "";
       popPreview.textContent = info.reason || "";
     }
+    const showFocus = focusOpen && info.ok && !!info.needsFocus;
+    if (popFocus.hidden === showFocus) { popFocus.hidden = !showFocus; position(); }
+    popUpgrade.setAttribute("aria-expanded", String(showFocus));
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
   }
 
@@ -210,9 +232,29 @@ export function createPopover(ctx: PageContext) {
   popUpgrade.addEventListener("click", () => {
     const session = state.session;
     if (!session || state.selectedEntityId === null) return;
+    if (session.game.upgradeInfo(state.selectedEntityId).needsFocus) {
+      focusOpen = !focusOpen;
+      const unit = findUnit(state.selectedEntityId);
+      if (unit) update(unit);
+      if (focusOpen) popFocus.querySelector<HTMLButtonElement>("[data-focus]")?.focus();
+      return;
+    }
     const result = session.game.upgrade(state.selectedEntityId);
     if (result.ok) ctx.notice(result.awaken ? `${result.hero.name} has awakened.` : `${result.hero.name} reached level ${result.hero.level}.`);
     else ctx.notice(result.reason || "Upgrade unavailable.");
+  });
+  popFocus.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-focus]");
+    const session = state.session;
+    if (!button || !session || state.selectedEntityId === null) return;
+    const result = session.game.upgrade(state.selectedEntityId, button.dataset.focus);
+    focusOpen = false;
+    if (result.ok) {
+      ctx.notice(`${result.hero.name} reached level ${result.hero.level} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
+      popUpgrade.focus();
+    } else ctx.notice(result.reason || "Upgrade unavailable.");
+    const unit = findUnit(state.selectedEntityId);
+    if (unit) update(unit);
   });
   q("[data-pop-rotate]").addEventListener("click", () => {
     if (state.session && state.selectedEntityId !== null) state.session.game.rotate(state.selectedEntityId);

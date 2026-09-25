@@ -3,7 +3,7 @@
 // ctx.actions, which the page fills once all modules exist; modules only call
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
-import type { RunBoost, SaveStore } from "./save";
+import type { RunBoost, RunMode, SaveStore } from "./save";
 
 export type Slot = { type: string; index: number };
 
@@ -15,7 +15,7 @@ export type Session = {
   started: boolean;
   perfectWaves: number;
   keyboardSlots: Slot[];
-  favTree: string[];
+  favLevels: Record<string, number>; // blessing levels this run was built with
   boost: RunBoost | null; // shard boost this run was built with
   debug: boolean;
 };
@@ -24,6 +24,7 @@ export type Session = {
 export type PageState = {
   session: Session | null;
   selectedMap: any;
+  selectedMode: RunMode; // run mode picked in the lobby (waves.js)
   selectedEntityId: number | null; // hero with the open popover
   deployHeroId: string; // fallen hero picked from the deck for redeploy
   pendingSlot: Slot | null; // ring the recruit sheet is open for
@@ -73,7 +74,6 @@ export type PageContext = {
   heroById: Map<string, any>;
   maxTeam: number;
   maxLevel: number;
-  totalWaves: number;
   bossFor(map: any): any; // bosses.json entry of the map's final boss
   blessingNames: Record<string, string>;
   store: SaveStore;

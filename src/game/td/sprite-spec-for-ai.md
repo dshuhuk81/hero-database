@@ -85,16 +85,18 @@ Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These rep
 - **Color palette**: Jet black, orange-red fire, glowing amber eyes
 
 ### boss_lilith.png
-- **Reference**: `A_UI_HeadPortrait_Lilisi02_Img.png` (black biomechanical humanoid figure, skeletal/lattice texture, glowing purple energy core in chest/head)
+- **Reference**: in-game boss screen (Lilith - Elite), plus her 3D model in `new_role3d_new_b_lilisi_100008` (ripped to `~/android/assetripper/newtry/ExportedProject/Assets/Imported/Lilith/`). The model's rest pose bunches the red streamers into a bulb; that is not how she looks in motion.
 - **Game name**: Lilith
-- **Sprite concept**: Dark cosmic entity. Tall humanoid but alien. Body is black lattice/web-like organic material with purple void energy visible through gaps. Elongated limbs. No clear face, just a glowing purple vortex where the head should be.
-- **Color palette**: Matte black lattice, deep purple glow, void dark background
+- **Sprite concept**: Slender woman of glossy black-violet obsidian armor, tall open black lattice crown, face a glowing purple starry void, one hand raised. Dark violet-black petal ribbons and thin tentacle strands at the hips; long translucent red-orange streamers fall from the hips and flare out wide at the floor, thin black legs visible between them.
+- **Color palette**: Glossy black-violet, red-orange translucent streamers, purple face glow
+- **Current art (v2)**: background removed from the in-game boss screen (rembg, birefnet-general), not generated; AI repaints kept losing the streamers.
 
 ### lilith_child.png
-- **Reference**: in-game texture `B_LiLiS_xiaoguaii_D_.png` (`~/android/game_images_only/new_role3d_new_b_lilisi_monster_100009/`): glossy black carapace with red accents
+- **Reference**: 3D model `new_role3d_new_b_lilisi_monster_100009` with texture `B_LiLiS_xiaoguaii_D_.png` (rendered in Unity, `Assets/Imported/Lilith/renders/`), and the in-game battle
 - **Game name**: Lilith's children (summoned by Garden of Flesh)
-- **Sprite concept**: Small hunched creature of the same black biomechanical material as Lilith. Glossy black shell plates, a few glowing red slits or veins. Clearly smaller and simpler than Lilith; shown at 44px.
-- **Color palette**: Glossy black, dark violet highlights, red accents
+- **Sprite concept**: Upright humanoid in glossy black armor, smooth featureless black helmet head, a large spiky collar of black crystal shards on chest and shoulders with a glowing red core and red cracks, angular plates on the shins. Not a beast.
+- **Color palette**: Glossy black, violet highlights, red chest glow
+- **Current art (v2)**: Coplay repaint of the Unity render.
 
 ---
 
@@ -106,7 +108,7 @@ lilith_child.png
 ```
 
 ## Priority
-In the game today: the 5 enemy kinds, Baphomet (Moonlit Pass, `boss_baphomet.png` -> `boss-v1.webp`) and Lilith with her children (Verdant Crossing, `boss_lilith.png` -> `boss-lilith-v1.webp`, `lilith_child.png` -> `brood-v1.webp`). The other 5 bosses can wait until they are added as final bosses.
+In the game today: the 5 enemy kinds, Baphomet (Moonlit Pass, `boss_baphomet.png` -> `boss-v1.webp`) and Lilith with her children (Verdant Crossing, `boss_lilith.png` -> `boss-lilith-v2.webp`, `lilith_child.png` -> `brood-v2.webp`). The other 5 bosses can wait until they are added as final bosses.
 
 ## Prompt template
 Use one generation per sprite with the same style block so the set matches:
@@ -117,8 +119,8 @@ Attach the reference portrait from the spec entry. Generate square (1024x1024 is
 
 ## Integration
 1. Put the images in one folder with the spec file names (`grunt.png` ... `boss_baphomet.png`; `.webp` also works).
-2. `node scripts/build-td-enemy-sprites.mjs <folder>` trims, fits the subject to 80% of a 256x256 transparent canvas and writes `public/td/enemies/sprites/{kind}-v1.webp` (Baphomet becomes `boss-v1.webp`). It warns when the corners are not transparent.
+2. `node scripts/build-td-enemy-sprites.mjs <folder>` trims, fits the subject to 80% of a 256x256 transparent canvas and writes `public/td/enemies/sprites/{kind}-v1.webp` (or `--version`) (Baphomet becomes `boss-v1.webp`). It warns when the corners are not transparent.
 3. `node scripts/upload-to-r2.mjs --prefix td/enemies/sprites` uploads them.
 4. The renderer picks them up automatically: full-body sprites win over the circle portraits, are drawn unmasked with a ground shadow and face their direction of travel (draw them facing right). Kinds without a file keep the portrait.
 
-Changed art needs a new file name because R2 objects are cached for a year: bump `VERSION` in the script and `ENEMY_SPRITE_VERSION` in `render.js` together.
+Changed art needs a new file name because R2 objects are cached for a year: build only the changed files with `--only <names> --version vN` and set the same version for those files in `ENEMY_SPRITE_VERSIONS` in `render.js`.

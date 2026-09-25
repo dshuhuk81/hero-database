@@ -2,14 +2,28 @@
 // heroes, spend spare gold on the cheapest upgrade, take the first virtue offered).
 // Used by test-td-balance.mjs and td-balance-sweep.mjs.
 import { TowerDefenseGame } from "../../src/game/td/sim.js";
-import { buildRunTuning } from "../../src/game/td/favor.js";
+import { buildRunTuning, TREE } from "../../src/game/td/favor.js";
 import heroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import waves from "../../src/data/tdWaves.json" with { type: "json" };
-import favorTree from "../../src/data/favorTree.json" with { type: "json" };
 
-export { maps, favorTree };
+export { maps };
+
+// Every blessing at max level ("trunk": only the Favor trunk). Of each pick-one pair
+// the first node is taken.
+export function maxBlessings(scope = "all") {
+  const levels = {};
+  const taken = new Set();
+  for (const node of TREE.nodes) {
+    if (scope === "trunk" && node.tree !== "trunk") continue;
+    const group = node.exclusive ? `${node.tree}:${node.exclusive}` : null;
+    if (group && taken.has(group)) continue;
+    if (group) taken.add(group);
+    levels[node.id] = node.maxLevel;
+  }
+  return levels;
+}
 
 export const SQUADS = {
   "balanced (S-tier core)": ["nuwa", "poseidon", "zeus", "diana", "caishen"],
@@ -19,16 +33,18 @@ export const SQUADS = {
   "glass cannon": ["nyx", "bastet", "phoenix", "zeus", "yuelao"],
 };
 
-// `tuning` overrides the base tuning (balance experiments).
-export function playRun(ids, seed, map, { difficulty, favTree = [], tuning: tuningOverride } = {}) {
+// `tuning` overrides the base tuning (balance experiments). `focus` is the level focus
+// bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
+// `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
+export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, mode = "classic", maxWave = 150 } = {}) {
   const source = tuningOverride ?? baseTuning;
-  const runTuning = favTree.length ? buildRunTuning(source, favTree) : source;
+  const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed });
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, seed });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   let spent = 0;
   const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
-  while (!g.complete) {
+  while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
       // deploy every affordable, not-yet-deployed squad member
       for (const id of ids) {
@@ -46,7 +62,8 @@ export function playRun(ids, seed, map, { difficulty, favTree = [], tuning: tuni
         if (!options.length) break;
         options.sort((a, b) => a.cost - b.cost);
         const before = g.gold;
-        g.upgrade(options[0].hero.entityId);
+        const pick = options[0].hero;
+        g.upgrade(pick.entityId, focus ?? (pick.slotType === "road" ? "health" : "attack"));
         spent += before - g.gold;
       }
       if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
@@ -54,5 +71,5 @@ export function playRun(ids, seed, map, { difficulty, favTree = [], tuning: tuni
     }
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
   }
-  return { won: g.won, wave: g.wave, lives: g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: g.perfect };
+  return { won: g.won, complete: g.complete, wave: g.wave, lives: g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: g.perfect };
 }

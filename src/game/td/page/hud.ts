@@ -1,6 +1,7 @@
 // HUD (gold, lives, wave, score), wave preview, main wave button, deck of deployed
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
+import { isBossWave } from "../waves.js";
 
 const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear", heroKills: "Slayer" };
 
@@ -13,8 +14,11 @@ const GOLD_TWEEN_MS = 600;
 const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children" };
 
 export function createHud(ctx: PageContext) {
-  const { q, state, store, pause, heroById, maxTeam, totalWaves } = ctx;
+  const { q, state, store, pause, heroById, maxTeam } = ctx;
   const bossName = () => ctx.bossFor(state.session?.map).name;
+  const bossWave = (game: any, n: number) => isBossWave(n, game.mode, ctx.data.tuning.waveGen);
+  // Team size of the current run (Set's Command blessing adds a slot).
+  const teamCap = (): number => state.session?.game.tuning.run.maxTeam ?? maxTeam;
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
   const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
@@ -42,6 +46,7 @@ export function createHud(ctx: PageContext) {
     updateGold(game.gold);
     q("[data-td-lives]").textContent = String(game.lives);
     q("[data-td-wave]").textContent = String(game.wave);
+    q("[data-td-wave-total]").textContent = Number.isFinite(game.totalWaves) ? String(game.totalWaves) : "∞";
     q("[data-td-score]").textContent = game.score.toLocaleString();
     q("[data-td-synergy-count]").textContent = String(game.activeSynergyCount());
   }
@@ -58,11 +63,11 @@ export function createHud(ctx: PageContext) {
     }
     if (game.running) {
       mainAction.disabled = true;
-      mainAction.textContent = game.wave === totalWaves ? "Final wave" : `Wave ${game.wave} underway`;
+      mainAction.textContent = game.wave === game.totalWaves ? "Final wave" : `Wave ${game.wave} underway`;
       return;
     }
     mainAction.disabled = false;
-    const label = game.wave === totalWaves - 1 ? `Face ${bossName()}` : `Start wave ${game.wave + 1}`;
+    const label = bossWave(game, game.wave + 1) ? `Face ${bossName()}` : `Start wave ${game.wave + 1}`;
     mainAction.textContent = countdownActive() ? `${label} - ${Math.ceil(autoLeft / 1000)}s` : label;
   }
 
@@ -144,10 +149,11 @@ export function createHud(ctx: PageContext) {
   function renderDeck() {
     const game = state.session?.game;
     const entries = deckEntries();
-    const key = entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
+    const cap = teamCap();
+    const key = `${cap}#` + entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
     if (key !== deckKey) {
       deckKey = key;
-      const empties = Math.max(0, maxTeam - entries.length);
+      const empties = Math.max(0, cap - entries.length);
       deckEl.innerHTML = entries.map((entry) => {
         const hero = heroById.get(entry.id);
         const attr = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : `data-deck-fallen="${entry.id}"`;
@@ -165,7 +171,7 @@ export function createHud(ctx: PageContext) {
     });
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
       const hero = heroById.get(button.dataset.deckFallen!);
-      const teamFull = game.team.length >= maxTeam;
+      const teamFull = game.team.length >= teamCap();
       button.disabled = game.complete || game.gold < hero.cost || teamFull;
       button.classList.toggle("is-selected", state.deployHeroId === hero.id);
       button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${hero.cost} gold${teamFull ? ", team full" : ""}.`);
@@ -203,7 +209,7 @@ export function createHud(ctx: PageContext) {
     if (game.startWave()) {
       pause.remove("manual"); // starting a wave is an explicit resume
       syncPauseButton();
-      ctx.notice(game.wave === totalWaves ? `${bossName()} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
+      ctx.notice(bossWave(game, game.wave) ? `${bossName()} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
     }
     syncMainAction();
     renderPreview();

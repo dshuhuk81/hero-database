@@ -177,12 +177,13 @@ export async function createRenderer(canvas, game, options = {}) {
 
   // Full-body enemy sprites (scripts/build-td-enemy-sprites.mjs), preferred over
   // portraits when present. Missing files fail quietly and portraits stay in use.
-  const ENEMY_SPRITE_VERSION = "v1";
+  // Per-file version (R2 caches a year): bump a file here and in the build script's --version together.
+  const ENEMY_SPRITE_VERSIONS = { "boss-lilith": "v2", brood: "v2" };
   const fullBodyTextures = new Map(); // kind -> PIXI.Texture
-  // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-v1 (the map's boss).
+  // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-vN (the map's boss).
   const bossFile = options.boss?.id && options.boss.id !== "baphomet" ? `boss-${options.boss.id}` : "boss";
   for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
-    PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSION}.webp`))
+    PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }

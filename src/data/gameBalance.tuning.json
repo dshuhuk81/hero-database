@@ -23,7 +23,7 @@
   },
   "difficulty": { "enemyHp": 2 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.1 },
-  "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2 },
+  "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 } },
   "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
   "virtueEffects": {
     "Wildness": { "type": "atk", "value": 0.15, "label": "All heroes deal +15% attack damage." },
@@ -60,6 +60,7 @@
     { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Bastet and Nyx: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
   ],
   "run": { "startingGold": 340, "lives": 25, "maxTeam": 5, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
+  "waveGen": { "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },
   "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 } },
   "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.6 },
   "shards": { "minWave": 3, "favorPct": 0.1, "favorMin": 5, "gold": 60 },

@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
 import { createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
-import { buildRunTuning, isFavorNodeActive, ACTIVE_FAVOR_EFFECTS } from "../src/game/td/favor.js";
+import { buildRunTuning, TREE } from "../src/game/td/favor.js";
 import { canvasPoint, nearestSlot } from "../src/game/td/render.js";
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
-import favorTreeData from "../src/data/favorTree.json" with { type: "json" };
 
 // --- fitRect: world fits width AND height, aspect preserved ---
 {
@@ -102,19 +101,16 @@ import favorTreeData from "../src/data/favorTree.json" with { type: "json" };
   assert.equal(paused, false, "clear resumes");
 }
 
-// --- Favor: run snapshot and active-node labelling ---
+// --- Favor: run snapshot ---
 {
-  const base = buildRunTuning(tuning, []);
+  const base = buildRunTuning(tuning, {});
   assert.equal(base.run.startingGold, tuning.run.startingGold, "no nodes, no bonus");
-  const gold = favorTreeData.find((node) => node.effect.type === "startingGold");
-  const lives = favorTreeData.find((node) => node.effect.type === "lives");
-  const boosted = buildRunTuning(tuning, [gold.id, lives.id]);
+  const gold = TREE.nodes.find((node) => node.effect.type === "startingGold");
+  const lives = TREE.nodes.find((node) => node.effect.type === "lives");
+  const boosted = buildRunTuning(tuning, { [gold.id]: 1, [lives.id]: 1 });
   assert.equal(boosted.run.startingGold, tuning.run.startingGold + gold.effect.value, "starting gold applied");
   assert.equal(boosted.run.lives, tuning.run.lives + lives.effect.value, "lives applied");
   assert.equal(tuning.run.startingGold, base.run.startingGold, "base tuning not mutated");
-  const inactive = favorTreeData.filter((node) => !isFavorNodeActive(node));
-  assert.ok(inactive.every((node) => !ACTIVE_FAVOR_EFFECTS.includes(node.effect.type)), "inactive nodes flagged");
-  assert.equal(favorTreeData.filter(isFavorNodeActive).length, favorTreeData.length, "every node is active");
 }
 
 console.log("Tower defense UI helper checks passed.");

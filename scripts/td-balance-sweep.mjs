@@ -1,9 +1,10 @@
 // Difficulty sweep: plays every balance squad on every map across a range of
 // enemy HP multipliers and prints who wins, so a target difficulty can be picked.
-// Run with: npm run td:sweep -- --hp=0.8,1,1.5,2 --scale=0.15 --favor=none --seeds=1
+// Run with: npm run td:sweep -- --hp=0.8,1,1.5,2 --scale=0.15 --favor=none|trunk|all --seeds=1 --mode=classic|long|endless
 // Cells: P25 = perfect win (lives left), W12 = win with 12 lives, L7 = lost in wave 7.
-// With --seeds>1 cells show wins/seeds instead.
-import { favorTree, maps, playRun, SQUADS } from "./lib/td-runner.mjs";
+// With --seeds>1 cells show wins/seeds instead. Endless cells show the wave reached
+// (average over seeds); a run that hits the 150-wave guard shows as R150 (runaway).
+import { maps, maxBlessings, playRun, SQUADS } from "./lib/td-runner.mjs";
 
 const args = Object.fromEntries(process.argv.slice(2).map((arg) => {
   const [key, value = ""] = arg.replace(/^--/, "").split("=");
@@ -15,10 +16,12 @@ const scales = list(args.scale, [0.15]);
 const speed = Number(args.speed || 1);
 const gold = Number(args.gold || 1);
 const seeds = Math.max(1, Number(args.seeds || 1));
-const favTree = args.favor === "all" ? favorTree.map((node) => node.id) : [];
+const favLevels = args.favor === "all" || args.favor === "trunk" ? maxBlessings(args.favor) : null;
 const squadNames = Object.keys(SQUADS);
+const mode = args.mode || "classic";
+const endless = mode === "endless";
 
-console.log(`Enemy speed x${speed} - kill gold x${gold} - favor: ${favTree.length ? "all nodes" : "none"} - seeds: ${seeds}`);
+console.log(`Enemy speed x${speed} - kill gold x${gold} - favor: ${favLevels ? `${args.favor} at max level` : "none"} - seeds: ${seeds} - mode: ${mode}`);
 
 const candidates = [];
 for (const waveHpScale of scales) {
@@ -30,11 +33,15 @@ for (const waveHpScale of scales) {
     for (const name of squadNames) {
       const cells = hpSteps.map((hp) => {
         const difficulty = { enemyHp: hp, enemySpeed: speed, killGold: gold, waveHpScale };
-        const runs = Array.from({ length: seeds }, (_, i) => playRun(SQUADS[name], 99 + i, map, { difficulty, favTree }));
+        const runs = Array.from({ length: seeds }, (_, i) => playRun(SQUADS[name], 99 + i, map, { difficulty, favLevels, mode }));
         const won = runs.filter((run) => run.won).length;
         const tally = wins.get(hp);
         if (won * 2 > seeds) tally.wins += 1;
         if (runs.every((run) => run.perfect)) tally.perfect += 1;
+        if (endless) {
+          const avg = Math.round(runs.reduce((sum, run) => sum + run.wave, 0) / seeds);
+          return runs.some((run) => !run.complete) ? `R${avg}` : `E${avg}`;
+        }
         if (seeds > 1) return `${won}/${seeds}`;
         const [run] = runs;
         return run.won ? `${run.perfect ? "P" : "W"}${run.lives}` : `L${run.wave}`;
@@ -48,9 +55,11 @@ for (const waveHpScale of scales) {
       if (w < 1 || w >= squadNames.length || perfect > 1) perStep.get(hp).ok = false;
     }
   }
+  if (endless) continue;
   for (const [hp, { ok }] of perStep) if (ok) candidates.push({ enemyHp: hp, waveHpScale });
 }
 
+if (endless) process.exit(0);
 console.log("\nCandidates (on every map: at least one squad wins, at least one loses, at most one perfect):");
 if (!candidates.length) console.log("  none - widen --hp or try another --scale");
 for (const candidate of candidates) console.log(`  "difficulty": ${JSON.stringify({ ...candidate, enemySpeed: speed, killGold: gold })}`);

@@ -1,11 +1,39 @@
 ---
-// Modal panels: menu, Blessings, help and save data. Controlled by src/game/td/page/panels.ts and save.ts.
-interface Props { maxTeam: number; maps: any[]; bossNames: Record<string, string>; }
-const { maxTeam, maps, bossNames } = Astro.props;
+// Modal panels: run length, menu, Blessings, help and save data. Controlled by src/game/td/page/panels.ts and save.ts.
+interface Props { maxTeam: number; maps: any[]; bossNames: Record<string, string>; waveCount: number; }
+const { maxTeam, maps, bossNames, waveCount } = Astro.props;
+const modes = [
+  { id: "classic", label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
+  { id: "long", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
+  { id: "endless", label: "Endless", copy: "A boss every 5th wave. Waves keep growing until the last life is lost." },
+];
 const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).join(", ");
 ---
 
 <div class="td-panel-layer" data-td-panel-layer hidden>
+  <section class="td-panel" data-td-panel="mode" role="dialog" aria-modal="true" aria-labelledby="td-mode-title" tabindex="-1" hidden>
+    <div class="td-panel-head">
+      <div>
+        <h2 id="td-mode-title">Choose run length</h2>
+        <p class="td-mode-map" data-td-mode-map></p>
+      </div>
+      <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Back to battlefields">
+        <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </div>
+    <div class="td-panel-body td-modes" data-td-modes>
+      {modes.map((mode) => (
+        <button type="button" class="td-mode" data-mode-id={mode.id}>
+          <span class="td-mode-copy">
+            <strong>{mode.label}</strong>
+            <small>{mode.copy}</small>
+          </span>
+          <span class="td-mode-best" data-mode-best={mode.id}></span>
+        </button>
+      ))}
+    </div>
+  </section>
+
   <section class="td-panel" data-td-panel="menu" role="dialog" aria-modal="true" aria-labelledby="td-menu-title" tabindex="-1" hidden>
     <div class="td-panel-head">
       <h2 id="td-menu-title">Paused</h2>
@@ -39,7 +67,7 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
     </div>
   </section>
 
-  <section class="td-panel td-panel--wide" data-td-panel="blessings" role="dialog" aria-modal="true" aria-labelledby="td-blessings-title" tabindex="-1" hidden>
+  <section class="td-panel td-panel--wide td-panel--blessings" data-td-panel="blessings" role="dialog" aria-modal="true" aria-labelledby="td-blessings-title" tabindex="-1" hidden>
     <div class="td-panel-head">
       <h2 id="td-blessings-title">Blessings</h2>
       <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close blessings">
@@ -52,7 +80,6 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
     </div>
     <div class="td-panel-body">
       <div id="td-tabpanel-favor" role="tabpanel" aria-labelledby="td-tab-favor" data-td-tabpanel="favor">
-        <p class="td-favor-summary"><strong data-td-favor-available>0</strong> Favor available. Permanent upgrades earned by finishing runs.</p>
         <p class="td-favor-note" data-td-favor-note></p>
         <div data-td-favor-tree></div>
       </div>
@@ -71,11 +98,12 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
       <article><strong>Deploy</strong><p>Tap an empty ring to recruit a hero there. Deploy up to {maxTeam} heroes. You can start wave 1 as soon as one hero is on the field.</p></article>
       <article><strong>Road</strong><p>Gold rings accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle. A Tank holds up to 3 enemies at once, a Warrior 2 and an Assassin 1; the rest walk past to the next blocker.</p></article>
       <article><strong>Platforms</strong><p>Purple rings accept Mages, Archers, and Supports. Flyers ignore blockers and road heroes (ultimates included), so ranged coverage matters.</p></article>
-      <article><strong>Upgrade</strong><p>Tap a deployed hero to upgrade or rotate it. Levels belong to the deployed unit - a fallen hero re-enters at level 1. At level 4 a hero can Awaken for 220 gold: more attack and health and a stronger ultimate (Details shows what changes). Awakening is lost when the hero falls.</p></article>
+      <article><strong>Upgrade</strong><p>Tap a deployed hero to upgrade or rotate it. Levels belong to the deployed unit - a fallen hero re-enters at level 1. Level 3 asks for a focus: +10% attack, +25% health or +20% range; it stays with that unit until it falls. At level 4 a hero can Awaken for 220 gold: more attack and health and a stronger ultimate (Details shows what changes). Awakening is lost when the hero falls.</p></article>
       <article><strong>Auto</strong><p>Turn on Auto in the top bar to start the next wave 10 seconds after a wave is cleared. The countdown waits while you choose a blessing, recruit a hero, pause or have a menu open.</p></article>
       <article><strong>Quests</strong><p>Each wave except the last has a quest, shown at the top of the map: let no enemy through, keep every hero alive, clear the wave quickly after the last enemy spawns, or have a named hero land a set number of kills. Complete it for bonus gold when the wave ends.</p></article>
-      <article><strong>Divine Blessings</strong><p>Every finished run earns Favor. Spend it any time under Blessings. Purchases made during a run apply from your next run. Runs that reach wave 3 also let you pick a shard: extra Favor, or extra gold or a blessing for your next run.</p></article>
-      <article><strong>Final wave</strong><p>Each battlefield ends with its own boss ({bossList}), arriving with an escort. Boss health and speed are tuned for this mode. Lilith summons her children around her and cannot be hit while they stand; damage they take also hurts her, and she summons them again, weaker, when all have fallen.</p></article>
+      <article><strong>Divine Blessings</strong><p>Every finished run earns Favor for the Divine trunk. Each hero class also has its own branch, paid with that class's Insight: the heroes you deploy earn it for their class, per wave on the field and per kills. Most blessings have several levels, deeper stages open once enough levels are bought in that tree, and Surge and Wrath exclude each other. Drag or pinch to move and zoom the tree. A reset refunds everything for a Favor fee. Purchases made during a run apply from your next run. Runs that reach wave 3 also let you pick a shard: extra Favor, or extra gold or a blessing for your next run.</p></article>
+      <article><strong>Run length</strong><p>Pick a run length in the lobby. 10 waves is the original run. 20 waves brings a boss every 5th wave; the earlier ones are weaker and the one on wave 20 fights at full strength. Endless also brings a boss every 5th wave and keeps making waves bigger until your last life is lost. Each length keeps its own best score per battlefield.</p></article>
+      <article><strong>Bosses</strong><p>Each battlefield has its own boss ({bossList}), arriving with an escort. Boss health and speed are tuned for this mode. Lilith summons her children around her and cannot be hit while they stand; damage they take also hurts her, and she summons them again, weaker, when all have fallen.</p></article>
       <article><strong>Keyboard</strong><p>Focus the battlefield, use the left and right arrow keys to choose a ring, and press Enter to use it. R rotates the selected hero, Escape closes panels.</p></article>
     </div>
   </section>

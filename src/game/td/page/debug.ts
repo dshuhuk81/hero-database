@@ -10,7 +10,7 @@ function formatKnob(key: string, value: number) {
 
 // Returns null when the page has no debug panel (production build).
 export function createDebugPanel(ctx: PageContext) {
-  const { root, q, data, store, totalWaves } = ctx;
+  const { root, q, data, store } = ctx;
   const debugEl = root.querySelector<HTMLElement>("[data-td-debug]");
   if (!debugEl) return null;
   const tunedDifficulty = data.tuning.difficulty || {};
@@ -117,7 +117,7 @@ export function createDebugPanel(ctx: PageContext) {
     if (action === "lose" && !game.complete) { game.running = false; game.lives = 0; game.finish(false); }
     if (action === "jump") {
       if (game.running || game.complete) { ctx.notice("Jump works between waves."); return; }
-      const target = Math.min(totalWaves, Math.max(1, Number(debugEl.querySelector<HTMLInputElement>("[data-debug-wave]")!.value) || 1));
+      const target = Math.min(game.totalWaves, Math.max(1, Number(debugEl.querySelector<HTMLInputElement>("[data-debug-wave]")!.value) || 1));
       game.wave = target - 1;
       game.virtueOffer = null;
       session.started = true;

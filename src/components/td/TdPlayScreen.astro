@@ -12,7 +12,7 @@ const { waveCount, isDev } = Astro.props;
     <div class="td-stats">
       <div class="td-stat td-stat--gold"><span>Gold</span><strong data-td-gold>0</strong><em class="td-gold-float" data-td-gold-float aria-hidden="true"></em></div>
       <div class="td-stat"><span>Lives</span><strong data-td-lives>0</strong></div>
-      <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/{waveCount}</strong></div>
+      <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/<span data-td-wave-total>{waveCount}</span></strong></div>
     </div>
     <div class="td-top-actions">
       <button class="td-icon-button td-auto-button" type="button" data-td-auto aria-pressed="false" aria-label="Auto-start next wave">Auto</button>
@@ -44,7 +44,7 @@ const { waveCount, isDev } = Astro.props;
 
 
     <TdOverlays>
-      {isDev && <TdDebugPanel waveCount={waveCount} />}
+      {isDev && <TdDebugPanel />}
     </TdOverlays>
   </div>
 

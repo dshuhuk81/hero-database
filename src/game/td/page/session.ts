@@ -56,9 +56,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     stageEl.prepend(canvas);
     loadingCanvas = canvas;
 
-    const runFavTree = [...store.data.favTree];
+    const runLevels = { ...store.data.favLevels };
     const boost = store.data.nextRunBoost;
-    const game: any = new TowerDefenseGame({ ...data, tuning: buildRunTuning(data.tuning, runFavTree, boost), map });
+    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tuning: buildRunTuning(data.tuning, runLevels, boost), map });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
@@ -77,7 +77,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favTree: runFavTree, boost, debug: false };
+    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
