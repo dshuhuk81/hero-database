@@ -59,7 +59,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
 
     const runLevels = { ...store.data.favLevels };
     const boost = store.data.nextRunBoost;
-    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tuning: buildRunTuning(data.tuning, runLevels, boost), map });
+    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });

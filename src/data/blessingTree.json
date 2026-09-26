@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "costGrowth": 1.35,
   "reset": {
     "favorCost": 150
@@ -24,7 +24,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 30,
+      "cost": 65,
       "effect": {
         "type": "startingGold",
         "value": 10
@@ -38,7 +38,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 3,
-      "cost": 40,
+      "cost": 85,
       "effect": {
         "type": "lives",
         "value": 1
@@ -52,7 +52,7 @@
       "row": 0,
       "col": 2,
       "maxLevel": 1,
-      "cost": 30,
+      "cost": 65,
       "effect": {
         "type": "showHp",
         "value": 1
@@ -66,7 +66,7 @@
       "row": 0,
       "col": 3,
       "maxLevel": 5,
-      "cost": 40,
+      "cost": 85,
       "effect": {
         "type": "heroHp",
         "value": 0.02
@@ -80,7 +80,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 80,
+      "cost": 170,
       "requiresPoints": 6,
       "effect": {
         "type": "killGold",
@@ -95,7 +95,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 100,
+      "cost": 210,
       "requiresPoints": 6,
       "effect": {
         "type": "ultCharge",
@@ -110,7 +110,7 @@
       "row": 1,
       "col": 2,
       "maxLevel": 4,
-      "cost": 90,
+      "cost": 190,
       "requiresPoints": 6,
       "effect": {
         "type": "synergyTag",
@@ -125,7 +125,7 @@
       "row": 1,
       "col": 3,
       "maxLevel": 3,
-      "cost": 60,
+      "cost": 125,
       "requiresPoints": 6,
       "effect": {
         "type": "wave1Speed",
@@ -140,7 +140,7 @@
       "row": 2,
       "col": 0,
       "maxLevel": 5,
-      "cost": 200,
+      "cost": 415,
       "requiresPoints": 16,
       "effect": {
         "type": "upgradeDiscount",
@@ -155,7 +155,7 @@
       "row": 2,
       "col": 1,
       "maxLevel": 5,
-      "cost": 180,
+      "cost": 375,
       "requiresPoints": 16,
       "effect": {
         "type": "clearBonus",
@@ -170,7 +170,7 @@
       "row": 2,
       "col": 2,
       "maxLevel": 4,
-      "cost": 150,
+      "cost": 310,
       "requiresPoints": 16,
       "effect": {
         "type": "contactRange",
@@ -185,7 +185,7 @@
       "row": 2,
       "col": 3,
       "maxLevel": 1,
-      "cost": 900,
+      "cost": 1870,
       "requiresPoints": 16,
       "effect": {
         "type": "extraOffer",
@@ -200,7 +200,7 @@
       "row": 3,
       "col": 1,
       "maxLevel": 4,
-      "cost": 400,
+      "cost": 830,
       "requiresPoints": 28,
       "effect": {
         "type": "bossDamage",
@@ -215,7 +215,7 @@
       "row": 3,
       "col": 2,
       "maxLevel": 1,
-      "cost": 3000,
+      "cost": 6240,
       "requiresPoints": 28,
       "effect": {
         "type": "startingGold",
@@ -231,7 +231,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -246,7 +246,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -261,7 +261,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -276,7 +276,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -291,7 +291,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -307,7 +307,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "tank_ascension"
@@ -320,23 +320,24 @@
     },
     {
       "tree": "Tank",
-      "id": "tank_surge",
-      "name": "Surge",
+      "id": "tank_infusion",
+      "name": "Earthshaker",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "tank_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "infuse",
+        "value": 1,
+        "status": "chill"
       },
-      "text": "Tanks' ultimates charge {p} faster."
+      "text": "Tanks' attacks Chill enemies (70% speed for 1s). Wet enemies freeze."
     },
     {
       "tree": "Tank",
@@ -346,7 +347,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "tank_special"
@@ -366,10 +367,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "tank_surge",
+        "tank_infusion",
         "tank_wrath"
       ],
       "effect": {
@@ -386,7 +387,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "tank_rite"
@@ -405,7 +406,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -420,7 +421,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -435,7 +436,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -450,7 +451,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -465,7 +466,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -481,7 +482,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "warrior_ascension"
@@ -494,23 +495,24 @@
     },
     {
       "tree": "Warrior",
-      "id": "warrior_surge",
-      "name": "Surge",
+      "id": "warrior_infusion",
+      "name": "Tidebreaker",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "warrior_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "infuse",
+        "value": 1,
+        "status": "wet"
       },
-      "text": "Warriors' ultimates charge {p} faster."
+      "text": "Warriors' attacks, cleave included, make enemies Wet."
     },
     {
       "tree": "Warrior",
@@ -520,7 +522,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "warrior_special"
@@ -540,10 +542,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "warrior_surge",
+        "warrior_infusion",
         "warrior_wrath"
       ],
       "effect": {
@@ -560,7 +562,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "warrior_rite"
@@ -579,7 +581,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -594,7 +596,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -609,7 +611,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -624,7 +626,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -639,7 +641,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -655,7 +657,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "assassin_ascension"
@@ -668,23 +670,24 @@
     },
     {
       "tree": "Assassin",
-      "id": "assassin_surge",
-      "name": "Surge",
+      "id": "assassin_infusion",
+      "name": "Venom Blades",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "assassin_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "infuse",
+        "value": 1,
+        "status": "poison"
       },
-      "text": "Assassins' ultimates charge {p} faster."
+      "text": "Assassins' attacks Poison enemies."
     },
     {
       "tree": "Assassin",
@@ -694,7 +697,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "assassin_special"
@@ -714,10 +717,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "assassin_surge",
+        "assassin_infusion",
         "assassin_wrath"
       ],
       "effect": {
@@ -734,7 +737,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "assassin_rite"
@@ -753,7 +756,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -768,7 +771,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -783,7 +786,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -798,7 +801,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -813,7 +816,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -829,7 +832,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "mage_ascension"
@@ -842,23 +845,24 @@
     },
     {
       "tree": "Mage",
-      "id": "mage_surge",
-      "name": "Surge",
+      "id": "mage_infusion",
+      "name": "Kindling",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "mage_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "infuse",
+        "value": 1,
+        "status": "burn"
       },
-      "text": "Mages' ultimates charge {p} faster."
+      "text": "Mages' attacks, splash included, set enemies on Burn."
     },
     {
       "tree": "Mage",
@@ -868,7 +872,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "mage_special"
@@ -888,10 +892,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "mage_surge",
+        "mage_infusion",
         "mage_wrath"
       ],
       "effect": {
@@ -908,7 +912,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "mage_rite"
@@ -927,7 +931,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -942,7 +946,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -957,7 +961,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -972,7 +976,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -987,7 +991,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -1003,7 +1007,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "archer_ascension"
@@ -1016,23 +1020,24 @@
     },
     {
       "tree": "Archer",
-      "id": "archer_surge",
-      "name": "Surge",
+      "id": "archer_infusion",
+      "name": "Frost Arrows",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "archer_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "infuse",
+        "value": 1,
+        "status": "chill"
       },
-      "text": "Archers' ultimates charge {p} faster."
+      "text": "Archers' shots Chill enemies (70% speed for 1s). Wet enemies freeze."
     },
     {
       "tree": "Archer",
@@ -1042,7 +1047,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "archer_special"
@@ -1062,10 +1067,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "archer_surge",
+        "archer_infusion",
         "archer_wrath"
       ],
       "effect": {
@@ -1082,7 +1087,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "archer_rite"
@@ -1101,7 +1106,7 @@
       "row": 0,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "atk",
         "value": 0.02
@@ -1116,7 +1121,7 @@
       "row": 0,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "hp",
         "value": 0.03
@@ -1131,7 +1136,7 @@
       "row": 1,
       "col": 0,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "aps",
         "value": 0.02
@@ -1146,7 +1151,7 @@
       "row": 1,
       "col": 1,
       "maxLevel": 5,
-      "cost": 5,
+      "cost": 15,
       "effect": {
         "type": "range",
         "value": 0.02
@@ -1161,7 +1166,7 @@
       "row": 2,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 40,
+      "cost": 120,
       "requiresPoints": 8,
       "effect": {
         "type": "startLevel",
@@ -1177,7 +1182,7 @@
       "row": 3,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 60,
+      "cost": 180,
       "requiresPoints": 12,
       "requires": [
         "support_ascension"
@@ -1190,23 +1195,23 @@
     },
     {
       "tree": "Support",
-      "id": "support_surge",
-      "name": "Surge",
+      "id": "support_infusion",
+      "name": "Radiance",
       "stage": "Divine III",
       "row": 4,
       "col": 0,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "support_special"
       ],
       "exclusive": "d3",
       "effect": {
-        "type": "ultCharge",
-        "value": 0.15
+        "type": "purify",
+        "value": 1
       },
-      "text": "Supports' ultimates charge {p} faster."
+      "text": "Supports' heals and attacks lift hexes from allies in range."
     },
     {
       "tree": "Support",
@@ -1216,7 +1221,7 @@
       "row": 4,
       "col": 1,
       "maxLevel": 1,
-      "cost": 80,
+      "cost": 240,
       "requiresPoints": 16,
       "requires": [
         "support_special"
@@ -1236,10 +1241,10 @@
       "row": 5,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 100,
+      "cost": 300,
       "requiresPoints": 18,
       "requiresAny": [
-        "support_surge",
+        "support_infusion",
         "support_wrath"
       ],
       "effect": {
@@ -1256,7 +1261,7 @@
       "row": 6,
       "col": 0.5,
       "maxLevel": 1,
-      "cost": 140,
+      "cost": 420,
       "requiresPoints": 20,
       "requires": [
         "support_rite"

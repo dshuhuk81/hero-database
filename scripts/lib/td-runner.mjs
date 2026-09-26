@@ -41,14 +41,15 @@ export const SQUADS = {
 // bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
 // `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
-export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mode = "classic", maxWave = 150 } = {}) {
+export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mode = "classic", tier = "normal", maxWave = 150 } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, seed });
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, tier, seed });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   let spent = 0;
   let stalled = false;
+  let perfectWaves = 0;
   const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
@@ -87,6 +88,7 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
     // Standoff guard: blockers and heals can outlast enemies nobody can kill. A wave with
     // no kill and no leak for STALL_SECONDS is a standoff; a player would recruit damage
     // mid-wave, the bot counts it as a lost run. (Long boss fights keep making progress.)
+    const leaksBefore = g.totalLeaks;
     let quietSteps = 0;
     let progress = -1;
     while (g.running && !g.complete) {
@@ -97,7 +99,8 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
       if (quietSteps >= 60 * STALL_SECONDS) { stalled = true; break; }
     }
     if (stalled) break;
+    if (!g.running && g.totalLeaks === leaksBefore) perfectWaves += 1;
   }
   const won = g.won && !stalled;
-  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect };
+  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, perfectWaves, insightLog: g.insightLog };
 }

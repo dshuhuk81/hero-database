@@ -89,6 +89,29 @@ export function canBuy(nodeId, levels, tree = TREE) {
   return { ok: true, reason: "" };
 }
 
+// Tree version 3 (M3) raised prices (trunk x1.6, class branches x3) and replaced each
+// class's Surge with an Infusion. Saves from version 2 keep every level they own: the
+// price increase is credited back per currency, so nothing they own costs them more.
+// Surge levels simply drop out (their node is gone), which returns that Insight too.
+const V2_TRUNK_COSTS = { demeter_bounty: 30, freya_blessing: 40, horus_sight: 30, jormungandr_hide: 40, caishen_treasury: 80, amunra_surge: 100, yuelao_bond: 90, nyx_veil: 60, zeus_dominion: 200, poseidon_tide: 180, nuwa_wall: 150, fengyi_favor: 900, anubis_judgment: 400, set_command: 3000 };
+const V2_CLASS_COSTS = { might: 5, vigor: 5, swiftness: 5, reach: 5, ascension: 40, special: 60, wrath: 80, rite: 100, apotheosis: 140 };
+const v2Cost = (node) => (node.tree === "trunk" ? V2_TRUNK_COSTS[node.id] : V2_CLASS_COSTS[node.id.slice(node.tree.length + 1)]);
+
+export function repriceCredit(levels, tree = TREE) {
+  const credit = {};
+  for (const [id, rawLevel] of Object.entries(levels || {})) {
+    const node = findNode(id, tree);
+    const old = node && v2Cost(node);
+    if (!old || !rawLevel) continue;
+    const level = Math.min(rawLevel, node.maxLevel);
+    let before = 0;
+    for (let i = 1; i <= level; i += 1) before += Math.round(old * tree.costGrowth ** (i - 1));
+    const key = nodeCurrency(node);
+    credit[key] = (credit[key] || 0) + nodeSpent(node, level, tree) - before;
+  }
+  return credit;
+}
+
 // Old saves stored bought node ids of the first tree (favTree, 12 nodes). Those are
 // refunded: dropping them frees the Favor, because available Favor is earned minus
 // spent. The old prices only serve the one-time "refunded" notice.
@@ -109,7 +132,9 @@ export function applyBlessings(levels, tree = TREE) {
     const value = node.effect.value * level;
     if (node.tree !== "trunk") {
       const cls = (bonuses.classBonus[node.tree] ||= {});
-      add(cls, node.effect.type, value);
+      // Infusion (Divine III): the class's attacks apply a status (M3, tuning.statuses).
+      if (node.effect.type === "infuse") cls.infuse = node.effect.status;
+      else add(cls, node.effect.type, value);
       continue;
     }
     switch (node.effect.type) {

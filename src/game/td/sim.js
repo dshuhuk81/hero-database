@@ -57,7 +57,7 @@ export function pointOnPath(points, distance, offset = 0) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", seed = 1337, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     this.tuning = tuning;
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
@@ -66,6 +66,12 @@ export class TowerDefenseGame {
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
     this.difficulty = { enemyHp: 1, enemySpeed: 1, killGold: 1, waveHpScale: 0.15, invincible: false, ...(tuning.difficulty || {}) };
+    // Difficulty tier (M3) for the finite modes; endless has its own ramp and stays Normal.
+    // Kept apart from `difficulty`, which the dev debug panel overwrites.
+    this.tier = mode !== "endless" && tuning.tiers?.[tier] ? tier : "normal";
+    const tierCfg = tuning.tiers?.[this.tier] ?? {};
+    this.tierHp = tierCfg.enemyHp ?? 1;
+    this.tierAttack = tierCfg.enemyAttack ?? 1;
     this.map = map;
     // Run mode (waves.js): classic = tdWaves.json, long = 20 waves, endless = until the last life.
     this.mode = isRunMode(mode) ? mode : "classic";
@@ -114,6 +120,8 @@ export class TowerDefenseGame {
     this.perfect = false;
     this.fallenHeroes = [];
     this.heroKills = {};
+    this.heroStats = {}; // per hero id: damage, boss, dot, heal, buff, kills (M14 result screen)
+    this.leakKinds = {}; // lives lost per enemy kind over the run
     this.reactionsSeen = new Set(); // reactions triggered this run (first one of each gets a notice)
     this.reactionCounts = {};
     this.lastReaction = null;
@@ -463,7 +471,7 @@ export class TowerDefenseGame {
   waveTotalHp(waveIndex = this.wave) {
     const wave = this.waves[waveIndex];
     if (!wave) return 0;
-    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.endlessRamp(waveIndex + 1);
+    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * this.endlessRamp(waveIndex + 1);
     return Math.round(wave.spawns.reduce((sum, group) => sum + group.count * (group.scale ?? 1) * (this.tuning.enemies[group.kind]?.hp || 0), 0) * scale);
   }
 
@@ -475,7 +483,7 @@ export class TowerDefenseGame {
     if (this.running || this.complete || this.wave >= this.waves.length) return false;
     const wave = this.waves[this.wave];
     this.wave += 1;
-    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0, heroDeaths: 0, lastSpawnAt: null };
+    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0, heroDeaths: 0, lastSpawnAt: null, leakKinds: {} };
     this.virtueOffer = null; // unclaimed offers expire when the next wave starts
     this.waveHeroes = new Map(this.heroes.map((hero) => [hero.entityId, hero.class])); // Insight credit per wave
     this.quest = this.rollQuest();
@@ -531,8 +539,8 @@ export class TowerDefenseGame {
       enemy.held = false;
       enemy.slow = Math.max(0, enemy.slow - dt);
       enemy.chill = Math.max(0, (enemy.chill ?? 0) - dt);
-      if ((enemy.burnUntil ?? 0) > this.time) this.hit(enemy, enemy.burnDps * dt, enemy.burnBy, { showShot: false, showHit: false });
-      if (!enemy.dead && (enemy.poisonUntil ?? 0) > this.time) this.hit(enemy, enemy.poisonDps * dt, enemy.poisonBy, { showShot: false, showHit: false });
+      if ((enemy.burnUntil ?? 0) > this.time) this.hit(enemy, enemy.burnDps * dt, enemy.burnBy, { showShot: false, showHit: false, dot: true });
+      if (!enemy.dead && (enemy.poisonUntil ?? 0) > this.time) this.hit(enemy, enemy.poisonDps * dt, enemy.poisonBy, { showShot: false, showHit: false, dot: true });
       if (enemy.dead) continue;
       enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
@@ -578,7 +586,11 @@ export class TowerDefenseGame {
             this.emit({ type: "baseHit", enemyId: enemy.entityId, damage: previousLives - this.lives,
               x: this.map.base.x, y: this.map.base.y, life: 0.65, color: "red" });
           }
-          if (this.waveStats) this.waveStats.leaks += 1;
+          if (this.waveStats) {
+            this.waveStats.leaks += 1;
+            this.waveStats.leakKinds[enemy.kind] = (this.waveStats.leakKinds[enemy.kind] || 0) + (previousLives - this.lives || enemy.damage || 1);
+          }
+          this.leakKinds[enemy.kind] = (this.leakKinds[enemy.kind] || 0) + (enemy.damage || 1);
           this.totalLeaks += 1;
           if (this.quest?.type === "noLeaks") this.failQuest();
           this.onChange("leak", this);
@@ -641,11 +653,11 @@ export class TowerDefenseGame {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
     const ramp = this.endlessRamp();
-    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * statScale * ramp;
+    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * statScale * ramp;
     const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
-    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
     this.enemies.push(enemy);
     if (kind === "boss") {
@@ -944,7 +956,7 @@ export class TowerDefenseGame {
   basicAttack(hero, target) {
     const kit = this.kit(hero);
     const cb = this.classBonus(hero);
-    if (this.pathFx(hero, "purify")) this.purify(hero);
+    if (this.pathFx(hero, "purify") || cb.purify) this.purify(hero);
     if (kit.heal && this.healPulse(hero, kit, cb)) return true;
     if (!target) return false;
     const mods = this.modifiers();
@@ -1038,7 +1050,7 @@ export class TowerDefenseGame {
         enemy.sunderUntil = this.time + path.seconds;
         break;
       case "bloodlust":
-        hero.hpLeft = Math.min(hero.hp, hero.hpLeft + dealt * path.lifesteal);
+        this.healHero(hero, dealt * path.lifesteal, hero);
         break;
       case "wildfire":
         this.applyBurn(enemy, hero, dealt * path.share, path.seconds);
@@ -1081,9 +1093,21 @@ export class TowerDefenseGame {
 
   applyHeroStatus(hero, enemy, dealt) {
     const cfg = this.statusCfg();
-    const kind = cfg?.sources?.[hero.id];
-    if (!kind || enemy.dead) return;
-    if (kind === "wet") {
+    if (!cfg || enemy.dead) return;
+    // A hero's own status (sources) plus its class Infusion blessing, if different.
+    const own = cfg.sources?.[hero.id];
+    const infuse = this.classBonus(hero).infuse;
+    if (own) this.applyStatusKind(own, hero, enemy, dealt);
+    if (infuse && infuse !== own && !enemy.dead) this.applyStatusKind(infuse, hero, enemy, dealt);
+  }
+
+  applyStatusKind(kind, hero, enemy, dealt) {
+    const cfg = this.statusCfg();
+    if (kind === "chill") {
+      enemy.chillFactor = enemy.chill > 0 ? Math.min(cfg.chill.factor, enemy.chillFactor) : cfg.chill.factor;
+      enemy.chill = Math.max(enemy.chill ?? 0, cfg.chill.seconds);
+      this.tryFreeze(enemy, hero);
+    } else if (kind === "wet") {
       if (this.isBurning(enemy)) return this.steam(enemy, enemy.burnBy ?? hero, enemy.burnDps * (enemy.burnUntil - this.time));
       enemy.wetUntil = this.time + cfg.wet.seconds;
       this.tryFreeze(enemy, hero);
@@ -1187,19 +1211,19 @@ export class TowerDefenseGame {
     }
     if (!ally) return false;
     const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0)) * (1 + (this.pathFx(hero, "purify")?.heal || 0));
-    ally.hpLeft = Math.min(ally.hp, ally.hpLeft + amount);
+    this.healHero(ally, amount, hero);
     // Sanctuary (Support path): the heal also reaches allies standing next to the target.
     const sanctuary = this.pathFx(hero, "sanctuary");
     if (sanctuary) {
       for (const other of this.heroes) {
-        if (other !== ally && Math.hypot(other.x - ally.x, other.y - ally.y) <= sanctuary.radius) other.hpLeft = Math.min(other.hp, other.hpLeft + amount * sanctuary.share);
+        if (other !== ally && Math.hypot(other.x - ally.x, other.y - ally.y) <= sanctuary.radius) this.healHero(other, amount * sanctuary.share, hero);
       }
     }
     this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
     return true;
   }
 
-  hit(enemy, amount, hero, { showShot = true, showHit = true, crit = false } = {}) {
+  hit(enemy, amount, hero, { showShot = true, showHit = true, crit = false, dot = false } = {}) {
     if (enemy.dead || enemy.untargetable) return;
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
@@ -1212,8 +1236,34 @@ export class TowerDefenseGame {
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
+    const dealt = Math.max(0, before - Math.max(0, enemy.hp));
+    if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
     if (enemy.hp <= 0) this.killEnemy(enemy, hero);
-    return Math.max(0, before - Math.max(0, enemy.hp));
+    return dealt;
+  }
+
+  // Run statistics per hero id (M14), summed over every unit of that hero.
+  statFor(hero) {
+    return (this.heroStats[hero.id] ||= { id: hero.id, name: hero.name, class: hero.class, damage: 0, boss: 0, dot: 0, heal: 0, buff: 0, kills: 0 });
+  }
+
+  recordDamage(hero, enemy, dealt, dot) {
+    if (!hero.id) return; // enemy sources (none today) stay out of hero stats
+    const stat = this.statFor(hero);
+    stat.damage += dealt;
+    if (enemy.kind === "boss" || enemy.parentId) stat.boss += dealt;
+    if (dot) stat.dot += dealt;
+    // Support aura: its share of this hit is credited to the Support as buff contribution.
+    const aura = this.supportAuraFor(hero);
+    if (aura) this.statFor(aura.source).buff += dealt * aura.bonus / (1 + aura.bonus);
+  }
+
+  // Heals a hero up to its maximum and credits the healer (M14). Returns the amount healed.
+  healHero(target, amount, by) {
+    const healed = Math.max(0, Math.min(target.hp, target.hpLeft + amount) - target.hpLeft);
+    target.hpLeft += healed;
+    if (by?.id && healed > 0) this.statFor(by).heal += healed;
+    return healed;
   }
 
   // Shieldbearer (M11): the shield takes hits before health. Every hit strips at least
@@ -1319,6 +1369,7 @@ export class TowerDefenseGame {
     this.score += Math.round(enemy.maxHp + enemy.reward * 4);
     if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
     this.totalGoldEarned += reward;
+    if (hero?.id) this.statFor(hero).kills += 1;
     const slot = this.heroKills[hero.entityId];
     if (slot) slot.kills += 1;
     else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
@@ -1377,7 +1428,7 @@ export class TowerDefenseGame {
       } else {
         const fraction = this.healFraction(hero);
         this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-          a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * fraction);
+          this.healHero(a, a.hp * fraction, hero);
           this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         });
       }
@@ -1414,7 +1465,7 @@ export class TowerDefenseGame {
       // Nuwa: taunt + heal nearby road allies
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = aw ? 4 : 3; });
       this.heroes.filter((a) => a.slotType === "road" && Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-        a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * (aw ? 0.3 : 0.15));
+        this.healHero(a, a.hp * (aw ? 0.3 : 0.15), hero);
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
@@ -1426,7 +1477,7 @@ export class TowerDefenseGame {
     } else if (variant === "drain_field") {
       // Demeter: taunt + self heal
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
-      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * (aw ? 0.35 : 0.15));
+      this.healHero(hero, hero.hp * (aw ? 0.35 : 0.15), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "war_cry") {
       // Amunra: cleave + slow hit enemies
@@ -1441,7 +1492,7 @@ export class TowerDefenseGame {
       const targets = cone.length ? cone : around;
       targets.forEach((e) => this.hit(e, power, hero));
       if (targets.length > 0) {
-        hero.hpLeft = Math.min(hero.hp, hero.hpLeft + power * targets.length * (aw ? 0.3 : 0.15));
+        this.healHero(hero, power * targets.length * (aw ? 0.3 : 0.15), hero);
         this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.4, color: "green" });
       }
     } else if (variant === "venom_cleave") {
@@ -1479,7 +1530,7 @@ export class TowerDefenseGame {
     } else if (variant === "rebirth_flame") {
       // Phoenix: nuke + self heal for 20% max HP
       foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
-      hero.hpLeft = Math.min(hero.hp, hero.hpLeft + hero.hp * (aw ? 0.4 : 0.2));
+      this.healHero(hero, hero.hp * (aw ? 0.4 : 0.2), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "weaken_burst") {
       // Fengyi: nuke + expose hit targets
@@ -1509,7 +1560,7 @@ export class TowerDefenseGame {
       // Caishen: heal all allies + grant atk buff together
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-        a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * fraction);
+        this.healHero(a, a.hp * fraction, hero);
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
@@ -1523,7 +1574,7 @@ export class TowerDefenseGame {
       // Yuelao: heal allies + accelerate their ult charge by 30%
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
-        a.hpLeft = Math.min(a.hp, a.hpLeft + a.hp * fraction);
+        this.healHero(a, a.hp * fraction, hero);
         a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * (aw ? 0.6 : 0.3));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
@@ -1545,7 +1596,7 @@ export class TowerDefenseGame {
         const allies = this.heroes.filter((ally) => Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range);
         if (hero.synergies?.includes("TEAM_HEAL")) {
           const fraction = this.healFraction(hero);
-          allies.forEach((ally) => { ally.hpLeft = Math.min(ally.hp, ally.hpLeft + ally.hp * fraction); this.emitHeroEffect(hero, { type: "heal", x: ally.x, y: ally.y, life: 0.5, color: "green" }); });
+          allies.forEach((ally) => { this.healHero(ally, ally.hp * fraction, hero); this.emitHeroEffect(hero, { type: "heal", x: ally.x, y: ally.y, life: 0.5, color: "green" }); });
         } else {
           allies.forEach((ally) => { ally.buffUntil = this.time + this.support.auraDuration; this.emitHeroEffect(hero, { type: "buff", x: ally.x, y: ally.y, life: 0.5, color: "gold" }); });
         }

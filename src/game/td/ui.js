@@ -111,3 +111,53 @@ export function buffChips(modifiers) {
     .filter((type) => (modifiers?.[type] || 0) > 0)
     .map((type) => ({ type, value: `+${Math.round(modifiers[type] * 100)}%`, short: BUFF_SHORT[type] }));
 }
+
+// Run statistics (M14). Rows for the result screen's damage table, highest damage first.
+export function damageRows(heroStats = {}) {
+  const rows = Object.values(heroStats);
+  const total = rows.reduce((sum, row) => sum + row.damage, 0);
+  return rows
+    .map((row) => ({ ...row, share: total ? row.damage / total : 0 }))
+    .sort((a, b) => b.damage - a.damage || b.heal + b.buff - (a.heal + a.buff));
+}
+
+// Compact number for tables: 950, 12.4k, 1.2M.
+export function shortNumber(value) {
+  const n = Math.round(value);
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e4) return `${Math.round(n / 1e3)}k`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}k`;
+  return String(n);
+}
+
+const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps" };
+const LEAK_HINTS = {
+  grunt: "Crowds overran the line: Warrior cleave and Mage splash thin them out.",
+  runner: "Runners slip past full blockers: Assassins catch loose enemies, Tanks hold 3, and Frost or Crippling slow them.",
+  flyer: "Flyers pass over road heroes: add platform heroes, Archers hit them twice as hard.",
+  archer: "Enemy archers shoot your blockers from range: keep a Support behind the line.",
+  brute: "Brutes are armored: Mages deal magic damage, Sunder and Hunter's Mark help physical heroes.",
+  boss: "The boss got through: Archers, Hunter's Mark and Boss first targeting focus it.",
+  brood: "While her children stand, Lilith cannot be hit: splash and cleave clear them faster.",
+  mender: "Menders kept their pack alive: splash damage or Last enemy targeting reach them.",
+  shieldbearer: "Shields soaked your damage: many quick hits (cleave, splash, fast attackers) break them.",
+  hexer: "Hexers stopped your heroes: Archers outrange them, and a Support on the Purify path lifts hexes.",
+  broodcaller: "Broodcallers keep calling Imps: snipe them early with Archers.",
+  imp: "Imps swarmed the line: kill Broodcallers early and bring splash damage.",
+};
+
+// Loss analysis (M14): which enemy kind cost the most lives on the wave the run ended,
+// with a one-line hint. Null when nothing leaked.
+export function lossReport(waveStats) {
+  const kinds = Object.entries(waveStats?.leakKinds ?? {});
+  const total = kinds.reduce((sum, [, lives]) => sum + lives, 0);
+  if (!total) return null;
+  // Imps count with their Broodcaller: the answer is the same.
+  const merged = {};
+  for (const [kind, lives] of kinds) {
+    const key = kind === "imp" && kinds.some(([k]) => k === "broodcaller") ? "broodcaller" : kind;
+    merged[key] = (merged[key] || 0) + lives;
+  }
+  const [kind, lives] = Object.entries(merged).sort((a, b) => b[1] - a[1])[0];
+  return { wave: waveStats.wave, kind, lives, total, share: lives / total, name: LEAK_NAMES[kind] ?? kind, hint: LEAK_HINTS[kind] ?? "" };
+}

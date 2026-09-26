@@ -3,7 +3,7 @@
 // ctx.actions, which the page fills once all modules exist; modules only call
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
-import type { RunBoost, RunMode, SaveStore } from "./save";
+import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
 
 export type Slot = { type: string; index: number };
 
@@ -26,6 +26,7 @@ export type PageState = {
   session: Session | null;
   selectedMap: any;
   selectedMode: RunMode; // run mode picked in the lobby (waves.js)
+  selectedTier: RunTier; // difficulty tier for 10 and 20 waves (M3)
   selectedEntityId: number | null; // hero with the open popover
   deployHeroId: string; // fallen hero picked from the deck for redeploy
   pendingSlot: Slot | null; // ring the recruit sheet is open for

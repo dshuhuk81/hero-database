@@ -11,7 +11,7 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 // Cleanup: unknown and repeated heroes dropped, bad blessing levels dropped, broken runs dropped.
 {
   const clean = sanitizeSave({
-    bestScore: 900, bestWave: "7", favor: "25", perfectDefense: 1,
+    bestScore: 900, bestWave: "7", favor: "25", perfectDefense: 1, treeVersion: 3,
     lastTeam: ["zeus", "ghost", "nuwa", "zeus", "diana"],
     favLevels: { demeter_bounty: 2, bad: -1, nan: "x", frac: 2.7 },
     insight: { Mage: 12, Tank: 0 },
@@ -84,6 +84,40 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.equal(modeBest(emptySave(), "endless"), 0, "no runs yet");
   const roundTrip = parseSaveText(encodeSaveCode(clean), rules);
   assert.deepEqual(roundTrip.mapTop, clean.mapTop, "mode records survive the save code");
+}
+
+// Tree v3 (M3): a v2 save keeps its levels and its available Favor and Insight; Surge
+// levels drop out and their Insight comes back.
+{
+  const v2 = { ...emptySave(), favor: 1000, insight: { Mage: 300 }, favLevels: { demeter_bounty: 2, mage_might: 5, mage_ascension: 1, mage_surge: 1 } };
+  delete v2.treeVersion;
+  delete v2.repriceNotice;
+  // v2 prices: Demeter 30 + 41; Might 5 + 7 + 9 + 12 + 17; Ascension 40; Surge 80.
+  const favorBefore = 1000 - (30 + 41);
+  const mageBefore = 300 - (5 + 7 + 9 + 12 + 17) - 40 - 80;
+  const migrated = sanitizeSave(v2, rules);
+  assert.equal(migrated.treeVersion, 3, "migrated to tree v3");
+  assert.equal(availableFavor(migrated), favorBefore, "available Favor unchanged");
+  assert.equal(availableInsight(migrated, "Mage"), mageBefore + 80, "Insight unchanged plus the Surge refund");
+  assert.equal(migrated.favLevels.mage_might, 5, "owned levels kept");
+  assert.equal(migrated.repriceNotice, true, "one-time notice");
+  const again = sanitizeSave(migrated, rules);
+  assert.equal(availableFavor(again), favorBefore, "credit applied once");
+  const fresh = sanitizeSave(emptySave(), rules);
+  assert.equal(fresh.repriceNotice, false, "new saves get no notice");
+}
+
+// Difficulty tiers (M3): own record keys, Normal keys unchanged, endless always Normal.
+{
+  assert.equal(runKey("moonlit-pass", "classic"), "moonlit-pass");
+  assert.equal(runKey("moonlit-pass", "classic", "heroic"), "moonlit-pass#heroic");
+  assert.equal(runKey("moonlit-pass", "long", "mythic"), "moonlit-pass@long#mythic");
+  assert.equal(runKey("moonlit-pass", "endless", "mythic"), "moonlit-pass@endless", "endless ignores the tier");
+  const save = { ...emptySave(), bestScore: 100, mapTop: { "moonlit-pass": { score: 100, wave: 10 }, "moonlit-pass#heroic": { score: 500, wave: 10 }, "moonlit-pass@long#heroic": { score: 900, wave: 20 } } };
+  assert.equal(modeBest(save, "classic"), 100, "Normal record ignores Heroic");
+  assert.equal(modeBest(save, "classic", "heroic"), 500);
+  assert.equal(modeBest(save, "long", "heroic"), 900);
+  assert.equal(modeBest(save, "long"), 0, "20 waves Normal has no run");
 }
 
 console.log("Tower defense save checks passed.");

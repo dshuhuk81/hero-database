@@ -76,14 +76,14 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(canBuy(node("startLevel").id, full).ok, true, "Divine I open after Mythic");
   assert.equal(canBuy(node("splash").id, full).ok, false, "Divine II needs Divine I");
   const withD2 = { ...full, [node("startLevel").id]: 1, [node("splash").id]: 1 };
-  assert.ok(pointsIn(withD2, cls) >= node("ultCharge").requiresPoints, "enough points for Divine III");
-  assert.equal(canBuy(node("ultCharge").id, withD2).ok, true);
-  const pickedSurge = { ...withD2, [node("ultCharge").id]: 1 };
-  assert.equal(canBuy(node("ultPower").id, pickedSurge).ok, false, "Surge and Wrath exclude each other");
-  assert.ok(canBuy(node("ultPower").id, pickedSurge).reason.includes("pick one"));
-  assert.equal(canBuy(node("awakenDiscount").id, withD2).ok, false, "Divine IV needs Surge or Wrath");
+  assert.ok(pointsIn(withD2, cls) >= node("infuse").requiresPoints, "enough points for Divine III");
+  assert.equal(canBuy(node("infuse").id, withD2).ok, true);
+  const pickedInfusion = { ...withD2, [node("infuse").id]: 1 };
+  assert.equal(canBuy(node("ultPower").id, pickedInfusion).ok, false, "Infusion and Wrath exclude each other");
+  assert.ok(canBuy(node("ultPower").id, pickedInfusion).reason.includes("pick one"));
+  assert.equal(canBuy(node("awakenDiscount").id, withD2).ok, false, "Divine IV needs Infusion or Wrath");
   assert.ok(canBuy(node("awakenDiscount").id, withD2).reason.includes(" or "));
-  assert.equal(canBuy(node("awakenDiscount").id, pickedSurge).ok, true, "Divine IV open after Surge");
+  assert.equal(canBuy(node("awakenDiscount").id, pickedInfusion).ok, true, "Divine IV open after Infusion");
 }
 
 // --- Bonuses scale with the level ---
@@ -197,9 +197,23 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(place(early, mage).level, 1, "other classes enter at level 1");
 
 
-  const surge = make(lv("Mage", "ultCharge"));
-  close(surge.ultChargeRate({ class: "Mage" }), 1 + classNode("Mage", "ultCharge").effect.value, "class ult charge");
-  close(surge.ultChargeRate({ class: "Tank" }), 1, "other class unchanged");
+  // Infusion (Divine III): the class's attacks apply its status; other classes don't.
+  // Heroes without a status of their own, so only the Infusion can apply one.
+  const byId = (id) => heroes.find((h) => h.id === id);
+  for (const [cls, hero, status] of [["Mage", byId("fengyi"), "burn"], ["Warrior", byId("amunra"), "wet"], ["Archer", byId("diana"), "chill"]]) {
+    assert.equal(applyBlessings(lv(cls, "infuse")).classBonus[cls].infuse, status, `${cls} infusion stored`);
+    const game = make(lv(cls, "infuse"));
+    const unit = place(game, hero);
+    const foe = game.spawnEnemy("grunt");
+    game.applyHeroStatus(unit, foe, 100);
+    const has = { burn: game.isBurning(foe), wet: game.isWet(foe), chill: foe.chill > 0 }[status];
+    assert.ok(has, `${cls} Infusion applies ${status}`);
+  }
+  const bareGame = make({});
+  const bareFoe = bareGame.spawnEnemy("grunt");
+  bareGame.applyHeroStatus(place(bareGame, byId("fengyi")), bareFoe, 100);
+  assert.ok(!bareGame.isBurning(bareFoe), "no Infusion, no status");
+  assert.equal(applyBlessings(lv("Support", "purify")).classBonus.Support.purify, 1, "Radiance stored");
 
   const heal = make(lv("Support", "support"));
   close(heal.healFraction({ class: "Support" }), tuning.support.healFraction * (1 + classNode("Support", "support").effect.value), "support heals");

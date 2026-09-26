@@ -54,7 +54,7 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
 
   function renderMenu() {
     ctx.actions.updateHud();
-    q("[data-td-menu-best]").textContent = modeBest(store.data, state.session?.game.mode ?? state.selectedMode).toLocaleString();
+    q("[data-td-menu-best]").textContent = modeBest(store.data, state.session?.game.mode ?? state.selectedMode, state.session?.game.tier ?? state.selectedTier).toLocaleString();
     q<HTMLButtonElement>("[data-td-restart]").hidden = !state.session;
     ctx.actions.syncAudioUi();
   }

@@ -10,24 +10,7 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 ## Use subagents for tackling more than one task
 
-Coordinate well when changing files though.
-
-### M14: Run statistics and "what went wrong" (gap check, P1)
-
-The result screen shows MVP by kills, duration, gold, quests, Insight. No damage numbers.
-- [ ] Track damage per hero in the sim (total, boss damage, splash/chain share, heal done, buff contribution).
-- [ ] Result screen: damage table per hero.
-- [ ] Loss screen: leaks by enemy kind for the last wave plus a one-line hint (for example "Most leaks were flyers: add platform heroes").
-- Done when: every run end shows per-hero damage and a loss names the enemy kind that leaked most.
-
-### M3: Divine Blessings tuning (next)
-
-- The tree itself shipped (archive, [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md) section 7). This milestone is the follow-up once endless mode exists.
-- Goal: full progression is needed somewhere. Today the full tree wins at about 4 to 5x enemy HP while the 10-wave mode runs at 2x.
-- Scope: balance bots that buy blessings (so `td:sweep` measures real progression), pacing check (trunk about 128 runs, a class branch 11 to 21 runs with two heroes), endless waves as the power sink, maybe a cap on vertical bonuses. Later, if class branches feel alike: per-hero capstones.
-- Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
-- Also decide: endless earns Favor per wave with no cap (farmable), left open by M1.
-- [ ] Gap check (September 26, 2026): about 85% of the 74 blessing nodes are percentage bonuses (atk, aps, hp, range, ultCharge, ultPower). Findings suggest roughly 30% numbers / 70% new mechanics. When tuning, turn some nodes into unlocks (for example a new targeting mode, a status effect, a second level-3 branch, an extra run blessing offer) instead of more percentages.
+Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
 ### M15: Endless mutators (gap check, P1)
 
@@ -95,8 +78,17 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 ### M22: Bugs or UI Changes
 
 - We should check some menue items for bad ux or visual style. for example when i select a hero on the battlefield: currently a flyout opens (or a dialog) at the place where the hero is. it would be much better to have a sidebar with full height coming from the right where all the info is in. that way more space could be filled and a dialog also has ux issues.
-- button alignment: some buttons are just underneath vertically aligned. that takes a lot of y space. why not bring them next to each other.
+- button alignment: some buttons are just underneath vertically aligned. that takes a lot of vertical space. why not bring them next to each other.
 - font size and readability. sometimes we should be more compact in font size, sometimes elements are too small. there should be an audit regarding that to get more content in the screen but also to ehnance readability at the same time.
+- in endless mode the boss announcement says: "FINAL BOSS" which is not correct. this only applies to the maybe 10-wave or 20-wave variants where the boss appears on the last wave. 
+
+### M22b: Hero Placement
+- maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?
+
+### M22c: add a difficulty choose layer
+- add easy, medium, high difficulty modal before the map starts.
+- define enemy values for each difficulty setting
+- Status (September 26, 2026): largely covered by M3 (archive). The run-length panel now starts with a difficulty choice, Normal / Heroic / Mythic, with enemy health and attack per tier in `tuning.tiers` (x1 / x2 / x3.2 health, x1 / x1.3 / x1.6 attack, Favor x1 / x1.3 / x1.6), records per tier, endless always Normal. Open: rename to easy / medium / hard if preferred, and whether it should be its own modal step instead of part of the run-length panel.
 
 ### M23: Tutorial Stage
 
@@ -105,8 +97,8 @@ We should have a tutorial stage where players get an onboarding into all our mec
 ### M24: White label (only if game base is solid - not before)
 
 - due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
-- new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt`
-- new heroes defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
+- new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt` xor `/Users/daschultheiss/hero-database/public/td/heroes-alt/review-set-v1`
+- new heroes (text, skills) defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
 - we use AI sprites created, maybe we need to do them for all heroes. also all skills and effects need to adapt to the new heroes as well.
 - White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
 

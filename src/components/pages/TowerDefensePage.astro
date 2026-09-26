@@ -24,7 +24,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { setAssetBase } from "../../game/td/assets.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
-  import { availableFavor, createSavePanel, createSaveStore, runKey, type RunMode } from "../../game/td/page/save";
+  import { availableFavor, createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
   import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
@@ -47,12 +47,14 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
   const store = createSaveStore({ heroIds: new Set(heroById.keys()) });
-  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
+  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedTier: "normal", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
     state.selectedMap = maps.find((entry) => entry.id === savedMapId) ?? maps[0];
     const savedMode = localStorage.getItem("td:mode");
     if (isRunMode(savedMode)) state.selectedMode = savedMode as RunMode;
+    const savedTier = localStorage.getItem("td:tier");
+    if (isRunTier(savedTier)) state.selectedTier = savedTier;
   } catch {}
 
   const pause = createPauseController((paused: boolean) => {
@@ -147,18 +149,53 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     renderLobby();
   });
   // Run length step: Play opens it for the selected map; picking a length starts the run.
+  function renderTiers() {
+    root!.querySelectorAll<HTMLButtonElement>("[data-tier-id]").forEach((button) => {
+      const on = button.dataset.tierId === state.selectedTier;
+      button.setAttribute("aria-checked", String(on));
+      button.tabIndex = on ? 0 : -1;
+    });
+  }
+  function renderModeBests() {
+    const map = state.selectedMap;
+    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
+      const mode = button.dataset.modeId as RunMode;
+      const top = store.data.mapTop[runKey(map.id, mode, state.selectedTier)];
+      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
+    });
+  }
+  q("[data-td-tiers]").addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-tier-id]");
+    if (!button || !isRunTier(button.dataset.tierId)) return;
+    state.selectedTier = button.dataset.tierId;
+    try { localStorage.setItem("td:tier", state.selectedTier); } catch {}
+    renderTiers();
+    renderModeBests();
+  });
+  // Radio group keys: arrows move and select.
+  q("[data-td-tiers]").addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+    event.preventDefault();
+    const index = RUN_TIERS.indexOf(state.selectedTier);
+    const next = RUN_TIERS[(index + (event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : RUN_TIERS.length - 1)) % RUN_TIERS.length];
+    state.selectedTier = next;
+    try { localStorage.setItem("td:tier", next); } catch {}
+    renderTiers();
+    renderModeBests();
+    root!.querySelector<HTMLButtonElement>(`[data-tier-id="${next}"]`)?.focus();
+  });
   function openModePicker(opener: HTMLElement) {
     const map = state.selectedMap;
     q("[data-td-mode-map]").textContent = `${map.name} - Boss: ${ctx.bossFor(map).name}`;
+    renderTiers();
     let last: HTMLButtonElement | null = null;
     root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
       const mode = button.dataset.modeId as RunMode;
       const isLast = mode === state.selectedMode;
       button.classList.toggle("is-selected", isLast);
       if (isLast) last = button;
-      const top = store.data.mapTop[runKey(map.id, mode)];
-      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
     });
+    renderModeBests();
     actions.openPanel("mode", opener);
     (last as HTMLButtonElement | null)?.focus({ preventScroll: true });
   }

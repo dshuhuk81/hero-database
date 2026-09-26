@@ -12,6 +12,20 @@ function reactionStat(counts: Record<string, number> = {}) {
   return `<div class="td-result-stat"><span>Reactions</span><strong>${total}</strong><small>${entries.map(([id, n]) => `${names[id]?.name ?? id} ${n}`).join(", ")}</small></div>`;
 }
 
+// Per-hero damage table (M14): damage and its share, boss damage, kills, and healing plus
+// aura contribution for Supports.
+function damageTable(heroStats: Record<string, any>) {
+  const rows = damageRows(heroStats);
+  if (!rows.length) return "";
+  const body = rows.map((row: any) => {
+    const support = row.heal + row.buff;
+    return `<tr><th scope="row">${row.name}</th>` +
+      `<td><span class="td-dmg-bar" data-share="${Math.round(row.share * 100)}"></span>${shortNumber(row.damage)} <small>${Math.round(row.share * 100)}%</small></td>` +
+      `<td>${row.boss ? shortNumber(row.boss) : "-"}</td><td>${row.kills}</td><td>${support ? shortNumber(support) : "-"}</td></tr>`;
+  }).join("");
+  return `<table><caption>Damage by hero</caption><thead><tr><th scope="col">Hero</th><th scope="col">Damage</th><th scope="col">Boss</th><th scope="col">Kills</th><th scope="col" title="Healing done plus the attack its aura added to allies">Support</th></tr></thead><tbody>${body}</tbody></table>`;
+}
+
 function insightStat(earned: Record<string, number>) {
   const entries = Object.entries(earned).sort((a, b) => b[1] - a[1]);
   if (!entries.length) return "";
@@ -20,6 +34,7 @@ function insightStat(earned: Record<string, number>) {
 }
 import type { PageContext } from "./context";
 import { REACTION_INFO } from "../skills.js";
+import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type RunBoost } from "./save";
 
 type ShardChoice = "favor" | "gold" | "virtue";
@@ -41,11 +56,26 @@ export function createResults(ctx: PageContext) {
   function reset() {
     resultEl.hidden = true;
     shard = null;
-    for (const selector of ["[data-td-result-stats]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]"]) q(selector).hidden = true;
+    for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]"]) q(selector).hidden = true;
   }
 
   const boostText = (boost: RunBoost) => boost.type === "gold"
     ? `+${boost.gold} starting gold` : `start with ${blessingNames[boost.virtue] ?? boost.virtue}`;
+
+  function renderAnalysis(game: any) {
+    const el = q("[data-td-result-analysis]");
+    const report = !game.won ? lossReport(game.waveStats) : null;
+    el.hidden = !report;
+    if (!report) return;
+    el.innerHTML = `<strong>What went wrong</strong><p>Wave ${report.wave}: ${Math.round(report.share * 100)}% of the lives lost (${report.lives} of ${report.total}) went to ${report.name}.</p><p>${report.hint}</p>`;
+  }
+
+  function renderDamage(game: any) {
+    const el = q("[data-td-result-damage]");
+    el.innerHTML = damageTable(game.heroStats ?? {});
+    for (const bar of el.querySelectorAll<HTMLElement>("[data-share]")) bar.style.setProperty("--share", `${bar.dataset.share}%`);
+    el.hidden = !el.innerHTML;
+  }
 
   function renderFavorLine() {
     const favorEl = q("[data-td-result-favor]");
@@ -110,15 +140,17 @@ export function createResults(ctx: PageContext) {
     const game = session.game;
     const map = session.map;
     const saved = store.data;
-    const earnedFavor = computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning);
+    // Heroic and Mythic pay more Favor (tuning.tiers, M3).
+    const tierFavor = data.tuning.tiers?.[game.tier]?.favor ?? 1;
+    const earnedFavor = Math.round(computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) * tierFavor);
     const earnedInsight = (session.debug ? {} : computeInsight(game.insightLog)) as Record<string, number>;
-    const key = runKey(map.id, game.mode);
+    const key = runKey(map.id, game.mode, game.tier);
     const prevRun = saved.mapBests[key] || null;
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
       if (game.perfect) saved.perfectDefense = true;
       // bestScore/bestWave stay the classic record; other modes keep theirs in mapTop.
-      if (game.mode === "classic") {
+      if (game.mode === "classic" && game.tier === "normal") {
         saved.bestScore = Math.max(saved.bestScore, game.score);
         saved.bestWave = Math.max(saved.bestWave, game.wave);
       }
@@ -139,7 +171,8 @@ export function createResults(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     ctx.actions.cancelDeploy();
     const endless = game.mode === "endless";
-    q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
+    const tierLabel = game.tier !== "normal" ? `${data.tuning.tiers?.[game.tier]?.label ?? game.tier} - ` : "";
+    q("[data-td-result-kicker]").textContent = tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
     q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
     q("[data-td-result-copy]").textContent = game.perfect
       ? `${game.score.toLocaleString()} points - all ${game.totalWaves} waves - ${game.lives} lives left - not a single enemy broke through`
@@ -161,6 +194,8 @@ export function createResults(ctx: PageContext) {
       bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
     ].join("");
     statsEl.hidden = false;
+    renderAnalysis(game);
+    renderDamage(game);
 
     const compareEl = q("[data-td-result-compare]");
     if (prevRun) {

@@ -1,6 +1,6 @@
 // Saved progress (localStorage td:v1) and the save code / save file export and import.
 import type { PageContext } from "./context";
-import { legacyRefund, spentByCurrency } from "../favor.js";
+import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
 
 export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number };
 
@@ -17,6 +17,8 @@ export type SaveData = {
   insight: Record<string, number>; // Insight earned in total per hero class
   resetSpent: number; // Favor paid for blessing resets
   refundNotice: number; // Favor refunded from the first tree, shown once in the Blessings panel
+  treeVersion: number; // blessingTree.json version the prices were last settled with
+  repriceNotice: boolean; // tree v3 price change and Surge -> Infusion, shown once
   mapBests: Record<string, MapRun>;
   mapTop: Record<string, { score: number; wave: number }>;
   nextRunBoost: RunBoost | null;
@@ -25,15 +27,32 @@ export type SaveData = {
 export type SaveStore = { data: SaveData; persist(): void };
 
 export type RunMode = "classic" | "long" | "endless";
+export type RunTier = "normal" | "heroic" | "mythic";
+export const RUN_TIERS: RunTier[] = ["normal", "heroic", "mythic"];
+export const isRunTier = (value: unknown): value is RunTier => RUN_TIERS.includes(value as RunTier);
+// Endless has its own ramp and always runs at Normal (sim.js).
+export const tierFor = (mode: RunMode, tier: RunTier): RunTier => (mode === "endless" ? "normal" : tier);
 
 // mapBests/mapTop key: classic runs keep the plain map id (older saves), other modes
-// append the mode ("moonlit-pass@long"), so td:v1 stays readable by older builds.
-export const runKey = (mapId: string, mode: RunMode) => (mode === "classic" ? mapId : `${mapId}@${mode}`);
+// append the mode ("moonlit-pass@long"), and Heroic or Mythic append the tier
+// ("moonlit-pass#heroic", "moonlit-pass@long#mythic"), so td:v1 stays readable by older builds.
+export const runKey = (mapId: string, mode: RunMode, tier: RunTier = "normal") => {
+  const base = mode === "classic" ? mapId : `${mapId}@${mode}`;
+  const t = tierFor(mode, tier);
+  return t === "normal" ? base : `${base}#${t}`;
+};
 
-// Best score in a mode across all maps. bestScore stays the classic record.
-export function modeBest(save: SaveData, mode: RunMode): number {
-  const scores = Object.entries(save.mapTop).filter(([key]) => mode === "classic" ? !key.includes("@") : key.endsWith(`@${mode}`)).map(([, top]) => top.score);
-  return Math.max(mode === "classic" ? save.bestScore : 0, 0, ...scores);
+function parseKey(key: string) {
+  const [base, tier = "normal"] = key.split("#");
+  const [, mode = "classic"] = base.split("@");
+  return { mode, tier };
+}
+
+// Best score in a mode (and tier) across all maps. bestScore stays the classic Normal record.
+export function modeBest(save: SaveData, mode: RunMode, tier: RunTier = "normal"): number {
+  const t = tierFor(mode, tier);
+  const scores = Object.entries(save.mapTop).filter(([key]) => { const k = parseKey(key); return k.mode === mode && k.tier === t; }).map(([, top]) => top.score);
+  return Math.max(mode === "classic" && t === "normal" ? save.bestScore : 0, 0, ...scores);
 }
 
 type SaveRules = { heroIds: Set<string> };
@@ -51,7 +70,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, mapBests: {}, mapTop: {}, nextRunBoost: null };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, nextRunBoost: null };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -77,10 +96,21 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
     refundNotice: Array.isArray(candidate.favTree) && !isRecord(candidate.favLevels)
       ? legacyRefund(candidate.favTree.filter((id: unknown) => typeof id === "string"))
       : Math.max(0, Number(candidate.refundNotice) || 0),
+    treeVersion: Number(candidate.treeVersion) || 2,
+    repriceNotice: !!candidate.repriceNotice,
     mapBests: pickRuns(candidate.mapBests),
     mapTop: pickRuns(candidate.mapTop),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
   };
+  // Tree v3 (M3): owned levels stay, the price increase is credited back once.
+  if (clean.treeVersion < 3) {
+    const credit = repriceCredit(clean.favLevels) as Record<string, number>;
+    clean.favor += credit.favor || 0;
+    for (const [cls, points] of Object.entries(credit)) if (cls !== "favor") clean.insight[cls] = (clean.insight[cls] || 0) + points;
+    const hadSurge = Object.keys(clean.favLevels).some((id) => /^(tank|warrior|assassin|mage|archer|support)_surge$/.test(id));
+    clean.repriceNotice = hadSurge || Object.keys(clean.favLevels).length > 0;
+    clean.treeVersion = TREE.version;
+  }
   // Older saves only kept the last run per map; it is a lower bound for the record.
   for (const [id, run] of Object.entries(clean.mapBests)) {
     if (!clean.mapTop[id]) clean.mapTop[id] = { score: run.score, wave: Number(run.wave) || 0 };

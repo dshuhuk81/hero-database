@@ -295,3 +295,35 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 - `test:td-balance`: 10 waves unchanged in result (Moonlit budget 17 -> 24 lives); 20 waves Sunscar 3/5 -> 2/5, others equal.
 - Tests in `test-td-sim.mjs`: each status source, burn rate, Steam burst and consumption, Conduct bounces, Blight radius and strength, Freeze stun and cooldown, Soul Harvest charge, reactions off keeps statuses.
 - Not done: showing a pair's reaction on the canvas synergy links before it fires (the notice on first trigger covers discovery for now).
+
+## Roadmap M14: Run statistics and "what went wrong" (done September 26, 2026)
+- Goal (gap check): failure becomes information; players see who did the work.
+- Sim: `heroStats` per hero id (summed over every unit of that hero, so a redeployed hero stays one row): damage, boss damage (boss and Lilith's children), damage over time (burn and poison ticks, `hit(..., { dot: true })`), healing, aura contribution (the Support aura's share of each boosted hit), kills. Every hero heal now goes through `healHero(target, amount, by)`, which caps at max health and credits the healer (11 heal sites in basic attacks, paths and ultimates). `hit()` records only damage actually dealt (no overkill). Leaks per enemy kind per wave (`waveStats.leakKinds`, lives lost) and per run (`leakKinds`). No RNG use, so `test:td-balance` output is identical.
+- Result screen: "Damage by hero" table (damage with share bar and percent, boss damage, kills, Support = healing plus aura contribution), scrolls when long; on a loss a "What went wrong" box: the enemy kind that cost the most lives on the final wave, its share, and a one-line hint (Imps count with their Broodcaller). Helpers `damageRows`, `shortNumber`, `lossReport` in `ui.js`.
+- Tests: `test-td-ui.mjs` (row order and share, number format, loss report and merge), `test-td-sim.mjs` (damage, overkill, aura credit, kills, boss and DoT damage, capped heal credit, leak kinds). Checked in Chromium at 1280x800 and 390x844 on a forced loss: table and analysis fit, no console errors.
+- Not done: per-wave damage breakdown, chain and splash share, "what killed your heroes" (hero deaths by enemy kind).
+
+## Roadmap M3: Divine Blessings tuning (done September 26, 2026)
+- Goal: progression that stays meaningful; the 10-wave mode should not be trivial before about half the trunk; decide whether endless Favor needs a cap.
+- Measurement tool: `npm run td:progression` (`scripts/td-progression.mjs`). One bot account plays classic runs from a fresh save, earns Favor and Insight with the real formulas, buys the cheapest affordable blessing after each run, steps up a difficulty tier after a win with 15+ lives and down after a loss, and at each checkpoint plays every map at every tier plus endless. `playRun` now also returns `perfectWaves` and `insightLog`.
+- Baseline (tree v2, before changes): trunk complete after about 80 runs, class branches 80% after 20 runs, and from run 20 on the 10-wave mode was 6/6 wins with full lives. Endless 22 -> 36 waves by run 20, then flat. Lever test (full tree at double enemy HP, one effect type removed at a time): no single dominant node, economy nodes (starting gold, clear bonus) largest. So pacing alone could not keep 10 waves interesting.
+- Decisions:
+  - Endless Favor per wave stays uncapped: endless pays about 15 to 18 Favor per minute against 23.5 (with tiers; 36.8 before) in 10-wave runs, so it is not a farm.
+  - No cap on vertical bonuses: they are already bounded by max levels (at most +10% attack per class from Mythic stats).
+  - Difficulty tiers for 10 and 20 waves (`tuning.tiers`): Normal, Heroic (enemy health x2, attack x1.3, Favor x1.3), Mythic (x3.2, x1.6, Favor x1.6). All selectable from the start, no unlock. Endless always Normal. Kept in the sim as `tierHp` / `tierAttack`, apart from `difficulty` (the dev debug panel overwrites that). Records per tier: save keys get `#heroic` / `#mythic` (Normal keys unchanged; `bestScore` stays the classic Normal record); `modeBest(save, mode, tier)`. Picker: a radio group above the run lengths (arrow keys work, last pick in `td:tier`), bests shown for the picked tier; result kicker names the tier; How to play "Difficulty" entry.
+  - Prices (tree version 3): trunk x2.08 (31,016 Favor), class branches x3 (1,860 Insight each).
+  - Gap check (fewer percentage nodes): each class's Surge (+15% ultimate charge) became an Infusion that plugs into M13: Warrior Tidebreaker (Wet), Mage Kindling (Burn), Assassin Venom Blades (Poison), Tank Earthshaker and Archer Frost Arrows (Chill 70% for 1 s, freezes Wet enemies), Support Radiance (heals and attacks lift hexes). Still exclusive with Wrath. Mechanic nodes went from about 19% to 27% of the tree; the findings' 70% target is not reached.
+- Save migration (tree v3, `repriceCredit` in `favor.js`, `sanitizeSave`): owned levels stay, the price increase is credited back per currency so available Favor and Insight do not change; Surge levels drop out and their Insight returns; one-time notice in the Blessings panel.
+- Result (`td:progression`, 200 runs, balanced squad, 2 seeds x 3 maps per checkpoint):
+
+  | Runs | Trunk | Branches | Normal | Heroic | Mythic | Endless |
+  |---|---|---|---|---|---|---|
+  | 0 | 0% | 0% | 5/6 | 0/6 | 0/6 | 22.3 |
+  | 20 | 10% | 27% | 6/6 | 3/6 | 1/6 | 34.3 |
+  | 40 | 23% | 54% | 6/6 | 6/6 | 2/6 | 36.2 |
+  | 80 | 50% | 78% | 6/6 | 6/6 | 2/6 | 35.5 |
+  | 160 | 100% | 89% | 6/6 | 6/6 | 5/6 | 36.8 |
+
+  Normal is the entry tier, Heroic the mid goal, Mythic stays a real test until the trunk is complete. Trunk completes at about 160 runs.
+- Open: endless depth barely grows after run 20 (8% compounding ramp); M15 mutators are the planned endless goals. Normal becomes easy after about 20 runs by design (Heroic takes over).
+- Tests: `test-td-favor.mjs` (Infusion rules, stored status, applied status, no status without it, Radiance), `test-td-save.mjs` (v2 migration keeps available Favor and Insight, Surge refund, notice, applied once; tier keys and records), `test-td-sim.mjs` (tier health and attack, endless stays Normal). Checked in Chromium at 1280 and 390 px: tier picker selects, persists and the run uses it.

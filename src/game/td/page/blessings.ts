@@ -23,7 +23,7 @@ const GLYPHS: Record<string, string> = {
   extraOffer: "+1", bossDamage: "Boss", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   startLevel: "Lv2", blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
   cleave: "Cleave", dash: "Dash", splash: "AoE", pierce: "Pierce",
-  ultPower: "Pow", awakenDiscount: "Rite", awakenBonus: "Apex",
+  ultPower: "Pow", awakenDiscount: "Rite", awakenBonus: "Apex", infuse: "Elem", purify: "Pure",
 };
 
 const branchIndex = (tree: string) => CLASSES.indexOf(tree);
@@ -154,8 +154,10 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       `<span class="td-bchip" style="--edge:var(--td-class-${cls.toLowerCase()})">${classIconImg(cls, 16)}${cls} <b>${availableInsight(store.data, cls)}</b></span>`).join("");
     const refund = store.data.refundNotice
       ? `<p class="td-favor-note td-bnotice">The Divine Blessings were rebuilt: ${store.data.refundNotice} Favor from your earlier purchases was refunded. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
+    const reprice = store.data.repriceNotice
+      ? `<p class="td-favor-note td-bnotice">Blessing prices changed. Everything you already own stays, and the price difference was credited back. Each class's Surge became an Infusion (its attacks apply a status); Insight spent on Surge was returned. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
     return `<div class="td-bsummary"><span class="td-bchip td-bchip--favor"><b>${availableFavor(store.data)}</b> Favor</span>${insight}</div>` +
-      `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` + refund;
+      `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` + refund + reprice;
   }
 
   function resetHtml() {
@@ -337,6 +339,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     }
     if (target.closest("[data-bdismiss]")) {
       store.data.refundNotice = 0;
+      store.data.repriceNotice = false;
       store.persist();
       render();
     }

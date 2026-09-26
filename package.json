@@ -41,6 +41,7 @@
     "test:td-balance": "node scripts/test-td-balance.mjs",
     "td:sweep": "node scripts/td-balance-sweep.mjs",
     "td:classes": "node scripts/td-classes.mjs",
+    "td:progression": "node scripts/td-progression.mjs",
     "r2:cors": "node scripts/r2-cors.mjs",
     "td:hero-audio": "node scripts/add-hero-audio.js",
     "check": "astro check"

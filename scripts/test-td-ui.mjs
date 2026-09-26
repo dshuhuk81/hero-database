@@ -146,3 +146,19 @@ console.log("Tower defense UI helper checks passed.");
   assert.deepEqual(buffChips({ atk: 0, hp: 0 }), [], "no chips without blessings");
   console.log("Buff bar checks passed.");
 }
+
+// M14 run statistics: damage rows, short numbers, loss report.
+{
+  const { damageRows, shortNumber, lossReport } = await import("../src/game/td/ui.js");
+  const rows = damageRows({ a: { id: "a", name: "A", damage: 300, heal: 0, buff: 0 }, b: { id: "b", name: "B", damage: 100, heal: 50, buff: 0 }, c: { id: "c", name: "C", damage: 0, heal: 10, buff: 90 } });
+  assert.deepEqual(rows.map((r) => r.id), ["a", "b", "c"], "sorted by damage, then support");
+  assert.equal(rows[0].share, 0.75, "damage share");
+  assert.deepEqual([shortNumber(950), shortNumber(1234), shortNumber(12400), shortNumber(1.25e6)], ["950", "1.2k", "12k", "1.3M"]);
+  assert.equal(lossReport({ wave: 3, leakKinds: {} }), null, "no leaks, no report");
+  const report = lossReport({ wave: 8, leakKinds: { flyer: 6, runner: 2 } });
+  assert.equal(report.kind, "flyer");
+  assert.equal(report.share, 0.75);
+  assert.ok(report.hint.includes("platform"), "flyer hint");
+  assert.equal(lossReport({ wave: 8, leakKinds: { broodcaller: 2, imp: 3, runner: 4 } }).kind, "broodcaller", "imps count with their Broodcaller");
+  console.log("Run statistics checks passed.");
+}

@@ -1979,6 +1979,45 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(g4.isWet(e4) && g4.isBurning(e4) && !g4.reactionsSeen.size, "no reactions when disabled");
   }
 
+  // M14 run statistics: damage, boss damage, damage over time, heals, aura credit, kills, leaks.
+  {
+    const { g, units: [zeus, caishen, phx] } = setup("zeus", "caishen", "phoenix");
+    const e = enemyAt(g, "grunt", zeus.x + 20, zeus.y, 100);
+    g.hit(e, 30, zeus);
+    assert.equal(g.heroStats.zeus.damage, 30, "damage recorded");
+    const aura = g.supportAuraFor(zeus);
+    if (aura) close(g.heroStats[aura.source.id].buff, 30 * aura.bonus / (1 + aura.bonus), "aura share credited");
+    g.hit(e, 1000, zeus);
+    assert.equal(g.heroStats.zeus.damage, 100, "overkill not counted");
+    assert.equal(g.heroStats.zeus.kills, 1, "kill recorded");
+    const boss = g.spawnEnemy("boss");
+    g.hit(boss, 50, phx);
+    assert.equal(g.heroStats.phoenix.boss, 50, "boss damage");
+    g.hit(boss, 20, phx, { dot: true, showShot: false });
+    assert.equal(g.heroStats.phoenix.dot, 20, "damage over time");
+    zeus.hpLeft = zeus.hp - 40;
+    assert.equal(g.healHero(zeus, 100, caishen), 40, "heal capped at max health");
+    assert.ok(g.heroStats.caishen.heal >= 40, "heal credited");
+    const leaker = g.spawnEnemy("flyer");
+    leaker.distance = g.laneOf(leaker).total - 0.1;
+    g.step(1 / 60);
+    assert.equal(g.waveStats.leakKinds.flyer, 1, "leak kind per wave");
+    assert.equal(g.leakKinds.flyer, 1, "leak kind per run");
+  }
+
+  // Difficulty tiers (M3): enemy health and attack scale; endless stays Normal.
+  {
+    const t = tuning.tiers.heroic;
+    const normal = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3 });
+    const heroic = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3, tier: "heroic" });
+    const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3, tier: "heroic", mode: "endless" });
+    const a = normal.spawnEnemy("grunt"), b = heroic.spawnEnemy("grunt"), c = endless.spawnEnemy("grunt");
+    close(b.maxHp, a.maxHp * t.enemyHp, "Heroic health");
+    close(b.attack, a.attack * t.enemyAttack, "Heroic attack");
+    assert.equal(endless.tier, "normal", "endless ignores the tier");
+    close(c.maxHp, a.maxHp, "endless health unchanged");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");
