@@ -515,9 +515,16 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 /* Narrow portrait: deck gets its own row above the actions. */
 @media (max-width: 600px) {
   .td-lobby { padding: var(--space-4) var(--space-4) var(--space-8); }
-  .td-stats { gap: var(--space-3); }
-  .td-stat strong { font-size: var(--text-base); }
-  .td-top-actions { gap: var(--space-1); }
+  /* Top bar on phones: stats shrink to their numbers and the buttons get a bit smaller so
+     both fit on one row next to each other (M22 bug: the Wave stat ran under the buttons). */
+  .td-topbar { gap: var(--space-2); padding: var(--space-2); }
+  .td-stats { gap: var(--space-3); flex: 0 1 auto; }
+  .td-stat { min-width: 0; flex: 0 0 auto; }
+  .td-stat > span { font-size: 10px; letter-spacing: var(--tracking-wide); }
+  .td-stat strong { font-size: var(--text-base); white-space: nowrap; }
+  .td-top-actions { gap: 4px; flex: 0 0 auto; }
+  .td-topbar .td-icon-button { width: 38px; height: 38px; }
+  .td-topbar .td-auto-button { font-size: var(--text-xs); }
   .td-bottombar { flex-wrap: wrap; gap: var(--space-2); }
   .td-deck { order: -1; flex-basis: 100%; }
   .td-main-action { flex: 1; min-width: 0; }
@@ -723,8 +730,13 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-daily-list small { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--leading-normal); }
 .td-daily-mutator strong { color: var(--td-warn); }
 .td-stat--goal.is-done strong { color: var(--accent-gold); }
-/* Portrait phones have no room in the top bar; the start notice and results carry the goal. */
-@media (max-width: 600px) { .td-stat--goal { display: none; } }
+/* Narrow phones have no room for a fourth stat (the start notice and results carry the
+   Daily Trial goal); the narrowest also get smaller buttons and tighter stats. */
+@media (max-width: 420px) { .td-stat--goal { display: none; } }
+@media (max-width: 380px) {
+  .td-stats { gap: var(--space-2); }
+  .td-topbar .td-icon-button { width: 34px; height: 34px; }
+}
 .td-result-inner .td-result-daily { color: var(--text-bright); font-weight: var(--weight-semibold); }
 .td-result-inner .td-result-daily.is-reached { color: var(--accent-gold); }
 /* Expedition (M21): lobby card reuses the Daily Trial layout; camp cards reuse the mutator cards. */

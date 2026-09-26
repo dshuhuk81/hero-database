@@ -19,12 +19,50 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - We should check some menue items for bad ux or visual style. for example when i select a hero on the battlefield: currently a flyout opens (or a dialog) at the place where the hero is. it would be much better to have a sidebar with full height coming from the right where all the info is in. that way more space could be filled and a dialog also has ux issues.
 - button alignment: some buttons are just underneath vertically aligned. that takes a lot of vertical space. why not bring them next to each other.
 - font size and readability. sometimes we should be more compact in font size, sometimes elements are too small. there should be an audit regarding that to get more content in the screen but also to ehnance readability at the same time.
-- in endless mode the boss announcement says: "FINAL BOSS" which is not correct. this only applies to the maybe 10-wave or 20-wave variants where the boss appears on the last wave. 
+- in endless mode the boss announcement says: "FINAL BOSS" which is not correct. this only applies to the maybe 10-wave or 20-wave variants where the boss appears on the last wave.
+  - Fixed (September 26, 2026): the boss nameplate says "Final wave" only on the last wave of a 10 or 20 wave run; endless and earlier bosses show "Boss - wave N". Also fixed: on phones the top bar's Wave stat ran under the buttons; stats keep their width, buttons are 38 px (34 px at 380 px and below), and the Daily Trial goal stat hides up to 420 px. Checked at 360, 390 and 430 px wide without overlap.
 - Menu structure and placenement of buttons before we start a game should feel more like an app. a specific area where everything happens. button logic, navigational structure, everything should feel like as if players are in an app. 
 e.g. main menu screen -> start game, action 2, action 3 ->
 select map -> select difficulty -> game begins.
 No different area like on a website, area 1 = maps, area 2 underneath = buttons. remove header and footer. use full width and height of the browser. check navigation.
 - Victory Screen: A lot of content. Needs an UI overhaul and optimized. Maybe fullscreen on the whole map (app view area)
+
+#### M22 plan (September 26, 2026)
+
+Today the lobby is one scrolling web page (title block, map cards, a button row, Daily Trial and Expedition cards stacked below). Blessings, help and save open as modal panels, the hero info is a popover next to the hero, and the result screen is a long modal. The plan turns this into an app: one screen at a time, full viewport, clear back navigation.
+
+**Phase A - App shell and navigation** (largest; do first, alone, since it touches the page wiring and most of `td.css`)
+- [ ] Full-viewport shell (`100dvh`, no page scroll): an app bar on every menu screen (back button, screen title, Favor chip, settings) and one content area.
+- [ ] Screens, one visible at a time, with a small navigation stack and browser Back support (history state):
+  1. Main menu: Play, Daily Trial, Expedition, Divine Blessings, Glossary, How to play, Settings (save data, sound, about and the disclaimer), Exit to database. Shows Favor and personal best.
+  2. Play -> Map select: the map cards (art, boss, challenge badges, bests), one selected, Next.
+  3. Difficulty and run length: today's "mode" panel as a screen (tiers, lengths, challenge list), Start.
+  4. Daily Trial and Expedition each get their own screen (today's cards moved there).
+  5. Divine Blessings, How to play, Save data become full screens instead of modals.
+  6. Game screen: unchanged; Menu returns to the main menu.
+- [ ] Remove the web-page title block and the lobby button row; the disclaimer moves to Settings / About.
+- [ ] Keyboard and focus: every screen has a focus target, Escape and Back go one screen back.
+- Done when: every current feature is reachable from the main menu in at most 3 taps, no screen scrolls the page body (only inner lists), and it works at 390x844, 844x390 and 1440x900.
+
+**Phase B - Hero panel as a sidebar** (after A; can run in parallel with C)
+- [ ] Selecting a hero opens a full-height panel from the right (landscape and desktop) or a bottom sheet (portrait phones) instead of the popover. The map stays visible and the hero is not covered.
+- [ ] Content in sections: header (portrait, name, class, level, path), health, stats, Target icons, Upgrade (focus / path / Awaken / Train pickers inline), Details; actions Rotate / Sell side by side.
+- Done when: the selected hero is never under the panel at the three test sizes, and all popover actions work from the panel.
+
+**Phase C - Result screen overhaul** (after A; can run in parallel with B)
+- [ ] Full-stage overlay over the map area, not a centered modal: header (outcome, map, tier, score), sections or tabs Summary (key stats, Favor, shard pick, challenges), Battle (damage table, what went wrong), and fixed bottom actions (Retry or Continue, Blessings, Main menu).
+- Done when: nothing on the result screen needs page scrolling at 1440x900; on phones only the section content scrolls.
+
+**Phase D - Buttons and type audit** (last; touches everything lightly)
+- [ ] Button groups side by side instead of stacked where space allows (popover actions, result actions, panels).
+- [ ] Type scale for the game: body text at least 13 px on phones, labels at least 11 px; one size set per role (screen title, section title, body, label, number). Audit every screen at the three sizes and fix outliers.
+- Done when: an audit table (screen x size) shows no text below the minimum and no stacked button pairs that fit side by side.
+
+Decisions (owner, September 26, 2026):
+- Main menu: one large Play button, then Daily Trial and Expedition as cards, then a row of smaller buttons (Blessings, Glossary, How to play, Settings, Exit to database).
+- Hero panel: the game keeps running while it is open (no automatic pause).
+- Glossary: becomes an in-app screen with back navigation; the separate page stays for search engines.
+- Map select and difficulty / run length: two steps.
 
 ### M22b: Hero Placement
 - maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?
@@ -38,11 +76,11 @@ upgrades and such.
 
 ### M24: White label (only if game base is solid - not before)
 
-- due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
+due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
+- plan: White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
 - new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt` xor `/Users/daschultheiss/hero-database/public/td/heroes-alt/review-set-v1`
 - new heroes (text, skills) defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
 - we use AI sprites created, maybe we need to do them for all heroes. also all skills and effects need to adapt to the new heroes as well.
-- White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
 
 
 ### M25: Leaderboard (large, needs design first)
@@ -51,6 +89,10 @@ upgrades and such.
 - Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
+
+### M26: Login/Register
+- what would we need to provide auth / login / register to dave players progress ? gmail auth ? apple auth ?
+
 
 ## Research notes (September 25, 2026)
 

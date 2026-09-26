@@ -323,6 +323,9 @@ export function createHud(ctx: PageContext) {
   function bossIntro() {
     const plate = q("[data-td-boss-plate]");
     const boss = ctx.bossFor(state.session?.map);
+    const game = state.session?.game;
+    // Only the last wave of a finite run is the final one; endless and earlier bosses show their wave.
+    q("[data-td-boss-kicker]").textContent = game && game.wave === game.totalWaves ? "Final wave" : `Boss - wave ${game?.wave ?? ""}`;
     q("[data-td-boss-name]").textContent = boss.name;
     q("[data-td-boss-sub]").textContent = [boss?.faction, boss?.class].filter(Boolean).join(" ");
     const art = q<HTMLImageElement>("[data-td-boss-art]");
