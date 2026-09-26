@@ -7,7 +7,7 @@ import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
-import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO } from "../../game/td/skills.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
@@ -116,9 +116,9 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
     stats: bossTuning?.stats,
     image: enemySprite(id === "baphomet" ? "boss" : `boss-${id}`, id === "lilith" ? "v2" : "v1"),
     meta: `Final boss on ${bossMaps(id).join(" and ")}`,
-    text: summon
+    text: (summon
       ? `${ENEMY_INFO.boss.text} Summons ${summon.count} children around herself and cannot be hit while any of them stand.`
-      : ENEMY_INFO.boss.text,
+      : ENEMY_INFO.boss.text) + (BOSS_RULES[id] ? ` ${BOSS_RULES[id]}` : ""),
   })];
   if (summon) cards.push(enemyCard(summon.kind, { image: enemySprite(summon.kind, "v2"), meta: `Summoned by ${boss?.name ?? id}` }));
   return cards;

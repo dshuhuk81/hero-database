@@ -2141,6 +2141,50 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     close(rallied / g.attackValue(zeus), 1 + B.rally.atk, "Rally attack bonus");
   }
 
+  // M18 boss rules: Baphomet's mark and stance, Lilith's End of All.
+  {
+    const cfg = tuning.bosses.baphomet;
+    const { g, units: [zeus, phx] } = setup("zeus", "phoenix");
+    const boss = g.spawnEnemy("boss");
+    boss.x = 0; boss.y = 0;
+    g.hit(enemyAt(g, "brute", 900, 500), 500, zeus, { showShot: false });
+    g.hit(enemyAt(g, "brute", 900, 500), 100, phx, { showShot: false });
+    boss.markClock = 0;
+    g.bossRules(boss, 0.01);
+    assert.equal(boss.markTarget, zeus.entityId, "marks the top recent damage dealer");
+    assert.ok(!g.isSilenced(zeus), "warning first");
+    const hpBefore = zeus.hpLeft;
+    g.time = boss.markAt + 0.01;
+    g.bossRules(boss, 0.01);
+    assert.ok(g.isSilenced(zeus), "silenced after the warning");
+    close(hpBefore - zeus.hpLeft, zeus.hp * cfg.mark.selfDamage, "self-damage share");
+    const e = enemyAt(g, "grunt", 800, 100);
+    zeus.attackClock = 0;
+    const b0 = e.hp;
+    g.heroes = [zeus];
+    g.step(1 / 60);
+    assert.equal(e.hp, b0, "a silenced hero does not attack");
+    // Stance halves (and more) incoming damage.
+    boss.stanceClock = 0;
+    g.bossRules(boss, 0.01);
+    const before = boss.hp;
+    g.hit(boss, 100, zeus, { showShot: false });
+    close(before - boss.hp, 100 * (1 - cfg.stance.reduction) * (1 + (g.favor.bossDamage || 0)) * (boss.held ? 1 + tuning.blocking.heldDamageBonus : 1), "Defensive Stance");
+  }
+  {
+    const cfg = tuning.bosses.lilith;
+    const map = maps.find((m) => m.boss === "lilith");
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 2 });
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const lilith = g.spawnEnemy("boss");
+    const child = g.enemies.find((e) => e.parentId === lilith.entityId);
+    assert.equal(g.childFrenzy(child), 1, "children normal at first");
+    lilith.hp = lilith.maxHp * (cfg.endOfAll.below - 0.01);
+    g.bossRules(lilith, 0.01);
+    assert.ok(lilith.endOfAll, "End of All below the threshold");
+    assert.equal(g.childFrenzy(child), cfg.endOfAll.attackSpeed, "children attack faster");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");

@@ -12,13 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M18: Bosses that change rules (gap check, P2)
-
-Lilith changes rules (untargetable while summoning, shared damage). Baphomet is stats only.
-- [ ] Give Baphomet a rule mechanic, for example every 15 s it silences the hero that dealt the most damage (rewards spreading damage). Needs M14 damage tracking. Ask the owner before adding anything that disables heroes.
-- [ ] Lilith's missing "End of All" (children +200% attack speed).
-- [ ] Future bosses (one per new map) each get one rule, not only more HP.
-
 ### M19: Daily Trial (gap check, P2)
 
 - [ ] Fixed daily setup from the date as seed: map, 3 to 5 allowed heroes, 2 modifiers, goal (for example reach wave 30). Fully client side; local best per day.
@@ -52,16 +45,11 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - Menu structure and placenement of buttons before we start a game should feel more like an app. a specific area where everything happens. button logic, navigational structure, everything should feel like as if players are in an app. 
 e.g. main menu screen -> start game, action 2, action 3 ->
 select map -> select difficulty -> game begins.
-No different area like on a website, area 1 = maps, area 2 underneath = buttons.
+No different area like on a website, area 1 = maps, area 2 underneath = buttons. remove header and footer.
 - Victory Screen: A lot of content. Needs an UI overhaul and optimized. Maybe fullscreen on the whole map (app view area)
 
 ### M22b: Hero Placement
 - maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?
-
-### M22c: add a difficulty choose layer
-- add easy, medium, high difficulty modal before the map starts.
-- define enemy values for each difficulty setting
-- Status (September 26, 2026): largely covered by M3 (archive). The run-length panel now starts with a difficulty choice, Normal / Heroic / Mythic, with enemy health and attack per tier in `tuning.tiers` (x1 / x2 / x3.2 health, x1 / x1.3 / x1.6 attack, Favor x1 / x1.3 / x1.6), records per tier, endless always Normal. Open: rename to easy / medium / hard if preferred, and whether it should be its own modal step instead of part of the run-length panel.
 
 ### M23: Tutorial Stage
 

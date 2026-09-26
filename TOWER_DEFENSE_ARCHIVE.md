@@ -376,3 +376,15 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 - Measured: rare or epic cards appeared in 45/45 classic bot runs (5 squads x 3 maps x 3 seeds), about 8 of 27 cards per run. Dominance (bots always take one blessing if offered, endless, 3 squads x 3 maps x 2 seeds): 29.2 to 30.2 waves against 29.6 with stat blessings only; Soul Reaper highest by a small margin; no single blessing dominates. Shattering Cold was never offered (no test squad has a Chill source). Each one is worth about one stat blessing in raw depth; their value is what they change.
 - `test:td-balance` (bots take the first card blindly, now sometimes a mechanic one): Moonlit glass cannon win -> loss, balanced 5 -> 4 lives; Sunscar balanced 10 -> 4; Verdant all-platform win -> loss. Checks pass. `playRun` got a `blessings` preference option.
 - Tests in `test-td-sim.mjs`: eligibility, rare cards appear and are always eligible, boons kept apart from virtues, each effect (Tidal Pull, Venom Rot, Shattering Cold, Drowned Burst, Wildfire Spread, Soul Reaper, Storm Surge, Rally). Checked in Chromium at 1280 and 390 px.
+
+## Roadmap M18: Bosses that change rules (done September 26, 2026)
+- Goal (gap check): boss fights that change how you play, not only more HP. Owner asked to confirm hero-disabling mechanics; the go-ahead came with "next" after the question (same kind of effect as the accepted Hexer).
+- Baphomet (`tuning.bosses.baphomet`, loosely after its real mechanics "targets top DPS: silences + self-damage" and "defensive stance"):
+  - Mark of the Goat: every 15 s marks the hero with the most recent damage (fading memory, 8 s, `recentDamage` in `recordDamage`); after a 1.5 s warning (red reticle, notice) that hero is silenced for 3 s (no attacks, no ultimate charge; `silencedUntil`, `isSilenced`) and loses 10% of its health. Veiled heroes are skipped; Purify and Radiance lift silences too. Spreading damage over several heroes blunts it.
+  - Defensive Stance: every 20 s takes 60% less damage for 4 s (steel ring).
+- Lilith: End of All (the missing piece from her archive entry): below 50% health her children attack 3x as fast (`childFrenzy`), with a notice.
+- Code: `bossRules(boss, dt)` from `enemyTraits`; applies to every boss of that map, including the scaled mid-bosses of 20 waves and endless.
+- Texts: `BOSS_RULES` in `skills.js`, appended to the boss cards in the Glossary.
+- Balance (`test:td-balance`): Sunscar balanced 4 -> 3 lives, Sunscar 20 waves 3/5 -> 2/5, other rows unchanged; boss fights run slightly longer.
+- Tests in `test-td-sim.mjs`: mark picks the top recent dealer, warning before the silence, self-damage share, a silenced hero does not attack, stance reduction, End of All threshold and child attack speed. Checked in Chromium (reticle, stance ring, notice, silence after the warning).
+- Standing rule for new maps: every new boss gets one rule, not only more HP.

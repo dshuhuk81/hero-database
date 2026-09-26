@@ -62,6 +62,13 @@ export const CLASS_ULT_TEXT = {
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 
+// Boss rules (M18); numbers in tuning.bosses. Loosely follow the real mechanics in bosses.json.
+/** @type {Record<string, string>} */
+export const BOSS_RULES = {
+  baphomet: "Mark of the Goat: every 15s marks the hero that dealt the most recent damage; 1.5s later it is silenced for 3s and loses 10% health (Supports with Radiance or Purify can lift it). Defensive Stance: every 20s takes 60% less damage for 4s. Spreading damage over several heroes blunts the mark.",
+  lilith: "End of All: below half health her children attack three times as fast.",
+};
+
 // Rare and epic run blessings (M17); numbers in tuning.runBoons.
 /** @type {Record<string, { name: string, text: string }>} */
 export const RUN_BOON_INFO = {

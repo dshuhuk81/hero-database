@@ -1001,6 +1001,8 @@ export async function createRenderer(canvas, game, options = {}) {
       const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
       const top = (fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9) - (unit.flying ? FLYER_LIFT : 0);
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
+      // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
+      if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
       for (const [on, color] of [[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]]) {
@@ -1023,6 +1025,16 @@ export async function createRenderer(canvas, game, options = {}) {
     }
     for (const unit of game.heroes) {
       drawBar(g, unit.x - 24, unit.y + 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
+      // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
+      if ((unit.markedByBossUntil ?? 0) > game.time) {
+        const r = 34;
+        g.circle(unit.x, unit.y, r).stroke({ width: 2, color: 0xff4d4d, alpha: 0.9 });
+        for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) g.moveTo(unit.x + dx * (r - 8), unit.y + dy * (r - 8)).lineTo(unit.x + dx * (r + 6), unit.y + dy * (r + 6)).stroke({ width: 3, color: 0xff4d4d, cap: "round" });
+      }
+      if (game.isSilenced?.(unit)) {
+        const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
+        g.circle(unit.x, unit.y, 33).stroke({ width: 3, color: 0xff4d4d, alpha: pulse });
+      }
       // Hexed (Hexer): a pulsing violet ring while the hero cannot act.
       if (game.isHexed?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);

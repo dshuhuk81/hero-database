@@ -624,7 +624,7 @@ export class TowerDefenseGame {
             if (thorns && !enemy.dead) this.hit(enemy, taken * thorns.reflect, target, { showShot: false, showHit: false });
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
-          enemy.attackClock = enemy.attackPeriod || 0.9;
+          enemy.attackClock = (enemy.attackPeriod || 0.9) / this.childFrenzy(enemy);
         }
       } else {
         // Walking past a full blocker costs time: a milder slow (passSlowFactor) for passSlow
@@ -663,7 +663,7 @@ export class TowerDefenseGame {
     if (this.complete) return; // the last life was lost this step: heroes stand down
 
     for (const hero of this.heroes) {
-      if (this.isHexed(hero)) continue; // Hexer: no attacks, ultimate charge paused
+      if (this.isHexed(hero) || this.isSilenced(hero)) continue; // Hexer or Baphomet: no attacks, ultimate charge paused
       hero.attackClock -= dt;
       hero.ultClock += dt;
       const target = this.findTarget(hero);
@@ -1358,8 +1358,9 @@ export class TowerDefenseGame {
   // Purify (Support path): every action lifts hexes from allies in range.
   purify(hero) {
     for (const ally of this.heroes) {
-      if (this.isHexed(ally) && Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range) {
+      if ((this.isHexed(ally) || this.isSilenced(ally)) && Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range) {
         ally.hexedUntil = 0;
+        ally.silencedUntil = 0;
         this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
       }
     }
@@ -1398,7 +1399,8 @@ export class TowerDefenseGame {
     const rot = this.boons.length && this.isPoisoned(enemy) ? 1 + (this.hasBoon("venom_rot")?.bonus || 0) : 1;
     const shatter = this.boons.length && (enemy.frozenUntil ?? 0) > this.time ? 1 + (this.hasBoon("shattering_cold")?.bonus || 0) : 1;
     const before = enemy.hp;
-    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter);
+    const stance = (enemy.stanceUntil ?? 0) > this.time ? 1 - (this.bossTuning?.stance?.reduction || 0) : 1;
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter * stance);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
@@ -1417,6 +1419,10 @@ export class TowerDefenseGame {
     if (!hero.id) return; // enemy sources (none today) stay out of hero stats
     const stat = this.statFor(hero);
     stat.damage += dealt;
+    // Recent damage with a fading memory (Baphomet's Mark targets the top recent dealer).
+    const memory = this.bossTuning?.mark?.memory ?? 8;
+    hero.recentDamage = (hero.recentDamage || 0) * Math.exp(-(this.time - (hero.recentAt ?? this.time)) / memory) + dealt;
+    hero.recentAt = this.time;
     if (enemy.kind === "boss" || enemy.parentId) stat.boss += dealt;
     if (dot) stat.dot += dealt;
     // Support aura: its share of this hit is credited to the Support as buff contribution.
@@ -1454,6 +1460,7 @@ export class TowerDefenseGame {
   //     and `total` over its life (a held Broodcaller must not feed a wave forever).
   //   hex (Hexer): stuns the nearest hero in range for `seconds`, every `every` seconds.
   enemyTraits(enemy, dt) {
+    if (enemy.kind === "boss" && this.bossTuning) this.bossRules(enemy, dt);
     const cfg = this.tuning.enemies[enemy.kind];
     if (!cfg) return;
     if (cfg.heal) {
@@ -1510,6 +1517,65 @@ export class TowerDefenseGame {
 
   isHexed(hero) {
     return (hero?.hexedUntil ?? 0) > this.time;
+  }
+
+  // Boss rules (M18, tuning.bosses[id]):
+  //   mark (Baphomet): every `every` s it marks the hero with the most recent damage; after
+  //     `warn` s that hero is silenced for `seconds` and loses `selfDamage` of its health.
+  //   stance (Baphomet): every `every` s it takes `reduction` less damage for `seconds`.
+  //   endOfAll (Lilith): below `below` health her children attack `attackSpeed` times as fast.
+  bossRules(boss, dt) {
+    const cfg = this.bossTuning;
+    if (cfg.mark) {
+      boss.markClock = (boss.markClock ?? cfg.mark.every) - dt;
+      const target = this.heroes.find((h) => h.entityId === boss.markTarget);
+      if (boss.markTarget && boss.markAt <= this.time) {
+        if (target && !this.isVeiled(target)) {
+          target.silencedUntil = this.time + cfg.mark.seconds;
+          this.damageHero(target, target.hp * cfg.mark.selfDamage, boss);
+          this.emit({ type: "hex", x1: boss.x, y1: boss.y, x2: target.x, y2: target.y, x: target.x, y: target.y, life: 0.6, color: "red" });
+        }
+        boss.markTarget = null;
+      } else if (!boss.markTarget && boss.markClock <= 0) {
+        const top = [...this.heroes].sort((a, b) => this.recentDamageOf(b) - this.recentDamageOf(a))[0];
+        boss.markClock = cfg.mark.every;
+        if (top && this.recentDamageOf(top) > 0) {
+          boss.markTarget = top.entityId;
+          boss.markAt = this.time + cfg.mark.warn;
+          top.markedByBossUntil = boss.markAt;
+          this.emit({ type: "bossMark", x: top.x, y: top.y, life: cfg.mark.warn, color: "red" });
+          this.onChange("bossMark", this);
+        }
+      }
+    }
+    if (cfg.stance) {
+      boss.stanceClock = (boss.stanceClock ?? cfg.stance.every) - dt;
+      if (boss.stanceClock <= 0) {
+        boss.stanceClock = cfg.stance.every;
+        boss.stanceUntil = this.time + cfg.stance.seconds;
+        this.emit({ type: "hold", x: boss.x, y: boss.y, radius: 40, life: 0.5, color: "red" });
+      }
+    }
+    if (cfg.endOfAll && !boss.endOfAll && boss.hp <= boss.maxHp * cfg.endOfAll.below) {
+      boss.endOfAll = true;
+      this.onChange("endOfAll", this);
+      this.emit({ type: "summon", x: boss.x, y: boss.y, life: 0.9, color: "red" });
+    }
+  }
+
+  // End of All (Lilith): her children attack faster once she is below the threshold.
+  childFrenzy(enemy) {
+    if (!enemy.parentId || !this.bossTuning?.endOfAll) return 1;
+    const parent = this.enemies.find((e) => e.entityId === enemy.parentId);
+    return parent?.endOfAll ? this.bossTuning.endOfAll.attackSpeed : 1;
+  }
+
+  recentDamageOf(hero) {
+    return (hero.recentDamage || 0) * Math.exp(-(this.time - (hero.recentAt ?? this.time)) / (this.bossTuning?.mark?.memory ?? 8));
+  }
+
+  isSilenced(hero) {
+    return (hero?.silencedUntil ?? 0) > this.time;
   }
 
   // Damage a child takes also reaches its summoner (capped at what the child had left).

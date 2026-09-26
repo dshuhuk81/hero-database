@@ -148,6 +148,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
       ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}`);
     }
+    // Boss rules (M18).
+    if (type === "bossMark") {
+      const marked = game.heroes.find((h: any) => (h.markedByBossUntil ?? 0) > game.time);
+      if (marked) ctx.notice(`${ctx.bossFor(game.map).name} marks ${marked.name}: silenced in a moment. Spread your damage to blunt the mark.`);
+    }
+    if (type === "endOfAll") ctx.notice(`End of All: ${ctx.bossFor(game.map).name}'s children now attack three times as fast.`);
     // First time each reaction fires in a run: name it so players learn the combination.
     if (type === "reaction" && game.lastReaction) {
       const info = (REACTION_INFO as Record<string, { name: string; needs: string; text: string }>)[game.lastReaction.name];
