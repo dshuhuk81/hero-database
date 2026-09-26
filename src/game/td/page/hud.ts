@@ -92,7 +92,7 @@ export function createHud(ctx: PageContext) {
   }
 
   // Held while the player is deciding: blessing offer, a panel or manual pause, the recruit sheet.
-  const countdownHeld = (game: any) => !!game.virtueOffer || pause.paused || !!state.pendingSlot;
+  const countdownHeld = (game: any) => !!game.virtueOffer || !!game.mutatorOffer || pause.paused || !!state.pendingSlot;
 
   function syncAutoButton() {
     autoButton.setAttribute("aria-pressed", String(autoNext));

@@ -141,8 +141,10 @@ export function createResults(ctx: PageContext) {
     const map = session.map;
     const saved = store.data;
     // Heroic and Mythic pay more Favor (tuning.tiers, M3).
+    // Endless mutators (M15): each wave cleared with them pays their Favor share extra.
     const tierFavor = data.tuning.tiers?.[game.tier]?.favor ?? 1;
-    const earnedFavor = Math.round(computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) * tierFavor);
+    const mutatorFavor = (game.mutatorWaves ?? 0) * data.tuning.favorEarn.perWave;
+    const earnedFavor = Math.round((computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
     const earnedInsight = (session.debug ? {} : computeInsight(game.insightLog)) as Record<string, number>;
     const key = runKey(map.id, game.mode, game.tier);
     const prevRun = saved.mapBests[key] || null;
@@ -161,9 +163,10 @@ export function createResults(ctx: PageContext) {
         shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, virtue: virtues[Math.floor(Math.random() * virtues.length)], choice: "favor", previousBoost: saved.nextRunBoost };
         saved.favor += shard.favor;
       }
-      saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0 };
+      const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
+      saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
       const top = saved.mapTop[key];
-      if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave };
+      if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
       store.persist();
     }
 

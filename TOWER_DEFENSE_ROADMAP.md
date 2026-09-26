@@ -12,13 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M15: Endless mutators (gap check, P1)
-
-Endless ramps HP and attack by 8% per wave from wave 21 and adds a boss every 5 waves. Nothing else changes.
-- [ ] Every 10 waves offer 3 mutators, pick 1 (for example enemy HP +30% for Favor +20%, enemy speed +15% for Favor +30%, elite enemies for Favor +50%). This also answers the open "Favor per wave with no cap" question in M3.
-- [ ] Elite variant of each enemy kind (bigger, one extra trait such as shield or regen).
-- Done when: endless runs show a mutator pick every 10 waves and the chosen mutators are saved with the best score.
-
 ### M16: Map mechanics (gap check, P1, with the separate map work)
 
 Rings are all equal today; maps differ only by path and boss.
@@ -62,18 +55,6 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M5: Sound variant listening pass (ready for listening)
-
-- Goal: every hero sound (voice on placement, attack, ultimate) has been heard in a real run and judged OK.
-- Done when: every hero below is ticked, or a bad file is swapped for another pick from the source folders ([docs/td-hero-audio-map.md](docs/td-hero-audio-map.md)).
-- Done by tooling (September 25, 2026):
-  - All 21 roster heroes have voice, attack and ultimate in `HERO_SOUNDS` (`audio.ts`); all 63 files exist in `public/td/sfx` and on R2 `td/sfx`.
-  - Loudness evened out: `node scripts/td-audio-levels.mjs` measures every file with ffmpeg (EBU R128) and writes per-file gains to `src/data/tdAudioLevels.json` (targets: voice -17, attack -20, ultimate -17 LUFS; boosts capped at -1 dB peak). Before: attacks spread from -15.5 (Bastet, Anubis, Momus) to -22.8 LUFS (Zeus, Caishen). Rerun it after adding or swapping a file.
-  - Clipping: 2 to 4 full-scale samples per file at most, not audible.
-  - Attack sounds were unthrottled (one per hit, every hero). Now each hero plays at most one attack sound per 0.7 s, and all heroes together at most 4 per second.
-- Listen for (things ffmpeg can't judge): wrong character or wrong skill, cut-off starts or ends, and long files that may drag: attacks Fengyi 3.6 s, Phoenix 2.7 s, Medusa 2.3 s, Amunra 2.1 s; ultimates Freya 8.8 s, Set 8.1 s, Momus 7.6 s.
-- Quick way: Play, open DBG, `tdGame.gold = 99999`, place heroes, then `tdGame.castUltimate(tdGame.heroes[0], tdGame.enemies[0])` during a wave.
-- Checklist (voice / attack / ultimate): amunra, anubis, artemis, bastet, caishen, demeter, diana, fengyi, freya, horus, jormungandr, medusa, momus, nuwa, nyx, phoenix, poseidon, prometheus, set, yuelao, zeus.
 
 ### M22: Bugs or UI Changes
 
@@ -81,6 +62,11 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - button alignment: some buttons are just underneath vertically aligned. that takes a lot of vertical space. why not bring them next to each other.
 - font size and readability. sometimes we should be more compact in font size, sometimes elements are too small. there should be an audit regarding that to get more content in the screen but also to ehnance readability at the same time.
 - in endless mode the boss announcement says: "FINAL BOSS" which is not correct. this only applies to the maybe 10-wave or 20-wave variants where the boss appears on the last wave. 
+- Menu structure and placenement of buttons before we start a game should feel more like an app. a specific area where everything happens. button logic, navigational structure, everything should feel like as if players are in an app. 
+e.g. main menu screen -> start game, action 2, action 3 ->
+select map -> select difficulty -> game begins.
+No different area like on a website, area 1 = maps, area 2 underneath = buttons.
+- Victory Screen: A lot of content. Needs an UI overhaul and optimized. Maybe fullscreen on the whole map (app view area)
 
 ### M22b: Hero Placement
 - maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?

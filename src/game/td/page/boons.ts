@@ -1,6 +1,7 @@
 // Blessing presentation: cards (large bonus value, stat word, stat icon), the
 // on-map buff bar with summed run blessings, and the between-wave offer modal.
 import { blessingDisplay, buffChips } from "../ui.js";
+import { MUTATOR_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 
 export const BOON_ICONS: Record<string, string> = {
@@ -59,14 +60,20 @@ export function createBuffBar(ctx: PageContext) {
   function render() {
     const game = ctx.getSession()?.game;
     const chips = game ? buffChips(game.modifiers()) : [];
-    buffsEl.hidden = chips.length === 0;
+    const mutators: string[] = game?.mutators ?? [];
+    buffsEl.hidden = chips.length === 0 && mutators.length === 0;
+    // Endless mutators (M15) sit after the blessings, in warning red.
+    const mutatorChips = mutators.map((id) => {
+      const info = (MUTATOR_INFO as Record<string, { name: string; text: string }>)[id];
+      return `<span class="td-buff td-buff--mutator" title="${info?.text ?? id}"><b>!</b><span>${info?.name ?? id}</span></span>`;
+    }).join("");
     buffsEl.innerHTML = chips.map((chip) => {
       const changed = buffValues[chip.type] !== chip.value;
       const stat = blessingDisplay({ type: chip.type, value: 0 }).stat;
       return `<button type="button" class="td-buff td-boon--${chip.type}${changed ? " is-bumped" : ""}" data-td-buff aria-label="${chip.value} ${stat} from ${sources(game, chip.type)}. Show run blessings.">` +
         `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${BOON_ICONS[chip.type] ?? ""}</svg>` +
         `<b>${chip.value}</b><span>${chip.short}</span></button>`;
-    }).join("");
+    }).join("") + mutatorChips;
     buffValues = Object.fromEntries(chips.map((chip) => [chip.type, chip.value]));
     position();
   }
@@ -87,14 +94,36 @@ export function createBuffBar(ctx: PageContext) {
 }
 
 // Run blessing offer between waves. Optional: starting the next wave forfeits it.
+// The endless mutator offer (M15) follows once the blessing is chosen.
 export function createRunOffer(ctx: PageContext) {
   const { q, data, blessingNames } = ctx;
   const modalEl = q("[data-td-blessing-modal]");
   const gridEl = q("[data-td-blessing-grid]");
+  const mutatorEl = q("[data-td-mutator-modal]");
+  const mutatorGrid = q("[data-td-mutator-grid]");
   let offerKey = "";
+  let mutatorKey = "";
+
+  function renderMutators(game: any) {
+    const offer: string[] | null = game && !game.running && !game.complete && !game.virtueOffer ? game.mutatorOffer : null;
+    if (!offer) { mutatorEl.hidden = true; mutatorKey = ""; return; }
+    const key = offer.join("|");
+    if (key === mutatorKey) return;
+    mutatorKey = key;
+    const pool = data.tuning.mutators?.pool ?? {};
+    mutatorGrid.innerHTML = offer.map((id) => {
+      const info = (MUTATOR_INFO as Record<string, { name: string; text: string }>)[id];
+      return `<button type="button" class="td-mutator" data-mutator="${id}"><strong>${info?.name ?? id}</strong><small>${info?.text ?? ""}</small><span class="td-mutator-favor">+${Math.round((pool[id]?.favor ?? 0) * 100)}% Favor per wave</span></button>`;
+    }).join("");
+    ctx.actions.closePopover(false);
+    ctx.actions.closeSheet(false);
+    mutatorEl.hidden = false;
+    mutatorGrid.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
+  }
 
   function render() {
     const game = ctx.getSession()?.game;
+    renderMutators(game);
     const offer: string[] | null = game && !game.running && !game.complete ? game.virtueOffer : null;
     if (!offer) { modalEl.hidden = true; offerKey = ""; return; }
     const key = offer.join("|");
@@ -122,7 +151,22 @@ export function createRunOffer(ctx: PageContext) {
   function reset() {
     modalEl.hidden = true;
     offerKey = "";
+    mutatorEl.hidden = true;
+    mutatorKey = "";
   }
+
+  mutatorGrid.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-mutator]");
+    const session = ctx.getSession();
+    if (!button || !session || !session.game.chooseMutator(button.dataset.mutator)) return;
+    const info = (MUTATOR_INFO as Record<string, { name: string }>)[button.dataset.mutator!];
+    ctx.notice(`${info?.name ?? "Mutator"} is active for the rest of this run.`);
+    q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+  });
+  q("[data-td-mutator-skip]").addEventListener("click", () => {
+    ctx.getSession()?.game.skipMutators();
+    q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+  });
 
   gridEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-virtue]");

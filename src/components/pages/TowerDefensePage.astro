@@ -25,6 +25,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
   import { availableFavor, createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
+  import { MUTATOR_INFO } from "../../game/td/skills.js";
   import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
@@ -161,7 +162,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
       const mode = button.dataset.modeId as RunMode;
       const top = store.data.mapTop[runKey(map.id, mode, state.selectedTier)];
-      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
+      const muts = top?.mutators?.length ? ` - ${top.mutators.map((id) => (MUTATOR_INFO as Record<string, { name: string }>)[id]?.name ?? id).join(", ")}` : "";
+      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}${muts}` : "No runs yet";
     });
   }
   q("[data-td-tiers]").addEventListener("click", (event) => {

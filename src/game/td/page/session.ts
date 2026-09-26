@@ -159,7 +159,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.syncMainAction();
     ctx.actions.renderPreview();
     deps.runOffer.render();
-    if (type === "virtue" || type === "reset") deps.buffBar.render();
+    if (type === "virtue" || type === "reset" || type === "mutator") deps.buffBar.render();
     ctx.actions.refreshSelection();
     if (deps.recruit.isOpen()) ctx.actions.updateSheet();
     if (ctx.actions.activePanel()?.dataset.tdPanel === "blessings") ctx.actions.renderRunTab();

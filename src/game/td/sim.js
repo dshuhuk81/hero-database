@@ -81,6 +81,7 @@ export class TowerDefenseGame {
     this.rng = createRng(seed);
     // Quests draw from their own stream so combat randomness is unchanged by them.
     this.questRng = createRng((seed ^ 0x7a3d9c1) >>> 0);
+    this.mutatorRng = createRng((seed ^ 0x3c6ef372) >>> 0); // endless mutator offers (M15), apart from combat
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
     this.lanes = mapLanes(map).map((lane) => ({ ...lane, ...pathMetrics(lane.path) }));
@@ -114,6 +115,10 @@ export class TowerDefenseGame {
     this.virtues = [];
     this.activePairs = [];
     this.virtueOffer = null;
+    this.mutators = []; // endless mutators chosen this run (M15)
+    this.mutatorWaves = 0; // sum of the mutators' Favor shares over the waves cleared with them
+    this.mutatorOffer = null;
+    this.spawnCount = 0;
     this.quest = null;
     this.questsDone = 0;
     this.totalLeaks = 0;
@@ -485,6 +490,7 @@ export class TowerDefenseGame {
     this.wave += 1;
     this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0, heroDeaths: 0, lastSpawnAt: null, leakKinds: {} };
     this.virtueOffer = null; // unclaimed offers expire when the next wave starts
+    this.mutatorOffer = null;
     this.waveHeroes = new Map(this.heroes.map((hero) => [hero.entityId, hero.class])); // Insight credit per wave
     this.quest = this.rollQuest();
     this.spawnQueue = [];
@@ -497,7 +503,8 @@ export class TowerDefenseGame {
     const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
       const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
-      for (let i = 0; i < group.count; i += 1) {
+      const count = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
+      for (let i = 0; i < count; i += 1) {
         const gate = lane++ % this.lanes.length;
         at = Math.max(at, laneFree[gate]);
         this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
@@ -640,7 +647,8 @@ export class TowerDefenseGame {
           this.totalGoldEarned += amount;
         }
         this.completeQuest();
-        this.offerVirtues(); this.onChange("clear", this);
+        this.mutatorWaves += this.mutatorMods().favor;
+        this.offerVirtues(); this.offerMutators(); this.onChange("clear", this);
       }
     }
   }
@@ -659,6 +667,7 @@ export class TowerDefenseGame {
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
+    this.applyMutators(enemy);
     this.enemies.push(enemy);
     if (kind === "boss") {
       enemy.bossId = this.bossId;
@@ -666,6 +675,72 @@ export class TowerDefenseGame {
       if (this.bossTuning?.summon) this.summonChildren(enemy, statScale);
     }
     return enemy;
+  }
+
+  // Endless mutators (M15, tuning.mutators): after every `every`-th endless wave the player
+  // may pick one of `offer` mutators (or skip). Each makes enemies harder; every wave
+  // cleared afterwards pays its `favor` share on top of the normal per-wave Favor
+  // (tracked in mutatorWaves). They stack and last for the rest of the run.
+  offerMutators() {
+    const cfg = this.tuning.mutators;
+    if (!cfg || this.mode !== "endless" || this.wave % cfg.every !== 0) return;
+    const available = Object.keys(cfg.pool).filter((id) => !this.mutators.includes(id));
+    const picks = [];
+    while (picks.length < cfg.offer && available.length) picks.push(available.splice(Math.floor(this.mutatorRng() * available.length), 1)[0]);
+    this.mutatorOffer = picks.length ? picks : null;
+  }
+
+  chooseMutator(id) {
+    if (!this.mutatorOffer?.includes(id)) return false;
+    this.mutatorOffer = null;
+    this.mutators = [...this.mutators, id];
+    this.onChange("mutator", this);
+    return true;
+  }
+
+  skipMutators() {
+    if (!this.mutatorOffer) return false;
+    this.mutatorOffer = null;
+    this.onChange("mutator", this);
+    return true;
+  }
+
+  // Summed effects of the chosen mutators.
+  mutatorMods() {
+    const pool = this.tuning.mutators?.pool ?? {};
+    const out = { hp: 0, speed: 0, attack: 0, count: 0, armor: 0, shield: 0, elite: 0, favor: 0 };
+    for (const id of this.mutators ?? []) for (const key of Object.keys(out)) out[key] += pool[id]?.[key] || 0;
+    return out;
+  }
+
+  applyMutators(enemy) {
+    this.spawnCount += 1;
+    if (!this.mutators?.length) return;
+    const mods = this.mutatorMods();
+    enemy.maxHp *= 1 + mods.hp;
+    enemy.hp *= 1 + mods.hp;
+    if (enemy.shieldMax) { enemy.shieldMax *= 1 + mods.hp; enemy.shield = enemy.shieldMax; }
+    enemy.speed *= 1 + mods.speed;
+    enemy.attack *= 1 + mods.attack;
+    enemy.armor += mods.armor;
+    enemy.magicRes += mods.armor;
+    if (mods.shield) {
+      enemy.shieldMax = (enemy.shieldMax || 0) + enemy.maxHp * mods.shield;
+      enemy.shield = enemy.shieldMax;
+      enemy.shieldChip ??= this.tuning.mutators.elite.minChip;
+    }
+    // Elites: every Nth ordinary enemy (not bosses, summons or Lilith's children).
+    const elite = this.tuning.mutators.elite;
+    if (mods.elite && enemy.kind !== "boss" && !enemy.parentId && !enemy.summonerId && this.spawnCount % mods.elite === 0) {
+      enemy.elite = true;
+      enemy.maxHp *= elite.hp;
+      enemy.hp = enemy.maxHp;
+      enemy.reward *= elite.reward;
+      const shield = enemy.maxHp * elite.shield;
+      enemy.shieldMax = (enemy.shieldMax || 0) + shield;
+      enemy.shield = enemy.shieldMax;
+      enemy.shieldChip = elite.minChip;
+    }
   }
 
   // Lilith (Garden of Flesh / Flesh Growth, bosses.json): summons children around
@@ -1273,7 +1348,7 @@ export class TowerDefenseGame {
     enemy.lastHitAt = this.time;
     if (!(enemy.shield > 0)) return damage;
     const shieldBefore = enemy.shield;
-    const strip = Math.max(damage, enemy.shieldMax * (this.tuning.enemies[enemy.kind]?.shield?.minChip ?? 0));
+    const strip = Math.max(damage, enemy.shieldMax * (enemy.shieldChip ?? this.tuning.enemies[enemy.kind]?.shield?.minChip ?? 0));
     enemy.shield = Math.max(0, shieldBefore - strip);
     if (enemy.shield === 0) this.emit({ type: "shieldBreak", x: enemy.x, y: enemy.y, life: 0.4, color: "white" });
     return Math.max(0, damage - shieldBefore);

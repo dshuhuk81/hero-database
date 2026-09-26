@@ -2018,6 +2018,43 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     close(c.maxHp, a.maxHp, "endless health unchanged");
   }
 
+  // M15 endless mutators: offered every `every` waves in endless only, stack, change enemies.
+  {
+    const M = tuning.mutators;
+    const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 8, mode: "endless" });
+    endless.wave = M.every;
+    endless.offerMutators();
+    assert.equal(endless.mutatorOffer.length, M.offer, "offer size");
+    const classic = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 8 });
+    classic.wave = M.every;
+    classic.offerMutators();
+    assert.equal(classic.mutatorOffer, null, "no mutators outside endless");
+    endless.wave = M.every + 1;
+    endless.mutatorOffer = null;
+    endless.offerMutators();
+    assert.equal(endless.mutatorOffer, null, "only every Nth wave");
+    endless.wave = M.every;
+    endless.mutatorOffer = ["fortified", "haste", "elites"];
+    const plain = endless.spawnEnemy("grunt");
+    assert.equal(endless.chooseMutator("frenzy"), false, "only offered mutators");
+    assert.ok(endless.chooseMutator("fortified"));
+    assert.equal(endless.mutatorOffer, null);
+    const tough = endless.spawnEnemy("grunt");
+    close(tough.maxHp, plain.maxHp * (1 + M.pool.fortified.hp), "Fortified health");
+    endless.mutators.push("haste", "ironclad", "elites");
+    const mods = endless.mutatorMods();
+    close(mods.favor, M.pool.fortified.favor + M.pool.haste.favor + M.pool.ironclad.favor + M.pool.elites.favor, "Favor shares add up");
+    const spawned = Array.from({ length: M.pool.elites.elite * 2 }, () => endless.spawnEnemy("grunt"));
+    const elites = spawned.filter((e) => e.elite);
+    assert.equal(elites.length, 2, "every Nth enemy is an Elite");
+    assert.ok(elites[0].shield > 0 && elites[0].reward === tuning.enemies.grunt.reward * M.elite.reward, "Elite shield and gold");
+    close(spawned[0].speed, plain.speed * (1 + M.pool.haste.speed), "Haste speed");
+    assert.equal(spawned[0].armor, plain.armor + M.pool.ironclad.armor, "Ironclad armor");
+    assert.ok(!endless.spawnEnemy("boss").elite, "bosses are never Elites");
+    endless.mutatorOffer = ["frenzy"];
+    assert.ok(endless.skipMutators() && endless.mutatorOffer === null, "skip");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");

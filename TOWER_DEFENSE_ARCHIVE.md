@@ -3,6 +3,19 @@
 ## Baseline (shipped September 23, 2026)
 One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave run, boss wave. User completed first full run and beat Baphomet.
 
+### M5: Sound variant listening pass (ready for listening)
+
+- Goal: every hero sound (voice on placement, attack, ultimate) has been heard in a real run and judged OK.
+- Done when: every hero below is ticked, or a bad file is swapped for another pick from the source folders ([docs/td-hero-audio-map.md](docs/td-hero-audio-map.md)).
+- Done by tooling (September 25, 2026):
+  - All 21 roster heroes have voice, attack and ultimate in `HERO_SOUNDS` (`audio.ts`); all 63 files exist in `public/td/sfx` and on R2 `td/sfx`.
+  - Loudness evened out: `node scripts/td-audio-levels.mjs` measures every file with ffmpeg (EBU R128) and writes per-file gains to `src/data/tdAudioLevels.json` (targets: voice -17, attack -20, ultimate -17 LUFS; boosts capped at -1 dB peak). Before: attacks spread from -15.5 (Bastet, Anubis, Momus) to -22.8 LUFS (Zeus, Caishen). Rerun it after adding or swapping a file.
+  - Clipping: 2 to 4 full-scale samples per file at most, not audible.
+  - Attack sounds were unthrottled (one per hit, every hero). Now each hero plays at most one attack sound per 0.7 s, and all heroes together at most 4 per second.
+- Listen for (things ffmpeg can't judge): wrong character or wrong skill, cut-off starts or ends, and long files that may drag: attacks Fengyi 3.6 s, Phoenix 2.7 s, Medusa 2.3 s, Amunra 2.1 s; ultimates Freya 8.8 s, Set 8.1 s, Momus 7.6 s.
+- Quick way: Play, open DBG, `tdGame.gold = 99999`, place heroes, then `tdGame.castUltimate(tdGame.heroes[0], tdGame.enemies[0])` during a wave.
+- Checklist (voice / attack / ultimate): amunra, anubis, artemis, bastet, caishen, demeter, diana, fengyi, freya, horus, jormungandr, medusa, momus, nuwa, nyx, phoenix, poseidon, prometheus, set, yuelao, zeus.
+
 ## Milestones 1A-4
 - Armor mitigation formula (armor / (armor + K), K=260)
 - Flyer counters (platform-only targeting, flying flag)
@@ -327,3 +340,20 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
   Normal is the entry tier, Heroic the mid goal, Mythic stays a real test until the trunk is complete. Trunk completes at about 160 runs.
 - Open: endless depth barely grows after run 20 (8% compounding ramp); M15 mutators are the planned endless goals. Normal becomes easy after about 20 runs by design (Heroic takes over).
 - Tests: `test-td-favor.mjs` (Infusion rules, stored status, applied status, no status without it, Radiance), `test-td-save.mjs` (v2 migration keeps available Favor and Insight, Surge refund, notice, applied once; tier keys and records), `test-td-sim.mjs` (tier health and attack, endless stays Normal). Checked in Chromium at 1280 and 390 px: tier picker selects, persists and the run uses it.
+
+## Roadmap M15: Endless mutators (done September 26, 2026)
+- Goal (gap check): endless should offer goals of the player's own making instead of only a steeper ramp.
+- Sim (`tuning.mutators`): after every 10th cleared endless wave, 3 of the not-yet-chosen mutators are offered (separate `mutatorRng`, so combat randomness is unchanged); pick one or skip, the offer expires when the next wave starts. Mutators stack for the rest of the run (`mutators`, `mutatorMods()`, applied in `spawnEnemy` via `applyMutators` and to wave counts in `startWave`):
+  - Fortified: enemies +30% health, +40% Favor per wave.
+  - Haste: +25% speed, +50%.
+  - Warded: every enemy gets a shield worth 40% of its health (15% minimum chip per hit), +50%.
+  - Horde: +40% enemies per wave (bosses excluded), +60%.
+  - Ironclad: +120 armor and magic resistance, +40%.
+  - Elites: every 3rd ordinary enemy is an Elite (2.5x health, shield 60% of that, 3x gold; never bosses, summons or Lilith's children), +60%.
+- Favor: each wave cleared with mutators adds their summed share of the per-wave Favor (`mutatorWaves`), so a late pick does not pay out on the whole run.
+- Measured (`playRun` option `mutators`, a preference list; balanced squad, 3 maps x 2 seeds; endless Favor per minute of sim time):
+  - Frenzy (+80% enemy attack) cost no depth at all (blockers rarely die) and was replaced by Warded.
+  - First version paid its share on the whole run's Favor: all six with the full tree gave 29.4 Favor per minute, above the 10-wave rate (23.5), so a farm. After the per-wave change and the retune: each mutator costs 0.5 to 2 waves (full tree 36.8 -> 34.8 to 36.2; all six 34.7) and pays 7 to 23% more Favor per run; all six give 22.2 Favor per minute, still below 10-wave runs. For a fresh account mutators are a net loss by design (a choice for strong squads).
+- UI: "Raise the stakes?" modal after the blessing offer (cards with effect and "+N% Favor per wave", Skip button), Auto countdown waits for it, active mutators as red chips on the buff bar, result Favor includes the bonus, the best endless record stores its mutators (`mutators` on `mapBests` / `mapTop`) and the run-length panel shows them next to the endless best. How to play "Mutators" entry. Texts in `MUTATOR_INFO` (`skills.js`).
+- Tests in `test-td-sim.mjs`: offer size, endless only, only every 10th wave, only offered ids, Fortified health, Favor shares add up, every 3rd enemy an Elite with shield and gold, Haste speed, Ironclad armor, bosses never Elites, skip. Checked in Chromium at 1280 and 390 px.
+- Not done: mutators in the M4 leaderboard (records carry them, ready for it).

@@ -2,7 +2,8 @@
 import type { PageContext } from "./context";
 import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
 
-export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number };
+// `mutators`: endless mutators (M15) chosen in that run, kept with the record.
+export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number; mutators?: string[] };
 
 // Pending run-end shard (6C) for the next run; cleared when that run's first wave starts.
 export type RunBoost = { type: "gold"; gold: number } | { type: "virtue"; virtue: string };
@@ -20,7 +21,7 @@ export type SaveData = {
   treeVersion: number; // blessingTree.json version the prices were last settled with
   repriceNotice: boolean; // tree v3 price change and Surge -> Infusion, shown once
   mapBests: Record<string, MapRun>;
-  mapTop: Record<string, { score: number; wave: number }>;
+  mapTop: Record<string, { score: number; wave: number; mutators?: string[] }>;
   nextRunBoost: RunBoost | null;
 };
 
