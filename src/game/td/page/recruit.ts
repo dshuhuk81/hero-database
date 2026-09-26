@@ -53,7 +53,8 @@ export function createRecruit(ctx: PageContext) {
     sheetNote.textContent = (ring ? `${ring.name}: ${ring.text} ` : "") + (road
       ? "Tanks hold the line, Warriors cleave groups, Assassins catch enemies that slip through."
       : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.");
-    sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
+    // Daily Trial (M19): only the day's heroes are listed.
+    sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id))).map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
       `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("");

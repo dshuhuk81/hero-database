@@ -57,8 +57,11 @@ export function pointOnPath(points, distance, offset = 0) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
+    // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
+    this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
+    this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);
     this.tuning = tuning;
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
@@ -119,7 +122,7 @@ export class TowerDefenseGame {
     this.boons = []; // rare and epic run blessings chosen this run (M17)
     this.rallyUntil = 0;
     this.reaperKills = 0;
-    this.mutators = []; // endless mutators chosen this run (M15)
+    this.mutators = [...(this.presetMutators ?? [])]; // endless mutators chosen this run (M15), Daily Trial ones first
     this.mutatorWaves = 0; // sum of the mutators' Favor shares over the waves cleared with them
     this.mutatorOffer = null;
     this.spawnCount = 0;
@@ -137,6 +140,8 @@ export class TowerDefenseGame {
     this.insightLog = {}; // per class { waves, kills } for Insight at run end (favor.js computeInsight)
     this.totalGoldEarned = 0;
     this.totalGoldSpent = 0;
+    this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
+    this.upgradesBought = 0; // levels, Awakenings and trainings bought this run (M20 challenges)
     this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
     // Virtue shard (6C): the run starts with this virtue already chosen.
@@ -165,6 +170,7 @@ export class TowerDefenseGame {
     const base = this.heroesById.get(heroId);
     const cost = this.deployCost(heroId);
     if (!base || base.slot !== slotType || this.gold < cost) return false;
+    if (this.allowedHeroes && !this.allowedHeroes.has(heroId)) return false;
     if (this.heroes.some((hero) => hero.id === heroId)) return false;
     if (this.heroes.some((hero) => hero.slotType === slotType && hero.slotIndex === slotIndex)) return false;
     // No team cap: free rings and gold are the only limits. `team` records who was fielded.
@@ -176,6 +182,7 @@ export class TowerDefenseGame {
     }
     this.gold -= cost;
     this.totalGoldSpent += cost;
+    if (!this.fieldedIds.includes(heroId)) this.fieldedIds.push(heroId);
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
@@ -438,6 +445,7 @@ export class TowerDefenseGame {
     }
     this.gold -= info.cost;
     this.totalGoldSpent += info.cost;
+    this.upgradesBought += 1;
     info.hero.invested = (info.hero.invested || 0) + info.cost;
     if (info.awaken) {
       info.hero.awakened = true;

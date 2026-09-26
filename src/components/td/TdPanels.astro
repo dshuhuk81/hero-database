@@ -2,6 +2,7 @@
 // Modal panels: run length, menu, Blessings, help and save data. Controlled by src/game/td/page/panels.ts and save.ts.
 interface Props { maps: any[]; bossNames: Record<string, string>; waveCount: number; }
 import tuning from "../../data/gameBalance.tuning.json";
+import { DAILY } from "../../game/td/daily.js";
 const { maps, bossNames, waveCount } = Astro.props;
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
@@ -47,6 +48,11 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
           <span class="td-mode-best" data-mode-best={mode.id}></span>
         </button>
       ))}
+      <details class="td-challenges" data-td-challenges>
+        <summary><span>Challenges on this battlefield</span> <span class="td-challenge-count" data-td-challenge-count></span></summary>
+        <p class="td-favor-note" data-td-challenge-reward></p>
+        <ul class="td-challenge-list" data-td-challenge-list></ul>
+      </details>
     </div>
   </section>
 
@@ -122,7 +128,9 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
       <article><strong>Quests</strong><p>Each wave except the last has a quest, shown at the top of the map: let no enemy through, keep every hero alive, clear the wave quickly after the last enemy spawns, or have a named hero land a set number of kills. Complete it for bonus gold when the wave ends.</p></article>
       <article><strong>Divine Blessings</strong><p>Every finished run earns Favor for the Divine trunk. Each hero class also has its own branch, paid with that class's Insight: the heroes you deploy earn it for their class, per wave on the field and per kills. Most blessings have several levels, deeper stages open once enough levels are bought in that tree, and Surge and Wrath exclude each other. Drag or pinch to move and zoom the tree. A reset refunds everything for a Favor fee. Purchases made during a run apply from your next run. Runs that reach wave 3 also let you pick a shard: extra Favor, or extra gold or a blessing for your next run.</p></article>
       <article><strong>Difficulty</strong><p>Before a 10 or 20 wave run, pick Normal, Heroic or Mythic. Heroic and Mythic send tougher enemies and pay more Favor; each difficulty keeps its own records. Normal is where a new account starts; as your Divine Blessings grow, Heroic and then Mythic become the real test. Endless always runs at Normal because it keeps getting harder on its own.</p></article>
+      <article><strong>Challenges</strong><p>Every battlefield has six optional challenges for 10 and 20 wave runs: Perfect Defense (lose no life), Trio (deploy at most 3 different heroes), One Class (every deployed hero from one class), Unrefined (buy no level, Awakening or training), Swift (win within a battle time limit) and Hoarder (win with a lot of gold left). They are checked when you win; nothing changes how the run plays. Each first clear pays Favor once per battlefield and run length, more on Heroic and Mythic, and clearing it later on a higher difficulty pays the difference. The badges on each battlefield card show what you have done; the run length panel lists the exact conditions.</p></article>
       <article><strong>Mutators</strong><p>In endless, every 10th cleared wave offers three mutators, for example Fortified (tougher enemies) or Elites. Pick one to make the rest of the run harder: every wave you clear afterwards pays extra Favor. Mutators stack and last until the run ends; you can also skip. Your best endless run on each battlefield remembers which mutators it had.</p></article>
+      <article><strong>Daily Trial</strong><p>Every day brings one fixed trial, the same for every player: a battlefield, five heroes (at least two for the road and two for platforms), and two mutators that are active from wave 1. It is an endless run at Normal without Divine Blessings or shard boosts, so only your play decides the score. Clear the goal wave for {DAILY.rewardFavor} bonus Favor once per day; the run's normal Favor counts as usual. The lobby shows today's trial and your best of the day. A new trial starts at midnight UTC.</p></article>
       <article><strong>Run length</strong><p>Pick a run length in the lobby. 10 waves is the original run. 20 waves brings a boss every 5th wave; the earlier ones are weaker and the one on wave 20 fights at full strength. Endless also brings a boss every 5th wave and keeps making waves bigger until your last life is lost; past wave 20 enemies get stronger with every wave, so going deeper takes Divine Blessings. Each length keeps its own best score per battlefield.</p></article>
       <article><strong>Rare and Epic blessings</strong><p>Some cards in the between-wave blessing offer are Rare (blue) or Epic (purple). Instead of a stat bonus they change how the fight works, for example Tidal Pull slows Wet enemies and Soul Reaper pays gold on every 10th kill. They are only offered when your deployed heroes can use them, so what you field shapes what you are offered.</p></article>
       <article><strong>Status effects</strong><p>Some heroes mark enemies with their basic attacks: Poseidon makes them Wet, Phoenix and Prometheus set them on Burn, Medusa and Jormungandr Poison them. Small colored dots above an enemy's health bar show its statuses. Statuses combine into reactions, for example Wet plus Zeus's chain lightning (Conduct) or Wet plus Burn (Steam). The first time a reaction happens in a run, the game names it; the Glossary lists all of them.</p></article>

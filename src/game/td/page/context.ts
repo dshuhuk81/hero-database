@@ -4,6 +4,7 @@
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
 import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
+import type { DailySetup } from "./daily";
 
 export type Slot = { type: string; index: number };
 
@@ -19,6 +20,7 @@ export type Session = {
   favLevels: Record<string, number>; // blessing levels this run was built with
   boost: RunBoost | null; // shard boost this run was built with
   debug: boolean;
+  daily: DailySetup | null; // Daily Trial setup (M19) when this run is the trial
 };
 
 // Mutable UI state shared between modules.
@@ -34,7 +36,7 @@ export type PageState = {
 
 export type PageActions = {
   // session.ts
-  startSession(map: any): void;
+  startSession(map: any, options?: { daily?: DailySetup | null }): void;
   toLobby(): void;
   handleChange(type: string): void;
   spaceBelowMap(): number;

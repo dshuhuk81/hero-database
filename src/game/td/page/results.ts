@@ -36,6 +36,8 @@ import type { PageContext } from "./context";
 import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type RunBoost } from "./save";
+import { finishDaily } from "./daily";
+import { challengeResultHtml, recordChallengeRun } from "./challenges";
 
 type ShardChoice = "favor" | "gold" | "virtue";
 
@@ -147,7 +149,12 @@ export function createResults(ctx: PageContext) {
     const earnedFavor = Math.round((computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
     const earnedInsight = (session.debug ? {} : computeInsight(game.insightLog)) as Record<string, number>;
     const key = runKey(map.id, game.mode, game.tier);
-    const prevRun = saved.mapBests[key] || null;
+    // Daily Trial (M19) runs keep their own per-day record instead of the map's endless bests.
+    const daily = session.daily;
+    const prevRun = daily ? null : saved.mapBests[key] || null;
+    const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug) : null;
+    // Challenges (M20): stored and paid only for non-debug runs; persisted with the run below.
+    const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
       if (game.perfect) saved.perfectDefense = true;
@@ -164,9 +171,11 @@ export function createResults(ctx: PageContext) {
         saved.favor += shard.favor;
       }
       const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
-      saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
-      const top = saved.mapTop[key];
-      if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
+      if (!daily) {
+        saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
+        const top = saved.mapTop[key];
+        if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
+      }
       store.persist();
     }
 
@@ -175,7 +184,11 @@ export function createResults(ctx: PageContext) {
     ctx.actions.cancelDeploy();
     const endless = game.mode === "endless";
     const tierLabel = game.tier !== "normal" ? `${data.tuning.tiers?.[game.tier]?.label ?? game.tier} - ` : "";
-    q("[data-td-result-kicker]").textContent = tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
+    q("[data-td-result-kicker]").textContent = daily ? `Daily Trial ${daily.date}` : tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
+    const dailyEl = q("[data-td-result-daily]");
+    dailyEl.hidden = !dailyRun;
+    dailyEl.textContent = dailyRun?.text ?? "";
+    dailyEl.classList.toggle("is-reached", !!dailyRun?.reached);
     q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
     q("[data-td-result-copy]").textContent = game.perfect
       ? `${game.score.toLocaleString()} points - all ${game.totalWaves} waves - ${game.lives} lives left - not a single enemy broke through`
@@ -210,12 +223,10 @@ export function createResults(ctx: PageContext) {
       if (improvements.length) { compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`; compareEl.hidden = false; }
     }
 
-    const earned: string[] = [];
-    if (game.perfect) earned.push("Perfect Defense");
-    if (game.won && game.gold >= 150) earned.push("Hoarder");
-    if (game.won && game.runDuration <= 300) earned.push("Speed Run");
+    // Achievements are the map's challenges (M20) this run completed; new clears are highlighted.
     const achieveEl = q("[data-td-result-achievements]");
-    if (earned.length) { achieveEl.innerHTML = earned.map((name) => `<span class="td-achievement">${name}</span>`).join(""); achieveEl.hidden = false; }
+    achieveEl.innerHTML = challengeResultHtml(challengeRun);
+    achieveEl.hidden = !achieveEl.innerHTML;
 
     const favorEl = q("[data-td-result-favor]");
     if (session.debug) favorEl.textContent = "Debug run: score, bests and Favor were not recorded.";

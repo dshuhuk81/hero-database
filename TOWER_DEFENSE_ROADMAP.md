@@ -12,16 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M19: Daily Trial (gap check, P2)
-
-- [ ] Fixed daily setup from the date as seed: map, 3 to 5 allowed heroes, 2 modifiers, goal (for example reach wave 30). Fully client side; local best per day.
-- [ ] Later shares the M4 leaderboard (same setup for everyone makes scores comparable).
-
-### M20: Challenge goals per map (gap check, P2)
-
-- [ ] Optional goals per map and mode: perfect defense (no lives lost), limited roster (max 3 heroes), one class only, no upgrades, speed clear, finish with X gold. Show as badges on the map card.
-- Reuse the achievement and quest code where possible.
-
 ### M21: Expedition mode (gap check, P3)
 
 - [ ] Roguelite chain of maps: start with 3 random heroes, after each map choose new hero, relic or upgrade. Needs M13 and M17 first so relics have mechanics to build on.
@@ -45,11 +35,12 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - Menu structure and placenement of buttons before we start a game should feel more like an app. a specific area where everything happens. button logic, navigational structure, everything should feel like as if players are in an app. 
 e.g. main menu screen -> start game, action 2, action 3 ->
 select map -> select difficulty -> game begins.
-No different area like on a website, area 1 = maps, area 2 underneath = buttons. remove header and footer.
+No different area like on a website, area 1 = maps, area 2 underneath = buttons. remove header and footer. use full width and height of the browser. check navigation.
 - Victory Screen: A lot of content. Needs an UI overhaul and optimized. Maybe fullscreen on the whole map (app view area)
 
 ### M22b: Hero Placement
 - maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?
+- that would require to maybe add another placement tile graphically since a lot of round tiles next to each other looks quite strange.
 
 ### M23: Tutorial Stage
 

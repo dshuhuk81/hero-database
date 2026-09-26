@@ -76,6 +76,25 @@
 .td-map-card-copy strong { color: var(--text-bright); font-size: var(--text-lg); }
 .td-map-card-copy small { color: var(--text-muted); font-size: var(--text-xs); }
 .td-map-card-copy .td-map-card-boss { color: var(--accent-gold); }
+/* Challenge badges (M20): dim until cleared on 10 or 20 waves, filled when cleared on both */
+.td-map-challenges { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+.td-map-challenge { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); color: var(--text-muted); opacity: .55; }
+.td-map-challenge.is-earned { border-color: var(--accent-gold); color: var(--accent-gold); opacity: 1; }
+.td-map-challenge.is-both { background: var(--accent-gold-dim); }
+.td-challenge-icon { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.td-challenges { border-top: 1px solid var(--border-subtle); padding-top: var(--space-3); }
+.td-challenges summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); min-height: 44px; color: var(--text-bright); font-size: var(--text-sm); font-weight: var(--weight-semibold); cursor: pointer; }
+.td-challenge-count { color: var(--accent-gold); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+.td-challenges > .td-favor-note { margin-bottom: var(--space-2); }
+.td-challenge-list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.td-challenge-row { display: grid; grid-template-columns: auto 1fr; gap: 2px var(--space-2); align-items: start; padding: var(--space-2) var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); }
+.td-challenge-row > .td-challenge-icon { margin-top: 3px; color: var(--accent-gold); }
+.td-challenge-copy { display: grid; gap: 2px; }
+.td-challenge-copy strong { color: var(--text-bright); font-size: var(--text-sm); }
+.td-challenge-copy small { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--leading-normal); }
+.td-challenge-states { grid-column: 2; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.td-challenge-status { padding: 1px 8px; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); color: var(--text-muted); font-size: var(--text-2xs); }
+.td-challenge-status.is-done { border-color: var(--accent-gold); color: var(--accent-gold); }
 .td-mode-map { margin: 2px 0 0; color: var(--text-muted); font-size: var(--text-sm); }
 .td-modes { display: grid; gap: var(--space-3); }
 .td-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); padding: 0 var(--space-4) var(--space-3); }
@@ -294,6 +313,11 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-result-inner .td-result-compare { color: var(--accent-gold); font-weight: var(--weight-semibold); }
 .td-result-achievements { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
 .td-achievement { padding: 3px 10px; border: 1px solid var(--accent-gold); border-radius: var(--radius-full); background: rgba(250, 189, 47, .1); color: var(--accent-gold); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+.td-result-achievements .td-label { flex-basis: 100%; text-align: center; }
+.td-challenge-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+.td-challenge-chip { display: inline-flex; align-items: center; gap: var(--space-1); opacity: .8; }
+.td-challenge-chip small { color: var(--text-bright); font-size: var(--text-2xs); font-weight: var(--weight-semibold); }
+.td-challenge-chip.is-new { opacity: 1; background: var(--accent-gold-dim); box-shadow: 0 0 0 1px var(--accent-gold); }
 .td-result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin-top: var(--space-2); }
 
 /* ============================================================
@@ -682,3 +706,24 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-sheet.is-below .td-sheet-preview { display: none; }
 @media (max-height: 560px) { .td-sheet-preview { display: none; } }
 @media (prefers-reduced-motion: reduce) { .td-anim { animation: none; } }
+/* Daily Trial (M19): lobby card, HUD goal and result line */
+.td-daily { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); }
+.td-daily-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.td-daily-head h2 { margin: 0; color: var(--text-bright); font-size: var(--text-lg); }
+.td-daily-date { margin-left: var(--space-2); color: var(--text-muted); letter-spacing: var(--tracking-wide); }
+.td-daily-goal, .td-daily-best { margin: 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
+.td-daily-best { color: var(--accent-gold); font-variant-numeric: tabular-nums; }
+.td-daily-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
+.td-daily-list { display: grid; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+.td-daily-list li { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.td-daily-list .td-class-icon { width: 14px; }
+.td-daily-list > li > img { width: 36px; height: 36px; flex: 0 0 auto; object-fit: cover; border-radius: var(--radius-sm); background: var(--bg-surface); }
+.td-daily-list span, .td-daily-mutator { display: grid; gap: 2px; min-width: 0; }
+.td-daily-list strong { display: flex; align-items: center; gap: var(--space-1); color: var(--text-bright); font-size: var(--text-sm); }
+.td-daily-list small { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--leading-normal); }
+.td-daily-mutator strong { color: var(--td-warn); }
+.td-stat--goal.is-done strong { color: var(--accent-gold); }
+/* Portrait phones have no room in the top bar; the start notice and results carry the goal. */
+@media (max-width: 600px) { .td-stat--goal { display: none; } }
+.td-result-inner .td-result-daily { color: var(--text-bright); font-weight: var(--weight-semibold); }
+.td-result-inner .td-result-daily.is-reached { color: var(--accent-gold); }

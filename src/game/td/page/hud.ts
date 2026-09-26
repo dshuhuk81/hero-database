@@ -2,6 +2,7 @@
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 import { isBossWave } from "../waves.js";
+import { clearedWaves } from "../daily.js";
 
 const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear", heroKills: "Slayer" };
 
@@ -45,6 +46,15 @@ export function createHud(ctx: PageContext) {
     q("[data-td-lives]").textContent = String(game.lives);
     q("[data-td-wave]").textContent = String(game.wave);
     q("[data-td-wave-total]").textContent = Number.isFinite(game.totalWaves) ? String(game.totalWaves) : "∞";
+    // Daily Trial goal (M19): waves cleared out of the goal.
+    const daily = state.session?.daily;
+    const dailyHud = q("[data-td-daily-hud]");
+    dailyHud.hidden = !daily;
+    if (daily) {
+      const cleared = clearedWaves(game);
+      q("[data-td-daily-progress]").textContent = cleared >= daily.goal ? "Done" : `${cleared}/${daily.goal}`;
+      dailyHud.classList.toggle("is-done", cleared >= daily.goal);
+    }
     q("[data-td-score]").textContent = game.score.toLocaleString();
     q("[data-td-synergy-count]").textContent = String(game.activeSynergyCount());
   }

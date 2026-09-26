@@ -1,6 +1,11 @@
 // Saved progress (localStorage td:v1) and the save code / save file export and import.
 import type { PageContext } from "./context";
 import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
+import { sanitizeChallenges } from "../challenges.js";
+import { sanitizeDaily } from "../daily.js";
+
+// Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
+export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };
 
 // `mutators`: endless mutators (M15) chosen in that run, kept with the record.
 export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number; mutators?: string[] };
@@ -22,7 +27,9 @@ export type SaveData = {
   repriceNotice: boolean; // tree v3 price change and Surge -> Infusion, shown once
   mapBests: Record<string, MapRun>;
   mapTop: Record<string, { score: number; wave: number; mutators?: string[] }>;
+  challenges: Record<string, Record<string, RunTier>>; // M20: challengeKey -> challenge id -> highest tier cleared (challenges.js)
   nextRunBoost: RunBoost | null;
+  daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
 };
 
 export type SaveStore = { data: SaveData; persist(): void };
@@ -71,7 +78,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, nextRunBoost: null };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [] };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -101,7 +108,9 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
     repriceNotice: !!candidate.repriceNotice,
     mapBests: pickRuns(candidate.mapBests),
     mapTop: pickRuns(candidate.mapTop),
+    challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
+    daily: sanitizeDaily(candidate.daily),
   };
   // Tree v3 (M3): owned levels stay, the price increase is credited back once.
   if (clean.treeVersion < 3) {

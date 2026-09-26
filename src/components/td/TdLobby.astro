@@ -2,6 +2,7 @@
 // Lobby screen: map cards with path previews, personal bests, play and panel buttons.
 import { mapSceneFor } from "../../game/td/map-scene.js";
 import { mapLanes, routeStrokes } from "../../game/td/lanes.js";
+import { CHALLENGES } from "../../game/td/challenges.js"; // M20 badges, filled by renderChallengeBadges
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; }
 const { maps, waveCount, bossNames } = Astro.props;
 const previews = maps.map((entry: any) => ({
@@ -52,6 +53,14 @@ const previews = maps.map((entry: any) => ({
             <strong>{preview.name}</strong>
             <small class="td-map-card-boss">Boss: {preview.bossName}</small>
             <small data-map-best={preview.id}>No runs yet</small>
+            <span class="td-map-challenges" data-map-challenges={preview.id}>
+              {CHALLENGES.map((challenge: any) => (
+                <span class="td-map-challenge" data-challenge={challenge.id}>
+                  <svg class="td-challenge-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={challenge.icon} /></svg>
+                </span>
+              ))}
+              <span class="sr-only" data-challenge-summary></span>
+            </span>
           </span>
         </button>
       ))}
@@ -64,6 +73,29 @@ const previews = maps.map((entry: any) => ({
       <a class="action-button action-button--quiet" href="/games/tower-defense/glossary">Glossary</a>
       <button class="action-button action-button--quiet" type="button" data-td-open="save">Save data</button>
     </div>
+
+    <!-- Daily Trial (M19): filled for today's UTC date by src/game/td/page/daily.ts -->
+    <section class="td-daily" aria-labelledby="td-daily-title" data-td-daily>
+      <div class="td-daily-head">
+        <div>
+          <p class="td-kicker">Daily Trial <span class="td-daily-date" data-td-daily-date></span></p>
+          <h2 id="td-daily-title" data-td-daily-map>Today's battlefield</h2>
+        </div>
+        <button class="action-button action-button--primary" type="button" data-td-daily-start>Start trial</button>
+      </div>
+      <p class="td-daily-goal" data-td-daily-goal></p>
+      <div class="td-daily-grid">
+        <div>
+          <span class="td-label">Heroes</span>
+          <ul class="td-daily-list" data-td-daily-heroes></ul>
+        </div>
+        <div>
+          <span class="td-label">Mutators from wave 1</span>
+          <ul class="td-daily-list" data-td-daily-mutators></ul>
+        </div>
+      </div>
+      <p class="td-daily-best" data-td-daily-best></p>
+    </section>
 
     <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
   </div>

@@ -7,6 +7,8 @@ import { mapSceneFor } from "../map-scene.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
+import { dailyGameOptions } from "../daily.js";
+import type { DailySetup } from "./daily";
 
 type Deps = {
   music: { play(track: string): void; stop(): void };
@@ -36,11 +38,14 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     playEl.hidden = name !== "play";
   }
 
-  async function start(map: any) {
+  async function start(map: any, options: { daily?: DailySetup | null } = {}) {
     const token = ++sessionToken;
+    const daily = options.daily ?? null;
     end();
-    state.selectedMap = map;
-    try { localStorage.setItem("td:map", map.id); } catch {}
+    if (!daily) { // the Daily Trial leaves the lobby's map pick alone
+      state.selectedMap = map;
+      try { localStorage.setItem("td:map", map.id); } catch {}
+    }
     deps.music.play(map.music);
     showScreen("play");
     pause.clear();
@@ -57,9 +62,10 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     stageEl.prepend(canvas);
     loadingCanvas = canvas;
 
-    const runLevels = { ...store.data.favLevels };
-    const boost = store.data.nextRunBoost;
-    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map });
+    // Daily Trial (M19): the same setup for everyone, so no Divine Blessings and no shard boost.
+    const runLevels = daily ? {} : { ...store.data.favLevels };
+    const boost = daily ? null : store.data.nextRunBoost;
+    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map, ...(daily ? dailyGameOptions(daily) : {}) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
@@ -78,7 +84,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false };
+    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -91,7 +97,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     deps.buffBar.render();
     const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
-    ctx.notice(`Tap a ring on ${map.name} to deploy a hero.${boostText}`);
+    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.` : "";
+    ctx.notice(`Tap a ring on ${map.name} to deploy a hero.${boostText}${dailyText}`);
   }
 
   function end() {
@@ -146,7 +153,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (stats.leaks === 0) session.perfectWaves += 1;
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
       const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
-      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}`);
+      const dailyText = session.daily && stats.wave === session.daily.goal ? " Daily Trial goal reached." : "";
+      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}${dailyText}`);
     }
     // Boss rules (M18).
     if (type === "bossMark") {
@@ -185,8 +193,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (target.closest("[data-td-close-panel]")) { ctx.actions.closePanel(); return; }
     if (target.closest("[data-td-restart]") || target.closest("[data-td-retry]")) {
       const map = state.session?.map ?? state.selectedMap;
+      const daily = state.session?.daily ?? null; // a trial retries the same day's setup
       ctx.actions.closePanel(false);
-      start(map);
+      start(map, { daily });
       return;
     }
     if (target.closest("[data-td-to-lobby]")) toLobby();

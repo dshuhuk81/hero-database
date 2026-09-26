@@ -29,6 +29,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
+  import { createDaily } from "../../game/td/page/daily";
+  import { renderChallengeBadges, renderChallengeList } from "../../game/td/page/challenges";
   import { createDebugPanel } from "../../game/td/page/debug";
   import { createHud } from "../../game/td/page/hud";
   import { createPopover } from "../../game/td/page/popover";
@@ -139,6 +141,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     boostEl.hidden = !boost;
     if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
     q("[data-td-favor-count]").textContent = `(${availableFavor(store.data)})`;
+    renderChallengeBadges(root!, store.data, data.tuning.tiers);
+    dailyTrial.render();
   }
 
   q("[data-td-maps]").addEventListener("click", (event) => {
@@ -189,6 +193,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   function openModePicker(opener: HTMLElement) {
     const map = state.selectedMap;
     q("[data-td-mode-map]").textContent = `${map.name} - Boss: ${ctx.bossFor(map).name}`;
+    renderChallengeList(q("[data-td-challenges]"), store.data, map.id, data.tuning.tiers);
     renderTiers();
     let last: HTMLButtonElement | null = null;
     root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
@@ -218,6 +223,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const buffBar = createBuffBar(ctx);
   const runOffer = createRunOffer(ctx);
   const results = createResults(ctx);
+  const dailyTrial = createDaily(ctx);
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
   const popover = createPopover(ctx);
