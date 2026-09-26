@@ -62,6 +62,41 @@ export const CLASS_ULT_TEXT = {
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 
+// Class paths chosen with the level 4 upgrade (M12); numbers in tuning.paths.
+/** @type {Record<string, Record<string, { name: string, text: string }>>} */
+export const PATH_INFO = {
+  Tank: {
+    bulwark: { name: "Bulwark", text: "Holds 1 more enemy at once." },
+    thorns: { name: "Thorns", text: "Enemies that hit it take 40% of that damage back." },
+    warden: { name: "Warden", text: "Enemies it holds take 30% more damage from every hero." },
+  },
+  Warrior: {
+    whirlwind: { name: "Whirlwind", text: "Cleave hits 3 more enemies in a 30% wider area." },
+    sunder: { name: "Sunder", text: "Each hit strips 8% armor and magic res from the target for 4s, up to 40%." },
+    bloodlust: { name: "Bloodlust", text: "Heals for 25% of the damage its attacks deal." },
+  },
+  Assassin: {
+    reach: { name: "Long Reach", text: "Dashes 80 further to catch loose enemies." },
+    ambush: { name: "Ambush", text: "The first strike on each enemy deals 2.5x damage." },
+    twin: { name: "Twin Blades", text: "Every attack also strikes the nearest other enemy for 70%." },
+  },
+  Mage: {
+    wildfire: { name: "Wildfire", text: "Hits set enemies on fire: 40% of the hit again over 3s." },
+    frost: { name: "Frost", text: "Hits slow enemies to 60% speed for 1.5s." },
+    arc: { name: "Arc", text: "Attacks chain to 2 more enemies (60% and 35%); Zeus gets 2 extra bounces." },
+  },
+  Archer: {
+    piercing: { name: "Piercing", text: "Each shot also hits up to 2 enemies right behind the target for 60%." },
+    mark: { name: "Hunter's Mark", text: "Hit enemies take 40% more damage from every hero for 5s." },
+    crippling: { name: "Crippling", text: "Hits slow enemies to 50% speed for 2s." },
+  },
+  Support: {
+    sanctuary: { name: "Sanctuary", text: "Heals also reach allies next to the target for half." },
+    hymn: { name: "War Hymn", text: "Allies in range attack 20% faster." },
+    purify: { name: "Purify", text: "Lifts hexes from allies in range and heals 25% more." },
+  },
+};
+
 // Enemy kinds in the order players meet them; stats come from tuning.enemies.
 /** @type {Record<string, { name: string, text: string }>} */
 export const ENEMY_INFO = {
@@ -71,5 +106,10 @@ export const ENEMY_INFO = {
   archer: { name: "Archer", text: "Stops at range and shoots road heroes for 8 seconds, then closes in to melee." },
   brute: { name: "Brute", text: "Slow and heavily armored against physical damage, but weak to magic. Costs 2 lives if it gets through." },
   boss: { name: "Boss", text: "The battlefield's final boss, arriving with an escort. Very tough, hits hard and costs 3 lives if it gets through." },
+  mender: { name: "Mender", text: "Every 2.5 seconds heals nearby enemies (not other Menders) for 8% of their health. Each enemy can be healed for at most half its health in total. Walks inside the pack, so splash damage, Last enemy targeting or an Assassin's dash reach it." },
+  shieldbearer: { name: "Shieldbearer", text: "Carries a shield worth 160% of its health that takes damage first. Every hit strips at least 15% of the shield, so many quick hits (cleave, splash, fast attackers) break it faster than one big hit. The shield grows back after 4 seconds without a hit." },
+  hexer: { name: "Hexer", text: "Every 6 seconds hexes the nearest hero within 140 range: for 2 seconds it cannot attack and its ultimate stops charging. Shoots road heroes from range like an Archer. Resists magic; Archers outrange the hex." },
+  broodcaller: { name: "Broodcaller", text: "Calls 2 Imps every 4 seconds, up to 4 at a time and 8 in total. Resists magic; Archers snipe it from range. Costs 2 lives if it gets through." },
+  imp: { name: "Imp", text: "Small, fast and fragile. Only appears from a Broodcaller." },
   brood: { name: "Lilith's Children", text: "Summoned around Lilith. While any of them stand she cannot be hit, and all damage they take also hurts her. When all have fallen she summons them again, weaker." },
 };

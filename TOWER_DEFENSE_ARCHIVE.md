@@ -249,3 +249,34 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 - Popup: a Target row of 9 icon buttons (`aria-pressed`, title and label per icon) under the stats, with the current choice named next to "Target" (auto shows the class rule). Road heroes don't show the flyers icon. Help entry "Targeting" added.
 - Bots keep auto, so `test:td-balance` and sweeps are unchanged (auto uses the same order as before).
 - Tests in `test-td-sim.mjs`: every mode picks its enemy, boss fallback and untargetable boss, invalid and road-flying modes rejected, dash reach with a chosen mode, the fallen record keeps the mode. Checked in Chromium at 1280x800, 844x390, 667x375 and 390x844: popup fits, pressed state and label follow the click, no console errors.
+
+## Roadmap M11: Enemies that ask questions (done September 26, 2026)
+- Goal (gap check): enemies that demand a decision beyond more damage: healer, shield, summoner, disabler.
+- Done (September 26, 2026), all numbers in `tuning.enemies`, logic in `enemyTraits()` in `sim.js` (runs each step while the enemy can act):
+  - **Mender** (wave 5, 9): every 2.5 s heals other enemies within 95 px for 8% of their max health; never other Menders; each enemy can take at most 50% of its max health from heals in total (without this cap two Menders behind a Brute outhealed a lone Tank forever); bosses at most 30% of the Mender's health per pulse.
+  - **Shieldbearer** (wave 6, 9): shield of 160% of its health takes damage first (`absorbShield` in `hit()`); every hit strips at least 15% of the full shield, so many quick hits break it; regrows at 35%/s after 4 s without a hit.
+  - **Hexer** (wave 7): ranged like the Archer enemy; every 6 s hexes the nearest hero within 140 px for 2 s (`hero.hexedUntil`, `isHexed`): no attacks and no ultimate charge. Veiled heroes are skipped. Magic resistance 160.
+  - **Broodcaller** (wave 8) and **Imp**: 2 Imps every 4 s, at most 4 alive and 8 in total (`summonerId`, no shared damage). Magic resistance 150, 2 lives.
+- Waves: `tdWaves.json` waves 5 to 9 each got one new kind (wave 6 archers 8 -> 6, wave 9 brutes 7 -> 6 to make room). Long and endless modes cycle waves 6 to 9, so they carry them too.
+- Class matrix (`td-class-matrix.mjs`, asserted in `test:td-balance`): new rows healer (platform Mage: splash hits the healed pack), shield (Tank / Mage), summoner (Warrior / Archer), hexer (Tank / Archer). Road Healer is a Warrior / Assassin tie, left unasserted. Platform scores no longer count damage on summoned Imps (they are not in the wave total). Old rows unchanged.
+- Balance (`test:td-balance`, seed 99): mixed squads still win every map in 10 waves; Moonlit balanced 15 -> 8 lives, Sunscar balanced 4 -> 7, Verdant all-platform went from a win to a loss (Verdant was the easy map). 20 waves and endless within 1 to 3 waves of before.
+- Bot runner fix (`td-runner.mjs`): the standoff guard never fired (7200 steps of 1/60 s sum to just under 120), so a stalled wave ran until something else ended it. It is now "120 s without a kill or leak", which also stops counting long boss fights as standoffs.
+- Art: no own sprites yet. `ENEMY_ART` in `assets.js` borrows full-body sprites with a tint and size (Mender = Archer crystal with a green heal ring at its feet, Shieldbearer = Grunt with a shield bar and bubble, Broodcaller = old `brood-v1`, Hexer = old `boss-lilith-v1` with a violet rim, Imp = small red Runner); glossary uses matching CSS filters. Hexed heroes get a pulsing violet ring, hexes draw a beam, broken shields spark. Own sprites via Coplay are still open.
+- Text: `ENEMY_INFO` in `skills.js`, a "Special enemies" entry in How to play, glossary cards (with Shield stat, Imp card after the Broodcaller), HUD wave preview names.
+- Tests in `test-td-sim.mjs`: heal share, no Mender-on-Mender heals, heal budget; shield scale, minimum chip, overflow, regrowth; summon per call, alive cap, lifetime total; hex target, a hexed hero does not attack, veil blocks the hex.
+
+## Roadmap M12: Class paths that change mechanics (done September 26, 2026)
+- Goal (gap check): upgrade choices that build a playstyle instead of +% stats.
+- Decision: the level 3 focus (attack / health / range) stays; the level 4 upgrade now asks for one of three class paths (`tuning.upgrades.path.level`, numbers in `tuning.paths`, names and text in `PATH_INFO` in `skills.js`). Kept on the unit through Awakening and training, lost when it falls, like the focus.
+  - Tank: Bulwark (holds 1 more), Thorns (reflects 40% of damage taken), Warden (held enemies take 30% more from everyone).
+  - Warrior: Whirlwind (cleave +3 targets, 30% wider), Sunder (8% armor and magic res shred per hit, up to 40%, 4 s), Bloodlust (25% lifesteal).
+  - Assassin: Long Reach (dash +80), Ambush (first strike on each enemy x2.5), Twin Blades (second strike on the nearest other enemy at 70%).
+  - Mage: Wildfire (burn: 40% of the hit again over 3 s), Frost (60% speed for 1.5 s), Arc (every Mage chains 2 more times at 60% / 35%; Zeus gets 2 extra bounces).
+  - Archer: Piercing (2 enemies behind the target at 60%), Hunter's Mark (target takes 40% more from everyone for 5 s), Crippling (50% speed for 2 s).
+  - Support: Sanctuary (heals also reach allies next to the target at 50%), War Hymn (allies in range attack 20% faster), Purify (lifts hexes from allies in range, heals 25% more).
+- Sim: `pathFx`, `onStrike` (sunder, bloodlust, burn, chill, mark), `hymnFor`, `purify`; `hit()` now returns the damage dealt and applies Warden and Mark; burn ticks and a separate `chill` slow in `step()` (skill slows keep their own `slowFactor`).
+- UI: the level 4 upgrade button opens a path picker (same style as the focus picker) with name and effect; the popup's level line names the path; Glossary class cards list the three paths; How to play mentions them.
+- Bots: `playRun` option `paths` (class -> path), default each class's first path. Tests use an `lv()` helper that picks the first path at level 4.
+- Balance (endless depth, 3 squads x 3 maps x 2 seeds, one class varied at a time): no paths 22.3; with paths 24 to 28. Tank 26.5 / 26.2 / 26.7, Warrior 26.5 / 26.0 / 26.4, Assassin 26.5 / 26.2 / 26.2, Mage 26.5 / 27.9 / 27.3, Support 26.5 / 26.8 / 26.3, Archer 26.5 / 24.6 / 24.3 (Mark and Crippling were buffed once, 24.1 / 23.9 before). `test:td-balance`: 10 waves unchanged; 20 waves Moonlit 1/5 -> 2/5 and Sunscar 1/5 -> 3/5 wins.
+- Open: Archer Mark and Crippling still trail Piercing by about 2 endless waves; the bots don't use targeting or placement that would favor them. Paths add about 4 endless waves overall; M3 (blessing tuning) should account for it.
+- Tests in `test-td-sim.mjs`: path required at level 4, wrong or foreign ids refused, asked once; one check per path.

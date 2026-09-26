@@ -14,6 +14,11 @@ assert.deepEqual(Array.from({ length: 8 }, createRng(42)), Array.from({ length: 
 assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 50 }, "path interpolation");
 
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
+// Upgrade with a focus; the path step (M12) takes the class's first path.
+const lv = (g, entityId, focus) => {
+  const info = g.upgradeInfo(entityId);
+  return g.upgrade(entityId, info.needsPath ? info.pathOptions[0] : focus);
+};
 
 const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
 assert.equal(game.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]), true, "valid team");
@@ -162,7 +167,7 @@ assert.equal(game.wave, 1, "wave advances once");
   let upgraded = false;
   while (!g.complete) {
     if (!g.running) {
-      for (const hero of g.heroes) if (g.upgrade(hero.entityId, "attack").ok) upgraded = true;
+      for (const hero of g.heroes) if (lv(g, hero.entityId, "attack").ok) upgraded = true;
       g.startWave();
     }
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
@@ -342,7 +347,7 @@ function runWaveOne(g) {
   const nuwa = g.heroes[0];
   nuwa.hpLeft = 200; // damaged: upgrade must not fully heal
   g.gold = tuning.upgrades.costs[1];
-  const info = g.upgrade(nuwa.entityId);
+  const info = lv(g, nuwa.entityId);
   assert.equal(info.ok, true, "exact-cost purchase is allowed");
   assert.equal(g.gold, 0, "gold deducted exactly");
   assert.equal(nuwa.level, 2, "level increases");
@@ -360,21 +365,21 @@ function runWaveOne(g) {
   g.place("nuwa", "road", 0);
   const nuwa = g.heroes[0];
   g.gold = tuning.upgrades.costs[1] - 1;
-  assert.equal(g.upgrade(nuwa.entityId).ok, false, "insufficient funds rejected");
+  assert.equal(lv(g, nuwa.entityId).ok, false, "insufficient funds rejected");
   assert.equal(g.gold, tuning.upgrades.costs[1] - 1, "failed purchase keeps gold");
   g.gold = 10000;
   g.startWave();
-  assert.equal(g.upgrade(nuwa.entityId).ok, true, "mid-wave upgrade allowed");
+  assert.equal(lv(g, nuwa.entityId).ok, true, "mid-wave upgrade allowed");
   assert.equal(nuwa.level, 2, "mid-wave upgrade applied");
   g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
   assert.equal(g.running, false, "wave cleared");
-  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(nuwa.entityId, "health").ok);
+  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(lv(g, nuwa.entityId, "health").ok);
   assert.equal(nuwa.level, tuning.upgrades.maxLevel, "level cap reached");
   const capped = g.upgradeInfo(nuwa.entityId);
   assert.equal(capped.awaken, true, "past the level cap only Awakening is offered");
   g.gold = 10000;
-  g.upgrade(nuwa.entityId);
-  const done = g.upgrade(nuwa.entityId);
+  lv(g, nuwa.entityId);
+  const done = lv(g, nuwa.entityId);
   assert.equal(done.ok, false, "after Awakening only training, which needs a stat");
   assert.equal(done.train, true, "training is offered");
   assert.ok(done.reason.includes("train"), "reason is stated");
@@ -386,7 +391,7 @@ function runWaveOne(g) {
   g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
   g.gold = 10000;
   g.place("nuwa", "road", 0);
-  g.upgrade(g.heroes[0].entityId);
+  lv(g, g.heroes[0].entityId);
   g.damageHero(g.heroes[0], 99999);
   assert.equal(g.heroes.length, 0, "fallen hero leaves the field");
   g.place("nuwa", "road", 1);
@@ -545,7 +550,7 @@ function runWaveOne(g) {
   const eid = g.heroes[0].entityId;
   g.gold = 10000;
   const upgradeCost = tuning.upgrades.costs[1]; // hero is level 1 after placement; upgradeInfo uses costs[hero.level]
-  g.upgrade(eid);
+  lv(g, eid);
   assert.equal(g.totalGoldSpent, nuwaHero.cost + upgradeCost, "upgrade cost accumulates");
 }
 
@@ -1259,12 +1264,12 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.gold = 100000;
   g.place("zeus", "platform", 0);
   const zeus = g.heroes[0];
-  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(g.upgrade(zeus.entityId, "range").ok);
+  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, zeus.entityId, "range").ok);
   const info = g.upgradeInfo(zeus.entityId);
   assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
   assert.equal(info.cost, aw.cost);
   const atk = zeus.atk, hp = zeus.hp, gold = g.gold;
-  assert.ok(g.upgrade(zeus.entityId).ok);
+  assert.ok(lv(g, zeus.entityId).ok);
   assert.equal(zeus.awakened, true);
   assert.equal(zeus.level, tuning.upgrades.maxLevel, "awakening does not add a level");
   assert.equal(g.gold, gold - aw.cost);
@@ -1487,24 +1492,24 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     g.gold = 10000;
     g.place("zeus", "platform", 0);
     const zeus = g.heroes[0];
-    while (zeus.level < f.level - 1) assert.ok(g.upgrade(zeus.entityId).ok, "levels before the focus need no choice");
+    while (zeus.level < f.level - 1) assert.ok(lv(g, zeus.entityId).ok, "levels before the focus need no choice");
     return { g, zeus };
   };
   let { g, zeus } = setup();
   const info = g.upgradeInfo(zeus.entityId);
   assert.equal(info.needsFocus, true, "focus level asks for a choice");
   const gold = g.gold;
-  const refused = g.upgrade(zeus.entityId);
+  const refused = lv(g, zeus.entityId);
   assert.equal(refused.ok, false, "no upgrade without a focus");
   assert.ok(refused.reason.includes("focus"));
   assert.equal(g.gold, gold, "refused choice costs nothing");
-  assert.equal(g.upgrade(zeus.entityId, "speed").ok, false, "unknown focus rejected");
+  assert.equal(lv(g, zeus.entityId, "speed").ok, false, "unknown focus rejected");
   // Each option previews and applies only its own stat.
   const plain = { atk: info.nextAtk, hp: info.nextHp, range: zeus.range };
   for (const focus of ["attack", "health", "range"]) {
     ({ g, zeus } = setup());
     const option = g.upgradeInfo(zeus.entityId).focusOptions[focus];
-    assert.ok(g.upgrade(zeus.entityId, focus).ok);
+    assert.ok(lv(g, zeus.entityId, focus).ok);
     assert.equal(zeus.focus, focus);
     assert.equal(zeus.level, f.level);
     assert.equal(zeus.atk, option.nextAtk); assert.equal(zeus.hp, option.nextHp); assert.equal(zeus.range, option.nextRange);
@@ -1514,14 +1519,14 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     // The focus carries into later levels and Awakening, and is asked only once.
     const next = g.upgradeInfo(zeus.entityId);
     assert.ok(!next.needsFocus, "focus is asked once");
-    while (zeus.level < tuning.upgrades.maxLevel) assert.ok(g.upgrade(zeus.entityId).ok);
-    assert.ok(g.upgrade(zeus.entityId).ok, "awaken");
+    while (zeus.level < tuning.upgrades.maxLevel) assert.ok(lv(g, zeus.entityId).ok);
+    assert.ok(lv(g, zeus.entityId).ok, "awaken");
     const expected = Math.round(zeus.baseAtk * (1 + tuning.upgrades.attackPerLevel * (zeus.level - 1)) * (1 + tuning.awakening.attackBonus) * (focus === "attack" ? 1 + f.attack : 1));
     assert.equal(zeus.atk, expected, `${focus}: attack focus kept through awakening`);
   }
   // A fallen hero re-enters without its focus.
   ({ g, zeus } = setup());
-  g.upgrade(zeus.entityId, "attack");
+  lv(g, zeus.entityId, "attack");
   g.place("nuwa", "road", 0);
   const nuwa = g.heroes.find((h) => h.id === "nuwa");
   assert.equal(nuwa.focus, undefined, "new units start without a focus");
@@ -1694,6 +1699,217 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.equal(g.findTarget(nyx), null, "held enemies beyond range stay out of reach");
   }
 
+  // M11 enemies. Mender: heals nearby enemies, not other Menders, within its budget.
+  {
+    const { g } = setup("zeus");
+    const cfg = tuning.enemies.mender.heal;
+    const mender = enemyAt(g, "mender", 100, 100, 50);
+    const other = enemyAt(g, "mender", 110, 100, 50);
+    const brute = enemyAt(g, "brute", 120, 100, 1000);
+    brute.hp = 100;
+    const far = enemyAt(g, "grunt", 100 + cfg.radius + 50, 100, 1000);
+    far.hp = 100;
+    g.enemyTraits(mender, cfg.every);
+    close(brute.hp, 100 + 1000 * cfg.share, "mender heals by share of max health");
+    assert.equal(other.hp, 50, "menders do not heal each other");
+    assert.equal(far.hp, 100, "out of radius is not healed");
+    for (let i = 0; i < 20; i += 1) g.enemyTraits(mender, cfg.every);
+    close(brute.healed, 1000 * cfg.budget, "heals stop at the budget");
+  }
+
+  // Shieldbearer: shield first, minimum chip per hit, regrows after a quiet spell.
+  {
+    const { g, units: [zeus] } = setup("zeus");
+    const cfg = tuning.enemies.shieldbearer.shield;
+    const sb = g.spawnEnemy("shieldbearer");
+    close(sb.shieldMax, sb.maxHp * cfg.hp, "shield scales with health");
+    const hp = sb.hp;
+    g.hit(sb, 1, zeus);
+    close(sb.shield, sb.shieldMax * (1 - cfg.minChip), "a small hit still strips minChip");
+    assert.equal(sb.hp, hp, "health untouched while the shield holds");
+    g.hit(sb, sb.shield + 30, zeus);
+    assert.equal(sb.shield, 0, "shield broken");
+    close(sb.hp, hp - 30, "overflow reaches health");
+    g.time += cfg.regenDelay + 1;
+    g.enemyTraits(sb, 1);
+    close(sb.shield, sb.shieldMax * cfg.regenRate, "shield regrows after the delay");
+  }
+
+  // Broodcaller: imps per call, alive cap, lifetime total.
+  {
+    const { g } = setup("zeus");
+    const cfg = tuning.enemies.broodcaller.summon;
+    const caller = g.spawnEnemy("broodcaller");
+    const imps = () => g.enemies.filter((e) => e.summonerId === caller.entityId && !e.dead);
+    g.enemyTraits(caller, cfg.every);
+    assert.equal(imps().length, cfg.count, "one call");
+    for (let i = 0; i < 5; i += 1) g.enemyTraits(caller, cfg.every);
+    assert.equal(imps().length, cfg.max, "alive cap");
+    for (let i = 0; i < 10; i += 1) { for (const imp of imps()) imp.dead = true; g.enemyTraits(caller, cfg.every); }
+    assert.equal(caller.summoned, cfg.total, "lifetime total");
+    assert.ok(!imps()[0]?.parentId, "imps do not share damage with the caller");
+  }
+
+  // Hexer: the nearest hero in range cannot act; veiled heroes are skipped.
+  {
+    const { g, units: [zeus, nyx] } = setup("zeus", "nyx");
+    const cfg = tuning.enemies.hexer.hex;
+    const hexer = enemyAt(g, "hexer", zeus.x + 20, zeus.y, 1e6);
+    hexer.distance = 5;
+    g.enemyTraits(hexer, cfg.every);
+    assert.ok(g.isHexed(zeus), "nearest hero hexed");
+    assert.ok(!g.isHexed(nyx), "one hero per hex");
+    const grunt = enemyAt(g, "grunt", zeus.x + 30, zeus.y, 1e6);
+    zeus.attackClock = 0;
+    const before = grunt.hp;
+    g.step(1 / 60);
+    assert.equal(grunt.hp, before, "a hexed hero does not attack");
+    g.time = zeus.hexedUntil + 0.01;
+    nyx.veilUntil = g.time + 10;
+    hexer.x = nyx.x; hexer.y = nyx.y;
+    g.enemyTraits(hexer, cfg.every);
+    assert.ok(!g.isHexed(nyx), "veiled heroes cannot be hexed");
+  }
+
+  // M12 class paths: the level 4 upgrade needs one, and each changes how the hero fights.
+  {
+    const { g, units: [zeus] } = setup("zeus");
+    while (zeus.level < tuning.upgrades.path.level - 1) lv(g, zeus.entityId, "attack");
+    const info = g.upgradeInfo(zeus.entityId);
+    assert.equal(info.needsPath, true, "level 4 asks for a path");
+    assert.deepEqual(info.pathOptions, Object.keys(tuning.paths.Mage), "Mage paths offered");
+    assert.equal(g.upgrade(zeus.entityId, "attack").ok, false, "a focus is not a path");
+    assert.equal(g.upgrade(zeus.entityId, "bulwark").ok, false, "another class's path is refused");
+    assert.ok(g.upgrade(zeus.entityId, "frost").ok);
+    assert.equal(zeus.path, "frost");
+    assert.ok(!g.upgradeInfo(zeus.entityId).needsPath, "asked once");
+  }
+  const P = tuning.paths;
+  const hp = (e) => e.maxHp - e.hp;
+  // Tank: Bulwark holds one more, Thorns reflects, Warden makes held enemies take more.
+  {
+    const { g, units: [nuwa] } = setup("nuwa");
+    const limit = tuning.blocking.blockLimit.Tank;
+    const crowd = Array.from({ length: limit + 2 }, () => enemyAt(g, "grunt", nuwa.x, nuwa.y));
+    g.engaged = new Map();
+    crowd.forEach((e) => g.findEnemyTarget(e));
+    assert.equal(g.engaged.get(nuwa), limit, "block limit without a path");
+    nuwa.path = "bulwark";
+    g.engaged = new Map();
+    crowd.forEach((e) => g.findEnemyTarget(e));
+    assert.equal(g.engaged.get(nuwa), limit + P.Tank.bulwark.blockLimit, "Bulwark holds one more");
+    g.enemies = [];
+    nuwa.path = "thorns";
+    const biter = enemyAt(g, "grunt", nuwa.x, nuwa.y);
+    biter.attackClock = 0;
+    g.step(1 / 60);
+    assert.ok(hp(biter) > 0 || biter.dead, "Thorns hurts the attacker");
+    g.enemies = [];
+    nuwa.path = "warden";
+    const held = enemyAt(g, "grunt", 0, 0);
+    held.held = true; held.heldBy = nuwa;
+    g.hit(held, 100, nuwa, { showShot: false });
+    close(hp(held), 100 * (1 + tuning.blocking.heldDamageBonus) * (1 + P.Tank.warden.heldBonus), "Warden bonus on held enemies");
+  }
+  // Warrior: Whirlwind cleaves more, Sunder shreds resistance, Bloodlust heals.
+  {
+    const { g, units: [war] } = setup("poseidon");
+    const crowd = Array.from({ length: 9 }, (_, i) => enemyAt(g, "grunt", war.x + 20 + (i % 3) * 8, war.y + Math.floor(i / 3) * 8));
+    g.basicAttack(war, crowd[0]);
+    const plain = crowd.filter((e) => hp(e) > 0).length;
+    crowd.forEach((e) => { e.hp = e.maxHp; });
+    war.path = "whirlwind";
+    g.basicAttack(war, crowd[0]);
+    assert.equal(crowd.filter((e) => hp(e) > 0).length, Math.min(crowd.length, plain + P.Warrior.whirlwind.targets), "Whirlwind hits more");
+    g.enemies = [];
+    war.path = "sunder";
+    const brute = enemyAt(g, "brute", war.x + 20, war.y);
+    g.basicAttack(war, brute);
+    const first = hp(brute);
+    g.basicAttack(war, brute);
+    assert.ok(hp(brute) - first > first, "Sunder: the second hit lands harder");
+    war.path = "bloodlust";
+    war.hpLeft = 1;
+    g.basicAttack(war, brute);
+    assert.ok(war.hpLeft > 1, "Bloodlust heals");
+  }
+  // Assassin: Long Reach, Ambush, Twin Blades.
+  {
+    const { g, units: [nyx] } = setup("nyx");
+    const base = g.dashReach(nyx);
+    nyx.path = "reach";
+    assert.equal(g.dashReach(nyx), base + P.Assassin.reach.dash, "Long Reach");
+    nyx.path = "ambush";
+    const a = enemyAt(g, "grunt", nyx.x + 10, nyx.y);
+    a.held = true;
+    g.basicAttack(nyx, a);
+    const opener = hp(a);
+    g.basicAttack(nyx, a);
+    close(opener / (hp(a) - opener), P.Assassin.ambush.firstHit, "Ambush opener");
+    g.enemies = [];
+    nyx.path = "twin";
+    const t1 = enemyAt(g, "grunt", nyx.x + 10, nyx.y);
+    const t2 = enemyAt(g, "grunt", nyx.x - 10, nyx.y);
+    t1.held = t2.held = true;
+    g.basicAttack(nyx, t1);
+    assert.ok(hp(t2) > 0, "Twin Blades strikes a second enemy");
+  }
+  // Mage: Wildfire burns, Frost slows, Arc chains beyond the splash.
+  {
+    const { g, units: [mage] } = setup("phoenix");
+    mage.path = "wildfire";
+    const e = enemyAt(g, "grunt", mage.x + 30, mage.y);
+    g.basicAttack(mage, e);
+    const hitDmg = hp(e);
+    for (let i = 0; i < 60 * P.Mage.wildfire.seconds + 5; i += 1) g.step(1 / 60);
+    assert.ok(hp(e) > hitDmg * (1 + P.Mage.wildfire.share * 0.9), "Wildfire burns after the hit");
+    g.enemies = [];
+    mage.path = "frost";
+    const f = enemyAt(g, "grunt", mage.x + 30, mage.y);
+    g.basicAttack(mage, f);
+    assert.ok(f.chill > 0 && f.chillFactor === P.Mage.frost.factor, "Frost chills");
+    g.enemies = [];
+    mage.path = "arc";
+    const near = enemyAt(g, "grunt", mage.x + 30, mage.y);
+    const far = enemyAt(g, "grunt", mage.x + 30 + g.splashRadius(mage) + 20, mage.y);
+    g.basicAttack(mage, near);
+    assert.ok(hp(far) > 0, "Arc reaches past the splash");
+  }
+  // Archer: Piercing, Hunter's Mark, Crippling.
+  {
+    const { g, units: [archer] } = setup("diana");
+    archer.path = "piercing";
+    const front = enemyAt(g, "grunt", archer.x + 60, archer.y, 5000);
+    const behind = enemyAt(g, "grunt", archer.x + 90, archer.y);
+    g.basicAttack(archer, front);
+    assert.ok(hp(behind) > 0, "Piercing hits the enemy behind");
+    archer.path = "mark";
+    g.basicAttack(archer, front);
+    assert.ok(front.markedUntil > g.time, "Hunter's Mark applied");
+    const before = hp(front);
+    g.hit(front, 100, archer, { showShot: false });
+    close(hp(front) - before, 100 * (1 + P.Archer.mark.bonus), "marked enemies take more from every hit");
+    archer.path = "crippling";
+    g.basicAttack(archer, front);
+    assert.equal(front.chillFactor, P.Archer.crippling.factor, "Crippling slows");
+  }
+  // Support: Sanctuary splashes heals, War Hymn speeds allies, Purify lifts hexes.
+  {
+    const { g, units: [sup, a, b] } = setup("caishen", "zeus", "phoenix");
+    sup.path = "sanctuary";
+    a.x = sup.x + 20; a.y = sup.y; b.x = a.x + 10; b.y = a.y;
+    a.hpLeft = 1; b.hpLeft = b.hp - 1;
+    g.basicAttack(sup, null);
+    assert.ok(b.hpLeft === b.hp, "Sanctuary reaches the neighbour");
+    sup.path = "hymn";
+    assert.equal(g.hymnFor(a), P.Support.hymn.aps, "War Hymn in range");
+    assert.equal(g.hymnFor(sup), 0, "not on itself");
+    sup.path = "purify";
+    a.hexedUntil = g.time + 5;
+    g.basicAttack(sup, null);
+    assert.ok(!g.isHexed(a), "Purify lifts the hex");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");
@@ -1752,7 +1968,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.place("nuwa", "road", 0);
   const nuwa = g.heroes[0];
   const deploy = heroes.find((h) => h.id === "nuwa").cost;
-  const up = g.upgrade(nuwa.entityId);
+  const up = lv(g, nuwa.entityId);
   assert.equal(nuwa.invested, deploy + up.cost, "invested tracks deploy and upgrades");
   assert.equal(g.sellValue(nuwa.entityId), Math.floor((deploy + up.cost) * tuning.run.sellRefund), "refund is the sell share");
   const gold = g.gold;
@@ -1813,24 +2029,24 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.gold = 1e5;
   g.place("zeus", "platform", 0);
   const zeus = g.heroes[0];
-  while (zeus.level < tuning.upgrades.maxLevel) g.upgrade(zeus.entityId, "attack");
+  while (zeus.level < tuning.upgrades.maxLevel) lv(g, zeus.entityId, "attack");
   assert.equal(g.upgradeInfo(zeus.entityId).awaken, true, "Awakening first");
-  g.upgrade(zeus.entityId);
+  lv(g, zeus.entityId);
   const info = g.upgradeInfo(zeus.entityId);
   assert.equal(info.train, true, "after Awakening the next step is training");
   assert.equal(info.cost, t.cost);
   const atk = zeus.atk, hp = zeus.hp, range = zeus.range;
-  assert.equal(g.upgrade(zeus.entityId).ok, false, "training needs a stat");
-  assert.equal(g.upgrade(zeus.entityId, "attack").ok, true);
+  assert.equal(lv(g, zeus.entityId).ok, false, "training needs a stat");
+  assert.equal(lv(g, zeus.entityId, "attack").ok, true);
   assert.ok(zeus.atk > atk, "attack trained");
   assert.equal(zeus.trained.attack, 1);
   assert.equal(g.upgradeInfo(zeus.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
-  g.upgrade(zeus.entityId, "health");
+  lv(g, zeus.entityId, "health");
   assert.ok(zeus.hp > hp, "health trained");
-  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(g.upgrade(zeus.entityId, "range").ok, true);
+  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(lv(g, zeus.entityId, "range").ok, true);
   assert.ok(zeus.range > range, "range trained");
   assert.equal(g.upgradeInfo(zeus.entityId).focusOptions.range, undefined, "range stops at its cap");
-  assert.equal(g.upgrade(zeus.entityId, "range").ok, false);
+  assert.equal(lv(g, zeus.entityId, "range").ok, false);
   assert.equal(zeus.level, tuning.upgrades.maxLevel, "training adds no level");
 }
 

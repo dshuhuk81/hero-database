@@ -219,6 +219,12 @@ export class TowerDefenseGame {
     return Math.round(cfg.cost * cfg.costGrowth ** done * (1 - (this.favor.upgradeDiscount || 0)));
   }
 
+  // Class path chosen at tuning.upgrades.path.level (M12): its numbers from tuning.paths.
+  pathFx(hero, id) {
+    if (!hero?.path || (id && hero.path !== id)) return null;
+    return this.tuning.paths?.[hero.class]?.[hero.path] ?? null;
+  }
+
   // Level focus (tuning.upgrades.focus): reaching focus.level asks for attack, health or range.
   focusMult(focus, stat) {
     const bonus = this.tuning.upgrades.focus?.[stat];
@@ -319,8 +325,11 @@ export class TowerDefenseGame {
       health: { nextAtk, nextHp: this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, "health"), nextRange: hero.range },
       range: { nextAtk, nextHp, nextRange: Math.round(hero.range * this.focusMult("range", "range")) },
     } : null;
-    if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost, nextAtk, nextHp, needsFocus, focusOptions };
-    return { ok: true, hero, cost, nextAtk, nextHp, needsFocus, focusOptions };
+    // The step to path.level asks for one of the class paths (tuning.paths, M12).
+    const needsPath = !hero.path && hero.level + 1 === tuning.path?.level && !!this.tuning.paths?.[hero.class];
+    const pathOptions = needsPath ? Object.keys(this.tuning.paths[hero.class]) : null;
+    if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost, nextAtk, nextHp, needsFocus, focusOptions, needsPath, pathOptions };
+    return { ok: true, hero, cost, nextAtk, nextHp, needsFocus, focusOptions, needsPath, pathOptions };
   }
 
   // Training offer, shaped like the level focus choice (needsFocus + focusOptions), so
@@ -353,6 +362,9 @@ export class TowerDefenseGame {
       if (info.train) info.hero.trained = { ...(info.hero.trained || {}), [focus]: (info.hero.trained?.[focus] || 0) + 1 };
       else info.hero.focus = focus;
       info.hero.range = option.nextRange;
+    } else if (info.needsPath) {
+      if (!info.pathOptions.includes(focus)) return { ...info, ok: false, reason: `Choose a path for level ${info.hero.level + 1}.` };
+      info.hero.path = focus;
     }
     this.gold -= info.cost;
     this.totalGoldSpent += info.cost;
@@ -514,9 +526,13 @@ export class TowerDefenseGame {
       if (enemy.dead) continue;
       enemy.held = false;
       enemy.slow = Math.max(0, enemy.slow - dt);
+      enemy.chill = Math.max(0, (enemy.chill ?? 0) - dt);
+      if ((enemy.burnUntil ?? 0) > this.time) this.hit(enemy, enemy.burnDps * dt, enemy.burnBy, { showShot: false, showHit: false });
+      if (enemy.dead) continue;
       enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
+      this.enemyTraits(enemy, dt);
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
       if (target) {
         const ranged = this.shootsFromRange(enemy);
@@ -529,7 +545,10 @@ export class TowerDefenseGame {
           const mods = this.modifiers();
           // A veiled Assassin keeps holding its enemy, but nothing can hurt it.
           if (!this.isVeiled(target) && this.rng() >= mods.dodge) {
-            this.damageHero(target, resolveDamage(enemy.attack, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target)), enemy);
+            const taken = resolveDamage(enemy.attack, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
+            this.damageHero(target, taken, enemy);
+            const thorns = this.pathFx(target, "thorns");
+            if (thorns && !enemy.dead) this.hit(enemy, taken * thorns.reflect, target, { showShot: false, showHit: false });
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
           enemy.attackClock = enemy.attackPeriod || 0.9;
@@ -539,7 +558,7 @@ export class TowerDefenseGame {
         // seconds, separate from skill slows; the stronger of the two applies.
         const blocking = this.tuning.blocking ?? {};
         if (enemy.brushed) enemy.squeeze = Math.max(enemy.squeeze, blocking.passSlow || 0);
-        const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1);
+        const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1);
         enemy.distance += enemy.speed * pace * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
@@ -566,11 +585,12 @@ export class TowerDefenseGame {
     if (this.complete) return; // the last life was lost this step: heroes stand down
 
     for (const hero of this.heroes) {
+      if (this.isHexed(hero)) continue; // Hexer: no attacks, ultimate charge paused
       hero.attackClock -= dt;
       hero.ultClock += dt;
       const target = this.findTarget(hero);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0)));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero)));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -621,6 +641,7 @@ export class TowerDefenseGame {
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
     this.enemies.push(enemy);
     if (kind === "boss") {
       enemy.bossId = this.bossId;
@@ -690,7 +711,7 @@ export class TowerDefenseGame {
       const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
       // Block limit: a blocker that already holds its share lets further melee enemies walk
       // past, but they brush against it (step() slows them, tuning.blocking.passSlow).
-      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) : undefined;
+      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) + (this.pathFx(hero, "bulwark")?.blockLimit || 0) : undefined;
       if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) {
         if (distance <= reach) enemy.brushed = true;
         continue;
@@ -698,6 +719,7 @@ export class TowerDefenseGame {
       if (distance <= reach && (!best || distance < best.distance)) best = { hero, distance };
     }
     if (best && melee && this.engaged) this.engaged.set(best.hero, (this.engaged.get(best.hero) || 0) + 1);
+    enemy.heldBy = best && melee ? best.hero : null;
     return best?.hero ?? null;
   }
 
@@ -876,7 +898,7 @@ export class TowerDefenseGame {
 
   dashReach(hero) {
     const dash = this.kit(hero).dash;
-    return dash ? dash + (this.classBonus(hero).dash || 0) : 0;
+    return dash ? dash + (this.classBonus(hero).dash || 0) + (this.pathFx(hero, "reach")?.dash || 0) : 0;
   }
 
   // Class kit numbers with their class blessings (blessingTree *_special), for sim and UI.
@@ -917,6 +939,7 @@ export class TowerDefenseGame {
   basicAttack(hero, target) {
     const kit = this.kit(hero);
     const cb = this.classBonus(hero);
+    if (this.pathFx(hero, "purify")) this.purify(hero);
     if (kit.heal && this.healPulse(hero, kit, cb)) return true;
     if (!target) return false;
     const mods = this.modifiers();
@@ -926,11 +949,18 @@ export class TowerDefenseGame {
     // Archer anti-air (kit airBonus). Assassins hunt enemies nobody holds (kit looseBonus),
     // scaled by (speed / kit.looseSpeed) squared, so runners take the full bonus and slow
     // walkers little of it.
+    const path = this.pathFx(hero);
     const strike = (enemy, share, opts = {}) => {
-      const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce);
+      const shred = (enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0;
+      const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce) * (1 - shred);
       const loose = kit.looseBonus && !enemy.held ? kit.looseBonus * (kit.looseSpeed ? Math.min(1, enemy.speed / kit.looseSpeed) ** 2 : 1) : 0;
-      const bonus = 1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose;
-      this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts });
+      // Ambush (Assassin path): the first strike on each enemy hits much harder.
+      const ambush = hero.path === "ambush" && !enemy.ambushedBy?.has(hero.entityId) ? path.firstHit : 1;
+      if (ambush !== 1) (enemy.ambushedBy ||= new Set()).add(hero.entityId);
+      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * ambush;
+      const dealt = this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts }) || 0;
+      this.onStrike(hero, enemy, dealt);
+      return dealt;
     };
     if (kit.dash && Math.hypot(hero.x - target.x, hero.y - target.y) > hero.range) {
       this.emitHeroEffect(hero, { type: "dash", x1: hero.x, y1: hero.y, x2: target.x, y2: target.y, life: 0.3, color: "purple" });
@@ -939,11 +969,14 @@ export class TowerDefenseGame {
     const others = (radius) => this.enemies
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
-    if (hero.basic === "chain" && kit.chain) {
+    // Arc (Mage path): every Mage chains; a chaining Mage (Zeus) gets the extra bounces.
+    const arc = hero.path === "arc" ? path : null;
+    const chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;
+    if (chain) {
       let from = target;
       const struck = new Set([target]);
-      for (const share of kit.chain.falloff) {
-        const next = this.enemies.filter((e) => !struck.has(e) && this.canHit(hero, e) && Math.hypot(from.x - e.x, from.y - e.y) <= kit.chain.reach)
+      for (const share of chain.falloff) {
+        const next = this.enemies.filter((e) => !struck.has(e) && this.canHit(hero, e) && Math.hypot(from.x - e.x, from.y - e.y) <= chain.reach)
           .sort((a, b) => Math.hypot(from.x - a.x, from.y - a.y) - Math.hypot(from.x - b.x, from.y - b.y))[0];
         if (!next) break;
         this.emitHeroEffect(hero, { type: "shot", x1: from.x, y1: from.y, x2: next.x, y2: next.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
@@ -951,14 +984,27 @@ export class TowerDefenseGame {
         struck.add(next);
         from = next;
       }
-    } else if (kit.splash) {
+    }
+    if (kit.splash && !(hero.basic === "chain" && kit.chain)) {
       const radius = this.splashRadius(hero);
       this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
       for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
     } else if (kit.cleave) {
-      const victims = others(kit.cleave.radius).slice(0, kit.cleave.targets);
-      this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius: kit.cleave.radius, life: 0.3, color: "gold" });
+      // Whirlwind (Warrior path): more cleave targets in a wider radius.
+      const whirl = hero.path === "whirlwind" ? path : null;
+      const radius = kit.cleave.radius * (whirl?.radius ?? 1);
+      const victims = others(radius).slice(0, kit.cleave.targets + (whirl?.targets ?? 0));
+      this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius, life: 0.3, color: "gold" });
       for (const e of victims) strike(e, this.cleaveShare(hero), { showShot: false, showHit: false });
+    }
+    // Piercing (Archer path): the shot carries on into enemies right behind the target.
+    if (hero.path === "piercing") for (const e of others(path.radius).slice(0, path.targets)) strike(e, path.share, { showHit: false });
+    // Twin Blades (Assassin path): a second strike on the nearest other enemy in reach.
+    if (hero.path === "twin") {
+      const reach = Math.max(hero.range, this.dashReach(hero));
+      const second = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= reach)
+        .sort((a, b) => Math.hypot(hero.x - a.x, hero.y - a.y) - Math.hypot(hero.x - b.x, hero.y - b.y))[0];
+      if (second) strike(second, path.share);
     }
     if (kit.veil && this.isVeiled(hero)) {
       const extra = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= Math.max(hero.range, this.dashReach(hero)))
@@ -966,6 +1012,59 @@ export class TowerDefenseGame {
       for (const e of extra) strike(e, 1);
     }
     return true;
+  }
+
+  // Per-strike path effects (M12), after the damage landed.
+  onStrike(hero, enemy, dealt) {
+    const path = this.pathFx(hero);
+    if (!path || enemy.dead && hero.path !== "bloodlust") return;
+    switch (hero.path) {
+      case "sunder":
+        enemy.sunder = Math.min(path.max, ((enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0) + path.perHit);
+        enemy.sunderUntil = this.time + path.seconds;
+        break;
+      case "bloodlust":
+        hero.hpLeft = Math.min(hero.hp, hero.hpLeft + dealt * path.lifesteal);
+        break;
+      case "wildfire":
+        // Burn: `share` of this hit again over `seconds`; a new burn replaces a weaker one.
+        if (dealt * path.share / path.seconds >= ((enemy.burnUntil ?? 0) > this.time ? enemy.burnDps : 0)) {
+          enemy.burnDps = dealt * path.share / path.seconds;
+          enemy.burnUntil = this.time + path.seconds;
+          enemy.burnBy = hero;
+        }
+        break;
+      case "frost":
+      case "crippling":
+        // Keeps the stronger slow while one is still running.
+        enemy.chillFactor = enemy.chill > 0 ? Math.min(path.factor, enemy.chillFactor) : path.factor;
+        enemy.chill = path.seconds;
+        break;
+      case "mark":
+        enemy.markedUntil = this.time + path.seconds;
+        enemy.markBonus = path.bonus;
+        break;
+    }
+  }
+
+  // War Hymn (Support path): allies inside a hymn Support's range attack faster. Does not stack.
+  hymnFor(hero) {
+    let best = 0;
+    for (const support of this.heroes) {
+      const hymn = this.pathFx(support, "hymn");
+      if (hymn && support !== hero && Math.hypot(support.x - hero.x, support.y - hero.y) <= support.range) best = Math.max(best, hymn.aps);
+    }
+    return best;
+  }
+
+  // Purify (Support path): every action lifts hexes from allies in range.
+  purify(hero) {
+    for (const ally of this.heroes) {
+      if (this.isHexed(ally) && Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range) {
+        ally.hexedUntil = 0;
+        this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
+      }
+    }
   }
 
   // Support basic action: heal the most injured ally in range (by health share).
@@ -976,8 +1075,15 @@ export class TowerDefenseGame {
       if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
     }
     if (!ally) return false;
-    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0));
+    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0)) * (1 + (this.pathFx(hero, "purify")?.heal || 0));
     ally.hpLeft = Math.min(ally.hp, ally.hpLeft + amount);
+    // Sanctuary (Support path): the heal also reaches allies standing next to the target.
+    const sanctuary = this.pathFx(hero, "sanctuary");
+    if (sanctuary) {
+      for (const other of this.heroes) {
+        if (other !== ally && Math.hypot(other.x - ally.x, other.y - ally.y) <= sanctuary.radius) other.hpLeft = Math.min(other.hp, other.hpLeft + amount * sanctuary.share);
+      }
+    }
     this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
     return true;
   }
@@ -987,12 +1093,96 @@ export class TowerDefenseGame {
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
     const bossHit = enemy.kind === "boss" ? 1 + (this.favor.bossDamage || 0) : 1;
+    // Paths (M12): Warden's held enemies and Hunter's Mark take more from everyone.
+    const warden = enemy.held ? 1 + (this.pathFx(enemy.heldBy, "warden")?.heldBonus || 0) : 1;
+    const marked = (enemy.markedUntil ?? 0) > this.time ? 1 + enemy.markBonus : 1;
     const before = enemy.hp;
-    enemy.hp -= amount * vuln * held * bossHit;
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     if (enemy.hp <= 0) this.killEnemy(enemy, hero);
+    return Math.max(0, before - Math.max(0, enemy.hp));
+  }
+
+  // Shieldbearer (M11): the shield takes hits before health. Every hit strips at least
+  // minChip of the full shield, so many quick hits (cleave, splash, fast attackers) break
+  // it sooner than one big hit. Returns the damage left over for health.
+  absorbShield(enemy, damage) {
+    enemy.lastHitAt = this.time;
+    if (!(enemy.shield > 0)) return damage;
+    const shieldBefore = enemy.shield;
+    const strip = Math.max(damage, enemy.shieldMax * (this.tuning.enemies[enemy.kind]?.shield?.minChip ?? 0));
+    enemy.shield = Math.max(0, shieldBefore - strip);
+    if (enemy.shield === 0) this.emit({ type: "shieldBreak", x: enemy.x, y: enemy.y, life: 0.4, color: "white" });
+    return Math.max(0, damage - shieldBefore);
+  }
+
+  // Per-kind enemy traits (M11), run every step while the enemy can act:
+  //   heal (Mender): pulses heal to other enemies nearby (not other Menders); bosses take at
+  //     most `cap` of the Mender's max health per pulse. Each enemy can receive at most
+  //     `budget` of its max health in total, so a held group cannot outheal a weak line forever.
+  //   shield (Shieldbearer): refills at regenRate per second after regenDelay seconds without a hit.
+  //   summon (Broodcaller): calls `count` imps every `every` seconds, at most `max` alive
+  //     and `total` over its life (a held Broodcaller must not feed a wave forever).
+  //   hex (Hexer): stuns the nearest hero in range for `seconds`, every `every` seconds.
+  enemyTraits(enemy, dt) {
+    const cfg = this.tuning.enemies[enemy.kind];
+    if (!cfg) return;
+    if (cfg.heal) {
+      enemy.healClock = (enemy.healClock ?? cfg.heal.every) - dt;
+      if (enemy.healClock <= 0) {
+        enemy.healClock = cfg.heal.every;
+        let healed = false;
+        for (const other of this.enemies) {
+          if (other.kind === enemy.kind || other.dead || other.hp >= other.maxHp) continue;
+          if (Math.hypot(other.x - enemy.x, other.y - enemy.y) > cfg.heal.radius) continue;
+          const left = other.maxHp * cfg.heal.budget - (other.healed ?? 0);
+          const amount = Math.min(other.maxHp * cfg.heal.share, other.kind === "boss" ? enemy.maxHp * cfg.heal.cap : Infinity, left, other.maxHp - other.hp);
+          if (amount <= 0) continue;
+          other.hp += amount;
+          other.healed = (other.healed ?? 0) + amount;
+          healed = true;
+        }
+        if (healed) this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: cfg.heal.radius, life: 0.45, color: "green", enemyHeal: true });
+      }
+    }
+    if (cfg.shield && enemy.shield < enemy.shieldMax && this.time - (enemy.lastHitAt ?? -Infinity) >= cfg.shield.regenDelay) {
+      enemy.shield = Math.min(enemy.shieldMax, enemy.shield + enemy.shieldMax * cfg.shield.regenRate * dt);
+    }
+    if (cfg.summon) {
+      enemy.summonClock = (enemy.summonClock ?? cfg.summon.every) - dt;
+      if (enemy.summonClock <= 0) {
+        enemy.summonClock = cfg.summon.every;
+        const alive = this.enemies.filter((e) => e.summonerId === enemy.entityId && !e.dead).length;
+        const room = Math.max(0, Math.min(cfg.summon.count, cfg.summon.max - alive, cfg.summon.total - (enemy.summoned ?? 0)));
+        enemy.summoned = (enemy.summoned ?? 0) + room;
+        for (let i = 0; i < room; i += 1) {
+          this.spawnEnemy(cfg.summon.kind, { distance: enemy.distance + 12 * (i + 1), statScale: enemy.statScale ?? 1, lane: enemy.lane ?? 0, sway: SWAY[(enemy.entityId + i) % SWAY.length], extra: { summonerId: enemy.entityId } });
+        }
+        if (room > 0) this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "red" });
+      }
+    }
+    if (cfg.hex) {
+      enemy.hexClock = (enemy.hexClock ?? cfg.hex.every * 0.5) - dt;
+      if (enemy.hexClock <= 0) {
+        let best = null;
+        for (const hero of this.heroes) {
+          if (this.isVeiled(hero) || this.isHexed(hero)) continue;
+          const d = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
+          if (d <= cfg.hex.range && (!best || d < best.d)) best = { hero, d };
+        }
+        if (best) {
+          enemy.hexClock = cfg.hex.every;
+          best.hero.hexedUntil = this.time + cfg.hex.seconds;
+          this.emit({ type: "hex", x1: enemy.x, y1: enemy.y, x2: best.hero.x, y2: best.hero.y, x: best.hero.x, y: best.hero.y, life: 0.5, color: "purple" });
+        }
+      }
+    }
+  }
+
+  isHexed(hero) {
+    return (hero?.hexedUntil ?? 0) > this.time;
   }
 
   // Damage a child takes also reaches its summoner (capped at what the child had left).

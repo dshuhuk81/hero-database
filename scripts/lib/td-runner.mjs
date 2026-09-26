@@ -10,7 +10,7 @@ import waves from "../../src/data/tdWaves.json" with { type: "json" };
 
 export { maps };
 
-const STALL_SECONDS = 120; // one wave running this long counts as a standoff (lost run)
+const STALL_SECONDS = 120; // this long without a kill or leak counts as a standoff (lost run)
 
 // Every blessing at max level ("trunk": only the Favor trunk). Of each pick-one pair
 // the first node is taken.
@@ -39,8 +39,9 @@ export const SQUADS = {
 
 // `tuning` overrides the base tuning (balance experiments). `focus` is the level focus
 // bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
+// `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
-export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, mode = "classic", maxWave = 150 } = {}) {
+export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mode = "classic", maxWave = 150 } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
@@ -75,17 +76,27 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
         options.sort((a, b) => a.cost - b.cost);
         const before = g.gold;
         const pick = options[0].hero;
-        g.upgrade(pick.entityId, focus ?? (pick.slotType === "road" ? "health" : "attack"));
+        const info = options[0];
+        const pathChoice = paths?.[pick.class] ?? info.pathOptions?.[0];
+        g.upgrade(pick.entityId, info.needsPath ? pathChoice : focus ?? (pick.slotType === "road" ? "health" : "attack"));
         spent += before - g.gold;
       }
       if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
       if (!g.startWave()) break;
     }
-    const waveStart = g.time;
-    for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
-    // Standoff guard: blockers and heals can outlast enemies nobody can kill. A player
-    // would recruit damage mid-wave; the bot counts it as a lost run.
-    if (g.running && g.time - waveStart >= STALL_SECONDS) { stalled = true; break; }
+    // Standoff guard: blockers and heals can outlast enemies nobody can kill. A wave with
+    // no kill and no leak for STALL_SECONDS is a standoff; a player would recruit damage
+    // mid-wave, the bot counts it as a lost run. (Long boss fights keep making progress.)
+    let quietSteps = 0;
+    let progress = -1;
+    while (g.running && !g.complete) {
+      g.step(1 / 60);
+      const now = g.totalLeaks + Object.values(g.heroKills).reduce((sum, h) => sum + h.kills, 0);
+      quietSteps = now === progress ? quietSteps + 1 : 0;
+      progress = now;
+      if (quietSteps >= 60 * STALL_SECONDS) { stalled = true; break; }
+    }
+    if (stalled) break;
   }
   const won = g.won && !stalled;
   return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect };

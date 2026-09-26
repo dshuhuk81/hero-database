@@ -7,7 +7,8 @@ import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
-import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO } from "../../game/td/skills.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO } from "../../game/td/skills.js";
+import { ENEMY_ART } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
 interface Props { assetBase: string; }
@@ -29,6 +30,7 @@ const classes = CLASS_ORDER.map((name) => {
     slot: kit.slot === "road" ? "Road" : "Platform",
     role: (CLASS_ROLES as Record<string, string>)[name],
     block: t.blocking?.blockLimit?.[name],
+    paths: Object.keys(t.paths?.[name] ?? {}).map((id) => PATH_INFO[name]?.[id] ?? { name: id, text: "" }),
   };
 });
 
@@ -73,7 +75,7 @@ function enemyCard(kind: string, overrides: any = {}) {
     kind,
     name: overrides.name ?? ENEMY_INFO[kind].name,
     text: overrides.text ?? ENEMY_INFO[kind].text,
-    image: overrides.image ?? enemySprite(kind),
+    image: overrides.image ?? (ENEMY_ART[kind] ? enemySprite(ENEMY_ART[kind].file, ENEMY_ART[kind].version) : enemySprite(kind)),
     meta: overrides.meta ?? (wave ? `First seen on wave ${wave}` : ""),
     tags: [base.flying ? "Flying" : "Ground", base.attackRange ? "Ranged" : base.attack ? "Melee" : "Does not attack"],
     stats: [
@@ -83,13 +85,18 @@ function enemyCard(kind: string, overrides: any = {}) {
       ["Magic res", `${Math.round(magicRes)} (-${reduction(magicRes)}%)`],
       ["Attack", base.attack ? `${base.attack} / ${base.attackPeriod}s` : "-"],
       ...(base.attackRange ? [["Attack range", base.attackRange]] : []),
+      ...(base.shield ? [["Shield", Math.round(base.hp * hpScale * base.shield.hp)]] : []),
       ["Lives lost", base.damage],
       ["Gold", base.reward],
     ],
   };
 }
 
-const enemyCards = ["grunt", "runner", "flyer", "archer", "brute"].map((kind) => enemyCard(kind));
+const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "shieldbearer", "hexer", "broodcaller"].map((kind) => enemyCard(kind));
+{
+  const caller = enemyCards.findIndex((card) => card.kind === "broodcaller");
+  enemyCards.splice(caller + 1, 0, enemyCard("imp", { meta: "Summoned by the Broodcaller" }));
+}
 const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet"))].flatMap((id) => {
   const boss: any = bossById.get(id);
   const bossTuning = t.bosses?.[id];
@@ -154,6 +161,11 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
                 <h3><img src={classIcon(cls.name)} alt="" width="22" height="25" loading="lazy" decoding="async" />{cls.name}</h3>
                 <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
                 <p>{cls.role}</p>
+                {cls.paths.length > 0 && (
+                  <ul class="td-glossary-paths" aria-label={`${cls.name} paths at level ${t.upgrades.path?.level}`}>
+                    {cls.paths.map((path) => <li><strong>{path.name}</strong> {path.text}</li>)}
+                  </ul>
+                )}
               </article>
             ))}
           </div>

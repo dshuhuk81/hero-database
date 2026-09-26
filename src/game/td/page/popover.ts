@@ -3,7 +3,7 @@
 import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 import { classIcon } from "../assets.js";
-import { AWAKEN_TEXT } from "../skills.js";
+import { AWAKEN_TEXT, PATH_INFO } from "../skills.js";
 
 export function createPopover(ctx: PageContext) {
   const { q, state, data, maxLevel } = ctx;
@@ -26,6 +26,8 @@ export function createPopover(ctx: PageContext) {
   const popDetails = q("[data-pop-details-body]");
   const popFocus = q("[data-pop-focus]");
   const popSell = q<HTMLButtonElement>("[data-pop-sell]");
+  const popPath = q("[data-pop-path]");
+  const pathButtons = [...popPath.querySelectorAll<HTMLButtonElement>("[data-path-option]")];
   const popTarget = q("[data-pop-target]");
   const popTargetLabel = q("[data-pop-target-label]");
   const targetButtons = [...popTarget.querySelectorAll<HTMLButtonElement>("[data-target]")];
@@ -106,7 +108,7 @@ export function createPopover(ctx: PageContext) {
     popName.textContent = unit.name;
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
     const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
-    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
+    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
@@ -141,6 +143,19 @@ export function createPopover(ctx: PageContext) {
       popPreview.textContent = info.ok
         ? `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.${awakenText}`
         : `Needs ${info.cost} gold, you have ${game.gold}.${awakenText}`;
+    } else if (info.ok && info.needsPath) {
+      // Class path (M12): the upgrade button opens the class's three paths.
+      popUpgrade.disabled = false;
+      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popCost.textContent = `${info.cost} gold`;
+      info.pathOptions.forEach((id: string, i: number) => {
+        const button = pathButtons[i];
+        const path = PATH_INFO[unit.class]?.[id];
+        button.dataset.pathOption = id;
+        button.querySelector("strong")!.textContent = path?.name ?? id;
+        button.querySelector("small")!.textContent = path?.text ?? "";
+      });
+      popPreview.textContent = focusOpen ? "Pick one. The path stays for this unit until it falls." : `Level ${unit.level + 1} also picks a path that changes how ${unit.name} fights.`;
     } else if (info.ok && info.needsFocus) {
       // Level focus: the upgrade button opens three options, each previews its own gain.
       popUpgrade.disabled = false;
@@ -181,8 +196,11 @@ export function createPopover(ctx: PageContext) {
       popPreview.textContent = info.reason || "";
     }
     const showFocus = focusOpen && info.ok && !!info.needsFocus;
+    const showPath = focusOpen && info.ok && !!info.needsPath;
     if (popFocus.hidden === showFocus) { popFocus.hidden = !showFocus; position(); }
-    popUpgrade.setAttribute("aria-expanded", String(showFocus));
+    if (popPath.hidden === showPath) { popPath.hidden = !showPath; position(); }
+    popUpgrade.setAttribute("aria-controls", info.needsPath ? "td-pop-path" : "td-pop-focus");
+    popUpgrade.setAttribute("aria-expanded", String(showFocus || showPath));
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
   }
 
@@ -257,11 +275,12 @@ export function createPopover(ctx: PageContext) {
   popUpgrade.addEventListener("click", () => {
     const session = state.session;
     if (!session || state.selectedEntityId === null) return;
-    if (session.game.upgradeInfo(state.selectedEntityId).needsFocus) {
+    const pending = session.game.upgradeInfo(state.selectedEntityId);
+    if (pending.needsFocus || pending.needsPath) {
       focusOpen = !focusOpen;
       const unit = findUnit(state.selectedEntityId);
       if (unit) update(unit);
-      if (focusOpen) popFocus.querySelector<HTMLButtonElement>("[data-focus]")?.focus();
+      if (focusOpen) (pending.needsPath ? pathButtons[0] : popFocus.querySelector<HTMLButtonElement>("[data-focus]"))?.focus();
       return;
     }
     const result = session.game.upgrade(state.selectedEntityId);
@@ -289,6 +308,19 @@ export function createPopover(ctx: PageContext) {
     session.game.setTargeting(state.selectedEntityId, button.dataset.target);
     const unit = findUnit(state.selectedEntityId);
     if (unit) updateTargeting(unit);
+  });
+  popPath.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-path-option]");
+    const session = state.session;
+    if (!button || !session || state.selectedEntityId === null) return;
+    const result = session.game.upgrade(state.selectedEntityId, button.dataset.pathOption);
+    focusOpen = false;
+    if (result.ok) {
+      ctx.notice(`${result.hero.name} reached level ${result.hero.level} on the ${PATH_INFO[result.hero.class]?.[result.hero.path]?.name ?? result.hero.path} path.`);
+      popUpgrade.focus();
+    } else ctx.notice(result.reason || "Upgrade unavailable.");
+    const unit = findUnit(state.selectedEntityId);
+    if (unit) update(unit);
   });
   q("[data-pop-rotate]").addEventListener("click", () => {
     if (state.session && state.selectedEntityId !== null) state.session.game.rotate(state.selectedEntityId);

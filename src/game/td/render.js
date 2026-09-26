@@ -2,7 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
-import { tdAsset } from "./assets.js";
+import { ENEMY_ART, tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
@@ -20,6 +20,11 @@ const COLORS = {
   brute:  0xfb923c,
   boss:   0xff4d4d,
   brood:  0x8b5cf6,
+  mender: 0x8ff0b0,
+  shieldbearer: 0x93c5fd,
+  broodcaller: 0xf87171,
+  imp:    0xfca5a5,
+  hexer:  0xc4b5fd,
 };
 
 // Kenney Micro Roguelike packed sheet: 128x80, 8x8 tiles, no gaps.
@@ -184,7 +189,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-vN (the map's boss).
   const bossFile = options.boss?.id && options.boss.id !== "baphomet" ? `boss-${options.boss.id}` : "boss";
   const bossSpriteSize = { lilith: 108 }[options.boss?.id] ?? 96;
-  const fullSpriteSize = (kind) => (kind === "boss" ? bossSpriteSize : kind === "brute" ? 64 : 44);
+  const fullSpriteSize = (kind) => (kind === "boss" ? bossSpriteSize : kind === "brute" ? 64 : ENEMY_ART[kind]?.size ?? 44);
   // Full-body sprites stand on the path: the build script leaves a 10% margin under the
   // figure, so anchor at 0.9 height and put the feet a little below the path centre line.
   const FULL_SPRITE_FEET = 6;
@@ -194,6 +199,12 @@ export async function createRenderer(canvas, game, options = {}) {
   const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
   for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
     PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
+      .then((tex) => fullBodyTextures.set(kind, tex))
+      .catch(() => {});
+  }
+  // M11 kinds borrow another sprite (ENEMY_ART), tinted in updateEnemyOverlays.
+  for (const [kind, art] of Object.entries(ENEMY_ART)) {
+    PIXI.Assets.load(tdAsset(`enemies/sprites/${art.file}-${art.version}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
@@ -757,6 +768,8 @@ export async function createRenderer(canvas, game, options = {}) {
       if (kind === "boss" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 14, outerStrength: 1, color: 0xff4d4d })];
       // Lilith's children are dark on dark ground: a thin violet rim keeps them readable in the escort.
       if (kind === "brood" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 8, outerStrength: 1.4, color: 0xa855f7 })];
+      // Borrowed sprites (M11) get a colored rim so they don't read as the original kind.
+      if (ENEMY_ART[kind]?.glow && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 8, outerStrength: 1.6, color: ENEMY_ART[kind].glow })];
     }
 
     // Boss: hero image > Kenney tile > vector circle (handled in buildEnemyShape)
@@ -947,8 +960,9 @@ export async function createRenderer(canvas, game, options = {}) {
     const petrified = (unit.petrifiedUntil ?? 0) > game.time;
     c._stoneOverlay.visible = petrified;
     const stunned = !petrified && (unit.stunnedUntil ?? 0) > game.time;
+    const own = ENEMY_ART[unit.kind]?.tint ?? 0xffffff;
     for (const sprite of [c._fullSprite, c._portraitSprite, c._bossSprite, c._enemySprite]) {
-      if (sprite) sprite.tint = petrified ? 0x9ba39f : stunned ? 0xb9a8ff : 0xffffff;
+      if (sprite) sprite.tint = petrified ? 0x9ba39f : stunned ? 0xb9a8ff : own;
     }
 
     // Hit-flash: white overlay for 2 frames
@@ -968,9 +982,26 @@ export async function createRenderer(canvas, game, options = {}) {
       const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
       const top = (fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9) - (unit.flying ? FLYER_LIFT : 0);
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
+      // Mender: green heal ring at its feet, showing the heal radius faintly.
+      const heal = game.tuning.enemies[unit.kind]?.heal;
+      if (heal) {
+        g.ellipse(unit.x, unit.y + FULL_SPRITE_FEET, 20, 7).fill({ color: 0x4ade80, alpha: 0.35 }).stroke({ width: 2, color: 0x86efac, alpha: 0.9 });
+        g.circle(unit.x, unit.y, heal.radius).stroke({ width: 1, color: 0x4ade80, alpha: 0.18 });
+      }
+      // Shieldbearer: shield bar above health and a bubble while the shield holds.
+      if (unit.shieldMax) {
+        const ratio = unit.shield / unit.shieldMax;
+        drawBar(g, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc);
+        if (ratio > 0) g.circle(unit.x, unit.y - fullSpriteSize(unit.kind) * 0.35, fullSpriteSize(unit.kind) * 0.45).stroke({ width: 2, color: 0x7dd3fc, alpha: 0.25 + 0.45 * ratio });
+      }
     }
     for (const unit of game.heroes) {
       drawBar(g, unit.x - 24, unit.y + 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
+      // Hexed (Hexer): a pulsing violet ring while the hero cannot act.
+      if (game.isHexed?.(unit)) {
+        const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
+        g.circle(unit.x, unit.y, 33).stroke({ width: 3, color: 0xc084fc, alpha: pulse });
+      }
     }
     layerBars.addChild(g);
   }
@@ -1024,7 +1055,12 @@ export async function createRenderer(canvas, game, options = {}) {
     if (effect.type === "shot") {
       spawnParticle("trace_01", (effect.x1 + effect.x2) / 2, (effect.y1 + effect.y2) / 2, { size: 26, life: 0.2, tint: baseTint });
     } else if (effect.type === "splash") {
-      spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: "purple" });
+      spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: effect.color === "green" ? "green" : "purple" });
+    } else if (effect.type === "hex") {
+      spawnParticle("twirl_01", effect.x2, effect.y2, { size: 64, life: 0.6, vr: 5, tint: "purple" });
+      for (let i = 1; i <= 3; i++) spawnParticle("trace_01", effect.x1 + (effect.x2 - effect.x1) * i / 4, effect.y1 + (effect.y2 - effect.y1) * i / 4, { size: 18, life: 0.3, tint: "purple" });
+    } else if (effect.type === "shieldBreak") {
+      for (let i = 0; i < 5; i++) spawnParticle("spark_04", effect.x, effect.y, { size: 16, life: 0.4, vx: rand(180), vy: rand(180), tint: "white" });
     } else if (effect.type === "cleave") {
       spawnParticle("slash_04", effect.x, effect.y, { size: effect.radius * 1.6, life: 0.3, rot: Math.random() * Math.PI * 2, tint: "gold" });
     } else if (effect.type === "dash") {
@@ -1129,12 +1165,14 @@ export async function createRenderer(canvas, game, options = {}) {
       if (effect.type === "veil") continue; // the hero token turns translucent instead (particles mark the start)
       if (hasHeroFx(effect)) continue;
       if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
-      const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : palette.gold;
+      const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : effect.color === "green" ? TINTS.green : effect.color === "white" ? TINTS.white : palette.gold;
       const g = new PIXI.Graphics();
       g.setStrokeStyle({ width: 2, color, alpha: reducedMotion ? 0.5 : Math.min(1, effect.life * 6) });
       const fade = reducedMotion ? 0.5 : Math.min(1, effect.life * 4);
       if (effect.type === "shot") {
         g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke();
+      } else if (effect.type === "hex") {
+        g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke({ width: 3, color, alpha: fade * 0.8, cap: "round" });
       } else if (effect.type === "dash" || effect.type === "beam") {
         // Class kits (M6): Assassin dash trail, Support heal beam.
         const beam = effect.type === "beam";

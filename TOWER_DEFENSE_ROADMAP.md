@@ -8,23 +8,9 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-### M11: Enemies that ask questions (gap check, P0)
+## Use subagents for tackling more than one task
 
-Today 5 enemy kinds (grunt, runner, flyer, archer, brute) plus brood; the counters are swarm, armored, runner, flyer, boss. Missing are enemies that demand a decision beyond "more damage".
-- [ ] Healer enemy: heals nearby enemies; answer is Archer/Assassin focus fire (pairs with the M1 targeting options).
-- [ ] Shielded enemy: flat shield that must break before HP damage; answer is fast hits or burst.
-- [ ] Summoner enemy: spawns small adds while alive; answer is priority killing (reuse the Lilith summon code).
-- [ ] Disabler enemy: stuns the nearest hero for a few seconds; answer is redundancy (two heroes covering one spot).
-- [ ] Add each to the `td:classes` matrix so every new kind has a clear best class, then glossary and `skills.js` text.
-- Done when: each new kind appears in the wave tables and the class matrix still shows distinct best picks.
-
-### M12: Branching upgrades that change mechanics (gap check, P1)
-
-Level focus at 3 and Training are stat-only (+attack, +health, +range). The findings warn that "+10% ATK" choices build numbers, not builds.
-- [ ] Replace or extend the level 3 focus with one mechanic choice per class, e.g. Mage: bigger splash vs. extra chain bounce vs. burn; Archer: pierce through vs. slow on hit vs. crit bonus; Tank: bigger hold vs. thorns vs. more blocks.
-- [ ] Per-hero variants later (Zeus chain vs. Stormcaller AoE vs. Overcharge), on top of the class choice.
-- [ ] Pricing check in `build-game-balance.mjs` if a branch changes effective DPS a lot.
-- Done when: every class has 3 level-3 branches with different behaviour, and the bots show no branch winning everywhere.
+Coordinate well when changing files though.
 
 ### M13: Status effects and mechanical synergies (gap check, P1)
 
@@ -120,9 +106,17 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - button alignment: some buttons are just underneath vertically aligned. that takes a lot of y space. why not bring them next to each other.
 - font size and readability. sometimes we should be more compact in font size, sometimes elements are too small. there should be an audit regarding that to get more content in the screen but also to ehnance readability at the same time.
 
-### M23: White label
+### M23: Tutorial Stage
+
+We should have a tutorial stage where players get an onboarding into all our mechanics and game play. that should cover minimalistic stages with the most importan topics to deal in an onboarding scenario like most gacha or tower defense games do. we have to define what we want to do and what should be displayed. most apps just create simple scenarios with tooltips that pause the game and players need to follow a tutorial.
+
+### M24: White label (only if game base is solid - not before)
 
 - due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
+- new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt`
+- new heroes defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
+- we use AI sprites created, maybe we need to do them for all heroes. also all skills and effects need to adapt to the new heroes as well.
+- White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
 
 ## Research notes (September 25, 2026)
 

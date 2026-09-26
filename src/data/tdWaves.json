@@ -3,10 +3,10 @@
   { "wave": 2, "spawns": [{ "kind": "grunt", "count": 11, "gapMs": 760 }] },
   { "wave": 3, "spawns": [{ "kind": "grunt", "count": 7, "gapMs": 700 }, { "kind": "runner", "count": 6, "gapMs": 620 }] },
   { "wave": 4, "spawns": [{ "kind": "flyer", "count": 9, "gapMs": 720 }, { "kind": "grunt", "count": 7, "gapMs": 620 }] },
-  { "wave": 5, "spawns": [{ "kind": "brute", "count": 4, "gapMs": 1500 }, { "kind": "runner", "count": 8, "gapMs": 520 }] },
-  { "wave": 6, "spawns": [{ "kind": "archer", "count": 8, "gapMs": 900 }, { "kind": "grunt", "count": 16, "gapMs": 220 }] },
-  { "wave": 7, "spawns": [{ "kind": "runner", "count": 18, "gapMs": 380 }, { "kind": "brute", "count": 4, "gapMs": 1100 }] },
-  { "wave": 8, "spawns": [{ "kind": "flyer", "count": 12, "gapMs": 480 }, { "kind": "archer", "count": 8, "gapMs": 760 }] },
-  { "wave": 9, "spawns": [{ "kind": "brute", "count": 7, "gapMs": 900 }, { "kind": "runner", "count": 18, "gapMs": 330 }] },
+  { "wave": 5, "spawns": [{ "kind": "brute", "count": 4, "gapMs": 1500 }, { "kind": "mender", "count": 2, "gapMs": 900 }, { "kind": "runner", "count": 8, "gapMs": 520 }] },
+  { "wave": 6, "spawns": [{ "kind": "shieldbearer", "count": 5, "gapMs": 800 }, { "kind": "archer", "count": 6, "gapMs": 900 }, { "kind": "grunt", "count": 16, "gapMs": 220 }] },
+  { "wave": 7, "spawns": [{ "kind": "runner", "count": 18, "gapMs": 380 }, { "kind": "hexer", "count": 3, "gapMs": 900 }, { "kind": "brute", "count": 4, "gapMs": 1100 }] },
+  { "wave": 8, "spawns": [{ "kind": "flyer", "count": 12, "gapMs": 480 }, { "kind": "broodcaller", "count": 2, "gapMs": 1600 }, { "kind": "archer", "count": 6, "gapMs": 760 }] },
+  { "wave": 9, "spawns": [{ "kind": "brute", "count": 6, "gapMs": 900 }, { "kind": "mender", "count": 2, "gapMs": 800 }, { "kind": "shieldbearer", "count": 4, "gapMs": 700 }, { "kind": "runner", "count": 18, "gapMs": 330 }] },
   { "wave": 10, "spawns": [{ "kind": "boss", "count": 1, "gapMs": 1000 }, { "kind": "grunt", "count": 12, "gapMs": 450 }, { "kind": "flyer", "count": 8, "gapMs": 560 }] }
 ]

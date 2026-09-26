@@ -18,6 +18,11 @@ export const WAVE_TYPES = {
   runner: [{ kind: "runner", count: 16, gapMs: 350 }],
   flyer: [{ kind: "flyer", count: 12, gapMs: 450 }],
   boss: [{ kind: "boss", count: 1, gapMs: 1000 }],
+  // M11 enemies that ask a question: healed packs, shields, summoners, hexers.
+  healer: [{ kind: "brute", count: 3, gapMs: 1200 }, { kind: "mender", count: 3, gapMs: 700 }],
+  shield: [{ kind: "shieldbearer", count: 12, gapMs: 300 }],
+  summoner: [{ kind: "broodcaller", count: 5, gapMs: 1200 }],
+  hexer: [{ kind: "hexer", count: 6, gapMs: 900 }],
 };
 export const CLASSES = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 export const ROAD = ["Tank", "Warrior", "Assassin"];
@@ -30,6 +35,13 @@ export const EXPECTED = {
   runner: { road: "Assassin" },
   flyer: { platform: "Archer" },
   boss: { platform: "Archer" },
+  // M11: splash punishes a healed pack; shields need hold time (Tank) or many hits (Mage
+  // splash); Archers snipe the tough Broodcaller and outrange the Hexer's hex. Road Healer
+  // is a Warrior / Assassin tie, so it is left unset.
+  healer: { platform: "Mage" },
+  shield: { road: "Tank", platform: "Mage" },
+  summoner: { road: "Warrior", platform: "Archer" },
+  hexer: { road: "Tank", platform: "Archer" },
 };
 const LIMIT_SECONDS = 90;
 
@@ -44,7 +56,10 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
   g.difficulty.invincible = true; // a leak must not end the run before the wave is scored
   if (!g.place(heroId, hero.slot, ringIndex)) return null;
   const unit = g.heroes[0];
-  for (let l = 1; l < level; l += 1) g.upgrade(unit.entityId, "attack");
+  for (let l = 1; l < level; l += 1) {
+    const info = g.upgradeInfo(unit.entityId);
+    g.upgrade(unit.entityId, info.needsPath ? info.pathOptions[0] : "attack");
+  }
   const partner = heroes.find((h) => h.id === PARTNER[hero.slot]);
   const rings = partner.slot === "road" ? map.roadSlots : map.platformSlots;
   g.place(partner.id, partner.slot, nearestRing(rings, [unit.x, unit.y]));
@@ -54,7 +69,8 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
   g.hit = (enemy, amount, source, ...rest) => {
     const before = Math.max(0, enemy.hp);
     hit(enemy, amount, source, ...rest);
-    if (source === unit) dealt += before - Math.max(0, enemy.hp);
+    // Summoned imps are not in the wave total, so they don't count here either.
+    if (source === unit && !enemy.summonerId) dealt += before - Math.max(0, enemy.hp);
   };
   g.startWave();
   const count = WAVE_TYPES[waveType].reduce((sum, group) => sum + group.count, 0);

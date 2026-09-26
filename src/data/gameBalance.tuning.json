@@ -16,14 +16,27 @@
     "archer": { "hp": 120, "speed": 39, "armor": 36, "reward": 7, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8 },
     "brute": { "hp": 320, "speed": 27, "armor": 200, "magicRes": 30, "reward": 12, "damage": 2, "attack": 80, "attackPeriod": 1.1 },
     "boss": { "hp": 2200, "speed": 20, "armor": 200, "magicRes": 90, "reward": 50, "damage": 3, "attack": 85, "attackPeriod": 1 },
-    "brood": { "hp": 510, "speed": 20, "armor": 110, "magicRes": 40, "reward": 6, "damage": 1, "attack": 85, "attackPeriod": 1 }
+    "brood": { "hp": 510, "speed": 20, "armor": 110, "magicRes": 40, "reward": 6, "damage": 1, "attack": 85, "attackPeriod": 1 },
+    "mender": { "hp": 90, "speed": 40, "armor": 30, "magicRes": 50, "reward": 8, "damage": 1, "attack": 14, "attackPeriod": 1, "heal": { "every": 2.5, "radius": 95, "share": 0.08, "budget": 0.5, "cap": 0.3 } },
+    "shieldbearer": { "hp": 100, "speed": 38, "armor": 60, "magicRes": 40, "reward": 8, "damage": 1, "attack": 24, "attackPeriod": 1, "shield": { "hp": 1.6, "minChip": 0.15, "regenDelay": 4, "regenRate": 0.35 } },
+    "broodcaller": { "hp": 260, "speed": 30, "armor": 40, "magicRes": 150, "reward": 12, "damage": 2, "attack": 20, "attackPeriod": 1.1, "summon": { "kind": "imp", "every": 4, "count": 2, "max": 4, "total": 8 } },
+    "imp": { "hp": 24, "speed": 58, "armor": 10, "reward": 1, "damage": 1, "attack": 10, "attackPeriod": 0.8 },
+    "hexer": { "hp": 130, "speed": 36, "armor": 30, "magicRes": 160, "reward": 9, "damage": 1, "attack": 18, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8, "hex": { "every": 6, "range": 140, "seconds": 2 } }
   },
   "bosses": {
     "lilith": { "stats": { "hp": 2600 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 } }
   },
   "difficulty": { "enemyHp": 3.75 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
-  "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 } },
+  "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 }, "path": { "level": 4 } },
+  "paths": {
+    "Tank": { "bulwark": { "blockLimit": 1 }, "thorns": { "reflect": 0.4 }, "warden": { "heldBonus": 0.3 } },
+    "Warrior": { "whirlwind": { "targets": 3, "radius": 1.3 }, "sunder": { "perHit": 0.08, "max": 0.4, "seconds": 4 }, "bloodlust": { "lifesteal": 0.25 } },
+    "Assassin": { "reach": { "dash": 80 }, "ambush": { "firstHit": 2.5 }, "twin": { "share": 0.7 } },
+    "Mage": { "wildfire": { "share": 0.4, "seconds": 3 }, "frost": { "factor": 0.6, "seconds": 1.5 }, "arc": { "falloff": [0.6, 0.35], "reach": 90 } },
+    "Archer": { "piercing": { "targets": 2, "radius": 70, "share": 0.6 }, "mark": { "bonus": 0.4, "seconds": 5 }, "crippling": { "factor": 0.5, "seconds": 2 } },
+    "Support": { "sanctuary": { "radius": 70, "share": 0.5 }, "hymn": { "aps": 0.2 }, "purify": { "heal": 0.25 } }
+  },
   "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
   "training": { "cost": 120, "costGrowth": 1.3, "attack": 0.08, "health": 0.12, "range": 0.08, "rangeCap": 3 },
   "virtueEffects": {

@@ -1,0 +1,70 @@
+{
+  "displayName": "Odin",
+  "intendedInternalId": "zeus",
+  "status": "sample; not wired into game",
+  "generator": "built-in image_gen",
+  "referenceMaster": {
+    "width": 2514,
+    "height": 6144,
+    "format": "webp",
+    "alpha": true
+  },
+  "sourceCrop": {
+    "left": 140,
+    "top": 40,
+    "width": 560,
+    "height": 560
+  },
+  "masterUpscaled": true,
+  "assets": [
+    {
+      "file": "source.png",
+      "width": 802,
+      "height": 1960,
+      "format": "png",
+      "alpha": true
+    },
+    {
+      "file": "odin.webp",
+      "width": 2514,
+      "height": 6144,
+      "format": "webp",
+      "alpha": true
+    },
+    {
+      "file": "cards/odin-240.webp",
+      "width": 240,
+      "height": 587,
+      "format": "webp",
+      "alpha": true
+    },
+    {
+      "file": "cards/odin-360.webp",
+      "width": 360,
+      "height": 880,
+      "format": "webp",
+      "alpha": true
+    },
+    {
+      "file": "cards/odin-480.webp",
+      "width": 480,
+      "height": 1173,
+      "format": "webp",
+      "alpha": true
+    },
+    {
+      "file": "thumbs/odin-96.webp",
+      "width": 96,
+      "height": 96,
+      "format": "webp",
+      "alpha": true
+    },
+    {
+      "file": "tokens/odin-v1.webp",
+      "width": 192,
+      "height": 192,
+      "format": "webp",
+      "alpha": true
+    }
+  ]
+}

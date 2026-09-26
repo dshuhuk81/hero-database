@@ -6,7 +6,7 @@ const { enemy } = Astro.props;
 
 <article class="td-glossary-card">
   <header class="td-glossary-card-head">
-    <img class="td-glossary-portrait td-glossary-portrait--enemy" src={enemy.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
+    <img class={`td-glossary-portrait td-glossary-portrait--enemy td-enemy-art--${enemy.kind}`} src={enemy.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
     <div>
       <h3>{enemy.name}</h3>
       <p class="td-glossary-meta">{enemy.tags.join(" - ")}</p>
