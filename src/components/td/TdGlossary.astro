@@ -7,7 +7,7 @@ import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
-import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO } from "../../game/td/skills.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO } from "../../game/td/skills.js";
 import { ENEMY_ART } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
@@ -34,6 +34,15 @@ const classes = CLASS_ORDER.map((name) => {
   };
 });
 
+// Status effects (M13): which heroes apply each status (tuning.statuses.sources).
+const heroName = new Map((heroes as any[]).map((hero) => [hero.id, hero.name]));
+const statusCards = Object.entries(STATUS_INFO).map(([id, info]) => ({
+  ...info,
+  sources: id === "chill" ? "Frost (Mage) and Crippling (Archer) paths"
+    : [...Object.entries(t.statuses?.sources ?? {}).filter(([, kind]) => kind === id).map(([hero]) => heroName.get(hero) ?? hero), ...(id === "burn" ? ["Wildfire path (Mage)"] : [])].join(", "),
+}));
+const reactionCards = Object.values(REACTION_INFO);
+
 const heroCards = [...(heroes as any[])]
   .sort((a, b) => CLASS_ORDER.indexOf(a.class) - CLASS_ORDER.indexOf(b.class) || a.name.localeCompare(b.name))
   .map((hero) => {
@@ -46,6 +55,7 @@ const heroCards = [...(heroes as any[])]
       skillText: SKILL_TEXT[skill.variant] ?? "",
       awakenText: AWAKEN_TEXT[skill.variant] ?? "",
       classUltText: CLASS_ULT_TEXT[hero.class] ?? "",
+      status: t.statuses?.sources?.[hero.id] ? STATUS_INFO[t.statuses.sources[hero.id]]?.name : null,
       stats: [
         ["Health", hero.hp],
         ["Attack", hero.atk],
@@ -171,6 +181,29 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
           </div>
         </section>
 
+        <section aria-labelledby="td-g-status">
+          <h2 id="td-g-status">Status effects</h2>
+          <div class="td-glossary-classes">
+            {statusCards.map((status) => (
+              <article class="td-glossary-class">
+                <h3>{status.name}</h3>
+                <p class="td-glossary-meta">From: {status.sources}</p>
+                <p>{status.text}</p>
+              </article>
+            ))}
+          </div>
+          <h3 class="td-glossary-subhead">Reactions</h3>
+          <div class="td-glossary-classes">
+            {reactionCards.map((reaction) => (
+              <article class="td-glossary-class">
+                <h3>{reaction.name}</h3>
+                <p class="td-glossary-meta">{reaction.needs}</p>
+                <p>{reaction.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section aria-labelledby="td-g-heroes">
           <h2 id="td-g-heroes">Heroes</h2>
           <div class="td-glossary-grid">
@@ -197,6 +230,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
                   {hero.classUltText && <p class="td-glossary-note">{hero.classUltText}</p>}
                   {hero.awakenText && <p class="td-glossary-note">Awakened: {hero.awakenText}.</p>}
                 </div>
+                {hero.status && <p class="td-glossary-note">Basic attacks apply {hero.status} (see Status effects).</p>}
                 {hero.synergies?.length > 0 && (
                   <ul class="td-glossary-tags" aria-label="Synergy tags">
                     {hero.synergies.map((tag: string) => <li>{tagLabel(tag)}</li>)}

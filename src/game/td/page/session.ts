@@ -5,6 +5,7 @@ import { buildRunTuning } from "../favor.js";
 import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { TowerDefenseGame } from "../sim.js";
+import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 
 type Deps = {
@@ -146,6 +147,11 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
       const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
       ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}`);
+    }
+    // First time each reaction fires in a run: name it so players learn the combination.
+    if (type === "reaction" && game.lastReaction) {
+      const info = (REACTION_INFO as Record<string, { name: string; needs: string; text: string }>)[game.lastReaction.name];
+      if (info) ctx.notice(`Reaction discovered: ${info.name} (${info.needs}). ${info.text}`);
     }
     if (type === "quest" && game.quest?.status === "failed" && game.lives > 0) ctx.notice(`Quest failed: ${ctx.actions.questName(game.quest)}.`);
     if (type === "finish") deps.results.finishRun();

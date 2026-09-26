@@ -982,6 +982,13 @@ export async function createRenderer(canvas, game, options = {}) {
       const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
       const top = (fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9) - (unit.flying ? FLYER_LIFT : 0);
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
+      // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
+      let pip = 0;
+      for (const [on, color] of [[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]]) {
+        if (!on) continue;
+        g.circle(unit.x - radius + 3 + pip * 7, Math.max(2, unit.y + top) - 5 - (unit.shieldMax ? 5 : 0), 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
+        pip += 1;
+      }
       // Mender: green heal ring at its feet, showing the heal radius faintly.
       const heal = game.tuning.enemies[unit.kind]?.heal;
       if (heal) {
@@ -1056,6 +1063,10 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("trace_01", (effect.x1 + effect.x2) / 2, (effect.y1 + effect.y2) / 2, { size: 26, life: 0.2, tint: baseTint });
     } else if (effect.type === "splash") {
       spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: effect.color === "green" ? "green" : "purple" });
+    } else if (effect.type === "reaction") {
+      const tint = { steam: "white", freeze: "white", blight: "green", conduct: "purple", harvest: "purple" }[effect.reaction] ?? "white";
+      spawnParticle(effect.reaction === "freeze" ? "star_03" : "twirl_01", effect.x, effect.y, { size: Math.max(40, effect.radius * 1.6), life: 0.6, vr: 4, tint });
+      if (effect.reaction === "steam") for (let i = 0; i < 4; i++) spawnParticle("light_01", effect.x + rand(30), effect.y, { size: 34, life: 0.8, vy: -50, tint: "white" });
     } else if (effect.type === "hex") {
       spawnParticle("twirl_01", effect.x2, effect.y2, { size: 64, life: 0.6, vr: 5, tint: "purple" });
       for (let i = 1; i <= 3; i++) spawnParticle("trace_01", effect.x1 + (effect.x2 - effect.x1) * i / 4, effect.y1 + (effect.y2 - effect.y1) * i / 4, { size: 18, life: 0.3, tint: "purple" });

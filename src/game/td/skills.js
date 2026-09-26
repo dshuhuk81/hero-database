@@ -62,6 +62,24 @@ export const CLASS_ULT_TEXT = {
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 
+// Status effects and reactions (M13); numbers in tuning.statuses.
+/** @type {Record<string, { name: string, text: string }>} */
+export const STATUS_INFO = {
+  wet: { name: "Wet", text: "No damage on its own, lasts 4s. Sets up Conduct, Steam and Freeze." },
+  burn: { name: "Burn", text: "30% of the hit again as damage over 3s." },
+  poison: { name: "Poison", text: "30% of the hit again as damage over 4s." },
+  chill: { name: "Chill", text: "Slowed by the Frost or Crippling path." },
+};
+
+/** @type {Record<string, { name: string, needs: string, text: string }>} */
+export const REACTION_INFO = {
+  conduct: { name: "Conduct", needs: "Wet + chain lightning", text: "A chain that starts on a Wet enemy bounces 3 more times and hits Wet enemies 60% harder." },
+  steam: { name: "Steam", needs: "Wet + Burn", text: "Wet and Burn cancel out in a burst of 4x the burn's damage, half of that to enemies nearby." },
+  blight: { name: "Blight", needs: "Poison + Burn", text: "Burning a poisoned enemy spreads its poison, twice as strong, to enemies around it." },
+  freeze: { name: "Freeze", needs: "Wet + Chill", text: "A Wet enemy that gets chilled freezes solid for 2s (once every 3s)." },
+  harvest: { name: "Soul Harvest", needs: "Poison + Anubis", text: "Every poisoned enemy that dies charges Anubis's ultimate by 1.5s." },
+};
+
 // Class paths chosen with the level 4 upgrade (M12); numbers in tuning.paths.
 /** @type {Record<string, Record<string, { name: string, text: string }>>} */
 export const PATH_INFO = {

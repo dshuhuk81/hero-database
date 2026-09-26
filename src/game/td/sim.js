@@ -5,6 +5,7 @@ const K = 260;
 // Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
 const SWAY = [0, 10, -10, 5, -14, 14, -5];
 const STEP = 1 / 60;
+const REACTION_COLORS = { conduct: "purple", steam: "white", blight: "green", freeze: "white", harvest: "purple" };
 // Hero target priorities (popover icons, M1). "auto" is the class rule in targetOrder().
 export const TARGET_MODES = ["auto", "first", "last", "strongest", "weakest", "fastest", "ground", "flying", "boss"];
 
@@ -113,6 +114,9 @@ export class TowerDefenseGame {
     this.perfect = false;
     this.fallenHeroes = [];
     this.heroKills = {};
+    this.reactionsSeen = new Set(); // reactions triggered this run (first one of each gets a notice)
+    this.reactionCounts = {};
+    this.lastReaction = null;
     this.insightLog = {}; // per class { waves, kills } for Insight at run end (favor.js computeInsight)
     this.totalGoldEarned = 0;
     this.totalGoldSpent = 0;
@@ -528,6 +532,7 @@ export class TowerDefenseGame {
       enemy.slow = Math.max(0, enemy.slow - dt);
       enemy.chill = Math.max(0, (enemy.chill ?? 0) - dt);
       if ((enemy.burnUntil ?? 0) > this.time) this.hit(enemy, enemy.burnDps * dt, enemy.burnBy, { showShot: false, showHit: false });
+      if (!enemy.dead && (enemy.poisonUntil ?? 0) > this.time) this.hit(enemy, enemy.poisonDps * dt, enemy.poisonBy, { showShot: false, showHit: false });
       if (enemy.dead) continue;
       enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
@@ -950,6 +955,7 @@ export class TowerDefenseGame {
     // scaled by (speed / kit.looseSpeed) squared, so runners take the full bonus and slow
     // walkers little of it.
     const path = this.pathFx(hero);
+    const chainer = (hero.basic === "chain" && !!kit.chain) || hero.path === "arc";
     const strike = (enemy, share, opts = {}) => {
       const shred = (enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0;
       const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce) * (1 - shred);
@@ -957,7 +963,8 @@ export class TowerDefenseGame {
       // Ambush (Assassin path): the first strike on each enemy hits much harder.
       const ambush = hero.path === "ambush" && !enemy.ambushedBy?.has(hero.entityId) ? path.firstHit : 1;
       if (ambush !== 1) (enemy.ambushedBy ||= new Set()).add(hero.entityId);
-      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * ambush;
+      const conducts = chainer && this.isWet(enemy) ? 1 + (this.statusCfg()?.reactions?.conduct?.bonus || 0) : 1;
+      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * ambush * conducts;
       const dealt = this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts }) || 0;
       this.onStrike(hero, enemy, dealt);
       return dealt;
@@ -971,7 +978,13 @@ export class TowerDefenseGame {
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
     // Arc (Mage path): every Mage chains; a chaining Mage (Zeus) gets the extra bounces.
     const arc = hero.path === "arc" ? path : null;
-    const chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;
+    let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;
+    // Conduct (M13): a chain that starts on a Wet enemy bounces further.
+    const conduct = this.statusCfg()?.reactions?.conduct;
+    if (chain && conduct && this.isWet(target)) {
+      chain = { ...chain, falloff: [...chain.falloff, ...Array(conduct.bounces).fill(chain.falloff.at(-1))] };
+      this.reaction("conduct", target, hero, 40);
+    }
     if (chain) {
       let from = target;
       const struck = new Set([target]);
@@ -1016,6 +1029,7 @@ export class TowerDefenseGame {
 
   // Per-strike path effects (M12), after the damage landed.
   onStrike(hero, enemy, dealt) {
+    this.applyHeroStatus(hero, enemy, dealt);
     const path = this.pathFx(hero);
     if (!path || enemy.dead && hero.path !== "bloodlust") return;
     switch (hero.path) {
@@ -1027,23 +1041,120 @@ export class TowerDefenseGame {
         hero.hpLeft = Math.min(hero.hp, hero.hpLeft + dealt * path.lifesteal);
         break;
       case "wildfire":
-        // Burn: `share` of this hit again over `seconds`; a new burn replaces a weaker one.
-        if (dealt * path.share / path.seconds >= ((enemy.burnUntil ?? 0) > this.time ? enemy.burnDps : 0)) {
-          enemy.burnDps = dealt * path.share / path.seconds;
-          enemy.burnUntil = this.time + path.seconds;
-          enemy.burnBy = hero;
-        }
+        this.applyBurn(enemy, hero, dealt * path.share, path.seconds);
         break;
       case "frost":
       case "crippling":
         // Keeps the stronger slow while one is still running.
         enemy.chillFactor = enemy.chill > 0 ? Math.min(path.factor, enemy.chillFactor) : path.factor;
         enemy.chill = path.seconds;
+        this.tryFreeze(enemy, hero);
         break;
       case "mark":
         enemy.markedUntil = this.time + path.seconds;
         enemy.markBonus = path.bonus;
         break;
+    }
+  }
+
+  // Status effects and reactions (M13, tuning.statuses). Heroes listed in `sources` apply
+  // their status with every basic strike:
+  //   wet: no effect alone; poison and burn: `share` of the hit again over `seconds`.
+  // Reactions: Conduct (chain hits on Wet enemies), Steam (Burn meets Wet: burst),
+  // Blight (Burn on a poisoned enemy spreads a stronger copy of its poison), Freeze (Chill meets Wet: stun),
+  // Soul Harvest (poisoned enemies that die charge Anubis's ultimate).
+  statusCfg() {
+    return this.tuning.statuses ?? null;
+  }
+
+  isWet(enemy) {
+    return (enemy.wetUntil ?? 0) > this.time;
+  }
+
+  isPoisoned(enemy) {
+    return (enemy.poisonUntil ?? 0) > this.time;
+  }
+
+  isBurning(enemy) {
+    return (enemy.burnUntil ?? 0) > this.time;
+  }
+
+  applyHeroStatus(hero, enemy, dealt) {
+    const cfg = this.statusCfg();
+    const kind = cfg?.sources?.[hero.id];
+    if (!kind || enemy.dead) return;
+    if (kind === "wet") {
+      if (this.isBurning(enemy)) return this.steam(enemy, enemy.burnBy ?? hero, enemy.burnDps * (enemy.burnUntil - this.time));
+      enemy.wetUntil = this.time + cfg.wet.seconds;
+      this.tryFreeze(enemy, hero);
+    } else if (kind === "burn") {
+      this.applyBurn(enemy, hero, dealt * cfg.burn.share, cfg.burn.seconds);
+    } else if (kind === "poison") {
+      const dps = dealt * cfg.poison.share / cfg.poison.seconds;
+      if (dps >= (this.isPoisoned(enemy) ? enemy.poisonDps : 0)) {
+        enemy.poisonDps = dps;
+        enemy.poisonUntil = this.time + cfg.poison.seconds;
+        enemy.poisonBy = hero;
+      }
+    }
+  }
+
+  // Burn: `total` damage over `seconds`; a new burn replaces a weaker one. On a Wet enemy it
+  // turns into Steam instead; on a poisoned one it spreads the poison (Blight).
+  applyBurn(enemy, hero, total, seconds) {
+    const reactions = this.statusCfg()?.reactions;
+    if (reactions?.steam && this.isWet(enemy)) return this.steam(enemy, hero, total);
+    if (reactions?.blight && this.isPoisoned(enemy)) {
+      let spread = 0;
+      for (const other of this.enemies) {
+        const dps = enemy.poisonDps * (reactions.blight.boost ?? 1);
+        if (other === enemy || other.dead || (this.isPoisoned(other) && other.poisonDps >= dps) || Math.hypot(other.x - enemy.x, other.y - enemy.y) > reactions.blight.radius) continue;
+        other.poisonDps = dps;
+        other.poisonUntil = enemy.poisonUntil;
+        other.poisonBy = enemy.poisonBy;
+        spread += 1;
+      }
+      if (spread) this.reaction("blight", enemy, hero, reactions.blight.radius);
+    }
+    if (total / seconds >= (this.isBurning(enemy) ? enemy.burnDps : 0)) {
+      enemy.burnDps = total / seconds;
+      enemy.burnUntil = this.time + seconds;
+      enemy.burnBy = hero;
+    }
+  }
+
+  // Steam: Wet and Burn cancel out in one burst of `burst` x the burn's damage, and half of
+  // that (`splash`) to enemies nearby.
+  steam(enemy, hero, burnTotal) {
+    const cfg = this.statusCfg()?.reactions?.steam;
+    if (!cfg) return;
+    enemy.wetUntil = 0;
+    enemy.burnUntil = 0;
+    const burst = burnTotal * cfg.burst;
+    for (const other of [...this.enemies]) {
+      if (other.dead || Math.hypot(other.x - enemy.x, other.y - enemy.y) > cfg.radius) continue;
+      this.hit(other, other === enemy ? burst : burst * cfg.splash, hero, { showShot: false, showHit: false });
+    }
+    this.reaction("steam", enemy, hero, cfg.radius);
+  }
+
+  // Freeze: a Wet enemy that gets chilled is stunned; it can't refreeze during the cooldown.
+  tryFreeze(enemy, hero) {
+    const cfg = this.statusCfg()?.reactions?.freeze;
+    if (!cfg || !this.isWet(enemy) || !(enemy.chill > 0) || (enemy.freezeReadyAt ?? 0) > this.time) return;
+    enemy.wetUntil = 0;
+    enemy.stunnedUntil = Math.max(enemy.stunnedUntil ?? 0, this.time + cfg.seconds);
+    enemy.freezeReadyAt = this.time + cfg.cooldown;
+    this.reaction("freeze", enemy, hero, 30);
+  }
+
+  reaction(name, enemy, hero, radius) {
+    this.reactionCounts[name] = (this.reactionCounts[name] || 0) + 1;
+    this.emit({ type: "reaction", reaction: name, x: enemy.x, y: enemy.y, radius, life: 0.5, color: REACTION_COLORS[name] ?? "white" });
+    if (!this.reactionsSeen.has(name)) {
+      this.reactionsSeen.add(name);
+      this.lastReaction = { name, heroId: hero?.id ?? null };
+      this.onChange("reaction", this);
     }
   }
 
@@ -1195,6 +1306,13 @@ export class TowerDefenseGame {
 
   killEnemy(enemy, hero) {
     enemy.dead = true;
+    const harvest = this.statusCfg()?.reactions?.harvest;
+    if (harvest && this.isPoisoned(enemy)) {
+      for (const anubis of this.heroes.filter((h) => h.id === "anubis")) {
+        anubis.ultClock += harvest.charge;
+        this.reaction("harvest", enemy, anubis, 20);
+      }
+    }
     if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
     const reward = this.killReward(enemy.reward);
     this.gold += reward;

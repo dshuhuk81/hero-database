@@ -425,6 +425,7 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-glossary-classes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-3); }
 .td-glossary-class, .td-glossary-card { display: grid; align-content: start; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); }
 .td-glossary-class { gap: var(--space-1); }
+.td-glossary-subhead { margin: var(--space-4) 0 var(--space-2); color: var(--text-bright); font-size: var(--text-base); }
 .td-glossary-class h3, .td-glossary-card h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--text-bright); font-size: var(--text-lg); font-weight: var(--weight-bold); }
 .td-glossary-class img, .td-glossary-meta img { object-fit: contain; }
 .td-glossary-class p, .td-glossary-card > p { margin: 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }

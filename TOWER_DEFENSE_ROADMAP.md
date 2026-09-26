@@ -12,14 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Coordinate well when changing files though.
 
-### M13: Status effects and mechanical synergies (gap check, P1)
-
-Synergies today are stat bonuses only (shared tag +8% attack, virtue pairs +5% attack/HP/crit). No status effects exist besides slow, stun and petrify.
-- [ ] Add a small status set (for example Wet, Burn, Poison, Mark) applied by specific heroes' basic attacks or ultimates.
-- [ ] Add hero pairs that exploit them (for example Poseidon applies Wet, Zeus chains twice on Wet; poison deaths feed Anubis). Only TD tuning, never written as a real game fact.
-- [ ] Show active pair interactions on the canvas links and in the glossary so players can discover them.
-- Done when: at least 4 pair interactions exist and each one measurably beats the same two heroes without it.
-
 ### M14: Run statistics and "what went wrong" (gap check, P1)
 
 The result screen shows MVP by kills, duration, gold, quests, Insight. No damage numbers.

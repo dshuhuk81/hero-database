@@ -1910,6 +1910,75 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(!g.isHexed(a), "Purify lifts the hex");
   }
 
+  // M13 statuses and reactions.
+  {
+    const S = tuning.statuses;
+    const R = S.reactions;
+    const { g, units: [pos, phx, zeus] } = setup("poseidon", "phoenix", "zeus");
+    const e = enemyAt(g, "grunt", 0, 0);
+    // Wet from Poseidon, then Burn from Phoenix: Steam bursts and clears both.
+    g.applyHeroStatus(pos, e, 100);
+    assert.ok(g.isWet(e), "Poseidon applies Wet");
+    const before = hp(e);
+    g.applyHeroStatus(phx, e, 100);
+    close(hp(e) - before, 100 * S.burn.share * R.steam.burst, "Steam burst");
+    assert.ok(!g.isWet(e) && !g.isBurning(e), "Steam consumes Wet and Burn");
+    assert.ok(g.reactionsSeen.has("steam") && g.lastReaction.name === "steam", "first Steam is recorded");
+    // Plain Burn ticks over its duration.
+    const b = enemyAt(g, "grunt", 500, 500);
+    g.applyHeroStatus(phx, b, 100);
+    assert.ok(g.isBurning(b), "Phoenix applies Burn");
+    close(b.burnDps, 100 * S.burn.share / S.burn.seconds, "burn damage per second");
+    // Conduct: Zeus's chain on a Wet target bounces further and hits Wet enemies harder.
+    g.enemies = [];
+    const line = Array.from({ length: 8 }, (_, i) => enemyAt(g, "grunt", zeus.x + 30 + i * 25, zeus.y));
+    g.basicAttack(zeus, line[0]);
+    const dry = line.filter((x) => hp(x) > 0).length;
+    line.forEach((x) => { x.hp = x.maxHp; x.wetUntil = g.time + 5; });
+    g.basicAttack(zeus, line[0]);
+    assert.ok(line.filter((x) => hp(x) > 0).length > dry, "Conduct adds bounces");
+    assert.ok(g.reactionsSeen.has("conduct"));
+  }
+  {
+    const S = tuning.statuses;
+    const R = S.reactions;
+    const { g, units: [med, phx] } = setup("medusa", "phoenix");
+    // Blight: burning a poisoned enemy spreads a stronger poison.
+    const a = enemyAt(g, "grunt", 100, 100);
+    const n = enemyAt(g, "grunt", 100 + R.blight.radius - 10, 100);
+    const far = enemyAt(g, "grunt", 100 + R.blight.radius + 40, 100);
+    g.applyHeroStatus(med, a, 100);
+    assert.ok(g.isPoisoned(a), "Medusa applies Poison");
+    g.applyHeroStatus(phx, a, 100);
+    assert.ok(g.isPoisoned(n) && !g.isPoisoned(far), "Blight spreads within its radius");
+    close(n.poisonDps, a.poisonDps * R.blight.boost, "spread poison is stronger");
+    // Freeze: a Wet enemy that gets chilled is stunned, then has a cooldown.
+    const { g: g2, units: [pos] } = setup("poseidon");
+    const f = enemyAt(g2, "grunt", 0, 0);
+    g2.applyHeroStatus(pos, f, 100);
+    f.chill = 1;
+    g2.tryFreeze(f, pos);
+    assert.ok(g2.isStopped(f), "Freeze stuns");
+    f.wetUntil = g2.time + 5;
+    f.stunnedUntil = 0;
+    g2.tryFreeze(f, pos);
+    assert.ok(!g2.isStopped(f), "Freeze cooldown");
+    // Soul Harvest: a poisoned enemy that dies charges Anubis.
+    const { g: g3, units: [anubis, jor] } = setup("anubis", "jormungandr");
+    const h = enemyAt(g3, "grunt", 0, 0, 10);
+    g3.applyHeroStatus(jor, h, 100);
+    const clock = anubis.ultClock;
+    g3.hit(h, 1e6, jor);
+    close(anubis.ultClock - clock, R.harvest.charge, "Soul Harvest charge");
+    // Reactions off: statuses stay, no reactions.
+    const g4 = new TowerDefenseGame({ heroes, tuning: { ...tuning, statuses: { ...S, reactions: {} } }, map: maps[0], waves, seed: 1 });
+    g4.gold = 1e6; g4.place("poseidon", "road", 0); g4.place("phoenix", "platform", 0);
+    const [p4, x4] = g4.heroes;
+    const e4 = g4.spawnEnemy("grunt");
+    g4.applyHeroStatus(p4, e4, 100); g4.applyHeroStatus(x4, e4, 100);
+    assert.ok(g4.isWet(e4) && g4.isBurning(e4) && !g4.reactionsSeen.size, "no reactions when disabled");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");

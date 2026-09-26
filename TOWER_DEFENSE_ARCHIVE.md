@@ -280,3 +280,18 @@ currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgra
 - Balance (endless depth, 3 squads x 3 maps x 2 seeds, one class varied at a time): no paths 22.3; with paths 24 to 28. Tank 26.5 / 26.2 / 26.7, Warrior 26.5 / 26.0 / 26.4, Assassin 26.5 / 26.2 / 26.2, Mage 26.5 / 27.9 / 27.3, Support 26.5 / 26.8 / 26.3, Archer 26.5 / 24.6 / 24.3 (Mark and Crippling were buffed once, 24.1 / 23.9 before). `test:td-balance`: 10 waves unchanged; 20 waves Moonlit 1/5 -> 2/5 and Sunscar 1/5 -> 3/5 wins.
 - Open: Archer Mark and Crippling still trail Piercing by about 2 endless waves; the bots don't use targeting or placement that would favor them. Paths add about 4 endless waves overall; M3 (blessing tuning) should account for it.
 - Tests in `test-td-sim.mjs`: path required at level 4, wrong or foreign ids refused, asked once; one check per path.
+
+## Roadmap M13: Status effects and reactions (done September 26, 2026)
+- Goal (gap check): synergies that change mechanics instead of +% stats, found by combining heroes.
+- Statuses (`tuning.statuses`, applied in `onStrike` by every basic strike, including cleave, splash and chain hits): Wet (Poseidon, 4 s, no damage alone), Burn (Phoenix, Prometheus, and the Wildfire path; 30% of the hit over 3 s), Poison (Medusa, Jormungandr; 30% over 4 s), Chill (Frost and Crippling paths). Sim-only choices for the minigame, not claims about the real heroes.
+- Reactions (`tuning.statuses.reactions`, logic in `applyHeroStatus`, `applyBurn`, `steam`, `tryFreeze`, the chain in `basicAttack`, `killEnemy`):
+  - Conduct (Wet + chain lightning: Zeus or the Arc path): 3 more bounces, +60% on Wet enemies.
+  - Steam (Wet + Burn): both consumed, burst of 4x the burn's damage, half to enemies within 55 px.
+  - Blight (Burn on a poisoned enemy): spreads a 2x copy of the poison within 80 px (replaces weaker poisons).
+  - Freeze (Wet + Chill): 2 s stun, 3 s cooldown per enemy.
+  - Soul Harvest (poisoned enemy dies): each Anubis gains 1.5 s of ultimate charge.
+- Measured (isolated: the pair plus Nuwa on Moonlit, all level 4, 3 seeds, reactions on vs off with statuses kept): Conduct Poseidon + Zeus +22% damage per second, Steam Poseidon + Phoenix +9%, Blight Medusa + Phoenix +36%, Soul Harvest Jormungandr + Anubis +12%, Freeze Poseidon + Fengyi (Frost) on a 40-runner wave 61 -> 48 leaks. First values were weaker (Conduct 2 bounces +30%, Steam 1.5x, Blight 1x, Freeze 1 s / 4 s) and were raised until every pair beat its reactions-off version. Endless depth was not a usable measure: most test squads die at the wave 10 boss either way.
+- UI: status dots above enemy health bars (Wet blue, Burn orange, Poison green, Chill cyan); reaction bursts (particles and a ring); the first time each reaction fires in a run a notice names it and its ingredients ("Reaction discovered: Steam (Wet + Burn) ..."); result screen "Reactions" stat with counts; Glossary "Status effects" section (statuses with their sources from tuning, reactions) and a line on each source hero's card; How to play "Status effects" entry. Texts in `STATUS_INFO` / `REACTION_INFO` (`skills.js`).
+- `test:td-balance`: 10 waves unchanged in result (Moonlit budget 17 -> 24 lives); 20 waves Sunscar 3/5 -> 2/5, others equal.
+- Tests in `test-td-sim.mjs`: each status source, burn rate, Steam burst and consumption, Conduct bounces, Blight radius and strength, Freeze stun and cooldown, Soul Harvest charge, reactions off keeps statuses.
+- Not done: showing a pair's reaction on the canvas synergy links before it fires (the notice on first trigger covers discovery for now).

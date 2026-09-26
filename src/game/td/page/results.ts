@@ -3,6 +3,15 @@
 import { computeFavor, computeInsight, shardEligible, shardFavor } from "../favor.js";
 
 // Insight earned per class this run (Divine Blessings class branches).
+// Reactions triggered this run (M13), most frequent first.
+function reactionStat(counts: Record<string, number> = {}) {
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return "";
+  const names = REACTION_INFO as Record<string, { name: string }>;
+  const total = entries.reduce((sum, [, n]) => sum + n, 0);
+  return `<div class="td-result-stat"><span>Reactions</span><strong>${total}</strong><small>${entries.map(([id, n]) => `${names[id]?.name ?? id} ${n}`).join(", ")}</small></div>`;
+}
+
 function insightStat(earned: Record<string, number>) {
   const entries = Object.entries(earned).sort((a, b) => b[1] - a[1]);
   if (!entries.length) return "";
@@ -10,6 +19,7 @@ function insightStat(earned: Record<string, number>) {
   return `<div class="td-result-stat"><span>Insight</span><strong>+${total}</strong><small>${entries.map(([cls, points]) => `${cls} +${points}`).join(", ")}</small></div>`;
 }
 import type { PageContext } from "./context";
+import { REACTION_INFO } from "../skills.js";
 import { availableFavor, runKey, type RunBoost } from "./save";
 
 type ShardChoice = "favor" | "gold" | "virtue";
@@ -147,6 +157,7 @@ export function createResults(ctx: PageContext) {
       `<div class="td-result-stat"><span>Spent</span><strong>${game.totalGoldSpent ?? 0}</strong></div>`,
       game.tuning.quests ? `<div class="td-result-stat"><span>Quests</span><strong>${game.questsDone ?? 0}</strong><small>completed</small></div>` : "",
       insightStat(earnedInsight),
+      reactionStat(game.reactionCounts),
       bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
     ].join("");
     statsEl.hidden = false;
