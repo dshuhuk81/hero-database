@@ -26,7 +26,13 @@ export function createPopover(ctx: PageContext) {
   const popDetails = q("[data-pop-details-body]");
   const popFocus = q("[data-pop-focus]");
   const popSell = q<HTMLButtonElement>("[data-pop-sell]");
+  const popTarget = q("[data-pop-target]");
+  const popTargetLabel = q("[data-pop-target-label]");
+  const targetButtons = [...popTarget.querySelectorAll<HTMLButtonElement>("[data-target]")];
   let sellArmed = false; // selling needs a second tap to confirm
+  const TARGET_NAMES: Record<string, string> = { first: "First enemy", last: "Last enemy", strongest: "Highest health", weakest: "Lowest health", fastest: "Fastest enemy", ground: "Ground first", flying: "Flyers first", boss: "Boss first" };
+  // What "auto" does per class (targetOrder / dashTarget in sim.js).
+  const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
   const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
   let lastHealthUpdate = 0;
@@ -85,6 +91,16 @@ export function createPopover(ctx: PageContext) {
     popCrit.textContent = `${Math.round(unit.critChance * 1000) / 10}%`;
   }
 
+  // Target priority icons (M1). Road heroes cannot hit flyers, so that option is hidden.
+  function updateTargeting(unit: any) {
+    const mode = unit.targeting ?? "auto";
+    for (const button of targetButtons) {
+      button.setAttribute("aria-pressed", String(button.dataset.target === mode));
+      if (button.dataset.target === "flying") button.hidden = unit.slotType === "road";
+    }
+    popTargetLabel.textContent = mode === "auto" ? `Class rule: ${CLASS_TARGETS[unit.class] ?? "first enemy"}` : TARGET_NAMES[mode];
+  }
+
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
@@ -97,6 +113,7 @@ export function createPopover(ctx: PageContext) {
     popSell.title = `Remove ${unit.name} from the field for ${refund} gold (half of what it cost).`;
     updateHealth(unit);
     updateStats(unit);
+    updateTargeting(unit);
     const info = game.upgradeInfo(unit.entityId);
     const awakenText = AWAKEN_TEXT[unit.variant] ? ` ${unit.skillName ?? "Ultimate"}: ${AWAKEN_TEXT[unit.variant]}.` : "";
     if (info.train) {
@@ -264,6 +281,14 @@ export function createPopover(ctx: PageContext) {
     } else ctx.notice(result.reason || "Upgrade unavailable.");
     const unit = findUnit(state.selectedEntityId);
     if (unit) update(unit);
+  });
+  popTarget.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-target]");
+    const session = state.session;
+    if (!button || !session || state.selectedEntityId === null) return;
+    session.game.setTargeting(state.selectedEntityId, button.dataset.target);
+    const unit = findUnit(state.selectedEntityId);
+    if (unit) updateTargeting(unit);
   });
   q("[data-pop-rotate]").addEventListener("click", () => {
     if (state.session && state.selectedEntityId !== null) state.session.game.rotate(state.selectedEntityId);

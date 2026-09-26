@@ -5,6 +5,8 @@ const K = 260;
 // Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
 const SWAY = [0, 10, -10, 5, -14, 14, -5];
 const STEP = 1 / 60;
+// Hero target priorities (popover icons, M1). "auto" is the class rule in targetOrder().
+export const TARGET_MODES = ["auto", "first", "last", "strongest", "weakest", "fastest", "ground", "flying", "boss"];
 
 export function createRng(seed = 0x51f15e) {
   let value = seed >>> 0;
@@ -155,7 +157,7 @@ export class TowerDefenseGame {
     this.totalGoldSpent += cost;
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
     // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
     const startLevel = Math.min(1 + (this.classBonus(base).startLevel || 0), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
     if (startLevel > 1) {
@@ -407,6 +409,15 @@ export class TowerDefenseGame {
     this.emit({ type: "sell", heroId: hero.id, x: hero.x, y: hero.y, life: 0.6, color: "gold" });
     this.onChange("sell", this);
     return { ok: true, hero, refund };
+  }
+
+  // Target priority chosen in the hero popover (TARGET_MODES); "auto" keeps the class rule.
+  setTargeting(entityId, mode) {
+    const hero = this.heroes.find((item) => item.entityId === entityId);
+    if (!hero || !TARGET_MODES.includes(mode) || (mode === "flying" && hero.slotType === "road")) return false;
+    hero.targeting = mode;
+    this.onChange("targeting", this);
+    return true;
   }
 
   rotate(entityId) {
@@ -760,7 +771,7 @@ export class TowerDefenseGame {
     hero.hpLeft -= amount;
     hero._hitFlash = true;
     if (hero.hpLeft <= 0) {
-      this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex });
+      this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex, targeting: hero.targeting });
       this.heroes = this.heroes.filter((entry) => entry !== hero);
       this.team = this.team.filter((id) => id !== hero.id);
       if (this.waveStats) this.waveStats.heroDeaths += 1;
@@ -798,6 +809,18 @@ export class TowerDefenseGame {
   }
 
   findTarget(hero) {
+    if ((hero.targeting ?? "auto") !== "auto") {
+      // A chosen priority ranks everything the hero can reach: its range, plus loose
+      // enemies inside the Assassin dash reach.
+      const reach = this.dashReach(hero);
+      const targets = this.enemies.filter((enemy) => {
+        if (!this.canHit(hero, enemy)) return false;
+        const d = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
+        return d <= hero.range || (d <= reach && !enemy.held && !this.isStopped(enemy));
+      });
+      targets.sort(this.targetOrder(hero));
+      return targets[0] ?? null;
+    }
     const loose = this.dashTarget(hero);
     if (loose) return loose;
     if (hero.variant === "shadow_step") {
@@ -811,9 +834,27 @@ export class TowerDefenseGame {
     return targets[0] ?? null;
   }
 
-  // Basic attack target order: Assassins finish the weakest, Archers snipe the
-  // toughest (kit target "strongest"), everyone else the enemy furthest along.
+  // Basic attack target order. Class rule ("auto"): Assassins finish the weakest, Archers
+  // snipe the toughest (kit target "strongest"), everyone else the enemy furthest along.
+  // A chosen priority replaces it; ground, flying and boss prefer that group and use the
+  // class rule inside it. Ties go to the enemy furthest along.
   targetOrder(hero) {
+    const classOrder = this.classTargetOrder(hero);
+    const prefer = (match) => (a, b) => (match(b) - match(a)) || classOrder(a, b);
+    switch (hero.targeting ?? "auto") {
+      case "first": return (a, b) => b.distance - a.distance;
+      case "last": return (a, b) => a.distance - b.distance;
+      case "strongest": return (a, b) => b.hp - a.hp || b.distance - a.distance;
+      case "weakest": return (a, b) => a.hp - b.hp || b.distance - a.distance;
+      case "fastest": return (a, b) => b.speed - a.speed || b.distance - a.distance;
+      case "ground": return prefer((e) => (e.flying ? 0 : 1));
+      case "flying": return prefer((e) => (e.flying ? 1 : 0));
+      case "boss": return prefer((e) => (e.kind === "boss" ? 1 : 0));
+      default: return classOrder;
+    }
+  }
+
+  classTargetOrder(hero) {
     if (hero.ability === "execute") return (a, b) => a.hp - b.hp;
     if (this.kit(hero).target === "strongest") return (a, b) => b.hp - a.hp || b.distance - a.distance;
     return (a, b) => b.distance - a.distance;
@@ -1020,7 +1061,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });

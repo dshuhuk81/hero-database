@@ -26,6 +26,20 @@
     <div><dt>Range</dt><dd data-pop-range></dd></div>
     <div><dt>Crit</dt><dd data-pop-crit></dd></div>
   </dl>
+  <div class="td-pop-target">
+    <div class="td-pop-target-head"><span>Target</span><strong data-pop-target-label></strong></div>
+    <div class="td-pop-target-row" data-pop-target role="group" aria-label="Target priority">
+      <button type="button" data-target="auto" aria-label="Class rule" title="Class rule"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="1.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></svg></button>
+      <button type="button" data-target="first" aria-label="First enemy" title="First enemy"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6l6 6-6 6M11 6l6 6-6 6M20 5v14" /></svg></button>
+      <button type="button" data-target="last" aria-label="Last enemy" title="Last enemy"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6l-6 6 6 6M13 6l-6 6 6 6M4 5v14" /></svg></button>
+      <button type="button" data-target="strongest" aria-label="Highest health" title="Highest health"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0112 7.3 4.3 4.3 0 0119.5 10c0 5.4-7.5 10-7.5 10z" /><path d="M12 10v6M9 13h6" /></svg></button>
+      <button type="button" data-target="weakest" aria-label="Lowest health" title="Lowest health"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0112 7.3 4.3 4.3 0 0119.5 10c0 5.4-7.5 10-7.5 10z" /><path d="M12 8l-2 4 3 2-1 3" /></svg></button>
+      <button type="button" data-target="fastest" aria-label="Fastest enemy" title="Fastest enemy"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8h8M2 12h10M3 16h8M14 6l6 6-6 6" /></svg></button>
+      <button type="button" data-target="ground" aria-label="Ground first" title="Ground first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18M5 19l4-7 3 4 3-5 4 8" /></svg></button>
+      <button type="button" data-target="flying" aria-label="Flyers first" title="Flyers first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8c3.5 0 6.5 2 9 6 2.5-4 5.5-6 9-6" /><path d="M9 19h6" /></svg></button>
+      <button type="button" data-target="boss" aria-label="Boss first" title="Boss first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18h16M4 18L3 8l5 4 4-6 4 6 5-4-1 10" /></svg></button>
+    </div>
+  </div>
   <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
     <span data-pop-upgrade-label>Upgrade</span>
     <span class="td-pop-cost" data-pop-cost></span>

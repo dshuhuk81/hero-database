@@ -1661,6 +1661,47 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     close(loose.maxHp - loose.hp, resolveDamage(g.attackValue(nyx) * (1 + kit.Assassin.looseBonus), loose.armor, nyx.damageType), "runners take the full loose bonus");
   }
 
+  // Target priority (M1): each mode picks its enemy, "auto" keeps the class rule.
+  {
+    const { g, units: [zeus, nyx] } = setup("zeus", "nyx");
+    const near = (e, x, y, dist, hp) => { const u = enemyAt(g, e, x, y, hp); u.distance = dist; return u; };
+    const front = near("grunt", zeus.x + 20, zeus.y, 300, 500);
+    const back = near("grunt", zeus.x - 20, zeus.y, 100, 400);
+    const tank = near("brute", zeus.x, zeus.y + 20, 200, 3000);
+    const runner = near("runner", zeus.x, zeus.y - 20, 150, 50);
+    const flyer = near("flyer", zeus.x + 10, zeus.y + 10, 50, 60);
+    assert.equal(zeus.targeting, "auto", "placed heroes start on the class rule");
+    assert.equal(g.findTarget(zeus), front, "auto: Mage takes the enemy furthest along");
+    const expect = { first: front, last: flyer, strongest: tank, weakest: runner, fastest: runner, flying: flyer, ground: front };
+    for (const [mode, target] of Object.entries(expect)) {
+      assert.equal(g.setTargeting(zeus.entityId, mode), true, `${mode} accepted`);
+      assert.equal(g.findTarget(zeus), target, `${mode} picks its enemy`);
+    }
+    g.setTargeting(zeus.entityId, "boss");
+    assert.equal(g.findTarget(zeus), front, "boss falls back to the class rule without a boss");
+    const boss = near("boss", zeus.x, zeus.y, 10, 5000);
+    assert.equal(g.findTarget(zeus), boss, "boss first");
+    boss.untargetable = true;
+    assert.equal(g.findTarget(zeus), front, "an untargetable boss is skipped");
+    assert.equal(g.setTargeting(zeus.entityId, "nonsense"), false, "unknown mode rejected");
+    assert.equal(g.setTargeting(nyx.entityId, "flying"), false, "road heroes cannot pick flyers");
+    // Explicit modes keep the Assassin dash reach for loose enemies.
+    g.enemies = [];
+    const loose = enemyAt(g, "runner", nyx.x + (nyx.range + kit.Assassin.dash) / 2, nyx.y, 80);
+    g.setTargeting(nyx.entityId, "strongest");
+    assert.equal(g.findTarget(nyx), loose, "strongest still dashes to loose enemies");
+    loose.held = true;
+    assert.equal(g.findTarget(nyx), null, "held enemies beyond range stay out of reach");
+  }
+
+  // A revived hero keeps its target priority.
+  {
+    const { g, units: [nuwa] } = setup("nuwa");
+    g.setTargeting(nuwa.entityId, "weakest");
+    g.damageHero(nuwa, 1e9, null);
+    assert.equal(g.fallenHeroes.at(-1)?.targeting, "weakest", "fallen record keeps the priority");
+  }
+
   // Tank ultimate holds every ground enemy in taunt range; flyers are not held.
   {
     const { g, units: [tank] } = setup("momus");
