@@ -9,16 +9,25 @@ Goal: replace every trace of "Motto Immortal" specific character
 expression in the TD minigame — portrait art, board token, bio text,
 ability names and flavor — with an original take on a real, public-domain
 Greek or Norse mythological figure, while keeping the TD mechanics,
-balance numbers, hero `id`s, classes, and file paths untouched. The 21
-internal ids stay as they are (`zeus`, `nuwa`, `set`, ...); only what a
-player sees changes.
+balance numbers, and hero `id`s untouched. The 21 internal ids stay as
+they are (`zeus`, `nuwa`, `set`, ...); only what a player sees changes.
+
+**Hard requirement added by the user:** no existing file that belongs to
+the original hero database may be overwritten, and no part of the TD
+game may keep loading images by referencing that database, not even as
+a fallback. The new art lives in its own folder inside the TD tree and
+the TD code loads from there directly — see section 1a. This does mean
+a few TD source files need small, isolated edits (never the hero JSON
+or database files) so nothing in the game still points at the old
+images; that's spelled out below so it isn't a surprise later.
 
 ## 1. What actually needs to change, and what doesn't
 
 | Surface | File / location | Carries game IP today? | Action |
 |---|---|---|---|
-| Hero portrait (card, detail page, TD token source) | R2 `heroes/{id}.webp`, referenced from `src/data/heroes/{id}.json` | Yes — real extracted game render | Replace the R2 object in place. No JSON edit needed; the URL stays the same. |
-| Board token (`public/td/tokens/{id}-v1.webp`) | derived by `scripts/build-td-tokens.mjs` from the portrait above | Yes, derivative of the portrait | Re-run the build script after the portrait swap. No manual edit. |
+| Hero portrait (card, detail page) | R2 `heroes/{id}.webp`, referenced from `src/data/heroes/{id}.json` | Yes — real extracted game render | **Not touched at all.** This file, and the rest of the site that shows it (`HeroCard.astro`, `heroes/[id].astro`), is outside the TD minigame and stays exactly as it is. |
+| TD hero art (new, separate) | new folder `public/td/heroes-alt/{id}.webp`, new R2 prefix `td/heroes-alt/` | No — freshly generated, own namespace | See section 1a. This is what the TD game shows instead. |
+| Board token (`public/td/tokens/{id}-v1.webp`) | derived by `scripts/build-td-tokens.mjs` | No, once repointed | The build script's source fetch changes from the shared `heroes/{id}.webp` to the new `td/heroes-alt/{id}.webp`. Same output path and filename, only the input changes. |
 | Idle animation preview (recruit screen) | `public/td/anims/{id}-idle-v1.webp` + `src/data/tdHeroAnims.json`, sourced from extracted Spine rigs via `scripts/td-spine/` | Yes — actual game animation rig, the highest-risk asset of the three | Drop it for swapped heroes. The code already hides the preview cleanly when `tdHeroAnims.json` has no entry (`recruit.ts`: `previewEl.hidden = !anim`). No code change required to do this — just don't ship an entry for the new figure. A from-scratch replacement (simple CSS sway on the static portrait, or a handful of independently generated frames) is a later, optional nice-to-have, never a re-skin of the extracted rig. |
 | Skill/relic icons (`skills/{id}_skill_1..4.webp`, `skills/{id}_relic.webp`) | R2, referenced from the same hero JSON | Likely yes, out of scope for the TD minigame (TD abilities are original class archetypes, not shown from these files in `src/game/td/`) | No action needed for the TD swap; flag for the rest of the fan database separately if it ever comes up. |
 | Hero bio text | `src/data/heroes/{id}.json` → `description` | Yes, paraphrased/borrowed game copy | Out of scope for this pass per the user's instruction (no JSON edits). Drafted below anyway so it's ready whenever JSON edits are back on the table. |
@@ -26,15 +35,92 @@ player sees changes.
 | Invented game-only labels (faction `"Starglint"`, tier `"Divine V"`, boss titles `"Ishtar IV"`) | hero/boss JSON | Yes, these are Motto Immortal's own coinages, not mythology | Never reuse these for the replacement figures, regardless of whether the figure's name itself changes. |
 | Hero name / id itself | — | No | Confirmed in the previous discussion: real mythological names are not copyrightable. Keeping `zeus` as the internal id while showing "Odin" on screen is also fine — the id is invisible to players. |
 
+## 1a. Asset isolation: a new folder, no shared files, no fallback references
+
+The site already keeps every TD-specific asset under its own tree, so
+this follows the existing pattern instead of inventing a new one:
+
+```
+public/td/
+  heroes-alt/{id}.webp      <- NEW: the 21 replacement full-body renders
+  tokens/{id}-v1.webp       <- unchanged path, but now built from heroes-alt/
+  anims/{id}-idle-v1.webp   <- unaffected; swapped heroes simply have no entry
+  enemies/sprites/…         <- unaffected (already AI-generated, unrelated)
+```
+
+On Cloudflare R2, that means a brand new prefix, `td/heroes-alt/`,
+uploaded the same way the other TD-only assets already are
+(`node scripts/upload-to-r2.mjs --prefix td/heroes-alt`). It never
+touches, never writes to, and never shares a filename with the
+site-wide `heroes/` prefix the rest of the database uses.
+
+That covers where the new files live. The other half of the
+requirement — nothing in the TD game may still *reference* the old
+system, even as a fallback — means three source files need a small,
+mechanical edit once execution starts (again: not the hero JSON, not
+any database file, just the URL a loader points at):
+
+1. `scripts/build-td-tokens.mjs`, function `source(id)`: currently
+   fetches `${R2}/heroes/${id}.webp`. Change to
+   `${R2}/td/heroes-alt/${id}.webp`.
+2. `src/game/td/render.js` (~line 143): the on-board circle-portrait
+   fallback currently does `loadTexture(hero.id, hero.image)` — `hero`
+   is the shared database record. Change to load
+   `tdAsset('heroes-alt/${hero.id}.webp')` instead, so the canvas never
+   touches `hero.image`.
+3. `src/game/td/page/recruit.ts` (~line 56) and
+   `src/game/td/page/hud.ts` (~line 157): both render
+   `<img src="${hero.image}">` for the recruit list and deck bar icons.
+   Same fix, same new path.
+
+Found while tracing this, flagged but **not** part of this pass unless
+the user says otherwise: `hud.ts` (~line 314) and `render.js` load
+`boss.image` from `src/data/bosses.json`, the same kind of
+shared-database coupling, for the boss art shown in the HUD. Bosses
+already got independent AI-generated sprites for the board itself
+(`td/enemies/sprites/boss-v1.webp` etc., done per the roadmap); this
+`boss.image` reference is a separate, smaller-scale HUD portrait that
+was missed by that earlier pass. Worth the same treatment, but it's
+about bosses, not the 21-hero roster this document is scoped to.
+
+Also flagged for a decision, not treated as in scope by default: the
+generic class icons (`assets.js: classIcon()`, i.e.
+`icons/classes/{class}.webp` — a plain hexagon per Warrior/Mage/etc.,
+shared with the boss and calendar pages) are not a specific hero's
+likeness and arguably aren't "the original database" in the sense this
+requirement is about. Left alone unless the user wants total isolation
+down to shared UI chrome too.
+
 ## 2. Execution order, once the user says go (not done yet)
 
-1. Generate the portrait art for one hero, spot-check it through `build-td-tokens.mjs --only <id>` to confirm the auto-crop finds the head cleanly (add an entry to `src/data/tdTokenCrops.json` only if it doesn't — confirm with the user first whether that crop-helper file counts as "database" for them).
-2. Repeat for all 21, upload each to R2 at the existing `heroes/{id}.webp` key (overwrite in place; the pipeline's own cache in `.cache/td-token-src/` needs clearing per id so it re-fetches).
-3. Rebuild all tokens: `node scripts/build-td-tokens.mjs`.
-4. Remove the swapped ids from `src/data/tdHeroAnims.json` if they're in there today (or simply never add them) so the recruit screen falls back to the static portrait.
-5. Only after the art is approved: revisit hero bio text and `TOWER_DEFENSE_HERO_SKILLS.md` naming as a separate, explicitly-requested step.
+1. Create the local folder `public/td/heroes-alt/` and the three code
+   edits from section 1a (source path in the build script, the
+   render.js fallback, the recruit/hud `<img>` tags). These are pure
+   redirects — no visual difference on their own until step 2 puts new
+   files at the new path.
+2. Generate the portrait art for one hero, place it at
+   `public/td/heroes-alt/<id>.webp`, spot-check it through
+   `build-td-tokens.mjs --only <id>` to confirm the auto-crop finds the
+   head cleanly (add an entry to `src/data/tdTokenCrops.json` only if
+   it doesn't — confirm with the user first whether that crop-helper
+   file counts as "database" for them).
+3. Repeat for all 21, upload each to R2 under the new `td/heroes-alt/`
+   prefix with `scripts/upload-to-r2.mjs --prefix td/heroes-alt`. This
+   never touches the original `heroes/` prefix.
+4. Rebuild all tokens: `node scripts/build-td-tokens.mjs`.
+5. Confirm none of the swapped ids are in `src/data/tdHeroAnims.json`
+   (or simply never add them) so the recruit screen falls back to the
+   new static portrait, never the old animation.
+6. Only after the art is approved: revisit hero bio text and
+   `TOWER_DEFENSE_HERO_SKILLS.md` naming as a separate, explicitly-
+   requested step.
 
 ## 3. Per-hero brief
+
+Every image below is a new file at `public/td/heroes-alt/{id}.webp`
+(same id as today, e.g. `public/td/heroes-alt/zeus.webp` for the Odin
+art) — never a replacement of `public/td/tokens/{id}-v1.webp` directly
+and never anything written into `heroes/{id}.webp` on R2.
 
 Shared style block for every image prompt (write once, reuse):
 
@@ -194,3 +280,5 @@ the name and the flavor sentence describing it.
 2. Which image generation tool/workflow will produce the 21 portraits — Midjourney, a local Stable Diffusion setup, or something else? That decides how literally the prompt blocks above can be pasted in versus needing reformatting.
 3. Zeus was flagged in `TOWER_DEFENSE_HERO_SKILLS.md` as "a separate test case by the user" with his own visual system (`zeus-fx.js`) — confirm whether he's in scope for this same swap pass or intentionally held back.
 4. Timing: do the bio-text and ability-name rewrites happen in the same pass as the art swap, or strictly after the art is approved, as suggested in section 2?
+5. Are the three small redirect edits in section 1a (build script source path, `render.js` fallback, the two `<img src="${hero.image}">` spots) acceptable as code changes, given the instruction has otherwise been "no JSON or database changes"? They touch no JSON and no hero data, only where an image loader points, but flagging it explicitly since it is still a source-code edit.
+6. Should the same isolation apply to the boss HUD portrait (`boss.image` from `bosses.json`, see section 1a) and to the generic class icons, or is this pass strictly the 21-hero roster?
