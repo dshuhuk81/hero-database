@@ -259,6 +259,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
   },
   {
+    label: "Artifact Enhancement Tool",
+    href: "/artifact-enhancement",
+    group: "tools",
+    teaser: true,
+    description: {
+      en: "Preview awakened-effect values and enhancement success rates",
+      de: "Vorschau auf Werte und Erfolgschancen bei Artefaktverbesserungen",
+      es: "Previsualiza valores y probabilidades de mejora de artefactos",
+      ru: "Просмотр значений и шансов усиления эффектов артефакта",
+      zh: "预览神器强化效果数值与成功率",
+    },
+    icon: `<path d="M14.5 4.5 19 9l-9.8 9.8a2.8 2.8 0 0 1-4 0 2.8 2.8 0 0 1 0-4z"/><path d="m12 7 4 4"/><path d="M18 2v3M21 5h-3"/><path d="M4 10H2M3 9v2"/>`,
+  },
+  {
     label: "Wishlist",
     href: "/wishlisht",
     group: "tools",

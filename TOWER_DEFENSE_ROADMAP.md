@@ -12,12 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M17: Run blessings with mechanics (gap check, P2)
-
-The between-wave pick already offers 3 choose 1 (good), but all 12 virtue effects are stats (atk, res, hp, heal, regen, crit, dodge).
-- [ ] Add rarity tiers: common stat blessings stay, rare and epic blessings change mechanics (for example "chain lightning can stun", "Wet enemies explode on death", "Tanks' hold also pulls enemies"). Tie them to M13 statuses and deployed heroes so the offer fits the team.
-- Done when: rare or epic offers appear in most runs and bots show no single blessing dominating.
-
 ### M18: Bosses that change rules (gap check, P2)
 
 Lilith changes rules (untargetable while summoning, shared damage). Baphomet is stats only.

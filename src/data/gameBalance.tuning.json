@@ -29,6 +29,19 @@
   "difficulty": { "enemyHp": 3.75 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 }, "path": { "level": 4 } },
+  "runBoons": {
+    "chance": { "epic": 0.1, "rare": 0.25 },
+    "list": {
+      "storm_surge": { "rarity": "rare", "requires": "chain", "stun": 0.4 },
+      "tidal_pull": { "rarity": "rare", "requires": "wet", "slow": 0.8 },
+      "venom_rot": { "rarity": "rare", "requires": "poison", "bonus": 0.25 },
+      "wildfire_spread": { "rarity": "rare", "requires": "burn", "radius": 70 },
+      "rally": { "rarity": "rare", "requires": "road", "atk": 0.3, "seconds": 5 },
+      "shattering_cold": { "rarity": "epic", "requires": "freeze", "bonus": 1 },
+      "drowned_burst": { "rarity": "epic", "requires": "wet", "share": 0.3, "radius": 55 },
+      "soul_reaper": { "rarity": "epic", "requires": null, "every": 10, "gold": 15, "charge": 1 }
+    }
+  },
   "rings": {
     "highground": { "range": 0.2 },
     "shrine": { "ultCharge": 0.3 },

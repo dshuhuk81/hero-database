@@ -41,7 +41,7 @@ export const SQUADS = {
 // bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
 // `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
-export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mutators = null, mode = "classic", tier = "normal", maxWave = 150 } = {}) {
+export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150 } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
@@ -82,7 +82,8 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
         g.upgrade(pick.entityId, info.needsPath ? pathChoice : focus ?? (pick.slotType === "road" ? "health" : "attack"));
         spent += before - g.gold;
       }
-      if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
+      // `blessings`: preference list of offer entries ("boon:<id>" or virtue names), else the first card.
+      if (g.virtueOffer) g.chooseVirtue((blessings ?? []).find((name) => g.virtueOffer.includes(name)) ?? g.virtueOffer[0]);
       // Endless mutators (M15): take the first offered one from `mutators` (a preference list), else skip.
       if (g.mutatorOffer) { const pick = (mutators ?? []).find((id) => g.mutatorOffer.includes(id)); if (pick) g.chooseMutator(pick); else g.skipMutators(); }
       if (!g.startWave()) break;
@@ -104,5 +105,5 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
     if (!g.running && g.totalLeaks === leaksBefore) perfectWaves += 1;
   }
   const won = g.won && !stalled;
-  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, perfectWaves, insightLog: g.insightLog, mutators: [...(g.mutators ?? [])], mutatorWaves: g.mutatorWaves ?? 0 };
+  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, perfectWaves, insightLog: g.insightLog, mutators: [...(g.mutators ?? [])], mutatorWaves: g.mutatorWaves ?? 0, boons: [...(g.boons ?? [])] };
 }

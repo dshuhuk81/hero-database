@@ -1,7 +1,7 @@
 // Blessing presentation: cards (large bonus value, stat word, stat icon), the
 // on-map buff bar with summed run blessings, and the between-wave offer modal.
 import { blessingDisplay, buffChips } from "../ui.js";
-import { MUTATOR_INFO } from "../skills.js";
+import { MUTATOR_INFO, RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 
 export const BOON_ICONS: Record<string, string> = {
@@ -27,6 +27,22 @@ export function boonCard(options: BoonCardOptions) {
     `<span class="td-boon-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${icon}</svg></span>` +
     `<span class="td-boon-main" aria-hidden="true"><span class="td-boon-value">${shown.value}</span><span class="td-boon-stat">${shown.stat}</span></span>` +
     `<span class="td-boon-name" aria-hidden="true">${options.name}</span>` +
+    (options.cta ? `<span class="td-boon-cta" aria-hidden="true">${options.cta}</span>` : "") +
+    `</${options.tag}>`;
+}
+
+// Rare and epic run blessing card (M17): rarity badge, name and what it changes.
+const RARITY_ICON = '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" />';
+export function mechanicBoonCard(id: string, rarity: string, options: { tag: "button" | "div"; attrs?: string; cta?: string; compact?: boolean }) {
+  const info = (RUN_BOON_INFO as Record<string, { name: string; text: string }>)[id] ?? { name: id, text: "" };
+  const label = rarity === "epic" ? "Epic" : "Rare";
+  const classes = ["td-boon", "td-boon--mech", `td-boon--${rarity}`, options.compact ? "td-boon--tile" : ""].filter(Boolean).join(" ");
+  const type = options.tag === "button" ? ' type="button"' : "";
+  return `<${options.tag} class="${classes}"${type} ${options.attrs ?? ""} aria-label="${label} blessing ${info.name}: ${info.text}">` +
+    `<span class="td-boon-badge">${label}</span>` +
+    `<span class="td-boon-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${RARITY_ICON}</svg></span>` +
+    `<span class="td-boon-main" aria-hidden="true"><span class="td-boon-stat">${info.name}</span></span>` +
+    `<span class="td-boon-text" aria-hidden="true">${info.text}</span>` +
     (options.cta ? `<span class="td-boon-cta" aria-hidden="true">${options.cta}</span>` : "") +
     `</${options.tag}>`;
 }
@@ -131,6 +147,10 @@ export function createRunOffer(ctx: PageContext) {
     offerKey = key;
     const owned: string[] = game.virtues;
     gridEl.innerHTML = offer.map((name) => {
+      if (name.startsWith("boon:")) {
+        const id = name.slice(5);
+        return mechanicBoonCard(id, data.tuning.runBoons?.list?.[id]?.rarity ?? "rare", { tag: "button", attrs: `data-virtue="${name}"`, cta: "Select" });
+      }
       const effect = data.tuning.virtueEffects[name];
       const pair = (data.tuning.virtuePairs || []).find((entry: any) => entry.virtues.includes(name) && entry.virtues.every((v: string) => v === name || owned.includes(v)));
       return boonCard({
@@ -174,6 +194,12 @@ export function createRunOffer(ctx: PageContext) {
     if (!button || !session) return;
     const name = button.dataset.virtue!;
     if (!session.game.chooseVirtue(name)) return;
+    if (name.startsWith("boon:")) {
+      const info = (RUN_BOON_INFO as Record<string, { name: string; text: string }>)[name.slice(5)];
+      ctx.notice(`${info?.name ?? "Blessing"}: ${info?.text ?? ""}`);
+      q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+      return;
+    }
     const triggered = (session.game.activePairs ?? []).find((pair: any) => pair.virtues.includes(name));
     const heroName = blessingNames[name] ?? name;
     ctx.notice(triggered ? `${heroName} activates ${triggered.name}: ${triggered.label}` : `${heroName} blesses your squad for the rest of this run.`);

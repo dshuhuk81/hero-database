@@ -62,6 +62,19 @@ export const CLASS_ULT_TEXT = {
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 
+// Rare and epic run blessings (M17); numbers in tuning.runBoons.
+/** @type {Record<string, { name: string, text: string }>} */
+export const RUN_BOON_INFO = {
+  storm_surge: { name: "Storm Surge", text: "Chain lightning bounces stun each enemy they reach for 0.4s." },
+  tidal_pull: { name: "Tidal Pull", text: "Wet enemies move 20% slower." },
+  venom_rot: { name: "Venom Rot", text: "Poisoned enemies take 25% more damage from every source." },
+  wildfire_spread: { name: "Wildfire Spread", text: "Burning enemies that die pass their fire to enemies nearby." },
+  rally: { name: "Rally", text: "When a road hero falls, every hero deals 30% more damage for 5s." },
+  shattering_cold: { name: "Shattering Cold", text: "Frozen enemies take double damage." },
+  drowned_burst: { name: "Drowned Burst", text: "Wet enemies burst when they die, dealing 30% of their health to enemies nearby." },
+  soul_reaper: { name: "Soul Reaper", text: "Every 10th kill pays 15 gold and charges every ultimate by 1s." },
+};
+
 // Special rings (M16); numbers in tuning.rings, placement in tdMaps.json "rings".
 /** @type {Record<string, { name: string, text: string }>} */
 export const RING_INFO = {

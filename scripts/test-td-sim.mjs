@@ -2077,6 +2077,70 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     }
   }
 
+  // M17 rare and epic run blessings: offers, eligibility, effects.
+  {
+    const B = tuning.runBoons.list;
+    const { g, units: [pos, zeus] } = setup("poseidon", "zeus");
+    assert.ok(g.boonEligible("tidal_pull"), "Wet source on the field");
+    assert.ok(g.boonEligible("storm_surge"), "Zeus chains");
+    assert.ok(!g.boonEligible("venom_rot"), "no poison source");
+    assert.ok(!g.boonEligible("shattering_cold"), "no chill source, no freeze");
+    let rare = 0;
+    for (let i = 0; i < 40; i += 1) { g.offerVirtues(); rare += g.virtueOffer.filter((n) => n.startsWith("boon:")).length; }
+    assert.ok(rare > 0, "rare or epic cards show up");
+    for (let i = 0; i < 40; i += 1) { g.offerVirtues(); for (const n of g.virtueOffer) if (n.startsWith("boon:")) assert.ok(g.boonEligible(n.slice(5)), `${n} eligible`); }
+    g.virtueOffer = ["boon:tidal_pull"];
+    assert.ok(g.chooseVirtue("boon:tidal_pull") && g.boons.includes("tidal_pull"), "boon chosen");
+    assert.equal(g.virtues.length, 0, "boons are not stat blessings");
+    // Tidal Pull slows Wet enemies.
+    const wet = enemyAt(g, "grunt", 0, 0); wet.distance = 10; wet.wetUntil = g.time + 5;
+    const dry = enemyAt(g, "grunt", 0, 0); dry.distance = 10;
+    g.heroes = [];
+    g.step(1);
+    close((wet.distance - 10) / (dry.distance - 10), B.tidal_pull.slow, "Tidal Pull");
+  }
+  {
+    const B = tuning.runBoons.list;
+    const { g, units: [zeus] } = setup("zeus");
+    g.boons = ["venom_rot", "shattering_cold", "drowned_burst", "soul_reaper", "wildfire_spread", "rally", "storm_surge"];
+    const p = enemyAt(g, "grunt", 0, 0); p.poisonUntil = g.time + 5; p.poisonDps = 0;
+    g.hit(p, 100, zeus, { showShot: false });
+    close(hp(p), 100 * (1 + B.venom_rot.bonus), "Venom Rot");
+    const f = enemyAt(g, "grunt", 0, 0); f.frozenUntil = g.time + 1;
+    g.hit(f, 100, zeus, { showShot: false });
+    close(hp(f), 100 * (1 + B.shattering_cold.bonus), "Shattering Cold");
+    // Drowned Burst: a Wet enemy's death hurts its neighbours.
+    const w = enemyAt(g, "grunt", 300, 300, 50); w.wetUntil = g.time + 5;
+    const n = enemyAt(g, "grunt", 310, 300);
+    g.hit(w, 1000, zeus);
+    close(hp(n), 50 * B.drowned_burst.share, "Drowned Burst");
+    // Wildfire Spread: a burning enemy's fire passes on.
+    const b = enemyAt(g, "grunt", 500, 300, 10); b.burnUntil = g.time + 3; b.burnDps = 7; b.burnBy = zeus;
+    const b2 = enemyAt(g, "grunt", 520, 300);
+    g.hit(b, 1000, zeus);
+    assert.ok(g.isBurning(b2) && b2.burnDps === 7, "Wildfire Spread");
+    // Soul Reaper: every Nth kill pays gold and charges ultimates.
+    g.reaperKills = B.soul_reaper.every - 1;
+    const gold = g.gold, clock = zeus.ultClock;
+    g.hit(enemyAt(g, "grunt", 700, 100, 1), 10, zeus);
+    assert.ok(g.gold >= gold + B.soul_reaper.gold && zeus.ultClock - clock >= B.soul_reaper.charge, "Soul Reaper");
+    // Storm Surge: bounces stun.
+    g.enemies = [];
+    const line = Array.from({ length: 3 }, (_, i) => enemyAt(g, "grunt", zeus.x + 30 + i * 25, zeus.y));
+    g.basicAttack(zeus, line[0]);
+    assert.ok(g.isStopped(line[1]), "Storm Surge stuns a bounce target");
+  }
+  {
+    const B = tuning.runBoons.list;
+    const { g, units: [nuwa, zeus] } = setup("nuwa", "zeus");
+    g.boons = ["rally"];
+    g.damageHero(nuwa, 1e9, null);
+    assert.ok(g.rallyUntil > g.time, "a fallen road hero starts the rally");
+    const rallied = g.attackValue(zeus);
+    g.rallyUntil = 0;
+    close(rallied / g.attackValue(zeus), 1 + B.rally.atk, "Rally attack bonus");
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");

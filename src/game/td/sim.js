@@ -81,7 +81,8 @@ export class TowerDefenseGame {
     this.rng = createRng(seed);
     // Quests draw from their own stream so combat randomness is unchanged by them.
     this.questRng = createRng((seed ^ 0x7a3d9c1) >>> 0);
-    this.mutatorRng = createRng((seed ^ 0x3c6ef372) >>> 0); // endless mutator offers (M15), apart from combat
+    this.mutatorRng = createRng((seed ^ 0x3c6ef372) >>> 0);
+    this.boonRng = createRng((seed ^ 0x5be0cd19) >>> 0); // rare / epic run blessing rolls (M17) // endless mutator offers (M15), apart from combat
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
     this.lanes = mapLanes(map).map((lane) => ({ ...lane, ...pathMetrics(lane.path) }));
@@ -115,6 +116,9 @@ export class TowerDefenseGame {
     this.virtues = [];
     this.activePairs = [];
     this.virtueOffer = null;
+    this.boons = []; // rare and epic run blessings chosen this run (M17)
+    this.rallyUntil = 0;
+    this.reaperKills = 0;
     this.mutators = []; // endless mutators chosen this run (M15)
     this.mutatorWaves = 0; // sum of the mutators' Favor shares over the waves cleared with them
     this.mutatorOffer = null;
@@ -294,11 +298,26 @@ export class TowerDefenseGame {
     return (this.tuning.synergy?.bonusPerTag || 0) + (this.favor.synergyTagBonus || 0);
   }
 
+  // Between-wave offer: each card may roll Epic or Rare (tuning.runBoons.chance, own RNG)
+  // and then shows a mechanic blessing the deployed team can use ("boon:<id>"); otherwise
+  // a common stat blessing (virtue).
   offerVirtues() {
     const available = Object.keys(this.virtueEffects).filter((name) => !this.virtues.includes(name));
+    const cfg = this.tuning.runBoons;
+    const boons = cfg ? Object.keys(cfg.list).filter((id) => !this.boons.includes(id) && this.boonEligible(id)) : [];
     const picks = [];
-    while (picks.length < 3 + (this.favor.extraOffer || 0) && available.length) {
-      picks.push(available.splice(Math.floor(this.rng() * available.length), 1)[0]);
+    const count = 3 + (this.favor.extraOffer || 0);
+    for (let i = 0; i < count; i += 1) {
+      const roll = cfg ? this.boonRng() : 1;
+      const rarity = roll < cfg?.chance.epic ? "epic" : roll < (cfg?.chance.epic ?? 0) + (cfg?.chance.rare ?? 0) ? "rare" : null;
+      const pool = rarity ? boons.filter((id) => cfg.list[id].rarity === rarity) : [];
+      if (pool.length) {
+        const id = pool[Math.floor(this.boonRng() * pool.length)];
+        boons.splice(boons.indexOf(id), 1);
+        picks.push(`boon:${id}`);
+      } else if (available.length) {
+        picks.push(available.splice(Math.floor(this.rng() * available.length), 1)[0]);
+      }
     }
     this.virtueOffer = picks.length ? picks : null;
   }
@@ -306,9 +325,28 @@ export class TowerDefenseGame {
   chooseVirtue(name) {
     if (!this.virtueOffer || !this.virtueOffer.includes(name) || this.virtues.includes(name)) return false;
     this.virtueOffer = null;
-    this.addVirtue(name);
+    if (name.startsWith("boon:")) this.boons = [...this.boons, name.slice(5)];
+    else this.addVirtue(name);
     this.onChange("virtue", this);
     return true;
+  }
+
+  hasBoon(id) {
+    return this.boons?.includes(id) ? this.tuning.runBoons.list[id] : null;
+  }
+
+  // Whether the deployed team can use a mechanic blessing (M17).
+  boonEligible(id) {
+    const need = this.tuning.runBoons.list[id]?.requires;
+    const applies = (status) => this.heroes.some((h) => this.statusCfg()?.sources?.[h.id] === status || this.classBonus(h).infuse === status
+      || (status === "burn" && h.path === "wildfire") || (status === "chill" && (h.path === "frost" || h.path === "crippling")));
+    switch (need) {
+      case null: case undefined: return true;
+      case "chain": return this.heroes.some((h) => (h.basic === "chain" && this.kit(h).chain) || h.path === "arc");
+      case "road": return this.heroes.some((h) => h.slotType === "road");
+      case "freeze": return applies("wet") && applies("chill");
+      default: return applies(need);
+    }
   }
 
   addVirtue(name) {
@@ -593,7 +631,8 @@ export class TowerDefenseGame {
         // seconds, separate from skill slows; the stronger of the two applies.
         const blocking = this.tuning.blocking ?? {};
         if (enemy.brushed) enemy.squeeze = Math.max(enemy.squeeze, blocking.passSlow || 0);
-        const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1);
+        const tidal = this.hasBoon("tidal_pull") && this.isWet(enemy) ? this.hasBoon("tidal_pull").slow : 1;
+        const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1) * tidal;
         enemy.distance += enemy.speed * pace * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
@@ -892,7 +931,8 @@ export class TowerDefenseGame {
     const aura = this.supportAuraFor(hero);
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0));
+    const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
+    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally;
   }
 
   damageHero(hero, amount, source) {
@@ -900,6 +940,8 @@ export class TowerDefenseGame {
     hero.hpLeft -= amount;
     hero._hitFlash = true;
     if (hero.hpLeft <= 0) {
+      const rally = this.boons?.length && hero.slotType === "road" ? this.hasBoon("rally") : null;
+      if (rally) this.rallyUntil = this.time + rally.seconds;
       this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex, targeting: hero.targeting });
       this.heroes = this.heroes.filter((entry) => entry !== hero);
       this.team = this.team.filter((id) => id !== hero.id);
@@ -1096,6 +1138,8 @@ export class TowerDefenseGame {
         if (!next) break;
         this.emitHeroEffect(hero, { type: "shot", x1: from.x, y1: from.y, x2: next.x, y2: next.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
         strike(next, share, { showShot: false });
+        const surge = this.hasBoon("storm_surge");
+        if (surge && !next.dead) next.stunnedUntil = Math.max(next.stunnedUntil ?? 0, this.time + surge.stun);
         struck.add(next);
         from = next;
       }
@@ -1258,6 +1302,7 @@ export class TowerDefenseGame {
     if (!cfg || !this.isWet(enemy) || !(enemy.chill > 0) || (enemy.freezeReadyAt ?? 0) > this.time) return;
     enemy.wetUntil = 0;
     enemy.stunnedUntil = Math.max(enemy.stunnedUntil ?? 0, this.time + cfg.seconds);
+    enemy.frozenUntil = this.time + cfg.seconds;
     enemy.freezeReadyAt = this.time + cfg.cooldown;
     this.reaction("freeze", enemy, hero, 30);
   }
@@ -1269,6 +1314,34 @@ export class TowerDefenseGame {
       this.reactionsSeen.add(name);
       this.lastReaction = { name, heroId: hero?.id ?? null };
       this.onChange("reaction", this);
+    }
+  }
+
+  // Kill effects of run blessings (M17).
+  boonsOnKill(enemy, hero) {
+    const spread = this.hasBoon("wildfire_spread");
+    if (spread && this.isBurning(enemy)) {
+      for (const other of this.enemies) {
+        if (other.dead || other === enemy || this.isBurning(other) || Math.hypot(other.x - enemy.x, other.y - enemy.y) > spread.radius) continue;
+        other.burnDps = enemy.burnDps;
+        other.burnUntil = enemy.burnUntil;
+        other.burnBy = enemy.burnBy;
+      }
+    }
+    const burst = this.hasBoon("drowned_burst");
+    if (burst && this.isWet(enemy)) {
+      enemy.wetUntil = 0;
+      for (const other of [...this.enemies]) {
+        if (other.dead || other === enemy || Math.hypot(other.x - enemy.x, other.y - enemy.y) > burst.radius) continue;
+        this.hit(other, enemy.maxHp * burst.share, hero, { showShot: false, showHit: false });
+      }
+      this.emit({ type: "reaction", reaction: "steam", x: enemy.x, y: enemy.y, radius: burst.radius, life: 0.45, color: "white" });
+    }
+    const reaper = this.hasBoon("soul_reaper");
+    if (reaper && ++this.reaperKills % reaper.every === 0) {
+      this.gold += reaper.gold;
+      this.totalGoldEarned += reaper.gold;
+      for (const h of this.heroes) h.ultClock += reaper.charge;
     }
   }
 
@@ -1321,8 +1394,11 @@ export class TowerDefenseGame {
     // Paths (M12): Warden's held enemies and Hunter's Mark take more from everyone.
     const warden = enemy.held ? 1 + (this.pathFx(enemy.heldBy, "warden")?.heldBonus || 0) : 1;
     const marked = (enemy.markedUntil ?? 0) > this.time ? 1 + enemy.markBonus : 1;
+    // Run blessings (M17): Venom Rot on poisoned enemies, Shattering Cold on frozen ones.
+    const rot = this.boons.length && this.isPoisoned(enemy) ? 1 + (this.hasBoon("venom_rot")?.bonus || 0) : 1;
+    const shatter = this.boons.length && (enemy.frozenUntil ?? 0) > this.time ? 1 + (this.hasBoon("shattering_cold")?.bonus || 0) : 1;
     const before = enemy.hp;
-    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked);
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
@@ -1446,6 +1522,7 @@ export class TowerDefenseGame {
 
   killEnemy(enemy, hero) {
     enemy.dead = true;
+    if (this.boons.length) this.boonsOnKill(enemy, hero);
     const harvest = this.statusCfg()?.reactions?.harvest;
     if (harvest && this.isPoisoned(enemy)) {
       for (const anubis of this.heroes.filter((h) => h.id === "anubis")) {

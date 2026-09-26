@@ -3,7 +3,7 @@
 // and the This run tab.
 import { buildRunTuning } from "../favor.js";
 import { createBlessingsGraph } from "./blessings";
-import { boonCard } from "./boons";
+import { boonCard, mechanicBoonCard } from "./boons";
 import type { PageContext } from "./context";
 import { availableFavor, modeBest } from "./save";
 
@@ -118,14 +118,16 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     const game = state.session?.game;
     const virtues: string[] = game?.virtues ?? [];
     const pairs: any[] = game?.activePairs ?? [];
+    const boons: string[] = game?.boons ?? [];
     const synergies = game ? game.activeSynergyCount() : 0;
-    if (!game || (!virtues.length && !pairs.length && !synergies)) {
+    if (!game || (!virtues.length && !pairs.length && !boons.length && !synergies)) {
       panel.innerHTML = `<p class="td-favor-note">No run blessings yet. Clearing a wave can offer a blessing that lasts for the rest of the run.</p>`;
       return;
     }
     const cards = virtues.map((name) => boonCard({ tag: "div", name: blessingNames[name] ?? name, effect: data.tuning.virtueEffects[name], compact: true })).join("");
     const pairCards = pairs.map((pair) => boonCard({ tag: "div", name: pair.name, effect: pair.effect, compact: true, pair: true, badge: "Pair bonus" })).join("");
-    panel.innerHTML = `<div class="td-boon-grid">${pairCards}${cards}</div>` +
+    const boonCards = boons.map((id) => mechanicBoonCard(id, data.tuning.runBoons?.list?.[id]?.rarity ?? "rare", { tag: "div", compact: true })).join("");
+    panel.innerHTML = `<div class="td-boon-grid">${boonCards}${pairCards}${cards}</div>` +
       `<p class="td-favor-note">${synergies} active synergy link${synergies === 1 ? "" : "s"} between deployed heroes.</p>`;
   }
 
