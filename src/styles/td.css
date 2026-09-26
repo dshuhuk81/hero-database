@@ -727,3 +727,9 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 @media (max-width: 600px) { .td-stat--goal { display: none; } }
 .td-result-inner .td-result-daily { color: var(--text-bright); font-weight: var(--weight-semibold); }
 .td-result-inner .td-result-daily.is-reached { color: var(--accent-gold); }
+/* Expedition (M21): lobby card reuses the Daily Trial layout; camp cards reuse the mutator cards. */
+.td-exp-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.td-exp-camp { display: grid; gap: var(--space-2); }
+.td-exp-camp .td-mutator { border-color: color-mix(in srgb, var(--accent-gold) 45%, var(--border-subtle)); background: color-mix(in srgb, var(--accent-gold) 6%, var(--bg-base)); }
+.td-exp-camp .td-mutator:hover, .td-exp-camp .td-mutator:focus-visible { border-color: var(--accent-gold); }
+.td-exp-cost { margin-top: auto; color: var(--td-warn); font-size: var(--text-xs); font-weight: var(--weight-bold); }

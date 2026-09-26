@@ -30,6 +30,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
   import { createDaily } from "../../game/td/page/daily";
+  import { createExpedition } from "../../game/td/page/expedition";
   import { renderChallengeBadges, renderChallengeList } from "../../game/td/page/challenges";
   import { createDebugPanel } from "../../game/td/page/debug";
   import { createHud } from "../../game/td/page/hud";
@@ -49,7 +50,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // ------------------------------------------------------------------
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
-  const store = createSaveStore({ heroIds: new Set(heroById.keys()) });
+  const store = createSaveStore({ heroIds: new Set(heroById.keys()), mapIds: new Set(maps.map((map) => map.id)), relicIds: new Set(Object.keys(data.tuning.runBoons?.list ?? {})) });
   const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedTier: "normal", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
@@ -143,6 +144,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     q("[data-td-favor-count]").textContent = `(${availableFavor(store.data)})`;
     renderChallengeBadges(root!, store.data, data.tuning.tiers);
     dailyTrial.render();
+    expedition.render();
   }
 
   q("[data-td-maps]").addEventListener("click", (event) => {
@@ -224,6 +226,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const runOffer = createRunOffer(ctx);
   const results = createResults(ctx);
   const dailyTrial = createDaily(ctx);
+  const expedition = createExpedition(ctx);
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
   const popover = createPopover(ctx);

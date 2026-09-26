@@ -3,6 +3,11 @@ import type { PageContext } from "./context";
 import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
 import { sanitizeChallenges } from "../challenges.js";
 import { sanitizeDaily } from "../daily.js";
+import { sanitizeExpedition } from "../expedition.js";
+
+// Expedition (M21) in progress: stage order, current stage, roster, relics, veterans,
+// lives carried over and the pending camp cards (expedition.js).
+export type ExpeditionState = { seed: number; stages: string[]; stage: number; roster: string[]; relics: string[]; veterans: string[]; lives: number; camp: any[] | null };
 
 // Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
 export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };
@@ -30,6 +35,8 @@ export type SaveData = {
   challenges: Record<string, Record<string, RunTier>>; // M20: challengeKey -> challenge id -> highest tier cleared (challenges.js)
   nextRunBoost: RunBoost | null;
   daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
+  expedition: ExpeditionState | null; // Expedition in progress (M21)
+  expeditionBest: { stages: number; completed: number }; // most stages cleared in one expedition, expeditions finished
 };
 
 export type SaveStore = { data: SaveData; persist(): void };
@@ -63,7 +70,8 @@ export function modeBest(save: SaveData, mode: RunMode, tier: RunTier = "normal"
   return Math.max(mode === "classic" && t === "normal" ? save.bestScore : 0, 0, ...scores);
 }
 
-type SaveRules = { heroIds: Set<string> };
+// mapIds and relicIds check the Expedition state; without them it is not validated as strictly.
+type SaveRules = { heroIds: Set<string>; mapIds?: Set<string>; relicIds?: Set<string> };
 
 export const SAVE_KEY = "td:v1";
 export const SAVE_CODE_PREFIX = "TD1:";
@@ -78,7 +86,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [] };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], expedition: null, expeditionBest: { stages: 0, completed: 0 } };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -111,6 +119,11 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
     challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
     daily: sanitizeDaily(candidate.daily),
+    expedition: sanitizeExpedition(candidate.expedition, { heroIds: rules.heroIds, mapIds: rules.mapIds ?? new Set(candidate.expedition?.stages ?? []), relicIds: rules.relicIds ?? new Set(candidate.expedition?.relics ?? []) }) as ExpeditionState | null,
+    expeditionBest: {
+      stages: Math.max(0, Math.floor(Number(candidate.expeditionBest?.stages) || 0)),
+      completed: Math.max(0, Math.floor(Number(candidate.expeditionBest?.completed) || 0)),
+    },
   };
   // Tree v3 (M3): owned levels stay, the price increase is credited back once.
   if (clean.treeVersion < 3) {

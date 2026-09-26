@@ -8,7 +8,9 @@ import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 import { dailyGameOptions } from "../daily.js";
+import { stageGameOptions } from "../expedition.js";
 import type { DailySetup } from "./daily";
+import type { ExpeditionState } from "./save";
 
 type Deps = {
   music: { play(track: string): void; stop(): void };
@@ -38,11 +40,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     playEl.hidden = name !== "play";
   }
 
-  async function start(map: any, options: { daily?: DailySetup | null } = {}) {
+  async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null } = {}) {
     const token = ++sessionToken;
     const daily = options.daily ?? null;
+    const expedition = options.expedition ?? null;
     end();
-    if (!daily) { // the Daily Trial leaves the lobby's map pick alone
+    if (!daily && !expedition) { // the Daily Trial and Expedition leave the lobby's map pick alone
       state.selectedMap = map;
       try { localStorage.setItem("td:map", map.id); } catch {}
     }
@@ -64,8 +67,10 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
 
     // Daily Trial (M19): the same setup for everyone, so no Divine Blessings and no shard boost.
     const runLevels = daily ? {} : { ...store.data.favLevels };
-    const boost = daily ? null : store.data.nextRunBoost;
-    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map, ...(daily ? dailyGameOptions(daily) : {}) });
+    // Expedition stages (M21) keep Divine Blessings but skip the shard boost (it waits for a normal run).
+    const boost = daily || expedition ? null : store.data.nextRunBoost;
+    const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition) : {};
+    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map, ...special });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
@@ -84,7 +89,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily };
+    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -97,7 +102,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     deps.buffBar.render();
     const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
-    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.` : "";
+    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
+      : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${expedition.lives} lives.` : "";
     ctx.notice(`Tap a ring on ${map.name} to deploy a hero.${boostText}${dailyText}`);
   }
 
@@ -192,6 +198,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (opener) { ctx.actions.openPanel(opener.dataset.tdOpen!, ctx.actions.activePanel() ? null : opener); return; }
     if (target.closest("[data-td-close-panel]")) { ctx.actions.closePanel(); return; }
     if (target.closest("[data-td-restart]") || target.closest("[data-td-retry]")) {
+      // An Expedition stage cannot be replayed; its outcome is final (M21).
+      if (state.session?.expedition) { toLobby(); return; }
       const map = state.session?.map ?? state.selectedMap;
       const daily = state.session?.daily ?? null; // a trial retries the same day's setup
       ctx.actions.closePanel(false);

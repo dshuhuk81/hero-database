@@ -37,6 +37,7 @@ import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type RunBoost } from "./save";
 import { finishDaily } from "./daily";
+import { finishExpeditionStage } from "./expedition";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 
 type ShardChoice = "favor" | "gold" | "virtue";
@@ -151,8 +152,10 @@ export function createResults(ctx: PageContext) {
     const key = runKey(map.id, game.mode, game.tier);
     // Daily Trial (M19) runs keep their own per-day record instead of the map's endless bests.
     const daily = session.daily;
-    const prevRun = daily ? null : saved.mapBests[key] || null;
-    const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug) : null;
+    const expedition = session.expedition;
+    const prevRun = daily || expedition ? null : saved.mapBests[key] || null;
+    const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
+      : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won } : null;
     // Challenges (M20): stored and paid only for non-debug runs; persisted with the run below.
     const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
@@ -171,7 +174,7 @@ export function createResults(ctx: PageContext) {
         saved.favor += shard.favor;
       }
       const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
-      if (!daily) {
+      if (!daily && !expedition) {
         saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
         const top = saved.mapTop[key];
         if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
@@ -184,7 +187,8 @@ export function createResults(ctx: PageContext) {
     ctx.actions.cancelDeploy();
     const endless = game.mode === "endless";
     const tierLabel = game.tier !== "normal" ? `${data.tuning.tiers?.[game.tier]?.label ?? game.tier} - ` : "";
-    q("[data-td-result-kicker]").textContent = daily ? `Daily Trial ${daily.date}` : tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
+    q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition; // an Expedition stage is final (M21)
+    q("[data-td-result-kicker]").textContent = daily ? `Daily Trial ${daily.date}` : expedition ? `Expedition - stage ${expedition.stage + 1} of ${expedition.stages.length}` : tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
     const dailyEl = q("[data-td-result-daily]");
     dailyEl.hidden = !dailyRun;
     dailyEl.textContent = dailyRun?.text ?? "";

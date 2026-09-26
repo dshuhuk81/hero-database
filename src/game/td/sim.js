@@ -57,11 +57,17 @@ export function pointOnPath(points, distance, offset = 0) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, hpScale = 1, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
     this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);
+    // Expedition (M21): relics (run blessings active from wave 1), veteran start levels per
+    // hero, lives carried over from the previous stage and a stage health scale.
+    this.presetBoons = (boons ?? []).filter((id) => tuning.runBoons?.list?.[id]);
+    this.startLevels = startLevels ?? {};
+    this.startLives = lives;
+    this.hpScale = hpScale;
     this.tuning = tuning;
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
@@ -73,7 +79,7 @@ export class TowerDefenseGame {
     // Kept apart from `difficulty`, which the dev debug panel overwrites.
     this.tier = mode !== "endless" && tuning.tiers?.[tier] ? tier : "normal";
     const tierCfg = tuning.tiers?.[this.tier] ?? {};
-    this.tierHp = tierCfg.enemyHp ?? 1;
+    this.tierHp = (tierCfg.enemyHp ?? 1) * (this.hpScale || 1);
     this.tierAttack = tierCfg.enemyAttack ?? 1;
     this.map = map;
     // Run mode (waves.js): classic = tdWaves.json, long = 20 waves, endless = until the last life.
@@ -99,7 +105,7 @@ export class TowerDefenseGame {
 
   reset() {
     this.gold = this.tuning.run.startingGold;
-    this.lives = this.tuning.run.lives;
+    this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;
     this.wave = 0;
     this.team = [];
@@ -119,7 +125,7 @@ export class TowerDefenseGame {
     this.virtues = [];
     this.activePairs = [];
     this.virtueOffer = null;
-    this.boons = []; // rare and epic run blessings chosen this run (M17)
+    this.boons = [...(this.presetBoons ?? [])]; // rare and epic run blessings chosen this run (M17), Expedition relics first
     this.rallyUntil = 0;
     this.reaperKills = 0;
     this.mutators = [...(this.presetMutators ?? [])]; // endless mutators chosen this run (M15), Daily Trial ones first
@@ -187,7 +193,7 @@ export class TowerDefenseGame {
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
     // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
-    const startLevel = Math.min(1 + (this.classBonus(base).startLevel || 0), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
+    const startLevel = Math.min(Math.max(1 + (this.classBonus(base).startLevel || 0), this.startLevels[heroId] || 1), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
     if (startLevel > 1) {
       const placed = this.heroes.at(-1);
       placed.level = startLevel;

@@ -97,6 +97,35 @@ const previews = maps.map((entry: any) => ({
       <p class="td-daily-best" data-td-daily-best></p>
     </section>
 
+    <section class="td-daily td-expedition" aria-labelledby="td-exp-title" data-td-expedition>
+      <div class="td-daily-head">
+        <div>
+          <p class="td-kicker">Expedition <span class="td-daily-date" data-td-exp-stage></span></p>
+          <h2 id="td-exp-title" data-td-exp-title>Three battlefields, one squad</h2>
+        </div>
+        <div class="td-exp-actions">
+          <button class="action-button action-button--quiet" type="button" data-td-exp-abandon hidden>Abandon</button>
+          <button class="action-button action-button--primary" type="button" data-td-exp-start>Start expedition</button>
+        </div>
+      </div>
+      <p class="td-daily-goal" data-td-exp-copy></p>
+      <div class="td-exp-camp" data-td-exp-camp hidden>
+        <span class="td-label">Camp: take one</span>
+        <div class="td-mutator-row" data-td-exp-cards></div>
+      </div>
+      <div class="td-daily-grid" data-td-exp-details hidden>
+        <div>
+          <span class="td-label">Roster</span>
+          <ul class="td-daily-list" data-td-exp-roster></ul>
+        </div>
+        <div>
+          <span class="td-label">Relics</span>
+          <ul class="td-daily-list" data-td-exp-relics></ul>
+        </div>
+      </div>
+      <p class="td-daily-best" data-td-exp-best></p>
+    </section>
+
     <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
   </div>
 </section>

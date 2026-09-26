@@ -12,19 +12,7 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M21: Expedition mode (gap check, P3)
-
-- [ ] Roguelite chain of maps: start with 3 random heroes, after each map choose new hero, relic or upgrade. Needs M13 and M17 first so relics have mechanics to build on.
-
 Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit the end of the blessing tree), map editor (non-goal in spec section 1).
-
-### M4: Leaderboard (large, needs design first)
-
-- Goal: shared scores across players.
-- Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
-- Done when: the anti-tamper approach is agreed, then built.
-- Only in Endless Mode maybe?
-
 
 ### M22: Bugs or UI Changes
 
@@ -44,7 +32,9 @@ No different area like on a website, area 1 = maps, area 2 underneath = buttons.
 
 ### M23: Tutorial Stage
 
-We should have a tutorial stage where players get an onboarding into all our mechanics and game play. that should cover minimalistic stages with the most importan topics to deal in an onboarding scenario like most gacha or tower defense games do. we have to define what we want to do and what should be displayed. most apps just create simple scenarios with tooltips that pause the game and players need to follow a tutorial.
+- We should have a tutorial stage where players get an onboarding into all our mechanics and game play. that should cover minimalistic stages with the most important topics to deal in an onboarding scenario like most gacha or tower defense games do. we have to define what we want to do and what should be displayed. most apps just create simple scenarios with tooltips that pause the game and players need to follow a tutorial.
+- players should be introduced to basic mechanics, status effects
+upgrades and such.
 
 ### M24: White label (only if game base is solid - not before)
 
@@ -53,6 +43,14 @@ We should have a tutorial stage where players get an onboarding into all our mec
 - new heroes (text, skills) defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
 - we use AI sprites created, maybe we need to do them for all heroes. also all skills and effects need to adapt to the new heroes as well.
 - White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
+
+
+### M25: Leaderboard (large, needs design first)
+
+- Goal: shared scores across players.
+- Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
+- Done when: the anti-tamper approach is agreed, then built.
+- Only in Endless Mode maybe?
 
 ## Research notes (September 25, 2026)
 

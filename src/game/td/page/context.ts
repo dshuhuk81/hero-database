@@ -5,6 +5,7 @@
 import type { createPauseController } from "../ui.js";
 import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
 import type { DailySetup } from "./daily";
+import type { ExpeditionState } from "./save";
 
 export type Slot = { type: string; index: number };
 
@@ -21,6 +22,7 @@ export type Session = {
   boost: RunBoost | null; // shard boost this run was built with
   debug: boolean;
   daily: DailySetup | null; // Daily Trial setup (M19) when this run is the trial
+  expedition: ExpeditionState | null; // Expedition state (M21) this stage was started from
 };
 
 // Mutable UI state shared between modules.
@@ -36,7 +38,7 @@ export type PageState = {
 
 export type PageActions = {
   // session.ts
-  startSession(map: any, options?: { daily?: DailySetup | null }): void;
+  startSession(map: any, options?: { daily?: DailySetup | null; expedition?: ExpeditionState | null }): void;
   toLobby(): void;
   handleChange(type: string): void;
   spaceBelowMap(): number;
