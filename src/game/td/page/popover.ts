@@ -3,7 +3,7 @@
 import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 import { classIcon } from "../assets.js";
-import { AWAKEN_TEXT, PATH_INFO } from "../skills.js";
+import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 
 export function createPopover(ctx: PageContext) {
   const { q, state, data, maxLevel } = ctx;
@@ -230,6 +230,8 @@ export function createPopover(ctx: PageContext) {
     if (unit.variant === "soul_drain") {
       lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakened ? 3 : 2} seconds. A kill refunds ${unit.awakened ? 80 : 60}% of the charge.</p>`);
     }
+    const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(unit.slotType, unit.slotIndex)];
+    if (ring) lines.push(`<p class="td-aura-line">Standing on ${ring.name}: ${ring.text}</p>`);
     lines.push(`<p>Levels and Awakening belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
     return lines.join("");
   }

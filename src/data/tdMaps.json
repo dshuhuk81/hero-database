@@ -1,6 +1,7 @@
 [
   {
     "id": "moonlit-pass",
+    "rings": {"platform:4": "highground", "platform:2": "cursed", "road:2": "shrine"},
     "boss": "baphomet",
     "name": "Moonlit Pass",
     "theme": "moonlit",
@@ -14,6 +15,7 @@
   },
   {
     "id": "verdant-crossing",
+    "rings": {"platform:1": "highground", "platform:2": "cursed", "road:2": "shrine"},
     "boss": "lilith",
     "name": "Verdant Crossing",
     "theme": "verdant",
@@ -27,6 +29,7 @@
   },
   {
     "id": "sunscar-ruins",
+    "rings": {"platform:5": "highground", "platform:4": "cursed", "road:4": "shrine"},
     "boss": "baphomet",
     "name": "Sunscar Ruins",
     "theme": "sunscar",

@@ -2055,6 +2055,28 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(endless.skipMutators() && endless.mutatorOffer === null, "skip");
   }
 
+  // M16 special rings: range, ultimate charge, damage and attack speed per ring.
+  {
+    const R = tuning.rings;
+    const map = { ...maps[0], rings: { "platform:0": "highground", "platform:1": "cursed", "platform:2": "shrine" } };
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 4 });
+    const plain = new TowerDefenseGame({ heroes, tuning, map: { ...maps[0], rings: {} }, waves, seed: 4 });
+    g.gold = plain.gold = 1e6;
+    for (const [i, id] of ["zeus", "phoenix", "fengyi"].entries()) { g.place(id, "platform", i); plain.place(id, "platform", i); }
+    const [hg, cu, sh] = g.heroes, [p0, p1, p2] = plain.heroes;
+    close(hg.range, p0.range * (1 + R.highground.range), "High ground range");
+    close(g.attackValue(cu) / plain.attackValue(p1), 1 + R.cursed.atk, "Cursed damage");
+    close(g.ultChargeRate(sh) / plain.ultChargeRate(p2), 1 + R.shrine.ultCharge, "Shrine charge");
+    assert.equal(g.ringKind("platform", 1), "cursed");
+    assert.equal(g.ringKind("road", 0), null, "plain ring");
+    for (const m of maps) assert.ok(Object.keys(m.rings ?? {}).length >= 1, `${m.id} has a special ring`);
+    for (const m of maps) for (const [key, kind] of Object.entries(m.rings ?? {})) {
+      const [type, index] = key.split(":");
+      assert.ok((type === "road" ? m.roadSlots : m.platformSlots)[Number(index)], `${m.id} ${key} exists`);
+      assert.ok(R[kind], `${m.id} ${key} kind ${kind} known`);
+    }
+  }
+
   // A revived hero keeps its target priority.
   {
     const { g, units: [nuwa] } = setup("nuwa");

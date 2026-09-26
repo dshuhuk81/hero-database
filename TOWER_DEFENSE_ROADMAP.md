@@ -12,13 +12,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 
 Use subagents for doing more than 1 milestone. Coordinate well when changing files though.
 
-### M16: Map mechanics (gap check, P1, with the separate map work)
-
-Rings are all equal today; maps differ only by path and boss.
-- [ ] Special rings: high ground (+range), shrine (+ult charge), cursed ring (+damage, -attack speed).
-- [ ] Hand to the map owner as a spec; the sim needs a per-ring modifier field in `tdMaps.json`.
-- Done when: each map has at least one special ring and the recruit sheet shows its effect.
-
 ### M17: Run blessings with mechanics (gap check, P2)
 
 The between-wave pick already offers 3 choose 1 (good), but all 12 virtue effects are stats (atk, res, hp, heal, regen, crit, dodge).

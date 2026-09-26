@@ -3,6 +3,7 @@
 import { classIconImg, tdAsset } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { slotHitRadius } from "../ui.js";
+import { RING_INFO } from "../skills.js";
 import anims from "../../../data/tdHeroAnims.json";
 
 // Idle loop sprite sheets rendered from the game's Spine data (scripts/td-spine/).
@@ -47,10 +48,11 @@ export function createRecruit(ctx: PageContext) {
     state.pendingSlot = slot;
     game.focusedSlot = slot;
     const road = slot.type === "road";
-    sheetKicker.textContent = `${road ? "Road" : "Platform"} ring ${slot.index + 1}`;
-    sheetNote.textContent = road
+    const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
+    sheetKicker.textContent = `${road ? "Road" : "Platform"} ring ${slot.index + 1}${ring ? ` - ${ring.name}` : ""}`;
+    sheetNote.textContent = (ring ? `${ring.name}: ${ring.text} ` : "") + (road
       ? "Tanks hold the line, Warriors cleave groups, Assassins catch enemies that slip through."
-      : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.";
+      : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.");
     sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +

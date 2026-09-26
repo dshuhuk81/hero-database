@@ -29,6 +29,11 @@
   "difficulty": { "enemyHp": 3.75 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 }, "path": { "level": 4 } },
+  "rings": {
+    "highground": { "range": 0.2 },
+    "shrine": { "ultCharge": 0.3 },
+    "cursed": { "atk": 0.3, "aps": -0.2 }
+  },
   "mutators": {
     "every": 10,
     "offer": 3,

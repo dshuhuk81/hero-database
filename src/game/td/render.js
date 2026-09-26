@@ -357,6 +357,25 @@ export async function createRenderer(canvas, game, options = {}) {
       const focused   = game.focusedSlot?.type === "platform" && game.focusedSlot.index === i;
       drawSlot(layerSlots, x, y, "platform", occupied, focused);
     });
+    for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
+      const [type, index] = key.split(":");
+      const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
+      if (pos) drawRingMark(layerSlots, pos[0], pos[1], kind);
+    }
+  }
+
+  // Special ring marker (M16): a colored halo and a small badge above the ring.
+  const RING_MARKS = { highground: 0xfacc15, shrine: 0x67e8f9, cursed: 0xf87171 };
+  function drawRingMark(container, x, y, kind) {
+    const color = RING_MARKS[kind] ?? 0xffffff;
+    const g = new PIXI.Graphics();
+    g.circle(x, y, 36).stroke({ width: 2, color, alpha: 0.55 });
+    const bx = x + 24, by = y - 26;
+    g.circle(bx, by, 9).fill({ color: 0x13111c, alpha: 0.92 }).stroke({ width: 2, color });
+    if (kind === "highground") g.moveTo(bx, by - 5).lineTo(bx + 5, by + 4).lineTo(bx - 5, by + 4).closePath().fill({ color });
+    else if (kind === "shrine") g.moveTo(bx, by - 5).lineTo(bx + 4, by).lineTo(bx, by + 5).lineTo(bx - 4, by).closePath().fill({ color });
+    else g.moveTo(bx - 4, by - 4).lineTo(bx + 4, by + 4).moveTo(bx + 4, by - 4).lineTo(bx - 4, by + 4).stroke({ width: 2.5, color, cap: "round" });
+    container.addChild(g);
   }
 
   function drawSlot(container, x, y, type, occupied, highlighted) {

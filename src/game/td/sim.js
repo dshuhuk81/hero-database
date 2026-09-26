@@ -174,7 +174,7 @@ export class TowerDefenseGame {
     this.totalGoldSpent += cost;
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
     // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
     const startLevel = Math.min(1 + (this.classBonus(base).startLevel || 0), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
     if (startLevel > 1) {
@@ -272,7 +272,22 @@ export class TowerDefenseGame {
   }
 
   ultChargeRate(hero = null) {
-    return 1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0);
+    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0));
+  }
+
+  // Special rings (M16): a map's `rings` names the kind per "road:0" / "platform:2"; the
+  // numbers live in tuning.rings (range, ultCharge, atk, aps shares).
+  ringKind(slotType, slotIndex) {
+    return this.map.rings?.[`${slotType}:${slotIndex}`] ?? null;
+  }
+
+  ringAt(slotType, slotIndex) {
+    const kind = this.ringKind(slotType, slotIndex);
+    return kind ? this.tuning.rings?.[kind] ?? null : null;
+  }
+
+  ringFx(hero) {
+    return hero?.slotType ? this.ringAt(hero.slotType, hero.slotIndex) : null;
   }
 
   synergyPerTag() {
@@ -614,7 +629,7 @@ export class TowerDefenseGame {
       hero.ultClock += dt;
       const target = this.findTarget(hero);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero)));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0)));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -877,7 +892,7 @@ export class TowerDefenseGame {
     const aura = this.supportAuraFor(hero);
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus);
+    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0));
   }
 
   damageHero(hero, amount, source) {
@@ -1495,7 +1510,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(fallen.slotType, fallen.slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
