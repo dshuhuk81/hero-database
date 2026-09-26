@@ -1,6 +1,6 @@
-// Daily Trial (M19) on the page: the lobby card with today's setup and best, starting
-// the trial run, and recording a finished trial for the result screen. Setup, seed and
-// the save record live in ../daily.js.
+// Daily Trial (M19) on the page: the Daily Trial screen with today's setup and best, its
+// card on the main menu, starting the trial run, and recording a finished trial for the
+// result screen. Setup, seed and the save record live in ../daily.js.
 import { classIconImg } from "../assets.js";
 import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { MUTATOR_INFO } from "../skills.js";
@@ -11,7 +11,7 @@ export type DailySetup = { date: string; seed: number; mapId: string; heroIds: s
 
 const mutatorInfo = MUTATOR_INFO as Record<string, { name: string; text: string }>;
 
-// Goal line shared by the lobby card and the result screen.
+// Goal line shared by the Daily Trial screen and the result screen.
 export const dailyGoalText = (setup: DailySetup) => `Clear wave ${setup.goal}`;
 
 export function dailyBestText(save: SaveData, date: string) {
@@ -48,6 +48,8 @@ export function createDaily(ctx: PageContext) {
   const heroesEl = q("[data-td-daily-heroes]");
   const mutatorsEl = q("[data-td-daily-mutators]");
   const bestEl = q("[data-td-daily-best]");
+  const summaryMapEl = q("[data-td-daily-summary-map]");
+  const summaryEl = q("[data-td-daily-summary]");
   let today: DailySetup | null = null;
 
   // Recomputed when the UTC date changes while the page stays open.
@@ -69,6 +71,9 @@ export function createDaily(ctx: PageContext) {
     }).join("");
     mutatorsEl.innerHTML = current.mutators.map((id) => `<li class="td-daily-mutator"><span><strong>${mutatorInfo[id]?.name ?? id}</strong><small>${mutatorInfo[id]?.text ?? ""}</small></span></li>`).join("");
     bestEl.textContent = dailyBestText(store.data, current.date);
+    const record = dailyRecord(store.data.daily, current.date);
+    summaryMapEl.textContent = map?.name ?? current.mapId;
+    summaryEl.textContent = `${dailyGoalText(current)}. ${record ? `Today's best: ${record.bestScore.toLocaleString()}${record.goalReached ? ", goal reached" : ""}.` : `+${DAILY.rewardFavor} Favor for the first clear.`}`;
   }
 
   function start() {

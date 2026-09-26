@@ -1,5 +1,5 @@
-// Expedition (M21) on the page: the lobby card (start, continue, abandon, camp choice)
-// and recording a finished stage for the result screen. Rules live in ../expedition.js.
+// Expedition (M21) on the page: the Expedition screen (start, continue, abandon, camp
+// choice), its card on the main menu and recording a finished stage for the result screen. Rules live in ../expedition.js.
 import { classIconImg } from "../assets.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
 import { RUN_BOON_INFO } from "../skills.js";
@@ -25,11 +25,11 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
     }
   }
   const text = result.outcome === "camp"
-    ? `Stage ${result.cleared} of ${total} cleared with ${game.lives} lives left. Choose your reward at the camp in the lobby, then continue.`
+    ? `Stage ${result.cleared} of ${total} cleared with ${game.lives} lives left. Choose your reward at the camp on the Expedition screen, then continue.`
     : result.outcome === "complete"
       ? `Expedition complete: all ${total} stages cleared.${reward ? ` +${reward} Favor.` : ""}`
       : `The expedition ends at stage ${state.stage + 1} of ${total} (${result.cleared} cleared).`;
-  return { outcome: result.outcome, text };
+  return { outcome: result.outcome, text, reward };
 }
 
 export function createExpedition(ctx: PageContext) {
@@ -45,6 +45,8 @@ export function createExpedition(ctx: PageContext) {
   const rosterEl = q("[data-td-exp-roster]");
   const relicsEl = q("[data-td-exp-relics]");
   const bestEl = q("[data-td-exp-best]");
+  const summaryTitleEl = q("[data-td-exp-summary-title]");
+  const summaryEl = q("[data-td-exp-summary]");
   let abandonArmed = false;
 
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -81,9 +83,13 @@ export function createExpedition(ctx: PageContext) {
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
+      summaryTitleEl.textContent = "Start";
+      summaryEl.textContent = `Three battlefields, one squad. +${EXPEDITION.completeFavor} Favor.`;
       return;
     }
     const map = mapOf(state.stages[state.stage]);
+    summaryTitleEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
+    summaryEl.textContent = `${state.lives} lives left.${state.camp ? " Camp reward waiting." : ` Next: ${map?.name ?? state.stages[state.stage]}.`}`;
     stageEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
     titleEl.textContent = `${map?.name ?? state.stages[state.stage]} - Boss: ${ctx.bossFor(map).name}`;
     copyEl.textContent = `${state.lives} lives left. Enemies at ${Math.round(EXPEDITION.stageHp[Math.min(state.stage, EXPEDITION.stageHp.length - 1)] * 100)}% of Normal health.${state.camp ? " Take one camp reward to continue." : ""}`;
@@ -93,6 +99,7 @@ export function createExpedition(ctx: PageContext) {
       : `<li><small>None yet.</small></li>`;
     campEl.hidden = !state.camp;
     cardsEl.innerHTML = state.camp ? state.camp.map((card, i) => cardHtml(card, i, state)).join("") : "";
+    cardsEl.querySelector("button")?.setAttribute("data-td-autofocus", ""); // the screen opens on the first camp choice
     startButton.hidden = !!state.camp;
     startButton.textContent = "Continue";
   }
@@ -116,6 +123,7 @@ export function createExpedition(ctx: PageContext) {
     store.data.expedition = null;
     store.persist();
     render();
+    startButton.focus({ preventScroll: true }); // the Abandon button is gone now
     ctx.notice("Expedition abandoned.");
   });
   cardsEl.addEventListener("click", (event) => {

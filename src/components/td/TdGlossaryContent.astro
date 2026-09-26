@@ -1,0 +1,316 @@
+---
+// Tower Defense glossary content: tabs (Heroes / Enemies) with every hero, enemy,
+// class, status effect and boss. No page title, back link or disclaimer; those
+// belong to the wrapper (TdGlossary.astro for the standalone page, a Glossary
+// screen in the game shell). Static; numbers come from the same data the game
+// runs on (gameBalance + tuning, tdWaves, tdMaps, bosses, skills.js).
+//
+// Props:
+//   assetBase     R2 base URL, no trailing slash (class icons, enemy sprites).
+//   embedded      false (default): standalone page, tabs sync with #heroes / #enemies
+//                 in the URL. true: mounted inside another page; no hash reading or
+//                 writing, all ids prefixed "tdg-", tab bar sticky at the top of the
+//                 nearest scroll container (the shell gives it height + overflow:auto).
+//   headingLevel  Level of the section headings (default 2). Card names use +1,
+//                 skill names +2, so under a screen title with an h1 keep 2.
+//
+// Several instances on one page are fine: the script scopes to each [data-td-glossary] root.
+import heroes from "../../data/gameBalance.json";
+import tuning from "../../data/gameBalance.tuning.json";
+import waves from "../../data/tdWaves.json";
+import maps from "../../data/tdMaps.json";
+import bosses from "../../data/bosses.json";
+import { CLASS_ROLES } from "../../game/td/ui.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
+import { ENEMY_ART } from "../../game/td/assets.js";
+import EnemyCard from "./TdEnemyCard.astro";
+
+interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
+const { assetBase, embedded = false, headingLevel = 2 } = Astro.props;
+
+// Ids: the standalone page keeps its public anchors (#heroes, #enemies, #hero-<id>);
+// embedded, everything is prefixed so nothing clashes with the host page.
+const pid = embedded ? "tdg-" : "";
+const id = (name: string) => `tdg-${name}`;
+const Section = `h${headingLevel}` as "h2";
+const Title = `h${headingLevel + 1}` as "h3";
+const SkillTitle = `h${headingLevel + 2}` as "h4";
+
+const t: any = tuning;
+const K = 260; // armor constant in sim.js mitigation()
+const reduction = (value: number) => Math.round((value / (value + K)) * 100);
+const pct = (value: number) => `${Math.round(value * 100)}%`;
+const classIcon = (name: string) => `${assetBase}/icons/classes/${name.toLowerCase()}.webp`;
+const enemySprite = (file: string, version = "v1") => `${assetBase}/td/enemies/sprites/${file}-${version}.webp`;
+const tagLabel = (tag: string) => tag.toLowerCase().replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
+
+const CLASS_ORDER = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
+const classes = CLASS_ORDER.map((name) => {
+  const kit = t.classes[name];
+  return {
+    name,
+    slot: kit.slot === "road" ? "Road" : "Platform",
+    role: (CLASS_ROLES as Record<string, string>)[name],
+    block: t.blocking?.blockLimit?.[name],
+    paths: Object.keys(t.paths?.[name] ?? {}).map((id) => PATH_INFO[name]?.[id] ?? { name: id, text: "" }),
+  };
+});
+
+// Status effects (M13): which heroes apply each status (tuning.statuses.sources).
+const heroName = new Map((heroes as any[]).map((hero) => [hero.id, hero.name]));
+const statusCards = Object.entries(STATUS_INFO).map(([id, info]) => ({
+  ...info,
+  sources: id === "chill" ? "Frost (Mage) and Crippling (Archer) paths"
+    : [...Object.entries(t.statuses?.sources ?? {}).filter(([, kind]) => kind === id).map(([hero]) => heroName.get(hero) ?? hero), ...(id === "burn" ? ["Wildfire path (Mage)"] : [])].join(", "),
+}));
+const reactionCards = Object.values(REACTION_INFO);
+
+const heroCards = [...(heroes as any[])]
+  .sort((a, b) => CLASS_ORDER.indexOf(a.class) - CLASS_ORDER.indexOf(b.class) || a.name.localeCompare(b.name))
+  .map((hero) => {
+    const skill = t.heroSkills?.[hero.id] ?? {};
+    return {
+      ...hero,
+      slotLabel: hero.slot === "road" ? "Road" : "Platform",
+      damageLabel: hero.damageType === "magical" ? "Magic" : "Physical",
+      skillName: skill.skillName ?? "Ultimate",
+      skillText: SKILL_TEXT[skill.variant] ?? "",
+      awakenText: AWAKEN_TEXT[skill.variant] ?? "",
+      classUltText: CLASS_ULT_TEXT[hero.class] ?? "",
+      status: t.statuses?.sources?.[hero.id] ? STATUS_INFO[t.statuses.sources[hero.id]]?.name : null,
+      stats: [
+        ["Health", hero.hp],
+        ["Attack", hero.atk],
+        ["Attacks / s", hero.aps],
+        ["Range", hero.range],
+        ["Armor", hero.armor],
+        ["Magic res", hero.magicRes],
+        ["Crit", pct(hero.critChance)],
+        ["Ult charge", `${hero.ultCooldown}s`],
+        ["Ult power", `x${hero.ultPower}`],
+      ] as [string, string | number][],
+    };
+  });
+
+// Enemies: wave-1 health (difficulty and per-wave growth applied in sim.js spawnEnemy).
+const hpScale = t.difficulty?.enemyHp ?? 1;
+const waveGrowth = 0.15; // sim.js difficulty.waveHpScale default
+const firstWave = (kind: string) => (waves as any[]).find((wave) => wave.spawns.some((group: any) => group.kind === kind))?.wave;
+const bossById = new Map((bosses as any).bosses.map((boss: any) => [boss.id, boss]));
+const bossMaps = (id: string) => (maps as any[]).filter((map) => (map.boss ?? "baphomet") === id).map((map) => map.name);
+
+function enemyCard(kind: string, overrides: any = {}) {
+  const base = { ...t.enemies[kind], ...(overrides.stats ?? {}) };
+  const magicRes = base.magicRes ?? base.armor * 0.8;
+  const wave = overrides.wave ?? firstWave(kind);
+  return {
+    kind,
+    name: overrides.name ?? ENEMY_INFO[kind].name,
+    text: overrides.text ?? ENEMY_INFO[kind].text,
+    image: overrides.image ?? (ENEMY_ART[kind] ? enemySprite(ENEMY_ART[kind].file, ENEMY_ART[kind].version) : enemySprite(kind)),
+    meta: overrides.meta ?? (wave ? `First seen on wave ${wave}` : ""),
+    tags: [base.flying ? "Flying" : "Ground", base.attackRange ? "Ranged" : base.attack ? "Melee" : "Does not attack"],
+    stats: [
+      ["Health", Math.round(base.hp * hpScale)],
+      ["Speed", base.speed],
+      ["Armor", `${base.armor} (-${reduction(base.armor)}%)`],
+      ["Magic res", `${Math.round(magicRes)} (-${reduction(magicRes)}%)`],
+      ["Attack", base.attack ? `${base.attack} / ${base.attackPeriod}s` : "-"],
+      ...(base.attackRange ? [["Attack range", base.attackRange]] : []),
+      ...(base.shield ? [["Shield", Math.round(base.hp * hpScale * base.shield.hp)]] : []),
+      ["Lives lost", base.damage],
+      ["Gold", base.reward],
+    ],
+  };
+}
+
+const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "shieldbearer", "hexer", "broodcaller"].map((kind) => enemyCard(kind));
+{
+  const caller = enemyCards.findIndex((card) => card.kind === "broodcaller");
+  enemyCards.splice(caller + 1, 0, enemyCard("imp", { meta: "Summoned by the Broodcaller" }));
+}
+const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet"))].flatMap((id) => {
+  const boss: any = bossById.get(id);
+  const bossTuning = t.bosses?.[id];
+  const summon = bossTuning?.summon;
+  const cards = [enemyCard("boss", {
+    name: boss?.name ?? id,
+    stats: bossTuning?.stats,
+    image: enemySprite(id === "baphomet" ? "boss" : `boss-${id}`, id === "lilith" ? "v2" : "v1"),
+    meta: `Final boss on ${bossMaps(id).join(" and ")}`,
+    text: (summon
+      ? `${ENEMY_INFO.boss.text} Summons ${summon.count} children around herself and cannot be hit while any of them stand.`
+      : ENEMY_INFO.boss.text) + (BOSS_RULES[id] ? ` ${BOSS_RULES[id]}` : ""),
+  })];
+  if (summon) cards.push(enemyCard(summon.kind, { image: enemySprite(summon.kind, "v2"), meta: `Summoned by ${boss?.name ?? id}` }));
+  return cards;
+});
+---
+
+<div class:list={["td-glossary-body", { "td-glossary-body--embedded": embedded }]} data-td-glossary data-hash={embedded ? undefined : "true"}>
+  <div class="td-tabs" role="tablist" aria-label="Glossary sections">
+    <button class="td-tab" type="button" role="tab" id={id("tab-heroes")} aria-controls={`${pid}heroes`} aria-selected="true" data-glossary-tab="heroes">Heroes</button>
+    <button class="td-tab" type="button" role="tab" id={id("tab-enemies")} aria-controls={`${pid}enemies`} aria-selected="false" tabindex="-1" data-glossary-tab="enemies">Enemies</button>
+  </div>
+
+  <div id={`${pid}heroes`} class="td-glossary-panel" role="tabpanel" aria-labelledby={id("tab-heroes")} data-glossary-panel="heroes">
+    <section aria-labelledby={id("hero-attrs")}>
+      <Section class="td-glossary-heading" id={id("hero-attrs")}>Attributes</Section>
+      <dl class="td-glossary-terms">
+        <div><dt>Road / Platform</dt><dd>Where the hero stands. Road heroes (gold rings) block ground enemies and can fall. Platform heroes (purple rings) are never attacked and are the only ones that reach flyers.</dd></div>
+        <div><dt>Cost</dt><dd>Gold to deploy the hero. Selling returns half of everything spent on it.</dd></div>
+        <div><dt>Health</dt><dd>Damage a hero takes before it falls. A fallen hero can be recruited again at level 1.</dd></div>
+        <div><dt>Attack</dt><dd>Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it.</dd></div>
+        <div><dt>Attacks / s</dt><dd>Basic attacks per second.</dd></div>
+        <div><dt>Range</dt><dd>How far the hero reaches, in map pixels. The ring on the map shows it.</dd></div>
+        <div><dt>Damage type</dt><dd>Physical damage is reduced by armor, magic damage by magic resistance. 260 points halve the damage.</dd></div>
+        <div><dt>Armor / Magic res</dt><dd>Reduce physical and magic damage the hero takes. Enemies only deal physical damage.</dd></div>
+        <div><dt>Crit</dt><dd>Chance for a basic hit to deal 1.5x damage.</dd></div>
+        <div><dt>Ult charge</dt><dd>Seconds until the ultimate is ready. It fires on its own at the current target.</dd></div>
+        <div><dt>Ult power</dt><dd>Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise.</dd></div>
+        <div><dt>Synergy tags</dt><dd>Each tag shared with a hero within {t.synergy?.range}px adds {pct(t.synergy?.bonusPerTag ?? 0)} attack, up to {pct(t.synergy?.cap ?? 0)}.</dd></div>
+        <div><dt>Awakening</dt><dd>At level 4 a hero can Awaken for {t.awakening?.cost} gold: +{pct(t.awakening?.attackBonus ?? 0)} attack, +{pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby={id("classes")}>
+      <Section class="td-glossary-heading" id={id("classes")}>Classes</Section>
+      <div class="td-glossary-classes">
+        {classes.map((cls) => (
+          <article class="td-glossary-class">
+            <Title class="td-glossary-title"><img src={classIcon(cls.name)} alt="" width="22" height="25" loading="lazy" decoding="async" />{cls.name}</Title>
+            <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
+            <p>{cls.role}</p>
+            {cls.paths.length > 0 && (
+              <ul class="td-glossary-paths" aria-label={`${cls.name} paths at level ${t.upgrades.path?.level}`}>
+                {cls.paths.map((path) => <li><strong>{path.name}</strong> {path.text}</li>)}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby={id("status")}>
+      <Section class="td-glossary-heading" id={id("status")}>Status effects</Section>
+      <div class="td-glossary-classes">
+        {statusCards.map((status) => (
+          <article class="td-glossary-class">
+            <Title class="td-glossary-title">{status.name}</Title>
+            <p class="td-glossary-meta">From: {status.sources}</p>
+            <p>{status.text}</p>
+          </article>
+        ))}
+      </div>
+      <Title class="td-glossary-subhead">Reactions</Title>
+      <div class="td-glossary-classes">
+        {reactionCards.map((reaction) => (
+          <article class="td-glossary-class">
+            <Title class="td-glossary-title">{reaction.name}</Title>
+            <p class="td-glossary-meta">{reaction.needs}</p>
+            <p>{reaction.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby={id("hero-list")}>
+      <Section class="td-glossary-heading" id={id("hero-list")}>Heroes</Section>
+      <div class="td-glossary-grid">
+        {heroCards.map((hero) => (
+          <article class="td-glossary-card" id={`${pid}hero-${hero.id}`}>
+            <header class="td-glossary-card-head">
+              <img class="td-glossary-portrait" src={hero.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
+              <div>
+                <Title class="td-glossary-title">{hero.name}</Title>
+                <p class="td-glossary-meta">
+                  <img src={classIcon(hero.class)} alt="" width="16" height="18" loading="lazy" decoding="async" />
+                  {hero.class} - {hero.slotLabel} - {hero.damageLabel}
+                </p>
+              </div>
+              <span class="td-glossary-cost">{hero.cost}<small>gold</small></span>
+            </header>
+            <dl class="td-glossary-stats">
+              {hero.stats.map(([label, value]: [string, string | number]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+            </dl>
+            <div class="td-glossary-skill">
+              <p class="td-label">Ultimate</p>
+              <SkillTitle class="td-glossary-skill-name">{hero.skillName}</SkillTitle>
+              {hero.skillText && <p>{hero.skillText}</p>}
+              {hero.classUltText && <p class="td-glossary-note">{hero.classUltText}</p>}
+              {hero.awakenText && <p class="td-glossary-note">Awakened: {hero.awakenText}.</p>}
+            </div>
+            {hero.status && <p class="td-glossary-note">Basic attacks apply {hero.status} (see Status effects).</p>}
+            {hero.synergies?.length > 0 && (
+              <ul class="td-glossary-tags" aria-label="Synergy tags">
+                {hero.synergies.map((tag: string) => <li>{tagLabel(tag)}</li>)}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div id={`${pid}enemies`} class="td-glossary-panel" role="tabpanel" aria-labelledby={id("tab-enemies")} data-glossary-panel="enemies" hidden>
+    <section aria-labelledby={id("enemy-attrs")}>
+      <Section class="td-glossary-heading" id={id("enemy-attrs")}>Attributes</Section>
+      <dl class="td-glossary-terms">
+        <div><dt>Health</dt><dd>At wave 1. Enemies gain {pct(waveGrowth)} health every wave; in Endless they also grow stronger past wave 20.</dd></div>
+        <div><dt>Speed</dt><dd>Map pixels per second. Slows and blockers hold it back.</dd></div>
+        <div><dt>Armor / Magic res</dt><dd>Reduce physical and magic damage taken; the percentage is how much. Archers pierce part of the armor.</dd></div>
+        <div><dt>Attack</dt><dd>Damage per hit to the road hero holding it, and the time between hits.</dd></div>
+        <div><dt>Ground / Flying</dt><dd>Ground enemies are stopped by road heroes. Flyers pass over them and can only be hit from platforms.</dd></div>
+        <div><dt>Lives lost</dt><dd>Lives you lose when it reaches your base.</dd></div>
+        <div><dt>Gold</dt><dd>Gold you earn for the kill.</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby={id("enemy-list")}>
+      <Section class="td-glossary-heading" id={id("enemy-list")}>Enemies</Section>
+      <div class="td-glossary-grid">
+        {enemyCards.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
+      </div>
+    </section>
+
+    <section aria-labelledby={id("bosses")}>
+      <Section class="td-glossary-heading" id={id("bosses")}>Bosses</Section>
+      <p class="td-glossary-lead">A boss ends every 10-wave run. 20-wave and Endless runs bring one every 5th wave; the earlier ones are weaker. Health is shown at wave 1 strength.</p>
+      <div class="td-glossary-grid">
+        {bossCards.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // Tabs, scoped per glossary root: click and arrow keys. Only the standalone page
+  // (data-hash) reads and writes #heroes / #enemies in the URL.
+  document.querySelectorAll<HTMLElement>("[data-td-glossary]").forEach((root) => {
+    const useHash = root.dataset.hash === "true";
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-glossary-tab]")];
+    const panels = [...root.querySelectorAll<HTMLElement>("[data-glossary-panel]")];
+    function show(name: string, focus = false) {
+      tabs.forEach((tab) => {
+        const on = tab.dataset.glossaryTab === name;
+        tab.setAttribute("aria-selected", String(on));
+        tab.tabIndex = on ? 0 : -1;
+        if (on && focus) tab.focus();
+      });
+      panels.forEach((panel) => { panel.hidden = panel.dataset.glossaryPanel !== name; });
+      if (useHash) history.replaceState(history.state, "", `#${name}`);
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => show(tab.dataset.glossaryTab!));
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        const next = tabs[(index + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        show(next.dataset.glossaryTab!, true);
+      });
+    });
+    if (useHash) {
+      const fromHash = location.hash.slice(1);
+      if (tabs.some((tab) => tab.dataset.glossaryTab === fromHash)) show(fromHash);
+    }
+  });
+</script>

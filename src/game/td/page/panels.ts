@@ -1,6 +1,6 @@
-// Modal panels (menu, Blessings, help, save): open/close with focus restore and a
-// "panel" pause reason, the Blessings tabs, the Divine Blessings graph (blessings.ts)
-// and the This run tab.
+// Panels (menu, Blessings, help, save): modal open/close with focus restore and a
+// "panel" pause reason, or embedded in a menu screen (M22), the Blessings tabs, the
+// Divine Blessings graph (blessings.ts) and the This run tab.
 import { buildRunTuning } from "../favor.js";
 import { createBlessingsGraph } from "./blessings";
 import { boonCard, mechanicBoonCard } from "./boons";
@@ -25,14 +25,38 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     },
   });
 
-  function open(name: string, opener?: HTMLElement | null) {
-    const panel = root.querySelector<HTMLElement>(`[data-td-panel="${name}"]`);
-    if (!panel) return;
-    if (activePanel) activePanel.hidden = true;
-    else panelReturnFocus = opener ?? (document.activeElement as HTMLElement | null);
+  function render(name: string) {
     if (name === "menu") renderMenu();
     if (name === "blessings") renderBlessingsPanel();
     if (name === "save") deps.renderSavePanel();
+  }
+
+  // Modal (during a run) and embedded (menu screen) use the same panel element; it moves
+  // between the modal layer and its screen host.
+  function setEmbedded(panel: HTMLElement, embedded: boolean) {
+    panel.classList.toggle("is-embedded", embedded);
+    if (embedded) { panel.removeAttribute("role"); panel.removeAttribute("aria-modal"); }
+    else { panel.setAttribute("role", "dialog"); panel.setAttribute("aria-modal", "true"); }
+  }
+
+  // Shows a panel inside a menu screen: no modal layer, no pause, no focus trap.
+  function embed(name: string, host: HTMLElement) {
+    const panel = root.querySelector<HTMLElement>(`[data-td-panel="${name}"]`);
+    if (!panel) return;
+    if (activePanel === panel) close(false);
+    if (panel.parentElement !== host) host.append(panel);
+    setEmbedded(panel, true);
+    render(name);
+    panel.hidden = false;
+  }
+
+  function open(name: string, opener?: HTMLElement | null) {
+    const panel = root.querySelector<HTMLElement>(`[data-td-panel="${name}"]`);
+    if (!panel) return;
+    if (panel.parentElement !== panelLayer) { panelLayer.append(panel); setEmbedded(panel, false); }
+    if (activePanel) activePanel.hidden = true;
+    else panelReturnFocus = opener ?? (document.activeElement as HTMLElement | null);
+    render(name);
     panelLayer.hidden = false;
     panel.hidden = false;
     panel.scrollTop = 0;
@@ -145,5 +169,5 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     q<HTMLButtonElement>(`[data-td-tab="${next}"]`).focus();
   });
 
-  return { open, close, active: () => activePanel, selectTab, renderRunTab, syncSpendButton, computeAvailableFavor };
+  return { open, close, embed, active: () => activePanel, selectTab, renderRunTab, syncSpendButton, computeAvailableFavor };
 }

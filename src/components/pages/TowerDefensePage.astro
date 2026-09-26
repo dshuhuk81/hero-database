@@ -9,17 +9,18 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
 const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
 ---
 
-<div class="td-shell" data-td-root data-screen="lobby">
-  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} />
+<div class="td-shell" data-td-root data-screen="home">
+  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
-  <TdPanels maps={maps} bossNames={bossNames} waveCount={waves.length} />
+  <TdPanels maps={maps} bossNames={bossNames} />
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
 
 <script>
   // Tower defense page controller: builds the shared context and wires the page
-  // modules in src/game/td/page/. Lobby and audio settings live here.
+  // modules in src/game/td/page/. Menu screen rendering and audio settings live here;
+  // screen switching is page/nav.ts.
   import { createAudio, createMusic } from "../../game/td/audio";
   import { setAssetBase } from "../../game/td/assets.js";
   import { createPauseController } from "../../game/td/ui.js";
@@ -38,6 +39,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createRecruit } from "../../game/td/page/recruit";
   import { createPanels } from "../../game/td/page/panels";
   import { createSessionController } from "../../game/td/page/session";
+  import { createNav } from "../../game/td/page/nav";
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
@@ -91,8 +93,10 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // Audio (one instance for the page lifetime)
   // ------------------------------------------------------------------
   const audio = createAudio();
-  const muteButton = q<HTMLButtonElement>("[data-td-mute]");
-  const volumeSlider = q<HTMLInputElement>("[data-td-volume]");
+  // Sound controls exist twice (pause menu and Settings); every copy stays in sync.
+  const all = <T extends HTMLElement>(selector: string) => [...root.querySelectorAll<T>(selector)];
+  const muteButtons = all<HTMLButtonElement>("[data-td-mute]");
+  const volumeSliders = all<HTMLInputElement>("[data-td-volume]");
   function playEffect(effect: any) {
     if (effect.type === "place") audio.play("voice", effect.heroId);
     else if (effect.type === "hit") audio.play("attack", effect.heroId);
@@ -101,35 +105,40 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     else if (effect.type === "awaken") audio.play("upgrade");
     else if (effect.type === "baseHit" && effect.damage > 0) audio.play("heavy");
   }
-  volumeSlider.value = String(Math.round(audio.volume * 100));
   function syncAudioUi() {
-    muteButton.textContent = audio.muted ? "Sound off" : "Sound on";
-    muteButton.setAttribute("aria-pressed", String(audio.muted));
+    muteButtons.forEach((button) => {
+      button.textContent = audio.muted ? "Sound off" : "Sound on";
+      button.setAttribute("aria-pressed", String(audio.muted));
+    });
+    volumeSliders.forEach((slider) => { slider.value = String(Math.round(audio.volume * 100)); });
   }
-  muteButton.addEventListener("click", () => { audio.toggleMute(); syncAudioUi(); });
-  volumeSlider.addEventListener("input", () => { audio.setVolume(Number(volumeSlider.value) / 100); syncAudioUi(); });
+  muteButtons.forEach((button) => button.addEventListener("click", () => { audio.toggleMute(); syncAudioUi(); }));
+  volumeSliders.forEach((slider) => slider.addEventListener("input", () => { audio.setVolume(Number(slider.value) / 100); syncAudioUi(); }));
   syncAudioUi();
 
   const music = createMusic();
-  const musicMuteButton = q<HTMLButtonElement>("[data-td-music-mute]");
-  const musicVolumeSlider = q<HTMLInputElement>("[data-td-music-volume]");
-  musicVolumeSlider.value = String(Math.round(music.volume * 100));
+  const musicMuteButtons = all<HTMLButtonElement>("[data-td-music-mute]");
+  const musicVolumeSliders = all<HTMLInputElement>("[data-td-music-volume]");
   const syncMusicUi = () => {
-    musicMuteButton.textContent = music.muted ? "Music off" : "Music on";
-    musicMuteButton.setAttribute("aria-pressed", String(music.muted));
+    musicMuteButtons.forEach((button) => {
+      button.textContent = music.muted ? "Music off" : "Music on";
+      button.setAttribute("aria-pressed", String(music.muted));
+    });
+    musicVolumeSliders.forEach((slider) => { slider.value = String(Math.round(music.volume * 100)); });
   };
-  musicMuteButton.addEventListener("click", () => { music.toggleMute(); syncMusicUi(); });
-  musicVolumeSlider.addEventListener("input", () => { music.setVolume(Number(musicVolumeSlider.value) / 100); syncMusicUi(); });
+  musicMuteButtons.forEach((button) => button.addEventListener("click", () => { music.toggleMute(); syncMusicUi(); }));
+  musicVolumeSliders.forEach((slider) => slider.addEventListener("input", () => { music.setVolume(Number(slider.value) / 100); syncMusicUi(); }));
   syncMusicUi();
 
   // ------------------------------------------------------------------
-  // Lobby
+  // Menu screens (main menu, map select, difficulty and run length)
   // ------------------------------------------------------------------
   function renderLobby() {
     root!.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
       const active = button.dataset.mapId === state.selectedMap.id;
       button.classList.toggle("is-selected", active);
       button.setAttribute("aria-pressed", String(active));
+      button.toggleAttribute("data-td-autofocus", active); // map select opens on the current pick
     });
     root!.querySelectorAll<HTMLElement>("[data-map-best]").forEach((el) => {
       const top = store.data.mapTop[el.dataset.mapBest!];
@@ -141,7 +150,11 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     const boostEl = q("[data-td-next-boost]");
     boostEl.hidden = !boost;
     if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
-    q("[data-td-favor-count]").textContent = `(${availableFavor(store.data)})`;
+    const favor = availableFavor(store.data);
+    q("[data-td-favor-count]").textContent = `(${favor})`;
+    q("[data-td-favor-chip]").textContent = favor.toLocaleString();
+    q("[data-td-favor-chip-button]").setAttribute("aria-label", `Divine Blessings, ${favor} Favor available`);
+    q("[data-td-map-pick]").textContent = `${state.selectedMap.name} - Boss: ${ctx.bossFor(state.selectedMap).name}`;
     renderChallengeBadges(root!, store.data, data.tuning.tiers);
     dailyTrial.render();
     expedition.render();
@@ -155,7 +168,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     try { localStorage.setItem("td:map", map.id); } catch {}
     renderLobby();
   });
-  // Run length step: Play opens it for the selected map; picking a length starts the run.
+  // Difficulty and run length screen for the selected map; picking a length starts the run.
   function renderTiers() {
     root!.querySelectorAll<HTMLButtonElement>("[data-tier-id]").forEach((button) => {
       const on = button.dataset.tierId === state.selectedTier;
@@ -192,7 +205,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     renderModeBests();
     root!.querySelector<HTMLButtonElement>(`[data-tier-id="${next}"]`)?.focus();
   });
-  function openModePicker(opener: HTMLElement) {
+  function renderModeScreen() {
     const map = state.selectedMap;
     q("[data-td-mode-map]").textContent = `${map.name} - Boss: ${ctx.bossFor(map).name}`;
     renderChallengeList(q("[data-td-challenges]"), store.data, map.id, data.tuning.tiers);
@@ -205,18 +218,16 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
       if (isLast) last = button;
     });
     renderModeBests();
-    actions.openPanel("mode", opener);
-    (last as HTMLButtonElement | null)?.focus({ preventScroll: true });
+    // Focus lands on the last run length played (nav focuses [data-td-autofocus]).
+    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => { button.toggleAttribute("data-td-autofocus", button === last); });
   }
   q("[data-td-modes]").addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-mode-id]");
     if (!button || !isRunMode(button.dataset.modeId)) return;
     state.selectedMode = button.dataset.modeId as RunMode;
     try { localStorage.setItem("td:mode", state.selectedMode); } catch {}
-    actions.closePanel(false);
     actions.startSession(state.selectedMap);
   });
-  q("[data-td-play-start]").addEventListener("click", (event) => { openModePicker(event.currentTarget as HTMLElement); });
 
   // ------------------------------------------------------------------
   // Page modules
@@ -233,6 +244,22 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const recruit = createRecruit(ctx);
   const panels = createPanels(ctx, { renderSavePanel: savePanel.render });
   const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: hud.tick, buffBar, runOffer, results, debugPanel, popover, recruit });
+  const nav = createNav(ctx, {
+    onShow(id) {
+      if (id === "play") return;
+      renderLobby();
+      if (id === "mode") renderModeScreen();
+      if (id === "blessings" || id === "help" || id === "save") panels.embed(id, q(`[data-td-screen-host="${id}"]`));
+    },
+    // Browser Back during a run: close what is open, else open the menu; a finished run leaves.
+    onGameBack() {
+      if (panels.active()) panels.close();
+      else if (recruit.isOpen()) actions.closeSheet();
+      else if (popover.isOpen()) actions.closePopover();
+      else if (!state.session || state.session.game.complete) controller.toLobby();
+      else panels.open("menu");
+    },
+  });
 
   Object.assign(actions, {
     startSession: controller.start,
@@ -260,10 +287,13 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     selectBlessingsTab: panels.selectTab,
     renderRunTab: panels.renderRunTab,
     syncSpendButton: panels.syncSpendButton,
+    showScreen: nav.go,
+    exitPlay: nav.exitPlay,
     renderLobby,
     syncAudioUi,
     playEffect,
   } satisfies PageActions);
 
+  nav.init();
   controller.run();
 </script>

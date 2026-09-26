@@ -55,11 +55,42 @@ export function createResults(ctx: PageContext) {
   // Run-end shard (6C). The Favor shard is granted with the run's Favor so nothing
   // is lost if the page closes; picking a boost converts it back.
   let shard: { favor: number; earned: number; virtue: string; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
+  // Favor this run paid, by source, so the summary adds up to what the save gained.
+  let rewards: { label: string; favor: number }[] = [];
+
+  // Summary / Battle tabs (narrow screens; wide screens show both columns).
+  const tabs = [...resultEl.querySelectorAll<HTMLButtonElement>("[data-td-result-tab]")];
+  function showTab(id: string, focus = false) {
+    for (const tab of tabs) {
+      const active = tab.dataset.tdResultTab === id;
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      if (active && focus) tab.focus({ preventScroll: true });
+    }
+    for (const panel of resultEl.querySelectorAll<HTMLElement>("[data-td-result-panel]")) {
+      panel.classList.toggle("is-active", panel.dataset.tdResultPanel === id);
+      panel.scrollTop = 0;
+    }
+  }
+  resultEl.querySelector("[role=tablist]")?.addEventListener("click", (event) => {
+    const tab = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-result-tab]");
+    if (tab) showTab(tab.dataset.tdResultTab!);
+  });
+  resultEl.querySelector("[role=tablist]")?.addEventListener("keydown", (event) => {
+    const key = (event as KeyboardEvent).key;
+    if (key !== "ArrowLeft" && key !== "ArrowRight") return;
+    const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
+    const next = tabs[(current + (key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+    showTab(next.dataset.tdResultTab!, true);
+    event.preventDefault();
+  });
 
   function reset() {
     resultEl.hidden = true;
     shard = null;
-    for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]"]) q(selector).hidden = true;
+    rewards = [];
+    showTab("summary");
+    for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
   }
 
   const boostText = (boost: RunBoost) => boost.type === "gold"
@@ -80,11 +111,17 @@ export function createResults(ctx: PageContext) {
     el.hidden = !el.innerHTML;
   }
 
-  function renderFavorLine() {
+  // Favor summary: headline total, one chip per source (run, challenges, Daily or Expedition
+  // bonus, Favor shard) and the new balance.
+  function renderFavorLine(note = "") {
     const favorEl = q("[data-td-result-favor]");
-    const total = store.data.favor;
-    const shardText = shard?.choice === "favor" ? ` plus ${shard.favor} from the Favor shard` : "";
-    favorEl.textContent = `+${shard?.earned ?? 0} Divine Favor earned${shardText}. Total: ${total} Favor.`;
+    const parts = [...rewards];
+    if (shard?.choice === "favor") parts.push({ label: "Favor shard", favor: shard.favor });
+    const earned = parts.reduce((sum, part) => sum + part.favor, 0);
+    const chips = parts.filter((part) => part.favor > 0 || part === parts[0])
+      .map((part) => `<li><span>${part.label}</span><strong>+${part.favor}</strong></li>`).join("");
+    favorEl.innerHTML = `<div class="td-result-favor-head"><span class="td-label">Divine Favor</span><strong>+${earned}</strong><small>Total ${store.data.favor}</small></div>` +
+      `<ul class="td-result-favor-parts">${chips}</ul>` + (note ? `<p class="td-result-favor-note">${note}</p>` : "");
   }
 
   function renderShards() {
@@ -186,17 +223,30 @@ export function createResults(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     ctx.actions.cancelDeploy();
     const endless = game.mode === "endless";
-    const tierLabel = game.tier !== "normal" ? `${data.tuning.tiers?.[game.tier]?.label ?? game.tier} - ` : "";
-    q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition; // an Expedition stage is final (M21)
-    q("[data-td-result-kicker]").textContent = daily ? `Daily Trial ${daily.date}` : expedition ? `Expedition - stage ${expedition.stage + 1} of ${expedition.stages.length}` : tierLabel + (endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken");
+    // Header: outcome, then where and how (map, mode or Daily / Expedition stage, tier), then score.
+    // An Expedition stage is final (M21): no Retry; Continue leads back to the camp or the menu.
+    q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition;
+    const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
+    continueButton.hidden = !expedition;
+    continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp" : "Continue";
+    q("[data-td-result-menu]").hidden = !!expedition;
+    const outcome = endless ? "endless" : game.won ? "won" : "lost";
+    resultEl.dataset.outcome = outcome;
+    q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
+    const tierName = data.tuning.tiers?.[game.tier]?.label ?? game.tier;
+    const context = daily ? `Daily Trial ${daily.date}`
+      : expedition ? `Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}`
+      : ({ classic: "10 waves", long: "20 waves", endless: "Endless" } as Record<string, string>)[game.mode] ?? game.mode;
+    q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" || (!daily && !expedition) ? tierName : ""].filter(Boolean).join(" - ");
     const dailyEl = q("[data-td-result-daily]");
     dailyEl.hidden = !dailyRun;
     dailyEl.textContent = dailyRun?.text ?? "";
     dailyEl.classList.toggle("is-reached", !!dailyRun?.reached);
     q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
+    q("[data-td-result-score]").textContent = `${game.score.toLocaleString()} points`;
     q("[data-td-result-copy]").textContent = game.perfect
-      ? `${game.score.toLocaleString()} points - all ${game.totalWaves} waves - ${game.lives} lives left - not a single enemy broke through`
-      : `${game.score.toLocaleString()} points - wave ${game.wave} - ${game.lives} lives left - ${game.totalLeaks} leaks`;
+      ? `All ${game.totalWaves} waves, ${game.lives} lives left, not a single enemy broke through`
+      : `${endless ? `Wave ${game.wave}` : `Wave ${game.wave} of ${game.totalWaves}`}, ${game.lives} ${game.lives === 1 ? "life" : "lives"} left, ${game.totalLeaks} ${game.totalLeaks === 1 ? "leak" : "leaks"}`;
 
     const kills = Object.values(game.heroKills ?? {}) as { name: string; kills: number }[];
     kills.sort((a, b) => b.kills - a.kills);
@@ -216,6 +266,7 @@ export function createResults(ctx: PageContext) {
     statsEl.hidden = false;
     renderAnalysis(game);
     renderDamage(game);
+    q("[data-td-result-battle-empty]").hidden = !q("[data-td-result-damage]").hidden || !q("[data-td-result-analysis]").hidden;
 
     const compareEl = q("[data-td-result-compare]");
     if (prevRun) {
@@ -233,15 +284,18 @@ export function createResults(ctx: PageContext) {
     achieveEl.hidden = !achieveEl.innerHTML;
 
     const favorEl = q("[data-td-result-favor]");
-    if (session.debug) favorEl.textContent = "Debug run: score, bests and Favor were not recorded.";
+    rewards = [{ label: "Run", favor: earnedFavor }, { label: "Challenges", favor: challengeRun.favor }];
+    if (daily) rewards.push({ label: "Daily first clear", favor: dailyRun?.reward ?? 0 });
+    if (expedition) rewards.push({ label: "Expedition complete", favor: dailyRun?.reward ?? 0 });
+    if (session.debug) favorEl.innerHTML = `<p class="td-result-favor-note">Debug run: score, bests and Favor were not recorded.</p>`;
     else if (shard) { renderFavorLine(); renderShards(); }
-    else favorEl.textContent = `+${earnedFavor} Divine Favor earned. Total: ${saved.favor} Favor.` +
-      (data.tuning.shards ? ` Reach wave ${data.tuning.shards.minWave} to earn a shard.` : "");
+    else renderFavorLine(data.tuning.shards ? `Reach wave ${data.tuning.shards.minWave} to earn a shard.` : "");
     favorEl.hidden = false;
     ctx.actions.syncSpendButton();
+    showTab("summary");
     resultEl.hidden = false;
     resultEl.scrollTop = 0;
-    q<HTMLButtonElement>("[data-td-retry]").focus({ preventScroll: true });
+    q<HTMLButtonElement>(expedition ? "[data-td-result-continue]" : "[data-td-retry]").focus({ preventScroll: true });
   }
 
   return { finishRun, reset };

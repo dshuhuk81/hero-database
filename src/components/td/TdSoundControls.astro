@@ -1,0 +1,15 @@
+---
+// Sound and music toggles with volume sliders. Used twice (pause menu and Settings);
+// the page script binds every copy through the data-td-* hooks and keeps them in sync.
+---
+
+<div class="td-menu-sound">
+  <div class="td-menu-sound-row">
+    <button class="action-button action-button--quiet" type="button" data-td-mute aria-pressed="false">Sound on</button>
+    <label class="td-volume-label">Effects <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume /></label>
+  </div>
+  <div class="td-menu-sound-row">
+    <button class="action-button action-button--quiet" type="button" data-td-music-mute aria-pressed="false">Music on</button>
+    <label class="td-volume-label">Music <input class="td-volume" type="range" min="0" max="100" value="5" data-td-music-volume /></label>
+  </div>
+</div>

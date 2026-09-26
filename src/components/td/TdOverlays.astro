@@ -1,12 +1,16 @@
 ---
-// Stage overlays: hero popover, recruit sheet, blessing offer and results.
+// Stage overlays: hero panel, recruit sheet, blessing offer and results.
 // The default slot sits between the popover and the sheet (debug panel position).
 ---
 
-<div class="td-popover" data-td-popover role="dialog" aria-labelledby="td-popover-name" hidden>
+<!-- Hero panel (M22): full-height side panel or a sheet below the map, laid out by popover.ts. -->
+<aside class="td-popover" data-td-popover role="dialog" aria-labelledby="td-popover-name" hidden>
   <div class="td-popover-head">
     <div class="td-popover-title">
-      <img class="td-class-icon" data-pop-class-icon alt="" width="28" height="32" decoding="async">
+      <span class="td-pop-portrait">
+        <img data-pop-portrait alt="" width="52" height="52" decoding="async">
+        <img class="td-class-icon" data-pop-class-icon alt="" width="20" height="23" decoding="async">
+      </span>
       <div class="td-popover-title-text">
         <strong id="td-popover-name" data-pop-name></strong>
         <span data-pop-level></span>
@@ -16,17 +20,20 @@
       <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
     </button>
   </div>
-  <div class="td-popover-hp">
-    <progress class="td-hp" data-pop-hp-bar max="1" value="1"></progress>
-    <small data-pop-hp></small>
-  </div>
-  <dl class="td-pop-stats">
-    <div><dt>Attack</dt><dd data-pop-atk></dd></div>
-    <div><dt>Speed</dt><dd data-pop-aps></dd></div>
-    <div><dt>Range</dt><dd data-pop-range></dd></div>
-    <div><dt>Crit</dt><dd data-pop-crit></dd></div>
-  </dl>
-  <div class="td-pop-target">
+  <div class="td-popover-body">
+    <section class="td-pop-section" aria-label="Health and stats">
+      <div class="td-popover-hp">
+        <progress class="td-hp" data-pop-hp-bar max="1" value="1"></progress>
+        <small data-pop-hp></small>
+      </div>
+      <dl class="td-pop-stats">
+        <div><dt>Attack</dt><dd data-pop-atk></dd></div>
+        <div><dt>Speed</dt><dd data-pop-aps></dd></div>
+        <div><dt>Range</dt><dd data-pop-range></dd></div>
+        <div><dt>Crit</dt><dd data-pop-crit></dd></div>
+      </dl>
+    </section>
+    <section class="td-pop-section td-pop-target">
     <div class="td-pop-target-head"><span>Target</span><strong data-pop-target-label></strong></div>
     <div class="td-pop-target-row" data-pop-target role="group" aria-label="Target priority">
       <button type="button" data-target="auto" aria-label="Class rule" title="Class rule"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="1.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></svg></button>
@@ -39,29 +46,38 @@
       <button type="button" data-target="flying" aria-label="Flyers first" title="Flyers first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8c3.5 0 6.5 2 9 6 2.5-4 5.5-6 9-6" /><path d="M9 19h6" /></svg></button>
       <button type="button" data-target="boss" aria-label="Boss first" title="Boss first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18h16M4 18L3 8l5 4 4-6 4 6 5-4-1 10" /></svg></button>
     </div>
+    </section>
+    <section class="td-pop-section" aria-labelledby="td-pop-upgrade-title">
+      <h3 class="td-pop-heading" id="td-pop-upgrade-title">Upgrade</h3>
+      <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
+        <span data-pop-upgrade-label>Upgrade</span>
+        <span class="td-pop-cost" data-pop-cost></span>
+      </button>
+      <div class="td-pop-focus" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
+        <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
+        <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
+        <button class="td-pop-focus-option" type="button" data-focus="range"><strong>Range <span data-focus-bonus="range"></span></strong><small data-focus-text="range"></small></button>
+      </div>
+      <div class="td-pop-focus" id="td-pop-path" data-pop-path role="group" aria-label="Choose a path" hidden>
+        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+      </div>
+      <p class="td-pop-preview" data-pop-preview></p>
+    </section>
+    <section class="td-pop-section">
+      <button class="td-pop-details-toggle" type="button" data-pop-details aria-expanded="true" aria-controls="td-pop-details">
+        <span>Details</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+      </button>
+      <div class="td-pop-details" id="td-pop-details" data-pop-details-body></div>
+    </section>
   </div>
-  <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
-    <span data-pop-upgrade-label>Upgrade</span>
-    <span class="td-pop-cost" data-pop-cost></span>
-  </button>
-  <div class="td-pop-focus" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
-    <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
-    <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
-    <button class="td-pop-focus-option" type="button" data-focus="range"><strong>Range <span data-focus-bonus="range"></span></strong><small data-focus-text="range"></small></button>
-  </div>
-  <div class="td-pop-focus" id="td-pop-path" data-pop-path role="group" aria-label="Choose a path" hidden>
-    <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-    <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-    <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-  </div>
-  <p class="td-pop-preview" data-pop-preview></p>
   <div class="td-pop-actions">
     <button class="action-button action-button--quiet" type="button" data-pop-rotate>Rotate</button>
-    <button class="action-button action-button--quiet" type="button" data-pop-details aria-expanded="false" aria-controls="td-pop-details">Details</button>
     <button class="action-button action-button--quiet" type="button" data-pop-sell>Sell</button>
   </div>
-  <div class="td-pop-details" id="td-pop-details" data-pop-details-body hidden></div>
-</div>
+</aside>
 
 <slot />
 
@@ -106,21 +122,39 @@
 
 <div class="td-result" data-td-result role="dialog" aria-modal="true" aria-labelledby="td-result-title" hidden>
   <div class="td-result-inner">
-    <span data-td-result-kicker>Run complete</span>
-    <strong id="td-result-title" data-td-result-title>Battlefield secured</strong>
-    <p data-td-result-copy></p>
-    <p class="td-result-daily" data-td-result-daily hidden></p>
-    <div class="td-result-stats" data-td-result-stats hidden></div>
-    <div class="td-result-analysis" data-td-result-analysis hidden></div>
-    <div class="td-result-damage" data-td-result-damage hidden></div>
-    <p class="td-result-compare" data-td-result-compare hidden></p>
-    <div class="td-result-achievements" data-td-result-achievements hidden></div>
-    <p class="td-result-favor" data-td-result-favor hidden></p>
-    <div class="td-result-shards" data-td-result-shards hidden></div>
+    <header class="td-result-head">
+      <span class="td-result-kicker" data-td-result-kicker>Run complete</span>
+      <strong class="td-result-title" id="td-result-title" data-td-result-title>Battlefield secured</strong>
+      <p class="td-result-meta" data-td-result-meta></p>
+      <p class="td-result-score"><strong data-td-result-score></strong> <span data-td-result-copy></span></p>
+      <p class="td-result-daily" data-td-result-daily hidden></p>
+    </header>
+    <div class="td-result-tabs" role="tablist" aria-label="Run result">
+      <button class="td-result-tab" type="button" role="tab" id="td-result-tab-summary" aria-controls="td-result-summary" aria-selected="true" data-td-result-tab="summary">Summary</button>
+      <button class="td-result-tab" type="button" role="tab" id="td-result-tab-battle" aria-controls="td-result-battle" aria-selected="false" tabindex="-1" data-td-result-tab="battle">Battle</button>
+    </div>
+    <div class="td-result-body">
+      <section class="td-result-panel is-active" id="td-result-summary" role="tabpanel" aria-labelledby="td-result-tab-summary" data-td-result-panel="summary">
+        <h3 class="td-result-section-title">Rewards</h3>
+        <div class="td-result-favor" data-td-result-favor hidden></div>
+        <div class="td-result-shards" data-td-result-shards hidden></div>
+        <div class="td-result-achievements" data-td-result-achievements hidden></div>
+        <p class="td-result-compare" data-td-result-compare hidden></p>
+        <h3 class="td-result-section-title">Run</h3>
+        <div class="td-result-stats" data-td-result-stats hidden></div>
+      </section>
+      <section class="td-result-panel" id="td-result-battle" role="tabpanel" aria-labelledby="td-result-tab-battle" data-td-result-panel="battle">
+        <h3 class="td-result-section-title">Battle</h3>
+        <div class="td-result-analysis" data-td-result-analysis hidden></div>
+        <div class="td-result-damage" data-td-result-damage hidden></div>
+        <p class="td-result-empty" data-td-result-battle-empty hidden>No hero dealt damage this run.</p>
+      </section>
+    </div>
     <div class="td-result-actions">
       <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
+      <button class="action-button action-button--primary" type="button" data-td-to-lobby="expedition" data-td-result-continue hidden>Continue</button>
       <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>
-      <button class="action-button action-button--quiet" type="button" data-td-to-lobby>Choose map</button>
+      <button class="action-button action-button--quiet" type="button" data-td-to-lobby="home" data-td-result-menu>Main menu</button>
     </div>
   </div>
 </div>

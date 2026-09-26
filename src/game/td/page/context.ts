@@ -6,6 +6,7 @@ import type { createPauseController } from "../ui.js";
 import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
 import type { DailySetup } from "./daily";
 import type { ExpeditionState } from "./save";
+import type { ScreenId } from "./nav";
 
 export type Slot = { type: string; index: number };
 
@@ -39,7 +40,7 @@ export type PageState = {
 export type PageActions = {
   // session.ts
   startSession(map: any, options?: { daily?: DailySetup | null; expedition?: ExpeditionState | null }): void;
-  toLobby(): void;
+  toLobby(target?: ScreenId): void; // ends the run; target defaults to where it was started from
   handleChange(type: string): void;
   spaceBelowMap(): number;
   // hud.ts
@@ -67,6 +68,9 @@ export type PageActions = {
   selectBlessingsTab(tab: "favor" | "run"): void;
   renderRunTab(): void;
   syncSpendButton(): void;
+  // nav.ts
+  showScreen(id: ScreenId): void;
+  exitPlay(target?: ScreenId): void;
   // page
   renderLobby(): void;
   syncAudioUi(): void;

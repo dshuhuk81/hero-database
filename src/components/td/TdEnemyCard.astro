@@ -1,14 +1,16 @@
 ---
-// One enemy or boss entry on the glossary page (TdGlossary.astro builds the data).
-interface Props { enemy: { kind: string; name: string; text: string; image: string; meta: string; tags: string[]; stats: (string | number)[][] }; }
-const { enemy } = Astro.props;
+// One enemy or boss entry in the glossary (TdGlossaryContent.astro builds the data).
+// headingLevel: level of the enemy name heading (default 3).
+interface Props { enemy: { kind: string; name: string; text: string; image: string; meta: string; tags: string[]; stats: (string | number)[][] }; headingLevel?: number; }
+const { enemy, headingLevel = 3 } = Astro.props;
+const Title = `h${headingLevel}` as "h3";
 ---
 
 <article class="td-glossary-card">
   <header class="td-glossary-card-head">
     <img class={`td-glossary-portrait td-glossary-portrait--enemy td-enemy-art--${enemy.kind}`} src={enemy.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
     <div>
-      <h3>{enemy.name}</h3>
+      <Title class="td-glossary-title">{enemy.name}</Title>
       <p class="td-glossary-meta">{enemy.tags.join(" - ")}</p>
     </div>
   </header>

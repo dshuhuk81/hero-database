@@ -1,10 +1,15 @@
 ---
-// Lobby screen: map cards with path previews, personal bests, play and panel buttons.
+// Menu screens (M22 app shell): app bar plus one visible screen at a time. Screen ids
+// match data-td-screen; src/game/td/page/nav.ts switches them and keeps browser history
+// in step. Blessings, help and save data are hosts: panels.ts moves those panels in.
 import { mapSceneFor } from "../../game/td/map-scene.js";
 import { mapLanes, routeStrokes } from "../../game/td/lanes.js";
 import { CHALLENGES } from "../../game/td/challenges.js"; // M20 badges, filled by renderChallengeBadges
-interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; }
-const { maps, waveCount, bossNames } = Astro.props;
+import tuning from "../../data/gameBalance.tuning.json";
+import TdSoundControls from "./TdSoundControls.astro";
+import TdGlossaryContent from "./TdGlossaryContent.astro";
+interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; }
+const { maps, waveCount, bossNames, assetBase } = Astro.props;
 const previews = maps.map((entry: any) => ({
   id: entry.id,
   name: entry.name,
@@ -16,116 +21,247 @@ const previews = maps.map((entry: any) => ({
   road: entry.roadSlots.map(([x, y]: number[]) => ({ x, y })),
   platform: entry.platformSlots.map(([x, y]: number[]) => ({ x, y })),
 }));
+// Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
+const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
+const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any]) => ({
+  id,
+  label: t.label,
+  copy: t.enemyHp === 1 && t.enemyAttack === 1 ? "The standard run." : `Enemies +${pct(t.enemyHp)} health, +${pct(t.enemyAttack)} attack. ${t.favor}x Favor.`,
+}));
+const modes = [
+  { id: "classic", label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
+  { id: "long", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
+  { id: "endless", label: "Endless", copy: "A boss every 5th wave. Waves keep growing until the last life is lost. Always Normal difficulty." },
+];
 ---
 
-<section class="td-lobby" data-td-lobby aria-labelledby="td-lobby-title">
-  <div class="td-lobby-inner">
-    <header class="td-lobby-head">
-      <a class="action-button action-button--quiet td-back" href="/">Back to database</a>
-      <div class="td-best" aria-label="Personal best">
-        <span>Personal best</span>
-        <strong data-td-best>0</strong>
-        <span class="td-perfect" data-td-perfect hidden>Perfect defense</span>
-        <span class="td-next-boost" data-td-next-boost hidden></span>
+<section class="td-app" data-td-lobby aria-label="Tower defense menu">
+  <header class="td-appbar">
+    <button class="td-icon-button td-appbar-back" type="button" data-td-nav-back aria-label="Back" hidden>
+      <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" /></svg>
+    </button>
+    <h1 class="td-appbar-title" data-td-appbar-title tabindex="-1">Tower Defense</h1>
+    <button class="td-favor-chip" type="button" data-td-go="blessings" data-td-favor-chip-button aria-label="Divine Blessings">
+      <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z" /></svg>
+      <strong data-td-favor-chip>0</strong><span>Favor</span>
+    </button>
+    <button class="td-icon-button td-appbar-settings" type="button" data-td-go="settings" aria-label="Settings">
+      <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" /><circle cx="15" cy="7" r="2" fill="none" /><circle cx="9" cy="17" r="2" fill="none" /></svg>
+    </button>
+  </header>
+
+  <div class="td-screens">
+    <!-- 1. Main menu -->
+    <section class="td-screen td-screen--home" data-td-screen="home" data-title="Tower Defense" aria-label="Main menu">
+      <div class="td-screen-body td-home">
+        <div class="td-home-main">
+          {previews[0]?.art && <img class="td-home-art" src={previews[0].art.terrain} alt="" width="960" height="540" decoding="async" />}
+          <div class="td-home-best" aria-label="Personal best">
+            <span>Personal best</span>
+            <strong data-td-best>0</strong>
+            <span class="td-perfect" data-td-perfect hidden>Perfect defense</span>
+            <span class="td-next-boost" data-td-next-boost hidden></span>
+          </div>
+          <button class="action-button action-button--primary td-play-button" type="button" data-td-go="maps" data-td-play-start data-td-autofocus>Play</button>
+        </div>
+        <div class="td-home-cards">
+          <button class="td-home-card" type="button" data-td-go="daily">
+            <span class="td-label">Daily Trial</span>
+            <strong data-td-daily-summary-map>Today's battlefield</strong>
+            <small data-td-daily-summary></small>
+          </button>
+          <button class="td-home-card" type="button" data-td-go="expedition">
+            <span class="td-label">Expedition</span>
+            <strong data-td-exp-summary-title>Start</strong>
+            <small data-td-exp-summary></small>
+          </button>
+        </div>
+        <nav class="td-home-links" aria-label="More">
+          <button class="action-button action-button--quiet" type="button" data-td-go="blessings">Divine Blessings <span class="td-favor-count" data-td-favor-count></span></button>
+          <button class="action-button action-button--quiet" type="button" data-td-go="glossary">Glossary</button>
+          <button class="action-button action-button--quiet" type="button" data-td-go="help">How to play</button>
+          <button class="action-button action-button--quiet" type="button" data-td-go="settings">Settings</button>
+          <a class="action-button action-button--quiet" href="/">Exit to database</a>
+        </nav>
       </div>
-    </header>
+    </section>
 
-    <div class="td-lobby-copy">
-      <p class="td-kicker">Motto Immortal - Field exercise</p>
-      <h1 id="td-lobby-title">Tower Defense</h1>
-      <p>Fill the rings with heroes and hold the line. Each battlefield has its own boss.</p>
-    </div>
-
-    <div class="td-map-cards" role="group" aria-label="Choose battlefield" data-td-maps>
-      {previews.map((preview: any) => (
-        <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
-          <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-            {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
-            {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
-            {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
-            {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
-            {preview.art && <>
-              {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
-              <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
-            </>}
-          </svg>
-          <span class="td-map-card-copy">
-            <strong>{preview.name}</strong>
-            <small class="td-map-card-boss">Boss: {preview.bossName}</small>
-            <small data-map-best={preview.id}>No runs yet</small>
-            <span class="td-map-challenges" data-map-challenges={preview.id}>
-              {CHALLENGES.map((challenge: any) => (
-                <span class="td-map-challenge" data-challenge={challenge.id}>
-                  <svg class="td-challenge-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={challenge.icon} /></svg>
+    <!-- 2. Map select -->
+    <section class="td-screen" data-td-screen="maps" data-title="Choose battlefield" aria-label="Choose battlefield" hidden>
+      <div class="td-screen-body td-screen-body--center td-maps-screen">
+        <div class="td-map-cards" role="group" aria-label="Battlefields" data-td-maps>
+          {previews.map((preview: any) => (
+            <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
+              <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
+                {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
+                {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
+                {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
+                {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
+                {preview.art && <>
+                  {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
+                  <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
+                </>}
+              </svg>
+              <span class="td-map-card-copy">
+                <strong>{preview.name}</strong>
+                <small class="td-map-card-boss">Boss: {preview.bossName}</small>
+                <small data-map-best={preview.id}>No runs yet</small>
+                <span class="td-map-challenges" data-map-challenges={preview.id}>
+                  {CHALLENGES.map((challenge: any) => (
+                    <span class="td-map-challenge" data-challenge={challenge.id}>
+                      <svg class="td-challenge-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={challenge.icon} /></svg>
+                    </span>
+                  ))}
+                  <span class="sr-only" data-challenge-summary></span>
                 </span>
-              ))}
-              <span class="sr-only" data-challenge-summary></span>
-            </span>
-          </span>
-        </button>
-      ))}
-    </div>
-
-    <div class="td-lobby-actions">
-      <button class="action-button action-button--primary td-play-button" type="button" data-td-play-start>Play</button>
-      <button class="action-button action-button--quiet" type="button" data-td-open="blessings">Divine Blessings <span class="td-favor-count" data-td-favor-count></span></button>
-      <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
-      <a class="action-button action-button--quiet" href="/games/tower-defense/glossary">Glossary</a>
-      <button class="action-button action-button--quiet" type="button" data-td-open="save">Save data</button>
-    </div>
-
-    <!-- Daily Trial (M19): filled for today's UTC date by src/game/td/page/daily.ts -->
-    <section class="td-daily" aria-labelledby="td-daily-title" data-td-daily>
-      <div class="td-daily-head">
-        <div>
-          <p class="td-kicker">Daily Trial <span class="td-daily-date" data-td-daily-date></span></p>
-          <h2 id="td-daily-title" data-td-daily-map>Today's battlefield</h2>
-        </div>
-        <button class="action-button action-button--primary" type="button" data-td-daily-start>Start trial</button>
-      </div>
-      <p class="td-daily-goal" data-td-daily-goal></p>
-      <div class="td-daily-grid">
-        <div>
-          <span class="td-label">Heroes</span>
-          <ul class="td-daily-list" data-td-daily-heroes></ul>
-        </div>
-        <div>
-          <span class="td-label">Mutators from wave 1</span>
-          <ul class="td-daily-list" data-td-daily-mutators></ul>
+              </span>
+            </button>
+          ))}
         </div>
       </div>
-      <p class="td-daily-best" data-td-daily-best></p>
+      <div class="td-screen-footer">
+        <p class="td-screen-footer-note" data-td-map-pick></p>
+        <button class="action-button action-button--primary" type="button" data-td-go="mode">Next</button>
+      </div>
     </section>
 
-    <section class="td-daily td-expedition" aria-labelledby="td-exp-title" data-td-expedition>
-      <div class="td-daily-head">
-        <div>
-          <p class="td-kicker">Expedition <span class="td-daily-date" data-td-exp-stage></span></p>
-          <h2 id="td-exp-title" data-td-exp-title>Three battlefields, one squad</h2>
+    <!-- 3. Difficulty and run length: picking a length starts the run -->
+    <section class="td-screen" data-td-screen="mode" data-title="Difficulty and run length" aria-label="Difficulty and run length" hidden>
+      <div class="td-screen-body td-mode-screen">
+        <p class="td-mode-map" data-td-mode-map></p>
+        <div class="td-mode-group">
+          <span class="td-label" id="td-tier-label">Difficulty</span>
+          <div class="td-tiers" role="radiogroup" aria-labelledby="td-tier-label" data-td-tiers>
+            {tiers.map((tier) => (
+              <button type="button" class="td-tier-option" role="radio" aria-checked="false" data-tier-id={tier.id}>
+                <strong>{tier.label}</strong>
+                <small>{tier.copy}</small>
+              </button>
+            ))}
+          </div>
         </div>
-        <div class="td-exp-actions">
-          <button class="action-button action-button--quiet" type="button" data-td-exp-abandon hidden>Abandon</button>
-          <button class="action-button action-button--primary" type="button" data-td-exp-start>Start expedition</button>
+        <div class="td-mode-group">
+          <span class="td-label">Run length - tap to start</span>
+          <div class="td-modes" data-td-modes>
+            {modes.map((mode) => (
+              <button type="button" class="td-mode" data-mode-id={mode.id}>
+                <span class="td-mode-copy">
+                  <strong>{mode.label}</strong>
+                  <small>{mode.copy}</small>
+                </span>
+                <span class="td-mode-best" data-mode-best={mode.id}></span>
+              </button>
+            ))}
+          </div>
         </div>
+        <details class="td-challenges" data-td-challenges>
+          <summary><span>Challenges on this battlefield</span> <span class="td-challenge-count" data-td-challenge-count></span></summary>
+          <p class="td-favor-note" data-td-challenge-reward></p>
+          <ul class="td-challenge-list" data-td-challenge-list></ul>
+        </details>
       </div>
-      <p class="td-daily-goal" data-td-exp-copy></p>
-      <div class="td-exp-camp" data-td-exp-camp hidden>
-        <span class="td-label">Camp: take one</span>
-        <div class="td-mutator-row" data-td-exp-cards></div>
-      </div>
-      <div class="td-daily-grid" data-td-exp-details hidden>
-        <div>
-          <span class="td-label">Roster</span>
-          <ul class="td-daily-list" data-td-exp-roster></ul>
-        </div>
-        <div>
-          <span class="td-label">Relics</span>
-          <ul class="td-daily-list" data-td-exp-relics></ul>
-        </div>
-      </div>
-      <p class="td-daily-best" data-td-exp-best></p>
     </section>
 
-    <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
+    <!-- 4a. Daily Trial (M19): filled for today's UTC date by src/game/td/page/daily.ts -->
+    <section class="td-screen" data-td-screen="daily" data-title="Daily Trial" aria-label="Daily Trial" hidden>
+      <div class="td-screen-body td-screen-body--center">
+        <section class="td-daily" aria-labelledby="td-daily-title" data-td-daily>
+          <div class="td-daily-head">
+            <div>
+              <p class="td-kicker">Today <span class="td-daily-date" data-td-daily-date></span></p>
+              <h2 id="td-daily-title" data-td-daily-map>Today's battlefield</h2>
+            </div>
+          </div>
+          <p class="td-daily-goal" data-td-daily-goal></p>
+          <div class="td-daily-grid">
+            <div>
+              <span class="td-label">Heroes</span>
+              <ul class="td-daily-list" data-td-daily-heroes></ul>
+            </div>
+            <div>
+              <span class="td-label">Mutators from wave 1</span>
+              <ul class="td-daily-list" data-td-daily-mutators></ul>
+            </div>
+          </div>
+          <p class="td-daily-best" data-td-daily-best></p>
+        </section>
+      </div>
+      <div class="td-screen-footer">
+        <button class="action-button action-button--primary" type="button" data-td-daily-start data-td-autofocus>Start trial</button>
+      </div>
+    </section>
+
+    <!-- 4b. Expedition (M21): src/game/td/page/expedition.ts -->
+    <section class="td-screen" data-td-screen="expedition" data-title="Expedition" aria-label="Expedition" hidden>
+      <div class="td-screen-body td-screen-body--center">
+        <section class="td-daily td-expedition" aria-labelledby="td-exp-title" data-td-expedition>
+          <div class="td-daily-head">
+            <div>
+              <p class="td-kicker">Expedition <span class="td-daily-date" data-td-exp-stage></span></p>
+              <h2 id="td-exp-title" data-td-exp-title>Three battlefields, one squad</h2>
+            </div>
+          </div>
+          <p class="td-daily-goal" data-td-exp-copy></p>
+          <div class="td-exp-camp" data-td-exp-camp hidden>
+            <span class="td-label">Camp: take one</span>
+            <div class="td-mutator-row" data-td-exp-cards></div>
+          </div>
+          <div class="td-daily-grid" data-td-exp-details hidden>
+            <div>
+              <span class="td-label">Roster</span>
+              <ul class="td-daily-list" data-td-exp-roster></ul>
+            </div>
+            <div>
+              <span class="td-label">Relics</span>
+              <ul class="td-daily-list" data-td-exp-relics></ul>
+            </div>
+          </div>
+          <p class="td-daily-best" data-td-exp-best></p>
+        </section>
+      </div>
+      <div class="td-screen-footer">
+        <button class="action-button action-button--quiet" type="button" data-td-exp-abandon hidden>Abandon</button>
+        <button class="action-button action-button--primary" type="button" data-td-exp-start data-td-autofocus>Start expedition</button>
+      </div>
+    </section>
+
+    <!-- 5. Panel hosts (panels.embed) -->
+    <section class="td-screen td-screen--host" data-td-screen="blessings" data-title="Divine Blessings" aria-label="Divine Blessings" hidden>
+      <div class="td-screen-host" data-td-screen-host="blessings"></div>
+    </section>
+    <section class="td-screen td-screen--host" data-td-screen="help" data-title="How to play" aria-label="How to play" hidden>
+      <div class="td-screen-host" data-td-screen-host="help"></div>
+    </section>
+    <section class="td-screen td-screen--host" data-td-screen="save" data-title="Save data" aria-label="Save data" hidden>
+      <div class="td-screen-host" data-td-screen-host="save"></div>
+    </section>
+
+    <!-- 6. Settings: sound, save data, about -->
+    <section class="td-screen" data-td-screen="settings" data-title="Settings" aria-label="Settings" hidden>
+      <div class="td-screen-body td-settings">
+        <section class="td-settings-group" aria-labelledby="td-settings-sound">
+          <h2 class="td-label" id="td-settings-sound">Sound</h2>
+          <TdSoundControls />
+        </section>
+        <section class="td-settings-group" aria-labelledby="td-settings-progress">
+          <h2 class="td-label" id="td-settings-progress">Progress</h2>
+          <p class="td-favor-note">Progress is stored in this browser only. A save code moves it to another device or keeps a backup.</p>
+          <button class="action-button action-button--quiet td-settings-link" type="button" data-td-go="save">Save data</button>
+        </section>
+        <section class="td-settings-group" aria-labelledby="td-settings-about">
+          <h2 class="td-label" id="td-settings-about">About</h2>
+          <p class="td-favor-note">A fan-made tower defense minigame on the Motto Immortal Database, played with heroes from the game.</p>
+          <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
+          <a class="action-button action-button--quiet td-settings-link" href="/">Exit to database</a>
+        </section>
+      </div>
+    </section>
+
+    <!-- 7. Glossary (same content as /games/tower-defense/glossary) -->
+    <section class="td-screen" data-td-screen="glossary" data-title="Glossary" aria-label="Glossary" hidden>
+      <div class="td-screen-body td-glossary-screen">
+        <TdGlossaryContent assetBase={assetBase} embedded headingLevel={2} />
+      </div>
+    </section>
   </div>
 </section>

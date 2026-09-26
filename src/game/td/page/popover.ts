@@ -1,16 +1,26 @@
-// Hero popover: anchored next to the selected unit (sheet fallback), upgrade,
-// rotate and details. Buttons are updated in place so focus survives game events.
-import { CLASS_ROLES, placePopover, worldToLocal } from "../ui.js";
+// Hero panel (M22): full-height side panel next to the map, or a sheet below the map on
+// portrait screens. Upgrade, target, rotate, sell and details. Buttons are updated in place so
+// focus survives game events. The game keeps running while the panel is open.
+import { CLASS_ROLES, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 import { classIcon } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 
+// Layout: "push" narrows the stage so the whole map sits beside the panel, as long as the map
+// keeps at least PUSH_MIN_MAP px of width. Narrower stages overlay the map on the side away from
+// the hero; portrait stages dock a sheet below the map (at least SHEET_MIN px tall).
+const PUSH_MIN_MAP = 520;
+const SHEET_MIN = 220;
+const HERO_RADIUS = 36; // world units kept clear around the selected hero
+
 export function createPopover(ctx: PageContext) {
-  const { q, state, data, maxLevel } = ctx;
+  const { q, state, data, maxLevel, heroById } = ctx;
   const stageEl = q("[data-td-stage]");
   const popover = q("[data-td-popover]");
+  const popBody = q(".td-popover-body");
   const popName = q("[data-pop-name]");
   const popLevel = q("[data-pop-level]");
+  const popPortrait = q<HTMLImageElement>("[data-pop-portrait]");
   const popClassIcon = q<HTMLImageElement>("[data-pop-class-icon]");
   const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
   const popHp = q("[data-pop-hp]");
@@ -37,6 +47,8 @@ export function createPopover(ctx: PageContext) {
   const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
   const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
+  let detailsOpen = true; // Details section state, kept between selections
+  let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
   let lastHealthUpdate = 0;
 
   const findUnit = (entityId: number | null) => state.session?.game.heroes.find((unit: any) => unit.entityId === entityId);
@@ -48,11 +60,13 @@ export function createPopover(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     state.selectedEntityId = unit.entityId;
     session.game.uiSelected = unit.entityId;
-    popDetails.hidden = true;
-    popDetailsButton.setAttribute("aria-expanded", "false");
+    popDetails.hidden = !detailsOpen;
+    popDetailsButton.setAttribute("aria-expanded", String(detailsOpen));
     focusOpen = false;
     sellArmed = false;
+    forcedPush = false;
     popover.hidden = false;
+    popBody.scrollTop = 0;
     update(unit);
     position();
     ctx.actions.renderDeck();
@@ -62,6 +76,7 @@ export function createPopover(ctx: PageContext) {
     if (state.selectedEntityId === null && popover.hidden) return;
     const hadFocus = popover.contains(document.activeElement);
     popover.hidden = true;
+    setLayout(null);
     state.selectedEntityId = null;
     if (state.session) state.session.game.uiSelected = null;
     ctx.actions.renderDeck();
@@ -106,6 +121,8 @@ export function createPopover(ctx: PageContext) {
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
+    const image = heroById.get(unit.id)?.image ?? "";
+    if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
     const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
     popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
@@ -197,8 +214,8 @@ export function createPopover(ctx: PageContext) {
     }
     const showFocus = focusOpen && info.ok && !!info.needsFocus;
     const showPath = focusOpen && info.ok && !!info.needsPath;
-    if (popFocus.hidden === showFocus) { popFocus.hidden = !showFocus; position(); }
-    if (popPath.hidden === showPath) { popPath.hidden = !showPath; position(); }
+    popFocus.hidden = !showFocus;
+    popPath.hidden = !showPath;
     popUpgrade.setAttribute("aria-controls", info.needsPath ? "td-pop-path" : "td-pop-focus");
     popUpgrade.setAttribute("aria-expanded", String(showFocus || showPath));
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
@@ -236,32 +253,50 @@ export function createPopover(ctx: PageContext) {
     return lines.join("");
   }
 
+  // Layout state lives on the stage (data-hero-panel + CSS variables) so the map, notices and
+  // chips can make room. In push mode the stage gets a right padding of the panel width; the
+  // renderer refits the map into the rest (ResizeObserver in session.ts) and calls position() again.
+  function setLayout(mode: "push" | "left" | "right" | "sheet" | null, width = 0, top = 0) {
+    popover.dataset.side = mode === "push" || mode === null ? "right" : mode;
+    if (mode) stageEl.dataset.heroPanel = mode;
+    else delete stageEl.dataset.heroPanel;
+    if (mode && mode !== "sheet") stageEl.style.setProperty("--td-hero-panel-w", `${width}px`);
+    else stageEl.style.removeProperty("--td-hero-panel-w");
+    if (mode === "sheet") stageEl.style.setProperty("--td-pop-top", `${top}px`);
+    else stageEl.style.removeProperty("--td-pop-top");
+  }
+
   function position() {
     const session = state.session;
     if (popover.hidden || !session) return;
     const unit = findUnit(state.selectedEntityId);
     if (!unit) return;
-    const canvasRect = session.canvas.getBoundingClientRect();
     const stageRect = stageEl.getBoundingClientRect();
-    popover.classList.remove("is-sheet");
-    const scale = canvasRect.width / 960;
-    const size = { width: popover.offsetWidth, height: popover.offsetHeight };
-    // A short map would be mostly covered by an anchored popover; use the space below it instead.
-    const dockBelow = canvasRect.height < size.height * 1.5 && ctx.actions.spaceBelowMap() >= size.height + 16;
-    const placement = dockBelow ? { mode: "sheet" as const } : placePopover({
-      anchor: worldToLocal(canvasRect, stageRect, unit),
-      size,
-      bounds: { width: stageRect.width, height: stageRect.height },
-      gap: 32 * scale + 8,
-    });
-    if (placement.mode === "sheet") {
-      popover.classList.add("is-sheet");
-      popover.dataset.side = "sheet";
+    const wasPush = stageEl.dataset.heroPanel === "push";
+    if (stageRect.height > stageRect.width) {
+      // Portrait: sheet from the map's bottom edge down. The map is width-bound here, so the
+      // hero stays above the sheet unless the stage is too short for SHEET_MIN.
+      if (wasPush) { setLayout(null); return; } // the map refits first, then this runs again
+      const canvasRect = session.canvas.getBoundingClientRect();
+      const top = Math.min(canvasRect.bottom - stageRect.top, stageRect.height - SHEET_MIN);
+      setLayout("sheet", 0, Math.max(0, Math.round(top)));
       return;
     }
-    popover.style.setProperty("--td-pop-x", `${placement.x}px`);
-    popover.style.setProperty("--td-pop-y", `${placement.y}px`);
-    popover.dataset.side = placement.side;
+    const side = popover.dataset.side === "left" ? "left" : "right";
+    popover.dataset.side = side; // measure the side width, not the sheet width
+    const panelWidth = popover.offsetWidth;
+    if (forcedPush || stageRect.width - panelWidth >= PUSH_MIN_MAP) { setLayout("push", panelWidth); return; }
+    if (wasPush) { setLayout(null); return; } // leaving push mode: wait for the map to refit
+    // Overlay: dock on the side away from the hero, keeping the current side while it fits.
+    const canvasRect = session.canvas.getBoundingClientRect();
+    const hero = worldToLocal(canvasRect, stageRect, unit);
+    const clear = HERO_RADIUS * canvasRect.width / 960 + 4;
+    const fitsRight = hero.x + clear <= stageRect.width - panelWidth;
+    const fitsLeft = hero.x - clear >= panelWidth;
+    if (side === "left" && fitsLeft) setLayout("left", panelWidth);
+    else if (fitsRight) setLayout("right", panelWidth);
+    else if (fitsLeft) setLayout("left", panelWidth);
+    else { forcedPush = true; setLayout("push", panelWidth); }
   }
 
   // Called from the frame loop; health changes every tick but the text only needs 4 updates a second.
@@ -344,10 +379,10 @@ export function createPopover(ctx: PageContext) {
   popDetailsButton.addEventListener("click", () => {
     const unit = findUnit(state.selectedEntityId);
     if (!unit) return;
-    popDetails.hidden = !popDetails.hidden;
-    popDetailsButton.setAttribute("aria-expanded", String(!popDetails.hidden));
-    if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
-    position();
+    detailsOpen = !detailsOpen;
+    popDetails.hidden = !detailsOpen;
+    popDetailsButton.setAttribute("aria-expanded", String(detailsOpen));
+    if (detailsOpen) popDetails.innerHTML = detailsHtml(unit);
   });
 
   return { select, close, refresh, position, tick, isOpen: () => !popover.hidden };

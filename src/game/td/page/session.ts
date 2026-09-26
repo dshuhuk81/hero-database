@@ -11,6 +11,7 @@ import { dailyGameOptions } from "../daily.js";
 import { stageGameOptions } from "../expedition.js";
 import type { DailySetup } from "./daily";
 import type { ExpeditionState } from "./save";
+import type { ScreenId } from "./nav";
 
 type Deps = {
   music: { play(track: string): void; stop(): void };
@@ -26,19 +27,11 @@ type Deps = {
 
 export function createSessionController(ctx: PageContext, deps: Deps) {
   const { root, q, state, store, data, pause, heroById } = ctx;
-  const lobbyEl = q("[data-td-lobby]");
-  const playEl = q("[data-td-play]");
   const stageEl = q("[data-td-stage]");
   const loadingEl = q("[data-td-loading]");
   const noticeEl = q("[data-td-notice]");
   let sessionToken = 0;
   let loadingCanvas: HTMLCanvasElement | null = null;
-
-  function showScreen(name: "lobby" | "play") {
-    root.dataset.screen = name;
-    lobbyEl.hidden = name !== "lobby";
-    playEl.hidden = name !== "play";
-  }
 
   async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null } = {}) {
     const token = ++sessionToken;
@@ -50,7 +43,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       try { localStorage.setItem("td:map", map.id); } catch {}
     }
     deps.music.play(map.music);
-    showScreen("play");
+    ctx.actions.showScreen("play");
     pause.clear();
     ctx.actions.syncPauseButton();
     deps.results.reset();
@@ -126,15 +119,15 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     (window as any).tdRenderer = null;
   }
 
-  function toLobby() {
+  // Ends the run and returns to a menu screen (nav.ts exitPlay picks the default).
+  function toLobby(target?: ScreenId) {
     sessionToken += 1; // cancels a battlefield that is still loading
     ctx.actions.closePanel(false);
     end();
     deps.music.stop();
     pause.clear();
-    showScreen("lobby");
     ctx.actions.renderLobby();
-    q<HTMLButtonElement>("[data-td-play-start]").focus({ preventScroll: true });
+    ctx.actions.exitPlay(target);
   }
 
   function handleChange(type: string) {
@@ -206,7 +199,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       start(map, { daily });
       return;
     }
-    if (target.closest("[data-td-to-lobby]")) toLobby();
+    const exit = target.closest<HTMLElement>("[data-td-to-lobby]");
+    if (exit) toLobby((exit.dataset.tdToLobby || undefined) as ScreenId | undefined);
   });
 
   const isTyping = (target: EventTarget | null) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
@@ -259,7 +253,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   }
 
   function run() {
-    showScreen("lobby");
     ctx.actions.renderLobby();
     requestAnimationFrame(frame);
   }
