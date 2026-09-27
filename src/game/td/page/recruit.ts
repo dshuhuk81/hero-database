@@ -1,13 +1,9 @@
 // Recruitment sheet (opens from an empty tile) and battlefield input. Pointer,
 // touch and keyboard all go through activateSlot.
-import { classIconImg, tdAsset } from "../assets.js";
+import { classIconImg } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { slotHitRadius } from "../ui.js";
 import { RING_INFO } from "../skills.js";
-import anims from "../../../data/tdHeroAnims.json";
-
-// Idle loop sprite sheets rendered from the game's Spine data (scripts/td-spine/).
-const ANIM_VERSION = "v1";
 import type { PageContext, Session, Slot } from "./context";
 
 export function createRecruit(ctx: PageContext) {
@@ -25,14 +21,19 @@ export function createRecruit(ctx: PageContext) {
   // Preview strip: the hovered or focused hero's in-game idle animation.
   function preview(heroId: string) {
     const hero = heroById.get(heroId);
-    const anim = (anims as Record<string, { frames: number; duration: number }>)[heroId];
+    // Idle loop from the hero skin ({ url, frames, duration } sprite sheet), else the still portrait.
+    const anim: { url: string; frames: number; duration: number } | undefined = hero?.anim || undefined;
+    const still = anim ? null : hero?.portrait;
     if (!hero || heroId === previewId) return;
     previewId = heroId;
-    previewEl.hidden = !anim;
-    if (!anim) return;
-    animEl.style.backgroundImage = `url("${tdAsset(`anims/${heroId}-idle-${ANIM_VERSION}.webp`)}")`;
-    animEl.style.setProperty("--td-anim-frames", String(anim.frames));
-    animEl.style.setProperty("--td-anim-duration", `${anim.duration}s`);
+    previewEl.hidden = !anim && !still;
+    if (!anim && !still) return;
+    animEl.classList.toggle("is-still", !anim);
+    animEl.style.backgroundImage = `url("${anim ? anim.url : still}")`;
+    if (anim) {
+      animEl.style.setProperty("--td-anim-frames", String(anim.frames));
+      animEl.style.setProperty("--td-anim-duration", `${anim.duration}s`);
+    }
     q("[data-td-preview-name]").textContent = hero.name;
     q("[data-td-preview-sub]").textContent = `${hero.class} - ${hero.cost} gold`;
     const skill = data.tuning.heroSkills?.[heroId]?.skillName;

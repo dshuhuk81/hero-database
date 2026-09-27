@@ -161,23 +161,34 @@ const modes = [
     <!-- 4a. Daily Trial (M19): filled for today's UTC date by src/game/td/page/daily.ts -->
     <section class="td-screen" data-td-screen="daily" data-title="Daily Trial" aria-label="Daily Trial" hidden>
       <div class="td-screen-body td-screen-body--center">
-        <section class="td-daily" aria-labelledby="td-daily-title" data-td-daily>
-          <div class="td-daily-head">
-            <div>
-              <p class="td-kicker">Today <span class="td-daily-date" data-td-daily-date></span></p>
+        <section class="td-trial" aria-labelledby="td-daily-title" data-td-daily>
+          <header class="td-trial-banner">
+            <img class="td-trial-boss-art" data-td-daily-boss-art alt="" loading="lazy" decoding="async">
+            <div class="td-trial-intro">
+              <p class="td-kicker">Daily Trial <span class="td-daily-date" data-td-daily-date></span></p>
               <h2 id="td-daily-title" data-td-daily-map>Today's battlefield</h2>
+              <p class="td-trial-boss">Boss <strong data-td-daily-boss></strong></p>
+              <p class="td-trial-goal" data-td-daily-goal></p>
+              <ul class="td-trial-rules" aria-label="Trial rules">
+                <li>Endless</li>
+                <li>Normal</li>
+                <li>No Divine Blessings</li>
+                <li>No shard boosts</li>
+              </ul>
             </div>
+            <div class="td-trial-reward" data-td-daily-reward>
+              <span class="td-label">First clear today</span>
+              <strong><span data-td-daily-reward-amount></span> <small>Favor</small></strong>
+              <span class="td-trial-reward-state" data-td-daily-reward-state></span>
+            </div>
+          </header>
+          <div class="td-trial-section">
+            <div class="td-trial-section-head"><span class="td-label">Mutators</span><small>Active from wave 1</small></div>
+            <ul class="td-trial-mutators" data-td-daily-mutators></ul>
           </div>
-          <p class="td-daily-goal" data-td-daily-goal></p>
-          <div class="td-daily-grid">
-            <div>
-              <span class="td-label">Heroes</span>
-              <ul class="td-daily-list" data-td-daily-heroes></ul>
-            </div>
-            <div>
-              <span class="td-label">Mutators from wave 1</span>
-              <ul class="td-daily-list" data-td-daily-mutators></ul>
-            </div>
+          <div class="td-trial-section">
+            <div class="td-trial-section-head"><span class="td-label">Trial squad</span><small data-td-daily-squad-count></small></div>
+            <ul class="td-trial-squad" data-td-daily-heroes></ul>
           </div>
           <p class="td-daily-best" data-td-daily-best></p>
         </section>
@@ -246,8 +257,8 @@ const modes = [
         </section>
         <section class="td-settings-group" aria-labelledby="td-settings-about">
           <h2 class="td-label" id="td-settings-about">About</h2>
-          <p class="td-favor-note">A fan-made tower defense minigame on the Motto Immortal Database, played with heroes from the game.</p>
-          <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
+          <p class="td-favor-note">The Last Crossing: a free tower defense game with heroes from Greek and Norse myth, hosted on the Motto Immortal Database fan site.</p>
+          <p class="td-disclaimer">Not affiliated with GOAT Games or Motto Immortal. Heroes, art and text are original; music and sounds are CC0.</p>
           <a class="action-button action-button--quiet td-settings-link" href="/">Exit to database</a>
         </section>
       </div>

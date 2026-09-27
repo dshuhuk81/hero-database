@@ -2,7 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
-import { ENEMY_ART, tdAsset } from "./assets.js";
+import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
@@ -125,11 +125,10 @@ export async function createRenderer(canvas, game, options = {}) {
   const fxTex    = new Map(); // name -> PIXI.Texture
   const heroFx = createHeroFx(PIXI, layerParts, fxTex, { reducedMotion });
 
-  // On-board tokens: transparent head-and-shoulders cutouts (scripts/build-td-tokens.mjs).
+  // On-board tokens: transparent head-and-shoulders cutouts from the hero skin (skin.js).
   // A hero without a token keeps the circle portrait.
-  const TOKEN_VERSION = "v1";
-  for (const id of game.heroesById.keys()) {
-    PIXI.Assets.load(tdAsset(`tokens/${id}-${TOKEN_VERSION}.webp`)).then((tex) => boardSprites.set(id, tex)).catch(() => {});
+  for (const [id, hero] of game.heroesById) {
+    if (hero.token) PIXI.Assets.load(hero.token).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }
 
   // Version query forces a fresh CORS-enabled fetch: browsers may still hold
@@ -147,7 +146,6 @@ export async function createRenderer(canvas, game, options = {}) {
   for (const hero of game.heroesById.values()) {
     heroLoads.push(loadTexture(hero.id, hero.image));
   }
-  if (options.boss?.image) heroLoads.push(loadTexture("boss", options.boss.image));
   // Fire hero loads but don't block; they resolve into the sprites map.
   Promise.all(heroLoads);
 
@@ -172,22 +170,13 @@ export async function createRenderer(canvas, game, options = {}) {
     })
     .catch(() => {});
 
-  // In-game portrait sprites per enemy kind (primary, loads async).
-  const portraitTextures = new Map(); // kind -> PIXI.Texture
-  const PORTRAIT_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
-  for (const kind of PORTRAIT_KINDS) {
-    PIXI.Assets.load(tdAsset(`enemies/${kind}.png`))
-      .then((tex) => portraitTextures.set(kind, tex))
-      .catch(() => {});
-  }
 
   // Full-body enemy sprites (scripts/build-td-enemy-sprites.mjs), preferred over
   // portraits when present. Missing files fail quietly and portraits stay in use.
   // Per-file version (R2 caches a year): bump a file here and in the build script's --version together.
-  const ENEMY_SPRITE_VERSIONS = { "boss-lilith": "v2", brood: "v2" };
   const fullBodyTextures = new Map(); // kind -> PIXI.Texture
   // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-vN (the map's boss).
-  const bossFile = options.boss?.id && options.boss.id !== "baphomet" ? `boss-${options.boss.id}` : "boss";
+  const bossFile = bossSpriteFile(options.boss?.id);
   const bossSpriteSize = { lilith: 108 }[options.boss?.id] ?? 96;
   const fullSpriteSize = (kind) => (kind === "boss" ? bossSpriteSize : kind === "brute" ? 64 : ENEMY_ART[kind]?.size ?? 44);
   // Full-body sprites stand on the path: the build script leaves a 10% margin under the
@@ -197,7 +186,8 @@ export async function createRenderer(canvas, game, options = {}) {
   // (they pass over blockers; only platform heroes can hit them).
   const FLYER_LIFT = 18;
   const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
-  for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
+  const SPRITE_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
+  for (const [kind, file] of [...SPRITE_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
     PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
@@ -299,7 +289,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   // ------------------------------------------------------------------
-  // Background art panels (game-extracted stage textures, async)
+  // Background art (authored map terrain, async)
   // ------------------------------------------------------------------
   async function buildBgTexture() {
     if (isAuthored) {
@@ -319,17 +309,6 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       return;
     }
-    // World map 2048x2048: scale width to 960, crop height to show mountains + city
-    try {
-      const tex = await PIXI.Assets.load(tdAsset("bg/worldmap.webp"));
-      const spr = new PIXI.Sprite(tex);
-      const scale = 960 / 2048;
-      spr.width = 960;
-      spr.height = 2048 * scale; // 960px tall
-      spr.position.set(0, -40); // show upper portion: dramatic sky, mountains, glowing city
-      layerBgTex.addChild(spr);
-    } catch {}
-
     // Dark overlay for gameplay readability
     const overlay = new PIXI.Graphics();
     overlay.rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.38 });
@@ -810,24 +789,6 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
 
-    // Portrait sprite for non-boss enemies (circular mask like boss portrait)
-    if (kind !== "boss" && !fullTex) {
-      const porTex = portraitTextures.get(kind);
-      if (porTex) {
-        const r = kind === "brute" ? 20 : 14;
-        const mask = new PIXI.Graphics();
-        mask.circle(0, 0, r).fill(0xffffff);
-        c.addChild(mask);
-        const sp = new PIXI.Sprite(porTex);
-        sp.anchor.set(0.5);
-        sp.width = r * 2; sp.height = r * 2;
-        sp.mask = mask;
-        c._portraitSprite = sp;
-        c._portraitMask = mask;
-        c.addChild(sp);
-        c._shape.visible = false;
-      }
-    }
 
     // Kenney tile sprite fallback (non-boss when portrait not yet loaded; boss when no hero image)
     const kenTex = enemyTextures.get(kind);
@@ -928,27 +889,6 @@ export async function createRenderer(canvas, game, options = {}) {
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
-
-    // Upgrade to portrait if it finished loading after container was built
-    if (!c._portraitSprite && unit.kind !== "boss") {
-      const porTex = portraitTextures.get(unit.kind);
-      if (porTex) {
-        const kind = unit.kind;
-        const r = kind === "brute" ? 20 : 14;
-        const mask = new PIXI.Graphics();
-        mask.circle(0, 0, r).fill(0xffffff);
-        c.addChildAt(mask, c.children.length - 1);
-        const sp = new PIXI.Sprite(porTex);
-        sp.anchor.set(0.5);
-        sp.width = r * 2; sp.height = r * 2;
-        sp.mask = mask;
-        c._portraitSprite = sp;
-        c._portraitMask = mask;
-        c.addChildAt(sp, c.children.length - 1);
-        c._shape.visible = false;
-        if (c._enemySprite) { c._enemySprite.visible = false; }
-      }
-    }
 
     // Upgrade to Kenney sprite if sheet finished loading (fallback when portrait absent)
     if (!c._enemySprite && !c._portraitSprite && !(unit.kind === "boss" && c._bossSprite)) {

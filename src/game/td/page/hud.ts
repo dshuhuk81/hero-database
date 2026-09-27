@@ -3,6 +3,7 @@
 import type { PageContext } from "./context";
 import { isBossWave } from "../waves.js";
 import { clearedWaves } from "../daily.js";
+import { bossSprite } from "../assets.js";
 
 const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear", heroKills: "Slayer" };
 
@@ -330,10 +331,9 @@ export function createHud(ctx: PageContext) {
     // Only the last wave of a finite run is the final one; endless and earlier bosses show their wave.
     q("[data-td-boss-kicker]").textContent = game && game.wave === game.totalWaves ? "Final wave" : `Boss - wave ${game?.wave ?? ""}`;
     q("[data-td-boss-name]").textContent = boss.name;
-    q("[data-td-boss-sub]").textContent = [boss?.faction, boss?.class].filter(Boolean).join(" ");
-    const art = q<HTMLImageElement>("[data-td-boss-art]");
-    art.hidden = !boss?.image;
-    if (boss?.image) art.src = boss.image;
+    q("[data-td-boss-sub]").textContent = boss?.class ? `${boss.class} boss` : "";
+    // The board sprite doubles as the nameplate portrait (no database art in the game).
+    q<HTMLImageElement>("[data-td-boss-art]").src = bossSprite(boss?.id);
     plate.hidden = false;
     plate.classList.remove("is-playing");
     void plate.offsetWidth; // restart the animation

@@ -12,7 +12,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
 <div class="td-shell" data-td-root data-screen="home">
   <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
-  <TdPanels maps={maps} bossNames={bossNames} />
+  <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
@@ -92,7 +92,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // ------------------------------------------------------------------
   // Audio (one instance for the page lifetime)
   // ------------------------------------------------------------------
-  const audio = createAudio();
+  const audio = createAudio(Object.fromEntries(data.heroes.map((hero: any) => [hero.id, hero.sounds])));
   // Sound controls exist twice (pause menu and Settings); every copy stays in sync.
   const all = <T extends HTMLElement>(selector: string) => [...root.querySelectorAll<T>(selector)];
   const muteButtons = all<HTMLButtonElement>("[data-td-mute]");

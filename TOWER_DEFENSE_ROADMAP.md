@@ -24,24 +24,31 @@ upgrades and such.
 
 due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
 - plan: White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
+- audit (September 27, 2026): `TOWER_DEFENSE_WHITELABEL_AUDIT.md` - full inventory of game content in the TD game, readiness per area, a one-switch skin plan, work order and owner decisions.
+- progress (September 27, 2026): switched. The game always uses the mythic roster (art approved), generated hero sounds (v3), idle loops from the portraits (test), CC0 music, renamed blessings; database hero sounds, Spine loops, tokens and extraction scripts removed. Left: class icons, enemy sprite review, leftover fallback files. Status section in the audit.
 - new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt` xor `/Users/daschultheiss/hero-database/public/td/heroes-alt/review-set-v1`
 - new heroes (text, skills) defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
-- we use AI sprites created, maybe we need to do them for all heroes. also all skills and effects need to adapt to the new heroes as well.
 
+### M24b - New sounds
+- i downloaded a bunch of sound effects that we can try and swap out here:
+`/Users/daschultheiss/hero-database/public/td/newFx``
+check what we can use its a mix of all kinds of sounds.
+- Done (September 27, 2026): hero sounds v4 from these packs (swords, stabs, spells, heals, coins), archers keep the generated sounds (no bow sounds in the packs); interface and combat sounds (hits, block, select, place, upgrade, wave clear, error) from the Tactical Interface pack. Mapping and licenses in `public/td/sfx/CREDITS-mythic.txt`. The original packs and the class icon sources were moved out of the site build to `~/hero-database-assets/td/` (`newFx`, `newArt`): their licenses forbid redistributing the standalone files.
 
-### M25: Leaderboard (large, needs design first)
+### M25: Leaderboard (large, needs design first - skip)
 
 - Goal: shared scores across players.
 - Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M26: New Game Mode (currently under work, ignore)
+### M26: New Game Mode
 
 - New Game mode should be planned. All exiting levels could be moved to "Free Play".
 Game Start -> Chose between A) CAmpaign (New) and b) Free Play.
 Campaign will require a lot of new concept thinking.
-to be continued....
+- a concept is written here. look for further information in:
+`TOWER_DEFENSE_NEXT_STEPS.md`
 
 ### M99: Login/Register
 - what would we need to provide auth / login / register to dave players progress ? gmail auth ? apple auth ?
@@ -49,6 +56,8 @@ to be continued....
 - if requirements are too large or harsh (for a free environment), we skip this entirely.
 
 ## Research notes (September 25, 2026)
+
+Superseded September 27, 2026 (M24 white label): the database tokens, Spine idle loops and their scripts below were removed from the game; heroes now use the mythic skin (see the white-label audit). Kept here as history.
 
 **Sprites from game art** (all three options done, September 25, 2026):
 
@@ -68,9 +77,8 @@ npm run build:game-balance      # regenerate hero balance (re-ranks all heroes)
 npm run check                   # astro check (TD code is type-clean; rest of site not yet)
 
 node scripts/build-td-grid.mjs [--check]                            # placement tiles -> tdMaps.json (after route / grid block edits)
-node scripts/build-td-tokens.mjs [--only id] [--sheet out.png]   # board tokens -> public/td/tokens
 node scripts/build-td-enemy-sprites.mjs <folder>                   # AI enemy art -> public/td/enemies/sprites
-PW=<playwright dir> node scripts/td-spine/render-sheets.cjs        # hero idle loops -> public/td/anims
+python3 scripts/td-idle-anim.py <portrait> <id> <outdir>           # hero idle loop sheet -> public/td/heroes-alt/anims
 node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new files (never overwrites)
 ```
 

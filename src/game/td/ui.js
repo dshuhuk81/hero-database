@@ -9,7 +9,7 @@ export const CLASS_ROLES = {
   Tank: "Holds up to 3 enemies and shrugs off part of every hit. Its ultimate pins every ground enemy nearby in place.",
   Warrior: "Holds 2 enemies and cleaves the enemies next to its target.",
   Assassin: "Holds 1 enemy and dashes to enemies that slip past the line, hitting fast runners hardest. Its ultimate makes it untouchable for a moment while it strikes an extra enemy.",
-  Mage: "Slow magic blasts that splash around the target (Zeus chains instead). Best against packs and armored Brutes.",
+  Mage: "Slow magic blasts that splash around the target (chain-lightning Mages chain instead). Best against packs and armored Brutes.",
   Archer: "Slow, heavy shots at the toughest enemy in range. Pierces armor and hits flyers twice as hard.",
   Support: "Heals the most injured ally in range and raises the attack of allies inside its ring. Barely attacks.",
 };

@@ -15,8 +15,9 @@
 //                 skill names +2, so under a screen title with an h1 keep 2.
 //
 // Several instances on one page are fine: the script scopes to each [data-td-glossary] root.
-import heroes from "../../data/gameBalance.json";
-import tuning from "../../data/gameBalance.tuning.json";
+import rawHeroes from "../../data/gameBalance.json";
+import rawTuning from "../../data/gameBalance.tuning.json";
+import { skinHeroes, skinTuning } from "../../game/td/skin.js";
 import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
@@ -27,6 +28,9 @@ import EnemyCard from "./TdEnemyCard.astro";
 
 interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
 const { assetBase, embedded = false, headingLevel = 2 } = Astro.props;
+// Hero skin (M24): the game's own names, portraits and ultimate names.
+const heroes = skinHeroes(rawHeroes as any[], assetBase);
+const tuning = skinTuning(rawTuning);
 
 // Ids: the standalone page keeps its public anchors (#heroes, #enemies, #hero-<id>);
 // embedded, everything is prefixed so nothing clashes with the host page.
@@ -40,7 +44,7 @@ const t: any = tuning;
 const K = 260; // armor constant in sim.js mitigation()
 const reduction = (value: number) => Math.round((value / (value + K)) * 100);
 const pct = (value: number) => `${Math.round(value * 100)}%`;
-const classIcon = (name: string) => `${assetBase}/icons/classes/${name.toLowerCase()}.webp`;
+const classIcon = (name: string) => `${assetBase}/td/icons/classes/${name.toLowerCase()}-v1.webp`;
 const enemySprite = (file: string, version = "v1") => `${assetBase}/td/enemies/sprites/${file}-${version}.webp`;
 const tagLabel = (tag: string) => tag.toLowerCase().replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
@@ -178,7 +182,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
       <div class="td-glossary-classes">
         {classes.map((cls) => (
           <article class="td-glossary-class">
-            <Title class="td-glossary-title"><img src={classIcon(cls.name)} alt="" width="22" height="25" loading="lazy" decoding="async" />{cls.name}</Title>
+            <Title class="td-glossary-title"><img src={classIcon(cls.name)} alt="" width="22" height="22" loading="lazy" decoding="async" />{cls.name}</Title>
             <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
             <p>{cls.role}</p>
             {cls.paths.length > 0 && (
@@ -224,7 +228,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
               <div>
                 <Title class="td-glossary-title">{hero.name}</Title>
                 <p class="td-glossary-meta">
-                  <img src={classIcon(hero.class)} alt="" width="16" height="18" loading="lazy" decoding="async" />
+                  <img src={classIcon(hero.class)} alt="" width="16" height="16" loading="lazy" decoding="async" />
                   {hero.class} - {hero.slotLabel} - {hero.damageLabel}
                 </p>
               </div>

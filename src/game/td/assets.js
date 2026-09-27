@@ -10,11 +10,6 @@ export function tdAsset(path) {
   return `${base}/td/${path.replace(/^\/+/, "")}`;
 }
 
-// Site-wide R2 assets outside td/ (shared with the rest of the site).
-export function r2Asset(path) {
-  return `${base}/${path.replace(/^\/+/, "")}`;
-}
-
 // M11 enemies without their own art yet reuse an existing full-body sprite
 // (enemies/sprites/{file}-{version}.webp), tinted and sized so they read as their own
 // kind. Plain <img> previews (glossary) use the .td-enemy-art--{kind} filters in td.css.
@@ -27,12 +22,24 @@ export const ENEMY_ART = {
   hexer: { file: "boss-lilith", version: "v1", tint: 0xffffff, size: 52, glow: 0xe879f9 },
 };
 
-// Hero class icon (the same hexagon icons the boss and calendar pages use).
+// Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
+export const ENEMY_SPRITE_VERSIONS = { "boss-lilith": "v2", brood: "v2" };
+
+// A map's final boss sprite: Baphomet is "boss", other bosses "boss-{id}".
+export function bossSpriteFile(id) {
+  return id && id !== "baphomet" ? `boss-${id}` : "boss";
+}
+export function bossSprite(id) {
+  const file = bossSpriteFile(id);
+  return tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`);
+}
+
+// Hero class icon (the game's own glyphs, td/icons/classes/{class}-v1.webp, square).
 export function classIcon(heroClass) {
-  return r2Asset(`icons/classes/${String(heroClass || "").toLowerCase()}.webp`);
+  return tdAsset(`icons/classes/${String(heroClass || "").toLowerCase()}-v1.webp`);
 }
 
 // Decorative class icon next to a class name (the name carries the meaning).
 export function classIconImg(heroClass, size = 20) {
-  return `<img class="td-class-icon" src="${classIcon(heroClass)}" alt="" width="${size}" height="${Math.round(size * 82 / 72)}" loading="lazy" decoding="async">`;
+  return `<img class="td-class-icon" src="${classIcon(heroClass)}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async">`;
 }

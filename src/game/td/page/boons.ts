@@ -201,8 +201,8 @@ export function createRunOffer(ctx: PageContext) {
       return;
     }
     const triggered = (session.game.activePairs ?? []).find((pair: any) => pair.virtues.includes(name));
-    const heroName = blessingNames[name] ?? name;
-    ctx.notice(triggered ? `${heroName} activates ${triggered.name}: ${triggered.label}` : `${heroName} blesses your squad for the rest of this run.`);
+    const blessingName = blessingNames[name] ?? name;
+    ctx.notice(triggered ? `${blessingName} activates ${triggered.name}: ${triggered.label}` : `${blessingName} blesses your squad for the rest of this run.`);
     q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
   });
 

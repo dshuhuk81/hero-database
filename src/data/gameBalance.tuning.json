@@ -105,24 +105,24 @@
     "Gnosis": { "type": "dodge", "value": 0.08, "label": "Heroes dodge 8% of incoming hits." }
   },
   "virtueBlessings": {
-    "Wildness": "Blessing of Zeus",
-    "Desire": "Blessing of Artemis",
-    "Resolve": "Shield of Diana",
-    "Oblivion": "Protection of Nuwa",
-    "Humility": "Ward of Horus",
-    "Defiance": "Hide of Jormungandr",
-    "Sacrifice": "Vigor of Poseidon",
-    "Mercy": "Grace of Freya",
-    "Grace": "Favor of Caishen",
-    "Fervor": "Surge of Amunra",
-    "Insight": "Edge of Bastet",
-    "Gnosis": "Veil of Nyx"
+    "Wildness": "Wrath of the Storm",
+    "Desire": "Hunter's Hunger",
+    "Resolve": "Steady Hand",
+    "Oblivion": "Bulwark of Ages",
+    "Humility": "Humble Ward",
+    "Defiance": "Unbroken Hide",
+    "Sacrifice": "Tidal Vigor",
+    "Mercy": "Gentle Mending",
+    "Grace": "Hearth's Grace",
+    "Fervor": "Rising Dawn",
+    "Insight": "Keen Edge",
+    "Gnosis": "Veil of Dusk"
   },
   "virtuePairs": [
-    { "virtues": ["Wildness", "Desire"], "name": "Storm Bond", "label": "Zeus and Artemis: all heroes deal +5% attack.", "effect": { "type": "atk", "value": 0.05 } },
-    { "virtues": ["Oblivion", "Defiance"], "name": "Iron Pact", "label": "Nuwa and Jormungandr: all heroes gain +5% max HP.", "effect": { "type": "hp", "value": 0.05 } },
-    { "virtues": ["Grace", "Fervor"], "name": "Divine Flow", "label": "Caishen and Amunra: ultimates charge 10% faster.", "effect": { "type": "regen", "value": 0.10 } },
-    { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Bastet and Nyx: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
+    { "virtues": ["Wildness", "Desire"], "name": "Storm Bond", "label": "Wrath of the Storm and Hunter's Hunger: all heroes deal +5% attack.", "effect": { "type": "atk", "value": 0.05 } },
+    { "virtues": ["Oblivion", "Defiance"], "name": "Iron Pact", "label": "Bulwark of Ages and Unbroken Hide: all heroes gain +5% max HP.", "effect": { "type": "hp", "value": 0.05 } },
+    { "virtues": ["Grace", "Fervor"], "name": "Divine Flow", "label": "Hearth's Grace and Rising Dawn: ultimates charge 10% faster.", "effect": { "type": "regen", "value": 0.10 } },
+    { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Keen Edge and Veil of Dusk: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
   ],
   "run": { "startingGold": 340, "sellRefund": 0.5, "lives": 25, "deployCap": 7, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
   "waveGen": { "minSpacing": 18, "endlessRamp": 0.08, "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },

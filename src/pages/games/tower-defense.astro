@@ -7,23 +7,26 @@ import tuning from "../../data/gameBalance.tuning.json";
 import maps from "../../data/tdMaps.json";
 import waves from "../../data/tdWaves.json";
 import bosses from "../../data/bosses.json";
+import { skinHeroes, skinTuning } from "../../game/td/skin.js";
 
 const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
 const isDev = import.meta.env.DEV;
 // In dev, proxy R2 images through Vite to avoid CORS blocks on PixiJS WebGL texture upload
-const heroesForGame = isDev
-  ? heroes.map((h: any) => ({ ...h, image: h.image.startsWith(R2_BASE) ? h.image.replace(R2_BASE, '/r2') : h.image }))
-  : heroes;
+const assetBase = isDev ? "/r2" : R2_BASE;
+// Hero skin (M24 white label): the game's own names, art, sounds and ultimate names.
+const heroesForGame = skinHeroes(heroes, assetBase);
+const tuningForGame = skinTuning(tuning);
 // Final boss per map (tdMaps.json "boss", default Baphomet), keyed by boss id.
 const bossIds = new Set(maps.map((map: any) => map.boss ?? "baphomet"));
 const bossesForGame = Object.fromEntries(bosses.bosses
   .filter((boss: any) => bossIds.has(boss.id))
-  .map((boss: any) => [boss.id, isDev && boss.image?.startsWith(R2_BASE) ? { ...boss, image: boss.image.replace(R2_BASE, '/r2') } : boss]));
+  // Only name and rules data: the game shows its own AI boss sprites, never database art.
+  .map(({ image: _image, faction: _faction, ...boss }: any) => [boss.id, boss]));
 ---
 
 <GameLayout
-  title="Tower Defense | Motto Immortal"
-  description="Command Motto Immortal heroes in a browser tower defense challenge: 10 waves, 20 waves or endless."
+  title="The Last Crossing | Tower Defense"
+  description="Hold the last crossing with gods and heroes of Greek and Norse myth: a free browser tower defense game with 10 waves, 20 waves or endless."
 >
   <Fragment slot="head">
     <script type="importmap" is:inline>{
@@ -33,5 +36,5 @@ const bossesForGame = Object.fromEntries(bosses.bosses
       }
     }</script>
   </Fragment>
-  <TowerDefensePage assetBase={isDev ? "/r2" : R2_BASE} heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} bosses={bossesForGame} />
+  <TowerDefensePage assetBase={assetBase} heroes={heroesForGame} tuning={tuningForGame} maps={maps} waves={waves} bosses={bossesForGame} />
 </GameLayout>

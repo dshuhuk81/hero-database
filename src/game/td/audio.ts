@@ -1,42 +1,19 @@
 // Minimal WebAudio player for the tower defense minigame, plus background music.
-// Kenney impact/interface sounds from td/sfx on R2 (CC0). Volume and mute persist
-// in localStorage; hit sounds are capped so a full wave stays pleasant.
+// Combat and interface sounds from td/sfx on R2 (Tactical Interface SFX, commercial license;
+// public/td/sfx/CREDITS-mythic.txt). Volume and mute persist in localStorage; hit sounds are
+// capped so a full wave stays pleasant.
 import { tdAsset } from "./assets.js";
 import levels from "../../data/tdAudioLevels.json";
 
 const SOUNDS = {
-  hit: ["impactGeneric_light_000", "impactGeneric_light_001"],
-  heavy: ["impactMetal_heavy_000"],
-  blocked: ["impactMetal_light_000"],
-  select: ["click_001"],
-  place: ["confirmation_001"],
-  upgrade: ["maximize_001"],
-  clear: ["bong_001"],
-  error: ["error_001"],
-};
-
-const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: string }> = {
-  zeus: { voice: "zeus_voice", attack: "zeus_attack", ultimate: "zeus_ultimate" },
-  caishen: { voice: "caishen_voice", attack: "caishen_attack", ultimate: "caishen_ultimate" },
-  demeter: { voice: "demeter_voice", attack: "demeter_attack", ultimate: "demeter_ultimate" },
-  poseidon: { voice: "poseidon_voice", attack: "poseidon_attack", ultimate: "poseidon_ultimate" },
-  diana: { voice: "diana_voice", attack: "diana_attack", ultimate: "diana_ultimate" },
-  anubis: { voice: "anubis_voice", attack: "anubis_attack", ultimate: "anubis_ultimate" },
-  fengyi: { voice: "fengyi_voice", attack: "fengyi_attack", ultimate: "fengyi_ultimate" },
-  amunra: { voice: "amunra_voice", attack: "amunra_attack", ultimate: "amunra_ultimate" },
-  artemis: { voice: "artemis_voice", attack: "artemis_attack", ultimate: "artemis_ultimate" },
-  bastet: { voice: "bastet_voice", attack: "bastet_attack", ultimate: "bastet_ultimate" },
-  freya: { voice: "freya_voice", attack: "freya_attack", ultimate: "freya_ultimate" },
-  horus: { voice: "horus_voice", attack: "horus_attack", ultimate: "horus_ultimate" },
-  jormungandr: { voice: "jormungandr_voice", attack: "jormungandr_attack", ultimate: "jormungandr_ultimate" },
-  medusa: { voice: "medusa_voice", attack: "medusa_attack", ultimate: "medusa_ultimate" },
-  momus: { voice: "momus_voice", attack: "momus_attack", ultimate: "momus_ultimate" },
-  nuwa: { voice: "nuwa_voice", attack: "nuwa_attack", ultimate: "nuwa_ultimate" },
-  nyx: { voice: "nyx_voice", attack: "nyx_attack", ultimate: "nyx_ultimate" },
-  phoenix: { voice: "phoenix_voice", attack: "phoenix_attack", ultimate: "phoenix_ultimate" },
-  prometheus: { voice: "prometheus_voice", attack: "prometheus_attack", ultimate: "prometheus_ultimate" },
-  set: { voice: "set_voice", attack: "set_attack", ultimate: "set_ultimate" },
-  yuelao: { voice: "yuelao_voice", attack: "yuelao_attack", ultimate: "yuelao_ultimate" },
+  hit: ["ui-hit-a-v1", "ui-hit-b-v1"],
+  heavy: ["ui-heavy-v1"],
+  blocked: ["ui-blocked-v1"],
+  select: ["ui-select-v1"],
+  place: ["ui-place-v1"],
+  upgrade: ["ui-upgrade-v1"],
+  clear: ["ui-clear-v1"],
+  error: ["ui-error-v1"],
 };
 
 const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
@@ -48,7 +25,8 @@ const HERO_ATTACK_CAP = { count: 4, windowMs: 1000 };
 // Per-file gain in dB (scripts/td-audio-levels.mjs) evens out loudness per category.
 const LEVELS = levels as Record<string, number>;
 
-export function createAudio() {
+// heroSounds: per-hero sound keys from the hero skin (skin.js).
+export function createAudio(heroSounds: Record<string, { voice?: string; attack?: string; ultimate?: string }> = {}) {
   let context: AudioContext | null = null;
   const buffers = new Map();
   const lastPlayedAt = new Map();
@@ -108,12 +86,12 @@ export function createAudio() {
 
   async function play(kind: keyof typeof SOUNDS | string, heroId?: string) {
     if (muted || !allowed(kind)) return;
-    if (kind === "attack" && heroId && HERO_SOUNDS[heroId] && !heroAttackAllowed(heroId)) return;
+    if (kind === "attack" && heroId && heroSounds[heroId] && !heroAttackAllowed(heroId)) return;
     let name: string | undefined;
 
     if (heroId && kind in { voice: 1, attack: 1, ultimate: 1 }) {
-      const heroSounds = HERO_SOUNDS[heroId];
-      if (heroSounds) name = heroSounds[kind as keyof typeof heroSounds];
+      const sounds = heroSounds[heroId];
+      if (sounds) name = sounds[kind as keyof typeof sounds];
     }
 
     if (!name) {

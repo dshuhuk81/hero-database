@@ -116,7 +116,7 @@ export const REACTION_INFO = {
   steam: { name: "Steam", needs: "Wet + Burn", text: "Wet and Burn cancel out in a burst of 4x the burn's damage, half of that to enemies nearby." },
   blight: { name: "Blight", needs: "Poison + Burn", text: "Burning a poisoned enemy spreads its poison, twice as strong, to enemies around it." },
   freeze: { name: "Freeze", needs: "Wet + Chill", text: "A Wet enemy that gets chilled freezes solid for 2s (once every 3s)." },
-  harvest: { name: "Soul Harvest", needs: "Poison + Anubis", text: "Every poisoned enemy that dies charges Anubis's ultimate by 1.5s." },
+  harvest: { name: "Soul Harvest", needs: "Poison + soul-draining ultimate", text: "Every poisoned enemy that dies charges the soul-draining Assassin's ultimate by 1.5s." },
 };
 
 // Class paths chosen with the level 4 upgrade (M12); numbers in tuning.paths.
@@ -140,7 +140,7 @@ export const PATH_INFO = {
   Mage: {
     wildfire: { name: "Wildfire", text: "Hits set enemies on fire: 40% of the hit again over 3s." },
     frost: { name: "Frost", text: "Hits slow enemies to 60% speed for 1.5s." },
-    arc: { name: "Arc", text: "Attacks chain to 2 more enemies (60% and 35%); Zeus gets 2 extra bounces." },
+    arc: { name: "Arc", text: "Attacks chain to 2 more enemies (60% and 35%); a Mage whose attacks already chain gets 2 extra bounces." },
   },
   Archer: {
     piercing: { name: "Piercing", text: "Each shot also hits up to 2 enemies right behind the target for 60%." },

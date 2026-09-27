@@ -1,7 +1,7 @@
 // Daily Trial (M19) on the page: the Daily Trial screen with today's setup and best, its
 // card on the main menu, starting the trial run, and recording a finished trial for the
 // result screen. Setup, seed and the save record live in ../daily.js.
-import { classIconImg } from "../assets.js";
+import { bossSprite, classIconImg } from "../assets.js";
 import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { MUTATOR_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -48,6 +48,12 @@ export function createDaily(ctx: PageContext) {
   const heroesEl = q("[data-td-daily-heroes]");
   const mutatorsEl = q("[data-td-daily-mutators]");
   const bestEl = q("[data-td-daily-best]");
+  const bossEl = q("[data-td-daily-boss]");
+  const bossArtEl = q<HTMLImageElement>("[data-td-daily-boss-art]");
+  const rewardEl = q("[data-td-daily-reward]");
+  const rewardAmountEl = q("[data-td-daily-reward-amount]");
+  const rewardStateEl = q("[data-td-daily-reward-state]");
+  const squadCountEl = q("[data-td-daily-squad-count]");
   const summaryMapEl = q("[data-td-daily-summary-map]");
   const summaryEl = q("[data-td-daily-summary]");
   let today: DailySetup | null = null;
@@ -62,16 +68,30 @@ export function createDaily(ctx: PageContext) {
   function render() {
     const current = setup();
     const map = data.maps.find((entry: any) => entry.id === current.mapId);
-    dateEl.textContent = current.date;
-    mapEl.textContent = `${map?.name ?? current.mapId} - Boss: ${ctx.bossFor(map).name}`;
-    goalEl.textContent = `Goal: ${dailyGoalText(current)}. First clear today: +${DAILY.rewardFavor} Favor. Endless, Normal, no Divine Blessings or shard boosts.`;
-    heroesEl.innerHTML = current.heroIds.map((id) => {
-      const hero = heroById.get(id);
-      return `<li class="td-daily-hero"><img src="${hero.image}" alt="" width="36" height="36" loading="lazy"><span><strong>${classIconImg(hero.class, 14)}${hero.name}</strong><small>${hero.slot === "road" ? "Road" : "Platform"} - ${hero.cost} gold</small></span></li>`;
-    }).join("");
-    mutatorsEl.innerHTML = current.mutators.map((id) => `<li class="td-daily-mutator"><span><strong>${mutatorInfo[id]?.name ?? id}</strong><small>${mutatorInfo[id]?.text ?? ""}</small></span></li>`).join("");
-    bestEl.textContent = dailyBestText(store.data, current.date);
+    const boss = ctx.bossFor(map);
     const record = dailyRecord(store.data.daily, current.date);
+    dateEl.textContent = current.date;
+    mapEl.textContent = map?.name ?? current.mapId;
+    bossEl.textContent = boss.name;
+    const bossArt = bossSprite(boss.id);
+    if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
+    goalEl.innerHTML = `Survive the assault and clear <strong>wave ${current.goal}</strong>.`;
+    rewardAmountEl.textContent = `+${DAILY.rewardFavor}`;
+    rewardEl.classList.toggle("is-claimed", !!record?.goalReached);
+    rewardStateEl.textContent = record?.goalReached ? "Claimed today" : "Reward available";
+    squadCountEl.textContent = `${current.heroIds.length} heroes locked in`;
+    heroesEl.innerHTML = current.heroIds.map((id, index) => {
+      const hero = heroById.get(id);
+      const heroClass = String(hero.class || "").toLowerCase();
+      return `<li class="td-trial-card td-trial-card--${heroClass}" style="--i:${index}">` +
+        `<div class="td-trial-card-art"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +
+        `<span class="td-trial-card-class" title="${hero.class}">${classIconImg(hero.class, 20)}</span>` +
+        `<span class="td-trial-card-cost">${hero.cost}g</span>` +
+        `<div class="td-trial-card-plate"><strong>${hero.name}</strong>${hero.title ? `<small>${hero.title}</small>` : ""}` +
+        `<span class="td-trial-card-meta"><span>${hero.class}</span><span>${hero.slot === "road" ? "Road" : "Platform"}</span></span></div></li>`;
+    }).join("");
+    mutatorsEl.innerHTML = current.mutators.map((id) => `<li title="${mutatorInfo[id]?.text ?? ""}"><strong>${mutatorInfo[id]?.name ?? id}</strong>${mutatorInfo[id]?.text ?? ""}</li>`).join("");
+    bestEl.textContent = dailyBestText(store.data, current.date);
     summaryMapEl.textContent = map?.name ?? current.mapId;
     summaryEl.textContent = `${dailyGoalText(current)}. ${record ? `Today's best: ${record.bestScore.toLocaleString()}${record.goalReached ? ", goal reached" : ""}.` : `+${DAILY.rewardFavor} Favor for the first clear.`}`;
   }
