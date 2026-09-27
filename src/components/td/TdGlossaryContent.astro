@@ -23,7 +23,7 @@ import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
 import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
-import { ENEMY_ART } from "../../game/td/assets.js";
+import { ENEMY_ART, bossSpriteFile, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
 interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
@@ -45,7 +45,7 @@ const K = 260; // armor constant in sim.js mitigation()
 const reduction = (value: number) => Math.round((value / (value + K)) * 100);
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 const classIcon = (name: string) => `${assetBase}/td/icons/classes/${name.toLowerCase()}-v1.webp`;
-const enemySprite = (file: string, version = "v1") => `${assetBase}/td/enemies/sprites/${file}-${version}.webp`;
+const enemySprite = (file: string, version = enemySpriteVersion(file)) => `${assetBase}/td/enemies/sprites/${file}-${version}.webp`;
 const tagLabel = (tag: string) => tag.toLowerCase().replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
 const CLASS_ORDER = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
@@ -140,13 +140,13 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
   const cards = [enemyCard("boss", {
     name: boss?.name ?? id,
     stats: bossTuning?.stats,
-    image: enemySprite(id === "baphomet" ? "boss" : `boss-${id}`, id === "lilith" ? "v2" : "v1"),
+    image: enemySprite(bossSpriteFile(id)),
     meta: `Final boss on ${bossMaps(id).join(" and ")}`,
     text: (summon
       ? `${ENEMY_INFO.boss.text} Summons ${summon.count} children around herself and cannot be hit while any of them stand.`
       : ENEMY_INFO.boss.text) + (BOSS_RULES[id] ? ` ${BOSS_RULES[id]}` : ""),
   })];
-  if (summon) cards.push(enemyCard(summon.kind, { image: enemySprite(summon.kind, "v2"), meta: `Summoned by ${boss?.name ?? id}` }));
+  if (summon) cards.push(enemyCard(summon.kind, { image: enemySprite(summon.kind), meta: `Summoned by ${boss?.name ?? id}` }));
   return cards;
 });
 ---

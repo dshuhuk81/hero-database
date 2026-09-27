@@ -10,6 +10,7 @@ import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
+import { roman, routeHtml } from "./route";
 
 export type CampaignRun = { stageId: string; squad: string[] };
 
@@ -41,6 +42,9 @@ export function createCampaign(ctx: PageContext) {
   const progressEl = q("[data-td-camp-progress]");
   const summaryTitleEl = q("[data-td-camp-summary-title]");
   const summaryEl = q("[data-td-camp-summary]");
+  const summaryChapterEl = q("[data-td-camp-summary-chapter]");
+  const summaryRouteEl = q("[data-td-camp-summary-route]");
+  const summaryCtaEl = q("[data-td-camp-summary-cta]");
   const squadTitleEl = q("[data-td-squad-stage]");
   const squadCopyEl = q("[data-td-squad-copy]");
   const squadCountEl = q("[data-td-squad-count]");
@@ -74,9 +78,12 @@ export function createCampaign(ctx: PageContext) {
     const stages = allStages(campaign);
     const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     const next = nextStage(campaign, p);
-    summaryTitleEl.textContent = next ? `Stage ${next.id}: ${next.name}` : "Chapter complete";
-    summaryEl.textContent = `${cleared} of ${stages.length} stages cleared, ${p.owned.length} heroes.`;
     const chapter = campaign.chapters[0];
+    summaryTitleEl.textContent = next ? `Stage ${next.id}: ${next.name}` : "Chapter complete";
+    summaryEl.textContent = `${cleared} / ${stages.length} stages cleared \u00b7 ${p.owned.length} heroes`;
+    summaryChapterEl.textContent = `Chapter ${roman(Number(chapter.id) || 1)} \u00b7 ${chapter.name}`;
+    summaryRouteEl.innerHTML = routeHtml(stages.map((stage: any) => ({ label: stage.id, state: isCleared(p, stage.id) ? "done" : stage.id === next?.id ? "current" : "ahead" })));
+    summaryCtaEl.textContent = !cleared ? "Begin" : next ? "Continue" : "Replay";
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     walletEls.forEach((el) => { el.textContent = wallet(); });

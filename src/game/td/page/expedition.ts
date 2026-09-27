@@ -5,6 +5,7 @@ import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expeditio
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 import type { ExpeditionState, SaveData } from "./save";
+import { roman, routeHtml } from "./route";
 
 const relicInfo = RUN_BOON_INFO as Record<string, { name: string; text: string }>;
 
@@ -47,6 +48,8 @@ export function createExpedition(ctx: PageContext) {
   const bestEl = q("[data-td-exp-best]");
   const summaryTitleEl = q("[data-td-exp-summary-title]");
   const summaryEl = q("[data-td-exp-summary]");
+  const summaryRouteEl = q("[data-td-exp-summary-route]");
+  const summaryCtaEl = q("[data-td-exp-summary-cta]");
   let abandonArmed = false;
 
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -83,13 +86,22 @@ export function createExpedition(ctx: PageContext) {
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
-      summaryTitleEl.textContent = "Start";
-      summaryEl.textContent = `Three battlefields, one squad. +${EXPEDITION.completeFavor} Favor.`;
+      summaryTitleEl.textContent = "Not started";
+      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> <b>+${EXPEDITION.completeFavor} Favor</b>`;
+      summaryRouteEl.innerHTML = routeHtml(data.maps.map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
+      summaryCtaEl.textContent = "Start";
       return;
     }
     const map = mapOf(state.stages[state.stage]);
     summaryTitleEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
-    summaryEl.textContent = `${state.lives} lives left.${state.camp ? " Camp reward waiting." : ` Next: ${map?.name ?? state.stages[state.stage]}.`}`;
+    summaryEl.innerHTML = `<span class="td-exp-lives"><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg><b>${state.lives}</b> lives remaining</span>` +
+      (state.camp ? `<span class="td-exp-camp">Camp reward waiting</span>` : "");
+    summaryRouteEl.innerHTML = routeHtml(state.stages.map((id, i) => ({
+      label: roman(i + 1),
+      state: i < state.stage ? "done" : i === state.stage ? "current" : "ahead",
+      note: mapOf(id)?.name ?? id,
+    })));
+    summaryCtaEl.textContent = state.camp ? "Make camp" : "Continue";
     stageEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
     titleEl.textContent = `${map?.name ?? state.stages[state.stage]} - Boss: ${ctx.bossFor(map).name}`;
     copyEl.textContent = `${state.lives} lives left. Enemies at ${Math.round(EXPEDITION.stageHp[Math.min(state.stage, EXPEDITION.stageHp.length - 1)] * 100)}% of Normal health.${state.camp ? " Take one camp reward to continue." : ""}`;

@@ -6,6 +6,8 @@ import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, tdAsset } from "./ass
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
+import { createFxKit } from "./fx-kit.js";
+import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 
@@ -119,11 +121,14 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   // Sprite cache: hero thumbnails + boss + FX textures
   // ------------------------------------------------------------------
-  const zeusFx = createZeusFx(PIXI, layerParts, { reducedMotion });
   const sprites     = new Map(); // id -> PIXI.Texture (UI/selection portraits from CDN)
   const boardSprites = new Map(); // id -> PIXI.Texture (on-board overrides, e.g. pixel sprites)
   const fxTex    = new Map(); // name -> PIXI.Texture
-  const heroFx = createHeroFx(PIXI, layerParts, fxTex, { reducedMotion });
+  // M24c: one pooled particle/shape kit shared by hero, lightning and status effects.
+  const fxKit = createFxKit(PIXI, layerParts, { reducedMotion });
+  const zeusFx = createZeusFx(PIXI, layerParts, fxKit, { reducedMotion });
+  const heroFx = createHeroFx(fxKit, { reducedMotion });
+  const statusFx = createStatusFx(fxKit, { reducedMotion });
 
   // On-board tokens: transparent head-and-shoulders cutouts from the hero skin (skin.js).
   // A hero without a token keeps the circle portrait.
@@ -827,6 +832,20 @@ export async function createRenderer(canvas, game, options = {}) {
     c._stoneOverlay = stone;
     c.addChild(stone);
 
+    // Ice shell while Freeze holds the enemy (M24c): faceted pale crystal.
+    const ice = new PIXI.Graphics();
+    const iceR = flashR * 1.15;
+    const facets = [];
+    for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + i * Math.PI / 3; facets.push(Math.cos(a) * iceR, Math.sin(a) * iceR * 1.1); }
+    ice.poly(facets).fill({ color: 0xbfeaff, alpha: 0.45 }).stroke({ color: 0xeafaff, width: 2, alpha: 0.9 });
+    ice.moveTo(-iceR * 0.5, -iceR * 0.2).lineTo(0, -iceR * 0.75).moveTo(iceR * 0.15, iceR * 0.5).lineTo(iceR * 0.55, iceR * 0.05)
+      .stroke({ color: 0xffffff, width: 1.5, alpha: 0.8 });
+    // Full-body sprites stand on their feet: lift the shell to the body's middle.
+    if (fullTex) ice.y = FULL_SPRITE_FEET - fullSpriteSize(kind) * 0.4 - (unit.flying ? FLYER_LIFT : 0);
+    ice.visible = false;
+    c._iceOverlay = ice;
+    c.addChild(ice);
+
     return c;
   }
 
@@ -918,10 +937,13 @@ export async function createRenderer(canvas, game, options = {}) {
   function updateEnemyOverlays(unit, c) {
     const petrified = (unit.petrifiedUntil ?? 0) > game.time;
     c._stoneOverlay.visible = petrified;
-    const stunned = !petrified && (unit.stunnedUntil ?? 0) > game.time;
+    const frozen = !petrified && (unit.frozenUntil ?? 0) > game.time;
+    c._iceOverlay.visible = frozen;
+    const stunned = !petrified && !frozen && (unit.stunnedUntil ?? 0) > game.time;
+    const chilled = unit.chill > 0;
     const own = ENEMY_ART[unit.kind]?.tint ?? 0xffffff;
     for (const sprite of [c._fullSprite, c._portraitSprite, c._bossSprite, c._enemySprite]) {
-      if (sprite) sprite.tint = petrified ? 0x9ba39f : stunned ? 0xb9a8ff : own;
+      if (sprite) sprite.tint = petrified ? 0x9ba39f : frozen ? 0xa8e4ff : stunned ? 0xb9a8ff : chilled ? 0xd2f0ff : own;
     }
 
     // Hit-flash: white overlay for 2 frames
@@ -996,6 +1018,24 @@ export async function createRenderer(canvas, game, options = {}) {
   const particles = [];
   const seenEffects = new WeakSet();
   let particleClock = null;
+  let fxClock = 0;
+
+  // Status visuals (M24c): where an enemy's body is, and which statuses it shows.
+  function enemyBody(unit) {
+    const full = fullBodyTextures.has(unit.kind);
+    const size = full ? fullSpriteSize(unit.kind) : unit.kind === "boss" ? 52 : unit.kind === "brute" ? 40 : 28;
+    const feet = unit.y + (full ? FULL_SPRITE_FEET : size * 0.45) - (unit.flying ? FLYER_LIFT : 0);
+    return { x: unit.x, y: feet, top: feet - size * 0.8, width: size * 0.6 };
+  }
+  function enemyStatuses(unit) {
+    const list = [];
+    if (game.isPoisoned?.(unit)) list.push("poison");
+    if (game.isBurning?.(unit)) list.push("burn");
+    if ((unit.frozenUntil ?? 0) > game.time) list.push("frozen");
+    else if (unit.chill > 0) list.push("chill");
+    if (game.isWet?.(unit)) list.push("wet");
+    return list;
+  }
 
   function spawnParticle(texName, x, y, { size = 28, life = 0.3, vx = 0, vy = 0, rot = 0, vr = 0, tint = "gold" } = {}) {
     const tex = fxTex.get(texName);
@@ -1014,9 +1054,38 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
+  // Travelling shot for effects without a hero profile, mostly enemy archers and Hexers
+  // hitting road heroes: a small dark arrow with a streak, never an instant line.
+  function launchBolt(effect) {
+    const { x1, y1, x2, y2 } = effect;
+    const life = Math.min(0.25, Math.max(0.06, Math.hypot(x2 - x1, y2 - y1) / 800));
+    const enemyShot = effect.color === "red";
+    fxKit.spawn(enemyShot ? "arrow" : "glow", x1, y1 - 10, { tint: enemyShot ? 0xffb4a8 : TINTS[effect.color] ?? TINTS.gold, size: enemyShot ? 18 : 10, life, add: !enemyShot, hold: 0.9,
+      path: { x1, y1: y1 - 10, x2, y2: y2 - 6, arc: 8 }, data: { acc: 0 },
+      onStep: (p, dt) => {
+        p.data.acc += dt;
+        if (p.data.acc < 0.02) return;
+        p.data.acc = 0;
+        fxKit.spawn("streak", p.x - Math.cos(p.rot) * 8, p.y - Math.sin(p.rot) * 8, { tint: enemyShot ? 0xff6b6b : TINTS.gold, size: 18, sizeEnd: 10, life: 0.12, rot: p.rot, alpha: 0.6, hold: 0, optional: true });
+      },
+      onEnd: (p) => fxKit.spawn("glow", p.x, p.y, { tint: enemyShot ? 0xff6b6b : TINTS.white, size: 18, sizeEnd: 28, life: 0.16, hold: 0.1, optional: true }) });
+  }
+
+  // Hex: a curse orb spirals from the caster to the hero, then twists around it.
+  function launchCurse(effect) {
+    const tint = effect.color === "red" ? TINTS.red : TINTS.purple;
+    const path = { x1: effect.x1, y1: effect.y1 - 12, x2: effect.x2, y2: effect.y2 - 8, arc: 20, helix: 10, helixFreq: 2 };
+    fxKit.spawn("glow", effect.x1, effect.y1, { tint, size: 16, life: 0.3, hold: 0.9, path,
+      onEnd: () => spawnParticle("twirl_01", effect.x2, effect.y2, { size: 64, life: 0.6, vr: 5, tint: effect.color === "red" ? "red" : "purple" }) });
+    for (let i = 0; i < 2; i++) fxKit.spawn("dot", effect.x1, effect.y1, { tint: 0xffffff, size: 6, life: 0.3, path: { ...path, phase: Math.PI * (i + 0.5) } });
+  }
+
   function spawnParticles(effect) {
     if (hasHeroFx(effect)) return;
     if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) return;
+    // Travelling replacements for the old tracer lines; the kit tones them down for reduced motion.
+    if (effect.type === "shot") return launchBolt(effect);
+    if (effect.type === "hex") return launchCurse(effect);
     if (reducedMotion) return;
     const rand = (s) => (Math.random() - 0.5) * s;
     const baseTint = effect.color === "purple" ? "purple" : effect.color === "red" ? "red" : "gold";
@@ -1030,25 +1099,24 @@ export async function createRenderer(canvas, game, options = {}) {
         spawnParticle("spark_04", effect.x, effect.y, { size: 16, life: 0.45, vx: Math.cos(angle) * 170, vy: Math.sin(angle) * 170, tint: baseTint });
       }
     }
-    if (effect.type === "shot") {
-      spawnParticle("trace_01", (effect.x1 + effect.x2) / 2, (effect.y1 + effect.y2) / 2, { size: 26, life: 0.2, tint: baseTint });
-    } else if (effect.type === "splash") {
+    if (effect.type === "splash") {
       spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: effect.color === "green" ? "green" : "purple" });
     } else if (effect.type === "reaction") {
       const tint = { steam: "white", freeze: "white", blight: "green", conduct: "purple", harvest: "purple" }[effect.reaction] ?? "white";
       spawnParticle(effect.reaction === "freeze" ? "star_03" : "twirl_01", effect.x, effect.y, { size: Math.max(40, effect.radius * 1.6), life: 0.6, vr: 4, tint });
       if (effect.reaction === "steam") for (let i = 0; i < 4; i++) spawnParticle("light_01", effect.x + rand(30), effect.y, { size: 34, life: 0.8, vy: -50, tint: "white" });
-    } else if (effect.type === "hex") {
-      spawnParticle("twirl_01", effect.x2, effect.y2, { size: 64, life: 0.6, vr: 5, tint: "purple" });
-      for (let i = 1; i <= 3; i++) spawnParticle("trace_01", effect.x1 + (effect.x2 - effect.x1) * i / 4, effect.y1 + (effect.y2 - effect.y1) * i / 4, { size: 18, life: 0.3, tint: "purple" });
     } else if (effect.type === "shieldBreak") {
       for (let i = 0; i < 5; i++) spawnParticle("spark_04", effect.x, effect.y, { size: 16, life: 0.4, vx: rand(180), vy: rand(180), tint: "white" });
     } else if (effect.type === "cleave") {
       spawnParticle("slash_04", effect.x, effect.y, { size: effect.radius * 1.6, life: 0.3, rot: Math.random() * Math.PI * 2, tint: "gold" });
     } else if (effect.type === "dash") {
-      for (let i = 1; i <= 3; i++) spawnParticle("trace_01", effect.x1 + (effect.x2 - effect.x1) * i / 4, effect.y1 + (effect.y2 - effect.y1) * i / 4, { size: 22, life: 0.25, tint: "purple" });
+      for (let i = 1; i <= 4; i++) {
+        const point = fxKit.pathPoint({ x1: effect.x1, y1: effect.y1, x2: effect.x2, y2: effect.y2, bend: 20 }, i / 5, { x: 0, y: 0, angle: 0 });
+        fxKit.spawn("glow", point.x, point.y, { tint: TINTS.purple, size: 24 - i * 2, sizeEnd: 8, life: 0.3, delay: i * 0.03, alpha: 0.6 });
+      }
     } else if (effect.type === "beam") {
-      spawnParticle("light_01", effect.x2, effect.y2, { size: 30, life: 0.45, vy: -30, tint: "green" });
+      for (let i = 0; i < 4; i++) fxKit.spawn("glow", effect.x1, effect.y1, { tint: TINTS.green, size: 9, life: 0.28, delay: i * 0.05,
+        path: { x1: effect.x1, y1: effect.y1, x2: effect.x2, y2: effect.y2, arc: 16, bend: 20 } });
     } else if (effect.type === "hold") {
       spawnParticle("twirl_01", effect.x, effect.y, { size: effect.radius * 1.4, life: 0.8, vr: 3, tint: "gold" });
     } else if (effect.type === "veil") {
@@ -1137,8 +1205,15 @@ export async function createRenderer(canvas, game, options = {}) {
     }
 
     advanceParticles(dt);
+    // Kit effects run on game time: frozen while paused, faster at higher game speed,
+    // wall time between waves so tails finish. A restarted run clears them.
+    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); heroFx.reset(); }
+    const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
+    fxClock = game.time;
+    heroFx.update(game);
     zeusFx.update(game.effects);
-    heroFx.update(game, dt);
+    statusFx.update(game.enemies, fxDt, enemyBody, enemyStatuses);
+    fxKit.update(fxDt);
 
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
@@ -1147,20 +1222,13 @@ export async function createRenderer(canvas, game, options = {}) {
       if (effect.type === "veil") continue; // the hero token turns translucent instead (particles mark the start)
       if (hasHeroFx(effect)) continue;
       if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
+      // M24c: shots, hexes, dashes and heal beams travel as kit particles (spawnParticles), no tracer lines.
+      if (effect.type === "shot" || effect.type === "hex" || effect.type === "dash" || effect.type === "beam") continue;
       const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : effect.color === "green" ? TINTS.green : effect.color === "white" ? TINTS.white : palette.gold;
       const g = new PIXI.Graphics();
       g.setStrokeStyle({ width: 2, color, alpha: reducedMotion ? 0.5 : Math.min(1, effect.life * 6) });
       const fade = reducedMotion ? 0.5 : Math.min(1, effect.life * 4);
-      if (effect.type === "shot") {
-        g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke();
-      } else if (effect.type === "hex") {
-        g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke({ width: 3, color, alpha: fade * 0.8, cap: "round" });
-      } else if (effect.type === "dash" || effect.type === "beam") {
-        // Class kits (M6): Assassin dash trail, Support heal beam.
-        const beam = effect.type === "beam";
-        g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2)
-          .stroke({ width: beam ? 3 : 5, color: beam ? TINTS.green : color, alpha: fade * (beam ? 0.8 : 0.6), cap: "round" });
-      } else if (effect.type === "splash" || effect.type === "cleave" || effect.type === "hold") {
+      if (effect.type === "splash" || effect.type === "cleave" || effect.type === "hold") {
         // Mage splash area, Warrior cleave arc, Tank hold zone: drawn at their real radius.
         const r = effect.radius;
         if (effect.type === "cleave") {
@@ -1239,7 +1307,7 @@ export async function createRenderer(canvas, game, options = {}) {
     app.destroy({ removeView: true }, { children: true });
   }
 
-  return { draw, resize, destroy, sprites, particles };
+  return { draw, resize, destroy, sprites, particles, fxCount: () => fxKit.count() };
 }
 
 // ------------------------------------------------------------------

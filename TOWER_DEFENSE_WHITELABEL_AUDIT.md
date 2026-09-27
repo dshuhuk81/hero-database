@@ -14,7 +14,9 @@ The game now always uses the mythic roster; the database look is gone from the T
 - **Music**: CC0 tracks (`public/td/music/CREDITS.txt`). **Blessings**: renamed, no hero names.
 - **Branding**: page title "The Last Crossing | Tower Defense", new descriptions; About and Glossary disclaimers now say the game is not affiliated with GOAT Games or Motto Immortal.
 
-Still open: enemy sprite review (9: the mushroom grunt reads close to the game's), leftover fallback files (8).
+- **Enemy sprites** (M24 leftovers): all five enemy kinds read as the game's monsters (same creature and palette) and were regenerated from text-only prompts (grunt draugr, runner underworld hound, flyer Stymphalian bird, archer satyr, brute armored troll: `{kind}-v2.webp`). Lilith `boss-lilith-v2` was the game's own boss art with the background removed and her brood `brood-v2` a repaint of the game's 3D model: both replaced (`-v3`, night demoness with owl wings and serpent, lilin night spirits). Kept: Baphomet `boss-v1`, `brood-v1` (broodcaller), `boss-lilith-v1` (hexer), which do not follow the game's designs. Versions live in `ENEMY_SPRITE_VERSIONS` (`assets.js`); the Glossary reads them too. Prompts: `src/game/td/sprite-spec-for-ai.md`.
+
+Still open: deleting the unused local leftovers and the replaced sprite files (item 8, needs the owner), the promo image (item 8), and old R2 keys (item 8 list).
 
 Companion documents: [TOWER_DEFENSE_WHITELABEL_PLAN.md](TOWER_DEFENSE_WHITELABEL_PLAN.md) (asset isolation rules, hero art briefs) and [TOWER_DEFENSE_MYTHIC_HEROES.md](TOWER_DEFENSE_MYTHIC_HEROES.md) (replacement names and text for all 21 heroes). Nothing has been switched yet; this is the inventory and the switch plan.
 
@@ -27,7 +29,7 @@ Companion documents: [TOWER_DEFENSE_WHITELABEL_PLAN.md](TOWER_DEFENSE_WHITELABEL
 | Background music | Yes (Map 3 confirmed as the game's `bgm_battle_desert`; Maps 1 and 2 very likely the same source) | No |
 | Boss HUD portraits and faction label | Yes (`bosses/*.webp`, faction "Spades") | Board sprites are already AI-made; HUD portrait: no |
 | Enemy portraits (legacy) | Yes, 5 APK head portraits still loaded | Not needed: AI sprites already replace them on the board |
-| Enemy AI sprites | Generated with the game portraits as reference | Review needed (see item 9) |
+| Enemy AI sprites | Generated with the game portraits as reference | Done: regenerated from text (item 9) |
 | Skill names | 2 of 21 are the game's own names; all 21 are Motto-hero themed | Yes (text pack ultimates) |
 | Blessing names (virtues) | 11 of 12 match the game's virtue names | No |
 | Class icons | Game hexagon icons from R2 `icons/classes/` | No |
@@ -68,13 +70,16 @@ Risk: **High** = copied game files (art, audio, animation rigs). **Medium** = th
 - Source: `public/td/enemies/{grunt,runner,flyer,archer,brute}.png`, head portraits from the APK (`UI_Headportraits`, e.g. `Mogu02`). Still loaded by `render.js` (`PORTRAIT_KINDS`) as the fallback behind the AI sprites.
 - Action: delete the loader and the files. No replacement needed; the fallback chain ends at the Kenney tiles and vector shapes.
 
-### 8. Other leftover files in `public/td` (High until checked)
-- `bg/worldmap.jpg` (game world map; `render.js` only loads it for maps without authored art, none exist), `zeusspritetest.png`, `sprite.png`, `spritePlatform.png`, `spriteRoad.png`, `bg/slot_*.png`, `bg/path_tile.png` (fallback slot and road art, origin not recorded), `promotional/motto-tower-defense-youtube-v1.*` (promo image, likely shows game heroes).
-- Action: delete what the authored maps do not use, check the origin of the rest. Known clean: `LICENSE-kenney.txt` assets, `fx/*.png` (Kenney), `fx/zeus/*` (CC0, OpenGameArt), `maps/*` (painted for this game).
+### 8. Other leftover files in `public/td` (checked September 27, 2026)
+- Unused, can be deleted from the repo (no reference in `src` or `scripts`; the renderer only loads `sprite.webp`, `spritePlatform.webp`, `spriteRoad.webp` from R2 for maps without authored art, and all three maps have authored art): `sprite.png` and `spritePlatform.png` (painted stone pads with a purple and a gold glow, generic AI style), `spriteRoad.png` (stone road texture), `bg/slot_platform.png`, `bg/slot_road.png` (flat procedural circles), `bg/path_tile.png` (dark flat tile). None looks like game art, origin still not recorded. Also the replaced enemy sprites `enemies/sprites/{grunt,runner,flyer,archer,brute}-v1.webp`, `boss-lilith-v2.webp`, `brood-v2.webp` (game-derived, nothing loads them). The deletion was not done by the agent (needs the owner's go).
+- `sprite_backgrounds.png`: a sheet of 9 painted fantasy landscapes (astrolabe terrace, pavilions over a gorge, lava fortress, jungle bridge, violet moon gate, desert with jackal statues, snowy bridge, sea god statue, cloud citadel), added in M24, not referenced. Origin unknown; the owner decides.
+- `kenney_enemies.png`: Kenney (CC0), still loaded by `render.js` as the enemy fallback. Keep.
+- `promotional/motto-tower-defense-youtube-v1.{png,jpg}`: YouTube thumbnail titled "MOTTO TOWER DEFENSE", generated with the game's Zeus and Lilith as identity references (`docs/tower-defense-thumbnail.md`): a white-haired Zeus in white and gold armor on the left, the game's black-and-red Lilith on the right. Not used by the game, but it is Motto branding and game-derived art and is served from the site: replace or delete it (and its doc) if the thumbnail should follow the white label.
+- R2 keys nothing loads any more (owner may delete by hand): `td/sprite.png`, `td/spritePlatform.png`, `td/spriteRoad.png` (the `.webp` versions are the fallback for maps without art; keep or delete together with that `render.js` code), `td/sprite_backgrounds.png`, `td/bg/slot_platform.png`, `td/bg/slot_road.png`, `td/bg/path_tile.png`, `td/bg/worldmap.jpg`, `td/bg/worldmap.webp`, `td/zeusspritetest.png`, `td/promotional/motto-tower-defense-youtube-v1.png` and `.jpg`, `td/enemies/{grunt,runner,flyer,archer,brute}.png`, `td/enemies/sprites/{grunt,runner,flyer,archer,brute}-v1.webp`, `td/enemies/sprites/boss-lilith-v2.webp`, `td/enemies/sprites/brood-v2.webp`.
 
-### 9. Enemy AI sprites (Medium)
-- Source: `td/enemies/sprites/*`, generated with gpt-image-1; `src/game/td/sprite-spec-for-ai.md` used the game portraits as references and colour palettes (e.g. the mushroom grunt follows `Mogu02`).
-- Action: look at each next to its game portrait. Where the design is recognisably the game monster, regenerate from a text-only prompt.
+### 9. Enemy AI sprites (done September 27, 2026)
+- Compared each sprite with its game portrait. Recognisably the game's design, replaced from text-only prompts: grunt (red-capped mushroom creature), runner (grey stones with a blue gem eye), flyer (rock sphere with a gold core and teal crystals), archer (purple crystal eye), brute (black and gold spider with amber eyes); Lilith v2 (the game's boss art with the background removed) and brood v2 (repaint of the game's model). Kept: Baphomet (generic horned demon), brood v1 and Lilith v1 (reused for broodcaller and hexer).
+- New: `td/enemies/sprites/{grunt,runner,flyer,archer,brute}-v2.webp`, `boss-lilith-v3.webp`, `brood-v3.webp`; prompts in `src/game/td/sprite-spec-for-ai.md`, which no longer tells anyone to use game portraits.
 
 ### 10. Hero names and text (Medium)
 - Source: `name` in `gameBalance.json` (Nuwa, Momus, Caishen, ...). The names are mythology, but the roster, pairing and portrayal are the game's.

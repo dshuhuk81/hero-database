@@ -147,12 +147,13 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     });
     q("[data-td-best]").textContent = store.data.bestScore.toLocaleString();
     q("[data-td-perfect]").hidden = !store.data.perfectDefense;
+    q("[data-td-free-map]").textContent = state.selectedMap.name;
     const boost = store.data.nextRunBoost;
     const boostEl = q("[data-td-next-boost]");
     boostEl.hidden = !boost;
     if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
     const favor = availableFavor(store.data);
-    q("[data-td-favor-count]").textContent = `(${favor})`;
+    q("[data-td-favor-count]").textContent = favor.toLocaleString();
     q("[data-td-favor-chip]").textContent = favor.toLocaleString();
     q("[data-td-favor-chip-button]").setAttribute("aria-label", `Divine Blessings, ${favor} Favor available`);
     q("[data-td-map-pick]").textContent = `${state.selectedMap.name} - Boss: ${ctx.bossFor(state.selectedMap).name}`;

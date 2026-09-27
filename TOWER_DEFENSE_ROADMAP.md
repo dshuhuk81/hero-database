@@ -1,6 +1,6 @@
 # Tower Defense Roadmap
 
-Last updated: September 26, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
+Last updated: September 27, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
 
 Map implementation must use the asset assignments in [map.md](map.md), including the prepared Sunscar Ruins art for Map 3.
 
@@ -20,20 +20,12 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - players should be introduced to basic mechanics, status effects
 upgrades and such.
 
-### M24: White label (only if game base is solid - not before)
-
-due to copyright issues we should make a plan to replace all content that is under copyright from MOTTO IMMORTAL and GOAT GAMES with new AI generated content. Images, text, skills or anything that is directly from the game. We should make an audit that if we need to replace that content, we should be ready.
-- plan: White label documentation: `TOWER_DEFENSE_WHITELABEL_PLAN.md`
-- audit (September 27, 2026): `TOWER_DEFENSE_WHITELABEL_AUDIT.md` - full inventory of game content in the TD game, readiness per area, a one-switch skin plan, work order and owner decisions.
-- progress (September 27, 2026): switched. The game always uses the mythic roster (art approved), generated hero sounds (v3), idle loops from the portraits (test), CC0 music, renamed blessings; database hero sounds, Spine loops, tokens and extraction scripts removed. Left: class icons, enemy sprite review, leftover fallback files. Status section in the audit.
-- new hero art is in `/Users/daschultheiss/hero-database/public/td/heroes-alt` xor `/Users/daschultheiss/hero-database/public/td/heroes-alt/review-set-v1`
-- new heroes (text, skills) defined in `TOWER_DEFENSE_MYTHIC_HEROES.md`
-
-### M24b - New sounds
-- i downloaded a bunch of sound effects that we can try and swap out here:
-`/Users/daschultheiss/hero-database/public/td/newFx``
-check what we can use its a mix of all kinds of sounds.
-- Done (September 27, 2026): hero sounds v4 from these packs (swords, stabs, spells, heals, coins), archers keep the generated sounds (no bow sounds in the packs); interface and combat sounds (hits, block, select, place, upgrade, wave clear, error) from the Tactical Interface pack. Mapping and licenses in `public/td/sfx/CREDITS-mythic.txt`. The original packs and the class icon sources were moved out of the site build to `~/hero-database-assets/td/` (`newFx`, `newArt`): their licenses forbid redistributing the standalone files.
+### M24 leftovers (white label)
+- Enemy sprites done (archive "M24 leftovers"). Open for the owner:
+  - Delete the unused local files (list in `TOWER_DEFENSE_WHITELABEL_AUDIT.md` item 8: `public/td/sprite.png`, `spritePlatform.png`, `spriteRoad.png`, `bg/*.png` and the replaced enemy sprites); the agent was not allowed to delete them.
+  - Decide on `public/td/sprite_backgrounds.png` (9 painted landscapes, origin unknown, unused).
+  - Promo thumbnail `public/td/promotional/motto-tower-defense-youtube-v1.*` says "MOTTO TOWER DEFENSE" and shows the game's Zeus and Lilith: replace or delete.
+  - Old R2 keys nothing loads: list in audit item 8.
 
 ### M24c - New Effects due to hero change
 - we should render new effects for our heroes after we swapped them.
@@ -41,6 +33,7 @@ check what we can use its a mix of all kinds of sounds.
 - if a hero uses lightning, the lightning should look good
 - if a hero uses poison, we should see poison bubbles happening
 - i dont want any "just straight line as damage" anymore in the game
+- Progress (Sep 27): done in a first pass. New pooled effect kit (`fx-kit.js`) plus status visuals (`status-fx.js`); every hero has a themed attack, impact and ultimate for its mythic identity (table in `TOWER_DEFENSE_HERO_SKILLS.md`); Odin's lightning forks and re-strikes with a rune circle ultimate; poison bubbles, burn flames, chill frost, wet drips and a frozen ice shell show on enemies; all tracer lines (hero shots, enemy shots, hexes, dashes, heal beams) replaced by travelling projectiles, arcs and curved flows. Open: Ymir shows Burn although he is a frost giant (tuning decision).
 
 ### M25: Leaderboard (large, needs design first - skip)
 
@@ -49,17 +42,26 @@ check what we can use its a mix of all kinds of sounds.
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M26: New Game Mode
+### M26: Campaign (next sprints)
 
-- New Game mode should be planned. All exiting levels could be moved to "Free Play".
-Game Start -> Chose between A) CAmpaign (New) and b) Free Play.
-Campaign will require a lot of new concept thinking.
-- a concept is written here. look for further information in:
-`TOWER_DEFENSE_NEXT_STEPS.md`
-- Sprints 0-3 done (September 27, 2026): Home has Campaign and Free Play; Campaign screen (Chapter 1, stages 1-1 First Watch on Moonlit, 1-2 The Green Road on Verdant, 1-3 Sunscar Stand on Sunscar, locked until the previous one is cleared); Squad screen (up to 4 owned heroes); stage data in `src/data/tdCampaign.json` (map, own waves, lives, enemy health, generic rewards list); rules in `src/game/td/campaign.js`, page in `src/game/td/page/campaign.ts`; progress in the save's own versioned `campaign` section (owned heroes, clears with best lives, last squad), exported with the save code. Owner decision: not all heroes at once, so a later summon has something to give: 6 starters (one per class, weaker tiers), each first clear unlocks one hero (1-1 Skadi, 1-2 Atlas, 1-3 Odin), 12 stay locked. No Divine Blessings and no Favor in campaign stages. Balance (bot, every 4-hero squad from the heroes owned by then): 1-1 all squads win, 1-2 16/35, 1-3 31/70; `scripts/test-td-campaign.mjs` fails if a stage drops below 20%. Tanks do worst in 4-hero squads (Gaia 30% on 1-3). Next per the concept: rewards/currencies, hero levels, the 10-stage Chapter 1, then summoning.
-- Sprints 4-6 done (September 27, 2026): generic rewards (`{ type: "currency" | "hero", ... }`) with two currencies, Gold and Hero XP (Divine Seals wait for summoning); first clear pays the stage's rewards (1-1: 200 Gold, 100 XP; 1-2: 300/150; 1-3: 400/200, plus the hero), a replay 25% of the currencies (`repeatShare`). Heroes screen (Campaign -> Heroes): hero levels 1-10, +6% attack and health per level in campaign stages only (`heroLevels` in tdCampaign.json; cost 100 Gold + 50 XP, +50/+25 per level), applied by scaling the run's hero list (`campaignHeroes`), no sim change. Campaign save v2 (currencies, levels); v1 saves migrate and are paid the first-clear currencies of stages they had cleared. Effect (bot, every 4-hero squad on 1-3): all level 1: 31/70 win, level 2: 41/70, level 5: 48/70. Next: the 10-stage Chapter 1, then summoning.
-- Sprint 7 done (September 27, 2026): Chapter 1 "The Road to the Crossing" has 10 stages (79 waves, about 65 minutes of bot play time for first clears), each introducing one or two enemy mechanics: 1-1 First Watch (Moonlit; grunts, runners), 1-2 The Green Road (Verdant; flyers), 1-3 Iron Hides (Moonlit; brutes, menders), 1-4 Shield Wall (Verdant; shieldbearers, archers), 1-5 The Horned Warden (Moonlit; Baphomet, mid-chapter boss), 1-6 Hexfire (Verdant; hexers), 1-7 Two Gates (Sunscar; two lanes), 1-8 Brood Hollow (Verdant; broodcallers), 1-9 Eve of the Crossing (Sunscar; everything mixed), 1-10 The Crossing (Verdant; Lilith, final boss). First clears pay 200..1100 Gold, 100..550 Hero XP and 50 Divine Seals (100 on 1-5 and 1-10); reward heroes 1-1 Skadi, 1-2 Atlas, 1-3 Odin, 1-5 Plutus (caishen), 1-10 Aegir (poseidon), the rest stay summon-only. Balance (bot, up to 35 sampled 4-hero squads per stage from the heroes owned by then, levels bought evenly with the first-clear currencies so far, level 1 up to 4-5 by 1-10): 1-1 15/15, 1-2 20/35, 1-3 19/35, 1-4 20/35, 1-5 11/35, 1-6 17/35, 1-7 14/35, 1-8 15/35, 1-9 12/35, 1-10 10/35; `scripts/test-td-campaign.mjs` checks all 10 at those levels (fails below 20%, about 35 s). Tanks (Demeter, Atlas) do worst in 4-hero squads on late stages.
-- Sprint 8 done (September 27, 2026): smallest summoning. Third currency Divine Seals (first clears only, replays pay none), one banner "Call to the Crossing" in `src/data/tdSummon.json` (100 Divine Seals, pool = every hero not owned yet, uniform, so a summon is always a new hero; no duplicates, ten-pulls or pity yet). Rules `summonPool`, `canSummon`, `summon` in `campaign.js` (rng injectable, `summons` count kept for later pity); Summon screen from the Campaign footer (banner, cost, wallet, heroes left, one button, reveal card with portrait, name, title, class and a Build squad link); the hero is usable in Squad and Heroes right away. Campaign save v3 (+ summons); v2 saves are paid the Divine Seals of stages they had cleared once, v1 saves all first-clear currencies once. Tests: `scripts/test-td-summon.mjs`. Open: the pool includes heroes that stages still give as first-clear rewards, so a summon can take a later stage's hero (that stage then pays only currencies). Pool rule (September 27, 2026): heroes that a stage gives on its first clear (Skadi, Atlas, Odin, Plutus, Aegir) are not summonable (`stageRewardHeroes`), so a summon never takes a stage reward; the banner holds the other 10 heroes. Next per the concept: duplicates and ranks (sprint 9), stars and milestones (10), quests (11).
+Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M26 sprints 0-8": 10-stage Chapter 1, squads of 4, Gold / Hero XP / Divine Seals, hero levels, one summon banner).
+- Sprint 9: duplicates and ranks (summons can return owned heroes; copies raise rank 1-3).
+- Sprint 10: stars per stage and chapter milestones (replay reasons).
+- Sprint 11: quests (only once enough systems exist to reference).
+- Open balance points from sprints 7-8:
+  - Tanks do worst in 4-hero squads on late stages (Gaia 1/14 winning squads on 1-9, Atlas 2/13 on 1-10).
+  - 1-9 and 1-10 react strongly to enemy health (1-10: hpScale 0.64 -> 0.69 moved bot wins 49% -> 26%); about 10 points above the test's 20% floor.
+  - Chapter 1 pays 600 Divine Seals = 6 of the 10 summonable heroes; the rest need a Chapter 2 or other seal sources.
+  - Play time about 65 minutes of winning bot play, over the concept's 30-60; 1-10 alone takes 10-12 minutes.
+
+  ### M27a: Menu design
+  - Most menues are really boring to watch. We have a really nice looking main menu screen at the moment. But all screen within a game mode looks like a text menu. 
+  - campaign should also have cards. summon is only a button. rethink and restructure this.
+
+  ### M27b: Rethink Summon Mode
+  - summon should be as to when a user requires to have x amount of a material to summon 1 hero, and XX amound of material to do a 10 pull summon.
+  - summons should contain not good heroes (60% chance of dropping), medium heroes (38%) and the best heroes (2%) chance. 
+  - for this we might require more heroes and put them to qualities like: common, rare and epic heroes.
 
 ### M99: Login/Register
 - what would we need to provide auth / login / register to dave players progress ? gmail auth ? apple auth ?
@@ -98,6 +100,8 @@ node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new 
 ## Known gaps / deferred
 
 Replays were dropped (September 25, 2026). Open items left by archived milestones:
+
+- M22b (tiles + deploy cap 7): Free Play runs are easier than with the old rings (20 waves 4/5 wins vs 2/5; all-platform squads now win). Retune enemy health with `npm run td:sweep` or lower the cap if that is too much.
 
 - M6 criterion 2: closed September 25, 2026 by the Support change below (endless without Warriors 16.3 vs 20.7 with them). Without Tanks is still close (20.3); check with `npm run td:classes`.
 - M6 criterion 3: three Mages alone win Verdant on every seed; Verdant is the easiest map for every squad and needs its own tuning.

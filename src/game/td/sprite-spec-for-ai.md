@@ -1,102 +1,78 @@
 # Tower Defense Enemy Sprite Specification (for AI image generation)
 
 ## Goal
-Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These replace portrait crops extracted from the mobile game "MOTTO IMMORTAL" (provided as reference images). The sprites are displayed at about 44px (enemies), 64px (brute) and 96px (boss) on a top-down tactical map, without a circular mask.
+Full-body tower defense sprites for the enemy kinds and bosses of "The Last Crossing" (Greek and Norse myth, roads between the worlds). The sprites are displayed at about 44px (enemies), 64px (brute) and 96px (boss) on a top-down tactical map, without a circular mask.
+
+**White label rule (M24):** generate from text only. Never attach, trace or describe art from Motto Immortal (GOAT Games) or any other game: no reference images, no "like the game's X". The first set (v1 of the five enemies, Lilith v2 and her brood v2) was made from the game's portraits and renders and has been replaced; see "Current prompts" below.
 
 ## Style Requirements
-- **Art style**: Dark fantasy / mobile RPG. Rich colors, strong silhouettes, dramatic lighting. Match the quality of the provided reference portraits.
-- **View**: Slight 3/4 top-down perspective (like Clash Royale or AFK Arena idle animations). NOT pure overhead, NOT pure side-view.
+- **Art style**: Dark fantasy RPG. Rich colors, strong silhouettes, dramatic lighting.
+- **View**: Slight 3/4 top-down perspective. NOT pure overhead, NOT pure side-view.
 - **Background**: Fully transparent (PNG with alpha channel).
-- **Canvas**: 256x256 pixels, subject centered, fills ~80% of canvas.
+- **Canvas**: 256x256 pixels after the build step, subject centered, fills ~80% of canvas.
 - **Format**: PNG-32 (RGBA), no white background, no drop shadow baked in.
 - **Key constraint**: The sprite is shown small. Keep the silhouette readable at 44px and face the subject to the right (the game mirrors it when moving left).
 
-## Enemy Sprites (6 types)
+## Current prompts (M24 leftovers, September 27, 2026)
+Coplay `generate_or_edit_images`, gpt_image_1, medium quality, 1:1, transparent background, no reference image. Every prompt ends with the same style block:
 
-### 1. grunt.png
-- **Reference**: `A_UI_HeadPortrait_Mogu02_Img.png` (mushroom creature with red-capped hat, glowing eyes, tiny arms)
-- **Role**: Basic melee enemy, medium stats
-- **Sprite concept**: Full body of the mushroom monster. Squat bipedal stance, angry face with orange glow eyes, wooden-bark torso, red mushroom cap on head. Walks forward in slight crouch.
-- **Color palette**: Earthy browns, red cap, orange glow eyes
+> Dark fantasy RPG art style, rich colors, strong silhouette, dramatic rim lighting, slight 3/4 top-down view, facing right, centered, entire body visible, wide empty margin around it, isolated on a fully transparent background, no ground, no shadow, no text. Readable at small size.
 
-### 2. runner.png
-- **Reference**: `A_UI_HeadPortrait_Diediemoou02_Img.png` (stack of 3 stone blocks with a single blue gem eye)
-- **Role**: Fast melee enemy, low HP, low armor
-- **Sprite concept**: Compact stone golem made of 2-3 stacked floating rock segments. Lean silhouette. Moving fast - slight forward lean or motion blur legs.
-- **Color palette**: Grey stone, blue gem eye, faint dust particles
+| Kind (file) | Role | Prompt (before the style block) |
+|---|---|---|
+| grunt (`grunt-v2`) | basic infantry | Full-body game sprite of an undead Norse draugr foot soldier: gaunt grey-blue skin, glowing pale cyan eyes under a battered iron nasal helmet, tattered dark wool tunic with a rusted mail shirt, round wooden shield with a faded rune, notched bronze short sword held forward, marching stance. Colors: grey-blue skin, rust brown, weathered wood, pale cyan eye glow. |
+| runner (`runner-v2`) | fast | Full-body game sprite of a lean spectral hound from the underworld: a wiry black wolf-like dog with smoky ember-orange cracks along its ribs, long legs in a full sprint, tail streaming like smoke, bared teeth, a broken bronze collar with a short chain. Fast and light silhouette. Colors: charcoal black, ember orange, dull bronze. |
+| flyer (`flyer-v2`) | flying | Full-body game sprite of a Stymphalian bird from Greek myth in flight: a large crane-like bird of prey with sharp metallic bronze feathers, long hooked bronze beak, red eyes, wings spread wide mid-flap, talons tucked, a few loose metal feathers falling (style block: "entire body and both wingtips visible"). Colors: polished bronze and copper, dark teal patina, red eyes. |
+| archer (`archer-v2`) | ranged | Full-body game sprite of a wild satyr archer from Greek myth: goat legs with hooves, curled ram horns, shaggy dark hair, lean bare torso with a leather quiver strap, drawing a curved horn bow with a nocked arrow aimed forward, crouched ready stance. Colors: tan and olive skin, dark brown fur, bone-white horns, dark leather, green fletching. |
+| brute (`brute-v2`) | armored heavy | Full-body game sprite of a hulking Norse mountain troll in heavy armor: massive hunched body, mossy grey stone-like skin, tusked underbite, small angry yellow eyes, thick riveted iron plates strapped over shoulders and chest, iron-banded forearms, dragging a huge stone-headed club, heavy lumbering stride. Colors: mossy grey-green skin, dark iron, rust accents, yellow eyes. |
+| Lilith (`boss-lilith-v3`) | final boss, Verdant Crossing | Full-body game sprite of Lilith, a night demoness boss from folklore: tall pale woman with long black hair, large dark owl wings spread behind her, owl talon feet, an emerald-green serpent coiled around her raised arm, layered gown of deep green and bone white, silver crescent-moon circlet, glowing amber eyes, commanding pose. Clean crisp painted game art with sharp edges (style block plus "no smoke"). Of three attempts this one is used; the lower gown still fades out a little. |
+| brood (`brood-v3`, `lilith_child.png`) | Lilith's summoned children | Full-body game sprite of a small lilin night spirit, the summoned child of a night demoness: a hunched, knee-high creature with a pale owl-like face and big amber eyes, ragged dark-green bat-like wings, thin grey limbs with long claws, a short serpent tail, scuttling forward. Colors: ash grey, dark green, amber eyes, a hint of emerald glow. |
 
-### 3. flyer.png
-- **Reference**: `A_UI_HeadPortrait_Hanhuizhihe03_Img 2.png` (spherical rock/ice creature with gold core, cracked dark shell with ice crystals)
-- **Role**: Flying enemy (bypasses ground heroes)
-- **Sprite concept**: Floating orb surrounded by broken rock/ice shards orbiting it. Gold energy core visible through cracks. Hovers with a slight glow beneath it.
-- **Color palette**: Dark grey rock, teal/blue ice crystals, gold inner light
+Kept: Baphomet (`boss-v1`, a generic horned winged demon with a mace, unlike the game's hunched plated design), `brood-v1` (spiky red-black beast, used tinted for the broodcaller) and `boss-lilith-v1` (violet tentacle figure, used for the hexer). Generated sources: `~/hero-database-assets/td/enemy-sprites-src/` (outside the repo).
 
-### 4. archer.png
-- **Reference**: `A_UI_HeadPortrait_An02_Img.png` (purple crystal star-shaped creature with single large eye, mounted on a staff-like dark pillar)
-- **Role**: Ranged attacker, attacks heroes
-- **Sprite concept**: Floating crystalline eye-creature. Star-burst of dark purple crystal spines radiating from a central purple eye. Hovers slightly above ground, tendrils or roots beneath.
-- **Color palette**: Deep purple/black crystals, glowing purple eye
-
-### 5. brute.png
-- **Reference**: `A_UI_HeadPortrait_Zhizhu03_Img 2.png` (massive black spider with 8 glowing orange gem-eyes, gold claws, dark carapace)
-- **Role**: Heavy melee tank, high HP and armor
-- **Sprite concept**: Large black-armored spider. Body nearly fills the frame. Front legs raised aggressively. 8 glowing amber eyes on dark face. Claws prominent.
-- **Color palette**: Matte black carapace, gold claws and joints, amber glow eyes
-
----
+## Future bosses
+Write new prompts from the myth, in the table format above. The concepts below for Ishtar, Snowman, Typhoon, Nian and Night Hag were written by looking at the mobile game's portraits: do not use them as they are; design each boss again from the myth before generating.
 
 ## Boss Sprites (7 types)
 
 ### boss_baphomet.png
-- **Reference**: `A_UI_HeadPortrait_Bafengte03_Img 2.png` (massive black goat-demon head with huge curved horns, glowing red eyes, dark feathery/spiky mantle)
-- **Game name**: Baphomet
+- **Name**: Baphomet
 - **Sprite concept**: Imposing dark demon lord, half-body visible. Towering curved black horns. Red burning eyes. Wings or dark energy mantle spreading behind. Standing pose, looming forward.
 - **Scale**: Noticeably larger canvas presence than enemy sprites. Should feel threatening.
 - **Color palette**: Matte black, deep red glow, dark purple aura
 
 ### boss_ishtar.png
-- **Reference**: `A_UI_HeadPortrait_Yishitaer03_Img 2.png` (beautiful pale woman with elaborate gold crown, jewels, dark hair, serene but unsettling expression)
-- **Game name**: Ishtar IV
+- **Name**: Ishtar IV
 - **Sprite concept**: Ancient goddess, regal and unsettling. Elaborate gold and dark crown. Floating rather than walking. Dark ornate robes with gold trim. Gems and celestial motifs.
 - **Color palette**: Pale skin, gold crown/jewelry, dark robes, purple gems
 
 ### boss_snowman.png
-- **Reference**: `A_UI_HeadPortrait_XueRenBoss02_Img.png` (jolly-looking snowman with red hat, chain necklace, scarf, button eyes - deceptively cute but villainous)
-- **Game name**: Snowman
+- **Name**: Snowman
 - **Sprite concept**: Full body snowman. Three-sphere stacked body. Sinister grin. Red top hat with holly. Chain necklace. Hidden weapons (claws or icicle fists) to hint at danger. Slightly menacing despite cute design.
 - **Color palette**: White snow, red hat, gold chain, button black eyes
 
 ### boss_typhoon.png
-- **Reference**: `A_UI_HeadPortrait_Tifeng02_Img.png` (massive ancient deity face with multiple eyes, antler-like gold protrusions, earthy red tones, tiny figure visible below showing scale)
-- **Game name**: Typhoon
+- **Name**: Typhoon
 - **Sprite concept**: Ancient wind/earth colossus. Multi-eyed face with twisted antler crown. Massive in scale - body like a living mountain. Wind or dust swirling around it. Multiple arms.
 - **Color palette**: Red-brown earth tones, gold antlers, multi-colored eyes
 
 ### boss_nian.png
-- **Reference**: `A_UI_HeadPortrait_NianShouBoss02_Img.png` (lion-like beast with white fur, orange mane, ornate gold armor headdress, fierce golden eyes)
-- **Game name**: Nian Beast
+- **Name**: Nian Beast
 - **Sprite concept**: Mythical Chinese lion-beast. White fur, flowing orange-red mane like fire. Gold ceremonial armor on chest and head. Roaring pose, front paws raised. Majestic and terrifying.
 - **Color palette**: White fur, flame-orange mane, gold armor, amber eyes
 
 ### boss_nighthag.png
-- **Reference**: `A_UI_HeadPortrait_Mengyanma02_Img.png` (jet-black flaming horse head with fiery mane, red-orange flame patterns, glowing red eyes)
-- **Game name**: Spirit of the Night Hag
+- **Name**: Spirit of the Night Hag
 - **Sprite concept**: Demonic flaming horse/nightmare. Full body galloping. Black body with fire patterns running along mane, hooves, and tail. Eyes and breath are orange flames. Ethereal smoke trails.
 - **Color palette**: Jet black, orange-red fire, glowing amber eyes
 
 ### boss_lilith.png
-- **Reference**: in-game boss screen (Lilith - Elite), plus her 3D model in `new_role3d_new_b_lilisi_100008` (ripped to `~/android/assetripper/newtry/ExportedProject/Assets/Imported/Lilith/`). The model's rest pose bunches the red streamers into a bulb; that is not how she looks in motion.
-- **Game name**: Lilith
-- **Sprite concept**: Slender woman of glossy black-violet obsidian armor, tall open black lattice crown, face a glowing purple starry void, one hand raised. Dark violet-black petal ribbons and thin tentacle strands at the hips; long translucent red-orange streamers fall from the hips and flare out wide at the floor, thin black legs visible between them.
-- **Color palette**: Glossy black-violet, red-orange translucent streamers, purple face glow
-- **Current art (v2)**: background removed from the in-game boss screen (rembg, birefnet-general), not generated; AI repaints kept losing the streamers.
+- **Name**: Lilith (final boss, Verdant Crossing)
+- **Current art (v3)**: text-only prompt, see "Current prompts" (folklore night demoness: owl wings, serpent, green and bone-white gown).
 
 ### lilith_child.png
-- **Reference**: 3D model `new_role3d_new_b_lilisi_monster_100009` with texture `B_LiLiS_xiaoguaii_D_.png` (rendered in Unity, `Assets/Imported/Lilith/renders/`), and the in-game battle
-- **Game name**: Lilith's children (summoned by Garden of Flesh)
-- **Sprite concept**: Upright humanoid in glossy black armor, smooth featureless black helmet head, a large spiky collar of black crystal shards on chest and shoulders with a glowing red core and red cracks, angular plates on the shins. Not a beast.
-- **Color palette**: Glossy black, violet highlights, red chest glow
-- **Current art (v2)**: Coplay repaint of the Unity render.
+- **Name**: Lilith's children (summoned by Garden of Flesh)
+- **Current art (v3)**: text-only prompt, see "Current prompts" (lilin night spirit: owl face, bat wings, serpent tail).
 
 ---
 
@@ -108,19 +84,19 @@ lilith_child.png
 ```
 
 ## Priority
-In the game today: the 5 enemy kinds, Baphomet (Moonlit Pass, `boss_baphomet.png` -> `boss-v1.webp`) and Lilith with her children (Verdant Crossing, `boss_lilith.png` -> `boss-lilith-v2.webp`, `lilith_child.png` -> `brood-v2.webp`). The other 5 bosses can wait until they are added as final bosses.
+In the game today: the 5 enemy kinds, Baphomet (Moonlit Pass, `boss_baphomet.png` -> `boss-v1.webp`) and Lilith with her children (Verdant Crossing, `boss_lilith.png` -> `boss-lilith-v3.webp`, `lilith_child.png` -> `brood-v3.webp`). The other 5 bosses can wait until they are added as final bosses.
 
 ## Prompt template
 Use one generation per sprite with the same style block so the set matches:
 
-> Full-body game sprite of {Sprite concept}. Dark fantasy mobile RPG art style, rich colors, strong silhouette, dramatic rim lighting, slight 3/4 top-down view, facing right, centered, isolated on a fully transparent background, no ground, no shadow, no text. Colors: {Color palette}.
+> Full-body game sprite of {Sprite concept}. Dark fantasy RPG art style, rich colors, strong silhouette, dramatic rim lighting, slight 3/4 top-down view, facing right, centered, isolated on a fully transparent background, no ground, no shadow, no text. Colors: {Color palette}.
 
-Attach the reference portrait from the spec entry. Generate square (1024x1024 is fine, the pipeline scales it down). If the tool cannot output transparency, remove the background before the next step.
+No reference image. Generate square (1024x1024 is fine, the pipeline scales it down). If the tool cannot output transparency, remove the background before the next step.
 
 ## Integration
 1. Put the images in one folder with the spec file names (`grunt.png` ... `boss_baphomet.png`; `.webp` also works).
 2. `node scripts/build-td-enemy-sprites.mjs <folder>` trims, fits the subject to 80% of a 256x256 transparent canvas and writes `public/td/enemies/sprites/{kind}-v1.webp` (or `--version`) (Baphomet becomes `boss-v1.webp`). It warns when the corners are not transparent.
 3. `node scripts/upload-to-r2.mjs --prefix td/enemies/sprites` uploads them.
-4. The renderer picks them up automatically: full-body sprites win over the circle portraits, are drawn unmasked with a ground shadow and face their direction of travel (draw them facing right). Kinds without a file keep the portrait.
+4. The renderer picks them up automatically: full-body sprites win over the circle portraits, are drawn unmasked with a ground shadow and face their direction of travel (draw them facing right). Kinds without a file fall back to the Kenney tiles and vector shapes.
 
-Changed art needs a new file name because R2 objects are cached for a year: build only the changed files with `--only <names> --version vN` and set the same version for those files in `ENEMY_SPRITE_VERSIONS` in `render.js`.
+Changed art needs a new file name because R2 objects are cached for a year: build only the changed files with `--only <names> --version vN` and set the same version for those files in `ENEMY_SPRITE_VERSIONS` in `src/game/td/assets.js` (renderer, boss nameplate and Glossary read it). Upload each new file with `node scripts/upload-to-r2.mjs --prefix td/enemies/sprites/{kind}-vN`.

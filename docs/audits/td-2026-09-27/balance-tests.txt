@@ -1,0 +1,34 @@
+
+> hero-database@0.0.1 test:td-balance
+> node scripts/test-td-balance.mjs
+
+map                  squad                          result  lives  leaks  score  spent  duration
+moonlit-pass         balanced (S-tier core)         loss        0      2  135282   3295  669s
+moonlit-pass         budget (D-tier)                PERFECT    25      0  155868   3525  565s
+moonlit-pass         road wall                      loss        0     25  109581   2970  949s
+moonlit-pass         all platform (no blockers)     win        21      2  135725   3355  439s
+moonlit-pass         glass cannon                   loss        0      5  133313   3205  584s
+verdant-crossing     balanced (S-tier core)         win        24      1  188915   3415  661s
+verdant-crossing     budget (D-tier)                PERFECT    25      0  189273   3525  628s
+verdant-crossing     road wall                      loss        0     25  110650   3140  1358s
+verdant-crossing     all platform (no blockers)     PERFECT    25      0  189273   3575  500s
+verdant-crossing     glass cannon                   PERFECT    25      0  189273   3335  607s
+sunscar-ruins        balanced (S-tier core)         PERFECT    25      0  155868   3415  379s
+sunscar-ruins        budget (D-tier)                PERFECT    25      0  155868   3645  366s
+sunscar-ruins        road wall                      loss        0     25  117512   3300  820s
+sunscar-ruins        all platform (no blockers)     win        22      1  136281   3575  351s
+sunscar-ruins        glass cannon                   loss        0      0  136281   3355  432s
+moonlit-pass         20 waves: 4/5 wins (lost at 10) - endless: 25, 30, 10, 26, 25
+verdant-crossing     20 waves: 4/5 wins (lost at 10) - endless: 32, 34, 10, 32, 30
+sunscar-ruins        20 waves: 3/5 wins (lost at 5, 20) - endless: 35, 35, 5, 26, 20
+wave            Tank   Warrior  Assassin      Mage    Archer   Support   best road / platform
+swarm            13%       47%       32%       54%       36%        2%   Warrior / Mage
+armored          50%       17%       17%       58%       52%        2%   Tank / Mage
+runner           19%       42%       59%       51%       37%        2%   Assassin / Mage
+flyer             0%        0%        0%       50%       67%        5%   Tank / Archer
+boss            100%      100%      100%       25%       40%        1%   Tank / Archer
+healer           63%       71%       67%       90%       84%        3%   Warrior / Mage
+shield           25%       23%       19%       40%       28%        1%   Tank / Mage
+summoner          0%       40%        0%       58%       74%        1%   Warrior / Archer
+hexer            50%       33%       33%       70%       72%        3%   Tank / Archer
+Tower defense balance checks passed

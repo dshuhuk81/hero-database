@@ -11,6 +11,30 @@ export type DailySetup = { date: string; seed: number; mapId: string; heroIds: s
 
 const mutatorInfo = MUTATOR_INFO as Record<string, { name: string; text: string }>;
 
+// Small stroke glyphs for the mutator chips on the main menu (24x24 paths).
+const MUTATOR_GLYPH: Record<string, string> = {
+  fortified: "M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z",
+  haste: "M13 3L5 13h6l-1 8 8-10h-6z",
+  warded: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M8 12a4 4 0 108 0a4 4 0 10-8 0",
+  horde: "M4 10a2 2 0 104 0a2 2 0 10-4 0M10 7a2 2 0 104 0a2 2 0 10-4 0M16 10a2 2 0 104 0a2 2 0 10-4 0M3 18c1-3 5-3 6 0M9 15c1-3 5-3 6 0M15 18c1-3 5-3 6 0",
+  ironclad: "M5 5h14v5c0 6-3 9-7 11-4-2-7-5-7-11zM5 10h14M12 5v16",
+  elites: "M4 17l2-9 4 4 2-6 2 6 4-4 2 9z",
+};
+const mutatorChip = (id: string) => {
+  const glyph = MUTATOR_GLYPH[id];
+  return `<span class="td-mutator-chip" title="${mutatorInfo[id]?.text ?? ""}">` +
+    (glyph ? `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${glyph}" fill="none" /></svg>` : "") +
+    `${mutatorInfo[id]?.name ?? id}</span>`;
+};
+
+// Time left until the next UTC midnight, when dailyDate() rolls over to a new trial.
+function resetText(now = Date.now()) {
+  const next = new Date(now);
+  next.setUTCHours(24, 0, 0, 0);
+  const minutes = Math.max(1, Math.ceil((next.getTime() - now) / 60000));
+  return minutes >= 60 ? `${Math.floor(minutes / 60)}h ${minutes % 60}m` : `${minutes}m`;
+}
+
 // Goal line shared by the Daily Trial screen and the result screen.
 export const dailyGoalText = (setup: DailySetup) => `Clear wave ${setup.goal}`;
 
@@ -56,6 +80,9 @@ export function createDaily(ctx: PageContext) {
   const squadCountEl = q("[data-td-daily-squad-count]");
   const summaryMapEl = q("[data-td-daily-summary-map]");
   const summaryEl = q("[data-td-daily-summary]");
+  const summaryMutatorsEl = q("[data-td-daily-summary-mutators]");
+  const summaryRewardEl = q("[data-td-daily-summary-reward]");
+  const summaryResetEl = q("[data-td-daily-summary-reset]");
   let today: DailySetup | null = null;
 
   // Recomputed when the UTC date changes while the page stays open.
@@ -93,8 +120,21 @@ export function createDaily(ctx: PageContext) {
     mutatorsEl.innerHTML = current.mutators.map((id) => `<li title="${mutatorInfo[id]?.text ?? ""}"><strong>${mutatorInfo[id]?.name ?? id}</strong>${mutatorInfo[id]?.text ?? ""}</li>`).join("");
     bestEl.textContent = dailyBestText(store.data, current.date);
     summaryMapEl.textContent = map?.name ?? current.mapId;
-    summaryEl.textContent = `${dailyGoalText(current)}. ${record ? `Today's best: ${record.bestScore.toLocaleString()}${record.goalReached ? ", goal reached" : ""}.` : `+${DAILY.rewardFavor} Favor for the first clear.`}`;
+    summaryEl.textContent = `${dailyGoalText(current)}${record ? ` \u00b7 best ${record.bestScore.toLocaleString()}` : ""}`;
+    summaryMutatorsEl.innerHTML = current.mutators.map(mutatorChip).join("");
+    summaryRewardEl.classList.toggle("is-claimed", !!record?.goalReached);
+    summaryRewardEl.innerHTML = record?.goalReached ? "Reward claimed" : `First clear <b>+${DAILY.rewardFavor} Favor</b>`;
+    renderReset();
   }
+
+  // The reset countdown ticks once a minute; a new UTC day re-renders the whole trial.
+  function renderReset() {
+    summaryResetEl.textContent = ` \u00b7 resets in ${resetText()}`;
+  }
+  setInterval(() => {
+    if (today && today.date !== dailyDate()) render();
+    else renderReset();
+  }, 60000);
 
   function start() {
     const current = setup();

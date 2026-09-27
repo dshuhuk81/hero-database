@@ -1,0 +1,32 @@
+
+> hero-database@0.0.1 td:classes
+> node scripts/td-classes.mjs
+
+1. Class-vs-enemy matrix (road: enemies stopped, platform: HP destroyed)
+wave            Tank   Warrior  Assassin      Mage    Archer   Support   best road / platform
+swarm            13%       47%       32%       54%       36%        2%   Warrior / Mage
+armored          50%       17%       17%       58%       52%        2%   Tank / Mage
+runner           19%       42%       59%       51%       37%        2%   Assassin / Mage
+flyer             0%        0%        0%       50%       67%        5%   Tank / Archer
+boss            100%      100%      100%       25%       40%        1%   Tank / Archer
+healer           63%       71%       67%       90%       84%        3%   Warrior / Mage
+shield           25%       23%       19%       40%       28%        1%   Tank / Mage
+summoner          0%       40%        0%       58%       74%        1%   Warrior / Archer
+hexer            50%       33%       33%       70%       72%        3%   Tank / Archer
+
+2. Mixed squad, endless waves reached without each class
+   full squad 30.7
+   without Tank      33.8 (+3.2)
+   without Warrior   25.8 (-4.8)
+   without Assassin  30.7 (+0.0)
+   without Mage      13.2 (-17.5)
+   without Archer    23.8 (-6.8)
+   without Support   27.2 (-3.5)
+
+3. One-class squads, 10 waves (W = won with lives left, L = lost in wave)
+   Tank      moonlit-pass L6  verdant-crossing L6  sunscar-ruins L6
+   Warrior   moonlit-pass L7  verdant-crossing L7  sunscar-ruins L10
+   Assassin  moonlit-pass L8  verdant-crossing L7  sunscar-ruins L8
+   Mage      moonlit-pass L7  verdant-crossing W12  sunscar-ruins L7
+   Archer    moonlit-pass L9  verdant-crossing W13  sunscar-ruins L6
+   Support   moonlit-pass L3  verdant-crossing L3  sunscar-ruins L3
