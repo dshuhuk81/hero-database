@@ -42,11 +42,12 @@ export const SQUADS = {
 // bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
 // `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
-export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150 } = {}) {
+// `game` adds constructor options (campaign stages: waves, allowedHeroes, lives, hpScale).
+export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150, game: gameOptions = {} } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, tier, seed });
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, tier, seed, ...gameOptions });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   let spent = 0;
   let stalled = false;

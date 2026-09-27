@@ -32,6 +32,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createResults } from "../../game/td/page/results";
   import { createDaily } from "../../game/td/page/daily";
   import { createExpedition } from "../../game/td/page/expedition";
+  import { createCampaign } from "../../game/td/page/campaign";
   import { renderChallengeBadges, renderChallengeList } from "../../game/td/page/challenges";
   import { createDebugPanel } from "../../game/td/page/debug";
   import { createHud } from "../../game/td/page/hud";
@@ -158,6 +159,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     renderChallengeBadges(root!, store.data, data.tuning.tiers);
     dailyTrial.render();
     expedition.render();
+    campaignScreens.render();
   }
 
   q("[data-td-maps]").addEventListener("click", (event) => {
@@ -238,6 +240,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const results = createResults(ctx);
   const dailyTrial = createDaily(ctx);
   const expedition = createExpedition(ctx);
+  const campaignScreens = createCampaign(ctx);
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
   const popover = createPopover(ctx);
@@ -249,6 +252,10 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
       if (id === "play") return;
       renderLobby();
       if (id === "mode") renderModeScreen();
+      // The squad screen needs a picked stage; after a reload there is none, so back to the stages.
+      if (id === "squad" && !campaignScreens.renderSquad()) nav.go("campaign");
+      if (id === "heroes") campaignScreens.renderHeroes();
+      if (id === "summon") campaignScreens.renderSummon(true);
       if (id === "blessings" || id === "help" || id === "save") panels.embed(id, q(`[data-td-screen-host="${id}"]`));
     },
     // Browser Back during a run: close what is open, else open the menu; a finished run leaves.

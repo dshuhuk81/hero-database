@@ -9,7 +9,10 @@ import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 import { dailyGameOptions } from "../daily.js";
 import { stageGameOptions } from "../expedition.js";
+import { campaignHeroes, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
+import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import type { DailySetup } from "./daily";
+import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
 import type { ScreenId } from "./nav";
 
@@ -33,12 +36,14 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   let sessionToken = 0;
   let loadingCanvas: HTMLCanvasElement | null = null;
 
-  async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null } = {}) {
+  async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null; campaign?: CampaignRun | null } = {}) {
     const token = ++sessionToken;
     const daily = options.daily ?? null;
     const expedition = options.expedition ?? null;
+    const campaign = options.campaign ?? null;
+    const campaignStage = campaign ? stageById(campaignData, campaign.stageId) : null;
     end();
-    if (!daily && !expedition) { // the Daily Trial and Expedition leave the lobby's map pick alone
+    if (!daily && !expedition && !campaign) { // the Daily Trial, Expedition and Campaign leave the lobby's map pick alone
       state.selectedMap = map;
       try { localStorage.setItem("td:map", map.id); } catch {}
     }
@@ -59,10 +64,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     loadingCanvas = canvas;
 
     // Daily Trial (M19): the same setup for everyone, so no Divine Blessings and no shard boost.
-    const runLevels = daily ? {} : { ...store.data.favLevels };
+    // Campaign stages (M26) are balanced as authored: no Divine Blessings either.
+    const runLevels = daily || campaign ? {} : { ...store.data.favLevels };
     // Expedition stages (M21) keep Divine Blessings but skip the shard boost (it waits for a normal run).
-    const boost = daily || expedition ? null : store.data.nextRunBoost;
-    const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition) : {};
+    const boost = daily || expedition || campaign ? null : store.data.nextRunBoost;
+    const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
+      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, campaignHeroes(campaignData, store.data.campaign, data.heroes)) : {};
     const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map, ...special });
     let renderer: any;
     try {
@@ -82,7 +89,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition };
+    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition, campaign };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -96,6 +103,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
+      : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${campaignStage.lives} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${expedition.lives} lives.` : "";
     ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${boostText}${dailyText}`);
   }
@@ -195,8 +203,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (state.session?.expedition) { toLobby(); return; }
       const map = state.session?.map ?? state.selectedMap;
       const daily = state.session?.daily ?? null; // a trial retries the same day's setup
+      const campaign = state.session?.campaign ?? null; // a campaign stage retries with the same squad
       ctx.actions.closePanel(false);
-      start(map, { daily });
+      start(map, { daily, campaign });
       return;
     }
     const exit = target.closest<HTMLElement>("[data-td-to-lobby]");

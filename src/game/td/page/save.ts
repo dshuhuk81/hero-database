@@ -4,10 +4,17 @@ import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js"
 import { sanitizeChallenges } from "../challenges.js";
 import { sanitizeDaily } from "../daily.js";
 import { sanitizeExpedition } from "../expedition.js";
+import { newCampaignProgress, sanitizeCampaign } from "../campaign.js";
+import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 
 // Expedition (M21) in progress: stage order, current stage, roster, relics, veterans,
 // lives carried over and the pending camp cards (expedition.js).
 export type ExpeditionState = { seed: number; stages: string[]; stage: number; roster: string[]; relics: string[]; veterans: string[]; lives: number; camp: any[] | null };
+
+// Campaign progress (M26, campaign.js): owned heroes, cleared stages with their best
+// lives, the last squad, currencies, hero levels and the summon count; versioned on its own so it can
+// migrate without touching Free Play.
+export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number };
 
 // Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
 export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };
@@ -37,6 +44,7 @@ export type SaveData = {
   daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
   expedition: ExpeditionState | null; // Expedition in progress (M21)
   expeditionBest: { stages: number; completed: number }; // most stages cleared in one expedition, expeditions finished
+  campaign: CampaignProgress; // Campaign (M26), its own progression
 };
 
 export type SaveStore = { data: SaveData; persist(): void };
@@ -86,7 +94,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], expedition: null, expeditionBest: { stages: 0, completed: 0 } };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -124,6 +132,7 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
       stages: Math.max(0, Math.floor(Number(candidate.expeditionBest?.stages) || 0)),
       completed: Math.max(0, Math.floor(Number(candidate.expeditionBest?.completed) || 0)),
     },
+    campaign: sanitizeCampaign(candidate.campaign, campaignData, rules.heroIds) as CampaignProgress,
   };
   // Tree v3 (M3): owned levels stay, the price increase is credited back once.
   if (clean.treeVersion < 3) {

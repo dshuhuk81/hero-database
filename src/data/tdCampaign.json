@@ -1,0 +1,780 @@
+{
+  "version": 2,
+  "squadSize": 4,
+  "starters": ["demeter", "jormungandr", "horus", "fengyi", "artemis", "freya"],
+  "heroLevels": {
+    "max": 10,
+    "statPerLevel": 0.06,
+    "cost": {
+      "gold": {
+        "base": 100,
+        "perLevel": 50
+      },
+      "heroXp": {
+        "base": 50,
+        "perLevel": 25
+      }
+    }
+  },
+  "repeatShare": 0.25,
+  "chapters": [
+    {
+      "id": 1,
+      "name": "The Road to the Crossing",
+      "stages": [
+        {
+          "id": "1-1",
+          "name": "First Watch",
+          "mapId": "moonlit-pass",
+          "text": "The first refugees are on the road. Hold the pass against grunts and fast runners; road heroes block them, platform heroes shoot from above.",
+          "lives": 20,
+          "hpScale": 0.8,
+          "unlockAfter": null,
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 200},
+            {"type": "currency", "id": "heroXp", "amount": 100},
+            {"type": "currency", "id": "divineSeals", "amount": 50},
+            {"type": "hero", "id": "diana"}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 7, "gapMs": 950}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "grunt", "count": 11, "gapMs": 760}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "grunt", "count": 7, "gapMs": 700},
+                {"kind": "runner", "count": 6, "gapMs": 620}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "runner", "count": 10, "gapMs": 520},
+                {"kind": "grunt", "count": 8, "gapMs": 650}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 520},
+                {"kind": "runner", "count": 8, "gapMs": 480}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-2",
+          "name": "The Green Road",
+          "mapId": "verdant-crossing",
+          "text": "Flyers arrive: they soar over your blockers and only platform heroes can hit them. Keep at least two heroes on the platforms.",
+          "lives": 15,
+          "hpScale": 0.95,
+          "unlockAfter": "1-1",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 300},
+            {"type": "currency", "id": "heroXp", "amount": 150},
+            {"type": "currency", "id": "divineSeals", "amount": 50},
+            {"type": "hero", "id": "nuwa"}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 9, "gapMs": 850}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "flyer", "count": 6, "gapMs": 900},
+                {"kind": "grunt", "count": 6, "gapMs": 700}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "runner", "count": 10, "gapMs": 520},
+                {"kind": "grunt", "count": 6, "gapMs": 700}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "flyer", "count": 10, "gapMs": 650},
+                {"kind": "grunt", "count": 8, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "grunt", "count": 12, "gapMs": 520},
+                {"kind": "runner", "count": 8, "gapMs": 480}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "flyer", "count": 12, "gapMs": 520},
+                {"kind": "runner", "count": 10, "gapMs": 450}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-3",
+          "name": "Iron Hides",
+          "mapId": "moonlit-pass",
+          "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
+          "lives": 15,
+          "hpScale": 0.9,
+          "unlockAfter": "1-2",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 400},
+            {"type": "currency", "id": "heroXp", "amount": 200},
+            {"type": "currency", "id": "divineSeals", "amount": 50},
+            {"type": "hero", "id": "zeus"}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 10, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "brute", "count": 2, "gapMs": 1600},
+                {"kind": "grunt", "count": 8, "gapMs": 650}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "grunt", "count": 10, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "flyer", "count": 8, "gapMs": 650},
+                {"kind": "runner", "count": 10, "gapMs": 480}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1400},
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "runner", "count": 8, "gapMs": 520}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 450},
+                {"kind": "flyer", "count": 8, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "brute", "count": 5, "gapMs": 1100},
+                {"kind": "mender", "count": 3, "gapMs": 800},
+                {"kind": "grunt", "count": 10, "gapMs": 500}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-4",
+          "name": "Shield Wall",
+          "mapId": "verdant-crossing",
+          "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
+          "lives": 15,
+          "hpScale": 0.95,
+          "unlockAfter": "1-3",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 500},
+            {"type": "currency", "id": "heroXp", "amount": 250},
+            {"type": "currency", "id": "divineSeals", "amount": 50}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 10, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 4, "gapMs": 900},
+                {"kind": "grunt", "count": 8, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "archer", "count": 5, "gapMs": 900},
+                {"kind": "runner", "count": 8, "gapMs": 520}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "flyer", "count": 10, "gapMs": 600},
+                {"kind": "grunt", "count": 10, "gapMs": 520}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 5, "gapMs": 800},
+                {"kind": "archer", "count": 6, "gapMs": 900},
+                {"kind": "grunt", "count": 10, "gapMs": 400}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1200},
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "runner", "count": 10, "gapMs": 450}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
+                {"kind": "archer", "count": 8, "gapMs": 700},
+                {"kind": "flyer", "count": 8, "gapMs": 550}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-5",
+          "name": "The Horned Warden",
+          "mapId": "moonlit-pass",
+          "text": "Baphomet guards the end of the pass. It silences the hero that hit it last and hardens its hide from time to time; spread your damage over several heroes.",
+          "lives": 14,
+          "hpScale": 0.75,
+          "unlockAfter": "1-4",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 600},
+            {"type": "currency", "id": "heroXp", "amount": 300},
+            {"type": "currency", "id": "divineSeals", "amount": 100},
+            {"type": "hero", "id": "caishen"}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 12, "gapMs": 700}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "runner", "count": 12, "gapMs": 450},
+                {"kind": "flyer", "count": 6, "gapMs": 700}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1300},
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "grunt", "count": 8, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 5, "gapMs": 800},
+                {"kind": "archer", "count": 6, "gapMs": 850}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "flyer", "count": 12, "gapMs": 500},
+                {"kind": "runner", "count": 10, "gapMs": 420}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "brute", "count": 5, "gapMs": 1000},
+                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
+                {"kind": "grunt", "count": 12, "gapMs": 420}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "archer", "count": 8, "gapMs": 700},
+                {"kind": "mender", "count": 3, "gapMs": 800},
+                {"kind": "runner", "count": 14, "gapMs": 380}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "boss", "count": 1, "gapMs": 1000},
+                {"kind": "grunt", "count": 12, "gapMs": 480},
+                {"kind": "flyer", "count": 6, "gapMs": 600}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-6",
+          "name": "Hexfire",
+          "mapId": "verdant-crossing",
+          "text": "Hexers resist magic and hex the nearest hero so it briefly cannot attack. Archers outrange the hex and physical damage cuts them down fastest.",
+          "lives": 15,
+          "hpScale": 0.9,
+          "unlockAfter": "1-5",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 700},
+            {"type": "currency", "id": "heroXp", "amount": 350},
+            {"type": "currency", "id": "divineSeals", "amount": 50}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 12, "gapMs": 700}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "hexer", "count": 2, "gapMs": 1200},
+                {"kind": "grunt", "count": 10, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "runner", "count": 14, "gapMs": 420},
+                {"kind": "flyer", "count": 6, "gapMs": 650}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "hexer", "count": 3, "gapMs": 1000},
+                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
+                {"kind": "grunt", "count": 8, "gapMs": 550}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1200},
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "archer", "count": 5, "gapMs": 850}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "flyer", "count": 12, "gapMs": 500},
+                {"kind": "hexer", "count": 3, "gapMs": 1000},
+                {"kind": "runner", "count": 8, "gapMs": 450}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
+                {"kind": "archer", "count": 6, "gapMs": 800},
+                {"kind": "grunt", "count": 14, "gapMs": 380}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "brute", "count": 5, "gapMs": 1000},
+                {"kind": "runner", "count": 14, "gapMs": 360}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-7",
+          "name": "Two Gates",
+          "mapId": "sunscar-ruins",
+          "text": "The ruins have two gates and every wave splits between them. Spread your squad so neither lane is left open.",
+          "lives": 16,
+          "hpScale": 0.9,
+          "unlockAfter": "1-6",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 800},
+            {"type": "currency", "id": "heroXp", "amount": 400},
+            {"type": "currency", "id": "divineSeals", "amount": 50}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "runner", "count": 12, "gapMs": 440},
+                {"kind": "grunt", "count": 8, "gapMs": 550}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "flyer", "count": 12, "gapMs": 550},
+                {"kind": "grunt", "count": 10, "gapMs": 520}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1200},
+                {"kind": "mender", "count": 2, "gapMs": 900},
+                {"kind": "runner", "count": 10, "gapMs": 450}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
+                {"kind": "archer", "count": 6, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "grunt", "count": 16, "gapMs": 380}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "flyer", "count": 14, "gapMs": 450},
+                {"kind": "archer", "count": 6, "gapMs": 800},
+                {"kind": "runner", "count": 10, "gapMs": 400}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "brute", "count": 6, "gapMs": 900},
+                {"kind": "shieldbearer", "count": 5, "gapMs": 750},
+                {"kind": "mender", "count": 3, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 9,
+              "spawns": [
+                {"kind": "runner", "count": 20, "gapMs": 300},
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "flyer", "count": 8, "gapMs": 500}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-8",
+          "name": "Brood Hollow",
+          "mapId": "verdant-crossing",
+          "text": "Broodcallers resist magic and keep calling imps while they walk. Snipe the callers with archers before the swarm grows.",
+          "lives": 15,
+          "hpScale": 0.72,
+          "unlockAfter": "1-7",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 900},
+            {"type": "currency", "id": "heroXp", "amount": 450},
+            {"type": "currency", "id": "divineSeals", "amount": 50}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "broodcaller", "count": 1, "gapMs": 1500},
+                {"kind": "grunt", "count": 10, "gapMs": 550}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
+                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
+                {"kind": "grunt", "count": 8, "gapMs": 500}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "brute", "count": 5, "gapMs": 1100},
+                {"kind": "mender", "count": 3, "gapMs": 850},
+                {"kind": "archer", "count": 5, "gapMs": 850}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
+                {"kind": "runner", "count": 12, "gapMs": 400}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "flyer", "count": 14, "gapMs": 450},
+                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
+                {"kind": "grunt", "count": 12, "gapMs": 380}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
+                {"kind": "archer", "count": 8, "gapMs": 700},
+                {"kind": "runner", "count": 14, "gapMs": 350}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "brute", "count": 6, "gapMs": 900},
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "flyer", "count": 10, "gapMs": 480},
+                {"kind": "grunt", "count": 14, "gapMs": 320}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-9",
+          "name": "Eve of the Crossing",
+          "mapId": "sunscar-ruins",
+          "text": "Every enemy you have met comes at once, through both gates. Ten long waves test your whole squad; level your heroes if you fall short.",
+          "lives": 18,
+          "hpScale": 0.57,
+          "unlockAfter": "1-8",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 1000},
+            {"type": "currency", "id": "heroXp", "amount": 500},
+            {"type": "currency", "id": "divineSeals", "amount": 50}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 560}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "runner", "count": 12, "gapMs": 420},
+                {"kind": "flyer", "count": 6, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "brute", "count": 4, "gapMs": 1200},
+                {"kind": "mender", "count": 3, "gapMs": 850},
+                {"kind": "grunt", "count": 10, "gapMs": 480}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
+                {"kind": "archer", "count": 7, "gapMs": 800},
+                {"kind": "runner", "count": 10, "gapMs": 420}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
+                {"kind": "grunt", "count": 12, "gapMs": 420}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "brute", "count": 6, "gapMs": 950},
+                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
+                {"kind": "mender", "count": 3, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "archer", "count": 8, "gapMs": 700},
+                {"kind": "hexer", "count": 5, "gapMs": 850},
+                {"kind": "flyer", "count": 10, "gapMs": 450}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
+                {"kind": "brute", "count": 5, "gapMs": 1000},
+                {"kind": "runner", "count": 16, "gapMs": 320}
+              ]
+            },
+            {
+              "wave": 9,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 8, "gapMs": 650},
+                {"kind": "mender", "count": 4, "gapMs": 750},
+                {"kind": "flyer", "count": 12, "gapMs": 420},
+                {"kind": "grunt", "count": 14, "gapMs": 300}
+              ]
+            },
+            {
+              "wave": 10,
+              "spawns": [
+                {"kind": "brute", "count": 8, "gapMs": 800},
+                {"kind": "hexer", "count": 5, "gapMs": 800},
+                {"kind": "broodcaller", "count": 2, "gapMs": 1400},
+                {"kind": "runner", "count": 20, "gapMs": 280}
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1-10",
+          "name": "The Crossing",
+          "mapId": "verdant-crossing",
+          "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. Eleven waves and the chapter's final battle.",
+          "lives": 15,
+          "hpScale": 0.67,
+          "unlockAfter": "1-9",
+          "rewards": [
+            {"type": "currency", "id": "gold", "amount": 1100},
+            {"type": "currency", "id": "heroXp", "amount": 550},
+            {"type": "currency", "id": "divineSeals", "amount": 100},
+            {"type": "hero", "id": "poseidon"}
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {"kind": "grunt", "count": 14, "gapMs": 560}
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {"kind": "runner", "count": 12, "gapMs": 420},
+                {"kind": "flyer", "count": 6, "gapMs": 600}
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {"kind": "brute", "count": 5, "gapMs": 1100},
+                {"kind": "mender", "count": 3, "gapMs": 850},
+                {"kind": "grunt", "count": 10, "gapMs": 480}
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
+                {"kind": "archer", "count": 8, "gapMs": 780}
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {"kind": "hexer", "count": 4, "gapMs": 900},
+                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
+                {"kind": "runner", "count": 12, "gapMs": 400}
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {"kind": "brute", "count": 6, "gapMs": 950},
+                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
+                {"kind": "mender", "count": 3, "gapMs": 800}
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {"kind": "archer", "count": 8, "gapMs": 700},
+                {"kind": "hexer", "count": 5, "gapMs": 850},
+                {"kind": "flyer", "count": 10, "gapMs": 450}
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
+                {"kind": "brute", "count": 5, "gapMs": 1000},
+                {"kind": "runner", "count": 16, "gapMs": 320}
+              ]
+            },
+            {
+              "wave": 9,
+              "spawns": [
+                {"kind": "shieldbearer", "count": 8, "gapMs": 650},
+                {"kind": "mender", "count": 4, "gapMs": 750},
+                {"kind": "flyer", "count": 12, "gapMs": 420},
+                {"kind": "grunt", "count": 14, "gapMs": 300}
+              ]
+            },
+            {
+              "wave": 10,
+              "spawns": [
+                {"kind": "brute", "count": 8, "gapMs": 800},
+                {"kind": "hexer", "count": 5, "gapMs": 800},
+                {"kind": "archer", "count": 6, "gapMs": 750},
+                {"kind": "runner", "count": 18, "gapMs": 280}
+              ]
+            },
+            {
+              "wave": 11,
+              "spawns": [
+                {"kind": "boss", "count": 1, "gapMs": 1000},
+                {"kind": "grunt", "count": 14, "gapMs": 420},
+                {"kind": "flyer", "count": 10, "gapMs": 500}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

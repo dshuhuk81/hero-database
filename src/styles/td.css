@@ -112,39 +112,84 @@
 .td-panel--blessings.is-embedded { width: min(1180px, 100%); }
 .td-panel.is-embedded > .td-panel-head, .td-panel.is-embedded > .td-tabs { display: none; }
 
-/* Main menu: large Play over the battlefield art, the two mode cards, then smaller links.
-   Phones: one column, the art block takes the free height. Short landscape: Play left,
-   cards and links right (responsive block). Wide screens: art block and cards side by
-   side, links in one row underneath. */
+/* Main menu: the four mode cards in a 2x2 grid that takes the free height, then the
+   smaller links. Each card carries its own art (public/td/*.webp) under a scrim that
+   keeps the text readable. Wide screens: larger cards, links in one row underneath. */
 .td-home { display: flex; flex-direction: column; gap: var(--space-4); }
-.td-home > * { width: min(560px, 100%); flex: 0 0 auto; }
-.td-home-main { position: relative; isolation: isolate; flex: 1 1 auto; min-height: 200px; display: grid; align-content: end; gap: var(--space-4); justify-items: center; padding: var(--space-5) var(--space-4) var(--space-4); overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); text-align: center; }
-.td-home-main::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, color-mix(in srgb, var(--bg-base) 15%, transparent), color-mix(in srgb, var(--bg-base) 85%, transparent) 70%); }
-.td-home-art { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .6; }
-.td-home-best { display: grid; gap: 2px; justify-items: center; }
-.td-home-best span { color: var(--text-secondary); font-size: var(--td-fs-label); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-.td-home-best strong { color: var(--accent-gold); font-size: var(--td-fs-display); font-variant-numeric: tabular-nums; line-height: 1.1; }
-.td-home-best .td-perfect { color: var(--accent-gold); }
-.td-home-best .td-next-boost { color: var(--td-hp, var(--text-secondary)); font-size: var(--td-fs-body); text-transform: none; letter-spacing: 0; }
-.td-play-button { width: 100%; min-height: 64px; font-size: var(--text-xl); letter-spacing: var(--tracking-wide); }
-.td-home-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
-.td-home-card { display: grid; gap: 2px; align-content: start; min-height: 88px; padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
+.td-home > * { width: min(720px, 100%); flex: 0 0 auto; }
+.td-home-cards { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(140px, 1fr); gap: var(--space-3); }
+.td-home-card { --td-card-scrim: linear-gradient(to top, color-mix(in srgb, var(--bg-base) 90%, transparent) 20%, color-mix(in srgb, var(--bg-base) 20%, transparent) 80%); display: grid; gap: 2px; align-content: end; min-height: 140px; padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--td-card-scrim), var(--td-card-art, none) center / cover no-repeat, var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
 .td-home-card:hover { border-color: var(--border-strong); }
+.td-home-card--campaign { --td-card-art: url("/td/campaign.webp"); border-color: var(--accent-gold-dim); }
+.td-home-card--campaign:hover { border-color: var(--accent-gold); }
+.td-home-card--free { --td-card-art: url("/td/freeplay.webp"); }
+.td-home-card--daily { --td-card-art: url("/td/trials.webp"); }
+.td-home-card--expedition { --td-card-art: url("/td/expedition.webp"); }
+.td-home-card strong, .td-home-card small, .td-home-card .td-label { text-shadow: 0 1px 3px color-mix(in srgb, var(--bg-base) 80%, transparent); }
 .td-home-card strong { color: var(--text-bright); font-size: var(--td-fs-card); }
 .td-home-card small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-home-card [data-td-best] { color: var(--accent-gold); font-variant-numeric: tabular-nums; }
+.td-home-card [data-td-perfect] { color: var(--accent-gold); }
+.td-home-card [data-td-next-boost] { color: var(--td-hp, var(--text-secondary)); }
 .td-home-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .td-home-links .action-button { flex: 1 1 auto; padding: 0 var(--space-3); }
+@media (max-width: 420px) { .td-home-cards { gap: var(--space-2); } .td-home-card { padding: var(--space-2); } }
 @media (min-width: 1024px) and (min-height: 600px) {
-  .td-home { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr); grid-template-rows: minmax(360px, 640px) auto; grid-template-areas: "main cards" "links links"; align-content: center; gap: var(--space-4); padding-inline: max(var(--space-6), calc((100% - 1240px) / 2)); }
-  .td-home > * { width: auto; margin: 0; }
-  .td-home-main { grid-area: main; align-content: end; padding: var(--space-8); }
-  .td-play-button { width: min(420px, 100%); min-height: 76px; font-size: var(--text-2xl); }
-  .td-home-cards { grid-area: cards; grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-  .td-home-card { align-content: end; gap: var(--space-1); padding: var(--space-5); background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent-gold) 10%, transparent), transparent 60%), var(--surface-tint); }
-  .td-home-card + .td-home-card { background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent-purple) 14%, transparent), transparent 60%), var(--surface-tint); }
+  .td-home { justify-content: center; padding-inline: max(var(--space-6), calc((100% - 1240px) / 2)); }
+  .td-home > * { width: 100%; }
+  .td-home-cards { grid-auto-rows: minmax(200px, 1fr); gap: var(--space-4); }
+  .td-home-card { align-content: end; gap: var(--space-1); padding: var(--space-5); }
   .td-home-card strong { font-size: var(--text-xl); }
-  .td-home-links { grid-area: links; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .td-home-links { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
+
+/* Campaign (M26): stage list and squad picker */
+.td-camp-screen, .td-squad-screen { display: grid; align-content: start; gap: var(--space-4); width: min(960px, 100%); margin-inline: auto; }
+.td-camp-head { display: grid; gap: var(--space-1); }
+.td-camp-chapter { margin: 0; color: var(--text-bright); font-size: var(--td-fs-screen); }
+.td-camp-progress { margin: 0; color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-camp-stages { display: grid; gap: var(--space-3); }
+.td-camp-stage { display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: start; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
+.td-camp-stage:hover:not(:disabled), .td-camp-stage:focus-visible { border-color: var(--accent-gold); }
+.td-camp-stage.is-next { border-color: var(--accent-gold); box-shadow: 0 0 0 1px var(--accent-gold-dim); }
+.td-camp-stage.is-locked { cursor: not-allowed; opacity: .55; }
+.td-camp-stage-id { display: grid; place-items: center; height: 56px; border-radius: var(--radius-md); background: var(--bg-base); color: var(--accent-gold); font-size: var(--td-fs-card); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.td-camp-stage.is-cleared .td-camp-stage-id { background: color-mix(in srgb, var(--accent-gold) 18%, var(--bg-base)); }
+.td-camp-stage-copy { display: grid; gap: 2px; min-width: 0; }
+.td-camp-stage-copy strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-camp-stage-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-camp-stage-status { color: var(--accent-gold) !important; }
+.td-camp-wallet { margin: 0; color: var(--accent-gold); font-size: var(--td-fs-body); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.td-camp-heroes { display: grid; gap: var(--space-2); }
+.td-camp-hero { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); }
+.td-camp-hero > img { width: 48px; height: 48px; border-radius: var(--radius-md); object-fit: cover; }
+.td-camp-hero .td-card-copy { display: grid; gap: 2px; min-width: 0; }
+.td-camp-hero strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-camp-hero small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-camp-level { color: var(--accent-gold); font-size: var(--td-fs-label); }
+.td-camp-levelup { display: grid; gap: 0; min-height: 44px; padding: var(--space-1) var(--space-3); line-height: 1.2; }
+.td-camp-levelup small { font-size: var(--td-fs-label); color: inherit; opacity: .8; }
+.td-camp-maxed { color: var(--accent-gold); font-size: var(--td-fs-label); }
+.td-camp-levelup:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 480px) { .td-camp-hero { grid-template-columns: 40px minmax(0, 1fr); } .td-camp-hero > img { width: 40px; height: 40px; } .td-camp-levelup, .td-camp-maxed { grid-column: 1 / -1; } }
+/* Summon (M26): the reveal card of a newly summoned hero */
+.td-summon-reveal { display: grid; gap: var(--space-3); justify-items: center; }
+.td-summon-card { display: grid; grid-template-columns: 200px minmax(0, 1fr); align-items: center; gap: var(--space-4); width: min(560px, 100%); padding: var(--space-4); border: 1px solid var(--accent-gold); border-radius: var(--radius-lg); background: radial-gradient(circle at 25% 40%, color-mix(in srgb, var(--accent-gold) 22%, transparent), transparent 60%), var(--surface-tint); box-shadow: 0 0 0 1px var(--accent-gold-dim); animation: td-summon-in 420ms cubic-bezier(.2, .8, .2, 1.1) both; }
+.td-summon-art { display: grid; place-items: center; height: 280px; min-height: 0; overflow: hidden; }
+.td-summon-art img { width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.55)); }
+.td-summon-copy { display: grid; gap: var(--space-1); min-width: 0; }
+.td-summon-copy strong { display: flex; align-items: center; gap: var(--space-2); color: var(--text-bright); font-size: var(--td-fs-screen); }
+.td-summon-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-summon-copy .td-summon-title { color: var(--accent-gold); font-style: italic; }
+.td-summon-hint { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-3); width: min(560px, 100%); text-align: center; }
+.td-summon-hint p { margin: 0; color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+@keyframes td-summon-in { from { opacity: 0; transform: scale(.9); } }
+@media (max-width: 480px) { .td-summon-card { grid-template-columns: 1fr; justify-items: center; text-align: center; } .td-summon-art { width: 100%; height: 220px; } .td-camp-footer-note { display: none; } .td-summon-copy strong { justify-content: center; } }
+@media (prefers-reduced-motion: reduce) { .td-summon-card { animation: none; } }
+.td-squad-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-2); }
+.td-squad-hero { min-height: 60px; }
+.td-squad-hero.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 2px var(--accent-gold-dim); background: color-mix(in srgb, var(--accent-gold) 10%, var(--surface-tint)); }
+.td-squad-hero.is-unavailable { opacity: .45; }
 
 /* Difficulty and run length */
 .td-mode-screen { display: grid; align-content: start; gap: var(--space-5); }
@@ -819,15 +864,16 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
   .td-sheet, .td-sheet.is-left { top: var(--space-2); bottom: var(--space-2); max-height: none; width: min(300px, 55%); }
   .td-sheet { left: auto; right: var(--space-2); }
   .td-sheet.is-left { right: auto; left: var(--space-2); }
-  /* Menu screens: slimmer bars; the main menu sets Play beside the cards and links. */
+  /* Menu screens: slimmer bars; the main menu sets the links beside the mode cards. */
   .td-appbar { min-height: 48px; padding-block: var(--space-1); }
   .td-screen-body { padding: var(--space-3) var(--space-4); }
   .td-screen-footer { padding-block: var(--space-2); }
-  .td-home { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; gap: var(--space-3) var(--space-4); }
+  .td-home { display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, 220px); gap: var(--space-3); }
   .td-home > * { width: auto; margin: 0; }
-  .td-home-main { grid-row: span 2; min-height: 0; padding: var(--space-3); gap: var(--space-3); }
-  .td-home-card { align-content: end; }
-  .td-home-best strong { font-size: var(--text-2xl); }
+  .td-home-cards { grid-auto-rows: minmax(0, 1fr); gap: var(--space-2); }
+  .td-home-card { min-height: 0; padding: var(--space-2) var(--space-3); }
+  .td-home-links { flex-direction: column; flex-wrap: nowrap; justify-content: center; }
+  .td-home-links .action-button { flex: 0 0 auto; }
   .td-blessing-modal-inner { padding: var(--space-3); }
   .td-blessing-modal-note { margin-bottom: var(--space-3); }
   .td-boon-row .td-boon { padding: var(--space-3) var(--space-2) var(--space-2); gap: var(--space-1); }

@@ -38,6 +38,7 @@ import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type RunBoost } from "./save";
 import { finishDaily } from "./daily";
 import { finishExpeditionStage } from "./expedition";
+import { finishCampaignRun } from "./campaign";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 
 type ShardChoice = "favor" | "gold" | "virtue";
@@ -184,34 +185,37 @@ export function createResults(ctx: PageContext) {
     // Endless mutators (M15): each wave cleared with them pays their Favor share extra.
     const tierFavor = data.tuning.tiers?.[game.tier]?.favor ?? 1;
     const mutatorFavor = (game.mutatorWaves ?? 0) * data.tuning.favorEarn.perWave;
-    const earnedFavor = Math.round((computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
-    const earnedInsight = (session.debug ? {} : computeInsight(game.insightLog)) as Record<string, number>;
+    // Campaign stages (M26) have their own progression: no Favor, Insight, bests, challenges or shard.
+    const campaign = session.campaign;
+    const earnedFavor = campaign ? 0 : Math.round((computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
+    const earnedInsight = (session.debug || campaign ? {} : computeInsight(game.insightLog)) as Record<string, number>;
     const key = runKey(map.id, game.mode, game.tier);
     // Daily Trial (M19) runs keep their own per-day record instead of the map's endless bests.
     const daily = session.daily;
     const expedition = session.expedition;
-    const prevRun = daily || expedition ? null : saved.mapBests[key] || null;
+    const prevRun = daily || expedition || campaign ? null : saved.mapBests[key] || null;
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
-      : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won } : null;
-    // Challenges (M20): stored and paid only for non-debug runs; persisted with the run below.
-    const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug);
+      : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
+      : campaign ? (({ text, won }) => ({ text, reached: won, reward: 0 }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
+    // Challenges (M20): stored and paid only for non-debug, non-campaign runs; persisted with the run below.
+    const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
       if (game.perfect) saved.perfectDefense = true;
       // bestScore/bestWave stay the classic record; other modes keep theirs in mapTop.
-      if (game.mode === "classic" && game.tier === "normal") {
+      if (game.mode === "classic" && game.tier === "normal" && !campaign) {
         saved.bestScore = Math.max(saved.bestScore, game.score);
         saved.bestWave = Math.max(saved.bestWave, game.wave);
       }
       saved.favor = (saved.favor || 0) + earnedFavor;
       for (const [cls, points] of Object.entries(earnedInsight)) saved.insight[cls] = (saved.insight[cls] || 0) + points;
-      if (shardEligible(game.wave, data.tuning)) {
+      if (shardEligible(game.wave, data.tuning) && !campaign) {
         const virtues = Object.keys(data.tuning.virtueEffects || {});
         shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, virtue: virtues[Math.floor(Math.random() * virtues.length)], choice: "favor", previousBoost: saved.nextRunBoost };
         saved.favor += shard.favor;
       }
       const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
-      if (!daily && !expedition) {
+      if (!daily && !expedition && !campaign) {
         saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
         const top = saved.mapTop[key];
         if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
@@ -227,8 +231,9 @@ export function createResults(ctx: PageContext) {
     // An Expedition stage is final (M21): no Retry; Continue leads back to the camp or the menu.
     q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition;
     const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
-    continueButton.hidden = !expedition;
-    continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp" : "Continue";
+    continueButton.hidden = !expedition && !campaign;
+    continueButton.dataset.tdToLobby = campaign ? "campaign" : "expedition";
+    continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp" : campaign ? "Campaign" : "Continue";
     q("[data-td-result-menu]").hidden = !!expedition;
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
@@ -236,8 +241,9 @@ export function createResults(ctx: PageContext) {
     const tierName = data.tuning.tiers?.[game.tier]?.label ?? game.tier;
     const context = daily ? `Daily Trial ${daily.date}`
       : expedition ? `Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}`
+      : campaign ? `Campaign stage ${campaign.stageId}`
       : ({ classic: "10 waves", long: "20 waves", endless: "Endless" } as Record<string, string>)[game.mode] ?? game.mode;
-    q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" || (!daily && !expedition) ? tierName : ""].filter(Boolean).join(" - ");
+    q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" || (!daily && !expedition && !campaign) ? tierName : ""].filter(Boolean).join(" - ");
     const dailyEl = q("[data-td-result-daily]");
     dailyEl.hidden = !dailyRun;
     dailyEl.textContent = dailyRun?.text ?? "";
@@ -281,13 +287,14 @@ export function createResults(ctx: PageContext) {
     // Achievements are the map's challenges (M20) this run completed; new clears are highlighted.
     const achieveEl = q("[data-td-result-achievements]");
     achieveEl.innerHTML = challengeResultHtml(challengeRun);
-    achieveEl.hidden = !achieveEl.innerHTML;
+    achieveEl.hidden = !achieveEl.innerHTML || !!campaign;
 
     const favorEl = q("[data-td-result-favor]");
     rewards = [{ label: "Run", favor: earnedFavor }, { label: "Challenges", favor: challengeRun.favor }];
     if (daily) rewards.push({ label: "Daily first clear", favor: dailyRun?.reward ?? 0 });
     if (expedition) rewards.push({ label: "Expedition complete", favor: dailyRun?.reward ?? 0 });
     if (session.debug) favorEl.innerHTML = `<p class="td-result-favor-note">Debug run: score, bests and Favor were not recorded.</p>`;
+    else if (campaign) favorEl.innerHTML = `<p class="td-result-favor-note">Campaign stages build campaign progress (heroes, unlocked stages) instead of Favor.</p>`;
     else if (shard) { renderFavorLine(); renderShards(); }
     else renderFavorLine(data.tuning.shards ? `Reach wave ${data.tuning.shards.minWave} to earn a shard.` : "");
     favorEl.hidden = false;

@@ -37,7 +37,7 @@
     "build:hero-variants": "node scripts/create-hero-image-variants.mjs",
     "prepare-hero-variants": "npm run sync:r2-heroes-down && npm run build:hero-variants",
     "build:game-balance": "node scripts/build-game-balance.mjs",
-    "test:tower-defense": "node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-skin.mjs && node scripts/test-td-save.mjs && node scripts/test-td-sim.mjs && node scripts/test-td-daily.mjs && node scripts/test-td-challenges.mjs && node scripts/test-td-expedition.mjs",
+    "test:tower-defense": "node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-skin.mjs && node scripts/test-td-save.mjs && node scripts/test-td-sim.mjs && node scripts/test-td-daily.mjs && node scripts/test-td-challenges.mjs && node scripts/test-td-expedition.mjs && node scripts/test-td-campaign.mjs && node scripts/test-td-summon.mjs",
     "test:td-balance": "node scripts/test-td-balance.mjs",
     "td:sweep": "node scripts/td-balance-sweep.mjs",
     "td:classes": "node scripts/td-classes.mjs",

@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { findNode, nodeSpent } from "../src/game/td/favor.js";
 import { availableFavor, availableInsight, emptySave, encodeSaveCode, modeBest, parseSaveText, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX } from "../src/game/td/page/save.ts";
 
-const rules = { heroIds: new Set(["zeus", "nuwa", "diana"]) };
+import heroes from "../src/data/gameBalance.json" with { type: "json" };
+
+const rules = { heroIds: new Set(heroes.map((hero) => hero.id)) };
 
 // Not a save: rejected.
 assert.equal(sanitizeSave(null, rules), null, "null rejected");

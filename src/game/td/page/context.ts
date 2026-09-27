@@ -5,6 +5,7 @@
 import type { createPauseController } from "../ui.js";
 import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
 import type { DailySetup } from "./daily";
+import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
 import type { ScreenId } from "./nav";
 
@@ -24,6 +25,7 @@ export type Session = {
   debug: boolean;
   daily: DailySetup | null; // Daily Trial setup (M19) when this run is the trial
   expedition: ExpeditionState | null; // Expedition state (M21) this stage was started from
+  campaign: CampaignRun | null; // Campaign stage and squad (M26) when this run is a campaign stage
 };
 
 // Mutable UI state shared between modules.
@@ -39,7 +41,7 @@ export type PageState = {
 
 export type PageActions = {
   // session.ts
-  startSession(map: any, options?: { daily?: DailySetup | null; expedition?: ExpeditionState | null }): void;
+  startSession(map: any, options?: { daily?: DailySetup | null; expedition?: ExpeditionState | null; campaign?: CampaignRun | null }): void;
   toLobby(target?: ScreenId): void; // ends the run; target defaults to where it was started from
   handleChange(type: string): void;
   spaceBelowMap(): number;

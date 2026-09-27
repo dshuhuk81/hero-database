@@ -5,11 +5,11 @@
 // stays in the game and opens its menu instead (deps.onGameBack).
 import type { PageContext } from "./context";
 
-export type ScreenId = "home" | "maps" | "mode" | "daily" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
+export type ScreenId = "home" | "campaign" | "squad" | "heroes" | "summon" | "maps" | "mode" | "daily" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
 
 // One level up when there is no history entry to go back to (for example after a reload).
 const PARENT: Record<ScreenId, ScreenId> = {
-  home: "home", maps: "home", mode: "maps", daily: "home", expedition: "home", blessings: "home",
+  home: "home", campaign: "home", squad: "campaign", heroes: "campaign", summon: "campaign", maps: "home", mode: "maps", daily: "home", expedition: "home", blessings: "home",
   help: "home", settings: "home", save: "settings", glossary: "home", play: "home",
 };
 const isScreen = (value: unknown): value is ScreenId => typeof value === "string" && value in PARENT;
@@ -88,7 +88,7 @@ export function createNav(ctx: PageContext, deps: { onShow(id: ScreenId): void; 
   // map select for a normal run, the Daily Trial or Expedition screen for those).
   function exitPlay(target?: ScreenId) {
     const below = current === "play" && index > 0 ? stack[index - 1] : undefined;
-    go(target ?? (below === "mode" ? "maps" : below && below !== "play" ? below : "home"));
+    go(target ?? (below === "mode" ? "maps" : below === "squad" ? "campaign" : below && below !== "play" ? below : "home"));
   }
 
   function back() {

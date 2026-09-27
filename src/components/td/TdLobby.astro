@@ -52,23 +52,23 @@ const modes = [
     <!-- 1. Main menu -->
     <section class="td-screen td-screen--home" data-td-screen="home" data-title="Tower Defense" aria-label="Main menu">
       <div class="td-screen-body td-home">
-        <div class="td-home-main">
-          {previews[0]?.art && <img class="td-home-art" src={previews[0].art.terrain} alt="" width="960" height="540" decoding="async" />}
-          <div class="td-home-best" aria-label="Personal best">
-            <span>Personal best</span>
-            <strong data-td-best>0</strong>
-            <span class="td-perfect" data-td-perfect hidden>Perfect defense</span>
-            <span class="td-next-boost" data-td-next-boost hidden></span>
-          </div>
-          <button class="action-button action-button--primary td-play-button" type="button" data-td-go="maps" data-td-play-start data-td-autofocus>Play</button>
-        </div>
         <div class="td-home-cards">
-          <button class="td-home-card" type="button" data-td-go="daily">
+          <button class="td-home-card td-home-card--campaign" type="button" data-td-go="campaign" data-td-autofocus>
+            <span class="td-label">Campaign</span>
+            <strong data-td-camp-summary-title>Stage 1-1</strong>
+            <small data-td-camp-summary></small>
+          </button>
+          <button class="td-home-card td-home-card--free" type="button" data-td-go="maps">
+            <span class="td-label">Free Play</span>
+            <strong>Best <span data-td-best>0</span></strong>
+            <small>Any battlefield, any run length.<span data-td-perfect hidden> Perfect defense.</span> <span data-td-next-boost hidden></span></small>
+          </button>
+          <button class="td-home-card td-home-card--daily" type="button" data-td-go="daily">
             <span class="td-label">Daily Trial</span>
             <strong data-td-daily-summary-map>Today's battlefield</strong>
             <small data-td-daily-summary></small>
           </button>
-          <button class="td-home-card" type="button" data-td-go="expedition">
+          <button class="td-home-card td-home-card--expedition" type="button" data-td-go="expedition">
             <span class="td-label">Expedition</span>
             <strong data-td-exp-summary-title>Start</strong>
             <small data-td-exp-summary></small>
@@ -81,6 +81,67 @@ const modes = [
           <button class="action-button action-button--quiet" type="button" data-td-go="settings">Settings</button>
           <a class="action-button action-button--quiet" href="/">Exit to database</a>
         </nav>
+      </div>
+    </section>
+
+    <!-- 1b. Campaign (M26): src/game/td/page/campaign.ts, stages in src/data/tdCampaign.json -->
+    <section class="td-screen" data-td-screen="campaign" data-title="Campaign" aria-label="Campaign" hidden>
+      <div class="td-screen-body td-camp-screen">
+        <div class="td-camp-head">
+          <h2 class="td-camp-chapter" data-td-camp-chapter>Chapter 1</h2>
+          <p class="td-camp-progress" data-td-camp-progress></p>
+          <p class="td-camp-wallet" data-td-camp-wallet></p>
+        </div>
+        <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
+      </div>
+      <div class="td-screen-footer">
+        <p class="td-screen-footer-note td-camp-footer-note">Gold and Hero XP level your heroes, Divine Seals summon new ones.</p>
+        <button class="action-button action-button--quiet" type="button" data-td-go="summon">Summon</button>
+        <button class="action-button action-button--primary" type="button" data-td-go="heroes">Heroes</button>
+      </div>
+    </section>
+
+    <!-- 1e. Summon (M26): one banner, Divine Seals buy a hero the player does not own yet;
+         banner in src/data/tdSummon.json, screen in src/game/td/page/campaign.ts -->
+    <section class="td-screen" data-td-screen="summon" data-title="Summon" aria-label="Summon" hidden>
+      <div class="td-screen-body td-camp-screen">
+        <div class="td-camp-head">
+          <h2 class="td-camp-chapter" data-td-summon-banner>Summon</h2>
+          <p class="td-camp-progress" data-td-summon-copy></p>
+          <p class="td-camp-wallet" data-td-summon-wallet></p>
+        </div>
+        <div class="td-summon-reveal" data-td-summon-reveal hidden></div>
+      </div>
+      <div class="td-screen-footer">
+        <p class="td-screen-footer-note" data-td-summon-note></p>
+        <button class="action-button action-button--primary" type="button" data-td-summon-button data-td-autofocus>Summon</button>
+      </div>
+    </section>
+
+    <!-- 1d. Campaign heroes: levels (M26) -->
+    <section class="td-screen" data-td-screen="heroes" data-title="Heroes" aria-label="Heroes" hidden>
+      <div class="td-screen-body td-camp-screen">
+        <div class="td-camp-head">
+          <h2 class="td-camp-chapter">Your heroes</h2>
+          <p class="td-camp-progress">Each level adds 6% attack and health in campaign stages. Free Play, the Daily Trial and the Expedition are not affected.</p>
+          <p class="td-camp-wallet" data-td-camp-wallet></p>
+        </div>
+        <div class="td-camp-heroes" data-td-camp-heroes></div>
+      </div>
+    </section>
+
+    <!-- 1c. Squad for a campaign stage (M26) -->
+    <section class="td-screen" data-td-screen="squad" data-title="Choose your squad" aria-label="Choose your squad" hidden>
+      <div class="td-screen-body td-squad-screen">
+        <div class="td-camp-head">
+          <h2 class="td-camp-chapter" data-td-squad-stage>Stage</h2>
+          <p class="td-camp-progress" data-td-squad-copy></p>
+        </div>
+        <div class="td-squad-list" role="group" aria-label="Heroes" data-td-squad-list></div>
+      </div>
+      <div class="td-screen-footer">
+        <p class="td-screen-footer-note" data-td-squad-count></p>
+        <button class="action-button action-button--primary" type="button" data-td-squad-start data-td-autofocus>Start</button>
       </div>
     </section>
 

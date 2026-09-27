@@ -1,0 +1,122 @@
+// Campaign (M26): stage data is valid, unlocks and first-clear rewards follow the rules,
+// the save section migrates, and every stage is winnable with heroes the player can own.
+import assert from "node:assert/strict";
+import campaign from "../src/data/tdCampaign.json" with { type: "json" };
+import heroes from "../src/data/gameBalance.json" with { type: "json" };
+import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import { allStages, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, finishCampaignStage, heroLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { playRun, maps } from "./lib/td-runner.mjs";
+
+const heroIds = new Set(heroes.map((hero) => hero.id));
+const enemyKinds = new Set([...Object.keys(tuning.enemies), "boss"]);
+const stages = allStages(campaign);
+
+// --- Data ---
+assert.ok(campaign.squadSize >= 1, "squad size");
+assert.ok(campaign.starters.length >= campaign.squadSize && campaign.starters.every((id) => heroIds.has(id)), "starters exist and fill a squad");
+assert.equal(new Set(stages.map((stage) => stage.id)).size, stages.length, "stage ids unique");
+stages.forEach((stage, i) => {
+  assert.ok(maps.some((map) => map.id === stage.mapId), `${stage.id}: map exists`);
+  assert.ok(stage.waves.length >= 1 && stage.waves.every((wave) => wave.spawns.every((group) => enemyKinds.has(group.kind) && group.count > 0)), `${stage.id}: waves use known enemies`);
+  assert.ok(stage.lives >= 1, `${stage.id}: lives`);
+  assert.equal(stage.unlockAfter, i === 0 ? null : stages[i - 1].id, `${stage.id}: unlocks after the previous stage`);
+  assert.ok(["gold", "heroXp", "divineSeals"].every((id) => stage.rewards.some((reward) => reward.type === "currency" && reward.id === id && reward.amount > 0)), `${stage.id}: first clear pays gold, hero XP and Divine Seals`);
+  assert.ok(stage.rewards.filter((reward) => reward.type === "hero").length <= 1, `${stage.id}: at most one reward hero`);
+  for (const reward of stage.rewards) if (reward.type === "hero") assert.ok(heroIds.has(reward.id) && !campaign.starters.includes(reward.id), `${stage.id}: reward hero ${reward.id} exists and is not a starter`);
+});
+
+// --- Rules ---
+{
+  let p = newCampaignProgress(campaign);
+  assert.deepEqual(p.owned, campaign.starters, "starts with the starters");
+  assert.equal(nextStage(campaign, p).id, stages[0].id, "first stage suggested");
+  assert.ok(isUnlocked(p, stages[0]) && !isUnlocked(p, stages[1]), "only the first stage is open");
+  assert.ok(validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize)), "owned squad valid");
+  assert.ok(!validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize + 1)), "too many heroes");
+  assert.ok(!validSquad(campaign, p, [stages[0].rewards.find((reward) => reward.type === "hero").id]), "locked hero not allowed");
+  assert.ok(!validSquad(campaign, p, []), "empty squad");
+  const lost = finishCampaignStage(campaign, p, stages[0].id, { won: false, lives: 0 });
+  assert.equal(lost.progress, p, "a loss changes nothing");
+  const won = finishCampaignStage(campaign, p, stages[0].id, { won: true, lives: 12 });
+  const rewardHero = stages[0].rewards.find((reward) => reward.type === "hero").id;
+  const gold = stages[0].rewards.find((reward) => reward.id === "gold").amount;
+  assert.ok(won.firstClear && won.unlocked.id === stages[1].id, "first clear unlocks");
+  p = won.progress;
+  assert.ok(p.owned.includes(rewardHero) && isUnlocked(p, stages[1]), "reward hero owned, next stage open");
+  assert.equal(p.currencies.gold, gold, "first clear pays its gold");
+  assert.equal(pendingRewards(stages[0], p).some((reward) => reward.type === "hero"), false, "hero reward only once");
+  const again = finishCampaignStage(campaign, p, stages[0].id, { won: true, lives: 18 });
+  assert.ok(!again.firstClear && again.granted.every((reward) => reward.type === "currency"), "replay pays currencies only");
+  assert.deepEqual(again.granted, repeatRewards(campaign, stages[0]), "replay pays the repeat share");
+  assert.equal(again.progress.currencies.gold, gold + Math.round(gold * campaign.repeatShare), "replay gold added");
+  assert.deepEqual(again.progress.cleared[stages[0].id], { clears: 2, bestLives: 18 }, "clears and best lives tracked");
+  const options = stageGameOptions(stages[0], ["demeter"], 7);
+  assert.deepEqual([options.mode, options.allowedHeroes, options.lives, options.waves], ["classic", ["demeter"], stages[0].lives, stages[0].waves], "game options");
+}
+
+// --- Hero levels ---
+{
+  let p = { ...newCampaignProgress(campaign), currencies: { gold: 10000, heroXp: 10000 } };
+  const id = campaign.starters[0];
+  assert.deepEqual(levelUpCost(campaign, 1), { gold: campaign.heroLevels.cost.gold.base, heroXp: campaign.heroLevels.cost.heroXp.base }, "level 1 -> 2 cost");
+  assert.equal(levelUp(campaign, newCampaignProgress(campaign), id), null, "no level up without currencies");
+  assert.equal(levelUp(campaign, p, "zeus"), null, "only owned heroes level up");
+  for (let i = 1; i < campaign.heroLevels.max; i += 1) p = levelUp(campaign, p, id);
+  assert.equal(heroLevel(p, id), campaign.heroLevels.max, "levels up to the cap");
+  assert.ok(!canLevelUp(campaign, p, id) && levelUpCost(campaign, campaign.heroLevels.max) === null, "capped");
+  const scaled = campaignHeroes(campaign, p, heroes).find((hero) => hero.id === id);
+  const base = heroes.find((hero) => hero.id === id);
+  assert.equal(scaled.atk, Math.round(base.atk * (1 + campaign.heroLevels.statPerLevel * (campaign.heroLevels.max - 1))), "level scales attack");
+  assert.equal(campaignHeroes(campaign, p, heroes).find((hero) => hero.id === "zeus"), heroes.find((hero) => hero.id === "zeus"), "level 1 heroes unchanged");
+}
+
+// --- Save section ---
+{
+  assert.deepEqual(sanitizeCampaign(undefined, campaign, heroIds), newCampaignProgress(campaign), "missing section: fresh progress");
+  const clean = sanitizeCampaign({ owned: ["zeus", "ghost"], cleared: { "1-1": { clears: "2", bestLives: 9 }, "9-9": { clears: 1 } }, lastSquad: ["zeus", "ghost", "nyx"] }, campaign, heroIds);
+  assert.deepEqual(clean.owned, [...campaign.starters, "zeus"], "starters kept, unknown heroes dropped");
+  assert.deepEqual(clean.cleared, { "1-1": { clears: 2, bestLives: 9 } }, "unknown stages dropped");
+  assert.deepEqual(clean.lastSquad, ["zeus"], "last squad only owned heroes");
+  const v1 = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared: {}, lastSquad: [] }, campaign, heroIds);
+  const zero = Object.fromEntries(CURRENCIES.map((id) => [id, 0]));
+  assert.deepEqual([v1.version, v1.currencies, v1.levels], [CAMPAIGN_SAVE_VERSION, zero, {}], "version 1 saves migrate: no currencies, level 1");
+  const paid = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared: { [stages[0].id]: { clears: 3, bestLives: 5 } } }, campaign, heroIds);
+  assert.equal(paid.currencies.gold, stages[0].rewards.find((reward) => reward.id === "gold").amount, "version 1 clears are paid once on migration");
+  assert.equal(sanitizeCampaign(paid, campaign, heroIds).currencies.gold, paid.currencies.gold, "not paid again");
+  const levels = sanitizeCampaign({ owned: ["zeus"], levels: { zeus: 99, demeter: 3, ghost: 4, nyx: 2 }, currencies: { gold: "40", heroXp: -5, gems: 9 } }, campaign, heroIds);
+  assert.deepEqual([levels.levels, levels.currencies], [{ zeus: campaign.heroLevels.max, demeter: 3 }, { ...zero, gold: 40 }], "levels capped, only owned heroes; currencies cleaned");
+}
+
+// --- Winnable: every stage, with the heroes owned by then at the level the chapter's
+// first-clear currencies buy (spread evenly over all owned heroes), has winning squads
+// (bot, fixed seeds). At most SAMPLE squads per stage, evenly spread over all 4-hero
+// combinations, keep the check fast. Below 20% a stage counts as too hard. ---
+{
+  const SAMPLE = 35;
+  const cost = Object.fromEntries(heroes.map((hero) => [hero.id, hero.cost]));
+  const combos = (list, k) => (k === 0 ? [[]] : list.flatMap((x, i) => combos(list.slice(i + 1), k - 1).map((c) => [x, ...c])));
+  const sample = (list, n) => (list.length <= n ? list : Array.from({ length: n }, (_, i) => list[Math.floor((i * list.length) / n)]));
+  // Expected levels: level the lowest owned hero while the currencies last.
+  const spendEvenly = (progress) => {
+    for (;;) {
+      const lowest = [...progress.owned].sort((a, b) => heroLevel(progress, a) - heroLevel(progress, b))[0];
+      const next = levelUp(campaign, progress, lowest);
+      if (!next) return progress;
+      progress = next;
+    }
+  };
+  let progress = newCampaignProgress(campaign);
+  for (const stage of stages) {
+    const leveled = spendEvenly(progress);
+    const runHeroes = campaignHeroes(campaign, leveled, heroes);
+    const levels = leveled.owned.map((id) => heroLevel(leveled, id));
+    const map = maps.find((entry) => entry.id === stage.mapId);
+    const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
+    const wins = squads.filter((squad, i) => playRun([...squad].sort((a, b) => cost[a] - cost[b]), i + 1, map, { game: stageGameOptions(stage, squad, i + 1, runHeroes) }).won).length;
+    const rate = wins / squads.length;
+    console.log(`  ${stage.id}: ${wins}/${squads.length} squads win (${leveled.owned.length} heroes, level ${Math.min(...levels)}-${Math.max(...levels)})`);
+    assert.ok(rate >= 0.2, `${stage.id}: too hard (${wins}/${squads.length} squads win)`);
+    progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
+  }
+}
+console.log("Tower defense campaign checks passed.");
