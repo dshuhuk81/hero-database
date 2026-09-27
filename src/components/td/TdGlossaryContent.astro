@@ -157,7 +157,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
     <section aria-labelledby={id("hero-attrs")}>
       <Section class="td-glossary-heading" id={id("hero-attrs")}>Attributes</Section>
       <dl class="td-glossary-terms">
-        <div><dt>Road / Platform</dt><dd>Where the hero stands. Road heroes (gold rings) block ground enemies and can fall. Platform heroes (purple rings) are never attacked and are the only ones that reach flyers.</dd></div>
+        <div><dt>Road / Platform</dt><dd>Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers.</dd></div>
         <div><dt>Cost</dt><dd>Gold to deploy the hero. Selling returns half of everything spent on it.</dd></div>
         <div><dt>Health</dt><dd>Damage a hero takes before it falls. A fallen hero can be recruited again at level 1.</dd></div>
         <div><dt>Attack</dt><dd>Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it.</dd></div>

@@ -54,7 +54,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const canvas = document.createElement("canvas");
     canvas.className = "td-canvas";
     canvas.tabIndex = 0;
-    canvas.setAttribute("aria-label", `${map.name} battlefield. Use the left and right arrow keys to choose a ring, then Enter to use it.`);
+    canvas.setAttribute("aria-label", `${map.name} battlefield. Use the arrow keys to choose a tile, then Enter to use it.`);
     stageEl.prepend(canvas);
     loadingCanvas = canvas;
 
@@ -97,7 +97,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${expedition.lives} lives.` : "";
-    ctx.notice(`Tap a ring on ${map.name} to deploy a hero.${boostText}${dailyText}`);
+    ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${boostText}${dailyText}`);
   }
 
   function end() {
@@ -139,7 +139,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (type === "death") {
       const fallen = game.fallenHeroes.at(-1);
       const hero = fallen && heroById.get(fallen.id);
-      if (hero) ctx.notice(`${hero.name} has fallen. Tap the empty ring or the deck to redeploy.`);
+      if (hero) ctx.notice(`${hero.name} has fallen. Tap an empty tile or the deck to redeploy.`);
     }
     if (type === "revive" && game.lastRevive) {
       const revived = heroById.get(game.lastRevive.heroId);

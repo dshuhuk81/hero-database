@@ -53,7 +53,9 @@ import maps from "../src/data/tdMaps.json" with { type: "json" };
   const [a, b] = [map.roadSlots[2], map.roadSlots[3]];
   const nearA = { x: a[0] + (b[0] - a[0]) * 0.2, y: a[1] + (b[1] - a[1]) * 0.2 };
   assert.deepEqual({ ...nearestSlot(map, nearA, 60), distance: 0 }, { type: "road", index: 2, distance: 0 }, "nearest ring wins");
-  assert.ok(minSlotGap > 60, "max radius smaller than ring spacing");
+  // Tiles (M22b) sit edge to edge, closer than the hit radius; nearest wins, so a tap
+  // always picks the tile it lands in.
+  assert.ok(minSlotGap >= 52, "tiles do not overlap");
 }
 
 // --- placePopover: all four edges ---

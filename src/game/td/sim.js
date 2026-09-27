@@ -179,7 +179,9 @@ export class TowerDefenseGame {
     if (this.allowedHeroes && !this.allowedHeroes.has(heroId)) return false;
     if (this.heroes.some((hero) => hero.id === heroId)) return false;
     if (this.heroes.some((hero) => hero.slotType === slotType && hero.slotIndex === slotIndex)) return false;
-    // No team cap: free rings and gold are the only limits. `team` records who was fielded.
+    // Deploy cap (M22b): with a tile on every step of the road, the number of heroes on the
+    // field is the limit, not the tiles. `team` records who was fielded.
+    if (this.heroes.length >= this.deployCap()) return false;
     const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
     if (!slot) return false;
     if (!this.team.includes(heroId)) {
@@ -975,8 +977,14 @@ export class TowerDefenseGame {
     return alive[0] ?? null;
   }
 
+  // Heroes allowed on the field at once (tuning.run.deployCap).
+  deployCap() {
+    return this.tuning.run.deployCap ?? Infinity;
+  }
+
   // Removes and returns the newest fallen entry that can be revived, or null.
   takeRevivableFallen() {
+    if (this.heroes.length >= this.deployCap()) return null;
     for (let i = this.fallenHeroes.length - 1; i >= 0; i -= 1) {
       const entry = this.fallenHeroes[i];
       const onField = this.heroes.some((h) => h.id === entry.id);

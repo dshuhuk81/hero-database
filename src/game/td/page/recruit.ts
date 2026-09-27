@@ -1,4 +1,4 @@
-// Recruitment sheet (opens from an empty ring) and battlefield input. Pointer,
+// Recruitment sheet (opens from an empty tile) and battlefield input. Pointer,
 // touch and keyboard all go through activateSlot.
 import { classIconImg, tdAsset } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
@@ -49,7 +49,7 @@ export function createRecruit(ctx: PageContext) {
     game.focusedSlot = slot;
     const road = slot.type === "road";
     const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
-    sheetKicker.textContent = `${road ? "Road" : "Platform"} ring ${slot.index + 1}${ring ? ` - ${ring.name}` : ""}`;
+    sheetKicker.textContent = `${road ? "Road" : "Platform"} tile - heroes ${game.heroes.length}/${game.deployCap()}${ring ? ` - ${ring.name}` : ""}`;
     sheetNote.textContent = (ring ? `${ring.name}: ${ring.text} ` : "") + (road
       ? "Tanks hold the line, Warriors cleave groups, Assassins catch enemies that slip through."
       : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.");
@@ -81,7 +81,8 @@ export function createRecruit(ctx: PageContext) {
       const hero = heroById.get(button.dataset.placeHero!);
       const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
       const affordable = game.gold >= hero.cost;
-      const reason = deployed ? "Already deployed" : !affordable ? `Needs ${hero.cost} gold` : "";
+      const full = game.heroes.length >= game.deployCap();
+      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : !affordable ? `Needs ${hero.cost} gold` : "";
       button.disabled = !!reason || game.complete;
       button.classList.toggle("is-unavailable", !!reason);
       button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason ? `${hero.cost} gold - ${reason}` : `${hero.class} - ${hero.cost} gold`;
@@ -106,11 +107,12 @@ export function createRecruit(ctx: PageContext) {
     if (occupant) { ctx.actions.selectUnit(occupant); return; }
     if (state.deployHeroId) {
       const hero = heroById.get(state.deployHeroId);
-      if (hero.slot !== slot.type) { ctx.notice(`${hero.name} needs a ${hero.slot} ring.`); return; }
+      if (hero.slot !== slot.type) { ctx.notice(`${hero.name} needs a ${hero.slot} tile.`); return; }
       if (game.place(hero.id, slot.type, slot.index)) { ctx.notice(`${hero.name} redeployed.`); ctx.actions.cancelDeploy(); }
-      else ctx.notice(game.gold < hero.cost ? `Needs ${hero.cost} gold to redeploy ${hero.name}.` : "Your team is full.");
+      else ctx.notice(game.gold < hero.cost ? `Needs ${hero.cost} gold to redeploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
       return;
     }
+    if (game.heroes.length >= game.deployCap()) { ctx.notice(`Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`); return; }
     open(slot);
   }
 
@@ -136,14 +138,31 @@ export function createRecruit(ctx: PageContext) {
     canvas.addEventListener("pointerleave", () => { if (state.deployHeroId) game.uiPlacement = null; });
     canvas.addEventListener("focus", () => { if (!state.pendingSlot) game.focusedSlot = keyboardSlots[keyboardIndex]; });
     canvas.addEventListener("blur", () => { if (!state.pendingSlot) game.focusedSlot = null; });
+    const tileAt = (slot: Slot) => (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
+    // Arrow keys move to the nearest tile in that direction (tiles line the road, M22b).
+    const step = (dx: number, dy: number) => {
+      const [x, y] = tileAt(keyboardSlots[keyboardIndex]);
+      let best = -1, bestScore = Infinity;
+      keyboardSlots.forEach((slot, i) => {
+        const [tx, ty] = tileAt(slot);
+        const along = (tx - x) * dx + (ty - y) * dy;
+        if (along < 20) return;
+        const across = Math.abs((tx - x) * dy - (ty - y) * dx);
+        const score = along + across * 2;
+        if (score < bestScore) { bestScore = score; best = i; }
+      });
+      return best < 0 ? keyboardIndex : best;
+    };
+    const ARROWS: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
     canvas.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+      if (!(event.key in ARROWS) && event.key !== "Enter" && event.key !== " ") return;
       event.preventDefault();
-      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-        keyboardIndex = (keyboardIndex + (event.key === "ArrowRight" ? 1 : -1) + keyboardSlots.length) % keyboardSlots.length;
+      if (event.key in ARROWS) {
+        keyboardIndex = step(...ARROWS[event.key]);
         const slot = keyboardSlots[keyboardIndex];
         game.focusedSlot = slot;
-        ctx.notice(`${slot.type === "road" ? "Road" : "Platform"} ring ${slot.index + 1}. Press Enter to use it.`);
+        const occupant = game.heroes.find((unit: any) => unit.slotType === slot.type && unit.slotIndex === slot.index);
+        ctx.notice(`${slot.type === "road" ? "Road" : "Platform"} tile${occupant ? `: ${occupant.name}` : ""}. Press Enter to use it.`);
       } else {
         activateSlot(keyboardSlots[keyboardIndex]);
       }

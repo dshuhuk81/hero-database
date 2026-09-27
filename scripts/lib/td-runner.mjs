@@ -7,6 +7,7 @@ import heroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import waves from "../../src/data/tdWaves.json" with { type: "json" };
+import { rankedTiles } from "../../src/game/td/grid.js";
 
 export { maps };
 
@@ -50,7 +51,6 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
   let spent = 0;
   let stalled = false;
   let perfectWaves = 0;
-  const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
       // deploy every affordable, not-yet-deployed squad member that has a free ring;
@@ -60,10 +60,11 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
         if (g.gold < g.deployCost(id)) continue;
-        const rings = Array.from({ length: slotCount[base.slot] }, (_, i) => i);
+        const rings = rankedTiles(map, base.slot, g.rangeFor(base));
         if (base.class === "Support") {
           const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
-          rings.sort((a, b) => covered(b) - covered(a) || a - b);
+          const rank = new Map(rings.map((i, n) => [i, n]));
+          rings.sort((a, b) => covered(b) - covered(a) || rank.get(a) - rank.get(b));
         }
         for (const i of rings) {
           const before = g.gold;

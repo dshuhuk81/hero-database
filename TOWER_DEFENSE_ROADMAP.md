@@ -14,11 +14,7 @@ Use subagents for doing more than 1 milestone. Coordinate well when changing fil
 
 Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit the end of the blessing tree), map editor (non-goal in spec section 1).
 
-### M22b: Hero Placement
-- maybe we should add more placement tiles where we can put heroes on? next to the road possible on each tile?
-- that would require to maybe add another placement tile graphically since a lot of round tiles next to each other looks quite strange.
-
-### M23: Tutorial Stage
+### M23: Tutorial Stage (skip)
 
 - We should have a tutorial stage where players get an onboarding into all our mechanics and game play. that should cover minimalistic stages with the most important topics to deal in an onboarding scenario like most gacha or tower defense games do. we have to define what we want to do and what should be displayed. most apps just create simple scenarios with tooltips that pause the game and players need to follow a tutorial.
 - players should be introduced to basic mechanics, status effects
@@ -40,7 +36,14 @@ due to copyright issues we should make a plan to replace all content that is und
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M26: Login/Register
+### M26: New Game Mode (currently under work, ignore)
+
+- New Game mode should be planned. All exiting levels could be moved to "Free Play".
+Game Start -> Chose between A) CAmpaign (New) and b) Free Play.
+Campaign will require a lot of new concept thinking.
+to be continued....
+
+### M99: Login/Register
 - what would we need to provide auth / login / register to dave players progress ? gmail auth ? apple auth ?
 - goal: all achieved things from players should be saved
 - if requirements are too large or harsh (for a free environment), we skip this entirely.
@@ -64,6 +67,7 @@ node scripts/td-audio-levels.mjs                                   # hero sound 
 npm run build:game-balance      # regenerate hero balance (re-ranks all heroes)
 npm run check                   # astro check (TD code is type-clean; rest of site not yet)
 
+node scripts/build-td-grid.mjs [--check]                            # placement tiles -> tdMaps.json (after route / grid block edits)
 node scripts/build-td-tokens.mjs [--only id] [--sheet out.png]   # board tokens -> public/td/tokens
 node scripts/build-td-enemy-sprites.mjs <folder>                   # AI enemy art -> public/td/enemies/sprites
 PW=<playwright dir> node scripts/td-spine/render-sheets.cjs        # hero idle loops -> public/td/anims

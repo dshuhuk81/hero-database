@@ -13,7 +13,6 @@ export const MAP_SCENES = {
       spawn: "/td/maps/moonlit-spawn-v1.png",
       base: "/td/maps/moonlit-base-v1.png",
       road: "/td/maps/moonlit-road-v1.png",
-      pad: "/td/maps/moonlit-pad-v1.png",
     },
     ground: 0x202e3d, grade: { color: 0x08101c, alpha: 0.14 },
     seed: 0x6d6f6f6e,
@@ -23,7 +22,7 @@ export const MAP_SCENES = {
     fragments: { count: 105, color: 0x65716e, edge: 0xb1b3a0 },
     labels: { spawn: ["SPAWN", 0xc2d0e1], base: ["SANCTUARY", 0xe3d4a8], integrity: 0xb6c4cf, stroke: 0x0a1420 },
     glow: { spawn: 0xb8ceee, base: 0xf5d590, hit: 0xffc0a0, ring: 0xf0c191, place: 0xe4c78d, dust: 0xb6b1a0, mote: 0xe8d9b2 },
-    pad: { platformTint: 0xc7d0f5, road: 0xc4a664, platform: 0x9ca6d6, highlight: 0xf3dba6 },
+    pad: { road: 0xc4a664, platform: 0x9ca6d6, highlight: 0xf3dba6 },
   },
   "verdant-shrine-v1": {
     name: "Verdant", baseName: "Shrine",
@@ -32,7 +31,6 @@ export const MAP_SCENES = {
       spawn: "/td/maps/verdant-spawn-v2.png",
       base: "/td/maps/verdant-base-v2.png",
       road: "/td/maps/verdant-road-v2.png",
-      pad: "/td/maps/verdant-pad-v2.png",
     },
     ground: 0x1f2d24, grade: { color: 0x07140f, alpha: 0.12 },
     seed: 0x76657264,
@@ -42,7 +40,7 @@ export const MAP_SCENES = {
     fragments: { count: 70, color: 0x66735f, edge: 0xb3b99c },
     labels: { spawn: ["SPAWN", 0xe6b3a4], base: ["SHRINE", 0xecd79b], integrity: 0xbccbb8, stroke: 0x0a1610 },
     glow: { spawn: 0xff8a6a, base: 0xffd27a, hit: 0xffc0a0, ring: 0xf0c191, place: 0xd8cf8a, dust: 0xa9b095, mote: 0xf0dfa0 },
-    pad: { platformTint: 0xcfe3cb, road: 0xc9a95f, platform: 0x86cfa4, highlight: 0xf1e2a4 },
+    pad: { road: 0xc9a95f, platform: 0x86cfa4, highlight: 0xf1e2a4 },
     decorate: decorateVerdant,
   },
   "sunscar-sanctuary-v1": {
@@ -52,7 +50,6 @@ export const MAP_SCENES = {
       spawn: "/td/maps/sunscar-spawn-v1.png",
       base: "/td/maps/sunscar-base-v1.png",
       road: "/td/maps/sunscar-road-v1.png",
-      pad: "/td/maps/sunscar-pad-v1.png",
     },
     ground: 0x3a3226, grade: { color: 0x1a1208, alpha: 0.1 },
     seed: 0x73756e73,
@@ -62,7 +59,7 @@ export const MAP_SCENES = {
     fragments: { count: 60, color: 0x8c7d64, edge: 0xd6c6a2 },
     labels: { spawn: ["SPAWN", 0xd7c2f0], base: ["SANCTUARY", 0xf2dc9c], integrity: 0xe6d6b4, stroke: 0x241a10 },
     glow: { spawn: 0xa88be0, base: 0xffd98a, hit: 0xffb08a, ring: 0xf0c191, place: 0xf0d59a, dust: 0xcdb892, mote: 0xf6e2a8 },
-    pad: { platformTint: 0xaebbd6, road: 0xd2a85a, platform: 0x9fb2e0, highlight: 0xf8e2a6 },
+    pad: { road: 0xd2a85a, platform: 0x9fb2e0, highlight: 0xf8e2a6 },
   },
 };
 
@@ -371,53 +368,30 @@ export function createMapScene(PIXI, game, {
   }
 
   // Caller can retain a slot container and repaint only when its state changes.
+  // Placement tiles (M22b): flat squares that sit edge to edge. Road tiles are only
+  // corner marks on the stone, side tiles a faint inset plate; the focused tile glows.
+  const TILE = 56;
   function drawSlot(container, x, y, type, occupied, highlighted) {
     const g = new PIXI.Graphics();
     g.position.set(x, y);
     container.addChild(g);
-    const radius = type === "road" ? 26 : 24;
     const accent = type === "road" ? theme.pad.road : theme.pad.platform;
-    if (textures.pad) {
-      g.ellipse(1, 11, 25, 13).fill({ color: 0x07131c, alpha: 0.22 });
-      const sprite = new PIXI.Sprite(textures.pad);
-      sprite.anchor.set(0.5);
-      sprite.position.set(x, y);
-      sprite.width = 60; sprite.height = 58;
-      if (type === "platform") sprite.tint = theme.pad.platformTint;
-      container.addChild(sprite);
-      if (!occupied || highlighted) {
-        const rune = new PIXI.Graphics();
-        rune.position.set(x, y - 1);
-        rune.ellipse(0, 0, 18, 13).stroke({ color: accent, width: highlighted ? 1.6 : 1, alpha: highlighted ? 0.9 : 0.55 });
-        if (!occupied) star(rune, 0, 0, 4.5, accent, highlighted ? 0.9 : 0.5);
-        if (highlighted) rune.ellipse(0, 1, 29, 23).stroke({ color: theme.pad.highlight, width: 1.2, alpha: 0.65 });
-        container.addChild(rune);
-      }
-      return g;
+    const h = TILE / 2;
+    if (type === "platform") {
+      g.rect(-h, -h, TILE, TILE).fill({ color: 0x050b12, alpha: occupied ? 0.12 : 0.2 });
+      g.rect(-h + 0.5, -h + 0.5, TILE - 1, TILE - 1).stroke({ color: accent, width: 1, alpha: occupied ? 0.14 : 0.3 });
     }
-    g.ellipse(3, 9, radius + 5, radius * 0.78).fill({ color: 0x030b14, alpha: 0.56 });
-    const points = [];
-    for (let i = 0; i < 8; i++) {
-      const a = (i + 0.5) * TAU / 8;
-      points.push([Math.cos(a) * radius, Math.sin(a) * radius * 0.82]);
+    // Corner brackets.
+    const arm = 9, alpha = highlighted ? 0.95 : occupied ? 0.18 : 0.5;
+    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      const cx = sx * (h - 3), cy = sy * (h - 3);
+      g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
     }
-    polygon(g, points.map(([px, py]) => [px, py + 5]), 0x203140);
-    polygon(g, points, occupied ? 0x4e5d68 : 0x53636f);
-    g.poly(points.flat()).stroke({ color: 0xa7b2b5, alpha: 0.46, width: 1 });
-    g.ellipse(0, 0, radius - 5, (radius - 5) * 0.82).fill({ color: 0x253645, alpha: 0.56 });
-    g.ellipse(0, 0, radius - 6, (radius - 6) * 0.82).stroke({ color: accent, alpha: highlighted ? 1 : occupied ? 0.34 : 0.7, width: highlighted ? 2 : 1 });
-    for (let i = 0; i < 4; i++) {
-      const a = i * TAU / 4;
-      const px = Math.cos(a) * (radius - 2), py = Math.sin(a) * (radius - 2) * 0.82;
-      g.circle(px, py, 1.1).fill({ color: accent, alpha: 0.8 });
-    }
-    if (!occupied) {
-      star(g, 0, 0, 7, accent, 0.68);
-      g.moveTo(-11, 8).lineTo(-4, 11).lineTo(9, 8).stroke({ color: 0x97a5ac, alpha: 0.18, width: 0.8 });
-    }
+    g.stroke({ color: highlighted ? theme.pad.highlight : accent, width: highlighted ? 2 : 1.4, alpha, cap: "round", join: "round" });
+    if (!occupied) g.circle(0, 0, 2).fill({ color: accent, alpha: 0.45 });
     if (highlighted) {
-      g.ellipse(0, 0, radius + 4, (radius + 4) * 0.82).stroke({ color: 0xffe7b4, alpha: 0.8, width: 1.5 });
-      g.ellipse(0, 0, radius + 7, (radius + 7) * 0.82).stroke({ color: accent, alpha: 0.14, width: 4 });
+      g.rect(-h, -h, TILE, TILE).fill({ color: theme.pad.highlight, alpha: 0.1 });
+      g.rect(-h - 3, -h - 3, TILE + 6, TILE + 6).stroke({ color: accent, width: 4, alpha: 0.16 });
     }
     return g;
   }

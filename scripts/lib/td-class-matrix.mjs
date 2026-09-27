@@ -6,6 +6,7 @@
 //   road: share of the wave's enemies stopped (killed, or still held at the time limit)
 //   platform: share of the wave's HP the hero itself destroyed
 // A class scores the mean of its heroes; each slot group has its own best class.
+import { rankedTiles } from "../../src/game/td/grid.js";
 import { TowerDefenseGame } from "../../src/game/td/sim.js";
 import heroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
@@ -83,9 +84,9 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
 export function heroScore(heroId, waveType, opts = {}) {
   const map = opts.map ?? maps[0];
   const hero = heroes.find((h) => h.id === heroId);
-  const rings = hero.slot === "road" ? map.roadSlots : map.platformSlots;
+  // The six tiles covering the most route (M22b: tiles line the whole road now).
   let best = 0;
-  for (let i = 0; i < rings.length; i += 1) best = Math.max(best, defend(heroId, i, waveType, { ...opts, map }) ?? 0);
+  for (const i of rankedTiles(map, hero.slot, hero.range).slice(0, 6)) best = Math.max(best, defend(heroId, i, waveType, { ...opts, map }) ?? 0);
   return best;
 }
 

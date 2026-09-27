@@ -16,13 +16,17 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 | Enemy entrance / `spawn` | [moonlit-spawn-v1.png](public/td/maps/moonlit-spawn-v1.png) | [verdant-spawn-v2.png](public/td/maps/verdant-spawn-v2.png) | [sunscar-spawn-v1.png](public/td/maps/sunscar-spawn-v1.png) |
 | Defended sanctuary / `base` | [moonlit-base-v1.png](public/td/maps/moonlit-base-v1.png) | [verdant-base-v2.png](public/td/maps/verdant-base-v2.png) | [sunscar-base-v1.png](public/td/maps/sunscar-base-v1.png) |
 | Repeating road surface / `road` | [moonlit-road-v1.png](public/td/maps/moonlit-road-v1.png) | [verdant-road-v2.png](public/td/maps/verdant-road-v2.png) | [sunscar-road-v1.png](public/td/maps/sunscar-road-v1.png) |
-| Hero deployment tile / `pad` | [moonlit-pad-v1.png](public/td/maps/moonlit-pad-v1.png) | [verdant-pad-v2.png](public/td/maps/verdant-pad-v2.png) | [sunscar-pad-v1.png](public/td/maps/sunscar-pad-v1.png) |
+| Hero deployment tile / `pad` (unused since M22b: tiles are drawn procedurally) | [moonlit-pad-v1.png](public/td/maps/moonlit-pad-v1.png) | [verdant-pad-v2.png](public/td/maps/verdant-pad-v2.png) | [sunscar-pad-v1.png](public/td/maps/sunscar-pad-v1.png) |
 
 ## Current map status
 
 - **Map 1 — Moonlit Pass:** implemented, map id `moonlit-pass`, art key `moonlit-sanctuary-v1`. Cool moonlit stone and celestial ruins. Keep its v1 art assignment.
 - **Map 2 — Verdant Crossing:** implemented, map id `verdant-crossing`, art key still `verdant-shrine-v1`, but its active images are **v2**. The art key is not the asset version. The `verdant-*-v1.png` files are historical procedural adaptations; do not reconnect them. The painted guardian is already in the v2 background, and roots are in the building sprites. Do not add the old vector guardian/root overlays on top.
 - **Map 3 - Sunscar Ruins:** implemented, map id `sunscar-ruins`, art key `sunscar-sanctuary-v1`. Desert solar ruins, sandstone, windblown sand and aged gold; the solar astrolabe is painted into the upper-right background corner. First map with **two entrances**: gates at (80, 140) and (80, 320) on the west edge, between the painted pillars. Both lanes run east and meet head-on at the junction (470, 230), then share one trunk that zigzags to the sanctuary at (860, 340). Spawns alternate between the gates. A central island between the lanes holds two platforms that reach both lanes with average range (~90). Boss and music reuse Map 1 (Baphomet, `bg_music_map1`) until dedicated ones exist.
+
+## Placement tiles (`grid`)
+
+Since M22b heroes stand on square tiles: road tiles along the route and one row of side tiles on each side. Do not hand-edit `roadSlots`, `platformSlots` or `rings`; they are generated from the route and the map's `grid` block (`bounds` for allowed tile centers, `exclude` rects for painted obstacles, `rings` with an anchor point per special ring) by `node scripts/build-td-grid.mjs`. Rules and defaults in [src/game/td/grid.js](src/game/td/grid.js); `test-td-sim.mjs` fails when the file is stale.
 
 ## Multi-entrance maps (`lanes`)
 

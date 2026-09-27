@@ -20,6 +20,7 @@ export function createHud(ctx: PageContext) {
   const bossWave = (game: any, n: number) => isBossWave(n, game.mode, ctx.data.tuning.waveGen);
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
+  const deckCountEl = q("[data-td-deck-count]");
   const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
   const pauseButton = q<HTMLButtonElement>("[data-td-pause]");
   const speedButton = q<HTMLButtonElement>("[data-td-speed]");
@@ -168,6 +169,8 @@ export function createHud(ctx: PageContext) {
       }).join("");
     }
     if (!game) return;
+    deckCountEl.textContent = `${game.heroes.length}/${game.deployCap()}`;
+    deckCountEl.classList.toggle("is-full", game.heroes.length >= game.deployCap());
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-unit]").forEach((button) => {
       const unit = game.heroes.find((entry: any) => entry.entityId === Number(button.dataset.deckUnit));
       if (!unit) return;
@@ -218,7 +221,7 @@ export function createHud(ctx: PageContext) {
       const flyers = !session.flyerHint && game.waves[game.wave - 1]?.spawns.some((group: any) => group.kind === "flyer");
       if (flyers) session.flyerHint = true;
       ctx.notice(bossWave(game, game.wave) ? `${bossName()} has entered ${session.map.name}.`
-        : flyers ? `Wave ${game.wave}: flyers pass over blockers. Only heroes on platform rings can hit them.`
+        : flyers ? `Wave ${game.wave}: flyers pass over blockers. Only platform heroes can hit them.`
         : `Wave ${game.wave} incoming. Heroes attack automatically.`);
     }
     syncMainAction();
@@ -241,7 +244,7 @@ export function createHud(ctx: PageContext) {
       ctx.actions.closePopover(false);
       ctx.actions.closeSheet(false);
       state.deployHeroId = state.deployHeroId === hero.id ? "" : hero.id;
-      if (state.deployHeroId) ctx.notice(`Tap an empty ${hero.slot} ring to redeploy ${hero.name}.`);
+      if (state.deployHeroId) ctx.notice(`Tap an empty ${hero.slot} tile to redeploy ${hero.name}.`);
       else session.game.uiPlacement = null;
       renderDeck();
     }

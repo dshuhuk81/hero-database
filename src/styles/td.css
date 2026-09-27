@@ -183,8 +183,6 @@
 .td-map-card.is-selected { border-color: var(--accent-gold); background: var(--accent-gold-dim); }
 .td-map-preview { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: var(--radius-md); background: var(--td-stage-bg); }
 .td-map-preview-path { fill: none; stroke: rgba(201, 162, 39, .3); stroke-width: 44; stroke-linecap: round; stroke-linejoin: round; }
-.td-map-preview-road { fill: rgba(250, 204, 21, .25); stroke: var(--accent-gold); stroke-width: 5; }
-.td-map-preview-platform { fill: rgba(168, 85, 247, .25); stroke: var(--accent-purple); stroke-width: 5; }
 .td-map-card-copy { display: grid; gap: 2px; }
 .td-map-card-copy strong { color: var(--text-bright); font-size: var(--td-fs-section); }
 .td-map-card-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); }
@@ -274,6 +272,8 @@
 
 /* Deck: deployed heroes (select) and fallen heroes (redeploy) */
 .td-deck { flex: 1; min-width: 0; display: flex; justify-content: safe center; gap: var(--space-2); padding: 4px; overflow-x: auto; scrollbar-width: thin; }
+.td-deck-count { flex: 0 0 auto; color: var(--text-muted); font-size: var(--td-fs-label); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.td-deck-count.is-full { color: var(--accent-gold); }
 .td-deck-slot { width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-md); }
 .td-deck-slot { position: relative; padding: 0; border: 1px solid var(--border-subtle); background: var(--bg-surface); cursor: pointer; transition: var(--transition-colors); }
 .td-deck-slot img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: inherit; }

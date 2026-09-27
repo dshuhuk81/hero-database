@@ -18,8 +18,6 @@ const previews = maps.map((entry: any) => ({
   spawns: mapLanes(entry).map((lane: any) => lane.spawn),
   base: entry.base,
   routes: routeStrokes(entry).map((points: number[][]) => points.map(([x, y]) => `${x},${y}`).join(" ")),
-  road: entry.roadSlots.map(([x, y]: number[]) => ({ x, y })),
-  platform: entry.platformSlots.map(([x, y]: number[]) => ({ x, y })),
 }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
@@ -95,8 +93,6 @@ const modes = [
               <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
                 {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
                 {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
-                {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
-                {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
                 {preview.art && <>
                   {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
                   <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />

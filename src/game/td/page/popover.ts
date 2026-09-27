@@ -242,7 +242,7 @@ export function createPopover(ctx: PageContext) {
       lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
     }
     if (unit.variant === "valkyrie_call") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free ring at level 1 with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile at level 1 with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
     }
     if (unit.variant === "soul_drain") {
       lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakened ? 3 : 2} seconds. A kill refunds ${unit.awakened ? 80 : 60}% of the charge.</p>`);
@@ -373,7 +373,7 @@ export function createPopover(ctx: PageContext) {
     }
     sellArmed = false;
     const result = session.game.sell(state.selectedEntityId);
-    if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} gold. The ring is free again.`);
+    if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} gold. The tile is free again.`);
   });
   q("[data-pop-close]").addEventListener("click", () => close());
   popDetailsButton.addEventListener("click", () => {

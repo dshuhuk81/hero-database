@@ -26,7 +26,7 @@ export const SKILL_TEXT = {
   petrify_shot: "Petrifies up to 3 enemies in front of her for 3s (they cannot move or attack) and hits them for 55%. Waits until she faces a target.",
   fortune_shower: "Heals allies in range for 18% of their max health and raises their attack by 25% for 5s.",
   fate_link: "Heals allies in range for 18% of their max health and fills 30% of their ultimate charge.",
-  valkyrie_call: "Revives the most recently fallen hero on its free ring at level 1 with half health. Heals allies in range when nobody can be revived.",
+  valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",
 };
 
 // What Awakening adds to each ultimate.
@@ -87,7 +87,7 @@ export const RUN_BOON_INFO = {
 export const RING_INFO = {
   highground: { name: "High ground", text: "+20% range for the hero standing here." },
   shrine: { name: "Shrine", text: "The hero's ultimate charges 30% faster." },
-  cursed: { name: "Cursed ring", text: "+30% damage, but 20% slower attacks." },
+  cursed: { name: "Cursed tile", text: "+30% damage, but 20% slower attacks." },
 };
 
 // Endless mutators (M15); numbers in tuning.mutators.

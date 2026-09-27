@@ -364,12 +364,12 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
-  // Special ring marker (M16): a colored halo and a small badge above the ring.
+  // Special ring marker (M16): a colored frame around the tile and a small badge.
   const RING_MARKS = { highground: 0xfacc15, shrine: 0x67e8f9, cursed: 0xf87171 };
   function drawRingMark(container, x, y, kind) {
     const color = RING_MARKS[kind] ?? 0xffffff;
     const g = new PIXI.Graphics();
-    g.circle(x, y, 36).stroke({ width: 2, color, alpha: 0.55 });
+    g.rect(x - 30, y - 30, 60, 60).stroke({ width: 2, color, alpha: 0.6 });
     const bx = x + 24, by = y - 26;
     g.circle(bx, by, 9).fill({ color: 0x13111c, alpha: 0.92 }).stroke({ width: 2, color });
     if (kind === "highground") g.moveTo(bx, by - 5).lineTo(bx + 5, by + 4).lineTo(bx - 5, by + 4).closePath().fill({ color });
@@ -1281,11 +1281,11 @@ export async function createRenderer(canvas, game, options = {}) {
       console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
       return null;
     });
-    const [spawnTexture, baseTexture, roadTexture, padTexture] = await Promise.all([
-      load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"), load("pad", "carved pad"),
+    const [spawnTexture, baseTexture, roadTexture] = await Promise.all([
+      load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, pad: padTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();

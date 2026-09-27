@@ -2,6 +2,7 @@
 // `node scripts/test-td-daily.mjs --measure [days]` plays each day's setup with a simple
 // bot and prints how often the goal is reached (used to tune DAILY.goalWave).
 import assert from "node:assert/strict";
+import { rankedTiles } from "../src/game/td/grid.js";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
 import { buildRunTuning } from "../src/game/td/favor.js";
 import { clearedWaves, DAILY, dailyDate, dailyGameOptions, dailyRecord, dailySetup, dateSeed, recordDaily, sanitizeDaily } from "../src/game/td/daily.js";
@@ -127,12 +128,11 @@ export function playDaily(setup, maxWave = 60) {
   const map = maps.find((entry) => entry.id === setup.mapId);
   const g = new TowerDefenseGame({ heroes, waves, map, tuning: buildRunTuning(tuning, {}, null), ...dailyGameOptions(setup) });
   const order = [...setup.heroIds].sort((a, b) => heroById.get(a).cost - heroById.get(b).cost);
-  const rings = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     for (const id of order) {
       if (g.heroes.some((h) => h.id === id)) continue;
       const base = heroById.get(id);
-      for (let i = 0; i < rings[base.slot]; i += 1) if (g.place(id, base.slot, i)) break;
+      for (const i of rankedTiles(map, base.slot, g.rangeFor(base))) if (g.place(id, base.slot, i)) break;
     }
     for (let guard = 0; guard < 20; guard += 1) {
       const options = g.heroes.map((h) => g.upgradeInfo(h.entityId)).filter((info) => info.ok).sort((a, b) => a.cost - b.cost);

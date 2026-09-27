@@ -3,7 +3,8 @@ import { createRng, pointOnPath, resolveDamage, TowerDefenseGame } from "../src/
 import { computeFavor } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import maps from "../src/data/tdMaps.json" with { type: "json" };
+import realMaps from "../src/data/tdMaps.json" with { type: "json" };
+import legacyRings from "./fixtures/td-legacy-rings.json" with { type: "json" };
 import { mapLanes } from "../src/game/td/lanes.js";
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 import { buildWave, isBossWave, wavesForMode } from "../src/game/td/waves.js";
@@ -12,6 +13,10 @@ assert.equal(resolveDamage(100, 260, "physical", false), 50, "physical mitigatio
 assert.equal(resolveDamage(100, 79503, "true", false), 100, "true damage");
 assert.deepEqual(Array.from({ length: 8 }, createRng(42)), Array.from({ length: 8 }, createRng(42)), "seeded RNG");
 assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 50 }, "path interpolation");
+
+// Rule tests place heroes by ring index and rely on where those rings are, so they run on
+// the hand-placed rings from before the tile grid (M22b); real tiles are checked below.
+const maps = realMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
 
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
 // Upgrade with a focus; the path step (M12) takes the class's first path.
@@ -870,26 +875,52 @@ function runWaveOne(g) {
   assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
 }
 
-// No team cap (M5): every ring can hold a distinct hero; rings, gold and uniqueness still apply.
+// Deploy cap (M22b): tiles line the road, so heroes on the field are capped; tiles, gold
+// and uniqueness still apply. A fallen hero frees a place under the cap.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
+  const map = realMaps[0];
+  const cap = tuning.run.deployCap;
+  assert.ok(cap >= 1 && cap < map.roadSlots.length + map.platformSlots.length, "the cap binds before the tiles run out");
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
   g.gold = 100000;
-  const road = heroes.filter((h) => h.slot === "road").slice(0, maps[0].roadSlots.length);
-  const platform = heroes.filter((h) => h.slot === "platform").slice(0, maps[0].platformSlots.length);
-  road.forEach((h, i) => assert.equal(g.place(h.id, "road", i), true, `road ring ${i} filled`));
-  platform.forEach((h, i) => assert.equal(g.place(h.id, "platform", i), true, `platform ring ${i} filled`));
-  assert.equal(g.heroes.length, maps[0].roadSlots.length + maps[0].platformSlots.length, "every ring holds a hero");
+  const road = heroes.filter((h) => h.slot === "road").slice(0, Math.ceil(cap / 2));
+  const platform = heroes.filter((h) => h.slot === "platform").slice(0, cap - road.length);
+  road.forEach((h, i) => assert.equal(g.place(h.id, "road", i), true, `road tile ${i} filled`));
+  platform.forEach((h, i) => assert.equal(g.place(h.id, "platform", i), true, `platform tile ${i} filled`));
+  assert.equal(g.heroes.length, cap, "field full at the cap");
   assert.equal(g.team.length, g.heroes.length, "team lists every fielded hero");
   const spare = heroes.find((h) => h.slot === "road" && !g.team.includes(h.id));
-  assert.equal(g.place(spare.id, "road", 0), false, "occupied ring rejected");
-  assert.equal(g.place(spare.id, "road", maps[0].roadSlots.length), false, "missing ring rejected");
+  assert.equal(g.place(spare.id, "road", road.length), false, "no deploy past the cap");
   const fielded = g.heroes.find((h) => h.slotType === "road");
   g.damageHero(fielded, fielded.hpLeft + 1, null);
   assert.equal(g.team.includes(fielded.id), false, "dead hero leaves the team roster");
-  assert.equal(g.place(spare.id, "road", fielded.slotIndex), true, "freed ring takes a new hero");
-  const poor = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
+  assert.equal(g.place(spare.id, "road", 1), false, "occupied tile rejected");
+  assert.equal(g.place(spare.id, "road", map.roadSlots.length), false, "missing tile rejected");
+  assert.equal(g.place(spare.id, "road", fielded.slotIndex), true, "fallen hero frees a place");
+  assert.equal(g.takeRevivableFallen(), null, "no revive past the cap");
+  const poor = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
   poor.gold = road[0].cost - 1;
   assert.equal(poor.place(road[0].id, "road", 0), false, "gold still limits deploys");
+}
+
+// Placement tiles (M22b): generated file in sync; road tiles on the route, side tiles
+// clear of it, no two tiles overlapping, every special ring on a tile.
+{
+  const { buildGrid } = await import("../src/game/td/grid.js");
+  const distance = (map, x, y) => Math.min(...mapLanes(map).flatMap(({ path }) => path.slice(1).map((b, i) => {
+    const a = path[i], dx = b[0] - a[0], dy = b[1] - a[1];
+    const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy)));
+    return Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy);
+  })));
+  for (const map of realMaps) {
+    const built = buildGrid(map);
+    assert.deepEqual([map.roadSlots, map.platformSlots, map.rings], [built.roadSlots, built.platformSlots, built.rings], `${map.id} tiles match the grid block (run scripts/build-td-grid.mjs)`);
+    for (const [x, y] of map.roadSlots) assert.ok(distance(map, x, y) < 1, `${map.id} road tile ${x},${y} on the route`);
+    for (const [x, y] of map.platformSlots) assert.ok(distance(map, x, y) >= 60, `${map.id} side tile ${x},${y} clear of the road`);
+    const all = [...map.roadSlots, ...map.platformSlots];
+    all.forEach(([x, y], i) => all.slice(i + 1).forEach(([u, v]) => assert.ok(Math.max(Math.abs(x - u), Math.abs(y - v)) >= 52, `${map.id} tiles ${x},${y} and ${u},${v} overlap`)));
+    assert.ok(map.roadSlots.length >= 15 && map.platformSlots.length >= 20, `${map.id} has tiles along the whole road`);
+  }
 }
 
 // --- 6B run quests ---
