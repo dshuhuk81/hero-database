@@ -69,12 +69,16 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   });
 
   const noticeEl = q("[data-td-notice]");
+  const menuNoticeEl = q("[data-td-menu-notice]");
   let noticeTimer = 0;
+  // Battle notices show on the battlefield; menu actions (no run) use the menu's own region.
   function notice(text: string) {
-    noticeEl.textContent = text;
-    noticeEl.classList.add("is-visible");
+    const el = state.session ? noticeEl : menuNoticeEl;
+    (el === noticeEl ? menuNoticeEl : noticeEl).classList.remove("is-visible");
+    el.textContent = text;
+    el.classList.add("is-visible");
     window.clearTimeout(noticeTimer);
-    noticeTimer = window.setTimeout(() => noticeEl.classList.remove("is-visible"), 3800);
+    noticeTimer = window.setTimeout(() => el.classList.remove("is-visible"), 3800);
   }
 
   // Filled below once every module exists; modules only call actions at runtime.
@@ -89,6 +93,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     notice,
     actions,
   };
+  store.onPersistError = () => notice("Progress could not be saved in this browser. Open Save data and export a save code to keep it.");
 
   // ------------------------------------------------------------------
   // Audio (one instance for the page lifetime)
@@ -271,6 +276,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
 
   Object.assign(actions, {
     startSession: controller.start,
+    selectCampaignStage: campaignScreens.selectStage,
     toLobby: controller.toLobby,
     handleChange: controller.handleChange,
     spaceBelowMap: controller.spaceBelowMap,

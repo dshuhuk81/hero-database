@@ -196,7 +196,7 @@ export function createResults(ctx: PageContext) {
     const prevRun = daily || expedition || campaign ? null : saved.mapBests[key] || null;
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
-      : campaign ? (({ text, won }) => ({ text, reached: won, reward: 0 }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
+      : campaign ? (({ text, won, followUp }) => ({ text, reached: won, reward: 0, followUp }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
     // Challenges (M20): stored and paid only for non-debug, non-campaign runs; persisted with the run below.
     const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
@@ -233,7 +233,11 @@ export function createResults(ctx: PageContext) {
     const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
     continueButton.hidden = !expedition && !campaign;
     continueButton.dataset.tdToLobby = campaign ? "campaign" : "expedition";
-    continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp" : campaign ? "Campaign" : "Continue";
+    // Campaign: after a loss go straight to this stage's squad, after a win to the next stage's.
+    const followUp: string | null = campaign ? (dailyRun as any)?.followUp ?? null : null;
+    if (followUp) continueButton.dataset.tdCampStage = followUp; else delete continueButton.dataset.tdCampStage;
+    continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
+      : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
     q("[data-td-result-menu]").hidden = !!expedition;
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
@@ -302,7 +306,7 @@ export function createResults(ctx: PageContext) {
     showTab("summary");
     resultEl.hidden = false;
     resultEl.scrollTop = 0;
-    q<HTMLButtonElement>(expedition ? "[data-td-result-continue]" : "[data-td-retry]").focus({ preventScroll: true });
+    q<HTMLButtonElement>(expedition || (campaign && game.won) ? "[data-td-result-continue]" : "[data-td-retry]").focus({ preventScroll: true });
   }
 
   return { finishRun, reset };

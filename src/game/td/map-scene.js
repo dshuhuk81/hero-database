@@ -80,7 +80,7 @@ export function createMapScene(PIXI, game, {
   const spawns = mapLanes(game.map).map((lane) => lane.spawn);
   const strokes = routeStrokes(game.map);
   const base = game.map.base;
-  const maxLives = Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
+  const maxLives = game.maxLives ?? Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
   const seen = new WeakSet();
   let hitAt = -Infinity;
   let lastLives = game.lives;

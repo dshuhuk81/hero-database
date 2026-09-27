@@ -73,6 +73,8 @@ export type PageActions = {
   // nav.ts
   showScreen(id: ScreenId): void;
   exitPlay(target?: ScreenId): void;
+  // campaign.ts
+  selectCampaignStage(id: string): boolean; // picks the stage (and last squad) for the squad screen
   // page
   renderLobby(): void;
   syncAudioUi(): void;

@@ -875,6 +875,19 @@ function runWaveOne(g) {
   assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
 }
 
+// Restricted rosters (Campaign squad, Daily, Expedition): the cap is the roster size, and the
+// life maximum is the run's own (campaign stage lives, or an explicit carried-lives maximum).
+{
+  const map = realMaps[0];
+  const squad = heroes.slice(0, 2).map((h) => h.id);
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves, allowedHeroes: squad }).deployCap(), 2, "cap follows a restricted roster");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).deployCap(), tuning.run.deployCap, "open roster keeps the tuned cap");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves, lives: 12 }).maxLives, 12, "stage lives are the maximum");
+  const carried = new TowerDefenseGame({ heroes, tuning, map, waves, lives: 7, maxLives: tuning.run.lives });
+  assert.deepEqual([carried.lives, carried.maxLives], [7, tuning.run.lives], "carried lives keep the run maximum");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).maxLives, tuning.run.lives, "default maximum");
+}
+
 // Deploy cap (M22b): tiles line the road, so heroes on the field are capped; tiles, gold
 // and uniqueness still apply. A fallen hero frees a place under the cap.
 {

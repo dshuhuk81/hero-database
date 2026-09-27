@@ -70,7 +70,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const boost = daily || expedition || campaign ? null : store.data.nextRunBoost;
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, campaignHeroes(campaignData, store.data.campaign, data.heroes)) : {};
-    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning: buildRunTuning(data.tuning, runLevels, boost), map, ...special });
+    const tuning = buildRunTuning(data.tuning, runLevels, boost);
+    // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
+    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
@@ -209,7 +211,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       return;
     }
     const exit = target.closest<HTMLElement>("[data-td-to-lobby]");
-    if (exit) toLobby((exit.dataset.tdToLobby || undefined) as ScreenId | undefined);
+    if (exit) {
+      // Result screen follow-up: pick the stage first, then leave the run straight to its squad.
+      const stage = exit.dataset.tdCampStage;
+      if (stage) ctx.actions.selectCampaignStage(stage);
+      toLobby((stage ? "squad" : exit.dataset.tdToLobby || undefined) as ScreenId | undefined);
+    }
   });
 
   const isTyping = (target: EventTarget | null) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;

@@ -57,7 +57,7 @@ export function pointOnPath(points, distance, offset = 0) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, hpScale = 1, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = 1, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
@@ -69,6 +69,9 @@ export class TowerDefenseGame {
     this.startLives = lives;
     this.hpScale = hpScale;
     this.tuning = tuning;
+    // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
+    // tuned lives for an Expedition (carried lives can be lower), otherwise tuning.run.lives.
+    this.maxLives = Math.max(1, maxLives ?? lives ?? tuning.run.lives);
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
     this.virtueEffects = tuning.virtueEffects || {};
@@ -977,9 +980,10 @@ export class TowerDefenseGame {
     return alive[0] ?? null;
   }
 
-  // Heroes allowed on the field at once (tuning.run.deployCap).
+  // Heroes allowed on the field at once (tuning.run.deployCap), never more than a restricted
+  // roster (Campaign squad, Daily Trial, Expedition) can field.
   deployCap() {
-    return this.tuning.run.deployCap ?? Infinity;
+    return Math.min(this.tuning.run.deployCap ?? Infinity, this.allowedHeroes?.size ?? Infinity);
   }
 
   // Removes and returns the newest fallen entry that can be revived, or null.

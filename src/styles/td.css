@@ -73,7 +73,8 @@
 }
 @media (max-width: 600px) { .td-shell, .td-glossary { --td-fs-section: var(--text-md); } }
 @media (min-width: 1024px) and (min-height: 700px) { .td-shell, .td-glossary { --td-fs-body: 14px; } }
-.td-app { height: 100%; display: flex; flex-direction: column; background: var(--bg-base); }
+.td-app { position: relative; height: 100%; display: flex; flex-direction: column; background: var(--bg-base); }
+.td-app > .td-menu-notice { bottom: calc(var(--space-6) * 3 + var(--space-4)); z-index: 20; } /* above the screen footer */
 .td-appbar { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-2); min-height: 56px; padding: var(--space-2) var(--space-4); box-sizing: border-box; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); }
 .td-appbar-title { flex: 0 1 auto; min-width: 0; margin: 0; overflow: hidden; color: var(--text-bright); font-size: var(--td-fs-screen); font-weight: var(--weight-bold); line-height: 1.2; white-space: nowrap; text-overflow: ellipsis; }
 /* Phones: long titles ("Difficulty and run length") wrap to two lines instead of an ellipsis. */
@@ -1022,8 +1023,8 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
   .td-buff svg { width: 14px; height: 14px; }
   .td-wave-preview { top: auto; bottom: var(--space-2); max-width: 45%; }
   /* Notice shares the bottom edge with the preview: take the right side instead of the centre. */
-  .td-notice { left: auto; right: var(--space-2); bottom: var(--space-2); max-width: calc(55% - var(--space-4)); transform: translateY(6px); }
-  .td-notice.is-visible { transform: none; }
+  .td-stage .td-notice { left: auto; right: var(--space-2); bottom: var(--space-2); max-width: calc(55% - var(--space-4)); transform: translateY(6px); }
+  .td-stage .td-notice.is-visible { transform: none; }
 }
 .td-wave-chip--hp b { color: var(--td-hp); }
 

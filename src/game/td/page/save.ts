@@ -47,7 +47,9 @@ export type SaveData = {
   campaign: CampaignProgress; // Campaign (M26), its own progression
 };
 
-export type SaveStore = { data: SaveData; persist(): void };
+// persist() returns false when the browser refused the write (storage full, blocked site data);
+// onPersistError, set by the page, tells the player once so they can export their progress.
+export type SaveStore = { data: SaveData; persist(): boolean; onPersistError?: () => void };
 
 export type RunMode = "classic" | "long" | "endless";
 export type RunTier = "normal" | "heroic" | "mythic";
@@ -182,15 +184,20 @@ export function createSaveStore(rules: SaveRules): SaveStore {
     data = sanitizeSave(JSON.parse(localStorage.getItem(SAVE_KEY) || "null"), rules) ?? data;
   } catch {}
   let persistRequested = false;
+  let warned = false; // one warning per run of failed writes
   const store: SaveStore = {
     data,
     persist() {
-      try { localStorage.setItem(SAVE_KEY, JSON.stringify(store.data)); } catch {}
+      let ok = true;
+      try { localStorage.setItem(SAVE_KEY, JSON.stringify(store.data)); } catch { ok = false; }
+      if (!ok && !warned) { warned = true; store.onPersistError?.(); }
+      if (ok) warned = false;
       // Ask once, only after there is progress, so the browser is less likely to evict it.
       if (!persistRequested) {
         persistRequested = true;
         navigator.storage?.persist?.().catch(() => {});
       }
+      return ok;
     },
   };
   return store;
@@ -226,10 +233,10 @@ export function createSavePanel(ctx: PageContext) {
       return;
     }
     store.data = incoming;
-    store.persist();
+    const saved = store.persist();
     ctx.actions.renderLobby();
     render();
-    setStatus("Save loaded.");
+    setStatus(saved ? "Save loaded." : "Save loaded for this visit, but this browser could not store it. It is lost when you close the page.", !saved);
   }
 
   q("[data-td-save-copy]").addEventListener("click", async () => {

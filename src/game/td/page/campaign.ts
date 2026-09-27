@@ -28,14 +28,15 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0 });
   if (record) save.campaign = result.progress as CampaignProgress;
   const label = `Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
-  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false };
+  // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
+  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
   for (const reward of result.granted) if (reward.type === "hero") parts.push(`${heroName(reward.id)} joins your heroes!`);
   if (result.unlocked) parts.push(`Stage ${result.unlocked.id} ${result.unlocked.name} unlocked.`);
   if (!record) parts.push("Debug run: progress was not recorded.");
-  return { text: parts.join(" "), won: true };
+  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null };
 }
 
 export function createCampaign(ctx: PageContext) {
@@ -226,12 +227,17 @@ export function createCampaign(ctx: PageContext) {
     if (card) { card.style.animation = "none"; void card.offsetWidth; card.style.animation = ""; }
   }
 
-  function openStage(id: string) {
+  function selectStage(id: string) {
     const stage = stageById(campaign, id);
-    if (!stage || !isUnlocked(progress(), stage)) return;
+    if (!stage || !isUnlocked(progress(), stage)) return false;
     stageId = id;
     // Start from the last squad, keeping only heroes still owned.
     squad = progress().lastSquad.filter((heroId) => progress().owned.includes(heroId)).slice(0, campaign.squadSize);
+    return true;
+  }
+
+  function openStage(id: string) {
+    if (!selectStage(id)) return;
     renderSquad();
     ctx.actions.showScreen("squad");
   }
@@ -300,5 +306,5 @@ export function createCampaign(ctx: PageContext) {
 
   });
 
-  return { render, renderSquad, renderHeroes, renderSummon };
+  return { render, renderSquad, renderHeroes, renderSummon, selectStage };
 }

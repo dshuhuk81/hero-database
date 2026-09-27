@@ -28,6 +28,21 @@ upgrades and such.
 - There will be an Audit being run. Audit is documented here and will be done from another agent. File: `/Users/daschultheiss/hero-database/TOWER_DEFENSE_PROGRESS_AUDIT.md`
 
 ### Audit changes:
+Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommendation"). Step 1 is done; steps 2-5 are open.
+
+- Step 1 - Rules and UI agree (done September 27, 2026):
+  - Deploy capacity: `sim.deployCap()` is capped by a restricted roster (Campaign squad, Daily Trial, Expedition), so HUD deck, recruit sheet and entry notice show e.g. `0/2` instead of `0/7`.
+  - Life maximum: new `game.maxLives` (campaign stage lives; Expedition uses the run's full lives, carried lives can be lower). The sanctuary's INTEGRITY label uses it (1-1 reads 20 / 20, not 20 / 25).
+  - Squad unlock text, boss preview only when the stage has a boss, and the "every hero in this banner" summon text were fixed in the Campaign/Squad/Summon screen pass before this.
+  - Menu notices: `ctx.notice` shows in a new menu region (`data-td-menu-notice`) when no run is active, so Expedition camp/abandon, summon and level-up feedback is visible.
+  - Save failures: `store.persist()` returns whether the write worked; a failed write shows one notice pointing to Save data export, and a failed import says the save only lasts this visit.
+  - Results: Campaign's Continue button reads "Next: stage X" after a win (opens that stage's squad) or "Change squad" after a loss (same stage's squad); "Campaign" only when the chapter is done.
+  - Checks: `npm run test:tower-defense` (new sim checks for restricted cap and life maximum), no TD type errors, Chromium 390x844 flow Campaign -> squad -> battle -> loss -> Change squad.
+- Step 2 - First session: teaching/tutorial skipped completely for now (owner, September 27, 2026). Only the UI parts stay, handled as UI polish: collapse target priority overrides, clearer Heroes screen.
+- Step 3 - Balance and pacing (open): Tanks show little payoff (Endless mean wave 33.8 without Tanks vs 30.7 full roster), Mages cover too much (13.2 without Mages); Verdant is the easiest map; 20 waves more winnable than 10 for bot presets. Test several seeds and two bot policies before tuning. Decide the post-chapter Divine Seal source (Chapter 1 pays 600 = 6 of 10 banner heroes).
+- Step 4 - Content contract (open): stable per-hero balance baselines so adding a hero does not shift others (`scripts/build-game-balance.mjs`); chapter-aware campaign UI (currently labels everything with `chapters[0]`); summon eligibility (stage-reward exclusion) into `campaign.js`; Expedition route length as a setting before a fourth map; pin Pixi CDN versions; short content checklists (stage, map, hero).
+- Step 5 - Controlled expansion (open): a few new stages or chapter star milestones, only after 1-4.
+- Doc drift listed in the audit (open): `TOWER_DEFENSE_SPEC.md` (one map, 20 heroes), `PROJECT_MEMORY.md` (inline page script), `src/game/td/bugs.md` (inspector stats and blessing graph exist), `docs/tower-defense-ui-plan.md` (ring-era requirements), white-label audit (label historical sections).
 
 ### M24c - New Effects due to hero change
 - we should render new effects for our heroes after we swapped them.
@@ -35,6 +50,7 @@ upgrades and such.
 - if a hero uses lightning, the lightning should look good
 - if a hero uses poison, we should see poison bubbles happening
 - i dont want any "just straight line as damage" anymore in the game
+- If a hero has a permanent support skill active (like give more atk or atk speed -> he should get an aura pulsating showing that there is an effect active)
 - Progress (Sep 27): done in a first pass. New pooled effect kit (`fx-kit.js`) plus status visuals (`status-fx.js`); every hero has a themed attack, impact and ultimate for its mythic identity (table in `TOWER_DEFENSE_HERO_SKILLS.md`); Odin's lightning forks and re-strikes with a rune circle ultimate; poison bubbles, burn flames, chill frost, wet drips and a frozen ice shell show on enemies; all tracer lines (hero shots, enemy shots, hexes, dashes, heal beams) replaced by travelling projectiles, arcs and curved flows. Open: Ymir shows Burn although he is a frost giant (tuning decision).
 
 ### M25: Leaderboard (large, needs design first - skip)
