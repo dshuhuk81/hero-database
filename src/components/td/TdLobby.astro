@@ -151,28 +151,36 @@ const modes = [
           <p class="td-camp-progress" data-td-camp-progress></p>
           <p class="td-camp-wallet" data-td-camp-wallet></p>
         </div>
+        <div data-td-camp-feature></div>
+        <h3 class="td-label">Chapter route</h3>
         <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
       </div>
       <div class="td-screen-footer">
         <p class="td-screen-footer-note td-camp-footer-note">Gold and Hero XP level your heroes, Divine Seals summon new ones.</p>
         <button class="action-button action-button--quiet" type="button" data-td-go="summon">Summon</button>
-        <button class="action-button action-button--primary" type="button" data-td-go="heroes">Heroes</button>
+        <button class="action-button action-button--quiet" type="button" data-td-go="heroes">Heroes</button>
       </div>
     </section>
 
     <!-- 1e. Summon (M26): one banner, Divine Seals buy a hero the player does not own yet;
          banner in src/data/tdSummon.json, screen in src/game/td/page/campaign.ts -->
     <section class="td-screen" data-td-screen="summon" data-title="Summon" aria-label="Summon" hidden>
-      <div class="td-screen-body td-camp-screen">
-        <div class="td-camp-head">
+      <div class="td-screen-body td-camp-screen td-summon-screen">
+        <div class="td-summon-banner">
+          <span class="td-label">The Crossing calls</span>
           <h2 class="td-camp-chapter" data-td-summon-banner>Summon</h2>
           <p class="td-camp-progress" data-td-summon-copy></p>
+          <div class="td-summon-terms"><span>One new hero · No duplicates</span><strong data-td-summon-price></strong></div>
           <p class="td-camp-wallet" data-td-summon-wallet></p>
         </div>
-        <div class="td-summon-reveal" data-td-summon-reveal hidden></div>
+        <div class="td-summon-reveal" data-td-summon-reveal tabindex="-1" hidden></div>
+        <div class="td-collection-head"><h3 class="td-label">Heroes in this banner</h3><span data-td-summon-pool-count></span></div>
+        <div class="td-summon-pool" data-td-summon-pool></div>
+        <p class="td-camp-progress" data-td-summon-source></p>
       </div>
       <div class="td-screen-footer">
         <p class="td-screen-footer-note" data-td-summon-note></p>
+        <button class="action-button action-button--quiet" type="button" data-td-go="campaign">Campaign</button>
         <button class="action-button action-button--primary" type="button" data-td-summon-button data-td-autofocus>Summon</button>
       </div>
     </section>
@@ -195,8 +203,16 @@ const modes = [
         <div class="td-camp-head">
           <h2 class="td-camp-chapter" data-td-squad-stage>Stage</h2>
           <p class="td-camp-progress" data-td-squad-copy></p>
+          <p class="td-camp-feature-reward" data-td-squad-rewards></p>
         </div>
-        <div class="td-squad-list" role="group" aria-label="Heroes" data-td-squad-list></div>
+        <div class="td-squad-prep">
+          <div class="td-squad-lineup" aria-label="Selected squad" data-td-squad-lineup></div>
+          <div class="td-squad-tools"><p data-td-squad-coverage></p><button class="action-button action-button--quiet" type="button" data-td-squad-preset>Quick pick</button></div>
+          <p class="td-squad-feedback" role="status" data-td-squad-feedback></p>
+        </div>
+        <p class="td-camp-progress">Choose up to 4 heroes. Campaign levels apply; Divine Blessings do not.</p>
+        <div class="td-squad-list" role="group" aria-label="Owned heroes" data-td-squad-list></div>
+        <details class="td-squad-locked"><summary data-td-squad-locked-label>Heroes to discover</summary><div class="td-squad-list" data-td-squad-locked></div></details>
       </div>
       <div class="td-screen-footer">
         <p class="td-screen-footer-note" data-td-squad-count></p>

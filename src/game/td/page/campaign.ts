@@ -4,6 +4,8 @@
 // buy a hero not owned yet) and recording a finished stage for the result screen. Rules
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
+import { mapSceneFor } from "../map-scene.js";
+import { SKILL_TEXT } from "../skills.js";
 import { classIconImg } from "../assets.js";
 import { allStages, stageRewardHeroes, canAfford, canLevelUp, canSummon, CURRENCIES, CURRENCY_NAMES, finishCampaignStage, heroLevel, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, nextStage, pendingRewards, repeatRewards, rewardText, stageById, summon, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
@@ -16,6 +18,7 @@ export type CampaignRun = { stageId: string; squad: string[] };
 
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
+const ROLE_HINTS: Record<string, string> = { Tank: "Holds 3 enemies. Protects the line.", Warrior: "Holds 2 enemies. Cleaves groups.", Assassin: "Catches enemies that slip through.", Mage: "Splash damage for packs and armor.", Archer: "Strong against flyers and tough targets.", Support: "Heals and boosts nearby allies." };
 const banner: any = summonCfg.banners[0]; // one banner for now
 
 // Records a finished stage (skipped for debug runs) and returns the result screen line.
@@ -73,6 +76,12 @@ export function createCampaign(ctx: PageContext) {
   const wallet = () => CURRENCIES.map((id) => `${(progress().currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}`).join(" - ");
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
+  const featureEl = q("[data-td-camp-feature]");
+  const lineupEl = q("[data-td-squad-lineup]");
+  const feedbackEl = q("[data-td-squad-feedback]");
+  const hasEnemy = (stage: any, kind: string) => stage.waves.some((wave: any) => wave.spawns.some((spawn: any) => spawn.kind === kind));
+  const terrain = (stage: any) => mapSceneFor(mapOf(stage.mapId))?.assets.terrain ?? "";
+
   function render() {
     const p = progress();
     const stages = allStages(campaign);
@@ -87,19 +96,23 @@ export function createCampaign(ctx: PageContext) {
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     walletEls.forEach((el) => { el.textContent = wallet(); });
+    const featured = next ?? stages.at(-1);
+    featureEl.innerHTML = featured ? `<article class="td-camp-feature">
+      <img src="${terrain(featured)}" alt="" class="td-camp-feature-art">
+      <div class="td-camp-feature-copy"><span class="td-label">${next ? "Your next defense" : "Chapter complete · Play again"}</span>
+      <h3>${featured.id} · ${featured.name}</h3><p>${featured.text}</p>
+      <span class="td-camp-feature-meta">${mapOf(featured.mapId)?.name} · ${featured.waves.length} waves · ${featured.lives} lives${hasEnemy(featured, "boss") ? ` · Boss: ${ctx.bossFor(mapOf(featured.mapId)).name}` : ""}</span>
+      <p class="td-camp-feature-reward">${stageRewards(featured)}</p>
+      <button class="action-button action-button--primary" type="button" data-camp-stage="${featured.id}" data-td-autofocus>${next ? "Choose squad" : "Replay stage"}</button></div></article>` : "";
     stagesEl.innerHTML = stages.map((stage: any) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
-      const map = mapOf(stage.mapId);
-      const status = !open ? `Locked - clear ${stage.unlockAfter} first` : done ? `Cleared - best ${done.bestLives} of ${stage.lives} lives` : "New";
-      const reward = open ? stageRewards(stage) : "";
-      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}" data-camp-stage="${stage.id}"${open ? "" : " disabled"}>` +
-        `<span class="td-camp-stage-id">${stage.id}</span>` +
-        `<span class="td-camp-stage-copy"><strong>${stage.name}</strong><small>${map?.name ?? stage.mapId} - ${stage.waves.length} waves - ${stage.lives} lives</small>` +
-        `<small class="td-camp-stage-text">${open ? stage.text : ""}</small>` +
-        `<small class="td-camp-stage-status">${status}${reward ? ` - ${reward}` : ""}</small></span></button>`;
+      const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${done.bestLives}/${stage.lives} lives` : "Ready to play";
+      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}" data-camp-stage="${stage.id}"${open ? "" : " disabled"}>
+        <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
+        <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
+        <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small></span></button>`;
     }).join("");
-    stagesEl.querySelector<HTMLElement>(".is-next, [data-camp-stage]:not([disabled])")?.setAttribute("data-td-autofocus", "");
   }
 
   function renderSquad() {
@@ -108,20 +121,37 @@ export function createCampaign(ctx: PageContext) {
     const p = progress();
     const map = mapOf(stage.mapId);
     squadTitleEl.textContent = `Stage ${stage.id}: ${stage.name}`;
-    squadCopyEl.textContent = `${map?.name ?? stage.mapId}, boss: ${ctx.bossFor(map).name}. ${stage.waves.length} waves, ${stage.lives} lives. Only your squad can be deployed; pick road heroes to block and platform heroes for flyers.`;
-    squadCountEl.textContent = `Squad ${squad.length} of ${campaign.squadSize}`;
+    squadCopyEl.textContent = `${map?.name ?? stage.mapId} · ${stage.waves.length} waves · ${stage.lives} lives${hasEnemy(stage, "boss") ? ` · Boss: ${ctx.bossFor(map).name}` : ""}. ${stage.text}`;
+    q("[data-td-squad-rewards]").textContent = stageRewards(stage);
+    squadCountEl.textContent = `Squad ${squad.length} / ${campaign.squadSize}`;
+    const selected = squad.map((id) => heroById.get(id));
+    const road = selected.filter((hero) => hero.slot === "road").length;
+    const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
+    q("[data-td-squad-coverage]").textContent = `${road} road · ${selected.length - road} platform · ${antiAir} anti-air damage`;
+    feedbackEl.textContent = hasEnemy(stage, "flyer") && !antiAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
+      : squad.length === campaign.squadSize ? "Squad full. Select a chosen hero to remove them." : "Select a hero to add them. Select again to remove.";
+    feedbackEl.classList.toggle("is-warning", hasEnemy(stage, "flyer") && !antiAir);
+    lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => selected[i]
+      ? `<button type="button" data-squad-remove="${selected[i].id}" aria-label="Remove ${selected[i].name} from squad"><img src="${selected[i].image}" alt=""><span>${selected[i].name}</span><small>Remove ×</small></button>`
+      : `<span class="td-squad-empty"><strong>${i + 1}</strong><small>Choose hero</small></span>`).join("");
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
-    // Owned heroes first (by class), locked ones after, so the choice is on top on phones.
-    const heroes = [...data.heroes].sort((a: any, b: any) => Number(!p.owned.includes(a.id)) - Number(!p.owned.includes(b.id)) || order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
-    squadListEl.innerHTML = heroes.map((hero: any) => {
-      const owned = p.owned.includes(hero.id);
-      const picked = squad.includes(hero.id);
+    const heroes = [...data.heroes].sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
+    const card = (hero: any) => {
+      const owned = p.owned.includes(hero.id), picked = squad.includes(hero.id);
       const unlock = allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
-      const note = owned ? `Lv ${heroLevel(p, hero.id)} ${hero.class} - ${hero.slot === "road" ? "road" : "platform"} - ${hero.cost} gold` : unlock ? `Locked - clear stage ${unlock.id} or summon` : "Locked - summon";
-      return `<button type="button" class="td-hero-card td-squad-hero${picked ? " is-picked" : ""}${owned ? "" : " is-unavailable"}" data-squad-hero="${hero.id}" aria-pressed="${picked}"${owned ? "" : " disabled"}>` +
-        `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
-        `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small>${note}</small></span></button>`;
-    }).join("");
+      const skill = data.tuning.heroSkills?.[hero.id];
+      const note = owned ? `Campaign Lv ${heroLevel(p, hero.id)} · ${hero.cost} battle gold` : unlock ? `Clear stage ${unlock.id}` : "Obtain through Summon";
+      return `<article class="td-squad-card${picked ? " is-picked" : ""}"><button type="button" class="td-squad-hero" data-squad-hero="${hero.id}" aria-pressed="${picked}"${owned ? "" : " disabled"}>
+        <img class="td-squad-portrait" src="${hero.portrait ?? hero.image}" alt="" loading="lazy">
+        <span class="td-squad-choice">${picked ? "✓ Selected" : owned ? "Select" : "Locked"}</span>
+        <span class="td-card-copy"><strong>${hero.name}</strong><small>${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}</small>
+        <span>${ROLE_HINTS[hero.class] ?? ""}</span><small>${note}</small></span></button>
+        ${owned && skill ? `<details class="td-squad-skill"><summary>${skill.skillName}</summary><p>${SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? ""}</p></details>` : ""}</article>`;
+    };
+    squadListEl.innerHTML = heroes.filter((h: any) => p.owned.includes(h.id)).map(card).join("");
+    const locked = heroes.filter((h: any) => !p.owned.includes(h.id));
+    q("[data-td-squad-locked]").innerHTML = locked.map(card).join("");
+    q("[data-td-squad-locked-label]").textContent = `Heroes to discover · ${locked.length}`;
     squadStart.disabled = !validSquad(campaign, p, squad);
     squadStart.textContent = squad.length ? `Start stage ${stage.id}` : "Pick at least one hero";
     return true;
@@ -159,14 +189,21 @@ export function createCampaign(ctx: PageContext) {
     const seals = p.currencies.divineSeals || 0;
     summonBannerEl.textContent = banner.name;
     summonCopyEl.textContent = left
-      ? `Each summon brings a hero you do not own yet. ${left} ${left === 1 ? "hero" : "heroes"} left to find. The first clear of a campaign stage pays Divine Seals.`
-      : "You own every hero. Nothing is left to summon.";
+      ? "Invite a new defender to your campaign squad."
+      : "Every hero in this banner is yours. Stage rewards can still unlock other heroes.";
     summonWalletEl.textContent = `${seals.toLocaleString()} ${CURRENCY_NAMES.divineSeals}`;
     const ok = canSummon(summonCfg, banner.id, p, allHeroIds());
     summonButton.disabled = !ok;
     summonButton.toggleAttribute("data-td-autofocus", ok);
-    summonButton.textContent = "Summon";
-    summonNoteEl.textContent = !left ? "Every hero is yours." : canAfford(p, banner.cost) ? `${costText(banner.cost)} per summon` : `Needs ${costText(banner.cost)}`;
+    summonButton.textContent = left ? "Summon 1 hero" : "Banner complete";
+    q("[data-td-summon-price]").textContent = `${costText(banner.cost)} per summon`;
+    q("[data-td-summon-pool-count]").textContent = `${left} still to discover`;
+    const pool = data.heroes.filter((hero: any) => !reserved.has(hero.id) && !campaign.starters.includes(hero.id));
+    q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => `<div class="td-summon-pool-hero${p.owned.includes(hero.id) ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${p.owned.includes(hero.id) ? "✓ Owned" : "Undiscovered"}</span></div>`).join("");
+    q("[data-td-summon-source]").textContent = nextStage(campaign, p)
+      ? "Earn Divine Seals from first clears in Campaign. Every remaining hero in this banner has an equal chance. Stage-reward heroes are earned only from their stages."
+      : "All current campaign stages are cleared. Replays award Gold and Hero XP, but no Divine Seals. More seals need future campaign rewards.";
+    summonNoteEl.textContent = !left ? "All banner heroes collected." : canAfford(p, banner.cost) ? `${costText(banner.cost)} per summon` : `Needs ${costText(banner.cost)}`;
     if (fresh) { summonRevealEl.hidden = true; summonRevealEl.innerHTML = ""; }
   }
 
@@ -182,6 +219,8 @@ export function createCampaign(ctx: PageContext) {
       `<div class="td-summon-hint"><p>Build squad: ${hero.name} is ready. Pick a stage and add ${hero.name} to your squad.</p>` +
       `<button type="button" class="action-button action-button--quiet" data-td-go="campaign">Build squad</button></div>`;
     summonRevealEl.hidden = false;
+    summonRevealEl.focus({ preventScroll: true });
+    summonRevealEl.scrollIntoView({ block: "nearest" });
     // Restart the reveal animation on a second summon.
     const card = summonRevealEl.querySelector<HTMLElement>(".td-summon-card");
     if (card) { card.style.animation = "none"; void card.offsetWidth; card.style.animation = ""; }
@@ -206,7 +245,7 @@ export function createCampaign(ctx: PageContext) {
     if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad] } });
   }
 
-  stagesEl.addEventListener("click", (event) => {
+  ctx.root.querySelector<HTMLElement>('[data-td-screen="campaign"]')!.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-stage]");
     if (button && !button.disabled) openStage(button.dataset.campStage!);
   });
@@ -216,9 +255,23 @@ export function createCampaign(ctx: PageContext) {
     const id = button.dataset.squadHero!;
     if (squad.includes(id)) squad = squad.filter((entry) => entry !== id);
     else if (squad.length < campaign.squadSize) squad = [...squad, id];
-    else { ctx.notice(`A squad has at most ${campaign.squadSize} heroes. Remove one first.`); return; }
+    else { feedbackEl.textContent = `Squad full. Remove a selected hero before adding ${heroName(id)}.`; return; }
     renderSquad();
     squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
+  });
+  lineupEl.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-remove]");
+    if (!button) return;
+    const id = button.dataset.squadRemove!;
+    squad = squad.filter((entry) => entry !== id);
+    renderSquad();
+    squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
+  });
+  q("[data-td-squad-preset]").addEventListener("click", () => {
+    const owned = data.heroes.filter((hero: any) => progress().owned.includes(hero.id));
+    squad = ["Warrior", "Mage", "Archer", "Support"].map((cls) => owned.find((hero: any) => hero.class === cls)?.id).filter(Boolean).slice(0, campaign.squadSize);
+    renderSquad();
+    feedbackEl.textContent = "Quick pick: a road fighter, splash damage, anti-air and healing. Swap any hero to try another approach.";
   });
   squadStart.addEventListener("click", start);
   heroListEl.addEventListener("click", (event) => {
@@ -244,7 +297,7 @@ export function createCampaign(ctx: PageContext) {
     render();
     reveal(result.heroId);
     ctx.notice(`${heroName(result.heroId)} joins your heroes!`);
-    if (summonButton.disabled) summonRevealEl.querySelector<HTMLButtonElement>("[data-td-go]")?.focus({ preventScroll: true });
+
   });
 
   return { render, renderSquad, renderHeroes, renderSummon };

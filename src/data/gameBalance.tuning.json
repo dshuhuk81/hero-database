@@ -67,7 +67,7 @@
     "mythic": { "label": "Mythic", "enemyHp": 3.2, "enemyAttack": 1.6, "favor": 1.6 }
   },
   "statuses": {
-    "sources": { "poseidon": "wet", "phoenix": "burn", "prometheus": "burn", "medusa": "poison", "jormungandr": "poison" },
+    "sources": { "poseidon": "wet", "phoenix": "burn", "prometheus": "chill", "medusa": "poison", "jormungandr": "poison" },
     "wet": { "seconds": 4 },
     "burn": { "share": 0.3, "seconds": 3 },
     "poison": { "share": 0.3, "seconds": 4 },

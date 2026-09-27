@@ -21,11 +21,13 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 upgrades and such.
 
 ### M24 leftovers (white label)
-- Enemy sprites done (archive "M24 leftovers"). Open for the owner:
-  - Delete the unused local files (list in `TOWER_DEFENSE_WHITELABEL_AUDIT.md` item 8: `public/td/sprite.png`, `spritePlatform.png`, `spriteRoad.png`, `bg/*.png` and the replaced enemy sprites); the agent was not allowed to delete them.
-  - Decide on `public/td/sprite_backgrounds.png` (9 painted landscapes, origin unknown, unused).
-  - Promo thumbnail `public/td/promotional/motto-tower-defense-youtube-v1.*` says "MOTTO TOWER DEFENSE" and shows the game's Zeus and Lilith: replace or delete.
-  - Old R2 keys nothing loads: list in audit item 8.
+- Enemy sprites done (archive "M24 leftovers"); unused local files and the Motto promo thumbnail (with `docs/tower-defense-thumbnail.md`) deleted September 27, 2026. Open for the owner:
+  - Old R2 keys nothing loads (delete by hand): list in `TOWER_DEFENSE_WHITELABEL_AUDIT.md` item 8, including the promo thumbnail `td/promotional/motto-tower-defense-youtube-v1.*`.
+
+### M24 - Attention! Audit
+- There will be an Audit being run. Audit is documented here and will be done from another agent. File: `/Users/daschultheiss/hero-database/TOWER_DEFENSE_PROGRESS_AUDIT.md`
+
+### Audit changes:
 
 ### M24c - New Effects due to hero change
 - we should render new effects for our heroes after we swapped them.

@@ -1222,3 +1222,82 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-exp-camp .td-mutator { border-color: color-mix(in srgb, var(--accent-gold) 45%, var(--border-subtle)); background: color-mix(in srgb, var(--accent-gold) 6%, var(--bg-base)); }
 .td-exp-camp .td-mutator:hover, .td-exp-camp .td-mutator:focus-visible { border-color: var(--accent-gold); }
 .td-exp-cost { margin-top: auto; color: var(--td-warn); font-size: var(--td-fs-body); font-weight: var(--weight-bold); }
+
+/* Audit step 1: Campaign, squad preparation and the summon collection. */
+.td-camp-screen, .td-squad-screen { width: min(1120px, 100%); }
+.td-camp-screen h3, .td-squad-screen h3 { margin-block: 0; }
+.td-camp-feature { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: var(--bg-raised); }
+.td-camp-feature-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.td-camp-feature::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9, 9, 16, .96), rgba(9, 9, 16, .86) 45%, rgba(9, 9, 16, .2)); z-index: -1; }
+.td-camp-feature-copy { display: grid; justify-items: start; gap: var(--space-3); max-width: 700px; padding: var(--space-5); }
+.td-camp-feature-copy h3 { color: var(--text-bright); font-size: var(--text-2xl); }
+.td-camp-feature-copy p { margin: 0; line-height: var(--leading-normal); }
+.td-camp-feature-meta { color: var(--text-secondary); font-size: var(--td-fs-body); }
+.td-camp-feature-reward { color: var(--accent-gold); font-size: var(--td-fs-body); }
+.td-camp-stages { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.td-camp-stage { position: relative; isolation: isolate; overflow: hidden; grid-template-columns: 1fr; gap: var(--space-3); min-height: 175px; background: var(--bg-raised); }
+.td-camp-stage-art { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+.td-camp-stage::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(transparent, var(--bg-base) 80%); }
+.td-camp-stage-id { width: 44px; height: 36px; font-size: var(--td-fs-body); }
+.td-camp-stage.is-locked { opacity: .7; }
+.td-camp-stage-copy { align-self: end; }
+.td-camp-stage-copy small { font-size: var(--td-fs-label); }
+.td-squad-prep { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--bg-raised); border: 1px solid var(--border-subtle); }
+.td-squad-lineup { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+.td-squad-lineup > * { display: grid; place-items: center; gap: 2px; padding: var(--space-2); min-width: 0; border: 1px dashed var(--border-medium); border-radius: var(--radius-md); color: var(--text-secondary); background: var(--bg-base); font: inherit; }
+.td-squad-lineup > button { border-style: solid; border-color: var(--accent-gold-dim); cursor: pointer; }
+.td-squad-lineup img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.td-squad-lineup span, .td-squad-lineup small { max-width: 100%; overflow-wrap: anywhere; font-size: var(--td-fs-label); }
+.td-squad-empty strong { display: grid; place-items: center; height: 48px; font-size: var(--text-xl); color: var(--text-muted); }
+.td-squad-tools { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.td-squad-tools p, .td-squad-feedback { margin: 0; color: var(--text-secondary); font-size: var(--td-fs-body); }
+.td-squad-feedback.is-warning { color: var(--accent-gold); }
+.td-squad-tools button { flex: 0 0 auto; }
+.td-squad-list { align-items: start; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-3); }
+.td-squad-card { overflow: hidden; min-width: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-raised); }
+.td-squad-card.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 1px var(--accent-gold-dim); }
+.td-squad-hero { position: relative; display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: center; width: 100%; min-height: 190px; padding: var(--space-3); padding-top: var(--space-5); gap: var(--space-3); border: 0; background: transparent; color: var(--text-primary); font: inherit; text-align: left; cursor: pointer; }
+.td-squad-hero:disabled { cursor: default; }
+.td-squad-portrait { width: 90px; height: 120px; object-fit: contain; }
+.td-squad-hero .td-card-copy { display: grid; gap: var(--space-1); min-width: 0; }
+.td-squad-hero strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-squad-hero small { color: var(--text-secondary); font-size: var(--td-fs-label); }
+.td-squad-hero .td-card-copy > span { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-squad-choice { position: absolute; top: var(--space-2); right: var(--space-3); color: var(--text-muted); font-size: var(--td-fs-label); }
+.is-picked .td-squad-choice { color: var(--accent-gold); }
+.td-squad-skill { border-top: 1px solid var(--border-subtle); padding: 0 var(--space-3); }
+.td-squad-skill summary, .td-squad-locked > summary { display: list-item; cursor: pointer; padding-block: var(--space-3); min-height: 44px; box-sizing: border-box; color: var(--text-secondary); font-size: var(--td-fs-body); }
+.td-squad-skill p { margin: 0 0 var(--space-3); color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-normal); }
+.td-squad-locked .td-squad-portrait { opacity: .55; }
+.td-squad-hero:focus-visible, .td-squad-lineup button:focus-visible, .td-camp-stage:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: -3px; }
+.td-summon-banner { padding: var(--space-5); display: grid; gap: var(--space-3); border: 1px solid var(--accent-gold-dim); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top right, var(--accent-gold-dim), transparent 65%), var(--bg-raised); }
+.td-summon-terms { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: var(--td-fs-body); color: var(--text-secondary); }
+.td-summon-terms strong { color: var(--accent-gold); }
+.td-collection-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.td-collection-head > span { color: var(--text-secondary); font-size: var(--td-fs-label); }
+.td-summon-pool { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-3); }
+.td-summon-pool-hero { display: grid; gap: var(--space-1); justify-items: center; text-align: center; min-width: 0; padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: radial-gradient(ellipse at top, var(--surface-tint), transparent), var(--bg-raised); }
+.td-summon-pool-hero img { width: 100%; height: 145px; object-fit: contain; }
+.td-summon-pool-hero strong { color: var(--text-bright); font-size: var(--td-fs-body); }
+.td-summon-pool-hero small, .td-summon-pool-hero span { color: var(--text-secondary); font-size: var(--td-fs-label); }
+.td-summon-pool-hero.is-owned { border-color: var(--accent-gold-dim); }
+.td-summon-pool-hero.is-owned span { color: var(--accent-gold); }
+[data-td-summon-button]:disabled, [data-td-squad-start]:disabled { background: var(--bg-raised); border-color: var(--border-medium); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+[data-td-screen="summon"] .td-screen-footer-note { white-space: normal; }
+@media (max-width: 640px) {
+  .td-camp-feature-copy, .td-summon-banner { padding: var(--space-4); }
+  .td-camp-feature::after { background: linear-gradient(90deg, rgba(9, 9, 16, .92), rgba(9, 9, 16, .65)); }
+  .td-camp-stages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .td-camp-stage { padding: var(--space-3); min-height: 165px; }
+  .td-camp-stage-copy strong { font-size: var(--td-fs-body); }
+  .td-summon-pool { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-td-screen="summon"] .td-screen-footer { flex-wrap: wrap; gap: var(--space-2); }
+  [data-td-screen="summon"] .td-screen-footer-note { flex-basis: 100%; }
+  .td-squad-prep { padding: var(--space-3); }
+}
+
+.td-camp-head > .td-camp-feature-reward { margin: var(--space-1) 0 0; }
+@media (orientation: landscape) and (max-height: 540px) {
+  .td-summon-banner { padding: var(--space-3) var(--space-4); gap: var(--space-2); }
+  .td-summon-banner > .td-label { display: none; }
+}
