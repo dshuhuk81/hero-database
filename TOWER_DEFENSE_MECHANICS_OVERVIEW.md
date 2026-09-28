@@ -173,12 +173,15 @@ activates in long (62% awakening+training) and endless (76%). Runs end with
 ~200–370 gold left over. Use this table to validate recommendation 3 (kill
 reward visibility) and recommendation 7 (training sink health).
 
-**2. Unify the difficulty multipliers.** `difficulty.enemyHp` (3.75), tier
-multipliers, expedition stage HP, and waveGen ramp all scale enemy health
-independently. Pick one semantic layer: base enemy stats = Normal truth, tiers
-own all difficulty scaling, and remove or fold the global 3.75 into the enemy
-table. Every additional global multiplier is a future bug when someone tunes
-an enemy for Normal and it lands 3.75× off in campaign.
+**2. Unify the difficulty multipliers.** *(Concrete proposal written September
+28, 2026 — see the roadmap entry "Difficulty multiplier unification", waiting
+for owner approval.)* The measured spawn chain is `base.hp × wave ramp (0.15) ×
+global 3.75 × tier × map scale × endless ramp`. The proposal folds the global
+3.75 into the enemy table itself (grunt 90 → 337.5, boss 2200 → 8250, Lilith
+2600 → 9750), drops `difficulty.enemyHp` to 1, and keeps the semantic layers
+(wave ramp, map scale, tiers, endless ramp, expedition stage ease-in)
+untouched. Behavior stays bit-near-identical; the enemy table becomes the
+Normal-truth so per-kind tuning lands where the author expects.
 
 **3. Make kill rewards matter or hide them.** *(Implemented September 28,
 2026.)* Kill rewards were doubled across all enemy kinds and the wave-clear

@@ -284,19 +284,19 @@ const modes = [
     <!-- 1c. Squad for a campaign stage (M26) -->
     <section class="td-screen" data-td-screen="squad" data-title="Choose your squad" aria-label="Choose your squad" hidden>
       <div class="td-screen-body td-squad-screen">
-        <div class="td-camp-head">
+        <div class="td-squad-head">
           <h2 class="td-camp-chapter" data-td-squad-stage>Stage</h2>
           <p class="td-camp-progress" data-td-squad-copy></p>
           <p class="td-camp-feature-reward" data-td-squad-rewards></p>
         </div>
+        <div class="td-squad-roster" role="group" aria-label="Heroes" data-td-squad-list></div>
         <div class="td-squad-prep">
           <div class="td-squad-lineup" aria-label="Selected squad" data-td-squad-lineup></div>
-          <div class="td-squad-tools"><p data-td-squad-coverage></p><button class="action-button action-button--quiet" type="button" data-td-squad-preset>Quick pick</button></div>
-          <p class="td-squad-feedback" role="status" data-td-squad-feedback></p>
+          <div class="td-squad-tools">
+            <div><p data-td-squad-coverage></p><p class="td-squad-feedback" role="status" data-td-squad-feedback></p></div>
+            <button class="action-button action-button--quiet" type="button" data-td-squad-preset>Quick pick</button>
+          </div>
         </div>
-        <p class="td-camp-progress">Choose up to 4 heroes. Campaign levels apply; Divine Blessings do not.</p>
-        <div class="td-squad-list" role="group" aria-label="Owned heroes" data-td-squad-list></div>
-        <details class="td-squad-locked"><summary data-td-squad-locked-label>Heroes to discover</summary><div class="td-squad-list" data-td-squad-locked></div></details>
       </div>
       <div class="td-screen-footer">
         <p class="td-screen-footer-note" data-td-squad-count></p>

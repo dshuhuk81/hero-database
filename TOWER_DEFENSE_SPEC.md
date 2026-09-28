@@ -223,6 +223,16 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    next-stage preview, stage cards and the transition into squad selection.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
    Campaign stages; exiting a campaign run also resolves through this hierarchy.
+   Layout (top to bottom): compact stage head (name, map · waves · lives · boss, rewards;
+   the stage text is a tooltip), a roster strip of small tiles, max 2 rows, swipe/scroll
+   sideways for the rest (portrait, name, class icon,
+   level; locked heroes trail dimmed with their unlock source), then a sticky panel with
+   the 4 squad slots (portrait, class · lane, level, battle gold cost; tap to remove),
+   coverage line, hint/flyer warning and Quick pick. Footer: count, power vs. recommended,
+   Start. Role hints and skill names live in tile tooltips and on the Heroes screen.
+   Drag and drop (pointer events, mouse + touch): tile -> slot places or replaces, slot ->
+   slot swaps, slot dropped outside the lineup removes. Tap still toggles. On touch a
+   roster tile drags only on a mostly vertical pull, so sideways swipes keep scrolling.
 
 Heroes and Summoning are campaign activities, so they are cards on the headquarters
 screen rather than persistent footer navigation buttons.

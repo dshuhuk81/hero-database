@@ -10,24 +10,24 @@
   },
   "tierUltPower": { "S+": 1.6, "S": 1.45, "A+": 1.3, "A": 1.15, "B": 1.05, "C": 1, "D": 1 },
   "enemies": {
-    "grunt": { "hp": 90, "speed": 42, "armor": 30, "reward": 10, "damage": 1, "attack": 22, "attackPeriod": 0.9 },
-    "runner": { "hp": 65, "speed": 76, "armor": 18, "reward": 10, "damage": 1, "attack": 18, "attackPeriod": 0.9 },
-    "flyer": { "hp": 70, "speed": 62, "armor": 24, "reward": 12, "damage": 1, "flying": true, "attack": 0, "attackPeriod": 1 },
-    "archer": { "hp": 120, "speed": 39, "armor": 36, "reward": 14, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8 },
-    "brute": { "hp": 320, "speed": 27, "armor": 200, "magicRes": 30, "reward": 24, "damage": 2, "attack": 80, "attackPeriod": 1.1 },
-    "boss": { "hp": 2200, "speed": 20, "armor": 200, "magicRes": 90, "reward": 100, "damage": 3, "attack": 85, "attackPeriod": 1 },
-    "brood": { "hp": 510, "speed": 20, "armor": 110, "magicRes": 40, "reward": 12, "damage": 1, "attack": 85, "attackPeriod": 1 },
-    "mender": { "hp": 90, "speed": 40, "armor": 30, "magicRes": 50, "reward": 16, "damage": 1, "attack": 14, "attackPeriod": 1, "heal": { "every": 2.5, "radius": 95, "share": 0.08, "budget": 0.5, "cap": 0.3 } },
-    "shieldbearer": { "hp": 100, "speed": 38, "armor": 60, "magicRes": 40, "reward": 16, "damage": 1, "attack": 24, "attackPeriod": 1, "shield": { "hp": 1.6, "minChip": 0.15, "regenDelay": 4, "regenRate": 0.35 } },
-    "broodcaller": { "hp": 260, "speed": 30, "armor": 40, "magicRes": 150, "reward": 24, "damage": 2, "attack": 20, "attackPeriod": 1.1, "summon": { "kind": "imp", "every": 4, "count": 2, "max": 4, "total": 8 } },
-    "imp": { "hp": 24, "speed": 58, "armor": 10, "reward": 2, "damage": 1, "attack": 10, "attackPeriod": 0.8 },
-    "hexer": { "hp": 130, "speed": 36, "armor": 30, "magicRes": 160, "reward": 18, "damage": 1, "attack": 18, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8, "hex": { "every": 6, "range": 140, "seconds": 2 } }
+    "grunt": { "hp": 337.5, "speed": 42, "armor": 30, "reward": 10, "damage": 1, "attack": 22, "attackPeriod": 0.9 },
+    "runner": { "hp": 243.75, "speed": 76, "armor": 18, "reward": 10, "damage": 1, "attack": 18, "attackPeriod": 0.9 },
+    "flyer": { "hp": 262.5, "speed": 62, "armor": 24, "reward": 12, "damage": 1, "flying": true, "attack": 0, "attackPeriod": 1 },
+    "archer": { "hp": 450, "speed": 39, "armor": 36, "reward": 14, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8 },
+    "brute": { "hp": 1200, "speed": 27, "armor": 200, "magicRes": 30, "reward": 24, "damage": 2, "attack": 80, "attackPeriod": 1.1 },
+    "boss": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "reward": 100, "damage": 3, "attack": 85, "attackPeriod": 1 },
+    "brood": { "hp": 1912.5, "speed": 20, "armor": 110, "magicRes": 40, "reward": 12, "damage": 1, "attack": 85, "attackPeriod": 1 },
+    "mender": { "hp": 337.5, "speed": 40, "armor": 30, "magicRes": 50, "reward": 16, "damage": 1, "attack": 14, "attackPeriod": 1, "heal": { "every": 2.5, "radius": 95, "share": 0.08, "budget": 0.5, "cap": 0.3 } },
+    "shieldbearer": { "hp": 375, "speed": 38, "armor": 60, "magicRes": 40, "reward": 16, "damage": 1, "attack": 24, "attackPeriod": 1, "shield": { "hp": 1.6, "minChip": 0.15, "regenDelay": 4, "regenRate": 0.35 } },
+    "broodcaller": { "hp": 975, "speed": 30, "armor": 40, "magicRes": 150, "reward": 24, "damage": 2, "attack": 20, "attackPeriod": 1.1, "summon": { "kind": "imp", "every": 4, "count": 2, "max": 4, "total": 8 } },
+    "imp": { "hp": 90, "speed": 58, "armor": 10, "reward": 2, "damage": 1, "attack": 10, "attackPeriod": 0.8 },
+    "hexer": { "hp": 487.5, "speed": 36, "armor": 30, "magicRes": 160, "reward": 18, "damage": 1, "attack": 18, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8, "hex": { "every": 6, "range": 140, "seconds": 2 } }
   },
   "bosses": {
     "baphomet": { "mark": { "every": 15, "warn": 1.5, "seconds": 3, "selfDamage": 0.1, "memory": 8 }, "stance": { "every": 20, "seconds": 4, "reduction": 0.6 } },
-    "lilith": { "stats": { "hp": 2600 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 }, "endOfAll": { "below": 0.5, "attackSpeed": 3 } }
+    "lilith": { "stats": { "hp": 9750 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 }, "endOfAll": { "below": 0.5, "attackSpeed": 3 } }
   },
-  "difficulty": { "enemyHp": 3.75 },
+  "difficulty": { "enemyHp": 1 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 }, "path": { "level": 4 } },
   "runBoons": {
