@@ -22,8 +22,8 @@ const spendEvenly = (progress) => {
   }
 };
 const scenarios = [
-  ["base", 1, 0], ["2 stars", 2, 0], ["3 stars", 3, 0], ["5 stars", 5, 0],
-  ["Evo II", 1, 2], ["Evo V", 1, 5], ["3 stars + Evo III", 3, 3], ["5 stars + Evo V", 5, 5],
+  ["base", 0, 0], ["1 star", 1, 0], ["2 stars", 2, 0], ["5 stars", 5, 0],
+  ["Evo II", 0, 2], ["Evo V", 0, 5], ["2 stars + Evo III", 2, 3], ["5 stars + Evo V", 5, 5],
 ];
 const rows = [];
 let progress = newCampaignProgress(campaign);

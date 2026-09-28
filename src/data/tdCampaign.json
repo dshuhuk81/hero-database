@@ -3,8 +3,10 @@
   "squadSize": 4,
   "starters": ["demeter", "jormungandr", "horus", "fengyi", "artemis", "freya"],
   "heroLevels": {
-    "max": 10,
-    "statPerLevel": 0.06,
+    "max": 60,
+    "capByStars": [10, 20, 30, 40, 50, 60],
+    "bandSize": 10,
+    "statPerLevel": [0.06, 0.03, 0.02, 0.015, 0.015, 0.01],
     "cost": {
       "gold": {
         "base": 100,
@@ -20,9 +22,10 @@
   "heroStars": {
     "max": 5,
     "statPerStar": 0.10,
-    "copies": [1, 2, 3, 4],
-    "gold": [200, 400, 600, 800]
+    "copies": [1, 1, 2, 3, 4],
+    "gold": [100, 200, 400, 600, 800]
   },
+  "heroMight": { "evolutionPerTier": 0.06 },
   "heroEvolution": {
     "tiers": [
       { "name": "Evolved I", "ultPower": 0.20, "text": "Ultimate deals 20% more" },

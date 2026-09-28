@@ -7,7 +7,7 @@
 // of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
 // clears, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
-export const CAMPAIGN_SAVE_VERSION = 4; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence
+export const CAMPAIGN_SAVE_VERSION = 5; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust", "divineEssence"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust", divineEssence: "Divine Essence" };
 // Save version that introduced each currency: stages cleared under an older save are paid
@@ -100,14 +100,19 @@ export function rewardText(rewards, heroName = (id) => id) {
 export const heroLevel = (progress, id) => progress.levels?.[id] ?? 1;
 
 // Cost to go from `level` to level + 1, or null at the cap.
-export function levelUpCost(campaign, level) {
+// Level cap from stars (heroLevels.capByStars: 0 stars -> 10 ... 5 stars -> 60).
+export const levelCap = (campaign, stars) => campaign.heroLevels?.capByStars?.[stars] ?? campaign.heroLevels?.max ?? 1;
+export const heroLevelCap = (campaign, progress, id) => levelCap(campaign, heroStars(progress, id));
+
+// Cost of level -> level + 1, or null at `cap` (the hero's star cap; default the absolute max).
+export function levelUpCost(campaign, level, cap = campaign.heroLevels?.max ?? 1) {
   const cfg = campaign.heroLevels;
-  if (!cfg || level >= cfg.max) return null;
+  if (!cfg || level >= Math.min(cap, cfg.max)) return null;
   return Object.fromEntries(Object.entries(cfg.cost).map(([id, { base, perLevel }]) => [id, base + perLevel * (level - 1)]));
 }
 
 export function canLevelUp(campaign, progress, id) {
-  const cost = levelUpCost(campaign, heroLevel(progress, id));
+  const cost = levelUpCost(campaign, heroLevel(progress, id), heroLevelCap(campaign, progress, id));
   return !!cost && progress.owned.includes(id) && Object.entries(cost).every(([currency, amount]) => (progress.currencies[currency] || 0) >= amount);
 }
 
@@ -121,18 +126,30 @@ export function levelUp(campaign, progress, id) {
   return { ...progress, currencies, levels: { ...progress.levels, [id]: level + 1 } };
 }
 
+// Attack and health gained by the step to `level` (2+). statPerLevel is one rate per star band
+// of bandSize levels (levels 2-10 band 0, 11-20 band 1, ...), so later levels add less.
+export function levelStepGain(campaign, level) {
+  const cfg = campaign.heroLevels ?? {};
+  const rates = Array.isArray(cfg.statPerLevel) ? cfg.statPerLevel : [cfg.statPerLevel ?? 0];
+  return rates[Math.min(rates.length - 1, Math.floor((level - 1) / (cfg.bandSize ?? 10)))] ?? 0;
+}
 // Attack and health multiplier of a campaign level.
-export const levelScale = (campaign, level) => 1 + (campaign.heroLevels?.statPerLevel ?? 0) * (level - 1);
+export function levelScale(campaign, level) {
+  let scale = 1;
+  for (let l = 2; l <= level; l += 1) scale += levelStepGain(campaign, l);
+  return scale;
+}
 
 // --- Stars (M26 sprint 9): spare copies of any hero + Gold raise a hero's attack and health ---
-export const heroStars = (progress, id) => progress.stars?.[id] ?? 1;
-export const starScale = (campaign, stars) => 1 + (campaign.heroStars?.statPerStar ?? 0) * (stars - 1);
+// Heroes start at 0 stars (save version 5; earlier saves counted from 1).
+export const heroStars = (progress, id) => progress.stars?.[id] ?? 0;
+export const starScale = (campaign, stars) => 1 + (campaign.heroStars?.statPerStar ?? 0) * stars;
 
 // Cost to go from `stars` to stars + 1: { copies, gold }, or null at the cap.
 export function starUpCost(campaign, stars) {
   const cfg = campaign.heroStars;
   if (!cfg || stars >= cfg.max) return null;
-  return { copies: cfg.copies[stars - 1], gold: cfg.gold[stars - 1] };
+  return { copies: cfg.copies[stars], gold: cfg.gold[stars] };
 }
 
 // Spare copies still needed for a hero's remaining Evolution tiers.
@@ -177,6 +194,15 @@ export function starUp(campaign, progress, id, fodder) {
 // --- Evolution (M26 sprint 9): a copy of the same hero (or Divine Essence) improves its skill ---
 export const heroEvolution = (progress, id) => progress.evolution?.[id] ?? 0;
 export const evolutionMax = (campaign) => campaign.heroEvolution?.tiers?.length ?? 0;
+
+// --- Might: one battle-power number per hero, from base attack + health scaled by level,
+// stars and evolution tier (heroMight.evolutionPerTier in tdCampaign.json). Sorts the Heroes
+// screen and sums to squad Might against a stage's recommendation.
+export function heroMight(campaign, progress, hero) {
+  const tier = heroEvolution(progress, hero.id);
+  const evo = 1 + (campaign.heroMight?.evolutionPerTier ?? 0) * tier;
+  return Math.round((hero.atk + hero.hp) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
+}
 
 // What evolving would spend now: "copy" (a copy of the hero first), "essence", or null.
 export function evolutionMaterial(campaign, progress, id) {
@@ -450,19 +476,21 @@ export function sanitizeCampaign(value, campaign, heroIds) {
       if (reward.type === "currency" && CURRENCIES.includes(reward.id) && version < CURRENCY_SINCE[reward.id]) currencies[reward.id] += Math.max(0, Math.floor(Number(reward.amount) || 0));
     }
   }
-  const max = campaign.heroLevels?.max ?? 1;
-  const levels = {};
-  for (const [id, level] of Object.entries(value.levels ?? {})) {
-    const n = Math.min(max, Math.floor(Number(level) || 1));
-    if (owned.includes(id) && n > 1) levels[id] = n;
-  }
   const summons = Math.max(0, Math.floor(Number(value.summons) || 0));
-  // Version 3 had no copies, stars or Evolution: they start empty (1 star, tier 0).
+  // Version 3 had no copies, stars or Evolution: they start empty (0 stars, tier 0).
   const counts = (obj, min, max, keep) => Object.fromEntries(Object.entries(obj && typeof obj === "object" ? obj : {})
     .map(([id, n]) => [id, Math.min(max, Math.floor(Number(n) || 0))])
     .filter(([id, n]) => keep(id) && n >= min));
   const copies = counts(value.copies, 1, Infinity, (id) => heroIds.has(id));
-  const stars = counts(value.stars, 2, campaign.heroStars?.max ?? 1, (id) => owned.includes(id));
+  // Version 4 counted stars from 1; version 5 from 0 (same stats: one less star, one less step).
+  const starShift = version < 5 ? 1 : 0;
+  const stars = counts(Object.fromEntries(Object.entries(value.stars && typeof value.stars === "object" ? value.stars : {}).map(([id, n]) => [id, (Number(n) || 0) - starShift])), 1, campaign.heroStars?.max ?? 0, (id) => owned.includes(id));
+  // Levels are capped by the hero's stars.
+  const levels = {};
+  for (const [id, level] of Object.entries(value.levels ?? {})) {
+    const n = Math.min(levelCap(campaign, stars[id] ?? 0), Math.floor(Number(level) || 1));
+    if (owned.includes(id) && n > 1) levels[id] = n;
+  }
   const evolution = counts(value.evolution, 1, campaign.heroEvolution?.tiers?.length ?? 0, (id) => owned.includes(id));
   return { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution };
 }

@@ -115,10 +115,15 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
 - **Starters:** demeter, jormungandr, horus, fengyi, artemis, freya.
 - **Campaign hero levels:** 1–10, +6% atk/HP per level, costing campaign Gold
   (100 + 50/level) and Hero XP (50 + 25/level) — **campaign stages only**.
-- **Stars:** duplicates become copies; 1/2/3/4 copies + 200/400/600/800 Gold
-  promote a hero to 2–5 stars at +10% stats each.
+- **Stars:** duplicates become copies; heroes start at 0 stars; 1/1/2/3/4
+  copies + 100/200/400/600/800 Gold promote to 1–5 stars at +10% stats each.
+- **Level cap:** 0–5 stars cap levels at 10/20/30/40/50/60. Per-level gain
+  drops by band: +6% (2–10), +3%, +2%, +1.5%, +1.5%, +1% (Lv 60 = +144%).
 - **Evolution:** Divine Essence buys tiers (Evolved I: +20% ult damage, II:
   +10% crit, III: −15% ult cooldown, …).
+- **Might:** one battle-power number per hero, (Attack + Health) × level ×
+  stars × (1 + 0.06 per evolution tier). Sorts the Heroes roster; squad Might
+  is compared to each stage's recommended Might (from its hp scale).
 - **Summons:** one banner ("Ember at the Crossing"), 60 Divine Seals per pull,
   10-pull option, pool = full roster, featured 4 heroes rotate every 14 days
   at 5× weight. Duplicates → copies + 30 Seal Dust; dust converts to Divine
@@ -139,7 +144,7 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
 | In-run economy | tuning | `run`, `upgrades`, `awakening`, `training`, `quests` |
 | Meta earn rates | tuning + modules | `favorEarn`, `daily.js`, `expedition.js`, `challenges.js` |
 | Gacha | `tdSummon.json` | banner cost, weights, dust |
-| Campaign progression | `tdCampaign.json` | heroLevels, heroStars, evolution, repeatShare |
+| Campaign progression | `tdCampaign.json` | heroLevels, heroStars, evolution, heroMight, repeatShare |
 | Verification | `scripts/test-td-*.mjs` | sim checks, balance harness, daily bot |
 
 ---

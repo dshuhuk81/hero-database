@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
+import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -21,6 +21,8 @@ export type CampaignRun = { stageId: string; squad: string[] };
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
 const banner: any = summonCfg.banners[0]; // one banner for now
+// Heroes screen tiles crop the full-body portrait to the face; heads sit lower on these.
+const FACE_FOCUS: Record<string, string> = { jormungandr: "18%", nuwa: "5%", zeus: "4%", nyx: "3%", poseidon: "3%" }; // Fenrir, Atlas, Odin, Nott, Aegir
 const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming soon"
 
 // Records a finished stage (skipped for debug runs) and returns the result screen line.
@@ -90,10 +92,10 @@ export function createCampaign(ctx: PageContext) {
   const wallet = () => CURRENCIES.map((id) => `${(progress().currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}`).join(" - ");
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
-  // Squad power vs. a stage's recommendation: a legible readout of the same hpScale
+  // Squad Might vs. a stage's recommendation: a legible readout of the same hpScale
   // knob the simulator uses to scale enemy HP, not a separate invented difficulty axis.
   const avgHeroBase = data.heroes.reduce((sum: number, hero: any) => sum + hero.atk + hero.hp, 0) / data.heroes.length;
-  const heroPower = (hero: any, level: number) => Math.round((hero.atk + hero.hp) * levelScale(campaign, level) * starScale(campaign, heroStars(progress(), hero.id)));
+  const might = (hero: any) => heroMight(campaign, progress(), hero);
   const recommendedPower = (stage: any) => Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
 
   const chaptersEl = q("[data-td-camp-chapters]");
@@ -192,7 +194,7 @@ export function createCampaign(ctx: PageContext) {
     const repeat = repeatRewards(campaign, stage);
     const recommended = recommendedPower(stage);
     const last = p.lastSquad.map((id) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
-    const lastPower = last.reduce((sum: number, hero: any) => sum + heroPower(hero, heroLevel(p, hero.id)), 0);
+    const lastPower = last.reduce((sum: number, hero: any) => sum + might(hero), 0);
     const boss = hasEnemy(stage, "boss") ? ctx.bossFor(mapOf(stage.mapId)).name : "";
     drawerBody.innerHTML = `<header class="td-camp-drawer-head">
         <img src="${terrain(stage)}" alt="" class="td-camp-drawer-art">
@@ -212,7 +214,7 @@ export function createCampaign(ctx: PageContext) {
         <section><h3 class="td-label">Rewards</h3>
           ${first.length ? `<p class="td-camp-drawer-reward"><span>First clear</span>${rewardText(first, heroName)}</p>` : ""}
           ${repeat.length ? `<p class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardText(repeat)}</p>` : ""}</section>
-        <section><h3 class="td-label">Recommended battle power</h3>
+        <section><h3 class="td-label">Recommended Might</h3>
           <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
           ${last.length ? `<p class="td-camp-drawer-power-note ${lastPower >= recommended ? "is-strong" : "is-weak"}">Your last squad: ${lastPower.toLocaleString()}</p>` : ""}</section>
       </div>
@@ -256,9 +258,9 @@ export function createCampaign(ctx: PageContext) {
     const powerEl = q("[data-td-squad-power]");
     powerEl.hidden = !selected.length;
     if (selected.length) {
-      const squadPower = selected.reduce((sum, hero) => sum + heroPower(hero, heroLevel(p, hero.id)), 0);
+      const squadPower = selected.reduce((sum, hero) => sum + might(hero), 0);
       const recommended = recommendedPower(stage);
-      powerEl.textContent = `Squad power ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
+      powerEl.textContent = `Squad Might ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
       powerEl.classList.toggle("is-strong", squadPower >= recommended);
       powerEl.classList.toggle("is-weak", squadPower < recommended);
     }
@@ -307,7 +309,9 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-heroes-copy]").textContent = "Level, Stars and Evolution apply in campaign stages only.";
     walletEls.forEach((el) => { el.textContent = wallet(); });
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
-    const heroes = [...data.heroes].sort((a: any, b: any) => Number(!p.owned.includes(a.id)) - Number(!p.owned.includes(b.id)) || order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
+    // Owned heroes by Might (strongest first), then the ones still to earn by class.
+    const mightOf = new Map<string, number>(p.owned.map((id: string) => [id, heroById.get(id) ? might(heroById.get(id)) : 0]));
+    const heroes = [...data.heroes].sort((a: any, b: any) => Number(!p.owned.includes(a.id)) - Number(!p.owned.includes(b.id)) || (mightOf.get(b.id) ?? 0) - (mightOf.get(a.id) ?? 0) || order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
     const owned = heroes.filter((hero: any) => p.owned.includes(hero.id));
     if (!selectedHeroId || !p.owned.includes(selectedHeroId)) selectedHeroId = owned[0]?.id ?? null;
     q("[data-td-heroes-count]").textContent = `${p.owned.length} / ${heroes.length}`;
@@ -315,11 +319,21 @@ export function createCampaign(ctx: PageContext) {
       const isOwned = p.owned.includes(hero.id);
       const unlock = allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
       const tier = heroEvolution(p, hero.id);
-      const note = isOwned ? `Lv ${heroLevel(p, hero.id)} · ${heroStars(p, hero.id)}★${tier ? ` · ${roman(tier)}` : ""}` : unlock ? `Stage ${unlock.id}` : "Summon";
+      const source = unlock ? `Stage ${unlock.id}` : "Summon";
       const ready = isOwned && (canLevelUp(campaign, p, hero.id) || evolutionMaterial(campaign, p, hero.id) === "copy");
-      return `<button type="button" class="td-hero-tile${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}"${isOwned ? "" : " disabled"}>
-        ${ready ? `<i class="td-hero-tile-dot" role="img" aria-label="Upgrade available"></i>` : ""}
-        <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><span><strong>${hero.name}</strong><small>${note}</small></span></button>`;
+      // Portrait card: the face fills the tile; class top left, evolution top right, level and
+      // stars over the bottom fade. The name is the accessible label and tooltip.
+      const label = isOwned
+        ? `${hero.name}, ${hero.class}, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} stars${tier ? `, Evolved ${roman(tier)}` : ""}, ${(mightOf.get(hero.id) ?? 0).toLocaleString()} Might${ready ? ", upgrade available" : ""}`
+        : `${hero.name}, ${hero.class}, unlocks from ${source}`;
+      return `<button type="button" class="td-hero-tile${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}" aria-label="${label}" title="${hero.name}"${isOwned ? "" : " disabled"}>
+        <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"${FACE_FOCUS[hero.id] ? ` style="--td-face-y: ${FACE_FOCUS[hero.id]}"` : ""}>
+        <span class="td-hero-tile-class" aria-hidden="true">${classIconImg(hero.class, 16)}</span>
+        ${tier ? `<span class="td-hero-tile-evo" aria-hidden="true">${roman(tier)}</span>` : ""}
+        ${ready ? `<i class="td-hero-tile-dot" aria-hidden="true"></i>` : ""}
+        <span class="td-hero-tile-foot" aria-hidden="true">${isOwned
+          ? `<span class="td-hero-tile-lv"><small>Lv.</small>${heroLevel(p, hero.id)}</span>${stars(heroStars(p, hero.id))}`
+          : `<span class="td-hero-tile-source">${source}</span>`}</span></button>`;
     }).join("");
     const hero = heroById.get(selectedHeroId ?? "");
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
@@ -330,6 +344,7 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
       <div class="td-hero-profile-copy"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
       <p class="td-hero-role">${classIconImg(hero.class, 18)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
+      <p class="td-hero-might"><strong>${might(hero).toLocaleString()}</strong> Might</p>
       <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
       <div class="td-hero-tabs">${tabs}</div>
       ${body}
@@ -344,16 +359,22 @@ export function createCampaign(ctx: PageContext) {
     return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Deploy cost</dt><dd>${hero.cost} Gold</dd></div></dl>`;
   };
 
+  // Level: capped by stars (10 per star band). Pips show the current band of 10 levels.
   function levelPanel(p: any, hero: any) {
-    const max = campaign.heroLevels?.max ?? 1;
+    const cap = heroLevelCap(campaign, p, hero.id);
     const level = heroLevel(p, hero.id);
-    const cost = levelUpCost(campaign, level);
+    const cost = levelUpCost(campaign, level, cap);
+    const nextCap = levelCap(campaign, heroStars(p, hero.id) + 1);
+    const maxed = level >= (campaign.heroLevels?.max ?? 1);
     const button = cost
       ? `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up <small>${costText(cost)}</small></button>`
-      : `<span class="td-camp-maxed">Maximum level reached</span>`;
-    return `<p class="td-hero-tab-copy">Each level adds ${Math.round((campaign.heroLevels?.statPerLevel ?? 0) * 100)}% attack and health.</p>
-      <div class="td-hero-level-head"><strong>Campaign level ${level}</strong><span>${level} / ${max}</span></div>
-      <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: max }, (_, n) => `<i${n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
+      : `<span class="td-camp-maxed">${maxed ? "Maximum level reached" : `Level cap ${cap} reached. Star up to raise it to ${nextCap}.`}</span>`;
+    const band = campaign.heroLevels?.bandSize ?? 10;
+    const bandStart = cap - band;
+    const gain = Math.round(levelStepGain(campaign, Math.min(level + 1, cap)) * 1000) / 10;
+    return `<p class="td-hero-tab-copy">Levels in this band add ${gain}% attack and health each. Stars raise the level cap by ${band}.</p>
+      <div class="td-hero-level-head"><strong>Campaign level ${level}</strong><span>${level} / ${cap}</span></div>
+      <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: band }, (_, n) => `<i${bandStart + n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
       ${statRows(hero, heroScale(p, hero.id), cost ? heroScale(p, hero.id, level + 1) : null)}
       <div class="td-hero-upgrade">${button}</div>`;
   }
@@ -382,7 +403,7 @@ export function createCampaign(ctx: PageContext) {
     }).join("") : `<p class="td-hero-tab-copy">No spare copies of other heroes yet. Summon heroes you already own to get copies.</p>`;
     const full = fodderCount() === cost.copies;
     const goldOk = (p.currencies.gold || 0) >= cost.gold;
-    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health. Star up uses spare copies of other heroes; ${hero.name}'s own copies are kept for Evolution.</p>
+    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health and raises the level cap to ${levelCap(campaign, starCount + 1)}. Star up uses spare copies of other heroes; ${hero.name}'s own copies are kept for Evolution.</p>
       <div class="td-hero-level-head"><strong>${stars(starCount)}</strong><span>${starCount} / ${max}</span></div>
       ${statRows(hero, heroScale(p, hero.id), heroScale(p, hero.id, undefined, starCount + 1))}
       <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Copies needed</span><span>${fodderCount()} / ${cost.copies}</span></div>

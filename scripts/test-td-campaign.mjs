@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
 import { allStages, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, finishCampaignStage, heroLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 
@@ -61,12 +62,21 @@ stages.forEach((stage, i) => {
   assert.deepEqual(levelUpCost(campaign, 1), { gold: campaign.heroLevels.cost.gold.base, heroXp: campaign.heroLevels.cost.heroXp.base }, "level 1 -> 2 cost");
   assert.equal(levelUp(campaign, newCampaignProgress(campaign), id), null, "no level up without currencies");
   assert.equal(levelUp(campaign, p, "zeus"), null, "only owned heroes level up");
-  for (let i = 1; i < campaign.heroLevels.max; i += 1) p = levelUp(campaign, p, id);
-  assert.equal(heroLevel(p, id), campaign.heroLevels.max, "levels up to the cap");
-  assert.ok(!canLevelUp(campaign, p, id) && levelUpCost(campaign, campaign.heroLevels.max) === null, "capped");
+  // Caps by stars: 0 stars -> 10 ... 5 stars -> 60.
+  assert.deepEqual([0, 1, 2, 3, 4, 5].map((s) => levelCap(campaign, s)), [10, 20, 30, 40, 50, 60], "level caps by stars");
+  const cap0 = heroLevelCap(campaign, p, id);
+  for (let i = 1; i < cap0; i += 1) p = levelUp(campaign, p, id);
+  assert.equal(heroLevel(p, id), cap0, "levels up to the 0-star cap");
+  assert.ok(!canLevelUp(campaign, p, id) && levelUpCost(campaign, cap0, cap0) === null, "capped until a star");
+  const starred = { ...p, stars: { [id]: 1 } };
+  assert.ok(canLevelUp(campaign, starred, id), "a star lifts the cap");
+  assert.equal(levelUpCost(campaign, campaign.heroLevels.max), null, "absolute max");
+  // Banded gains: levels 1-10 keep +6% each, later bands add less.
+  assert.equal(+levelScale(campaign, 10).toFixed(4), +(1 + 0.06 * 9).toFixed(4), "levels 2-10 unchanged at +6%");
+  assert.ok(levelScale(campaign, 20) - levelScale(campaign, 10) < levelScale(campaign, 10) - levelScale(campaign, 1), "later band adds less");
   const scaled = campaignHeroes(campaign, p, heroes).find((hero) => hero.id === id);
   const base = heroes.find((hero) => hero.id === id);
-  assert.equal(scaled.atk, Math.round(base.atk * (1 + campaign.heroLevels.statPerLevel * (campaign.heroLevels.max - 1))), "level scales attack");
+  assert.equal(scaled.atk, Math.round(base.atk * levelScale(campaign, cap0)), "level scales attack");
   assert.equal(campaignHeroes(campaign, p, heroes).find((hero) => hero.id === "zeus"), heroes.find((hero) => hero.id === "zeus"), "level 1 heroes unchanged");
 }
 
@@ -84,7 +94,7 @@ stages.forEach((stage, i) => {
   assert.equal(paid.currencies.gold, stages[0].rewards.find((reward) => reward.id === "gold").amount, "version 1 clears are paid once on migration");
   assert.equal(sanitizeCampaign(paid, campaign, heroIds).currencies.gold, paid.currencies.gold, "not paid again");
   const levels = sanitizeCampaign({ owned: ["zeus"], levels: { zeus: 99, demeter: 3, ghost: 4, nyx: 2 }, currencies: { gold: "40", heroXp: -5, gems: 9 } }, campaign, heroIds);
-  assert.deepEqual([levels.levels, levels.currencies], [{ zeus: campaign.heroLevels.max, demeter: 3 }, { ...zero, gold: 40 }], "levels capped, only owned heroes; currencies cleaned");
+  assert.deepEqual([levels.levels, levels.currencies], [{ zeus: levelCap(campaign, 0), demeter: 3 }, { ...zero, gold: 40 }], "levels capped by stars, only owned heroes; currencies cleaned");
 }
 
 // --- Winnable: every stage, with the heroes owned by then at the level the chapter's
@@ -118,5 +128,15 @@ stages.forEach((stage, i) => {
     assert.ok(rate >= 0.2, `${stage.id}: too hard (${wins}/${squads.length} squads win)`);
     progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
   }
+}
+// --- Might: grows with level, stars and evolution ---
+{
+  const hero = heroes[0];
+  const base = newCampaignProgress(campaign);
+  const m = (progress) => heroMight(campaign, progress, hero);
+  assert.equal(m(base), hero.atk + hero.hp, "Might at level 1, 0 stars, no evolution is base attack + health");
+  assert.ok(m({ ...base, levels: { [hero.id]: 5 } }) > m(base), "Might rises with level");
+  assert.ok(m({ ...base, stars: { [hero.id]: 3 } }) > m(base), "Might rises with stars");
+  assert.ok(m({ ...base, evolution: { [hero.id]: 2 } }) > m(base), "Might rises with evolution");
 }
 console.log("Tower defense campaign checks passed.");

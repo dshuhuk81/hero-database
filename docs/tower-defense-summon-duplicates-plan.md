@@ -20,7 +20,7 @@ The reference game has Stars (Aufstieg) and Awaken (Erwecken). The TD game alrea
 | **Evolution** (I to V) | A copy of the **same** hero, or 1 Divine Essence | Better skill values |
 
 ### Stars: higher attributes
-- A hero starts at 1 star. Going from star n to n+1 costs **n spare copies of any hero** plus `200 x n` Gold. From 1 to 5 stars that is 10 copies and 2000 Gold.
+- A hero starts at 0 stars (changed 2026-09-28, was 1). Star n to n+1 costs 1/1/2/3/4 spare copies of any hero plus 100/200/400/600/800 Gold: 0 to 5 stars is 11 copies and 2100 Gold. Stars also raise the level cap (0 stars: Lv 10, +10 per star, 5 stars: Lv 60).
 - Each star gives **+10% attack and health**. This multiplies with the level bonus in `campaignHeroes`.
 - Picking fodder works like the reference: a panel lists spare copies, with a **Quick add** button that uses the most common copies first. Copies the player might want for Evolution are never quick-added. Picking them by hand still works.
 

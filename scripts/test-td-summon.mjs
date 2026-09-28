@@ -101,9 +101,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 4, "save version 4");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 5, "save version 5");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
-  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [4, 0, 0], "fresh section");
+  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [5, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
   assert.deepEqual([clean.currencies.divineSeals, clean.summons], [120, 4], "seals and summons cleaned");
   const bad = sanitizeCampaign({ version: 3, currencies: { divineSeals: -5 }, summons: -2 }, campaign, heroIds);
@@ -111,7 +111,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const cleared = { [stages[0].id]: { clears: 2, bestLives: 5 }, [stages[1].id]: { clears: 1, bestLives: 3 } };
   // Version 2: cleared before seals existed; the seals of those stages are paid once, gold is not paid again.
   const v2 = sanitizeCampaign({ version: 2, owned: [...campaign.starters], cleared, currencies: { gold: 77, heroXp: 5, divineSeals: 0 }, levels: {} }, campaign, heroIds);
-  assert.deepEqual([v2.version, v2.currencies.gold, v2.currencies.heroXp, v2.currencies.divineSeals, v2.summons], [4, 77, 5, SEALS * 2, 0], "version 2 migrates: seals back-paid once");
+  assert.deepEqual([v2.version, v2.currencies.gold, v2.currencies.heroXp, v2.currencies.divineSeals, v2.summons], [CAMPAIGN_SAVE_VERSION, 77, 5, SEALS * 2, 0], "version 2 migrates: seals back-paid once");
   assert.equal(sanitizeCampaign(v2, campaign, heroIds).currencies.divineSeals, SEALS * 2, "seals not back-paid again");
   // Version 1: every first-clear currency, seals included, once.
   const v1 = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared }, campaign, heroIds);
@@ -183,14 +183,14 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   // Stars: copies of any hero + gold.
   const hero = campaignData.starters[0];
   let p = { ...tenSame.progress, currencies: { ...tenSame.progress.currencies, gold: 5000 } };
-  assert.equal(heroStars(p, hero), 1, "start at 1 star");
-  assert.deepEqual(starUpCost(campaignData, 1), { copies: campaignData.heroStars.copies[0], gold: campaignData.heroStars.gold[0] }, "star cost from data");
+  assert.equal(heroStars(p, hero), 0, "start at 0 stars");
+  assert.deepEqual(starUpCost(campaignData, 0), { copies: campaignData.heroStars.copies[0], gold: campaignData.heroStars.gold[0] }, "star cost from data");
   assert.equal(starUp(campaignData, p, hero, {}), null, "star up needs copies");
   assert.equal(starUp(campaignData, p, hero, { [featured]: 2 }), null, "star up needs exactly the cost's copies");
   assert.equal(starUp(campaignData, p, hero, { [featured]: 1.5 }), null, "whole copies only");
   assert.equal(starUp(campaignData, { ...p, copies: { [hero]: 3 } }, hero, { [hero]: 1 }), null, "own copies are not star fodder");
   const s2 = starUp(campaignData, p, hero, { [featured]: 1 });
-  assert.deepEqual([heroStars(s2, hero), s2.copies[featured], s2.currencies.gold], [2, 8, 5000 - campaignData.heroStars.gold[0]], "star up pays copies and gold");
+  assert.deepEqual([heroStars(s2, hero), s2.copies[featured], s2.currencies.gold], [1, 8, 5000 - campaignData.heroStars.gold[0]], "star up pays copies and gold");
   assert.equal(starUp(campaignData, { ...p, currencies: { ...p.currencies, gold: 0 } }, hero, { [featured]: 1 }), null, "star up needs gold");
   // Quick add: surplus copies (beyond what Evolution needs) first, then others, never the
   // hero's own copies.
@@ -237,7 +237,11 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
   assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
   const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
-  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [4, {}, {}, {}, 0, 0], "v3 migrates to empty v4 fields");
+  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [5, {}, {}, {}, 0, 0], "v3 migrates to empty fields");
+  // v4 counted stars from 1: one less star, same stats; levels stay within the new cap.
+  const v4 = sanitizeCampaign({ version: 4, owned: [...campaignData.starters, featured], stars: { [featured]: 3, [hero]: 1 }, levels: { [featured]: 10 } }, campaignData, heroIds);
+  assert.deepEqual([v4.stars[featured], v4.stars[hero], v4.levels[featured]], [2, undefined, 10], "v4 stars shift down by one");
+  assert.equal(starScale(campaignData, 2), 1 + 2 * campaignData.heroStars.statPerStar, "0-based star scale");
 }
 // --- New-hero pity in multi summons (recommendation 4) ---
 // The pity tests force the flag on so they hold regardless of the live config;

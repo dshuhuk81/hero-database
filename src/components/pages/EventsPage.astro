@@ -22,7 +22,6 @@ const copy = {
   today: { en: "Today", de: "Heute", es: "Hoy", ru: "Сегодня", zh: "今天" },
   previous: { en: "Previous period", de: "Vorheriger Zeitraum", es: "Periodo anterior", ru: "Предыдущий период", zh: "上一周期" },
   next: { en: "Next period", de: "Nächster Zeitraum", es: "Periodo siguiente", ru: "Следующий период", zh: "下一周期" },
-  days: { en: "days", de: "Tage", es: "días", ru: "дней", zh: "天" },
   all: { en: "All", de: "Alle", es: "Todos", ru: "Все", zh: "全部" },
   empty: { en: "No scheduled events in this period.", de: "Keine geplanten Events in diesem Zeitraum.", es: "No hay eventos programados en este periodo.", ru: "В этот период событий нет.", zh: "此时间段暂无活动。" },
   selectEvent: { en: "Select an event bar to see its full schedule.", de: "Wähle einen Event-Balken für den vollständigen Zeitraum.", es: "Selecciona una barra para ver el calendario completo.", ru: "Выберите событие, чтобы увидеть полное расписание.", zh: "选择活动条可查看完整日程。" },
@@ -75,13 +74,6 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
             <button type="button" data-today>{pickLang(copy.today, locale)}</button>
             <button type="button" data-shift="next" aria-label={pickLang(copy.next, locale)}>›</button>
           </div>
-          <div class="calendar-zoom" aria-label="Calendar range">
-            {[14, 30, 60].map((days) => (
-              <button type="button" data-days={days} class:list={{ active: days === 30 }}>
-                {days}<span class="sr-only"> {pickLang(copy.days, locale)}</span><span aria-hidden="true">d</span>
-              </button>
-            ))}
-          </div>
         </div>
       </header>
 
@@ -114,6 +106,13 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
     </dl>
   </dialog>
 
+  <aside class="event-tooltip" data-event-tooltip role="tooltip" hidden>
+    <span class="event-tooltip-category" data-tooltip-category></span>
+    <strong data-tooltip-title></strong>
+    <span class="event-tooltip-family" data-tooltip-family></span>
+    <span class="event-tooltip-dates" data-tooltip-dates></span>
+  </aside>
+
   <script type="application/json" id="global-event-data" set:html={clientData}></script>
   <script type="application/json" id="event-category-data" set:html={categoryData}></script>
 
@@ -132,8 +131,9 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       const categories = JSON.parse(categoriesNode.textContent || '[]');
       const locale = root.dataset.locale || 'en';
       const dialog = document.querySelector('[data-event-dialog]');
+      const tooltip = document.querySelector('[data-event-tooltip]');
       const dayMs = 86400000;
-      let visibleDays = 30;
+      const visibleDays = 60;
       let activeFilter = 'all';
       let anchor = startOfDay(new Date());
 
@@ -181,13 +181,46 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         dialog.showModal();
       }
 
+      function positionTooltip(target, pointerEvent) {
+        if (!(tooltip instanceof HTMLElement)) return;
+        const targetRect = target.getBoundingClientRect();
+        const gap = 14;
+        const pointerX = pointerEvent?.clientX ?? targetRect.right;
+        const pointerY = pointerEvent?.clientY ?? targetRect.top;
+        const tooltipRect = tooltip.getBoundingClientRect();
+        let left = pointerX + gap;
+        let top = pointerY + gap;
+        if (left + tooltipRect.width > window.innerWidth - 12) left = pointerX - tooltipRect.width - gap;
+        if (top + tooltipRect.height > window.innerHeight - 12) top = window.innerHeight - tooltipRect.height - 12;
+        tooltip.style.left = `${Math.max(12, left)}px`;
+        tooltip.style.top = `${Math.max(12, top)}px`;
+      }
+
+      function showTooltip(item, target, pointerEvent) {
+        if (!(tooltip instanceof HTMLElement)) return;
+        const category = categories.find((entry) => entry.id === item.category);
+        const duration = Math.round((parseDate(item.end) - parseDate(item.start)) / dayMs) + 1;
+        tooltip.dataset.category = item.category;
+        tooltip.querySelector('[data-tooltip-category]').textContent = `${category?.label || item.category} · ${duration} days`;
+        tooltip.querySelector('[data-tooltip-title]').textContent = item.label;
+        tooltip.querySelector('[data-tooltip-family]').textContent = item.hero || item.family;
+        tooltip.querySelector('[data-tooltip-dates]').textContent = `${formatDate(parseDate(item.start), { day: 'numeric', month: 'short', year: 'numeric' })} – ${formatDate(parseDate(item.end), { day: 'numeric', month: 'short', year: 'numeric' })}`;
+        tooltip.hidden = false;
+        positionTooltip(target, pointerEvent);
+      }
+
+      function hideTooltip() {
+        if (tooltip instanceof HTMLElement) tooltip.hidden = true;
+      }
+
       function render() {
-        const rangeStart = addDays(anchor, -Math.floor(visibleDays / 3));
+        hideTooltip();
+        const rangeStart = anchor;
         const rangeEnd = addDays(rangeStart, visibleDays - 1);
         const today = startOfDay(new Date()).getTime();
         const shownCategories = categories.filter((category) => activeFilter === 'all' || category.id === activeFilter);
         const visibleEvents = events.filter((item) => parseDate(item.end) >= rangeStart && parseDate(item.start) <= rangeEnd && (activeFilter === 'all' || item.category === activeFilter));
-        const dayWidth = visibleDays >= 60 ? 38 : visibleDays >= 30 ? 48 : 66;
+        const dayWidth = 48;
         canvas.style.setProperty('--calendar-days', visibleDays);
         canvas.style.setProperty('--calendar-day-width', `${dayWidth}px`);
         rangeLabel.textContent = `${formatDate(rangeStart, { day: 'numeric', month: 'short' })} – ${formatDate(rangeEnd, { day: 'numeric', month: 'short', year: 'numeric' })}`;
@@ -221,17 +254,17 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
 
         canvas.innerHTML = html;
         empty.hidden = visibleEvents.length > 0;
-        canvas.querySelectorAll('[data-event-id]').forEach((button) => button.addEventListener('click', () => {
+        canvas.querySelectorAll('[data-event-id]').forEach((button) => {
           const item = events.find((entry) => String(entry.id) === button.dataset.eventId);
-          if (item) openDialog(item);
-        }));
+          if (!item) return;
+          button.addEventListener('pointerenter', (event) => showTooltip(item, button, event));
+          button.addEventListener('pointermove', (event) => positionTooltip(button, event));
+          button.addEventListener('pointerleave', hideTooltip);
+          button.addEventListener('focus', () => showTooltip(item, button));
+          button.addEventListener('blur', hideTooltip);
+          button.addEventListener('click', () => { hideTooltip(); openDialog(item); });
+        });
       }
-
-      root.querySelectorAll('[data-days]').forEach((button) => button.addEventListener('click', () => {
-        visibleDays = Number(button.dataset.days);
-        root.querySelectorAll('[data-days]').forEach((entry) => entry.classList.toggle('active', entry === button));
-        render();
-      }));
 
       root.querySelectorAll('[data-filter]').forEach((button) => button.addEventListener('click', () => {
         activeFilter = button.dataset.filter;
@@ -239,13 +272,16 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         render();
       }));
 
-      root.querySelector('[data-today]')?.addEventListener('click', () => { anchor = startOfDay(new Date()); render(); });
+      root.querySelector('[data-today]')?.addEventListener('click', () => { anchor = startOfDay(new Date()); render(); scroll.scrollLeft = 0; });
       root.querySelectorAll('[data-shift]').forEach((button) => button.addEventListener('click', () => {
         anchor = addDays(anchor, button.dataset.shift === 'next' ? visibleDays : -visibleDays);
         render();
+        scroll.scrollLeft = 0;
       }));
       dialog?.querySelector('[data-dialog-close]')?.addEventListener('click', () => dialog.close());
       dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+      scroll.addEventListener('scroll', hideTooltip, { passive: true });
+      window.addEventListener('resize', hideTooltip);
       render();
     })();
   </script>

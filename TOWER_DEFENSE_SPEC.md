@@ -203,7 +203,7 @@ replace the map value, so tuned stages keep their numbers.
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-10 bought with Gold + Hero XP (+6% stats/level); Stars 1-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages, starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
@@ -228,7 +228,7 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    stage, hollow grey ahead. Tapping an unlocked stage
    card opens a details drawer from the right (modal dialog: stage id and name, about text,
    battlefield/waves/lives/boss/best, first-clear and replay rewards, recommended battle
-   power plus the last squad's power). Its "Choose squad" / "Replay stage" button is the
+   Might plus the last squad's Might). Its "Choose squad" / "Replay stage" button is the
    transition into squad selection; Escape, the close button or the backdrop close it.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
    Campaign stages; exiting a campaign run also resolves through this hierarchy.
@@ -252,18 +252,23 @@ Heroes and Summoning are campaign activities, so they are cards on the headquart
 screen rather than persistent footer navigation buttons.
 
 The **Heroes** screen uses a master-detail collection layout. A scrollable two-column
-roster sits on the left; the first owned hero is selected by default. Owned heroes are
-selectable and locked heroes remain visible with their unlock source. The selected hero
-fills the right panel with large art, class and placement role, role hint, campaign level,
-stars, Evolution badge and spare copies, then three tabs:
+roster sits on the left of 4:5 portrait cards: a face close-up fills the card (the full-body
+portrait scaled around the head; `FACE_FOCUS` in `page/campaign.ts` shifts the crop for heroes
+whose head sits lower), class icon top left, Evolution numeral badge top right (when evolved),
+"Lv. N" and the star row over a bottom fade. No name or Might on the card: both are in its
+aria-label/tooltip and in the detail panel. Locked heroes are greyed with their unlock source
+("Stage 1-2" / "Summon") in place of the level. Owned heroes are sorted by Might (highest first), then
+locked heroes by class with their unlock source; the strongest owned hero is selected by
+default. The selected hero fills the right panel with full-body art, class and placement
+role, Might, campaign level, stars, Evolution badge and spare copies, then three tabs:
 
-- **Level**: level pips, current and next-level Attack/Health, deploy cost, Level up.
+- **Level**: "level / cap", pips for the current 10-level band, current and next-level Attack/Health, deploy cost, Level up (at the cap: "Star up to raise it to N").
 - **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the
   other heroes' spare copies to tap into them, Quick add and Star up.
 - **Evolution**: the five tiers (done / next / locked) with their bonus, two material
   slots (a copy of this hero, Divine Essence), Evolve, and "1 copy -> 30 Dust".
 
-The detail column scrolls inside its panel. A small red dot on a roster tile means a
+The detail column scrolls inside its panel. A small red dot on a roster card's top-right corner means a
 level-up is affordable or the hero has its own copy for Evolution. On narrow screens the
 roster stacks above the detail panel while retaining its own scroll.
 
@@ -314,15 +319,29 @@ flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards
 "New" or "+1 copy". The result bar offers Summon again, Build squad and Close; Escape
 closes only the dialog. Reduced motion fades instead of flipping.
 
+### Might (campaign only)
+
+One battle-power number per hero: `heroMight()` in `campaign.js` = (base Attack + Health) x
+level scale x star scale x (1 + `heroMight.evolutionPerTier` x evolution tier), with
+`evolutionPerTier` 0.06 in `tdCampaign.json` (a readout weight, not a sim stat). It sorts the
+Heroes roster, sums to "Squad Might" on the Squad screen and to "Your last squad" in the stage
+drawer, both compared against the stage's "Recommended Might" (from `stage.hpScale`).
+
 ### Stars, Evolution and Seal Dust (campaign only)
 
 Numbers live in `tdCampaign.json` (`heroStars`, `heroEvolution`) and `tdSummon.json`
 (`dust`); design and review notes in `docs/tower-defense-summon-duplicates-plan.md`.
 Every upgrade is chosen and confirmed by the player; nothing is spent automatically.
 
-- **Stars 1-5**: star n -> n+1 costs n spare copies of *other* heroes (1/2/3/4, 10 in all)
-  plus 200/400/600/800 Gold; +10% attack and health per star, multiplied with the level
-  bonus. A hero's own copies are never star fodder (they are its Evolution material).
+- **Level cap by stars** (`heroLevels.capByStars`): 0 stars -> Lv 10, 1 -> 20, 2 -> 30,
+  3 -> 40, 4 -> 50, 5 -> 60. Gain per level comes from `heroLevels.statPerLevel`, one rate per
+  10-level band: +6% (Lv 2-10, unchanged so Chapter 1 balance holds), +3% (11-20), +2%
+  (21-30), +1.5% (31-40), +1.5% (41-50), +1% (51-60): Lv 60 = +144% attack and health.
+  Cost stays linear (Gold 100 + 50 per level, Hero XP 50 + 25 per level; ~91k Gold to Lv 60).
+- **Stars 0-5** (heroes start at 0): star n -> n+1 costs 1/1/2/3/4 spare copies of *other*
+  heroes (11 in all) plus 100/200/400/600/800 Gold; +10% attack and health per star (5 stars
+  = +50%), multiplied with the level bonus. Save version 5 migrates older saves (stars counted
+  from 1) by one star down, so stats are unchanged. A hero's own copies are never star fodder (they are its Evolution material).
   Quick add takes surplus copies (beyond what their hero's Evolution still needs) first,
   then the largest piles.
 - **Evolution I-V**: each tier costs 1 copy of the same hero or 1 Divine Essence; the
