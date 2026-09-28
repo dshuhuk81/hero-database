@@ -191,11 +191,14 @@ const modes = [
           <p class="td-camp-progress" data-td-camp-progress></p>
           <p class="td-camp-wallet" data-td-camp-wallet></p>
         </div>
-        <div data-td-camp-feature></div>
-        <h3 class="td-label">Chapter route</h3>
         <div class="td-route td-route--stages" aria-hidden="true" data-td-camp-route></div>
         <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
+        <nav class="td-camp-chapters" aria-label="Chapters" data-td-camp-chapters></nav>
       </div>
+      <!-- Stage details: tapping a stage card slides this in from the right. -->
+      <dialog class="td-camp-drawer" data-td-camp-drawer aria-labelledby="td-camp-drawer-title">
+        <div class="td-camp-drawer-inner" data-td-camp-drawer-body></div>
+      </dialog>
     </section>
 
     <!-- 1e. Summon (M26 sprint 9): one banner, Divine Seals buy one or ten heroes; owned heroes return as spare copies;
@@ -211,7 +214,7 @@ const modes = [
             <p class="td-summon-feature-title" data-td-summon-feature-title></p>
             <p class="td-camp-progress" data-td-summon-copy></p>
             <div class="td-summon-rate"><strong data-td-summon-feature-rate></strong><span>Featured chance</span></div>
-            <div class="td-summon-terms"><span>Owned heroes return as copies</span><span data-td-summon-pool-count></span></div>
+            <div class="td-summon-terms"><span>Owned heroes return as copies</span><span data-td-summon-pool-count></span><span data-td-summon-pity></span></div>
             <div class="td-summon-action">
               <div><span data-td-summon-wallet></span><small data-td-summon-note></small></div>
               <div class="td-summon-buttons">
@@ -236,6 +239,8 @@ const modes = [
           <div class="td-dust-actions">
             <button class="action-button action-button--quiet" type="button" data-td-dust-seals></button>
             <button class="action-button action-button--quiet" type="button" data-td-dust-essence></button>
+            <select class="td-dust-copy-select" data-td-dust-copy-hero aria-label="Hero for dust copies"></select>
+            <button class="action-button action-button--quiet" type="button" data-td-dust-copy></button>
           </div>
         </div>
         <p class="td-camp-progress" data-td-summon-source></p>

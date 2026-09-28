@@ -290,8 +290,10 @@ the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
 The Summon screen is centered on the featured target: large art, name/title, remaining
 rotation time, exact featured chance, Divine Seal balance, Summon x1 / Summon x10 and a
 Skip animation toggle (per browser, `td:summonSkip`). The pool below shows each hero as
-New or with its stars and spare copies. A Seal Dust panel exchanges dust for seals or
-Divine Essence.
+New or with its stars and spare copies. When the banner has `pityNewInMulti` and
+unowned heroes remain, a line under the pool count states that Summon x10 guarantees
+at least one hero not owned yet. A Seal Dust panel exchanges dust for seals, Divine
+Essence or — via a hero select — spare copies of an owned hero (`dust.copyPrice`).
 
 **Reveal** (`page/summon-reveal.ts`): a full-screen `<dialog>` over the Summon screen.
 The summon is paid and saved before it opens. Cards deal in face down (10 cards as 3/4/3)

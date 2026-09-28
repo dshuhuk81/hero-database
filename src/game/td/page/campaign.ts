@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, stageRewardHeroes, autoFodder, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
+import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -21,6 +21,7 @@ export type CampaignRun = { stageId: string; squad: string[] };
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
 const banner: any = summonCfg.banners[0]; // one banner for now
+const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming soon"
 
 // Records a finished stage (skipped for debug runs) and returns the result screen line.
 // The caller persists the save.
@@ -70,7 +71,8 @@ export function createCampaign(ctx: PageContext) {
   const summonReveal = createSummonReveal(ctx, () => doSummon(lastCount));
   let stageId: string | null = null; // stage picked on the Campaign screen
   let squad: string[] = [];
-  let featuredId: string | null = null; // stage shown in the detail panel (tap a stage card to preview it)
+  let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
+  let drawerId: string | null = null; // stage shown in the details drawer
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" = "level"; // Heroes screen detail tab
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
@@ -94,7 +96,9 @@ export function createCampaign(ctx: PageContext) {
   const heroPower = (hero: any, level: number) => Math.round((hero.atk + hero.hp) * levelScale(campaign, level) * starScale(campaign, heroStars(progress(), hero.id)));
   const recommendedPower = (stage: any) => Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
 
-  const featureEl = q("[data-td-camp-feature]");
+  const chaptersEl = q("[data-td-camp-chapters]");
+  const drawerEl = q<HTMLDialogElement>("[data-td-camp-drawer]");
+  const drawerBody = q("[data-td-camp-drawer-body]");
   const lineupEl = q("[data-td-squad-lineup]");
   const feedbackEl = q("[data-td-squad-feedback]");
   const hasEnemy = (stage: any, kind: string) => stage.waves.some((wave: any) => wave.spawns.some((spawn: any) => spawn.kind === kind));
@@ -128,34 +132,104 @@ export function createCampaign(ctx: PageContext) {
     summaryChapterEl.textContent = `Chapter ${roman(Number(chapter.id) || 1)} \u00b7 ${chapter.name}`;
     summaryRouteEl.innerHTML = routeHtml(stages.map((stage: any) => ({ label: stage.id, state: isCleared(p, stage.id) ? "done" : stage.id === next?.id ? "current" : "ahead" })));
     summaryCtaEl.textContent = !cleared ? "Begin" : next ? "Continue" : "Replay";
+    renderStages();
+  }
+
+  // Stages screen: chapter tabs, the chapter's route and stage cards; tapping a card opens
+  // the details drawer (renderDrawer), whose button commits to the stage.
+  function renderStages() {
+    const p = progress();
+    const next = nextStage(campaign, p);
+    const chapters: any[] = campaign.chapters;
+    const chapter = chapters.find((entry) => String(entry.id) === chapterId)
+      ?? chapters.find((entry) => entry.stages.some((stage: any) => stage.id === next?.id))
+      ?? chapters.at(-1);
+    chapterId = String(chapter.id);
+    const stages: any[] = chapter.stages;
+    const cleared = stages.filter((stage) => isCleared(p, stage.id)).length;
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     walletEls.forEach((el) => { el.textContent = wallet(); });
-    const featured = (featuredId && stageById(campaign, featuredId)) ?? next ?? stages.at(-1);
-    const replay = !!featured && isCleared(p, featured.id);
-    const kicker = featured && featuredId && featuredId !== next?.id
-      ? (replay ? "Selected stage · cleared" : "Selected stage")
-      : (next ? "Your next defense" : "Chapter complete · Play again");
-    q("[data-td-camp-route]").innerHTML = routeHtml(stages.map((stage: any) => ({
+    q("[data-td-camp-route]").innerHTML = routeHtml(stages.map((stage) => ({
       label: stage.id,
-      state: isCleared(p, stage.id) ? "done" : featured && stage.id === featured.id ? "current" : "ahead",
+      state: isCleared(p, stage.id) ? "done" : stage.id === next?.id ? "current" : "ahead",
     })));
-    featureEl.innerHTML = featured ? `<article class="td-camp-feature">
-      <img src="${terrain(featured)}" alt="" class="td-camp-feature-art">
-      <div class="td-camp-feature-copy"><span class="td-label">${kicker}</span>
-      <h3>${featured.id} · ${featured.name}</h3><p>${featured.text}</p>
-      <span class="td-camp-feature-meta">${mapOf(featured.mapId)?.name} · ${featured.waves.length} waves · ${featured.lives} lives${hasEnemy(featured, "boss") ? ` · Boss: ${ctx.bossFor(mapOf(featured.mapId)).name}` : ""}</span>
-      <p class="td-camp-feature-reward">${stageRewards(featured)}</p>
-      <button class="action-button action-button--primary" type="button" data-camp-feature-start="${featured.id}" data-td-autofocus>${replay ? "Replay stage" : "Choose squad"}</button></div></article>` : "";
-    stagesEl.innerHTML = stages.map((stage: any) => {
+    stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
       const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${done.bestLives}/${stage.lives} lives` : "Ready to play";
-      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${featured && stage.id === featured.id ? " is-featured" : ""}" data-camp-stage="${stage.id}"${open ? "" : " disabled"}>
+      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
         <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small></span></button>`;
     }).join("");
+    // Authored chapters first; later ones show as locked until their stages exist.
+    const tabs = chapters.map((entry) => {
+      const unlocked = entry.stages.some((stage: any) => isUnlocked(p, stage));
+      const current = String(entry.id) === chapterId;
+      return `<button type="button" class="td-camp-chapter-tab${current ? " is-current" : ""}" data-camp-chapter="${entry.id}"${current ? ' aria-current="true"' : ""}${unlocked ? "" : " disabled"}>Chapter ${entry.id}</button>`;
+    });
+    const lastId = Number(chapters.at(-1)?.id) || chapters.length;
+    for (let id = lastId + 1; tabs.length < UPCOMING_CHAPTERS; id++) {
+      tabs.push(`<button type="button" class="td-camp-chapter-tab" disabled>Chapter ${id}<small>Coming soon</small></button>`);
+    }
+    chaptersEl.innerHTML = tabs.join("");
+  }
+
+  function renderDrawer() {
+    const stage = drawerId ? stageById(campaign, drawerId) : null;
+    if (!stage) return;
+    const p = progress();
+    const done = p.cleared[stage.id];
+    const replay = !!done;
+    const first = pendingRewards(stage, p);
+    const repeat = repeatRewards(campaign, stage);
+    const recommended = recommendedPower(stage);
+    const last = p.lastSquad.map((id) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
+    const lastPower = last.reduce((sum: number, hero: any) => sum + heroPower(hero, heroLevel(p, hero.id)), 0);
+    const boss = hasEnemy(stage, "boss") ? ctx.bossFor(mapOf(stage.mapId)).name : "";
+    drawerBody.innerHTML = `<header class="td-camp-drawer-head">
+        <img src="${terrain(stage)}" alt="" class="td-camp-drawer-art">
+        <button class="td-camp-drawer-close" type="button" data-camp-drawer-close aria-label="Close stage details">×</button>
+        <span class="td-label">Stage ${stage.id}${replay ? " · Cleared" : stage.id === nextStage(campaign, p)?.id ? " · Your next defense" : ""}</span>
+        <h2 id="td-camp-drawer-title">${stage.name}</h2>
+      </header>
+      <div class="td-camp-drawer-content">
+        <section><h3 class="td-label">About the stage</h3><p>${stage.text}</p>
+          <dl class="td-camp-drawer-facts">
+            <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
+            <div><dt>Waves</dt><dd>${stage.waves.length}</dd></div>
+            <div><dt>Lives</dt><dd>${stage.lives}</dd></div>
+            ${boss ? `<div><dt>Boss</dt><dd>${boss}</dd></div>` : ""}
+            ${done ? `<div><dt>Best</dt><dd>${done.bestLives}/${stage.lives} lives</dd></div>` : ""}
+          </dl></section>
+        <section><h3 class="td-label">Rewards</h3>
+          ${first.length ? `<p class="td-camp-drawer-reward"><span>First clear</span>${rewardText(first, heroName)}</p>` : ""}
+          ${repeat.length ? `<p class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardText(repeat)}</p>` : ""}</section>
+        <section><h3 class="td-label">Recommended battle power</h3>
+          <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
+          ${last.length ? `<p class="td-camp-drawer-power-note ${lastPower >= recommended ? "is-strong" : "is-weak"}">Your last squad: ${lastPower.toLocaleString()}</p>` : ""}</section>
+      </div>
+      <footer class="td-camp-drawer-foot">
+        <button class="action-button action-button--primary" type="button" data-camp-drawer-start="${stage.id}">${replay ? "Replay stage" : "Choose squad"}</button>
+      </footer>`;
+  }
+
+  function openDrawer(id: string) {
+    drawerId = id;
+    renderDrawer();
+    renderStages();
+    if (!drawerEl.open) drawerEl.showModal();
+    drawerEl.querySelector<HTMLElement>("[data-camp-drawer-start]")?.focus();
+  }
+
+  function closeDrawer() {
+    if (!drawerEl.open) return;
+    const returnTo = drawerId;
+    drawerEl.close();
+    drawerId = null;
+    renderStages();
+    if (returnTo) stagesEl.querySelector<HTMLElement>(`[data-camp-stage="${returnTo}"]`)?.focus({ preventScroll: true });
   }
 
   function renderSquad() {
@@ -385,6 +459,9 @@ export function createCampaign(ctx: PageContext) {
     summonMultiButton.textContent = `Summon x${multi} · ${(banner.cost.divineSeals * multi).toLocaleString()} ✧`;
     q("[data-td-summon-price]").textContent = `${costText(banner.cost)} per summon`;
     q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
+    q("[data-td-summon-pity]").textContent = banner.pityNewInMulti && left
+      ? `Summon x${multi} guarantees at least one hero you don't own yet.`
+      : "";
     const pool = data.heroes.filter((hero: any) => ids.includes(hero.id) && hero.id !== featuredId);
     q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
@@ -405,6 +482,17 @@ export function createCampaign(ctx: PageContext) {
     const essenceButton = q<HTMLButtonElement>("[data-td-dust-essence]");
     essenceButton.disabled = dust < d.perEssence;
     essenceButton.textContent = `${d.perEssence} Dust → 1 Divine Essence`;
+    // Dust → spare copies of an owned hero (feeds Stars and Evolution).
+    const copySelect = q<HTMLSelectElement>("[data-td-dust-copy-hero]");
+    const prevPick = copySelect.value;
+    copySelect.innerHTML = p.owned.map((id: string) => {
+      const hero = heroById.get(id);
+      return `<option value="${id}">${hero?.name ?? id} (${p.copies?.[id] ?? 0} spare)</option>`;
+    }).join("");
+    if (prevPick && p.owned.includes(prevPick)) copySelect.value = prevPick;
+    const copyButton = q<HTMLButtonElement>("[data-td-dust-copy]");
+    copyButton.disabled = !p.owned.length || dust < d.copyPrice;
+    copyButton.textContent = `${d.copyPrice} Dust → 1 copy`;
     if (fresh) summonReveal.close();
   }
 
@@ -434,16 +522,26 @@ export function createCampaign(ctx: PageContext) {
 
   ctx.root.querySelector<HTMLElement>('[data-td-screen="stages"]')!.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
-    const startButton = target.closest<HTMLButtonElement>("[data-camp-feature-start]");
-    if (startButton) { openStage(startButton.dataset.campFeatureStart!); return; }
-    // Tapping a stage card previews it in the detail panel; "Choose squad" there commits to it.
+    const chapterButton = target.closest<HTMLButtonElement>("[data-camp-chapter]");
+    if (chapterButton && !chapterButton.disabled) { chapterId = chapterButton.dataset.campChapter!; renderStages(); return; }
+    // Tapping a stage card opens its details drawer; "Choose squad" there commits to it.
     const button = target.closest<HTMLButtonElement>("[data-camp-stage]");
-    if (button && !button.disabled) {
-      featuredId = button.dataset.campStage!;
-      render();
-      featureEl.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (button && !button.disabled) openDrawer(button.dataset.campStage!);
   });
+  drawerEl.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    // A click on the dialog itself (not its panel) is the backdrop.
+    if (target === drawerEl || target.closest("[data-camp-drawer-close]")) { closeDrawer(); return; }
+    const startButton = target.closest<HTMLButtonElement>("[data-camp-drawer-start]");
+    if (startButton) { const id = startButton.dataset.campDrawerStart!; closeDrawer(); openStage(id); }
+  });
+  // Escape closes the drawer only; the menu's own Escape (one screen up) must not see it.
+  window.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !drawerEl.open) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    closeDrawer();
+  }, true);
   squadListEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-hero]");
     if (!button || button.disabled) return;
@@ -643,6 +741,16 @@ export function createCampaign(ctx: PageContext) {
     renderSummon();
     render();
     ctx.notice("+1 Divine Essence from Seal Dust.");
+  });
+  q("[data-td-dust-copy]").addEventListener("click", () => {
+    const id = q<HTMLSelectElement>("[data-td-dust-copy-hero]").value;
+    const next = buyCopiesWithDust(summonCfg, progress(), id, 1);
+    if (!next) return;
+    store.data.campaign = next as CampaignProgress;
+    store.persist();
+    renderSummon();
+    render();
+    ctx.notice(`1 copy of ${heroName(id)} for ${summonCfg.dust.copyPrice} Seal Dust.`);
   });
 
   // Pays and saves first, then opens the reveal stage (closing it mid-reveal loses nothing).

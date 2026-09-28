@@ -191,9 +191,8 @@ cost gold, which was the goal. If the extra ~300 gold proves too generous in
 play, trim the clear bonus to 40 + 8/wave rather than touching kill rewards
 again.
 
-**4. Add pity and a dust sink to the gacha.** *(Logic implemented September
-28, 2026; UI wiring pending in `page/campaign.ts`, another agent's active
-file.)* (a) `pityNewInMulti`: a full x10 that draws no new hero replaces the
+**4. Add pity and a dust sink to the gacha.** *(Implemented September
+28, 2026, logic and UI.)* (a) `pityNewInMulti`: a full x10 that draws no new hero replaces the
 last duplicate with a weighted draw from the unowned pool — duplicates in a
 x10 always convert into at least one collection entry until the pool is
 exhausted. (b) `buyCopiesWithDust`: 100 Seal Dust buys 1 spare copy of an
