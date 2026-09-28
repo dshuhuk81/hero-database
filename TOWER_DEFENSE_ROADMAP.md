@@ -46,7 +46,7 @@ Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommend
   - Hero popover: target priority folded into a collapsed "Target" row (summary shows the active rule); opened, it lists labelled options (icon + name, 36px tall) instead of nine 32px icons.
   - Heroes screen: card grid with portrait, "Campaign Lv X / 10" plus level pips, Attack and Health as current -> next, level-up cost on the button; per-level percentage read from `tdCampaign.json` and battle levels named as separate.
   - Checks: `npm run test:tower-defense`, no TD type errors, Chromium 1440x900 and 390x844 (Heroes screen, popover open/closed, target change).
-- Step 3 - Balance and pacing (open): Tanks show little payoff (Endless mean wave 33.8 without Tanks vs 30.7 full roster), Mages cover too much (13.2 without Mages); Verdant is the easiest map; 20 waves more winnable than 10 for bot presets. Test several seeds and two bot policies before tuning. Decide the post-chapter Divine Seal source (Chapter 1 pays 600 = 6 of 10 banner heroes).
+- Step 3 - Balance and pacing (open): Tanks show little payoff (Endless mean wave 33.8 without Tanks vs 30.7 full roster), Mages cover too much (13.2 without Mages); Verdant is the easiest map; 20 waves more winnable than 10 for bot presets. Test several seeds and two bot policies before tuning. Post-chapter Divine Seal source decided September 28, 2026: Daily Trial goal +15, finished Expedition +60, Seal Dust from spare copies (see M26 sprint 9).
 - Step 4 - Content contract (open): stable per-hero balance baselines so adding a hero does not shift others (`scripts/build-game-balance.mjs`); chapter-aware campaign UI (currently labels everything with `chapters[0]`); summon eligibility (stage-reward exclusion) into `campaign.js`; Expedition route length as a setting before a fourth map; pin Pixi CDN versions; short content checklists (stage, map, hero).
 - Step 5 - Controlled expansion (open): a few new stages or chapter star milestones, only after 1-4.
 - Doc drift listed in the audit (open): `TOWER_DEFENSE_SPEC.md` (one map, 20 heroes), `PROJECT_MEMORY.md` (inline page script), `src/game/td/bugs.md` (inspector stats and blessing graph exist), `docs/tower-defense-ui-plan.md` (ring-era requirements), white-label audit (label historical sections).
@@ -74,13 +74,21 @@ Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommend
 ### M26: Campaign (next sprints)
 
 Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M26 sprints 0-8": 10-stage Chapter 1, squads of 4, Gold / Hero XP / Divine Seals, hero levels, one summon banner).
-- Sprint 9: duplicates and ranks (summons can return owned heroes; copies raise rank 1-3).
+- Sprint 9: duplicates, Stars and Evolution (done September 28, 2026; replaces the planned ranks 1-3). Design and numbers: `docs/tower-defense-summon-duplicates-plan.md`, current rules in the spec (Summoning; Stars, Evolution and Seal Dust).
+  - Summon: 60 Divine Seals per pull, x1 and x10 (600). Pool `"all"`: owned heroes come back as spare copies; stage-reward heroes join once earned. Full-screen reveal dialog (`page/summon-reveal.ts`): wolf card backs, tier glow (gold featured, purple S/A, none), tap to flip, Reveal all, New / +1 copy tags, Summon again / Build squad / Close, Skip animation.
+  - Seal sources: campaign first clears (600 = one full x10), Daily Trial goal +15, finished Expedition +60.
+  - Stars 1-5 (copies of other heroes + Gold, +10% attack/health each), Evolution I-V (own copy or Divine Essence; ult +20%, crit +10%, ult cooldown -15%, ult +25%, V = awakened ultimate from deploy), Seal Dust (copy -> 30; 2 -> 1 seal; 150 -> 1 Essence). All player-confirmed; Heroes screen has Level / Stars / Evolution tabs. Campaign only.
+  - Save: campaign section version 4 (`copies`, `stars`, `evolution`, Seal Dust, Divine Essence).
+  - Owner decision: new heroes stay hard to get (x10 at the end of Chapter 1 gives about 4 new heroes, 6 copies); no new-hero boost.
+  - Result screen after a campaign stage: Campaign button back to the headquarters instead of Main menu; Spend Favor hidden.
+  - Checks: `npm run test:tower-defense` (summon suite covers multi summon, duplicates, Stars, Evolution, dust, v3 -> v4 migration), `npm run td:upgrade-sweep` (1-8 / 1-10: base 25%, 3 stars ~45%, Evolution V ~60-65%, 5 stars + Evolution V 70%), Chromium 1280x800, 900x700, 390x844.
+  - Open: numbers under review in play; the reveal could flag "Evolution ready" on a copy that makes an upgrade affordable.
 - Sprint 10: stars per stage and chapter milestones (replay reasons).
 - Sprint 11: quests (only once enough systems exist to reference).
 - Open balance points from sprints 7-8:
   - Tanks do worst in 4-hero squads on late stages (Gaia 1/14 winning squads on 1-9, Atlas 2/13 on 1-10).
   - 1-9 and 1-10 react strongly to enemy health (1-10: hpScale 0.64 -> 0.69 moved bot wins 49% -> 26%); about 10 points above the test's 20% floor.
-  - Chapter 1 pays 600 Divine Seals = 6 of the 10 summonable heroes; the rest need a Chapter 2 or other seal sources.
+  - Chapter 1 pays 600 Divine Seals = one x10 at 60 per pull (sprint 9); later seals come from the Daily Trial, the Expedition and Seal Dust.
   - Play time about 65 minutes of winning bot play, over the concept's 30-60; 1-10 alone takes 10-12 minutes.
 
   ### M27a: Menu design
@@ -97,6 +105,7 @@ Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M
   - summon should be as to when a user requires to have x amount of a material to summon 1 hero, and XX amound of material to do a 10 pull summon.
   - summons should contain not good heroes (60% chance of dropping), medium heroes (38%) and the best heroes (2%) chance. 
   - for this we might require more heroes and put them to qualities like: common, rare and epic heroes.
+  - Progress (September 28, 2026): the cost part is done in M26 sprint 9 (60 seals per pull, 600 for x10, duplicates as copies, reveal with tier glow). Open: quality tiers with 60 / 38 / 2% drop rates; this needs the common fodder heroes from M24d first (the roster has 21 heroes and no commons).
 
 ### M28: AAA reference UI pass (done September 28, 2026)
 

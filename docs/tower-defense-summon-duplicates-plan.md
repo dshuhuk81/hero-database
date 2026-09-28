@@ -1,6 +1,6 @@
 # Tower Defense: duplicates, Stars and Evolution plan
 
-Status: built (M28) with the numbers below; the numbers are under review. Re-check with `npm run td:upgrade-sweep`. Campaign only: nothing here touches Free Play, the Daily Trial or the Expedition.
+Status: built (M26 sprint 9) with the numbers below; the numbers are under review. Re-check with `npm run td:upgrade-sweep`. Campaign only: nothing here touches Free Play, the Daily Trial or the Expedition.
 All numbers are invented minigame balance. They live in `tdCampaign.json` / `tdSummon.json`, never in the hero database.
 
 ## Why duplicates are needed

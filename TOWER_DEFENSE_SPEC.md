@@ -9,6 +9,7 @@ This file describes what the game **is** today. It is not a plan.
 - Player-facing hero identities: [TOWER_DEFENSE_MYTHIC_HEROES.md](TOWER_DEFENSE_MYTHIC_HEROES.md)
 - UI plan: [docs/tower-defense-ui-plan.md](docs/tower-defense-ui-plan.md)
 - Blessing tree design: [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md)
+- Summon duplicates, Stars and Evolution: [docs/tower-defense-summon-duplicates-plan.md](docs/tower-defense-summon-duplicates-plan.md)
 
 The original September 2026 MVP spec (20-hero lock, prototype cost table, T1-T6 task
 split) lives in git history (last version at commit `5e788d86`).
@@ -58,7 +59,7 @@ Hard rules:
   `TdOverlays`, `TdGlossary*`, `TdEnemyCard`, `TdSoundControls`, `TdDebugPanel`).
 - Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
   each other only through `ctx.actions`. Screens are a stack mirrored in browser history
-  (`nav.ts`).
+  (`nav.ts`). The summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
@@ -171,8 +172,8 @@ Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlo
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-10 bought with Gold + Hero XP (+6% stats/level) | `campaign.js`, `tdCampaign.json` |
-| Summon | Banner "Ember at the Crossing", 100 Divine Seals per summon, no duplicates, locked-hero pool, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
+| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-10 bought with Gold + Hero XP (+6% stats/level); Stars 1-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages, starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
 | Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
@@ -199,31 +200,83 @@ The **Heroes** screen uses a master-detail collection layout. A scrollable two-c
 roster sits on the left; the first owned hero is selected by default. Owned heroes are
 selectable and locked heroes remain visible with their unlock source. The selected hero
 fills the right panel with large art, class and placement role, role hint, campaign level,
-current and next-level Attack/Health, deploy cost, signature skill and the level-up action.
-On narrow screens the roster stacks above the detail panel while retaining its own scroll.
+stars, Evolution badge and spare copies, then three tabs:
+
+- **Level**: level pips, current and next-level Attack/Health, deploy cost, Level up.
+- **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the
+  other heroes' spare copies to tap into them, Quick add and Star up.
+- **Evolution**: the five tiers (done / next / locked) with their bonus, two material
+  slots (a copy of this hero, Divine Essence), Evolve, and "1 copy -> 30 Dust".
+
+The detail column scrolls inside its panel. A small red dot on a roster tile means a
+level-up is affordable or the hero has its own copy for Evolution. On narrow screens the
+roster stacks above the detail panel while retaining its own scroll.
 
 ### Summoning rules and screen
 
-`tdSummon.json` authors the banner cost and featured rotation. The current banner uses:
+`tdSummon.json` authors the banner, seal sources and dust rates. The current banner uses:
 
 - rotation: `set` (Surtr), `nyx` (Nott), `phoenix` (Hephaestus), `bastet` (Hecate);
 - one featured hero for 14 days, calculated from `rotationEpoch`;
-- featured weight 5, every other available hero weight 1;
-- 100 Divine Seals per summon;
-- one guaranteed new hero per summon; owned heroes cannot be rolled again;
-- stage-reward heroes are excluded and must be earned from their campaign stages.
+- featured weight 5, every other hero weight 1;
+- 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
+- pool `"all"`: every hero the player owns or can summon, drawn with replacement. A hero
+  not owned yet joins; an owned one becomes a spare copy (`copies[heroId]`);
+- stage-reward heroes join the pool only after their stage's first clear, so a summon never
+  takes a stage's reward first. (`"locked"`, new heroes only, is still supported.)
 
-If `N` heroes remain and the featured hero is unowned, its displayed and actual chance is
-`5 / (5 + N - 1)`. Each other hero has chance `1 / (5 + N - 1)`. Once the featured hero
-is owned it leaves the pool and the remaining heroes are uniform. The UI calculates the
-rate from the same rules function used by `summon()`, so the displayed chance cannot drift
-from selection behavior.
+With `N` heroes in the pool the featured chance is `5 / (5 + N - 1)`, each other hero
+`1 / (5 + N - 1)`. The UI calculates the rate from the same rules function used by
+`summonMany()`, so the displayed chance cannot drift from selection behavior. New heroes
+are meant to stay hard to get (owner, September 28, 2026): the campaign's 600 seals spent
+as one x10 at the end give about 4 new heroes and 6 copies; there is no new-hero boost.
+
+Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
+the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
 
 The Summon screen is centered on the featured target: large art, name/title, remaining
-rotation time, exact featured chance, Divine Seal balance, affordability state and the
-Summon action all live in one banner. The pool below is secondary and labels non-featured
-heroes as possible arrivals or owned. There is no bottom action/footer bar; Back handles
-navigation. A result reveal distinguishes a featured acquisition from another new hero.
+rotation time, exact featured chance, Divine Seal balance, Summon x1 / Summon x10 and a
+Skip animation toggle (per browser, `td:summonSkip`). The pool below shows each hero as
+New or with its stars and spare copies. A Seal Dust panel exchanges dust for seals or
+Divine Essence.
+
+**Reveal** (`page/summon-reveal.ts`): a full-screen `<dialog>` over the Summon screen.
+The summon is paid and saved before it opens. Cards deal in face down (10 cards as 3/4/3)
+with the wolf card back (`public/td/summon-card-back-wolf.webp`); the back's glow shows
+the tier before the flip: gold = featured hero, purple = S or A tier, none = the rest. Tap
+flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards say
+"New" or "+1 copy". The result bar offers Summon again, Build squad and Close; Escape
+closes only the dialog. Reduced motion fades instead of flipping.
+
+### Stars, Evolution and Seal Dust (campaign only)
+
+Numbers live in `tdCampaign.json` (`heroStars`, `heroEvolution`) and `tdSummon.json`
+(`dust`); design and review notes in `docs/tower-defense-summon-duplicates-plan.md`.
+Every upgrade is chosen and confirmed by the player; nothing is spent automatically.
+
+- **Stars 1-5**: star n -> n+1 costs n spare copies of *other* heroes (1/2/3/4, 10 in all)
+  plus 200/400/600/800 Gold; +10% attack and health per star, multiplied with the level
+  bonus. A hero's own copies are never star fodder (they are its Evolution material).
+  Quick add takes surplus copies (beyond what their hero's Evolution still needs) first,
+  then the largest piles.
+- **Evolution I-V**: each tier costs 1 copy of the same hero or 1 Divine Essence; the
+  player taps the material, then Evolve. Tiers: ultimate +20%, crit +10%, ultimate cooldown
+  -15%, ultimate +25%, and V: the ultimate starts with its awakened upgrade (the same
+  per-ultimate upgrade the in-run Awaken unlocks; `hero.awakenedUlt` in `sim.js`).
+- **Seal Dust**: 1 spare copy -> 30 dust (by hand); 2 dust -> 1 Divine Seal; 150 dust ->
+  1 Divine Essence.
+- `campaignHeroes()` applies level x stars to attack/health and Evolution to
+  `ultPower`, `critChance`, `ultCooldown` and `awakenedUlt`.
+
+Measured with `npm run td:upgrade-sweep` (20 squads per stage at the expected levels):
+base 25% on 1-8 and 1-10; 3 stars about +20 points; Evolution V alone about +35;
+5 stars + Evolution V reach 70%. Every stage stays winnable without upgrades.
+
+### Results screen
+
+A campaign stage's result screen offers Retry, the follow-up (Next: stage X after a win,
+Change squad after a loss) and **Campaign** (back to the Campaign headquarters) instead of
+Main menu. Spend Favor is hidden after campaign stages (they earn no Favor).
 
 ## 9. Meta progression
 
@@ -246,6 +299,11 @@ Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLeve
 `mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
 `campaign`.
 
+The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 4): `owned`, `cleared`,
+`lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust, Divine Essence),
+`levels`, `summons`, `copies`, `stars`, `evolution`. Older versions migrate on load
+(version 3 gets empty copies, stars and Evolution).
+
 Per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic`, so
 older builds can still read `td:v1`. Export/import: save code (`TD1:` prefix) or file.
 Audio volume and mute have their own keys.
@@ -257,6 +315,7 @@ Audio volume and mute have their own keys.
 | `npm run test:tower-defense` | UI helpers, favor, difficulty, skin, save, sim, daily, challenges, expedition, campaign, summon |
 | `npm run test:td-balance` | Balance harness |
 | `npm run td:sweep` | Difficulty sweep |
+| `npm run td:upgrade-sweep` | Campaign win rates by Stars / Evolution, summon economy |
 | `npm run td:classes` / `td:progression` | Class and progression reports |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

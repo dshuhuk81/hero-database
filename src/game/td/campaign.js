@@ -124,7 +124,7 @@ export function levelUp(campaign, progress, id) {
 // Attack and health multiplier of a campaign level.
 export const levelScale = (campaign, level) => 1 + (campaign.heroLevels?.statPerLevel ?? 0) * (level - 1);
 
-// --- Stars (M28): spare copies of any hero + Gold raise a hero's attack and health ---
+// --- Stars (M26 sprint 9): spare copies of any hero + Gold raise a hero's attack and health ---
 export const heroStars = (progress, id) => progress.stars?.[id] ?? 1;
 export const starScale = (campaign, stars) => 1 + (campaign.heroStars?.statPerStar ?? 0) * (stars - 1);
 
@@ -174,7 +174,7 @@ export function starUp(campaign, progress, id, fodder) {
   return { ...progress, copies, currencies: { ...progress.currencies, gold: progress.currencies.gold - cost.gold }, stars: { ...progress.stars, [id]: heroStars(progress, id) + 1 } };
 }
 
-// --- Evolution (M28): a copy of the same hero (or Divine Essence) improves its skill ---
+// --- Evolution (M26 sprint 9): a copy of the same hero (or Divine Essence) improves its skill ---
 export const heroEvolution = (progress, id) => progress.evolution?.[id] ?? 0;
 export const evolutionMax = (campaign) => campaign.heroEvolution?.tiers?.length ?? 0;
 
@@ -211,7 +211,7 @@ export function evolutionBonus(campaign, tier) {
   return bonus;
 }
 
-// --- Seal Dust (M28): spare copies become dust; dust buys Divine Seals or Divine Essence ---
+// --- Seal Dust (M26 sprint 9): spare copies become dust; dust buys Divine Seals or Divine Essence ---
 // Converts `count` spare copies of a hero to Seal Dust (summonCfg.dust.perCopy each).
 export function convertCopies(summonCfg, progress, id, count = 1) {
   const n = Math.floor(Number(count) || 0);
@@ -291,7 +291,7 @@ export function summonPool(progress, heroes) {
 }
 
 // A banner's pool. "locked": heroes not owned yet (no duplicates). "all": every hero passed
-// in, owned or not; an owned hero drawn again becomes a spare copy (M28).
+// in, owned or not; an owned hero drawn again becomes a spare copy (M26 sprint 9).
 function bannerPool(banner, progress, heroes) {
   if (banner?.pool === "all") return heroes.map(heroIdOf);
   return banner?.pool === "locked" ? summonPool(progress, heroes) : [];

@@ -1,4 +1,4 @@
-// Summon reveal (M27): the full-screen stage a summon opens over the Summon screen. Cards
+// Summon reveal (M27b): the full-screen stage a summon opens over the Summon screen. Cards
 // deal in face down; the back's glow tells the tier (gold: the featured hero, purple: an S or
 // A tier hero, none: the rest). A tap flips one card, Reveal all flips the rest, and the
 // result bar offers the same summon again, the squad screen or closing. The summon itself

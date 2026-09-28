@@ -19,8 +19,8 @@ const campaign = {
   })),
 };
 const stages = allStages(campaign);
-// The authored banner has pool "all" (duplicates become copies, M28). The no-duplicate
-// checks below run on a "locked" copy of it; the M28 section uses the authored one.
+// The authored banner has pool "all" (duplicates become copies, M26 sprint 9). The no-duplicate
+// checks below run on a "locked" copy of it; the M26 sprint 9 section uses the authored one.
 const authored = summonData.banners[0];
 const summonCfg = { ...summonData, banners: [{ ...authored, pool: "locked" }] };
 const banner = summonCfg.banners[0];
@@ -132,7 +132,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.ok(reserved.every((id) => !campaignData.starters.includes(id)), "no starter is a stage reward");
 }
 
-// --- Multi summon (M27) ---
+// --- Multi summon (M27b) ---
 {
   const multi = banner.multiCount;
   assert.ok(multi >= 2, "banner has a multi summon");
@@ -167,7 +167,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.ok(campaignSeals >= cost * banner.multiCount, `campaign pays ${campaignSeals} seals, a full x${banner.multiCount} costs ${cost * banner.multiCount}`);
 }
 
-// --- Duplicates, Stars, Evolution, Seal Dust (M28) ---
+// --- Duplicates, Stars, Evolution, Seal Dust (M26 sprint 9) ---
 {
   assert.equal(authored.pool, "all", "authored banner gives duplicates");
   const cfg = summonData;

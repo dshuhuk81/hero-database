@@ -1,4 +1,4 @@
-// Stars and Evolution (M28) sweep: campaign stage win rates with the expected hero levels
+// Stars and Evolution (M26 sprint 9) sweep: campaign stage win rates with the expected hero levels
 // (as in test-td-campaign) and every owned hero at a given Stars / Evolution state, to see
 // how much each upgrade path moves the campaign. Also the summon economy: what the
 // campaign's Divine Seals buy in copies. Run: node scripts/td-upgrade-sweep.mjs
