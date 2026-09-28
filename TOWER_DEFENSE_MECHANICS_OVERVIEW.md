@@ -225,11 +225,13 @@ Campaign stages only. The Blessings screen carries the mirror note. Campaign
 levels deliberately stay out of Free Play — daily/trial comparability is
 preserved.
 
-**6. Watch the deploy-cap asymmetry.** Free Play squads are 5 with deploy cap
-7; campaign squads are 4. If that's intentional (campaign is the harder,
-collection-driven mode), say so in the UI; if not, align them — players will
-read the smaller campaign squad as a punishment for engaging with the mode
-that gates their heroes.
+**6. Watch the deploy-cap asymmetry.** *(Implemented September 28, 2026.)*
+Free Play fields up to 7 (deploy cap); campaign squads were 4, which read as
+punishment for the mode that gates heroes. A sweep (35 sampled squads per
+stage) showed late-stage win rates of 34-54% at squad 4, 49-81% at 5, and
+near-Free-Play ease at 6 — squad size was raised to 5 and the squad screen
+now names the remaining gap: "Campaign squads field 5 heroes — a tighter
+fight than Free Play's 7. Your levels, stars and evolution carry you here."
 
 **7. Training is your best sink — protect it.** The ×1.3 cost growth after
 awakening is exactly the "one more run" engine, and awakening being lost on

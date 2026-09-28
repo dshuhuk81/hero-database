@@ -1,12 +1,33 @@
 {
   "version": 2,
-  "squadSize": 4,
-  "starters": ["demeter", "jormungandr", "horus", "fengyi", "artemis", "freya"],
+  "squadSize": 5,
+  "starters": [
+    "demeter",
+    "jormungandr",
+    "horus",
+    "fengyi",
+    "artemis",
+    "freya"
+  ],
   "heroLevels": {
     "max": 60,
-    "capByStars": [10, 20, 30, 40, 50, 60],
+    "capByStars": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60
+    ],
     "bandSize": 10,
-    "statPerLevel": [0.06, 0.03, 0.02, 0.015, 0.015, 0.01],
+    "statPerLevel": [
+      0.06,
+      0.03,
+      0.02,
+      0.015,
+      0.015,
+      0.01
+    ],
     "cost": {
       "gold": {
         "base": 100,
@@ -21,18 +42,52 @@
   "repeatShare": 0.25,
   "heroStars": {
     "max": 5,
-    "statPerStar": 0.10,
-    "copies": [1, 1, 2, 3, 4],
-    "gold": [100, 200, 400, 600, 800]
+    "statPerStar": 0.1,
+    "copies": [
+      1,
+      1,
+      2,
+      3,
+      4
+    ],
+    "gold": [
+      100,
+      200,
+      400,
+      600,
+      800
+    ]
   },
-  "heroMight": { "evolutionPerTier": 0.06 },
+  "heroMight": {
+    "evolutionPerTier": 0.06
+  },
   "heroEvolution": {
     "tiers": [
-      { "name": "Evolved I", "ultPower": 0.20, "text": "Ultimate deals 20% more" },
-      { "name": "Evolved II", "crit": 0.10, "text": "+10% critical chance" },
-      { "name": "Evolved III", "ultCooldown": -0.15, "text": "Ultimate recharges 15% faster" },
-      { "name": "Evolved IV", "ultPower": 0.25, "text": "Ultimate deals 25% more" },
-      { "name": "Evolved V", "awakenedUlt": true, "text": "Ultimate starts with its awakened upgrade" }
+      {
+        "name": "Evolved I",
+        "ultPower": 0.2,
+        "text": "Ultimate deals 20% more"
+      },
+      {
+        "name": "Evolved II",
+        "crit": 0.1,
+        "text": "+10% critical chance"
+      },
+      {
+        "name": "Evolved III",
+        "ultCooldown": -0.15,
+        "text": "Ultimate recharges 15% faster"
+      },
+      {
+        "name": "Evolved IV",
+        "ultPower": 0.25,
+        "text": "Ultimate deals 25% more"
+      },
+      {
+        "name": "Evolved V",
+        "awakenedUlt": true,
+        "text": "Ultimate starts with its awakened upgrade"
+      }
     ]
   },
   "heroSkillLevels": {
@@ -40,8 +95,18 @@
     "ultimatePowerPerLevel": 0.05,
     "passiveStatPerLevel": 0.03,
     "cost": {
-      "gold": [150, 300, 600, 1000],
-      "divineEssence": [0, 0, 0, 1]
+      "gold": [
+        150,
+        300,
+        600,
+        1000
+      ],
+      "divineEssence": [
+        0,
+        0,
+        0,
+        1
+      ]
     }
   },
   "chapters": [
@@ -58,43 +123,90 @@
           "hpScale": 0.8,
           "unlockAfter": null,
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 200},
-            {"type": "currency", "id": "heroXp", "amount": 100},
-            {"type": "currency", "id": "divineSeals", "amount": 50},
-            {"type": "hero", "id": "diana"}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 200
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 100
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            },
+            {
+              "type": "hero",
+              "id": "diana"
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 7, "gapMs": 950}
+                {
+                  "kind": "grunt",
+                  "count": 7,
+                  "gapMs": 950
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "grunt", "count": 11, "gapMs": 760}
+                {
+                  "kind": "grunt",
+                  "count": 11,
+                  "gapMs": 760
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "grunt", "count": 7, "gapMs": 700},
-                {"kind": "runner", "count": 6, "gapMs": 620}
+                {
+                  "kind": "grunt",
+                  "count": 7,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gapMs": 620
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "runner", "count": 10, "gapMs": 520},
-                {"kind": "grunt", "count": 8, "gapMs": 650}
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 650
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 520},
-                {"kind": "runner", "count": 8, "gapMs": 480}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 480
+                }
               ]
             }
           ]
@@ -108,51 +220,110 @@
           "hpScale": 0.95,
           "unlockAfter": "1-1",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 300},
-            {"type": "currency", "id": "heroXp", "amount": 150},
-            {"type": "currency", "id": "divineSeals", "amount": 50},
-            {"type": "hero", "id": "nuwa"}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 300
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 150
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            },
+            {
+              "type": "hero",
+              "id": "nuwa"
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 9, "gapMs": 850}
+                {
+                  "kind": "grunt",
+                  "count": 9,
+                  "gapMs": 850
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "flyer", "count": 6, "gapMs": 900},
-                {"kind": "grunt", "count": 6, "gapMs": 700}
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 6,
+                  "gapMs": 700
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "runner", "count": 10, "gapMs": 520},
-                {"kind": "grunt", "count": 6, "gapMs": 700}
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "grunt",
+                  "count": 6,
+                  "gapMs": 700
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "flyer", "count": 10, "gapMs": 650},
-                {"kind": "grunt", "count": 8, "gapMs": 600}
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "grunt", "count": 12, "gapMs": 520},
-                {"kind": "runner", "count": 8, "gapMs": 480}
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 480
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "flyer", "count": 12, "gapMs": 520},
-                {"kind": "runner", "count": 10, "gapMs": 450}
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 450
+                }
               ]
             }
           ]
@@ -166,60 +337,135 @@
           "hpScale": 0.9,
           "unlockAfter": "1-2",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 400},
-            {"type": "currency", "id": "heroXp", "amount": 200},
-            {"type": "currency", "id": "divineSeals", "amount": 50},
-            {"type": "hero", "id": "zeus"}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 400
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 200
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            },
+            {
+              "type": "hero",
+              "id": "zeus"
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 10, "gapMs": 800}
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "brute", "count": 2, "gapMs": 1600},
-                {"kind": "grunt", "count": 8, "gapMs": 650}
+                {
+                  "kind": "brute",
+                  "count": 2,
+                  "gapMs": 1600
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 650
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "grunt", "count": 10, "gapMs": 600}
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "flyer", "count": 8, "gapMs": 650},
-                {"kind": "runner", "count": 10, "gapMs": 480}
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 480
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1400},
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "runner", "count": 8, "gapMs": 520}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1400
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 520
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 450},
-                {"kind": "flyer", "count": 8, "gapMs": 600}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 450
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "brute", "count": 5, "gapMs": 1100},
-                {"kind": "mender", "count": 3, "gapMs": 800},
-                {"kind": "grunt", "count": 10, "gapMs": 500}
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1100
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 500
+                }
               ]
             }
           ]
@@ -233,60 +479,136 @@
           "hpScale": 0.95,
           "unlockAfter": "1-3",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 500},
-            {"type": "currency", "id": "heroXp", "amount": 250},
-            {"type": "currency", "id": "divineSeals", "amount": 50}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 500
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 250
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 10, "gapMs": 800}
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "shieldbearer", "count": 4, "gapMs": 900},
-                {"kind": "grunt", "count": 8, "gapMs": 600}
+                {
+                  "kind": "shieldbearer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "archer", "count": 5, "gapMs": 900},
-                {"kind": "runner", "count": 8, "gapMs": 520}
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 520
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "flyer", "count": 10, "gapMs": 600},
-                {"kind": "grunt", "count": 10, "gapMs": 520}
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 600
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 520
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "shieldbearer", "count": 5, "gapMs": 800},
-                {"kind": "archer", "count": 6, "gapMs": 900},
-                {"kind": "grunt", "count": 10, "gapMs": 400}
+                {
+                  "kind": "shieldbearer",
+                  "count": 5,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 400
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1200},
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "runner", "count": 10, "gapMs": 450}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 450
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
-                {"kind": "archer", "count": 8, "gapMs": 700},
-                {"kind": "flyer", "count": 8, "gapMs": 550}
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 550
+                }
               ]
             }
           ]
@@ -300,69 +622,160 @@
           "hpScale": 0.75,
           "unlockAfter": "1-4",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 600},
-            {"type": "currency", "id": "heroXp", "amount": 300},
-            {"type": "currency", "id": "divineSeals", "amount": 100},
-            {"type": "hero", "id": "caishen"}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 600
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 300
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 100
+            },
+            {
+              "type": "hero",
+              "id": "caishen"
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 12, "gapMs": 700}
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 700
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "runner", "count": 12, "gapMs": 450},
-                {"kind": "flyer", "count": 6, "gapMs": 700}
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 450
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 700
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1300},
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "grunt", "count": 8, "gapMs": 600}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "shieldbearer", "count": 5, "gapMs": 800},
-                {"kind": "archer", "count": 6, "gapMs": 850}
+                {
+                  "kind": "shieldbearer",
+                  "count": 5,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 850
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "flyer", "count": 12, "gapMs": 500},
-                {"kind": "runner", "count": 10, "gapMs": 420}
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 500
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 420
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "brute", "count": 5, "gapMs": 1000},
-                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
-                {"kind": "grunt", "count": 12, "gapMs": 420}
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 4,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 420
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "archer", "count": 8, "gapMs": 700},
-                {"kind": "mender", "count": 3, "gapMs": 800},
-                {"kind": "runner", "count": 14, "gapMs": 380}
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 380
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "boss", "count": 1, "gapMs": 1000},
-                {"kind": "grunt", "count": 12, "gapMs": 480},
-                {"kind": "flyer", "count": 6, "gapMs": 600}
+                {
+                  "kind": "boss",
+                  "count": 1,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 480
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 600
+                }
               ]
             }
           ]
@@ -376,69 +789,161 @@
           "hpScale": 0.9,
           "unlockAfter": "1-5",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 700},
-            {"type": "currency", "id": "heroXp", "amount": 350},
-            {"type": "currency", "id": "divineSeals", "amount": 50}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 700
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 350
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 12, "gapMs": 700}
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 700
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "hexer", "count": 2, "gapMs": 1200},
-                {"kind": "grunt", "count": 10, "gapMs": 600}
+                {
+                  "kind": "hexer",
+                  "count": 2,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "runner", "count": 14, "gapMs": 420},
-                {"kind": "flyer", "count": 6, "gapMs": 650}
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 650
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "hexer", "count": 3, "gapMs": 1000},
-                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
-                {"kind": "grunt", "count": 8, "gapMs": 550}
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 4,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 550
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1200},
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "archer", "count": 5, "gapMs": 850}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 850
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "flyer", "count": 12, "gapMs": 500},
-                {"kind": "hexer", "count": 3, "gapMs": 1000},
-                {"kind": "runner", "count": 8, "gapMs": 450}
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 500
+                },
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 450
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
-                {"kind": "archer", "count": 6, "gapMs": 800},
-                {"kind": "grunt", "count": 14, "gapMs": 380}
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 380
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "brute", "count": 5, "gapMs": 1000},
-                {"kind": "runner", "count": 14, "gapMs": 360}
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 360
+                }
               ]
             }
           ]
@@ -452,75 +957,171 @@
           "hpScale": 0.9,
           "unlockAfter": "1-6",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 800},
-            {"type": "currency", "id": "heroXp", "amount": 400},
-            {"type": "currency", "id": "divineSeals", "amount": 50}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 800
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 400
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 600}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "runner", "count": 12, "gapMs": 440},
-                {"kind": "grunt", "count": 8, "gapMs": 550}
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 440
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 550
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "flyer", "count": 12, "gapMs": 550},
-                {"kind": "grunt", "count": 10, "gapMs": 520}
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 550
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 520
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1200},
-                {"kind": "mender", "count": 2, "gapMs": 900},
-                {"kind": "runner", "count": 10, "gapMs": 450}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 450
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
-                {"kind": "archer", "count": 6, "gapMs": 800}
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "grunt", "count": 16, "gapMs": 380}
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 16,
+                  "gapMs": 380
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "flyer", "count": 14, "gapMs": 450},
-                {"kind": "archer", "count": 6, "gapMs": 800},
-                {"kind": "runner", "count": 10, "gapMs": 400}
+                {
+                  "kind": "flyer",
+                  "count": 14,
+                  "gapMs": 450
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 400
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "brute", "count": 6, "gapMs": 900},
-                {"kind": "shieldbearer", "count": 5, "gapMs": 750},
-                {"kind": "mender", "count": 3, "gapMs": 800}
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 5,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 9,
               "spawns": [
-                {"kind": "runner", "count": 20, "gapMs": 300},
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "flyer", "count": 8, "gapMs": 500}
+                {
+                  "kind": "runner",
+                  "count": 20,
+                  "gapMs": 300
+                },
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 500
+                }
               ]
             }
           ]
@@ -534,71 +1135,171 @@
           "hpScale": 0.72,
           "unlockAfter": "1-7",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 900},
-            {"type": "currency", "id": "heroXp", "amount": 450},
-            {"type": "currency", "id": "divineSeals", "amount": 50}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 900
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 450
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 600}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "broodcaller", "count": 1, "gapMs": 1500},
-                {"kind": "grunt", "count": 10, "gapMs": 550}
+                {
+                  "kind": "broodcaller",
+                  "count": 1,
+                  "gapMs": 1500
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 550
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
-                {"kind": "shieldbearer", "count": 4, "gapMs": 800},
-                {"kind": "grunt", "count": 8, "gapMs": 500}
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1500
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 4,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 500
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "brute", "count": 5, "gapMs": 1100},
-                {"kind": "mender", "count": 3, "gapMs": 850},
-                {"kind": "archer", "count": 5, "gapMs": 850}
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1100
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 850
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
-                {"kind": "runner", "count": 12, "gapMs": 400}
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1500
+                },
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 400
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "flyer", "count": 14, "gapMs": 450},
-                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
-                {"kind": "grunt", "count": 12, "gapMs": 380}
+                {
+                  "kind": "flyer",
+                  "count": 14,
+                  "gapMs": 450
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 380
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
-                {"kind": "archer", "count": 8, "gapMs": 700},
-                {"kind": "runner", "count": 14, "gapMs": 350}
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 350
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "brute", "count": 6, "gapMs": 900},
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "flyer", "count": 10, "gapMs": 480},
-                {"kind": "grunt", "count": 14, "gapMs": 320}
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 480
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 320
+                }
               ]
             }
           ]
@@ -612,88 +1313,216 @@
           "hpScale": 0.57,
           "unlockAfter": "1-8",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 1000},
-            {"type": "currency", "id": "heroXp", "amount": 500},
-            {"type": "currency", "id": "divineSeals", "amount": 50}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1000
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 500
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 560}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 560
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "runner", "count": 12, "gapMs": 420},
-                {"kind": "flyer", "count": 6, "gapMs": 600}
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "brute", "count": 4, "gapMs": 1200},
-                {"kind": "mender", "count": 3, "gapMs": 850},
-                {"kind": "grunt", "count": 10, "gapMs": 480}
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 480
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
-                {"kind": "archer", "count": 7, "gapMs": 800},
-                {"kind": "runner", "count": 10, "gapMs": 420}
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "archer",
+                  "count": 7,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 420
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
-                {"kind": "grunt", "count": 12, "gapMs": 420}
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1500
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 420
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "brute", "count": 6, "gapMs": 950},
-                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
-                {"kind": "mender", "count": 3, "gapMs": 800}
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 950
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "archer", "count": 8, "gapMs": 700},
-                {"kind": "hexer", "count": 5, "gapMs": 850},
-                {"kind": "flyer", "count": 10, "gapMs": 450}
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "hexer",
+                  "count": 5,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 450
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
-                {"kind": "brute", "count": 5, "gapMs": 1000},
-                {"kind": "runner", "count": 16, "gapMs": 320}
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "runner",
+                  "count": 16,
+                  "gapMs": 320
+                }
               ]
             },
             {
               "wave": 9,
               "spawns": [
-                {"kind": "shieldbearer", "count": 8, "gapMs": 650},
-                {"kind": "mender", "count": 4, "gapMs": 750},
-                {"kind": "flyer", "count": 12, "gapMs": 420},
-                {"kind": "grunt", "count": 14, "gapMs": 300}
+                {
+                  "kind": "shieldbearer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 300
+                }
               ]
             },
             {
               "wave": 10,
               "spawns": [
-                {"kind": "brute", "count": 8, "gapMs": 800},
-                {"kind": "hexer", "count": 5, "gapMs": 800},
-                {"kind": "broodcaller", "count": 2, "gapMs": 1400},
-                {"kind": "runner", "count": 20, "gapMs": 280}
+                {
+                  "kind": "brute",
+                  "count": 8,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "hexer",
+                  "count": 5,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1400
+                },
+                {
+                  "kind": "runner",
+                  "count": 20,
+                  "gapMs": 280
+                }
               ]
             }
           ]
@@ -707,96 +1536,235 @@
           "hpScale": 0.67,
           "unlockAfter": "1-9",
           "rewards": [
-            {"type": "currency", "id": "gold", "amount": 1100},
-            {"type": "currency", "id": "heroXp", "amount": 550},
-            {"type": "currency", "id": "divineSeals", "amount": 100},
-            {"type": "hero", "id": "poseidon"}
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1100
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 550
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 100
+            },
+            {
+              "type": "hero",
+              "id": "poseidon"
+            }
           ],
           "waves": [
             {
               "wave": 1,
               "spawns": [
-                {"kind": "grunt", "count": 14, "gapMs": 560}
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 560
+                }
               ]
             },
             {
               "wave": 2,
               "spawns": [
-                {"kind": "runner", "count": 12, "gapMs": 420},
-                {"kind": "flyer", "count": 6, "gapMs": 600}
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 600
+                }
               ]
             },
             {
               "wave": 3,
               "spawns": [
-                {"kind": "brute", "count": 5, "gapMs": 1100},
-                {"kind": "mender", "count": 3, "gapMs": 850},
-                {"kind": "grunt", "count": 10, "gapMs": 480}
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1100
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 480
+                }
               ]
             },
             {
               "wave": 4,
               "spawns": [
-                {"kind": "shieldbearer", "count": 6, "gapMs": 750},
-                {"kind": "archer", "count": 8, "gapMs": 780}
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 780
+                }
               ]
             },
             {
               "wave": 5,
               "spawns": [
-                {"kind": "hexer", "count": 4, "gapMs": 900},
-                {"kind": "broodcaller", "count": 2, "gapMs": 1500},
-                {"kind": "runner", "count": 12, "gapMs": 400}
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1500
+                },
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 400
+                }
               ]
             },
             {
               "wave": 6,
               "spawns": [
-                {"kind": "brute", "count": 6, "gapMs": 950},
-                {"kind": "shieldbearer", "count": 6, "gapMs": 700},
-                {"kind": "mender", "count": 3, "gapMs": 800}
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 950
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                }
               ]
             },
             {
               "wave": 7,
               "spawns": [
-                {"kind": "archer", "count": 8, "gapMs": 700},
-                {"kind": "hexer", "count": 5, "gapMs": 850},
-                {"kind": "flyer", "count": 10, "gapMs": 450}
+                {
+                  "kind": "archer",
+                  "count": 8,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "hexer",
+                  "count": 5,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 450
+                }
               ]
             },
             {
               "wave": 8,
               "spawns": [
-                {"kind": "broodcaller", "count": 3, "gapMs": 1300},
-                {"kind": "brute", "count": 5, "gapMs": 1000},
-                {"kind": "runner", "count": 16, "gapMs": 320}
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "runner",
+                  "count": 16,
+                  "gapMs": 320
+                }
               ]
             },
             {
               "wave": 9,
               "spawns": [
-                {"kind": "shieldbearer", "count": 8, "gapMs": 650},
-                {"kind": "mender", "count": 4, "gapMs": 750},
-                {"kind": "flyer", "count": 12, "gapMs": 420},
-                {"kind": "grunt", "count": 14, "gapMs": 300}
+                {
+                  "kind": "shieldbearer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 300
+                }
               ]
             },
             {
               "wave": 10,
               "spawns": [
-                {"kind": "brute", "count": 8, "gapMs": 800},
-                {"kind": "hexer", "count": 5, "gapMs": 800},
-                {"kind": "archer", "count": 6, "gapMs": 750},
-                {"kind": "runner", "count": 18, "gapMs": 280}
+                {
+                  "kind": "brute",
+                  "count": 8,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "hexer",
+                  "count": 5,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "runner",
+                  "count": 18,
+                  "gapMs": 280
+                }
               ]
             },
             {
               "wave": 11,
               "spawns": [
-                {"kind": "boss", "count": 1, "gapMs": 1000},
-                {"kind": "grunt", "count": 14, "gapMs": 420},
-                {"kind": "flyer", "count": 10, "gapMs": 500}
+                {
+                  "kind": "boss",
+                  "count": 1,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 500
+                }
               ]
             }
           ]

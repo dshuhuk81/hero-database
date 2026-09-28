@@ -237,7 +237,7 @@ replace the map value, so tuned stages keep their numbers.
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages, starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
@@ -272,10 +272,15 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    the stage text is a tooltip), a roster strip of small tiles, max 2 rows, swipe/scroll
    sideways for the rest (portrait, name, class icon,
    level; locked heroes trail dimmed with their unlock source), then a sticky panel with
-   the 4 squad slots (portrait-format cards, art only with the class icon top right,
+   the 5 squad slots (portrait-format cards, art only with the class icon top right,
    battle gold cost below; tap or drag out to remove), all centered with coverage line and
    hint/flyer warning under them. Quick pick sits top right in the stage head. Footer: count, power vs. recommended,
    Start. Role hints and skill names live in tile tooltips and on the Heroes screen.
+   Under the coverage line a note names the deploy-cap asymmetry (mechanics overview
+   recommendation 6): "Campaign squads field 5 heroes — a tighter fight than Free
+   Play's 7. Your levels, stars and evolution carry you here." Squad size was raised
+   4 → 5 on September 28, 2026 after a sweep showed 4 read as punishment (late-stage
+   win rates 34-54% at 4, 49-81% at 5, near-Free-Play ease at 6).
    Class icons across the whole TD UI are `classGlyph()` (assets.js; `classIconImg()`
    delegates to it): simplified solid SVGs readable at small sizes (shield, sword, crossed
    daggers, star, bow, cross), currentColor. Squad/popover badges sit on a class-tinted

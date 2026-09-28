@@ -267,6 +267,9 @@ export function createCampaign(ctx: PageContext) {
     squadCopyEl.title = stage.text ?? "";
     q("[data-td-squad-rewards]").innerHTML = stageRewards(stage);
     squadCountEl.textContent = `Squad ${squad.length} / ${campaign.squadSize}`;
+    // Deploy-cap note (mechanics overview recommendation 6): campaign squads are
+    // deliberately tighter than Free Play's 7 — the collection upgrades carry you.
+    q("[data-td-squad-note]").textContent = `Campaign squads field ${campaign.squadSize} heroes — a tighter fight than Free Play's ${data.tuning.run?.deployCap ?? 7}. Your levels, stars and evolution carry you here.`;
     const selected = squad.map((id) => heroById.get(id));
     const road = selected.filter((hero) => hero.slot === "road").length;
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
