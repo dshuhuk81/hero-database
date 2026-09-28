@@ -105,6 +105,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerBgTex  = new PIXI.Container(); // game-art background panels
   const layerBg     = new PIXI.Container(); // path, grid
   const layerStructures = new PIXI.Container(); // physical gate/base foundations
+  const layerSlotAuras = new PIXI.Container(); // persistent special-tile ambience
   const layerSlots  = new PIXI.Container(); // slot rings
   const layerRanges = new PIXI.Container(); // range preview rings
   const layerLinks  = new PIXI.Container(); // aura + synergy links
@@ -114,7 +115,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerFx     = new PIXI.Container(); // shot tracers, hit rings
   const layerParts  = new PIXI.Container(); // particles
   const layerHud    = new PIXI.Container(); // portals, labels
-  for (const l of [layerBgTex, layerBg, layerStructures, layerSlots, layerRanges, layerLinks, layerUnits, layerForeground, layerBars, layerFx, layerParts, layerHud]) {
+  for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerForeground, layerBars, layerFx, layerParts, layerHud]) {
     stage.addChild(l);
   }
 
@@ -192,14 +193,18 @@ export async function createRenderer(canvas, game, options = {}) {
   const FLYER_LIFT = 18;
   const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
   const SPRITE_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
+  // Same cache bust as hero thumbs: the lobby, boss plate and glossary show these files in
+  // plain <img> tags, and a cached non-CORS copy makes WebGL reject the texture (the boss then
+  // fell back to the blurry Kenney tile).
+  const enemySpriteUrl = (file, version) => `${tdAsset(`enemies/sprites/${file}-${version}.webp`)}?${TEXTURE_CACHE_BUST}`;
   for (const [kind, file] of [...SPRITE_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
-    PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
+    PIXI.Assets.load(enemySpriteUrl(file, ENEMY_SPRITE_VERSIONS[file] ?? "v1"))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
   // M11 kinds borrow another sprite (ENEMY_ART), tinted in updateEnemyOverlays.
   for (const [kind, art] of Object.entries(ENEMY_ART)) {
-    PIXI.Assets.load(tdAsset(`enemies/sprites/${art.file}-${art.version}.webp`))
+    PIXI.Assets.load(enemySpriteUrl(art.file, art.version))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
@@ -360,6 +365,86 @@ export async function createRenderer(canvas, game, options = {}) {
     else if (kind === "shrine") g.moveTo(bx, by - 5).lineTo(bx + 4, by).lineTo(bx, by + 5).lineTo(bx - 4, by).closePath().fill({ color });
     else g.moveTo(bx - 4, by - 4).lineTo(bx + 4, by + 4).moveTo(bx + 4, by - 4).lineTo(bx - 4, by + 4).stroke({ width: 2.5, color, cap: "round" });
     container.addChild(g);
+  }
+
+  // Special-tile atmosphere is built once and animated by changing transforms only.
+  // This keeps the effects visible under occupied tiles without allocating display objects
+  // during combat. Reduced motion keeps the coloured ground glow and disables drifting parts.
+  const specialTileFx = [];
+  function buildSpecialTileFx() {
+    for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
+      const [type, index] = key.split(":");
+      const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
+      if (!pos) continue;
+      const color = RING_MARKS[kind] ?? 0xffffff;
+      const root = new PIXI.Container();
+      root.position.set(pos[0], pos[1]);
+
+      const glow = new PIXI.Graphics();
+      glow.ellipse(0, 5, 38, 25).fill({ color, alpha: kind === "cursed" ? 0.12 : 0.1 });
+      glow.ellipse(0, 5, 30, 19).stroke({ color, width: 2, alpha: 0.24 });
+      root.addChild(glow);
+
+      const halo = new PIXI.Graphics();
+      halo.ellipse(0, 4, 34, 22).stroke({ color, width: kind === "shrine" ? 3 : 2, alpha: 0.42 });
+      root.addChild(halo);
+
+      const parts = [];
+      const count = kind === "highground" ? 6 : kind === "shrine" ? 3 : 5;
+      for (let i = 0; i < count; i += 1) {
+        const part = new PIXI.Graphics();
+        if (kind === "highground") {
+          part.circle(0, 0, i % 2 ? 1.4 : 1.9).fill({ color, alpha: 0.9 });
+          if (i % 2 === 0) part.moveTo(-3, 0).lineTo(3, 0).moveTo(0, -3).lineTo(0, 3).stroke({ color, width: 0.8, alpha: 0.55 });
+        } else if (kind === "shrine") {
+          part.ellipse(0, 0, 15 + i * 2, 5 + i).fill({ color, alpha: 0.18 });
+          part.ellipse(0, 0, 13 + i * 2, 4 + i).stroke({ color, width: 1, alpha: 0.28 });
+        } else {
+          part.moveTo(-6, 5).bezierCurveTo(-1, -6, 5, 3, 3, -9).stroke({ color, width: 2, alpha: 0.55, cap: "round" });
+          part.circle(3, -9, 1.5).fill({ color, alpha: 0.5 });
+        }
+        root.addChild(part);
+        parts.push(part);
+      }
+      layerSlotAuras.addChild(root);
+      specialTileFx.push({ kind, root, glow, halo, parts });
+    }
+  }
+
+  function updateSpecialTileFx(now) {
+    const seconds = now / 1000;
+    for (const fx of specialTileFx) {
+      if (reducedMotion) {
+        fx.glow.alpha = 1;
+        fx.halo.alpha = 0.72;
+        fx.halo.scale.set(1);
+        for (const part of fx.parts) part.visible = false;
+        continue;
+      }
+      const pulse = 0.5 + 0.5 * Math.sin(seconds * (fx.kind === "cursed" ? 2.1 : 1.45));
+      fx.glow.alpha = 0.72 + pulse * 0.28;
+      fx.halo.alpha = 0.34 + pulse * 0.34;
+      fx.halo.scale.set(0.94 + pulse * 0.11);
+      for (let i = 0; i < fx.parts.length; i += 1) {
+        const part = fx.parts[i];
+        part.visible = true;
+        const phase = (seconds * (fx.kind === "shrine" ? 0.09 : fx.kind === "cursed" ? 0.16 : 0.2) + i / fx.parts.length) % 1;
+        if (fx.kind === "highground") {
+          part.position.set(Math.sin(seconds * 0.7 + i * 2.2) * (10 + i), 15 - phase * 48);
+          part.alpha = Math.sin(phase * Math.PI) * 0.78;
+          part.scale.set(0.75 + phase * 0.45);
+        } else if (fx.kind === "shrine") {
+          part.position.set(Math.sin(seconds * 0.45 + i * 2.1) * 9, 7 - i * 5 + Math.cos(seconds * 0.55 + i) * 3);
+          part.alpha = 0.42 + pulse * 0.2;
+          part.scale.set(0.86 + pulse * 0.16, 0.8 + pulse * 0.12);
+        } else {
+          part.position.set(Math.sin(seconds * 1.15 + i * 1.7) * (10 + i), 14 - phase * 42);
+          part.rotation = Math.sin(seconds * 0.8 + i) * 0.22;
+          part.alpha = Math.sin(phase * Math.PI) * 0.64;
+          part.scale.set(0.8 + phase * 0.35);
+        }
+      }
+    }
   }
 
   function drawSlot(container, x, y, type, occupied, highlighted) {
@@ -1275,6 +1360,7 @@ export async function createRenderer(canvas, game, options = {}) {
     syncHeroes();
     drawBars();
     drawEffects(now);
+    updateSpecialTileFx(now);
     applyImpact(now);
     mapScene?.draw(now);
     app.renderer.render(stage);
@@ -1297,6 +1383,7 @@ export async function createRenderer(canvas, game, options = {}) {
   } else buildBgTexture();
   buildBg();
   buildPortals();
+  buildSpecialTileFx();
 
   let destroyed = false;
   function destroy() {

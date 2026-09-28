@@ -13,6 +13,12 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
   <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
+  <dialog class="td-panel td-orient-dialog" data-td-orient-dialog aria-labelledby="td-orient-text">
+    <div class="td-panel-body">
+      <p id="td-orient-text">For the perfect experience, activate fullscreen mode and rotate your phone to landscape.</p>
+      <button class="action-button action-button--primary" type="button" data-td-orient-ok>Okay</button>
+    </div>
+  </dialog>
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
@@ -319,4 +325,9 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
 
   nav.init();
   controller.run();
+
+  // Phones in portrait get a one-time hint on landing to go full screen and rotate.
+  const orientDialog = q<HTMLDialogElement>("[data-td-orient-dialog]");
+  q("[data-td-orient-ok]").addEventListener("click", () => orientDialog.close());
+  if (matchMedia("(orientation: portrait) and (pointer: coarse) and (max-width: 767px)").matches) orientDialog.showModal();
 </script>

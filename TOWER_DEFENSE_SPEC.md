@@ -60,6 +60,10 @@ Hard rules:
 - Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
   each other only through `ctx.actions`. Screens are a stack mirrored in browser history
   (`nav.ts`). The summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.
+- Portrait phone hint: on page load, if `(orientation: portrait) and (pointer: coarse) and
+  (max-width: 767px)` matches, a native `<dialog>` (`data-td-orient-dialog`, in
+  `TowerDefensePage.astro`) asks the player to go full screen and rotate to landscape.
+  One "Okay" button closes it. Shown on every landing, no saved dismissal.
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
@@ -145,6 +149,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `shieldbearer`, `broodcaller`, `imp`, `hexer`, plus `boss`. Stats in `tuning.enemies`.
 - Bosses: `baphomet` (mark, stance) and `lilith` (summons brood, enrages below 50%).
   Each map names its boss.
+- Enemy art: full-body sprites from R2 `td/enemies/sprites/` (`render.js`), loaded with
+  the `?v=cors1` cache bust like hero thumbs. The same files appear in plain `<img>`
+  tags (lobby, boss plate, glossary), and a cached non-CORS copy would make WebGL reject
+  the texture and drop the enemy to the 8x8 Kenney tile fallback.
 - Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
   6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
   9 brute/mender/shieldbearer/runner, 10 boss + escort.
@@ -166,6 +174,11 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
+
+Optional `enemyHp` scales enemy health on that map in open modes (Free play, Daily Trial,
+Endless). Verdant Crossing uses 1.25 (September 28, 2026) because it was the easiest map for
+every squad. Modes with their own stage scale (`hpScale` from Campaign stages or Expedition)
+replace the map value, so tuned stages keep their numbers.
 
 ## 8. Game modes
 
@@ -317,6 +330,7 @@ Audio volume and mute have their own keys.
 | `npm run td:sweep` | Difficulty sweep |
 | `npm run td:upgrade-sweep` | Campaign win rates by Stars / Evolution, summon economy |
 | `npm run td:classes` / `td:progression` | Class and progression reports |
+| `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |
 | `node scripts/td-audio-levels.mjs` | Regenerate audio gains |

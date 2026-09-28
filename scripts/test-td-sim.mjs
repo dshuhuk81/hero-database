@@ -888,6 +888,17 @@ function runWaveOne(g) {
   assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).maxLives, tuning.run.lives, "default maximum");
 }
 
+// Map enemy health (audit step 3): a map's `enemyHp` scales open modes; a mode's own stage
+// scale (campaign, Expedition) replaces it, so tuned stages keep their numbers.
+{
+  const verdant = realMaps.find((map) => map.id === "verdant-crossing");
+  assert.ok(verdant.enemyHp > 1, "Verdant is tuned harder");
+  const plain = { ...verdant, enemyHp: undefined };
+  const hp = (options) => new TowerDefenseGame({ heroes, tuning, waves, ...options }).waveTotalHp(0);
+  assert.ok(Math.abs(hp({ map: verdant }) / hp({ map: plain }) - verdant.enemyHp) < 0.01, "map scale applies in open modes");
+  assert.equal(hp({ map: verdant, hpScale: 0.9 }), hp({ map: plain, hpScale: 0.9 }), "stage scale replaces the map scale");
+}
+
 // Deploy cap (M22b): tiles line the road, so heroes on the field are capped; tiles, gold
 // and uniqueness still apply. A fallen hero frees a place under the cap.
 {
@@ -1486,7 +1497,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   // Lilith: tougher stat block, summons her children around her, cannot be hit.
   g = setup(lilithMap);
   boss = g.spawnEnemy("boss");
-  const scale = g.difficulty.enemyHp; // wave 1
+  const scale = g.difficulty.enemyHp * g.tierHp; // wave 1, with the map's enemy health
   assert.equal(boss.bossId, "lilith");
   assert.equal(boss.maxHp, cfg.stats.hp * scale, "lilith uses her own hp");
   assert.ok(cfg.stats.hp > tuning.enemies.boss.hp, "lilith is tougher than baphomet");

@@ -35,7 +35,7 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   assert.equal(opts.hpScale, EXPEDITION.stageHp[1]);
   const map = maps.find((m) => m.id === e.stages[1]);
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, ...opts });
-  const plain = new TowerDefenseGame({ heroes, tuning, map, waves });
+  const plain = new TowerDefenseGame({ heroes, tuning, map: { ...map, enemyHp: undefined }, waves }); // stage scale replaces the map's
   assert.equal(g.lives, 9, "lives carried over");
   assert.deepEqual(g.boons, ["soul_reaper"], "relics active from wave 1");
   assert.ok(Math.abs(g.spawnEnemy("grunt").maxHp / plain.spawnEnemy("grunt").maxHp - EXPEDITION.stageHp[1]) < 1e-9, "stage health scale");

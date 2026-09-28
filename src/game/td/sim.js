@@ -57,7 +57,7 @@ export function pointOnPath(points, distance, offset = 0) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = 1, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = null, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
@@ -67,7 +67,9 @@ export class TowerDefenseGame {
     this.presetBoons = (boons ?? []).filter((id) => tuning.runBoons?.list?.[id]);
     this.startLevels = startLevels ?? {};
     this.startLives = lives;
-    this.hpScale = hpScale;
+    // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
+    // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play, Daily and Endless).
+    this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     this.tuning = tuning;
     // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
     // tuned lives for an Expedition (carried lives can be lower), otherwise tuning.run.lives.
