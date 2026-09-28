@@ -51,6 +51,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createSessionController } from "../../game/td/page/session";
   import { createNav } from "../../game/td/page/nav";
   import { createOrientGate } from "../../game/td/page/orient";
+  import { createMenuFrame } from "../../game/td/page/frame";
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
@@ -331,4 +332,6 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
 
   // Phones in portrait: blocking rotate gate above every screen (page/orient.ts).
   createOrientGate(ctx);
+  // Menus: one phone-landscape layout, zoomed to fit (page/frame.ts).
+  createMenuFrame(q("[data-td-lobby]"));
 </script>

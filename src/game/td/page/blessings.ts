@@ -6,6 +6,7 @@ import { TREE, CLASSES, canBuy, findNode, levelCost, nodeCurrency, pointsIn } fr
 import type { PageContext } from "./context";
 import { availableFavor, availableInsight } from "./save";
 import { classIconImg } from "../assets.js";
+import { zoomOf } from "./frame";
 
 const U = 84; // grid unit in world px
 const NODE = 60; // node button size
@@ -286,9 +287,11 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     if (!prev) return;
     const viewport = host.querySelector<HTMLElement>(".td-bgraph")!;
     if (pointers.size === 1) {
-      const dx = event.clientX - prev.x;
-      const dy = event.clientY - prev.y;
-      if (!dragged && Math.hypot(dx, dy) < 6) return;
+      // Pointer px are screen px; inside the zoomed menu frame the graph works in layout px.
+      const k = zoomOf(viewport);
+      const dx = (event.clientX - prev.x) / k;
+      const dy = (event.clientY - prev.y) / k;
+      if (!dragged && Math.hypot(dx, dy) * k < 6) return;
       if (!dragged) viewport.setPointerCapture(event.pointerId);
       dragged = true;
       view.x += dx; view.y += dy;
@@ -298,7 +301,8 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       const [a, b] = [...pointers.values()];
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
       const rect = viewport.getBoundingClientRect();
-      if (pinchStart) zoomAt(dist / pinchStart, (a.x + b.x) / 2 - rect.left, (a.y + b.y) / 2 - rect.top);
+      const k = zoomOf(viewport);
+      if (pinchStart) zoomAt(dist / pinchStart, ((a.x + b.x) / 2 - rect.left) / k, ((a.y + b.y) / 2 - rect.top) / k);
       pinchStart = dist;
       dragged = true;
       return;
@@ -313,7 +317,8 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     if (!viewport) return;
     event.preventDefault();
     const rect = viewport.getBoundingClientRect();
-    zoomAt(event.deltaY < 0 ? 1.12 : 1 / 1.12, event.clientX - rect.left, event.clientY - rect.top);
+    const k = zoomOf(viewport);
+    zoomAt(event.deltaY < 0 ? 1.12 : 1 / 1.12, (event.clientX - rect.left) / k, (event.clientY - rect.top) / k);
   }, { passive: false });
 
   host.addEventListener("click", (event) => {
