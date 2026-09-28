@@ -112,9 +112,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 5, "save version 5");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 6, "save version 6");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
-  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [5, 0, 0], "fresh section");
+  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [6, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
   assert.deepEqual([clean.currencies.divineSeals, clean.summons], [120, 4], "seals and summons cleaned");
   const bad = sanitizeCampaign({ version: 3, currencies: { divineSeals: -5 }, summons: -2 }, campaign, heroIds);
@@ -248,7 +248,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
   assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
   const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
-  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [5, {}, {}, {}, 0, 0], "v3 migrates to empty fields");
+  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [6, {}, {}, {}, 0, 0], "v3 migrates to empty fields");
   // v4 counted stars from 1: one less star, same stats; levels stay within the new cap.
   const v4 = sanitizeCampaign({ version: 4, owned: [...campaignData.starters, featured], stars: { [featured]: 3, [hero]: 1 }, levels: { [featured]: 10 } }, campaignData, heroIds);
   assert.deepEqual([v4.stars[featured], v4.stars[hero], v4.levels[featured]], [2, undefined, 10], "v4 stars shift down by one");

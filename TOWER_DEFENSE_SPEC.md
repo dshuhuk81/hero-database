@@ -159,8 +159,12 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
   `freeze`, `harvest`.
 - Exposed (`enemy.exposed`, end time): +20% damage taken in `hit()`. Set by Prometheus
-  `expose`, the 72px cleave with 8s awakened exposure, and Boreas `weaken_burst`; reapplying
+  `expose`, the 72px cleave with 8s awakened exposure, and recruit Elm `weaken_burst`; reapplying
   keeps the later end time (`Math.max`), so a short exposure never cuts a longer one.
+- Boreas `ice_shockwave` (tuning `heroSkills.fengyi`): shockwave around him within `hero.range`,
+  115% U per enemy, 10% chance per enemy (seeded `rng`) to freeze 2s (`stunnedUntil` +
+  `frozenUntil`, so Shattering Cold applies). Awakened: +10% chance, +1s. Replaces the old
+  `weaken_burst` binding; no exposure.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
   atk, capped at `+24%`.
 
@@ -283,7 +287,11 @@ roster stacks above the detail panel while retaining its own scroll.
 
 - rotation: `set` (Surtr), `nyx` (Nott), `phoenix` (Hephaestus), `bastet` (Hecate);
 - one featured hero for 14 days, calculated from `rotationEpoch`;
-- featured weight 5, every other hero weight 1;
+- rarity weights (`rarityWeights`): every hero carries a `rarity` in
+  `gameBalance.json` — legendary (tiers S/A, 5 heroes), epic (B/C, 13), common
+  (D, 15, all recruits). A hero's draw weight is its rarity weight
+  (legendary 1, epic 4, common 10); the featured hero's rarity weight is
+  multiplied by `featuredWeight` 5;
 - 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
 - new-hero pity (`pityNewInMulti`, **currently `false`**): if a full x10 draws no hero
   the player does not own yet and the pool still has one, the last duplicate is
@@ -303,17 +311,20 @@ variants, generated placeholder art and reused class sounds — see
 weakest mythic class member in power; they exist so x10 summons yield commons,
 duplicates and dust.
 
-With `N` heroes in the pool the featured chance is `5 / (5 + N - 1)`, each other hero
-`1 / (5 + N - 1)` — currently 5/37 ≈ 13.5% featured, 1/37 ≈ 2.7% each other. The UI
-calculates the rate from the same rules function used by `summonMany()`, so the
-displayed chance cannot drift from selection behavior. New heroes are meant to stay
-hard to get (owner, September 28, 2026): with the 33-hero pool the campaign's 600
-seals spent as one x10 at the end give on average 5.8 new heroes and 4.2 copies
-(measured with `td:upgrade-sweep` after the recruit batch; 3.9/6.1 before it — a
-larger pool means fewer early duplicates). The owner confirmed later the same day
-that this "no boost" decision stands: the x10 new-hero pity (mechanics overview
-recommendation 4) stays implemented but ships as `pityNewInMulti: false`; with 33
-heroes it can be re-evaluated, batch 2 of recruits would make it safer.
+A hero's draw chance is its weight over the pool's total weight — with the current
+33-hero pool and an epic featured hero: featured 20/223 ≈ 9.0%, each legendary
+1/223 ≈ 0.45% (any legendary ≈ 2.2%), each epic 4/223 ≈ 1.8% (any epic ≈ 21.5%),
+each common 10/223 ≈ 4.5% (any common ≈ 67.3%). The banner shows these per-rarity
+rates next to the pool count, computed by `summonRates()` from the same weighting
+rules used by `summonMany()`, so the displayed rates cannot drift from selection
+behavior. New heroes are meant to stay hard to get (owner, September 28, 2026):
+with the 33-hero pool and rarity weights the campaign's 600 seals spent as one x10
+at the end give on average 6.4 new heroes and 3.6 copies (measured with
+`td:upgrade-sweep`; 5.8/4.2 with flat weights, 3.9/6.1 at 21 heroes). The owner
+confirmed later the same day that this "no boost" decision stands: the x10
+new-hero pity (mechanics overview recommendation 4) stays implemented but ships as
+`pityNewInMulti: false`; with 33 heroes it can be re-evaluated, batch 2 of
+recruits would make it safer.
 
 Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
