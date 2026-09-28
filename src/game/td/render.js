@@ -745,10 +745,6 @@ export async function createRenderer(canvas, game, options = {}) {
     applyHeroTexture(container, unit.id);
 
 
-    const facing = new PIXI.Graphics();
-    container._facing = facing;
-    container.addChild(facing);
-
     const ultRing = new PIXI.Graphics();
     container._ultRing = ultRing;
     container.addChild(ultRing);
@@ -776,14 +772,6 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
-
-    // Facing tick
-    const f = container._facing;
-    f.clear();
-    const angle = unit.rotation || 0;
-    f.setStrokeStyle({ width: 3, color: 0xffffff, alpha: 0.75 });
-    f.moveTo(Math.cos(angle) * 27, Math.sin(angle) * 27).lineTo(Math.cos(angle) * 36, Math.sin(angle) * 36);
-    f.stroke();
 
     // Ult charge arc
     const ur = container._ultRing;

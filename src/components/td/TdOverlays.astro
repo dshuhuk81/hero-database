@@ -76,7 +76,6 @@
     </section>
   </div>
   <div class="td-pop-actions">
-    <button class="action-button action-button--quiet" type="button" data-pop-rotate>Rotate</button>
     <button class="action-button action-button--quiet" type="button" data-pop-sell>Sell</button>
   </div>
 </aside>
@@ -93,16 +92,28 @@
       <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
     </button>
   </div>
-  <div class="td-sheet-preview" data-td-sheet-preview aria-hidden="true" hidden>
-    <div class="td-anim" data-td-anim></div>
-    <div class="td-sheet-preview-copy">
-      <strong data-td-preview-name></strong>
-      <small data-td-preview-sub></small>
-      <small class="td-sheet-preview-ult" data-td-preview-ult></small>
+  <div class="td-sheet-inspect" data-td-sheet-preview hidden>
+    <div class="td-sheet-preview">
+      <div class="td-anim" data-td-anim></div>
+      <div class="td-sheet-preview-copy">
+        <strong data-td-preview-name></strong>
+        <small data-td-preview-sub></small>
+        <small class="td-sheet-preview-role" data-td-preview-role></small>
+      </div>
     </div>
+    <p class="td-inspect-facts" data-td-preview-facts></p>
+    <p class="td-sheet-preview-ult" data-td-preview-ult></p>
+    <details class="td-inspect-details" data-td-preview-details>
+      <summary>Details</summary>
+      <div data-td-preview-details-body></div>
+    </details>
   </div>
   <p class="td-sheet-note" data-td-sheet-note></p>
-  <div class="td-sheet-list" data-td-sheet-list></div>
+  <div class="td-sheet-list" data-td-sheet-list aria-label="Heroes"></div>
+  <div class="td-sheet-foot">
+    <small class="td-inspect-reason" data-td-preview-reason aria-live="polite"></small>
+    <button class="action-button action-button--primary td-inspect-deploy" type="button" data-td-deploy-selected>Deploy</button>
+  </div>
 </div>
 
 <div class="td-blessing-modal" data-td-blessing-modal role="dialog" aria-labelledby="td-blessing-title" hidden>

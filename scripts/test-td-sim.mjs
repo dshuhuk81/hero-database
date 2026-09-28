@@ -161,6 +161,58 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(behind.hp, behind.maxHp, "enemy outside cone is spared");
 }
 
+// Automatic aiming (M24, no player rotation): cone and spread ultimates turn to their primary
+// target first, so an enemy on any side is hit without manual setup; neighbours in the
+// opposite direction stay outside the cone.
+{
+  const sides = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+  const cast = (id, angle, extras = 0) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 17 });
+    g.gold = 100000;
+    const base = g.heroesById.get(id);
+    g.place(id, base.slot, 0);
+    g.startWave(); g.enemies = []; g.spawnQueue = [];
+    const hero = g.heroes[0];
+    hero.rotation = angle + Math.PI; // facing away from the enemy, as a stale manual rotation would
+    for (let i = 0; i < 2 + extras; i += 1) g.spawnEnemy("brute");
+    const [target, opposite, ...rest] = g.enemies;
+    for (const e of g.enemies) e.hp = e.maxHp = 1e9;
+    const reach = base.slot === "road" ? 40 : 60;
+    target.x = hero.x + Math.cos(angle) * reach; target.y = hero.y + Math.sin(angle) * reach; target.distance = 300;
+    opposite.x = hero.x - Math.cos(angle) * reach; opposite.y = hero.y - Math.sin(angle) * reach; opposite.distance = 200;
+    rest.forEach((e, i) => { const a = angle + (i % 2 ? 0.3 : -0.3); e.x = hero.x + Math.cos(a) * (reach + 10); e.y = hero.y + Math.sin(a) * (reach + 10); e.distance = 250 - i; });
+    const result = g.castUltimate(hero, target);
+    return { g, hero, target, opposite, rest, result };
+  };
+  for (const angle of sides) {
+    for (const id of ["poseidon", "amunra", "set", "jormungandr"]) {
+      if (!heroes.some((h) => h.id === id)) continue;
+      const r = cast(id, angle);
+      assert.ok(r.target.hp < r.target.maxHp, `${id} hits a target at ${angle.toFixed(2)} rad`);
+      assert.equal(r.opposite.hp, r.opposite.maxHp, `${id} spares the enemy behind at ${angle.toFixed(2)} rad`);
+    }
+    const m = cast("medusa", angle, 1);
+    assert.notEqual(m.result, false, `medusa fires at ${angle.toFixed(2)} rad`);
+    assert.ok((m.target.petrifiedUntil ?? 0) > m.g.time && (m.rest[0].petrifiedUntil ?? 0) > m.g.time, `medusa petrifies target and cone neighbour at ${angle.toFixed(2)} rad`);
+    assert.ok(!((m.opposite.petrifiedUntil ?? 0) > m.g.time), `medusa misses the enemy behind at ${angle.toFixed(2)} rad`);
+    const d = cast("diana", angle, 2);
+    assert.ok(d.rest.every((e) => e.hp < e.maxHp), `diana's spread follows her target at ${angle.toFixed(2)} rad`);
+    assert.equal(d.opposite.hp, d.opposite.maxHp, `diana's spread skips the enemy behind at ${angle.toFixed(2)} rad`);
+  }
+  // Facing also follows the current target every step, so effects point the right way.
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 18 });
+  g.gold = 100000; g.place("diana", "platform", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  const hero = g.heroes[0]; hero.rotation = 0;
+  g.spawnEnemy("brute"); const e = g.enemies[0]; e.hp = e.maxHp = 1e9;
+  for (let i = 0; i < 600 && !g.findTarget(hero); i += 1) g.step(1 / 30); // walk it into range
+  assert.ok(g.findTarget(hero), "enemy reaches diana's range");
+  g.step(1 / 60);
+  const t = g.findTarget(hero);
+  assert.ok(Math.abs(hero.rotation - Math.atan2(t.y - hero.y, t.x - hero.x)) < 1e-6, "hero turns to its target during combat");
+  assert.equal(typeof g.rotate, "undefined", "player rotation is gone");
+}
+
 // Full run, win: a fully deployed squad survives all ten waves, upgrading between waves.
 // Mechanics check at base difficulty; balance at the shipped difficulty is covered by test:td-balance.
 {
@@ -886,6 +938,24 @@ function runWaveOne(g) {
   const carried = new TowerDefenseGame({ heroes, tuning, map, waves, lives: 7, maxLives: tuning.run.lives });
   assert.deepEqual([carried.lives, carried.maxLives], [7, tuning.run.lives], "carried lives keep the run maximum");
   assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).maxLives, tuning.run.lives, "default maximum");
+}
+
+// Recruit inspect (M24): deployPreview shows what place() fields on that tile, special tile
+// range included, without spending gold.
+{
+  const map = realMaps[0];
+  const [key] = Object.entries(map.rings).find(([, kind]) => kind === "highground");
+  const [slotType, slotIndex] = [key.split(":")[0], Number(key.split(":")[1])];
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 3 });
+  g.gold = 9999;
+  const hero = heroes.find((h) => h.slot === slotType);
+  const preview = g.deployPreview(hero.id, slotType, slotIndex);
+  assert.equal(g.gold, 9999, "preview spends nothing");
+  assert.ok(g.place(hero.id, slotType, slotIndex), "placed after preview");
+  const unit = g.heroes.at(-1);
+  assert.deepEqual([preview.atk, preview.hp, preview.range, preview.aps, preview.cost], [unit.atk, unit.hp, unit.range, unit.aps, 9999 - g.gold], "preview matches the placed unit");
+  assert.ok(preview.range > g.rangeFor(hero), "high ground range is in the preview");
+  assert.equal(g.deployPreview(heroes.find((h) => h.slot === "road").id, "road", 0).hitsFlyers, false, "road heroes cannot hit flyers");
 }
 
 // Map enemy health (audit step 3): a map's `enemyHp` scales open modes; a mode's own stage

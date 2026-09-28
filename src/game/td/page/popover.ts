@@ -1,5 +1,5 @@
 // Hero panel (M22): full-height side panel next to the map, or a sheet below the map on
-// portrait screens. Upgrade, target, rotate, sell and details. Buttons are updated in place so
+// portrait screens. Upgrade, target, sell and details. Buttons are updated in place so
 // focus survives game events. The game keeps running while the panel is open.
 import { CLASS_ROLES, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
@@ -48,7 +48,11 @@ export function createPopover(ctx: PageContext) {
   const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
   const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
-  let detailsOpen = true; // Details section state, kept between selections
+  // Details section state, kept between selections once the player toggles it. Until then it
+  // starts collapsed on phones (portrait or short landscape), so the Upgrade action shows first.
+  let detailsChoice: boolean | null = null;
+  const compactScreen = window.matchMedia?.("(max-width: 600px), (max-height: 560px)");
+  const detailsDefault = () => detailsChoice ?? !compactScreen?.matches;
   let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
   let lastHealthUpdate = 0;
 
@@ -61,8 +65,8 @@ export function createPopover(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     state.selectedEntityId = unit.entityId;
     session.game.uiSelected = unit.entityId;
-    popDetails.hidden = !detailsOpen;
-    popDetailsButton.setAttribute("aria-expanded", String(detailsOpen));
+    popDetails.hidden = !detailsDefault();
+    popDetailsButton.setAttribute("aria-expanded", String(detailsDefault()));
     focusOpen = false;
     sellArmed = false;
     forcedPush = false;
@@ -363,9 +367,6 @@ export function createPopover(ctx: PageContext) {
     const unit = findUnit(state.selectedEntityId);
     if (unit) update(unit);
   });
-  q("[data-pop-rotate]").addEventListener("click", () => {
-    if (state.session && state.selectedEntityId !== null) state.session.game.rotate(state.selectedEntityId);
-  });
   popSell.addEventListener("click", () => {
     const session = state.session;
     if (!session || state.selectedEntityId === null) return;
@@ -383,10 +384,11 @@ export function createPopover(ctx: PageContext) {
   popDetailsButton.addEventListener("click", () => {
     const unit = findUnit(state.selectedEntityId);
     if (!unit) return;
-    detailsOpen = !detailsOpen;
-    popDetails.hidden = !detailsOpen;
-    popDetailsButton.setAttribute("aria-expanded", String(detailsOpen));
-    if (detailsOpen) popDetails.innerHTML = detailsHtml(unit);
+    const open = popDetails.hidden;
+    detailsChoice = open; // kept for the rest of the session
+    popDetails.hidden = !open;
+    popDetailsButton.setAttribute("aria-expanded", String(open));
+    if (open) popDetails.innerHTML = detailsHtml(unit);
   });
 
   return { select, close, refresh, position, tick, isOpen: () => !popover.hidden };

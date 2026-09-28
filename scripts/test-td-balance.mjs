@@ -38,12 +38,16 @@ for (const map of maps) {
   if (deepest <= 20) throw new Error(`Balance: no endless run on ${map.id} got past wave 20 (best ${deepest})`);
 }
 // Class identity (M6): each wave type calls for its class (design intent in EXPECTED).
+// Owner-approved tolerance (September 28, 2026): with automatic aiming (M24) Warrior cleaves
+// reliably and edges past Tank on shield waves; the Tank only has to stay within 3 points.
+const TOLERANCE = { shield: { road: 0.03 } };
 const matrix = classMatrix();
 printMatrix(matrix);
 for (const [waveType, want] of Object.entries(EXPECTED)) {
   for (const [group, cls] of Object.entries(want)) {
     const got = bestClass(matrix[waveType], group);
-    if (got !== cls) throw new Error(`Class matrix: ${waveType} should call for a ${cls} on ${group} rings, best is ${got}`);
+    const gap = matrix[waveType][got] - matrix[waveType][cls];
+    if (got !== cls && gap > (TOLERANCE[waveType]?.[group] ?? 0)) throw new Error(`Class matrix: ${waveType} should call for a ${cls} on ${group} rings, best is ${got}`);
   }
 }
 console.log("Tower defense balance checks passed");

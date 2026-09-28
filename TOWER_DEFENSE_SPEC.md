@@ -6,6 +6,7 @@ This file describes what the game **is** today. It is not a plan.
 - Open work and priorities: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md)
 - Finished milestones: [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md)
 - Hero ultimates and kits: [TOWER_DEFENSE_HERO_SKILLS.md](TOWER_DEFENSE_HERO_SKILLS.md)
+- Mechanics and economy overview (currencies, upgrade layers, balance levers): [TOWER_DEFENSE_MECHANICS_OVERVIEW.md](TOWER_DEFENSE_MECHANICS_OVERVIEW.md)
 - Player-facing hero identities: [TOWER_DEFENSE_MYTHIC_HEROES.md](TOWER_DEFENSE_MYTHIC_HEROES.md)
 - UI plan: [docs/tower-defense-ui-plan.md](docs/tower-defense-ui-plan.md)
 - Blessing tree design: [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md)
@@ -128,6 +129,13 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Placement: square tiles (`grid.js`, cell 60) on the road (blockers) and in rows beside
   it (ranged). Road tiles take Tank/Warrior/Assassin, platform tiles take
   Mage/Archer/Support. Flyers can only be hit by platform heroes.
+- Recruiting (`page/recruit.ts`): tapping an empty tile opens the sheet. Choosing a card
+  (tap, click, Enter or keyboard focus; hover does not) only inspects that hero: role line,
+  ground/flying reach, range on this tile, ultimate text, and collapsed Details (attack,
+  health, speed, crit, class rule, tile bonus, campaign level). Numbers come from
+  `sim.deployPreview()`, the same maths as `place()`. Only the footer button
+  "Deploy <hero> · <cost> gold" places. Unaffordable or deployed heroes stay inspectable;
+  Deploy is then disabled with the reason. The recruit pause is unchanged.
 - Blocking: `blockLimit` Tank 3, Warrior 2, Assassin 1. Held enemies take `+20%`
   damage; enemies passing a full blocker are slowed.
 - Class archetypes: Tank `taunt`, Warrior `cleave`, Assassin `execute` (dash, veil),
@@ -141,8 +149,13 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   the hero on the tile gets an underglow plus a rim (rotating gold arcs, pulsing cyan
   double ring, flickering red ring). Reduced motion: static glow and rim, no drifting parts.
 - Hero actions: upgrade Lv1-4 (costs 80/120/160; Lv3 focus, Lv4 class path such as
-  Mage wildfire/frost/arc), awakening, training, target mode, rotate (`R`), sell (50%
-  refund).
+  Mage wildfire/frost/arc), awakening, training, target mode, sell (50% refund).
+  No player rotation (M24): `sim.faceTarget()` turns a hero to its current target every
+  step and to the ultimate's primary target at cast, so cones (cleave, knockback, petrify)
+  and spreads (volley, moon barrage) centre on that target. `rotation` remains as internal
+  combat/effect state; no facing tick is drawn.
+- Hero panel (`page/popover.ts`): Details starts collapsed on phones (max-width 600px or
+  max-height 560px) and open on larger screens; the player's toggle is kept for the session.
 - Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
   `freeze`, `harvest`.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
@@ -335,6 +348,7 @@ Audio volume and mute have their own keys.
 | `npm run td:sweep` | Difficulty sweep |
 | `npm run td:upgrade-sweep` | Campaign win rates by Stars / Evolution, summon economy |
 | `npm run td:classes` / `td:progression` | Class and progression reports |
+| `npm run td:economy` | In-run gold ledger: income by source vs. spend by sink, per mode/tier |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

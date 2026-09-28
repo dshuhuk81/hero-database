@@ -219,7 +219,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     }
   });
 
-  const isTyping = (target: EventTarget | null) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
   document.addEventListener("keydown", (event) => {
     const activePanel = ctx.actions.activePanel();
     if (event.key === "Escape") {
@@ -240,9 +239,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (event.shiftKey && (document.activeElement === first || document.activeElement === activePanel)) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       return;
-    }
-    if (event.key.toLowerCase() === "r" && !event.metaKey && !event.ctrlKey && !activePanel && !isTyping(event.target) && state.session && state.selectedEntityId !== null) {
-      state.session.game.rotate(state.selectedEntityId);
     }
   });
 

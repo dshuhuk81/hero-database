@@ -198,9 +198,8 @@ export class TowerDefenseGame {
     if (!this.fieldedIds.includes(heroId)) this.fieldedIds.push(heroId);
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
-    // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
-    const startLevel = Math.min(Math.max(1 + (this.classBonus(base).startLevel || 0), this.startLevels[heroId] || 1), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
+    this.heroes.push({ ...base, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    const startLevel = this.startLevelFor(base);
     if (startLevel > 1) {
       const placed = this.heroes.at(-1);
       placed.level = startLevel;
@@ -212,6 +211,33 @@ export class TowerDefenseGame {
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
     return true;
+  }
+
+  // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
+  startLevelFor(base) {
+    return Math.min(Math.max(1 + (this.classBonus(base).startLevel || 0), this.startLevels[base.id] || 1), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
+  }
+
+  deployRange(base, slotType, slotIndex) {
+    return this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0));
+  }
+
+  // What place() would field on this tile, without spending anything (recruit preview).
+  // Attack is the unit's own value; auras, synergy and run buffs apply once it is placed.
+  deployPreview(heroId, slotType, slotIndex) {
+    const base = this.heroesById.get(heroId);
+    if (!base) return null;
+    const level = this.startLevelFor(base);
+    return {
+      level,
+      atk: level > 1 ? this.atkFor({ ...base, baseAtk: base.atk }, level) : base.atk,
+      hp: this.maxHpFor(base.hp, level, base.class),
+      range: this.deployRange(base, slotType, slotIndex),
+      aps: base.aps,
+      critChance: base.critChance,
+      cost: this.deployCost(heroId),
+      hitsFlyers: slotType !== "road",
+    };
   }
 
   // Aggregated modifiers from chosen virtues and any triggered pairs.
@@ -523,11 +549,10 @@ export class TowerDefenseGame {
     return true;
   }
 
-  rotate(entityId) {
-    const hero = this.heroes.find((item) => item.entityId === entityId);
-    if (!hero) return;
-    hero.rotation = (hero.rotation + Math.PI / 2) % (Math.PI * 2);
-    this.onChange("rotate", this);
+  // Heroes aim on their own (M24: no player rotation). Cones and spreads are centred on the
+  // chosen primary target; `rotation` stays as combat/render state for effects.
+  faceTarget(hero, target) {
+    if (target) hero.rotation = Math.atan2(target.y - hero.y, target.x - hero.x);
   }
 
   wavePreview(waveIndex = this.wave) {
@@ -688,6 +713,7 @@ export class TowerDefenseGame {
       hero.attackClock -= dt;
       hero.ultClock += dt;
       const target = this.findTarget(hero);
+      this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
         hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0)));
       }
@@ -1648,6 +1674,7 @@ export class TowerDefenseGame {
   }
 
   castUltimate(hero, target) {
+    this.faceTarget(hero, target);
     const power = this.attackValue(hero) * 2.5 * hero.ultPower * (1 + (this.classBonus(hero).ultPower || 0));
     const variant = hero.variant;
     // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.

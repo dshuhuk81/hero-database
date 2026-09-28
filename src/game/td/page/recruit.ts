@@ -1,9 +1,10 @@
 // Recruitment sheet (opens from an empty tile) and battlefield input. Pointer,
-// touch and keyboard all go through activateSlot.
+// touch and keyboard all go through activateSlot. Choosing a card only inspects that hero
+// (touch has no hover); the Deploy button in the sheet footer is the one action that places.
 import { classIconImg } from "../assets.js";
 import { canvasPoint, nearestSlot } from "../render.js";
-import { slotHitRadius } from "../ui.js";
-import { RING_INFO } from "../skills.js";
+import { CLASS_ROLES, ROLE_HINTS, slotHitRadius } from "../ui.js";
+import { CLASS_ULT_TEXT, RING_INFO, SKILL_TEXT } from "../skills.js";
 import type { PageContext, Session, Slot } from "./context";
 
 export function createRecruit(ctx: PageContext) {
@@ -15,35 +16,111 @@ export function createRecruit(ctx: PageContext) {
   const sheetList = q("[data-td-sheet-list]");
   const previewEl = q("[data-td-sheet-preview]");
   const animEl = q("[data-td-anim]");
+  const detailsEl = q<HTMLDetailsElement>("[data-td-preview-details]");
+  const detailsBody = q("[data-td-preview-details-body]");
+  const deployButton = q<HTMLButtonElement>("[data-td-deploy-selected]");
+  const reasonEl = q("[data-td-preview-reason]");
   let lastPointerType = "mouse";
   let previewId = "";
 
-  // Preview strip: the hovered or focused hero's in-game idle animation.
+  const ringOf = (game: any, slot: Slot) => (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
+
+  // Why the selected hero cannot be deployed right now ("" when it can).
+  function blockReason(game: any, heroId: string) {
+    const cost = game.deployCost(heroId);
+    if (game.complete) return "The battle is over";
+    if (game.heroes.some((unit: any) => unit.id === heroId)) return "Already deployed";
+    if (game.heroes.length >= game.deployCap()) return `Team full (${game.deployCap()})`;
+    if (game.gold < cost) return `Needs ${cost} gold, you have ${Math.floor(game.gold)}`;
+    return "";
+  }
+
+  function syncDeploy() {
+    const game = state.session?.game;
+    const hero = heroById.get(previewId);
+    if (!game || !hero) { deployButton.disabled = true; reasonEl.textContent = ""; return; }
+    const reason = blockReason(game, hero.id);
+    deployButton.disabled = !!reason;
+    deployButton.textContent = `Deploy ${hero.name} · ${game.deployCost(hero.id)} gold`;
+    reasonEl.textContent = reason;
+    reasonEl.hidden = !reason;
+  }
+
+  // Inspect panel for the chosen hero. Numbers come from the running game (campaign level,
+  // blessings and the tile's bonus included), so they match the unit Deploy creates.
   function preview(heroId: string) {
     const hero = heroById.get(heroId);
-    // Idle loop from the hero skin ({ url, frames, duration } sprite sheet), else the still portrait.
-    const anim: { url: string; frames: number; duration: number } | undefined = hero?.anim || undefined;
-    const still = anim ? null : hero?.portrait;
-    if (!hero || heroId === previewId) return;
-    previewId = heroId;
     const session = state.session;
-    if (session && state.pendingSlot) {
-      const points = state.pendingSlot.type === "road" ? session.map.roadSlots : session.map.platformSlots;
-      const point = points[state.pendingSlot.index];
-      session.game.uiPlacement = point ? { x: point[0], y: point[1], range: hero.range, type: state.pendingSlot.type } : null;
-    }
-    previewEl.hidden = !anim && !still;
-    if (!anim && !still) return;
+    const slot = state.pendingSlot;
+    if (!hero || !session || !slot || heroId === previewId) return;
+    previewId = heroId;
+    const game = session.game;
+    sheetList.querySelectorAll<HTMLButtonElement>("[data-place-hero]").forEach((button) => {
+      const on = button.dataset.placeHero === heroId;
+      button.classList.toggle("is-selected", on);
+      button.setAttribute("aria-pressed", String(on));
+    });
+    const stats = game.deployPreview(heroId, slot.type, slot.index);
+    const points = slot.type === "road" ? session.map.roadSlots : session.map.platformSlots;
+    const point = points[slot.index];
+    game.uiPlacement = point && stats ? { x: point[0], y: point[1], range: stats.range, type: slot.type } : null;
+
+    // Idle loop from the hero skin ({ url, frames, duration } sprite sheet), else the still portrait.
+    const anim: { url: string; frames: number; duration: number } | undefined = hero.anim || undefined;
+    const still = anim ? null : hero.portrait;
+    animEl.hidden = !anim && !still;
     animEl.classList.toggle("is-still", !anim);
-    animEl.style.backgroundImage = `url("${anim ? anim.url : still}")`;
+    animEl.style.backgroundImage = anim || still ? `url("${anim ? anim.url : still}")` : "";
     if (anim) {
       animEl.style.setProperty("--td-anim-frames", String(anim.frames));
       animEl.style.setProperty("--td-anim-duration", `${anim.duration}s`);
     }
     q("[data-td-preview-name]").textContent = hero.name;
-    q("[data-td-preview-sub]").textContent = `${hero.class} - ${hero.cost} gold`;
-    const skill = data.tuning.heroSkills?.[heroId]?.skillName;
-    q("[data-td-preview-ult]").textContent = skill ? `Ultimate: ${skill}` : "";
+    q("[data-td-preview-sub]").innerHTML = `${classIconImg(hero.class, 14)}${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}`;
+    q("[data-td-preview-role]").textContent = (ROLE_HINTS as Record<string, string>)[hero.class] ?? "";
+    const ring = ringOf(game, slot);
+    const rangeBonus = ring && game.ringAt(slot.type, slot.index)?.range ? ` (${ring.name})` : "";
+    q("[data-td-preview-facts]").textContent = stats
+      ? `${stats.hitsFlyers ? "Hits ground and flying enemies" : "Hits ground enemies only"} · Range ${Math.round(stats.range)}${rangeBonus}`
+      : "";
+    const skill = data.tuning.heroSkills?.[heroId];
+    const ultText = skill ? (SKILL_TEXT as Record<string, string>)[skill.variant] : "";
+    q("[data-td-preview-ult]").innerHTML = skill
+      ? `<strong>Ultimate: ${skill.skillName}</strong>${ultText ? ` ${ultText}` : ""}`
+      : "";
+
+    const base = game.heroesById.get(heroId);
+    const lines: string[] = [];
+    if (stats) {
+      lines.push(`<dl class="td-inspect-stats"><div><dt>Attack</dt><dd>${stats.atk}</dd></div><div><dt>Health</dt><dd>${stats.hp}</dd></div><div><dt>Speed</dt><dd>${Math.round(stats.aps * 100) / 100}/s</dd></div><div><dt>Crit</dt><dd>${Math.round(stats.critChance * 1000) / 10}%</dd></div></dl>`);
+      if (stats.level > 1) lines.push(`<p>Enters at battle rank ${stats.level} (Divine Blessing).</p>`);
+    }
+    const role = (CLASS_ROLES as Record<string, string>)[hero.class];
+    if (role) lines.push(`<p>${hero.class}: ${role}</p>`);
+    const classUlt = (CLASS_ULT_TEXT as Record<string, string>)[hero.class];
+    if (classUlt) lines.push(`<p>${classUlt}</p>`);
+    if (ring) lines.push(`<p>On this tile: ${ring.name}: ${ring.text}</p>`);
+    if (session.campaign && base?.campaignLevel) lines.push(`<p>Campaign level ${base.campaignLevel} is included in attack and health.</p>`);
+    detailsBody.innerHTML = lines.join("");
+    previewEl.hidden = false;
+    syncDeploy();
+  }
+
+  function deploySelected() {
+    const session = state.session;
+    const slot = state.pendingSlot;
+    const hero = heroById.get(previewId);
+    if (!session || !slot || !hero || blockReason(session.game, hero.id)) { syncDeploy(); return; }
+    const hadFocus = sheetEl.contains(document.activeElement);
+    if (session.game.place(hero.id, slot.type, slot.index)) {
+      close(false);
+      if (hadFocus) session.canvas.focus({ preventScroll: true });
+      ctx.notice(session.started || session.game.heroes.length > 1
+        ? `${hero.name} deployed.`
+        : `${hero.name} deployed. Add more heroes, then start wave 1.`);
+    } else {
+      update();
+    }
   }
 
   function open(slot: Slot) {
@@ -56,20 +133,22 @@ export function createRecruit(ctx: PageContext) {
     game.focusedSlot = slot;
     game.uiPlacement = null;
     const road = slot.type === "road";
-    const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
+    const ring = ringOf(game, slot);
     sheetKicker.textContent = `${road ? "Road" : "Platform"} tile - heroes ${game.heroes.length}/${game.deployCap()}${ring ? ` - ${ring.name}` : ""}`;
-    sheetNote.textContent = (ring ? `${ring.name}: ${ring.text} ` : "") + (road
-      ? "Tanks hold the line, Warriors cleave groups, Assassins catch enemies that slip through."
-      : "Mages splash packs and armor, Archers snipe tough enemies and flyers, Supports heal and boost allies.");
+    // Class roles now live on the chosen hero; the note only carries the tile's own bonus.
+    sheetNote.textContent = ring ? `${ring.name}: ${ring.text}` : "";
+    sheetNote.hidden = !ring;
     // Daily Trial (M19): only the day's heroes are listed.
     sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id))).map((hero: any) =>
-      `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
+      `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" aria-pressed="false">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
       `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("");
     update();
     previewId = "";
-    const first = sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetList.querySelector<HTMLButtonElement>("button");
+    detailsEl.open = false;
+    const first = sheetList.querySelector<HTMLButtonElement>("button:not(.is-unavailable)") ?? sheetList.querySelector<HTMLButtonElement>("button");
     if (first) preview(first.dataset.placeHero!);
+    else { previewEl.hidden = true; syncDeploy(); }
     const [x] = (road ? session.map.roadSlots : session.map.platformSlots)[slot.index];
     sheetEl.classList.toggle("is-left", x > 480);
     // Portrait: keep the map visible by docking the list into the space below it.
@@ -79,22 +158,23 @@ export function createRecruit(ctx: PageContext) {
     if (dockBelow) sheetEl.style.setProperty("--td-sheet-top", `${stageEl.clientHeight - below + 8}px`);
     sheetEl.hidden = false;
     if (session.started && game.running) pause.add("recruit");
-    (sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetEl).focus({ preventScroll: true });
+    (sheetList.querySelector<HTMLButtonElement>(".is-selected") ?? sheetEl).focus({ preventScroll: true });
   }
 
   function update() {
     const game = state.session?.game;
     if (!game) return;
     sheetList.querySelectorAll<HTMLButtonElement>("[data-place-hero]").forEach((button) => {
+      // Cards stay selectable when a hero cannot be deployed, so it can still be inspected.
       const hero = heroById.get(button.dataset.placeHero!);
+      const cost = game.deployCost(hero.id);
       const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
-      const affordable = game.gold >= hero.cost;
       const full = game.heroes.length >= game.deployCap();
-      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : !affordable ? `Needs ${hero.cost} gold` : "";
-      button.disabled = !!reason || game.complete;
+      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : game.gold < cost ? `Needs ${cost} gold` : "";
       button.classList.toggle("is-unavailable", !!reason);
-      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason ? `${hero.cost} gold - ${reason}` : `${hero.class} - ${hero.cost} gold`;
+      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason || `${hero.class} - ${cost} gold`;
     });
+    syncDeploy();
   }
 
   function close(restoreFocus = true) {
@@ -178,29 +258,15 @@ export function createRecruit(ctx: PageContext) {
   }
 
   q("[data-td-sheet-close]").addEventListener("click", () => close());
+  // Click, tap, Enter and Space choose a card; Tab/arrow focus follows. Hover does not change
+  // the choice, so the Deploy button always names the hero it will place.
   const previewFrom = (event: Event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
     if (button) preview(button.dataset.placeHero!);
   };
-  sheetList.addEventListener("pointerover", previewFrom);
   sheetList.addEventListener("focusin", previewFrom);
-  sheetList.addEventListener("click", (event) => {
-    const session = state.session;
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
-    if (!button || !state.pendingSlot || !session) return;
-    const hero = heroById.get(button.dataset.placeHero!);
-    // Placing disables this button, which drops focus; decide on restoring it first.
-    const hadFocus = sheetEl.contains(document.activeElement);
-    if (session.game.place(hero.id, state.pendingSlot.type, state.pendingSlot.index)) {
-      close(false);
-      if (hadFocus) session.canvas.focus({ preventScroll: true });
-      ctx.notice(session.started || session.game.heroes.length > 1
-        ? `${hero.name} deployed.`
-        : `${hero.name} deployed. Add more heroes, then start wave 1.`);
-    } else {
-      update();
-    }
-  });
+  sheetList.addEventListener("click", previewFrom);
+  deployButton.addEventListener("click", deploySelected);
 
   // Taps on the letterbox around the map dismiss the selection like empty map space.
   stageEl.addEventListener("click", (event) => {

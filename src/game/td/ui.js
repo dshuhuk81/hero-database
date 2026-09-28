@@ -14,6 +14,10 @@ export const CLASS_ROLES = {
   Support: "Heals the most injured ally in range and raises the attack of allies inside its ring. Barely attacks.",
 };
 
+// One-line class summary for cards (campaign squad, recruit sheet).
+/** @type {Record<string, string>} */
+export const ROLE_HINTS = { Tank: "Holds 3 enemies. Protects the line.", Warrior: "Holds 2 enemies. Cleaves groups.", Assassin: "Catches enemies that slip through.", Mage: "Splash damage for packs and armor.", Archer: "Strong against flyers and tough targets.", Support: "Heals and boosts nearby allies." };
+
 // Largest rectangle with the world aspect ratio that fits inside the container.
 // A container without a usable height falls back to width-only fitting.
 export function fitRect(containerWidth, containerHeight, aspect = WORLD_WIDTH / WORLD_HEIGHT) {

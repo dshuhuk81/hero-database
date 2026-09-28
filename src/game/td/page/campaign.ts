@@ -7,6 +7,7 @@
 import { mapSceneFor } from "../map-scene.js";
 import { SKILL_TEXT } from "../skills.js";
 import { classIconImg } from "../assets.js";
+import { ROLE_HINTS } from "../ui.js";
 import { allStages, stageRewardHeroes, autoFodder, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
@@ -19,7 +20,6 @@ export type CampaignRun = { stageId: string; squad: string[] };
 
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
-const ROLE_HINTS: Record<string, string> = { Tank: "Holds 3 enemies. Protects the line.", Warrior: "Holds 2 enemies. Cleaves groups.", Assassin: "Catches enemies that slip through.", Mage: "Splash damage for packs and armor.", Archer: "Strong against flyers and tough targets.", Support: "Heals and boosts nearby allies." };
 const banner: any = summonCfg.banners[0]; // one banner for now
 
 // Records a finished stage (skipped for debug runs) and returns the result screen line.

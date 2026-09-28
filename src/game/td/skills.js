@@ -23,7 +23,7 @@ export const SKILL_TEXT = {
   weaken_burst: "Blasts every enemy within 72px of the target and exposes them: they take 20% more damage for 4s.",
   moon_barrage: "Fires 3 shots for 55% each at enemies in front of her and raises the attack of allies in range by 25% for 5s.",
   piercing_shot: "Fires a shot through the target that hits every enemy on the line, up to 1.5x her range, for 55% each.",
-  petrify_shot: "Petrifies up to 3 enemies in front of her for 3s (they cannot move or attack) and hits them for 55%. Waits until she faces a target.",
+  petrify_shot: "Petrifies up to 3 enemies in front of her for 3s (they cannot move or attack) and hits them for 55%.",
   fortune_shower: "Heals allies in range for 18% of their max health and raises their attack by 25% for 5s.",
   fate_link: "Heals allies in range for 18% of their max health and fills 30% of their ultimate charge.",
   valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",

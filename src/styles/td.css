@@ -662,7 +662,6 @@
 
 .td-hero-card { width: 100%; min-height: 52px; display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
 .td-hero-card:hover:not(:disabled), .td-hero-card:focus-visible { border-color: var(--accent-gold); }
-.td-hero-card:disabled { cursor: not-allowed; }
 .td-hero-card.is-unavailable img { filter: grayscale(.8); opacity: .6; }
 .td-hero-card.is-unavailable small { color: var(--td-warn); }
 .td-hero-card img { width: 40px; height: 40px; object-fit: cover; border-radius: var(--radius-sm); background: var(--bg-surface); }
@@ -1256,9 +1255,37 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-sheet-preview-copy { display: grid; gap: 2px; min-width: 0; }
 .td-sheet-preview-copy strong { color: var(--text-bright); font-size: var(--text-base); }
 .td-sheet-preview-copy small { color: var(--text-muted); font-size: var(--td-fs-meta); line-height: var(--leading-snug); }
-.td-sheet-preview-ult { color: var(--accent-gold) !important; }
-.td-sheet.is-below .td-sheet-preview { display: none; }
-@media (max-height: 560px) { .td-sheet-preview { display: none; } }
+/* Inspect panel: chosen hero's role, reach, ultimate and (collapsed) numbers; stays on phones,
+   where only the idle animation is dropped to save height. */
+/* The list always keeps two card rows; the panel gives way first and scrolls (open Details on phones). */
+.td-sheet-inspect { flex: 0 1 auto; min-height: 0; display: grid; align-content: start; gap: var(--space-1); overflow-y: auto; scrollbar-color: var(--border-medium) transparent; }
+.td-sheet .td-sheet-list { min-height: 112px; }
+.td-sheet-preview-copy .td-class-icon { width: 14px; height: auto; margin: -2px 4px 0 0; vertical-align: middle; }
+.td-sheet-preview-copy .td-sheet-preview-role { color: var(--text-primary); }
+.td-inspect-facts, .td-sheet-preview-ult { margin: 0; font-size: var(--td-fs-meta); line-height: var(--leading-snug); }
+.td-inspect-facts { color: var(--text-primary); }
+.td-sheet-preview-ult { color: var(--text-muted); }
+.td-sheet-preview-ult strong { color: var(--accent-gold); }
+.td-inspect-details summary { display: flex; align-items: center; min-height: 32px; color: var(--text-bright); font-size: var(--td-fs-meta); font-weight: var(--weight-bold); cursor: pointer; }
+.td-inspect-details p { margin: var(--space-1) 0 0; color: var(--text-muted); font-size: var(--td-fs-meta); line-height: var(--leading-snug); }
+.td-inspect-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); margin: 0; }
+.td-inspect-stats div { padding: 4px 2px; border-radius: var(--radius-sm); background: var(--surface-tint); text-align: center; }
+.td-inspect-stats dt { color: var(--text-muted); font-size: var(--td-fs-label); }
+.td-inspect-stats dd { margin: 0; color: var(--text-bright); font-size: var(--td-fs-meta); font-weight: var(--weight-bold); }
+.td-sheet-foot { display: grid; gap: 4px; }
+.td-inspect-deploy { width: 100%; min-height: 44px; }
+.td-inspect-deploy:disabled { border-color: var(--border-subtle); background: var(--bg-surface); color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
+.td-inspect-reason { color: var(--td-warn); font-size: var(--td-fs-meta); text-align: center; }
+.td-hero-card.is-selected { border-color: var(--accent-gold); background: rgba(250, 204, 21, .08); box-shadow: inset 0 0 0 1px var(--accent-gold); }
+.td-sheet.is-below .td-anim { display: none; }
+@media (max-height: 560px) {
+  .td-sheet .td-anim { display: none; }
+  .td-sheet .td-sheet-preview { padding: var(--space-1) var(--space-2); }
+  .td-sheet .td-sheet-preview-ult { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  /* Short screens: the kicker already names the tile, and Details repeats its bonus. */
+  .td-sheet #td-sheet-title, .td-sheet .td-sheet-note { display: none; }
+  .td-sheet .td-sheet-list { min-height: 60px; }
+}
 .td-anim.is-still { animation: none; background-size: cover; background-position: 50% 6%; }
 @media (prefers-reduced-motion: reduce) { .td-anim { animation: none; } }
 /* Daily Trial (M19): lobby card, HUD goal and result line */
