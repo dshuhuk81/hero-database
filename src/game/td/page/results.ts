@@ -238,7 +238,11 @@ export function createResults(ctx: PageContext) {
     if (followUp) continueButton.dataset.tdCampStage = followUp; else delete continueButton.dataset.tdCampStage;
     continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
       : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
-    q("[data-td-result-menu]").hidden = !!expedition;
+    // Campaign stages lead back to the Campaign screen (stage list) instead of the main menu.
+    const menuButton = q<HTMLButtonElement>("[data-td-result-menu]");
+    menuButton.hidden = !!expedition || (!!campaign && !followUp);
+    menuButton.dataset.tdToLobby = campaign ? "campaign" : "home";
+    menuButton.textContent = campaign ? "Campaign" : "Main menu";
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
     q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";

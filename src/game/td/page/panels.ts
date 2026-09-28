@@ -123,7 +123,8 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
   function syncSpendButton() {
     const available = computeAvailableFavor();
     q("[data-td-spend-count]").textContent = `(${available})`;
-    q("[data-td-spend]").hidden = available <= 0;
+    // Campaign stages earn no Favor and Blessings do not apply there (M26).
+    q("[data-td-spend]").hidden = available <= 0 || !!state.session?.campaign;
   }
 
   function applyFavorToPreparedRun() {
