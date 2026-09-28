@@ -424,7 +424,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 **Ultimate — Winter Comes Through the Door**
 
 - Flavor: “No shield is fitted closely enough for winter.”
-- Rules: An ice shockwave centered on Boreas fills his attack range and deals 115% U to every eligible enemy in it. Each enemy hit has a 10% chance to freeze for 2 seconds (cannot move or attack). Freezes do not stack; a new freeze keeps whichever end time is later.
+- Rules: An ice shockwave centered on Boreas fills his attack range and deals 140% U to every eligible enemy in it. Each enemy hit has a 10% chance to freeze for 2 seconds (cannot move or attack). Freezes do not stack; a new freeze keeps whichever end time is later.
 
 **Awakening — A Wider Weather:** Freeze chance becomes 20% and freezes last 3 seconds.
 

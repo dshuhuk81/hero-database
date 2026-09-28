@@ -21,7 +21,7 @@ export const SKILL_TEXT = {
   chain_lightning: "Blasts every enemy within 72px of the target, then lightning bounces to 2 more enemies for 70% and 45%.",
   rebirth_flame: "Blasts every enemy within 72px of the target and heals herself for 20% of her max health.",
   weaken_burst: "Blasts every enemy within 72px of the target and exposes them: they take 20% more damage for 4s.",
-  ice_shockwave: "An ice shockwave hits every enemy within his attack range for 115%. Each enemy hit has a 10% chance to freeze for 2s (cannot move or attack).",
+  ice_shockwave: "An ice shockwave hits every enemy within his attack range for 140%. Each enemy hit has a 10% chance to freeze for 2s (cannot move or attack).",
   moon_barrage: "Fires 3 shots for 55% each at enemies in front of her and raises the attack of allies in range by 25% for 5s.",
   piercing_shot: "Fires a shot through the target that hits every enemy on the line, up to 1.5x her range, for 55% each.",
   petrify_shot: "Petrifies up to 3 enemies in front of her for 3s (they cannot move or attack) and hits them for 55%.",

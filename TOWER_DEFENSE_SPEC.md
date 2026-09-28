@@ -162,7 +162,7 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `expose`, the 72px cleave with 8s awakened exposure, and recruit Elm `weaken_burst`; reapplying
   keeps the later end time (`Math.max`), so a short exposure never cuts a longer one.
 - Boreas `ice_shockwave` (tuning `heroSkills.fengyi`): shockwave around him within `hero.range`,
-  115% U per enemy, 10% chance per enemy (seeded `rng`) to freeze 2s (`stunnedUntil` +
+  140% U per enemy, 10% chance per enemy (seeded `rng`) to freeze 2s (`stunnedUntil` +
   `frozenUntil`, so Shattering Cold applies). Awakened: +10% chance, +1s. Replaces the old
   `weaken_burst` binding; no exposure.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
