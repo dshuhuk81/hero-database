@@ -4,10 +4,8 @@ export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import PageHero from "../PageHero.astro";
 import "../../styles/events.css";
-import "../../styles/components.css";
-import allHeroes from "../../data/all_heroes_db.json";
-import eventsData from "../../data/events.json";
-import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
+import { globalEvents, globalEventsMeta } from "../../data/eventsGlobal";
+import { defaultLocale, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { t } from "../../i18n/ui";
 
@@ -16,171 +14,239 @@ interface Props {
 }
 
 const { locale = defaultLocale } = Astro.props;
-const frontLabel = t(locale, "common", "front");
-const backLabel = t(locale, "common", "back");
-
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
-const HERO_IMAGE_VERSION = "2026-06-08-portrait";
-
-function heroCardSrc(heroId: string, width: number) {
-  return `${R2_BASE}/heroes/cards/${encodeURIComponent(heroId)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
-}
-
-function heroCardSrcset(heroId: string) {
-  return [240, 360]
-    .map((width) => `${heroCardSrc(heroId, width)} ${width}w`)
-    .join(", ");
-}
-
-function getHero(heroId: string) {
-  const rawId = String(heroId || "");
-  const lowerId = rawId.toLowerCase();
-  const compactId = lowerId.replace(/[\s_-]+/g, "");
-  return allHeroes[lowerId as keyof typeof allHeroes]
-    ?? allHeroes[compactId as keyof typeof allHeroes]
-    ?? allHeroes[rawId as keyof typeof allHeroes];
-}
-
-const campaigns = eventsData.campaigns.map((campaign) => {
-  const campaignHero = getHero(campaign.hero);
-
-  return {
-    ...campaign,
-    displayName: pickLang(campaign.name, locale),
-    displayDescription: pickLang(campaign.description, locale),
-    heroId: campaignHero?.id ?? campaign.hero,
-    heroName: campaignHero?.name ?? campaign.hero,
-    stages: campaign.stages.map((stage) => ({
-      ...stage,
-      displayName: pickLang(stage.name, locale),
-      frontHeroes: stage.composition.front.map(id => getHero(id)).filter(Boolean),
-      backHeroes: stage.composition.back.map(id => getHero(id)).filter(Boolean),
-    })),
-  };
-});
-
-const stageCount = campaigns.reduce((total, campaign) => total + campaign.stages.length, 0);
 const copy = {
-  directoryKicker: { en: "Team directory", de: "Team-Verzeichnis", es: "Directorio de equipos", ru: "Каталог команд", zh: "阵容目录" },
-  directoryTitle: { en: "Clear every stage with a proven setup", de: "Bewährte Aufstellungen für jede Stufe", es: "Supera cada etapa con una formación probada", ru: "Проверенные составы для каждого этапа", zh: "使用可靠阵容通关每个关卡" },
-  directoryBody: { en: "Choose the stage you are stuck on and copy the formation. Front and Back rows are separated so positioning remains clear on every screen size.", de: "Wähle die Stufe, an der du festhängst, und übernimm die Formation. Vorder- und Hinterreihe bleiben auf jeder Bildschirmgröße klar getrennt.", es: "Elige la etapa donde estás atascado y copia la formación. Las filas delantera y trasera permanecen claramente separadas en cualquier pantalla.", ru: "Выберите сложный этап и скопируйте расстановку. Передний и задний ряды разделены на экране любого размера.", zh: "选择卡关关卡并复制阵容。前排与后排在任何屏幕尺寸下都清晰分开。" },
-  stages: { en: "stage setups", de: "Stufenaufstellungen", es: "formaciones", ru: "составов", zh: "套关卡阵容" },
-  recommended: { en: "Recommended formation", de: "Empfohlene Formation", es: "Formación recomendada", ru: "Рекомендуемая расстановка", zh: "推荐阵容" },
-  openSlot: { en: "Open slot", de: "Freier Platz", es: "Espacio libre", ru: "Свободное место", zh: "空位" },
+  source: { en: "Global client data", de: "Daten des Global-Clients", es: "Datos del cliente global", ru: "Данные глобального клиента", zh: "全球服数据" },
+  updated: { en: "Config updated", de: "Config aktualisiert", es: "Config actualizada", ru: "Конфигурация обновлена", zh: "配置更新时间" },
+  title: { en: "Global event schedule", de: "Globaler Event-Zeitplan", es: "Calendario global de eventos", ru: "Расписание событий Global", zh: "全球服活动日程" },
+  description: { en: "Browse banners, featured events, leaderboards, recurring activities and limited offers found in the Global client configuration.", de: "Durchsuche Banner, besondere Events, Ranglisten, wiederkehrende Aktivitäten und zeitlich begrenzte Angebote aus der Global-Client-Konfiguration.", es: "Consulta banners, eventos destacados, clasificaciones, actividades recurrentes y ofertas limitadas de la configuración global.", ru: "Просматривайте баннеры, события, рейтинги, регулярные активности и ограниченные предложения из конфигурации Global.", zh: "浏览全球服配置中的卡池、主题活动、排行榜、周期活动和限时礼包。" },
+  today: { en: "Today", de: "Heute", es: "Hoy", ru: "Сегодня", zh: "今天" },
+  previous: { en: "Previous period", de: "Vorheriger Zeitraum", es: "Periodo anterior", ru: "Предыдущий период", zh: "上一周期" },
+  next: { en: "Next period", de: "Nächster Zeitraum", es: "Periodo siguiente", ru: "Следующий период", zh: "下一周期" },
+  days: { en: "days", de: "Tage", es: "días", ru: "дней", zh: "天" },
+  all: { en: "All", de: "Alle", es: "Todos", ru: "Все", zh: "全部" },
+  empty: { en: "No scheduled events in this period.", de: "Keine geplanten Events in diesem Zeitraum.", es: "No hay eventos programados en este periodo.", ru: "В этот период событий нет.", zh: "此时间段暂无活动。" },
+  selectEvent: { en: "Select an event bar to see its full schedule.", de: "Wähle einen Event-Balken für den vollständigen Zeitraum.", es: "Selecciona una barra para ver el calendario completo.", ru: "Выберите событие, чтобы увидеть полное расписание.", zh: "选择活动条可查看完整日程。" },
 };
+
+const categories = [
+  { id: "banners", label: { en: "Hero banners", de: "Helden-Banner", es: "Banners de héroes", ru: "Баннеры героев", zh: "英雄卡池" } },
+  { id: "events", label: { en: "Featured events", de: "Besondere Events", es: "Eventos destacados", ru: "Главные события", zh: "主题活动" } },
+  { id: "leaderboards", label: { en: "Leaderboards", de: "Ranglisten", es: "Clasificaciones", ru: "Рейтинги", zh: "排行榜" } },
+  { id: "recurring", label: { en: "Recurring", de: "Wiederkehrend", es: "Recurrentes", ru: "Регулярные", zh: "周期活动" } },
+  { id: "offers", label: { en: "Shops & offers", de: "Shops & Angebote", es: "Tiendas y ofertas", ru: "Магазины и предложения", zh: "商店与礼包" } },
+];
+
+const clientData = JSON.stringify(globalEvents).replace(/</g, "\\u003c");
+const categoryData = JSON.stringify(categories.map((category) => ({ id: category.id, label: pickLang(category.label, locale) }))).replace(/</g, "\\u003c");
+const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${globalEventsMeta.generated.slice(0, 10)}T00:00:00Z`));
 ---
 
 <Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale}>
-<PageHero
-  tag={t(locale, "events", "tag")}
-  headline={t(locale, "events", "headline")}
-  subtitle={t(locale, "events", "subtitle")}
-  locale={locale}
-/>
+  <PageHero
+    tag={t(locale, "events", "tag")}
+    headline={t(locale, "events", "headline")}
+    subtitle={t(locale, "events", "subtitle")}
+    locale={locale}
+  />
 
-<main class="page-wrapper events-page page-content">
-  <section class="events-intro" aria-labelledby="events-intro-title">
-    <div>
-      <span class="section-label">{pickLang(copy.directoryKicker, locale)}</span>
-      <h2 id="events-intro-title">{pickLang(copy.directoryTitle, locale)}</h2>
-      <p>{pickLang(copy.directoryBody, locale)}</p>
-    </div>
-    <span class="events-count"><strong>{stageCount}</strong> {pickLang(copy.stages, locale)}</span>
-  </section>
+  <main class="page-wrapper events-page page-content">
+    <section class="events-overview" aria-labelledby="events-title">
+      <div class="events-overview-copy">
+        <p class="content-heading-kicker">{pickLang(copy.source, locale)}</p>
+        <h2 id="events-title">{pickLang(copy.title, locale)}</h2>
+        <p>{pickLang(copy.description, locale)}</p>
+      </div>
+      <div class="events-source">
+        <span class="events-live-dot" aria-hidden="true"></span>
+        <span>{globalEventsMeta.client}</span>
+        <small>{pickLang(copy.updated, locale)} {generatedDate}</small>
+      </div>
+    </section>
 
-  <div class="events-main">
-    {campaigns.map((campaign) => (
-      <section class="challenge" id={campaign.id} aria-labelledby={`${campaign.id}-title`}>
-        <header class="challenge-header">
-          <div class="challenge-portrait">
-            <img
-              src={heroCardSrc(campaign.heroId, 360)}
-              srcset={heroCardSrcset(campaign.heroId)}
-              sizes="(max-width: 480px) calc(100vw - 72px), (max-width: 720px) 112px, 38vw"
-              alt={campaign.heroName}
-              width="360"
-              height="360"
-              decoding="async"
-            />
-          </div>
-          <div class="challenge-copy">
-            <span class="section-label">{pickLang(copy.recommended, locale)}</span>
-            <h2 id={`${campaign.id}-title`}>{campaign.displayName}</h2>
-            <p>{campaign.displayDescription}</p>
-          </div>
-          <span class="challenge-stage-count">{campaign.stages.length} {pickLang(copy.stages, locale)}</span>
-        </header>
-
-        <div class="stages-container">
-          {campaign.stages.map((stage) => (
-            <article class="stage-card">
-              <header class="stage-header">
-                <span class="stage-number">{String(stage.id).padStart(2, "0")}</span>
-                <div>
-                  <span>{pickLang(copy.recommended, locale)}</span>
-                  <h3 class="stage-title">{stage.displayName.replace(/^\d+\.\s*/, "")}</h3>
-                </div>
-              </header>
-
-              <div class="formation-board">
-                <div class="formation-group formation-group--front">
-                  <span class="formation-label">{frontLabel}</span>
-                  <div class="formation-slots formation-slots--front">
-                    {stage.frontHeroes.map((hero) => (
-                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
-                        <div class="event-hero-image">
-                          <img
-                            src={heroCardSrc(hero.id, 240)}
-                            srcset={heroCardSrcset(hero.id)}
-                            sizes="(max-width: 480px) 42vw, (max-width: 900px) 30vw, 180px"
-                            alt={hero.name}
-                            loading="lazy"
-                            decoding="async"
-                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                          />
-                        </div>
-                        <strong>{hero.name}</strong>
-                      </a>
-                    ))}
-                    {Array.from({ length: Math.max(0, 2 - stage.frontHeroes.length) }).map(() => (
-                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
-                    ))}
-                  </div>
-                </div>
-
-                <div class="formation-divider" aria-hidden="true"></div>
-
-                <div class="formation-group formation-group--back">
-                  <span class="formation-label">{backLabel}</span>
-                  <div class="formation-slots formation-slots--back">
-                    {stage.backHeroes.map((hero) => (
-                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
-                        <div class="event-hero-image">
-                          <img
-                            src={heroCardSrc(hero.id, 240)}
-                            srcset={heroCardSrcset(hero.id)}
-                            sizes="(max-width: 480px) 28vw, (max-width: 900px) 20vw, 180px"
-                            alt={hero.name}
-                            loading="lazy"
-                            decoding="async"
-                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                          />
-                        </div>
-                        <strong>{hero.name}</strong>
-                      </a>
-                    ))}
-                    {Array.from({ length: Math.max(0, 3 - stage.backHeroes.length) }).map(() => (
-                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
+    <section class="calendar-shell" aria-label={pickLang(copy.title, locale)} data-locale={locale}>
+      <header class="calendar-toolbar">
+        <div>
+          <p class="calendar-range" data-calendar-range></p>
+          <p class="calendar-hint">{pickLang(copy.selectEvent, locale)}</p>
         </div>
-      </section>
-    ))}
-  </div>
-</main>
+        <div class="calendar-actions">
+          <div class="calendar-nav" aria-label="Calendar navigation">
+            <button type="button" data-shift="previous" aria-label={pickLang(copy.previous, locale)}>‹</button>
+            <button type="button" data-today>{pickLang(copy.today, locale)}</button>
+            <button type="button" data-shift="next" aria-label={pickLang(copy.next, locale)}>›</button>
+          </div>
+          <div class="calendar-zoom" aria-label="Calendar range">
+            {[14, 30, 60].map((days) => (
+              <button type="button" data-days={days} class:list={{ active: days === 30 }}>
+                {days}<span class="sr-only"> {pickLang(copy.days, locale)}</span><span aria-hidden="true">d</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
 
+      <div class="calendar-filters" aria-label="Event categories">
+        <button type="button" class="active" data-filter="all">{pickLang(copy.all, locale)}</button>
+        {categories.map((category) => (
+          <button type="button" data-filter={category.id}>
+            <span class={`category-mark category-mark--${category.id}`} aria-hidden="true"></span>
+            {pickLang(category.label, locale)}
+          </button>
+        ))}
+      </div>
+
+      <div class="calendar-scroll" data-calendar-scroll tabindex="0">
+        <div class="calendar-canvas" data-calendar-canvas></div>
+      </div>
+      <p class="calendar-empty" data-calendar-empty hidden>{pickLang(copy.empty, locale)}</p>
+    </section>
+  </main>
+
+  <dialog class="event-dialog" data-event-dialog>
+    <button type="button" class="event-dialog-close" data-dialog-close aria-label="Close">×</button>
+    <span class="event-dialog-category" data-dialog-category></span>
+    <h2 data-dialog-title></h2>
+    <p class="event-dialog-family" data-dialog-family></p>
+    <dl>
+      <div><dt>Starts</dt><dd data-dialog-start></dd></div>
+      <div><dt>Ends</dt><dd data-dialog-end></dd></div>
+      <div><dt>Duration</dt><dd data-dialog-duration></dd></div>
+    </dl>
+  </dialog>
+
+  <script type="application/json" id="global-event-data" set:html={clientData}></script>
+  <script type="application/json" id="event-category-data" set:html={categoryData}></script>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('.calendar-shell');
+      const canvas = root?.querySelector('[data-calendar-canvas]');
+      const scroll = root?.querySelector('[data-calendar-scroll]');
+      const rangeLabel = root?.querySelector('[data-calendar-range]');
+      const empty = root?.querySelector('[data-calendar-empty]');
+      const eventsNode = document.getElementById('global-event-data');
+      const categoriesNode = document.getElementById('event-category-data');
+      if (!root || !canvas || !scroll || !rangeLabel || !empty || !eventsNode || !categoriesNode) return;
+
+      const events = JSON.parse(eventsNode.textContent || '[]');
+      const categories = JSON.parse(categoriesNode.textContent || '[]');
+      const locale = root.dataset.locale || 'en';
+      const dialog = document.querySelector('[data-event-dialog]');
+      const dayMs = 86400000;
+      let visibleDays = 30;
+      let activeFilter = 'all';
+      let anchor = startOfDay(new Date());
+
+      function startOfDay(value) {
+        return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+      }
+
+      function parseDate(value) {
+        return new Date(`${value}T00:00:00Z`);
+      }
+
+      function addDays(date, amount) {
+        return new Date(date.getTime() + amount * dayMs);
+      }
+
+      function formatDate(date, options) {
+        return new Intl.DateTimeFormat(locale, { timeZone: 'UTC', ...options }).format(date);
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+      }
+
+      function lanesFor(items) {
+        const laneEnds = [];
+        return items.map((item) => {
+          const itemStart = parseDate(item.start).getTime();
+          let lane = laneEnds.findIndex((end) => end < itemStart);
+          if (lane === -1) lane = laneEnds.length;
+          laneEnds[lane] = parseDate(item.end).getTime();
+          return { ...item, lane };
+        });
+      }
+
+      function openDialog(item) {
+        if (!(dialog instanceof HTMLDialogElement)) return;
+        const category = categories.find((entry) => entry.id === item.category);
+        dialog.dataset.category = item.category;
+        dialog.querySelector('[data-dialog-category]').textContent = category?.label || item.category;
+        dialog.querySelector('[data-dialog-title]').textContent = item.label;
+        dialog.querySelector('[data-dialog-family]').textContent = item.hero || item.family;
+        dialog.querySelector('[data-dialog-start]').textContent = formatDate(parseDate(item.start), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        dialog.querySelector('[data-dialog-end]').textContent = formatDate(parseDate(item.end), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        dialog.querySelector('[data-dialog-duration]').textContent = `${Math.round((parseDate(item.end) - parseDate(item.start)) / dayMs) + 1} days`;
+        dialog.showModal();
+      }
+
+      function render() {
+        const rangeStart = addDays(anchor, -Math.floor(visibleDays / 3));
+        const rangeEnd = addDays(rangeStart, visibleDays - 1);
+        const today = startOfDay(new Date()).getTime();
+        const shownCategories = categories.filter((category) => activeFilter === 'all' || category.id === activeFilter);
+        const visibleEvents = events.filter((item) => parseDate(item.end) >= rangeStart && parseDate(item.start) <= rangeEnd && (activeFilter === 'all' || item.category === activeFilter));
+        const dayWidth = visibleDays >= 60 ? 38 : visibleDays >= 30 ? 48 : 66;
+        canvas.style.setProperty('--calendar-days', visibleDays);
+        canvas.style.setProperty('--calendar-day-width', `${dayWidth}px`);
+        rangeLabel.textContent = `${formatDate(rangeStart, { day: 'numeric', month: 'short' })} – ${formatDate(rangeEnd, { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+        let html = '<div class="calendar-date-row"><div class="calendar-corner">UTC</div><div class="calendar-days">';
+        for (let index = 0; index < visibleDays; index += 1) {
+          const date = addDays(rangeStart, index);
+          const isToday = date.getTime() === today;
+          html += `<div class="calendar-day${isToday ? ' is-today' : ''}${date.getUTCDay() === 0 || date.getUTCDay() === 6 ? ' is-weekend' : ''}"><span>${escapeHtml(formatDate(date, { weekday: 'short' }))}</span><strong>${date.getUTCDate()}</strong>${date.getUTCDate() === 1 ? `<small>${escapeHtml(formatDate(date, { month: 'short' }))}</small>` : ''}</div>`;
+        }
+        html += '</div></div>';
+
+        shownCategories.forEach((category) => {
+          const categoryEvents = lanesFor(visibleEvents.filter((item) => item.category === category.id).sort((a, b) => a.start.localeCompare(b.start)));
+          const laneCount = Math.max(1, ...categoryEvents.map((item) => item.lane + 1));
+          html += `<section class="calendar-group" data-category="${category.id}"><div class="calendar-group-label"><span class="category-mark category-mark--${category.id}"></span><strong>${escapeHtml(category.label)}</strong><small>${categoryEvents.length}</small></div><div class="calendar-track" style="--lane-count:${laneCount}">`;
+          for (let index = 0; index < visibleDays; index += 1) {
+            const date = addDays(rangeStart, index);
+            html += `<i class="calendar-cell${date.getTime() === today ? ' is-today' : ''}${date.getUTCDay() === 0 || date.getUTCDay() === 6 ? ' is-weekend' : ''}" style="grid-column:${index + 1};"></i>`;
+          }
+          categoryEvents.forEach((item) => {
+            const startOffset = Math.max(0, Math.round((parseDate(item.start) - rangeStart) / dayMs));
+            const endOffset = Math.min(visibleDays - 1, Math.round((parseDate(item.end) - rangeStart) / dayMs));
+            const duration = endOffset - startOffset + 1;
+            const clippedStart = parseDate(item.start) < rangeStart;
+            const clippedEnd = parseDate(item.end) > rangeEnd;
+            html += `<button type="button" class="calendar-event${clippedStart ? ' is-clipped-start' : ''}${clippedEnd ? ' is-clipped-end' : ''}" data-event-id="${item.id}" style="grid-column:${startOffset + 1} / span ${duration};grid-row:${item.lane + 1}" title="${escapeHtml(item.label)} · ${item.start} – ${item.end}"><span>${escapeHtml(item.label)}</span></button>`;
+          });
+          html += '</div></section>';
+        });
+
+        canvas.innerHTML = html;
+        empty.hidden = visibleEvents.length > 0;
+        canvas.querySelectorAll('[data-event-id]').forEach((button) => button.addEventListener('click', () => {
+          const item = events.find((entry) => String(entry.id) === button.dataset.eventId);
+          if (item) openDialog(item);
+        }));
+      }
+
+      root.querySelectorAll('[data-days]').forEach((button) => button.addEventListener('click', () => {
+        visibleDays = Number(button.dataset.days);
+        root.querySelectorAll('[data-days]').forEach((entry) => entry.classList.toggle('active', entry === button));
+        render();
+      }));
+
+      root.querySelectorAll('[data-filter]').forEach((button) => button.addEventListener('click', () => {
+        activeFilter = button.dataset.filter;
+        root.querySelectorAll('[data-filter]').forEach((entry) => entry.classList.toggle('active', entry === button));
+        render();
+      }));
+
+      root.querySelector('[data-today]')?.addEventListener('click', () => { anchor = startOfDay(new Date()); render(); });
+      root.querySelectorAll('[data-shift]').forEach((button) => button.addEventListener('click', () => {
+        anchor = addDays(anchor, button.dataset.shift === 'next' ? visibleDays : -visibleDays);
+        render();
+      }));
+      dialog?.querySelector('[data-dialog-close]')?.addEventListener('click', () => dialog.close());
+      dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+      render();
+    })();
+  </script>
 </Base>

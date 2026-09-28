@@ -219,8 +219,17 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    Hero XP and Divine Seal balances inside the headquarters banner, the last deployed
    squad (or the starter company), and three activity cards: Journey, Heroes and
    Summoning.
-2. **Campaign stages** opens from Journey / Venture forth. It owns the chapter route,
-   next-stage preview, stage cards and the transition into squad selection.
+2. **Campaign stages** opens from Journey / Venture forth. It owns the stage grid (5 per row, 3 below 900px, 2 on phones) and chapter tabs below it
+   (authored chapters, then locked "Coming soon" tabs up to 3). Stage state reads at a glance:
+   cleared cards fade back (translucent, desaturated art) with a green check badge and green
+   status, the next stage is bright with a gold play badge and glow, locked ones go grey with
+   a lock. No route rail here (the cards already show progress); the home Campaign card's route
+   uses the same states: green check dots and line behind, pulsing gold ring on the next
+   stage, hollow grey ahead. Tapping an unlocked stage
+   card opens a details drawer from the right (modal dialog: stage id and name, about text,
+   battlefield/waves/lives/boss/best, first-clear and replay rewards, recommended battle
+   power plus the last squad's power). Its "Choose squad" / "Replay stage" button is the
+   transition into squad selection; Escape, the close button or the backdrop close it.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
    Campaign stages; exiting a campaign run also resolves through this hierarchy.
    Layout (top to bottom): compact stage head (name, map · waves · lives · boss, rewards;

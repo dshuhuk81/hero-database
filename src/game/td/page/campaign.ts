@@ -103,6 +103,15 @@ export function createCampaign(ctx: PageContext) {
   const feedbackEl = q("[data-td-squad-feedback]");
   const hasEnemy = (stage: any, kind: string) => stage.waves.some((wave: any) => wave.spawns.some((spawn: any) => spawn.kind === kind));
   const terrain = (stage: any) => mapSceneFor(mapOf(stage.mapId))?.assets.terrain ?? "";
+  // Corner badge on a stage card: check when cleared, lock when locked, a play mark on the next one.
+  const BADGE_PATHS: Record<string, string> = {
+    done: '<path d="M5 12.5l4.5 4.5L19 7.5" />',
+    locked: '<rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 018 0v3" />',
+    next: '<path d="M9 6.5l8 5.5-8 5.5z" />',
+  };
+  const stageBadge = (state: string) => state
+    ? `<span class="td-camp-stage-badge is-${state}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${BADGE_PATHS[state]}</svg></span>`
+    : "";
 
   function render() {
     const p = progress();
@@ -150,16 +159,13 @@ export function createCampaign(ctx: PageContext) {
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     walletEls.forEach((el) => { el.textContent = wallet(); });
-    q("[data-td-camp-route]").innerHTML = routeHtml(stages.map((stage) => ({
-      label: stage.id,
-      state: isCleared(p, stage.id) ? "done" : stage.id === next?.id ? "current" : "ahead",
-    })));
     stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
       const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${done.bestLives}/${stage.lives} lives` : "Ready to play";
       return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
+        ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
         <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small></span></button>`;
     }).join("");

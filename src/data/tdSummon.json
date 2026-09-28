@@ -1,16 +1,31 @@
 {
-  "sealSources": { "dailyGoal": 15, "expeditionComplete": 60 },
-  "dust": { "perCopy": 30, "perSeal": 2, "perEssence": 150, "copyPrice": 100 },
+  "sealSources": {
+    "dailyGoal": 15,
+    "expeditionComplete": 60
+  },
+  "dust": {
+    "perCopy": 30,
+    "perSeal": 2,
+    "perEssence": 150,
+    "copyPrice": 100
+  },
   "banners": [
     {
       "id": "crossing",
       "name": "Ember at the Crossing",
-      "cost": { "divineSeals": 60 },
+      "cost": {
+        "divineSeals": 60
+      },
       "multiCount": 10,
       "pool": "all",
-      "featuredRotation": ["set", "nyx", "phoenix", "bastet"],
+      "featuredRotation": [
+        "set",
+        "nyx",
+        "phoenix",
+        "bastet"
+      ],
       "featuredWeight": 5,
-      "pityNewInMulti": true,
+      "pityNewInMulti": false,
       "rotationDays": 14,
       "rotationEpoch": "2026-09-28T00:00:00Z"
     }
