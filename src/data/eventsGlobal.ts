@@ -31,6 +31,7 @@ const event = (
 // Curated from /Users/daschultheiss/android/dashboard/src/data/events.global.json.
 // This snapshot intentionally contains Global-client dates only.
 export const globalEvents: GlobalEvent[] = [
+  event(200380001, "Spending Rebate Claim", "Spending Rebate", "rebate", "2026-01-15", "2027-01-15", "offers"),
   event(200390021, "New Card Push · He Bo", "Hero Banner", "new_card_push", "2026-09-02", "2026-09-15", "banners", "Hebo (1013)"),
   event(200890005, "Recharge Event · Phase 5", "Recharge", "charge_activity", "2026-09-02", "2026-09-10", "offers"),
   event(200560020, "Treasure Hunt · Phase 20", "Treasure Hunt", "treasure_hunt", "2026-09-04", "2026-09-08", "recurring"),
@@ -78,4 +79,16 @@ export const globalEvents: GlobalEvent[] = [
   event(200560034, "Treasure Hunt · Phase 34", "Treasure Hunt", "treasure_hunt", "2026-12-11", "2026-12-15", "recurring"),
   event(200560035, "Treasure Hunt · Phase 35", "Treasure Hunt", "treasure_hunt", "2026-12-18", "2026-12-22", "recurring"),
   event(200560036, "Treasure Hunt · Phase 36", "Treasure Hunt", "treasure_hunt", "2026-12-25", "2026-12-29", "recurring"),
+  event(200560037, "Treasure Hunt · Phase 37", "Treasure Hunt", "treasure_hunt", "2027-01-01", "2027-01-05", "recurring"),
+  event(200560038, "Treasure Hunt · Phase 38", "Treasure Hunt", "treasure_hunt", "2027-01-08", "2027-01-12", "recurring"),
+  event(200560039, "Treasure Hunt · Phase 39", "Treasure Hunt", "treasure_hunt", "2027-01-15", "2027-01-19", "recurring"),
+  event(200560040, "Treasure Hunt · Phase 40", "Treasure Hunt", "treasure_hunt", "2027-01-22", "2027-01-26", "recurring"),
+  event(200560041, "Treasure Hunt · Phase 41", "Treasure Hunt", "treasure_hunt", "2027-01-29", "2027-02-02", "recurring"),
+  event(200560042, "Treasure Hunt · Phase 42", "Treasure Hunt", "treasure_hunt", "2027-02-05", "2027-02-09", "recurring"),
+  event(200560043, "Treasure Hunt · Phase 43", "Treasure Hunt", "treasure_hunt", "2027-02-12", "2027-02-16", "recurring"),
+  event(200560044, "Treasure Hunt · Phase 44", "Treasure Hunt", "treasure_hunt", "2027-02-19", "2027-02-23", "recurring"),
+  event(200560045, "Treasure Hunt · Phase 45", "Treasure Hunt", "treasure_hunt", "2027-02-26", "2027-03-02", "recurring"),
+  event(200560046, "Treasure Hunt · Phase 46", "Treasure Hunt", "treasure_hunt", "2027-03-05", "2027-03-09", "recurring"),
+  event(200560047, "Treasure Hunt · Phase 47", "Treasure Hunt", "treasure_hunt", "2027-03-12", "2027-03-16", "recurring"),
+  event(200560048, "Treasure Hunt · Phase 48", "Treasure Hunt", "treasure_hunt", "2027-03-19", "2027-03-23", "recurring"),
 ];

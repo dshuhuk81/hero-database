@@ -138,7 +138,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       let anchor = startOfDay(new Date());
 
       function startOfDay(value) {
-        return new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+        return new Date(Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate()));
       }
 
       function parseDate(value) {
