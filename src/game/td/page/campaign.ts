@@ -6,7 +6,7 @@
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
 import { SKILL_TEXT } from "../skills.js";
-import { classIconImg } from "../assets.js";
+import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { allStages, stageRewardHeroes, autoFodder, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
@@ -187,14 +187,13 @@ export function createCampaign(ctx: PageContext) {
       : squad.length === campaign.squadSize ? "Squad full. Drag a hero onto a slot to swap, or tap a slot to free it." : `Tap or drag up to ${campaign.squadSize} heroes into the slots. Campaign levels apply; Divine Blessings do not.`;
     feedbackEl.classList.toggle("is-warning", noAir);
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
-    // Slots: the only place with per-hero detail (role, lane, level, battle gold cost).
+    // Slots: portrait card only, class icon on the art, battle gold cost above. Tap or drag out to remove.
     lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => {
       const hero = selected[i];
-      if (!hero) return `<span class="td-squad-slot is-empty" data-squad-slot="${i}"><strong aria-hidden="true">+</strong><small>Slot ${i + 1}</small></span>`;
-      return `<button type="button" class="td-squad-slot" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="Remove ${hero.name} from squad">
-        <img class="td-squad-slot-portrait" src="${hero.portrait ?? hero.image}" alt="">
-        <span class="td-squad-slot-copy"><strong>${hero.name}</strong><small>${classIconImg(hero.class, 14)}${hero.class} · ${slotLabel(hero)}</small><small>Lv ${heroLevel(p, hero.id)} · ◈ ${hero.cost}</small></span>
-        <span class="td-squad-slot-x" aria-hidden="true">×</span></button>`;
+      if (!hero) return `<span class="td-squad-slot is-empty" data-squad-slot="${i}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></span>`;
+      return `<button type="button" class="td-squad-slot" data-class="${hero.class.toLowerCase()}" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} battle gold. Remove from squad">
+        <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
+        <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
     }).join("");
     // Roster: portrait, name, class icon and level only. Locked heroes trail the owned ones, dimmed.
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
@@ -205,15 +204,16 @@ export function createCampaign(ctx: PageContext) {
       const skill = data.tuning.heroSkills?.[hero.id];
       const tip = owned ? `${hero.name} · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
-      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-squad-hero="${hero.id}" aria-pressed="${picked}" title="${tip}"${owned ? "" : " disabled"}>
+      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" src="${hero.image}" alt="" loading="lazy">
-        <span class="td-squad-tile-class">${classIconImg(hero.class, 14)}</span>
+        <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
         <span class="td-squad-tile-name">${hero.name}</span>
-        <small>${owned ? `Lv ${heroLevel(p, hero.id)}` : unlock ? `Stage ${unlock.id}` : "Summon"}</small></button>`;
+        <small>${owned ? `<span class="td-squad-tile-role">${hero.class}</span> · Lv ${heroLevel(p, hero.id)}` : unlock ? `Stage ${unlock.id}` : "Summon"}</small></button>`;
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
+    q<HTMLButtonElement>("[data-td-squad-clear]").disabled = !squad.length;
     squadStart.disabled = !validSquad(campaign, p, squad);
     squadStart.textContent = squad.length ? `Start stage ${stage.id}` : "Pick at least one hero";
     return true;
@@ -532,6 +532,10 @@ export function createCampaign(ctx: PageContext) {
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
   ctx.root.addEventListener("click", (event) => { if (swallowClick) { event.stopPropagation(); event.preventDefault(); swallowClick = false; } }, true);
+  q("[data-td-squad-clear]").addEventListener("click", () => {
+    squad = [];
+    renderSquad();
+  });
   q("[data-td-squad-preset]").addEventListener("click", () => {
     const owned = data.heroes.filter((hero: any) => progress().owned.includes(hero.id));
     squad = ["Warrior", "Mage", "Archer", "Support"].map((cls) => owned.find((hero: any) => hero.class === cls)?.id).filter(Boolean).slice(0, campaign.squadSize);

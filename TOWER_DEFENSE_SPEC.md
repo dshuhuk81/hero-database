@@ -227,9 +227,14 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    the stage text is a tooltip), a roster strip of small tiles, max 2 rows, swipe/scroll
    sideways for the rest (portrait, name, class icon,
    level; locked heroes trail dimmed with their unlock source), then a sticky panel with
-   the 4 squad slots (portrait, class · lane, level, battle gold cost; tap to remove),
-   coverage line, hint/flyer warning and Quick pick. Footer: count, power vs. recommended,
+   the 4 squad slots (portrait-format cards, art only with the class icon top right,
+   battle gold cost below; tap or drag out to remove), all centered with coverage line and
+   hint/flyer warning under them. Quick pick sits top right in the stage head. Footer: count, power vs. recommended,
    Start. Role hints and skill names live in tile tooltips and on the Heroes screen.
+   Class icons across the whole TD UI are `classGlyph()` (assets.js; `classIconImg()`
+   delegates to it): simplified solid SVGs readable at small sizes (shield, sword, crossed
+   daggers, star, bow, cross), currentColor. Squad/popover badges sit on a class-tinted
+   disc. The main site's hero pages keep the game's webp class icons.
    Drag and drop (pointer events, mouse + touch): tile -> slot places or replaces, slot ->
    slot swaps, slot dropped outside the lineup removes. Tap still toggles. On touch a
    roster tile drags only on a mostly vertical pull, so sideways swipes keep scrolling.
@@ -261,6 +266,9 @@ roster stacks above the detail panel while retaining its own scroll.
 - one featured hero for 14 days, calculated from `rotationEpoch`;
 - featured weight 5, every other hero weight 1;
 - 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
+- new-hero pity (`pityNewInMulti`): if a full x10 draws no hero the player does not
+  own yet and the pool still has one, the last duplicate is replaced by a weighted
+  draw from the unowned heroes. Single summons have no pity;
 - pool `"all"`: every hero the player owns or can summon, drawn with replacement. A hero
   not owned yet joins; an owned one becomes a spare copy (`copies[heroId]`);
 - stage-reward heroes join the pool only after their stage's first clear, so a summon never
@@ -270,7 +278,11 @@ With `N` heroes in the pool the featured chance is `5 / (5 + N - 1)`, each other
 `1 / (5 + N - 1)`. The UI calculates the rate from the same rules function used by
 `summonMany()`, so the displayed chance cannot drift from selection behavior. New heroes
 are meant to stay hard to get (owner, September 28, 2026): the campaign's 600 seals spent
-as one x10 at the end give about 4 new heroes and 6 copies; there is no new-hero boost.
+as one x10 at the end give about 4 new heroes and 6 copies. Note: the x10 new-hero pity
+added later the same day (mechanics overview recommendation 4, approved by the owner in
+the economy session) guarantees one new hero per full x10 — if the "no boost" decision
+above is the standing one, set `pityNewInMulti` to false to disable it without a code
+change. Pending owner confirmation which decision wins.
 
 Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
@@ -305,7 +317,8 @@ Every upgrade is chosen and confirmed by the player; nothing is spent automatica
   -15%, ultimate +25%, and V: the ultimate starts with its awakened upgrade (the same
   per-ultimate upgrade the in-run Awaken unlocks; `hero.awakenedUlt` in `sim.js`).
 - **Seal Dust**: 1 spare copy -> 30 dust (by hand); 2 dust -> 1 Divine Seal; 150 dust ->
-  1 Divine Essence.
+  1 Divine Essence; 100 dust -> 1 spare copy of an owned hero (`buyCopiesWithDust`,
+  September 28, 2026).
 - `campaignHeroes()` applies level x stars to attack/health and Evolution to
   `ultPower`, `critChance`, `ultCooldown` and `awakenedUlt`.
 

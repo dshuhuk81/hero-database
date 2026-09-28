@@ -3,7 +3,7 @@
 // focus survives game events. The game keeps running while the panel is open.
 import { CLASS_ROLES, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
-import { classIcon } from "../assets.js";
+import { classGlyph } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 
 // Layout: "push" narrows the stage so the whole map sits beside the panel, as long as the map
@@ -22,7 +22,7 @@ export function createPopover(ctx: PageContext) {
   const popName = q("[data-pop-name]");
   const popLevel = q("[data-pop-level]");
   const popPortrait = q<HTMLImageElement>("[data-pop-portrait]");
-  const popClassIcon = q<HTMLImageElement>("[data-pop-class-icon]");
+  const popClassIcon = q<HTMLElement>("[data-pop-class-icon]");
   const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
   const popHp = q("[data-pop-hp]");
   const popAtk = q("[data-pop-atk]");
@@ -128,7 +128,7 @@ export function createPopover(ctx: PageContext) {
     popName.textContent = state.session!.campaign ? `${unit.name} · Level ${unit.campaignLevel ?? 1}` : unit.name;
     const image = heroById.get(unit.id)?.image ?? "";
     if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
-    if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
+    if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.innerHTML = classGlyph(unit.class, 14); popClassIcon.dataset.cls = unit.class; popClassIcon.dataset.class = String(unit.class || "").toLowerCase(); }
     const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
     popLevel.textContent = `${unit.class} - Battle rank ${battleRank(unit.level)}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
     const refund = game.sellValue(unit.entityId);

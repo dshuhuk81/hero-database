@@ -44,7 +44,24 @@ export function classIcon(heroClass) {
   return tdAsset(`icons/classes/${String(heroClass || "").toLowerCase()}-v1.webp`);
 }
 
+// TD class glyphs: simplified solid shapes on a 24px grid (currentColor) that stay
+// readable at badge sizes, where the game's detailed webp icons lose their thin lines.
+// The main site's hero pages keep the game's own icons.
+const CLASS_GLYPHS = {
+  tank: '<path d="M12 2 20 5v6c0 5.5-3.4 9.4-8 11-4.6-1.6-8-5.5-8-11V5z"/>',
+  warrior: '<g transform="translate(12 12) scale(1.1) rotate(45) translate(-12 -12)"><path d="M12 1.5 14 4.5v10h-4v-10z"/><rect x="7" y="14.5" width="10" height="2.2" rx="1.1"/><rect x="11" y="16.7" width="2" height="3.8"/><circle cx="12" cy="21.3" r="1.6"/></g>',
+  assassin: '<g transform="translate(12 12) scale(1.3) rotate(40) translate(-12 -11.5)"><path d="M12 3.5 13.7 6.5 13.4 13h-2.8l-.3-6.5z"/><rect x="9" y="13" width="6" height="1.8" rx=".9"/><rect x="11.2" y="14.8" width="1.6" height="3.6"/><circle cx="12" cy="19.3" r="1.2"/></g><g transform="translate(12 12) scale(1.3) rotate(-40) translate(-12 -11.5)"><path d="M12 3.5 13.7 6.5 13.4 13h-2.8l-.3-6.5z"/><rect x="9" y="13" width="6" height="1.8" rx=".9"/><rect x="11.2" y="14.8" width="1.6" height="3.6"/><circle cx="12" cy="19.3" r="1.2"/></g>',
+  mage: '<path d="M12 1.5 14.4 9.6 22.5 12 14.4 14.4 12 22.5 9.6 14.4 1.5 12 9.6 9.6z"/>',
+  archer: '<path d="M7 2.5Q21 12 7 21.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M7 2.5v19" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22.5 12 17.5 8.8v6.4z"/>',
+  support: '<path d="M9.5 2.5h5v7h7v5h-7v7h-5v-7h-7v-5h7z" stroke-linejoin="round"/>',
+};
+export function classGlyph(heroClass, size = 16) {
+  const glyph = CLASS_GLYPHS[String(heroClass || "").toLowerCase()];
+  if (!glyph) return `<img class="td-class-icon" src="${classIcon(heroClass)}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async">`;
+  return `<svg class="td-class-icon td-class-glyph" viewBox="0 0 24 24" width="${size}" height="${size}" fill="currentColor" aria-hidden="true" focusable="false">${glyph}</svg>`;
+}
+
 // Decorative class icon next to a class name (the name carries the meaning).
 export function classIconImg(heroClass, size = 20) {
-  return `<img class="td-class-icon" src="${classIcon(heroClass)}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async">`;
+  return classGlyph(heroClass, size);
 }

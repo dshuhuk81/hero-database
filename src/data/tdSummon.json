@@ -1,6 +1,6 @@
 {
   "sealSources": { "dailyGoal": 15, "expeditionComplete": 60 },
-  "dust": { "perCopy": 30, "perSeal": 2, "perEssence": 150 },
+  "dust": { "perCopy": 30, "perSeal": 2, "perEssence": 150, "copyPrice": 100 },
   "banners": [
     {
       "id": "crossing",
@@ -10,6 +10,7 @@
       "pool": "all",
       "featuredRotation": ["set", "nyx", "phoenix", "bastet"],
       "featuredWeight": 5,
+      "pityNewInMulti": true,
       "rotationDays": 14,
       "rotationEpoch": "2026-09-28T00:00:00Z"
     }

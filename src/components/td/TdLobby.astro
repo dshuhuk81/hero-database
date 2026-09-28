@@ -285,16 +285,22 @@ const modes = [
     <section class="td-screen" data-td-screen="squad" data-title="Choose your squad" aria-label="Choose your squad" hidden>
       <div class="td-screen-body td-squad-screen">
         <div class="td-squad-head">
-          <h2 class="td-camp-chapter" data-td-squad-stage>Stage</h2>
-          <p class="td-camp-progress" data-td-squad-copy></p>
-          <p class="td-camp-feature-reward" data-td-squad-rewards></p>
+          <div>
+            <h2 class="td-camp-chapter" data-td-squad-stage>Stage</h2>
+            <p class="td-camp-progress" data-td-squad-copy></p>
+            <p class="td-camp-feature-reward" data-td-squad-rewards></p>
+          </div>
+          <div class="td-squad-head-actions">
+            <button class="td-squad-clear" type="button" data-td-squad-clear>Clear heroes</button>
+            <button class="action-button action-button--quiet" type="button" data-td-squad-preset>Quick pick</button>
+          </div>
         </div>
         <div class="td-squad-roster" role="group" aria-label="Heroes" data-td-squad-list></div>
         <div class="td-squad-prep">
           <div class="td-squad-lineup" aria-label="Selected squad" data-td-squad-lineup></div>
           <div class="td-squad-tools">
-            <div><p data-td-squad-coverage></p><p class="td-squad-feedback" role="status" data-td-squad-feedback></p></div>
-            <button class="action-button action-button--quiet" type="button" data-td-squad-preset>Quick pick</button>
+            <p data-td-squad-coverage></p>
+            <p class="td-squad-feedback" role="status" data-td-squad-feedback></p>
           </div>
         </div>
       </div>

@@ -232,6 +232,22 @@ export function exchangeDust(summonCfg, progress, kind, count = 1) {
   return { ...progress, currencies: { ...progress.currencies, sealDust: progress.currencies.sealDust - n * price, [target]: (progress.currencies[target] || 0) + n } };
 }
 
+// Buys spare copies of an owned hero with Seal Dust (summonCfg.dust.copyPrice each),
+// so duplicates always convert into targeted progress (mechanics overview
+// recommendation 4). Returns the new progress, or null when the hero is not owned,
+// no price is configured or the wallet is short.
+export function buyCopiesWithDust(summonCfg, progress, heroId, count = 1) {
+  const price = summonCfg?.dust?.copyPrice ?? 0;
+  const n = Math.floor(Number(count) || 0);
+  if (n < 1 || !price || !progress.owned.includes(heroId)) return null;
+  if ((progress.currencies.sealDust || 0) < n * price) return null;
+  return {
+    ...progress,
+    copies: { ...progress.copies, [heroId]: (progress.copies[heroId] || 0) + n },
+    currencies: { ...progress.currencies, sealDust: progress.currencies.sealDust - n * price },
+  };
+}
+
 // The run's hero list with campaign levels and stars applied to attack and health and
 // Evolution to the ultimate and crit (campaign stages only).
 export function campaignHeroes(campaign, progress, heroes) {
@@ -350,6 +366,30 @@ export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng
     if (owned.includes(heroId)) copies[heroId] = (copies[heroId] || 0) + 1;
     else owned.push(heroId);
     if (!withReplacement(banner)) pool = pool.filter((id) => id !== heroId);
+  }
+  // New-hero pity (mechanics overview recommendation 4): on a full multi summon of a
+  // banner with `pityNewInMulti`, at least one draw joins the collection while any
+  // pool hero is still unowned. The last duplicate is replaced by a weighted draw
+  // from the unowned subset, so featured odds stay honest among the new heroes.
+  if (banner.pityNewInMulti && n >= (Math.max(1, Number(banner.multiCount) || 10)) && !isNew.some(Boolean)) {
+    const unowned = pool.filter((id) => !owned.includes(id));
+    if (unowned.length) {
+      const ordered = featured && unowned.includes(featured) ? [featured, ...unowned.filter((id) => id !== featured)] : unowned;
+      const totalWeight = ordered.reduce((sum, id) => sum + (id === featured ? featuredWeight : 1), 0);
+      let roll = Math.min(.999999999, Math.max(0, rng())) * totalWeight;
+      let heroId = ordered.at(-1);
+      for (const id of ordered) {
+        roll -= id === featured ? featuredWeight : 1;
+        if (roll < 0) { heroId = id; break; }
+      }
+      const slot = heroIds.length - 1;
+      const replaced = heroIds[slot];
+      copies[replaced] -= 1;
+      if (copies[replaced] <= 0) delete copies[replaced];
+      heroIds[slot] = heroId;
+      isNew[slot] = true;
+      owned.push(heroId);
+    }
   }
   const currencies = { ...progress.currencies };
   for (const [id, amount] of Object.entries(cost)) currencies[id] -= amount;

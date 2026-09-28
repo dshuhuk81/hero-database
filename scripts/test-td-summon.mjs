@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad, autoFodder, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -225,11 +225,40 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const sealsBack = exchangeDust(cfg, dusted, "seals", 5);
   assert.deepEqual([sealsBack.currencies.sealDust, sealsBack.currencies.divineSeals], [3 * d.perCopy - 5 * d.perSeal, dusted.currencies.divineSeals + 5], "dust to seals");
   assert.equal(exchangeDust(cfg, dusted, "seals", 1000), null, "not enough dust");
+  // Dust buys copies (recommendation 4): owned hero only, copyPrice each.
+  const copyPrice = cfg.dust.copyPrice;
+  assert.ok(copyPrice > 0, "dust copy price authored");
+  const dustRich = { ...p, currencies: { ...p.currencies, sealDust: copyPrice * 2 } };
+  assert.equal(buyCopiesWithDust(cfg, dustRich, "medusa", 1), null, "dust copies need an owned hero");
+  assert.equal(buyCopiesWithDust(cfg, { ...dustRich, currencies: { ...dustRich.currencies, sealDust: copyPrice - 1 } }, hero, 1), null, "dust copies need the dust");
+  const bought = buyCopiesWithDust(cfg, dustRich, hero, 2);
+  assert.deepEqual([bought.copies[hero], bought.currencies.sealDust], [(p.copies[hero] || 0) + 2, 0], "dust becomes targeted copies");
   // Save round trip and v3 migration.
   const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
   assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
   const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
   assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [4, {}, {}, {}, 0, 0], "v3 migrates to empty v4 fields");
+}
+// --- New-hero pity in multi summons (recommendation 4) ---
+{
+  const cfg = summonData;
+  const missing = "caishen";
+  const ownedRest = ids.filter((id) => id !== missing);
+  const pAllButOne = withSeals({ ...newCampaignProgress(campaignData), owned: [...ownedRest] }, cost * 30);
+  // rng pinned high: every draw lands on the last pool entry (owned) -> all duplicates.
+  const pitied = summonMany(cfg, authored.id, pAllButOne, ids, authored.multiCount, () => 0.999999);
+  assert.equal(pitied.isNew.filter(Boolean).length, 1, "multi with a missing hero guarantees one new");
+  assert.equal(pitied.heroIds.at(-1), missing, "the missing hero replaces the last duplicate");
+  assert.ok(pitied.progress.owned.includes(missing), "pitied hero joins the collection");
+  const replacedCopies = Object.values(pitied.progress.copies).reduce((sum, n) => sum + n, 0);
+  assert.equal(replacedCopies, authored.multiCount - 1, "the replaced draw refunds its copy");
+  // Single summons have no pity.
+  const single = summonMany(cfg, authored.id, pAllButOne, ids, 1, () => 0.999999);
+  assert.equal(single.isNew[0], false, "single draw stays unpitied");
+  // Everything owned: pity has nothing to give, draws stay copies.
+  const pAll = withSeals({ ...newCampaignProgress(campaignData), owned: [...ids] }, cost * 30);
+  const allCopies = summonMany(cfg, authored.id, pAll, ids, authored.multiCount, () => 0.999999);
+  assert.equal(allCopies.isNew.filter(Boolean).length, 0, "no pity once the pool is exhausted");
 }
 
 console.log("Tower defense summon checks passed.");
