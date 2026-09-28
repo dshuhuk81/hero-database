@@ -3,11 +3,16 @@
 // result screen. Setup, seed and the save record live in ../daily.js.
 import { bossSprite, classIconImg } from "../assets.js";
 import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
+import { addSeals } from "../campaign.js";
+import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { MUTATOR_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 import type { SaveData } from "./save";
 
 export type DailySetup = { date: string; seed: number; mapId: string; heroIds: string[]; mutators: string[]; goal: number };
+
+// Divine Seals for the day's first goal clear, on top of the Favor (summon currency, M26).
+const DAILY_SEALS: number = (summonData as any).sealSources?.dailyGoal ?? 0;
 
 const mutatorInfo = MUTATOR_INFO as Record<string, { name: string; text: string }>;
 
@@ -57,7 +62,7 @@ export function dailyBestText(save: SaveData, date: string) {
 }
 
 // Records a finished trial run in the save (skipped for debug runs), pays the one-time
-// goal Favor and returns the result screen line. The caller persists the save.
+// goal Favor and Divine Seals and returns the result screen line. The caller persists the save.
 export function finishDaily(save: SaveData, game: any, setup: DailySetup, record: boolean) {
   const cleared = clearedWaves(game);
   const reached = cleared >= setup.goal;
@@ -67,9 +72,10 @@ export function finishDaily(save: SaveData, game: any, setup: DailySetup, record
     save.daily = result.records;
     reward = result.reward;
     save.favor = (save.favor || 0) + reward;
+    if (reward) save.campaign = addSeals(save.campaign, DAILY_SEALS) as SaveData["campaign"];
   }
   const goal = reached
-    ? `Goal reached: ${dailyGoalText(setup).toLowerCase()}.${reward ? ` +${reward} Favor for today's first clear.` : ""}`
+    ? `Goal reached: ${dailyGoalText(setup).toLowerCase()}.${reward ? ` +${reward} Favor${DAILY_SEALS ? ` and +${DAILY_SEALS} Divine Seals` : ""} for today's first clear.` : ""}`
     : `Goal missed: ${dailyGoalText(setup).toLowerCase()} (${cleared} cleared).`;
   // A trial started before midnight UTC keeps its own day.
   const best = setup.date === dailyDate() ? ` ${dailyBestText(save, setup.date)}` : ` Trial of ${setup.date}.`;
@@ -116,6 +122,7 @@ export function createDaily(ctx: PageContext) {
     if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
     goalEl.innerHTML = `Survive the assault and clear <strong>wave ${current.goal}</strong>.`;
     rewardAmountEl.textContent = `+${DAILY.rewardFavor}`;
+    q("[data-td-daily-reward-seals]").textContent = DAILY_SEALS ? `+${DAILY_SEALS} Divine Seals` : "";
     rewardEl.classList.toggle("is-claimed", !!record?.goalReached);
     rewardStateEl.textContent = record?.goalReached ? "Claimed today" : "Reward available";
     squadCountEl.textContent = `${current.heroIds.length} heroes locked in`;
@@ -126,7 +133,7 @@ export function createDaily(ctx: PageContext) {
     summaryEl.textContent = `${dailyGoalText(current)}${record ? ` \u00b7 best ${record.bestScore.toLocaleString()}` : ""}`;
     summaryMutatorsEl.innerHTML = current.mutators.map(mutatorChip).join("");
     summaryRewardEl.classList.toggle("is-claimed", !!record?.goalReached);
-    summaryRewardEl.innerHTML = record?.goalReached ? "Reward claimed" : `First clear <b>+${DAILY.rewardFavor} Favor</b>`;
+    summaryRewardEl.innerHTML = record?.goalReached ? "Reward claimed" : `First clear <b>+${DAILY.rewardFavor} Favor</b>${DAILY_SEALS ? ` <b>+${DAILY_SEALS} Seals</b>` : ""}`;
     renderReset();
   }
 

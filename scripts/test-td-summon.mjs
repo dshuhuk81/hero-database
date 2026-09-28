@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, finishCampaignStage, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonPool, validSquad } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -28,6 +28,8 @@ const seq = (...values) => { let i = 0; return () => values[i++ % values.length]
 assert.ok(CURRENCIES.includes("divineSeals") && CURRENCY_NAMES.divineSeals === "Divine Seals", "Divine Seals currency");
 assert.equal(summonCfg.banners.length, 1, "one banner");
 assert.ok(banner.id && banner.name && banner.pool === "locked" && cost > 0, "banner shape");
+assert.equal(featuredHeroId(banner, Date.parse(banner.rotationEpoch)), banner.featuredRotation[0], "first featured rotation");
+assert.equal(featuredHeroId(banner, Date.parse(banner.rotationEpoch) + banner.rotationDays * 86400000), banner.featuredRotation[1], "featured hero rotates");
 assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), "+50 Divine Seals", "reward text");
 
 // --- Pool ---
@@ -49,8 +51,11 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const rich = withSeals(p, cost * 2 + 7);
   assert.ok(canSummon(summonCfg, banner.id, rich, ids), "canSummon with seals");
   const pool = summonPool(rich, ids);
+  const featured = featuredHeroId(banner);
+  assert.ok(pool.includes(featured), "featured hero is summonable");
+  assert.ok(featuredChance(banner, rich, ids) > 1 / pool.length, "featured chance is boosted");
   const first = summon(summonCfg, banner.id, rich, ids, () => 0);
-  assert.equal(first.heroId, pool[0], "rng 0 picks the first pool hero");
+  assert.equal(first.heroId, featured, "rng 0 picks the featured hero");
   assert.equal(first.progress.currencies.divineSeals, cost + 7, "cost paid");
   assert.equal(first.progress.currencies.gold, rich.currencies.gold, "other currencies untouched");
   assert.equal(first.progress.summons, 1, "summon counted");
@@ -64,8 +69,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const squad = [first.heroId, ...campaign.starters.slice(0, campaign.squadSize - 1)];
   assert.ok(validSquad(campaign, first.progress, squad), "summoned hero fits a valid squad");
   assert.ok(!validSquad(campaign, rich, squad), "not before the summon");
-  // Uniform: every pool hero can come up.
-  const seen = new Set(pool.map((_, i) => summon(summonCfg, banner.id, rich, ids, () => (i + 0.5) / pool.length).heroId));
+  // Weighted pool: every hero remains reachable.
+  const totalWeight = banner.featuredWeight + pool.length - 1;
+  const seen = new Set(Array.from({ length: totalWeight }, (_, i) => summon(summonCfg, banner.id, rich, ids, () => (i + 0.5) / totalWeight).heroId));
   assert.equal(seen.size, pool.length, "every pool hero reachable");
   // Empty pool: everything owned.
   const all = { ...withSeals(p, cost * 10), owned: [...ids] };
@@ -120,6 +126,41 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const fromStages = allStages(campaignData).flatMap((stage) => stage.rewards.filter((reward) => reward.type === "hero").map((reward) => reward.id));
   assert.deepEqual([...reserved].sort(), [...new Set(fromStages)].sort(), "stage reward heroes listed");
   assert.ok(reserved.every((id) => !campaignData.starters.includes(id)), "no starter is a stage reward");
+}
+
+// --- Multi summon (M27) ---
+{
+  const multi = banner.multiCount;
+  assert.ok(multi >= 2, "banner has a multi summon");
+  const p = newCampaignProgress(campaign);
+  const pool = summonPool(p, ids);
+  const n = Math.min(multi, pool.length);
+  assert.equal(multiSummonCount(summonCfg, banner.id, withSeals(p, cost * n - 1), ids), 0, "multi: one seal short");
+  const rich = withSeals(p, cost * n + 3);
+  assert.equal(multiSummonCount(summonCfg, banner.id, rich, ids), n, "multi count = multiCount or pool left");
+  assert.equal(summonMany(summonCfg, banner.id, withSeals(p, cost * n - 1), ids, n), null, "summonMany: short wallet is null, nothing paid");
+  assert.equal(summonMany(summonCfg, banner.id, rich, ids, pool.length + 1), null, "summonMany: more than the pool is null");
+  assert.equal(summonMany(summonCfg, banner.id, rich, ids, 0), null, "summonMany: count 0 is null");
+  const many = summonMany(summonCfg, banner.id, rich, ids, n, Math.random);
+  assert.equal(many.heroIds.length, n, "summonMany gives count heroes");
+  assert.equal(new Set(many.heroIds).size, n, "no duplicates within one multi summon");
+  assert.ok(many.heroIds.every((id) => pool.includes(id)), "all from the pool");
+  assert.deepEqual([many.progress.currencies.divineSeals, many.progress.summons], [3, n], "multi pays count x cost, counts each summon");
+  assert.equal(rich.owned.length, campaign.starters.length, "input not mutated");
+  assert.equal(summonMany(summonCfg, banner.id, rich, ids, n, () => 0).heroIds[0], featuredHeroId(banner), "featured weight applies to the first draw");
+  // Fewer heroes left than multiCount: the multi summon shrinks to what is left.
+  const nearlyAll = { ...rich, owned: [...rich.owned, ...pool.slice(0, pool.length - 3)] };
+  assert.equal(multiSummonCount(summonCfg, banner.id, nearlyAll, ids), Math.min(multi, 3), "multi shrinks to heroes left");
+  // Seal sources outside the campaign.
+  assert.equal(addSeals(p, 15).currencies.divineSeals, 15, "addSeals pays");
+  assert.equal(addSeals(p, -4), p, "addSeals ignores negatives");
+  assert.ok(summonCfg.sealSources.dailyGoal > 0 && summonCfg.sealSources.expeditionComplete > 0, "seal sources authored");
+}
+
+// --- Economy: the authored campaign pays at least one full multi summon ---
+{
+  const campaignSeals = allStages(campaignData).reduce((sum, stage) => sum + (stage.rewards ?? []).filter((reward) => reward.id === "divineSeals").reduce((m, reward) => m + reward.amount, 0), 0);
+  assert.ok(campaignSeals >= cost * banner.multiCount, `campaign pays ${campaignSeals} seals, a full x${banner.multiCount} costs ${cost * banner.multiCount}`);
 }
 
 console.log("Tower defense summon checks passed.");

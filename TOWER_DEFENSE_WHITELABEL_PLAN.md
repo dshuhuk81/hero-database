@@ -1,9 +1,8 @@
 # Tower Defense: White-Label Hero Plan
 
-Status: planning only. Nothing in this document has been implemented — no
-image was generated, no file on R2 was replaced, no JSON or code was
-changed. This is the checklist and the per-hero brief to work from when
-the user decides to execute.
+Status: done (M24). All Motto Immortal content in the TD minigame has been
+replaced; the live mapping is `src/game/td/skin.js` + `src/data/tdSkinMythic.json`.
+Kept below as the original per-hero brief.
 
 Goal: replace every trace of "Motto Immortal" specific character
 expression in the TD minigame — portrait art, board token, bio text,

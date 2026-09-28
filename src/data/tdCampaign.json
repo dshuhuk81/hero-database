@@ -17,6 +17,21 @@
     }
   },
   "repeatShare": 0.25,
+  "heroStars": {
+    "max": 5,
+    "statPerStar": 0.10,
+    "copies": [1, 2, 3, 4],
+    "gold": [200, 400, 600, 800]
+  },
+  "heroEvolution": {
+    "tiers": [
+      { "name": "Evolved I", "ultPower": 0.10, "text": "Ultimate deals 10% more" },
+      { "name": "Evolved II", "crit": 0.05, "text": "+5% critical chance" },
+      { "name": "Evolved III", "ultCooldown": -0.10, "text": "Ultimate recharges 10% faster" },
+      { "name": "Evolved IV", "ultPower": 0.15, "text": "Ultimate deals 15% more" },
+      { "name": "Evolved V", "awakenedUlt": true, "text": "Ultimate starts with its awakened upgrade" }
+    ]
+  },
   "chapters": [
     {
       "id": 1,

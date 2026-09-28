@@ -1,557 +1,268 @@
-# Tower Defense Minigame - Spec and Task Split
+# Tower Defense - Current Design Reference
 
-Status: first one-map prototype implemented; user confirmed completing all ten waves
-and beating the boss on September 23, 2026. The full spec remains partially implemented.
-Next increments and research decisions: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md).
-The roadmap governs current scope and delivery order. Sections below preserve the
-original target design; their task descriptions are not completion claims. The
-current scope is one map; the original second map is deferred.
-Reference: https://fastidious.gg/games/tower-defense
+Last verified against code: September 28, 2026.
 
-## 1. Goal
+This file describes what the game **is** today. It is not a plan.
+- Open work and priorities: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md)
+- Finished milestones: [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md)
+- Hero ultimates and kits: [TOWER_DEFENSE_HERO_SKILLS.md](TOWER_DEFENSE_HERO_SKILLS.md)
+- Player-facing hero identities: [TOWER_DEFENSE_MYTHIC_HEROES.md](TOWER_DEFENSE_MYTHIC_HEROES.md)
+- UI plan: [docs/tower-defense-ui-plan.md](docs/tower-defense-ui-plan.md)
+- Blessing tree design: [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md)
 
-Playable browser tower defense on `/games/tower-defense`, using the real hero roster,
-real hero stats, and real boss art from this project. Fully client side, works on the
-static Cloudflare build, no backend.
+The original September 2026 MVP spec (20-hero lock, prototype cost table, T1-T6 task
+split) lives in git history (last version at commit `5e788d86`).
 
-### Non-goals (MVP)
+When code and this file disagree, the code wins. Update this file in the same change.
 
-- No accounts, no server leaderboard, no replays, no live channels (fastidious.gg needs
-  Laravel for those; we have no runtime server in production).
-- No custom map editor.
-- No per-hero hand-authored skill scripting. Abilities are class archetypes in MVP.
-- No i18n. English only. Route is not localized.
+## 1. Scope
 
-## 2. Data policy
+- Route `/games/tower-defense` (plus `/games/tower-defense/glossary`). Public, not in
+  `LOCAL_ONLY_ROUTES`. There is currently no entry in `src/data/nav.ts`.
+- Fully client side on the static Cloudflare build. No backend, no accounts, no server
+  leaderboard, no replays.
+- English only, route not localized.
+- Non-goals: map editor, shared leaderboard (needs anti-tamper design first).
 
-Invented tuning numbers are allowed here. They live in exactly two files and never
-touch player-facing data:
+## 2. Data policy and white label
 
-- `src/data/gameBalance.tuning.json` - hand-authored knobs (class ranges, cost curve,
-  ability archetypes, enemy stats). Committed, human edited.
-- `src/data/gameBalance.json` - generated, derived from `all_heroes_db.json` plus the
-  tuning file. Regenerated with `npm run build:game-balance`.
+Invented tuning numbers are allowed, and live only in TD files:
+
+| File | Role |
+|---|---|
+| `src/data/gameBalance.tuning.json` | Hand-authored knobs (classes, enemies, bosses, run, modes, systems) |
+| `src/data/gameBalance.json` | Generated per-hero stats. `npm run build:game-balance` |
+| `src/data/tdMaps.json` | Maps. Tiles written by `scripts/build-td-grid.mjs` |
+| `src/data/tdWaves.json` | 10 base waves |
+| `src/data/tdCampaign.json` | Campaign chapters, stages, squad and hero-level rules |
+| `src/data/tdSummon.json` | Summon banners |
+| `src/data/blessingTree.json` | Divine Blessings tree (Favor trunk, Insight class branches) |
+| `src/data/tdSkinMythic.json` | Player-facing hero names, titles, ultimate names |
+| `src/data/tdAudioLevels.json` | Per-file gains. `node scripts/td-audio-levels.mjs` |
 
 Hard rules:
-- Never write game numbers back into `src/data/heroes/*.json`, `hero-ratings.json`,
-  `bosses.json`, or any CN block.
-- `npm run db:merge` must stay unaware of these files.
-- The page must not present any invented number as a game fact. Add a one-line
-  disclaimer in the page footer: "Minigame balance values are made up for fun and do
-  not reflect in-game numbers."
+- Never write TD numbers back into `src/data/heroes/*.json`, `hero-ratings.json`,
+  `bosses.json` or any CN block. `npm run db:merge` stays unaware of TD files.
+- **White label (M24):** the player never sees database hero art, names or sounds.
+  `src/game/td/skin.js` maps each internal id (`nuwa`, `zeus`, ...) to a mythic persona
+  (e.g. `nuwa` -> Atlas) with TD-owned art on R2 `td/heroes-alt/` and sounds on
+  `td/sfx/mythic-*`. Internal ids, stats and rules are unchanged. `gameBalance.json`
+  still carries DB names and thumb URLs; UI code must go through `skin.js`.
+- Page disclaimer (lobby and glossary): "Not affiliated with GOAT Games or Motto
+  Immortal. Heroes, art and text are original; music and sounds are CC0."
 
-## 3. What the reference game does
+## 3. Code layout
 
-Confirmed from the live page and its bundles:
+- Page: `src/pages/games/tower-defense.astro` -> `src/components/pages/TowerDefensePage.astro`
+  (wiring only). Markup in `src/components/td/` (`TdLobby`, `TdPlayScreen`, `TdPanels`,
+  `TdOverlays`, `TdGlossary*`, `TdEnemyCard`, `TdSoundControls`, `TdDebugPanel`).
+- Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
+  each other only through `ctx.actions`. Screens are a stack mirrored in browser history
+  (`nav.ts`).
+- Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
+  `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
+- Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
+  `hero-fx.js`, `status-fx.js`, `zeus-fx.js`, `skin.js`, `audio.ts`, `ui.js`.
+  Presentation never affects combat or consumes combat RNG.
+- Styles: `src/styles/td.css`, `td-*` classes.
+- Assets: Cloudflare R2 under `td/`, resolved by `assets.js` (R2 public URL in
+  production, `/r2` dev proxy locally).
 
-- Canvas `768x480`, hidden below the `sm` breakpoint (desktop only).
-- React + Inertia + Laravel. TD page is a thin wrapper passing `mode: "defense"` into a
-  shared `game-page` component, so TD is one mode of a game platform.
-- Shared modules: `sim`, `replay`, `combat-stats`, `wave-preview`, `game-call-popups`,
-  `echo` (websockets), custom maps gated behind sign-in.
-- 20 waves, 25 lives, 260 starting gold, hero cost 90-150.
-- Pre-pick 5 heroes, then buy more mid-run from kill gold.
-- Melee block on road tiles, ranged sit on platforms. Placement is class gated.
-- Rotate facing with `R`.
-- Skills auto-charge and auto-cast at full.
-- Wave 4 flyers, wave 5 enemy archers, boss every 5th wave.
-- 5 maps: Serpentine, Ramparts, Crossroads, Pincer, Sand Road.
+## 4. Roster and hero stats
 
-We copy the loop, not the platform.
+21 heroes, literal array `roster` in the tuning file:
 
-## 4. Roster (locked: 20 heroes)
-
-MVP roster is the Divine Throne subset, hand-trimmed to 20. Source of the pool:
-`src/data/divine-throne.json` -> `heroes` (36 entries).
-
-All 36 were checked against `all_heroes_db.json`: every one is released, has non-null
-`stats`, and has a rating. Three (`dionysus`, `ullr`, `yanluo`) lack **both**
-`baseAttackRate` and `bossUltimatesPer90s`, so they are excluded from the 20 rather than
-needing fallbacks.
-
-The locked 20, verified complete (all Legendary, all rated, all have `baseAttackRate`
-and `bossUltimatesPer90s`):
-
-| Class | Slot | Heroes |
+| Class | Slot | Heroes (internal ids) |
 |---|---|---|
-| Tank | road | `nuwa` (S), `prometheus` (A), `momus` (A+), `demeter` (D) |
-| Warrior | road | `poseidon` (S+), `amunra` (S), `set` (A+), `jormungandr` (B) |
-| Assassin | road | `nyx` (S), `bastet` (A+), `horus` (D) |
-| Mage | platform | `zeus` (S+), `phoenix` (A+), `fengyi` (D) |
-| Archer | platform | `diana` (A), `artemis` (D), `medusa` (D) |
-| Support | platform | `caishen` (S+), `yuelao` (S), `freya` (D) |
+| Tank | road | `nuwa`, `prometheus`, `momus`, `demeter` |
+| Warrior | road | `poseidon`, `amunra`, `set`, `jormungandr` |
+| Assassin | road | `nyx`, `bastet`, `horus`, `anubis` |
+| Mage | platform | `zeus`, `phoenix`, `fengyi` |
+| Archer | platform | `diana`, `artemis`, `medusa` |
+| Support | platform | `caishen`, `yuelao`, `freya` |
 
-11 road blockers, 9 platform units. Tier spread S+ x3, S x4, A+ x4, A x2, B x1, D x6, so
-the cost curve has real range. The list is a literal array in
-`gameBalance.tuning.json` under `roster` - no filtering logic, no dev/prod difference,
-no unreleased-hero edge cases.
+12 road, 9 platform. The build fails on a missing id or missing `stats`,
+`baseAttackRate` or `bossUltimatesPer90s`.
 
-Because all 20 are Legendary, the `rarity` term in the cost formula is dead. Cost is
-derived from in-game value instead (see section 5).
+### Generator (`scripts/build-game-balance.mjs`)
 
-### Full-roster stat survey (why the formulas look the way they do)
+`rank(x)` = percentile rank across the roster (ties share the lowest index).
 
-Measured across all 74 non-Common heroes with stats:
+```
+aps          = clamp(baseAttackRate, 0.5, 2.2)
+dps          = lerp(18, 55, rank(atk * baseAttackRate)),  atk = dps / aps
+hp           = lerp(340, 880, rank(stats.hp))
+armor/mres   = lerp(30, 230, rank(stats.armor / stats.magicRes))
+critChance   = stats.critRate / 100
+ultCooldown  = 90 / bossUltimatesPer90s
+ultPower     = tierUltPower[tier]   // S+ 1.6, S 1.45, A+ 1.3, A 1.15, B 1.05, C/D 1.0
+damageType   = skills[0].damageType normalized (magic -> magical, else physical)
+```
 
-| Stat | Legendary | Epic | Usable? |
+Cost is value-based, ranked **within each slot type**, mapped to `85..150`, rounded to 5:
+
+```
+effDps     = rawDps * classes[class].valueDps
+value_road     = 0.30 rank(effDps) + 0.50 rank(effHp) + 0.20 rank(ultValue)
+value_platform = 0.65 rank(effDps) + 0.10 rank(effHp) + 0.25 rank(ultValue)
+```
+
+Why not price by tier: tier reflects real-game skill strength, not raw stats, so tier
+pricing made D heroes strictly best per gold. Tier feeds `ultPower` instead. Cost
+therefore does not track the tier badge; that is intended.
+
+After pricing, class kits apply (`hpMult`, `armorMult`, `apsMult`/`maxAps`, `dpsMult`,
+forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
+
+## 5. Combat rules (`sim.js`)
+
+- Fixed step 60/s, accumulator loop, deterministic, seeded RNG. Speed toggle scales
+  steps per frame, never step size. World space `960x540`, canvas CSS-scaled.
+- Damage: `mitigation = res / (res + 260)`; `dmg = atk * (1 - mitigation) * (crit ? 1.5 : 1)`.
+  True damage skips mitigation.
+- Placement: square tiles (`grid.js`, cell 60) on the road (blockers) and in rows beside
+  it (ranged). Road tiles take Tank/Warrior/Assassin, platform tiles take
+  Mage/Archer/Support. Flyers can only be hit by platform heroes.
+- Blocking: `blockLimit` Tank 3, Warrior 2, Assassin 1. Held enemies take `+20%`
+  damage; enemies passing a full blocker are slowed.
+- Class archetypes: Tank `taunt`, Warrior `cleave`, Assassin `execute` (dash, veil),
+  Mage `nuke` (splash, chain), Archer `volley`, Support `aura`/heal. Per-hero
+  ultimates and variants: `heroSkills` in tuning, text in `skills.js`.
+- Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
+  `cursed` +30% atk / -20% aps.
+- Hero actions: upgrade Lv1-4 (costs 80/120/160; Lv3 focus, Lv4 class path such as
+  Mage wildfire/frost/arc), awakening, training, target mode, rotate (`R`), sell (50%
+  refund).
+- Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
+  `freeze`, `harvest`.
+- Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
+  atk, capped at `+24%`.
+
+## 6. Enemies, bosses, waves
+
+- Enemy kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`,
+  `shieldbearer`, `broodcaller`, `imp`, `hexer`, plus `boss`. Stats in `tuning.enemies`.
+- Bosses: `baphomet` (mark, stance) and `lilith` (summons brood, enrages below 50%).
+  Each map names its boss.
+- Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
+  6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
+  9 brute/mender/shieldbearer/runner, 10 boss + escort.
+- Run lengths (`waves.js`): `classic` 10 waves (boss on 10), `long` 20, `endless`.
+  Long and endless reuse waves 1-10 plus a mid-boss on 5, then generate waves with a
+  boss every 5 (`waveGen`).
+- Tiers: Normal, Heroic (enemy hp x2, attack x1.3, Favor x1.3), Mythic (x3.2, x1.6,
+  x1.6). Global `difficulty.enemyHp` 3.75 applies on top.
+- Mutators: every 10 waves pick 1 of 3 (fortified, haste, warded, horde, ironclad,
+  elites), each raising Favor.
+
+## 7. Maps (`tdMaps.json`)
+
+| id | Name | Routes | Boss |
 |---|---|---|---|
-| `hp` | 1,615,947 - 3,366,556 | 1,157,784 - 2,962,569 | yes |
-| `atk` | 150,629 - 304,336 | 120,920 - 159,838 | yes |
-| `armor` / `magicRes` | 10 - 79,503 (median 37,031) | same field | yes |
-| `critRate` | 0 - 10 | 0 - 10 | yes, already a percent |
-| `atkSpdBonus` | all 0 | all 0 | **no, dead field** |
-| `cooldownHaste` | all 0 | all 0 | **no, dead field** |
-| `baseAttackRate` | 0.364 - 4.956, median 0.787 | same | yes, 11 of 74 missing |
-| `bossUltimatesPer90s` | 2 - 10, median 4 | same | yes, real ult cadence |
+| `moonlit-pass` | Moonlit Pass | one path | `baphomet` |
+| `verdant-crossing` | Verdant Crossing | one path | `lilith` |
+| `sunscar-ruins` | Sunscar Ruins | 2 `lanes`, one base | `baphomet` |
 
-Two useful finds:
-- `bossUltimatesPer90s` gives a **real** ultimate cooldown: `90 / bossUltimatesPer90s`
-  = 9s to 45s. No invention needed for cast cadence.
-- `atkSpdBonus` and `cooldownHaste` are zero for every hero, so attack rate must come
-  from `baseAttackRate` only.
+Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
+`platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
 
-### Data quality issue found (separate from this project)
+## 8. Game modes
 
-`skills[0].damageType` on the playable roster is inconsistent:
-`Physical` 29, `Magical` 20, `""` 20, `magical` 1, `Magic` 1, `Support` 1, `null` 1,
-`undefined` 1. The sim needs a normalizer (lowercase, map `magic` -> `magical`, fall
-back to a class default). This is worth fixing in the real hero JSONs too, since
-CLAUDE.md requires `damageType` on all 4 skills - tracked separately, not part of this
-task list.
+| Mode | Rules | Source |
+|---|---|---|
+| Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
+| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 4 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-10 bought with Gold + Hero XP (+6% stats/level) | `campaign.js`, `tdCampaign.json` |
+| Summon | Banner "Ember at the Crossing", 100 Divine Seals per summon, no duplicates, locked-hero pool, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
+| Expedition | Roguelite chain of 10-wave stages, starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
+| Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
+| Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
 
-## 5. Balance math
+Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 
-All formulas live in `scripts/build-game-balance.mjs`. `rank(x)` = percentile rank in
-`[0,1]` **across the 20-hero roster only** (percentile, not min-max, so single outliers
-like `baseAttackRate: 4.956` do not squash everyone else). Ranking within the 20 keeps
-the playable spread wide - ranking within all 74 would bunch the picked heroes together.
+### Campaign navigation and screens
 
-Prototyped and verified on the real 20 (see the output table below), not hypothetical.
+Campaign is a small screen hierarchy rather than a stage list with utility buttons:
 
-```
-aps          = clamp(hero.baseAttackRate, 0.5, 2.2)
-rawDps       = hero.stats.atk * hero.baseAttackRate
+1. **Campaign headquarters** is the Campaign entry screen. It shows compact Gold,
+   Hero XP and Divine Seal balances inside the headquarters banner, the last deployed
+   squad (or the starter company), and three activity cards: Journey, Heroes and
+   Summoning.
+2. **Campaign stages** opens from Journey / Venture forth. It owns the chapter route,
+   next-stage preview, stage cards and the transition into squad selection.
+3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
+   Campaign stages; exiting a campaign run also resolves through this hierarchy.
 
-gameDps      = lerp(18, 55, rank(rawDps))        // 3x band, keeps tiers readable
-gameAtk      = round(gameDps / aps)
+Heroes and Summoning are campaign activities, so they are cards on the headquarters
+screen rather than persistent footer navigation buttons.
 
-gameHp       = round(lerp(340, 880, rank(hero.stats.hp)))
-gameArmor    = round(lerp(30, 230, rank(hero.stats.armor)))
-gameMagicRes = round(lerp(30, 230, rank(hero.stats.magicRes)))
-critChance   = hero.stats.critRate / 100                      // already a percent
-ultCooldown  = 90 / hero.bossUltimatesPer90s                  // 9s..45s, real cadence
-ultPower     = tierUltPower[rating.overall]                   // tier drives ULT, not cost
-```
+The **Heroes** screen uses a master-detail collection layout. A scrollable two-column
+roster sits on the left; the first owned hero is selected by default. Owned heroes are
+selectable and locked heroes remain visible with their unlock source. The selected hero
+fills the right panel with large art, class and placement role, role hint, campaign level,
+current and next-level Attack/Health, deploy cost, signature skill and the level-up action.
+On narrow screens the roster stacks above the detail panel while retaining its own scroll.
 
-Bands are `30..230` and `340..880`, not `0..260` and `300..900`, on purpose. Percentile
-rank puts the min at exactly `0` and the max at exactly `1`, so open-ended bands produced
-degenerate extremes: `medusa` at `armor: 0` (zero mitigation) and `nuwa` at `armor: 260`
-(the 50% mitigation wall). Compressed bands give a clean `10%..47%` mitigation range.
+### Summoning rules and screen
 
-Damage resolution (game units, `K = 260`):
+`tdSummon.json` authors the banner cost and featured rotation. The current banner uses:
 
-```
-mitigation = res / (res + K)          // res = armor for physical, magicRes for magical
-                                      // roster range 10%..47%, median ~35%
-dmg = atk * (1 - mitigation) * (crit ? 1.5 : 1.0)
-true damage skips mitigation entirely
-```
+- rotation: `set` (Surtr), `nyx` (Nott), `phoenix` (Hephaestus), `bastet` (Hecate);
+- one featured hero for 14 days, calculated from `rotationEpoch`;
+- featured weight 5, every other available hero weight 1;
+- 100 Divine Seals per summon;
+- one guaranteed new hero per summon; owned heroes cannot be rolled again;
+- stage-reward heroes are excluded and must be earned from their campaign stages.
 
-Invented per class (`gameBalance.tuning.json`):
+If `N` heroes remain and the featured hero is unowned, its displayed and actual chance is
+`5 / (5 + N - 1)`. Each other hero has chance `1 / (5 + N - 1)`. Once the featured hero
+is owned it leaves the pool and the remaining heroes are uniform. The UI calculates the
+rate from the same rules function used by `summon()`, so the displayed chance cannot drift
+from selection behavior.
 
-| Class | Slot | Range (px) | Ability archetype |
-|---|---|---|---|
-| Tank | road (blocker) | 60 | `taunt` - slows enemies in radius |
-| Warrior | road (blocker) | 70 | `cleave` - AoE around self |
-| Assassin | road (blocker) | 90 | `execute` - bonus damage below 35% hp |
-| Mage | platform | 160 | `nuke` - AoE burst at densest cluster |
-| Support | platform | 150 | `aura` - `+25%` atk to allies in radius, or `heal` if hero has `TEAM_HEAL` in `synergies` |
-| Archer | platform | 190 | `volley` - 3 rapid single-target shots |
+The Summon screen is centered on the featured target: large art, name/title, remaining
+rotation time, exact featured chance, Divine Seal balance, affordability state and the
+Summon action all live in one banner. The pool below is secondary and labels non-featured
+heroes as possible arrivals or owned. There is no bottom action/footer bar; Back handles
+navigation. A result reveal distinguishes a featured acquisition from another new hero.
 
-Ability archetype is picked from `class`, refined by `synergies` tags that already exist
-in `tags.json` (`TEAM_HEAL`, `TEAM_SHIELD`, `ENEMY_TAUNT`, `TEAM_BUFF`). Skill prose is
-never parsed.
+## 9. Meta progression
 
-### Cost curve, and the trap it avoids
+- **Favor**: earned per wave, perfect wave, boss kill, remaining lives (`favorEarn`),
+  scaled by tier and mutators. Spent in the Divine Blessings tree.
+- **Insight**: per-class currency for the class branches of the tree.
+- **Virtue blessings**: between-wave offers from 12 virtues (Wildness, Desire, ...),
+  with virtue pairs (e.g. Storm Bond) granting extra run effects. Run boons (rare/epic)
+  can roll with requirements such as `chain` or `wet`.
+- **Shards / next-run boost**: gold or virtue boost for the next run.
+- Favor purchases are allowed anytime and apply on the next run.
 
-The obvious design - price heroes by their tier rating - was prototyped first and is
-**broken**. Tier rating reflects real-game strength, which comes from skill effects, not
-from raw `atk` and `baseAttackRate`. So pricing by tier while computing damage from stats
-made cost and power uncorrelated, and the cheapest heroes came out strictly best:
+## 10. Persistence
 
-```
-tier-priced prototype, dps per 100 gold:
-  artemis (D, 85g)  = 52.9   <- best in game
-  poseidon (S+,150g)= 18.7   <- worst in game
-```
+`localStorage` key `td:v1`, one JSON blob, sanitized on load (`save.ts`): any bad field
+is dropped, a corrupt blob starts fresh, unknown hero ids are removed.
 
-Every S+ hero was a trap and every D hero was optimal. Discarded.
+Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLevels`,
+`insight`, `resetSpent`, `refundNotice`, `treeVersion`, `repriceNotice`, `mapBests`,
+`mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
+`campaign`.
 
-Cost is instead derived from **in-game value**, weighted by what the slot actually does,
-then mapped onto `85..150` gold and rounded to 5:
+Per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic`, so
+older builds can still read `td:v1`. Export/import: save code (`TD1:` prefix) or file.
+Audio volume and mute have their own keys.
 
-```
-effHp     = hp / (1 - (mitigation(armor) + mitigation(magicRes)) / 2)
-ultValue  = (90 / ultCooldown) * ultPower
+## 11. Tests and tools
 
-value_road     = 0.30 * rank(dps) + 0.50 * rank(effHp) + 0.20 * rank(ultValue)
-value_platform = 0.65 * rank(dps) + 0.10 * rank(effHp) + 0.25 * rank(ultValue)
-
-cost = round5(lerp(85, 150, rank(value)))
-```
-
-Tier rating now feeds `ultPower` instead of cost, which is where real-game strength
-actually lives:
-
-```
-tierUltPower = { "S+": 1.6, S: 1.45, "A+": 1.3, A: 1.15, B: 1.05, C: 1.0, D: 1.0 }
-```
-
-Rating comes from `src/data/ratings/hero-ratings.json` via `withRatings.js`. Range values
-like `A~S` take the lower grade. All 20 roster heroes have a rating, so no default is
-needed, but keep one (`C`) for safety.
-
-Result: efficiency is roughly flat within a slot type, and the premium heroes trade raw
-efficiency for a stronger ultimate. That is a real decision instead of a trap.
-
-```
-road, effHp per gold:      12.4 (prometheus) .. 6.4 (bastet)
-platform, dps per 100g:    39.1 (artemis)    .. 21.2 (freya)
-```
-
-**Consequence to surface in the UI**: cost no longer tracks the tier badge. `demeter` is
-D tier but the 3rd most expensive road unit, because she is the second-best wall in game
-terms. Players who know the tier list will find that odd, so the hero picker shows the
-real tier badge **and** the minigame cost side by side, with the section 2 disclaimer
-nearby. Honest, and it is the point of the disclaimer.
-
-### Verified output on the locked 20
-
-Generated by the prototype against live data. These are the expected `gameBalance.json`
-values, sorted by cost.
-
-```
-id           class    tier slot      cost  atk  aps   dps  hp   arm  mres  effHp  ultCd  ultPwr
-phoenix      Mage     A+   platform  150   25   2.2   55   539  72   83    699    15     1.3
-amunra       Warrior  S    road      145   35   1.4   49   823  188  219   1466   18     1.45
-nyx          Assassin S    road      145   25   2.13  53   738  209  167   1269   15     1.45
-nuwa         Tank     S    road      140   30   1.72  51   766  230  230   1444   22.5   1.45
-demeter      Tank     D    road      135   39   0.56  22   852  198  198   1501   18     1
-zeus         Mage     S+   platform  135   41   1.16  47   624  41   114   801    18     1.6
-poseidon     Warrior  S+   road      130   35   0.79  28   653  104  62    858    11.3   1.6
-jormungandr  Warrior  B    road      125   26   1.59  41   709  135  125   1063   22.5   1.05
-prometheus   Tank     A    road      120   35   0.74  26   880  219  146   1488   45     1.15
-bastet       Assassin A+   road      120   26   1.64  43   511  156  104   763    15     1.3
-artemis      Archer   D    platform  115   29   1.57  45   454  51   30    524    18     1
-momus        Tank     A+   road      110   38   0.52  20   795  167  198   1351   22.5   1.3
-caishen      Support  S+   platform  110   32   0.94  30   482  177  188   820    9      1.6
-set          Warrior  A+   road      105   36   0.88  32   653  114  41    838    22.5   1.3
-diana        Archer   A    platform  100   37   0.9   34   539  62   72    678    18     1.15
-medusa       Archer   D    platform  100   34   1.16  39   340  30   51    392    18     1
-fengyi       Mage     D    platform  95    40   0.93  37   368  83   93    492    18     1
-horus        Assassin D    road      90    38   0.94  36   425  93   135   609    15     1
-yuelao       Support  S    platform  90    47   0.5   24   596  146  177   965    22.5   1.45
-freya        Support  D    platform  85    36   0.5   18   397  125  146   603    30     1
-```
-
-Sanity checks that pass: no `NaN`, cost spans the full `85..150`, both slot types cover
-the range, `prometheus` is the tankiest (effHp 1488, 45s ult), `phoenix` is the glassiest
-carry (55 dps, 2.2 aps, 699 effHp), `caishen` has the fastest ult (9s) matching his real
-`bossUltimatesPer90s: 10`.
-
-Synergy team bonus: for each `synergies` tag shared by 2+ deployed heroes, all heroes
-holding that tag get `+8%` atk, capped at `+24%`. Reuses `src/utils/synergyTags.js`.
-
-## 6. Sim spec
-
-- Fixed step `1/60s`, accumulator loop, decoupled from render. Deterministic.
-- Seeded RNG (mulberry32) - same seed plus same inputs equals same run. Enables the
-  headless test harness and a later replay feature.
-- Internal coordinate space fixed at `960x540`. Canvas is CSS-scaled to fit, so mobile
-  gets the same sim, just smaller pixels. No desktop-only cop-out.
-- Entities: `enemy`, `hero`, `projectile`, `effect`.
-- Enemy pathing: polyline follow with a per-enemy lateral offset so crowds do not stack
-  into one pixel. Flyers ignore blockers and cut corners.
-- Blocking: a road-slot hero occupies its tile; ground enemies stop at contact range and
-  melee it. Blocker death frees the tile and enemies resume.
-- Targeting: `first` (furthest along path) by default; `lowest-hp` for `execute` heroes.
-- Facing/rotation: `R` on a selected hero. Only affects cone abilities (`cleave`,
-  `volley` spread), not basic attacks.
-
-## 7. Maps and waves
-
-`src/data/tdMaps.json` - array of `{ id, name, path: [[x,y],...], roadSlots: [[x,y],...],
-platformSlots: [[x,y],...] }` in the `960x540` space. MVP: 2 maps.
-
-`src/data/tdWaves.json` - array of `{ wave, spawns: [{ kind, count, gapMs }], startDelayMs }`.
-MVP: 10 waves, boss at 10.
-
-Enemy kinds (invented stats in tuning file): `grunt`, `runner`, `flyer`, `archer`,
-`brute`, `boss`. Boss uses a real boss from `src/data/bosses.json` for name and R2 art
-(8 available, e.g. `baphomet`), with invented hp/speed. Boss `mechanics[]` text is shown
-in a pre-wave warning popup - real text, invented numbers, no conflict.
-
-Run params: **10 waves**, 25 lives, 260 starting gold. No pre-pick phase - placement is
-slot-first (see section 9). Team builds up as you place heroes; first placement enlists
-into the run team (capped at `maxTeam`, default 5). Gold from kills, buy between waves.
-Boss on wave 10 only (the reference's every-5th-wave boss does not fit a 10-wave run;
-wave 5 gets a `brute` pack instead).
-
-Wave schedule, condensed from the reference's 20-wave curve:
-
-| Wave | Introduces |
+| Command | Covers |
 |---|---|
-| 1-2 | `grunt` |
-| 3 | `runner` |
-| 4 | `flyer` (forces at least one platform unit) |
-| 5 | `brute` pack (mini-spike) |
-| 6 | `archer` (can kill blockers, forces support or rotation) |
-| 7-9 | mixed, rising counts |
-| 10 | boss + escort |
+| `npm run test:tower-defense` | UI helpers, favor, difficulty, skin, save, sim, daily, challenges, expedition, campaign, summon |
+| `npm run test:td-balance` | Balance harness |
+| `npm run td:sweep` | Difficulty sweep |
+| `npm run td:classes` / `td:progression` | Class and progression reports |
+| `npm run build:game-balance` | Regenerate `gameBalance.json` |
+| `node scripts/build-td-grid.mjs` | Regenerate map tiles |
+| `node scripts/td-audio-levels.mjs` | Regenerate audio gains |
 
-## 8. Rendering
-
-### Hero sprites
-- Source: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs/{id}-96.webp`
-  verified reachable. Loaded via `PIXI.Assets.load()` with a Vite proxy (`/r2 -> R2_BASE`)
-  in dev to bypass CORS (PixiJS WebGL texture upload requires CORS headers; R2 has none
-  without explicit config, so same-origin proxy is the dev-only workaround; production
-  serves from R2 directly which works via HTML `<img>` but requires the proxy for PixiJS).
-- Drawn as circle-masked sprites (circular mask + PIXI.Sprite) on each hero slot.
-
-### Enemy sprites
-Primary sprites are portrait crops extracted from game APK (`extracted/UI_Headportraits/`),
-resized to 128x128 and placed at `public/td/enemies/{kind}.png`. They render as
-circle-masked PIXI.Sprites with radii matching enemy tier.
-
-Mapping (CN portrait name -> TD kind):
-- `Mogu02` (mushroom creature) -> `grunt`
-- `Diediemoou02` (stacked stone blocks) -> `runner`
-- `Hanhuizhihe03` (ice/rock sphere) -> `flyer`
-- `An02` (crystal eye) -> `archer`
-- `Zhizhu03` (spider) -> `brute`
-
-Fallback chain per enemy: portrait PNG -> Kenney Micro Roguelike tileset tile -> vector
-shape. This means the game works even if portrait files are missing.
-
-A full sprite spec for AI-generated replacements (full-body 3/4-view sprites, 256x256
-transparent PNG) lives at `src/game/td/sprite-spec-for-ai.md`. Covers all 6 enemy kinds
-+ 7 bosses with visual descriptions, color palettes, and integration instructions.
-
-### Boss
-`bosses.json` carries absolute R2 `image` URLs. Boss portrait is loaded the same as hero
-sprites and rendered as a larger circle-masked sprite with a glow filter.
-
-### General
-Everything else (path, tiles, hp bars, projectiles, particles) is canvas primitives using
-`tokens.css` colors via `getComputedStyle` on `:root`. `devicePixelRatio`-aware backing
-store. Internal coordinate space fixed at `960x540`; CSS-scaled to fit container.
-
-## 9. UI
-
-Astro page + one client island. No React - deps are currently `astro` + `express` only
-and it stays that way. Follows the `virtue-wizard.astro` pattern exactly: server-render
-the shell, ship data via `<script type="application/json">`, one `<script>` module for
-logic.
-
-HUD: gold, lives, wave `n/10`, score, speed toggle (`1x`/`2x`), start/pause/restart.
-Panels: slot-picker (context-sensitive hero list for the clicked slot), selected-hero
-inspector, between-wave upgrade choice.
-
-### Placement flow (slot-first)
-The original pre-pick-5 phase is removed. Flow:
-1. Before wave starts: click a ring on the canvas.
-2. Command panel shows heroes filtered by slot type (road rings = Tank/Warrior/Assassin;
-   platform rings = Mage/Archer/Support).
-3. Click a hero card to place them. If they are not in the team yet, they are auto-enlisted
-   (capped at `maxTeam`). Heroes already deployed or unaffordable are shown disabled.
-4. Click empty canvas or a non-slot area to dismiss the picker.
-5. Once at least one hero is placed, the "Start wave" button activates.
-
-During a wave: clicking an occupied slot opens the inspector for that hero (rotate, upgrade,
-see stats). Clicking empty canvas or an empty slot deselects. Clicking empty slot with no
-hero selected deselects the inspector (does not prompt for placement mid-wave).
-
-Upgrades between waves: 3 random picks drawn from `src/data/virtues.json` 2-piece set
-bonuses. Real set names and real bonus text, hand-mapped to a sim effect in the tuning
-file (about 12 sets is enough for MVP).
-
-CSS: all new classes go in `src/styles/components.css` under a `td-*` prefix. No inline
-styles, no per-page `<style>` block.
-
-Route: `/games/tower-defense`, implemented as `src/pages/games/tower-defense.astro`.
-Leaves `/games/` free as a hub if more minigames follow. Public - do **not** add to
-`LOCAL_ONLY_ROUTES`.
-
-Nav: new `src/data/nav.ts` entry, `group: "tools"`, `teaser: true`, badge "New".
-
-### Persistence (deliberately the easiest thing that works)
-
-`localStorage` only. One key, one JSON blob, no backend, no Worker, no D1:
-
-```
-key:   "td:v1"
-value: { bestScore: number, bestWave: number, lastTeam: string[] }
-```
-
-Read on mount inside a `try/catch` (private-mode browsers throw on access). On any parse
-error or shape mismatch, discard and start fresh - never crash the page for a bad blob.
-`lastTeam` entries are validated against the locked 20 and silently dropped if unknown,
-so changing the roster later cannot break a returning player.
-
-A shared leaderboard is explicitly out of scope. If it is ever wanted, the natural path is
-a Cloudflare Worker plus D1 keyed on a signed score payload - but that needs
-anti-tamper thought, and a client-authoritative score endpoint would just be a
-cheat-submission form. Not worth it for a minigame.
-
-## 10. Task split
-
-Six tasks, each under the 10-file limit. Each is independently reviewable and the sim
-tasks are testable headless before any pixel is drawn.
-
-### T1 - Balance data layer (4 files)
-- `src/data/gameBalance.tuning.json` (new, hand-authored)
-- `scripts/build-game-balance.mjs` (new)
-- `src/data/gameBalance.json` (generated)
-- `package.json` (add `build:game-balance`)
-
-Exit: `npm run build:game-balance` writes **20** hero entries matching the verified table
-in section 5; printed summary shows cost spanning `85..150` with no NaN and no zero-dps
-hero. Prototype already exists and produces this output, so T1 is mostly transcription.
-
-### T2 - Sim core, headless (4 files)
-- `src/game/td/rng.js`, `src/game/td/entities.js`, `src/game/td/sim.js` (new)
-- `scripts/test-td-sim.mjs` (new)
-
-Exit: headless run of a scripted 10-wave scenario completes; same seed gives byte-identical
-event log twice.
-
-### T3 - Maps, paths, waves (3 files)
-- `src/data/tdMaps.json`, `src/data/tdWaves.json` (new)
-- `src/game/td/path.js` (new)
-
-Exit: every `roadSlot` sits on the path polyline; no `platformSlot` does; enemy walk from
-spawn to exit takes the intended time on both maps.
-
-### T4 - Renderer (2 files)
-- `src/game/td/render.js`, `src/game/td/sprites.js` (new)
-
-Exit: 60fps with 80 enemies on screen on a mid laptop; sprites load from R2 with a
-placeholder shown until decoded.
-
-### T5 - Page, HUD, nav (4 files)
-- `src/pages/games/tower-defense.astro` (new)
-- `src/components/pages/TowerDefensePage.astro` (new)
-- `src/styles/components.css` (edit, `td-*` block)
-- `src/data/nav.ts` (edit)
-
-Exit: full run playable start to finish on desktop and on a 390px-wide phone; `npm run build`
-clean; page in nav and teaser grid.
-
-### T6 - Upgrades, synergy bonus, score (3 files)
-- `src/game/td/upgrades.js` (new)
-- `src/game/td/sim.js` (edit, hook effects)
-- `src/data/gameBalance.tuning.json` (edit, virtue-set effect map)
-
-Exit: 3 upgrade choices per wave gap apply visibly; synergy bonus shows in the hero
-inspector; best score survives reload.
-
-## 11. Edge cases
-
-Data - the locked 20 eliminates most of these by construction. Remaining:
-
-1. A roster id is renamed or removed from `all_heroes_db.json` - the balance build must
-   **fail loudly**, not silently emit 19 heroes. Assert `roster.length === 20`.
-2. `damageType` casing chaos (`Magic`, `magical`, `""`, `null`, `Support`) - normalizer
-   plus class default. Still live: several of the 20 are affected.
-3. `critRate: 0` heroes (`nuwa`, `prometheus`, `demeter`, `momus` - all Tanks) - crit path
-   must not divide by zero or skip the attack.
-4. Percentile rank on a 20-element set gives exact `0` and `1` at the extremes - bands
-   must stay compressed (`30..230`, `340..880`) or mitigation hits a hard wall.
-5. Rating is a range (`A~S`) - take the lower grade. None of the 20 currently is, but the
-   ratings file is hand-edited, so handle it.
-6. Two roster heroes tie on a ranked stat - `indexOf` on the sorted array returns the
-   first index for both, so ties get an identical rank. Acceptable, but the ranker must
-   not return `undefined` (`indexOf` miss on a float mutated by rounding). Rank by index
-   in the sorted array, not by `indexOf` of the value.
-
-Already eliminated by the locked roster: `stats === null`, missing `baseAttackRate`,
-missing `bossUltimatesPer90s`, missing rating, dev-versus-prod roster differences,
-unreleased heroes. All 20 were verified complete.
-
-Sim
-9. All road slots filled - enemies must still resolve, not deadlock.
-10. Blocker dies mid-melee - enemies must re-path, not freeze at the empty tile.
-11. Flyers with zero valid platform heroes - run must be losable, not softlocked.
-12. Two heroes kill the same enemy on the same tick - gold awarded once.
-13. Projectile in flight when its target dies - retarget or expire, no null deref.
-14. Wave cleared while a `cleave` effect is mid-animation.
-15. Tab backgrounded for 5 minutes - accumulator must clamp, not run 18000 catch-up ticks.
-16. Speed toggle flipped mid-tick - determinism must hold (scale render, not step size).
-17. Gold exactly equal to a hero cost - purchase allowed (`>=` not `>`).
-18. Lives hit zero on the same tick as the last enemy dies - define the winner (loss wins).
-
-UI
-19. R2 sprite 404 for a new hero - placeholder silhouette, no broken canvas.
-20. Canvas on a 320px-wide phone - internal `960x540` must letterbox, not distort.
-21. Tap versus drag on touch - place on tap, no accidental placement while scrolling.
-22. `prefers-reduced-motion` - offer a no-screenshake, no-particle mode.
-23. Keyboard-only play - hero picker and slots reachable by tab, `R` rotate documented on screen.
-
-## 12. Test cases
-
-Headless (`scripts/test-td-sim.mjs`, plain node, no framework, same style as
-`scripts/test-tag-rules.mjs`):
-
-1. `damage_physical_mitigation` - atk 100 vs armor 260 equals 50 damage.
-2. `damage_true_ignores_res` - true damage vs armor 79503 equals full atk.
-3. `damage_magical_uses_magicres` - physical armor does not reduce magical damage.
-4. `crit_deterministic` - fixed seed produces the exact expected crit sequence.
-5. `determinism` - two runs, same seed and inputs, identical event log hash.
-6. `no_deadlock` - 10 waves with every road slot filled always terminates.
-7. `gold_once` - simultaneous killing blows award gold exactly once.
-8. `ult_cadence` - hero with `bossUltimatesPer90s: 4` casts 4 times in 90 sim-seconds (+/-1).
-9. `flyer_ignores_blockers` - flyer reaches exit with all road slots filled.
-10. `accumulator_clamp` - a 300s `dt` spike advances at most 5 sim-seconds.
-
-Balance build (`npm run build:game-balance --check`):
-
-11. Exactly 20 entries, all ids resolve in `all_heroes_db.json`, no `NaN`, no `null`.
-12. `gameDps` inside `[18, 55]`, `aps` inside `[0.5, 2.2]`, `cost` inside `[85, 150]`.
-13. Every class has a range, a slot type, and an ability archetype.
-14. Every ability archetype named in the balance file is implemented in the sim (guards
-    against a tuning-file typo shipping a hero with a dead ultimate).
-15. Slot balance holds: 11 road, 9 platform. A map with fewer than 11 road slots is still
-    playable, but the picker must never offer a slot type the map lacks.
-16. Cost is not monotonic in tier (regression guard, not a bug): assert at least one D-tier
-    hero costs more than at least one S-tier hero, so a future refactor cannot silently
-    revert to the tier-priced model rejected in section 5.
-
-Manual
-17. Full 10-wave win on both maps.
-18. Full loss run - lives to zero, restart works, best score persists across reload.
-19. Mobile portrait 390px, one full run.
-20. `localStorage` blob hand-corrupted to `"{"` - page still loads and starts fresh.
-21. `npm run build` then check `dist/games/tower-defense/index.html` exists and the page
-    is in `sitemap-0.xml`.
-
-## 13. Decisions (locked)
-
-| # | Decision |
-|---|---|
-| 1 | Route `/games/tower-defense`, leaving `/games/` free as a future hub |
-| 2 | Roster: 20 heroes from the Divine Throne subset, hand-picked, listed in section 4 |
-| 3 | 10 waves, single boss on wave 10 |
-| 4 | Persistence: `localStorage` only, one `td:v1` key. No leaderboard, no Worker, no D1 |
-
-The balance generator is implemented. The table in section 5 is a historical
-prototype reference; current ratings and generated costs must be checked against
-today's data. Remaining implementation and verification are tracked in the roadmap.
-
-### Deferred, not rejected
-
-- More maps beyond the 2 in MVP.
-- The remaining 16 Divine Throne heroes, then the wider 74.
-- 20-wave mode with a boss every 5th wave, matching the reference.
-- Shared leaderboard - needs anti-tamper design first (see section 9).
-- Replays. The sim is already deterministic and seeded, so this stays cheap to add later.
+Invariants worth keeping under test: determinism (same seed = same log), gold awarded
+once per kill, no deadlock with every road tile filled, flyers reach the base past
+blockers, accumulator clamps long tab-away gaps, loss wins a same-tick tie, cost is not
+monotonic in tier.

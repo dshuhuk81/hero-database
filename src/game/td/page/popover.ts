@@ -11,6 +11,7 @@ import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 // the hero; portrait stages dock a sheet below the map (at least SHEET_MIN px tall).
 const PUSH_MIN_MAP = 520;
 const SHEET_MIN = 220;
+const battleRank = (level: number) => ["I", "II", "III", "IV"][level - 1] ?? String(level);
 const HERO_RADIUS = 36; // world units kept clear around the selected hero
 
 export function createPopover(ctx: PageContext) {
@@ -120,12 +121,12 @@ export function createPopover(ctx: PageContext) {
 
   function update(unit: any) {
     const game = state.session!.game;
-    popName.textContent = unit.name;
+    popName.textContent = state.session!.campaign ? `${unit.name} · Level ${unit.campaignLevel ?? 1}` : unit.name;
     const image = heroById.get(unit.id)?.image ?? "";
     if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
     const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
-    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
+    popLevel.textContent = `${unit.class} - Battle rank ${battleRank(unit.level)}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
@@ -163,7 +164,7 @@ export function createPopover(ctx: PageContext) {
     } else if (info.ok && info.needsPath) {
       // Class path (M12): the upgrade button opens the class's three paths.
       popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
       popCost.textContent = `${info.cost} gold`;
       info.pathOptions.forEach((id: string, i: number) => {
         const button = pathButtons[i];
@@ -172,11 +173,11 @@ export function createPopover(ctx: PageContext) {
         button.querySelector("strong")!.textContent = path?.name ?? id;
         button.querySelector("small")!.textContent = path?.text ?? "";
       });
-      popPreview.textContent = focusOpen ? "Pick one. The path stays for this unit until it falls." : `Level ${unit.level + 1} also picks a path that changes how ${unit.name} fights.`;
+      popPreview.textContent = focusOpen ? "Pick one. The path stays for this unit until it falls." : `Rank ${battleRank(unit.level + 1)} also picks a path that changes how ${unit.name} fights.`;
     } else if (info.ok && info.needsFocus) {
       // Level focus: the upgrade button opens three options, each previews its own gain.
       popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
       popCost.textContent = `${info.cost} gold`;
       q<HTMLButtonElement>('[data-focus="range"]').disabled = false;
       const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
@@ -188,22 +189,22 @@ export function createPopover(ctx: PageContext) {
       };
       for (const [focus, text] of Object.entries(texts)) q(`[data-focus-text="${focus}"]`).textContent = text;
       for (const focus of Object.keys(texts)) q(`[data-focus-bonus="${focus}"]`).textContent = `+${Math.round(f[focus] * 100)}%`;
-      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Level ${f.level} adds a focus of your choice: attack, health or range.`;
+      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Rank ${battleRank(f.level)} adds a focus of your choice: attack, health or range.`;
     } else if (info.ok) {
       popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
       popCost.textContent = `${info.cost} gold`;
       // Same multiplier as the Attack stat so the preview matches the number shown above it.
       const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
       popPreview.textContent = `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.nextAtk * boost)}, health ${unit.hp} to ${info.nextHp}.`;
     } else if (unit.level >= maxLevel) {
       popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = unit.awakened ? "Awakened" : "Max level";
+      popUpgradeLabel.textContent = unit.awakened ? "Awakened" : "Max rank";
       popCost.textContent = "";
-      popPreview.textContent = unit.awakened ? `Fully upgraded.${awakenText}` : "This hero is at the level cap.";
+      popPreview.textContent = unit.awakened ? `Fully upgraded.${awakenText}` : "This hero is at the maximum battle rank.";
     } else if (Number.isFinite(info.cost)) {
       popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
       popCost.textContent = `${info.cost} gold`;
       popPreview.textContent = `Needs ${info.cost} gold, you have ${game.gold}.`;
     } else {
@@ -242,14 +243,17 @@ export function createPopover(ctx: PageContext) {
       lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
     }
     if (unit.variant === "valkyrie_call") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile at level 1 with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile at battle rank I with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
     }
     if (unit.variant === "soul_drain") {
       lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakened ? 3 : 2} seconds. A kill refunds ${unit.awakened ? 80 : 60}% of the charge.</p>`);
     }
     const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(unit.slotType, unit.slotIndex)];
     if (ring) lines.push(`<p class="td-aura-line">Standing on ${ring.name}: ${ring.text}</p>`);
-    lines.push(`<p>Levels and Awakening belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
+    if (state.session!.campaign) {
+      lines.push(`<p>Campaign level ${unit.campaignLevel ?? 1} is already included in this hero's attack and health. Campaign upgrades are permanent and stay when the hero falls.</p>`);
+    }
+    lines.push(`<p>Battle ranks and Awakening belong to this deployed unit. A fallen hero re-enters at battle rank I.</p>`);
     return lines.join("");
   }
 
@@ -321,7 +325,7 @@ export function createPopover(ctx: PageContext) {
       return;
     }
     const result = session.game.upgrade(state.selectedEntityId);
-    if (result.ok) ctx.notice(result.awaken ? `${result.hero.name} has awakened.` : `${result.hero.name} reached level ${result.hero.level}.`);
+    if (result.ok) ctx.notice(result.awaken ? `${result.hero.name} has awakened.` : `${result.hero.name} reached battle rank ${battleRank(result.hero.level)}.`);
     else ctx.notice(result.reason || "Upgrade unavailable.");
   });
   popFocus.addEventListener("click", (event) => {
@@ -332,7 +336,7 @@ export function createPopover(ctx: PageContext) {
     focusOpen = false;
     if (result.ok) {
       ctx.notice(result.train ? `${result.hero.name} trained ${FOCUS_NAMES[button.dataset.focus!].toLowerCase()}.`
-        : `${result.hero.name} reached level ${result.hero.level} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
+        : `${result.hero.name} reached battle rank ${battleRank(result.hero.level)} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
       popUpgrade.focus();
     } else ctx.notice(result.reason || "Upgrade unavailable.");
     const unit = findUnit(state.selectedEntityId);
@@ -353,7 +357,7 @@ export function createPopover(ctx: PageContext) {
     const result = session.game.upgrade(state.selectedEntityId, button.dataset.pathOption);
     focusOpen = false;
     if (result.ok) {
-      ctx.notice(`${result.hero.name} reached level ${result.hero.level} on the ${PATH_INFO[result.hero.class]?.[result.hero.path]?.name ?? result.hero.path} path.`);
+      ctx.notice(`${result.hero.name} reached battle rank ${battleRank(result.hero.level)} on the ${PATH_INFO[result.hero.class]?.[result.hero.path]?.name ?? result.hero.path} path.`);
       popUpgrade.focus();
     } else ctx.notice(result.reason || "Upgrade unavailable.");
     const unit = findUnit(state.selectedEntityId);

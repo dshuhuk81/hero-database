@@ -163,7 +163,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
       <dl class="td-glossary-terms">
         <div><dt>Road / Platform</dt><dd>Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers.</dd></div>
         <div><dt>Cost</dt><dd>Gold to deploy the hero. Selling returns half of everything spent on it.</dd></div>
-        <div><dt>Health</dt><dd>Damage a hero takes before it falls. A fallen hero can be recruited again at level 1.</dd></div>
+        <div><dt>Health</dt><dd>Damage a hero takes before it falls. A fallen hero can be recruited again at battle rank I.</dd></div>
         <div><dt>Attack</dt><dd>Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it.</dd></div>
         <div><dt>Attacks / s</dt><dd>Basic attacks per second.</dd></div>
         <div><dt>Range</dt><dd>How far the hero reaches, in map pixels. The ring on the map shows it.</dd></div>
@@ -173,7 +173,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
         <div><dt>Ult charge</dt><dd>Seconds until the ultimate is ready. It fires on its own at the current target.</dd></div>
         <div><dt>Ult power</dt><dd>Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise.</dd></div>
         <div><dt>Synergy tags</dt><dd>Each tag shared with a hero within {t.synergy?.range}px adds {pct(t.synergy?.bonusPerTag ?? 0)} attack, up to {pct(t.synergy?.cap ?? 0)}.</dd></div>
-        <div><dt>Awakening</dt><dd>At level 4 a hero can Awaken for {t.awakening?.cost} gold: +{pct(t.awakening?.attackBonus ?? 0)} attack, +{pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.</dd></div>
+        <div><dt>Awakening</dt><dd>At battle rank IV a hero can Awaken for {t.awakening?.cost} gold: +{pct(t.awakening?.attackBonus ?? 0)} attack, +{pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.</dd></div>
       </dl>
     </section>
 
@@ -186,7 +186,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
             <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
             <p>{cls.role}</p>
             {cls.paths.length > 0 && (
-              <ul class="td-glossary-paths" aria-label={`${cls.name} paths at level ${t.upgrades.path?.level}`}>
+              <ul class="td-glossary-paths" aria-label={`${cls.name} paths at battle rank ${["I", "II", "III", "IV"][(t.upgrades.path?.level ?? 4) - 1]}`}>
                 {cls.paths.map((path) => <li><strong>{path.name}</strong> {path.text}</li>)}
               </ul>
             )}

@@ -60,6 +60,10 @@ Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommend
 - If a hero has a permanent support skill active (like give more atk or atk speed -> he should get an aura pulsating showing that there is an effect active)
 - Progress (Sep 27): done in a first pass. New pooled effect kit (`fx-kit.js`) plus status visuals (`status-fx.js`); every hero has a themed attack, impact and ultimate for its mythic identity (table in `TOWER_DEFENSE_HERO_SKILLS.md`); Odin's lightning forks and re-strikes with a rune circle ultimate; poison bubbles, burn flames, chill frost, wet drips and a frozen ice shell show on enemies; all tracer lines (hero shots, enemy shots, hexes, dashes, heal beams) replaced by travelling projectiles, arcs and curved flows. Open: Ymir shows Burn although he is a frost giant (tuning decision).
 
+### M24d - New boss and heroes
+- we need another boss for Lilith cause she is still a character from Motto Immortal. Create all what is necessary. Ideas: some Monsters from Greek Mythology
+- also we need common heroes where we can summon from. These can be pawn like common heroes with no heroic names cause they need to differ from our good heroes. they are common and deal as fodder with low stats and limited skills. they should be added to the summon pool and of course everywhere else. we need at least one for each class. 
+
 ### M25: Leaderboard (large, needs design first - skip)
 
 - Goal: shared scores across players.

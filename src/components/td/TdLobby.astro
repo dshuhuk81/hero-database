@@ -148,10 +148,12 @@ const modes = [
     <!-- Campaign home: resources and activities, with stages one level deeper. -->
     <section class="td-screen" data-td-screen="campaign" data-title="Campaign" aria-label="Campaign camp" hidden>
       <div class="td-screen-body td-camp-screen td-camp-home">
-        <div class="td-camp-resources" aria-label="Campaign resources" data-td-camp-resources></div>
         <div class="td-camp-campfire">
           <div class="td-camp-welcome">
-            <span class="td-label">Your campaign headquarters</span>
+            <div class="td-camp-welcome-top">
+              <span class="td-label">Your campaign headquarters</span>
+              <div class="td-camp-resources" aria-label="Campaign resources" data-td-camp-resources></div>
+            </div>
             <h2>Campaign camp</h2>
             <p>Gather your heroes. Strengthen your ranks.<br />Prepare for the road ahead.</p>
           </div>
@@ -196,38 +198,86 @@ const modes = [
       </div>
     </section>
 
-    <!-- 1e. Summon (M26): one banner, Divine Seals buy a hero the player does not own yet;
-         banner in src/data/tdSummon.json, screen in src/game/td/page/campaign.ts -->
+    <!-- 1e. Summon (M26, M28): one banner, Divine Seals buy one or ten heroes; owned heroes return as spare copies;
+         banner in src/data/tdSummon.json, screen in src/game/td/page/campaign.ts,
+         reveal stage (dialog below) in src/game/td/page/summon-reveal.ts -->
     <section class="td-screen" data-td-screen="summon" data-title="Summon" aria-label="Summon" hidden>
       <div class="td-screen-body td-camp-screen td-summon-screen">
-        <div class="td-summon-banner">
-          <span class="td-label">The Crossing calls</span>
-          <h2 class="td-camp-chapter" data-td-summon-banner>Summon</h2>
-          <p class="td-camp-progress" data-td-summon-copy></p>
-          <div class="td-summon-terms"><span>One new hero · No duplicates</span><strong data-td-summon-price></strong></div>
-          <p class="td-camp-wallet" data-td-summon-wallet></p>
+        <article class="td-summon-banner">
+          <div class="td-summon-feature-art"><img data-td-summon-feature-art alt="" /></div>
+          <div class="td-summon-feature-copy">
+            <div class="td-summon-feature-top"><span class="td-label">Featured hero</span><span data-td-summon-rotation></span></div>
+            <h2 data-td-summon-feature-name></h2>
+            <p class="td-summon-feature-title" data-td-summon-feature-title></p>
+            <p class="td-camp-progress" data-td-summon-copy></p>
+            <div class="td-summon-rate"><strong data-td-summon-feature-rate></strong><span>Featured chance</span></div>
+            <div class="td-summon-terms"><span>Owned heroes return as copies</span><span data-td-summon-pool-count></span></div>
+            <div class="td-summon-action">
+              <div><span data-td-summon-wallet></span><small data-td-summon-note></small></div>
+              <div class="td-summon-buttons">
+                <button class="action-button action-button--quiet" type="button" data-td-summon-button data-td-autofocus>Summon x1</button>
+                <button class="action-button action-button--primary" type="button" data-td-summon-multi>Summon x10</button>
+                <label class="td-summon-skip"><input type="checkbox" data-td-summon-skip /> Skip animation</label>
+              </div>
+            </div>
+          </div>
+          <span class="sr-only" data-td-summon-banner></span>
+          <span class="sr-only" data-td-summon-price></span>
+        </article>
+        <details class="td-summon-arrivals">
+          <summary>Possible arrivals<svg class="td-summon-arrivals-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+          <div class="td-summon-arrivals-content">
+            <div class="td-summon-pool-head"><h3>Other heroes in this call</h3><p>Every non-featured hero has the same chance.</p></div>
+            <div class="td-summon-pool" data-td-summon-pool></div>
+          </div>
+        </details>
+        <div class="td-dust">
+          <div><span class="td-label">Seal Dust</span><strong data-td-dust-wallet></strong><small>Turn spare copies into Seal Dust on the Heroes screen (Evolution tab).</small></div>
+          <div class="td-dust-actions">
+            <button class="action-button action-button--quiet" type="button" data-td-dust-seals></button>
+            <button class="action-button action-button--quiet" type="button" data-td-dust-essence></button>
+          </div>
         </div>
-        <div class="td-summon-reveal" data-td-summon-reveal tabindex="-1" hidden></div>
-        <div class="td-collection-head"><h3 class="td-label">Heroes in this banner</h3><span data-td-summon-pool-count></span></div>
-        <div class="td-summon-pool" data-td-summon-pool></div>
         <p class="td-camp-progress" data-td-summon-source></p>
       </div>
-      <div class="td-screen-footer">
-        <p class="td-screen-footer-note" data-td-summon-note></p>
-        <button class="action-button action-button--quiet" type="button" data-td-go="campaign">Campaign</button>
-        <button class="action-button action-button--primary" type="button" data-td-summon-button data-td-autofocus>Summon</button>
-      </div>
+      <dialog class="td-summon-stage" data-td-summon-stage aria-labelledby="td-summon-stage-title">
+        <div class="td-summon-stage-inner">
+          <header class="td-summon-stage-head">
+            <h2 id="td-summon-stage-title" data-td-summon-stage-title>Summon</h2>
+            <p data-td-summon-stage-hint></p>
+          </header>
+          <div class="td-summon-cards" data-td-summon-cards></div>
+          <p class="sr-only" aria-live="polite" data-td-summon-live></p>
+          <div class="td-summon-stage-actions">
+            <button class="action-button action-button--primary" type="button" data-td-summon-reveal-all>Reveal all</button>
+            <div class="td-summon-done" data-td-summon-done hidden>
+              <button class="action-button action-button--primary" type="button" data-td-summon-again></button>
+              <button class="action-button action-button--quiet" type="button" data-td-go="stages">Build squad</button>
+              <button class="action-button action-button--quiet" type="button" data-td-summon-close>Close</button>
+            </div>
+          </div>
+        </div>
+      </dialog>
     </section>
 
     <!-- 1d. Campaign heroes: levels (M26) -->
     <section class="td-screen" data-td-screen="heroes" data-title="Heroes" aria-label="Heroes" hidden>
-      <div class="td-screen-body td-camp-screen">
-        <div class="td-camp-head">
-          <h2 class="td-camp-chapter">Your heroes</h2>
-          <p class="td-camp-progress" data-td-heroes-copy></p>
+      <div class="td-screen-body td-heroes-screen">
+        <div class="td-heroes-head">
+          <div>
+            <span class="td-label">Your company</span>
+            <h2 class="td-camp-chapter">Heroes</h2>
+            <p class="td-camp-progress td-heroes-copy" data-td-heroes-copy></p>
+          </div>
           <p class="td-camp-wallet" data-td-camp-wallet></p>
         </div>
-        <div class="td-camp-heroes" data-td-camp-heroes></div>
+        <div class="td-heroes-workspace">
+          <aside class="td-heroes-browser" aria-label="Hero collection">
+            <div class="td-collection-head"><h3 class="td-label">Collection</h3><span data-td-heroes-count></span></div>
+            <div class="td-camp-heroes" data-td-camp-heroes></div>
+          </aside>
+          <div class="td-hero-detail" data-td-hero-detail aria-live="polite"></div>
+        </div>
       </div>
     </section>
 
@@ -363,6 +413,7 @@ const modes = [
             <div class="td-trial-reward" data-td-daily-reward>
               <span class="td-label">First clear today</span>
               <strong><span data-td-daily-reward-amount></span> <small>Favor</small></strong>
+              <small class="td-trial-reward-extra" data-td-daily-reward-seals></small>
               <span class="td-trial-reward-state" data-td-daily-reward-state></span>
             </div>
           </header>

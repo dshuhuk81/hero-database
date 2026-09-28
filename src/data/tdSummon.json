@@ -1,5 +1,17 @@
 {
+  "sealSources": { "dailyGoal": 15, "expeditionComplete": 60 },
+  "dust": { "perCopy": 30, "perSeal": 2, "perEssence": 150 },
   "banners": [
-    { "id": "crossing", "name": "Call to the Crossing", "cost": { "divineSeals": 100 }, "pool": "locked" }
+    {
+      "id": "crossing",
+      "name": "Ember at the Crossing",
+      "cost": { "divineSeals": 60 },
+      "multiCount": 10,
+      "pool": "all",
+      "featuredRotation": ["set", "nyx", "phoenix", "bastet"],
+      "featuredWeight": 5,
+      "rotationDays": 14,
+      "rotationEpoch": "2026-09-28T00:00:00Z"
+    }
   ]
 }

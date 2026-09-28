@@ -3,11 +3,17 @@
 import { bossSprite } from "../assets.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
+import { addSeals } from "../campaign.js";
+import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 import type { ExpeditionState, SaveData } from "./save";
 import { roman, routeHtml } from "./route";
 import { trialCardHtml } from "./daily";
+
+// Divine Seals for a finished expedition, on top of the Favor (summon currency, M26).
+const EXP_SEALS: number = (summonData as any).sealSources?.expeditionComplete ?? 0;
+const sealsText = EXP_SEALS ? ` + ${EXP_SEALS} Seals` : "";
 
 const relicInfo = RUN_BOON_INFO as Record<string, { name: string; text: string }>;
 
@@ -24,13 +30,14 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
     if (result.outcome === "complete") {
       reward = EXPEDITION.completeFavor;
       save.favor = (save.favor || 0) + reward;
+      save.campaign = addSeals(save.campaign, EXP_SEALS) as SaveData["campaign"];
       save.expeditionBest.completed += 1;
     }
   }
   const text = result.outcome === "camp"
     ? `Stage ${result.cleared} of ${total} cleared with ${game.lives} lives left. Choose your reward at the camp on the Expedition screen, then continue.`
     : result.outcome === "complete"
-      ? `Expedition complete: all ${total} stages cleared.${reward ? ` +${reward} Favor.` : ""}`
+      ? `Expedition complete: all ${total} stages cleared.${reward ? ` +${reward} Favor${EXP_SEALS ? `, +${EXP_SEALS} Divine Seals` : ""}.` : ""}`
       : `The expedition ends at stage ${state.stage + 1} of ${total} (${result.cleared} cleared).`;
   return { outcome: result.outcome, text, reward };
 }
@@ -117,14 +124,14 @@ export function createExpedition(ctx: PageContext) {
       titleEl.textContent = "Three battlefields, one squad";
       copyEl.textContent = `Clear ${stops} battlefields in a row with the heroes you are given, and grow the squad at camp between battles.`;
       statusEl.className = "td-trial-reward td-exp-status";
-      statusEl.innerHTML = `<span class="td-label">Complete all ${stops}</span><strong>+${EXPEDITION.completeFavor} <small>Favor</small></strong><span class="td-trial-reward-state">Paid once per expedition</span>`;
+      statusEl.innerHTML = `<span class="td-label">Complete all ${stops}</span><strong>+${EXPEDITION.completeFavor} <small>Favor${sealsText}</small></strong><span class="td-trial-reward-state">Paid once per expedition</span>`;
       routeNoteEl.textContent = "Order is drawn at the start";
       routeEl.innerHTML = data.maps.map((_: any, i: number) => stopHtml(null, i, "ahead")).join("");
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
       summaryTitleEl.textContent = "Not started";
-      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> <b>+${EXPEDITION.completeFavor} Favor</b>`;
+      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> <b>+${EXPEDITION.completeFavor} Favor${sealsText}</b>`;
       summaryRouteEl.innerHTML = routeHtml(data.maps.map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
       summaryCtaEl.textContent = "Start";
       return;
@@ -147,7 +154,7 @@ export function createExpedition(ctx: PageContext) {
     const bossArt = bossSprite(ctx.bossFor(map).id ?? map?.boss ?? "baphomet");
     if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
     statusEl.className = "td-trial-reward td-exp-status is-lives";
-    statusEl.innerHTML = `<span class="td-label">Lives left</span><strong><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg>${state.lives}</strong><span class="td-trial-reward-state">Finish for +${EXPEDITION.completeFavor} Favor</span>`;
+    statusEl.innerHTML = `<span class="td-label">Lives left</span><strong><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg>${state.lives}</strong><span class="td-trial-reward-state">Finish for +${EXPEDITION.completeFavor} Favor${sealsText}</span>`;
     routeNoteEl.textContent = `${state.stage} of ${state.stages.length} cleared`;
     routeEl.innerHTML = state.stages.map((id, i) => stopHtml(id, i, i < state.stage ? "done" : i === state.stage ? "current" : "ahead")).join("");
     rosterCountEl.textContent = `${state.roster.length} ${state.roster.length === 1 ? "hero" : "heroes"}`;

@@ -1650,8 +1650,9 @@ export class TowerDefenseGame {
     const variant = hero.variant;
     // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.
     const foes = this.enemies.filter((e) => !e.untargetable && !(e.flying && hero.slotType === "road"));
-    // Awakened heroes (level 5 step, tuning.awakening) get the approved per-ultimate upgrade.
-    const aw = !!hero.awakened;
+    // Awakened heroes (level 5 step, tuning.awakening) get the approved per-ultimate upgrade;
+    // campaign Evolution V (hero.awakenedUlt, campaign.js campaignHeroes) has it from deploy.
+    const aw = !!hero.awakened || !!hero.awakenedUlt;
 
     if (variant === "shadow_step") {
       // Nyx: phase to lowest-HP enemy, execute it, slow nearby

@@ -1,18 +1,19 @@
 // Campaign (M26) on the page: the Campaign screen (chapter, currencies, stages with lock
 // and clear state and their rewards), the Squad screen (pick up to squadSize owned heroes),
 // the Heroes screen (level heroes with Gold and Hero XP), the Summon screen (Divine Seals
-// buy a hero not owned yet) and recording a finished stage for the result screen. Rules
+// buy one or ten heroes not owned yet; the reveal stage is ./summon-reveal.ts) and recording a finished stage for the result screen. Rules
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
 import { SKILL_TEXT } from "../skills.js";
 import { classIconImg } from "../assets.js";
-import { allStages, stageRewardHeroes, canAfford, canLevelUp, canSummon, CURRENCIES, CURRENCY_NAMES, finishCampaignStage, heroLevel, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, nextStage, pendingRewards, repeatRewards, rewardText, stageById, summon, summonPool, validSquad } from "../campaign.js";
+import { allStages, stageRewardHeroes, autoFodder, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman, routeHtml } from "./route";
+import { createSummonReveal } from "./summon-reveal";
 
 export type CampaignRun = { stageId: string; squad: string[] };
 
@@ -60,11 +61,19 @@ export function createCampaign(ctx: PageContext) {
   const summonCopyEl = q("[data-td-summon-copy]");
   const summonWalletEl = q("[data-td-summon-wallet]");
   const summonNoteEl = q("[data-td-summon-note]");
-  const summonRevealEl = q("[data-td-summon-reveal]");
   const summonButton = q<HTMLButtonElement>("[data-td-summon-button]");
+  const summonMultiButton = q<HTMLButtonElement>("[data-td-summon-multi]");
+  const summonSkipInput = q<HTMLInputElement>("[data-td-summon-skip]");
+  const SKIP_KEY = "td:summonSkip"; // per-browser convenience, not part of the save
+  try { summonSkipInput.checked = localStorage.getItem(SKIP_KEY) === "1"; } catch { /* storage blocked */ }
+  let lastCount = 1; // the reveal stage's Summon again repeats the last summon size
+  const summonReveal = createSummonReveal(ctx, () => doSummon(lastCount));
   let stageId: string | null = null; // stage picked on the Campaign screen
   let squad: string[] = [];
   let featuredId: string | null = null; // stage shown in the detail panel (tap a stage card to preview it)
+  let selectedHeroId: string | null = null;
+  let heroTab: "level" | "stars" | "evolution" = "level"; // Heroes screen detail tab
+  let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -81,7 +90,7 @@ export function createCampaign(ctx: PageContext) {
   // Squad power vs. a stage's recommendation: a legible readout of the same hpScale
   // knob the simulator uses to scale enemy HP, not a separate invented difficulty axis.
   const avgHeroBase = data.heroes.reduce((sum: number, hero: any) => sum + hero.atk + hero.hp, 0) / data.heroes.length;
-  const heroPower = (hero: any, level: number) => Math.round((hero.atk + hero.hp) * levelScale(campaign, level));
+  const heroPower = (hero: any, level: number) => Math.round((hero.atk + hero.hp) * levelScale(campaign, level) * starScale(campaign, heroStars(progress(), hero.id)));
   const recommendedPower = (stage: any) => Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
 
   const featureEl = q("[data-td-camp-feature]");
@@ -96,18 +105,17 @@ export function createCampaign(ctx: PageContext) {
     const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     const next = nextStage(campaign, p);
     const chapter = campaign.chapters[0];
-    const resourceHints: Record<string, string> = { gold: "Hero upgrades", heroXp: "Hero upgrades", divineSeals: "Summon heroes" };
     const resourceIcons: Record<string, string> = { gold: "◈", heroXp: "✦", divineSeals: "✧" };
-    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<div class="td-camp-resource"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><div><small>${(CURRENCY_NAMES as Record<string, string>)[id]}</small><strong>${(p.currencies[id] || 0).toLocaleString()}</strong><small>${resourceHints[id] ?? "Hero upgrades"}</small></div></div>`).join("");
+    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<span class="td-camp-resource" title="${(CURRENCY_NAMES as Record<string, string>)[id]}" aria-label="${(p.currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><strong>${(p.currencies[id] || 0).toLocaleString()}</strong></span>`).join("");
     q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
     q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
     const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
     meter.max = stages.length;
     meter.value = cleared;
-    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id)).length;
-    q("[data-td-camp-home-heroes]").textContent = `${p.owned.length} / ${data.heroes.length} collected · ${upgrades ? `${upgrades} ready to level up` : "Earn Gold and Hero XP to level up"}`;
+    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id) || canStarUp(p, id) || !!evolutionMaterial(campaign, p, id)).length;
+    q("[data-td-camp-home-heroes]").textContent = `${p.owned.length} / ${data.heroes.length} collected · ${upgrades ? `${upgrades} ready to upgrade` : "Earn Gold and Hero XP to level up"}`;
     const remaining = summonPool(p, allHeroIds()).length;
-    q("[data-td-camp-home-summon]").textContent = !remaining ? "All banner heroes collected" : canSummon(summonCfg, banner.id, p, allHeroIds()) ? "A new hero awaits · Summon available" : `${costText(banner.cost)} per summon`;
+    q("[data-td-camp-home-summon]").textContent = canSummon(summonCfg, banner.id, p, allHeroIds()) ? `Summon available${remaining ? ` · ${remaining} heroes not owned yet` : " · duplicates become copies"}` : `${costText(banner.cost)} per summon`;
     const company = (p.lastSquad.length ? p.lastSquad : p.owned.slice(0, campaign.squadSize)).filter((id) => p.owned.includes(id));
     q("[data-td-camp-company-note]").textContent = p.lastSquad.length ? "Last deployed squad" : "Your first defenders";
     q("[data-td-camp-company]").innerHTML = company.map((id) => {
@@ -200,78 +208,194 @@ export function createCampaign(ctx: PageContext) {
     return true;
   }
 
-  // Heroes screen: owned heroes with level, attack and health in campaign stages, Level up.
+  // Heroes screen: owned heroes and their three campaign upgrades, one tab each:
+  // Level (Gold + Hero XP), Stars (spare copies of any hero + Gold: attack and health) and
+  // Evolution (a copy of the same hero or Divine Essence: ultimate and crit).
   function renderHeroes() {
     const p = progress();
-    q("[data-td-heroes-copy]").textContent = `Each campaign level adds ${Math.round((campaign.heroLevels?.statPerLevel ?? 0) * 100)}% attack and health in campaign stages. Battle levels inside a run are separate, and Free Play, the Daily Trial and the Expedition are not affected.`;
+    q("[data-td-heroes-copy]").textContent = "Level, Stars and Evolution apply in campaign stages only.";
     walletEls.forEach((el) => { el.textContent = wallet(); });
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
-    const heroes = data.heroes.filter((hero: any) => p.owned.includes(hero.id)).sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
-    const max = campaign.heroLevels?.max ?? 1;
+    const heroes = [...data.heroes].sort((a: any, b: any) => Number(!p.owned.includes(a.id)) - Number(!p.owned.includes(b.id)) || order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
+    const owned = heroes.filter((hero: any) => p.owned.includes(hero.id));
+    if (!selectedHeroId || !p.owned.includes(selectedHeroId)) selectedHeroId = owned[0]?.id ?? null;
+    q("[data-td-heroes-count]").textContent = `${p.owned.length} / ${heroes.length}`;
     heroListEl.innerHTML = heroes.map((hero: any) => {
-      const level = heroLevel(p, hero.id);
-      const cost = levelUpCost(campaign, level);
-      const now = levelScale(campaign, level), next = levelScale(campaign, level + 1);
-      // Current value, and the value after the next level while one is left.
-      const stat = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${cost ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
-      const button = cost
-        ? `<button type="button" class="action-button action-button--quiet td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up<small>${costText(cost)}</small></button>`
-        : `<span class="td-camp-maxed">Max level</span>`;
-      return `<article class="td-camp-hero"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy">
-        <div class="td-card-copy"><strong>${hero.name}</strong><small>${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}</small>
-        <span class="td-camp-level">Campaign Lv ${level} / ${max}</span>
-        <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: max }, (_, n) => `<i${n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
-        <dl class="td-camp-stats">${stat("Attack", hero.atk)}${stat("Health", hero.hp)}</dl></div>${button}</article>`;
+      const isOwned = p.owned.includes(hero.id);
+      const unlock = allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
+      const tier = heroEvolution(p, hero.id);
+      const note = isOwned ? `Lv ${heroLevel(p, hero.id)} · ${heroStars(p, hero.id)}★${tier ? ` · ${roman(tier)}` : ""}` : unlock ? `Stage ${unlock.id}` : "Summon";
+      const copies = p.copies?.[hero.id] ?? 0;
+      const ready = isOwned && (canLevelUp(campaign, p, hero.id) || !!evolutionMaterial(campaign, p, hero.id) || canStarUp(p, hero.id));
+      return `<button type="button" class="td-hero-tile${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}"${isOwned ? "" : " disabled"}>
+        ${copies ? `<span class="td-hero-tile-copies" title="Spare copies">+${copies}</span>` : ""}${ready ? `<span class="td-hero-tile-dot" aria-label="Upgrade available"></span>` : ""}
+        <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><span><strong>${hero.name}</strong><small>${note}</small></span></button>`;
     }).join("");
-    heroListEl.querySelector<HTMLElement>("[data-camp-levelup]:not([disabled])")?.setAttribute("data-td-autofocus", "");
+    const hero = heroById.get(selectedHeroId ?? "");
+    if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
+    const skill = data.tuning.heroSkills?.[hero.id];
+    const tabs = (["level", "stars", "evolution"] as const).map((id) => `<button type="button" class="td-hero-tab${heroTab === id ? " is-active" : ""}" data-camp-hero-tab="${id}" aria-pressed="${heroTab === id}">${{ level: "Level", stars: "Stars", evolution: "Evolution" }[id]}</button>`).join("");
+    const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : levelPanel(p, hero);
+    q("[data-td-hero-detail]").innerHTML = `<article class="td-hero-profile">
+      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
+      <div class="td-hero-profile-copy"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
+      <p class="td-hero-role">${classIconImg(hero.class, 18)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
+      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
+      <div class="td-hero-tabs">${tabs}</div>
+      ${body}
+      ${skill && heroTab !== "evolution" ? `<div class="td-hero-skill"><span class="td-label">Signature skill</span><strong>${skill.skillName}</strong><p>${SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? ""}</p></div>` : ""}
+      </div></article>`;
   }
 
-  // Summon screen: the banner, its cost, the player's Divine Seals, heroes left, one button.
-  // `fresh` (entering the screen) hides the last reveal.
-  // Summonable roster: stage reward heroes are left out (they come from their stage's first clear).
+  // Attack and health in campaign stages: base x level x stars.
+  const heroScale = (p: any, id: string, level = heroLevel(p, id), starCount = heroStars(p, id)) => levelScale(campaign, level) * starScale(campaign, starCount);
+  const statRows = (hero: any, now: number, next: number | null) => {
+    const row = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${next ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
+    return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Deploy cost</dt><dd>${hero.cost} Gold</dd></div></dl>`;
+  };
+
+  function levelPanel(p: any, hero: any) {
+    const max = campaign.heroLevels?.max ?? 1;
+    const level = heroLevel(p, hero.id);
+    const cost = levelUpCost(campaign, level);
+    const button = cost
+      ? `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up <small>${costText(cost)}</small></button>`
+      : `<span class="td-camp-maxed">Maximum level reached</span>`;
+    return `<p class="td-hero-tab-copy">Each level adds ${Math.round((campaign.heroLevels?.statPerLevel ?? 0) * 100)}% attack and health.</p>
+      <div class="td-hero-level-head"><strong>Campaign level ${level}</strong><span>${level} / ${max}</span></div>
+      <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: max }, (_, n) => `<i${n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
+      ${statRows(hero, heroScale(p, hero.id), cost ? heroScale(p, hero.id, level + 1) : null)}
+      <div class="td-hero-upgrade">${button}</div>`;
+  }
+
+  // Stars: pick exactly the cost's number of spare copies (any hero). Quick add only uses
+  // copies no Evolution still needs; tap a copy to add it, tap a filled slot to remove it.
+  const fodderCount = () => Object.values(fodder).reduce((sum, n) => sum + n, 0);
+  function canStarUp(p: any, id: string) {
+    const cost = starUpCost(campaign, heroStars(p, id));
+    return !!cost && (p.currencies.gold || 0) >= cost.gold && Object.values(p.copies ?? {}).reduce((sum: number, n: any) => sum + n, 0) >= cost.copies;
+  }
+  function starsPanel(p: any, hero: any) {
+    const starCount = heroStars(p, hero.id);
+    const max = campaign.heroStars?.max ?? 5;
+    const cost = starUpCost(campaign, starCount);
+    const per = Math.round((campaign.heroStars?.statPerStar ?? 0) * 100);
+    if (!cost) return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health.</p>${statRows(hero, heroScale(p, hero.id), null)}<span class="td-camp-maxed">Maximum stars reached</span>`;
+    const slots = Object.entries(fodder).flatMap(([id, n]) => Array.from({ length: n }, () => id));
+    const slotHtml = Array.from({ length: cost.copies }, (_, i) => {
+      const id = slots[i];
+      const h = id ? heroById.get(id) : null;
+      return h ? `<button type="button" class="td-fodder-slot is-filled" data-camp-fodder-remove="${id}" aria-label="Remove ${h.name} copy"><img src="${h.portrait ?? h.image}" alt=""><small>${h.name}</small></button>` : `<span class="td-fodder-slot" aria-hidden="true">+</span>`;
+    }).join("");
+    const spare = Object.entries(p.copies ?? {}).filter(([, n]) => (n as number) > 0);
+    const pickHtml = spare.length ? spare.map(([id, n]) => {
+      const h = heroById.get(id);
+      const free = (n as number) - (fodder[id] ?? 0);
+      return `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${h?.portrait ?? h?.image}" alt=""><strong>${h?.name ?? id}</strong><small>${free} left</small></button>`;
+    }).join("") : `<p class="td-hero-tab-copy">No spare copies yet. Summon heroes you already own to get copies.</p>`;
+    const full = fodderCount() === cost.copies;
+    const goldOk = (p.currencies.gold || 0) >= cost.gold;
+    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health. Star up uses spare copies of any hero.</p>
+      <div class="td-hero-level-head"><strong>${stars(starCount)}</strong><span>${starCount} / ${max}</span></div>
+      ${statRows(hero, heroScale(p, hero.id), heroScale(p, hero.id, undefined, starCount + 1))}
+      <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Copies needed</span><span>${fodderCount()} / ${cost.copies}</span></div>
+      <div class="td-fodder-slots">${slotHtml}</div>
+      <div class="td-fodder-picks">${pickHtml}</div></div>
+      <div class="td-hero-upgrade td-hero-upgrade--split">
+        <button type="button" class="action-button action-button--quiet" data-camp-fodder-auto${spare.length ? "" : " disabled"}>Quick add</button>
+        <button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-starup="${hero.id}"${full && goldOk ? "" : " disabled"}>Star up <small>${cost.gold} Gold</small></button>
+      </div>`;
+  }
+
+  // Evolution: tiers I-V with their bonus; each costs a copy of this hero (used first) or
+  // 1 Divine Essence. Spare copies can also become Seal Dust here.
+  function evolutionPanel(p: any, hero: any) {
+    const tier = heroEvolution(p, hero.id);
+    const tiers = campaign.heroEvolution?.tiers ?? [];
+    const copies = p.copies?.[hero.id] ?? 0;
+    const essence = p.currencies.divineEssence || 0;
+    const material = evolutionMaterial(campaign, p, hero.id);
+    const list = tiers.map((entry: any, i: number) => `<li class="${i < tier ? "is-done" : i === tier ? "is-next" : "is-locked"}"><span class="td-evo-mark" aria-hidden="true">${i < tier ? "✓" : roman(i + 1)}</span><span><strong>${entry.name}</strong><small>${entry.text}</small></span></li>`).join("");
+    const maxed = tier >= tiers.length;
+    const materialHtml = maxed ? "" : `<div class="td-evo-material">
+        <div class="td-evo-slot${copies ? " is-ready" : ""}"><img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small></div>
+        <span>or</span>
+        <div class="td-evo-slot td-evo-slot--essence${essence ? " is-ready" : ""}"><span aria-hidden="true">✦</span><small>${essence} Essence</small></div>
+        <p>${material === "copy" ? `Uses 1 copy of ${hero.name}.` : material === "essence" ? "Uses 1 Divine Essence." : `Needs a copy of ${hero.name} or 1 Divine Essence.`}</p>
+      </div>`;
+    const dustPer = summonCfg.dust?.perCopy ?? 0;
+    return `<p class="td-hero-tab-copy">Evolution improves the ultimate and crit chance, one tier per copy of ${hero.name}.</p>
+      <ol class="td-evo-tiers">${list}</ol>
+      ${materialHtml}
+      <div class="td-hero-upgrade td-hero-upgrade--split">
+        ${copies && dustPer ? `<button type="button" class="action-button action-button--quiet" data-camp-dust="${hero.id}">1 copy → ${dustPer} Dust</button>` : ""}
+        ${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${material ? "" : " disabled"}>Evolve to ${roman(tier + 1)}</button>`}
+      </div>`;
+  }
+
+  // Summon screen: the banner, its cost, the player's Divine Seals and Seal Dust, x1 / x10.
+  // `fresh` (entering the screen) closes the last reveal.
+  // Summonable roster: stage reward heroes join only once earned (their stage's first clear
+  // gives them; a summon never takes it first). Owned heroes come back as spare copies.
   const reserved = new Set(stageRewardHeroes(campaign));
-  const allHeroIds = () => data.heroes.map((hero: any) => hero.id as string).filter((id: string) => !reserved.has(id));
+  const allHeroIds = () => data.heroes.map((hero: any) => hero.id as string).filter((id: string) => !reserved.has(id) || progress().owned.includes(id));
+  const stars = (n: number, max = campaign.heroStars?.max ?? 5) => `<span class="td-stars" aria-label="${n} of ${max} stars">${"★".repeat(n)}<span aria-hidden="true">${"★".repeat(Math.max(0, max - n))}</span></span>`;
   function renderSummon(fresh = false) {
     const p = progress();
-    const left = summonPool(p, allHeroIds()).length;
+    const ids = allHeroIds();
+    const left = summonPool(p, ids).length;
     const seals = p.currencies.divineSeals || 0;
+    const dust = p.currencies.sealDust || 0;
+    const featuredId = featuredHeroId(banner);
+    const featured = heroById.get(featuredId);
+    const featuredOwned = !!featuredId && p.owned.includes(featuredId);
+    const chance = featuredChance(banner, p, ids);
+    const epoch = Date.parse(banner.rotationEpoch ?? "");
+    const duration = Math.max(1, Number(banner.rotationDays) || 14) * 86400000;
+    const elapsed = Number.isFinite(epoch) ? Math.max(0, Date.now() - epoch) : 0;
+    const rotationEnd = Number.isFinite(epoch) ? epoch + (Math.floor(elapsed / duration) + 1) * duration : Date.now() + duration;
+    const daysLeft = Math.max(1, Math.ceil((rotationEnd - Date.now()) / 86400000));
     summonBannerEl.textContent = banner.name;
-    summonCopyEl.textContent = left
-      ? "Invite a new defender to your campaign squad."
-      : "Every hero in this banner is yours. Stage rewards can still unlock other heroes.";
-    summonWalletEl.textContent = `${seals.toLocaleString()} ${CURRENCY_NAMES.divineSeals}`;
-    const ok = canSummon(summonCfg, banner.id, p, allHeroIds());
+    summonCopyEl.textContent = featuredOwned
+      ? "You own the featured hero. More copies raise its Stars and Evolution on the Heroes screen."
+      : "The featured hero has boosted odds. Heroes you already own come back as spare copies.";
+    q<HTMLImageElement>("[data-td-summon-feature-art]").src = featured?.portrait ?? featured?.image ?? "";
+    q<HTMLImageElement>("[data-td-summon-feature-art]").alt = featured?.name ?? "Featured hero";
+    q("[data-td-summon-feature-name]").textContent = featured?.name ?? "Featured hero";
+    q("[data-td-summon-feature-title]").textContent = featured ? `${featured.title ?? ROLE_HINTS[featured.class] ?? ""} · ${featured.class}` : "";
+    q("[data-td-summon-feature-rate]").textContent = `${Math.round(chance * 100)}%`;
+    q("[data-td-summon-rotation]").textContent = `Rotates in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`;
+    summonWalletEl.textContent = `✧ ${seals.toLocaleString()} Divine Seals`;
+    const ok = canSummon(summonCfg, banner.id, p, ids);
     summonButton.disabled = !ok;
     summonButton.toggleAttribute("data-td-autofocus", ok);
-    summonButton.textContent = left ? "Summon 1 hero" : "Banner complete";
+    summonButton.textContent = `Summon x1 · ${banner.cost.divineSeals} ✧`;
+    const multi = Number(banner.multiCount) || 10;
+    summonMultiButton.disabled = !multiSummonCount(summonCfg, banner.id, p, ids);
+    summonMultiButton.textContent = `Summon x${multi} · ${(banner.cost.divineSeals * multi).toLocaleString()} ✧`;
     q("[data-td-summon-price]").textContent = `${costText(banner.cost)} per summon`;
-    q("[data-td-summon-pool-count]").textContent = `${left} still to discover`;
-    const pool = data.heroes.filter((hero: any) => !reserved.has(hero.id) && !campaign.starters.includes(hero.id));
-    q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => `<div class="td-summon-pool-hero${p.owned.includes(hero.id) ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${p.owned.includes(hero.id) ? "✓ Owned" : "Undiscovered"}</span></div>`).join("");
+    q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
+    const pool = data.heroes.filter((hero: any) => ids.includes(hero.id) && hero.id !== featuredId);
+    q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => {
+      const isOwned = p.owned.includes(hero.id);
+      const copies = p.copies?.[hero.id] ?? 0;
+      return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
+    }).join("");
     q("[data-td-summon-source]").textContent = nextStage(campaign, p)
-      ? "Earn Divine Seals from first clears in Campaign. Every remaining hero in this banner has an equal chance. Stage-reward heroes are earned only from their stages."
-      : "All current campaign stages are cleared. Replays award Gold and Hero XP, but no Divine Seals. More seals need future campaign rewards.";
-    summonNoteEl.textContent = !left ? "All banner heroes collected." : canAfford(p, banner.cost) ? `${costText(banner.cost)} per summon` : `Needs ${costText(banner.cost)}`;
-    if (fresh) { summonRevealEl.hidden = true; summonRevealEl.innerHTML = ""; }
-  }
-
-  function reveal(id: string) {
-    const hero = heroById.get(id);
-    if (!hero) return;
-    summonRevealEl.innerHTML = `<div class="td-summon-card">` +
-      `<div class="td-summon-art"><img src="${hero.portrait ?? hero.image}" alt="" width="240" height="240" decoding="async"></div>` +
-      `<div class="td-summon-copy"><span class="td-label">New hero</span>` +
-      `<strong>${classIconImg(hero.class, 18)}${hero.name}</strong>` +
-      (hero.title ? `<small class="td-summon-title">${hero.title}</small>` : "") +
-      `<small>${hero.class} - ${hero.slot === "road" ? "road" : "platform"} - ${hero.cost} gold</small></div></div>` +
-      `<div class="td-summon-hint"><p>Build squad: ${hero.name} is ready. Pick a stage and add ${hero.name} to your squad.</p>` +
-      `<button type="button" class="action-button action-button--quiet" data-td-go="stages">Build squad</button></div>`;
-    summonRevealEl.hidden = false;
-    summonRevealEl.focus({ preventScroll: true });
-    summonRevealEl.scrollIntoView({ block: "nearest" });
-    // Restart the reveal animation on a second summon.
-    const card = summonRevealEl.querySelector<HTMLElement>(".td-summon-card");
-    if (card) { card.style.animation = "none"; void card.offsetWidth; card.style.animation = ""; }
+      ? "Divine Seals come from first clears in Campaign, the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. Stage-reward heroes join this banner once earned."
+      : "All current campaign stages are cleared. Divine Seals still come from the Daily Trial goal, finished Expeditions and Seal Dust.";
+    summonNoteEl.textContent = canAfford(p, banner.cost) ? "Summon available" : `${Math.max(0, banner.cost.divineSeals - seals)} more needed`;
+    // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals or Essence.
+    const d = summonCfg.dust ?? {};
+    q("[data-td-dust-wallet]").textContent = `${dust.toLocaleString()} Seal Dust · ${(p.currencies.divineEssence || 0).toLocaleString()} Divine Essence`;
+    const sealsFor = Math.floor(dust / (d.perSeal || Infinity));
+    const sealsButton = q<HTMLButtonElement>("[data-td-dust-seals]");
+    sealsButton.disabled = sealsFor < 1;
+    sealsButton.textContent = sealsFor ? `${(sealsFor * d.perSeal).toLocaleString()} Dust → ${sealsFor.toLocaleString()} Divine Seals` : `${d.perSeal} Dust → 1 Divine Seal`;
+    const essenceButton = q<HTMLButtonElement>("[data-td-dust-essence]");
+    essenceButton.disabled = dust < d.perEssence;
+    essenceButton.textContent = `${d.perEssence} Dust → 1 Divine Essence`;
+    if (fresh) summonReveal.close();
   }
 
   function selectStage(id: string) {
@@ -335,9 +459,18 @@ export function createCampaign(ctx: PageContext) {
     feedbackEl.textContent = "Quick pick: a road fighter, splash damage, anti-air and healing. Swap any hero to try another approach.";
   });
   squadStart.addEventListener("click", start);
-  heroListEl.addEventListener("click", (event) => {
+  ctx.root.querySelector<HTMLElement>('[data-td-screen="heroes"]')!.addEventListener("click", (event) => {
+    const select = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-hero-select]");
+    if (select && !select.disabled) {
+      if (selectedHeroId !== select.dataset.campHeroSelect) fodder = {};
+      selectedHeroId = select.dataset.campHeroSelect!;
+      renderHeroes();
+      heroListEl.querySelector<HTMLButtonElement>(`[data-camp-hero-select="${selectedHeroId}"]`)?.focus({ preventScroll: true });
+      return;
+    }
+    if (upgradeClick(event.target as HTMLElement)) return;
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-levelup]");
-    if (!button || button.disabled) return;
+    if (!button || button.disabled || !button.dataset.campLevelup) return;
     const id = button.dataset.campLevelup!;
     const next = levelUp(campaign, progress(), id);
     if (!next) return;
@@ -346,19 +479,103 @@ export function createCampaign(ctx: PageContext) {
     renderHeroes();
     render();
     ctx.notice(`${heroName(id)} reached level ${heroLevel(next, id)}.`);
-    (heroListEl.querySelector<HTMLButtonElement>(`[data-camp-levelup="${id}"]:not([disabled])`) ?? heroListEl.querySelector<HTMLButtonElement>("[data-camp-levelup]:not([disabled])"))?.focus({ preventScroll: true });
+    (q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-levelup="${id}"]:not([disabled])`) ?? heroListEl.querySelector<HTMLButtonElement>(`[data-camp-hero-select="${id}"]`))?.focus({ preventScroll: true });
   });
 
-  summonButton.addEventListener("click", () => {
-    const result = summon(summonCfg, banner.id, progress(), allHeroIds());
+  // Heroes screen: tabs, Star up (fodder picking), Evolve and copy to dust. Returns true
+  // when the click was one of these.
+  function commit(next: any, message: string, focus: string) {
+    store.data.campaign = next as CampaignProgress;
+    store.persist();
+    renderHeroes();
+    render();
+    ctx.notice(message);
+    q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${focus}:not([disabled])`)?.focus({ preventScroll: true });
+  }
+  function upgradeClick(target: HTMLElement) {
+    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
+    if (!el || el.disabled || !selectedHeroId) return !!el;
+    const id = selectedHeroId;
+    const d = el.dataset;
+    const p = progress();
+    if (d.campHeroTab) {
+      heroTab = d.campHeroTab as typeof heroTab;
+      fodder = {};
+      renderHeroes();
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-hero-tab="${heroTab}"]`)?.focus({ preventScroll: true });
+    } else if (d.campFodderAdd || d.campFodderRemove || el.hasAttribute("data-camp-fodder-auto")) {
+      const need = starUpCost(campaign, heroStars(p, id))?.copies ?? 0;
+      if (d.campFodderAdd) fodder = { ...fodder, [d.campFodderAdd]: (fodder[d.campFodderAdd] ?? 0) + 1 };
+      else if (d.campFodderRemove) { fodder = { ...fodder, [d.campFodderRemove]: fodder[d.campFodderRemove] - 1 }; if (!fodder[d.campFodderRemove]) delete fodder[d.campFodderRemove]; }
+      else {
+        const auto = autoFodder(campaign, p, need);
+        if (auto) fodder = auto;
+        else ctx.notice("Not enough spare copies that Evolution does not need. Tap copies to pick them yourself.");
+      }
+      renderHeroes();
+      const again = d.campFodderAdd ? `[data-camp-fodder-add="${d.campFodderAdd}"]` : "[data-camp-starup]";
+      (q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${again}:not([disabled])`) ?? q("[data-td-hero-detail]").querySelector<HTMLButtonElement>("[data-camp-starup]"))?.focus({ preventScroll: true });
+    } else if (d.campStarup) {
+      const next = starUp(campaign, p, id, fodder);
+      if (!next) return true;
+      fodder = {};
+      commit(next, `${heroName(id)} reached ${heroStars(next, id)} stars.`, "[data-camp-fodder-auto]");
+    } else if (d.campEvolve) {
+      const next = evolve(campaign, p, id);
+      if (!next) return true;
+      commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evolve]");
+    } else if (d.campDust) {
+      const next = convertCopies(summonCfg, p, id, 1);
+      if (!next) return true;
+      commit(next, `1 copy of ${heroName(id)} became ${summonCfg.dust.perCopy} Seal Dust.`, "[data-camp-dust]");
+    }
+    return true;
+  }
+
+  // Seal Dust exchange on the Summon screen.
+  q("[data-td-dust-seals]").addEventListener("click", () => {
+    const p = progress();
+    const n = Math.floor((p.currencies.sealDust || 0) / (summonCfg.dust?.perSeal || Infinity));
+    const next = exchangeDust(summonCfg, p, "seals", n);
+    if (!next) return;
+    store.data.campaign = next as CampaignProgress;
+    store.persist();
+    renderSummon();
+    render();
+    ctx.notice(`+${n} Divine Seals from Seal Dust.`);
+  });
+  q("[data-td-dust-essence]").addEventListener("click", () => {
+    const next = exchangeDust(summonCfg, progress(), "essence", 1);
+    if (!next) return;
+    store.data.campaign = next as CampaignProgress;
+    store.persist();
+    renderSummon();
+    render();
+    ctx.notice("+1 Divine Essence from Seal Dust.");
+  });
+
+  // Pays and saves first, then opens the reveal stage (closing it mid-reveal loses nothing).
+  function doSummon(count: number) {
+    const result = summonMany(summonCfg, banner.id, progress(), allHeroIds(), count);
     if (!result) return;
+    lastCount = count;
     store.data.campaign = result.progress as CampaignProgress;
     store.persist();
     renderSummon();
     render();
-    reveal(result.heroId);
-    ctx.notice(`${heroName(result.heroId)} joins your heroes!`);
+    const again = count === 1 ? canSummon(summonCfg, banner.id, progress(), allHeroIds()) : multiSummonCount(summonCfg, banner.id, progress(), allHeroIds()) === count;
+    summonReveal.open(result.heroIds, {
+      featuredId: featuredHeroId(banner),
+      isNew: result.isNew,
+      skip: summonSkipInput.checked,
+      again: { label: `Summon x${count} again · ${(banner.cost.divineSeals * count).toLocaleString()} ✧`, enabled: again },
+    });
+  }
 
+  summonButton.addEventListener("click", () => doSummon(1));
+  summonMultiButton.addEventListener("click", () => doSummon(multiSummonCount(summonCfg, banner.id, progress(), allHeroIds())));
+  summonSkipInput.addEventListener("change", () => {
+    try { localStorage.setItem(SKIP_KEY, summonSkipInput.checked ? "1" : "0"); } catch { /* storage blocked */ }
   });
 
   return { render, renderSquad, renderHeroes, renderSummon, selectStage };
