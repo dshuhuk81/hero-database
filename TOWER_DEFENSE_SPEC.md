@@ -275,9 +275,12 @@ roster stacks above the detail panel while retaining its own scroll.
 - one featured hero for 14 days, calculated from `rotationEpoch`;
 - featured weight 5, every other hero weight 1;
 - 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
-- new-hero pity (`pityNewInMulti`): if a full x10 draws no hero the player does not
-  own yet and the pool still has one, the last duplicate is replaced by a weighted
-  draw from the unowned heroes. Single summons have no pity;
+- new-hero pity (`pityNewInMulti`, **currently `false`**): if a full x10 draws no hero
+  the player does not own yet and the pool still has one, the last duplicate is
+  replaced by a weighted draw from the unowned heroes. Single summons have no pity.
+  Implemented but switched off (owner, September 28, 2026): with 21 heroes and no
+  filler heroes, a guaranteed new hero per x10 would empty the collection too fast.
+  Re-enable at ~30+ heroes or once filler heroes exist — one-line config flip;
 - pool `"all"`: every hero the player owns or can summon, drawn with replacement. A hero
   not owned yet joins; an owned one becomes a spare copy (`copies[heroId]`);
 - stage-reward heroes join the pool only after their stage's first clear, so a summon never
@@ -287,11 +290,10 @@ With `N` heroes in the pool the featured chance is `5 / (5 + N - 1)`, each other
 `1 / (5 + N - 1)`. The UI calculates the rate from the same rules function used by
 `summonMany()`, so the displayed chance cannot drift from selection behavior. New heroes
 are meant to stay hard to get (owner, September 28, 2026): the campaign's 600 seals spent
-as one x10 at the end give about 4 new heroes and 6 copies. Note: the x10 new-hero pity
-added later the same day (mechanics overview recommendation 4, approved by the owner in
-the economy session) guarantees one new hero per full x10 — if the "no boost" decision
-above is the standing one, set `pityNewInMulti` to false to disable it without a code
-change. Pending owner confirmation which decision wins.
+as one x10 at the end give about 4 new heroes and 6 copies. The owner confirmed later
+the same day that this "no boost" decision stands: the x10 new-hero pity (mechanics
+overview recommendation 4) stays implemented but ships as `pityNewInMulti: false`
+until the hero pool grows.
 
 Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
