@@ -71,6 +71,17 @@ Hard rules:
   Where element full screen exists, "Enter fullscreen" requests it on the shell and tries
   `screen.orientation.lock("landscape")` (Android); hidden while already full screen and on
   iPhone Safari. The lock is only an enhancement; the gate is the dependable part.
+- Menu frame (`page/frame.ts`): every menu screen (lobby, its dialogs and the embedded
+  Blessings, help and save panels) is laid out once for a phone held sideways, 844 x 390
+  CSS px, and must fit it without page scrolling; only long lists scroll inside their own
+  box (hero roster, hero copy, squad roster, glossary, save code). `.td-app` gets
+  `zoom: var(--td-zoom)` with `--td-zoom = max(0.75, min(w / 844, h / 390))`, so desktop shows
+  the same layout larger and small phones a slightly smaller one. The play screen is not
+  zoomed. Menu CSS lives in the "Menu frame layout" section at the end of `td.css`, prefixed
+  `.td-app`; menu rules must not use viewport units or viewport media queries (neither
+  follows the zoom; percentages and container queries do). Pointer maths inside the frame
+  divides by `zoomOf(el)` (Blessings graph pan and zoom). Checked at 667x375, 844x390,
+  915x412, 1280x720, 1440x900 and 1920x1080.
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
