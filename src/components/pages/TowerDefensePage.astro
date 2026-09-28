@@ -268,7 +268,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
       renderLobby();
       if (id === "mode") renderModeScreen();
       // The squad screen needs a picked stage; after a reload there is none, so back to the stages.
-      if (id === "squad" && !campaignScreens.renderSquad()) nav.go("campaign");
+      if (id === "squad" && !campaignScreens.renderSquad()) nav.go("stages");
       if (id === "heroes") campaignScreens.renderHeroes();
       if (id === "summon") campaignScreens.renderSummon(true);
       if (id === "blessings" || id === "help" || id === "save") panels.embed(id, q(`[data-td-screen-host="${id}"]`));

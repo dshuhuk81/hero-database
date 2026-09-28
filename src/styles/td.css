@@ -1392,3 +1392,52 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
   .td-summon-banner { padding: var(--space-3) var(--space-4); gap: var(--space-2); }
   .td-summon-banner > .td-label { display: none; }
 }
+
+/* Campaign camp: a resource and preparation hub above the chapter route. */
+.td-camp-home { gap: 20px; }
+.td-camp-resources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.td-camp-resource { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: var(--bg-raised); }
+.td-camp-resource > span { font-size: 32px; color: var(--accent-gold); }
+.td-camp-resource:nth-child(2) > span { color: #9ac8f5; }
+.td-camp-resource:nth-child(3) > span { color: #c4a5f5; }
+.td-camp-resource div { display: grid; gap: 2px; }
+.td-camp-resource strong { color: var(--text-bright); font-size: 24px; font-variant-numeric: tabular-nums; }
+.td-camp-resource small { color: var(--text-secondary); font-size: 12px; }
+.td-camp-campfire { overflow: hidden; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: linear-gradient(90deg, rgba(9,9,16,.92), rgba(9,9,16,.15)), url('/td/campaign.webp') center 45% / cover; }
+.td-camp-welcome { padding: 36px 32px 48px; }
+.td-camp-welcome h2 { margin: 10px 0; font-size: clamp(28px, 4vw, 42px); color: var(--text-bright); }
+.td-camp-welcome p { margin: 0; line-height: 1.6; color: #dedce5; }
+.td-camp-party { padding: 20px 24px; background: rgba(9,9,16,.82); border-top: 1px solid var(--border-medium); }
+.td-camp-party .td-collection-head { margin-bottom: 12px; }
+.td-camp-company { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.td-camp-companion { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.td-camp-companion img { width: 50px; height: 58px; object-fit: cover; object-position: top; border: 1px solid var(--border-medium); border-radius: 8px; }
+.td-camp-companion div { display: grid; gap: 4px; }
+.td-camp-companion strong { color: var(--text-bright); font-size: 14px; }
+.td-camp-companion small { color: var(--text-secondary); font-size: 12px; }
+.td-camp-activities { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 16px; }
+.td-camp-activity { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px; text-align: left; font: inherit; color: var(--text-secondary); background: var(--bg-raised); border: 1px solid var(--border-medium); border-radius: var(--radius-lg); cursor: pointer; }
+.td-camp-activity:hover { border-color: var(--accent-gold); background-color: var(--bg-surface); }
+.td-camp-activity:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 4px; }
+.td-camp-activity h3 { color: var(--text-bright); font-size: 21px; line-height: 1.3; }
+.td-camp-activity > span:not(.td-label):not(.td-camp-activity-icon) { line-height: 1.5; font-size: 14px; }
+.td-camp-activity small { font-size: 12px; line-height: 1.5; }
+.td-camp-activity--journey { border-color: color-mix(in srgb, var(--accent-gold) 45%, transparent); background: linear-gradient(135deg, #302815, var(--bg-raised)); }
+.td-camp-activity--summon { background: linear-gradient(135deg, #221b35, var(--bg-raised)); }
+.td-camp-activity-icon { font-size: 26px; line-height: 1; color: var(--accent-gold); }
+.td-camp-activity--summon .td-camp-activity-icon { color: #c4a5f5; }
+.td-camp-activity-cta { display: flex; justify-content: space-between; gap: 16px; width: 100%; margin-top: auto; padding-top: 12px; color: var(--accent-gold); font-size: 14px; }
+.td-camp-activity progress { width: 100%; height: 6px; accent-color: var(--accent-gold); }
+.td-root:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-favor-chip { display: none; }
+@media (max-width: 700px) {
+  .td-camp-resources { gap: 8px; }
+  .td-camp-resource { padding: 12px 8px; gap: 6px; }
+  .td-camp-resource > span { font-size: 20px; }
+  .td-camp-resource strong { font-size: 20px; }
+  .td-camp-resource small { font-size: 10px; }
+  .td-camp-welcome { padding: 28px 20px 36px; }
+  .td-camp-party { padding: 16px; }
+  .td-camp-company { grid-template-columns: repeat(2, 1fr); }
+  .td-camp-activities { grid-template-columns: 1fr; }
+  .td-camp-activity { padding: 20px; }
+}

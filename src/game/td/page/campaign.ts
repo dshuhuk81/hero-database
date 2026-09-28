@@ -96,6 +96,24 @@ export function createCampaign(ctx: PageContext) {
     const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     const next = nextStage(campaign, p);
     const chapter = campaign.chapters[0];
+    const resourceHints: Record<string, string> = { gold: "Hero upgrades", heroXp: "Hero upgrades", divineSeals: "Summon heroes" };
+    const resourceIcons: Record<string, string> = { gold: "◈", heroXp: "✦", divineSeals: "✧" };
+    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<div class="td-camp-resource"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><div><small>${CURRENCY_NAMES[id]}</small><strong>${(p.currencies[id] || 0).toLocaleString()}</strong><small>${resourceHints[id] ?? "Hero upgrades"}</small></div></div>`).join("");
+    q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
+    q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
+    const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
+    meter.max = stages.length;
+    meter.value = cleared;
+    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id)).length;
+    q("[data-td-camp-home-heroes]").textContent = `${p.owned.length} / ${data.heroes.length} collected · ${upgrades ? `${upgrades} ready to level up` : "Earn Gold and Hero XP to level up"}`;
+    const remaining = summonPool(p, allHeroIds()).length;
+    q("[data-td-camp-home-summon]").textContent = !remaining ? "All banner heroes collected" : canSummon(summonCfg, banner.id, p, allHeroIds()) ? "A new hero awaits · Summon available" : `${costText(banner.cost)} per summon`;
+    const company = (p.lastSquad.length ? p.lastSquad : p.owned.slice(0, campaign.squadSize)).filter((id) => p.owned.includes(id));
+    q("[data-td-camp-company-note]").textContent = p.lastSquad.length ? "Last deployed squad" : "Your first defenders";
+    q("[data-td-camp-company]").innerHTML = company.map((id) => {
+      const hero = heroById.get(id);
+      return hero ? `<div class="td-camp-companion"><img src="${hero.portrait ?? hero.image}" alt=""><div><strong>${hero.name}</strong><small>${hero.class} · Lv ${heroLevel(p, id)}</small></div></div>` : "";
+    }).join("");
     summaryTitleEl.textContent = next ? `Stage ${next.id}: ${next.name}` : "Chapter complete";
     summaryEl.textContent = `${cleared} / ${stages.length} stages cleared \u00b7 ${p.owned.length} heroes`;
     summaryChapterEl.textContent = `Chapter ${roman(Number(chapter.id) || 1)} \u00b7 ${chapter.name}`;
@@ -247,7 +265,7 @@ export function createCampaign(ctx: PageContext) {
       (hero.title ? `<small class="td-summon-title">${hero.title}</small>` : "") +
       `<small>${hero.class} - ${hero.slot === "road" ? "road" : "platform"} - ${hero.cost} gold</small></div></div>` +
       `<div class="td-summon-hint"><p>Build squad: ${hero.name} is ready. Pick a stage and add ${hero.name} to your squad.</p>` +
-      `<button type="button" class="action-button action-button--quiet" data-td-go="campaign">Build squad</button></div>`;
+      `<button type="button" class="action-button action-button--quiet" data-td-go="stages">Build squad</button></div>`;
     summonRevealEl.hidden = false;
     summonRevealEl.focus({ preventScroll: true });
     summonRevealEl.scrollIntoView({ block: "nearest" });
@@ -280,7 +298,7 @@ export function createCampaign(ctx: PageContext) {
     if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad] } });
   }
 
-  ctx.root.querySelector<HTMLElement>('[data-td-screen="campaign"]')!.addEventListener("click", (event) => {
+  ctx.root.querySelector<HTMLElement>('[data-td-screen="stages"]')!.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     const startButton = target.closest<HTMLButtonElement>("[data-camp-feature-start]");
     if (startButton) { openStage(startButton.dataset.campFeatureStart!); return; }

@@ -145,8 +145,44 @@ const modes = [
       </div>
     </section>
 
+    <!-- Campaign home: resources and activities, with stages one level deeper. -->
+    <section class="td-screen" data-td-screen="campaign" data-title="Campaign" aria-label="Campaign camp" hidden>
+      <div class="td-screen-body td-camp-screen td-camp-home">
+        <div class="td-camp-resources" aria-label="Campaign resources" data-td-camp-resources></div>
+        <div class="td-camp-campfire">
+          <div class="td-camp-welcome">
+            <span class="td-label">Your campaign headquarters</span>
+            <h2>Campaign camp</h2>
+            <p>Gather your heroes. Strengthen your ranks.<br />Prepare for the road ahead.</p>
+          </div>
+          <div class="td-camp-party">
+            <div class="td-collection-head"><h3 class="td-label">Your company</h3><span data-td-camp-company-note></span></div>
+            <div class="td-camp-company" data-td-camp-company></div>
+          </div>
+        </div>
+        <div class="td-camp-activities">
+          <button class="td-camp-activity td-camp-activity--journey" type="button" data-td-go="stages" data-td-autofocus>
+            <span class="td-label">The journey</span><h3 data-td-camp-home-chapter></h3>
+            <span data-td-camp-home-progress></span>
+            <progress data-td-camp-home-meter aria-label="Campaign stages cleared"></progress>
+            <strong class="td-camp-activity-cta">Venture forth <span aria-hidden="true">→</span></strong>
+          </button>
+          <button class="td-camp-activity" type="button" data-td-go="heroes">
+            <span class="td-camp-activity-icon" aria-hidden="true">♜</span><h3>Heroes</h3>
+            <span>Manage your collection and level up your defenders.</span>
+            <small data-td-camp-home-heroes></small><strong class="td-camp-activity-cta">Visit heroes <span aria-hidden="true">→</span></strong>
+          </button>
+          <button class="td-camp-activity td-camp-activity--summon" type="button" data-td-go="summon">
+            <span class="td-camp-activity-icon" aria-hidden="true">✧</span><h3>Summoning</h3>
+            <span>Spend Divine Seals to welcome a new hero to camp.</span>
+            <small data-td-camp-home-summon></small><strong class="td-camp-activity-cta">Visit summoning <span aria-hidden="true">→</span></strong>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- 1b. Campaign (M26): src/game/td/page/campaign.ts, stages in src/data/tdCampaign.json -->
-    <section class="td-screen" data-td-screen="campaign" data-title="Campaign" aria-label="Campaign" hidden>
+    <section class="td-screen" data-td-screen="stages" data-title="Campaign stages" aria-label="Campaign stages" hidden>
       <div class="td-screen-body td-camp-screen">
         <div class="td-camp-head">
           <h2 class="td-camp-chapter" data-td-camp-chapter>Chapter 1</h2>
@@ -157,11 +193,6 @@ const modes = [
         <h3 class="td-label">Chapter route</h3>
         <div class="td-route td-route--stages" aria-hidden="true" data-td-camp-route></div>
         <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
-      </div>
-      <div class="td-screen-footer">
-        <p class="td-screen-footer-note td-camp-footer-note">Gold and Hero XP level your heroes, Divine Seals summon new ones.</p>
-        <button class="action-button action-button--quiet" type="button" data-td-go="summon">Summon</button>
-        <button class="action-button action-button--quiet" type="button" data-td-go="heroes">Heroes</button>
       </div>
     </section>
 
