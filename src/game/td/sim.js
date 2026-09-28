@@ -1759,7 +1759,7 @@ export class TowerDefenseGame {
       });
     } else if (variant === "expose") {
       // Prometheus: taunt + expose enemies (take +20% damage for 4s, see hit())
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = this.time + (aw ? 7 : 4); });
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4)); });
     } else if (variant === "mass_taunt") {
       // Momus: wide taunt (2.5x range)
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * (aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
@@ -1788,7 +1788,7 @@ export class TowerDefenseGame {
       // Jormungandr: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= (aw ? 100 : 72));
       const cone = around.filter((e) => this.inCone(hero, e));
-      (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + (aw ? 8 : 4); });
+      (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 8 : 4)); });
     } else if (variant === "claw_sweep") {
       // Bastet: execute target + AoE execute around it
       const execMult = target.hp / target.maxHp < this.executeThreshold(hero) ? 1.8 : 1;
@@ -1823,7 +1823,7 @@ export class TowerDefenseGame {
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "weaken_burst") {
       // Fengyi: nuke + expose hit targets
-      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
+      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + 4); });
     } else if (variant === "moon_barrage") {
       // Diana: volley + grant atk buff to nearby allies
       const shots = aw ? 5 : 3;

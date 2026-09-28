@@ -27,7 +27,12 @@
       "featuredWeight": 5,
       "pityNewInMulti": false,
       "rotationDays": 14,
-      "rotationEpoch": "2026-09-28T00:00:00Z"
+      "rotationEpoch": "2026-09-28T00:00:00Z",
+      "rarityWeights": {
+        "legendary": 1,
+        "epic": 4,
+        "common": 10
+      }
     }
   ]
 }

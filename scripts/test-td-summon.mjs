@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -73,10 +73,21 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const squad = [first.heroId, ...campaign.starters.slice(0, campaign.squadSize - 1)];
   assert.ok(validSquad(campaign, first.progress, squad), "summoned hero fits a valid squad");
   assert.ok(!validSquad(campaign, rich, squad), "not before the summon");
-  // Weighted pool: every hero remains reachable.
-  const totalWeight = banner.featuredWeight + pool.length - 1;
+  // Weighted pool: every hero remains reachable. Weights follow the banner's
+  // rarityWeights (legendary/epic/common), the featured hero multiplied by featuredWeight.
+  const rarityOf = (id) => heroes.find((hero) => hero.id === id)?.rarity ?? "common";
+  const weightOf = (id) => Math.max(1, banner.rarityWeights?.[rarityOf(id)] ?? 1) * (id === featured ? banner.featuredWeight : 1);
+  const totalWeight = pool.reduce((sum, id) => sum + weightOf(id), 0);
   const seen = new Set(Array.from({ length: totalWeight }, (_, i) => summon(summonCfg, banner.id, rich, ids, () => (i + 0.5) / totalWeight).heroId));
   assert.equal(seen.size, pool.length, "every pool hero reachable");
+  // Rarity rates: commons individually outweigh legendaries; rates sum to 1.
+  const rates = summonRates(banner, rich, ids);
+  assert.ok(Math.abs(rates.legendary + rates.epic + rates.common - 1) < 1e-9, "rarity rates sum to 1");
+  const aCommon = pool.find((id) => rarityOf(id) === "common" && id !== featured);
+  const aLegendary = pool.find((id) => rarityOf(id) === "legendary" && id !== featured);
+  assert.ok(weightOf(aCommon) > weightOf(aLegendary), "common outweighs legendary per hero");
+  assert.ok(rates.common > rates.legendary && rates.common > rates.epic, "commons dominate the banner");
+  assert.ok(Math.abs(rates.featured - featuredChance(banner, rich, ids)) < 1e-9, "featured rate matches featuredChance");
   // Empty pool: everything owned.
   const all = { ...withSeals(p, cost * 10), owned: [...ids] };
   assert.deepEqual(summonPool(all, ids), [], "empty pool");

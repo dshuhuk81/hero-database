@@ -7,6 +7,8 @@
 // of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
 // clears, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
+import heroBalance from "../../data/gameBalance.json" with { type: "json" };
+
 export const CAMPAIGN_SAVE_VERSION = 6; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust", "divineEssence"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust", divineEssence: "Divine Essence" };
@@ -361,12 +363,38 @@ export function featuredHeroId(banner, now = Date.now()) {
   return rotation[Math.floor(elapsed / (days * 86400000)) % rotation.length];
 }
 
+// Rarity (legendary/epic/common, from each hero's `rarity` in gameBalance.json) drives
+// the summon odds: the banner's `rarityWeights` give every hero of a rarity its base
+// weight; the featured hero's weight is its rarity weight x `featuredWeight`.
+const RARITY_BY_ID = Object.fromEntries(heroBalance.map((hero) => [hero.id, hero.rarity ?? "common"]));
+export const heroRarity = (id) => RARITY_BY_ID[id] ?? "common";
+const rarityWeight = (banner, id) => Math.max(0, Number(banner?.rarityWeights?.[heroRarity(id)]) || 1);
+const drawWeight = (banner, id, featured, featuredWeight) => rarityWeight(banner, id) * (id === featured ? featuredWeight : 1);
+
 export function featuredChance(banner, progress, heroes, now = Date.now()) {
   const pool = bannerPool(banner, progress, heroes);
   const featured = featuredHeroId(banner, now);
   if (!featured || !pool.includes(featured)) return 0;
-  const weight = Math.max(1, Number(banner.featuredWeight) || 1);
-  return weight / (weight + pool.length - 1);
+  const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);
+  const total = pool.reduce((sum, id) => sum + drawWeight(banner, id, featured, featuredWeight), 0);
+  return drawWeight(banner, featured, featured, featuredWeight) / total;
+}
+
+// Summon odds per rarity plus the featured hero, for the banner's rate display. Shares
+// the weighting rules with summonMany() so the shown rates cannot drift from the draw.
+export function summonRates(banner, progress, heroes, now = Date.now()) {
+  const pool = bannerPool(banner, progress, heroes);
+  const featured = featuredHeroId(banner, now);
+  const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);
+  const total = pool.reduce((sum, id) => sum + drawWeight(banner, id, featured, featuredWeight), 0);
+  const rates = { featured: 0, legendary: 0, epic: 0, common: 0 };
+  if (!total) return rates;
+  for (const id of pool) {
+    const share = drawWeight(banner, id, featured, featuredWeight) / total;
+    rates[heroRarity(id)] += share;
+    if (id === featured) rates.featured = share;
+  }
+  return rates;
 }
 
 // Heroes a summon can give: every roster hero (ids or hero objects) not owned yet.
@@ -401,8 +429,9 @@ export function multiSummonCount(summonCfg, bannerId, progress, heroes) {
 
 const scaleCost = (cost, count) => Object.fromEntries(Object.entries(cost ?? {}).map(([id, amount]) => [id, amount * count]));
 
-// Pays `count` times the banner's cost and draws `count` heroes one after another. The
-// current featured hero has the authored weight; every other hero has weight 1. A "locked"
+// Pays `count` times the banner's cost and draws `count` heroes one after another. Each
+// hero's weight is its rarity weight (`rarityWeights`: legendary/epic/common); the
+// current featured hero's rarity weight is multiplied by `featuredWeight`. A "locked"
 // banner draws without replacement (new heroes only); an "all" banner with replacement:
 // a hero not owned yet joins, an owned one adds a spare copy. Returns
 // { progress, heroIds, isNew }, or null when the banner is unknown, a "locked" pool has
@@ -422,11 +451,11 @@ export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng
   const isNew = [];
   for (let i = 0; i < n; i += 1) {
     const ordered = featured && pool.includes(featured) ? [featured, ...pool.filter((id) => id !== featured)] : pool;
-    const totalWeight = ordered.reduce((sum, id) => sum + (id === featured ? featuredWeight : 1), 0);
+    const totalWeight = ordered.reduce((sum, id) => sum + drawWeight(banner, id, featured, featuredWeight), 0);
     let roll = Math.min(.999999999, Math.max(0, rng())) * totalWeight;
     let heroId = ordered.at(-1);
     for (const id of ordered) {
-      roll -= id === featured ? featuredWeight : 1;
+      roll -= drawWeight(banner, id, featured, featuredWeight);
       if (roll < 0) { heroId = id; break; }
     }
     heroIds.push(heroId);
@@ -443,11 +472,11 @@ export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng
     const unowned = pool.filter((id) => !owned.includes(id));
     if (unowned.length) {
       const ordered = featured && unowned.includes(featured) ? [featured, ...unowned.filter((id) => id !== featured)] : unowned;
-      const totalWeight = ordered.reduce((sum, id) => sum + (id === featured ? featuredWeight : 1), 0);
+      const totalWeight = ordered.reduce((sum, id) => sum + drawWeight(banner, id, featured, featuredWeight), 0);
       let roll = Math.min(.999999999, Math.max(0, rng())) * totalWeight;
       let heroId = ordered.at(-1);
       for (const id of ordered) {
-        roll -= id === featured ? featuredWeight : 1;
+        roll -= drawWeight(banner, id, featured, featuredWeight);
         if (roll < 0) { heroId = id; break; }
       }
       const slot = heroIds.length - 1;

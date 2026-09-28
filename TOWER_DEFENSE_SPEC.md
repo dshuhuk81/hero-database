@@ -158,6 +158,9 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   max-height 560px) and open on larger screens; the player's toggle is kept for the session.
 - Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
   `freeze`, `harvest`.
+- Exposed (`enemy.exposed`, end time): +20% damage taken in `hit()`. Set by Prometheus
+  `expose`, the 72px cleave with 8s awakened exposure, and Boreas `weaken_burst`; reapplying
+  keeps the later end time (`Math.max`), so a short exposure never cuts a longer one.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
   atk, capped at `+24%`.
 

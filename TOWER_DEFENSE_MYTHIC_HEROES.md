@@ -54,7 +54,7 @@ The rules reflect `src/game/td/sim.js` and `src/data/gameBalance.tuning.json` as
 
 - **Ultimate strength (U):** 2.5 × current attack × hero ultimate-power multiplier × class ultimate bonus. Percentages of U below are raw damage before resistance and other combat modifiers. An ultimate deals damage only where its entry explicitly says so.
 - **Range:** the deployed hero's current range. Distances in px are game-world units, independent of screen size.
-- **Exposed:** takes 20% more damage. This does not remove armor.
+- **Exposed:** takes 20% more damage. This does not remove armor. Exposure does not stack; reapplying it keeps whichever duration ends later.
 - **Wounded execution threshold:** normally below 35% maximum health; use the runtime threshold if upgrades modify it.
 - **Allies in range:** includes the caster where the simulation includes them. Healing cannot exceed maximum health.
 - **Facing:** warrior area ultimates first use eligible enemies in the forward cone; if there are none, they use eligible enemies around the caster. Ground heroes cannot hit flying enemies.
@@ -424,7 +424,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 **Ultimate — Wind Finds the Weakness**
 
 - Flavor: “No shield is fitted closely enough for winter.”
-- Rules: Deal 100% U to eligible enemies within 72 px of the target and expose them for 4 seconds.
+- Rules: Deal 100% U to eligible enemies within 72 px of the target and expose them for 4 seconds (+20% damage taken). The blast itself lands before the exposure.
 
 **Awakening — A Wider Weather:** Blast radius becomes 110 px.
 

@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
+import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -529,6 +529,9 @@ export function createCampaign(ctx: PageContext) {
     summonMultiButton.innerHTML = `Summon x${multi} ${currencyAmount("divineSeals", banner.cost.divineSeals * multi)}`;
     q("[data-td-summon-price]").innerHTML = `${currencyList(banner.cost)} per summon`;
     q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
+    const rates = summonRates(banner, p, ids);
+    const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
+    q("[data-td-summon-rates]").textContent = `Legendary ${pct(rates.legendary)} · Epic ${pct(rates.epic)} · Common ${pct(rates.common)}`;
     q("[data-td-summon-pity]").textContent = banner.pityNewInMulti && left
       ? `Summon x${multi} guarantees at least one hero you don't own yet.`
       : "";
