@@ -13,10 +13,12 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
   <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
-  <dialog class="td-panel td-orient-dialog" data-td-orient-dialog aria-labelledby="td-orient-text">
-    <div class="td-panel-body">
-      <p id="td-orient-text">For the perfect experience, activate fullscreen mode and rotate your phone to landscape.</p>
-      <button class="action-button action-button--primary" type="button" data-td-orient-ok>Okay</button>
+  <dialog class="td-orient-gate" data-td-orient-gate aria-labelledby="td-orient-title" aria-describedby="td-orient-text">
+    <div class="td-orient-body">
+      <svg class="td-orient-icon" viewBox="0 0 64 64" aria-hidden="true"><rect x="20" y="8" width="24" height="44" rx="4" /><line x1="29" y1="46" x2="35" y2="46" /></svg>
+      <h2 id="td-orient-title">Rotate your phone</h2>
+      <p id="td-orient-text">The battlefield only fits in landscape. The game is paused and continues when you turn your phone sideways.</p>
+      <button class="action-button action-button--primary" type="button" data-td-orient-fullscreen hidden>Enter fullscreen</button>
     </div>
   </dialog>
 </div>
@@ -48,6 +50,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createPanels } from "../../game/td/page/panels";
   import { createSessionController } from "../../game/td/page/session";
   import { createNav } from "../../game/td/page/nav";
+  import { createOrientGate } from "../../game/td/page/orient";
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
@@ -326,8 +329,6 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   nav.init();
   controller.run();
 
-  // Phones in portrait get a one-time hint on landing to go full screen and rotate.
-  const orientDialog = q<HTMLDialogElement>("[data-td-orient-dialog]");
-  q("[data-td-orient-ok]").addEventListener("click", () => orientDialog.close());
-  if (matchMedia("(orientation: portrait) and (pointer: coarse) and (max-width: 767px)").matches) orientDialog.showModal();
+  // Phones in portrait: blocking rotate gate above every screen (page/orient.ts).
+  createOrientGate(ctx);
 </script>

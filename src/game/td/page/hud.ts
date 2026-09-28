@@ -18,7 +18,12 @@ const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners",
 export function createHud(ctx: PageContext) {
   const { q, state, store, pause, heroById } = ctx;
   const bossName = () => ctx.bossFor(state.session?.map).name;
-  const bossWave = (game: any, n: number) => isBossWave(n, game.mode, ctx.data.tuning.waveGen);
+  // The wave table is the truth (campaign stages put the boss on their own last wave, e.g. 8 or 11);
+  // the mode rule only covers endless waves not generated yet.
+  const bossWave = (game: any, n: number) => {
+    const wave = game.waves?.[n - 1];
+    return wave ? wave.spawns.some((group: any) => group.kind === "boss") : isBossWave(n, game.mode, ctx.data.tuning.waveGen);
+  };
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
   const deckCountEl = q("[data-td-deck-count]");

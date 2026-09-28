@@ -156,6 +156,14 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   combat/effect state; no facing tick is drawn.
 - Hero panel (`page/popover.ts`): Details starts collapsed on phones (max-width 600px or
   max-height 560px) and open on larger screens; the player's toggle is kept for the session.
+  Side: portrait stages get a sheet below the map. Otherwise the panel pushes the map aside
+  when the map keeps 520px, else overlays it. On desktop (fine pointer) it always sits on the
+  right and pushes when it would cover the hero; only touch landscape docks on the side away
+  from the hero.
+- Boss warnings (`page/hud.ts`): "Face <boss>" on the start button and "<boss> has entered"
+  follow the run's wave table (a wave with a `boss` spawn), so campaign stages with the boss
+  on wave 8 or 11 warn on the right wave. The mode rule (`isBossWave`) only covers endless
+  waves not generated yet.
 - Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
   `freeze`, `harvest`.
 - Exposed (`enemy.exposed`, end time): +20% damage taken in `hit()`. Set by Prometheus
@@ -279,7 +287,12 @@ role, Might, campaign level, stars, Evolution badge and spare copies, then three
 
 The detail column scrolls inside its panel. A small red dot on a roster card's top-right corner means a
 level-up is affordable or the hero has its own copy for Evolution. On narrow screens the
-roster stacks above the detail panel while retaining its own scroll.
+roster stacks above the detail panel while retaining its own scroll. On short landscape
+screens (phones, height up to 540px) the screen fits the viewport so the page itself never
+scrolls: the head keeps only the wallet (the app bar already says "Heroes"), the roster
+narrows to 172px, the art column shrinks, the tabs run across the top of the copy, and the
+whole copy column is one scroller. Skill upgrade buttons sit under their skill text so the
+description gets the full column width.
 
 ### Summoning rules and screen
 

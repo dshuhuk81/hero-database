@@ -1819,6 +1819,34 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
   .td-hero-tab { flex: 1; min-height: 44px; padding-inline: 4px; border-bottom: 0; border-right: 1px solid var(--border-subtle); text-align: center; }
   .td-hero-tab:last-child { border-right: 0; }
 }
+/* Short landscape (phones): the heroes screen fits the viewport so the page never scrolls;
+   only the roster and the hero copy scroll. Tabs run across the top of the copy and the skill
+   upgrade sits under its text, so skill descriptions get the full column width. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .td-heroes-screen { grid-template-rows: auto minmax(0, 1fr); gap: var(--space-2); height: 100%; }
+  /* The app bar already says "Heroes": the head keeps only the wallet. */
+  .td-heroes-head { justify-content: flex-end; }
+  .td-heroes-head > div:first-child { display: none; }
+  .td-heroes-head .td-camp-wallet { max-width: none; }
+  .td-heroes-workspace { grid-template-columns: 172px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: var(--space-2); min-height: 0; max-height: none; }
+  .td-heroes-browser { height: auto; gap: var(--space-2); padding: var(--space-2); }
+  .td-heroes-browser .td-camp-heroes { overscroll-behavior: contain; touch-action: pan-y; }
+  .td-hero-tile-foot .td-stars { font-size: 11px; letter-spacing: 0; }
+  .td-hero-profile { grid-template-columns: minmax(110px, 20%) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "art tabs" "art copy"; height: 100%; min-height: 0; }
+  .td-hero-tabs { flex-direction: row; border-left: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+  .td-hero-tab { flex: 1; min-height: 44px; padding-inline: 4px; border-bottom: 0; border-right: 1px solid var(--border-subtle); text-align: center; }
+  .td-hero-tab:last-child { border-right: 0; }
+  /* One scroller for the whole copy column instead of a small inner tab panel. */
+  .td-hero-profile-copy { padding: var(--space-3) var(--space-4); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
+  .td-hero-tab-panel { flex: 0 0 auto; margin-top: var(--space-2); padding-right: 0; overflow: visible; }
+  .td-hero-summary h2 { margin-top: var(--space-1); font-size: 26px; }
+  .td-hero-summary > p { margin: var(--space-1) 0; }
+  .td-hero-profile-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .td-hero-skill { min-height: 0; }
+  .td-skill-row { grid-template-columns: 24px minmax(0, 1fr); gap: var(--space-2) var(--space-3); padding: var(--space-3) 0; }
+  .td-skill-glyph { font-size: 18px; }
+  .td-skill-rank { grid-column: 2; grid-auto-flow: column; justify-content: space-between; align-items: center; }
+}
 .td-fodder { display: grid; gap: var(--space-2); margin: var(--space-3) 0; padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-base); }
 .td-fodder-head { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: var(--td-fs-label); }
 .td-fodder-slots { display: flex; flex-wrap: wrap; gap: var(--space-2); }
@@ -1865,10 +1893,16 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-evo-slot.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 2px var(--accent-gold-dim), 0 0 14px color-mix(in srgb, var(--accent-purple) 45%, transparent); }
 .td-evo-slot.is-picked::after { content: "✓"; position: absolute; top: -7px; right: -7px; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-gold); color: #1a1405; font-size: 11px; font-weight: var(--weight-bold); }
 
-/* Portrait phone hint on landing (TowerDefensePage.astro): native dialog on the panel look. */
-.td-orient-dialog { padding: 0; color: var(--text-primary); }
-.td-orient-dialog::backdrop { background: color-mix(in srgb, var(--bg-base) 75%, transparent); backdrop-filter: blur(4px); }
-.td-orient-dialog p { margin: 0; color: var(--text-bright); font-size: var(--text-base); line-height: var(--leading-snug); text-align: center; }
+/* Portrait gate (page/orient.ts): opaque full-screen cover on phones held upright. Modal
+   dialog, so it sits in the top layer above every screen and other dialog. */
+.td-orient-gate { width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; padding: 0; border: 0; background: var(--bg-base); color: var(--text-primary); }
+.td-orient-gate::backdrop { background: var(--bg-base); }
+.td-orient-body { display: grid; justify-items: center; align-content: center; gap: var(--space-4); height: 100%; box-sizing: border-box; padding: var(--space-6) var(--space-4); text-align: center; }
+.td-orient-body h2 { margin: 0; color: var(--text-bright); font-size: var(--text-xl); }
+.td-orient-body p { max-width: 32ch; margin: 0; color: var(--text-secondary); font-size: var(--text-base); line-height: var(--leading-snug); }
+.td-orient-icon { width: 72px; height: 72px; fill: none; stroke: var(--accent-gold); stroke-width: 3; stroke-linecap: round; animation: td-orient-turn 2.4s ease-in-out infinite; }
+@keyframes td-orient-turn { 0%, 25% { transform: rotate(0deg); } 50%, 80% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
+@media (prefers-reduced-motion: reduce) { .td-orient-icon { animation: none; transform: rotate(-90deg); } }
 
 /* Currencies: always icon + value (src/game/td/currency-icons.js). Tinted per currency;
    inside buttons the icon takes the button's text color. */

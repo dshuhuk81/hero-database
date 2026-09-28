@@ -7,8 +7,9 @@ import { classGlyph } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 
 // Layout: "push" narrows the stage so the whole map sits beside the panel, as long as the map
-// keeps at least PUSH_MIN_MAP px of width. Narrower stages overlay the map on the side away from
-// the hero; portrait stages dock a sheet below the map (at least SHEET_MIN px tall).
+// keeps at least PUSH_MIN_MAP px of width. Narrower stages overlay the map on the right (desktop)
+// or, on touch landscape, on the side away from the hero; portrait stages dock a sheet below the
+// map (at least SHEET_MIN px tall).
 const PUSH_MIN_MAP = 520;
 const SHEET_MIN = 220;
 const battleRank = (level: number) => ["I", "II", "III", "IV"][level - 1] ?? String(level);
@@ -53,6 +54,7 @@ export function createPopover(ctx: PageContext) {
   let detailsChoice: boolean | null = null;
   const compactScreen = window.matchMedia?.("(max-width: 600px), (max-height: 560px)");
   const detailsDefault = () => detailsChoice ?? !compactScreen?.matches;
+  const coarsePointer = window.matchMedia?.("(pointer: coarse)");
   let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
   let lastHealthUpdate = 0;
 
@@ -301,6 +303,13 @@ export function createPopover(ctx: PageContext) {
     const clear = HERO_RADIUS * canvasRect.width / 960 + 4;
     const fitsRight = hero.x + clear <= stageRect.width - panelWidth;
     const fitsLeft = hero.x - clear >= panelWidth;
+    // Desktop keeps the panel on the right: overlay when the hero stays visible, else push.
+    // Only touch landscape (short phones) swaps sides to keep the hero in view.
+    if (!coarsePointer?.matches) {
+      if (fitsRight) setLayout("right", panelWidth);
+      else { forcedPush = true; setLayout("push", panelWidth); }
+      return;
+    }
     if (side === "left" && fitsLeft) setLayout("left", panelWidth);
     else if (fitsRight) setLayout("right", panelWidth);
     else if (fitsLeft) setLayout("left", panelWidth);
