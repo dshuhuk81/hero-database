@@ -1,108 +1,662 @@
 {
-  "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya", "anubis"],
+  "roster": [
+    "nuwa",
+    "prometheus",
+    "momus",
+    "demeter",
+    "poseidon",
+    "amunra",
+    "set",
+    "jormungandr",
+    "nyx",
+    "bastet",
+    "horus",
+    "zeus",
+    "phoenix",
+    "fengyi",
+    "diana",
+    "artemis",
+    "medusa",
+    "caishen",
+    "yuelao",
+    "freya",
+    "anubis",
+    "recruit-bram",
+    "recruit-tilda",
+    "recruit-kellan",
+    "recruit-sable",
+    "recruit-ash",
+    "recruit-nyra",
+    "recruit-elm",
+    "recruit-ives",
+    "recruit-wren",
+    "recruit-hollis",
+    "recruit-poppy",
+    "recruit-jory"
+  ],
   "classes": {
-    "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 0.6, "valueDps": 0.6, "guard": 0.3, "hold": 2 },
-    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.2, "armorMult": 1.2, "dpsMult": 1.4, "valueDps": 1.5, "cleave": { "share": 0.7, "radius": 65, "targets": 5 } },
-    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.2, "armorMult": 1.2, "dpsMult": 1.1, "valueDps": 1.3, "dash": 170, "looseBonus": 2.2, "looseSpeed": 76, "veil": { "seconds": 3, "extraTargets": 1 } },
-    "Mage": { "slot": "platform", "range": 160, "ability": "nuke", "apsMult": 0.55, "maxAps": 0.75, "dpsMult": 0.6, "damageType": "magical", "valueDps": 1.5, "splash": { "share": 0.35, "radius": 42 }, "chain": { "falloff": [0.6, 0.35], "reach": 110 } },
-    "Support": { "slot": "platform", "range": 170, "ability": "aura", "valueDps": 1, "damageShare": 0.35, "heal": 1.8 },
-    "Archer": { "slot": "platform", "range": 210, "ability": "volley", "apsMult": 0.5, "maxAps": 0.7, "valueDps": 1.1, "pierce": 0.35, "crit": 0.1, "airBonus": 1, "target": "strongest" }
+    "Tank": {
+      "slot": "road",
+      "range": 60,
+      "ability": "taunt",
+      "hpMult": 1.7,
+      "armorMult": 1.5,
+      "dpsMult": 0.6,
+      "valueDps": 0.6,
+      "guard": 0.3,
+      "hold": 2
+    },
+    "Warrior": {
+      "slot": "road",
+      "range": 70,
+      "ability": "cleave",
+      "hpMult": 1.2,
+      "armorMult": 1.2,
+      "dpsMult": 1.4,
+      "valueDps": 1.5,
+      "cleave": {
+        "share": 0.7,
+        "radius": 65,
+        "targets": 5
+      }
+    },
+    "Assassin": {
+      "slot": "road",
+      "range": 90,
+      "ability": "execute",
+      "hpMult": 1.2,
+      "armorMult": 1.2,
+      "dpsMult": 1.1,
+      "valueDps": 1.3,
+      "dash": 170,
+      "looseBonus": 2.2,
+      "looseSpeed": 76,
+      "veil": {
+        "seconds": 3,
+        "extraTargets": 1
+      }
+    },
+    "Mage": {
+      "slot": "platform",
+      "range": 160,
+      "ability": "nuke",
+      "apsMult": 0.55,
+      "maxAps": 0.75,
+      "dpsMult": 0.6,
+      "damageType": "magical",
+      "valueDps": 1.5,
+      "splash": {
+        "share": 0.35,
+        "radius": 42
+      },
+      "chain": {
+        "falloff": [
+          0.6,
+          0.35
+        ],
+        "reach": 110
+      }
+    },
+    "Support": {
+      "slot": "platform",
+      "range": 170,
+      "ability": "aura",
+      "valueDps": 1,
+      "damageShare": 0.35,
+      "heal": 1.8
+    },
+    "Archer": {
+      "slot": "platform",
+      "range": 210,
+      "ability": "volley",
+      "apsMult": 0.5,
+      "maxAps": 0.7,
+      "valueDps": 1.1,
+      "pierce": 0.35,
+      "crit": 0.1,
+      "airBonus": 1,
+      "target": "strongest"
+    }
   },
-  "tierUltPower": { "S+": 1.6, "S": 1.45, "A+": 1.3, "A": 1.15, "B": 1.05, "C": 1, "D": 1 },
+  "tierUltPower": {
+    "S+": 1.6,
+    "S": 1.45,
+    "A+": 1.3,
+    "A": 1.15,
+    "B": 1.05,
+    "C": 1,
+    "D": 1
+  },
   "enemies": {
-    "grunt": { "hp": 337.5, "speed": 42, "armor": 30, "reward": 10, "damage": 1, "attack": 22, "attackPeriod": 0.9 },
-    "runner": { "hp": 243.75, "speed": 76, "armor": 18, "reward": 10, "damage": 1, "attack": 18, "attackPeriod": 0.9 },
-    "flyer": { "hp": 262.5, "speed": 62, "armor": 24, "reward": 12, "damage": 1, "flying": true, "attack": 0, "attackPeriod": 1 },
-    "archer": { "hp": 450, "speed": 39, "armor": 36, "reward": 14, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8 },
-    "brute": { "hp": 1200, "speed": 27, "armor": 200, "magicRes": 30, "reward": 24, "damage": 2, "attack": 80, "attackPeriod": 1.1 },
-    "boss": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "reward": 100, "damage": 3, "attack": 85, "attackPeriod": 1 },
-    "brood": { "hp": 1912.5, "speed": 20, "armor": 110, "magicRes": 40, "reward": 12, "damage": 1, "attack": 85, "attackPeriod": 1 },
-    "mender": { "hp": 337.5, "speed": 40, "armor": 30, "magicRes": 50, "reward": 16, "damage": 1, "attack": 14, "attackPeriod": 1, "heal": { "every": 2.5, "radius": 95, "share": 0.08, "budget": 0.5, "cap": 0.3 } },
-    "shieldbearer": { "hp": 375, "speed": 38, "armor": 60, "magicRes": 40, "reward": 16, "damage": 1, "attack": 24, "attackPeriod": 1, "shield": { "hp": 1.6, "minChip": 0.15, "regenDelay": 4, "regenRate": 0.35 } },
-    "broodcaller": { "hp": 975, "speed": 30, "armor": 40, "magicRes": 150, "reward": 24, "damage": 2, "attack": 20, "attackPeriod": 1.1, "summon": { "kind": "imp", "every": 4, "count": 2, "max": 4, "total": 8 } },
-    "imp": { "hp": 90, "speed": 58, "armor": 10, "reward": 2, "damage": 1, "attack": 10, "attackPeriod": 0.8 },
-    "hexer": { "hp": 487.5, "speed": 36, "armor": 30, "magicRes": 160, "reward": 18, "damage": 1, "attack": 18, "attackPeriod": 1.2, "attackRange": 110, "holdSeconds": 8, "hex": { "every": 6, "range": 140, "seconds": 2 } }
+    "grunt": {
+      "hp": 337.5,
+      "speed": 42,
+      "armor": 30,
+      "reward": 10,
+      "damage": 1,
+      "attack": 22,
+      "attackPeriod": 0.9
+    },
+    "runner": {
+      "hp": 243.75,
+      "speed": 76,
+      "armor": 18,
+      "reward": 10,
+      "damage": 1,
+      "attack": 18,
+      "attackPeriod": 0.9
+    },
+    "flyer": {
+      "hp": 262.5,
+      "speed": 62,
+      "armor": 24,
+      "reward": 12,
+      "damage": 1,
+      "flying": true,
+      "attack": 0,
+      "attackPeriod": 1
+    },
+    "archer": {
+      "hp": 450,
+      "speed": 39,
+      "armor": 36,
+      "reward": 14,
+      "damage": 1,
+      "attack": 34,
+      "attackPeriod": 1.2,
+      "attackRange": 110,
+      "holdSeconds": 8
+    },
+    "brute": {
+      "hp": 1200,
+      "speed": 27,
+      "armor": 200,
+      "magicRes": 30,
+      "reward": 24,
+      "damage": 2,
+      "attack": 80,
+      "attackPeriod": 1.1
+    },
+    "boss": {
+      "hp": 8250,
+      "speed": 20,
+      "armor": 200,
+      "magicRes": 90,
+      "reward": 100,
+      "damage": 3,
+      "attack": 85,
+      "attackPeriod": 1
+    },
+    "brood": {
+      "hp": 1912.5,
+      "speed": 20,
+      "armor": 110,
+      "magicRes": 40,
+      "reward": 12,
+      "damage": 1,
+      "attack": 85,
+      "attackPeriod": 1
+    },
+    "mender": {
+      "hp": 337.5,
+      "speed": 40,
+      "armor": 30,
+      "magicRes": 50,
+      "reward": 16,
+      "damage": 1,
+      "attack": 14,
+      "attackPeriod": 1,
+      "heal": {
+        "every": 2.5,
+        "radius": 95,
+        "share": 0.08,
+        "budget": 0.5,
+        "cap": 0.3
+      }
+    },
+    "shieldbearer": {
+      "hp": 375,
+      "speed": 38,
+      "armor": 60,
+      "magicRes": 40,
+      "reward": 16,
+      "damage": 1,
+      "attack": 24,
+      "attackPeriod": 1,
+      "shield": {
+        "hp": 1.6,
+        "minChip": 0.15,
+        "regenDelay": 4,
+        "regenRate": 0.35
+      }
+    },
+    "broodcaller": {
+      "hp": 975,
+      "speed": 30,
+      "armor": 40,
+      "magicRes": 150,
+      "reward": 24,
+      "damage": 2,
+      "attack": 20,
+      "attackPeriod": 1.1,
+      "summon": {
+        "kind": "imp",
+        "every": 4,
+        "count": 2,
+        "max": 4,
+        "total": 8
+      }
+    },
+    "imp": {
+      "hp": 90,
+      "speed": 58,
+      "armor": 10,
+      "reward": 2,
+      "damage": 1,
+      "attack": 10,
+      "attackPeriod": 0.8
+    },
+    "hexer": {
+      "hp": 487.5,
+      "speed": 36,
+      "armor": 30,
+      "magicRes": 160,
+      "reward": 18,
+      "damage": 1,
+      "attack": 18,
+      "attackPeriod": 1.2,
+      "attackRange": 110,
+      "holdSeconds": 8,
+      "hex": {
+        "every": 6,
+        "range": 140,
+        "seconds": 2
+      }
+    }
   },
   "bosses": {
-    "baphomet": { "mark": { "every": 15, "warn": 1.5, "seconds": 3, "selfDamage": 0.1, "memory": 8 }, "stance": { "every": 20, "seconds": 4, "reduction": 0.6 } },
-    "lilith": { "stats": { "hp": 9750 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 }, "endOfAll": { "below": 0.5, "attackSpeed": 3 } }
+    "baphomet": {
+      "mark": {
+        "every": 15,
+        "warn": 1.5,
+        "seconds": 3,
+        "selfDamage": 0.1,
+        "memory": 8
+      },
+      "stance": {
+        "every": 20,
+        "seconds": 4,
+        "reduction": 0.6
+      }
+    },
+    "lilith": {
+      "stats": {
+        "hp": 9750
+      },
+      "summon": {
+        "kind": "brood",
+        "count": 3,
+        "resummonScale": 0.6,
+        "spacing": 40,
+        "sharedDamage": 1
+      },
+      "endOfAll": {
+        "below": 0.5,
+        "attackSpeed": 3
+      }
+    }
   },
-  "difficulty": { "enemyHp": 1 },
-  "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
-  "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 }, "path": { "level": 4 } },
+  "difficulty": {
+    "enemyHp": 1
+  },
+  "support": {
+    "healFraction": 0.18,
+    "auraAttackBonus": 0.25,
+    "auraDuration": 6,
+    "passiveAuraBonus": 0.35
+  },
+  "upgrades": {
+    "maxLevel": 4,
+    "costs": [
+      0,
+      80,
+      120,
+      160
+    ],
+    "attackPerLevel": 0.1,
+    "healthPerLevel": 0.2,
+    "focus": {
+      "level": 3,
+      "attack": 0.1,
+      "health": 0.25,
+      "range": 0.2
+    },
+    "path": {
+      "level": 4
+    }
+  },
   "runBoons": {
-    "chance": { "epic": 0.1, "rare": 0.25 },
+    "chance": {
+      "epic": 0.1,
+      "rare": 0.25
+    },
     "list": {
-      "storm_surge": { "rarity": "rare", "requires": "chain", "stun": 0.4 },
-      "tidal_pull": { "rarity": "rare", "requires": "wet", "slow": 0.8 },
-      "venom_rot": { "rarity": "rare", "requires": "poison", "bonus": 0.25 },
-      "wildfire_spread": { "rarity": "rare", "requires": "burn", "radius": 70 },
-      "rally": { "rarity": "rare", "requires": "road", "atk": 0.3, "seconds": 5 },
-      "shattering_cold": { "rarity": "epic", "requires": "freeze", "bonus": 1 },
-      "drowned_burst": { "rarity": "epic", "requires": "wet", "share": 0.3, "radius": 55 },
-      "soul_reaper": { "rarity": "epic", "requires": null, "every": 10, "gold": 15, "charge": 1 }
+      "storm_surge": {
+        "rarity": "rare",
+        "requires": "chain",
+        "stun": 0.4
+      },
+      "tidal_pull": {
+        "rarity": "rare",
+        "requires": "wet",
+        "slow": 0.8
+      },
+      "venom_rot": {
+        "rarity": "rare",
+        "requires": "poison",
+        "bonus": 0.25
+      },
+      "wildfire_spread": {
+        "rarity": "rare",
+        "requires": "burn",
+        "radius": 70
+      },
+      "rally": {
+        "rarity": "rare",
+        "requires": "road",
+        "atk": 0.3,
+        "seconds": 5
+      },
+      "shattering_cold": {
+        "rarity": "epic",
+        "requires": "freeze",
+        "bonus": 1
+      },
+      "drowned_burst": {
+        "rarity": "epic",
+        "requires": "wet",
+        "share": 0.3,
+        "radius": 55
+      },
+      "soul_reaper": {
+        "rarity": "epic",
+        "requires": null,
+        "every": 10,
+        "gold": 15,
+        "charge": 1
+      }
     }
   },
   "rings": {
-    "highground": { "range": 0.2 },
-    "shrine": { "ultCharge": 0.3 },
-    "cursed": { "atk": 0.3, "aps": -0.2 }
+    "highground": {
+      "range": 0.2
+    },
+    "shrine": {
+      "ultCharge": 0.3
+    },
+    "cursed": {
+      "atk": 0.3,
+      "aps": -0.2
+    }
   },
   "mutators": {
     "every": 10,
     "offer": 3,
     "pool": {
-      "fortified": { "hp": 0.3, "favor": 0.4 },
-      "haste": { "speed": 0.25, "favor": 0.5 },
-      "warded": { "shield": 0.4, "favor": 0.5 },
-      "horde": { "count": 0.4, "favor": 0.6 },
-      "ironclad": { "armor": 120, "favor": 0.4 },
-      "elites": { "elite": 3, "favor": 0.6 }
+      "fortified": {
+        "hp": 0.3,
+        "favor": 0.4
+      },
+      "haste": {
+        "speed": 0.25,
+        "favor": 0.5
+      },
+      "warded": {
+        "shield": 0.4,
+        "favor": 0.5
+      },
+      "horde": {
+        "count": 0.4,
+        "favor": 0.6
+      },
+      "ironclad": {
+        "armor": 120,
+        "favor": 0.4
+      },
+      "elites": {
+        "elite": 3,
+        "favor": 0.6
+      }
     },
-    "elite": { "hp": 2.5, "shield": 0.6, "minChip": 0.15, "reward": 3 }
+    "elite": {
+      "hp": 2.5,
+      "shield": 0.6,
+      "minChip": 0.15,
+      "reward": 3
+    }
   },
   "tiers": {
-    "normal": { "label": "Normal", "enemyHp": 1, "enemyAttack": 1, "favor": 1 },
-    "heroic": { "label": "Heroic", "enemyHp": 2, "enemyAttack": 1.3, "favor": 1.3 },
-    "mythic": { "label": "Mythic", "enemyHp": 3.2, "enemyAttack": 1.6, "favor": 1.6 }
+    "normal": {
+      "label": "Normal",
+      "enemyHp": 1,
+      "enemyAttack": 1,
+      "favor": 1
+    },
+    "heroic": {
+      "label": "Heroic",
+      "enemyHp": 2,
+      "enemyAttack": 1.3,
+      "favor": 1.3
+    },
+    "mythic": {
+      "label": "Mythic",
+      "enemyHp": 3.2,
+      "enemyAttack": 1.6,
+      "favor": 1.6
+    }
   },
   "statuses": {
-    "sources": { "poseidon": "wet", "phoenix": "burn", "prometheus": "chill", "medusa": "poison", "jormungandr": "poison" },
-    "wet": { "seconds": 4 },
-    "burn": { "share": 0.3, "seconds": 3 },
-    "poison": { "share": 0.3, "seconds": 4 },
-    "chill": { "factor": 0.7, "seconds": 1 },
+    "sources": {
+      "poseidon": "wet",
+      "phoenix": "burn",
+      "prometheus": "chill",
+      "medusa": "poison",
+      "jormungandr": "poison"
+    },
+    "wet": {
+      "seconds": 4
+    },
+    "burn": {
+      "share": 0.3,
+      "seconds": 3
+    },
+    "poison": {
+      "share": 0.3,
+      "seconds": 4
+    },
+    "chill": {
+      "factor": 0.7,
+      "seconds": 1
+    },
     "reactions": {
-      "conduct": { "bounces": 3, "bonus": 0.6 },
-      "steam": { "burst": 4, "radius": 55, "splash": 0.5 },
-      "blight": { "radius": 80, "boost": 2 },
-      "freeze": { "seconds": 2, "cooldown": 3 },
-      "harvest": { "charge": 1.5 }
+      "conduct": {
+        "bounces": 3,
+        "bonus": 0.6
+      },
+      "steam": {
+        "burst": 4,
+        "radius": 55,
+        "splash": 0.5
+      },
+      "blight": {
+        "radius": 80,
+        "boost": 2
+      },
+      "freeze": {
+        "seconds": 2,
+        "cooldown": 3
+      },
+      "harvest": {
+        "charge": 1.5
+      }
     }
   },
   "paths": {
-    "Tank": { "bulwark": { "blockLimit": 1 }, "thorns": { "reflect": 0.4 }, "warden": { "heldBonus": 0.3 } },
-    "Warrior": { "whirlwind": { "targets": 3, "radius": 1.3 }, "sunder": { "perHit": 0.08, "max": 0.4, "seconds": 4 }, "bloodlust": { "lifesteal": 0.25 } },
-    "Assassin": { "reach": { "dash": 80 }, "ambush": { "firstHit": 2.5 }, "twin": { "share": 0.7 } },
-    "Mage": { "wildfire": { "share": 0.4, "seconds": 3 }, "frost": { "factor": 0.6, "seconds": 1.5 }, "arc": { "falloff": [0.6, 0.35], "reach": 90 } },
-    "Archer": { "piercing": { "targets": 2, "radius": 70, "share": 0.6 }, "mark": { "bonus": 0.4, "seconds": 5 }, "crippling": { "factor": 0.5, "seconds": 2 } },
-    "Support": { "sanctuary": { "radius": 70, "share": 0.5 }, "hymn": { "aps": 0.2 }, "purify": { "heal": 0.25 } }
+    "Tank": {
+      "bulwark": {
+        "blockLimit": 1
+      },
+      "thorns": {
+        "reflect": 0.4
+      },
+      "warden": {
+        "heldBonus": 0.3
+      }
+    },
+    "Warrior": {
+      "whirlwind": {
+        "targets": 3,
+        "radius": 1.3
+      },
+      "sunder": {
+        "perHit": 0.08,
+        "max": 0.4,
+        "seconds": 4
+      },
+      "bloodlust": {
+        "lifesteal": 0.25
+      }
+    },
+    "Assassin": {
+      "reach": {
+        "dash": 80
+      },
+      "ambush": {
+        "firstHit": 2.5
+      },
+      "twin": {
+        "share": 0.7
+      }
+    },
+    "Mage": {
+      "wildfire": {
+        "share": 0.4,
+        "seconds": 3
+      },
+      "frost": {
+        "factor": 0.6,
+        "seconds": 1.5
+      },
+      "arc": {
+        "falloff": [
+          0.6,
+          0.35
+        ],
+        "reach": 90
+      }
+    },
+    "Archer": {
+      "piercing": {
+        "targets": 2,
+        "radius": 70,
+        "share": 0.6
+      },
+      "mark": {
+        "bonus": 0.4,
+        "seconds": 5
+      },
+      "crippling": {
+        "factor": 0.5,
+        "seconds": 2
+      }
+    },
+    "Support": {
+      "sanctuary": {
+        "radius": 70,
+        "share": 0.5
+      },
+      "hymn": {
+        "aps": 0.2
+      },
+      "purify": {
+        "heal": 0.25
+      }
+    }
   },
-  "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
-  "training": { "cost": 120, "costGrowth": 1.3, "attack": 0.08, "health": 0.12, "range": 0.08, "rangeCap": 3 },
+  "awakening": {
+    "cost": 220,
+    "attackBonus": 0.15,
+    "healthBonus": 0.25
+  },
+  "training": {
+    "cost": 120,
+    "costGrowth": 1.3,
+    "attack": 0.08,
+    "health": 0.12,
+    "range": 0.08,
+    "rangeCap": 3
+  },
   "virtueEffects": {
-    "Wildness": { "type": "atk", "value": 0.15, "label": "All heroes deal +15% attack damage." },
-    "Desire": { "type": "atk", "value": 0.1, "label": "All heroes deal +10% attack damage." },
-    "Resolve": { "type": "atk", "value": 0.05, "label": "All heroes deal +5% attack damage." },
-    "Oblivion": { "type": "res", "value": 0.3, "label": "All heroes gain +30% armor and magic resist." },
-    "Humility": { "type": "res", "value": 0.05, "label": "All heroes gain +5% armor and magic resist." },
-    "Defiance": { "type": "hp", "value": 0.15, "label": "All heroes gain +15% maximum health." },
-    "Sacrifice": { "type": "hp", "value": 0.1, "label": "All heroes gain +10% maximum health." },
-    "Mercy": { "type": "hp", "value": 0.05, "label": "All heroes gain +5% maximum health." },
-    "Grace": { "type": "heal", "value": 0.15, "label": "Support healing is 15% stronger." },
-    "Fervor": { "type": "regen", "value": 0.1, "label": "Ultimates charge 10% faster." },
-    "Insight": { "type": "crit", "value": 0.1, "label": "All heroes gain +10% critical chance." },
-    "Gnosis": { "type": "dodge", "value": 0.08, "label": "Heroes dodge 8% of incoming hits." }
+    "Wildness": {
+      "type": "atk",
+      "value": 0.15,
+      "label": "All heroes deal +15% attack damage."
+    },
+    "Desire": {
+      "type": "atk",
+      "value": 0.1,
+      "label": "All heroes deal +10% attack damage."
+    },
+    "Resolve": {
+      "type": "atk",
+      "value": 0.05,
+      "label": "All heroes deal +5% attack damage."
+    },
+    "Oblivion": {
+      "type": "res",
+      "value": 0.3,
+      "label": "All heroes gain +30% armor and magic resist."
+    },
+    "Humility": {
+      "type": "res",
+      "value": 0.05,
+      "label": "All heroes gain +5% armor and magic resist."
+    },
+    "Defiance": {
+      "type": "hp",
+      "value": 0.15,
+      "label": "All heroes gain +15% maximum health."
+    },
+    "Sacrifice": {
+      "type": "hp",
+      "value": 0.1,
+      "label": "All heroes gain +10% maximum health."
+    },
+    "Mercy": {
+      "type": "hp",
+      "value": 0.05,
+      "label": "All heroes gain +5% maximum health."
+    },
+    "Grace": {
+      "type": "heal",
+      "value": 0.15,
+      "label": "Support healing is 15% stronger."
+    },
+    "Fervor": {
+      "type": "regen",
+      "value": 0.1,
+      "label": "Ultimates charge 10% faster."
+    },
+    "Insight": {
+      "type": "crit",
+      "value": 0.1,
+      "label": "All heroes gain +10% critical chance."
+    },
+    "Gnosis": {
+      "type": "dodge",
+      "value": 0.08,
+      "label": "Heroes dodge 8% of incoming hits."
+    }
   },
   "virtueBlessings": {
     "Wildness": "Wrath of the Storm",
@@ -119,39 +673,244 @@
     "Gnosis": "Veil of Dusk"
   },
   "virtuePairs": [
-    { "virtues": ["Wildness", "Desire"], "name": "Storm Bond", "label": "Wrath of the Storm and Hunter's Hunger: all heroes deal +5% attack.", "effect": { "type": "atk", "value": 0.05 } },
-    { "virtues": ["Oblivion", "Defiance"], "name": "Iron Pact", "label": "Bulwark of Ages and Unbroken Hide: all heroes gain +5% max HP.", "effect": { "type": "hp", "value": 0.05 } },
-    { "virtues": ["Grace", "Fervor"], "name": "Divine Flow", "label": "Hearth's Grace and Rising Dawn: ultimates charge 10% faster.", "effect": { "type": "regen", "value": 0.10 } },
-    { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Keen Edge and Veil of Dusk: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
+    {
+      "virtues": [
+        "Wildness",
+        "Desire"
+      ],
+      "name": "Storm Bond",
+      "label": "Wrath of the Storm and Hunter's Hunger: all heroes deal +5% attack.",
+      "effect": {
+        "type": "atk",
+        "value": 0.05
+      }
+    },
+    {
+      "virtues": [
+        "Oblivion",
+        "Defiance"
+      ],
+      "name": "Iron Pact",
+      "label": "Bulwark of Ages and Unbroken Hide: all heroes gain +5% max HP.",
+      "effect": {
+        "type": "hp",
+        "value": 0.05
+      }
+    },
+    {
+      "virtues": [
+        "Grace",
+        "Fervor"
+      ],
+      "name": "Divine Flow",
+      "label": "Hearth's Grace and Rising Dawn: ultimates charge 10% faster.",
+      "effect": {
+        "type": "regen",
+        "value": 0.1
+      }
+    },
+    {
+      "virtues": [
+        "Insight",
+        "Gnosis"
+      ],
+      "name": "True Sight",
+      "label": "Keen Edge and Veil of Dusk: all heroes gain +5% critical chance.",
+      "effect": {
+        "type": "crit",
+        "value": 0.05
+      }
+    }
   ],
-  "run": { "startingGold": 340, "sellRefund": 0.5, "lives": 25, "deployCap": 7, "stepsPerSecond": 60, "waveClearBonus": { "base": 50, "perWave": 10 } },
-  "waveGen": { "minSpacing": 18, "endlessRamp": 0.08, "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },
-  "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 }, "heldDamageBonus": 0.2, "passSlow": 1.5, "passSlowFactor": 0.8 },
-  "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.6 },
-  "shards": { "minWave": 3, "favorPct": 0.1, "favorMin": 5, "gold": 60 },
-  "favorEarn": { "perWave": 10, "perPerfectWave": 5, "bossKill": 20, "perRemainingLife": 1, "remainingLifeCap": 25 },
-  "synergy": { "bonusPerTag": 0.08, "cap": 0.24, "range": 250 },
+  "run": {
+    "startingGold": 340,
+    "sellRefund": 0.5,
+    "lives": 25,
+    "deployCap": 7,
+    "stepsPerSecond": 60,
+    "waveClearBonus": {
+      "base": 50,
+      "perWave": 10
+    }
+  },
+  "waveGen": {
+    "minSpacing": 18,
+    "endlessRamp": 0.08,
+    "bossEvery": 5,
+    "midBossScale": 0.4,
+    "countGrowth": 0.02,
+    "gapShrink": 0.02,
+    "gapFloor": 0.55
+  },
+  "blocking": {
+    "blockLimit": {
+      "Tank": 3,
+      "Warrior": 2,
+      "Assassin": 1
+    },
+    "heldDamageBonus": 0.2,
+    "passSlow": 1.5,
+    "passSlowFactor": 0.8
+  },
+  "quests": {
+    "goldBase": 40,
+    "goldPerWave": 10,
+    "speedClearTravel": 0.5,
+    "heroKillsShare": 0.6
+  },
+  "shards": {
+    "minWave": 3,
+    "favorPct": 0.1,
+    "favorMin": 5,
+    "gold": 60
+  },
+  "favorEarn": {
+    "perWave": 10,
+    "perPerfectWave": 5,
+    "bossKill": 20,
+    "perRemainingLife": 1,
+    "remainingLifeCap": 25
+  },
+  "synergy": {
+    "bonusPerTag": 0.08,
+    "cap": 0.24,
+    "range": 250
+  },
   "heroSkills": {
-    "nuwa":         { "skillName": "Celestial Bulwark",   "variant": "shield_wall" },
-    "prometheus":   { "skillName": "Titan's Expose",      "variant": "expose" },
-    "momus":        { "skillName": "Grand Mockery",        "variant": "mass_taunt" },
-    "demeter":      { "skillName": "Harvest Drain",        "variant": "drain_field" },
-    "poseidon":     { "skillName": "Tidal Surge",          "variant": "knockback" },
-    "amunra":       { "skillName": "Solar War Cry",        "variant": "war_cry" },
-    "set":          { "skillName": "Crimson Cleave",       "variant": "lifesteal_cleave" },
-    "jormungandr":  { "skillName": "Venom Coil",           "variant": "venom_cleave" },
-    "nyx":          { "skillName": "Shadow Step",          "variant": "shadow_step" },
-    "bastet":       { "skillName": "Claw Sweep",           "variant": "claw_sweep" },
-    "horus":        { "skillName": "Rapid Strike",         "variant": "rapid_strike" },
-    "zeus":         { "skillName": "Chain Lightning",      "variant": "chain_lightning", "basic": "chain" },
-    "phoenix":      { "skillName": "Rebirth Flame",        "variant": "rebirth_flame" },
-    "fengyi":       { "skillName": "Weaken Burst",         "variant": "weaken_burst" },
-    "diana":        { "skillName": "Moon Barrage",         "variant": "moon_barrage" },
-    "artemis":      { "skillName": "Piercing Shot",        "variant": "piercing_shot" },
-    "medusa":       { "skillName": "Petrifying Gaze",      "variant": "petrify_shot", "petrifyTargets": 3, "petrifyDuration": 3 },
-    "caishen":      { "skillName": "Fortune Shower",       "variant": "fortune_shower" },
-    "yuelao":       { "skillName": "Fate Link",            "variant": "fate_link" },
-    "freya":        { "skillName": "Valkyrie's Call",      "variant": "valkyrie_call" },
-    "anubis":       { "skillName": "Featherfall Judgment", "variant": "soul_drain" }
+    "nuwa": {
+      "skillName": "Celestial Bulwark",
+      "variant": "shield_wall"
+    },
+    "prometheus": {
+      "skillName": "Titan's Expose",
+      "variant": "expose"
+    },
+    "momus": {
+      "skillName": "Grand Mockery",
+      "variant": "mass_taunt"
+    },
+    "demeter": {
+      "skillName": "Harvest Drain",
+      "variant": "drain_field"
+    },
+    "poseidon": {
+      "skillName": "Tidal Surge",
+      "variant": "knockback"
+    },
+    "amunra": {
+      "skillName": "Solar War Cry",
+      "variant": "war_cry"
+    },
+    "set": {
+      "skillName": "Crimson Cleave",
+      "variant": "lifesteal_cleave"
+    },
+    "jormungandr": {
+      "skillName": "Venom Coil",
+      "variant": "venom_cleave"
+    },
+    "nyx": {
+      "skillName": "Shadow Step",
+      "variant": "shadow_step"
+    },
+    "bastet": {
+      "skillName": "Claw Sweep",
+      "variant": "claw_sweep"
+    },
+    "horus": {
+      "skillName": "Rapid Strike",
+      "variant": "rapid_strike"
+    },
+    "zeus": {
+      "skillName": "Chain Lightning",
+      "variant": "chain_lightning",
+      "basic": "chain"
+    },
+    "phoenix": {
+      "skillName": "Rebirth Flame",
+      "variant": "rebirth_flame"
+    },
+    "fengyi": {
+      "skillName": "Weaken Burst",
+      "variant": "weaken_burst"
+    },
+    "diana": {
+      "skillName": "Moon Barrage",
+      "variant": "moon_barrage"
+    },
+    "artemis": {
+      "skillName": "Piercing Shot",
+      "variant": "piercing_shot"
+    },
+    "medusa": {
+      "skillName": "Petrifying Gaze",
+      "variant": "petrify_shot",
+      "petrifyTargets": 3,
+      "petrifyDuration": 3
+    },
+    "caishen": {
+      "skillName": "Fortune Shower",
+      "variant": "fortune_shower"
+    },
+    "yuelao": {
+      "skillName": "Fate Link",
+      "variant": "fate_link"
+    },
+    "freya": {
+      "skillName": "Valkyrie's Call",
+      "variant": "valkyrie_call"
+    },
+    "anubis": {
+      "skillName": "Featherfall Judgment",
+      "variant": "soul_drain"
+    },
+    "recruit-bram": {
+      "skillName": "Recruit Shield Wall",
+      "variant": "shield_wall"
+    },
+    "recruit-tilda": {
+      "skillName": "Recruit Mass Taunt",
+      "variant": "mass_taunt"
+    },
+    "recruit-kellan": {
+      "skillName": "Recruit War Cry",
+      "variant": "war_cry"
+    },
+    "recruit-sable": {
+      "skillName": "Recruit Knockback",
+      "variant": "knockback"
+    },
+    "recruit-ash": {
+      "skillName": "Recruit Rapid Strike",
+      "variant": "rapid_strike"
+    },
+    "recruit-nyra": {
+      "skillName": "Recruit Claw Sweep",
+      "variant": "claw_sweep"
+    },
+    "recruit-elm": {
+      "skillName": "Recruit Weaken Burst",
+      "variant": "weaken_burst"
+    },
+    "recruit-ives": {
+      "skillName": "Recruit Rebirth Flame",
+      "variant": "rebirth_flame"
+    },
+    "recruit-wren": {
+      "skillName": "Recruit Moon Barrage",
+      "variant": "moon_barrage"
+    },
+    "recruit-hollis": {
+      "skillName": "Recruit Piercing Shot",
+      "variant": "piercing_shot"
+    },
+    "recruit-poppy": {
+      "skillName": "Recruit Fortune Shower",
+      "variant": "fortune_shower"
+    },
+    "recruit-jory": {
+      "skillName": "Recruit Fate Link",
+      "variant": "fate_link"
+    }
   }
 }

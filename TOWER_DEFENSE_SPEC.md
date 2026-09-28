@@ -226,9 +226,11 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    a lock. No route rail here (the cards already show progress); the home Campaign card's route
    uses the same states: green check dots and line behind, pulsing gold ring on the next
    stage, hollow grey ahead. Tapping an unlocked stage
-   card opens a details drawer from the right (modal dialog: stage id and name, about text,
-   battlefield/waves/lives/boss/best, first-clear and replay rewards, recommended battle
-   Might plus the last squad's Might). Its "Choose squad" / "Replay stage" button is the
+   card opens a details drawer from the right (modal dialog: stage id and name, the
+   battlefield map preview (terrain, lane routes, spawn gates, base; same drawing as the map
+   select), about text (2px below body size), a plain inline facts row without boxes
+   (battlefield/waves/lives/boss/best), first-clear and replay rewards as currency chips,
+   recommended Might plus the last squad's Might). Its "Choose squad" / "Replay stage" button is the
    transition into squad selection; Escape, the close button or the backdrop close it.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
    Campaign stages; exiting a campaign run also resolves through this hierarchy.
@@ -291,14 +293,24 @@ roster stacks above the detail panel while retaining its own scroll.
 - stage-reward heroes join the pool only after their stage's first clear, so a summon never
   takes a stage's reward first. (`"locked"`, new heroes only, is still supported.)
 
+The pool holds 33 heroes: the 21 mythic roster heroes plus 12 "recruits" (generic
+tier-D filler heroes, 2 per class, `recruit-*` ids, reused abilities and ultimate
+variants, generated placeholder art and reused class sounds — see
+`TOWER_DEFENSE_FILLER_HEROES.md`). Recruits are never featured and sit below the
+weakest mythic class member in power; they exist so x10 summons yield commons,
+duplicates and dust.
+
 With `N` heroes in the pool the featured chance is `5 / (5 + N - 1)`, each other hero
-`1 / (5 + N - 1)`. The UI calculates the rate from the same rules function used by
-`summonMany()`, so the displayed chance cannot drift from selection behavior. New heroes
-are meant to stay hard to get (owner, September 28, 2026): the campaign's 600 seals spent
-as one x10 at the end give about 4 new heroes and 6 copies. The owner confirmed later
-the same day that this "no boost" decision stands: the x10 new-hero pity (mechanics
-overview recommendation 4) stays implemented but ships as `pityNewInMulti: false`
-until the hero pool grows.
+`1 / (5 + N - 1)` — currently 5/37 ≈ 13.5% featured, 1/37 ≈ 2.7% each other. The UI
+calculates the rate from the same rules function used by `summonMany()`, so the
+displayed chance cannot drift from selection behavior. New heroes are meant to stay
+hard to get (owner, September 28, 2026): with the 33-hero pool the campaign's 600
+seals spent as one x10 at the end give on average 5.8 new heroes and 4.2 copies
+(measured with `td:upgrade-sweep` after the recruit batch; 3.9/6.1 before it — a
+larger pool means fewer early duplicates). The owner confirmed later the same day
+that this "no boost" decision stands: the x10 new-hero pity (mechanics overview
+recommendation 4) stays implemented but ships as `pityNewInMulti: false`; with 33
+heroes it can be re-evaluated, batch 2 of recruits would make it safer.
 
 Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
@@ -318,6 +330,17 @@ the tier before the flip: gold = featured hero, purple = S or A tier, none = the
 flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards say
 "New" or "+1 copy". The result bar offers Summon again, Build squad and Close; Escape
 closes only the dialog. Reduced motion fades instead of flipping.
+
+### Currency display (campaign)
+
+Currencies always show as icon + value, never as a spelled-out name: `currency-icons.js`
+(`currencyAmount`, `currencyList`, `currencyIcon`) draws one inline SVG per currency with its
+tint in td.css (`.td-cur--<id>`: Gold gold, Hero XP blue, Divine Seals light gold, Seal Dust
+grey, Divine Essence purple). The name is the chip's tooltip and aria-label. Used for the
+wallets (Campaign camp, Stages, Heroes, Summon, Seal Dust), stage rewards (drawer, Squad
+screen; hero rewards as a portrait + name chip), level/star costs, summon prices and dust
+exchanges. Inside primary (gold) buttons the icon takes the button's text color. Plain
+sentences (result screen, notices) still spell names out.
 
 ### Might (campaign only)
 

@@ -7,7 +7,7 @@
 // of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
 // clears, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
-export const CAMPAIGN_SAVE_VERSION = 5; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars
+export const CAMPAIGN_SAVE_VERSION = 6; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust", "divineEssence"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust", divineEssence: "Divine Essence" };
 // Save version that introduced each currency: stages cleared under an older save are paid
@@ -27,7 +27,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -201,7 +201,10 @@ export const evolutionMax = (campaign) => campaign.heroEvolution?.tiers?.length 
 export function heroMight(campaign, progress, hero) {
   const tier = heroEvolution(progress, hero.id);
   const evo = 1 + (campaign.heroMight?.evolutionPerTier ?? 0) * tier;
-  return Math.round((hero.atk + hero.hp) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
+  const perSkill = campaign.heroSkillLevels?.passiveStatPerLevel ?? 0;
+  const attackSkill = 1 + perSkill * (heroSkillLevel(progress, hero.id, "passiveAttack") - 1);
+  const healthSkill = 1 + perSkill * (heroSkillLevel(progress, hero.id, "passiveHealth") - 1);
+  return Math.round((hero.atk * attackSkill + hero.hp * healthSkill) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
 }
 
 // What evolving would spend now: "copy" (a copy of the hero first), "essence", or null.
@@ -235,6 +238,39 @@ export function evolutionBonus(campaign, tier) {
     bonus.awakenedUlt ||= !!entry.awakenedUlt;
   }
   return bonus;
+}
+
+// --- Skills: the Ultimate and two class-flavoured passives level independently. Early
+// ranks cost Gold; authored cost arrays can add a rare currency to later ranks.
+export const SKILL_IDS = ["ultimate", "passiveAttack", "passiveHealth"];
+export const heroSkillLevel = (progress, id, skillId) => progress.skillLevels?.[id]?.[skillId] ?? 1;
+
+export function skillUpCost(campaign, progress, id, skillId) {
+  if (!progress.owned.includes(id) || !SKILL_IDS.includes(skillId)) return null;
+  const cfg = campaign.heroSkillLevels;
+  const level = heroSkillLevel(progress, id, skillId);
+  if (!cfg || level >= (cfg.max ?? 1)) return null;
+  return Object.fromEntries(Object.entries(cfg.cost ?? {}).map(([currency, costs]) => [currency, Number(costs?.[level - 1]) || 0]).filter(([, amount]) => amount > 0));
+}
+
+export function canSkillUp(campaign, progress, id, skillId) {
+  const cost = skillUpCost(campaign, progress, id, skillId);
+  return !!cost && Object.entries(cost).every(([currency, amount]) => (progress.currencies[currency] || 0) >= amount);
+}
+
+export function skillUp(campaign, progress, id, skillId) {
+  const cost = skillUpCost(campaign, progress, id, skillId);
+  if (!cost || !canSkillUp(campaign, progress, id, skillId)) return null;
+  const currencies = { ...progress.currencies };
+  for (const [currency, amount] of Object.entries(cost)) currencies[currency] -= amount;
+  return {
+    ...progress,
+    currencies,
+    skillLevels: {
+      ...progress.skillLevels,
+      [id]: { ...progress.skillLevels?.[id], [skillId]: heroSkillLevel(progress, id, skillId) + 1 },
+    },
+  };
 }
 
 // --- Seal Dust (M26 sprint 9): spare copies become dust; dust buys Divine Seals or Divine Essence ---
@@ -280,19 +316,25 @@ export function campaignHeroes(campaign, progress, heroes) {
   return heroes.map((hero) => {
     const level = heroLevel(progress, hero.id), stars = heroStars(progress, hero.id), tier = heroEvolution(progress, hero.id);
     const scale = levelScale(campaign, level) * starScale(campaign, stars);
-    if (scale === 1 && !tier) return hero;
+    const skillCfg = campaign.heroSkillLevels ?? {};
+    const skillStat = skillCfg.passiveStatPerLevel ?? 0;
+    const attackSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveAttack") - 1);
+    const healthSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveHealth") - 1);
+    const ultimateSkill = 1 + (skillCfg.ultimatePowerPerLevel ?? 0) * (heroSkillLevel(progress, hero.id, "ultimate") - 1);
+    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1) return hero;
     const bonus = evolutionBonus(campaign, tier);
     return {
       ...hero,
-      atk: Math.round(hero.atk * scale),
-      hp: Math.round(hero.hp * scale),
-      ultPower: +(hero.ultPower * (1 + bonus.ultPower)).toFixed(4),
+      atk: Math.round(hero.atk * scale * attackSkill),
+      hp: Math.round(hero.hp * scale * healthSkill),
+      ultPower: +(hero.ultPower * (1 + bonus.ultPower) * ultimateSkill).toFixed(4),
       critChance: +(hero.critChance + bonus.crit).toFixed(4),
       ultCooldown: +(hero.ultCooldown * (1 + bonus.ultCooldown)).toFixed(3),
       ...(bonus.awakenedUlt && { awakenedUlt: true }),
       campaignLevel: level,
       campaignStars: stars,
       campaignEvolution: tier,
+      campaignSkillLevels: { ...progress.skillLevels?.[hero.id] },
     };
   });
 }
@@ -459,6 +501,7 @@ export function sanitizeCampaign(value, campaign, heroIds) {
   if (!value || typeof value !== "object") return fresh;
   const stageIds = new Set(allStages(campaign).map((stage) => stage.id));
   const owned = [...new Set([...fresh.owned, ...(Array.isArray(value.owned) ? value.owned : [])])].filter((id) => heroIds.has(id));
+  /** @type {Record<string, { clears: number, bestLives: number }>} */
   const cleared = {};
   for (const [id, entry] of Object.entries(value.cleared ?? {})) {
     if (!stageIds.has(id) || !entry || typeof entry !== "object") continue;
@@ -486,11 +529,18 @@ export function sanitizeCampaign(value, campaign, heroIds) {
   const starShift = version < 5 ? 1 : 0;
   const stars = counts(Object.fromEntries(Object.entries(value.stars && typeof value.stars === "object" ? value.stars : {}).map(([id, n]) => [id, (Number(n) || 0) - starShift])), 1, campaign.heroStars?.max ?? 0, (id) => owned.includes(id));
   // Levels are capped by the hero's stars.
+  /** @type {Record<string, number>} */
   const levels = {};
   for (const [id, level] of Object.entries(value.levels ?? {})) {
     const n = Math.min(levelCap(campaign, stars[id] ?? 0), Math.floor(Number(level) || 1));
     if (owned.includes(id) && n > 1) levels[id] = n;
   }
   const evolution = counts(value.evolution, 1, campaign.heroEvolution?.tiers?.length ?? 0, (id) => owned.includes(id));
-  return { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution };
+  const skillMax = campaign.heroSkillLevels?.max ?? 1;
+  const skillLevels = Object.fromEntries(Object.entries(value.skillLevels && typeof value.skillLevels === "object" ? value.skillLevels : {}).flatMap(([id, skills]) => {
+    if (!owned.includes(id) || !skills || typeof skills !== "object") return [];
+    const clean = Object.fromEntries(Object.entries(skills).filter(([skillId]) => SKILL_IDS.includes(skillId)).map(([skillId, level]) => [skillId, Math.min(skillMax, Math.max(1, Math.floor(Number(level) || 1)))]).filter(([, level]) => level > 1));
+    return Object.keys(clean).length ? [[id, clean]] : [];
+  }));
+  return { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels };
 }

@@ -108,7 +108,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     doneEl.hidden = true;
     againButton.hidden = !options.again;
     againButton.disabled = !options.again?.enabled;
-    againButton.textContent = options.again?.label ?? "";
+    againButton.innerHTML = options.again?.label ?? ""; // trusted markup: currency icon chip
     stageEl.classList.toggle("is-skipped", options.skip);
     if (!stageEl.open) stageEl.showModal();
     if (options.skip) { cards().forEach(flip); focusDone(); }

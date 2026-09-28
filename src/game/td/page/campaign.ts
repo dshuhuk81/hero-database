@@ -5,15 +5,17 @@
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
-import { SKILL_TEXT } from "../skills.js";
+import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
+import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman, routeHtml } from "./route";
+import { currencyAmount, currencyIcon, currencyList } from "../currency-icons.js";
+import { mapLanes, routeStrokes } from "../lanes.js";
 import { createSummonReveal } from "./summon-reveal";
 
 export type CampaignRun = { stageId: string; squad: string[] };
@@ -76,20 +78,24 @@ export function createCampaign(ctx: PageContext) {
   let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
   let drawerId: string | null = null; // stage shown in the details drawer
   let selectedHeroId: string | null = null;
-  let heroTab: "level" | "stars" | "evolution" = "level"; // Heroes screen detail tab
+  let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
   let evoPick: "copy" | "essence" | null = null; // Evolution: material the player picked
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
   const heroName = (id: string) => heroById.get(id)?.name ?? id;
+  // Rewards as icon + value chips; hero rewards as a named hero chip.
+  const rewardHtml = (rewards: any[]) => `<span class="td-cur-list">${rewards.map((reward) => reward.type === "currency"
+    ? currencyAmount(reward.id, reward.amount, { plus: true })
+    : `<span class="td-cur td-cur--hero">${heroById.get(reward.id)?.portrait ? `<img src="${heroById.get(reward.id).portrait}" alt="">` : ""}<b>${heroName(reward.id)}</b></span>`).join("")}</span>`;
   const stageRewards = (stage: any) => {
     const first = pendingRewards(stage, progress());
-    if (!isCleared(progress(), stage.id)) return first.length ? `First clear: ${rewardText(first, heroName)}` : "";
+    if (!isCleared(progress(), stage.id)) return first.length ? `<span class="td-cur-label">First clear</span>${rewardHtml(first)}` : "";
     const replay = repeatRewards(campaign, stage);
-    return replay.length ? `Replay: ${rewardText(replay)}` : "";
+    return replay.length ? `<span class="td-cur-label">Replay</span>${rewardHtml(replay)}` : "";
   };
-  const wallet = () => CURRENCIES.map((id) => `${(progress().currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}`).join(" - ");
+  const wallet = () => currencyList(Object.fromEntries(CURRENCIES.map((id) => [id, progress().currencies[id] || 0])));
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
   // Squad Might vs. a stage's recommendation: a legible readout of the same hpScale
@@ -115,14 +121,24 @@ export function createCampaign(ctx: PageContext) {
     ? `<span class="td-camp-stage-badge is-${state}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${BADGE_PATHS[state]}</svg></span>`
     : "";
 
+  // Battlefield preview (as on the map select): terrain, lane routes, spawn gates and base.
+  function mapPreview(map: any) {
+    if (!map) return "";
+    const art = mapSceneFor(map)?.assets;
+    const routes = routeStrokes(map).map((points: number[][]) => `<polyline class="td-map-preview-path" points="${points.map(([x, y]) => `${x},${y}`).join(" ")}" />`).join("");
+    const spawns = art ? mapLanes(map).map((lane: any) => `<image href="${art.spawn}" x="${lane.spawn.x - 48}" y="${lane.spawn.y - 55}" width="96" height="110" />`).join("") : "";
+    return `<svg class="td-map-preview td-camp-drawer-map" viewBox="0 0 960 540" role="img" aria-label="${map.name} battlefield">
+      ${art ? `<image href="${art.terrain}" width="960" height="540" opacity="0.9" preserveAspectRatio="none" />` : ""}${routes}${spawns}
+      ${art ? `<image href="${art.base}" x="${map.base.x - 59}" y="${map.base.y - 62}" width="118" height="125" />` : ""}</svg>`;
+  }
+
   function render() {
     const p = progress();
     const stages = allStages(campaign);
     const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     const next = nextStage(campaign, p);
     const chapter = campaign.chapters[0];
-    const resourceIcons: Record<string, string> = { gold: "◈", heroXp: "✦", divineSeals: "✧" };
-    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<span class="td-camp-resource" title="${(CURRENCY_NAMES as Record<string, string>)[id]}" aria-label="${(p.currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><strong>${(p.currencies[id] || 0).toLocaleString()}</strong></span>`).join("");
+    q("[data-td-camp-resources]").innerHTML = wallet();
     q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
     q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
     const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
@@ -160,7 +176,7 @@ export function createCampaign(ctx: PageContext) {
     const cleared = stages.filter((stage) => isCleared(p, stage.id)).length;
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
-    walletEls.forEach((el) => { el.textContent = wallet(); });
+    walletEls.forEach((el) => { el.innerHTML = wallet(); });
     stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
@@ -197,13 +213,13 @@ export function createCampaign(ctx: PageContext) {
     const lastPower = last.reduce((sum: number, hero: any) => sum + might(hero), 0);
     const boss = hasEnemy(stage, "boss") ? ctx.bossFor(mapOf(stage.mapId)).name : "";
     drawerBody.innerHTML = `<header class="td-camp-drawer-head">
-        <img src="${terrain(stage)}" alt="" class="td-camp-drawer-art">
         <button class="td-camp-drawer-close" type="button" data-camp-drawer-close aria-label="Close stage details">×</button>
         <span class="td-label">Stage ${stage.id}${replay ? " · Cleared" : stage.id === nextStage(campaign, p)?.id ? " · Your next defense" : ""}</span>
         <h2 id="td-camp-drawer-title">${stage.name}</h2>
       </header>
       <div class="td-camp-drawer-content">
-        <section><h3 class="td-label">About the stage</h3><p>${stage.text}</p>
+        ${mapPreview(mapOf(stage.mapId))}
+        <section><p class="td-camp-drawer-about">${stage.text}</p>
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
             <div><dt>Waves</dt><dd>${stage.waves.length}</dd></div>
@@ -212,8 +228,8 @@ export function createCampaign(ctx: PageContext) {
             ${done ? `<div><dt>Best</dt><dd>${done.bestLives}/${stage.lives} lives</dd></div>` : ""}
           </dl></section>
         <section><h3 class="td-label">Rewards</h3>
-          ${first.length ? `<p class="td-camp-drawer-reward"><span>First clear</span>${rewardText(first, heroName)}</p>` : ""}
-          ${repeat.length ? `<p class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardText(repeat)}</p>` : ""}</section>
+          ${first.length ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}
+          ${repeat.length ? `<div class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardHtml(repeat)}</div>` : ""}</section>
         <section><h3 class="td-label">Recommended Might</h3>
           <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
           ${last.length ? `<p class="td-camp-drawer-power-note ${lastPower >= recommended ? "is-strong" : "is-weak"}">Your last squad: ${lastPower.toLocaleString()}</p>` : ""}</section>
@@ -249,7 +265,7 @@ export function createCampaign(ctx: PageContext) {
     const bossText = hasEnemy(stage, "boss") ? ` · Boss: ${ctx.bossFor(map).name}` : "";
     squadCopyEl.textContent = `${map?.name ?? stage.mapId} · ${stage.waves.length} waves · ${stage.lives} lives${bossText}`;
     squadCopyEl.title = stage.text ?? "";
-    q("[data-td-squad-rewards]").textContent = stageRewards(stage);
+    q("[data-td-squad-rewards]").innerHTML = stageRewards(stage);
     squadCountEl.textContent = `Squad ${squad.length} / ${campaign.squadSize}`;
     const selected = squad.map((id) => heroById.get(id));
     const road = selected.filter((hero) => hero.slot === "road").length;
@@ -306,8 +322,8 @@ export function createCampaign(ctx: PageContext) {
   // Evolution (a copy of the same hero or Divine Essence: ultimate and crit).
   function renderHeroes() {
     const p = progress();
-    q("[data-td-heroes-copy]").textContent = "Level, Stars and Evolution apply in campaign stages only.";
-    walletEls.forEach((el) => { el.textContent = wallet(); });
+    q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in campaign stages only.";
+    walletEls.forEach((el) => { el.innerHTML = wallet(); });
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     // Owned heroes by Might (strongest first), then the ones still to earn by class.
     const mightOf = new Map<string, number>(p.owned.map((id: string) => [id, heroById.get(id) ? might(heroById.get(id)) : 0]));
@@ -338,18 +354,45 @@ export function createCampaign(ctx: PageContext) {
     const hero = heroById.get(selectedHeroId ?? "");
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
     const skill = data.tuning.heroSkills?.[hero.id];
-    const tabs = (["level", "stars", "evolution"] as const).map((id) => `<button type="button" class="td-hero-tab${heroTab === id ? " is-active" : ""}" data-camp-hero-tab="${id}" aria-pressed="${heroTab === id}">${{ level: "Level", stars: "Stars", evolution: "Evolution" }[id]}</button>`).join("");
-    const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : levelPanel(p, hero);
-    q("[data-td-hero-detail]").innerHTML = `<article class="td-hero-profile">
-      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
-      <div class="td-hero-profile-copy"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
+    const tabLabels = { level: "Level", stars: "Stars", evolution: "Evolution", skills: "Skills" } as const;
+    const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}">${tabLabels[id]}</button>`).join("");
+    const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : heroTab === "skills" ? skillsPanel(p, hero, skill) : levelPanel(p, hero);
+    const summary = heroTab === "level" ? `<div class="td-hero-summary"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
       <p class="td-hero-role">${classIconImg(hero.class, 18)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
       <p class="td-hero-might"><strong>${might(hero).toLocaleString()}</strong> Might</p>
-      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
-      <div class="td-hero-tabs">${tabs}</div>
-      ${body}
-      ${skill && heroTab !== "evolution" ? `<div class="td-hero-skill"><span class="td-label">Signature skill</span><strong>${skill.skillName}</strong><p>${SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? ""}</p></div>` : ""}
-      </div></article>`;
+      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p></div>` : "";
+    q("[data-td-hero-detail]").innerHTML = `<article class="td-hero-profile">
+      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
+      <div class="td-hero-profile-copy${heroTab === "level" ? "" : " is-detail-only"}">${summary}
+      <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
+      </div>
+      <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
+      </article>`;
+  }
+
+  function skillsPanel(p: any, hero: any, skill: any) {
+    const max = campaign.heroSkillLevels?.max ?? 1;
+    const perUltimate = Math.round((campaign.heroSkillLevels?.ultimatePowerPerLevel ?? 0) * 100);
+    const perPassive = Math.round((campaign.heroSkillLevels?.passiveStatPerLevel ?? 0) * 100);
+    const passiveSkills = (CLASS_PASSIVE_SKILLS as Record<string, Array<{ id: string; name: string; text: string }>>)[hero.class] ?? [];
+    const entries = [
+      ...(skill ? [{ id: "ultimate", kind: "Ultimate", glyph: "✦", name: skill.skillName, text: SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? "", gain: `+${perUltimate}% Ultimate power per level` }] : []),
+      ...passiveSkills.map((entry, index) => ({ ...entry, kind: "Passive", glyph: index ? "◇" : "◆", gain: `+${perPassive}% ${entry.id === "passiveAttack" ? "attack" : "health"} per level` })),
+    ];
+    if (!entries.length) return `<div class="td-hero-skill td-hero-skill--empty"><span class="td-label">Skills</span><p>${hero.name} does not have any skills yet.</p></div>`;
+    const rows = entries.map((entry) => {
+      const level = heroSkillLevel(p, hero.id, entry.id);
+      const cost = skillUpCost(campaign, p, hero.id, entry.id);
+      const action = cost
+        ? `<button type="button" class="action-button action-button--primary td-skill-up" data-camp-skillup="${entry.id}"${canSkillUp(campaign, p, hero.id, entry.id) ? "" : " disabled"}>Upgrade <small>${currencyList(cost)}</small></button>`
+        : `<span class="td-skill-max">Max level</span>`;
+      return `<div class="td-skill-row">
+        <span class="td-skill-glyph" aria-hidden="true">${entry.glyph}</span>
+        <div class="td-skill-copy"><span class="td-label">${entry.kind}</span><strong>${entry.name}</strong><p>${entry.text}</p><small>${entry.gain}</small></div>
+        <div class="td-skill-rank"><span>Level ${level} / ${max}</span>${action}</div>
+      </div>`;
+    }).join("");
+    return `<div class="td-hero-skill"><header><span class="td-label">Skill training</span><p>Upgrade each skill separately. Higher ranks eventually require Divine Essence.</p></header>${rows}</div>`;
   }
 
   // Attack and health in campaign stages: base x level x stars.
@@ -367,7 +410,7 @@ export function createCampaign(ctx: PageContext) {
     const nextCap = levelCap(campaign, heroStars(p, hero.id) + 1);
     const maxed = level >= (campaign.heroLevels?.max ?? 1);
     const button = cost
-      ? `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up <small>${costText(cost)}</small></button>`
+      ? `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up <small>${currencyList(cost)}</small></button>`
       : `<span class="td-camp-maxed">${maxed ? "Maximum level reached" : `Level cap ${cap} reached. Star up to raise it to ${nextCap}.`}</span>`;
     const band = campaign.heroLevels?.bandSize ?? 10;
     const bandStart = cap - band;
@@ -411,7 +454,7 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-fodder-picks">${pickHtml}</div></div>
       <div class="td-hero-upgrade td-hero-upgrade--split">
         <button type="button" class="action-button action-button--quiet" data-camp-fodder-auto${spare.length ? "" : " disabled"}>Quick add</button>
-        <button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-starup="${hero.id}"${full && goldOk ? "" : " disabled"}>Star up <small>${cost.gold} Gold</small></button>
+        <button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-starup="${hero.id}"${full && goldOk ? "" : " disabled"}>Star up <small>${currencyAmount("gold", cost.gold)}</small></button>
       </div>`;
   }
 
@@ -431,7 +474,7 @@ export function createCampaign(ctx: PageContext) {
     const materialHtml = maxed ? "" : `<div class="td-evo-material">
         ${slot("copy", copies, `<img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small>`, `Use 1 copy of ${hero.name} (${copies} owned)`)}
         <span>or</span>
-        ${slot("essence", essence, `<span aria-hidden="true">✦</span><small>${essence} Essence</small>`, `Use 1 Divine Essence (${essence} owned)`)}
+        ${slot("essence", essence, `<span class="td-cur td-cur--divineEssence td-evo-essence-icon" aria-hidden="true">${currencyIcon("divineEssence")}</span><small>${essence} Essence</small>`, `Use 1 Divine Essence (${essence} owned)`)}
         <p>${evoPick === "copy" ? `Uses 1 copy of ${hero.name}.` : evoPick === "essence" ? "Uses 1 Divine Essence." : copies || essence ? "Tap a material to use it." : `Needs a copy of ${hero.name} or 1 Divine Essence.`}</p>
       </div>`;
     const dustPer = summonCfg.dust?.perCopy ?? 0;
@@ -439,7 +482,7 @@ export function createCampaign(ctx: PageContext) {
       <ol class="td-evo-tiers">${list}</ol>
       ${materialHtml}
       <div class="td-hero-upgrade td-hero-upgrade--split">
-        ${copies && dustPer ? `<button type="button" class="action-button action-button--quiet" data-camp-dust="${hero.id}">1 copy → ${dustPer} Dust</button>` : ""}
+        ${copies && dustPer ? `<button type="button" class="action-button action-button--quiet" data-camp-dust="${hero.id}">1 copy → ${currencyAmount("sealDust", dustPer)}</button>` : ""}
         ${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${evoPick ? "" : " disabled"}>Evolve to ${roman(tier + 1)}</button>`}
       </div>`;
   }
@@ -476,15 +519,15 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-summon-feature-title]").textContent = featured ? `${featured.title ?? ROLE_HINTS[featured.class] ?? ""} · ${featured.class}` : "";
     q("[data-td-summon-feature-rate]").textContent = `${Math.round(chance * 100)}%`;
     q("[data-td-summon-rotation]").textContent = `Rotates in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`;
-    summonWalletEl.textContent = `✧ ${seals.toLocaleString()} Divine Seals`;
+    summonWalletEl.innerHTML = currencyAmount("divineSeals", seals);
     const ok = canSummon(summonCfg, banner.id, p, ids);
     summonButton.disabled = !ok;
     summonButton.toggleAttribute("data-td-autofocus", ok);
-    summonButton.textContent = `Summon x1 · ${banner.cost.divineSeals} ✧`;
+    summonButton.innerHTML = `Summon x1 ${currencyAmount("divineSeals", banner.cost.divineSeals)}`;
     const multi = Number(banner.multiCount) || 10;
     summonMultiButton.disabled = !multiSummonCount(summonCfg, banner.id, p, ids);
-    summonMultiButton.textContent = `Summon x${multi} · ${(banner.cost.divineSeals * multi).toLocaleString()} ✧`;
-    q("[data-td-summon-price]").textContent = `${costText(banner.cost)} per summon`;
+    summonMultiButton.innerHTML = `Summon x${multi} ${currencyAmount("divineSeals", banner.cost.divineSeals * multi)}`;
+    q("[data-td-summon-price]").innerHTML = `${currencyList(banner.cost)} per summon`;
     q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
     q("[data-td-summon-pity]").textContent = banner.pityNewInMulti && left
       ? `Summon x${multi} guarantees at least one hero you don't own yet.`
@@ -501,14 +544,14 @@ export function createCampaign(ctx: PageContext) {
     summonNoteEl.textContent = canAfford(p, banner.cost) ? "Summon available" : `${Math.max(0, banner.cost.divineSeals - seals)} more needed`;
     // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals or Essence.
     const d = summonCfg.dust ?? {};
-    q("[data-td-dust-wallet]").textContent = `${dust.toLocaleString()} Seal Dust · ${(p.currencies.divineEssence || 0).toLocaleString()} Divine Essence`;
+    q("[data-td-dust-wallet]").innerHTML = currencyList({ sealDust: dust, divineEssence: p.currencies.divineEssence || 0 });
     const sealsFor = Math.floor(dust / (d.perSeal || Infinity));
     const sealsButton = q<HTMLButtonElement>("[data-td-dust-seals]");
     sealsButton.disabled = sealsFor < 1;
-    sealsButton.textContent = sealsFor ? `${(sealsFor * d.perSeal).toLocaleString()} Dust → ${sealsFor.toLocaleString()} Divine Seals` : `${d.perSeal} Dust → 1 Divine Seal`;
+    sealsButton.innerHTML = `${currencyAmount("sealDust", (sealsFor || 1) * d.perSeal)} → ${currencyAmount("divineSeals", sealsFor || 1)}`;
     const essenceButton = q<HTMLButtonElement>("[data-td-dust-essence]");
     essenceButton.disabled = dust < d.perEssence;
-    essenceButton.textContent = `${d.perEssence} Dust → 1 Divine Essence`;
+    essenceButton.innerHTML = `${currencyAmount("sealDust", d.perEssence)} → ${currencyAmount("divineEssence", 1)}`;
     // Dust → spare copies of an owned hero (feeds Stars and Evolution).
     const copySelect = q<HTMLSelectElement>("[data-td-dust-copy-hero]");
     const prevPick = copySelect.value;
@@ -519,7 +562,7 @@ export function createCampaign(ctx: PageContext) {
     if (prevPick && p.owned.includes(prevPick)) copySelect.value = prevPick;
     const copyButton = q<HTMLButtonElement>("[data-td-dust-copy]");
     copyButton.disabled = !p.owned.length || dust < d.copyPrice;
-    copyButton.textContent = `${d.copyPrice} Dust → 1 copy`;
+    copyButton.innerHTML = `${currencyAmount("sealDust", d.copyPrice)} → 1 copy`;
     if (fresh) summonReveal.close();
   }
 
@@ -702,7 +745,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${focus}:not([disabled])`)?.focus({ preventScroll: true });
   }
   function upgradeClick(target: HTMLElement) {
-    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-evo-pick], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
+    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-skillup], [data-camp-evo-pick], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
     if (!el || el.disabled || !selectedHeroId) return !!el;
     const id = selectedHeroId;
     const d = el.dataset;
@@ -713,6 +756,10 @@ export function createCampaign(ctx: PageContext) {
       evoPick = null;
       renderHeroes();
       q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-hero-tab="${heroTab}"]`)?.focus({ preventScroll: true });
+    } else if (d.campSkillup) {
+      const next = skillUp(campaign, p, id, d.campSkillup);
+      if (!next) return true;
+      commit(next, `${heroName(id)}'s skill reached level ${heroSkillLevel(next, id, d.campSkillup)}.`, `[data-camp-skillup="${d.campSkillup}"]`);
     } else if (d.campEvoPick) {
       evoPick = evoPick === d.campEvoPick ? null : d.campEvoPick as typeof evoPick;
       renderHeroes();
@@ -794,7 +841,7 @@ export function createCampaign(ctx: PageContext) {
       featuredId: featuredHeroId(banner),
       isNew: result.isNew,
       skip: summonSkipInput.checked,
-      again: { label: `Summon x${count} again · ${(banner.cost.divineSeals * count).toLocaleString()} ✧`, enabled: again },
+      again: { label: `Summon x${count} again ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
     });
   }
 

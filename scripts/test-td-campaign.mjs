@@ -5,7 +5,7 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
-import { allStages, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, finishCampaignStage, heroLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { allStages, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
@@ -55,6 +55,30 @@ stages.forEach((stage, i) => {
   assert.deepEqual([options.mode, options.allowedHeroes, options.lives, options.waves], ["classic", ["demeter"], stages[0].lives, stages[0].waves], "game options");
 }
 
+// --- Skill levels ---
+{
+  const id = campaign.starters[0];
+  const fresh = newCampaignProgress(campaign);
+  assert.equal(heroSkillLevel(fresh, id, "ultimate"), 1, "skills start at level 1");
+  assert.deepEqual(skillUpCost(campaign, fresh, id, "ultimate"), { gold: 150 }, "first skill rank costs Gold");
+  assert.equal(canSkillUp(campaign, fresh, id, "ultimate"), false, "cannot upgrade without the cost");
+  let p = { ...fresh, currencies: { ...fresh.currencies, gold: 5000, divineEssence: 1 } };
+  p = skillUp(campaign, p, id, "ultimate");
+  p = skillUp(campaign, p, id, "ultimate");
+  p = skillUp(campaign, p, id, "ultimate");
+  assert.equal(heroSkillLevel(p, id, "ultimate"), 4, "ultimate levels independently");
+  assert.deepEqual(skillUpCost(campaign, p, id, "ultimate"), { gold: 1000, divineEssence: 1 }, "final rank also costs rare material");
+  p = skillUp(campaign, p, id, "ultimate");
+  assert.equal(heroSkillLevel(p, id, "ultimate"), 5, "skill reaches its cap");
+  assert.equal(skillUp(campaign, p, id, "ultimate"), null, "skill cannot pass its cap");
+  const passive = skillUp(campaign, { ...p, currencies: { ...p.currencies, gold: 5000 } }, id, "passiveAttack");
+  assert.equal(heroSkillLevel(passive, id, "passiveAttack"), 2, "passives level separately from the ultimate");
+  const baseHero = heroes.find((hero) => hero.id === id);
+  const skilledHero = campaignHeroes(campaign, passive, heroes).find((hero) => hero.id === id);
+  assert.ok(skilledHero.atk > baseHero.atk && skilledHero.hp === baseHero.hp, "attack passive affects campaign attack only");
+  assert.ok(skilledHero.ultPower > baseHero.ultPower, "ultimate level affects campaign Ultimate power");
+}
+
 // --- Hero levels ---
 {
   let p = { ...newCampaignProgress(campaign), currencies: { gold: 10000, heroXp: 10000 } };
@@ -95,6 +119,8 @@ stages.forEach((stage, i) => {
   assert.equal(sanitizeCampaign(paid, campaign, heroIds).currencies.gold, paid.currencies.gold, "not paid again");
   const levels = sanitizeCampaign({ owned: ["zeus"], levels: { zeus: 99, demeter: 3, ghost: 4, nyx: 2 }, currencies: { gold: "40", heroXp: -5, gems: 9 } }, campaign, heroIds);
   assert.deepEqual([levels.levels, levels.currencies], [{ zeus: levelCap(campaign, 0), demeter: 3 }, { ...zero, gold: 40 }], "levels capped by stars, only owned heroes; currencies cleaned");
+  const skills = sanitizeCampaign({ owned: ["zeus"], skillLevels: { zeus: { ultimate: 99, passiveAttack: 3, unknown: 4 }, ghost: { ultimate: 2 } } }, campaign, heroIds);
+  assert.deepEqual(skills.skillLevels, { zeus: { ultimate: campaign.heroSkillLevels.max, passiveAttack: 3 } }, "skill levels are capped and unknown skills and heroes are dropped");
 }
 
 // --- Winnable: every stage, with the heroes owned by then at the level the chapter's

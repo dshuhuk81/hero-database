@@ -35,6 +35,15 @@
       { "name": "Evolved V", "awakenedUlt": true, "text": "Ultimate starts with its awakened upgrade" }
     ]
   },
+  "heroSkillLevels": {
+    "max": 5,
+    "ultimatePowerPerLevel": 0.05,
+    "passiveStatPerLevel": 0.03,
+    "cost": {
+      "gold": [150, 300, 600, 1000],
+      "divineEssence": [0, 0, 0, 1]
+    }
+  },
   "chapters": [
     {
       "id": 1,

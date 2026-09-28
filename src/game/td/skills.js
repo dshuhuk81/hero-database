@@ -29,6 +29,36 @@ export const SKILL_TEXT = {
   valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",
 };
 
+// Campaign skill progression uses the same two passive slots for every hero so saves stay
+// stable, while each class gives those slots its own name and fiction. The effects themselves
+// are applied in campaign.js: one raises attack, the other raises health.
+export const CLASS_PASSIVE_SKILLS = {
+  Tank: [
+    { id: "passiveAttack", name: "Crushing Counter", text: "Turns a firm defense into heavier attacks." },
+    { id: "passiveHealth", name: "Stone Skin", text: "Hardens the body against sustained pressure." },
+  ],
+  Warrior: [
+    { id: "passiveAttack", name: "Battle Rhythm", text: "Each practiced motion adds force to the next strike." },
+    { id: "passiveHealth", name: "Iron Constitution", text: "Endures longer when holding the road." },
+  ],
+  Assassin: [
+    { id: "passiveAttack", name: "Deadly Opening", text: "Punishes the first gap in an enemy's guard." },
+    { id: "passiveHealth", name: "Escape Artist", text: "Survives the danger of fighting behind enemy lines." },
+  ],
+  Mage: [
+    { id: "passiveAttack", name: "Arcane Study", text: "Refines every spell into a stronger attack." },
+    { id: "passiveHealth", name: "Warding Sigil", text: "A quiet ward absorbs part of every blow." },
+  ],
+  Archer: [
+    { id: "passiveAttack", name: "True Aim", text: "Places every shot where it will hurt most." },
+    { id: "passiveHealth", name: "Light Footing", text: "Keeps the archer alive when the battle reaches the platform." },
+  ],
+  Support: [
+    { id: "passiveAttack", name: "Guiding Hymn", text: "Channels greater force through every attack." },
+    { id: "passiveHealth", name: "Protective Grace", text: "Sustains the caster through a prolonged defense." },
+  ],
+};
+
 // What Awakening adds to each ultimate.
 /** @type {Record<string, string>} */
 export const AWAKEN_TEXT = {

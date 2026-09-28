@@ -52,7 +52,7 @@ Added after the plan (user requests):
 Screenshots of another mobile TD's campaign map, squad select, in-combat HUD and victory screens were compared against `TdLobby.astro`, `TdPlayScreen.astro`, `campaign.ts`, `recruit.ts` and `hud.ts`. Shipped:
 
 - Chapter route rail on the Campaign screen removed again: redundant with the stage cards and the home Campaign card's route.
-- Tapping a stage card opens the stage details drawer from the right (`data-td-camp-drawer`: art, info, waves, boss, rewards, recommended battle power) instead of jumping straight to Squad; the drawer's CTA (`data-camp-drawer-start`) is what navigates. The old in-page feature panel is gone; chapter tabs (`data-td-camp-chapters`) sit under the grid.
+- Tapping a stage card opens the stage details drawer from the right (`data-td-camp-drawer`: map preview, info, waves, boss, rewards as currency chips, recommended Might) instead of jumping straight to Squad; the drawer's CTA (`data-camp-drawer-start`) is what navigates. The old in-page feature panel is gone; chapter tabs (`data-td-camp-chapters`) sit under the grid.
 - Squad power vs. recommended chip in the Squad screen footer, derived from `stage.hpScale` (the same knob `sim.js` already uses to scale enemy HP) rather than a new invented stat.
 - Small line icons next to Gold/Lives/Wave in the play screen topbar.
 - Range-ring preview on first deployment now also fires for touch (`recruit.ts` sets `game.uiPlacement` from the focused/hovered hero card in the recruit sheet); it previously only existed for mouse-hover during the separate "redeploy a fallen hero" flow.
