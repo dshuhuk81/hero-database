@@ -197,23 +197,22 @@ play, trim the clear bonus to 40 + 8/wave rather than touching kill rewards
 again.
 
 **4. Add pity and a dust sink to the gacha.** *(Implemented September
-28, 2026, logic and UI; pity currently disabled in the live config by owner
-decision.)* (a) `pityNewInMulti`: a full x10 that draws no new hero replaces the
+28, 2026, logic and UI; pity enabled the same day after the rarity weights
+landed.)* (a) `pityNewInMulti`: a full x10 that draws no new hero replaces the
 last duplicate with a weighted draw from the unowned pool — duplicates in a
 x10 always convert into at least one collection entry until the pool is
-exhausted. With only 21 heroes and no filler heroes yet, the owner keeps the
-flag at `false` (a guaranteed new hero per x10 would empty the collection too
-fast, and duplicates already feed stars/evolution/dust); re-enable at ~30+
-heroes or once dummy filler heroes exist. (b) `buyCopiesWithDust`: 100 Seal
+exhausted. Initially shipped disabled (21-hero pool, no fillers); enabled once
+the rarity weights and 33-hero pool were in, after a 4,000-run simulation
+showed no early-game effect (≈7 new in the first x10 either way) but a fixed
+collection tail (full collection median 46 → 12 x10, first legendary P90
+11 → 8). (b) `buyCopiesWithDust`: 100 Seal
 Dust buys 1 spare copy of an owned hero (`dust.copyPrice`), a targeted sink
 for duplicate income — active and visible on the Summon screen. (c) Rarity
-odds, added later the same day on the owner's "legendary / epic / common"
+odds, added on the owner's "legendary / epic / common"
 direction: every hero carries `rarity` (legendary = tiers S/A, epic = B/C,
 common = D/recruits) and the banner weights draws legendary 1 / epic 4 /
 common 10 with the featured hero at 5× its rarity weight; per-rarity rates
-show on the banner. With 33 heroes and the filler batch in place, the pity
-flag's re-enable condition is closer than the "~30+ heroes" note above
-suggests — re-evaluate with a sweep comparison.
+show on the banner.
 
 **5. Separate the three progression identities clearly.** Right now a hero's
 strength comes from in-run levels (temporary), campaign levels/stars

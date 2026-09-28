@@ -293,12 +293,14 @@ roster stacks above the detail panel while retaining its own scroll.
   (legendary 1, epic 4, common 10); the featured hero's rarity weight is
   multiplied by `featuredWeight` 5;
 - 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
-- new-hero pity (`pityNewInMulti`, **currently `false`**): if a full x10 draws no hero
+- new-hero pity (`pityNewInMulti`, **active**): if a full x10 draws no hero
   the player does not own yet and the pool still has one, the last duplicate is
   replaced by a weighted draw from the unowned heroes. Single summons have no pity.
-  Implemented but switched off (owner, September 28, 2026): with 21 heroes and no
-  filler heroes, a guaranteed new hero per x10 would empty the collection too fast.
-  Re-enable at ~30+ heroes or once filler heroes exist — one-line config flip;
+  Shipped as `false` at first (small 21-hero pool), enabled the same day after the
+  rarity weights and the 33-hero pool landed: a 4,000-run simulation showed the
+  pity barely touches the early game (≈7 new heroes in the first x10 either way)
+  but fixes the collection tail — full collection median 46 x10 without vs 12 x10
+  with pity, first legendary P90 improves 11 → 8 x10;
 - pool `"all"`: every hero the player owns or can summon, drawn with replacement. A hero
   not owned yet joins; an owned one becomes a spare copy (`copies[heroId]`);
 - stage-reward heroes join the pool only after their stage's first clear, so a summon never
@@ -320,11 +322,10 @@ rules used by `summonMany()`, so the displayed rates cannot drift from selection
 behavior. New heroes are meant to stay hard to get (owner, September 28, 2026):
 with the 33-hero pool and rarity weights the campaign's 600 seals spent as one x10
 at the end give on average 6.4 new heroes and 3.6 copies (measured with
-`td:upgrade-sweep`; 5.8/4.2 with flat weights, 3.9/6.1 at 21 heroes). The owner
-confirmed later the same day that this "no boost" decision stands: the x10
-new-hero pity (mechanics overview recommendation 4) stays implemented but ships as
-`pityNewInMulti: false`; with 33 heroes it can be re-evaluated, batch 2 of
-recruits would make it safer.
+`td:upgrade-sweep`; 5.8/4.2 with flat weights, 3.9/6.1 at 21 heroes). High rarities
+carry the "hard to get" goal now — a specific legendary sits at ≈0.45% per draw —
+so the x10 new-hero pity is enabled: it only fires when a full x10 yields nothing
+new and does not cheapen the early game.
 
 Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).

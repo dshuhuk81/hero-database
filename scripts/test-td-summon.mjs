@@ -255,8 +255,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(starScale(campaignData, 2), 1 + 2 * campaignData.heroStars.statPerStar, "0-based star scale");
 }
 // --- New-hero pity in multi summons (recommendation 4) ---
-// The pity tests force the flag on so they hold regardless of the live config;
-// the authored banner currently ships with pityNewInMulti: false (small pool).
+// The pity tests force the flag on/off so they hold regardless of the live config;
+// the authored banner ships with pityNewInMulti: true (enabled September 28, 2026
+// after the rarity weights and the 33-hero pool landed).
 {
   const cfg = { ...summonData, banners: [{ ...authored, pityNewInMulti: true }] };
   const missing = "caishen";
@@ -276,8 +277,10 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const pAll = withSeals({ ...newCampaignProgress(campaignData), owned: [...ids] }, cost * 30);
   const allCopies = summonMany(cfg, authored.id, pAll, ids, authored.multiCount, () => 0.999999);
   assert.equal(allCopies.isNew.filter(Boolean).length, 0, "no pity once the pool is exhausted");
-  // Flag off (the live config): the same draw stays all duplicates.
-  const unpitied = summonMany(summonData, authored.id, pAllButOne, ids, authored.multiCount, () => 0.999999);
+  // Flag off: the same draw stays all duplicates. Forced config, so the test
+  // holds regardless of the live banner's pityNewInMulti.
+  const offCfg = { ...summonData, banners: [{ ...authored, pityNewInMulti: false }] };
+  const unpitied = summonMany(offCfg, authored.id, pAllButOne, ids, authored.multiCount, () => 0.999999);
   assert.equal(unpitied.isNew.filter(Boolean).length, 0, "pityNewInMulti: false disables the replacement");
 }
 
