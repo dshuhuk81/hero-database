@@ -165,7 +165,9 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   Side: portrait stages get a sheet below the map. Otherwise the panel pushes the map aside
   when the map keeps 520px, else overlays it. On desktop (fine pointer) it always sits on the
   right and pushes when it would cover the hero; only touch landscape docks on the side away
-  from the hero.
+  from the hero. The Upgrade button sits in the pinned footer (2/3 width) beside Sell (1/3),
+  so it never scrolls out of view on short screens; focus and path choices still open in the
+  scrolling body and get scrolled into view by focus.
 - Boss warnings (`page/hud.ts`): "Face <boss>" on the start button and "<boss> has entered"
   follow the run's wave table (a wave with a `boss` spawn), so campaign stages with the boss
   on wave 8 or 11 warn on the right wave. The mode rule (`isBossWave`) only covers endless

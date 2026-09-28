@@ -51,10 +51,6 @@
     <section class="td-pop-section" aria-labelledby="td-pop-upgrade-title">
       <h3 class="td-pop-heading" id="td-pop-upgrade-title">Battle upgrades</h3>
       <p class="td-pop-preview">Resets each battle or when this hero falls.</p>
-      <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
-        <span data-pop-upgrade-label>Upgrade</span>
-        <span class="td-pop-cost" data-pop-cost></span>
-      </button>
       <div class="td-pop-focus" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
         <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
         <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
@@ -75,7 +71,12 @@
       <div class="td-pop-details" id="td-pop-details" data-pop-details-body></div>
     </section>
   </div>
+  <!-- Pinned footer: Upgrade must never scroll out of view on short screens; it outranks Sell. -->
   <div class="td-pop-actions">
+    <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
+      <span data-pop-upgrade-label>Upgrade</span>
+      <span class="td-pop-cost" data-pop-cost></span>
+    </button>
     <button class="action-button action-button--quiet" type="button" data-pop-sell>Sell</button>
   </div>
 </aside>
