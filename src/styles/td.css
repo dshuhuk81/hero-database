@@ -1749,17 +1749,18 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-hero-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: var(--space-1) 0 0; color: var(--text-secondary); font-size: var(--td-fs-label); }
 .td-hero-badges .td-stars { font-size: 18px; }
 .td-evo-badge { padding: 2px 8px; border: 1px solid var(--accent-purple); border-radius: var(--radius-full); color: var(--text-bright); background: color-mix(in srgb, var(--accent-purple) 22%, transparent); }
-.td-hero-tabs { grid-area: tabs; display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: var(--space-2); border-left: 1px solid var(--border-subtle); background: var(--bg-base); }
-.td-hero-tab { min-width: 0; min-height: 48px; padding: var(--space-2); border: 0; border-radius: var(--radius-sm); background: none; color: var(--text-secondary); font: inherit; font-size: var(--td-fs-label); font-weight: var(--weight-bold); text-align: left; text-transform: uppercase; letter-spacing: var(--tracking-wide); cursor: pointer; }
-.td-hero-tab:hover { color: var(--text-bright); }
-.td-hero-tab.is-active { background: var(--surface-tint); color: var(--accent-gold); box-shadow: inset 0 0 0 1px var(--accent-gold-dim); }
-.td-hero-tab:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 1px; }
+.td-hero-tabs { grid-area: tabs; display: flex; flex-direction: column; min-width: 0; padding: 0; border-left: 1px solid var(--border-subtle); background: var(--bg-base); }
+.td-hero-tab { min-width: 0; min-height: 64px; padding: var(--space-3) var(--space-4); border: 0; border-bottom: 1px solid var(--border-subtle); border-radius: 0; background: none; color: var(--text-primary); font: inherit; font-size: var(--td-fs-label); font-weight: var(--weight-bold); text-align: left; text-transform: uppercase; letter-spacing: var(--tracking-wide); cursor: pointer; transition: color var(--duration-fast) ease, background-color var(--duration-fast) ease; }
+.td-hero-tab:hover { color: var(--text-bright); background: var(--surface-tint); }
+.td-hero-tab.is-active { color: var(--accent-gold); background: none; }
+.td-hero-tab:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: -2px; }
 .td-hero-tab-copy { margin: 0 0 var(--space-2); color: var(--text-secondary); font-size: var(--td-fs-body); }
 .td-hero-upgrade--split { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
 .td-hero-upgrade--split .td-camp-levelup { grid-column: auto; min-width: 170px; }
 @media (max-width: 600px) {
-  .td-hero-tabs { flex-direction: row; padding: 4px; border-top: 1px solid var(--border-subtle); border-left: 0; }
-  .td-hero-tab { flex: 1; min-height: 44px; padding-inline: 4px; text-align: center; }
+  .td-hero-tabs { flex-direction: row; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); border-left: 0; }
+  .td-hero-tab { flex: 1; min-height: 44px; padding-inline: 4px; border-bottom: 0; border-right: 1px solid var(--border-subtle); text-align: center; }
+  .td-hero-tab:last-child { border-right: 0; }
 }
 .td-fodder { display: grid; gap: var(--space-2); margin: var(--space-3) 0; padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-base); }
 .td-fodder-head { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: var(--td-fs-label); }
@@ -1817,18 +1818,11 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-cur-list { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); }
 .td-cur { display: inline-flex; align-items: center; gap: 5px; color: var(--text-bright); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .td-cur b { font-weight: var(--weight-semibold); }
-.td-cur-icon { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; color: var(--td-cur-tint, var(--accent-gold)); }
-.td-cur-icon .is-fill { fill: currentColor; stroke: none; }
-.td-cur--gold { --td-cur-tint: var(--accent-gold); }
-.td-cur--heroXp { --td-cur-tint: var(--accent-blue); }
-.td-cur--divineSeals { --td-cur-tint: var(--accent-gold-light); }
-.td-cur--sealDust { --td-cur-tint: var(--text-secondary); }
-.td-cur--divineEssence { --td-cur-tint: var(--accent-purple); }
+.td-cur-icon { width: 1.4em; height: 1.4em; flex: 0 0 auto; object-fit: contain; }
 .td-cur--hero img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; object-position: 50% 8%; border: 1px solid var(--border-medium); }
 .td-cur-label { margin-right: var(--space-2); color: var(--text-muted); font-size: var(--td-fs-label); }
 .td-camp-wallet .td-cur-list { font-size: var(--td-fs-body); }
 button .td-cur { color: inherit; }
-.action-button--primary .td-cur-icon { color: inherit; }
-.td-evo-slot--essence .td-cur-icon { width: 30px; height: 30px; }
+.td-evo-slot--essence .td-cur-icon { width: 38px; height: 38px; }
 .td-camp-levelup small .td-cur-list { gap: var(--space-2); }
 .td-camp-drawer-reward .td-cur-list { font-size: var(--td-fs-body); }

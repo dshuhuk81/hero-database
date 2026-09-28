@@ -334,12 +334,13 @@ closes only the dialog. Reduced motion fades instead of flipping.
 ### Currency display (campaign)
 
 Currencies always show as icon + value, never as a spelled-out name: `currency-icons.js`
-(`currencyAmount`, `currencyList`, `currencyIcon`) draws one inline SVG per currency with its
-tint in td.css (`.td-cur--<id>`: Gold gold, Hero XP blue, Divine Seals light gold, Seal Dust
-grey, Divine Essence purple). The name is the chip's tooltip and aria-label. Used for the
+(`currencyAmount`, `currencyList`, `currencyIcon`) shows each currency's item icon from R2
+`td/icons/items/{gold,hero-xp,divine-seals,seal-dust,divine-essence}-v1.webp` (96px, trimmed
+from the 760px source art in `public/td/icons/items/`; the "Divine Dust" art is Seal Dust).
+The name is the chip's tooltip and aria-label. Used for the
 wallets (Campaign camp, Stages, Heroes, Summon, Seal Dust), stage rewards (drawer, Squad
 screen; hero rewards as a portrait + name chip), level/star costs, summon prices and dust
-exchanges. Inside primary (gold) buttons the icon takes the button's text color. Plain
+exchanges. Plain
 sentences (result screen, notices) still spell names out.
 
 ### Might (campaign only)
