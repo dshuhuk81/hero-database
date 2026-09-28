@@ -135,6 +135,11 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   ultimates and variants: `heroSkills` in tuning, text in `skills.js`.
 - Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
   `cursed` +30% atk / -20% aps.
+  Visuals (`render.js`, built once, animated by transforms only): soft additive ground
+  light about twice the tile size under the slot art (`layerSlotAuras`); gold motes, cyan
+  mist or red wisps drifting above the heroes (`layerSlotAurasTop`, fainter when occupied);
+  the hero on the tile gets an underglow plus a rim (rotating gold arcs, pulsing cyan
+  double ring, flickering red ring). Reduced motion: static glow and rim, no drifting parts.
 - Hero actions: upgrade Lv1-4 (costs 80/120/160; Lv3 focus, Lv4 class path such as
   Mage wildfire/frost/arc), awakening, training, target mode, rotate (`R`), sell (50%
   refund).
