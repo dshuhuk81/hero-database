@@ -360,7 +360,8 @@ export function createCampaign(ctx: PageContext) {
     const summary = heroTab === "level" ? `<div class="td-hero-summary"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
       <p class="td-hero-role">${classIconImg(hero.class, 18)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
       <p class="td-hero-might"><strong>${might(hero).toLocaleString()}</strong> Might</p>
-      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p></div>` : "";
+      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
+      ${powerLayers(p, hero)}</div>` : "";
     q("[data-td-hero-detail]").innerHTML = `<article class="td-hero-profile">
       <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
       <div class="td-hero-profile-copy${heroTab === "level" ? "" : " is-detail-only"}">${summary}
@@ -397,6 +398,27 @@ export function createCampaign(ctx: PageContext) {
 
   // Attack and health in campaign stages: base x level x stars.
   const heroScale = (p: any, id: string, level = heroLevel(p, id), starCount = heroStars(p, id)) => levelScale(campaign, level) * starScale(campaign, starCount);
+
+  // Progression layers (mechanics overview recommendation 5): the campaign layer's
+  // running multipliers at a glance, plus the scope note — campaign upgrades apply
+  // in Campaign stages only; Free Play/Expeditions use base stats and Divine
+  // Blessings, the Daily Trial is the same for everyone.
+  function powerLayers(p: any, hero: any) {
+    const lv = levelScale(campaign, heroLevel(p, hero.id));
+    const st = starScale(campaign, heroStars(p, hero.id));
+    const evo = 1 + (campaign.heroMight?.evolutionPerTier ?? 0) * heroEvolution(p, hero.id);
+    const perSkill = campaign.heroSkillLevels?.passiveStatPerLevel ?? 0;
+    const atkSkill = Math.round(perSkill * (heroSkillLevel(p, hero.id, "passiveAttack") - 1) * 100);
+    const hpSkill = Math.round(perSkill * (heroSkillLevel(p, hero.id, "passiveHealth") - 1) * 100);
+    const total = might(hero) / Math.max(1, hero.atk + hero.hp);
+    const f = (x: number) => `×${x.toFixed(2)}`;
+    return `<dl class="td-hero-layers">
+      <div><dt>Campaign power</dt><dd>${f(total)} <small>Level ${f(lv)} · Stars ${f(st)} · Evolution ${f(evo)}${atkSkill || hpSkill ? ` · Skills +${atkSkill}% atk / +${hpSkill}% hp` : ""}</small></dd></div>
+      <div><dt>In-run training</dt><dd><small>temporary levels during a run, in every mode</small></dd></div>
+      <div><dt>Divine Blessings</dt><dd><small>Free Play and Expeditions — not Campaign stages, not the Daily Trial</small></dd></div>
+    </dl>
+    <p class="td-hero-scope">Campaign levels, stars, evolution and skills apply in Campaign stages only.</p>`;
+  }
   const statRows = (hero: any, now: number, next: number | null) => {
     const row = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${next ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
     return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Deploy cost</dt><dd>${hero.cost} Gold</dd></div></dl>`;

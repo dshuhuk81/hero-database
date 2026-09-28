@@ -61,10 +61,16 @@ Hard rules:
 - Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
   each other only through `ctx.actions`. Screens are a stack mirrored in browser history
   (`nav.ts`). The summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.
-- Portrait phone hint: on page load, if `(orientation: portrait) and (pointer: coarse) and
-  (max-width: 767px)` matches, a native `<dialog>` (`data-td-orient-dialog`, in
-  `TowerDefensePage.astro`) asks the player to go full screen and rotate to landscape.
-  One "Okay" button closes it. Shown on every landing, no saved dismissal.
+- Portrait gate (`page/orient.ts`): the game has no portrait layout. While
+  `(orientation: portrait) and (pointer: coarse) and (max-width: 767px)` matches (touch
+  phones only; narrow desktop windows and tablets are not blocked), a full-screen modal
+  `<dialog>` (`data-td-orient-gate`, in `TowerDefensePage.astro`) covers every screen,
+  menus included. No dismiss button, Escape is swallowed; it reopens on each change so it
+  stays above other modal dialogs. It adds the `orient` pause reason; turning back to
+  landscape closes it and removes the reason, so the run and open screens stay as they were.
+  Where element full screen exists, "Enter fullscreen" requests it on the shell and tries
+  `screen.orientation.lock("landscape")` (Android); hidden while already full screen and on
+  iPhone Safari. The lock is only an enhancement; the gate is the dependable part.
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
