@@ -1,6 +1,6 @@
 # Tower Defense: duplicates, Stars and Evolution plan
 
-Status: proposal, not built. Campaign only: nothing here touches Free Play, the Daily Trial or the Expedition.
+Status: built (M28) with the numbers below; the numbers are under review. Re-check with `npm run td:upgrade-sweep`. Campaign only: nothing here touches Free Play, the Daily Trial or the Expedition.
 All numbers are invented minigame balance. They live in `tdCampaign.json` / `tdSummon.json`, never in the hero database.
 
 ## Why duplicates are needed
@@ -29,11 +29,11 @@ Each tier costs 1 copy of the same hero, or 1 **Divine Essence**. Divine Essence
 
 | Tier | Bonus | Sim field |
 |---|---|---|
-| I | Ultimate power +10% | `ultPower` |
-| II | Crit chance +5% | `critChance` |
-| III | Ultimate cooldown -10% | `ultCooldown` |
-| IV | Ultimate power +15% | `ultPower` |
-| V | Signature ability empowered (per ability variant, needs sim work) | `ability` |
+| I | Ultimate power +20% | `ultPower` |
+| II | Crit chance +10% | `critChance` |
+| III | Ultimate cooldown -15% | `ultCooldown` |
+| IV | Ultimate power +25% | `ultPower` |
+| V | Ultimate starts with its awakened upgrade (the in-run Awaken per-ultimate upgrade) | `awakenedUlt` |
 
 Tier V is the only one that needs new sim code. Tiers I to IV only change numbers in `campaignHeroes`.
 

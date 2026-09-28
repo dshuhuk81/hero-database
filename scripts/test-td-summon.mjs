@@ -4,9 +4,9 @@
 // authored stage rewards.
 import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
-import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
+import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, addSeals, validSquad, autoFodder, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -19,6 +19,10 @@ const campaign = {
   })),
 };
 const stages = allStages(campaign);
+// The authored banner has pool "all" (duplicates become copies, M28). The no-duplicate
+// checks below run on a "locked" copy of it; the M28 section uses the authored one.
+const authored = summonData.banners[0];
+const summonCfg = { ...summonData, banners: [{ ...authored, pool: "locked" }] };
 const banner = summonCfg.banners[0];
 const cost = banner.cost.divineSeals;
 const withSeals = (p, n) => ({ ...p, currencies: { ...p.currencies, divineSeals: n } });
@@ -97,9 +101,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 3, "save version 3");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 4, "save version 4");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
-  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [3, 0, 0], "fresh section");
+  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [4, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
   assert.deepEqual([clean.currencies.divineSeals, clean.summons], [120, 4], "seals and summons cleaned");
   const bad = sanitizeCampaign({ version: 3, currencies: { divineSeals: -5 }, summons: -2 }, campaign, heroIds);
@@ -107,7 +111,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const cleared = { [stages[0].id]: { clears: 2, bestLives: 5 }, [stages[1].id]: { clears: 1, bestLives: 3 } };
   // Version 2: cleared before seals existed; the seals of those stages are paid once, gold is not paid again.
   const v2 = sanitizeCampaign({ version: 2, owned: [...campaign.starters], cleared, currencies: { gold: 77, heroXp: 5, divineSeals: 0 }, levels: {} }, campaign, heroIds);
-  assert.deepEqual([v2.version, v2.currencies.gold, v2.currencies.heroXp, v2.currencies.divineSeals, v2.summons], [3, 77, 5, SEALS * 2, 0], "version 2 migrates: seals back-paid once");
+  assert.deepEqual([v2.version, v2.currencies.gold, v2.currencies.heroXp, v2.currencies.divineSeals, v2.summons], [4, 77, 5, SEALS * 2, 0], "version 2 migrates: seals back-paid once");
   assert.equal(sanitizeCampaign(v2, campaign, heroIds).currencies.divineSeals, SEALS * 2, "seals not back-paid again");
   // Version 1: every first-clear currency, seals included, once.
   const v1 = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared }, campaign, heroIds);
@@ -161,6 +165,71 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 {
   const campaignSeals = allStages(campaignData).reduce((sum, stage) => sum + (stage.rewards ?? []).filter((reward) => reward.id === "divineSeals").reduce((m, reward) => m + reward.amount, 0), 0);
   assert.ok(campaignSeals >= cost * banner.multiCount, `campaign pays ${campaignSeals} seals, a full x${banner.multiCount} costs ${cost * banner.multiCount}`);
+}
+
+// --- Duplicates, Stars, Evolution, Seal Dust (M28) ---
+{
+  assert.equal(authored.pool, "all", "authored banner gives duplicates");
+  const cfg = summonData;
+  const p0 = withSeals(newCampaignProgress(campaignData), cost * 30);
+  // With replacement: 10 draws of one hero (rng 0 = featured) -> 1 new + 9 copies.
+  const featured = featuredHeroId(authored);
+  const tenSame = summonMany(cfg, authored.id, p0, ids, 10, () => 0);
+  assert.deepEqual(tenSame.heroIds, Array(10).fill(featured), "all banner draws with replacement");
+  assert.deepEqual(tenSame.isNew, [true, ...Array(9).fill(false)], "first is new, the rest copies");
+  assert.equal(tenSame.progress.copies[featured], 9, "duplicates become copies");
+  assert.equal(tenSame.progress.owned.filter((id) => id === featured).length, 1, "owned once");
+  assert.equal(multiSummonCount(cfg, authored.id, { ...p0, owned: [...ids] }, ids), authored.multiCount, "multi is full even with everything owned");
+  // Stars: copies of any hero + gold.
+  const hero = campaignData.starters[0];
+  let p = { ...tenSame.progress, currencies: { ...tenSame.progress.currencies, gold: 5000 } };
+  assert.equal(heroStars(p, hero), 1, "start at 1 star");
+  assert.deepEqual(starUpCost(campaignData, 1), { copies: campaignData.heroStars.copies[0], gold: campaignData.heroStars.gold[0] }, "star cost from data");
+  assert.equal(starUp(campaignData, p, hero, {}), null, "star up needs copies");
+  assert.equal(starUp(campaignData, p, hero, { [featured]: 2 }), null, "star up needs exactly the cost's copies");
+  assert.equal(starUp(campaignData, p, hero, { [featured]: 1.5 }), null, "whole copies only");
+  assert.equal(starUp(campaignData, { ...p, copies: { [hero]: 3 } }, hero, { [hero]: 1 }), null, "own copies are not star fodder");
+  const s2 = starUp(campaignData, p, hero, { [featured]: 1 });
+  assert.deepEqual([heroStars(s2, hero), s2.copies[featured], s2.currencies.gold], [2, 8, 5000 - campaignData.heroStars.gold[0]], "star up pays copies and gold");
+  assert.equal(starUp(campaignData, { ...p, currencies: { ...p.currencies, gold: 0 } }, hero, { [featured]: 1 }), null, "star up needs gold");
+  // Quick add: surplus copies (beyond what Evolution needs) first, then others, never the
+  // hero's own copies.
+  const tiers = campaignData.heroEvolution.tiers.length;
+  const mixed = { ...p, copies: { [featured]: 9, [hero]: 2, nyx: 1 } };
+  assert.deepEqual(autoFodder(campaignData, mixed, 4, hero), { [featured]: 4 }, "surplus copies first");
+  assert.deepEqual(autoFodder(campaignData, mixed, 6, hero), { [featured]: 6 }, "then other copies, largest pile first");
+  assert.equal(autoFodder(campaignData, mixed, 11, hero), null, "never the hero's own copies");
+  // Evolution: copies of the same hero first, then Divine Essence.
+  assert.equal(evolutionMaterial(campaignData, p, hero), null, "no copy, no essence: cannot evolve");
+  let e = p;
+  for (let i = 0; i < tiers; i += 1) e = evolve(campaignData, e, featured);
+  assert.deepEqual([heroEvolution(e, featured), e.copies[featured]], [tiers, 9 - tiers], "evolve spends copies of the same hero");
+  assert.equal(evolve(campaignData, e, featured), null, "max tier");
+  const withEssence = { ...p, currencies: { ...p.currencies, divineEssence: 1 } };
+  const ev = evolve(campaignData, withEssence, hero);
+  assert.deepEqual([heroEvolution(ev, hero), ev.currencies.divineEssence], [1, 0], "essence evolves any hero");
+  // Evolution bonuses reach the run's hero list; V gives the awakened ultimate.
+  const base = heroes.find((h) => h.id === featured);
+  const run = campaignHeroes(campaignData, { ...e, stars: { [featured]: 3 } }, heroes).find((h) => h.id === featured);
+  const bonus = evolutionBonus(campaignData, tiers);
+  assert.equal(run.atk, Math.round(base.atk * starScale(campaignData, 3)), "stars scale attack");
+  assert.equal(run.critChance, +(base.critChance + bonus.crit).toFixed(4), "evolution crit");
+  assert.ok(run.ultPower > base.ultPower && run.ultCooldown < base.ultCooldown && run.awakenedUlt, "evolution ultimate power, cooldown, awakened");
+  assert.equal(campaignHeroes(campaignData, newCampaignProgress(campaignData), heroes)[0], heroes[0], "no upgrades: hero unchanged");
+  // Dust.
+  const d = cfg.dust;
+  assert.equal(convertCopies(cfg, p, hero, 1), null, "no copy to convert");
+  const dusted = convertCopies(cfg, p, featured, 3);
+  assert.deepEqual([dusted.copies[featured], dusted.currencies.sealDust], [6, 3 * d.perCopy], "copies to dust");
+  assert.equal(exchangeDust(cfg, dusted, "essence", 1), 3 * d.perCopy >= d.perEssence ? exchangeDust(cfg, dusted, "essence", 1) : null, "essence price");
+  const sealsBack = exchangeDust(cfg, dusted, "seals", 5);
+  assert.deepEqual([sealsBack.currencies.sealDust, sealsBack.currencies.divineSeals], [3 * d.perCopy - 5 * d.perSeal, dusted.currencies.divineSeals + 5], "dust to seals");
+  assert.equal(exchangeDust(cfg, dusted, "seals", 1000), null, "not enough dust");
+  // Save round trip and v3 migration.
+  const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
+  assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
+  const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
+  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [4, {}, {}, {}, 0, 0], "v3 migrates to empty v4 fields");
 }
 
 console.log("Tower defense summon checks passed.");

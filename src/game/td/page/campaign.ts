@@ -74,6 +74,7 @@ export function createCampaign(ctx: PageContext) {
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" = "level"; // Heroes screen detail tab
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
+  let evoPick: "copy" | "essence" | null = null; // Evolution: material the player picked
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -112,7 +113,7 @@ export function createCampaign(ctx: PageContext) {
     const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
     meter.max = stages.length;
     meter.value = cleared;
-    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id) || canStarUp(p, id) || !!evolutionMaterial(campaign, p, id)).length;
+    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id) || evolutionMaterial(campaign, p, id) === "copy").length;
     q("[data-td-camp-home-heroes]").textContent = `${p.owned.length} / ${data.heroes.length} collected · ${upgrades ? `${upgrades} ready to upgrade` : "Earn Gold and Hero XP to level up"}`;
     const remaining = summonPool(p, allHeroIds()).length;
     q("[data-td-camp-home-summon]").textContent = canSummon(summonCfg, banner.id, p, allHeroIds()) ? `Summon available${remaining ? ` · ${remaining} heroes not owned yet` : " · duplicates become copies"}` : `${costText(banner.cost)} per summon`;
@@ -225,10 +226,9 @@ export function createCampaign(ctx: PageContext) {
       const unlock = allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
       const tier = heroEvolution(p, hero.id);
       const note = isOwned ? `Lv ${heroLevel(p, hero.id)} · ${heroStars(p, hero.id)}★${tier ? ` · ${roman(tier)}` : ""}` : unlock ? `Stage ${unlock.id}` : "Summon";
-      const copies = p.copies?.[hero.id] ?? 0;
-      const ready = isOwned && (canLevelUp(campaign, p, hero.id) || !!evolutionMaterial(campaign, p, hero.id) || canStarUp(p, hero.id));
+      const ready = isOwned && (canLevelUp(campaign, p, hero.id) || evolutionMaterial(campaign, p, hero.id) === "copy");
       return `<button type="button" class="td-hero-tile${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}"${isOwned ? "" : " disabled"}>
-        ${copies ? `<span class="td-hero-tile-copies" title="Spare copies">+${copies}</span>` : ""}${ready ? `<span class="td-hero-tile-dot" aria-label="Upgrade available"></span>` : ""}
+        ${ready ? `<i class="td-hero-tile-dot" role="img" aria-label="Upgrade available"></i>` : ""}
         <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><span><strong>${hero.name}</strong><small>${note}</small></span></button>`;
     }).join("");
     const hero = heroById.get(selectedHeroId ?? "");
@@ -271,10 +271,6 @@ export function createCampaign(ctx: PageContext) {
   // Stars: pick exactly the cost's number of spare copies (any hero). Quick add only uses
   // copies no Evolution still needs; tap a copy to add it, tap a filled slot to remove it.
   const fodderCount = () => Object.values(fodder).reduce((sum, n) => sum + n, 0);
-  function canStarUp(p: any, id: string) {
-    const cost = starUpCost(campaign, heroStars(p, id));
-    return !!cost && (p.currencies.gold || 0) >= cost.gold && Object.values(p.copies ?? {}).reduce((sum: number, n: any) => sum + n, 0) >= cost.copies;
-  }
   function starsPanel(p: any, hero: any) {
     const starCount = heroStars(p, hero.id);
     const max = campaign.heroStars?.max ?? 5;
@@ -287,15 +283,16 @@ export function createCampaign(ctx: PageContext) {
       const h = id ? heroById.get(id) : null;
       return h ? `<button type="button" class="td-fodder-slot is-filled" data-camp-fodder-remove="${id}" aria-label="Remove ${h.name} copy"><img src="${h.portrait ?? h.image}" alt=""><small>${h.name}</small></button>` : `<span class="td-fodder-slot" aria-hidden="true">+</span>`;
     }).join("");
-    const spare = Object.entries(p.copies ?? {}).filter(([, n]) => (n as number) > 0);
+    // The hero's own copies are its Evolution material and are not offered here.
+    const spare = Object.entries(p.copies ?? {}).filter(([id, n]) => id !== hero.id && (n as number) > 0);
     const pickHtml = spare.length ? spare.map(([id, n]) => {
       const h = heroById.get(id);
       const free = (n as number) - (fodder[id] ?? 0);
       return `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${h?.portrait ?? h?.image}" alt=""><strong>${h?.name ?? id}</strong><small>${free} left</small></button>`;
-    }).join("") : `<p class="td-hero-tab-copy">No spare copies yet. Summon heroes you already own to get copies.</p>`;
+    }).join("") : `<p class="td-hero-tab-copy">No spare copies of other heroes yet. Summon heroes you already own to get copies.</p>`;
     const full = fodderCount() === cost.copies;
     const goldOk = (p.currencies.gold || 0) >= cost.gold;
-    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health. Star up uses spare copies of any hero.</p>
+    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health. Star up uses spare copies of other heroes; ${hero.name}'s own copies are kept for Evolution.</p>
       <div class="td-hero-level-head"><strong>${stars(starCount)}</strong><span>${starCount} / ${max}</span></div>
       ${statRows(hero, heroScale(p, hero.id), heroScale(p, hero.id, undefined, starCount + 1))}
       <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Copies needed</span><span>${fodderCount()} / ${cost.copies}</span></div>
@@ -314,14 +311,17 @@ export function createCampaign(ctx: PageContext) {
     const tiers = campaign.heroEvolution?.tiers ?? [];
     const copies = p.copies?.[hero.id] ?? 0;
     const essence = p.currencies.divineEssence || 0;
-    const material = evolutionMaterial(campaign, p, hero.id);
+    if (evoPick === "copy" && !copies) evoPick = null;
+    if (evoPick === "essence" && !essence) evoPick = null;
     const list = tiers.map((entry: any, i: number) => `<li class="${i < tier ? "is-done" : i === tier ? "is-next" : "is-locked"}"><span class="td-evo-mark" aria-hidden="true">${i < tier ? "✓" : roman(i + 1)}</span><span><strong>${entry.name}</strong><small>${entry.text}</small></span></li>`).join("");
     const maxed = tier >= tiers.length;
+    // The player picks the material (tap a slot), then confirms with Evolve.
+    const slot = (kind: "copy" | "essence", have: number, inner: string, label: string) => `<button type="button" class="td-evo-slot${kind === "essence" ? " td-evo-slot--essence" : ""}${have ? " is-ready" : ""}${evoPick === kind ? " is-picked" : ""}" data-camp-evo-pick="${kind}" aria-pressed="${evoPick === kind}" aria-label="${label}"${have ? "" : " disabled"}>${inner}</button>`;
     const materialHtml = maxed ? "" : `<div class="td-evo-material">
-        <div class="td-evo-slot${copies ? " is-ready" : ""}"><img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small></div>
+        ${slot("copy", copies, `<img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small>`, `Use 1 copy of ${hero.name} (${copies} owned)`)}
         <span>or</span>
-        <div class="td-evo-slot td-evo-slot--essence${essence ? " is-ready" : ""}"><span aria-hidden="true">✦</span><small>${essence} Essence</small></div>
-        <p>${material === "copy" ? `Uses 1 copy of ${hero.name}.` : material === "essence" ? "Uses 1 Divine Essence." : `Needs a copy of ${hero.name} or 1 Divine Essence.`}</p>
+        ${slot("essence", essence, `<span aria-hidden="true">✦</span><small>${essence} Essence</small>`, `Use 1 Divine Essence (${essence} owned)`)}
+        <p>${evoPick === "copy" ? `Uses 1 copy of ${hero.name}.` : evoPick === "essence" ? "Uses 1 Divine Essence." : copies || essence ? "Tap a material to use it." : `Needs a copy of ${hero.name} or 1 Divine Essence.`}</p>
       </div>`;
     const dustPer = summonCfg.dust?.perCopy ?? 0;
     return `<p class="td-hero-tab-copy">Evolution improves the ultimate and crit chance, one tier per copy of ${hero.name}.</p>
@@ -329,7 +329,7 @@ export function createCampaign(ctx: PageContext) {
       ${materialHtml}
       <div class="td-hero-upgrade td-hero-upgrade--split">
         ${copies && dustPer ? `<button type="button" class="action-button action-button--quiet" data-camp-dust="${hero.id}">1 copy → ${dustPer} Dust</button>` : ""}
-        ${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${material ? "" : " disabled"}>Evolve to ${roman(tier + 1)}</button>`}
+        ${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${evoPick ? "" : " disabled"}>Evolve to ${roman(tier + 1)}</button>`}
       </div>`;
   }
 
@@ -462,7 +462,7 @@ export function createCampaign(ctx: PageContext) {
   ctx.root.querySelector<HTMLElement>('[data-td-screen="heroes"]')!.addEventListener("click", (event) => {
     const select = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-hero-select]");
     if (select && !select.disabled) {
-      if (selectedHeroId !== select.dataset.campHeroSelect) fodder = {};
+      if (selectedHeroId !== select.dataset.campHeroSelect) { fodder = {}; evoPick = null; }
       selectedHeroId = select.dataset.campHeroSelect!;
       renderHeroes();
       heroListEl.querySelector<HTMLButtonElement>(`[data-camp-hero-select="${selectedHeroId}"]`)?.focus({ preventScroll: true });
@@ -493,7 +493,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${focus}:not([disabled])`)?.focus({ preventScroll: true });
   }
   function upgradeClick(target: HTMLElement) {
-    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
+    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-evo-pick], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
     if (!el || el.disabled || !selectedHeroId) return !!el;
     const id = selectedHeroId;
     const d = el.dataset;
@@ -501,16 +501,21 @@ export function createCampaign(ctx: PageContext) {
     if (d.campHeroTab) {
       heroTab = d.campHeroTab as typeof heroTab;
       fodder = {};
+      evoPick = null;
       renderHeroes();
       q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-hero-tab="${heroTab}"]`)?.focus({ preventScroll: true });
+    } else if (d.campEvoPick) {
+      evoPick = evoPick === d.campEvoPick ? null : d.campEvoPick as typeof evoPick;
+      renderHeroes();
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(evoPick ? "[data-camp-evolve]" : `[data-camp-evo-pick="${d.campEvoPick}"]`)?.focus({ preventScroll: true });
     } else if (d.campFodderAdd || d.campFodderRemove || el.hasAttribute("data-camp-fodder-auto")) {
       const need = starUpCost(campaign, heroStars(p, id))?.copies ?? 0;
       if (d.campFodderAdd) fodder = { ...fodder, [d.campFodderAdd]: (fodder[d.campFodderAdd] ?? 0) + 1 };
       else if (d.campFodderRemove) { fodder = { ...fodder, [d.campFodderRemove]: fodder[d.campFodderRemove] - 1 }; if (!fodder[d.campFodderRemove]) delete fodder[d.campFodderRemove]; }
       else {
-        const auto = autoFodder(campaign, p, need);
+        const auto = autoFodder(campaign, p, need, id);
         if (auto) fodder = auto;
-        else ctx.notice("Not enough spare copies that Evolution does not need. Tap copies to pick them yourself.");
+        else ctx.notice("Not enough spare copies of other heroes.");
       }
       renderHeroes();
       const again = d.campFodderAdd ? `[data-camp-fodder-add="${d.campFodderAdd}"]` : "[data-camp-starup]";
@@ -521,9 +526,11 @@ export function createCampaign(ctx: PageContext) {
       fodder = {};
       commit(next, `${heroName(id)} reached ${heroStars(next, id)} stars.`, "[data-camp-fodder-auto]");
     } else if (d.campEvolve) {
-      const next = evolve(campaign, p, id);
+      if (!evoPick) return true;
+      const next = evolve(campaign, p, id, evoPick === "essence");
       if (!next) return true;
-      commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evolve]");
+      evoPick = null;
+      commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evo-pick]");
     } else if (d.campDust) {
       const next = convertCopies(summonCfg, p, id, 1);
       if (!next) return true;

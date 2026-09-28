@@ -138,32 +138,37 @@ export function starUpCost(campaign, stars) {
 // Spare copies still needed for a hero's remaining Evolution tiers.
 const evolutionNeed = (campaign, progress, id) => Math.max(0, evolutionMax(campaign) - heroEvolution(progress, id));
 
-// Quick add: `count` spare copies, taken only from copies no Evolution still needs (most
-// plentiful first). Returns { heroId: n } or null when there are not enough.
-export function autoFodder(campaign, progress, count) {
-  const surplus = Object.entries(progress.copies ?? {})
-    .map(([id, n]) => [id, n - evolutionNeed(campaign, progress, id)])
-    .filter(([, n]) => n > 0)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+// Quick add: `count` spare copies for `heroId`'s next star. Copies no Evolution still needs
+// go first (most plentiful first), then other heroes' copies; the hero's own copies are
+// never taken (they are its Evolution material). Returns { heroId: n } or null.
+export function autoFodder(campaign, progress, count, heroId = null) {
+  const spare = Object.entries(progress.copies ?? {}).filter(([id, n]) => id !== heroId && n > 0);
+  const surplus = spare.map(([id, n]) => [id, Math.min(n, n - evolutionNeed(campaign, progress, id))]).filter(([, n]) => n > 0);
   const pick = {};
   let left = count;
-  for (const [id, n] of surplus) {
-    if (!left) break;
-    const take = Math.min(n, left);
-    pick[id] = take;
-    left -= take;
-  }
+  const take = (list) => {
+    for (const [id, n] of [...list].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))) {
+      const free = n - (pick[id] ?? 0);
+      if (!left || free <= 0) continue;
+      const t = Math.min(free, left);
+      pick[id] = (pick[id] ?? 0) + t;
+      left -= t;
+    }
+  };
+  take(surplus);
+  take(spare);
   return left ? null : pick;
 }
 
-// Pays the star cost with the chosen copies ({ heroId: n }, exactly the cost's count) and
+// Pays the star cost with the chosen copies of other heroes ({ heroId: n }, exactly the cost's count) and
 // raises the stars. Returns the new progress or null when not possible.
 export function starUp(campaign, progress, id, fodder) {
   const cost = starUpCost(campaign, heroStars(progress, id));
   if (!cost || !progress.owned.includes(id) || (progress.currencies.gold || 0) < cost.gold) return null;
   const entries = Object.entries(fodder ?? {}).filter(([, n]) => n > 0);
   if (entries.reduce((sum, [, n]) => sum + n, 0) !== cost.copies) return null;
-  if (entries.some(([hid, n]) => !Number.isInteger(n) || (progress.copies?.[hid] ?? 0) < n)) return null;
+  // A hero's own copies are its Evolution material, never its star fodder.
+  if (entries.some(([hid, n]) => hid === id || !Number.isInteger(n) || (progress.copies?.[hid] ?? 0) < n)) return null;
   const copies = { ...progress.copies };
   for (const [hid, n] of entries) { copies[hid] -= n; if (!copies[hid]) delete copies[hid]; }
   return { ...progress, copies, currencies: { ...progress.currencies, gold: progress.currencies.gold - cost.gold }, stars: { ...progress.stars, [id]: heroStars(progress, id) + 1 } };
