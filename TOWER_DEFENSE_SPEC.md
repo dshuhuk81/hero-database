@@ -283,13 +283,22 @@ aria-label/tooltip and in the detail panel. Locked heroes are greyed with their 
 ("Stage 1-2" / "Summon") in place of the level. Owned heroes are sorted by Might (highest first), then
 locked heroes by class with their unlock source; the strongest owned hero is selected by
 default. The selected hero fills the right panel with full-body art, class and placement
-role, Might, campaign level, stars, Evolution badge and spare copies, then three tabs:
+role, Might, campaign level, stars, Evolution badge and spare copies. Below the badges,
+the **progression layers** block (mechanics overview recommendation 5) answers "why is
+my hero strong here?": the campaign power multiplier with its Level / Stars / Evolution /
+Skills breakdown, plus one line each for the two layers that do not apply here — in-run
+training (temporary, every mode) and Divine Blessings (Free Play and Expeditions only) —
+and the scope note "Campaign levels, stars, evolution and skills apply in Campaign
+stages only." The Blessings screen carries the mirror note (blessings apply in Free Play
+and Expeditions; Campaign uses campaign upgrades, the Daily Trial is identical for
+everyone). Then four tabs:
 
 - **Level**: "level / cap", pips for the current 10-level band, current and next-level Attack/Health, deploy cost, Level up (at the cap: "Star up to raise it to N").
 - **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the
   other heroes' spare copies to tap into them, Quick add and Star up.
 - **Evolution**: the five tiers (done / next / locked) with their bonus, two material
   slots (a copy of this hero, Divine Essence), Evolve, and "1 copy -> 30 Dust".
+- **Skills**: ultimate and class passives, each upgraded separately (save v6).
 
 The detail column scrolls inside its panel. A small red dot on a roster card's top-right corner means a
 level-up is affordable or the hero has its own copy for Evolution. On narrow screens the

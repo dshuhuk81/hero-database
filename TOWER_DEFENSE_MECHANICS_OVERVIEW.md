@@ -214,13 +214,16 @@ common = D/recruits) and the banner weights draws legendary 1 / epic 4 /
 common 10 with the featured hero at 5× its rarity weight; per-rarity rates
 show on the banner.
 
-**5. Separate the three progression identities clearly.** Right now a hero's
-strength comes from in-run levels (temporary), campaign levels/stars
-(permanent, campaign-only), and blessings (permanent, free play). That is a
-good gacha skeleton, but the UI must answer "why is my hero strong here?"
-in one glance. Recommend one hero panel section per layer with a running
-multiplier total, and keeping campaign levels out of Free Play deliberately —
-it preserves the daily/trial comparability you already built.
+**5. Separate the three progression identities clearly.** *(Implemented
+September 28, 2026.)* A hero's strength comes from in-run levels (temporary),
+campaign levels/stars/evolution/skills (permanent, campaign-only), and Divine
+Blessings (permanent, Free Play and Expeditions). The campaign hero panel now
+shows a progression-layers block: the campaign power multiplier with its
+Level / Stars / Evolution / Skills breakdown, one line each for the two
+non-campaign layers, and the scope note that campaign upgrades apply in
+Campaign stages only. The Blessings screen carries the mirror note. Campaign
+levels deliberately stay out of Free Play — daily/trial comparability is
+preserved.
 
 **6. Watch the deploy-cap asymmetry.** Free Play squads are 5 with deploy cap
 7; campaign squads are 4. If that's intentional (campaign is the harder,

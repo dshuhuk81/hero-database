@@ -412,7 +412,7 @@ export function createCampaign(ctx: PageContext) {
     const hpSkill = Math.round(perSkill * (heroSkillLevel(p, hero.id, "passiveHealth") - 1) * 100);
     const total = might(hero) / Math.max(1, hero.atk + hero.hp);
     const f = (x: number) => `×${x.toFixed(2)}`;
-    return `<dl class="td-hero-layers">
+    return `<dl class="td-camp-stats td-hero-layers">
       <div><dt>Campaign power</dt><dd>${f(total)} <small>Level ${f(lv)} · Stars ${f(st)} · Evolution ${f(evo)}${atkSkill || hpSkill ? ` · Skills +${atkSkill}% atk / +${hpSkill}% hp` : ""}</small></dd></div>
       <div><dt>In-run training</dt><dd><small>temporary levels during a run, in every mode</small></dd></div>
       <div><dt>Divine Blessings</dt><dd><small>Free Play and Expeditions — not Campaign stages, not the Daily Trial</small></dd></div>

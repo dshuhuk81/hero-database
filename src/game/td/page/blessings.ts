@@ -157,7 +157,8 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     const reprice = store.data.repriceNotice
       ? `<p class="td-favor-note td-bnotice">Blessing prices changed. Everything you already own stays, and the price difference was credited back. Each class's Surge became an Infusion (its attacks apply a status); Insight spent on Surge was returned. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
     return `<div class="td-bsummary"><span class="td-bchip td-bchip--favor"><b>${availableFavor(store.data)}</b> Favor</span>${insight}</div>` +
-      `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` + refund + reprice;
+      `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` +
+      `<p class="td-favor-note td-bexplain">Divine Blessings apply in Free Play and Expeditions. Campaign stages use campaign levels, stars and evolution instead, and the Daily Trial is the same for everyone.</p>` + refund + reprice;
   }
 
   function resetHtml() {
