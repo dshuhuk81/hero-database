@@ -1546,14 +1546,6 @@ svg.td-class-icon { aspect-ratio: 1; }
 .td-route--stages .is-current > .td-route-dot { animation: td-route-pulse 1.8s ease-in-out infinite; }
 @keyframes td-route-pulse { 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-gold) 10%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .td-route--stages .is-current > .td-route-dot { animation: none; } }
-.td-squad-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
-.td-squad-head > div:first-child { display: grid; gap: var(--space-1); min-width: 0; }
-.td-squad-head p { margin: 0; }
-.td-squad-head-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--space-2); flex: 0 0 auto; }
-.td-squad-clear { min-height: 44px; padding: 0 var(--space-2); border: 0; border-radius: var(--radius-md); background: none; color: var(--text-secondary); font: inherit; font-size: var(--td-fs-body); cursor: pointer; transition: var(--transition-colors); }
-.td-squad-clear:hover { color: var(--text-bright); text-decoration: underline; text-underline-offset: 3px; }
-.td-squad-clear:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
-.td-squad-clear:disabled { color: var(--text-muted); text-decoration: none; opacity: .5; cursor: not-allowed; }
 .td-squad-roster { display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, auto); grid-auto-columns: 104px; gap: var(--space-2); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scroll-padding-inline: 2px; padding: 2px 2px var(--space-2); scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
 .td-squad-tile { scroll-snap-align: start; }
 .td-squad-tile, .td-squad-slot { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
@@ -1567,8 +1559,6 @@ button.td-squad-slot { touch-action: none; cursor: grab; }
 .td-squad-ghost img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .td-squad-tile { position: relative; display: grid; justify-items: center; gap: 2px; min-width: 0; padding: 0 0 var(--space-2); overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-raised); color: var(--text-primary); font: inherit; cursor: pointer; }
 .td-squad-tile-portrait { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: top; background: var(--bg-base); }
-.td-squad-tile-name { max-width: 100%; padding-inline: var(--space-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-bright); font-size: var(--td-fs-label); font-weight: var(--weight-bold); }
-.td-squad-tile small { max-width: 100%; padding-inline: var(--space-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: var(--td-fs-label); font-variant-numeric: tabular-nums; }
 [data-class="tank"] { --class-color: var(--td-class-tank); }
 [data-class="warrior"] { --class-color: var(--td-class-warrior); }
 [data-class="assassin"] { --class-color: var(--td-class-assassin); }
@@ -1579,14 +1569,12 @@ button.td-squad-slot { touch-action: none; cursor: grab; }
 .td-squad-tile-class, .td-squad-slot-class { color: var(--text-bright); }
 .td-squad-tile-class .td-class-glyph, .td-squad-slot-class .td-class-glyph { display: block; width: 60%; height: 60%; filter: none; }
 .td-squad-tile-class { top: 4px; left: 4px; width: 24px; height: 24px; }
-.td-squad-tile-role { color: var(--class-color, var(--text-secondary)); font-weight: var(--weight-bold); }
 .td-squad-tile.is-locked .td-squad-tile-class { filter: grayscale(1); opacity: .6; }
 .td-squad-tile-check { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-gold); color: var(--bg-base); font-size: 13px; font-weight: var(--weight-bold); }
 .td-squad-tile.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 1px var(--accent-gold-dim); }
 .td-squad-tile.is-picked .td-squad-tile-portrait { opacity: .6; }
 .td-squad-tile.is-locked { cursor: default; }
 .td-squad-tile.is-locked .td-squad-tile-portrait { filter: grayscale(1); opacity: .4; }
-.td-squad-tile.is-locked .td-squad-tile-name { color: var(--text-muted); }
 .td-squad-prep { position: sticky; bottom: 0; z-index: 1; display: grid; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-lg); background: var(--bg-raised); border: 1px solid var(--border-medium); box-shadow: 0 -8px 24px rgba(0, 0, 0, .35); }
 .td-squad-lineup { display: grid; grid-template-columns: repeat(4, 112px); gap: var(--space-3); }
 .td-squad-prep { justify-items: center; text-align: center; }
@@ -1598,8 +1586,6 @@ button.td-squad-slot { touch-action: none; cursor: grab; }
 button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold); }
 .td-squad-slot.is-empty .td-squad-slot-card { border-style: dashed; border-color: var(--border-medium); color: var(--text-muted); }
 .td-squad-slot.is-empty strong { font-size: var(--text-xl); line-height: 1; }
-.td-squad-tools { display: grid; justify-items: center; gap: 2px; min-width: 0; }
-.td-squad-tools p { margin: 0; color: var(--text-secondary); font-size: var(--td-fs-body); }
 .td-squad-feedback.is-warning { color: var(--accent-gold); }
 .td-squad-power { margin: 0; font-size: var(--td-fs-body); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
 .td-squad-power.is-strong { color: var(--td-hp); }
@@ -1627,16 +1613,11 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
   .td-summon-pool { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   [data-td-screen="summon"] .td-screen-footer { flex-wrap: wrap; gap: var(--space-2); }
   [data-td-screen="summon"] .td-screen-footer-note { flex-basis: 100%; }
-  [data-td-screen="squad"] .td-screen-footer { flex-wrap: wrap; gap: var(--space-1) var(--space-2); }
-  [data-td-screen="squad"] .td-screen-footer-note, [data-td-screen="squad"] .td-squad-power { flex-basis: 100%; white-space: normal; }
   .td-squad-prep { padding: var(--space-2); gap: var(--space-2); }
   .td-squad-roster { grid-auto-columns: 94px; }
-  .td-squad-head { flex-direction: column; align-items: stretch; gap: var(--space-2); }
-  .td-squad-head-actions { justify-content: flex-end; }
   .td-squad-tile-class { width: 22px; height: 22px; }
   .td-squad-slot-class { width: 24px; height: 24px; }
   .td-squad-lineup { width: 100%; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
-        .td-squad-feedback:not(.is-warning) { display: none; }
 }
 
 .td-camp-head > .td-camp-feature-reward { margin: var(--space-1) 0 0; }
@@ -1695,7 +1676,7 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-summon-feature-copy .td-summon-terms span:last-child { padding-right: 0; border-right: 0; }
 .td-summon-action { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: auto; padding-top: var(--space-5); }
 .td-summon-action > div { display: grid; gap: 3px; color: var(--text-bright); font-weight: var(--weight-bold); }
-.td-summon-action small { color: var(--text-secondary); font-size: var(--td-fs-label); font-weight: var(--weight-regular); }
+.td-summon-action small { color: var(--text-secondary); font-size: var(--td-fs-label); font-weight: var(--weight-normal); }
 .td-summon-action .action-button { min-width: 170px; }
 .td-summon-arrivals > summary { display: flex; align-items: center; gap: var(--space-2); width: fit-content; min-height: 44px; color: var(--text-secondary); font-size: var(--td-fs-body); cursor: pointer; list-style: none; border-radius: var(--radius-sm); }
 .td-summon-arrivals > summary::-webkit-details-marker { display: none; }
@@ -1883,27 +1864,32 @@ button .td-cur { color: inherit; }
 .td-app .td-camp-chapters { flex-wrap: nowrap; gap: var(--space-1); margin-top: 0; padding: var(--space-1); overflow-x: auto; scrollbar-width: none; }
 .td-app .td-camp-chapter-tab { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-2); min-height: 36px; padding: var(--space-1) var(--space-3); }
 
-/* Squad: head, then the roster as one sideways-scrolling row, then the lineup slots at the
-   bottom. Rows share the 390px-tall frame: the roster takes what head and lineup leave. */
-.td-app .td-squad-screen { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; align-content: stretch; gap: var(--space-2); height: 100%; }
-.td-app .td-squad-head { align-items: center; }
-.td-app .td-squad-head > div:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px var(--space-3); }
-.td-app .td-squad-head .td-camp-chapter { font-size: var(--td-fs-card); }
-.td-app .td-squad-head .td-camp-progress, .td-app .td-squad-head .td-camp-feature-reward { font-size: var(--td-fs-label); }
-.td-app .td-squad-head-actions .action-button { min-height: 36px; }
-.td-app .td-squad-head .td-squad-clear { min-height: 36px; }
-.td-app .td-squad-roster { grid-auto-flow: column; grid-template-rows: minmax(0, 1fr); grid-template-columns: none; grid-auto-columns: 76px; min-height: 0; padding: 2px 2px var(--space-1); overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
-.td-app .td-squad-tile { grid-template-rows: minmax(0, 1fr) auto auto; height: 100%; padding-bottom: var(--space-1); touch-action: pan-x; }
-.td-app .td-squad-tile-portrait { height: 100%; min-height: 0; aspect-ratio: auto; }
-.td-app .td-squad-prep { position: static; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: stretch; gap: var(--space-3); padding: var(--space-2) var(--space-3); text-align: left; box-shadow: none; }
-.td-app .td-squad-lineup { width: auto; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 50px; gap: var(--space-2); }
+/* Squad (menu frame 844 x 390): no stage head, the player picked the stage one screen up.
+   Roster on top: two rows of bare 50 x 75 art cards, scrolling sideways. Lineup at the
+   bottom: 84 x 84 slots centered, cost under each, one 11px hint line. No panels around either. */
+.td-app .td-squad-screen { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; align-content: stretch; gap: var(--space-3); height: 100%; }
+.td-app [data-td-screen="squad"] .td-screen-body { padding-block: var(--space-3); }
+.td-app .td-squad-roster { grid-auto-flow: column; grid-template-rows: repeat(2, 75px); grid-template-columns: none; grid-auto-columns: 50px; align-self: center; gap: 6px; min-height: 0; padding: 2px; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
+.td-app .td-squad-tile { display: block; width: 50px; height: 75px; padding: 0; border-radius: var(--radius-sm); touch-action: pan-x; }
+.td-app .td-squad-tile-portrait { display: block; width: 100%; height: 100%; aspect-ratio: auto; }
+.td-app .td-squad-tile-class { top: 2px; left: 2px; width: 16px; height: 16px; }
+.td-app .td-squad-tile-check { top: 2px; right: 2px; width: 16px; height: 16px; font-size: 10px; }
+.td-app .td-squad-tile-foot { position: absolute; right: 0; bottom: 0; left: 0; padding: 8px 2px 2px; background: linear-gradient(transparent, rgba(9, 9, 16, .9) 55%); color: var(--text-bright); font-size: 11px; font-weight: var(--weight-bold); line-height: 1.1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Bottom row: slots and hint centered, Might above Start on the right; no screen footer. */
+.td-app .td-squad-prep { position: static; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; justify-items: center; gap: 4px var(--space-3); padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.td-app .td-squad-lineup, .td-app .td-squad-feedback { grid-column: 2; }
+.td-app .td-squad-go { grid-column: 3; grid-row: 1 / span 2; justify-self: end; display: grid; justify-items: center; gap: 4px; }
+.td-app .td-squad-go .action-button { min-width: 120px; min-height: 40px; }
+.td-app .td-squad-power { display: flex; align-items: center; gap: 4px; margin: 0; font-size: 12px; font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.td-app .td-squad-power[hidden] { display: flex; visibility: hidden; }
+.td-app .td-squad-lineup { width: auto; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84px; gap: var(--space-3); }
 .td-app .td-squad-slot { gap: 2px; }
-.td-app .td-squad-slot-class { top: 2px; right: 2px; width: 18px; height: 18px; }
-.td-app .td-squad-slot-cost { min-height: 0; font-size: var(--td-fs-label); line-height: 1.2; }
+.td-app .td-squad-slot-card { width: 84px; height: 84px; aspect-ratio: auto; }
+.td-app .td-squad-slot-class { top: 3px; right: 3px; width: 22px; height: 22px; }
+.td-app .td-squad-slot-cost { min-height: 0; font-size: 11px; line-height: 1.2; }
 .td-app .td-squad-slot.is-empty strong { font-size: var(--text-lg); }
-.td-app .td-squad-tools { justify-items: start; }
-.td-app .td-squad-tools p { font-size: var(--td-fs-label); line-height: 1.35; }
-.td-app [data-td-screen="squad"] .td-screen-footer-note, .td-app [data-td-screen="squad"] .td-squad-power { white-space: nowrap; }
+.td-app .td-squad-feedback { margin: 0; color: var(--text-muted); font-size: 11px; line-height: 1.2; }
+.td-app .td-squad-feedback.is-warning { color: var(--accent-gold); }
 
 /* Summon: the banner takes the height; arrivals and Seal Dust are slim rows below. */
 .td-app .td-summon-screen { grid-template-rows: minmax(0, 1fr) auto auto; align-content: stretch; gap: var(--space-2); height: 100%; }
@@ -2106,4 +2092,10 @@ button .td-cur { color: inherit; }
 .td-app .td-camp-company { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .td-app .td-camp-companion strong, .td-app .td-camp-companion small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .td-app .td-camp-companion > div { min-width: 0; }
-.td-squad-note { margin: 0; color: var(--text-muted); font-size: var(--td-fs-label); }
+/* Star fodder: chosen slots on the left, spare copies to pick from beside them. */
+.td-fodder { grid-template-columns: auto minmax(0, 1fr); align-items: start; column-gap: var(--space-3); }
+.td-fodder-head { grid-column: 1 / -1; }
+.td-fodder-picks { min-height: 100%; padding-left: var(--space-3); border-left: 1px solid var(--border-subtle); }
+.td-fodder-picks > .td-hero-tab-copy { margin: 0; align-self: center; }
+.td-fodder-slot { width: 72px; height: 84px; box-sizing: border-box; }
+.td-fodder-pick { min-height: 84px; box-sizing: border-box; }

@@ -268,17 +268,23 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    transition into squad selection; Escape, the close button or the backdrop close it.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
    Campaign stages; exiting a campaign run also resolves through this hierarchy.
-   Layout (top to bottom): compact stage head (name, map · waves · lives · boss, rewards;
-   the stage text is a tooltip), a roster strip of small tiles, max 2 rows, swipe/scroll
-   sideways for the rest (portrait, name, class icon,
-   level; locked heroes trail dimmed with their unlock source), then a sticky panel with
-   the 5 squad slots (portrait-format cards, art only with the class icon top right,
-   battle gold cost below; tap or drag out to remove), all centered with coverage line and
-   hint/flyer warning under them. Quick pick sits top right in the stage head. Footer: count, power vs. recommended,
-   Start. Role hints and skill names live in tile tooltips and on the Heroes screen.
-   Under the coverage line a note names the deploy-cap asymmetry (mechanics overview
-   recommendation 6): "Campaign squads field 5 heroes — a tighter fight than Free
-   Play's 7. Your levels, stars and evolution carry you here." Squad size was raised
+   Layout (top to bottom), measured against a gacha team screen (owner, September 28,
+   2026): no stage head and no Clear heroes / Quick pick buttons (the player saw the stage
+   in the drawer one screen up). Roster: two rows of bare 50 x 75 art cards scrolling
+   sideways, class icon top left, check top right when picked, "Lv N" in 11px over the
+   card foot; name, class, role hint and skill are in the tooltip/label. Locked heroes
+   trail dimmed with no foot text; their unlock source (stage or Summon) is in the tooltip.
+   Lineup at the bottom, no panel: the 5 slots as 84 x 84 cards centered (enlarged from 50 once the footer left) (class icon top
+   right, battle gold cost under each; tap or drag out to remove), then one 11px hint line:
+   "Drag a hero onto a slot to swap, or tap a slot to free it." (or the flyer warning when
+   the stage has flyers and the squad no Mage/Archer). No coverage line or deploy-cap note.
+   No screen footer: Might and Start sit in the lineup row, right-aligned, Might (crossed
+   swords icon + value, 12px, green at/above recommended, gold below; "Squad Might X /
+   recommended Y" in its tooltip and label) above a plain "Start" button (disabled until one
+   hero is picked). No squad count text; the slots show it.
+   The whole screen fits the menu frame (844 x 390) without vertical scroll. Roster top,
+   slots bottom is fixed: do not move the lineup into a side column. Role hints and skill names live in tile tooltips and on the Heroes screen.
+   Campaign squads field 5 heroes (Free Play deploys 7). Squad size was raised
    4 → 5 on September 28, 2026 after a sweep showed 4 read as punishment (late-stage
    win rates 34-54% at 4, 49-81% at 5, near-Free-Play ease at 6).
    Class icons across the whole TD UI are `classGlyph()` (assets.js; `classIconImg()`

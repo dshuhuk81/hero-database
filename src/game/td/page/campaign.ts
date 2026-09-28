@@ -55,9 +55,6 @@ export function createCampaign(ctx: PageContext) {
   const summaryChapterEl = q("[data-td-camp-summary-chapter]");
   const summaryRouteEl = q("[data-td-camp-summary-route]");
   const summaryCtaEl = q("[data-td-camp-summary-cta]");
-  const squadTitleEl = q("[data-td-squad-stage]");
-  const squadCopyEl = q("[data-td-squad-copy]");
-  const squadCountEl = q("[data-td-squad-count]");
   const squadListEl = q("[data-td-squad-list]");
   const squadStart = q<HTMLButtonElement>("[data-td-squad-start]");
   const walletEls = [...ctx.root.querySelectorAll<HTMLElement>("[data-td-camp-wallet]")];
@@ -89,12 +86,6 @@ export function createCampaign(ctx: PageContext) {
   const rewardHtml = (rewards: any[]) => `<span class="td-cur-list">${rewards.map((reward) => reward.type === "currency"
     ? currencyAmount(reward.id, reward.amount, { plus: true })
     : `<span class="td-cur td-cur--hero">${heroById.get(reward.id)?.portrait ? `<img src="${heroById.get(reward.id).portrait}" alt="">` : ""}<b>${heroName(reward.id)}</b></span>`).join("")}</span>`;
-  const stageRewards = (stage: any) => {
-    const first = pendingRewards(stage, progress());
-    if (!isCleared(progress(), stage.id)) return first.length ? `<span class="td-cur-label">First clear</span>${rewardHtml(first)}` : "";
-    const replay = repeatRewards(campaign, stage);
-    return replay.length ? `<span class="td-cur-label">Replay</span>${rewardHtml(replay)}` : "";
-  };
   const wallet = () => currencyList(Object.fromEntries(CURRENCIES.map((id) => [id, progress().currencies[id] || 0])));
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
@@ -260,32 +251,23 @@ export function createCampaign(ctx: PageContext) {
     const stage = stageId ? stageById(campaign, stageId) : null;
     if (!stage) return false;
     const p = progress();
-    const map = mapOf(stage.mapId);
-    squadTitleEl.textContent = `Stage ${stage.id}: ${stage.name}`;
-    const bossText = hasEnemy(stage, "boss") ? ` · Boss: ${ctx.bossFor(map).name}` : "";
-    squadCopyEl.textContent = `${map?.name ?? stage.mapId} · ${stage.waves.length} waves · ${stage.lives} lives${bossText}`;
-    squadCopyEl.title = stage.text ?? "";
-    q("[data-td-squad-rewards]").innerHTML = stageRewards(stage);
-    squadCountEl.textContent = `Squad ${squad.length} / ${campaign.squadSize}`;
-    // Deploy-cap note (mechanics overview recommendation 6): campaign squads are
-    // deliberately tighter than Free Play's 7 — the collection upgrades carry you.
-    q("[data-td-squad-note]").textContent = `Campaign squads field ${campaign.squadSize} heroes — a tighter fight than Free Play's ${data.tuning.run?.deployCap ?? 7}. Your levels, stars and evolution carry you here.`;
     const selected = squad.map((id) => heroById.get(id));
-    const road = selected.filter((hero) => hero.slot === "road").length;
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
-    q("[data-td-squad-coverage]").textContent = `${road} road · ${selected.length - road} platform · ${antiAir} anti-air`;
     const powerEl = q("[data-td-squad-power]");
     powerEl.hidden = !selected.length;
     if (selected.length) {
       const squadPower = selected.reduce((sum, hero) => sum + might(hero), 0);
       const recommended = recommendedPower(stage);
-      powerEl.textContent = `Squad Might ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
+      // Crossed swords + value; the recommendation is in the label and tooltip only.
+      powerEl.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 4l11 11M20 4L9 15M13 17l4 4M7 21l4-4M17 13l4 4M3 17l4-4"/></svg><span>${squadPower.toLocaleString()}</span>`;
+      powerEl.title = `Squad Might ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
+      powerEl.setAttribute("aria-label", powerEl.title);
       powerEl.classList.toggle("is-strong", squadPower >= recommended);
       powerEl.classList.toggle("is-weak", squadPower < recommended);
     }
     const noAir = hasEnemy(stage, "flyer") && !antiAir;
     feedbackEl.textContent = noAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
-      : squad.length === campaign.squadSize ? "Squad full. Drag a hero onto a slot to swap, or tap a slot to free it." : `Tap or drag up to ${campaign.squadSize} heroes into the slots. Campaign levels apply; Divine Blessings do not.`;
+      : "Drag a hero onto a slot to swap, or tap a slot to free it.";
     feedbackEl.classList.toggle("is-warning", noAir);
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
     // Slots: portrait card only, class icon on the art, battle gold cost above. Tap or drag out to remove.
@@ -296,7 +278,8 @@ export function createCampaign(ctx: PageContext) {
         <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
         <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
     }).join("");
-    // Roster: portrait, name, class icon and level only. Locked heroes trail the owned ones, dimmed.
+    // Roster: 50 x 75 art cards, class icon on the art, level over its foot; name and (for
+    // locked heroes) the unlock source are in the tooltip and label. Locked heroes trail the owned ones, dimmed.
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const heroes = [...data.heroes].sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
     const tile = (hero: any) => {
@@ -305,18 +288,16 @@ export function createCampaign(ctx: PageContext) {
       const skill = data.tuning.heroSkills?.[hero.id];
       const tip = owned ? `${hero.name} · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
-      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" title="${tip}"${owned ? "" : " disabled"}>
+      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, level ${heroLevel(p, hero.id)}` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" src="${hero.image}" alt="" loading="lazy">
         <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
-        <span class="td-squad-tile-name">${hero.name}</span>
-        <small>${owned ? `<span class="td-squad-tile-role">${hero.class}</span> · Lv ${heroLevel(p, hero.id)}` : unlock ? `Stage ${unlock.id}` : "Summon"}</small></button>`;
+        ${owned ? `<small class="td-squad-tile-foot">Lv ${heroLevel(p, hero.id)}</small>` : ""}</button>`;
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
-    q<HTMLButtonElement>("[data-td-squad-clear]").disabled = !squad.length;
     squadStart.disabled = !validSquad(campaign, p, squad);
-    squadStart.textContent = squad.length ? `Start stage ${stage.id}` : "Pick at least one hero";
+    squadStart.textContent = "Start";
     return true;
   }
 
@@ -728,16 +709,6 @@ export function createCampaign(ctx: PageContext) {
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);
   ctx.root.addEventListener("click", (event) => { if (swallowClick) { event.stopPropagation(); event.preventDefault(); swallowClick = false; } }, true);
-  q("[data-td-squad-clear]").addEventListener("click", () => {
-    squad = [];
-    renderSquad();
-  });
-  q("[data-td-squad-preset]").addEventListener("click", () => {
-    const owned = data.heroes.filter((hero: any) => progress().owned.includes(hero.id));
-    squad = ["Warrior", "Mage", "Archer", "Support"].map((cls) => owned.find((hero: any) => hero.class === cls)?.id).filter(Boolean).slice(0, campaign.squadSize);
-    renderSquad();
-    feedbackEl.textContent = "Quick pick: a road fighter, splash damage, anti-air and healing. Swap any hero to try another approach.";
-  });
   squadStart.addEventListener("click", start);
   ctx.root.querySelector<HTMLElement>('[data-td-screen="heroes"]')!.addEventListener("click", (event) => {
     const select = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-hero-select]");
