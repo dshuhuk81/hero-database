@@ -98,7 +98,7 @@ export function createCampaign(ctx: PageContext) {
     const chapter = campaign.chapters[0];
     const resourceHints: Record<string, string> = { gold: "Hero upgrades", heroXp: "Hero upgrades", divineSeals: "Summon heroes" };
     const resourceIcons: Record<string, string> = { gold: "◈", heroXp: "✦", divineSeals: "✧" };
-    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<div class="td-camp-resource"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><div><small>${CURRENCY_NAMES[id]}</small><strong>${(p.currencies[id] || 0).toLocaleString()}</strong><small>${resourceHints[id] ?? "Hero upgrades"}</small></div></div>`).join("");
+    q("[data-td-camp-resources]").innerHTML = CURRENCIES.map((id) => `<div class="td-camp-resource"><span aria-hidden="true">${resourceIcons[id] ?? "✦"}</span><div><small>${(CURRENCY_NAMES as Record<string, string>)[id]}</small><strong>${(p.currencies[id] || 0).toLocaleString()}</strong><small>${resourceHints[id] ?? "Hero upgrades"}</small></div></div>`).join("");
     q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
     q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
     const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
