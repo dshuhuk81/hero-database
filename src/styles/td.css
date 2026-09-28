@@ -291,17 +291,59 @@
 .td-squad-hero.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 2px var(--accent-gold-dim); background: color-mix(in srgb, var(--accent-gold) 10%, var(--surface-tint)); }
 .td-squad-hero.is-unavailable { opacity: .45; }
 
-/* Difficulty and run length */
-.td-mode-screen { display: grid; align-content: start; gap: var(--space-5); }
-.td-mode-screen > * { width: min(860px, 100%); }
-.td-mode-screen .td-mode-map { margin-block: 0; color: var(--accent-gold); font-size: var(--td-fs-card); font-weight: var(--weight-semibold); }
+/* Difficulty and run length (M27a): battlefield banner, ranked tiers, big run-length cards */
+.td-mode-screen { display: grid; align-content: start; justify-items: center; gap: var(--space-5); }
+.td-mode-screen > * { width: min(980px, 100%); }
 .td-mode-group { display: grid; gap: var(--space-2); }
-.td-mode-screen .td-tiers { padding: 0; }
-@media (min-width: 700px) {
-  .td-mode-screen .td-modes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .td-mode-screen .td-mode { flex-direction: column; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
-  .td-mode-screen .td-mode-best { max-width: none; text-align: left; }
+.td-mode-banner { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); min-height: 168px; padding: var(--space-5); overflow: hidden; border: 1px solid color-mix(in srgb, var(--accent-gold) 25%, var(--border-subtle)); border-radius: var(--radius-xl); background: var(--bg-surface); isolation: isolate; }
+.td-mode-banner-art { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .75; }
+.td-mode-banner::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--bg-base) 88%, transparent) 25%, transparent 75%), linear-gradient(0deg, color-mix(in srgb, var(--bg-base) 70%, transparent), transparent 60%); }
+.td-mode-banner-boss { position: absolute; z-index: -1; right: 110px; bottom: -6px; height: 150%; max-height: 240px; width: auto; object-fit: contain; filter: drop-shadow(0 0 22px color-mix(in srgb, var(--td-warn) 50%, transparent)); pointer-events: none; }
+.td-mode-banner-copy { display: grid; gap: var(--space-1); min-width: 0; }
+.td-mode-banner-copy h2 { margin: 0; color: var(--text-bright); font-size: clamp(1.6rem, 3.5vw, 2.25rem); line-height: 1.05; }
+.td-mode-banner-copy .td-trial-boss { margin: 0; }
+.td-mode-change { position: relative; flex: 0 0 auto; background: color-mix(in srgb, var(--bg-base) 70%, transparent); }
+.td-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); padding: 0; }
+.td-tier-option { --tier: var(--text-secondary); position: relative; display: grid; gap: var(--space-1); align-content: start; min-height: 44px; padding: var(--space-3) var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors), box-shadow .18s ease; }
+.td-tier-option--heroic { --tier: var(--accent-purple); }
+.td-tier-option--mythic { --tier: var(--td-warn); }
+.td-tier-option--normal { --tier: var(--accent-gold); }
+.td-tier-pips { display: flex; gap: 4px; }
+.td-tier-pips i { width: 10px; height: 10px; border: 1px solid color-mix(in srgb, var(--tier) 55%, transparent); transform: rotate(45deg); }
+.td-tier-pips i.is-on { background: var(--tier); border-color: var(--tier); }
+.td-tier-option strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-tier-option small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-tier-favor { justify-self: start; margin-top: var(--space-1); padding: 1px var(--space-2); border-radius: var(--radius-full); background: color-mix(in srgb, var(--accent-gold) 14%, transparent); color: var(--accent-gold); font-size: var(--td-fs-label); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.td-tier-option:hover, .td-tier-option:focus-visible { border-color: color-mix(in srgb, var(--tier) 70%, transparent); }
+.td-tier-option[aria-checked="true"] { border-color: var(--tier); background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--tier) 18%, transparent), transparent 70%), var(--surface-tint); box-shadow: 0 0 0 1px var(--tier), 0 12px 26px -16px var(--tier); }
+.td-tier-option[aria-checked="true"] strong { color: var(--tier); }
+.td-modes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.td-mode { position: relative; display: grid; grid-template-rows: auto auto 1fr auto; gap: var(--space-2); min-height: 220px; padding: var(--space-4); overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: linear-gradient(160deg, rgba(255, 255, 255, .04), transparent 55%), var(--bg-surface); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; isolation: isolate; transition: var(--transition-colors), transform .18s ease, box-shadow .18s ease; }
+.td-mode-glyph { color: color-mix(in srgb, var(--accent-gold) 85%, white); font-size: 3.5rem; font-weight: var(--weight-bold); line-height: .9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.td-mode--endless .td-mode-glyph { color: var(--accent-purple); }
+.td-mode-copy { display: grid; gap: 2px; }
+.td-mode-copy strong { color: var(--text-bright); font-size: var(--td-fs-section); }
+.td-mode-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-mode-best { align-self: end; color: var(--accent-gold); font-size: var(--td-fs-body); font-variant-numeric: tabular-nums; }
+.td-mode-play { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 40px; border: 1px solid var(--border-medium); border-radius: var(--radius-md); color: var(--text-bright); font-size: var(--td-fs-body); font-weight: var(--weight-bold); transition: var(--transition-colors); }
+.td-mode-play .td-icon { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.td-mode:hover, .td-mode:focus-visible { border-color: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 16px 30px -18px var(--accent-gold); }
+.td-mode:hover .td-mode-play, .td-mode:focus-visible .td-mode-play, .td-mode.is-selected .td-mode-play { border-color: var(--accent-gold); background: var(--accent-gold); color: var(--bg-base); }
+.td-mode.is-selected { border-color: color-mix(in srgb, var(--accent-gold) 60%, transparent); }
+@media (max-width: 700px) {
+  .td-mode-banner { min-height: 140px; padding: var(--space-4); }
+  .td-mode-banner-boss { right: 70px; max-height: 170px; opacity: .8; }
+  .td-tiers { grid-template-columns: 1fr; gap: var(--space-2); }
+  .td-tier-option { grid-template-columns: auto 1fr auto; column-gap: var(--space-3); align-items: center; padding: var(--space-2) var(--space-3); }
+  .td-tier-option small { grid-column: 2 / 4; }
+  .td-tier-pips { grid-row: 1 / 3; flex-direction: column; }
+  .td-tier-favor { grid-column: 3; grid-row: 1; margin: 0; }
+  .td-modes { grid-template-columns: 1fr; }
+  .td-mode { grid-template-columns: 64px 1fr; grid-template-rows: auto auto; min-height: 0; column-gap: var(--space-3); padding: var(--space-3); }
+  .td-mode-glyph { grid-row: 1 / 3; align-self: center; font-size: 2.5rem; text-align: center; }
+  .td-mode-play { display: none; }
 }
+@media (prefers-reduced-motion: reduce) { .td-mode { transition: none; } }
 
 /* Settings: one column on phones; Sound, Progress and About side by side from 760 px. */
 .td-settings { display: grid; align-content: start; gap: var(--space-5); }
@@ -327,7 +369,7 @@
 .td-map-card:hover, .td-map-card:focus-visible { border-color: var(--border-strong); }
 .td-map-card.is-selected { border-color: var(--accent-gold); background: var(--accent-gold-dim); }
 .td-map-preview { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: var(--radius-md); background: var(--td-stage-bg); }
-.td-map-preview-path { fill: none; stroke: rgba(201, 162, 39, .3); stroke-width: 44; stroke-linecap: round; stroke-linejoin: round; }
+.td-map-preview-path { fill: none; stroke: rgba(201, 162, 39, .22); stroke-width: 40; stroke-linecap: round; stroke-linejoin: round; }
 .td-map-card-copy { display: grid; gap: 2px; }
 .td-map-card-copy strong { color: var(--text-bright); font-size: var(--td-fs-section); }
 .td-map-card-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); }
@@ -353,24 +395,6 @@
 .td-challenge-states { grid-column: 2; display: flex; flex-wrap: wrap; gap: var(--space-1); }
 .td-challenge-status { padding: 1px 8px; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); color: var(--text-muted); font-size: var(--td-fs-label); }
 .td-challenge-status.is-done { border-color: var(--accent-gold); color: var(--accent-gold); }
-.td-mode-map { margin: 2px 0 0; color: var(--text-muted); font-size: var(--text-sm); }
-.td-modes { display: grid; gap: var(--space-3); }
-.td-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); padding: 0 var(--space-4) var(--space-3); }
-.td-tier-option { display: grid; gap: 2px; align-content: start; min-height: 44px; padding: var(--space-2) var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
-.td-tier-option strong { font-size: var(--td-fs-card); }
-.td-tier-option small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
-.td-tier-option:hover, .td-tier-option:focus-visible { border-color: var(--accent-gold); }
-.td-tier-option[aria-checked="true"] { border-color: var(--accent-gold); background: rgba(250, 204, 21, .12); }
-.td-tier-option[aria-checked="true"] strong { color: var(--accent-gold); }
-@media (max-width: 480px) { .td-tiers { grid-template-columns: 1fr; } }
-.td-mode { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }
-.td-mode:hover, .td-mode:focus-visible { border-color: var(--border-strong); }
-.td-mode.is-selected { border-color: var(--accent-gold); background: var(--accent-gold-dim); }
-.td-mode-copy { display: grid; gap: 2px; }
-.td-mode-copy strong { color: var(--text-bright); font-size: var(--td-fs-section); }
-.td-mode-copy small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
-.td-mode-best { flex: 0 1 auto; max-width: 40%; color: var(--accent-gold); font-size: var(--td-fs-body); font-variant-numeric: tabular-nums; text-align: right; }
-@media (max-width: 480px) { .td-mode { flex-direction: column; align-items: flex-start; gap: var(--space-1); padding: var(--space-3); } .td-mode-best { max-width: none; text-align: left; } }
 .td-favor-count { color: var(--accent-gold); }
 
 /* ============================================================
@@ -1240,11 +1264,50 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 }
 /* Expedition (M21): lobby card reuses the Daily Trial layout; camp cards reuse the mutator cards. */
 .td-exp-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
-.td-exp-camp { display: grid; gap: var(--space-2); }
-.td-exp-camp .td-mutator small { font-size: var(--td-fs-body); line-height: var(--leading-snug); }
-.td-exp-camp .td-mutator { border-color: color-mix(in srgb, var(--accent-gold) 45%, var(--border-subtle)); background: color-mix(in srgb, var(--accent-gold) 6%, var(--bg-base)); }
-.td-exp-camp .td-mutator:hover, .td-exp-camp .td-mutator:focus-visible { border-color: var(--accent-gold); }
-.td-exp-cost { margin-top: auto; color: var(--td-warn); font-size: var(--td-fs-body); font-weight: var(--weight-bold); }
+/* Expedition screen (M27a): Daily-style banner, route of battlefields, camp choices, roster cards */
+.td-exp-banner { border-color: color-mix(in srgb, var(--accent-gold) 25%, var(--border-subtle)); background: linear-gradient(90deg, var(--bg-surface) 30%, color-mix(in srgb, var(--bg-surface) 40%, transparent)), url("/td/expedition.webp") right center / cover no-repeat, var(--bg-surface); }
+.td-exp-banner .td-trial-boss-art { filter: drop-shadow(0 0 24px color-mix(in srgb, var(--accent-gold) 40%, transparent)); }
+.td-exp-banner .td-trial-goal strong { color: var(--td-warn); }
+.td-exp-status.is-lives strong { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text-bright); }
+.td-exp-status.is-lives .td-icon { width: 28px; height: 28px; fill: var(--td-hp, #4ade80); stroke: none; }
+.td-exp-route { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: none; }
+.td-exp-stop { position: relative; display: flex; align-items: flex-end; min-height: 150px; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: repeating-linear-gradient(135deg, rgba(255, 255, 255, .03) 0 10px, transparent 10px 20px), var(--bg-surface); isolation: isolate; }
+.td-exp-stop-art { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .7; }
+.td-exp-stop::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, transparent 20%, color-mix(in srgb, var(--bg-base) 92%, transparent) 85%); }
+.td-exp-stop-num { position: absolute; top: var(--space-2); left: var(--space-2); display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-full); background: color-mix(in srgb, var(--bg-base) 75%, transparent); color: var(--text-bright); font-size: var(--td-fs-label); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); }
+.td-exp-stop-copy { display: grid; gap: 2px; padding: 48px var(--space-3) var(--space-3); }
+.td-exp-stop-copy strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-exp-stop-copy small { color: var(--text-secondary); font-size: var(--td-fs-meta); }
+.td-exp-stop-state { color: var(--text-muted); font-size: var(--td-fs-label); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+.td-exp-stop.is-current { border-color: var(--accent-gold); box-shadow: 0 0 0 1px var(--accent-gold), 0 12px 28px -14px var(--accent-gold); }
+.td-exp-stop.is-current .td-exp-stop-num { border-color: var(--accent-gold); background: var(--accent-gold); color: var(--bg-base); }
+.td-exp-stop.is-current .td-exp-stop-state { color: var(--accent-gold); }
+.td-exp-stop.is-done .td-exp-stop-art { filter: grayscale(.7); opacity: .45; }
+.td-exp-stop.is-done .td-exp-stop-state { color: var(--td-hp, #4ade80); }
+.td-exp-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); }
+.td-exp-choice { position: relative; display: grid; align-content: start; gap: var(--space-1); min-height: 168px; padding: var(--space-4); overflow: hidden; border: 1px solid color-mix(in srgb, var(--accent-gold) 40%, var(--border-subtle)); border-radius: var(--radius-lg); background: radial-gradient(90% 80% at 100% 0%, color-mix(in srgb, var(--accent-gold) 12%, transparent), transparent 65%), var(--bg-surface); color: inherit; text-align: left; cursor: pointer; isolation: isolate; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.td-exp-choice:hover, .td-exp-choice:focus-visible { border-color: var(--accent-gold); box-shadow: 0 14px 30px -16px var(--accent-gold); transform: translateY(-2px); }
+.td-exp-choice strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-exp-choice small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+.td-exp-choice-art { position: absolute; z-index: -1; right: -12px; bottom: 0; width: 46%; height: 100%; object-fit: cover; object-position: top; opacity: .55; -webkit-mask-image: linear-gradient(to left, #000 40%, transparent); mask-image: linear-gradient(to left, #000 40%, transparent); }
+.td-exp-choice--hero > :not(img) { max-width: 70%; }
+.td-exp-choice-icon { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: var(--space-1); border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent); border-radius: var(--radius-md); background: color-mix(in srgb, var(--accent-gold) 10%, transparent); color: var(--accent-gold); }
+.td-exp-choice-icon .td-icon { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.td-exp-choice--drill .td-exp-choice-icon { color: var(--td-class-warrior, var(--accent-gold)); }
+.td-exp-cost { margin-top: auto; padding-top: var(--space-2); color: var(--td-warn); font-size: var(--td-fs-body); font-weight: var(--weight-bold); }
+@media (min-width: 861px) { .td-exp-squad { grid-template-columns: repeat(auto-fill, minmax(150px, 190px)); } }
+.td-exp-relics li { white-space: normal; }
+.td-exp-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.td-exp-steps li { display: grid; grid-template-columns: 40px 1fr; column-gap: var(--space-3); row-gap: 2px; align-items: start; padding: var(--space-3) var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); }
+.td-exp-steps .td-icon { grid-row: 1 / 3; width: 40px; height: 40px; padding: 8px; border-radius: var(--radius-md); background: color-mix(in srgb, var(--accent-gold) 10%, transparent); stroke: var(--accent-gold); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.td-exp-steps strong { color: var(--text-bright); font-size: var(--td-fs-card); }
+.td-exp-steps small { color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-snug); }
+@media (max-width: 640px) {
+  .td-exp-banner { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-surface) 50%, transparent), var(--bg-surface) 70%), url("/td/expedition.webp") center top / cover no-repeat, var(--bg-surface); }
+  .td-exp-route { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(200px, 72%); overflow-x: auto; margin-inline: calc(-1 * var(--space-4)); padding: var(--space-1) var(--space-4) var(--space-2); scroll-snap-type: x mandatory; scroll-padding-inline: var(--space-4); scrollbar-width: none; }
+  .td-exp-stop { scroll-snap-align: start; }
+}
+@media (prefers-reduced-motion: reduce) { .td-exp-choice { transition: none; } }
 
 /* Audit step 1: Campaign, squad preparation and the summon collection. */
 .td-camp-screen, .td-squad-screen { width: min(1120px, 100%); }

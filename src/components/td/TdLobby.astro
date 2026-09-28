@@ -21,15 +21,17 @@ const previews = maps.map((entry: any) => ({
 }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
-const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any]) => ({
+const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
   id,
+  rank,
   label: t.label,
-  copy: t.enemyHp === 1 && t.enemyAttack === 1 ? "The standard run." : `Enemies +${pct(t.enemyHp)} health, +${pct(t.enemyAttack)} attack. ${t.favor}x Favor.`,
+  copy: t.enemyHp === 1 && t.enemyAttack === 1 ? "The standard run." : `Enemies +${pct(t.enemyHp)} health, +${pct(t.enemyAttack)} attack.`,
+  favor: t.favor,
 }));
 const modes = [
-  { id: "classic", label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
-  { id: "long", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
-  { id: "endless", label: "Endless", copy: "A boss every 5th wave. Waves keep growing until the last life is lost. Always Normal difficulty." },
+  { id: "classic", glyph: String(waveCount), label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
+  { id: "long", glyph: "20", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
+  { id: "endless", glyph: "∞", label: "Endless", copy: "A boss every 5th wave. Waves keep growing until the last life is lost. Always Normal difficulty." },
 ];
 ---
 
@@ -229,7 +231,7 @@ const modes = [
           {previews.map((preview: any) => (
             <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
               <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-                {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
+                {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.9" preserveAspectRatio="none" />}
                 {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
                 {preview.art && <>
                   {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
@@ -262,14 +264,25 @@ const modes = [
     <!-- 3. Difficulty and run length: picking a length starts the run -->
     <section class="td-screen" data-td-screen="mode" data-title="Difficulty and run length" aria-label="Difficulty and run length" hidden>
       <div class="td-screen-body td-mode-screen">
-        <p class="td-mode-map" data-td-mode-map></p>
+        <header class="td-mode-banner">
+          <img class="td-mode-banner-art" data-td-mode-art alt="" decoding="async">
+          <img class="td-mode-banner-boss" data-td-mode-boss-art alt="" decoding="async">
+          <div class="td-mode-banner-copy">
+            <span class="td-label">Battlefield</span>
+            <h2 data-td-mode-map></h2>
+            <p class="td-trial-boss">Boss <strong data-td-mode-boss></strong></p>
+          </div>
+          <button class="action-button action-button--quiet td-mode-change" type="button" data-td-go="maps">Change</button>
+        </header>
         <div class="td-mode-group">
           <span class="td-label" id="td-tier-label">Difficulty</span>
           <div class="td-tiers" role="radiogroup" aria-labelledby="td-tier-label" data-td-tiers>
             {tiers.map((tier) => (
-              <button type="button" class="td-tier-option" role="radio" aria-checked="false" data-tier-id={tier.id}>
+              <button type="button" class={`td-tier-option td-tier-option--${tier.id}`} role="radio" aria-checked="false" data-tier-id={tier.id}>
+                <span class="td-tier-pips" aria-hidden="true">{Array.from({ length: tiers.length }, (_, i) => <i class={i <= tier.rank ? "is-on" : ""}></i>)}</span>
                 <strong>{tier.label}</strong>
                 <small>{tier.copy}</small>
+                <span class="td-tier-favor">{tier.favor}x Favor</span>
               </button>
             ))}
           </div>
@@ -278,12 +291,14 @@ const modes = [
           <span class="td-label">Run length - tap to start</span>
           <div class="td-modes" data-td-modes>
             {modes.map((mode) => (
-              <button type="button" class="td-mode" data-mode-id={mode.id}>
+              <button type="button" class={`td-mode td-mode--${mode.id}`} data-mode-id={mode.id}>
+                <span class="td-mode-glyph" aria-hidden="true">{mode.glyph}</span>
                 <span class="td-mode-copy">
                   <strong>{mode.label}</strong>
                   <small>{mode.copy}</small>
                 </span>
                 <span class="td-mode-best" data-mode-best={mode.id}></span>
+                <span class="td-mode-play" aria-hidden="true">Play <svg class="td-icon" viewBox="0 0 24 24" focusable="false"><path d="M9 6l6 6-6 6" fill="none" /></svg></span>
               </button>
             ))}
           </div>
@@ -339,27 +354,40 @@ const modes = [
     <!-- 4b. Expedition (M21): src/game/td/page/expedition.ts -->
     <section class="td-screen" data-td-screen="expedition" data-title="Expedition" aria-label="Expedition" hidden>
       <div class="td-screen-body td-screen-body--center">
-        <section class="td-daily td-expedition" aria-labelledby="td-exp-title" data-td-expedition>
-          <div class="td-daily-head">
-            <div>
+        <section class="td-trial td-exp" aria-labelledby="td-exp-title" data-td-expedition>
+          <header class="td-trial-banner td-exp-banner">
+            <img class="td-trial-boss-art" data-td-exp-boss-art alt="" loading="lazy" decoding="async" hidden>
+            <div class="td-trial-intro">
               <p class="td-kicker">Expedition <span class="td-daily-date" data-td-exp-stage></span></p>
               <h2 id="td-exp-title" data-td-exp-title>Three battlefields, one squad</h2>
+              <p class="td-trial-goal" data-td-exp-copy></p>
+              <ul class="td-trial-rules" aria-label="Expedition rules" data-td-exp-rules></ul>
             </div>
+            <div class="td-trial-reward td-exp-status" data-td-exp-status></div>
+          </header>
+          <div class="td-trial-section">
+            <div class="td-trial-section-head"><span class="td-label">Route</span><small data-td-exp-route-note></small></div>
+            <ol class="td-exp-route" data-td-exp-route></ol>
           </div>
-          <p class="td-daily-goal" data-td-exp-copy></p>
-          <div class="td-exp-camp" data-td-exp-camp hidden>
-            <span class="td-label">Camp: take one</span>
-            <div class="td-mutator-row" data-td-exp-cards></div>
+          <div class="td-trial-section td-exp-camp-box" data-td-exp-camp hidden>
+            <div class="td-trial-section-head"><span class="td-label">Camp: take one reward</span><small>Then continue to the next battlefield</small></div>
+            <div class="td-exp-choices" data-td-exp-cards></div>
           </div>
-          <div class="td-daily-grid" data-td-exp-details hidden>
-            <div>
-              <span class="td-label">Roster</span>
-              <ul class="td-daily-list" data-td-exp-roster></ul>
-            </div>
-            <div>
-              <span class="td-label">Relics</span>
-              <ul class="td-daily-list" data-td-exp-relics></ul>
-            </div>
+          <div class="td-trial-section" data-td-exp-details hidden>
+            <div class="td-trial-section-head"><span class="td-label">Squad</span><small data-td-exp-roster-count></small></div>
+            <ul class="td-trial-squad td-exp-squad" data-td-exp-roster></ul>
+          </div>
+          <div class="td-trial-section" data-td-exp-relics-box hidden>
+            <div class="td-trial-section-head"><span class="td-label">Relics</span><small>Active from wave 1 of every stage</small></div>
+            <ul class="td-trial-mutators td-exp-relics" data-td-exp-relics></ul>
+          </div>
+          <div class="td-trial-section" data-td-exp-steps>
+            <div class="td-trial-section-head"><span class="td-label">How it works</span></div>
+            <ol class="td-exp-steps">
+              <li><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 8a3 3 0 106 0a3 3 0 10-6 0M3 20c0-4 3-6 7-6s7 2 7 6M15 5a3 3 0 010 6M17 14c2.5.5 4 2.5 4 6" fill="none" /></svg><strong>Random squad</strong><small data-td-exp-step-squad></small></li>
+              <li><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" fill="none" /></svg><strong>Lives carry over</strong><small>Gold resets every stage, lives do not. Each battlefield is tougher than the last.</small></li>
+              <li><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 20l9-15 9 15zM9 20l3-5 3 5" fill="none" /></svg><strong>Make camp</strong><small>After each win, take a new hero, a pair of relics or a drill.</small></li>
+            </ol>
           </div>
           <p class="td-daily-best" data-td-exp-best></p>
         </section>

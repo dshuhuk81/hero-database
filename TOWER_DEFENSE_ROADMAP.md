@@ -20,15 +20,19 @@ Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit t
 - players should be introduced to basic mechanics, status effects
 upgrades and such.
 
-### M24 leftovers (white label)
-- Enemy sprites done (archive "M24 leftovers"); unused local files and the Motto promo thumbnail (with `docs/tower-defense-thumbnail.md`) deleted September 27, 2026. Open for the owner:
-  - Old R2 keys nothing loads (delete by hand): list in `TOWER_DEFENSE_WHITELABEL_AUDIT.md` item 8, including the promo thumbnail `td/promotional/motto-tower-defense-youtube-v1.*`.
 
 ### M24 - Attention! Audit
 - There will be an Audit being run. Audit is documented here and will be done from another agent. File: `/Users/daschultheiss/hero-database/TOWER_DEFENSE_PROGRESS_AUDIT.md`
 
 ### Audit changes:
-Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommendation"). Step 1 is done; steps 2-5 are open.
+Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommendation"). UI consolidation is done; balance and content-contract work remain open.
+
+- Campaign, Squad and Summon screen pass (done September 28, 2026):
+  - Campaign now leads with an illustrated next-stage detail card and a visual chapter route. Selecting an unlocked stage previews its art, encounter text, waves, boss when present and rewards before opening Squad.
+  - Squad now presents four visible lineup slots, road/platform and anti-air coverage, a flyer warning, quick pick, campaign power versus the stage recommendation, richer owned-hero cards with role and expandable skill text, and a separate locked-hero collection with accurate acquisition sources.
+  - Summon now presents its banner rules and cost, all ten banner heroes with collected/undiscovered state, the Divine Seal source, a clear disabled state, and a focused reveal that links back to Campaign. Completed-banner copy distinguishes banner heroes from stage rewards.
+  - Validation: Campaign and Summon rule suites passed; responsive Chromium flows passed at 1440x900, 390x844 and 844x390 with no document overflow or page errors. Covered stage selection, squad add/remove/quick pick, flyer warning, summon purchase/reveal, exhausted banner and four-hero campaign entry. `astro check` reports no errors in these changed TD files; the repository still has its known unrelated errors. Production build intentionally not run.
+  - Next approval gate: Step 3, Balance and pacing. Measure Tanks, Mages, Verdant, 10-versus-20-wave difficulty and post-chapter Divine Seal pacing with multiple seeds and a second bot policy before changing tuning.
 
 - Step 1 - Rules and UI agree (done September 27, 2026):
   - Deploy capacity: `sim.deployCap()` is capped by a restricted roster (Campaign squad, Daily Trial, Expedition), so HUD deck, recruit sheet and entry notice show e.g. `0/2` instead of `0/7`.
@@ -78,6 +82,12 @@ Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M
   ### M27a: Menu design
   - Most menues are really boring to watch. We have a really nice looking main menu screen at the moment. But all screen within a game mode looks like a text menu. 
   - campaign should also have cards. summon is only a button. rethink and restructure this.
+  - Progress (September 28, 2026): Campaign cards and the Summon screen were done earlier (audit screen pass, M28); Daily Trial already had its banner and portrait cards. This pass:
+    - Expedition: Daily-style banner (expedition art, boss art once started, rule chips, reward box before the start, lives box during a run), route of three battlefield cards with map art (done / next battle / ahead; "Unknown battlefield" plus stage health before the order is drawn), camp rewards as large choice cards (recruit portrait, relic and drill icons), squad as portrait cards (shared `trialCardHtml()` in `page/daily.ts`, veterans show their level instead of the cost), relics as tiles, "How it works" steps before the first start. Continue button names the stage.
+    - Difficulty and run length: battlefield banner (map art, boss art, Change button back to the map select), difficulty tiers with diamond rank pips, tier colours and a Favor badge, run-length cards with a big 10 / 20 / infinity numeral, best result and a Play button (compact rows on phones).
+    - Map select: map art at 90% instead of 55% opacity, softer route overlay.
+    - Checks: `npm run test:tower-defense`, no TD type errors, Chromium 1440x900 and 390x844: map select, mode screen, Expedition before start, after a forced stage win (camp) and after a camp pick; no horizontal overflow, no console errors.
+  - Open: Settings / Glossary / Blessings screens were not part of this pass.
 
   ### M27b: Rethink Summon Mode
   - summon should be as to when a user requires to have x amount of a material to summon 1 hero, and XX amound of material to do a 10 pull summon.

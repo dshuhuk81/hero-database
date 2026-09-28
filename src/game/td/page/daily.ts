@@ -27,6 +27,18 @@ const mutatorChip = (id: string) => {
     `${mutatorInfo[id]?.name ?? id}</span>`;
 };
 
+// Portrait card of a locked-in hero (Daily Trial squad, Expedition roster). `badge`
+// replaces the gold cost in the top corner (for example an Expedition veteran's level).
+export function trialCardHtml(hero: any, index: number, badge = `${hero.cost}g`) {
+  const heroClass = String(hero.class || "").toLowerCase();
+  return `<li class="td-trial-card td-trial-card--${heroClass}" style="--i:${index}">` +
+    `<div class="td-trial-card-art"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +
+    `<span class="td-trial-card-class" title="${hero.class}">${classIconImg(hero.class, 20)}</span>` +
+    `<span class="td-trial-card-cost">${badge}</span>` +
+    `<div class="td-trial-card-plate"><strong>${hero.name}</strong>${hero.title ? `<small>${hero.title}</small>` : ""}` +
+    `<span class="td-trial-card-meta"><span>${hero.class}</span><span>${hero.slot === "road" ? "Road" : "Platform"}</span></span></div></li>`;
+}
+
 // Time left until the next UTC midnight, when dailyDate() rolls over to a new trial.
 function resetText(now = Date.now()) {
   const next = new Date(now);
@@ -107,16 +119,7 @@ export function createDaily(ctx: PageContext) {
     rewardEl.classList.toggle("is-claimed", !!record?.goalReached);
     rewardStateEl.textContent = record?.goalReached ? "Claimed today" : "Reward available";
     squadCountEl.textContent = `${current.heroIds.length} heroes locked in`;
-    heroesEl.innerHTML = current.heroIds.map((id, index) => {
-      const hero = heroById.get(id);
-      const heroClass = String(hero.class || "").toLowerCase();
-      return `<li class="td-trial-card td-trial-card--${heroClass}" style="--i:${index}">` +
-        `<div class="td-trial-card-art"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +
-        `<span class="td-trial-card-class" title="${hero.class}">${classIconImg(hero.class, 20)}</span>` +
-        `<span class="td-trial-card-cost">${hero.cost}g</span>` +
-        `<div class="td-trial-card-plate"><strong>${hero.name}</strong>${hero.title ? `<small>${hero.title}</small>` : ""}` +
-        `<span class="td-trial-card-meta"><span>${hero.class}</span><span>${hero.slot === "road" ? "Road" : "Platform"}</span></span></div></li>`;
-    }).join("");
+    heroesEl.innerHTML = current.heroIds.map((id, index) => trialCardHtml(heroById.get(id), index)).join("");
     mutatorsEl.innerHTML = current.mutators.map((id) => `<li title="${mutatorInfo[id]?.text ?? ""}"><strong>${mutatorInfo[id]?.name ?? id}</strong>${mutatorInfo[id]?.text ?? ""}</li>`).join("");
     bestEl.textContent = dailyBestText(store.data, current.date);
     summaryMapEl.textContent = map?.name ?? current.mapId;

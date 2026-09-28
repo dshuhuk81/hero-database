@@ -22,7 +22,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // modules in src/game/td/page/. Menu screen rendering and audio settings live here;
   // screen switching is page/nav.ts.
   import { createAudio, createMusic } from "../../game/td/audio";
-  import { setAssetBase } from "../../game/td/assets.js";
+  import { bossSprite, setAssetBase } from "../../game/td/assets.js";
+  import { mapSceneFor } from "../../game/td/map-scene.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
   import { availableFavor, createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
@@ -215,7 +216,15 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   });
   function renderModeScreen() {
     const map = state.selectedMap;
-    q("[data-td-mode-map]").textContent = `${map.name} - Boss: ${ctx.bossFor(map).name}`;
+    const boss = ctx.bossFor(map);
+    q("[data-td-mode-map]").textContent = map.name;
+    q("[data-td-mode-boss]").textContent = boss.name;
+    const art = mapSceneFor(map)?.assets.terrain ?? "";
+    const modeArt = q<HTMLImageElement>("[data-td-mode-art]");
+    if (modeArt.getAttribute("src") !== art) modeArt.src = art;
+    const bossArt = bossSprite(boss.id ?? map.boss ?? "baphomet");
+    const modeBoss = q<HTMLImageElement>("[data-td-mode-boss-art]");
+    if (modeBoss.getAttribute("src") !== bossArt) modeBoss.src = bossArt;
     renderChallengeList(q("[data-td-challenges]"), store.data, map.id, data.tuning.tiers);
     renderTiers();
     let last: HTMLButtonElement | null = null;

@@ -1,11 +1,13 @@
 // Expedition (M21) on the page: the Expedition screen (start, continue, abandon, camp
 // choice), its card on the main menu and recording a finished stage for the result screen. Rules live in ../expedition.js.
-import { classIconImg } from "../assets.js";
+import { bossSprite } from "../assets.js";
+import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 import type { ExpeditionState, SaveData } from "./save";
 import { roman, routeHtml } from "./route";
+import { trialCardHtml } from "./daily";
 
 const relicInfo = RUN_BOON_INFO as Record<string, { name: string; text: string }>;
 
@@ -44,6 +46,14 @@ export function createExpedition(ctx: PageContext) {
   const cardsEl = q("[data-td-exp-cards]");
   const detailsEl = q("[data-td-exp-details]");
   const rosterEl = q("[data-td-exp-roster]");
+  const rosterCountEl = q("[data-td-exp-roster-count]");
+  const relicsBoxEl = q("[data-td-exp-relics-box]");
+  const rulesEl = q("[data-td-exp-rules]");
+  const statusEl = q("[data-td-exp-status]");
+  const routeEl = q("[data-td-exp-route]");
+  const routeNoteEl = q("[data-td-exp-route-note]");
+  const stepsEl = q("[data-td-exp-steps]");
+  const bossArtEl = q<HTMLImageElement>("[data-td-exp-boss-art]");
   const relicsEl = q("[data-td-exp-relics]");
   const bestEl = q("[data-td-exp-best]");
   const summaryTitleEl = q("[data-td-exp-summary-title]");
@@ -53,36 +63,63 @@ export function createExpedition(ctx: PageContext) {
   let abandonArmed = false;
 
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
-  const heroItem = (id: string, veteran: boolean) => {
-    const hero = heroById.get(id);
-    return `<li class="td-daily-hero"><img src="${hero.image}" alt="" width="36" height="36" loading="lazy"><span><strong>${classIconImg(hero.class, 14)}${hero.name}</strong><small>${hero.slot === "road" ? "Road" : "Platform"}${veteran ? " - veteran (enters at level 2)" : ""}</small></span></li>`;
-  };
+  const hpPct = (stage: number) => Math.round(EXPEDITION.stageHp[Math.min(stage, EXPEDITION.stageHp.length - 1)] * 100);
+  const icon = (path: string) => `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${path}" fill="none" /></svg>`;
+  const RELIC_ICON = "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z";
+  const DRILL_ICON = "M4 20l6-6M14 4l6 6-8 8-6-6zM16 8l-2-2";
+
+  // One battlefield on the route: its map art, boss and stage health. Before the start the
+  // order is still random, so the stops show only their stage number and health.
+  function stopHtml(mapId: string | null, index: number, state: "done" | "current" | "ahead") {
+    const map = mapId ? mapOf(mapId) : null;
+    const art = map ? mapSceneFor(map)?.assets.terrain : null;
+    const label = state === "done" ? "Cleared" : state === "current" ? "Next battle" : "Ahead";
+    return `<li class="td-exp-stop is-${state}">${art ? `<img class="td-exp-stop-art" src="${art}" alt="">` : ""}` +
+      `<span class="td-exp-stop-num">${roman(index + 1)}</span>` +
+      `<span class="td-exp-stop-copy"><strong>${map?.name ?? "Unknown battlefield"}</strong>` +
+      `<small>${map ? `Boss: ${ctx.bossFor(map).name} · ` : ""}Enemies at ${hpPct(index)}% health</small>` +
+      `<span class="td-exp-stop-state">${state === "done" ? "✓ " : ""}${label}</span></span></li>`;
+  }
 
   function cardHtml(card: any, index: number, state: ExpeditionState) {
     if (card.type === "hero") {
       const hero = heroById.get(card.id);
-      return `<button type="button" class="td-mutator" data-exp-card="${index}"><strong>Recruit ${hero.name}</strong><small>${hero.class}, ${hero.slot === "road" ? "road" : "platform"}. Joins the roster for the rest of the expedition.</small><span class="td-exp-cost">Costs ${Math.min(EXPEDITION.recruitLives, state.lives - 1)} lives</span></button>`;
+      return `<button type="button" class="td-exp-choice td-exp-choice--hero" data-exp-card="${index}"><img class="td-exp-choice-art" src="${hero.portrait ?? hero.image}" alt="" loading="lazy">` +
+        `<span class="td-label">Recruit</span><strong>${hero.name}</strong><small>${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}. Joins the roster for the rest of the expedition.</small>` +
+        `<span class="td-exp-cost">Costs ${Math.min(EXPEDITION.recruitLives, state.lives - 1)} lives</span></button>`;
     }
     if (card.type === "relic") {
-      const names = card.ids.map((id: string) => relicInfo[id]?.name ?? id).join(" and ");
+      const names = card.ids.map((id: string) => relicInfo[id]?.name ?? id).join(" + ");
       const texts = card.ids.map((id: string) => relicInfo[id]?.text ?? "").join(" ");
-      return `<button type="button" class="td-mutator" data-exp-card="${index}"><strong>Relics: ${names}</strong><small>${texts} Active from wave 1 of every stage.</small></button>`;
+      return `<button type="button" class="td-exp-choice td-exp-choice--relic" data-exp-card="${index}"><span class="td-exp-choice-icon">${icon(RELIC_ICON)}</span>` +
+        `<span class="td-label">Relics</span><strong>${names}</strong><small>${texts} Active from wave 1 of every stage.</small></button>`;
     }
     const names = card.ids.map((id: string) => heroById.get(id)?.name ?? id).join(", ");
-    return `<button type="button" class="td-mutator" data-exp-card="${index}"><strong>Drill</strong><small>${names} enter every stage at level ${EXPEDITION.veteranLevel}.</small></button>`;
+    return `<button type="button" class="td-exp-choice td-exp-choice--drill" data-exp-card="${index}"><span class="td-exp-choice-icon">${icon(DRILL_ICON)}</span>` +
+      `<span class="td-label">Drill</span><strong>Veteran training</strong><small>${names} enter every stage at level ${EXPEDITION.veteranLevel}.</small></button>`;
   }
 
   function render() {
     const state = store.data.expedition;
     const best = store.data.expeditionBest;
+    const stops = data.maps.length;
     bestEl.textContent = best.stages ? `Best: ${best.stages} ${best.stages === 1 ? "stage" : "stages"} cleared, ${best.completed} ${best.completed === 1 ? "expedition" : "expeditions"} completed.` : "No expedition yet.";
     abandonButton.hidden = !state;
     abandonButton.textContent = abandonArmed ? "Confirm abandon" : "Abandon";
     detailsEl.hidden = !state;
+    relicsBoxEl.hidden = !state?.relics.length;
+    stepsEl.hidden = !!state;
+    bossArtEl.hidden = !state;
+    rulesEl.innerHTML = [`${stops} battlefields`, "Normal", "Lives carry over", "Divine Blessings apply", "No shard boosts"].map((rule) => `<li>${rule}</li>`).join("");
+    q("[data-td-exp-step-squad]").textContent = `Start with ${EXPEDITION.startHeroes} random heroes. Only they can be deployed.`;
     if (!state) {
       stageEl.textContent = "";
       titleEl.textContent = "Three battlefields, one squad";
-      copyEl.textContent = `Start with ${EXPEDITION.startHeroes} random heroes and clear the three battlefields in a row, each tougher than the last. Lives carry over, gold does not. After each stage, take a new hero, a pair of relics or a drill for your squad. Divine Blessings apply. Finishing pays +${EXPEDITION.completeFavor} Favor.`;
+      copyEl.textContent = `Clear ${stops} battlefields in a row with the heroes you are given, and grow the squad at camp between battles.`;
+      statusEl.className = "td-trial-reward td-exp-status";
+      statusEl.innerHTML = `<span class="td-label">Complete all ${stops}</span><strong>+${EXPEDITION.completeFavor} <small>Favor</small></strong><span class="td-trial-reward-state">Paid once per expedition</span>`;
+      routeNoteEl.textContent = "Order is drawn at the start";
+      routeEl.innerHTML = data.maps.map((_: any, i: number) => stopHtml(null, i, "ahead")).join("");
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
@@ -103,17 +140,24 @@ export function createExpedition(ctx: PageContext) {
     })));
     summaryCtaEl.textContent = state.camp ? "Make camp" : "Continue";
     stageEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
-    titleEl.textContent = `${map?.name ?? state.stages[state.stage]} - Boss: ${ctx.bossFor(map).name}`;
-    copyEl.textContent = `${state.lives} lives left. Enemies at ${Math.round(EXPEDITION.stageHp[Math.min(state.stage, EXPEDITION.stageHp.length - 1)] * 100)}% of Normal health.${state.camp ? " Take one camp reward to continue." : ""}`;
-    rosterEl.innerHTML = state.roster.map((id) => heroItem(id, state.veterans.includes(id))).join("");
-    relicsEl.innerHTML = state.relics.length
-      ? state.relics.map((id) => `<li class="td-daily-mutator"><span><strong>${relicInfo[id]?.name ?? id}</strong><small>${relicInfo[id]?.text ?? ""}</small></span></li>`).join("")
-      : `<li><small>None yet.</small></li>`;
+    titleEl.textContent = map?.name ?? state.stages[state.stage];
+    copyEl.innerHTML = state.camp
+      ? `Battle won. Take one camp reward, then face <strong>${ctx.bossFor(map).name}</strong>.`
+      : `Next boss: <strong>${ctx.bossFor(map).name}</strong>. Enemies at ${hpPct(state.stage)}% of Normal health.`;
+    const bossArt = bossSprite(ctx.bossFor(map).id ?? map?.boss ?? "baphomet");
+    if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
+    statusEl.className = "td-trial-reward td-exp-status is-lives";
+    statusEl.innerHTML = `<span class="td-label">Lives left</span><strong><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg>${state.lives}</strong><span class="td-trial-reward-state">Finish for +${EXPEDITION.completeFavor} Favor</span>`;
+    routeNoteEl.textContent = `${state.stage} of ${state.stages.length} cleared`;
+    routeEl.innerHTML = state.stages.map((id, i) => stopHtml(id, i, i < state.stage ? "done" : i === state.stage ? "current" : "ahead")).join("");
+    rosterCountEl.textContent = `${state.roster.length} ${state.roster.length === 1 ? "hero" : "heroes"}`;
+    rosterEl.innerHTML = state.roster.map((id, i) => trialCardHtml(heroById.get(id), i, state.veterans.includes(id) ? `Lv ${EXPEDITION.veteranLevel}` : `${heroById.get(id).cost}g`)).join("");
+    relicsEl.innerHTML = state.relics.map((id) => `<li title="${relicInfo[id]?.text ?? ""}"><strong>${relicInfo[id]?.name ?? id}</strong>${relicInfo[id]?.text ?? ""}</li>`).join("");
     campEl.hidden = !state.camp;
     cardsEl.innerHTML = state.camp ? state.camp.map((card, i) => cardHtml(card, i, state)).join("") : "";
     cardsEl.querySelector("button")?.setAttribute("data-td-autofocus", ""); // the screen opens on the first camp choice
     startButton.hidden = !!state.camp;
-    startButton.textContent = "Continue";
+    startButton.textContent = `Continue to stage ${state.stage + 1}`;
   }
 
   function start() {
