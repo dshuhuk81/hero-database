@@ -26,6 +26,12 @@ export function createRecruit(ctx: PageContext) {
     const still = anim ? null : hero?.portrait;
     if (!hero || heroId === previewId) return;
     previewId = heroId;
+    const session = state.session;
+    if (session && state.pendingSlot) {
+      const points = state.pendingSlot.type === "road" ? session.map.roadSlots : session.map.platformSlots;
+      const point = points[state.pendingSlot.index];
+      session.game.uiPlacement = point ? { x: point[0], y: point[1], range: hero.range, type: state.pendingSlot.type } : null;
+    }
     previewEl.hidden = !anim && !still;
     if (!anim && !still) return;
     animEl.classList.toggle("is-still", !anim);
@@ -48,6 +54,7 @@ export function createRecruit(ctx: PageContext) {
     ctx.actions.cancelDeploy();
     state.pendingSlot = slot;
     game.focusedSlot = slot;
+    game.uiPlacement = null;
     const road = slot.type === "road";
     const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
     sheetKicker.textContent = `${road ? "Road" : "Platform"} tile - heroes ${game.heroes.length}/${game.deployCap()}${ring ? ` - ${ring.name}` : ""}`;
@@ -95,7 +102,7 @@ export function createRecruit(ctx: PageContext) {
     const hadFocus = sheetEl.contains(document.activeElement);
     sheetEl.hidden = true;
     state.pendingSlot = null;
-    if (state.session) state.session.game.focusedSlot = null;
+    if (state.session) { state.session.game.focusedSlot = null; state.session.game.uiPlacement = null; }
     pause.remove("recruit");
     if (restoreFocus && hadFocus) state.session?.canvas.focus({ preventScroll: true });
   }

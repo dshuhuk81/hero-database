@@ -153,6 +153,7 @@ const modes = [
         </div>
         <div data-td-camp-feature></div>
         <h3 class="td-label">Chapter route</h3>
+        <div class="td-route td-route--stages" aria-hidden="true" data-td-camp-route></div>
         <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
       </div>
       <div class="td-screen-footer">
@@ -190,7 +191,7 @@ const modes = [
       <div class="td-screen-body td-camp-screen">
         <div class="td-camp-head">
           <h2 class="td-camp-chapter">Your heroes</h2>
-          <p class="td-camp-progress">Each level adds 6% attack and health in campaign stages. Free Play, the Daily Trial and the Expedition are not affected.</p>
+          <p class="td-camp-progress" data-td-heroes-copy></p>
           <p class="td-camp-wallet" data-td-camp-wallet></p>
         </div>
         <div class="td-camp-heroes" data-td-camp-heroes></div>
@@ -216,6 +217,7 @@ const modes = [
       </div>
       <div class="td-screen-footer">
         <p class="td-screen-footer-note" data-td-squad-count></p>
+        <p class="td-squad-power" data-td-squad-power hidden></p>
         <button class="action-button action-button--primary" type="button" data-td-squad-start data-td-autofocus>Start</button>
       </div>
     </section>

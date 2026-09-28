@@ -1,6 +1,6 @@
 # Tower Defense Roadmap
 
-Last updated: September 27, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
+Last updated: September 28, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
 
 Map implementation must use the asset assignments in [map.md](map.md), including the prepared Sunscar Ruins art for Map 3.
 
@@ -38,7 +38,10 @@ Audit order from `TOWER_DEFENSE_PROGRESS_AUDIT.md` ("Development cycle recommend
   - Save failures: `store.persist()` returns whether the write worked; a failed write shows one notice pointing to Save data export, and a failed import says the save only lasts this visit.
   - Results: Campaign's Continue button reads "Next: stage X" after a win (opens that stage's squad) or "Change squad" after a loss (same stage's squad); "Campaign" only when the chapter is done.
   - Checks: `npm run test:tower-defense` (new sim checks for restricted cap and life maximum), no TD type errors, Chromium 390x844 flow Campaign -> squad -> battle -> loss -> Change squad.
-- Step 2 - First session: teaching/tutorial skipped completely for now (owner, September 27, 2026). Only the UI parts stay, handled as UI polish: collapse target priority overrides, clearer Heroes screen.
+- Step 2 - First session: teaching/tutorial skipped completely for now (owner, September 27, 2026); focus moved to UI polish. Done September 27, 2026:
+  - Hero popover: target priority folded into a collapsed "Target" row (summary shows the active rule); opened, it lists labelled options (icon + name, 36px tall) instead of nine 32px icons.
+  - Heroes screen: card grid with portrait, "Campaign Lv X / 10" plus level pips, Attack and Health as current -> next, level-up cost on the button; per-level percentage read from `tdCampaign.json` and battle levels named as separate.
+  - Checks: `npm run test:tower-defense`, no TD type errors, Chromium 1440x900 and 390x844 (Heroes screen, popover open/closed, target change).
 - Step 3 - Balance and pacing (open): Tanks show little payoff (Endless mean wave 33.8 without Tanks vs 30.7 full roster), Mages cover too much (13.2 without Mages); Verdant is the easiest map; 20 waves more winnable than 10 for bot presets. Test several seeds and two bot policies before tuning. Decide the post-chapter Divine Seal source (Chapter 1 pays 600 = 6 of 10 banner heroes).
 - Step 4 - Content contract (open): stable per-hero balance baselines so adding a hero does not shift others (`scripts/build-game-balance.mjs`); chapter-aware campaign UI (currently labels everything with `chapters[0]`); summon eligibility (stage-reward exclusion) into `campaign.js`; Expedition route length as a setting before a fourth map; pin Pixi CDN versions; short content checklists (stage, map, hero).
 - Step 5 - Controlled expansion (open): a few new stages or chapter star milestones, only after 1-4.
@@ -80,6 +83,19 @@ Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M
   - summon should be as to when a user requires to have x amount of a material to summon 1 hero, and XX amound of material to do a 10 pull summon.
   - summons should contain not good heroes (60% chance of dropping), medium heroes (38%) and the best heroes (2%) chance. 
   - for this we might require more heroes and put them to qualities like: common, rare and epic heroes.
+
+### M28: AAA reference UI pass (done September 28, 2026)
+
+Screenshots of an unnamed AAA mobile TD's campaign map, squad select, in-combat HUD and victory screens were analyzed and compared against our screens (`TdLobby.astro`, `TdPlayScreen.astro`, `campaign.ts`, `recruit.ts`, `hud.ts`). Findings and owner decisions:
+- Already equivalent, no change: redeploy-cost badge on fallen deck heroes (`td-deck-badge`), per-unit ultimate charge ring (drawn on canvas, `render.js`), result screen (ours is one screen with Summary/Battle tabs; the reference needlessly splits Victory into two screens around a sync-loading gap - not worth copying).
+- Shipped:
+  - Chapter route rail: `routeHtml()` (already used on the home screen's Campaign card) now also renders above the Campaign screen's stage grid (`data-td-camp-route`), done/current/ahead dots for all 10 stages.
+  - Stage detail before squad: tapping any unlocked stage card now updates the existing feature panel in place (art, waves, boss, reward) instead of jumping straight to the Squad screen; a card gets `.is-featured`. The panel's own CTA (`data-camp-feature-start`, renamed from the shared `data-camp-stage`) is what actually opens the Squad screen ("Choose squad" or "Replay stage" depending on clear state).
+  - Squad power vs. recommended: `data-td-squad-power` in the Squad screen footer reads `Squad power X / recommended Y`, green when at or above, gold when under. `recommendedPower = avg(hero.atk+hero.hp across the roster) * squadSize * stage.hpScale` - a legible readout of the same `hpScale` knob the simulator already uses to scale enemy HP, not a new invented difficulty axis. Footer wraps to 3 lines under 640px (was truncating the squad-count text before the fix).
+  - Topbar icons: Gold/Lives/Wave in the play screen topbar each got a small line icon next to the label.
+  - Touch range preview on first deployment: the recruit sheet (tap an empty tile) never showed the hero's range ring before placing, on any input; mouse-hover-based preview only existed for the separate "redeploy a fallen hero from the deck" flow. `recruit.ts`'s `preview()` now sets `game.uiPlacement` from the focused/hovered hero card, so the existing canvas range ring (`render.js` `buildRanges`) shows for touch too.
+- Explicitly skipped (owner decision, September 28, 2026): a Lord-hero / support-hero slot pair like the reference's team screen. Would need a new squad data model and a defined gameplay effect neither of which exist; out of scope until designed on its own.
+- Checks: `npm run test:tower-defense` (all suites, including `test-td-campaign.mjs`), `npm run check` (no new TD type errors), manual Chromium pass at 420x900 (campaign -> stage detail -> squad -> battle) via the Playwright skill.
 
 ### M99: Login/Register
 - what would we need to provide auth / login / register to dave players progress ? gmail auth ? apple auth ?

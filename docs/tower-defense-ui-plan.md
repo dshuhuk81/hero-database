@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026. The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
 
 ## Status
 
@@ -46,6 +46,18 @@ Added after the plan (user requests):
 2. Done (September 25, 2026): blocking balance. Shipped a block limit per blocker (`tuning.blocking.blockLimit`: Tank 3, Warrior 2, Assassin 1 melee enemies; extra enemies walk past to the next blocker or the goal). Measured over 5 squads x 2 maps x 3 seeds at the live difficulty (enemyHp 2): balanced 2/6 -> 5/6 wins, glass cannon 0/6 -> 6/6, budget 1/6 -> 3/6, all platform 6/6 unchanged. "No hero falls" quest completion 21% -> 47%. Also measured and not shipped: cheaper redeploy (`redeployCostFactor`, weak) and a damage bonus on held enemies (`heldDamageBonus`); both switches remain in the sim, off. "Road wall" losing is not a blocking problem: it has no real flyer coverage (all 9 flyers of wave 4 leak every run), which is the intended rule. Difficulty kept at enemyHp 2 by decision (September 25, 2026): with the limit, 3/5 squads win on Moonlit Pass and 4/5 on Verdant Crossing; 2.5 would restore the old challenge (1/5 and 3/5).
 3. Done (September 25, 2026): Anubis in the roster (21 heroes). Assassin, road, B tier, 90 gold. Ultimate Featherfall Judgment (`soul_drain`), from the game skill text: 450% ATK on the weakest enemy in range, 2s stun (new plain stun, violet tint), a kill refunds 60% of the charge (the skill restores 600 Energy). Token built and uploaded; his sounds now play. Adding a hero re-ranks everyone in `build-game-balance.mjs` (stats shift up to about 4%, five costs +-5 gold); `td:sweep` wins at enemyHp 2 unchanged (3/5 Moonlit Pass, 4/5 Verdant Crossing). In the bot squads he replaced Poseidon with a clear gain (avg 10.3 -> 17.8 lives, 6/6 wins either way); watch him.
 4. Done (September 25, 2026): `@astrojs/check` and `typescript` are devDependencies, `npm run check` runs `astro check` (lockfile verified with npm 10.9.2). The TD modules have no type errors; the rest of the site reports about 2,050, almost all a script block in `src/pages/heroes/[id].astro` the checker misparses (the build is fine), plus about 80 in `src/pages/status.astro`.
+
+## M6: Menu UI pass against an AAA reference (done September 28, 2026)
+
+Screenshots of another mobile TD's campaign map, squad select, in-combat HUD and victory screens were compared against `TdLobby.astro`, `TdPlayScreen.astro`, `campaign.ts`, `recruit.ts` and `hud.ts`. Shipped:
+
+- Chapter route rail above the Campaign screen's stage grid (`data-td-camp-route`, reusing the existing `routeHtml()` node-and-line component from the home screen's Campaign card).
+- Tapping a stage card previews it in the existing feature/detail panel in place (art, waves, boss, reward) instead of jumping straight to Squad; the panel's own CTA (`data-camp-feature-start`) is what navigates.
+- Squad power vs. recommended chip in the Squad screen footer, derived from `stage.hpScale` (the same knob `sim.js` already uses to scale enemy HP) rather than a new invented stat.
+- Small line icons next to Gold/Lives/Wave in the play screen topbar.
+- Range-ring preview on first deployment now also fires for touch (`recruit.ts` sets `game.uiPlacement` from the focused/hovered hero card in the recruit sheet); it previously only existed for mouse-hover during the separate "redeploy a fallen hero" flow.
+
+Skipped on purpose: a Lord-hero/support-hero slot pair from the reference's squad screen - would need a new data model and an undefined gameplay effect; not adopted without a design decision. Already equivalent and left alone: the redeploy-cost deck badge and the per-unit ultimate charge ring (both existed, just canvas-side rather than reference-style HTML). Checks: `npm run test:tower-defense`, `npm run check`, manual Chromium pass at 420x900 via the Playwright skill.
 
 ## Scope and evidence
 

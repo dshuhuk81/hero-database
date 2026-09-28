@@ -64,6 +64,7 @@ export function createCampaign(ctx: PageContext) {
   const summonButton = q<HTMLButtonElement>("[data-td-summon-button]");
   let stageId: string | null = null; // stage picked on the Campaign screen
   let squad: string[] = [];
+  let featuredId: string | null = null; // stage shown in the detail panel (tap a stage card to preview it)
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -76,6 +77,12 @@ export function createCampaign(ctx: PageContext) {
   };
   const wallet = () => CURRENCIES.map((id) => `${(progress().currencies[id] || 0).toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[id]}`).join(" - ");
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
+
+  // Squad power vs. a stage's recommendation: a legible readout of the same hpScale
+  // knob the simulator uses to scale enemy HP, not a separate invented difficulty axis.
+  const avgHeroBase = data.heroes.reduce((sum: number, hero: any) => sum + hero.atk + hero.hp, 0) / data.heroes.length;
+  const heroPower = (hero: any, level: number) => Math.round((hero.atk + hero.hp) * levelScale(campaign, level));
+  const recommendedPower = (stage: any) => Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
 
   const featureEl = q("[data-td-camp-feature]");
   const lineupEl = q("[data-td-squad-lineup]");
@@ -97,19 +104,27 @@ export function createCampaign(ctx: PageContext) {
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     walletEls.forEach((el) => { el.textContent = wallet(); });
-    const featured = next ?? stages.at(-1);
+    const featured = (featuredId && stageById(campaign, featuredId)) ?? next ?? stages.at(-1);
+    const replay = !!featured && isCleared(p, featured.id);
+    const kicker = featured && featuredId && featuredId !== next?.id
+      ? (replay ? "Selected stage · cleared" : "Selected stage")
+      : (next ? "Your next defense" : "Chapter complete · Play again");
+    q("[data-td-camp-route]").innerHTML = routeHtml(stages.map((stage: any) => ({
+      label: stage.id,
+      state: isCleared(p, stage.id) ? "done" : featured && stage.id === featured.id ? "current" : "ahead",
+    })));
     featureEl.innerHTML = featured ? `<article class="td-camp-feature">
       <img src="${terrain(featured)}" alt="" class="td-camp-feature-art">
-      <div class="td-camp-feature-copy"><span class="td-label">${next ? "Your next defense" : "Chapter complete · Play again"}</span>
+      <div class="td-camp-feature-copy"><span class="td-label">${kicker}</span>
       <h3>${featured.id} · ${featured.name}</h3><p>${featured.text}</p>
       <span class="td-camp-feature-meta">${mapOf(featured.mapId)?.name} · ${featured.waves.length} waves · ${featured.lives} lives${hasEnemy(featured, "boss") ? ` · Boss: ${ctx.bossFor(mapOf(featured.mapId)).name}` : ""}</span>
       <p class="td-camp-feature-reward">${stageRewards(featured)}</p>
-      <button class="action-button action-button--primary" type="button" data-camp-stage="${featured.id}" data-td-autofocus>${next ? "Choose squad" : "Replay stage"}</button></div></article>` : "";
+      <button class="action-button action-button--primary" type="button" data-camp-feature-start="${featured.id}" data-td-autofocus>${replay ? "Replay stage" : "Choose squad"}</button></div></article>` : "";
     stagesEl.innerHTML = stages.map((stage: any) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
       const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${done.bestLives}/${stage.lives} lives` : "Ready to play";
-      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}" data-camp-stage="${stage.id}"${open ? "" : " disabled"}>
+      return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${featured && stage.id === featured.id ? " is-featured" : ""}" data-camp-stage="${stage.id}"${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
         <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small></span></button>`;
@@ -129,6 +144,15 @@ export function createCampaign(ctx: PageContext) {
     const road = selected.filter((hero) => hero.slot === "road").length;
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
     q("[data-td-squad-coverage]").textContent = `${road} road · ${selected.length - road} platform · ${antiAir} anti-air damage`;
+    const powerEl = q("[data-td-squad-power]");
+    powerEl.hidden = !selected.length;
+    if (selected.length) {
+      const squadPower = selected.reduce((sum, hero) => sum + heroPower(hero, heroLevel(p, hero.id)), 0);
+      const recommended = recommendedPower(stage);
+      powerEl.textContent = `Squad power ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
+      powerEl.classList.toggle("is-strong", squadPower >= recommended);
+      powerEl.classList.toggle("is-weak", squadPower < recommended);
+    }
     feedbackEl.textContent = hasEnemy(stage, "flyer") && !antiAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
       : squad.length === campaign.squadSize ? "Squad full. Select a chosen hero to remove them." : "Select a hero to add them. Select again to remove.";
     feedbackEl.classList.toggle("is-warning", hasEnemy(stage, "flyer") && !antiAir);
@@ -161,20 +185,25 @@ export function createCampaign(ctx: PageContext) {
   // Heroes screen: owned heroes with level, attack and health in campaign stages, Level up.
   function renderHeroes() {
     const p = progress();
+    q("[data-td-heroes-copy]").textContent = `Each campaign level adds ${Math.round((campaign.heroLevels?.statPerLevel ?? 0) * 100)}% attack and health in campaign stages. Battle levels inside a run are separate, and Free Play, the Daily Trial and the Expedition are not affected.`;
     walletEls.forEach((el) => { el.textContent = wallet(); });
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const heroes = data.heroes.filter((hero: any) => p.owned.includes(hero.id)).sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
+    const max = campaign.heroLevels?.max ?? 1;
     heroListEl.innerHTML = heroes.map((hero: any) => {
       const level = heroLevel(p, hero.id);
       const cost = levelUpCost(campaign, level);
       const now = levelScale(campaign, level), next = levelScale(campaign, level + 1);
-      const stats = `Attack ${Math.round(hero.atk * now)}, health ${Math.round(hero.hp * now)}`;
-      const gain = cost ? ` - next: ${Math.round(hero.atk * next)} / ${Math.round(hero.hp * next)}` : "";
+      // Current value, and the value after the next level while one is left.
+      const stat = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${cost ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
       const button = cost
         ? `<button type="button" class="action-button action-button--quiet td-camp-levelup" data-camp-levelup="${hero.id}"${canLevelUp(campaign, p, hero.id) ? "" : " disabled"}>Level up<small>${costText(cost)}</small></button>`
         : `<span class="td-camp-maxed">Max level</span>`;
-      return `<div class="td-camp-hero"><img src="${hero.image}" alt="" width="48" height="48" loading="lazy">` +
-        `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name} <span class="td-camp-level">Lv ${level}</span></strong><small>${hero.class} - ${stats}${gain}</small></span>${button}</div>`;
+      return `<article class="td-camp-hero"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy">
+        <div class="td-card-copy"><strong>${hero.name}</strong><small>${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}</small>
+        <span class="td-camp-level">Campaign Lv ${level} / ${max}</span>
+        <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: max }, (_, n) => `<i${n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
+        <dl class="td-camp-stats">${stat("Attack", hero.atk)}${stat("Health", hero.hp)}</dl></div>${button}</article>`;
     }).join("");
     heroListEl.querySelector<HTMLElement>("[data-camp-levelup]:not([disabled])")?.setAttribute("data-td-autofocus", "");
   }
@@ -252,8 +281,16 @@ export function createCampaign(ctx: PageContext) {
   }
 
   ctx.root.querySelector<HTMLElement>('[data-td-screen="campaign"]')!.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-stage]");
-    if (button && !button.disabled) openStage(button.dataset.campStage!);
+    const target = event.target as HTMLElement;
+    const startButton = target.closest<HTMLButtonElement>("[data-camp-feature-start]");
+    if (startButton) { openStage(startButton.dataset.campFeatureStart!); return; }
+    // Tapping a stage card previews it in the detail panel; "Choose squad" there commits to it.
+    const button = target.closest<HTMLButtonElement>("[data-camp-stage]");
+    if (button && !button.disabled) {
+      featuredId = button.dataset.campStage!;
+      render();
+      featureEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
   squadListEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-hero]");
