@@ -167,6 +167,12 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   double ring, flickering red ring). Reduced motion: static glow and rim, no drifting parts.
 - Hero actions: upgrade Lv1-4 (costs 80/120/160; Lv3 focus, Lv4 class path such as
   Mage wildfire/frost/arc), awakening, training, target mode, sell (50% refund).
+  The training picker shows each option's real relative gain ("+6.9% this time")
+  instead of the base rate, because training adds a fixed share of base per buy —
+  the relative gain shrinks as trainings pile up while the cost grows ×1.3
+  (mechanics overview recommendation 7). Measured on Normal (12 seeds, 5 squads,
+  3 maps): a winning run buys 0-2 trainings and ~1 awakening, so the sink is
+  tight, not over-generous.
   No player rotation (M24): `sim.faceTarget()` turns a hero to its current target every
   step and to the ultimate's primary target at cast, so cones (cleave, knockback, petrify)
   and spreads (volley, moon barrage) centre on that target. `rotation` remains as internal

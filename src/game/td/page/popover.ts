@@ -156,7 +156,16 @@ export function createPopover(ctx: PageContext) {
         range: options.range ? `Range ${Math.round(unit.range)} to ${options.range.nextRange} (${unit.trained?.range || 0} of ${t.rangeCap})` : `Range fully trained (${t.rangeCap} of ${t.rangeCap})`,
       };
       for (const [stat, text] of Object.entries(texts)) q(`[data-focus-text="${stat}"]`).textContent = text;
-      for (const stat of Object.keys(texts)) q(`[data-focus-bonus="${stat}"]`).textContent = `+${Math.round(t[stat] * 100)}%`;
+      // Honest diminishing returns (mechanics overview recommendation 7): training adds
+      // a fixed share of base each time, so this buy's relative gain shrinks as trainings
+      // pile up while the cost grows. Show this buy's real relative gain, not the base rate.
+      const rel = (now: number, next: number) => now > 0 ? `+${((next / now - 1) * 100).toFixed(1)}% this time` : `+${Math.round(t.attack * 100)}%`;
+      const gains: Record<string, string> = {
+        attack: rel(Math.round(unit.atk * boost), Math.round(options.attack.nextAtk * boost)),
+        health: rel(unit.hp, options.health.nextHp),
+        range: options.range ? rel(Math.round(unit.range), options.range.nextRange) : "maxed",
+      };
+      for (const stat of Object.keys(texts)) q(`[data-focus-bonus="${stat}"]`).textContent = gains[stat];
       q<HTMLButtonElement>('[data-focus="range"]').disabled = !options.range;
       popPreview.textContent = !info.ok ? info.reason
         : focusOpen ? "Pick one. Every training makes the next one pricier." : "Awakened heroes can keep training attack, health or range.";

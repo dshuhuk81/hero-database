@@ -233,12 +233,14 @@ near-Free-Play ease at 6 — squad size was raised to 5 and the squad screen
 now names the remaining gap: "Campaign squads field 5 heroes — a tighter
 fight than Free Play's 7. Your levels, stars and evolution carry you here."
 
-**7. Training is your best sink — protect it.** The ×1.3 cost growth after
-awakening is exactly the "one more run" engine, and awakening being lost on
-death creates real tension. Two safeguards: cap training display so players
-see diminishing returns honestly, and make sure the harness measures how much
-training a winning run actually buys (if it's >4 buys on Normal, the early
-game is too generous again).
+**7. Training is your best sink — protect it.** *(Implemented September 28,
+2026.)* Measured first (12 seeds × 5 squads × 3 maps, classic Normal): a
+winning run buys 0-2 trainings and ~1 awakening — well under the 4-buy
+warning line, so the early game is not too generous and the ×1.3 cost growth
+stays as is. The training picker now shows each option's real relative gain
+("+6.9% this time") instead of the flat base rate, so diminishing returns are
+honest: the additive per-buy share of base shrinks relatively while the cost
+compounds.
 
 **8. Small currency cleanup.** Nine currencies is a lot. Seal Dust and Divine
 Essence can merge into one conversion currency unless evolution is meant to
