@@ -36,7 +36,7 @@ Two changes from the earlier plan: **Asclepius replaces Sif** for `freya`, since
 | `anubis` | Thanatos | Witness of the Final Breath | Greek | Assassin / road | One Breath Remaining |
 | `zeus` | Odin | Reader of Unfinished Roads | Norse | Mage / platform | The Answer Travels |
 | `phoenix` | Hephaestus | Smith of the Refuge Gate | Greek | Mage / platform | Work the Living Furnace |
-| `fengyi` | Boreas | Winter at the Open Door | Greek | Mage / platform | Wind Finds the Weakness |
+| `fengyi` | Boreas | Winter at the Open Door | Greek | Mage / platform | Winter Comes Through the Door |
 | `diana` | Skadi | Hunter Above the Pass | Norse | Archer / platform | Follow My Arrow |
 | `artemis` | Atalanta | First Through the Brambles | Greek | Archer / platform | A Path Through the Pack |
 | `medusa` | Stheno | Stillness at the Threshold | Greek | Archer / platform | Hold That Last Step |
@@ -409,11 +409,11 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 15. Boreas — Winter at the Open Door
 
-**Binding:** `fengyi` · `weaken_burst` · Mage · platform · he/him
+**Binding:** `fengyi` · `ice_shockwave` · Mage · platform · he/him
 
 **Myth anchor:** Boreas personifies the north wind. [Source: Boreas](https://www.theoi.com/Titan/AnemosBoreas.html).
 
-**Card:** Blasts a cluster and increases the damage it takes.
+**Card:** Sends an ice shockwave through his whole range that can freeze enemies.
 
 **Biography:** Boreas arrives through the smallest gap in the barricade and complains about the workmanship. Then he turns outward. He knows every loose fastening in the enemy line, every raised shield that leaves a seam beneath it. The defenders learn to strike where the cold has already entered.
 
@@ -421,12 +421,12 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 **Trait — Air Finds a Way:** Uses the Mage trait.
 
-**Ultimate — Wind Finds the Weakness**
+**Ultimate — Winter Comes Through the Door**
 
 - Flavor: “No shield is fitted closely enough for winter.”
-- Rules: Deal 100% U to eligible enemies within 72 px of the target and expose them for 4 seconds (+20% damage taken). The blast itself lands before the exposure.
+- Rules: An ice shockwave centered on Boreas fills his attack range and deals 115% U to every eligible enemy in it. Each enemy hit has a 10% chance to freeze for 2 seconds (cannot move or attack). Freezes do not stack; a new freeze keeps whichever end time is later.
 
-**Awakening — A Wider Weather:** Blast radius becomes 110 px.
+**Awakening — A Wider Weather:** Freeze chance becomes 20% and freezes last 3 seconds.
 
 **Dialogue:** Recruit: “You have left a gap.” · Ultimate: “Feel where it opens.” · Defeat: “Close the door behind me.”
 

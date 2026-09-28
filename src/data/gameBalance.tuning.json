@@ -831,8 +831,13 @@
       "variant": "rebirth_flame"
     },
     "fengyi": {
-      "skillName": "Weaken Burst",
-      "variant": "weaken_burst"
+      "skillName": "Ice Shockwave",
+      "variant": "ice_shockwave",
+      "damage": 1.15,
+      "freezeChance": 0.1,
+      "freezeSeconds": 2,
+      "awakenFreezeChance": 0.1,
+      "awakenFreezeSeconds": 1
     },
     "diana": {
       "skillName": "Moon Barrage",

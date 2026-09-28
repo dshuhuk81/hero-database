@@ -1821,8 +1821,19 @@ export class TowerDefenseGame {
       foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
       this.healHero(hero, hero.hp * (aw ? 0.4 : 0.2), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
+    } else if (variant === "ice_shockwave") {
+      // Boreas: an ice shockwave fills his whole attack radius; each enemy hit may freeze.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const chance = (skill?.freezeChance ?? 0.1) + (aw ? skill?.awakenFreezeChance ?? 0.1 : 0);
+      const seconds = (skill?.freezeSeconds ?? 2) + (aw ? skill?.awakenFreezeSeconds ?? 1 : 0);
+      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range).forEach((e) => {
+        this.hit(e, power * (skill?.damage ?? 1.15), hero, { showShot: false });
+        if (e.dead || this.rng() >= chance) return;
+        e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + seconds);
+        e.frozenUntil = Math.max(e.frozenUntil ?? 0, this.time + seconds);
+      });
     } else if (variant === "weaken_burst") {
-      // Fengyi: nuke + expose hit targets
+      // Recruit Elm: nuke + expose hit targets
       foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + 4); });
     } else if (variant === "moon_barrage") {
       // Diana: volley + grant atk buff to nearby allies

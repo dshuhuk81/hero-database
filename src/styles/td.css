@@ -1316,6 +1316,63 @@ svg.td-class-icon { aspect-ratio: 1; }
 }
 .td-anim.is-still { animation: none; background-size: cover; background-position: 50% 6%; }
 @media (prefers-reduced-motion: reduce) { .td-anim { animation: none; } }
+
+/* Phone landscape: recruitment becomes a wide bottom tray. A side sheet leaves only a
+   card or two in a very short vertical scroller; the tray keeps the battlefield visible
+   and gives horizontal swiping the full map width. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .td-sheet, .td-sheet.is-left, .td-sheet.is-below {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 118px;
+    max-height: none;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) minmax(128px, 18%);
+    grid-template-rows: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, .5);
+  }
+  .td-sheet-head { grid-column: 1; min-width: 0; }
+  .td-sheet-head > div { display: none; }
+  .td-sheet-head .td-icon-button { width: 44px; height: 100%; }
+  .td-sheet-inspect, .td-sheet-note { display: none; }
+  .td-sheet-list, .td-sheet .td-sheet-list {
+    grid-column: 2;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: 0 0 3px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
+  }
+  .td-sheet-list .td-hero-card {
+    flex: 0 0 138px;
+    width: 138px;
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: 52px minmax(0, 1fr);
+    scroll-snap-align: start;
+  }
+  .td-sheet-list .td-hero-card img { width: 52px; height: 100%; max-height: 82px; }
+  .td-sheet-list .td-card-copy strong { white-space: normal; line-height: var(--leading-tight); }
+  .td-sheet-foot { grid-column: 3; min-width: 0; align-content: stretch; }
+  .td-sheet-foot .td-inspect-reason { align-self: center; }
+  .td-inspect-deploy { height: 100%; min-height: 0; padding: var(--space-2); white-space: normal; line-height: var(--leading-tight); }
+  .td-stage:has(.td-sheet:not([hidden])) .td-wave-preview { bottom: calc(118px + var(--space-2)); }
+}
 /* Daily Trial (M19): lobby card, HUD goal and result line */
 .td-daily { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); }
 .td-daily-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }

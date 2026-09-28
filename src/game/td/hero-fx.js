@@ -437,12 +437,16 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         kit.spawn("flame", e.x + Math.cos(a) * r * 0.55, e.y + Math.sin(a) * r * 0.3, { tint: i % 2 ? p.color : p.accent, size: 14, sizeEnd: 24, vy: -50, life: 0.6, delay: 0.1 + i * 0.03 });
       }
     },
-    fengyi(e, p, sx, sy) { // Wind Finds the Weakness: a snow vortex spins up at the target
-      const r = e.awakened ? 110 : 72;
-      orbit("flake", e.x, e.y, 12, p.accent, { r: r * 0.7, size: 10, life: 1.1, speed: 6, climb: 20 });
-      orbit("streak", e.x, e.y, 6, p.color, { r: r * 0.5, size: 22, life: 1, speed: 8, climb: 30 });
-      for (let i = 0; i < 2; i++) groundRing(e.x, e.y + 6, r, 10, p.color, { delay: i * 0.25, life: 0.6 });
-      flash(e.x, e.y, p.color, 70, { life: 0.5, alpha: 0.5 });
+    fengyi(e, p, sx, sy) { // Winter Comes Through the Door: an ice shockwave fills his attack range
+      const r = e.range ?? 160;
+      flash(sx, sy, 0xffffff, 60, { life: 0.25 });
+      for (let i = 0; i < 3; i++) groundRing(sx, sy + 8, 10, r * (1 - i * 0.12), i ? p.color : p.accent, { delay: i * 0.1, width: 5 - i, life: 0.7 });
+      for (let i = 0; i < kit.n(12); i++) {
+        const a = i / 12 * TAU;
+        kit.spawn("flake", sx, sy, { tint: i % 2 ? p.color : p.accent, size: 10, sizeEnd: 6, life: 0.7, delay: 0.05,
+          path: { x1: sx, y1: sy, x2: sx + Math.cos(a) * r, y2: sy + Math.sin(a) * r * 0.6 } });
+      }
+      flash(sx, sy, p.color, r * 0.8, { life: 0.5, alpha: 0.35 });
     },
     diana(e, p, sx, sy) { // Follow My Arrow: the hunt mark and a frost ring under the volley
       kit.spawn("twinkle", sx, sy - 30, { tint: p.accent, size: 30, sizeEnd: 8, life: 0.5, spin: 3 });
