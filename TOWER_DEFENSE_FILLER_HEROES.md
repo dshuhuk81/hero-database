@@ -1,6 +1,19 @@
 # Tower Defense — Filler Heroes (Recruits)
 
-Content + integration proposal · 28 September 2026 · English · Status: **proposal, not yet implemented**
+Content + integration proposal · 28 September 2026 · English · Status: **implemented September 28, 2026** (owner approved count, names and placeholder art)
+
+Implementation notes beyond the proposal below:
+
+- `gameBalance.tuning.json` keeps generic skill names for recruits ("Recruit
+  Shield Wall" etc.); the display names live only in `tdSkinMythic.json`. This
+  mirrors the mythic pattern and satisfies the skin test's new-name rule.
+- The 12 recruit ids were also appended to `tuning.roster` (now 33).
+- `scripts/td-recruit-assets.py` generated all art/sound files and the
+  `tdAudioLevels.json` entries; it is rerunnable and idempotent.
+- Measured after integration (clean worktree, suite 14/14 green): featured
+  chance 5/37 ≈ 13.5%; the campaign-end 600-seal x10 averages 5.8 new heroes /
+  4.2 copies (was 3.9/6.1 at 21 heroes — a larger pool duplicates less early);
+  campaign stage sweep win rates unchanged.
 
 Goal: enlarge the summon pool with generic low-value heroes ("recruits") so that
 x10 summons produce commons, duplicates and dust income feel meaningful, and the
