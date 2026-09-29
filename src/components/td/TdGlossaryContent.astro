@@ -47,6 +47,22 @@ const pct = (value: number) => `${Math.round(value * 100)}%`;
 const enemySprite = (file: string, version = enemySpriteVersion(file)) => `${assetBase}/td/enemies/sprites/${file}-${version}.webp`;
 const tagLabel = (tag: string) => tag.toLowerCase().replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
+// Material Symbols (Rounded), loaded as a subset: only the icons named here. Every icon the
+// glossary shows must come from these maps so the subset URL stays complete.
+const STAT_ICON: Record<string, string> = {
+  "Health": "favorite", "Attack": "swords", "Attacks / s": "speed", "Range": "radar",
+  "Armor": "shield", "Magic res": "shield_moon", "Crit": "crisis_alert",
+  "Ult charge": "hourglass_top", "Ult power": "bolt", "Speed": "directions_run",
+  "Attack range": "radar", "Shield": "security", "Lives lost": "heart_broken", "Gold": "paid",
+};
+const STATUS_ICON: Record<string, string> = { wet: "water_drop", burn: "local_fire_department", poison: "science", chill: "ac_unit" };
+const REACTION_ICON: Record<string, string> = { conduct: "electric_bolt", steam: "cloud", blight: "coronavirus", freeze: "severe_cold", harvest: "cyclone" };
+const UI_ICON = {
+  heroes: "groups", enemies: "skull", attributes: "menu_book", classes: "category", status: "science",
+  reactions: "join", bosses: "crown", ultimate: "bolt", awakened: "auto_awesome", synergy: "hub",
+  paths: "alt_route", first: "flag", note: "info", cost: "paid",
+};
+
 const CLASS_ORDER = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 const classes = CLASS_ORDER.map((name) => {
   const kit = t.classes[name];
@@ -63,10 +79,11 @@ const classes = CLASS_ORDER.map((name) => {
 const heroName = new Map((heroes as any[]).map((hero) => [hero.id, hero.name]));
 const statusCards = Object.entries(STATUS_INFO).map(([id, info]) => ({
   ...info,
+  id,
   sources: id === "chill" ? "Frost (Mage) and Crippling (Archer) paths"
     : [...Object.entries(t.statuses?.sources ?? {}).filter(([, kind]) => kind === id).map(([hero]) => heroName.get(hero) ?? hero), ...(id === "burn" ? ["Wildfire path (Mage)"] : [])].join(", "),
 }));
-const reactionCards = Object.values(REACTION_INFO);
+const reactionCards = Object.entries(REACTION_INFO).map(([id, info]) => ({ ...info, id }));
 
 const heroCards = [...(heroes as any[])]
   .sort((a, b) => CLASS_ORDER.indexOf(a.class) - CLASS_ORDER.indexOf(b.class) || a.name.localeCompare(b.name))
@@ -91,7 +108,7 @@ const heroCards = [...(heroes as any[])]
         ["Crit", pct(hero.critChance)],
         ["Ult charge", `${hero.ultCooldown}s`],
         ["Ult power", `x${hero.ultPower}`],
-      ] as [string, string | number][],
+      ].map(([label, value]) => [label, value, STAT_ICON[label as string]]) as [string, string | number, string][],
     };
   });
 
@@ -127,6 +144,9 @@ function enemyCard(kind: string, overrides: any = {}) {
   };
 }
 
+// Enemy stat rows carry their icon too (TdEnemyCard renders it).
+const withIcons = (card: any) => ({ ...card, stats: card.stats.map(([label, value]: any[]) => [label, value, STAT_ICON[label]]) });
+
 const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "shieldbearer", "hexer", "broodcaller"].map((kind) => enemyCard(kind));
 {
   const caller = enemyCards.findIndex((card) => card.kind === "broodcaller");
@@ -148,47 +168,87 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
   if (summon) cards.push(enemyCard(summon.kind, { image: enemySprite(summon.kind), meta: `Summoned by ${boss?.name ?? id}` }));
   return cards;
 });
+const enemyCardsView = enemyCards.map(withIcons);
+const bossCardsView = bossCards.map(withIcons);
+
+const heroAttrs: [string, string, string][] = [
+  ["add_road", "Road / Platform", "Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers."],
+  ["paid", "Cost", "Gold to deploy the hero. Selling returns half of everything spent on it."],
+  ["favorite", "Health", "Damage a hero takes before it falls. A fallen hero can be recruited again at battle rank I."],
+  ["swords", "Attack", "Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it."],
+  ["speed", "Attacks / s", "Basic attacks per second."],
+  ["radar", "Range", "How far the hero reaches, in map pixels. The ring on the map shows it."],
+  ["auto_fix_high", "Damage type", "Physical damage is reduced by armor, magic damage by magic resistance. 260 points halve the damage."],
+  ["shield", "Armor / Magic res", "Reduce physical and magic damage the hero takes. Enemies only deal physical damage."],
+  ["crisis_alert", "Crit", "Chance for a basic hit to deal 1.5x damage."],
+  ["hourglass_top", "Ult charge", "Seconds until the ultimate is ready. It fires on its own at the current target."],
+  ["bolt", "Ult power", "Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise."],
+  ["hub", "Synergy tags", `Each tag shared with a hero within ${t.synergy?.range}px adds ${pct(t.synergy?.bonusPerTag ?? 0)} attack, up to ${pct(t.synergy?.cap ?? 0)}.`],
+  ["auto_awesome", "Awakening", `At battle rank IV a hero can Awaken for ${t.awakening?.cost} gold: +${pct(t.awakening?.attackBonus ?? 0)} attack, +${pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.`],
+  ["military_tech", "Campaign upgrades", "Level, Stars, Evolution and Skills from the Heroes screen apply in Campaign stages only. Free Play and Expeditions use base stats plus Divine Blessings, and the Daily Trial is the same for everyone."],
+  ["star", "Divine Blessings", "Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial."],
+];
+const enemyAttrs: [string, string, string][] = [
+  ["favorite", "Health", `At wave 1. Enemies gain ${pct(waveGrowth)} health every wave; in Endless they also grow stronger past wave 20.`],
+  ["directions_run", "Speed", "Map pixels per second. Slows and blockers hold it back."],
+  ["shield", "Armor / Magic res", "Reduce physical and magic damage taken; the percentage is how much. Archers pierce part of the armor."],
+  ["swords", "Attack", "Damage per hit to the road hero holding it, and the time between hits."],
+  ["flight", "Ground / Flying", "Ground enemies are stopped by road heroes. Flyers pass over them and can only be hit from platforms."],
+  ["heart_broken", "Lives lost", "Lives you lose when it reaches your base."],
+  ["paid", "Gold", "Gold you earn for the kill."],
+];
+const iconNames = [...new Set([
+  ...Object.values(STAT_ICON), ...Object.values(STATUS_ICON), ...Object.values(REACTION_ICON), ...Object.values(UI_ICON),
+  ...heroAttrs.map(([icon]) => icon), ...enemyAttrs.map(([icon]) => icon),
+])].sort();
+const iconFont = `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500,0..1,0&icon_names=${iconNames.join(",")}&display=block`;
+const reactionIds = Object.keys(REACTION_INFO);
+// Section jump chips under the tabs (per panel).
+const heroJumps = [["hero-attrs", "Attributes"], ["classes", "Classes"], ["status", "Status effects"], ["hero-list", "Heroes"]];
+const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["bosses", "Bosses"]];
 ---
 
+<link rel="stylesheet" href={iconFont} />
 <div class:list={["td-glossary-body", { "td-glossary-body--embedded": embedded }]} data-td-glossary data-hash={embedded ? undefined : "true"}>
-  <div class="td-tabs" role="tablist" aria-label="Glossary sections">
-    <button class="td-tab" type="button" role="tab" id={id("tab-heroes")} aria-controls={`${pid}heroes`} aria-selected="true" data-glossary-tab="heroes">Heroes</button>
-    <button class="td-tab" type="button" role="tab" id={id("tab-enemies")} aria-controls={`${pid}enemies`} aria-selected="false" tabindex="-1" data-glossary-tab="enemies">Enemies</button>
+  <div class="td-glossary-bar">
+    <div class="td-tabs" role="tablist" aria-label="Glossary sections">
+      <button class="td-tab" type="button" role="tab" id={id("tab-heroes")} aria-controls={`${pid}heroes`} aria-selected="true" data-glossary-tab="heroes"><span class="td-msym" aria-hidden="true">{UI_ICON.heroes}</span>Heroes</button>
+      <button class="td-tab" type="button" role="tab" id={id("tab-enemies")} aria-controls={`${pid}enemies`} aria-selected="false" tabindex="-1" data-glossary-tab="enemies"><span class="td-msym" aria-hidden="true">{UI_ICON.enemies}</span>Enemies</button>
+    </div>
+    <nav class="td-glossary-jumps" aria-label="Jump to section" data-glossary-jumps="heroes">
+      {heroJumps.map(([target, label]) => <a href={`#${id(target)}`} data-glossary-jump={id(target)}>{label}</a>)}
+    </nav>
+    <nav class="td-glossary-jumps" aria-label="Jump to section" data-glossary-jumps="enemies" hidden>
+      {enemyJumps.map(([target, label]) => <a href={`#${id(target)}`} data-glossary-jump={id(target)}>{label}</a>)}
+    </nav>
   </div>
 
   <div id={`${pid}heroes`} class="td-glossary-panel" role="tabpanel" aria-labelledby={id("tab-heroes")} data-glossary-panel="heroes">
     <section aria-labelledby={id("hero-attrs")}>
-      <Section class="td-glossary-heading" id={id("hero-attrs")}>Attributes</Section>
+      <Section class="td-glossary-heading" id={id("hero-attrs")}><span class="td-msym" aria-hidden="true">{UI_ICON.attributes}</span>Attributes</Section>
       <dl class="td-glossary-terms">
-        <div><dt>Road / Platform</dt><dd>Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers.</dd></div>
-        <div><dt>Cost</dt><dd>Gold to deploy the hero. Selling returns half of everything spent on it.</dd></div>
-        <div><dt>Health</dt><dd>Damage a hero takes before it falls. A fallen hero can be recruited again at battle rank I.</dd></div>
-        <div><dt>Attack</dt><dd>Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it.</dd></div>
-        <div><dt>Attacks / s</dt><dd>Basic attacks per second.</dd></div>
-        <div><dt>Range</dt><dd>How far the hero reaches, in map pixels. The ring on the map shows it.</dd></div>
-        <div><dt>Damage type</dt><dd>Physical damage is reduced by armor, magic damage by magic resistance. 260 points halve the damage.</dd></div>
-        <div><dt>Armor / Magic res</dt><dd>Reduce physical and magic damage the hero takes. Enemies only deal physical damage.</dd></div>
-        <div><dt>Crit</dt><dd>Chance for a basic hit to deal 1.5x damage.</dd></div>
-        <div><dt>Ult charge</dt><dd>Seconds until the ultimate is ready. It fires on its own at the current target.</dd></div>
-        <div><dt>Ult power</dt><dd>Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise.</dd></div>
-        <div><dt>Synergy tags</dt><dd>Each tag shared with a hero within {t.synergy?.range}px adds {pct(t.synergy?.bonusPerTag ?? 0)} attack, up to {pct(t.synergy?.cap ?? 0)}.</dd></div>
-        <div><dt>Awakening</dt><dd>At battle rank IV a hero can Awaken for {t.awakening?.cost} gold: +{pct(t.awakening?.attackBonus ?? 0)} attack, +{pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.</dd></div>
-        <div><dt>Campaign upgrades</dt><dd>Level, Stars, Evolution and Skills from the Heroes screen apply in Campaign stages only. Free Play and Expeditions use base stats plus Divine Blessings, and the Daily Trial is the same for everyone.</dd></div>
-        <div><dt>Divine Blessings</dt><dd>Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial.</dd></div>
+        {heroAttrs.map(([icon, term, text]) => (
+          <div><span class="td-msym td-glossary-term-icon" aria-hidden="true">{icon}</span><dt>{term}</dt><dd>{text}</dd></div>
+        ))}
       </dl>
     </section>
 
     <section aria-labelledby={id("classes")}>
-      <Section class="td-glossary-heading" id={id("classes")}>Classes</Section>
+      <Section class="td-glossary-heading" id={id("classes")}><span class="td-msym" aria-hidden="true">{UI_ICON.classes}</span>Classes</Section>
       <div class="td-glossary-classes">
         {classes.map((cls) => (
           <article class="td-glossary-class">
-            <Title class="td-glossary-title"><Fragment set:html={classGlyph(cls.name, 22)} />{cls.name}</Title>
-            <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
+            <header class="td-glossary-class-head">
+              <span class="td-glossary-glyph"><Fragment set:html={classGlyph(cls.name, 28)} /></span>
+              <div>
+                <Title class="td-glossary-title">{cls.name}</Title>
+                <p class="td-glossary-meta">{cls.slot}{cls.block ? ` - holds ${cls.block} ${cls.block === 1 ? "enemy" : "enemies"}` : ""}</p>
+              </div>
+            </header>
             <p>{cls.role}</p>
             {cls.paths.length > 0 && (
               <ul class="td-glossary-paths" aria-label={`${cls.name} paths at battle rank ${["I", "II", "III", "IV"][(t.upgrades.path?.level ?? 4) - 1]}`}>
-                {cls.paths.map((path) => <li><strong>{path.name}</strong> {path.text}</li>)}
+                {cls.paths.map((path) => <li><span class="td-msym" aria-hidden="true">{UI_ICON.paths}</span><span><strong>{path.name}</strong> {path.text}</span></li>)}
               </ul>
             )}
           </article>
@@ -197,57 +257,64 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
     </section>
 
     <section aria-labelledby={id("status")}>
-      <Section class="td-glossary-heading" id={id("status")}>Status effects</Section>
-      <div class="td-glossary-classes">
+      <Section class="td-glossary-heading" id={id("status")}><span class="td-msym" aria-hidden="true">{UI_ICON.status}</span>Status effects</Section>
+      <div class="td-glossary-effects">
         {statusCards.map((status) => (
-          <article class="td-glossary-class">
-            <Title class="td-glossary-title">{status.name}</Title>
-            <p class="td-glossary-meta">From: {status.sources}</p>
-            <p>{status.text}</p>
+          <article class={`td-glossary-effect td-glossary-effect--${status.id}`}>
+            <span class="td-msym td-glossary-effect-icon" aria-hidden="true">{STATUS_ICON[status.id]}</span>
+            <div>
+              <Title class="td-glossary-title">{status.name}</Title>
+              <p>{status.text}</p>
+              <p class="td-glossary-meta">From: {status.sources}</p>
+            </div>
           </article>
         ))}
       </div>
-      <Title class="td-glossary-subhead">Reactions</Title>
-      <div class="td-glossary-classes">
+      <Title class="td-glossary-subhead"><span class="td-msym" aria-hidden="true">{UI_ICON.reactions}</span>Reactions</Title>
+      <div class="td-glossary-effects">
         {reactionCards.map((reaction) => (
-          <article class="td-glossary-class">
-            <Title class="td-glossary-title">{reaction.name}</Title>
-            <p class="td-glossary-meta">{reaction.needs}</p>
-            <p>{reaction.text}</p>
+          <article class={`td-glossary-effect td-glossary-effect--${reaction.id}`}>
+            <span class="td-msym td-glossary-effect-icon" aria-hidden="true">{REACTION_ICON[reaction.id]}</span>
+            <div>
+              <SkillTitle class="td-glossary-title">{reaction.name}</SkillTitle>
+              <p class="td-glossary-needs">{reaction.needs}</p>
+              <p>{reaction.text}</p>
+            </div>
           </article>
         ))}
       </div>
     </section>
 
     <section aria-labelledby={id("hero-list")}>
-      <Section class="td-glossary-heading" id={id("hero-list")}>Heroes</Section>
+      <Section class="td-glossary-heading" id={id("hero-list")}><span class="td-msym" aria-hidden="true">{UI_ICON.heroes}</span>Heroes</Section>
       <div class="td-glossary-grid">
         {heroCards.map((hero) => (
           <article class="td-glossary-card" id={`${pid}hero-${hero.id}`}>
             <header class="td-glossary-card-head">
-              <img class="td-glossary-portrait" src={hero.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
+              <img class="td-glossary-portrait" src={hero.image} alt="" width="80" height="80" loading="lazy" decoding="async" />
               <div>
                 <Title class="td-glossary-title">{hero.name}</Title>
                 <p class="td-glossary-meta">
-                  <Fragment set:html={classGlyph(hero.class, 16)} />
+                  <Fragment set:html={classGlyph(hero.class, 14)} />
                   {hero.class} - {hero.slotLabel} - {hero.damageLabel}
                 </p>
+                <p class="td-glossary-cost"><span class="td-msym" aria-hidden="true">{UI_ICON.cost}</span>{hero.cost} gold</p>
               </div>
-              <span class="td-glossary-cost">{hero.cost}<small>gold</small></span>
             </header>
             <dl class="td-glossary-stats">
-              {hero.stats.map(([label, value]: [string, string | number]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+              {hero.stats.map(([label, value, icon]: [string, string | number, string]) => <div><dt><span class="td-msym" aria-hidden="true">{icon}</span>{label}</dt><dd>{value}</dd></div>)}
             </dl>
             <div class="td-glossary-skill">
-              <p class="td-label">Ultimate</p>
+              <p class="td-label"><span class="td-msym" aria-hidden="true">{UI_ICON.ultimate}</span>Ultimate</p>
               <SkillTitle class="td-glossary-skill-name">{hero.skillName}</SkillTitle>
               {hero.skillText && <p>{hero.skillText}</p>}
               {hero.classUltText && <p class="td-glossary-note">{hero.classUltText}</p>}
-              {hero.awakenText && <p class="td-glossary-note">Awakened: {hero.awakenText}.</p>}
+              {hero.awakenText && <p class="td-glossary-note td-glossary-note--awaken"><span class="td-msym" aria-hidden="true">{UI_ICON.awakened}</span><span>Awakened: {hero.awakenText}.</span></p>}
             </div>
-            {hero.status && <p class="td-glossary-note">Basic attacks apply {hero.status} (see Status effects).</p>}
+            {hero.status && <p class="td-glossary-note"><span class="td-msym" aria-hidden="true">{UI_ICON.note}</span><span>Basic attacks apply {hero.status} (see Status effects).</span></p>}
             {hero.synergies?.length > 0 && (
               <ul class="td-glossary-tags" aria-label="Synergy tags">
+                <li class="td-glossary-tags-icon" aria-hidden="true"><span class="td-msym">{UI_ICON.synergy}</span></li>
                 {hero.synergies.map((tag: string) => <li>{tagLabel(tag)}</li>)}
               </ul>
             )}
@@ -259,42 +326,46 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
 
   <div id={`${pid}enemies`} class="td-glossary-panel" role="tabpanel" aria-labelledby={id("tab-enemies")} data-glossary-panel="enemies" hidden>
     <section aria-labelledby={id("enemy-attrs")}>
-      <Section class="td-glossary-heading" id={id("enemy-attrs")}>Attributes</Section>
+      <Section class="td-glossary-heading" id={id("enemy-attrs")}><span class="td-msym" aria-hidden="true">{UI_ICON.attributes}</span>Attributes</Section>
       <dl class="td-glossary-terms">
-        <div><dt>Health</dt><dd>At wave 1. Enemies gain {pct(waveGrowth)} health every wave; in Endless they also grow stronger past wave 20.</dd></div>
-        <div><dt>Speed</dt><dd>Map pixels per second. Slows and blockers hold it back.</dd></div>
-        <div><dt>Armor / Magic res</dt><dd>Reduce physical and magic damage taken; the percentage is how much. Archers pierce part of the armor.</dd></div>
-        <div><dt>Attack</dt><dd>Damage per hit to the road hero holding it, and the time between hits.</dd></div>
-        <div><dt>Ground / Flying</dt><dd>Ground enemies are stopped by road heroes. Flyers pass over them and can only be hit from platforms.</dd></div>
-        <div><dt>Lives lost</dt><dd>Lives you lose when it reaches your base.</dd></div>
-        <div><dt>Gold</dt><dd>Gold you earn for the kill.</dd></div>
+        {enemyAttrs.map(([icon, term, text]) => (
+          <div><span class="td-msym td-glossary-term-icon" aria-hidden="true">{icon}</span><dt>{term}</dt><dd>{text}</dd></div>
+        ))}
       </dl>
     </section>
 
     <section aria-labelledby={id("enemy-list")}>
-      <Section class="td-glossary-heading" id={id("enemy-list")}>Enemies</Section>
+      <Section class="td-glossary-heading" id={id("enemy-list")}><span class="td-msym" aria-hidden="true">{UI_ICON.enemies}</span>Enemies</Section>
       <div class="td-glossary-grid">
-        {enemyCards.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
+        {enemyCardsView.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
       </div>
     </section>
 
     <section aria-labelledby={id("bosses")}>
-      <Section class="td-glossary-heading" id={id("bosses")}>Bosses</Section>
+      <Section class="td-glossary-heading" id={id("bosses")}><span class="td-msym" aria-hidden="true">{UI_ICON.bosses}</span>Bosses</Section>
       <p class="td-glossary-lead">A boss ends every 10-wave run. 20-wave and Endless runs bring one every 5th wave; the earlier ones are weaker. Health is shown at wave 1 strength.</p>
       <div class="td-glossary-grid">
-        {bossCards.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
+        {bossCardsView.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
       </div>
     </section>
   </div>
 </div>
 
 <script>
-  // Tabs, scoped per glossary root: click and arrow keys. Only the standalone page
+  // Tabs and section jump chips, scoped per glossary root: click and arrow keys. Only the standalone page
   // (data-hash) reads and writes #heroes / #enemies in the URL.
   document.querySelectorAll<HTMLElement>("[data-td-glossary]").forEach((root) => {
     const useHash = root.dataset.hash === "true";
     const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-glossary-tab]")];
     const panels = [...root.querySelectorAll<HTMLElement>("[data-glossary-panel]")];
+    const jumps = [...root.querySelectorAll<HTMLElement>("[data-glossary-jumps]")];
+    // Jump chips scroll their section under the sticky bar; the URL hash stays the tab's.
+    root.querySelectorAll<HTMLAnchorElement>("[data-glossary-jump]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        root.querySelector(`#${link.dataset.glossaryJump}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
     function show(name: string, focus = false) {
       tabs.forEach((tab) => {
         const on = tab.dataset.glossaryTab === name;
@@ -303,6 +374,7 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
         if (on && focus) tab.focus();
       });
       panels.forEach((panel) => { panel.hidden = panel.dataset.glossaryPanel !== name; });
+      jumps.forEach((nav) => { nav.hidden = nav.dataset.glossaryJumps !== name; });
       if (useHash) history.replaceState(history.state, "", `#${name}`);
     }
     tabs.forEach((tab, index) => {

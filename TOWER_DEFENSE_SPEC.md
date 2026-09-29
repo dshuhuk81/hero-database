@@ -58,6 +58,13 @@ Hard rules:
 - Page: `src/pages/games/tower-defense.astro` -> `src/components/pages/TowerDefensePage.astro`
   (wiring only). Markup in `src/components/td/` (`TdLobby`, `TdPlayScreen`, `TdPanels`,
   `TdOverlays`, `TdGlossary*`, `TdEnemyCard`, `TdSoundControls`, `TdDebugPanel`).
+- Glossary (`TdGlossaryContent`, standalone page and in-app screen): sticky bar with the
+  Heroes / Enemies tabs and section jump chips (scroll only, the URL hash stays the tab's).
+  Its own denser type scale (body 12px, titles 13px). Icons are Material Symbols Rounded,
+  loaded as a Google Fonts subset (`icon_names`) built from the icon maps in the component
+  frontmatter (`STAT_ICON`, `STATUS_ICON`, `REACTION_ICON`, `UI_ICON`, attribute lists), so a
+  new icon must be added there; `.td-msym` renders them. Embedded, the screen body has no top
+  padding so nothing shows above the sticky bar.
 - Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
   each other only through `ctx.actions`. Screens are a stack mirrored in browser history
   (`nav.ts`). The summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.

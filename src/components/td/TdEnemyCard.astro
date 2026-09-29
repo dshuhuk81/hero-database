@@ -1,6 +1,7 @@
 ---
 // One enemy or boss entry in the glossary (TdGlossaryContent.astro builds the data).
 // headingLevel: level of the enemy name heading (default 3).
+// stats: [label, value, icon?]; icon is a Material Symbols name from the glossary's subset.
 interface Props { enemy: { kind: string; name: string; text: string; image: string; meta: string; tags: string[]; stats: (string | number)[][] }; headingLevel?: number; }
 const { enemy, headingLevel = 3 } = Astro.props;
 const Title = `h${headingLevel}` as "h3";
@@ -8,15 +9,17 @@ const Title = `h${headingLevel}` as "h3";
 
 <article class="td-glossary-card">
   <header class="td-glossary-card-head">
-    <img class={`td-glossary-portrait td-glossary-portrait--enemy td-enemy-art--${enemy.kind}`} src={enemy.image} alt="" width="56" height="56" loading="lazy" decoding="async" />
+    <img class={`td-glossary-portrait td-glossary-portrait--enemy td-enemy-art--${enemy.kind}`} src={enemy.image} alt="" width="80" height="80" loading="lazy" decoding="async" />
     <div>
       <Title class="td-glossary-title">{enemy.name}</Title>
-      <p class="td-glossary-meta">{enemy.tags.join(" - ")}</p>
+      <ul class="td-glossary-tags" aria-label="Traits">
+        {enemy.tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+      {enemy.meta && <p class="td-glossary-meta"><span class="td-msym" aria-hidden="true">flag</span>{enemy.meta}</p>}
     </div>
   </header>
   <p>{enemy.text}</p>
   <dl class="td-glossary-stats">
-    {enemy.stats.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+    {enemy.stats.map(([label, value, icon]) => <div><dt>{icon && <span class="td-msym" aria-hidden="true">{icon}</span>}{label}</dt><dd>{value}</dd></div>)}
   </dl>
-  {enemy.meta && <p class="td-glossary-note">{enemy.meta}</p>}
 </article>
