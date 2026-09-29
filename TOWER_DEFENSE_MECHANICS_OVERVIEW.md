@@ -247,12 +247,18 @@ stays as is. The training picker now shows each option's real relative gain
 honest: the additive per-buy share of base shrinks relatively while the cost
 compounds.
 
-**8. Small currency cleanup.** Nine currencies is a lot. Seal Dust and Divine
-Essence can merge into one conversion currency unless evolution is meant to
-gate behind two steps. Similarly, shards (run-start boost) are subtle enough
-that many players will never notice them — surface the pick on the pre-run
-screen with a one-line explanation, or fold the gold shard into starting gold
-and drop the system.
+**8. Small currency cleanup.** Implemented September 28/29, 2026, all three parts:
+
+- **Seal income** (the owner's actual pain point: one chapter could not fund
+  summons): campaign replays now pay a quarter of the first-clear Divine Seals
+  (≈150 extra per chapter run ≈ 2.5 pulls). First clears still pay full.
+- **Shard visibility:** already covered — the lobby home card shows the pending
+  next-run boost ("Next run: +X gold" / virtue name). No change needed.
+- **Currency merge:** Divine Essence is gone, merged into Seal Dust (save
+  version 7 migrates leftover essence at the historical 1:150 rate). Evolution
+  without a copy costs 150 Seal Dust directly (`heroEvolution.dustPrice`), and
+  the final skill rank costs 150 dust instead of 1 essence. Eight currencies
+  remain, and dust is now the single conversion currency.
 
 **Suggested first step:** the in-run gold ledger (the one gap in the existing
 suite), then recommendation 2 (multiplier cleanup) — together they make every
