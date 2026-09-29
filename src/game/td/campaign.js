@@ -356,6 +356,19 @@ export function stageRewardHeroes(campaign) {
 
 const heroIdOf = (hero) => (typeof hero === "string" ? hero : hero.id);
 
+// Acquisition rules (audit step 4), shared by the Summon and Squad screens and the tests.
+// The stage whose first clear gives this hero, or null (then Summon is its source).
+export function heroRewardStage(campaign, heroId) {
+  return allStages(campaign).find((stage) => (stage.rewards ?? []).some((reward) => reward.type === "hero" && reward.id === heroId)) ?? null;
+}
+
+// Heroes the banner may draw from `heroes` (ids or hero objects): everyone except stage
+// reward heroes the player has not earned yet. Owned ones come back as spare copies.
+export function summonableHeroes(campaign, progress, heroes) {
+  const reserved = new Set(stageRewardHeroes(campaign));
+  return heroes.map(heroIdOf).filter((id) => !reserved.has(id) || progress.owned.includes(id));
+}
+
 export const bannerById = (summonCfg, bannerId) => summonCfg?.banners?.find((banner) => banner.id === bannerId) ?? null;
 
 // Featured heroes rotate on a fixed schedule authored by the banner. Keeping the

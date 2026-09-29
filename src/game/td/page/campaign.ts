@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, stageRewardHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { allStages, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -284,7 +284,7 @@ export function createCampaign(ctx: PageContext) {
     const heroes = [...data.heroes].sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
     const tile = (hero: any) => {
       const owned = p.owned.includes(hero.id), picked = squad.includes(hero.id);
-      const unlock = owned ? null : allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
+      const unlock = owned ? null : heroRewardStage(campaign, hero.id);
       const skill = data.tuning.heroSkills?.[hero.id];
       const tip = owned ? `${hero.name} · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
@@ -317,7 +317,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-heroes-count]").textContent = `${p.owned.length} / ${heroes.length}`;
     heroListEl.innerHTML = heroes.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
-      const unlock = allStages(campaign).find((entry: any) => (entry.rewards ?? []).some((reward: any) => reward.type === "hero" && reward.id === hero.id));
+      const unlock = heroRewardStage(campaign, hero.id);
       const tier = heroEvolution(p, hero.id);
       const source = unlock ? `Stage ${unlock.id}` : "Summon";
       const ready = isOwned && (canLevelUp(campaign, p, hero.id) || evolutionMaterial(campaign, p, hero.id) === "copy");
@@ -505,10 +505,8 @@ export function createCampaign(ctx: PageContext) {
 
   // Summon screen: the banner, its cost, the player's Divine Seals and Seal Dust, x1 / x10.
   // `fresh` (entering the screen) closes the last reveal.
-  // Summonable roster: stage reward heroes join only once earned (their stage's first clear
-  // gives them; a summon never takes it first). Owned heroes come back as spare copies.
-  const reserved = new Set(stageRewardHeroes(campaign));
-  const allHeroIds = () => data.heroes.map((hero: any) => hero.id as string).filter((id: string) => !reserved.has(id) || progress().owned.includes(id));
+  // Summonable roster (campaign.js summonableHeroes): stage reward heroes join once earned.
+  const allHeroIds = (): string[] => summonableHeroes(campaign, progress(), data.heroes);
   const stars = (n: number, max = campaign.heroStars?.max ?? 5) => `<span class="td-stars" aria-label="${n} of ${max} stars">${"★".repeat(n)}<span aria-hidden="true">${"★".repeat(Math.max(0, max - n))}</span></span>`;
   function renderSummon(fresh = false) {
     const p = progress();

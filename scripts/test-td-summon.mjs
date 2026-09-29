@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -143,6 +143,16 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const fromStages = allStages(campaignData).flatMap((stage) => stage.rewards.filter((reward) => reward.type === "hero").map((reward) => reward.id));
   assert.deepEqual([...reserved].sort(), [...new Set(fromStages)].sort(), "stage reward heroes listed");
   assert.ok(reserved.every((id) => !campaignData.starters.includes(id)), "no starter is a stage reward");
+  // One rule for the banner and the Squad screen's source text (campaign.js).
+  const fresh = newCampaignProgress(campaignData);
+  const roster = [...campaignData.starters, ...reserved, "someone-else"];
+  const open = summonableHeroes(campaignData, fresh, roster);
+  assert.ok(reserved.every((id) => !open.includes(id)), "unearned stage reward heroes are not summonable");
+  assert.ok(open.includes("someone-else") && campaignData.starters.every((id) => open.includes(id)), "everyone else is");
+  const earned = { ...fresh, owned: [...fresh.owned, reserved[0]] };
+  assert.ok(summonableHeroes(campaignData, earned, roster).includes(reserved[0]), "an earned stage reward hero comes back as copies");
+  assert.equal(heroRewardStage(campaignData, reserved[0])?.rewards.some((r) => r.type === "hero" && r.id === reserved[0]), true, "reward stage found");
+  assert.equal(heroRewardStage(campaignData, "someone-else"), null, "summon-only hero has no reward stage");
 }
 
 // --- Multi summon (M27b) ---
