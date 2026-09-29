@@ -5,7 +5,7 @@
 import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
-import { createHeroFx, hasHeroFx } from "./hero-fx.js";
+import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
@@ -550,6 +550,57 @@ export async function createRenderer(canvas, game, options = {}) {
           part.scale.set(0.8 + phase * 0.4);
         }
       }
+    }
+  }
+
+  // M24c: Supports with the passive attack aura pulse while it is active, and a slow wave
+  // runs out to the aura's real edge (its range). Allies inside it, or under a timed ult
+  // buff, carry a faint rim at their feet. Presentation only; the rule is supportAuraFor().
+  const auraFx = new Map(); // support hero -> { glow, color, phase }
+  const auraGfx = new PIXI.Graphics();
+  layerSlotAuras.addChild(auraGfx);
+  function updateAuraFx(now) {
+    const seconds = now / 1000;
+    auraGfx.clear();
+    const live = new Set();
+    for (const hero of game.heroes) {
+      if (hero.ability !== "aura") continue;
+      live.add(hero);
+      let fx = auraFx.get(hero);
+      if (!fx) {
+        const color = PROFILES[hero.id]?.color ?? palette.gold;
+        fx = { glow: softSprite(color, 96, 60, 0.4), color, phase: Math.random() * Math.PI * 2 };
+        layerSlotAuras.addChild(fx.glow);
+        auraFx.set(hero, fx);
+      }
+      const veil = game.isVeiled?.(hero) ? 0.45 : 1;
+      const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * 2.4 + fx.phase);
+      fx.glow.position.set(hero.x, hero.y + 6);
+      fx.glow.width = 88 + pulse * 22;
+      fx.glow.height = 56 + pulse * 14;
+      fx.glow.alpha = (0.32 + pulse * 0.3) * veil;
+      auraGfx.circle(hero.x, hero.y, 31 + pulse * 4).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
+      if (reducedMotion) {
+        auraGfx.circle(hero.x, hero.y, hero.range).stroke({ color: fx.color, width: 1.5, alpha: 0.12 * veil });
+      } else {
+        const t = ((seconds + fx.phase) / 2.8) % 1;
+        const r = 34 + (hero.range - 34) * (1 - (1 - t) * (1 - t));
+        auraGfx.circle(hero.x, hero.y, r).stroke({ color: fx.color, width: 2, alpha: 0.3 * (1 - t) * veil });
+      }
+    }
+    for (const [hero, fx] of auraFx) {
+      if (live.has(hero)) continue;
+      fx.glow.destroy();
+      auraFx.delete(hero);
+    }
+    for (const ally of game.heroes) {
+      const aura = game.supportAuraFor?.(ally);
+      const timed = game.time < (ally.buffUntil || 0);
+      if (!aura && !timed) continue;
+      const color = timed ? palette.gold : auraFx.get(aura.source)?.color ?? palette.gold;
+      const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * (timed ? 5 : 2.4));
+      const veil = game.isVeiled?.(ally) ? 0.45 : 1;
+      auraGfx.ellipse(ally.x, ally.y + 22, 26, 9).stroke({ color, width: timed ? 2.5 : 1.5, alpha: (timed ? 0.55 + pulse * 0.35 : 0.3 + pulse * 0.25) * veil });
     }
   }
 
@@ -1554,6 +1605,7 @@ export async function createRenderer(canvas, game, options = {}) {
     drawBars();
     drawEffects(now);
     updateSpecialTileFx(now);
+    updateAuraFx(now);
     applyImpact(now);
     mapScene?.draw(now);
     app.renderer.render(stage);

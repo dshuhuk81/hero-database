@@ -63,6 +63,29 @@ ultimates keep the existing hold circle, which marks the real stop radius.
 
 Mage Arc path bounces use Odin's lightning for every Mage.
 
+### Recruits and support auras (September 29, 2026)
+
+The 12 recruits have their own `PROFILES` entry (plain mortal colours: steel, bronze,
+leather, hedge green, candle gold) with a `kind` field. Heroes without a hand-made entry
+fall back to class builders in `hero-fx.js` (`CLASS_MELEE`, `CLASS_SHOTS`,
+`CLASS_IMPACTS`, `CLASS_ULTS`), humbler than the named heroes:
+
+| Class | Attack | Ultimate |
+|-------|--------|----------|
+| Tank (Bram, Tilda) | Short heavy shield bash, dust ring | Shield dome over the hero, ground ring, rock chips |
+| Warrior (Kellan, Sable) | Steel arc with sparks | Two wide sweeps, dust ring, sparks |
+| Assassin (Ash, Nyra) | Two quick dagger cuts, smoke puff | Three crossed cuts inside a smoke cloud |
+| Mage (Elm, Ives) | Arcane orb on a light arc (Ives: ember trail) | Charged orb lands and bursts at the splash radius |
+| Archer (Wren, Hollis) | Plain arrow with a short streak | Five arrows fall around the target |
+| Support (Poppy, Jory) | Soft pulse with one helper mote; heals flow as crosses (Poppy) or motes (Jory) | Widening rings and rising motes over the hero |
+
+Support passive aura (`render.js` `updateAuraFx`): every hero with the `aura` ability
+has a pulsing underglow and ring in its profile colour, plus a slow wave that runs out to
+the aura's real edge (its range) every 2.8 s. Allies inside an aura (`supportAuraFor`)
+carry a faint rim at their feet in the support's colour; allies under a timed ult buff
+(`buffUntil`) get a brighter, faster gold rim. Reduced motion: static glow and a faint
+fixed range ring. Presentation only.
+
 ## Files
 
 - `src/game/td/fx-kit.js`: canvas-painted white textures (glow, ember, streak, bubble,
@@ -80,8 +103,6 @@ No new image files: all new textures are painted at runtime, so nothing was uplo
 
 ## Open points
 
-- Ymir's identity is frost, but his status in `tuning.statuses.sources` is Burn, so his
-  enemies show flames. Either change his status to Chill in tuning or accept a
-  "cold fire" reading.
+- Ymir: resolved September 27, 2026 (Chill instead of Burn).
 - Tank hold circles from several tanks at once are large filled areas; they could be
   toned down if they crowd the board.

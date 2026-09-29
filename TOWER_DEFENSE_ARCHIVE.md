@@ -466,3 +466,16 @@ White label follow-up; details in [TOWER_DEFENSE_WHITELABEL_AUDIT.md](TOWER_DEFE
 - Follow-up (September 27, 2026, owner approved): deleted the unused local files (`public/td/sprite.png`, `spritePlatform.png`, `spriteRoad.png`, `bg/slot_platform.png`, `bg/slot_road.png`, `bg/path_tile.png`), the replaced enemy sprites (`{grunt,runner,flyer,archer,brute}-v1.webp`, `boss-lilith-v2.webp`, `brood-v2.webp`) and the Motto promo thumbnail with its doc. R2 copies stay until the owner deletes them.
 - M24c follow-up (September 27, 2026, owner approved): Ymir (`prometheus`) applies Chill instead of Burn (`tuning.statuses.sources`), matching the frost giant; with Aegir's Wet this now triggers Freeze. Burn comes only from Hephaestus and the Wildfire path / Kindling infusion.
 - Also deleted (owner, September 27, 2026): `public/td/sprite_backgrounds.png` (unused sheet of 9 painted landscapes, origin unknown); R2 `td/sprite_backgrounds.png` stays until deleted by hand.
+
+
+## Roadmap M27a: Menu design (done September 29, 2026)
+
+- Most menues are really boring to watch. We have a really nice looking main menu screen at the moment. But all screen within a game mode looks like a text menu. 
+- campaign should also have cards. summon is only a button. rethink and restructure this.
+- Progress (September 28, 2026): Campaign cards and the Summon screen were done earlier (audit screen pass, M28); Daily Trial already had its banner and portrait cards. This pass:
+  - Expedition: Daily-style banner (expedition art, boss art once started, rule chips, reward box before the start, lives box during a run), route of three battlefield cards with map art (done / next battle / ahead; "Unknown battlefield" plus stage health before the order is drawn), camp rewards as large choice cards (recruit portrait, relic and drill icons), squad as portrait cards (shared `trialCardHtml()` in `page/daily.ts`, veterans show their level instead of the cost), relics as tiles, "How it works" steps before the first start. Continue button names the stage.
+  - Difficulty and run length: battlefield banner (map art, boss art, Change button back to the map select), difficulty tiers with diamond rank pips, tier colours and a Favor badge, run-length cards with a big 10 / 20 / infinity numeral, best result and a Play button (compact rows on phones).
+  - Map select: map art at 90% instead of 55% opacity, softer route overlay.
+  - Checks: `npm run test:tower-defense`, no TD type errors, Chromium 1440x900 and 390x844: map select, mode screen, Expedition before start, after a forced stage win (camp) and after a camp pick; no horizontal overflow, no console errors.
+- Open: Settings / Glossary / Blessings screens were not part of this pass.
+- Closed by the owner September 29, 2026; Settings / Glossary / Blessings redesign not required for this milestone.

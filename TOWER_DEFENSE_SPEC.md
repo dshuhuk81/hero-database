@@ -190,6 +190,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Class archetypes: Tank `taunt`, Warrior `cleave`, Assassin `execute` (dash, veil),
   Mage `nuke` (splash, chain), Archer `volley`, Support `aura`/heal. Per-hero
   ultimates and variants: `heroSkills` in tuning, text in `skills.js`.
+  Support aura visual (`render.js` `updateAuraFx`): `aura` heroes pulse in their profile
+  colour with a slow wave out to their range; allies inside carry a faint rim at their
+  feet, allies under a timed ult buff a brighter gold rim. Recruits use the class effect
+  builders in `hero-fx.js` (`CLASS_*`).
 - Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
   `cursed` +30% atk / -20% aps.
   Visuals (`render.js`, built once, animated by transforms only): soft additive ground

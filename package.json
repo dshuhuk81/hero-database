@@ -46,6 +46,7 @@
     "td:pacing": "node scripts/td-pacing.mjs",
     "td:economy": "node scripts/td-economy.mjs",
     "td:layout": "node scripts/td-layout-compare.mjs",
+    "td:maps": "node scripts/report-td-maps.mjs",
     "r2:cors": "node scripts/r2-cors.mjs",
     "check": "astro check"
   },

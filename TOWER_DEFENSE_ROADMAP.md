@@ -31,6 +31,16 @@ Use subagents for doing more than 1 milestone. Coordinate well when changing fil
 
 Deferred (P3, not needed yet): prestige/Ascension reset (only once players hit the end of the blessing tree), map editor (non-goal in spec section 1).
 
+### M24c - New Effects due to hero change (next up, owner September 29, 2026)
+- we should render new effects for our heroes after we swapped them.
+- check what kind of hero we have, then look what we can do with a solid type of effect in the game
+- if a hero uses lightning, the lightning should look good
+- if a hero uses poison, we should see poison bubbles happening
+- i dont want any "just straight line as damage" anymore in the game
+- If a hero has a permanent support skill active (like give more atk or atk speed -> he should get an aura pulsating showing that there is an effect active)
+- Progress (Sep 27): done in a first pass. New pooled effect kit (`fx-kit.js`) plus status visuals (`status-fx.js`); every hero has a themed attack, impact and ultimate for its mythic identity (table in `TOWER_DEFENSE_HERO_SKILLS.md`); Odin's lightning forks and re-strikes with a rune circle ultimate; poison bubbles, burn flames, chill frost, wet drips and a frozen ice shell show on enemies; all tracer lines (hero shots, enemy shots, hexes, dashes, heal beams) replaced by travelling projectiles, arcs and curved flows. Ymir Burn -> Chill fixed September 27, 2026 (see archive).
+- Second pass (done September 29, 2026): (a) support passive aura now visible while active: pulsing underglow and ring on every `aura` hero, a slow wave out to its real range, faint rims at the feet of allies inside it and a brighter gold rim under a timed ult buff (`render.js` `updateAuraFx`, reduced motion static); (b) the 12 recruits got profiles and class builders for attacks, impacts and ultimates instead of the generic fallback (`hero-fx.js` `CLASS_*`, table in `TOWER_DEFENSE_HERO_SKILLS.md`). Checks: `npm run test:tower-defense`, Chromium 1440x900 and 844x390 on Moonlit (9 recruits + Plutus, wave 1, all ultimates), no page errors. Open: owner look in play; then archive M24c.
+
 ### M23: Tutorial Stage (skip)
 
 - We should have a tutorial stage where players get an onboarding into all our mechanics and game play. that should cover minimalistic stages with the most important topics to deal in an onboarding scenario like most gacha or tower defense games do. we have to define what we want to do and what should be displayed. most apps just create simple scenarios with tooltips that pause the game and players need to follow a tutorial.
@@ -138,15 +148,6 @@ This is feedback from a players perspective and we should tackle solutions for t
   - **Counterplay / done when:** Players can identify and focus the attacker, protect platforms with positioning/road defenders, and recover through healing or redeployment. Test range, target eligibility, dead/veiled targets, target loss and damage/death handling. Measure platform-heavy and mixed squads under both existing bot policies, plus manual phone play, before increasing its frequency. Revisit the audit's Tank/Mage imbalance with those results; a wholly new enemy and art set can follow if this first variant is insufficient.
   - **Shipped September 29, 2026 (accepted by the owner the same day):** the existing enemy Archer now shoots platform heroes: while it holds at range (110 px, 8 s) it still takes the nearest road hero first, otherwise the nearest living platform hero in range, for half its attack (`tuning.enemies.archer.targetsPlatforms` / `platformAttack` 0.5; set the flag false to switch it off). Melee phase stays road-only. Archers first appear in stage 1-4 and Free Play waves 6 and 8, so this is the controlled mid-chapter introduction. Readability: amber corner brackets on the aimed hero (`aimedAt`), first-archer-wave notice, glossary and leak-hint text updated. Tests: new `test-td-sim.mjs` block (road first, range, fallen heroes, melee phase, flag off, damage share, warning timestamp); full suite, `test:td-balance`, TD type check pass; Chromium check on Moonlit (brackets on Zeus, notice text, no page errors). Measured off -> on, same seeds, both bot policies: Free Play classic 88/120 -> 87/120 wins (lives -0.2 on average), Endless waves -1.0 / +1.0 / -0.5 (Moonlit / Verdant / Sunscar). Campaign (35 sampled squads x 2 policies): 1-4 59 -> 51/70, 1-5 45 -> 39/70, 1-6 40 -> 39, 1-7 48 -> 47, 1-8 44 -> 44, 1-9 27 -> 27, 1-10 39 -> 36; chapter total 62% -> 58%, 1-9 stays at 39% (floor 20%). Bots lose up to ~1 platform hero per run to archers on 1-4 (they do not reposition; players can). Tried: full damage cost 1-4 84% -> 60% (too harsh for an introduction), 0.6 -> 76%, 0.4 -> 80%. Tank squads did not gain a clear protective edge (most sampled 5-hero squads contain a Tank, so the split says little); revisit with the Tank decision. Next: manual phone play; raise `platformAttack` or add archers to more waves only after that.
 
-### M24c - New Effects due to hero change
-- we should render new effects for our heroes after we swapped them.
-- check what kind of hero we have, then look what we can do with a solid type of effect in the game
-- if a hero uses lightning, the lightning should look good
-- if a hero uses poison, we should see poison bubbles happening
-- i dont want any "just straight line as damage" anymore in the game
-- If a hero has a permanent support skill active (like give more atk or atk speed -> he should get an aura pulsating showing that there is an effect active)
-- Progress (Sep 27): done in a first pass. New pooled effect kit (`fx-kit.js`) plus status visuals (`status-fx.js`); every hero has a themed attack, impact and ultimate for its mythic identity (table in `TOWER_DEFENSE_HERO_SKILLS.md`); Odin's lightning forks and re-strikes with a rune circle ultimate; poison bubbles, burn flames, chill frost, wet drips and a frozen ice shell show on enemies; all tracer lines (hero shots, enemy shots, hexes, dashes, heal beams) replaced by travelling projectiles, arcs and curved flows. Open: Ymir shows Burn although he is a frost giant (tuning decision).
-
 ### M24d - New boss and heroes
 - we need another boss for Lilith cause she is still a character from Motto Immortal. Create all what is necessary. Ideas: some Monsters from Greek Mythology
 - also we need common heroes where we can summon from. These can be pawn like common heroes with no heroic names cause they need to differ from our good heroes. they are common and deal as fodder with low stats and limited skills. they should be added to the summon pool and of course everywhere else. we need at least one for each class. 
@@ -177,16 +178,6 @@ Concept: `TOWER_DEFENSE_NEXT_STEPS.md`. Sprints 0-8 are done (archive "Roadmap M
   - 1-9 and 1-10 react strongly to enemy health (1-10: hpScale 0.64 -> 0.69 moved bot wins 49% -> 26%); about 10 points above the test's 20% floor.
   - Chapter 1 pays 600 Divine Seals = one x10 at 60 per pull (sprint 9); later seals come from the Daily Trial, the Expedition and Seal Dust.
   - Play time about 65 minutes of winning bot play, over the concept's 30-60; 1-10 alone takes 10-12 minutes.
-
-  ### M27a: Menu design
-  - Most menues are really boring to watch. We have a really nice looking main menu screen at the moment. But all screen within a game mode looks like a text menu. 
-  - campaign should also have cards. summon is only a button. rethink and restructure this.
-  - Progress (September 28, 2026): Campaign cards and the Summon screen were done earlier (audit screen pass, M28); Daily Trial already had its banner and portrait cards. This pass:
-    - Expedition: Daily-style banner (expedition art, boss art once started, rule chips, reward box before the start, lives box during a run), route of three battlefield cards with map art (done / next battle / ahead; "Unknown battlefield" plus stage health before the order is drawn), camp rewards as large choice cards (recruit portrait, relic and drill icons), squad as portrait cards (shared `trialCardHtml()` in `page/daily.ts`, veterans show their level instead of the cost), relics as tiles, "How it works" steps before the first start. Continue button names the stage.
-    - Difficulty and run length: battlefield banner (map art, boss art, Change button back to the map select), difficulty tiers with diamond rank pips, tier colours and a Favor badge, run-length cards with a big 10 / 20 / infinity numeral, best result and a Play button (compact rows on phones).
-    - Map select: map art at 90% instead of 55% opacity, softer route overlay.
-    - Checks: `npm run test:tower-defense`, no TD type errors, Chromium 1440x900 and 390x844: map select, mode screen, Expedition before start, after a forced stage win (camp) and after a camp pick; no horizontal overflow, no console errors.
-  - Open: Settings / Glossary / Blessings screens were not part of this pass.
 
   ### M27b: Rethink Summon Mode
   - summon should be as to when a user requires to have x amount of a material to summon 1 hero, and XX amound of material to do a 10 pull summon.

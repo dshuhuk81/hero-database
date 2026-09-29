@@ -31,6 +31,19 @@ export const PROFILES = {
   caishen:     { name: "Plutus", color: 0xffd24a, accent: 0xfff3b0, mote: "coin", ranged: true, speed: 480 },
   yuelao:      { name: "Harmonia", color: 0xff8fb1, accent: 0xffe1a8, mote: "note", ranged: true, speed: 520 },
   freya:       { name: "Asclepius", color: 0x5fe0a0, accent: 0xfff7d6, mote: "plus", ranged: true, speed: 540 },
+  // Recruits (common heroes): plain mortal materials, drawn by the class builders (`kind`).
+  "recruit-bram":   { name: "Bram", color: 0xa8b4c0, accent: 0xe8eef4, mote: "twinkle", kind: "tank" },
+  "recruit-tilda":  { name: "Tilda", color: 0xc79a5a, accent: 0xffe2b0, mote: "twinkle", kind: "tank" },
+  "recruit-kellan": { name: "Kellan", color: 0x9fb2c8, accent: 0xffffff, mote: "twinkle", kind: "warrior" },
+  "recruit-sable":  { name: "Sable", color: 0xc8765a, accent: 0xffd0b0, mote: "ember", kind: "warrior" },
+  "recruit-ash":    { name: "Ash", color: 0x8e8a9e, accent: 0xd8d4e8, mote: "glow", kind: "assassin" },
+  "recruit-nyra":   { name: "Nyra", color: 0x5fb3a8, accent: 0xd0fff4, mote: "glow", kind: "assassin" },
+  "recruit-elm":    { name: "Elm", color: 0x8fce72, accent: 0xe6ffd0, mote: "leaf", kind: "mage", ranged: true, speed: 560 },
+  "recruit-ives":   { name: "Ives", color: 0xe89a4a, accent: 0xffe0b0, mote: "ember", kind: "mage", ranged: true, speed: 520 },
+  "recruit-wren":   { name: "Wren", color: 0xc8a878, accent: 0xfff0d0, mote: "leaf", kind: "archer", ranged: true, speed: 950 },
+  "recruit-hollis": { name: "Hollis", color: 0xd8c890, accent: 0xffffff, mote: "twinkle", kind: "archer", ranged: true, speed: 1100 },
+  "recruit-poppy":  { name: "Poppy", color: 0x9ee6a0, accent: 0xfff7d6, mote: "plus", kind: "support", ranged: true, speed: 520 },
+  "recruit-jory":   { name: "Jory", color: 0xffd98a, accent: 0xfff4d6, mote: "twinkle", kind: "support", ranged: true, speed: 520 },
 };
 
 export const hasHeroFx = (effect) => {
@@ -198,6 +211,51 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       for (let i = 0; i < kit.n(2); i++) kit.spawn("feather", x + rand(-8, 8), y - 6, { tint: 0x23262f, size: 5, vx: rand(-25, 25), vy: 10, ay: 30,
         life: 0.8, rot: rand(-1, 1), spin: rand(-3, 3), wobble: 5, wobbleFreq: 1.5, add: false, hold: 0.5 });
       kit.spawn("glow", x, y - 4, { tint: p.color, size: 8, vy: -60, life: 0.5, wobble: 3 });
+    },
+  };
+
+  // Class builders for heroes without their own entry (recruits): same readability, humbler kit.
+  const CLASS_MELEE = {
+    tank(x, y, a, p, big) { // shield bash: short heavy arc, dust ring
+      slash(x, y, a, p.color, { r: 17, thick: 9, sweep: 1.5, offset: 0.7 });
+      groundRing(x, y + 6, 4, 20 * big, 0xb8a888, { add: false, width: 3, alpha: 0.5, life: 0.35 });
+      flash(x, y, p.accent, 22 * big);
+    },
+    warrior(x, y, a, p, big) { // steel arc with a few sparks
+      slash(x, y, a, p.color, { r: 21, thick: 7, core: p.accent });
+      sparks(x, y, 3, p.accent, { size: 8, speed: 140, dir: a, spread: 1.8 });
+    },
+    assassin(x, y, a, p, big) { // two quick dagger cuts and a smoke puff
+      for (let i = 0; i < 2; i++) slash(x, y, a + (i ? 0.7 : -0.7), i ? p.accent : p.color, { r: 16, thick: 5, sweep: 1.7, offset: 0.2, delay: i * 0.07, life: 0.18 });
+      kit.spawn("glow", x, y - 4, { tint: p.color, size: 18, sizeEnd: 34, life: 0.35, alpha: 0.35, add: false });
+    },
+  };
+  const CLASS_SHOTS = {
+    mage(e, sx, sy, x, y, p) { // arcane orb on a light arc with a mote trail
+      return projectile("glow", sx, sy, x, y, p.color, { speed: p.speed, arc: 18, size: 16,
+        trail: moteTrail(p.mote === "ember" ? "ember" : "dot", p.accent, { size: 5, life: 0.3 }), trailEvery: 0.025 });
+    },
+    archer(e, sx, sy, x, y, p) { // plain arrow with a short streak
+      return projectile("arrow", sx, sy, x, y, p.accent, { speed: p.speed, arc: 8, size: 22, add: false, trail: streakTrail(p.color, { size: 20 }) });
+    },
+    support(e, sx, sy, x, y, p) { // soft pulse with one helper mote
+      const end = projectile("glow", sx, sy, x, y, p.color, { speed: p.speed, size: 14 });
+      projectile("dot", sx, sy, x, y, p.accent, { speed: p.speed, size: 5, helix: 7, helixFreq: 2, trail: moteTrail("dot", p.color, { size: 4, life: 0.25 }), trailEvery: 0.03 });
+      return end;
+    },
+  };
+  const CLASS_IMPACTS = {
+    mage(x, y, p, big) {
+      flash(x, y, p.color, 28 * big);
+      sparks(x, y, 4, p.accent, { tex: p.mote === "ember" ? "ember" : "dot", size: 7, speed: 110 });
+    },
+    archer(x, y, p, big) {
+      kit.spawn("twinkle", x, y, { tint: p.accent, size: 14 * big, sizeEnd: 4, life: 0.2 });
+      sparks(x, y, 2, p.color, { tex: "shard", size: 6, speed: 110 });
+    },
+    support(x, y, p, big) {
+      flash(x, y, p.color, 22 * big, { alpha: 0.7 });
+      kit.spawn(p.mote === "plus" ? "plus" : "twinkle", x, y - 6, { tint: p.accent, size: 8, vy: -40, life: 0.4 });
     },
   };
 
@@ -503,6 +561,47 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
     },
   };
 
+  const CLASS_ULTS = {
+    tank(e, p, sx, sy) { // raised shield: a dome over the hero, the ground steadies
+      kit.shape((g, t) => {
+        const alpha = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4, r = 38 * (reducedMotion ? 1 : Math.min(1, t * 3));
+        g.moveTo(sx - r, sy - 4).arc(sx, sy - 4, r, Math.PI, TAU).stroke({ width: 5, color: p.color, alpha: alpha * 0.4 });
+        g.moveTo(sx - r, sy - 4).arc(sx, sy - 4, r, Math.PI, TAU).stroke({ width: 2, color: p.accent, alpha: alpha * 0.9 });
+      }, 0.9);
+      groundRing(sx, sy + 12, 8, (e.range ?? 60) * 1.1, p.color, { width: 4, life: 0.55 });
+      debris("rock", sx, sy + 12, 4, 0xa89878, { up: 90, size: 7 });
+    },
+    warrior(e, p, sx, sy) { // two wide sweeps and a dust ring
+      for (let i = 0; i < 2; i++) slash(e.x, e.y, Math.atan2(e.y - sy, e.x - sx) + (i ? 0.5 : -0.5), i ? p.accent : p.color, { r: 32, thick: 9, sweep: 2.6, offset: 0.1, delay: i * 0.12, life: 0.28, dir: i ? -1 : 1 });
+      groundRing(e.x, e.y + 6, 8, 50, p.color, { delay: 0.12, life: 0.5, width: 4 });
+      sparks(e.x, e.y, 5, p.accent, { size: 8, speed: 170, delay: 0.12 });
+    },
+    assassin(e, p, sx, sy) { // three crossed cuts inside a smoke cloud
+      kit.shape((g, t) => { g.circle(e.x, e.y, 34 * (1 - t) + 6).fill({ color: 0x1a1824, alpha: 0.35 * (1 - t) }); }, 0.6, { add: false });
+      for (let i = 0; i < 3; i++) slash(e.x, e.y, i * TAU / 3 + 0.4, i % 2 ? p.accent : p.color, { r: 26, thick: 6, sweep: 1.8, offset: 0, delay: 0.06 + i * 0.09, life: 0.24 });
+      flash(sx, sy, p.color, 40, { life: 0.25, alpha: 0.5 });
+    },
+    mage(e, p, sx, sy) { // charged orb lands and bursts at the target
+      const end = projectile("glow", sx, sy, e.x, e.y, p.accent, { speed: 480, arc: 30, size: 26, trail: moteTrail("dot", p.color, { size: 7, life: 0.35 }), trailEvery: 0.02 });
+      flash(e.x, e.y, p.color, 70, { delay: end, life: 0.3 });
+      groundRing(e.x, e.y + 4, 8, e.radius ?? 60, p.color, { delay: end, width: 4, life: 0.5 });
+      sparks(e.x, e.y, 8, p.accent, { tex: p.mote === "ember" ? "ember" : "dot", size: 9, speed: 190, delay: end });
+    },
+    archer(e, p, sx, sy) { // a spread volley falling around the target
+      for (let i = 0; i < kit.n(5); i++) {
+        const tx = e.x + rand(-28, 28), ty = e.y + rand(-16, 16);
+        const end = projectile("arrow", sx, sy, tx, ty, p.accent, { speed: p.speed ?? 900, arc: 34, size: 20, add: false, delay: i * 0.06, trail: streakTrail(p.color, { size: 18 }) });
+        kit.spawn("twinkle", tx, ty, { tint: p.accent, size: 12, sizeEnd: 3, life: 0.2, delay: end });
+      }
+      groundRing(e.x, e.y + 6, 6, 42, p.color, { delay: 0.2, life: 0.5 });
+    },
+    support(e, p, sx, sy) { // widening ring and rising motes over the hero
+      for (let i = 0; i < 2; i++) groundRing(sx, sy + 8, 8, (e.range ?? 90) * 0.7, p.color, { delay: i * 0.2, width: 3, life: 0.6 });
+      rise(p.mote === "plus" ? "plus" : "twinkle", sx, sy - 12, 6, p.accent, { spread: 40, size: 10, life: 0.9 });
+      flash(sx, sy, p.accent, 54, { life: 0.35 });
+    },
+  };
+
   // ------------------------------------------------------------ dispatch
   function create(e) {
     const p = PROFILES[e.heroId];
@@ -514,21 +613,21 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       case "shot": {
         // Melee heroes show their weapon at the impact (hit event); nothing crosses the gap.
         if (!p.ranged) return;
-        (SHOTS[e.heroId] ?? SHOTS.freya)(e, sx, sy, x, y, p);
+        (SHOTS[e.heroId] ?? CLASS_SHOTS[p.kind] ?? SHOTS.freya)(e, sx, sy, x, y, p);
         return;
       }
       case "hit": {
         if (p.ranged) {
           // Impact waits for the projectile launched by the matching shot.
           const delay = travelTime(sx, sy, x, y, p.speed);
-          const impact = IMPACTS[e.heroId] ?? IMPACTS.freya;
+          const impact = IMPACTS[e.heroId] ?? CLASS_IMPACTS[p.kind] ?? IMPACTS.freya;
           kit.spawn("dot", x, y, { size: 0.1, life: delay, alpha: 0, onEnd: () => {
             impact(x, y, p, big);
             if (e.crit) kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 34, sizeEnd: 8, life: 0.3, spin: 3 });
           } });
           return;
         }
-        (MELEE[e.heroId] ?? MELEE.momus)(x, y, angle, p, big);
+        (MELEE[e.heroId] ?? CLASS_MELEE[p.kind] ?? MELEE.momus)(x, y, angle, p, big);
         if (e.crit) kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 34, sizeEnd: 8, life: 0.3, spin: 3 });
         return;
       }
@@ -559,8 +658,8 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         return;
       }
       case "beam": { // Support heal: motes flow along a curve to the ally
-        const tex = { caishen: "coin", yuelao: "note", freya: "dot" }[e.heroId] ?? "dot";
-        const add = tex === "dot";
+        const tex = { caishen: "coin", yuelao: "note", freya: "dot", "recruit-poppy": "plus" }[e.heroId] ?? "dot";
+        const add = tex === "dot" || tex === "plus";
         const end = flow(tex, sx, sy, x, y, e.heroId === "freya" ? 6 : 4, p.color, { speed: 380, bend: 26, arc: 16, size: tex === "dot" ? 6 : 9,
           helix: e.heroId === "freya" ? 8 : 0, helixFreq: 3, add, spin: tex === "coin" ? 8 : 0 });
         flash(x, y, p.color, 36, { delay: end, life: 0.3, alpha: 0.6 });
@@ -584,7 +683,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         return;
       }
       case "ult": {
-        (ULTS[e.heroId] ?? (() => flash(e.x, e.y, p.color, 80)))(e, p, sx, sy);
+        (ULTS[e.heroId] ?? CLASS_ULTS[p.kind] ?? (() => flash(e.x, e.y, p.color, 80)))(e, p, sx, sy);
         return;
       }
     }
