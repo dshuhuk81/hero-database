@@ -330,23 +330,29 @@ export async function createRenderer(canvas, game, options = {}) {
   // Slots (semi-static: rebuild when hero placement changes)
   // ------------------------------------------------------------------
   let slotState = "";
+  // Empty-tile mode: while a fallen hero is being redeployed (`game.uiDeploySlot`, set by
+  // the deck) its tile type is "eligible" and the other type "dim"; with a full team
+  // empty tiles go "idle" so they stay out of the way during combat.
+  function slotMode(type) {
+    const deploying = game.uiDeploySlot;
+    if (deploying) return deploying === type ? "eligible" : "dim";
+    return game.heroes.length >= game.deployCap() ? "idle" : "";
+  }
   function buildSlots() {
     if (mapScene) {
-      const next = `${game.heroes.map((h) => `${h.slotType}:${h.slotIndex}`).join(",")}|${game.focusedSlot?.type}:${game.focusedSlot?.index}`;
+      const next = `${game.heroes.map((h) => `${h.slotType}:${h.slotIndex}`).join(",")}|${game.focusedSlot?.type}:${game.focusedSlot?.index}|${slotMode("road")}${slotMode("platform")}`;
       if (next === slotState) return;
       slotState = next;
       layerSlots.removeChildren().forEach((child) => child.destroy({ children: true }));
     } else layerSlots.removeChildren();
-    game.map.roadSlots.forEach(([x, y], i) => {
-      const occupied  = game.heroes.some((h) => h.slotType === "road" && h.slotIndex === i);
-      const focused   = game.focusedSlot?.type === "road" && game.focusedSlot.index === i;
-      drawSlot(layerSlots, x, y, "road", occupied, focused);
-    });
-    game.map.platformSlots.forEach(([x, y], i) => {
-      const occupied  = game.heroes.some((h) => h.slotType === "platform" && h.slotIndex === i);
-      const focused   = game.focusedSlot?.type === "platform" && game.focusedSlot.index === i;
-      drawSlot(layerSlots, x, y, "platform", occupied, focused);
-    });
+    for (const type of ["road", "platform"]) {
+      const mode = slotMode(type);
+      (type === "road" ? game.map.roadSlots : game.map.platformSlots).forEach(([x, y], i) => {
+        const occupied = game.heroes.some((h) => h.slotType === type && h.slotIndex === i);
+        const focused  = game.focusedSlot?.type === type && game.focusedSlot.index === i;
+        drawSlot(layerSlots, x, y, type, occupied, focused, mode);
+      });
+    }
     for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
       const [type, index] = key.split(":");
       const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
@@ -541,8 +547,16 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
-  function drawSlot(container, x, y, type, occupied, highlighted) {
-    if (mapScene) { mapScene.drawSlot(container, x, y, type, occupied, highlighted); return; }
+  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
+    if (mapScene) { mapScene.drawSlot(container, x, y, type, occupied, highlighted, mode); return; }
+    const before = container.children.length;
+    drawFallbackSlot(container, x, y, type, occupied, highlighted);
+    // Same placement states as the map-scene tiles, as a fade on the fallback art.
+    const fade = highlighted || occupied ? 1 : mode === "dim" ? 0.3 : mode === "idle" ? 0.55 : 1;
+    for (const child of container.children.slice(before)) child.alpha *= fade;
+  }
+
+  function drawFallbackSlot(container, x, y, type, occupied, highlighted) {
     const color  = type === "road" ? palette.gold : palette.purple;
     const radius = type === "road" ? 27 : 24;
     const tex    = slotTextures.get(type);
@@ -1488,13 +1502,21 @@ export function canvasPoint(canvas, event) {
   return { x: (event.clientX - rect.left) * 960 / rect.width, y: (event.clientY - rect.top) * 540 / rect.height };
 }
 
+// A point inside a drawn tile (56 px square) always picks that tile, so the corners of
+// staggered tiles at road bends are not stolen by a neighbour whose centre is closer.
+const TILE_HALF = 28;
 export function nearestSlot(map, point, maxDistance = 38) {
-  let best = null;
+  let best = null, bestInside = false;
   for (const type of ["road", "platform"]) {
     const slots = type === "road" ? map.roadSlots : map.platformSlots;
     slots.forEach(([x, y], index) => {
       const distance = Math.hypot(point.x - x, point.y - y);
-      if (distance <= maxDistance && (!best || distance < best.distance)) best = { type, index, distance };
+      const inside = Math.abs(point.x - x) <= TILE_HALF && Math.abs(point.y - y) <= TILE_HALF;
+      if (!inside && distance > maxDistance) return;
+      if (!best || (inside && !bestInside) || (inside === bestInside && distance < best.distance)) {
+        best = { type, index, distance };
+        bestInside = inside;
+      }
     });
   }
   return best;

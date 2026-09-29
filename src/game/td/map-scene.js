@@ -368,30 +368,67 @@ export function createMapScene(PIXI, game, {
   }
 
   // Caller can retain a slot container and repaint only when its state changes.
-  // Placement tiles (M22b): flat squares that sit edge to edge. Road tiles are only
-  // corner marks on the stone, side tiles a faint inset plate; the focused tile glows.
+  // Placement tiles (M22b, readability pass M24): flat squares that sit edge to edge.
+  // Every empty tile has a dark outer rim plus an accent rim so it reads on bright and
+  // dark art alike. Road tiles are a recessed socket with corner brackets and a shield
+  // glyph (blockers stand here); platform tiles a raised bevelled plate with a double
+  // chevron (high ground for ranged heroes). mode: "eligible" brightens a valid target
+  // while a hero is being placed, "dim" fades the wrong tile type, "idle" quiets empty
+  // tiles when the team is full. Occupied tiles stay faint so the hero token reads first.
   const TILE = 56;
-  function drawSlot(container, x, y, type, occupied, highlighted) {
+  const DARK = 0x04070c;
+  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
     const g = new PIXI.Graphics();
     g.position.set(x, y);
     container.addChild(g);
     const accent = type === "road" ? theme.pad.road : theme.pad.platform;
     const h = TILE / 2;
+    const brackets = (inset, arm, color, width, alpha) => {
+      for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+        const cx = sx * (h - inset), cy = sy * (h - inset);
+        g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
+      }
+      g.stroke({ color, width, alpha, cap: "round", join: "round" });
+    };
+    if (occupied && !highlighted) {
+      g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: DARK, alpha: 0.14 });
+      brackets(3, 7, accent, 1.2, 0.2);
+      return g;
+    }
+    const eligible = mode === "eligible" || highlighted;
+    const strength = eligible ? 1 : mode === "dim" ? 0.28 : mode === "idle" ? 0.45 : 0.78;
+    g.alpha = strength;
+    // Surface: road sockets sink into the stone, platforms sit on it as a plate.
+    const surface = type === "road" ? 0.3 : 0.38;
+    g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: DARK, alpha: surface });
+    g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: accent, alpha: eligible ? 0.16 : 0.07 });
+    // Contrasting rim: dark outline first, accent line inside it.
+    g.rect(-h + 1.5, -h + 1.5, TILE - 3, TILE - 3).stroke({ color: DARK, width: 3, alpha: 0.6 });
     if (type === "platform") {
-      g.rect(-h, -h, TILE, TILE).fill({ color: 0x050b12, alpha: occupied ? 0.12 : 0.2 });
-      g.rect(-h + 0.5, -h + 0.5, TILE - 1, TILE - 1).stroke({ color: accent, width: 1, alpha: occupied ? 0.14 : 0.3 });
+      g.rect(-h + 3.5, -h + 3.5, TILE - 7, TILE - 7).stroke({ color: accent, width: eligible ? 2 : 1.5, alpha: 0.95 });
+      // Bevel: light top/left, dark bottom/right edge inside the rim.
+      const b = h - 6;
+      g.moveTo(-b, b).lineTo(-b, -b).lineTo(b, -b).stroke({ color: 0xffffff, width: 1.2, alpha: 0.28 });
+      g.moveTo(b, -b).lineTo(b, b).lineTo(-b, b).stroke({ color: DARK, width: 1.2, alpha: 0.5 });
+      // Double chevron: raised ground.
+      for (const dy of [-2.5, 3.5]) g.moveTo(-5, dy + 3).lineTo(0, dy - 2).lineTo(5, dy + 3);
+      g.stroke({ color: accent, width: 1.8, alpha: 0.9, cap: "round", join: "round" });
+    } else {
+      // Recess: dark top/left, light bottom/right edge, then the corner brackets.
+      const b = h - 5;
+      g.moveTo(-b, b).lineTo(-b, -b).lineTo(b, -b).stroke({ color: DARK, width: 1.5, alpha: 0.55 });
+      g.moveTo(b, -b).lineTo(b, b).lineTo(-b, b).stroke({ color: 0xffffff, width: 1, alpha: 0.18 });
+      brackets(3.5, 11, accent, eligible ? 2.4 : 2, 0.95);
+      // Shield glyph: blockers stand here.
+      g.moveTo(0, -6).lineTo(5.5, -3.8).lineTo(4.6, 2.2).lineTo(0, 6.5).lineTo(-4.6, 2.2).lineTo(-5.5, -3.8).closePath()
+        .fill({ color: DARK, alpha: 0.35 }).stroke({ color: accent, width: 1.6, alpha: 0.9, join: "round" });
     }
-    // Corner brackets.
-    const arm = 9, alpha = highlighted ? 0.95 : occupied ? 0.18 : 0.5;
-    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
-      const cx = sx * (h - 3), cy = sy * (h - 3);
-      g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
-    }
-    g.stroke({ color: highlighted ? theme.pad.highlight : accent, width: highlighted ? 2 : 1.4, alpha, cap: "round", join: "round" });
-    if (!occupied) g.circle(0, 0, 2).fill({ color: accent, alpha: 0.45 });
     if (highlighted) {
-      g.rect(-h, -h, TILE, TILE).fill({ color: theme.pad.highlight, alpha: 0.1 });
-      g.rect(-h - 3, -h - 3, TILE + 6, TILE + 6).stroke({ color: accent, width: 4, alpha: 0.16 });
+      g.rect(-h, -h, TILE, TILE).fill({ color: theme.pad.highlight, alpha: 0.14 });
+      g.rect(-h + 0.5, -h + 0.5, TILE - 1, TILE - 1).stroke({ color: theme.pad.highlight, width: 2.5, alpha: 1 });
+      g.rect(-h - 3, -h - 3, TILE + 6, TILE + 6).stroke({ color: theme.pad.highlight, width: 4, alpha: 0.3 });
+    } else if (mode === "eligible") {
+      g.rect(-h - 2, -h - 2, TILE + 4, TILE + 4).stroke({ color: accent, width: 3, alpha: 0.35 });
     }
     return g;
   }

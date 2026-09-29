@@ -196,7 +196,7 @@ export function createHud(ctx: PageContext) {
   function cancelDeploy() {
     if (!state.deployHeroId) return;
     state.deployHeroId = "";
-    if (state.session) state.session.game.uiPlacement = null;
+    if (state.session) { state.session.game.uiPlacement = null; state.session.game.uiDeploySlot = null; }
     renderDeck();
   }
 
@@ -250,6 +250,7 @@ export function createHud(ctx: PageContext) {
       ctx.actions.closePopover(false);
       ctx.actions.closeSheet(false);
       state.deployHeroId = state.deployHeroId === hero.id ? "" : hero.id;
+      session.game.uiDeploySlot = state.deployHeroId ? hero.slot : null;
       if (state.deployHeroId) ctx.notice(`Tap an empty ${hero.slot} tile to redeploy ${hero.name}.`);
       else session.game.uiPlacement = null;
       renderDeck();

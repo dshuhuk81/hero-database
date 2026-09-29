@@ -150,6 +150,15 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Placement: square tiles (`grid.js`, cell 60) on the road (blockers) and in rows beside
   it (ranged). Road tiles take Tank/Warrior/Assassin, platform tiles take
   Mage/Archer/Support. Flyers can only be hit by platform heroes.
+  Tile look (`map-scene.js` `drawSlot`): every empty tile has a dark outer rim plus an
+  accent rim over a darkened surface. Road = recessed socket, corner brackets and a shield
+  glyph (gold accent); platform = raised bevelled plate with a double chevron (map-coloured
+  accent). Occupied tiles drop to a faint plate and brackets. Placement states
+  (`render.js` `slotMode`): while a fallen hero is picked from the deck
+  (`game.uiDeploySlot`), empty tiles of its type glow ("eligible") and the other type fades
+  ("dim"); with a full team empty tiles go quiet ("idle"); the focused tile gets a bright
+  outline. Taps (`nearestSlot`) always pick the tile whose 56 px square contains the
+  point, then the nearest centre within the hit radius.
 - Recruiting (`page/recruit.ts`): tapping an empty tile opens the sheet. Choosing a card
   (tap, click, Enter or keyboard focus; hover does not) only inspects that hero: role line,
   ground/flying reach, range on this tile, ultimate text, and collapsed Details (attack,

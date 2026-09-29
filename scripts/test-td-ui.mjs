@@ -56,6 +56,18 @@ import maps from "../src/data/tdMaps.json" with { type: "json" };
   // Tiles (M22b) sit edge to edge, closer than the hit radius; nearest wins, so a tap
   // always picks the tile it lands in.
   assert.ok(minSlotGap >= 52, "tiles do not overlap");
+  // Every point inside a drawn 56 px tile picks that tile, including the corners of
+  // staggered tiles at road bends (M24 slot readability).
+  for (const tileMap of maps) {
+    for (const type of ["road", "platform"]) {
+      (type === "road" ? tileMap.roadSlots : tileMap.platformSlots).forEach(([x, y], index) => {
+        for (let dx = -27; dx <= 27; dx += 3) for (let dy = -27; dy <= 27; dy += 3) {
+          const hit = nearestSlot(tileMap, { x: x + dx, y: y + dy }, 38);
+          assert.ok(hit && hit.type === type && hit.index === index, `${tileMap.id} ${type} ${index}: tap at ${dx},${dy} picks its own tile`);
+        }
+      });
+    }
+  }
 }
 
 // --- placePopover: all four edges ---
