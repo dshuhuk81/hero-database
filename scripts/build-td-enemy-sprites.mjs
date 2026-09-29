@@ -18,7 +18,9 @@ const SIZE = 256;
 const FILL = 0.8;
 // Spec file name -> output name. Baphomet is "boss"; other final bosses are boss-{id}
 // (render.js picks the map's boss). lilith_child is her summoned children ("brood").
-const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "archer", brute: "brute", boss_baphomet: "boss", boss_lilith: "boss-lilith", lilith_child: "brood" };
+const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "archer", brute: "brute", boss_baphomet: "boss", boss_lilith: "boss-lilith", lilith_child: "brood",
+  // TD-original bosses (artifacts/td-bosses-v1), ready for a map or stage to use.
+  boss_lerna: "boss-lerna", boss_kraghorn: "boss-kraghorn", boss_vorruk: "boss-vorruk" };
 
 const inDir = process.argv[2];
 if (!inDir) { console.error("Usage: node scripts/build-td-enemy-sprites.mjs <input folder>"); process.exit(1); }

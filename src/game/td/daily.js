@@ -38,7 +38,9 @@ function pickFrom(list, rng) {
 export function dailySetup(date, { heroes, maps, tuning }) {
   const seed = dateSeed(date);
   const rng = createRng(seed);
-  const map = maps[Math.floor(rng() * maps.length)];
+  // Campaign-only battlefields (tdMaps.json campaignOnly) stay out of the Daily Trial.
+  const battlefields = maps.filter((entry) => !entry.campaignOnly);
+  const map = battlefields[Math.floor(rng() * battlefields.length)];
   const road = heroes.filter((hero) => hero.slot === "road").map((hero) => hero.id);
   const platform = heroes.filter((hero) => hero.slot === "platform").map((hero) => hero.id);
   const picked = [];

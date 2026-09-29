@@ -17,7 +17,12 @@ import { fileURLToPath } from "url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const arg = (name) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const SET = arg("--set") ?? "painted";
-const OUT_DIR = join(arg("--out") ?? join(ROOT, "public/td-local/sheets"), SET);
+// --release vN writes the shipped files public/td/enemies/sheets/{kind}-vN.(webp|json) (upload
+// with scripts/upload-to-r2.mjs, list the version in ENEMY_SHEET_VERSIONS); without it the
+// set goes to public/td-local/sheets/<set>/ for local testing.
+const RELEASE = arg("--release");
+const OUT_DIR = RELEASE ? join(ROOT, "public/td/enemies/sheets") : join(arg("--out") ?? join(ROOT, "public/td-local/sheets"), SET);
+const fileName = (kind) => (RELEASE ? `${kind}-${RELEASE}` : kind);
 const ONLY = arg("--only")?.split(",");
 const FPS = 12;
 
@@ -34,6 +39,10 @@ const SETS = {
     // Bosses: one sheet per boss file (render.js loads the map's boss, see bossSpriteFile).
     boss: { dir: "boss", clips: clipFiles("boss") },
     "boss-lilith": { dir: "lilith", clips: clipFiles("lilith") },
+    // TD-original bosses, ready for a map or stage (tdBosses.json).
+    "boss-lerna": { dir: "lerna", clips: clipFiles("lerna") },
+    "boss-kraghorn": { dir: "kraghorn", clips: clipFiles("kraghorn") },
+    "boss-vorruk": { dir: "vorruk", clips: clipFiles("vorruk") },
     // Flyers never stop or strike: idle, walk and attack all use the flap cycle.
     flyer: { dir: "flyer", clips: { idle: "flyer_fly", walk: "flyer_fly", attack: "flyer_fly", hurt: "flyer_hurt", death: "flyer_death" } },
   },
@@ -107,14 +116,14 @@ for (const [kind, pack] of Object.entries(PACKS)) {
   }
   const width = columns * box.w, height = rowOf.size * box.h;
   await sharp({ create: { width, height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
-    .composite(composites).webp(pack.pixelArt ? { lossless: true } : { quality: 82, alphaQuality: 90 }).toFile(join(OUT_DIR, `${kind}.webp`));
+    .composite(composites).webp(pack.pixelArt ? { lossless: true } : { quality: 82, alphaQuality: 90 }).toFile(join(OUT_DIR, `${fileName(kind)}.webp`));
   const json = {
     frames, animations,
-    meta: { image: `${kind}.webp`, format: "RGBA8888", size: { w: width, h: height }, scale: "1" },
+    meta: { image: `${fileName(kind)}.webp`, format: "RGBA8888", size: { w: width, h: height }, scale: "1" },
     // Renderer data: feet point inside a frame (idle frame 0: bottom centre of the body),
     // the idle body size for scaling to the kind's sprite size, and the frame rate.
     td: { anchor: { x: (idle.minX + idle.maxX + 1) / 2 - box.x, y: idle.maxY + 1 - box.y }, bodyHeight: idle.maxY - idle.minY + 1, bodyWidth: idle.maxX - idle.minX + 1, fps: FPS, pixelArt: Boolean(pack.pixelArt) },
   };
-  writeFileSync(join(OUT_DIR, `${kind}.json`), JSON.stringify(json, null, 1));
+  writeFileSync(join(OUT_DIR, `${fileName(kind)}.json`), JSON.stringify(json));
   console.log(`built ${kind}: ${clips.map((c) => `${c.clip} ${c.count}`).join(", ")}; frame ${box.w}x${box.h}, sheet ${width}x${height}`);
 }

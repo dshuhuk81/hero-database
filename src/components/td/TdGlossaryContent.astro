@@ -21,6 +21,8 @@ import { skinHeroes, skinTuning } from "../../game/td/skin.js";
 import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
+import tdBosses from "../../data/tdBosses.json";
+import campaign from "../../data/tdCampaign.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
 import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
@@ -116,8 +118,12 @@ const heroCards = [...(heroes as any[])]
 const hpScale = t.difficulty?.enemyHp ?? 1;
 const waveGrowth = 0.15; // sim.js difficulty.waveHpScale default
 const firstWave = (kind: string) => (waves as any[]).find((wave) => wave.spawns.some((group: any) => group.kind === kind))?.wave;
-const bossById = new Map((bosses as any).bosses.map((boss: any) => [boss.id, boss]));
-const bossMaps = (id: string) => (maps as any[]).filter((map) => (map.boss ?? "baphomet") === id).map((map) => map.name);
+const bossById = new Map([...(bosses as any).bosses, ...tdBosses.bosses].map((boss: any) => [boss.id, boss]));
+const stageBossIds = (campaign as any).chapters.flatMap((chapter: any) => chapter.stages.map((stage: any) => stage.boss).filter(Boolean));
+const bossMaps = (id: string) => [...new Set([
+  ...(maps as any[]).filter((map) => !map.campaignOnly && (map.boss ?? "baphomet") === id).map((map) => map.name),
+  ...(campaign as any).chapters.flatMap((chapter: any) => chapter.stages.filter((stage: any) => stage.boss === id).map((stage: any) => stage.name)),
+])];
 
 function enemyCard(kind: string, overrides: any = {}) {
   const base = { ...t.enemies[kind], ...(overrides.stats ?? {}) };
@@ -152,7 +158,7 @@ const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "sh
   const caller = enemyCards.findIndex((card) => card.kind === "broodcaller");
   enemyCards.splice(caller + 1, 0, enemyCard("imp", { meta: "Summoned by the Broodcaller" }));
 }
-const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet"))].flatMap((id) => {
+const bossCards = [...new Set([...(maps as any[]).map((map) => map.boss ?? "baphomet"), ...stageBossIds])].flatMap((id) => {
   const boss: any = bossById.get(id);
   const bossTuning = t.bosses?.[id];
   const summon = bossTuning?.summon;

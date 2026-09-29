@@ -45,7 +45,9 @@ const dates = (start, count) => Array.from({ length: count }, (_, i) => dailyDat
   }
   const key = (s) => `${s.mapId}|${s.heroIds.join()}|${s.mutators.join()}`;
   assert.ok(new Set(setups.map(key)).size >= 55, "setups vary from day to day");
-  assert.equal(new Set(setups.map((s) => s.mapId)).size, maps.length, "every map comes up");
+  const open = maps.filter((map) => !map.campaignOnly);
+  assert.equal(new Set(setups.map((s) => s.mapId)).size, open.length, "every open map comes up");
+  assert.ok(setups.every((s) => open.some((map) => map.id === s.mapId)), "campaign-only maps never come up");
   assert.ok(new Set(setups.flatMap((s) => s.heroIds)).size >= heroes.length - 2, "most heroes come up");
 }
 

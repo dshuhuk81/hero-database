@@ -501,11 +501,12 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
     fengyi(e, p, sx, sy) { // Winter Comes Through the Door: an ice shockwave fills his attack range
       const r = e.range ?? 160;
       flash(sx, sy, 0xffffff, 60, { life: 0.25 });
-      for (let i = 0; i < 3; i++) groundRing(sx, sy + 8, 10, r * (1 - i * 0.12), i ? p.color : p.accent, { delay: i * 0.1, width: 5 - i, life: 0.7 });
+      // Round like his range circle (not the squashed ground ring), so the blast matches the area it hits.
+      for (let i = 0; i < 3; i++) groundRing(sx, sy, 10, r * (1 - i * 0.12), i ? p.color : p.accent, { delay: i * 0.1, width: 5 - i, life: 0.7, squash: 1 });
       for (let i = 0; i < kit.n(12); i++) {
         const a = i / 12 * TAU;
         kit.spawn("flake", sx, sy, { tint: i % 2 ? p.color : p.accent, size: 10, sizeEnd: 6, life: 0.7, delay: 0.05,
-          path: { x1: sx, y1: sy, x2: sx + Math.cos(a) * r, y2: sy + Math.sin(a) * r * 0.6 } });
+          path: { x1: sx, y1: sy, x2: sx + Math.cos(a) * r, y2: sy + Math.sin(a) * r } });
       }
       flash(sx, sy, p.color, r * 0.8, { life: 0.5, alpha: 0.35 });
     },

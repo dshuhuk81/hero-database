@@ -28,7 +28,8 @@ const mix = (seed, stage, salt) => (Math.imul(seed ^ (stage + 1) * 0x9e3779b1, 0
 // `heroes` the roster pool.
 export function newExpedition(seed, { heroes, maps, tuning }) {
   const rng = createRng(seed >>> 0);
-  const order = maps.map((map) => map.id);
+  // Campaign-only battlefields (tdMaps.json campaignOnly) stay out of the expedition pool.
+  const order = maps.filter((map) => !map.campaignOnly).map((map) => map.id);
   const stages = [];
   while (order.length && stages.length < EXPEDITION.stages) stages.push(pickFrom(order, rng));
   const road = heroes.filter((hero) => hero.slot === "road").map((hero) => hero.id);

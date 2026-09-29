@@ -7,6 +7,9 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
 import { allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
+import dbBosses from "../src/data/bosses.json" with { type: "json" };
+import tdBosses from "../src/data/tdBosses.json" with { type: "json" };
+const knownBosses = new Set([...dbBosses.bosses, ...tdBosses.bosses].map((boss) => boss.id));
 
 // Chapter-aware progress (audit step 4): a second chapter unlocks after the first one's last
 // stage; the current chapter follows the next stage and stays on the last chapter at the end.
@@ -33,6 +36,8 @@ assert.ok(campaign.starters.length >= campaign.squadSize && campaign.starters.ev
 assert.equal(new Set(stages.map((stage) => stage.id)).size, stages.length, "stage ids unique");
 stages.forEach((stage, i) => {
   assert.ok(maps.some((map) => map.id === stage.mapId), `${stage.id}: map exists`);
+  // Optional per-stage boss (replaces the map's): must be a boss the page can name.
+  if (stage.boss) assert.ok(knownBosses.has(stage.boss), `${stage.id}: boss ${stage.boss} is in bosses.json or tdBosses.json`);
   assert.ok(stage.waves.length >= 1 && stage.waves.every((wave) => wave.spawns.every((group) => enemyKinds.has(group.kind) && group.count > 0)), `${stage.id}: waves use known enemies`);
   assert.ok(stage.lives >= 1, `${stage.id}: lives`);
   assert.equal(stage.unlockAfter, i === 0 ? null : stages[i - 1].id, `${stage.id}: unlocks after the previous stage`);

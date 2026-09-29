@@ -110,7 +110,7 @@ export function createExpedition(ctx: PageContext) {
   function render() {
     const state = store.data.expedition;
     const best = store.data.expeditionBest;
-    const stops = state ? state.stages.length : Math.min(EXPEDITION.stages, data.maps.length);
+    const stops = state ? state.stages.length : Math.min(EXPEDITION.stages, data.maps.filter((map: any) => !map.campaignOnly).length);
     bestEl.textContent = best.stages ? `Best: ${best.stages} ${best.stages === 1 ? "stage" : "stages"} cleared, ${best.completed} ${best.completed === 1 ? "expedition" : "expeditions"} completed.` : "No expedition yet.";
     abandonButton.hidden = !state;
     abandonButton.textContent = abandonArmed ? "Confirm abandon" : "Abandon";
@@ -133,7 +133,7 @@ export function createExpedition(ctx: PageContext) {
       campEl.hidden = true;
       summaryTitleEl.textContent = "Not started";
       summaryEl.innerHTML = `<span>Three battlefields, one squad</span> ${currencyList({ favor: EXPEDITION.completeFavor, ...(EXP_SEALS ? { divineSeals: EXP_SEALS } : {}) }, { plus: true })}`;
-      summaryRouteEl.innerHTML = routeHtml(data.maps.map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
+      summaryRouteEl.innerHTML = routeHtml(data.maps.filter((map: any) => !map.campaignOnly).map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
       summaryCtaEl.textContent = "Start";
       return;
     }

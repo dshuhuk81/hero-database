@@ -7,6 +7,8 @@ import tuning from "../../data/gameBalance.tuning.json";
 import maps from "../../data/tdMaps.json";
 import waves from "../../data/tdWaves.json";
 import bosses from "../../data/bosses.json";
+import tdBosses from "../../data/tdBosses.json";
+import campaign from "../../data/tdCampaign.json";
 import { skinHeroes, skinTuning } from "../../game/td/skin.js";
 
 const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
@@ -17,11 +19,15 @@ const assetBase = isDev ? "/r2" : R2_BASE;
 const heroesForGame = skinHeroes(heroes, assetBase);
 const tuningForGame = skinTuning(tuning);
 // Final boss per map (tdMaps.json "boss", default Baphomet), keyed by boss id.
-const bossIds = new Set(maps.map((map: any) => map.boss ?? "baphomet"));
+// Campaign stages may name their own boss (stage.boss), replacing their map's.
+const stageBosses = campaign.chapters.flatMap((chapter: any) => chapter.stages.map((stage: any) => stage.boss).filter(Boolean));
+const bossIds = new Set([...maps.map((map: any) => map.boss ?? "baphomet"), ...stageBosses]);
 const bossesForGame = Object.fromEntries(bosses.bosses
   .filter((boss: any) => bossIds.has(boss.id))
   // Only name and rules data: the game shows its own AI boss sprites, never database art.
-  .map(({ image: _image, faction: _faction, ...boss }: any) => [boss.id, boss]));
+  .map(({ image: _image, faction: _faction, ...boss }: any) => [boss.id, boss])
+  // TD-original bosses (tdBosses.json) join by the same id.
+  .concat(tdBosses.bosses.filter((boss: any) => bossIds.has(boss.id)).map((boss: any) => [boss.id, boss])));
 ---
 
 <GameLayout

@@ -16,6 +16,16 @@ export function tdAsset(path) {
 export const ENEMY_SPRITE_VERSIONS = { grunt: "v2", runner: "v2", flyer: "v2", archer: "v3", brute: "v3", boss: "v2", "boss-lilith": "v4", brood: "v4" };
 export const enemySpriteVersion = (file) => ENEMY_SPRITE_VERSIONS[file] ?? "v1";
 
+// Enemy animation sheets (M7): enemies/sheets/{file}-{version}.json (Pixi spritesheet) and
+// .webp, built by `node scripts/build-td-enemy-anims.mjs <clips> --release vN` from the
+// sprite version listed in ENEMY_SPRITE_VERSIONS. A file without an entry has no sheet.
+// Changed sheets need a new version (R2 caches a year).
+export const ENEMY_SHEET_VERSIONS = {
+  grunt: "v1", runner: "v1", flyer: "v1", archer: "v1", brute: "v1", brood: "v1",
+  boss: "v1", "boss-lilith": "v1", "boss-lerna": "v1", "boss-kraghorn": "v1", "boss-vorruk": "v1",
+};
+export const enemySheetUrl = (file) => (ENEMY_SHEET_VERSIONS[file] ? tdAsset(`enemies/sheets/${file}-${ENEMY_SHEET_VERSIONS[file]}.json`) : null);
+
 // M11 enemies without their own art yet reuse an existing full-body sprite
 // (enemies/sprites/{file}-{version}.webp), tinted and sized so they read as their own
 // kind. Plain <img> previews (glossary) use the .td-enemy-art--{kind} filters in td.css.

@@ -247,7 +247,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Boreas `ice_shockwave` (tuning `heroSkills.fengyi`): shockwave around him within `hero.range`,
   140% U per enemy, 10% chance per enemy (seeded `rng`) to freeze 2s (`stunnedUntil` +
   `frozenUntil`, so Shattering Cold applies). Awakened: +10% chance, +1s. Replaces the old
-  `weaken_burst` binding; no exposure.
+  `weaken_burst` binding; no exposure. FX: the blast rings are true circles (`squash: 1`) centred on
+  the hero, matching his range circle.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
   atk, capped at `+24%`.
 
@@ -264,6 +265,28 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   heroes directly (Baphomet's mark and Hexers still affect them).
 - Bosses: `baphomet` (mark, stance) and `lilith` (summons brood, enrages below 50%).
   Each map names its boss.
+- TD-original bosses, prepared but on no map yet (September 29, 2026): `lerna` (Lerna, the
+  Root-Maw, three-headed root hydra), `kraghorn` (Kraghorn, the Broken Tusk, stone-plated boar)
+  and `vorruk` (Vorruk, the Hollow Hunger, segmented worm). Art and concept notes in
+  `artifacts/td-bosses-v1/`; names in `src/data/tdBosses.json` (kept apart from the database's
+  `bosses.json`); stills `boss-<id>-v1.webp` built and on R2; PixelLab clips packed as
+  `boss-<id>` sheets. No special rules yet: without `tuning.bosses[id]` they fight as the plain
+  boss (a simulated Moonlit Pass run with `kraghorn` wins normally).
+- Adding a boss to a level:
+  1. Art: still `boss-<id>-vN.webp` on R2 (`build-td-enemy-sprites.mjs`, `FILES` maps
+     `boss_<id>.png`), animation sheet `boss-<id>` in `build-td-enemy-anims.mjs` (dev, `?anim=sheets`).
+  2. Name: `tdBosses.json` for TD-original bosses (`bosses.json` only for database bosses).
+  3. Placement, either
+     - one campaign stage: `"boss": "<id>"` on the stage in `tdCampaign.json`. It replaces that
+       stage's map boss only (`stageMap` in `page/campaign.ts` starts the session on a copy of
+       the map with the stage's boss; drawer, HUD, notices, renderer and glossary follow), or
+     - a whole battlefield: `"boss": "<id>"` on the map in `tdMaps.json` (Free Play, Daily,
+       Expedition and every campaign stage on that map without its own `boss`).
+     `test-td-campaign.mjs` checks that every stage boss is in `bosses.json` or `tdBosses.json`.
+  4. Rules (optional): `tuning.bosses[id]` plus sim code for new mechanics, `stats.hp`, the rules
+     sentence in `skills.js`, the glossary text. Sprite size: `bossSpriteSize` in `render.js`
+     (default 96 px, Lilith 108).
+  5. Checks: `npm run test:tower-defense`, `npm run td:sweep`, a look in the browser.
 - Enemy art: full-body sprites from R2 `td/enemies/sprites/` (`render.js`), loaded with
   the `?v=cors1` cache bust like hero thumbs. The same files appear in plain `<img>`
   tags (lobby, boss plate, glossary), and a cached non-CORS copy would make WebGL reject
@@ -271,34 +294,34 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `ENEMY_SPRITE_VERSIONS` (`assets.js`); since September 29, 2026: archer v3, brute v3,
   brood v4, Baphomet `boss-v2`, Lilith `boss-lilith-v4` (redrawn complete, feet included,
   uploaded to R2). The old v2/v3/v1 files stay on R2 until the new build is deployed.
-- Enemy motion prototype (off by default, `?anim` in the URL, skipped with reduced
+- Procedural enemy motion (on with the enemy animation below, skipped with reduced
   motion): `animateEnemy` in `render.js` moves the full-body sprites procedurally, render
   only and on game time. Distance moved drives a walk cycle (bounce, waddle, lean,
   squash); a jump in `attackClock` plays a swing (wind-up, then a lunge toward `heldBy`,
   or a recoil for ranged shots); an hp drop above 1.5% of max hp (DoT ticks excluded)
   flashes an additive copy of the sprite and shakes it; flyers get a wingbeat; dying
-  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. With the
-  flag on, the facing only turns on clearly sideways steps; without it, it flips on any
+  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. With motion
+  on, the facing only turns on clearly sideways steps; without it, it flips on any
   horizontal change. `pointOnPath` rounds lane corners (quadratic curve, radius 24 px,
   capped at half the adjacent segments) and blends the `sway` normal across the turn, so
-  enemies arc around corners instead of popping sideways. Switching
-  it on for everyone is the `ENEMY_ANIM` line. Next steps toward real animation frames
-  (sheet format, packer, `AnimatedSprite`, free art workflow) are in
-  `docs/tower-defense-ui-plan.md` (M7); the frame format is in
-  `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
-- Enemy animation sheets (`?anim=sheets`, M7, not live yet): `scripts/build-td-enemy-anims.mjs`
-  packs clip strips (`idle`, `walk`, `attack`, `hurt`, `death`) into
-  `public/td-local/sheets/painted/{kind}.webp` + `.json` (Pixi spritesheet plus a `td` block:
-  feet anchor, idle body size, fps, `pixelArt` for nearest scaling). The folder is gitignored
-  and never deployed. `render.js` loads sheets for `grunt`, `archer`, `flyer`, `runner`,
-  `brute` and `brood`; such a kind swaps its still sprite for the sheet, scaled so the idle
-  body's larger side is 80% of the kind's sprite size. `animateEnemy` only picks the frame on
-  game time: attack after an `attackClock` jump, hurt after a real hit, walk from distance
-  moved (one cycle per ~0.9 body widths), idle otherwise; dying plays `death` and fades.
-  Flyers stay at `FLYER_LIFT` with the bob, beat their wings on game time with a per-enemy
-  offset and drop to the ground while dying. Clips that share one strip share one sheet row.
-  A kind without a sheet logs one 404 and keeps its still sprite. The `boss` kind loads the
-  map's boss sheet (`boss.json` for Baphomet, `boss-lilith.json`), like `bossSpriteFile`.
+  enemies arc around corners instead of popping sideways. History and the art workflow:
+  `docs/tower-defense-ui-plan.md` (M7); frame format: `src/game/td/sprite-spec-for-ai.md`.
+- Enemy animation (M7, on by default since September 29, 2026; off with reduced motion or
+  `?anim=off`): every full-body enemy moves (`animateEnemy`), and kinds with an animation sheet
+  play clips instead of the still. Sheets: `enemies/sheets/{file}-vN.json` + `.webp` on R2
+  (`ENEMY_SHEET_VERSIONS`, `enemySheetUrl` in `assets.js`), built with
+  `scripts/build-td-enemy-anims.mjs <clips> --set painted --release vN` into
+  `public/td/enemies/sheets/` and uploaded with `upload-to-r2.mjs --prefix td/enemies/sheets`.
+  v1 sheets: grunt, runner, flyer, archer, brute, brood, boss (Baphomet), boss-lilith,
+  boss-lerna, boss-kraghorn, boss-vorruk (about 70-170 KB each). A sheet is a Pixi spritesheet
+  plus a `td` block (feet anchor, idle body size, fps, `pixelArt`). The boss loads the map's
+  boss sheet; ENEMY_ART kinds use their borrowed sprite's sheet while they borrow its current
+  version (mender -> archer, shieldbearer -> grunt, imp -> runner; tint and rim glow apply),
+  broodcaller and hexer keep their v1 stills with procedural motion. `?sheets=off` shows stills
+  with procedural motion; `?sheets=local&set=<name>` loads an unreleased set from
+  `public/td-local/sheets/` in dev. `animateEnemy` picks the frame on game time: attack after
+  an `attackClock` jump, hurt after a real hit, walk from distance moved, idle otherwise; dying
+  plays `death` and fades. Flyers stay at `FLYER_LIFT` with the bob and drop while dying.
 - Clip sources (`scripts/td-warp-anim.py`, numpy + Pillow, local only as `*.py` is gitignored;
   outputs in `~/hero-database-assets/td/warp-anims/<kind>/`):
   - `--pixellab` (archer, grunt, runner, brute, brood, Baphomet as `boss`, Lilith as `lilith`
@@ -341,9 +364,42 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 | `verdant-crossing` | Verdant Crossing | one path | `lilith` |
 | `sunscar-ruins` | Sunscar Ruins | 2 `lanes`, one base | `baphomet` |
 | `sunscar-basin` | Sunscar Basin | one path, **generated** (`orthogonal-v1`, seed 3) | `baphomet` |
+| `sunscar-glass` | Glass Flats | one path, lattice-v2 seed 114 (top gate), campaign only (2-2) | `baphomet` |
+| `sunscar-wells` | Well Road | one path, lattice-v2 seed 95 (bottom gate), campaign only (2-3) | `baphomet` |
+| `sunscar-noon` | Noon Terraces | one path, lattice-v2 seed 107 (left gate), campaign only (2-4) | `baphomet` |
+| `sunscar-mirage` | Mirage Steps | one path, lattice-v2 seed 74 (bottom gate), campaign only (2-5) | `baphomet` |
+| `sunscar-throne` | Ash Throne Approach | 2 gates (bottom + left), lattice-v2 seed 101, campaign only (2-6) | `baphomet` |
+| `moonlit-terraces` | Moonlit Terraces | one path, lattice-v2 seed 74 (bottom gate), campaign only (1-3) | `baphomet` |
+| `verdant-thicket` | Thorn Thicket | one path, lattice-v2 seed 120 (top gate), campaign only (1-4) | `lilith` |
+| `verdant-glade` | Hexed Glade | one path, lattice-v2 seed 70 (bottom gate), campaign only (1-6) | `lilith` |
+| `verdant-hollow` | Root Hollow | one path, lattice-v2 seed 33 (left gate), campaign only (1-8) | `lilith` |
 
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
+
+`campaignOnly: true` keeps a map out of Free Play (map select, help text), the Daily Trial
+pool and the Expedition pool; campaign stages still use it by `mapId`. Campaign layout (September
+29, 2026): intro, boss and two-gate stages keep their authored maps (1-1, 1-2, 1-5, 1-7, 1-9, 1-10,
+2-1); the other regular stages each get their own lattice-v2 route on their chapter's theme, picked
+from 120 seeds per theme for a length close to the map they replace, high tower coverage and
+varied gate edges and base rows. Chapter 2's finale 2-6 has the chapter's two-gate map. `hpScale`
+was retuned so every stage keeps its win curve (bot squads out of 35, target -> result): 1-4
+31 -> 32 at 0.68, 1-6 23 -> 23 at 0.72, 1-8 17 -> 17 at 0.8, 2-2 27 -> 27 at 0.88, 2-3 27 -> 25 at
+0.74, 2-4 28 -> 28 at 0.8, 2-5 16 -> 17 at 0.66, 2-6 15 -> 15 at 0.46; 1-3 stays at 0.9 (27/28).
+Maps are two layers: a theme (background art, gate/base sprites, `exclude` rectangles for painted
+props) and a generated path on top; map-scene.js draws the road, so any theme takes any route.
+`orthogonal-v1` only makes left-to-right single lanes (4 or 6-8 turns). `lattice-v2`
+(`src/game/td/map-generator-v2.js`, September 29, 2026) is the path layer for new maps: 60 px
+lattice (15 x 7), gates on the left, top or bottom edge, base anywhere in the right third,
+self-avoiding walks in straight runs of at least two nodes with one empty node to every earlier
+part (parallel roads >= 120 px apart), legs in all directions, and a breadth-first reachability
+check before every step (no dead ends). `two-gate` builds the shared tail from a junction to the
+base first, then two branches of exactly equal node count out to two gates, so both lanes are
+equally long and end in the same segment. CLI: `node scripts/generate-td-map.mjs --gen=lattice-v2
+--skin=sunscar [--gates=2] --gallery=24` writes a candidate sheet to `public/td-local/`
+(gitignored); `--seed=N --id=... --name=... --publish` publishes one. `--check` regenerates both
+generators' maps. Plan: one level per chapter with two gates, the rest one. Route previews (map select, stage drawer) draw a dark casing under a gold core so
+the road reads on bright sand.
 
 Optional `enemyHp` scales enemy health on that map in open modes (Free play, Daily Trial,
 Endless). Verdant Crossing uses 1.25 (September 28, 2026) because it was the easiest map for

@@ -83,6 +83,11 @@ export function createCampaign(ctx: PageContext) {
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
+  // A stage's battlefield: its map, with the stage's own `boss` (optional) replacing the map's.
+  const stageMap = (stage: any) => {
+    const map = mapOf(stage.mapId);
+    return map && stage.boss ? { ...map, boss: stage.boss } : map;
+  };
   const heroName = (id: string) => heroById.get(id)?.name ?? id;
   // Rewards as icon + value chips; hero rewards as a named hero chip.
   const rewardHtml = (rewards: any[]) => `<span class="td-cur-list">${rewards.map((reward) => reward.type === "currency"
@@ -126,7 +131,8 @@ export function createCampaign(ctx: PageContext) {
     if (!map) return "";
     const preview = mapPreviewModel(map);
     const art = preview.art;
-    const routes = preview.routes.map((points: number[][]) => `<polyline class="td-map-preview-path" points="${routePreviewPoints(points)}" />`).join("");
+    // Dark casing under a gold core: the road reads on bright sand and dark stone alike.
+    const routes = preview.routes.map((points: number[][]) => `<polyline class="td-map-preview-path-edge" points="${routePreviewPoints(points)}" /><polyline class="td-map-preview-path" points="${routePreviewPoints(points)}" />`).join("");
     const spawns = art ? preview.spawns.map((spawn: any) => `<image href="${art.spawn}" x="${spawn.x - 48}" y="${spawn.y - 55}" width="96" height="110" />`).join("") : "";
     return `<svg class="td-map-preview td-camp-drawer-map" viewBox="0 0 960 540" role="img" aria-label="${map.name} battlefield">
       ${art ? `<image href="${art.terrain}" width="960" height="540" opacity="0.9" preserveAspectRatio="none" />` : ""}${routes}${spawns}
@@ -220,7 +226,7 @@ export function createCampaign(ctx: PageContext) {
     const recommended = recommendedPower(stage);
     const last = p.lastSquad.map((id) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
     const lastPower = last.reduce((sum: number, hero: any) => sum + might(hero), 0);
-    const boss = hasEnemy(stage, "boss") ? ctx.bossFor(mapOf(stage.mapId)).name : "";
+    const boss = hasEnemy(stage, "boss") ? ctx.bossFor(stageMap(stage)).name : "";
     drawerBody.innerHTML = `<header class="td-camp-drawer-head">
         <button class="td-camp-drawer-close" type="button" data-camp-drawer-close aria-label="Close stage details">×</button>
         <span class="td-label">Stage ${stage.id}${replay ? " · Cleared" : stage.id === nextStage(campaign, p)?.id ? " · Your next defense" : ""}</span>
@@ -602,7 +608,7 @@ export function createCampaign(ctx: PageContext) {
     if (!stage || !validSquad(campaign, progress(), squad)) return;
     store.data.campaign = { ...progress(), lastSquad: [...squad] };
     store.persist();
-    const map = mapOf(stage.mapId);
+    const map = stageMap(stage);
     if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad] } });
   }
 

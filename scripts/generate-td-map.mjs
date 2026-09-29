@@ -1,11 +1,16 @@
 // Map generator CLI (orthogonal-v1, src/game/td/map-generator.js).
 //   node scripts/generate-td-map.mjs --seed=3 --skin=sunscar              report one candidate
 //   node scripts/generate-td-map.mjs --seed=3 --skin=sunscar --id=sunscar-basin --name="Sunscar Basin" --publish
+//   node scripts/generate-td-map.mjs --gen=lattice-v2 --seed=4 --skin=sunscar [--gates=2] [--entry=left,top,bottom]
+//        lattice-v2 (src/game/td/map-generator-v2.js): any entry edge, base in the right third,
+//        tight meanders, optional second gate. --gallery=N writes N candidates as an HTML sheet.
 //   node scripts/generate-td-map.mjs --check                              regenerate every published
 //                                                                         generated map from its recipe
 // Publishing writes an ordinary record into tdMaps.json (same format as build-td-grid.mjs).
 import { readFileSync, writeFileSync } from "node:fs";
 import { generateMap, geometryHash, GENERATOR_ID, GENERATOR_RULESET } from "../src/game/td/map-generator.js";
+import { generateMapV2, geometryHashV2, GENERATOR_V2_ID, GENERATOR_V2_RULESET } from "../src/game/td/map-generator-v2.js";
+import { mapLanes } from "../src/game/td/lanes.js";
 import { analyzeMap } from "../src/game/td/map-analysis.js";
 
 const file = new URL("../src/data/tdMaps.json", import.meta.url);
@@ -29,9 +34,10 @@ if (flag("check")) {
   let failed = 0;
   for (const map of maps.filter((entry) => entry.recipe)) {
     const identity = { id: map.id, name: map.name, theme: map.theme, art: map.art, music: map.music, boss: map.boss };
-    const result = generateMap(map.recipe, identity);
+    const v2 = map.recipe.generator === GENERATOR_V2_ID;
+    const result = v2 ? generateMapV2(map.recipe, identity) : generateMap(map.recipe, identity);
     // Hand edits after publishing (e.g. enemyHp) are allowed; geometry must match exactly.
-    const same = result.ok && result.map.geometryHash === map.geometryHash && geometryHash(map) === map.geometryHash;
+    const same = result.ok && result.map.geometryHash === map.geometryHash && (v2 ? geometryHashV2(map) : geometryHash(map)) === map.geometryHash;
     console.log(`${map.id}: ${same ? "regenerates identically" : "DIFFERS from its recipe"} (${map.geometryHash})`);
     if (!same) failed += 1;
   }
@@ -41,7 +47,17 @@ if (flag("check")) {
 const skinId = arg("skin", "sunscar");
 const skin = SKINS[skinId];
 if (!skin) throw new Error(`unknown skin ${skinId}; one of ${Object.keys(SKINS).join(", ")}`);
-const recipe = {
+const V2 = arg("gen", GENERATOR_ID) === GENERATOR_V2_ID;
+const recipeFor = (seed) => V2 ? {
+  generator: GENERATOR_V2_ID,
+  ruleset: GENERATOR_V2_RULESET,
+  seed,
+  topology: arg("gates", "1") === "2" ? "two-gate" : "single-lane",
+  difficultyBand: arg("band", "standard"),
+  parameters: { turns: range(arg("turns", "4,14")), length: range(arg("length", "1300,2600")), coverageGap: range(arg("gap", "0,0.3")), entry: arg("entry", "left,top,bottom").split(",") },
+  constraints: { exclude: skin.exclude },
+} : null;
+const recipe = recipeFor(Number(arg("seed", 1))) ?? {
   generator: GENERATOR_ID,
   ruleset: GENERATOR_RULESET,
   seed: Number(arg("seed", 1)),
@@ -51,7 +67,43 @@ const recipe = {
   constraints: { exclude: skin.exclude },
 };
 const identity = { id: arg("id", `generated-${skinId}-${recipe.seed}`), name: arg("name", `Generated ${recipe.seed}`), theme: skin.theme, art: skin.art, music: skin.music, boss: arg("boss", skin.boss) };
-const result = generateMap(recipe, identity);
+const gen = (r, who) => (V2 ? generateMapV2(r, who) : generateMap(r, who));
+
+// Gallery: N candidates from consecutive seeds on the skin's terrain, as one local HTML page
+// (public/td-local/, gitignored) to pick from. Nothing is published.
+if (arg("gallery")) {
+  const { mapSceneFor } = await import("../src/game/td/map-scene.js");
+  const count = Number(arg("gallery"));
+  const cards = [];
+  for (let seed = Number(arg("seed", 1)); cards.length < count && seed < Number(arg("seed", 1)) + count * 4; seed++) {
+    const r = V2 ? recipeFor(seed) : { ...recipe, seed };
+    const res = gen(r, { ...identity, id: `candidate-${seed}` });
+    if (!res.ok) continue;
+    const m = res.map;
+    const a = analyzeMap(m);
+    const terrain = mapSceneFor(m)?.assets.terrain ?? "";
+    const lines = mapLanes(m).map((lane) => `<polyline points="${lane.path.map((p) => p.join(",")).join(" ")}" />`).join("");
+    const gates = mapLanes(m).map((lane) => `<circle class="gate" cx="${lane.spawn.x}" cy="${lane.spawn.y}" r="22" />`).join("");
+    cards.push(`<figure><svg viewBox="0 0 960 540"><image href="${terrain}" width="960" height="540" preserveAspectRatio="none" />
+      <g class="edge">${lines}</g><g class="core">${lines}</g>${gates}<rect class="base" x="${m.base.x - 26}" y="${m.base.y - 26}" width="52" height="52" rx="8" /></svg>
+      <figcaption>seed ${seed} · ${mapLanes(m).length} gate${mapLanes(m).length > 1 ? "s" : ""} · length ${Math.round(a.route.length)} · turns ${a.route.turns} · road ${m.roadSlots.length} · side ${m.platformSlots.length}</figcaption></figure>`);
+  }
+  const { mkdirSync } = await import("node:fs");
+  mkdirSync(new URL("../public/td-local/", import.meta.url), { recursive: true });
+  const out = new URL(`../public/td-local/map-gallery-${skinId}${V2 && recipe.topology === "two-gate" ? "-2gates" : ""}.html`, import.meta.url);
+  writeFileSync(out, `<!doctype html><meta charset="utf-8"><title>Map candidates</title><style>
+    body { background: #14121c; color: #e6e1f2; font: 14px system-ui; margin: 16px; }
+    main { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    figure { margin: 0; background: #1f1c2b; border-radius: 12px; overflow: hidden; }
+    svg { display: block; width: 100%; } figcaption { padding: 8px 12px; }
+    .edge polyline { fill: none; stroke: rgba(7,6,12,.6); stroke-width: 70; stroke-linejoin: round; stroke-linecap: round; }
+    .core polyline { fill: none; stroke: rgba(232,190,72,.85); stroke-width: 50; stroke-linejoin: round; stroke-linecap: round; }
+    .gate { fill: #a88be0; stroke: #14121c; stroke-width: 4; } .base { fill: #ffd98a; stroke: #14121c; stroke-width: 4; }
+    </style><h1>${skinId} · ${V2 ? recipe.topology : GENERATOR_ID}</h1><main>${cards.join("")}</main>`);
+  console.log(`wrote ${cards.length} candidates to ${out.pathname}`);
+  process.exit(0);
+}
+const result = gen(recipe, identity);
 if (!result.ok) {
   console.error(`no map after ${result.attempts} attempts: ${JSON.stringify(result.rejections)}`);
   process.exit(1);
@@ -59,7 +111,7 @@ if (!result.ok) {
 const { map } = result;
 const a = analyzeMap(map);
 console.log(`${map.id} after ${result.attempts} attempt(s), rejected ${JSON.stringify(result.rejections)}`);
-console.log(`  path ${JSON.stringify(map.path)}`);
+console.log(`  ${map.lanes ? `lanes ${JSON.stringify(map.lanes.map((lane) => lane.path))}` : `path ${JSON.stringify(map.path)}`}`);
 console.log(`  length ${a.route.length}, turns ${a.route.turns}, road ${map.roadSlots.length}, platform ${map.platformSlots.length}, coverage@90 ${a.coverage[90].total}, landmark ${a.landmark}, hash ${map.geometryHash}`);
 
 if (flag("publish")) {

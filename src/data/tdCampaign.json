@@ -351,7 +351,7 @@
         {
           "id": "1-3",
           "name": "Iron Hides",
-          "mapId": "moonlit-pass",
+          "mapId": "moonlit-terraces",
           "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
           "lives": 15,
           "hpScale": 0.9,
@@ -463,10 +463,10 @@
         {
           "id": "1-4",
           "name": "Shield Wall",
-          "mapId": "verdant-crossing",
+          "mapId": "verdant-thicket",
           "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
           "lives": 15,
-          "hpScale": 0.95,
+          "hpScale": 0.68,
           "unlockAfter": "1-3",
           "rewards": [
             {
@@ -703,10 +703,10 @@
         {
           "id": "1-6",
           "name": "Hexfire",
-          "mapId": "verdant-crossing",
+          "mapId": "verdant-glade",
           "text": "Hexers resist magic and hex the nearest hero so it briefly cannot attack. Archers outrange the hex and physical damage cuts them down fastest.",
           "lives": 15,
-          "hpScale": 0.9,
+          "hpScale": 0.72,
           "unlockAfter": "1-5",
           "rewards": [
             {
@@ -974,10 +974,10 @@
         {
           "id": "1-8",
           "name": "Brood Hollow",
-          "mapId": "verdant-crossing",
+          "mapId": "verdant-hollow",
           "text": "Broodcallers resist magic and keep calling imps while they walk. Snipe the callers with archers before the swarm grows.",
           "lives": 15,
-          "hpScale": 0.72,
+          "hpScale": 0.8,
           "unlockAfter": "1-7",
           "rewards": [
             {
@@ -1603,10 +1603,10 @@
         {
           "id": "2-2",
           "name": "Glass Sands",
-          "mapId": "sunscar-basin",
+          "mapId": "sunscar-glass",
           "text": "Archers dig in on the dunes and shoot at your platforms; shieldbearers cover their advance. Blockers on the road draw their fire.",
           "lives": 15,
-          "hpScale": 0.75,
+          "hpScale": 0.88,
           "unlockAfter": "2-1",
           "rewards": [
             {
@@ -1736,10 +1736,10 @@
         {
           "id": "2-3",
           "name": "Serpent Wells",
-          "mapId": "sunscar-basin",
+          "mapId": "sunscar-wells",
           "text": "Menders tend the brutes at the old wells while hexers curse your heroes. Break the healers first. Stheno waits at the last well.",
           "lives": 15,
-          "hpScale": 0.72,
+          "hpScale": 0.74,
           "unlockAfter": "2-2",
           "rewards": [
             {
@@ -1878,10 +1878,10 @@
         {
           "id": "2-4",
           "name": "Brood of Noon",
-          "mapId": "sunscar-basin",
+          "mapId": "sunscar-noon",
           "text": "Broodcallers hatch swarms in the heat. Kill them before they reach the long bends, or the brood floods the basin.",
           "lives": 16,
-          "hpScale": 0.7,
+          "hpScale": 0.8,
           "unlockAfter": "2-3",
           "rewards": [
             {
@@ -2021,10 +2021,10 @@
         {
           "id": "2-5",
           "name": "Mirage Gate",
-          "mapId": "sunscar-basin",
+          "mapId": "sunscar-mirage",
           "text": "Everything the desert has, and the sky full of wings. Keep platform heroes spread along the whole road.",
           "lives": 16,
-          "hpScale": 0.6,
+          "hpScale": 0.66,
           "unlockAfter": "2-4",
           "rewards": [
             {
@@ -2184,10 +2184,10 @@
         {
           "id": "2-6",
           "name": "Throne of Ash",
-          "mapId": "sunscar-basin",
+          "mapId": "sunscar-throne",
           "text": "The Horned Warden returns to the basin with the whole desert at his back. Hold the Sanctuary and Helios will stand with you.",
           "lives": 18,
-          "hpScale": 0.6,
+          "hpScale": 0.46,
           "unlockAfter": "2-5",
           "rewards": [
             {

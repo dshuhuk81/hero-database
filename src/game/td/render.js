@@ -2,7 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
-import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, tdAsset } from "./assets.js";
+import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
@@ -195,9 +195,11 @@ export async function createRenderer(canvas, game, options = {}) {
   // (they pass over blockers; only platform heroes can hit them).
   const FLYER_LIFT = 18;
   const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
-  // Prototype, only with ?anim in the URL: procedural motion on the full-body enemy sprites
-  // (animateEnemy). Render-only and on game time, so pausing freezes it.
-  const ENEMY_ANIM = !reducedMotion && new URLSearchParams(location.search).has("anim");
+  // Enemy motion (M7): procedural motion on every full-body enemy sprite (animateEnemy) and,
+  // where a kind has one, its animation sheet. Render-only and on game time, so pausing
+  // freezes it. Off with reduced motion or ?anim=off.
+  const urlParams = new URLSearchParams(location.search);
+  const ENEMY_ANIM = !reducedMotion && urlParams.get("anim") !== "off";
   const DEATH_FALL = 0.5; // seconds an animated enemy takes to topple and fade
   const SPRITE_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
   // Same cache bust as hero thumbs: the lobby, boss plate and glossary show these files in
@@ -215,17 +217,20 @@ export async function createRenderer(canvas, game, options = {}) {
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
-  // M7 test, only with ?anim=sheets: animation sheets from scripts/build-td-enemy-anims.mjs,
-  // served locally from public/td-local/ (gitignored, not deployed). A kind with a sheet
-  // plays its clips instead of the still sprite (animateEnemy picks the frame).
-  const ENEMY_SHEETS = ENEMY_ANIM && new URLSearchParams(location.search).get("anim") === "sheets";
+  // Animation sheets (M7, enemySheetUrl): a kind with a sheet plays its clips instead of the
+  // still sprite (animateEnemy picks the frame). The boss uses the map's boss sheet; kinds that
+  // borrow a sprite (ENEMY_ART) use that sprite's sheet while they borrow its current version
+  // (tint and rim glow still apply). ?sheets=off keeps the stills with procedural motion;
+  // ?sheets=local&set=<name> loads an unreleased set from public/td-local/sheets/ in dev.
+  const ENEMY_SHEETS = ENEMY_ANIM && urlParams.get("sheets") !== "off";
   const enemySheets = new Map(); // kind -> { anims: { idle, walk, attack, hurt, death }, td }
   if (ENEMY_SHEETS) {
-    // Sheet set (?anim=sheets&set=<name>, default painted), see scripts/build-td-enemy-anims.mjs.
-    const set = new URLSearchParams(location.search).get("set") ?? "painted";
-    // The boss sheet is the map's boss (boss.json for Baphomet, boss-lilith.json, ...).
-    for (const [kind, file] of [...["grunt", "archer", "flyer", "runner", "brute", "brood"].map((k) => [k, k]), ["boss", bossFile]]) {
-      PIXI.Assets.load(`/td-local/sheets/${set}/${file}.json`).then((sheet) => {
+    const localSet = urlParams.get("sheets") === "local" ? urlParams.get("set") ?? "painted" : null;
+    const borrowed = Object.entries(ENEMY_ART).filter(([, art]) => art.version === enemySpriteVersion(art.file)).map(([kind, art]) => [kind, art.file]);
+    for (const [kind, file] of [...["grunt", "archer", "flyer", "runner", "brute", "brood"].map((k) => [k, k]), ["boss", bossFile], ...borrowed]) {
+      const url = localSet ? `/td-local/sheets/${localSet}/${file}.json` : enemySheetUrl(file);
+      if (!url) continue;
+      PIXI.Assets.load(url).then((sheet) => {
         if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";
         enemySheets.set(kind, { anims: sheet.animations, td: sheet.data.td });
       }).catch(() => {});

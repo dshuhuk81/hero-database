@@ -9,7 +9,8 @@ import TdSoundControls from "./TdSoundControls.astro";
 import TdGlossaryContent from "./TdGlossaryContent.astro";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
 const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
-const previews = maps.map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
+// Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
+const previews = maps.filter((entry: any) => !entry.campaignOnly).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
 const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
@@ -321,7 +322,7 @@ const modes = [
             <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
               <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
                 {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.9" preserveAspectRatio="none" />}
-                {preview.routes.map((points: number[][]) => <polyline class="td-map-preview-path" points={routePreviewPoints(points)} />)}
+                {preview.routes.map((points: number[][]) => <Fragment><polyline class="td-map-preview-path-edge" points={routePreviewPoints(points)} /><polyline class="td-map-preview-path" points={routePreviewPoints(points)} /></Fragment>)}
                 {preview.art && <>
                   {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
                   {preview.base && <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />}

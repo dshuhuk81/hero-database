@@ -1128,7 +1128,8 @@ function runWaveOne(g) {
     g.quest = null;
     return Math.round((g.path.total / tuning.enemies.grunt.speed) * tuning.quests.speedClearTravel);
   };
-  const [short, long] = [...maps].sort((m1, m2) => new TowerDefenseGame({ heroes, tuning, map: m1, waves }).path.total - new TowerDefenseGame({ heroes, tuning, map: m2, waves }).path.total);
+  const byLength = [...maps].sort((m1, m2) => new TowerDefenseGame({ heroes, tuning, map: m1, waves }).path.total - new TowerDefenseGame({ heroes, tuning, map: m2, waves }).path.total);
+  const [short, long] = [byLength[0], byLength.at(-1)]; // shortest and longest map
   const g = new TowerDefenseGame({ heroes, tuning, map: long, waves, seed: 94 });
   g.place("zeus", "platform", 0);
   for (let seed = 0; seed < 50 && g.quest?.type !== "speedClear"; seed += 1) {
@@ -1336,9 +1337,14 @@ for (const map of maps.filter((entry) => entry.lanes)) {
   const second = g.spawnEnemy("grunt", { lane: 1 });
   const [x, y] = mapLanes(map)[1].path[0];
   assert.deepEqual({ x: second.x, y: second.y }, { x, y }, "second lane starts at its own gate");
-  second.distance = 60;
+  // Along its own first leg, whichever way it leaves the gate (lattice-v2 gates sit on any
+  // edge), measured mid-leg because the sim rounds corners.
+  const [nx, ny] = mapLanes(map)[1].path[1];
+  const [dx, dy] = [Math.sign(nx - x), Math.sign(ny - y)];
+  const along = Math.min(60, Math.hypot(nx - x, ny - y) / 2);
+  second.distance = along;
   g.step(1 / 60);
-  assert.ok(second.x > x + 55 && Math.abs(second.y - y) < 1, "second lane walks its own road");
+  assert.ok((second.x - x) * dx + (second.y - y) * dy > along - 5 && Math.abs((second.x - x) * dy - (second.y - y) * dx) < 1, "second lane walks its own road");
 }
 
 // Final-life impacts arrive before finish; invincibility reports zero damage; legacy maps stay unchanged.

@@ -10,7 +10,7 @@ const { maps, bossNames, heroes } = Astro.props;
 // Display names (the active hero skin), so rules text never hard-codes a hero.
 const n = (id: string) => heroes.find((hero: any) => hero.id === id)?.name ?? id;
 const deployCap = tuning.run.deployCap;
-const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).join(", ");
+const bossList = maps.filter((map: any) => !map.campaignOnly).map((map: any) => `${bossNames[map.id]} on ${map.name}`).join(", ");
 ---
 
 <div class="td-panel-layer" data-td-panel-layer hidden>
