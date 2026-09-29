@@ -44,6 +44,8 @@ Owner decisions: no player-facing name (wreath icons only, internally "laurels")
 
 Map generator `orthogonal-v1` built per the map runbook (`map-generator.js`, `npm run td:generate-map`, tests in the suite), first map `sunscar-basin` published (seed 3, Sunscar art, 8 turns, "defense-basin"), Chapter 2 "The Sunscar March": 6 stages on it, Stheno on 2-3, Helios on the 2-6 finale, rating milestones 6 / 12 / 18. Bot win rates 86 -> 40% (cheapest) / 89 -> 34% (carry). Free Play map select now 4 in a row. Expedition test updated (it assumed exactly three maps). Details in the spec (section 7 and Game modes). Open: look in play; Moonlit / Verdant safe regions in the generator script are unverified guesses; Lilith replacement (M24d) still applies to Verdant.
 
+Independent re-check September 29, 2026 (`td-chapter-length.mjs --variant=0`, 21 squads x 2 policies, heroes levelled from the natural campaign income): every Chapter 2 stage sits at 48-86% (cheapest) / 38-86% (carry), all clearly above the 20% floor; softest is the 2-6 finale under "carry" (38%), matching the authored spike. Seal economy with Chapter 2 in place: 350 seals from first clears + ~290 from the chapter's laurel milestones ≈ one full x10 per chapter, and replays now add a quarter of first-clear seals per run (≈160 per Chapter 2 replay). Two-chapter total for a fresh player: ≈1,720 seals (600 + 480 Chapter 1, 350 + 290 Chapter 2) ≈ 28 pulls before dailies and expeditions. Income fits; no tuning.
+
 ### 2b. Class audit (owner request, September 29, 2026)
 
 Check that each class looks and plays like its fantasy.
