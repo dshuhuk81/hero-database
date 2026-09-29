@@ -9,7 +9,7 @@
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 
-export const CAMPAIGN_SAVE_VERSION = 7; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8)
+export const CAMPAIGN_SAVE_VERSION = 8; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
 // Save version that introduced each currency: stages cleared under an older save are paid
@@ -31,7 +31,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -74,14 +74,14 @@ export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() *
   };
 }
 
-// Rewards this version understands: known currencies and heroes not owned yet. Other reward
-// types stay in the data for later versions and are ignored here.
-const known = (reward, progress) => (reward.type === "currency" && CURRENCIES.includes(reward.id) && reward.amount > 0)
-  || (reward.type === "hero" && !progress.owned.includes(reward.id));
+// Rewards this version understands. Other reward types stay in the data for later versions
+// and are ignored here. An already-owned first-clear hero becomes a spare copy.
+const known = (reward) => (reward.type === "currency" && CURRENCIES.includes(reward.id) && reward.amount > 0)
+  || reward.type === "hero";
 
 // What the first clear of a stage would pay now.
 export function pendingRewards(stage, progress) {
-  return (stage.rewards ?? []).filter((reward) => known(reward, progress));
+  return (stage.rewards ?? []).filter((reward) => known(reward) && (reward.type !== "hero" || !progress.cleared?.[stage.id]));
 }
 
 // What a replay pays: `repeatShare` of the stage's currencies (not Divine Seals), no heroes.
@@ -91,15 +91,18 @@ export function repeatRewards(campaign, stage) {
     .filter((reward) => (campaign.repeatShare ?? 0) > 0);
 }
 
-// Applies rewards to progress (generic: currencies add up, heroes join).
+// Applies rewards to progress (generic: currencies add up, new heroes join, duplicates
+// become spare copies).
 export function grantRewards(progress, rewards) {
   const currencies = { ...progress.currencies };
   const owned = [...progress.owned];
+  const copies = { ...progress.copies };
   for (const reward of rewards) {
     if (reward.type === "currency" && CURRENCIES.includes(reward.id)) currencies[reward.id] = (currencies[reward.id] || 0) + reward.amount;
-    else if (reward.type === "hero" && !owned.includes(reward.id)) owned.push(reward.id);
+    else if (reward.type === "hero" && owned.includes(reward.id)) copies[reward.id] = (copies[reward.id] || 0) + 1;
+    else if (reward.type === "hero") owned.push(reward.id);
   }
-  return { ...progress, currencies, owned };
+  return { ...progress, currencies, owned, copies };
 }
 
 // "+200 Gold, +100 Hero XP, Skadi" (heroName maps ids to display names).
@@ -355,8 +358,7 @@ export function campaignHeroes(campaign, progress, heroes) {
 }
 
 // --- Summoning ---
-// Heroes a stage gives on its first clear. The summon banner leaves them out, so a stage's
-// hero reward is never taken by a summon first.
+// Heroes a stage gives on its first clear.
 export function stageRewardHeroes(campaign) {
   return [...new Set(allStages(campaign).flatMap((stage) => (stage.rewards ?? []).filter((reward) => reward.type === "hero").map((reward) => reward.id)))];
 }
@@ -369,11 +371,10 @@ export function heroRewardStage(campaign, heroId) {
   return allStages(campaign).find((stage) => (stage.rewards ?? []).some((reward) => reward.type === "hero" && reward.id === heroId)) ?? null;
 }
 
-// Heroes the banner may draw from `heroes` (ids or hero objects): everyone except stage
-// reward heroes the player has not earned yet. Owned ones come back as spare copies.
-export function summonableHeroes(campaign, progress, heroes) {
-  const reserved = new Set(stageRewardHeroes(campaign));
-  return heroes.map(heroIdOf).filter((id) => !reserved.has(id) || progress.owned.includes(id));
+// Heroes the banner may draw from `heroes` (ids or hero objects). Stage-reward heroes are
+// included too; if summoned first, their eventual first-clear reward becomes a spare copy.
+export function summonableHeroes(_campaign, _progress, heroes) {
+  return heroes.map(heroIdOf);
 }
 
 export const bannerById = (summonCfg, bannerId) => summonCfg?.banners?.find((banner) => banner.id === bannerId) ?? null;
@@ -532,21 +533,62 @@ export function addSeals(progress, amount) {
   return n ? { ...progress, currencies: { ...progress.currencies, divineSeals: (progress.currencies.divineSeals || 0) + n } } : progress;
 }
 
+// Stage rating (M26 sprint 10), internally "laurels": 0-3 per stage, shown to players only
+// as icons. Laurel n needs a clear keeping at least thresholds[n-1] of the stage's lives
+// (1 / 50% / 90%). Derived from the saved bestLives, so older saves rate retroactively.
+export function laurelLives(campaign, stage) {
+  return (campaign.laurels?.thresholds ?? [0]).map((share) => Math.ceil(share * stage.lives));
+}
+
+export function stageLaurels(campaign, progress, stage) {
+  const entry = progress.cleared[stage.id];
+  return entry ? laurelLives(campaign, stage).filter((lives) => entry.bestLives >= lives).length : 0;
+}
+
+// A chapter's laurels and its milestones (paid automatically when reached).
+export function chapterLaurels(campaign, progress, chapterId) {
+  const chapter = campaign.chapters.find((entry) => entry.id === chapterId);
+  if (!chapter) return { earned: 0, max: 0, milestones: [] };
+  const per = campaign.laurels?.thresholds?.length ?? 0;
+  const earned = chapter.stages.reduce((sum, stage) => sum + stageLaurels(campaign, progress, stage), 0);
+  const paid = progress.milestones?.[chapterId] ?? [];
+  const milestones = (chapter.milestones ?? []).map((milestone) => ({ ...milestone, paid: paid.includes(milestone.laurels) }));
+  return { earned, max: chapter.stages.length * per, milestones };
+}
+
+// Pays every reached, unpaid milestone. Returns the new progress and the milestones paid.
+export function payMilestones(campaign, progress) {
+  let next = progress;
+  /** @type {{ chapter: any, laurels: number, rewards: any[] }[]} */
+  const paid = [];
+  for (const chapter of campaign.chapters) {
+    const { earned, milestones } = chapterLaurels(campaign, next, chapter.id);
+    for (const milestone of milestones) {
+      if (milestone.paid || earned < milestone.laurels) continue;
+      next = { ...grantRewards(next, milestone.rewards), milestones: { ...next.milestones, [chapter.id]: [...(next.milestones?.[chapter.id] ?? []), milestone.laurels] } };
+      paid.push({ chapter: chapter.id, laurels: milestone.laurels, rewards: milestone.rewards });
+    }
+  }
+  return { progress: next, paid };
+}
+
 // After a stage: a win records the clear (best lives kept) and pays the first-clear or the
 // replay rewards. A loss changes nothing. Returns the new progress, whether it was a first
 // clear, the rewards granted and the stage it unlocked.
 export function finishCampaignStage(campaign, progress, stageId, { won, lives }) {
   const stage = stageById(campaign, stageId);
-  if (!stage || !won) return { progress, firstClear: false, granted: [], unlocked: null };
+  if (!stage || !won) return { progress, firstClear: false, granted: [], unlocked: null, laurels: null, milestones: [] };
   const before = progress.cleared[stageId];
   const firstClear = !before;
   const granted = firstClear ? pendingRewards(stage, progress) : repeatRewards(campaign, stage);
-  const next = {
+  const recorded = {
     ...grantRewards(progress, granted),
     cleared: { ...progress.cleared, [stageId]: { clears: (before?.clears ?? 0) + 1, bestLives: Math.max(before?.bestLives ?? 0, lives) } },
   };
+  const laurels = { before: stageLaurels(campaign, progress, stage), after: stageLaurels(campaign, recorded, stage) };
+  const { progress: next, paid: milestones } = payMilestones(campaign, recorded);
   const unlocked = firstClear ? allStages(campaign).find((entry) => entry.unlockAfter === stageId) ?? null : null;
-  return { progress: next, firstClear, granted, unlocked };
+  return { progress: next, firstClear, granted, unlocked, laurels, milestones };
 }
 
 // Save shape check and migration. Unknown heroes and stages are dropped, starters are
@@ -600,5 +642,14 @@ export function sanitizeCampaign(value, campaign, heroIds) {
     const clean = Object.fromEntries(Object.entries(skills).filter(([skillId]) => SKILL_IDS.includes(skillId)).map(([skillId, level]) => [skillId, Math.min(skillMax, Math.max(1, Math.floor(Number(level) || 1)))]).filter(([, level]) => level > 1));
     return Object.keys(clean).length ? [[id, clean]] : [];
   }));
-  return { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels };
+  // Version 7 had no milestones: reached ones are paid once here (retroactive laurels).
+  /** @type {Record<string, number[]>} */
+  const milestones = {};
+  for (const chapter of campaign.chapters) {
+    const valid = new Set((chapter.milestones ?? []).map((milestone) => milestone.laurels));
+    const list = Array.isArray(value.milestones?.[chapter.id]) ? [...new Set(value.milestones[chapter.id].map(Number))].filter((n) => valid.has(n)) : [];
+    if (list.length) milestones[chapter.id] = list;
+  }
+  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones };
+  return payMilestones(campaign, clean).progress;
 }

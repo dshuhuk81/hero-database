@@ -1,8 +1,10 @@
 # Tower Defense - Current Design Reference
 
-Last verified against code: September 28, 2026.
+Last verified against code: September 29, 2026.
 
-This file describes what the game **is** today. It is not a plan.
+This file describes what the game **is** today. Open map-system work is also recorded in
+section 7 so the generator handoff remains visible beside the live map contract; other
+planning stays in the roadmap.
 - Open work and priorities: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md)
 - Finished milestones: [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md)
 - Hero ultimates and kits: [TOWER_DEFENSE_HERO_SKILLS.md](TOWER_DEFENSE_HERO_SKILLS.md)
@@ -11,6 +13,8 @@ This file describes what the game **is** today. It is not a plan.
 - UI plan: [docs/tower-defense-ui-plan.md](docs/tower-defense-ui-plan.md)
 - Blessing tree design: [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md)
 - Summon duplicates, Stars and Evolution: [docs/tower-defense-summon-duplicates-plan.md](docs/tower-defense-summon-duplicates-plan.md)
+- Map generator architecture: [docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)
+- Map-work agent handoff: [docs/tower-defense-map-agent-runbook.md](docs/tower-defense-map-agent-runbook.md)
 
 The original September 2026 MVP spec (20-hero lock, prototype cost table, T1-T6 task
 split) lives in git history (last version at commit `5e788d86`).
@@ -194,6 +198,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   colour with a slow wave out to their range; allies inside carry a faint rim at their
   feet, allies under a timed ult buff a brighter gold rim. Recruits use the class effect
   builders in `hero-fx.js` (`CLASS_*`).
+  Melee strikes move the hero token (presentation only): Assassins dash to the enemy and
+  back, Tanks and Warriors lean in; sim positions never change.
 - Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
   `cursed` +30% atk / -20% aps.
   Visuals (`render.js`, built once, animated by transforms only): soft additive ground
@@ -296,13 +302,123 @@ Endless). Verdant Crossing uses 1.25 (September 28, 2026) because it was the eas
 every squad. Modes with their own stage scale (`hpScale` from Campaign stages or Expedition)
 replace the map value, so tuned stages keep their numbers.
 
+### Map geometry, analysis and validation
+
+The runtime map contract is data-driven and remains the downstream contract for authored
+and generated maps:
+
+- The battlefield is 960×540 logical pixels.
+- A single-entry map uses `spawn` plus `path`.
+- A multi-entry map uses `lanes: [{ spawn, path }, ...]` and one `base`.
+- Every path begins exactly at its visible gate and ends exactly at the visible base.
+- Multi-entry routes have equal travel length and an identical shared final segment.
+- Initial generated routes use integer, horizontal and vertical segments.
+- `grid.js` derives road slots, platform slots and special rings. Do not hand-edit the
+  derived arrays; run `node scripts/build-td-grid.mjs` after route or grid changes.
+
+The map foundation added September 29, 2026 consists of:
+
+- `map-analysis.js`: deterministic route length, lane, turn, placement, range coverage,
+  blocker-support and landmark metrics through `analyzeMap(map)`.
+- `map-validation.js`: stable rejection codes for invalid points, diagonal or short
+  segments, self-intersections, endpoint mismatches, unequal lanes, missing shared tails,
+  stale grids and insufficient slot counts through `validateMap(map)`.
+- `scripts/report-td-maps.mjs`: `npm run td:maps` prints the current geometry baseline and
+  validation status; `npm run td:maps -- --json` includes the detailed metrics and errors.
+- `map-preview.js`: `mapPreviewModel(map)` resolves terrain, route strokes, gates, base,
+  `skinId` and optional `geometryHash` from the same materialized map used by combat.
+
+Current baseline:
+
+| Map | Route length | Turns | Platform coverage at range 90 | Landmark | Valid |
+|---|---:|---:|---:|---|---|
+| Moonlit Pass | 1,574 | 6 | 74% | `switchback` | yes |
+| Verdant Crossing | 2,292 | 4 | 97% | `open-road` | yes |
+| Sunscar Ruins | 1,180 per lane | 12 total | 99% | `twin-gate` | yes |
+
+These values describe the existing maps; they are baselines for generation, not automatic
+balance targets.
+
+### Map preview contract
+
+Every preview pane must consume the same resolved map record as combat. Terrain comes from
+the resolved skin; routes, entrances and base come from the resolved layout. Changing the
+selected map changes terrain, routes, every gate, base, name and boss together.
+
+Free Play map selection and the Campaign stage drawer use `mapPreviewModel(map)` and draw
+the terrain, route strokes, gates and base as lightweight SVG. Do not maintain separate
+route thumbnails or screenshots. Expedition currently shows terrain-only compact stops and
+Daily shows the battlefield name; review those surfaces before calling preview integration
+complete. A future preview cache key must contain `geometryHash`, `skinId` and a preview
+renderer version.
+
+### Map authoring workflow today
+
+Automatic route generation is not implemented yet. To add a map now:
+
+1. Add its complete runtime record to `tdMaps.json`: identity, scene art, boss, music,
+   spawn/base and `path` or `lanes`, plus the `grid` settings.
+2. Run `node scripts/build-td-grid.mjs` to derive placements and rings.
+3. Run `npm run td:maps` and require `valid: yes`.
+4. Use `npm run td:maps -- --json` to inspect detailed coverage and lane metrics.
+5. Assign the stable map id to Campaign stages through `stage.mapId` where required.
+6. Inspect Free Play and Campaign previews and then the loaded battle.
+7. Run `npm run test:tower-defense` and `npm run test:td-balance` for gameplay changes.
+
+### Planned layout generator and catalogs
+
+The approved direction is a deterministic development-time map compiler. It generates many
+candidates, validates and simulates them, and publishes approved candidates as ordinary
+stable `tdMaps.json` records. Campaign does not generate an unknown layout when a battle
+starts. Live seeded generation is deferred until validation and difficulty fingerprints
+predict real outcomes reliably.
+
+The intended source responsibilities are:
+
+```text
+tdMapLayouts.json     fixed geometry and deterministic recipes
+tdMapSkins.json       art, safe regions, endpoint support and capabilities
+tdWaveProfiles.json   reusable enemy and wave compositions
+tdCampaign.json       stages, progression bands, rewards and overrides
+          |
+          v
+compiled tdMaps.json + resolved Campaign data
+```
+
+A layout owns geometry, a recipe, topology, grid rules, geometry hash, analysis fingerprint
+and landmark. A skin owns terrain, road, gate, base, palette, safe regions and supported
+topologies. In the first implementation, changing a skin does not change gameplay geometry.
+
+Campaign progression uses non-overlapping hero-level bands: 1–10, 11–20, 21–30, 31–40
+and later bands as needed. A band supplies defaults such as layout pool, skin pool, wave
+profile, lives and health scale. A published stage stores stable layout and skin ids and may
+override any band default. Tutorial stages and boss encounters remain explicitly authored.
+
+The next bounded milestone is `orthogonal-v1`:
+
+1. Accept a versioned recipe with generator id, ruleset, seed, topology, difficulty band
+   and parameter ranges.
+2. Generate one deterministic single-entry, self-avoiding route on an integer lattice.
+3. Use a fixed attempt bound and report stable rejection reasons.
+4. Run `buildGrid()`, `validateMap()` and `analyzeMap()` on each candidate.
+5. Create a canonical hash over endpoints, route, grid, placements and rings.
+6. Return a complete runtime-compatible map record with recipe provenance.
+7. Prove that repeated generation produces byte-equivalent geometry and placements.
+8. Publish one reviewed candidate into Free Play and verify that its preview and battle
+   display the same terrain, route, gate and base.
+
+After that: batch generation and a development atlas; layout/skin catalogs and compiler;
+bot difficulty fingerprints; a reviewed three-to-six-map pack; Campaign bands and reusable
+wave profiles; Daily/Expedition integration; equal-length split-and-merge generation; and
+only then optional live seeded generation.
+
 ## 8. Game modes
 
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
-| Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
+| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target, plus hp relief on 1-9/1-10). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
 | Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
@@ -395,6 +511,22 @@ narrows to 172px, the art column shrinks, the tabs run across the top of the cop
 whole copy column is one scroller. Skill upgrade buttons sit under their skill text so the
 description gets the full column width.
 
+### Stage rating and chapter rewards (campaign only, M26 sprint 10)
+
+- Every cleared stage has a rating of 0-3, shown only as laurel wreath icons (no
+  player-facing name; internally "laurels"). 1 for a clear, 2 for keeping at least 50%
+  of the stage's lives, 3 for at least 90% (`tdCampaign.json` `laurels.thresholds`,
+  rounded up: 8 and 14 of 15 lives). Derived from the saved `bestLives`, so older saves
+  are rated retroactively.
+- Chapter milestones (`chapters[].milestones`): 10 / 20 / 30 rating points pay
+  1,000 Gold + 500 Hero XP / 180 Divine Seals / 300 Divine Seals + 100 Seal Dust, once,
+  automatically (`payMilestones` in `campaign.js`, on a stage win and on save load).
+  Owner note (September 29, 2026): amounts may be a bit high, revisit later.
+- UI: wreaths on stage cards, a "Goals" list in the stage drawer ("Keep 8 of 15 lives"),
+  a chapter track under the stage grid (points x / 30, meter, milestone rewards marked
+  "Received"), and result lines for a new best rating and paid chapter rewards.
+- Save: campaign section version 8 adds `milestones: { [chapterId]: number[] }`.
+
 ### Summoning rules and screen
 
 `tdSummon.json` authors the banner, seal sources and dust rates. The current banner uses:
@@ -404,8 +536,8 @@ description gets the full column width.
 - rarity weights (`rarityWeights`): every hero carries a `rarity` in
   `gameBalance.json` — legendary (tiers S/A, 5 heroes), epic (B/C, 13), common
   (D, 15, all recruits). A hero's draw weight is its rarity weight
-  (legendary 1, epic 4, common 10); the featured hero's rarity weight is
-  multiplied by `featuredWeight` 5;
+  (legendary 6, epic 4, common 10); the featured hero's rarity weight is
+  multiplied by `featuredWeight` 2;
 - 60 Divine Seals per summon; x10 (`multiCount`) costs 600 and always gives 10;
 - new-hero pity (`pityNewInMulti`, **active**): if a full x10 draws no hero
   the player does not own yet and the pool still has one, the last duplicate is
@@ -417,8 +549,9 @@ description gets the full column width.
   with pity, first legendary P90 improves 11 → 8 x10;
 - pool `"all"`: every hero the player owns or can summon, drawn with replacement. A hero
   not owned yet joins; an owned one becomes a spare copy (`copies[heroId]`);
-- stage-reward heroes join the pool only after their stage's first clear, so a summon never
-  takes a stage's reward first. (`"locked"`, new heroes only, is still supported.)
+- stage-reward heroes are in the pool from the start; if one is summoned before its stage
+  is cleared, that stage's hero reward becomes a spare copy. (`"locked"`, new heroes only,
+  is still supported.)
 
 The pool holds 33 heroes: the 21 mythic roster heroes plus 12 "recruits" (generic
 tier-D filler heroes, 2 per class, `recruit-*` ids, reused abilities and ultimate
@@ -428,16 +561,16 @@ weakest mythic class member in power; they exist so x10 summons yield commons,
 duplicates and dust.
 
 A hero's draw chance is its weight over the pool's total weight — with the current
-33-hero pool and an epic featured hero: featured 20/223 ≈ 9.0%, each legendary
-1/223 ≈ 0.45% (any legendary ≈ 2.2%), each epic 4/223 ≈ 1.8% (any epic ≈ 21.5%),
-each common 10/223 ≈ 4.5% (any common ≈ 67.3%). The banner shows these per-rarity
+33-hero pool and an epic featured hero: featured 8/236 ≈ 3.4%, each legendary
+6/236 ≈ 2.5% (any legendary ≈ 12.7%), each non-featured epic 4/236 ≈ 1.7%
+(any epic ≈ 23.7%), each common 10/236 ≈ 4.2% (any common ≈ 63.6%). The banner shows these per-rarity
 rates next to the pool count, computed by `summonRates()` from the same weighting
 rules used by `summonMany()`, so the displayed rates cannot drift from selection
 behavior. New heroes are meant to stay hard to get (owner, September 28, 2026):
 with the 33-hero pool and rarity weights the campaign's 600 seals spent as one x10
 at the end give on average 6.4 new heroes and 3.6 copies (measured with
 `td:upgrade-sweep`; 5.8/4.2 with flat weights, 3.9/6.1 at 21 heroes). High rarities
-carry the "hard to get" goal now — a specific legendary sits at ≈0.45% per draw —
+carry the "hard to get" goal now — a specific legendary sits at ≈2.5% per draw —
 so the x10 new-hero pity is enabled: it only fires when a full x10 yields nothing
 new and does not cheapen the early game.
 
@@ -458,7 +591,7 @@ hero select — spare copies of an owned hero (`dust.copyPrice`).
 **Reveal** (`page/summon-reveal.ts`): a full-screen `<dialog>` over the Summon screen.
 The summon is paid and saved before it opens. Cards deal in face down (10 cards as 3/4/3)
 with the wolf card back (`public/td/summon-card-back-wolf.webp`); the back's glow shows
-the tier before the flip: gold = featured hero, purple = S or A tier, none = the rest. Tap
+the rarity before the flip: gold = legendary, purple = epic, none = common. Tap
 flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards are
 large art only, with a small "New" tag on first-time heroes (spare copies carry no tag);
 name, class and featured status are in each card's aria-label. No visible title or result
@@ -588,14 +721,15 @@ Content is not JSON-only. Before shipping, walk the matching list.
 4. Art and sound: token/portrait on R2 (`assets.js`, new file names, R2 caches for a year),
    sounds plus `tdAudioLevels.json` (`node scripts/td-audio-levels.mjs`), attack/ultimate
    effects (`hero-fx.js`, `TOWER_DEFENSE_HERO_SKILLS.md`).
-5. Acquisition: summon pool by default (rarity from tier); a stage-reward hero instead goes
-   into a stage's `rewards` (`heroRewardStage` / `summonableHeroes` in `campaign.js`).
+5. Acquisition: summon pool by default (rarity from tier); a stage-reward hero also goes
+   into a stage's `rewards`, which becomes a spare copy if already owned
+   (`heroRewardStage` / `summonableHeroes` in `campaign.js`).
 6. Checks: `npm run test:tower-defense` (skin test, ultimate edge cases run every roster
    hero), `npm run test:td-balance`, `npm run td:upgrade-sweep` for the summon economy.
 
 **New campaign stage or chapter**
 1. Stage in `tdCampaign.json` under its chapter: `unlockAfter`, `mapId`, lives, `hpScale`,
-   waves, rewards (a hero reward removes that hero from the banner until earned).
+   waves and rewards (an already-owned hero reward becomes a spare copy).
 2. A new chapter's first stage unlocks after the previous chapter's last one; the home card
    and route follow `currentChapter()`, the Stages screen shows chapter tabs.
 3. Checks: `test-td-campaign.mjs` (prints the sampled win rate per stage; keep late stages
@@ -608,7 +742,9 @@ Content is not JSON-only. Before shipping, walk the matching list.
 3. Boss assignment, special tiles (`grid.rings`), music.
 4. Modes pick it up automatically: Free Play map select, Daily Trial, Expedition pool
    (route length stays `EXPEDITION.stages`, so a fourth map adds variety, not duration).
-5. Checks: `npm run test:tower-defense` (tile hit test covers every map), `npm run td:sweep`,
+5. Run `npm run td:maps` and require `valid: yes`; inspect `--json` coverage, support and
+   lane metrics. Confirm the preview terrain, paths, gates and base match the loaded battle.
+6. Checks: `npm run test:tower-defense` (tile hit test covers every map), `npm run td:sweep`,
    Chromium at phone and desktop size.
 
 ## 11. Tests and tools
@@ -622,6 +758,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:classes` / `td:progression` | Class and progression reports |
 | `npm run td:economy` | In-run gold ledger: income by source vs. spend by sink, per mode/tier |
 | `npm run td:layout -- --map=<id>` | Tile layout A/B: committed vs working `tdMaps.json`, Free Play + campaign stages on that map |
+| `npm run td:maps` / `npm run td:maps -- --json` | Map geometry baseline, landmark metrics and stable validation errors |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

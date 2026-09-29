@@ -32,7 +32,7 @@ more heroes to pick (summons).
 | **Shards** | run-start boost | runs reaching wave 3+: pick gold (+60), a starting virtue, or bonus Favor (10% of run Favor, min 5) | consumed on the next run | `shards` |
 | **Campaign Gold** | meta | stage clears (replays pay 25%) | campaign hero levels, star promotions | `tdCampaign.json` |
 | **Hero XP** | meta | stage clears | campaign hero levels | `tdCampaign.json` |
-| **Divine Seals** | meta | stage clears (replays pay a quarter of the first-clear seals), daily trial goal (15), expedition complete (60) | summons (60 per pull, 10-pulls) | `tdSummon.json` |
+| **Divine Seals** | meta | stage clears (replays pay a quarter of the first-clear seals), daily trial goal (15), expedition complete (60), chapter rating milestones (180 + 300 per chapter, once) | summons (60 per pull, 10-pulls) | `tdSummon.json` |
 | **Seal Dust** | meta | 30 per duplicate copy (manual conversion) | 2 → 1 seal, 100 → 1 spare copy, 150 → 1 evolution tier (without a copy), 150 for the final skill rank | `tdSummon.json`, `tdCampaign.json` |
 
 Divine Essence was merged into Seal Dust on September 29, 2026 (save version 7;

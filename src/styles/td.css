@@ -372,7 +372,7 @@
   .td-skill-up { width: 100%; }
 }
 /* Summon reveal stage (M27b): full-screen dialog, cards deal in face down and flip on tap.
-   Back glow = tier: gold (featured hero), purple (S or A tier), none. */
+   Back glow = rarity: gold (legendary), purple (epic), none (common). */
 .td-summon-stage { width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; color: var(--text-primary); background: radial-gradient(ellipse at 50% 38%, #221a44 0%, #0d0c1f 48%, #05060c 100%); }
 .td-summon-stage::backdrop { background: rgb(3 4 10 / .85); }
 .td-summon-stage[open] { animation: td-stage-in 260ms ease-out both; }
@@ -403,8 +403,8 @@
 .td-summon-flip--purple .td-summon-face--back { box-shadow: 0 0 0 2px var(--accent-purple), 0 0 18px 3px color-mix(in srgb, var(--accent-purple) 55%, transparent); }
 .td-summon-flip--gold .td-summon-face--front { border-color: var(--accent-gold); box-shadow: 0 0 26px 6px color-mix(in srgb, var(--accent-gold) 55%, transparent); }
 .td-summon-flip--purple .td-summon-face--front { border-color: var(--accent-purple); box-shadow: 0 0 18px 3px color-mix(in srgb, var(--accent-purple) 45%, transparent); }
-/* The featured hero's flip lands with a burst */
-.td-summon-flip--gold.is-flipped::after { content: ""; position: absolute; inset: -30%; z-index: -1; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, color-mix(in srgb, var(--accent-gold) 55%, transparent), transparent 65%); animation: td-card-burst 900ms ease-out 300ms both; }
+/* The featured hero's flip lands with a burst, independent of its rarity. */
+.td-summon-flip.is-featured.is-flipped::after { content: ""; position: absolute; inset: -30%; z-index: -1; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, color-mix(in srgb, var(--accent-gold) 55%, transparent), transparent 65%); animation: td-card-burst 900ms ease-out 300ms both; }
 .td-summon-stage-actions { position: relative; display: flex; justify-content: center; min-height: 44px; }
 .td-summon-done { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
 .td-summon-done[hidden], .td-summon-stage-actions [hidden] { display: none; }
@@ -416,7 +416,7 @@
 @keyframes td-card-burst { from { opacity: 0; transform: scale(.4); } 30% { opacity: 1; } to { opacity: 0; transform: scale(1.3); } }
 @media (max-width: 480px) { .td-summon-row { gap: var(--space-2); } .td-summon-cards { gap: var(--space-2); --card-w: min(104px, calc((100vw - 32px - 3 * var(--space-2)) / 4), calc((100dvh - 240px) / 3 / 1.5)); } .td-camp-footer-note { display: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .td-summon-stage[open], .td-summon-flip, .td-summon-flip--gold .td-summon-face--back, .td-summon-flip--gold.is-flipped::after { animation: none; }
+  .td-summon-stage[open], .td-summon-flip, .td-summon-flip--gold .td-summon-face--back, .td-summon-flip.is-featured.is-flipped::after { animation: none; }
   .td-summon-flip-inner { transition: opacity 200ms; }
   .td-summon-flip.is-flipped .td-summon-flip-inner { transform: none; }
   .td-summon-flip.is-flipped .td-summon-face--back { opacity: 0; }
@@ -1602,6 +1602,29 @@ svg.td-class-icon { aspect-ratio: 1; }
 .td-camp-stage.is-locked .td-camp-stage-art { opacity: .2; filter: grayscale(1); }
 .td-camp-stage.is-locked .td-camp-stage-status { color: var(--text-muted) !important; }
 .td-camp-stage.is-locked .td-camp-stage-id { color: var(--text-muted); }
+/* Stage rating (M26 sprint 10, internally "laurels"): gold wreaths earned, hollow ones open. */
+.td-laurels { display: inline-flex; gap: 2px; margin-top: var(--space-1); }
+.td-laurel { width: 18px; height: 18px; flex: none; }
+.td-laurel path { stroke: var(--text-muted); stroke-width: 1.4; stroke-linecap: round; }
+.td-laurel ellipse { fill: none; stroke: var(--text-muted); stroke-width: .9; }
+.td-laurel.is-earned path { stroke: var(--accent-gold); }
+.td-laurel.is-earned ellipse { fill: var(--accent-gold); stroke: var(--accent-gold); }
+.td-camp-stage.is-cleared .td-laurel:not(.is-earned) { opacity: .7; }
+.td-camp-drawer-goals { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.td-camp-drawer-goals li { display: flex; align-items: center; gap: var(--space-2); color: var(--text-muted); }
+.td-camp-drawer-goals li.is-earned { color: var(--text-primary); }
+.td-camp-laurels { display: grid; grid-template-columns: auto minmax(80px, 1fr); align-items: center; gap: var(--space-2) var(--space-3); margin-top: var(--space-4); padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); }
+.td-camp-laurels[hidden] { display: none; }
+.td-camp-laurel-total { display: flex; align-items: baseline; gap: var(--space-1); color: var(--text-muted); }
+.td-camp-laurel-total .td-laurel { align-self: center; width: 22px; height: 22px; }
+.td-camp-laurel-total strong { color: var(--accent-gold); font-size: var(--td-fs-body); }
+.td-camp-laurel-meter { height: 6px; border-radius: 3px; background: var(--bg-base); overflow: hidden; }
+.td-camp-laurel-meter span { display: block; height: 100%; background: var(--accent-gold); }
+.td-camp-laurel-goals { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.td-camp-laurel-goals li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-base); }
+.td-camp-laurel-goals li.is-paid { border-color: color-mix(in srgb, var(--accent-new) 35%, var(--border-subtle)); opacity: .75; }
+.td-camp-laurel-need { display: inline-flex; align-items: center; gap: 2px; font-weight: 700; color: var(--accent-gold); }
+.td-camp-laurel-done { color: var(--accent-new); font-size: var(--td-fs-label); }
 .td-camp-stage-badge { position: absolute; top: var(--space-3); right: var(--space-3); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; }
 .td-camp-stage-badge svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .td-camp-stage-badge.is-done { background: var(--accent-new); color: var(--bg-base); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-new) 25%, transparent); }

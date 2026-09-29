@@ -88,6 +88,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const aLegendary = pool.find((id) => rarityOf(id) === "legendary" && id !== featured);
   assert.ok(weightOf(aCommon) > weightOf(aLegendary), "common outweighs legendary per hero");
   assert.ok(rates.common > rates.legendary && rates.common > rates.epic, "commons dominate the banner");
+  assert.ok(rates.legendary > rates.featured, "all legendary heroes together are more likely than the featured hero");
   assert.ok(Math.abs(rates.featured - featuredChance(banner, rich, ids)) < 1e-9, "featured rate matches featuredChance");
   // Empty pool: everything owned.
   const all = { ...withSeals(p, cost * 10), owned: [...ids] };
@@ -114,9 +115,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 7, "save version 7");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 8, "save version 8");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
-  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [7, 0, 0], "fresh section");
+  assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [CAMPAIGN_SAVE_VERSION, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
   assert.deepEqual([clean.currencies.divineSeals, clean.summons], [120, 4], "seals and summons cleaned");
   const bad = sanitizeCampaign({ version: 3, currencies: { divineSeals: -5 }, summons: -2 }, campaign, heroIds);
@@ -137,7 +138,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.deepEqual(back, summoned, "summoned progress round-trips unchanged");
 }
 
-// Stage reward heroes are not summonable (the page removes them from the roster it passes).
+// Stage reward heroes remain summonable; their eventual stage reward becomes a copy.
 {
   const reserved = stageRewardHeroes(campaignData);
   const fromStages = allStages(campaignData).flatMap((stage) => stage.rewards.filter((reward) => reward.type === "hero").map((reward) => reward.id));
@@ -147,11 +148,17 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const fresh = newCampaignProgress(campaignData);
   const roster = [...campaignData.starters, ...reserved, "someone-else"];
   const open = summonableHeroes(campaignData, fresh, roster);
-  assert.ok(reserved.every((id) => !open.includes(id)), "unearned stage reward heroes are not summonable");
+  assert.ok(reserved.every((id) => open.includes(id)), "all stage reward heroes are summonable from the start");
   assert.ok(open.includes("someone-else") && campaignData.starters.every((id) => open.includes(id)), "everyone else is");
+  const openingRates = summonRates(authored, fresh, summonableHeroes(campaignData, fresh, heroes));
+  assert.ok(openingRates.legendary > openingRates.featured, "opening banner: all available legendary heroes together outweigh the featured hero");
+  assert.ok(openingRates.common > openingRates.legendary + openingRates.epic, "opening banner: commons are more likely than every higher rarity combined");
   const earned = { ...fresh, owned: [...fresh.owned, reserved[0]] };
-  assert.ok(summonableHeroes(campaignData, earned, roster).includes(reserved[0]), "an earned stage reward hero comes back as copies");
-  assert.equal(heroRewardStage(campaignData, reserved[0])?.rewards.some((r) => r.type === "hero" && r.id === reserved[0]), true, "reward stage found");
+  assert.ok(summonableHeroes(campaignData, earned, roster).includes(reserved[0]), "an earned stage reward hero remains summonable as copies");
+  const rewardStage = heroRewardStage(campaignData, reserved[0]);
+  assert.equal(rewardStage?.rewards.some((r) => r.type === "hero" && r.id === reserved[0]), true, "reward stage found");
+  const duplicateReward = finishCampaignStage(campaignData, earned, rewardStage.id, { won: true, lives: rewardStage.lives });
+  assert.equal(duplicateReward.progress.copies[reserved[0]], 1, "an already-owned stage reward becomes a spare copy");
   assert.equal(heroRewardStage(campaignData, "someone-else"), null, "summon-only hero has no reward stage");
 }
 
@@ -263,10 +270,10 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
   assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
   const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
-  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [7, {}, {}, {}, 0, undefined], "v3 migrates to empty fields");
+  assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [CAMPAIGN_SAVE_VERSION, {}, {}, {}, 0, undefined], "v3 migrates to empty fields");
   // v6 → v7: leftover Divine Essence becomes Seal Dust at the historical 1:150 rate.
   const v6 = sanitizeCampaign({ version: 6, owned: [...campaignData.starters], cleared: {}, currencies: { sealDust: 20, divineEssence: 2 } }, campaignData, heroIds);
-  assert.deepEqual([v6.currencies.sealDust, v6.currencies.divineEssence, v6.version], [20 + 300, undefined, 7], "essence becomes dust on migration");
+  assert.deepEqual([v6.currencies.sealDust, v6.currencies.divineEssence, v6.version], [20 + 300, undefined, CAMPAIGN_SAVE_VERSION], "essence becomes dust on migration");
   // v4 counted stars from 1: one less star, same stats; levels stay within the new cap.
   const v4 = sanitizeCampaign({ version: 4, owned: [...campaignData.starters, featured], stars: { [featured]: 3, [hero]: 1 }, levels: { [featured]: 10 } }, campaignData, heroIds);
   assert.deepEqual([v4.stars[featured], v4.stars[hero], v4.levels[featured]], [2, undefined, 10], "v4 stars shift down by one");

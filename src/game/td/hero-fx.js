@@ -18,10 +18,10 @@ export const PROFILES = {
   amunra:      { name: "Helios", color: 0xffc233, accent: 0xfff4c4, mote: "twinkle" },
   set:         { name: "Surtr", color: 0xff5a1f, accent: 0xffc26b, mote: "ember" },
   jormungandr: { name: "Fenrir", color: 0x8fdc4a, accent: 0xd8ff8a, mote: "drop" },
-  nyx:         { name: "Nott", color: 0x7c6cff, accent: 0xcfd6ff, mote: "twinkle" },
-  bastet:      { name: "Hecate", color: 0xb36bff, accent: 0xffb86b, mote: "twinkle" },
-  horus:       { name: "Vidar", color: 0xa9b8cc, accent: 0xeef5ff, mote: "twinkle" },
-  anubis:      { name: "Thanatos", color: 0xb9c3d6, accent: 0xf2f5fb, mote: "glow" },
+  nyx:         { name: "Nott", color: 0x7c6cff, accent: 0xcfd6ff, mote: "twinkle", kind: "assassin" },
+  bastet:      { name: "Hecate", color: 0xb36bff, accent: 0xffb86b, mote: "twinkle", kind: "assassin" },
+  horus:       { name: "Vidar", color: 0xa9b8cc, accent: 0xeef5ff, mote: "twinkle", kind: "assassin" },
+  anubis:      { name: "Thanatos", color: 0xb9c3d6, accent: 0xf2f5fb, mote: "glow", kind: "assassin" },
   zeus:        { name: "Odin", color: 0x8fb4ff, accent: 0xffffff, mote: "twinkle", ranged: true },
   phoenix:     { name: "Hephaestus", color: 0xff7a2e, accent: 0xffd27a, mote: "ember", ranged: true, speed: 520 },
   fengyi:      { name: "Boreas", color: 0x9be7ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 560 },
@@ -88,6 +88,10 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       kit.crescent(g, cx, cy, r, a0, a1, { thick, color, alpha: alpha * 0.85, progress, squash, tail: 0.9 });
       kit.crescent(g, cx, cy, r - 1, a0, a1, { thick: thick * 0.35, color: core, alpha, progress, squash, tail: 0.6 });
     }, life, { delay });
+  }
+  // Short blade flash along the strike direction: the dagger itself.
+  function daggerGlint(x, y, angle, p, delay = 0) {
+    kit.spawn("shard", x - Math.cos(angle) * 6, y - Math.sin(angle) * 6, { tint: p.accent, size: 16, sizeEnd: 10, life: 0.16, delay, rot: angle, alpha: 1, hold: 0.4 });
   }
   function groundRing(x, y, r0, r1, color, { life = 0.45, width = 3, delay = 0, squash = 0.5, add = true, alpha = 0.85 } = {}) {
     kit.shape((g, t) => {
@@ -225,9 +229,8 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       slash(x, y, a, p.color, { r: 21, thick: 7, core: p.accent });
       sparks(x, y, 3, p.accent, { size: 8, speed: 140, dir: a, spread: 1.8 });
     },
-    assassin(x, y, a, p, big) { // two quick dagger cuts and a smoke puff
+    assassin(x, y, a, p, big) { // two quick dagger cuts (the blade glint is added by the dispatch)
       for (let i = 0; i < 2; i++) slash(x, y, a + (i ? 0.7 : -0.7), i ? p.accent : p.color, { r: 16, thick: 5, sweep: 1.7, offset: 0.2, delay: i * 0.07, life: 0.18 });
-      kit.spawn("glow", x, y - 4, { tint: p.color, size: 18, sizeEnd: 34, life: 0.35, alpha: 0.35, add: false });
     },
   };
   const CLASS_SHOTS = {
@@ -628,6 +631,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
           return;
         }
         (MELEE[e.heroId] ?? CLASS_MELEE[p.kind] ?? MELEE.momus)(x, y, angle, p, big);
+        if (p.kind === "assassin") daggerGlint(x, y, angle, p);
         if (e.crit) kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 34, sizeEnd: 8, life: 0.3, spin: 3 });
         return;
       }
@@ -648,13 +652,13 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         if (e.heroId === "fengyi") debris("flake", e.x, e.y, 4, p.accent, { add: true, delay, up: 30, gravity: 40, speed: r * 2, life: 0.5, size: 7 });
         return;
       }
-      case "dash": { // Assassin lunge: afterimage puffs along a bent path, never a line
-        for (let i = 0; i < kit.n(5); i++) {
-          const t = (i + 1) / 6;
-          kit.pathPoint({ x1: sx, y1: sy, x2: x, y2: y, bend: 22 }, t, tmp);
-          kit.spawn("glow", tmp.x, tmp.y, { tint: i % 2 ? p.color : p.accent, size: 26 - i * 2, sizeEnd: 10, life: 0.3, delay: i * 0.03, alpha: 0.6 });
+      case "dash": { // Assassin dash: the token itself travels (render.js lunge); speed streaks mark the path
+        for (let i = 0; i < kit.n(4); i++) {
+          const t = (i + 1) / 5;
+          kit.spawn("streak", sx + (x - sx) * t, sy + (y - sy) * t, { tint: i % 2 ? p.color : p.accent, size: 34, sizeEnd: 12, life: 0.22, delay: i * 0.02, rot: angle, alpha: 0.55, hold: 0 });
         }
-        slash(x, y, angle, p.color, { r: 18, thick: 6, delay: 0.14, core: p.accent });
+        daggerGlint(x, y, angle, p, 0.1);
+        slash(x, y, angle, p.color, { r: 18, thick: 6, delay: 0.1, core: p.accent });
         return;
       }
       case "beam": { // Support heal: motes flow along a curve to the ally

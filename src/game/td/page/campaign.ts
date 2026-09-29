@@ -5,17 +5,17 @@
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
+import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman, routeHtml } from "./route";
 import { currencyAmount, currencyIcon, currencyList } from "../currency-icons.js";
-import { mapLanes, routeStrokes } from "../lanes.js";
 import { createSummonReveal } from "./summon-reveal";
 
 export type CampaignRun = { stageId: string; squad: string[] };
@@ -40,6 +40,8 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
   for (const reward of result.granted) if (reward.type === "hero") parts.push(`${heroName(reward.id)} joins your heroes!`);
+  if (result.laurels && result.laurels.after > result.laurels.before) parts.push(`Stage rating ${result.laurels.after} of 3${result.laurels.before ? " (new best)" : ""}.`);
+  for (const milestone of result.milestones ?? []) parts.push(`Chapter reward for ${milestone.laurels} rating points: ${rewardText(milestone.rewards)}.`);
   if (result.unlocked) parts.push(`Stage ${result.unlocked.id} ${result.unlocked.name} unlocked.`);
   if (!record) parts.push("Debug run: progress was not recorded.");
   return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null };
@@ -50,6 +52,7 @@ export function createCampaign(ctx: PageContext) {
   const stagesEl = q("[data-td-camp-stages]");
   const chapterEl = q("[data-td-camp-chapter]");
   const progressEl = q("[data-td-camp-progress]");
+  const laurelTrackEl = q("[data-td-camp-laurels]");
   const summaryTitleEl = q("[data-td-camp-summary-title]");
   const summaryEl = q("[data-td-camp-summary]");
   const summaryChapterEl = q("[data-td-camp-summary-chapter]");
@@ -110,15 +113,24 @@ export function createCampaign(ctx: PageContext) {
     ? `<span class="td-camp-stage-badge is-${state}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${BADGE_PATHS[state]}</svg></span>`
     : "";
 
+  // Stage rating (M26 sprint 10, internally "laurels"): a laurel wreath per point, no
+  // player-facing name. Earned ones are gold, the rest hollow.
+  const LEAVES = [[7.4, 18, -60], [5.4, 15.2, -35], [4.6, 11.8, -12], [5, 8.4, 12], [6.6, 5.4, 35]]
+    .flatMap(([x, y, a]) => [[x, y, a], [24 - x, y, -a]])
+    .map(([x, y, a]) => `<ellipse cx="${x}" cy="${y}" rx="2.1" ry="1.05" transform="rotate(${a} ${x} ${y})" />`).join("");
+  const laurelIcon = (earned: boolean) => `<svg class="td-laurel${earned ? " is-earned" : ""}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5c-4.2-.8-7.4-4.6-7.4-9.8M12 20.5c4.2-.8 7.4-4.6 7.4-9.8" fill="none" />${LEAVES}</svg>`;
+  const laurelRow = (n: number, label = true) => `<span class="td-laurels"${label ? ` role="img" aria-label="Rating ${n} of 3"` : ' aria-hidden="true"'}>${[0, 1, 2].map((i) => laurelIcon(i < n)).join("")}</span>`;
+
   // Battlefield preview (as on the map select): terrain, lane routes, spawn gates and base.
   function mapPreview(map: any) {
     if (!map) return "";
-    const art = mapSceneFor(map)?.assets;
-    const routes = routeStrokes(map).map((points: number[][]) => `<polyline class="td-map-preview-path" points="${points.map(([x, y]) => `${x},${y}`).join(" ")}" />`).join("");
-    const spawns = art ? mapLanes(map).map((lane: any) => `<image href="${art.spawn}" x="${lane.spawn.x - 48}" y="${lane.spawn.y - 55}" width="96" height="110" />`).join("") : "";
+    const preview = mapPreviewModel(map);
+    const art = preview.art;
+    const routes = preview.routes.map((points: number[][]) => `<polyline class="td-map-preview-path" points="${routePreviewPoints(points)}" />`).join("");
+    const spawns = art ? preview.spawns.map((spawn: any) => `<image href="${art.spawn}" x="${spawn.x - 48}" y="${spawn.y - 55}" width="96" height="110" />`).join("") : "";
     return `<svg class="td-map-preview td-camp-drawer-map" viewBox="0 0 960 540" role="img" aria-label="${map.name} battlefield">
       ${art ? `<image href="${art.terrain}" width="960" height="540" opacity="0.9" preserveAspectRatio="none" />` : ""}${routes}${spawns}
-      ${art ? `<image href="${art.base}" x="${map.base.x - 59}" y="${map.base.y - 62}" width="118" height="125" />` : ""}</svg>`;
+      ${art && preview.base ? `<image href="${art.base}" x="${preview.base.x - 59}" y="${preview.base.y - 62}" width="118" height="125" />` : ""}</svg>`;
   }
 
   function render() {
@@ -172,7 +184,7 @@ export function createCampaign(ctx: PageContext) {
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
-        <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small></span></button>`;
+        <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(stageLaurels(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
     // Authored chapters first; later ones show as locked until their stages exist.
     const tabs = chapters.map((entry) => {
@@ -185,6 +197,13 @@ export function createCampaign(ctx: PageContext) {
       tabs.push(`<button type="button" class="td-camp-chapter-tab" disabled>Chapter ${id}<small>Coming soon</small></button>`);
     }
     chaptersEl.innerHTML = tabs.join("");
+    // Chapter rating track: points earned and the milestone rewards (paid automatically).
+    const track = chapterLaurels(campaign, p, chapter.id);
+    laurelTrackEl.hidden = !track.milestones.length;
+    laurelTrackEl.innerHTML = `<div class="td-camp-laurel-total">${laurelIcon(true)}<strong>${track.earned}</strong><span>/ ${track.max}</span></div>
+      <div class="td-camp-laurel-meter"><span style="width:${track.max ? Math.round((track.earned / track.max) * 100) : 0}%"></span></div>
+      <ol class="td-camp-laurel-goals">${track.milestones.map((m: any) => `<li class="${m.paid ? "is-paid" : ""}">
+        <span class="td-camp-laurel-need">${laurelIcon(m.paid)}${m.laurels}</span>${rewardHtml(m.rewards)}${m.paid ? '<span class="td-camp-laurel-done">Received</span>' : ""}</li>`).join("")}</ol>`;
   }
 
   function renderDrawer() {
@@ -214,8 +233,13 @@ export function createCampaign(ctx: PageContext) {
             ${boss ? `<div><dt>Boss</dt><dd>${boss}</dd></div>` : ""}
             ${done ? `<div><dt>Best</dt><dd>${done.bestLives}/${stage.lives} lives</dd></div>` : ""}
           </dl></section>
+        <section><h3 class="td-label">Goals</h3>
+          <ul class="td-camp-drawer-goals">${laurelLives(campaign, stage).map((lives: number, i: number) => {
+            const earned = i < stageLaurels(campaign, p, stage);
+            return `<li class="${earned ? "is-earned" : ""}">${laurelIcon(earned)}<span>${i === 0 ? "Clear the stage" : `Keep ${lives} of ${stage.lives} lives`}</span></li>`;
+          }).join("")}</ul></section>
         <section><h3 class="td-label">Rewards</h3>
-          ${first.length ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}
+          ${first.length && !replay ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}
           ${repeat.length ? `<div class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardHtml(repeat)}</div>` : ""}</section>
         <section><h3 class="td-label">Recommended Might</h3>
           <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
@@ -483,7 +507,7 @@ export function createCampaign(ctx: PageContext) {
 
   // Summon screen: the banner, its cost, the player's Divine Seals and Seal Dust, x1 / x10.
   // `fresh` (entering the screen) closes the last reveal.
-  // Summonable roster (campaign.js summonableHeroes): stage reward heroes join once earned.
+  // Summonable roster (campaign.js summonableHeroes): every campaign hero is available.
   const allHeroIds = (): string[] => summonableHeroes(campaign, progress(), data.heroes);
   const stars = (n: number, max = campaign.heroStars?.max ?? 5) => `<span class="td-stars" aria-label="${n} of ${max} stars">${"★".repeat(n)}<span aria-hidden="true">${"★".repeat(Math.max(0, max - n))}</span></span>`;
   function renderSummon(fresh = false) {
@@ -534,7 +558,7 @@ export function createCampaign(ctx: PageContext) {
       return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
     }).join("");
     q("[data-td-summon-source]").textContent = nextStage(campaign, p)
-      ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. Stage-reward heroes join this banner once earned."
+      ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. All Legendary heroes are in the pool."
       : "All current campaign stages are cleared. Divine Seals still come from replays (a quarter of first-clear), the Daily Trial goal, finished Expeditions and Seal Dust.";
     // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals.
     const d = summonCfg.dust ?? {};

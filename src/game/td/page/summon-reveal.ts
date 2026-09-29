@@ -1,6 +1,6 @@
 // Summon reveal (M27b): the full-screen stage a summon opens over the Summon screen. Cards
-// deal in face down; the back's glow tells the tier (gold: the featured hero, purple: an S or
-// A tier hero, none: the rest). A tap flips one card, Reveal all flips the rest, and the
+// deal in face down; the back's glow tells the rarity (gold: legendary, purple: epic,
+// none: common). A tap flips one card, Reveal all flips the rest, and the
 // result bar offers the same summon again or closing. Face-up cards are art only (plus a small New tag); names are in each card's accessible label. The summon itself
 // is already paid and saved before the stage opens; this module only shows it.
 import type { PageContext } from "./context";
@@ -13,7 +13,6 @@ export type RevealOptions = {
   wallet: string; // trusted markup: the Divine Seal balance after this summon
 };
 
-const HIGH_TIERS = new Set(["S", "A"]);
 const FLIP_GAP_MS = 140; // Reveal all: delay between cards
 
 // Rows of the card layout: 10 cards as 3 / 4 / 3, like a hand spread on the table.
@@ -41,13 +40,16 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   let timers: number[] = [];
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const glowOf = (id: string) => (id === featured ? "gold" : HIGH_TIERS.has(heroById.get(id)?.tier) ? "purple" : "none");
-  const glowName: Record<string, string> = { gold: "featured hero", purple: "high tier hero", none: "hero" };
+  const glowOf = (id: string) => {
+    const rarity = heroById.get(id)?.rarity;
+    return rarity === "legendary" ? "gold" : rarity === "epic" ? "purple" : "none";
+  };
+  const glowName: Record<string, string> = { gold: "legendary hero", purple: "epic hero", none: "common hero" };
 
   function cardHtml(id: string, index: number) {
     const hero = heroById.get(id) ?? { name: id, class: "" };
     const glow = glowOf(id);
-    return `<button type="button" class="td-summon-flip td-summon-flip--${glow}" data-td-summon-card="${index}" style="--i:${index}" aria-label="Unrevealed card ${index + 1}, ${glowName[glow]}">` +
+    return `<button type="button" class="td-summon-flip td-summon-flip--${glow}${id === featured ? " is-featured" : ""}" data-td-summon-card="${index}" style="--i:${index}" aria-label="Unrevealed card ${index + 1}, ${id === featured ? "featured " : ""}${glowName[glow]}">` +
       `<span class="td-summon-flip-inner">` +
       `<span class="td-summon-face td-summon-face--back" aria-hidden="true"></span>` +
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +

@@ -2,23 +2,14 @@
 // Menu screens (M22 app shell): app bar plus one visible screen at a time. Screen ids
 // match data-td-screen; src/game/td/page/nav.ts switches them and keeps browser history
 // in step. Blessings, help and save data are hosts: panels.ts moves those panels in.
-import { mapSceneFor } from "../../game/td/map-scene.js";
-import { mapLanes, routeStrokes } from "../../game/td/lanes.js";
+import { mapPreviewModel, routePreviewPoints } from "../../game/td/map-preview.js";
 import { CHALLENGES } from "../../game/td/challenges.js"; // M20 badges, filled by renderChallengeBadges
 import tuning from "../../data/gameBalance.tuning.json";
 import TdSoundControls from "./TdSoundControls.astro";
 import TdGlossaryContent from "./TdGlossaryContent.astro";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
 const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
-const previews = maps.map((entry: any) => ({
-  id: entry.id,
-  name: entry.name,
-  bossName: bossNames[entry.id],
-  art: mapSceneFor(entry)?.assets ?? null,
-  spawns: mapLanes(entry).map((lane: any) => lane.spawn),
-  base: entry.base,
-  routes: routeStrokes(entry).map((points: number[][]) => points.map(([x, y]) => `${x},${y}`).join(" ")),
-}));
+const previews = maps.map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
 const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
@@ -210,6 +201,7 @@ const modes = [
           <p class="td-camp-progress" data-td-camp-progress></p>
         </div>
         <div class="td-camp-stages" role="group" aria-label="Stages" data-td-camp-stages></div>
+        <section class="td-camp-laurels" aria-label="Chapter rating rewards" data-td-camp-laurels hidden></section>
         <nav class="td-camp-chapters" aria-label="Chapters" data-td-camp-chapters></nav>
       </div>
       <!-- Stage details: tapping a stage card slides this in from the right. -->
@@ -329,10 +321,10 @@ const modes = [
             <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
               <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
                 {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.9" preserveAspectRatio="none" />}
-                {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
+                {preview.routes.map((points: number[][]) => <polyline class="td-map-preview-path" points={routePreviewPoints(points)} />)}
                 {preview.art && <>
                   {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
-                  <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
+                  {preview.base && <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />}
                 </>}
               </svg>
               <span class="td-map-card-copy">

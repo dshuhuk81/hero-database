@@ -14,7 +14,7 @@ export type ExpeditionState = { seed: number; stages: string[]; stage: number; r
 // Campaign progress (M26, campaign.js): owned heroes, cleared stages with their best
 // lives, the last squad, currencies, hero levels and the summon count; versioned on its own so it can
 // migrate without touching Free Play.
-export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>> };
+export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>>; milestones?: Record<string, number[]> };
 
 // Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
 export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };

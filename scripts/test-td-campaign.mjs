@@ -5,7 +5,7 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
-import { allStages, currentChapter, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 
 // Chapter-aware progress (audit step 4): a second chapter unlocks after the first one's last
@@ -179,5 +179,48 @@ stages.forEach((stage, i) => {
   assert.ok(m({ ...base, levels: { [hero.id]: 5 } }) > m(base), "Might rises with level");
   assert.ok(m({ ...base, stars: { [hero.id]: 3 } }) > m(base), "Might rises with stars");
   assert.ok(m({ ...base, evolution: { [hero.id]: 2 } }) > m(base), "Might rises with evolution");
+}
+
+// --- Stage laurels and chapter milestones (M26 sprint 10) ---
+{
+  const chapter = campaign.chapters[0];
+  const stage = chapter.stages.find((entry) => entry.lives === 15);
+  assert.deepEqual(laurelLives(campaign, stage), [0, 8, 14], "15 lives: any clear, 8+, 14+");
+  let progress = newCampaignProgress(campaign);
+  assert.equal(stageLaurels(campaign, progress, stage), 0, "uncleared stage has none");
+  const rated = (lives) => stageLaurels(campaign, { ...progress, cleared: { [stage.id]: { clears: 1, bestLives: lives } } }, stage);
+  assert.deepEqual([rated(1), rated(7), rated(8), rated(13), rated(14), rated(15)], [1, 1, 2, 2, 3, 3], "laurel thresholds");
+  // Clearing stages in order: milestones pay automatically and only once.
+  const byId = Object.fromEntries(chapter.stages.map((entry) => [entry.id, entry]));
+  const gold0 = progress.currencies.gold;
+  let paidTotal = [];
+  let firstLaurels = null;
+  for (const entry of chapter.stages) {
+    const result = finishCampaignStage(campaign, progress, entry.id, { won: true, lives: entry.lives });
+    firstLaurels ??= result.laurels;
+    paidTotal = paidTotal.concat(result.milestones.map((m) => m.laurels));
+    progress = result.progress;
+  }
+  assert.deepEqual(firstLaurels, { before: 0, after: 3 }, "a flawless first clear earns 3");
+  assert.deepEqual(paidTotal, [10, 20, 30], "all three milestones paid on the way");
+  const info = chapterLaurels(campaign, progress, chapter.id);
+  assert.deepEqual([info.earned, info.max, info.milestones.every((m) => m.paid)], [30, 30, true], "chapter at 30 / 30, all paid");
+  const replay = finishCampaignStage(campaign, progress, chapter.stages[0].id, { won: true, lives: 20 });
+  assert.deepEqual(replay.milestones, [], "no second payout");
+  assert.deepEqual(payMilestones(campaign, progress).paid, [], "payMilestones idempotent");
+  const expectedGold = chapter.stages.reduce((n, entry) => n + entry.rewards.filter((r) => r.id === "gold").reduce((m, r) => m + r.amount, 0), 0)
+    + chapter.milestones.flatMap((m) => m.rewards).filter((r) => r.id === "gold").reduce((n, r) => n + r.amount, 0);
+  assert.equal(progress.currencies.gold - gold0, expectedGold, "milestone gold added once");
+  assert.ok(byId[chapter.stages[0].id], "stage lookup");
+  // A loss changes nothing and reports no laurels.
+  assert.deepEqual([finishCampaignStage(campaign, progress, stage.id, { won: false, lives: 0 }).laurels], [null], "loss: no laurels");
+  // v7 save with 12 laurels already earned: the 10 milestone is paid once on load.
+  const cleared = Object.fromEntries(chapter.stages.slice(0, 4).map((entry) => [entry.id, { clears: 1, bestLives: entry.lives }]));
+  const v7 = { version: 7, owned: [...campaign.starters], cleared, currencies: { gold: 0, heroXp: 0, divineSeals: 0, sealDust: 0 } };
+  const migrated = sanitizeCampaign(v7, campaign, heroIds);
+  const ten = chapter.milestones.find((m) => m.laurels === 10);
+  assert.deepEqual([migrated.version, migrated.milestones[chapter.id], migrated.currencies.gold], [CAMPAIGN_SAVE_VERSION, [10], ten.rewards.find((r) => r.id === "gold").amount], "v7 -> v8 pays reached milestones once");
+  assert.equal(sanitizeCampaign(migrated, campaign, heroIds).currencies.gold, migrated.currencies.gold, "not paid again on reload");
+  assert.deepEqual(sanitizeCampaign({ ...migrated, milestones: { [chapter.id]: [10, 999, "x"] } }, campaign, heroIds).milestones[chapter.id], [10], "unknown milestones dropped");
 }
 console.log("Tower defense campaign checks passed.");

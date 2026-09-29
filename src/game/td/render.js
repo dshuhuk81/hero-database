@@ -773,7 +773,41 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   const heroSprites = new Map(); // entityId -> Container
 
+  // Melee strikes move the token (presentation only; sim positions never change).
+  // Assassins dash all the way to the enemy and back, so a dagger hit never reads as
+  // ranged; other road heroes lean in a little. Sim time, so pause and speed apply.
+  const lungeSeen = new WeakSet();
+  function scanLunges() {
+    if (reducedMotion) return;
+    for (const effect of game.effects) {
+      if (lungeSeen.has(effect)) continue;
+      lungeSeen.add(effect);
+      if (effect.type !== "dash" && !(effect.type === "hit" && effect.melee)) continue;
+      const container = heroSprites.get(effect.sourceId);
+      if (!container) continue;
+      const tx = effect.x2 ?? effect.x, ty = effect.y2 ?? effect.y;
+      const last = container._lunge;
+      // A dash and its hit arrive together; keep the dash.
+      if (last && last.at === game.time && last.dash) continue;
+      container._lunge = { at: game.time, dx: tx - effect.sourceX, dy: ty - effect.sourceY, dash: effect.type === "dash" };
+    }
+  }
+  function lungeOffset(unit, container) {
+    const l = container._lunge;
+    if (!l) return [0, 0];
+    const t = game.time - l.at;
+    const assassin = unit.ability === "execute";
+    const out = assassin ? 0.1 : 0.07, stay = assassin ? 0.06 : 0.02, back = assassin ? 0.14 : 0.11;
+    if (t < 0 || t > out + stay + back) { container._lunge = null; return [0, 0]; }
+    const dist = Math.hypot(l.dx, l.dy) || 1;
+    // Stop just short of the enemy so the blade, not the token, lands on it.
+    const reach = assassin ? Math.max(0, dist - 22) : Math.min(14, dist * 0.25);
+    const k = t < out ? 1 - (1 - t / out) ** 2 : t < out + stay ? 1 : (1 - (t - out - stay) / back) ** 2;
+    return [l.dx / dist * reach * k, l.dy / dist * reach * k];
+  }
+
   function syncHeroes() {
+    scanLunges();
     const seen = new Set();
     for (const unit of game.heroes) {
       seen.add(unit.entityId);
@@ -837,7 +871,8 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function updateHeroSprite(unit, container) {
-    container.position.set(unit.x, unit.y);
+    const [lx, ly] = lungeOffset(unit, container);
+    container.position.set(unit.x + lx, unit.y + ly);
     // Assassin veil (class ultimate): translucent while nothing can hurt it.
     container.alpha = game.isVeiled?.(unit) ? 0.45 : 1;
 
