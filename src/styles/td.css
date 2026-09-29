@@ -338,7 +338,7 @@
 .td-hero-profile-copy { grid-area: copy; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; padding: clamp(20px, 2.5vw, 32px); border-left: 1px solid var(--border-subtle); }
 .td-hero-summary h2 { margin: var(--space-2) 0 var(--space-1); color: var(--text-bright); font-size: clamp(30px, 4vw, 46px); line-height: 1; }
 .td-hero-summary > p { margin: var(--space-2) 0; color: var(--text-secondary); line-height: var(--leading-normal); }
-.td-hero-profile-copy .td-hero-role { display: flex; align-items: center; gap: 6px; color: var(--accent-gold); font-weight: var(--weight-bold); }
+.td-hero-summary .td-hero-role { display: flex; align-items: center; gap: 6px; color: var(--accent-gold); font-weight: var(--weight-bold); }
 .td-hero-level-head { display: flex; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-4); color: var(--text-bright); }
 .td-hero-level-head span { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .td-hero-profile .td-camp-pips { margin-block: var(--space-2) var(--space-4); }
@@ -346,8 +346,7 @@
 .td-hero-profile-stats div { gap: var(--space-1); }
 .td-hero-profile-stats dt { color: var(--text-secondary); }
 .td-hero-profile-stats dd { color: var(--text-bright); font-size: var(--td-fs-card); }
-.td-hero-tab-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; margin-top: var(--space-4); padding-right: var(--space-1); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
-.td-hero-profile-copy.is-detail-only .td-hero-tab-panel { margin-top: 0; }
+.td-hero-tab-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; padding-right: var(--space-1); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
 .td-hero-skill { display: grid; align-content: start; min-height: 100%; }
 .td-hero-skill > header { display: grid; gap: var(--space-1); padding-bottom: var(--space-3); }
 .td-hero-skill p { margin: 0; color: var(--text-secondary); font-size: var(--td-fs-body); line-height: var(--leading-normal); }
@@ -363,7 +362,6 @@
 .td-skill-max { color: var(--accent-gold); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
 .td-hero-skill--empty { min-height: 0; }
 .td-hero-upgrade { display: grid; margin-top: auto; padding-top: var(--space-4); }
-.td-hero-profile-copy.is-detail-only .td-hero-upgrade { margin-top: var(--space-4); }
 .td-hero-upgrade .td-camp-levelup { grid-column: auto; }
 @media (max-width: 600px) {
   .td-hero-profile { grid-template-columns: 1fr; grid-template-rows: 300px auto minmax(520px, auto); grid-template-areas: "art" "tabs" "copy"; height: auto; min-height: 0; }
@@ -665,6 +663,8 @@
 .td-pop-cost { font-variant-numeric: tabular-nums; }
 .td-pop-preview { margin: 0; color: var(--text-muted); font-size: var(--td-fs-body); line-height: var(--leading-normal); }
 .td-pop-actions { flex: 0 0 auto; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-2); padding: var(--space-3); border-top: 1px solid var(--border-subtle); }
+.td-pop-action-row { grid-column: 1 / -1; }
+.td-pop-action-row[hidden], .td-pop-action-row:empty { display: none; }
 .td-pop-actions [data-pop-sell].is-armed { border-color: var(--td-warn); color: var(--td-warn); }
 .td-pop-actions .action-button { padding: 0 var(--space-2); }
 .td-pop-details { display: grid; gap: var(--space-1); }
@@ -2039,25 +2039,64 @@ button .td-cur { color: inherit; }
 .td-app .td-bsummary { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
 .td-app .td-bchip { flex: 0 0 auto; }
 
-/* Heroes: roster left, profile right; only the roster and the hero copy scroll. The app bar
-   already says "Heroes" and the app bar wallet shows the currencies, so the head is hidden. Tabs run across the copy and the
-   skill upgrade sits under its text, so descriptions get the full column width. */
+/* Heroes (Watcher of Realms pattern): narrow three-column roster, the hero art as the
+   stage with name and Might over it, a 250px upgrade flyout for the active tab and an icon
+   tab rail on the right edge. Only the roster and the flyout scroll; the upgrade button
+   stays pinned to the flyout bottom. The app bar already says "Heroes" and shows the wallet. */
 .td-app .td-heroes-screen { grid-template-rows: minmax(0, 1fr); gap: var(--space-2); height: 100%; }
 .td-app .td-heroes-head { display: none; }
-.td-app .td-heroes-workspace { grid-template-columns: 172px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: var(--space-2); min-height: 0; max-height: none; }
-.td-app .td-heroes-browser { height: auto; gap: var(--space-2); padding: var(--space-2); }
-.td-app .td-heroes-browser .td-camp-heroes { overscroll-behavior: contain; touch-action: pan-y; }
-.td-app .td-hero-tile-foot .td-stars { font-size: 11px; letter-spacing: 0; }
-.td-app .td-hero-profile { grid-template-columns: minmax(110px, 20%) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "art tabs" "art copy"; height: 100%; min-height: 0; }
-.td-app .td-hero-tabs { flex-direction: row; border-left: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
-.td-app .td-hero-tab { flex: 1; min-height: 44px; padding-inline: 4px; border-bottom: 0; border-right: 1px solid var(--border-subtle); text-align: center; }
-.td-app .td-hero-tab:last-child { border-right: 0; }
-.td-app .td-hero-profile-copy { padding: var(--space-3) var(--space-4); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
-.td-app .td-hero-tab-panel { flex: 0 0 auto; margin-top: var(--space-2); padding-right: 0; overflow: visible; }
-.td-app .td-hero-summary h2 { margin-top: var(--space-1); font-size: 26px; }
-.td-app .td-hero-summary > p { margin: var(--space-1) 0; }
-.td-app .td-hero-profile-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.td-app .td-heroes-workspace { grid-template-columns: 176px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: var(--space-2); min-height: 0; max-height: none; }
+.td-app .td-heroes-browser { height: auto; gap: var(--space-1); padding: var(--space-2) var(--space-1) var(--space-2) var(--space-2); }
+.td-app .td-heroes-browser .td-camp-heroes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; overscroll-behavior: contain; touch-action: pan-y; }
+.td-app .td-hero-tile { border-radius: var(--radius-sm); }
+.td-app .td-hero-tile-class { top: 3px; left: 3px; width: 18px; height: 18px; }
+.td-app .td-hero-tile-class img { width: 11px; height: 11px; }
+.td-app .td-hero-tile-evo { top: 3px; right: 3px; min-width: 18px; height: 18px; padding: 0 3px; border-radius: 5px; }
+.td-app .td-hero-tile-foot { gap: 1px; padding: 0 2px 4px; }
+.td-app .td-hero-tile-lv { font-size: var(--td-fs-number); }
+.td-app .td-hero-tile-lv small { font-size: var(--td-fs-label); }
+.td-app .td-hero-tile-foot .td-stars { font-size: 8px; letter-spacing: 0; }
+.td-app .td-hero-profile { grid-template-columns: minmax(0, 1fr) 250px 76px; grid-template-rows: minmax(0, 1fr); grid-template-areas: "art copy tabs"; height: 100%; min-height: 0; }
+.td-app .td-hero-profile-art::after { height: 60%; background: linear-gradient(transparent, rgb(9 9 16 / .94) 75%); }
+.td-app .td-hero-profile-art img { object-fit: cover; object-position: 50% 12%; }
+.td-app .td-hero-summary { position: absolute; inset: auto 0 0; z-index: 1; padding: var(--space-3); }
+.td-app .td-hero-summary h2 { margin: 0; font-size: 24px; }
+.td-app .td-hero-summary > p { margin: 2px 0 0; line-height: 1.3; }
+.td-app .td-hero-role { font-size: var(--td-fs-label); }
+.td-app .td-hero-might { font-size: var(--td-fs-label); }
+.td-app .td-hero-might strong { font-size: var(--td-fs-section); }
+.td-app .td-hero-badges .td-stars { font-size: 14px; }
+.td-app .td-hero-badges .td-evo-badge { padding: 0 6px; }
+.td-app .td-hero-profile-copy { padding: var(--space-3) var(--space-3) 0; background: rgb(9 9 16 / .35); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
+.td-app .td-hero-tab-panel { flex: 1 0 auto; overflow: visible; padding-right: 0; }
+.td-app .td-hero-tab-copy { font-size: var(--td-fs-label); line-height: var(--leading-normal); }
+.td-app .td-hero-level-head { margin-top: var(--space-1); font-size: var(--td-fs-body); }
+.td-app .td-hero-profile .td-camp-pips { margin-block: var(--space-1) var(--space-2); }
+.td-app .td-hero-profile-stats { grid-template-columns: 1fr; gap: 2px; padding: var(--space-2) 0; }
+.td-app .td-hero-profile-stats div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); }
+.td-app .td-hero-profile-stats dd { font-size: var(--td-fs-body); }
+.td-app .td-hero-layers { gap: var(--space-1); margin-top: var(--space-2); }
+.td-app .td-hero-layers dd { font-size: var(--td-fs-label); }
+.td-app .td-hero-upgrade { position: sticky; bottom: 0; z-index: 1; margin-top: auto; padding-block: var(--space-2); background: linear-gradient(transparent, var(--bg-raised) 30%); }
+.td-app .td-hero-upgrade--split { flex-wrap: nowrap; }
+.td-app .td-hero-upgrade--split > * { flex: 1; min-width: 0; }
+.td-app .td-hero-upgrade--split .td-camp-levelup { flex: 1.5; min-width: 0; white-space: nowrap; }
+.td-app .td-fodder { margin: var(--space-2) 0; padding: var(--space-2); }
+.td-app .td-fodder-slot { width: 48px; height: 60px; }
+.td-app .td-fodder-slot.is-filled img { height: 40px; }
+.td-app .td-fodder-pick, .td-app .td-evo-slot { width: 64px; }
+.td-app .td-fodder-pick img, .td-app .td-evo-slot img { height: 44px; }
+.td-app .td-evo-slot--essence > span { height: 44px; }
+.td-app .td-evo-tiers li { gap: var(--space-2); padding: var(--space-1) var(--space-2); }
+.td-app .td-evo-mark { width: 24px; height: 24px; font-size: 10px; }
+.td-app .td-hero-tabs { flex-direction: column; border-left: 1px solid var(--border-subtle); }
+.td-app .td-hero-tab { display: grid; flex: 1; place-content: center; justify-items: center; gap: 4px; min-height: 0; padding: var(--space-1) 2px; border-bottom: 1px solid var(--border-subtle); border-right: 0; font-size: var(--td-fs-label); letter-spacing: .02em; text-align: center; }
+.td-app .td-hero-tab:last-child { border-bottom: 0; }
+.td-app .td-hero-tab .td-icon { width: 22px; height: 22px; stroke-width: 1.75; }
+.td-app .td-hero-tab.is-active { box-shadow: inset 3px 0 0 var(--accent-gold); background: var(--surface-tint); }
 .td-app .td-hero-skill { min-height: 0; }
+.td-app .td-hero-skill p { font-size: var(--td-fs-label); }
+.td-app .td-skill-copy strong { font-size: var(--td-fs-body); }
 .td-app .td-skill-row { grid-template-columns: 24px minmax(0, 1fr); gap: var(--space-2) var(--space-3); padding: var(--space-3) 0; }
 .td-app .td-skill-glyph { font-size: 18px; }
 .td-app .td-skill-rank { grid-column: 2; grid-auto-flow: column; justify-content: space-between; align-items: center; }

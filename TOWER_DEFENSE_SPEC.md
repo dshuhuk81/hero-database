@@ -202,8 +202,11 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   step and to the ultimate's primary target at cast, so cones (cleave, knockback, petrify)
   and spreads (volley, moon barrage) centre on that target. `rotation` remains as internal
   combat/effect state; no facing tick is drawn.
-- Hero panel (`page/popover.ts`): Details starts collapsed on phones (max-width 600px or
-  max-height 560px) and open on larger screens; the player's toggle is kept for the session.
+- Hero panel (`page/popover.ts`): Details is an accordion that starts collapsed on every hero
+  selection (it also carries the "battle ranks reset" note). The upgrade flow lives in the
+  pinned footer: a one-line preview of the next upgrade sits above Upgrade/Sell, and the rank III
+  focus, rank IV path and training picks open there too, with the Upgrade button turning into a
+  quiet Cancel while a pick is open.
   Side: portrait stages get a sheet below the map. Otherwise the panel pushes the map aside
   when the map keeps 520px, else overlays it. On desktop (fine pointer) it always sits on the
   right and pushes when it would cover the hero; only touch landscape docks on the side away
@@ -249,7 +252,11 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   squash); a jump in `attackClock` plays a swing (wind-up, then a lunge toward `heldBy`,
   or a recoil for ranged shots); an hp drop above 1.5% of max hp (DoT ticks excluded)
   flashes an additive copy of the sprite and shakes it; flyers get a wingbeat; dying
-  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still.
+  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. Switching
+  it on for everyone is the `ENEMY_ANIM` line. Next steps toward real animation frames
+  (sheet format, packer, `AnimatedSprite`, free art workflow) are in
+  `docs/tower-defense-ui-plan.md` (M7); the frame format is in
+  `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
 - Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
   6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
   9 brute/mender/shieldbearer/runner, 10 boss + escort.

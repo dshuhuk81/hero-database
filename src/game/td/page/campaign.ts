@@ -334,13 +334,16 @@ export function createCampaign(ctx: PageContext) {
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
     const skill = data.tuning.heroSkills?.[hero.id];
     const tabLabels = { level: "Level", stars: "Stars", evolution: "Evolution", skills: "Skills" } as const;
-    const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}">${tabLabels[id]}</button>`).join("");
+    const tabIcons = { level: "M7 13l5-5 5 5M7 19l5-5 5 5", stars: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z", evolution: "M12 3l8 9-8 9-8-9zM8 12h8", skills: "M13 2L5 13h6l-1 9 8-11h-6z" } as const;
+    const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}"><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${tabIcons[id]}" fill="none" stroke-linejoin="round" /></svg>${tabLabels[id]}</button>`).join("");
     const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : heroTab === "skills" ? skillsPanel(p, hero, skill) : levelPanel(p, hero);
-    const summary = heroTab === "level" ? `<div class="td-hero-summary"><span class="td-label">Selected hero</span><h2>${hero.name}</h2>
-      <p class="td-hero-role">${classIconImg(hero.class, 18)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
+    // Identity sits over the hero art on every tab; the upgrade flyout beside it only
+    // holds the active tab.
+    const evo = heroEvolution(p, hero.id);
+    const summary = `<div class="td-hero-summary"><h2>${hero.name}</h2>
+      <p class="td-hero-role">${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>
       <p class="td-hero-might"><strong>${might(hero).toLocaleString()}</strong> Might</p>
-      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
-      ${powerLayers(p, hero)}</div>` : "";
+      <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p></div>`;
     // Redrawing replaces the scroll containers: keep their offsets when the same hero and tab
     // redraw (an upgrade), so the button just pressed stays under the pointer.
     const detailEl = q("[data-td-hero-detail]");
@@ -349,8 +352,8 @@ export function createCampaign(ctx: PageContext) {
     const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
     heroDetailKey = detailKey;
     detailEl.innerHTML = `<article class="td-hero-profile">
-      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
-      <div class="td-hero-profile-copy${heroTab === "level" ? "" : " is-detail-only"}">${summary}
+      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}</div>
+      <div class="td-hero-profile-copy">
       <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
       </div>
       <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
@@ -428,6 +431,7 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-hero-level-head"><strong>Campaign level ${level}</strong><span>${level} / ${cap}</span></div>
       <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: band }, (_, n) => `<i${bandStart + n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
       ${statRows(hero, heroScale(p, hero.id), cost ? heroScale(p, hero.id, level + 1) : null)}
+      ${powerLayers(p, hero)}
       <div class="td-hero-upgrade">${button}</div>`;
   }
 

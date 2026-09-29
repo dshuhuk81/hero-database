@@ -49,11 +49,6 @@ export function createPopover(ctx: PageContext) {
   const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
   const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
-  // Details section state, kept between selections once the player toggles it. Until then it
-  // starts collapsed on phones (portrait or short landscape), so the Upgrade action shows first.
-  let detailsChoice: boolean | null = null;
-  const compactScreen = window.matchMedia?.("(max-width: 600px), (max-height: 560px)");
-  const detailsDefault = () => detailsChoice ?? !compactScreen?.matches;
   const coarsePointer = window.matchMedia?.("(pointer: coarse)");
   let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
   let lastHealthUpdate = 0;
@@ -67,8 +62,7 @@ export function createPopover(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     state.selectedEntityId = unit.entityId;
     session.game.uiSelected = unit.entityId;
-    popDetails.hidden = !detailsDefault();
-    popDetailsButton.setAttribute("aria-expanded", String(detailsDefault()));
+    setSection(popDetailsButton, popDetails, false); // always starts collapsed
     focusOpen = false;
     sellArmed = false;
     forcedPush = false;
@@ -232,14 +226,24 @@ export function createPopover(ctx: PageContext) {
     const showPath = focusOpen && info.ok && !!info.needsPath;
     popFocus.hidden = !showFocus;
     popPath.hidden = !showPath;
+    // While the pick is open the Upgrade button closes it again.
+    const picking = showFocus || showPath;
+    if (picking) { popUpgradeLabel.textContent = "Cancel"; popCost.textContent = ""; }
+    popUpgrade.classList.toggle("action-button--primary", !picking);
+    popUpgrade.classList.toggle("action-button--quiet", picking);
     popUpgrade.setAttribute("aria-controls", info.needsPath ? "td-pop-path" : "td-pop-focus");
     popUpgrade.setAttribute("aria-expanded", String(showFocus || showPath));
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
   }
 
+  function setSection(button: HTMLButtonElement, body: HTMLElement, open: boolean) {
+    body.hidden = !open;
+    button.setAttribute("aria-expanded", String(open));
+  }
+
   function detailsHtml(unit: any) {
     const game = state.session!.game;
-    const lines: string[] = [];
+    const lines: string[] = ["<p>Battle ranks reset each battle or when this hero falls.</p>"];
     const role = (CLASS_ROLES as Record<string, string>)[unit.class];
     if (role) lines.push(`<p class="td-aura-line">${unit.class}: ${role}</p>`);
     const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
@@ -403,9 +407,7 @@ export function createPopover(ctx: PageContext) {
     const unit = findUnit(state.selectedEntityId);
     if (!unit) return;
     const open = !!popDetails.hidden; // hidden may also be "until-found" in the DOM types
-    detailsChoice = open; // kept for the rest of the session
-    popDetails.hidden = !open;
-    popDetailsButton.setAttribute("aria-expanded", String(open));
+    setSection(popDetailsButton, popDetails, open);
     if (open) popDetails.innerHTML = detailsHtml(unit);
   });
 

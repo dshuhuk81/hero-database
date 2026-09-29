@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026. The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026, M7 (enemy animation) open with a procedural prototype behind `?anim` (September 29, 2026). The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
 
 ## Status
 
@@ -60,6 +60,35 @@ Screenshots of another mobile TD's campaign map, squad select, in-combat HUD and
 Squad screen follow-up (September 28, 2026, owner measurements against a gacha team screen): stage head with Clear heroes / Quick pick removed (the drawer already shows the stage); roster as two rows of bare 50 x 75 art cards scrolling sideways with "Lv N" over the foot (name in tooltip/label; locked heroes dimmed, no text); lineup at the bottom without a panel, 84 x 84 slots centered with cost and one 11px hint line; no screen footer, Might and Start sit right of the slots. Coverage line, deploy-cap note and Quick pick message removed. Fits 844 x 390 without vertical scroll. Details in `TOWER_DEFENSE_SPEC.md` (Squad selection).
 
 Skipped on purpose: a Lord-hero/support-hero slot pair from the reference's squad screen - would need a new data model and an undefined gameplay effect; not adopted without a design decision. Already equivalent and left alone: the redeploy-cost deck badge and the per-unit ultimate charge ring (both existed, just canvas-side rather than reference-style HTML). Checks: `npm run test:tower-defense`, `npm run check`, manual Chromium pass at 420x900 via the Playwright skill.
+
+## M7: Enemy animation (open)
+
+Goal: enemies that walk, strike, react to hits and die, in the painted style of the current full-body sprites, with free tools only while this is a test.
+
+### Tried and dropped (September 29, 2026)
+
+3D via Meshy.ai: `grunt-v2` became a textured model and `scripts/td-render-3d.py` (local only, `*.py` is gitignored) rendered it in Blender headless at the sprite angle. Dropped by the owner: the render looked flatter than the painted sprite, rigging needed Meshy's paid skeleton export or a Mixamo detour, and every step costs credits. Do not reopen unless the owner asks.
+
+### Step 1: procedural motion (done, prototype)
+
+`animateEnemy` in `render.js`, only with `?anim` in the URL (details in `TOWER_DEFENSE_SPEC.md`, section 6). Walk bounce and lean, attack wind-up and lunge, hit flash and shake, wingbeat, topple on death; no new assets. Open: tune the amounts in play, then decide whether it ships on by default. Switching it on is the `ENEMY_ANIM` line.
+
+### Next steps: real animation frames, free workflow
+
+Each step is usable on its own; stop when the result is good enough at 44 to 108 px.
+
+1. **Frame format and packer.** Fix the sheet format first (see "Animation frames" in `src/game/td/sprite-spec-for-ai.md`: 256x256 frames, feet on the same line as the stills, facing right, clips `walk`, `attack`, `hit`, `death`). Add `scripts/build-td-enemy-anims.mjs` (sharp, already a dependency): a folder of numbered PNGs per clip becomes one WebP sheet plus a JSON atlas, versioned file names for the one-year R2 cache.
+2. **Renderer support.** Load the atlas with the full-body sprite; a kind with a sheet uses `PIXI.AnimatedSprite` and picks the clip from the same signals `animateEnemy` already reads (distance moved, `attackClock` jump, hp drop, removal). Kinds without a sheet keep the static sprite and the procedural motion. Keep the hit flash and death fade from step 1.
+3. **Warp frames from the existing sprite (cheapest art).** Extend `scripts/td-idle-anim.py` (numpy + Pillow, already used for the recruit idle loops) with region warps: legs shear in opposite directions per step, torso leans, weapon-arm region rotates for the swing, cloth ripples. Test with `grunt` and one boss. No new drawing, no hidden limbs, so it stays a deformation, not a real step.
+4. **Cut-out puppet (best quality, most work).** Per enemy:
+   - Split the sprite into parts (head, torso, upper and lower arms, legs, weapon, shield, cape). Free options: Krita or GIMP by hand, or Meta's SAM 2 locally (runs on the Mac) for rough masks, then clean up.
+   - Fill what the parts hid (the torso behind the shield, the far leg). Hand paint in Krita, or local Stable Diffusion inpainting (ComfyUI, free) seeded from the enemy's own colors. White label rule stays: no game art as input.
+   - Rig and animate: Blender (free, already installed) with the parts as image planes on an armature, or DragonBones (free, no longer maintained). Keyframe `walk` (8 frames), `attack` (6), `hit` (3), `death` (6).
+   - Render frames headless from Blender with a transparent background at 256x256, then run the packer from step 1.
+5. **Optional experiment: local image-to-video.** ComfyUI with an open image-to-video model and `rembg` for the background is free but slow on the Mac, and the clips need hand-picked loop points. Only worth a try for the bosses.
+6. **Checks per new sheet.** Download size per kind (target well under 300 KB), frame rate on a real phone with a full wave, reduced motion (hold the first walk frame), `npm run test:tower-defense`, and a Chromium pass at phone size.
+
+Order suggestion: 1 and 2 with a warp-frame `grunt` (3), then judge in play before any cut-out work (4).
 
 ## Scope and evidence
 

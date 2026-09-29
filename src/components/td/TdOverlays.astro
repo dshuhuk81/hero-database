@@ -48,31 +48,29 @@
       <button type="button" data-target="boss"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18h16M4 18L3 8l5 4 4-6 4 6 5-4-1 10" /></svg><span>Boss first</span></button>
     </div>
     </details>
-    <section class="td-pop-section" aria-labelledby="td-pop-upgrade-title">
-      <h3 class="td-pop-heading" id="td-pop-upgrade-title">Battle upgrades</h3>
-      <p class="td-pop-preview">Resets each battle or when this hero falls.</p>
-      <div class="td-pop-focus" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
-        <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
-        <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
-        <button class="td-pop-focus-option" type="button" data-focus="range"><strong>Range <span data-focus-bonus="range"></span></strong><small data-focus-text="range"></small></button>
-      </div>
-      <div class="td-pop-focus" id="td-pop-path" data-pop-path role="group" aria-label="Choose a path" hidden>
-        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-        <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-      </div>
-      <p class="td-pop-preview" data-pop-preview></p>
-    </section>
+    <!-- Details starts collapsed on every selection. -->
     <section class="td-pop-section">
-      <button class="td-pop-details-toggle" type="button" data-pop-details aria-expanded="true" aria-controls="td-pop-details">
+      <button class="td-pop-details-toggle" type="button" data-pop-details aria-expanded="false" aria-controls="td-pop-details">
         <span>Details</span>
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
       </button>
-      <div class="td-pop-details" id="td-pop-details" data-pop-details-body></div>
+      <div class="td-pop-details" id="td-pop-details" data-pop-details-body hidden></div>
     </section>
   </div>
-  <!-- Pinned footer: Upgrade must never scroll out of view on short screens; it outranks Sell. -->
+  <!-- Pinned footer: the upgrade preview, the focus/path pick and Upgrade stay together and never
+       scroll out of view on short screens; Upgrade outranks Sell. -->
   <div class="td-pop-actions">
+    <p class="td-pop-preview td-pop-action-row" data-pop-preview></p>
+    <div class="td-pop-focus td-pop-action-row" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
+      <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
+      <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
+      <button class="td-pop-focus-option" type="button" data-focus="range"><strong>Range <span data-focus-bonus="range"></span></strong><small data-focus-text="range"></small></button>
+    </div>
+    <div class="td-pop-focus td-pop-action-row" id="td-pop-path" data-pop-path role="group" aria-label="Choose a path" hidden>
+      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
+    </div>
     <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
       <span data-pop-upgrade-label>Upgrade</span>
       <span class="td-pop-cost" data-pop-cost></span>

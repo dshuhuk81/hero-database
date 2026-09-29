@@ -76,6 +76,14 @@ Write new prompts from the myth, in the table format above. The concepts below f
 
 ---
 
+## Animation frames (planned, M7)
+Not in the game yet; the plan and the free workflow are in `docs/tower-defense-ui-plan.md` (M7). Until a kind has a sheet, it uses the still sprite with the procedural motion prototype (`?anim`). Frames for a sheet follow the still sprite's rules, so a kind can switch without resizing or re-anchoring:
+- 256x256 PNG-32 per frame, transparent, same scale as the kind's still sprite (subject about 80% of the canvas in the widest frame of all clips, not per frame).
+- Feet on the same line in every frame (the renderer anchors at 90% height); facing right.
+- Clips and frame counts: `walk` 8 (loop), `attack` 6 (strike lands on frame 3), `hit` 3, `death` 6 (last frame lying down). 12 fps.
+- Folder layout for the packer: `<kind>/<clip>/0000.png, 0001.png, ...`.
+- Same white label rule as the stills: made from our own sprites or from text, never from Motto Immortal art.
+
 ## Output Filenames
 ```
 grunt.png, runner.png, flyer.png, archer.png, brute.png
