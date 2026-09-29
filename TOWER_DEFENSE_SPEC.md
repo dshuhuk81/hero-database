@@ -198,8 +198,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   colour with a slow wave out to their range; allies inside carry a faint rim at their
   feet, allies under a timed ult buff a brighter gold rim. Recruits use the class effect
   builders in `hero-fx.js` (`CLASS_*`).
-  Melee strikes move the hero token (presentation only): Assassins dash to the enemy and
-  back, Tanks and Warriors lean in; sim positions never change.
+  Melee strikes give the hero token a short presentation-only lean; sim positions never
+  change. Assassins use 42 px contact range against approaching enemies. They can dash to
+  an unheld enemy only after it has passed their tile; the portrait remains anchored while
+  speed streaks show the catch-up strike.
 - Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
   `cursed` +30% atk / -20% aps.
   Visuals (`render.js`, built once, animated by transforms only): soft additive ground
@@ -269,11 +271,35 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   squash); a jump in `attackClock` plays a swing (wind-up, then a lunge toward `heldBy`,
   or a recoil for ranged shots); an hp drop above 1.5% of max hp (DoT ticks excluded)
   flashes an additive copy of the sprite and shakes it; flyers get a wingbeat; dying
-  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. Switching
+  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. With the
+  flag on, the drawn position glides over jumps of 8 to 60 px (the `sway` offset flips at
+  lane corners in `pointOnPath`, up to ~20 px and often backwards) and the facing only
+  turns on clearly sideways steps; without it both behave as before. Switching
   it on for everyone is the `ENEMY_ANIM` line. Next steps toward real animation frames
   (sheet format, packer, `AnimatedSprite`, free art workflow) are in
   `docs/tower-defense-ui-plan.md` (M7); the frame format is in
   `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
+- Enemy sheet test (`?anim=sheets`, M7): `scripts/build-td-enemy-anims.mjs --set <name>` packs
+  clip strips (`idle`, `walk`, `attack`, `hurt`, `death`) into
+  `public/td-local/sheets/<set>/{kind}.webp` + `.json` (Pixi spritesheet plus a `td` block: feet anchor, idle body height, fps,
+  `pixelArt` for nearest scaling). The folder is gitignored and never deployed. `render.js`
+  loads sheets for `grunt` and `archer`; such a kind swaps its still sprite for the sheet,
+  scaled so the idle body is 80% of the kind's sprite size. `animateEnemy` only picks the
+  frame on game time: attack after an `attackClock` jump, hurt after a real hit, walk from
+  distance moved (one cycle per ~0.9 body widths), idle otherwise; dying plays `death` and
+  fades. Sets: `painted` (default; warp frames from our own `grunt-v2` by
+  `scripts/td-warp-anim.py`, see below) and `pixel` (`&set=pixel`: a free pixel-art pack,
+  Orc as grunt, Soldier with bow as archer, license not confirmed, so it stays local).
+  A kind missing from a set logs one 404 and keeps its still sprite.
+- Warp frames (`scripts/td-warp-anim.py <kind> <outdir>`, numpy + Pillow, local only as
+  `*.py` is gitignored): per kind a rig in `RIGS` (hip and foot lines, leg split, shoulder,
+  weapon-arm polygon on the 256 px still). The arm is cut out as a rigid layer and the gap
+  behind it filled by colour and alpha diffusion; legs swing as pendulums from the hip, the
+  upper body bobs and breathes, the whole figure leans around the feet. Clips: idle 6, walk 8,
+  attack 6 (raise, slash on frame 3, recover), hurt 4 (lean back, white flash), death 6
+  (topple backwards, lying). Frames at 0.35 scale on a 448 px canvas (idle body ~70 px,
+  2x its size on screen); the grunt sheet is about 100 KB. Frame-rate check during wave 1:
+  no measurable difference between still, procedural and sheet variants. Known artefact: a soft blur where the blade covered the skirt.
 - Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
   6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
   9 brute/mender/shieldbearer/runner, 10 boss + escort.
@@ -495,8 +521,8 @@ label). Which modes campaign upgrades and Divine Blessings apply in is explained
 glossary (Heroes > Attributes: "Campaign upgrades", "Divine Blessings"), not on each hero. The four tabs:
 
 - **Level**: "level / cap", pips for the current 10-level band, current and next-level Attack/Health, deploy cost, Level up (at the cap: "Star up to raise it to N").
-- **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the
-  other heroes' spare copies to tap into them, Quick add and Star up.
+- **Stars**: current stars, Attack/Health now and at the next star, material slots, the
+  selected hero's duplicate copies to tap into them, Quick add and Star up.
 - **Evolution**: the five tiers (done / next / locked) with their bonus, two material
   slots (a copy of this hero, 150 Seal Dust), Evolve, and "1 copy -> 30 Dust".
 - **Skills**: ultimate and class passives, each upgraded separately (save v6).
@@ -648,12 +674,12 @@ Every upgrade is chosen and confirmed by the player; nothing is spent automatica
   10-level band: +6% (Lv 2-10, unchanged so Chapter 1 balance holds), +3% (11-20), +2%
   (21-30), +1.5% (31-40), +1.5% (41-50), +1% (51-60): Lv 60 = +144% attack and health.
   Cost stays linear (Gold 100 + 50 per level, Hero XP 50 + 25 per level; ~91k Gold to Lv 60).
-- **Stars 0-5** (heroes start at 0): star n -> n+1 costs 1/1/2/3/4 spare copies of *other*
-  heroes (11 in all) plus 100/200/400/600/800 Gold; +10% attack and health per star (5 stars
-  = +50%), multiplied with the level bonus. Save version 5 migrates older saves (stars counted
-  from 1) by one star down, so stats are unchanged. A hero's own copies are never star fodder (they are its Evolution material).
-  Quick add takes surplus copies (beyond what their hero's Evolution still needs) first,
-  then the largest piles.
+- **Stars 0-5** (heroes start at 0): star n -> n+1 costs 1/1/2/3/4 duplicate copies of
+  that hero (11 in all) plus 100/200/400/600/800 Gold; +10% attack and health per star (5
+  stars = +50%), multiplied with the level bonus. Save version 5 migrates older saves (stars
+  counted from 1) by one star down, so stats are unchanged. Stars and Evolution share the
+  hero's duplicate supply. Quick add fills the material slots only when enough copies of
+  that hero are available.
 - **Evolution I-V**: each tier costs 1 copy of the same hero or 150 Seal Dust
   (`heroEvolution.dustPrice`); the
   player taps the material, then Evolve. Tiers: ultimate +20%, crit +10%, ultimate cooldown

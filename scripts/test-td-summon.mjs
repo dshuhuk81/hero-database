@@ -210,7 +210,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(tenSame.progress.copies[featured], 9, "duplicates become copies");
   assert.equal(tenSame.progress.owned.filter((id) => id === featured).length, 1, "owned once");
   assert.equal(multiSummonCount(cfg, authored.id, { ...p0, owned: [...ids] }, ids), authored.multiCount, "multi is full even with everything owned");
-  // Stars: copies of any hero + gold.
+  // Stars: duplicate copies of that hero + gold.
   const hero = campaignData.starters[0];
   let p = { ...tenSame.progress, currencies: { ...tenSame.progress.currencies, gold: 5000 } };
   assert.equal(heroStars(p, hero), 0, "start at 0 stars");
@@ -218,17 +218,16 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(starUp(campaignData, p, hero, {}), null, "star up needs copies");
   assert.equal(starUp(campaignData, p, hero, { [featured]: 2 }), null, "star up needs exactly the cost's copies");
   assert.equal(starUp(campaignData, p, hero, { [featured]: 1.5 }), null, "whole copies only");
-  assert.equal(starUp(campaignData, { ...p, copies: { [hero]: 3 } }, hero, { [hero]: 1 }), null, "own copies are not star fodder");
-  const s2 = starUp(campaignData, p, hero, { [featured]: 1 });
-  assert.deepEqual([heroStars(s2, hero), s2.copies[featured], s2.currencies.gold], [1, 8, 5000 - campaignData.heroStars.gold[0]], "star up pays copies and gold");
-  assert.equal(starUp(campaignData, { ...p, currencies: { ...p.currencies, gold: 0 } }, hero, { [featured]: 1 }), null, "star up needs gold");
-  // Quick add: surplus copies (beyond what Evolution needs) first, then others, never the
-  // hero's own copies.
+  assert.equal(starUp(campaignData, p, hero, { [featured]: 1 }), null, "copies of another hero are not star material");
+  const ownCopies = { ...p, copies: { ...p.copies, [hero]: 3 } };
+  const s2 = starUp(campaignData, ownCopies, hero, { [hero]: 1 });
+  assert.deepEqual([heroStars(s2, hero), s2.copies[hero], s2.currencies.gold], [1, 2, 5000 - campaignData.heroStars.gold[0]], "star up pays duplicate copies and gold");
+  assert.equal(starUp(campaignData, { ...ownCopies, currencies: { ...ownCopies.currencies, gold: 0 } }, hero, { [hero]: 1 }), null, "star up needs gold");
+  // Quick add only selects duplicates of the hero being upgraded.
   const tiers = campaignData.heroEvolution.tiers.length;
   const mixed = { ...p, copies: { [featured]: 9, [hero]: 2, nyx: 1 } };
-  assert.deepEqual(autoFodder(campaignData, mixed, 4, hero), { [featured]: 4 }, "surplus copies first");
-  assert.deepEqual(autoFodder(campaignData, mixed, 6, hero), { [featured]: 6 }, "then other copies, largest pile first");
-  assert.equal(autoFodder(campaignData, mixed, 11, hero), null, "never the hero's own copies");
+  assert.deepEqual(autoFodder(campaignData, mixed, 2, hero), { [hero]: 2 }, "select the hero's duplicates");
+  assert.equal(autoFodder(campaignData, mixed, 3, hero), null, "other heroes cannot cover a duplicate shortage");
   // Evolution: copies of the same hero first, then Seal Dust (heroEvolution.dustPrice).
   const dustPrice = campaignData.heroEvolution.dustPrice;
   assert.equal(evolutionMaterial(campaignData, p, hero), null, "no copy, not enough dust: cannot evolve");

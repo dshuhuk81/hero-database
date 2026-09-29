@@ -76,12 +76,12 @@ Write new prompts from the myth, in the table format above. The concepts below f
 
 ---
 
-## Animation frames (planned, M7)
+## Animation frames (M7, test pipeline in place)
 Not in the game yet; the plan and the free workflow are in `docs/tower-defense-ui-plan.md` (M7). Until a kind has a sheet, it uses the still sprite with the procedural motion prototype (`?anim`). Frames for a sheet follow the still sprite's rules, so a kind can switch without resizing or re-anchoring:
 - 256x256 PNG-32 per frame, transparent, same scale as the kind's still sprite (subject about 80% of the canvas in the widest frame of all clips, not per frame).
 - Feet on the same line in every frame (the renderer anchors at 90% height); facing right.
-- Clips and frame counts: `walk` 8 (loop), `attack` 6 (strike lands on frame 3), `hit` 3, `death` 6 (last frame lying down). 12 fps.
-- Folder layout for the packer: `<kind>/<clip>/0000.png, 0001.png, ...`.
+- Clips and frame counts: `idle` 6 (loop), `walk` 8 (loop), `attack` 6 (strike lands on frame 3), `hurt` 3 to 4, `death` 4 to 6 (last frame lying down). 12 fps.
+- Packer input (`scripts/build-td-enemy-anims.mjs`): one horizontal strip PNG per clip, square frames (frame size = strip height), clips `idle`, `walk`, `attack`, `hurt`, `death`; map the files per kind in its `PACKS` table. The packer crops all frames to one shared box and takes the feet point from `idle` frame 0.
 - Same white label rule as the stills: made from our own sprites or from text, never from Motto Immortal art.
 
 ## Output Filenames

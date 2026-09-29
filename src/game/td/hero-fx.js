@@ -652,7 +652,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         if (e.heroId === "fengyi") debris("flake", e.x, e.y, 4, p.accent, { add: true, delay, up: 30, gravity: 40, speed: r * 2, life: 0.5, size: 7 });
         return;
       }
-      case "dash": { // Assassin dash: the token itself travels (render.js lunge); speed streaks mark the path
+      case "dash": { // Assassin reach cue: speed streaks mark the path while the portrait stays at its slot
         for (let i = 0; i < kit.n(4); i++) {
           const t = (i + 1) / 5;
           kit.spawn("streak", sx + (x - sx) * t, sy + (y - sy) * t, { tint: i % 2 ? p.color : p.accent, size: 34, sizeEnd: 12, life: 0.22, delay: i * 0.02, rot: angle, alpha: 0.55, hold: 0 });

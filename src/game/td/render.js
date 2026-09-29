@@ -215,6 +215,21 @@ export async function createRenderer(canvas, game, options = {}) {
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
+  // M7 test, only with ?anim=sheets: animation sheets from scripts/build-td-enemy-anims.mjs,
+  // served locally from public/td-local/ (gitignored, not deployed). A kind with a sheet
+  // plays its clips instead of the still sprite (animateEnemy picks the frame).
+  const ENEMY_SHEETS = ENEMY_ANIM && new URLSearchParams(location.search).get("anim") === "sheets";
+  const enemySheets = new Map(); // kind -> { anims: { idle, walk, attack, hurt, death }, td }
+  if (ENEMY_SHEETS) {
+    // Sheet set: painted (warp frames from our sprites, default) or pixel (free test pack).
+    const set = new URLSearchParams(location.search).get("set") ?? "painted";
+    for (const kind of ["grunt", "archer"]) {
+      PIXI.Assets.load(`/td-local/sheets/${set}/${kind}.json`).then((sheet) => {
+        if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";
+        enemySheets.set(kind, { anims: sheet.animations, td: sheet.data.td });
+      }).catch(() => {});
+    }
+  }
 
   // Slot art sprites (road = gold glow, platform = purple glow). Falls back to Graphics if absent.
   const slotTextures = new Map(); // "road" | "platform" -> PIXI.Texture
@@ -773,35 +788,31 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   const heroSprites = new Map(); // entityId -> Container
 
-  // Melee strikes move the token (presentation only; sim positions never change).
-  // Assassins dash all the way to the enemy and back, so a dagger hit never reads as
-  // ranged; other road heroes lean in a little. Sim time, so pause and speed apply.
+  // Melee strikes give road heroes a short lean toward the target (presentation only;
+  // sim positions never change). Assassin dash effects must not move the portrait away
+  // from its slot; their regular hit uses the same short melee motion as a Warrior.
   const lungeSeen = new WeakSet();
   function scanLunges() {
     if (reducedMotion) return;
     for (const effect of game.effects) {
       if (lungeSeen.has(effect)) continue;
       lungeSeen.add(effect);
-      if (effect.type !== "dash" && !(effect.type === "hit" && effect.melee)) continue;
+      if (effect.type !== "hit" || !effect.melee) continue;
       const container = heroSprites.get(effect.sourceId);
       if (!container) continue;
       const tx = effect.x2 ?? effect.x, ty = effect.y2 ?? effect.y;
-      const last = container._lunge;
-      // A dash and its hit arrive together; keep the dash.
-      if (last && last.at === game.time && last.dash) continue;
-      container._lunge = { at: game.time, dx: tx - effect.sourceX, dy: ty - effect.sourceY, dash: effect.type === "dash" };
+      container._lunge = { at: game.time, dx: tx - effect.sourceX, dy: ty - effect.sourceY };
     }
   }
-  function lungeOffset(unit, container) {
+  function lungeOffset(container) {
     const l = container._lunge;
     if (!l) return [0, 0];
     const t = game.time - l.at;
-    const assassin = unit.ability === "execute";
-    const out = assassin ? 0.1 : 0.07, stay = assassin ? 0.06 : 0.02, back = assassin ? 0.14 : 0.11;
+    const out = 0.07, stay = 0.02, back = 0.11;
     if (t < 0 || t > out + stay + back) { container._lunge = null; return [0, 0]; }
     const dist = Math.hypot(l.dx, l.dy) || 1;
     // Stop just short of the enemy so the blade, not the token, lands on it.
-    const reach = assassin ? Math.max(0, dist - 22) : Math.min(14, dist * 0.25);
+    const reach = Math.min(14, dist * 0.25);
     const k = t < out ? 1 - (1 - t / out) ** 2 : t < out + stay ? 1 : (1 - (t - out - stay) / back) ** 2;
     return [l.dx / dist * reach * k, l.dy / dist * reach * k];
   }
@@ -871,7 +882,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function updateHeroSprite(unit, container) {
-    const [lx, ly] = lungeOffset(unit, container);
+    const [lx, ly] = lungeOffset(container);
     container.position.set(unit.x + lx, unit.y + ly);
     // Assassin veil (class ultimate): translucent while nothing can hurt it.
     container.alpha = game.isVeiled?.(unit) ? 0.45 : 1;
@@ -966,7 +977,7 @@ export async function createRenderer(canvas, game, options = {}) {
       seen.add(unit.entityId);
       const existing = enemyContainers.get(unit.entityId);
       // Full-body art that finished loading after this enemy spawned: rebuild so it converges.
-      const stale = existing && !existing._fullSprite && fullBodyTextures.has(unit.kind);
+      const stale = existing && ((!existing._fullSprite && fullBodyTextures.has(unit.kind)) || (!existing._sheet && enemySheets.has(unit.kind)));
       if (!existing || stale) {
         const c = buildEnemyContainer(unit);
         c.tdEnemy = unit;
@@ -1007,7 +1018,13 @@ export async function createRenderer(canvas, game, options = {}) {
   function advanceDying(dt) {
     for (const [id, d] of dyingPool) {
       d.timer -= dt;
-      if (d.c._anim) {
+      if (d.c._sheet) {
+        // Play the death clip, hold its last frame, fade at the end.
+        const death = d.c._sheet.anims.death;
+        const p = 1 - Math.max(0, d.timer) / DEATH_FALL;
+        d.c._fullSprite.texture = death[Math.min(death.length - 1, Math.floor(p * 1.4 * death.length))];
+        d.c.alpha = Math.min(1, Math.max(0, d.timer) / (DEATH_FALL * 0.4));
+      } else if (d.c._anim) {
         // Topple backwards (away from the facing), then fade.
         const sp = d.c._fullSprite;
         const p = 1 - Math.max(0, d.timer) / DEATH_FALL;
@@ -1035,22 +1052,31 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Full-body sprite: unmasked, larger than the portrait circle, ground shadow.
     const fullTex = fullBodyTextures.get(kind);
-    if (fullTex) {
+    const sheet = enemySheets.get(kind);
+    if (fullTex || sheet) {
       const size = fullSpriteSize(kind);
       const shadow = new PIXI.Graphics();
       shadow.ellipse(0, FULL_SPRITE_FEET, size * (unit.flying ? 0.22 : 0.3), size * (unit.flying ? 0.06 : 0.08)).fill({ color: 0x000000, alpha: unit.flying ? 0.25 : 0.45 });
       c.addChild(shadow);
-      const sp = new PIXI.Sprite(fullTex);
-      sp.anchor.set(0.5, 0.9);
+      const sp = new PIXI.Sprite(sheet ? sheet.anims.idle[0] : fullTex);
+      if (sheet) {
+        // Feet point from the packer; the idle body gets the still sprite's ~80% height.
+        const frame = sheet.anims.idle[0];
+        sp.anchor.set(sheet.td.anchor.x / frame.width, sheet.td.anchor.y / frame.height);
+        sp.scale.set(size * 0.8 / sheet.td.bodyHeight);
+        c._sheet = sheet;
+      } else {
+        sp.anchor.set(0.5, 0.9);
+        sp.width = size; sp.height = size;
+      }
       sp.y = FULL_SPRITE_FEET - (unit.flying ? FLYER_LIFT : 0);
-      sp.width = size; sp.height = size;
       c._fullSprite = sp;
       c._fullScale = sp.scale.x;
       c.addChild(sp);
       if (ENEMY_ANIM) {
         // Additive copy of the sprite: the white hit flash, shaped like the body.
-        const glint = new PIXI.Sprite(fullTex);
-        glint.anchor.set(0.5, 0.9);
+        const glint = new PIXI.Sprite(sp.texture);
+        glint.anchor.copyFrom(sp.anchor);
         glint.blendMode = "add";
         glint.alpha = 0;
         c._glint = glint;
@@ -1088,7 +1114,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Kenney tile sprite fallback (non-boss when portrait not yet loaded; boss when no hero image)
     const kenTex = enemyTextures.get(kind);
-    if (kenTex && !fullTex && !c._portraitSprite && !(kind === "boss" && c._bossSprite)) {
+    if (kenTex && !fullTex && !sheet && !c._portraitSprite && !(kind === "boss" && c._bossSprite)) {
       const spriteSize = kind === "boss" ? 52 : kind === "brute" ? 40 : 28;
       const sp = new PIXI.Sprite(kenTex);
       sp.anchor.set(0.5);
@@ -1132,7 +1158,7 @@ export async function createRenderer(canvas, game, options = {}) {
     ice.moveTo(-iceR * 0.5, -iceR * 0.2).lineTo(0, -iceR * 0.75).moveTo(iceR * 0.15, iceR * 0.5).lineTo(iceR * 0.55, iceR * 0.05)
       .stroke({ color: 0xffffff, width: 1.5, alpha: 0.8 });
     // Full-body sprites stand on their feet: lift the shell to the body's middle.
-    if (fullTex) ice.y = FULL_SPRITE_FEET - fullSpriteSize(kind) * 0.4 - (unit.flying ? FLYER_LIFT : 0);
+    if (fullTex || sheet) ice.y = FULL_SPRITE_FEET - fullSpriteSize(kind) * 0.4 - (unit.flying ? FLYER_LIFT : 0);
     ice.visible = false;
     c._iceOverlay = ice;
     c.addChild(ice);
@@ -1191,11 +1217,26 @@ export async function createRenderer(canvas, game, options = {}) {
 
   function updateEnemyContainer(unit, c) {
     // Full-body sprites face their direction of travel (art faces right).
-    if (c._fullSprite && c._lastX !== undefined && Math.abs(unit.x - c._lastX) > 0.01) {
-      c._fullSprite.scale.x = (unit.x < c._lastX ? -1 : 1) * c._fullScale;
+    if (c._anim) {
+      // Sway offsets jump at lane corners (pointOnPath swaps the normal, up to ~20 px, often
+      // backwards): glide over the jump instead of popping, and only turn around on clearly
+      // sideways steps, so a corner or a vertical stretch keeps the facing.
+      const d = c._draw ?? (c._draw = { x: unit.x, y: unit.y });
+      const gap = Math.hypot(unit.x - d.x, unit.y - d.y);
+      if (gap > 8 && gap < 60) { d.x += (unit.x - d.x) * 0.3; d.y += (unit.y - d.y) * 0.3; } else { d.x = unit.x; d.y = unit.y; }
+      const dx = unit.x - (c._lastX ?? unit.x), dy = unit.y - (c._lastY ?? unit.y);
+      if (c._fullSprite && Math.abs(dx) > 0.01 && Math.abs(dx) > Math.abs(dy) * 0.5 && Math.hypot(dx, dy) < 8) {
+        c._fullSprite.scale.x = Math.sign(dx) * Math.abs(c._fullScale);
+      }
+      c._lastX = unit.x; c._lastY = unit.y;
+      c.position.set(d.x, d.y);
+    } else {
+      if (c._fullSprite && c._lastX !== undefined && Math.abs(unit.x - c._lastX) > 0.01) {
+        c._fullSprite.scale.x = (unit.x < c._lastX ? -1 : 1) * c._fullScale;
+      }
+      c._lastX = unit.x;
+      c.position.set(unit.x, unit.y);
     }
-    c._lastX = unit.x;
-    c.position.set(unit.x, unit.y);
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
     if (c._anim) animateEnemy(unit, c);
@@ -1246,8 +1287,26 @@ export async function createRenderer(canvas, game, options = {}) {
     // Face the hero being struck; otherwise keep the travel facing from updateEnemyContainer.
     if (a.target && t - a.atkAt < 0.4 && Math.abs(a.target.x - unit.x) > 1) sp.scale.x = Math.sign(a.target.x - unit.x) * Math.abs(sp.scale.x);
     const f = Math.sign(sp.scale.x) || 1;
-    let rot = 0, dx = 0, dy = 0, sx = 1, sy = 1;
     const held = (unit.petrifiedUntil ?? 0) > t || (unit.frozenUntil ?? 0) > t;
+    if (c._sheet) {
+      // Sheet kinds: the clips carry the motion, so only pick the frame (game time; the walk
+      // follows distance moved, one cycle per ~0.9 body widths). Held enemies keep their frame.
+      const { anims, td } = c._sheet;
+      const at = t - a.atkAt, ht = t - a.hitAt;
+      const play = (clip, since) => anims[clip][Math.min(anims[clip].length - 1, Math.floor(since * td.fps))];
+      if (!held) {
+        sp.texture = at < anims.attack.length / td.fps ? play("attack", at)
+          : ht < anims.hurt.length / td.fps ? play("hurt", ht)
+          : a.moving > 0.3 ? anims.walk[Math.floor(a.phase / (Math.PI * 2) * anims.walk.length) % anims.walk.length]
+          : anims.idle[Math.floor(t * td.fps * 0.6) % anims.idle.length];
+      }
+      sp.position.set(0, FULL_SPRITE_FEET);
+      sp.rotation = 0;
+      sp.scale.set(f * c._fullScale, c._fullScale);
+      c._glint.alpha = 0; // the hurt clip has its own flash
+      return;
+    }
+    let rot = 0, dx = 0, dy = 0, sx = 1, sy = 1;
     if (!held) {
       if (unit.flying) {
         sy += Math.sin(t * 14 + unit.entityId) * 0.06; // wingbeat

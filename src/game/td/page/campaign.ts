@@ -322,7 +322,7 @@ export function createCampaign(ctx: PageContext) {
   }
 
   // Heroes screen: owned heroes and their three campaign upgrades, one tab each:
-  // Level (Gold + Hero XP), Stars (spare copies of any hero + Gold: attack and health) and
+  // Level (Gold + Hero XP), Stars (duplicates of that hero + Gold: attack and health) and
   // Evolution (a copy of the same hero or Seal Dust: ultimate and crit).
   function renderHeroes() {
     const p = progress();
@@ -438,8 +438,8 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-hero-upgrade">${button}</div>`;
   }
 
-  // Stars: pick exactly the cost's number of spare copies (any hero). Quick add only uses
-  // copies no Evolution still needs; tap a copy to add it, tap a filled slot to remove it.
+  // Stars: pick exactly the cost's number of duplicate copies of this hero. Stars and
+  // Evolution share that supply; tap the duplicate to add it or a filled slot to remove it.
   const fodderCount = () => Object.values(fodder).reduce((sum, n) => sum + n, 0);
   function starsPanel(p: any, hero: any) {
     const starCount = heroStars(p, hero.id);
@@ -453,23 +453,21 @@ export function createCampaign(ctx: PageContext) {
       const h = id ? heroById.get(id) : null;
       return h ? `<button type="button" class="td-fodder-slot is-filled" data-camp-fodder-remove="${id}" aria-label="Remove ${h.name} copy"><img src="${h.portrait ?? h.image}" alt=""><small>${h.name}</small></button>` : `<span class="td-fodder-slot" aria-hidden="true">+</span>`;
     }).join("");
-    // The hero's own copies are its Evolution material and are not offered here.
-    const spare = Object.entries(p.copies ?? {}).filter(([id, n]) => id !== hero.id && (n as number) > 0);
-    const pickHtml = spare.length ? spare.map(([id, n]) => {
-      const h = heroById.get(id);
-      const free = (n as number) - (fodder[id] ?? 0);
-      return `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${h?.portrait ?? h?.image}" alt=""><strong>${h?.name ?? id}</strong><small>${free} left</small></button>`;
-    }).join("") : `<p class="td-hero-tab-copy">No spare copies of other heroes yet. Summon heroes you already own to get copies.</p>`;
+    const copies = p.copies?.[hero.id] ?? 0;
+    const free = copies - (fodder[hero.id] ?? 0);
+    const pickHtml = copies > 0
+      ? `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${hero.id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${hero.portrait ?? hero.image}" alt=""><strong>${hero.name}</strong><small>${free} left</small></button>`
+      : `<p class="td-hero-tab-copy">No duplicate of ${hero.name} yet. Summon another copy to raise this hero's stars.</p>`;
     const full = fodderCount() === cost.copies;
     const goldOk = (p.currencies.gold || 0) >= cost.gold;
-    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health and raises the level cap to ${levelCap(campaign, starCount + 1)}. Star up uses spare copies of other heroes; ${hero.name}'s own copies are kept for Evolution.</p>
+    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health and raises the level cap to ${levelCap(campaign, starCount + 1)}. Star up uses duplicate copies of ${hero.name}; the same copies can also be spent on Evolution.</p>
       <div class="td-hero-level-head"><strong>${stars(starCount)}</strong><span>${starCount} / ${max}</span></div>
       ${statRows(hero, heroScale(p, hero.id), heroScale(p, hero.id, undefined, starCount + 1))}
       <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Copies needed</span><span>${fodderCount()} / ${cost.copies}</span></div>
       <div class="td-fodder-slots">${slotHtml}</div>
       <div class="td-fodder-picks">${pickHtml}</div></div>
       <div class="td-hero-upgrade td-hero-upgrade--split">
-        <button type="button" class="action-button action-button--quiet" data-camp-fodder-auto${spare.length ? "" : " disabled"}>Quick add</button>
+        <button type="button" class="action-button action-button--quiet" data-camp-fodder-auto${copies >= cost.copies ? "" : " disabled"}>Quick add</button>
         <button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-starup="${hero.id}"${full && goldOk ? "" : " disabled"}>Star up <small>${currencyAmount("gold", cost.gold)}</small></button>
       </div>`;
   }
@@ -776,7 +774,7 @@ export function createCampaign(ctx: PageContext) {
       else {
         const auto = autoFodder(campaign, p, need, id);
         if (auto) fodder = auto;
-        else ctx.notice("Not enough spare copies of other heroes.");
+        else ctx.notice(`Not enough duplicates of ${heroName(id)}.`);
       }
       renderHeroes();
       const again = d.campFodderAdd ? `[data-camp-fodder-add="${d.campFodderAdd}"]` : "[data-camp-starup]";

@@ -1749,6 +1749,21 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     return { g, units: ids.map((id) => g.heroes.find((h) => h.id === id)) };
   };
   const enemyAt = (g, kind, x, y, hp = 1e6) => { const e = g.spawnEnemy(kind); e.x = x; e.y = y; e.hp = e.maxHp = hp; return e; };
+  const closestPathDistance = (g, hero) => {
+    const lane = g.lanes[0];
+    let best = { distance: 0, gap: Infinity };
+    for (let distance = 0; distance <= lane.total; distance += 1) {
+      const point = pointOnPath(lane.path, distance);
+      const gap = Math.hypot(hero.x - point.x, hero.y - point.y);
+      if (gap < best.gap) best = { distance, gap };
+    }
+    return best.distance;
+  };
+  const moveOnPath = (g, enemy, distance) => {
+    enemy.distance = distance;
+    Object.assign(enemy, pointOnPath(g.laneOf(enemy).path, distance, enemy.sway));
+    return enemy;
+  };
   const hurt = (e) => e.hp < e.maxHp;
   const kit = tuning.classes;
 
@@ -1813,11 +1828,15 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.equal(g.findTarget(archer), tough, "Archers snipe the toughest enemy");
   }
 
-  // Assassin dash: strikes a loose enemy beyond its range, leaves held ones to the line.
+  // Assassin attacks approaching enemies only in melee, then dashes after a loose enemy
+  // that has already slipped past its tile.
   {
     const { g, units: [nyx] } = setup("nyx");
-    const loose = enemyAt(g, "runner", nyx.x + (nyx.range + kit.Assassin.dash) / 2, nyx.y);
-    assert.equal(g.findTarget(nyx), loose, "dash reaches a loose enemy");
+    const crossing = closestPathDistance(g, nyx);
+    const loose = moveOnPath(g, enemyAt(g, "runner", 0, 0), crossing - 70);
+    assert.equal(g.findTarget(nyx), null, "an approaching enemy outside melee range is not attacked");
+    moveOnPath(g, loose, crossing + 70);
+    assert.equal(g.findTarget(nyx), loose, "dash catches a loose enemy after it passes");
     loose.held = true;
     assert.equal(g.findTarget(nyx), null, "a held enemy beyond range is left alone");
     loose.held = false;
@@ -1850,9 +1869,10 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.equal(g.findTarget(zeus), front, "an untargetable boss is skipped");
     assert.equal(g.setTargeting(zeus.entityId, "nonsense"), false, "unknown mode rejected");
     assert.equal(g.setTargeting(nyx.entityId, "flying"), false, "road heroes cannot pick flyers");
-    // Explicit modes keep the Assassin dash reach for loose enemies.
+    // Explicit modes keep the Assassin dash reach for loose enemies that have passed.
     g.enemies = [];
-    const loose = enemyAt(g, "runner", nyx.x + (nyx.range + kit.Assassin.dash) / 2, nyx.y, 80);
+    const crossing = closestPathDistance(g, nyx);
+    const loose = moveOnPath(g, enemyAt(g, "runner", 0, 0, 80), crossing + 70);
     g.setTargeting(nyx.entityId, "strongest");
     assert.equal(g.findTarget(nyx), loose, "strongest still dashes to loose enemies");
     loose.held = true;

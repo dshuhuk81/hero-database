@@ -1047,12 +1047,11 @@ export class TowerDefenseGame {
   findTarget(hero) {
     if ((hero.targeting ?? "auto") !== "auto") {
       // A chosen priority ranks everything the hero can reach: its range, plus loose
-      // enemies inside the Assassin dash reach.
-      const reach = this.dashReach(hero);
+      // enemies that have passed it and remain inside the Assassin dash reach.
       const targets = this.enemies.filter((enemy) => {
         if (!this.canHit(hero, enemy)) return false;
         const d = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
-        return d <= hero.range || (d <= reach && !enemy.held && !this.isStopped(enemy));
+        return d <= hero.range || this.canDashTo(hero, enemy, d);
       });
       targets.sort(this.targetOrder(hero));
       return targets[0] ?? null;
@@ -1096,18 +1095,23 @@ export class TowerDefenseGame {
     return (a, b) => b.distance - a.distance;
   }
 
-  // Assassin leak catcher (kit dash): an enemy no blocker holds, within dash reach,
-  // furthest along the path. Held enemies are left to the line.
+  // Assassin leak catcher (kit dash): a moving enemy that has already passed the Assassin,
+  // no blocker holds and remains within dash reach. Approaching enemies must enter melee.
   dashTarget(hero) {
-    const reach = this.dashReach(hero);
-    if (!reach) return null;
     let best = null;
     for (const enemy of this.enemies) {
-      if (enemy.held || this.isStopped(enemy) || !this.canHit(hero, enemy)) continue;
-      if (Math.hypot(hero.x - enemy.x, hero.y - enemy.y) > reach) continue;
+      if (!this.canDashTo(hero, enemy)) continue;
       if (!best || enemy.distance > best.distance) best = enemy;
     }
     return best;
+  }
+
+  canDashTo(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
+    const reach = this.dashReach(hero);
+    if (!reach || distance > reach || enemy.held || this.isStopped(enemy) || !this.canHit(hero, enemy)) return false;
+    const lane = this.laneOf(enemy);
+    const next = pointOnPath(lane.path, Math.min(lane.total, enemy.distance + 4), enemy.sway);
+    return Math.hypot(hero.x - next.x, hero.y - next.y) > distance;
   }
 
   dashReach(hero) {

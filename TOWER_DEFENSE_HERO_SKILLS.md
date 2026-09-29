@@ -79,11 +79,11 @@ fall back to class builders in `hero-fx.js` (`CLASS_MELEE`, `CLASS_SHOTS`,
 | Archer (Wren, Hollis) | Plain arrow with a short streak | Five arrows fall around the target |
 | Support (Poppy, Jory) | Soft pulse with one helper mote; heals flow as crosses (Poppy) or motes (Jory) | Widening rings and rising motes over the hero |
 
-Melee tokens move (`render.js` `scanLunges` / `lungeOffset`, sim time, off with reduced
-motion): Assassins dash all the way to the enemy and back on every strike (their range
-is 90 px, 170 px for loose enemies, so a static token read as ranged); Tanks and Warriors
-lean in up to 14 px. The dash path shows speed streaks instead of glow dots, and every
-Assassin hit adds a dagger glint (`daggerGlint`, `kind: "assassin"`).
+Melee tokens use a short strike lean (`render.js` `scanLunges` / `lungeOffset`, sim time,
+off with reduced motion). Assassins attack approaching enemies at 42 px contact range;
+their extended dash activates only after a loose enemy has passed their tile. The portrait
+stays anchored while the catch-up path shows speed streaks, and every Assassin hit adds a
+dagger glint (`daggerGlint`, `kind: "assassin"`).
 
 Support passive aura (`render.js` `updateAuraFx`): every hero with the `aura` ability
 has a pulsing underglow and ring in its profile colour, plus a slow wave that runs out to

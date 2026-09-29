@@ -43,7 +43,7 @@ Owner decisions: no player-facing name (wreath icons only, internally "laurels")
 ### 2b. Class audit (owner request, September 29, 2026)
 
 Check that each class looks and plays like its fantasy.
-- Assassins (done September 29, 2026): they hit up to 90 px away (170 px dashing to loose enemies) while the token stood still, and the dash drew a row of glow dots, so they read as ranged. Now the token itself dashes to the enemy and back on every strike (`render.js` `scanLunges` / `lungeOffset`, sim time, off with reduced motion), the dash path shows speed streaks, and every assassin hit adds a dagger glint (`hero-fx.js` `daggerGlint`, `kind: "assassin"` on all six). Tanks and Warriors lean in a little when they strike. Mechanics unchanged. Checks: full suite, Chromium frame sequence on Moonlit (Nott, Ash, Bram, Kellan), no page errors.
+- Assassins (done September 29, 2026): normal attacks now use 42 px contact range. Their extended dash only catches a loose enemy after it has passed their tile; approaching enemies must enter melee first. The portrait stays anchored to its tile, while speed streaks and a dagger glint show a leak-catching dash. Tanks and Warriors lean in a little when they strike. Checks cover approaching versus passed enemies, held enemies and explicit targeting modes.
 - Open: go through Tank, Warrior, Mage, Archer, Support the same way (look in play, list mismatches). Known: several Tank hold circles at once fill large areas. Class balance itself (Tanks) is under 1. Balance decisions.
 
 ### 3. M24d - New boss to replace Lilith

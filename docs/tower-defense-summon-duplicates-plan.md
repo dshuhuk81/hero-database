@@ -16,13 +16,13 @@ The reference game has Stars (Aufstieg) and Awaken (Erwecken). The TD game alrea
 | Path | Input | Result |
 |---|---|---|
 | Level (exists) | Gold + Hero XP | +6% attack and health per level, up to level 10 |
-| **Stars** (1 to 5) | Copies of **any** hero + Gold | Higher base stats |
+| **Stars** (1 to 5) | Duplicate copies of the **same** hero + Gold | Higher base stats |
 | **Evolution** (I to V) | A copy of the **same** hero, or 1 Divine Essence | Better skill values |
 
 ### Stars: higher attributes
-- A hero starts at 0 stars (changed 2026-09-28, was 1). Star n to n+1 costs 1/1/2/3/4 spare copies of any hero plus 100/200/400/600/800 Gold: 0 to 5 stars is 11 copies and 2100 Gold. Stars also raise the level cap (0 stars: Lv 10, +10 per star, 5 stars: Lv 60).
+- A hero starts at 0 stars (changed 2026-09-28, was 1). Star n to n+1 costs 1/1/2/3/4 duplicate copies of that hero plus 100/200/400/600/800 Gold: 0 to 5 stars is 11 copies and 2100 Gold. Stars also raise the level cap (0 stars: Lv 10, +10 per star, 5 stars: Lv 60).
 - Each star gives **+10% attack and health**. This multiplies with the level bonus in `campaignHeroes`.
-- Picking fodder works like the reference: a panel lists spare copies, with a **Quick add** button that uses the most common copies first. Copies the player might want for Evolution are never quick-added. Picking them by hand still works.
+- The material panel shows only duplicates of the hero being upgraded. **Quick add** fills the required slots when enough copies are available. Stars and Evolution draw from the same duplicate supply.
 
 ### Evolution: better skills
 Each tier costs 1 copy of the same hero, or 1 **Divine Essence**. Divine Essence is the wildcard material, like the purple item in the reference. The tiers change hero fields the simulation already reads:
@@ -41,7 +41,7 @@ Tier V is the only one that needs new sim code. Tiers I to IV only change number
 - A summoned copy of a hero you own goes into `copies[heroId]`.
 - A spare copy can be turned into **30 Seal Dust** by hand.
 - Seal Dust can be exchanged for Divine Seals (**2 dust = 1 seal**), or crafted into **Divine Essence (150 dust)**. Divine Essence works as pity, so an unlucky player can still evolve the hero they want.
-- Copies of a hero that is at 5 stars and Evolution V are still useful as star fodder for other heroes. Nothing turns into dust automatically.
+- Copies of a hero that is at 5 stars and Evolution V can still be converted to Seal Dust. Nothing turns into dust automatically.
 
 ## Summon changes
 - **Banner:** `pool: "all"` makes every hero summonable, owned or not. Stage-reward heroes join the pool only after their stage is cleared, so a summon never takes a stage's reward first. Weights stay the same: the featured hero `featuredWeight`, everyone else 1.
@@ -77,7 +77,7 @@ The migration from version 3 fills these with empty or zero values.
 - Tests: duplicate draws, star and Evolution costs and bonuses, dust and essence, the version 3 to 4 migration, and the balance check (`test:td-balance`, `td:sweep`) with maxed heroes.
 
 ## Economy check (proposed numbers)
-- One hero at 5 stars and Evolution V needs 10 copies of any hero plus 5 copies of that hero or Divine Essence.
+- One hero at 5 stars and Evolution V needs 11 duplicate copies of that hero for Stars plus 5 more copies of that hero or Divine Essence for Evolution.
 - Each pull is a duplicate once the collection is complete. The chance of a given non-featured hero is about 1 in 25.
 - Five copies of one hero by luck alone takes about 125 pulls. Divine Essence caps that: 5 Essence = 750 dust = 25 spare copies.
 - The build rebalances seal income against these costs, and the td:sweep run checks that campaign stages stay beatable without Stars and Evolution.

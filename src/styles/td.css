@@ -2241,10 +2241,12 @@ button .td-cur { color: inherit; }
 .td-app .td-camp-company { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .td-app .td-camp-companion strong, .td-app .td-camp-companion small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .td-app .td-camp-companion > div { min-width: 0; }
-/* Star fodder: chosen slots on the left, spare copies to pick from beside them. */
-.td-fodder { grid-template-columns: auto minmax(0, 1fr); align-items: start; column-gap: var(--space-3); }
+/* Star fodder: chosen slots stay in a fixed column so higher star costs cannot
+   squeeze the spare-hero cards beside them. */
+.td-fodder { grid-template-columns: 72px minmax(0, 1fr); align-items: start; column-gap: var(--space-3); }
 .td-fodder-head { grid-column: 1 / -1; }
-.td-fodder-picks { min-height: 100%; padding-left: var(--space-3); border-left: 1px solid var(--border-subtle); }
+.td-fodder-slots { flex-flow: column nowrap; }
+.td-fodder-picks { align-content: flex-start; align-items: flex-start; min-height: 100%; padding-left: var(--space-3); border-left: 1px solid var(--border-subtle); }
 .td-fodder-picks > .td-hero-tab-copy { margin: 0; align-self: center; }
 .td-fodder-slot { width: 72px; height: 84px; box-sizing: border-box; }
-.td-fodder-pick { min-height: 84px; box-sizing: border-box; }
+.td-fodder-pick { flex: 0 0 64px; min-width: 64px; min-height: 84px; box-sizing: border-box; }

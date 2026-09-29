@@ -77,9 +77,9 @@ Goal: enemies that walk, strike, react to hits and die, in the painted style of 
 
 Each step is usable on its own; stop when the result is good enough at 44 to 108 px.
 
-1. **Frame format and packer.** Fix the sheet format first (see "Animation frames" in `src/game/td/sprite-spec-for-ai.md`: 256x256 frames, feet on the same line as the stills, facing right, clips `walk`, `attack`, `hit`, `death`). Add `scripts/build-td-enemy-anims.mjs` (sharp, already a dependency): a folder of numbered PNGs per clip becomes one WebP sheet plus a JSON atlas, versioned file names for the one-year R2 cache.
-2. **Renderer support.** Load the atlas with the full-body sprite; a kind with a sheet uses `PIXI.AnimatedSprite` and picks the clip from the same signals `animateEnemy` already reads (distance moved, `attackClock` jump, hp drop, removal). Kinds without a sheet keep the static sprite and the procedural motion. Keep the hit flash and death fade from step 1.
-3. **Warp frames from the existing sprite (cheapest art).** Extend `scripts/td-idle-anim.py` (numpy + Pillow, already used for the recruit idle loops) with region warps: legs shear in opposite directions per step, torso leans, weapon-arm region rotates for the swing, cloth ripples. Test with `grunt` and one boss. No new drawing, no hidden limbs, so it stays a deformation, not a real step.
+1. **Frame format and packer (done as a test, September 29, 2026).** `scripts/build-td-enemy-anims.mjs` (sharp) turns one horizontal strip per clip into a WebP sheet plus a Pixi spritesheet JSON with a `td` block (feet anchor, idle body height, fps, pixel-art flag). Frames are cropped to one shared box per kind so the feet never jump. Output goes to `public/td-local/sheets/` (gitignored). Open: versioned file names and an R2 upload once real art exists.
+2. **Renderer support (done as a test).** With `?anim=sheets`, `grunt` and `archer` load their sheet and play `idle`, `walk`, `attack`, `hurt` and `death` from the signals `animateEnemy` already reads; other kinds keep the still sprite and the procedural motion. Frames are picked on game time rather than with `AnimatedSprite`'s own ticker, so pause and game speed apply. Test art: a free pixel-art pack in `~/hero-database-assets/td/newAssetTest` (Orc, Soldier); it proves the pipeline but does not match the painted style, and its license is not confirmed, so it is not deployed. Open: a real sheet for a painted enemy, checked the same way.
+3. **Warp frames from the existing sprite (cheapest art; grunt done as a test, September 29, 2026: `scripts/td-warp-anim.py`, set `painted`, see `TOWER_DEFENSE_SPEC.md` section 6).** Extend `scripts/td-idle-anim.py` (numpy + Pillow, already used for the recruit idle loops) with region warps: legs shear in opposite directions per step, torso leans, weapon-arm region rotates for the swing, cloth ripples. Test with `grunt` and one boss. No new drawing, no hidden limbs, so it stays a deformation, not a real step.
 4. **Cut-out puppet (best quality, most work).** Per enemy:
    - Split the sprite into parts (head, torso, upper and lower arms, legs, weapon, shield, cape). Free options: Krita or GIMP by hand, or Meta's SAM 2 locally (runs on the Mac) for rough masks, then clean up.
    - Fill what the parts hid (the torso behind the shield, the far leg). Hand paint in Krita, or local Stable Diffusion inpainting (ComfyUI, free) seeded from the enemy's own colors. White label rule stays: no game art as input.
@@ -88,7 +88,7 @@ Each step is usable on its own; stop when the result is good enough at 44 to 108
 5. **Optional experiment: local image-to-video.** ComfyUI with an open image-to-video model and `rembg` for the background is free but slow on the Mac, and the clips need hand-picked loop points. Only worth a try for the bosses.
 6. **Checks per new sheet.** Download size per kind (target well under 300 KB), frame rate on a real phone with a full wave, reduced motion (hold the first walk frame), `npm run test:tower-defense`, and a Chromium pass at phone size.
 
-Order suggestion: 1 and 2 with a warp-frame `grunt` (3), then judge in play before any cut-out work (4).
+Order suggestion: 1, 2 and a warp-frame `grunt` (3) are in place; judge it in play (`?anim=sheets`, compare `&set=pixel`) before any cut-out work (4).
 
 ## Scope and evidence
 
