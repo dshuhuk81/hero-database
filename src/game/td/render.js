@@ -195,6 +195,10 @@ export async function createRenderer(canvas, game, options = {}) {
   // (they pass over blockers; only platform heroes can hit them).
   const FLYER_LIFT = 18;
   const flyerBob = (unit) => (reducedMotion ? 0 : Math.sin(performance.now() / 260 + unit.entityId) * 3);
+  // Prototype, only with ?anim in the URL: procedural motion on the full-body enemy sprites
+  // (animateEnemy). Render-only and on game time, so pausing freezes it.
+  const ENEMY_ANIM = !reducedMotion && new URLSearchParams(location.search).has("anim");
+  const DEATH_FALL = 0.5; // seconds an animated enemy takes to topple and fade
   const SPRITE_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
   // Same cache bust as hero thumbs: the lobby, boss plate and glossary show these files in
   // plain <img> tags, and a cached non-CORS copy makes WebGL reject the texture (the boss then
@@ -908,7 +912,7 @@ export async function createRenderer(canvas, game, options = {}) {
           continue;
         }
         // Move to dying pool for death-fade instead of instant removal
-        dyingPool.set(id, { c, timer: 0.3 });
+        dyingPool.set(id, { c, timer: c._anim ? DEATH_FALL : 0.3 });
         enemyContainers.delete(id);
       }
     }
@@ -917,7 +921,14 @@ export async function createRenderer(canvas, game, options = {}) {
   function advanceDying(dt) {
     for (const [id, d] of dyingPool) {
       d.timer -= dt;
-      d.c.alpha = Math.max(0, d.timer / 0.3);
+      if (d.c._anim) {
+        // Topple backwards (away from the facing), then fade.
+        const sp = d.c._fullSprite;
+        const p = 1 - Math.max(0, d.timer) / DEATH_FALL;
+        sp.rotation = -Math.sign(sp.scale.x) * 1.45 * (1 - (1 - Math.min(1, p * 1.6)) ** 3);
+        d.c._glint.alpha = 0;
+        d.c.alpha = Math.min(1, Math.max(0, d.timer) / (DEATH_FALL * 0.5));
+      } else d.c.alpha = Math.max(0, d.timer / 0.3);
       if (d.timer <= 0) {
         layerUnits.removeChild(d.c);
         d.c.destroy({ children: true });
@@ -950,6 +961,17 @@ export async function createRenderer(canvas, game, options = {}) {
       c._fullSprite = sp;
       c._fullScale = sp.scale.x;
       c.addChild(sp);
+      if (ENEMY_ANIM) {
+        // Additive copy of the sprite: the white hit flash, shaped like the body.
+        const glint = new PIXI.Sprite(fullTex);
+        glint.anchor.set(0.5, 0.9);
+        glint.blendMode = "add";
+        glint.alpha = 0;
+        c._glint = glint;
+        c.addChild(glint);
+        c._anim = { phase: (unit.entityId * 1.7) % (Math.PI * 2), moving: 0, x: unit.x, y: unit.y, t: game.time,
+          clock: unit.attackClock ?? 0, hp: unit.hp, atkAt: -9, hitAt: -9, target: null };
+      }
       c._shape.visible = false;
       if (kind === "boss" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 14, outerStrength: 1, color: 0xff4d4d })];
       // Lilith's children are dark on dark ground: a thin violet rim keeps them readable in the escort.
@@ -1090,6 +1112,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c.position.set(unit.x, unit.y);
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
+    if (c._anim) animateEnemy(unit, c);
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
 
     // Upgrade to Kenney sprite if sheet finished loading (fallback when portrait absent)
@@ -1114,6 +1137,69 @@ export async function createRenderer(canvas, game, options = {}) {
     // Vector shape: only rebuild when used as fallback; boss ring always redrawn
     if (c._shape.visible || unit.kind === "boss") buildEnemyShape(c._shape, unit);
     updateEnemyOverlays(unit, c);
+  }
+
+  // Prototype enemy motion (ENEMY_ANIM). Reads only what the sim already exposes:
+  // distance moved drives the walk cycle, a jump in attackClock is a swing, a real hp drop
+  // (not a DoT tick) is a hit. Everything is an offset on the sprite, pivoting at the feet.
+  function animateEnemy(unit, c) {
+    const a = c._anim, sp = c._fullSprite, size = fullSpriteSize(unit.kind);
+    const t = game.time;
+    if (t === a.t) return; // paused: hold the pose
+    a.t = t;
+    const moved = Math.hypot(unit.x - a.x, unit.y - a.y);
+    a.x = unit.x; a.y = unit.y;
+    if (moved < size) a.phase += moved * Math.PI / (size * 0.45); // a step per ~half a body width
+    a.moving = moved > 0.02 ? Math.min(1, a.moving + 0.2) : Math.max(0, a.moving - 0.1);
+    const clock = unit.attackClock ?? 0;
+    if (clock > a.clock + 0.01) { a.atkAt = t; a.target = unit.heldBy ?? null; }
+    a.clock = clock;
+    if (unit.hp < a.hp - unit.maxHp * 0.015 && t - a.hitAt > 0.15) a.hitAt = t;
+    a.hp = unit.hp;
+
+    // Face the hero being struck; otherwise keep the travel facing from updateEnemyContainer.
+    if (a.target && t - a.atkAt < 0.4 && Math.abs(a.target.x - unit.x) > 1) sp.scale.x = Math.sign(a.target.x - unit.x) * Math.abs(sp.scale.x);
+    const f = Math.sign(sp.scale.x) || 1;
+    let rot = 0, dx = 0, dy = 0, sx = 1, sy = 1;
+    const held = (unit.petrifiedUntil ?? 0) > t || (unit.frozenUntil ?? 0) > t;
+    if (!held) {
+      if (unit.flying) {
+        sy += Math.sin(t * 14 + unit.entityId) * 0.06; // wingbeat
+      } else {
+        const step = Math.sin(a.phase);
+        dy -= Math.abs(step) * size * 0.05 * a.moving;          // bounce per step
+        rot += (step * 0.07 + 0.06) * a.moving * f;             // waddle and lean into the walk
+        const land = Math.cos(2 * a.phase) * 0.04 * a.moving;   // squash on landing
+        sy += land; sx -= land * 0.6;
+        sy += Math.sin(t * 2.4 + unit.entityId) * 0.02 * (1 - a.moving); // breathing at rest
+      }
+      const at = t - a.atkAt;
+      if (at < 0.36) {
+        const melee = Boolean(a.target);
+        if (at < 0.14) { // wind up
+          const k = at / 0.14;
+          rot -= 0.14 * k * f; dx -= size * 0.05 * k * f;
+        } else { // strike (melee lunges in, ranged recoils), easing back
+          const e = (1 - (at - 0.14) / 0.22) ** 2;
+          rot += (melee ? 0.22 : -0.05) * e * f; dx += size * (melee ? 0.14 : -0.06) * e * f; sx += 0.06 * e;
+        }
+      }
+      const ht = t - a.hitAt;
+      if (ht < 0.18) { // knocked back and shaking
+        const k = 1 - ht / 0.18;
+        dx += (Math.sin(ht * 90) * 0.04 - 0.03 * f) * size * k;
+      }
+    }
+    const ht = t - a.hitAt;
+    c._glint.alpha = ht < 0.1 ? 0.75 * (1 - ht / 0.1) : 0;
+
+    const base = c._fullScale;
+    sp.position.set(dx, FULL_SPRITE_FEET + dy - (unit.flying ? FLYER_LIFT - flyerBob(unit) : 0));
+    sp.rotation = rot;
+    sp.scale.set(f * base * sx, base * sy);
+    c._glint.position.copyFrom(sp.position);
+    c._glint.rotation = rot;
+    c._glint.scale.copyFrom(sp.scale);
   }
 
   // Petrify tint and stone shell, hit flash.

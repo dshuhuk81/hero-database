@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -57,7 +57,6 @@ export function createCampaign(ctx: PageContext) {
   const summaryCtaEl = q("[data-td-camp-summary-cta]");
   const squadListEl = q("[data-td-squad-list]");
   const squadStart = q<HTMLButtonElement>("[data-td-squad-start]");
-  const walletEls = [...ctx.root.querySelectorAll<HTMLElement>("[data-td-camp-wallet]")];
   const heroListEl = q("[data-td-camp-heroes]");
   const summonBannerEl = q("[data-td-summon-banner]");
   const summonCopyEl = q("[data-td-summon-copy]");
@@ -86,7 +85,6 @@ export function createCampaign(ctx: PageContext) {
   const rewardHtml = (rewards: any[]) => `<span class="td-cur-list">${rewards.map((reward) => reward.type === "currency"
     ? currencyAmount(reward.id, reward.amount, { plus: true })
     : `<span class="td-cur td-cur--hero">${heroById.get(reward.id)?.portrait ? `<img src="${heroById.get(reward.id).portrait}" alt="">` : ""}<b>${heroName(reward.id)}</b></span>`).join("")}</span>`;
-  const wallet = () => currencyList(Object.fromEntries(CURRENCIES.map((id) => [id, progress().currencies[id] || 0])));
   const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
   // Squad Might vs. a stage's recommendation: a legible readout of the same hpScale
@@ -166,7 +164,6 @@ export function createCampaign(ctx: PageContext) {
     const cleared = stages.filter((stage) => isCleared(p, stage.id)).length;
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
-    walletEls.forEach((el) => { el.innerHTML = wallet(); });
     stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
@@ -306,7 +303,6 @@ export function createCampaign(ctx: PageContext) {
   function renderHeroes() {
     const p = progress();
     q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in campaign stages only.";
-    walletEls.forEach((el) => { el.innerHTML = wallet(); });
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     // Owned heroes by Might (strongest first), then the ones still to earn by class.
     const mightOf = new Map<string, number>(p.owned.map((id: string) => [id, heroById.get(id) ? might(heroById.get(id)) : 0]));

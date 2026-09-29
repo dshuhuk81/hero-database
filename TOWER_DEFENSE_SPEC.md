@@ -243,6 +243,13 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   the `?v=cors1` cache bust like hero thumbs. The same files appear in plain `<img>`
   tags (lobby, boss plate, glossary), and a cached non-CORS copy would make WebGL reject
   the texture and drop the enemy to the 8x8 Kenney tile fallback.
+- Enemy motion prototype (off by default, `?anim` in the URL, skipped with reduced
+  motion): `animateEnemy` in `render.js` moves the full-body sprites procedurally, render
+  only and on game time. Distance moved drives a walk cycle (bounce, waddle, lean,
+  squash); a jump in `attackClock` plays a swing (wind-up, then a lunge toward `heldBy`,
+  or a recoil for ranged shots); an hp drop above 1.5% of max hp (DoT ticks excluded)
+  flashes an additive copy of the sprite and shakes it; flyers get a wingbeat; dying
+  enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still.
 - Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
   6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
   9 brute/mender/shieldbearer/runner, 10 boss + escort.
@@ -368,7 +375,7 @@ the scroll position, so the button stays in place for repeat presses. A small re
 level-up is affordable or the hero has its own copy for Evolution. On narrow screens the
 roster stacks above the detail panel while retaining its own scroll. On short landscape
 screens (phones, height up to 540px) the screen fits the viewport so the page itself never
-scrolls: the head keeps only the wallet (the app bar already says "Heroes"), the roster
+scrolls: the screen has no head (the app bar says "Heroes" and its wallet shows Gold, Hero XP and Seal Dust), the roster
 narrows to 172px, the art column shrinks, the tabs run across the top of the copy, and the
 whole copy column is one scroller. Skill upgrade buttons sit under their skill text so the
 description gets the full column width.
@@ -450,11 +457,23 @@ Currencies always show as icon + value, never as a spelled-out name: `currency-i
 (`currencyAmount`, `currencyList`, `currencyIcon`) shows each currency's item icon from R2
 `td/icons/items/{gold,hero-xp,divine-seals,seal-dust,divine-essence}-v1.webp` (96px, trimmed
 from the 760px source art in `public/td/icons/items/`; the "Divine Dust" art is Seal Dust).
-The name is the chip's tooltip and aria-label. Used for the
-wallets (Campaign camp, Stages, Heroes, Summon, Seal Dust), stage rewards (drawer, Squad
+Favor has no item art and uses the star glyph (`currencyIcon("favor")`). The name is the
+chip's tooltip and aria-label. Used for the app bar wallet, the Summon and Seal Dust
+wallets, the reward lines on the Daily Trial and Expedition home cards, stage rewards (drawer, Squad
 screen; hero rewards as a portrait + name chip), level/star costs, summon prices and dust
 exchanges. Plain
 sentences (result screen, notices) still spell names out.
+
+Global wallet (`page/wallet.ts`, markup in the `TdLobby` app bar): one button on every menu
+screen, replacing the old Favor chip and the per-screen wallet rows (Campaign camp, Stages,
+Heroes). It shows the currencies that matter on the open screen, picked in `td.css` by
+`.td-shell[data-screen]`: Favor + Divine Seals by default; Gold + Divine Seals on camp,
+stages and squad; Gold + Hero XP + Seal Dust on Heroes; Divine Seals + Seal Dust on Summon.
+Clicking it opens the inventory dropdown: Favor and per-class Insight (Divine Blessings),
+then Gold, Hero XP, Divine Seals and Seal Dust (Campaign), each with where it is earned and
+spent, and links to Divine Blessings, Heroes and Summon. Escape, a click outside, a link or
+any screen change closes it. It redraws after every save (`store.onPersist`) and on every
+screen change (`renderLobby`).
 
 Campaign debug (dev builds only, `import.meta.env.DEV`): a DBG button in the app bar on
 the campaign screens (camp, stages, heroes, summon, squad) toggles a panel (`TdLobby`,
