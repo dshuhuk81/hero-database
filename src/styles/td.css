@@ -1829,10 +1829,6 @@ button .td-cur { color: inherit; }
 .td-camp-drawer-reward .td-cur-list { font-size: var(--td-fs-body); }
 
 /* Progression layers (recommendation 5): campaign power breakdown + scope note. */
-.td-hero-layers { grid-template-columns: 1fr; margin-top: var(--space-3); }
-.td-hero-layers dd { font-weight: var(--weight-bold); }
-.td-hero-layers dd small { display: block; color: var(--text-muted); font-weight: var(--weight-normal); }
-.td-hero-scope { margin: var(--space-2) 0 0; color: var(--text-muted); font-size: var(--td-fs-label); }
 
 /* ============================================================
    Menu frame layout (page/frame.ts). Every menu screen is built for a phone held sideways
@@ -2075,11 +2071,10 @@ button .td-cur { color: inherit; }
 .td-app .td-hero-profile-stats { grid-template-columns: 1fr; gap: 2px; padding: var(--space-2) 0; }
 .td-app .td-hero-profile-stats div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); }
 .td-app .td-hero-profile-stats dd { font-size: var(--td-fs-body); }
-.td-app .td-hero-layers { gap: var(--space-1); margin-top: var(--space-2); }
-.td-app .td-hero-layers dd { font-size: var(--td-fs-label); }
 .td-app .td-hero-upgrade { position: sticky; bottom: 0; z-index: 1; margin-top: auto; padding-block: var(--space-2); background: linear-gradient(transparent, var(--bg-raised) 30%); }
 .td-app .td-hero-upgrade--split { flex-wrap: nowrap; }
-.td-app .td-hero-upgrade--split > * { flex: 1; min-width: 0; }
+.td-app .td-hero-upgrade--split > * { flex: 1; min-width: 0; padding-inline: var(--space-2); white-space: nowrap; }
+.td-app .td-hero-tile-source { display: grid; justify-items: center; line-height: 1.1; white-space: nowrap; }
 .td-app .td-hero-upgrade--split .td-camp-levelup { flex: 1.5; min-width: 0; white-space: nowrap; }
 .td-app .td-fodder { margin: var(--space-2) 0; padding: var(--space-2); }
 .td-app .td-fodder-slot { width: 48px; height: 60px; }

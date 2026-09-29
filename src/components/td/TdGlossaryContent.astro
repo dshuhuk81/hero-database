@@ -173,6 +173,8 @@ const bossCards = [...new Set((maps as any[]).map((map) => map.boss ?? "baphomet
         <div><dt>Ult power</dt><dd>Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise.</dd></div>
         <div><dt>Synergy tags</dt><dd>Each tag shared with a hero within {t.synergy?.range}px adds {pct(t.synergy?.bonusPerTag ?? 0)} attack, up to {pct(t.synergy?.cap ?? 0)}.</dd></div>
         <div><dt>Awakening</dt><dd>At battle rank IV a hero can Awaken for {t.awakening?.cost} gold: +{pct(t.awakening?.attackBonus ?? 0)} attack, +{pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.</dd></div>
+        <div><dt>Campaign upgrades</dt><dd>Level, Stars, Evolution and Skills from the Heroes screen apply in Campaign stages only. Free Play and Expeditions use base stats plus Divine Blessings, and the Daily Trial is the same for everyone.</dd></div>
+        <div><dt>Divine Blessings</dt><dd>Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial.</dd></div>
       </dl>
     </section>
 

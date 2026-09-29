@@ -351,24 +351,21 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
 Heroes and Summoning are campaign activities, so they are cards on the headquarters
 screen rather than persistent footer navigation buttons.
 
-The **Heroes** screen uses a master-detail collection layout. A scrollable two-column
-roster sits on the left of 4:5 portrait cards: a face close-up fills the card (the full-body
-portrait scaled around the head; `FACE_FOCUS` in `page/campaign.ts` shifts the crop for heroes
-whose head sits lower), class icon top left, Evolution numeral badge top right (when evolved),
-"Lv. N" and the star row over a bottom fade. No name or Might on the card: both are in its
-aria-label/tooltip and in the detail panel. Locked heroes are greyed with their unlock source
-("Stage 1-2" / "Summon") in place of the level. Owned heroes are sorted by Might (highest first), then
-locked heroes by class with their unlock source; the strongest owned hero is selected by
-default. The selected hero fills the right panel with full-body art, class and placement
-role, Might, campaign level, stars, Evolution badge and spare copies. Below the badges,
-the **progression layers** block (mechanics overview recommendation 5) answers "why is
-my hero strong here?": the campaign power multiplier with its Level / Stars / Evolution /
-Skills breakdown, plus one line each for the two layers that do not apply here — in-run
-training (temporary, every mode) and Divine Blessings (Free Play and Expeditions only) —
-and the scope note "Campaign levels, stars, evolution and skills apply in Campaign
-stages only." The Blessings screen carries the mirror note (blessings apply in Free Play
-and Expeditions; Campaign uses campaign upgrades, the Daily Trial is identical for
-everyone). Then four tabs:
+The **Heroes** screen follows the Watcher of Realms hero view: four columns inside the menu
+frame. Left, a narrow (176px) scrollable three-column roster of 4:5 portrait cards: a face
+close-up fills the card (the full-body portrait scaled around the head; `FACE_FOCUS` in
+`page/campaign.ts` shifts the crop for heroes whose head sits lower), class icon top left,
+Evolution numeral badge top right (when evolved), "Lv. N" and the star row over a bottom fade.
+No name or Might on the card: both are in its aria-label/tooltip and over the hero art. Locked
+heroes are greyed with their unlock source ("Stage / 1-2" on two lines, or "Summon") in place
+of the level. Owned heroes are sorted by Might (highest first), then locked heroes by class
+with their unlock source; the strongest owned hero is selected by default. Centre, the
+selected hero's art is the stage (cropped from the top), with name, class and placement role,
+Might, stars, Evolution badge and spare copies over its bottom fade on every tab. Right of
+the art, a 250px upgrade flyout holds the active tab and scrolls on its own; its upgrade
+button stays pinned to the flyout bottom. The right edge is a vertical tab rail (icon over
+label). Which modes campaign upgrades and Divine Blessings apply in is explained once in the
+glossary (Heroes > Attributes: "Campaign upgrades", "Divine Blessings"), not on each hero. The four tabs:
 
 - **Level**: "level / cap", pips for the current 10-level band, current and next-level Attack/Health, deploy cost, Level up (at the cap: "Star up to raise it to N").
 - **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the

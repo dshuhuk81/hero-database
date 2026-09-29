@@ -328,7 +328,7 @@ export function createCampaign(ctx: PageContext) {
         ${ready ? `<i class="td-hero-tile-dot" aria-hidden="true"></i>` : ""}
         <span class="td-hero-tile-foot" aria-hidden="true">${isOwned
           ? `<span class="td-hero-tile-lv"><small>Lv.</small>${heroLevel(p, hero.id)}</span>${stars(heroStars(p, hero.id))}`
-          : `<span class="td-hero-tile-source">${source}</span>`}</span></button>`;
+          : `<span class="td-hero-tile-source">${unlock ? `<small>Stage</small>${unlock.id}` : source}</span>`}</span></button>`;
     }).join("");
     const hero = heroById.get(selectedHeroId ?? "");
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
@@ -389,26 +389,6 @@ export function createCampaign(ctx: PageContext) {
   // Attack and health in campaign stages: base x level x stars.
   const heroScale = (p: any, id: string, level = heroLevel(p, id), starCount = heroStars(p, id)) => levelScale(campaign, level) * starScale(campaign, starCount);
 
-  // Progression layers (mechanics overview recommendation 5): the campaign layer's
-  // running multipliers at a glance, plus the scope note — campaign upgrades apply
-  // in Campaign stages only; Free Play/Expeditions use base stats and Divine
-  // Blessings, the Daily Trial is the same for everyone.
-  function powerLayers(p: any, hero: any) {
-    const lv = levelScale(campaign, heroLevel(p, hero.id));
-    const st = starScale(campaign, heroStars(p, hero.id));
-    const evo = 1 + (campaign.heroMight?.evolutionPerTier ?? 0) * heroEvolution(p, hero.id);
-    const perSkill = campaign.heroSkillLevels?.passiveStatPerLevel ?? 0;
-    const atkSkill = Math.round(perSkill * (heroSkillLevel(p, hero.id, "passiveAttack") - 1) * 100);
-    const hpSkill = Math.round(perSkill * (heroSkillLevel(p, hero.id, "passiveHealth") - 1) * 100);
-    const total = might(hero) / Math.max(1, hero.atk + hero.hp);
-    const f = (x: number) => `×${x.toFixed(2)}`;
-    return `<dl class="td-camp-stats td-hero-layers">
-      <div><dt>Campaign power</dt><dd>${f(total)} <small>Level ${f(lv)} · Stars ${f(st)} · Evolution ${f(evo)}${atkSkill || hpSkill ? ` · Skills +${atkSkill}% atk / +${hpSkill}% hp` : ""}</small></dd></div>
-      <div><dt>In-run training</dt><dd><small>temporary levels during a run, in every mode</small></dd></div>
-      <div><dt>Divine Blessings</dt><dd><small>Free Play and Expeditions — not Campaign stages, not the Daily Trial</small></dd></div>
-    </dl>
-    <p class="td-hero-scope">Campaign levels, stars, evolution and skills apply in Campaign stages only.</p>`;
-  }
   const statRows = (hero: any, now: number, next: number | null) => {
     const row = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${next ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
     return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Deploy cost</dt><dd>${hero.cost} Gold</dd></div></dl>`;
@@ -431,7 +411,6 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-hero-level-head"><strong>Campaign level ${level}</strong><span>${level} / ${cap}</span></div>
       <span class="td-camp-pips" aria-hidden="true">${Array.from({ length: band }, (_, n) => `<i${bandStart + n < level ? " class=\"is-on\"" : ""}></i>`).join("")}</span>
       ${statRows(hero, heroScale(p, hero.id), cost ? heroScale(p, hero.id, level + 1) : null)}
-      ${powerLayers(p, hero)}
       <div class="td-hero-upgrade">${button}</div>`;
   }
 
