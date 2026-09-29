@@ -57,3 +57,11 @@ All 21 source images and 126 WebPs exist; the roster matches the 21 internal TD 
 These are first-pass review assets. Some original framing remains tight around equipment or cloth, particularly Atlas's arch, Skadi's bow, Hecate's lamp glow and Stheno's bow. Several male faces have similar proportions; identity differentiation can be strengthened in a later art review. Fenrir uses a quadruped wolf interpretation in place of the earlier humanoid-wolf image brief.
 
 No animation strips were generated. These files have not replaced the original hero database art, been wired into the game, or been uploaded to R2.
+
+## Odin alternative — v2
+
+[Odin v2 portrait](odin-v2.webp) follows the user's supplied visual reference: hatless, long grey hair, fur mantle, rust-red cloak, prominent spear and two ravens. It is saved alongside the original Odin. There are seven additional image files under `odin-v2*`: native source, upscaled 2514 × 6144 WebP, three cards, a face-centered 96 px thumbnail and a 192 px token. The raised wing is retained in the full portrait; the token prioritizes the face.
+
+See [ODIN-V2-PROMPT.md](ODIN-V2-PROMPT.md) for the exact built-in generation prompt, `odin-v2-manifest.json` for export metadata, and `export-odin-v2.mjs` to reproduce exports. The original 21-hero manifest is unchanged; this is an alternate appearance for the same Odin slot.
+
+**In game since 2026-09-29:** card, thumb and token copied to `../zeus-v2-*.webp`, idle loop rendered to `../anims/zeus-idle-v2.webp` (`scripts/td-idle-anim.py`), uploaded to R2, and `tdSkinMythic.json` sets `"art": "v2"` for `zeus`.

@@ -1,0 +1,13 @@
+# Odin v2 — reference-inspired alternative
+
+Created using built-in image_gen with the user's attached example as a visual reference. Saved alongside v1; not integrated into the game. The master is upscaled to 2514 × 6144. Cards retain the full standing pose; thumbnail and token use a face-centered crop because the raised raven wings occupy the top of the image. Exact dimensions are in odin-v2-manifest.json.
+
+## Prompt
+
+Create an ALTERNATIVE original Odin hero portrait for a mythological tower defense roster, inspired by the user reference image.
+Input image role: composition, costume mood and posture inspiration only. Reinterpret as new game artwork.
+Subject: powerful mature one-eyed Norse god with long windswept silver-grey hair, some small practical braids, full grey beard, rugged expressive weathered face, plain dark bronze-trimmed eyepatch. NO HAT. Broad fur mantle over dark practical iron shoulder armor, deep wine-red wool tunic and diagonally draped muted rust-red cloak, restrained bronze clasps, leather belt, dark trousers and worn armored boots. Keep ornament sparse and independently designed. Two BLACK RAVENS: one perched high behind his shoulder with wings partly lifted within the composition, the second perched on his other forearm. Hold a tall carved wooden spear with a long iron leaf-shaped point on viewer's left; spear shaft visibly supported by his hand. His other bent forearm supports the lower raven, hand relaxed at waist. Raven anatomies distinct, both have beaks, feet, feathered wings. Neither bird blocks Odin's face.
+Pose: commanding near-frontal full standing figure, slight three-quarter torso turn, broad shoulders, weight forward, one boot slightly ahead. Confident direct gaze. Capture the assertive presence and layered upper-body composition of the example, with independently designed clothing, face and spear. Full figure from head to boots, all spear and feathers fit with clear margins.
+Composition: very tall narrow portrait about 5:12 aspect ratio to suit a 2514x6144 final canvas. Let upper body and ravens occupy most of width without cropping. Strong face placement for a later square head-and-shoulders crop. Spear tip and raised wing tips stay inside all canvas edges, at least 4 percent margin. No background scenery.
+Style: high-detail painterly fantasy game character, realistic mature proportions and tactile fur, weathered iron, cloth and skin. Cool silver rim light, restrained warm illumination on face, rich burgundy, russet, dark iron and grey fur.
+Background MUST be genuine transparent alpha, also between spear, ravens and body. No mountains, snow scene, floor, pedestal, black or white backdrop, painted checkerboard, text, frame, UI or watermark. ONE hero and his two ravens only.

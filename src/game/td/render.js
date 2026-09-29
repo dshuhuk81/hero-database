@@ -1220,18 +1220,13 @@ export async function createRenderer(canvas, game, options = {}) {
   function updateEnemyContainer(unit, c) {
     // Full-body sprites face their direction of travel (art faces right).
     if (c._anim) {
-      // Sway offsets jump at lane corners (pointOnPath swaps the normal, up to ~20 px, often
-      // backwards): glide over the jump instead of popping, and only turn around on clearly
-      // sideways steps, so a corner or a vertical stretch keeps the facing.
-      const d = c._draw ?? (c._draw = { x: unit.x, y: unit.y });
-      const gap = Math.hypot(unit.x - d.x, unit.y - d.y);
-      if (gap > 8 && gap < 60) { d.x += (unit.x - d.x) * 0.3; d.y += (unit.y - d.y) * 0.3; } else { d.x = unit.x; d.y = unit.y; }
+      // Only turn around on clearly sideways steps, so a vertical stretch keeps the facing.
       const dx = unit.x - (c._lastX ?? unit.x), dy = unit.y - (c._lastY ?? unit.y);
       if (c._fullSprite && Math.abs(dx) > 0.01 && Math.abs(dx) > Math.abs(dy) * 0.5 && Math.hypot(dx, dy) < 8) {
         c._fullSprite.scale.x = Math.sign(dx) * Math.abs(c._fullScale);
       }
       c._lastX = unit.x; c._lastY = unit.y;
-      c.position.set(d.x, d.y);
+      c.position.set(unit.x, unit.y);
     } else {
       if (c._fullSprite && c._lastX !== undefined && Math.abs(unit.x - c._lastX) > 0.01) {
         c._fullSprite.scale.x = (unit.x < c._lastX ? -1 : 1) * c._fullScale;

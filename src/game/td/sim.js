@@ -37,6 +37,10 @@ function pathMetrics(points) {
   return { lengths, total };
 }
 
+// Corners are rounded over this many px either side of a vertex, so a sideways offset turns
+// with the path instead of snapping from one segment's normal to the next.
+const CORNER_RADIUS = 24;
+
 // `offset` shifts the point sideways from the path centre (px, left of travel direction).
 export function pointOnPath(points, distance, offset = 0) {
   let remaining = distance;
@@ -45,15 +49,46 @@ export function pointOnPath(points, distance, offset = 0) {
     const bx = points[i][0]; const by = points[i][1];
     const segment = Math.hypot(bx - ax, by - ay);
     if (remaining <= segment) {
-      const t = segment ? remaining / segment : 0;
-      const nx = segment ? -(by - ay) / segment : 0;
-      const ny = segment ? (bx - ax) / segment : 0;
-      return { x: ax + (bx - ax) * t + nx * offset, y: ay + (by - ay) * t + ny * offset };
+      if (!segment) return { x: ax, y: ay };
+      const dx = (bx - ax) / segment; const dy = (by - ay) / segment;
+      // Inside the rounding zone of the vertex before (i-1) or after (i) this segment?
+      const prev = i > 1 ? cornerAt(points, i - 1) : null;
+      const next = i < points.length - 1 ? cornerAt(points, i) : null;
+      if (prev && remaining < prev.r) return cornerPoint(prev, 0.5 + remaining / (2 * prev.r), offset);
+      if (next && segment - remaining < next.r) return cornerPoint(next, 0.5 - (segment - remaining) / (2 * next.r), offset);
+      return { x: ax + dx * remaining - dy * offset, y: ay + dy * remaining + dx * offset };
     }
     remaining -= segment;
   }
   const last = points.at(-1);
   return { x: last[0], y: last[1] };
+}
+
+// Rounding zone at vertex k: enter point, vertex, exit point (quadratic Bezier) and the
+// in/out directions whose normals get blended across the turn.
+function cornerAt(points, k) {
+  const [px, py] = points[k - 1]; const [vx, vy] = points[k]; const [nx, ny] = points[k + 1];
+  const lenIn = Math.hypot(vx - px, vy - py); const lenOut = Math.hypot(nx - vx, ny - vy);
+  if (!lenIn || !lenOut) return null;
+  const inX = (vx - px) / lenIn; const inY = (vy - py) / lenIn;
+  const outX = (nx - vx) / lenOut; const outY = (ny - vy) / lenOut;
+  if (inX * outX + inY * outY > 0.999) return null; // straight through
+  const r = Math.min(CORNER_RADIUS, lenIn / 2, lenOut / 2);
+  return { r, vx, vy, inX, inY, outX, outY };
+}
+
+function cornerPoint(c, t, offset) {
+  const { r, vx, vy, inX, inY, outX, outY } = c;
+  const sx = vx - inX * r; const sy = vy - inY * r;
+  const ex = vx + outX * r; const ey = vy + outY * r;
+  const u = 1 - t;
+  const x = u * u * sx + 2 * u * t * vx + t * t * ex;
+  const y = u * u * sy + 2 * u * t * vy + t * t * ey;
+  // Tangent of the curve, rotated left, gives the offset normal.
+  let tx = u * inX + t * outX; let ty = u * inY + t * outY;
+  const tl = Math.hypot(tx, ty) || 1;
+  tx /= tl; ty /= tl;
+  return { x: x - ty * offset, y: y + tx * offset };
 }
 
 export class TowerDefenseGame {

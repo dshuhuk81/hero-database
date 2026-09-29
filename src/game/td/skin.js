@@ -15,7 +15,10 @@ export function skinHeroes(heroes, base) {
   return heroes.map((hero) => {
     const entry = mythic.heroes[hero.id];
     if (!entry) throw new Error(`Mythic skin has no entry for ${hero.id}`);
-    const art = (variant) => `${base}/td/heroes-alt/${hero.id}-${variant}.webp`;
+    // entry.art: art version for redrawn heroes (R2 files are cached immutable, so new art
+    // gets new file names: {id}-{art}-{variant}.webp and anims/{id}-idle-{art}.webp).
+    const file = entry.art ? `${hero.id}-${entry.art}` : hero.id;
+    const art = (variant) => `${base}/td/heroes-alt/${file}-${variant}.webp`;
     return {
       ...hero,
       name: entry.name,
@@ -24,7 +27,7 @@ export function skinHeroes(heroes, base) {
       portrait: art("card-240"),
       token: art("token-192"),
       // Idle loop for the recruit preview (scripts/td-idle-anim.py): 24 square frames, 2.4 s.
-      anim: { url: `${base}/td/heroes-alt/anims/${hero.id}-idle-v1.webp`, frames: 24, duration: 2.4 },
+      anim: { url: `${base}/td/heroes-alt/anims/${hero.id}-idle-${entry.art ?? "v1"}.webp`, frames: 24, duration: 2.4 },
       // One file per hero and sound (td/sfx/mythic-{id}-{SOUND_VERSION}_{kind}.ogg); to replace
       // sounds, add files under a new version and bump SOUND_VERSION (R2 files are cached).
       sounds: { attack: `mythic-${hero.id}-${SOUND_VERSION}_attack`, ultimate: `mythic-${hero.id}-${SOUND_VERSION}_ultimate` },

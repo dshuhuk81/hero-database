@@ -54,6 +54,9 @@ Hard rules:
   (e.g. `nuwa` -> Atlas) with TD-owned art on R2 `td/heroes-alt/` and sounds on
   `td/sfx/mythic-*`. Internal ids, stats and rules are unchanged. `gameBalance.json`
   still carries DB names and thumb URLs; UI code must go through `skin.js`.
+  Redrawn heroes carry `"art": "v2"` (etc.) in `tdSkinMythic.json`: files become
+  `{id}-{art}-{card-240|thumb-96|token-192}.webp` and `anims/{id}-idle-{art}.webp`, since
+  R2 caches immutable. Odin (`zeus`) uses v2 (source `review-set-v1/odin-v2*`).
 - Page disclaimer (lobby and glossary): "Not affiliated with GOAT Games or Motto
   Immortal. Heroes, art and text are original; music and sounds are CC0."
 
@@ -275,9 +278,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   or a recoil for ranged shots); an hp drop above 1.5% of max hp (DoT ticks excluded)
   flashes an additive copy of the sprite and shakes it; flyers get a wingbeat; dying
   enemies topple backwards over 0.5 s. Petrified or frozen enemies hold still. With the
-  flag on, the drawn position glides over jumps of 8 to 60 px (the `sway` offset flips at
-  lane corners in `pointOnPath`, up to ~20 px and often backwards) and the facing only
-  turns on clearly sideways steps; without it both behave as before. Switching
+  flag on, the facing only turns on clearly sideways steps; without it, it flips on any
+  horizontal change. `pointOnPath` rounds lane corners (quadratic curve, radius 24 px,
+  capped at half the adjacent segments) and blends the `sway` normal across the turn, so
+  enemies arc around corners instead of popping sideways. Switching
   it on for everyone is the `ENEMY_ANIM` line. Next steps toward real animation frames
   (sheet format, packer, `AnimatedSprite`, free art workflow) are in
   `docs/tower-defense-ui-plan.md` (M7); the frame format is in
