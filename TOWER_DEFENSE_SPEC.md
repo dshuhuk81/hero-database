@@ -308,7 +308,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
     (walk 8, idle 4, attack 8) and hurt (4) also send `last_frame` = the same still, which the web
     UI does not offer, so they end in the start pose; death (8) runs open. Raw frames:
     `~/hero-database-assets/td/enemy-sprites-src/pixellab-<kind>/<clip>/NN.png` (00 is the
-    unchanged input). Loops drop their last frame (= frame 0), hurt and death drop frame 0.
+    unchanged input). Every clip drops frame 0: generated frames are slightly redrawn, so the
+    untouched input would pop once per loop; loops still close on their generated start pose.
     Frames scaled so the first walk frame's larger side is 90 px.
   - `STRIPS` (flyer): a 6-frame flight cycle generated from text on black
     (`enemy-sprites-src/flyerSpriteFlying.png`). Only dark pixels connected to the border are
