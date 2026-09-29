@@ -161,8 +161,7 @@
 .td-home-side > .td-hmode + .td-hmode { border-top: 1px solid var(--border-subtle); }
 .td-home-side .td-hmode { --td-hmode-mask: linear-gradient(to left, #000, transparent 70%); --td-hmode-art-opacity: 0.35; }
 .td-home-side .td-hmode:hover, .td-home-side .td-hmode:focus-visible { background: var(--surface-tint); --td-hmode-art-opacity: 0.5; }
-.td-hmode--campaign { --td-hmode-art: url("/td/campaign.webp"); box-shadow: inset 3px 0 0 var(--accent-gold-dim); }
-.td-hmode--campaign:hover, .td-hmode--campaign:focus-visible { box-shadow: inset 3px 0 0 var(--accent-gold); }
+.td-hmode--campaign { --td-hmode-art: url("/td/campaign.webp"); }
 .td-hmode--daily { --td-hmode-art: url("/td/trials.webp"); }
 .td-hmode--expedition { --td-hmode-art: url("/td/expedition.webp"); --td-hmode-mask: linear-gradient(to left, #000 20%, transparent 90%); }
 
@@ -1831,8 +1830,9 @@ button .td-cur { color: inherit; }
 /* Side modes: three separate cards with a gap. The CTA sits in a right column beside route
    and summary (the foot is flattened into the grid), so no card needs a separate button row. */
 .td-app .td-home-side { gap: var(--space-2); border-block: 0; }
-.td-app .td-home-side > .td-hmode + .td-hmode { border-top: 0; }
 .td-app .td-home-side .td-hmode { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-auto-rows: auto; align-content: center; gap: 4px var(--space-3); padding: 6px var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+/* Hovered or pressed cards: a plain 1px gold border. */
+.td-app .td-home-side .td-hmode:hover, .td-app .td-home-side .td-hmode:active, .td-app .td-home-side .td-hmode:focus-visible { border-color: var(--accent-gold); }
 .td-app .td-home-side .td-hmode > * { grid-column: 1; }
 .td-app .td-home-side .td-hmode-head { grid-column: 1 / -1; }
 .td-app .td-home-side .td-hmode-foot { display: contents; }

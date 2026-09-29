@@ -28,6 +28,8 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 
 Since M22b heroes stand on square tiles: road tiles along the route and one row of side tiles on each side. Do not hand-edit `roadSlots`, `platformSlots` or `rings`; they are generated from the route and the map's `grid` block (`bounds` for allowed tile centers, `exclude` rects for painted obstacles, `rings` with an anchor point per special ring) by `node scripts/build-td-grid.mjs`. Rules and defaults in [src/game/td/grid.js](src/game/td/grid.js); `test-td-sim.mjs` fails when the file is stale.
 
+Authored side tiles (M24 layout trial, September 29, 2026): a map may list `grid.platforms` (tile centers) instead of the generated side rows; road tiles stay generated so blocking lines up with the route. The builder rejects a tile outside `bounds`, inside an `exclude` rect, within `endClear` of a gate or the sanctuary, closer than 67 px to the road centerline, or overlapping another tile. Moonlit Pass uses it (26 staggered tiles in the two bend pockets, an island by the sanctuary, sparse outer tiles). Compare a new layout with `npm run td:layout -- --map=<id>` (committed tiles vs working file, same seeds) before shipping it.
+
 ## Multi-entrance maps (`lanes`)
 
 A map with more than one entrance replaces top-level `spawn` + `path` with `lanes: [{ spawn, path }, ...]` ([src/game/td/lanes.js](src/game/td/lanes.js) `mapLanes`). Rules, checked by `test-td-sim.mjs`:

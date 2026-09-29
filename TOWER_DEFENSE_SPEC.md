@@ -148,7 +148,7 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Damage: `mitigation = res / (res + 260)`; `dmg = atk * (1 - mitigation) * (crit ? 1.5 : 1)`.
   True damage skips mitigation.
 - Placement: square tiles (`grid.js`, cell 60) on the road (blockers) and in rows beside
-  it (ranged). Road tiles take Tank/Warrior/Assassin, platform tiles take
+  it (ranged); Moonlit Pass has authored, irregular side tiles instead (`grid.platforms`, see map.md). Road tiles take Tank/Warrior/Assassin, platform tiles take
   Mage/Archer/Support. Flyers can only be hit by platform heroes.
   Tile look (`map-scene.js` `drawSlot`): every empty tile has a dark outer rim plus an
   accent rim over a darkened surface. Road = recessed socket, corner brackets and a shield
@@ -532,6 +532,7 @@ Audio volume and mute have their own keys.
 | `npm run td:upgrade-sweep` | Campaign win rates by Stars / Evolution, summon economy |
 | `npm run td:classes` / `td:progression` | Class and progression reports |
 | `npm run td:economy` | In-run gold ledger: income by source vs. spend by sink, per mode/tier |
+| `npm run td:layout -- --map=<id>` | Tile layout A/B: committed vs working `tdMaps.json`, Free Play + campaign stages on that map |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

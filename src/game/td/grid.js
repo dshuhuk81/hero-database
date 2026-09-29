@@ -46,6 +46,7 @@ function along([ax, ay], [bx, by], step) {
   return Array.from({ length: count }, (_, i) => ({ x: ax + ux * (offset + i * step), y: ay + uy * (offset + i * step), ux, uy }));
 }
 
+const TILE_HALF = 28; // drawn tile half size (map-scene.js TILE 56)
 const tooClose = (cells, x, y, spacing) => cells.some(([cx, cy]) => Math.max(Math.abs(cx - x), Math.abs(cy - y)) < spacing);
 const inRect = (x, y, [rx, ry, rw, rh]) => x >= rx && x <= rx + rw && y >= ry && y <= ry + rh;
 const round = (v) => Math.round(v);
@@ -70,9 +71,21 @@ export function buildGrid(map) {
   }
 
   // Side rows: one row of tiles on each side of every segment, just clear of the road.
+  // A map can author its side tiles instead (`grid.platforms`, M24 layout trial):
+  // irregular clusters in clearings and near bends, checked by the same rules.
   const across = roadHalf + gap + cell / 2;
   const platform = [];
-  for (const [a, b] of segments) {
+  if (cfg.platforms) {
+    const clear = roadHalf + gap + TILE_HALF;
+    for (const [x, y] of cfg.platforms) {
+      const where = `${map.id} side tile [${x}, ${y}]`;
+      if (blocked(x, y)) throw new Error(`${where}: outside bounds, in an excluded rect or too close to a gate`);
+      if (distanceToSegments(segments, x, y) < clear) throw new Error(`${where}: overlaps the road`);
+      if (tooClose(platform, x, y, TILE_HALF * 2 + 2)) throw new Error(`${where}: overlaps another side tile`);
+      platform.push([x, y]);
+    }
+  }
+  for (const [a, b] of cfg.platforms ? [] : segments) {
     // Extend a tile past each end so the outside of a bend gets a corner tile.
     const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     const ux = (b[0] - a[0]) / length, uy = (b[1] - a[1]) / length;
