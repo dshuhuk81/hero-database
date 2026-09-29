@@ -4,6 +4,7 @@
 import { bossSprite, classIconImg } from "../assets.js";
 import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { addSeals } from "../campaign.js";
+import { currencyList } from "../currency-icons.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { MUTATOR_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -133,7 +134,7 @@ export function createDaily(ctx: PageContext) {
     summaryEl.textContent = `${dailyGoalText(current)}${record ? ` \u00b7 best ${record.bestScore.toLocaleString()}` : ""}`;
     summaryMutatorsEl.innerHTML = current.mutators.map(mutatorChip).join("");
     summaryRewardEl.classList.toggle("is-claimed", !!record?.goalReached);
-    summaryRewardEl.innerHTML = record?.goalReached ? "Reward claimed" : `First clear <b>+${DAILY.rewardFavor} Favor</b>${DAILY_SEALS ? ` <b>+${DAILY_SEALS} Seals</b>` : ""}`;
+    summaryRewardEl.innerHTML = record?.goalReached ? "Reward claimed" : `First clear ${currencyList({ favor: DAILY.rewardFavor, ...(DAILY_SEALS ? { divineSeals: DAILY_SEALS } : {}) }, { plus: true })}`;
     renderReset();
   }
 

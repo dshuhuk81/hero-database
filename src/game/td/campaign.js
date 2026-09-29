@@ -45,6 +45,13 @@ export function nextStage(campaign, progress) {
   return allStages(campaign).find((stage) => isUnlocked(progress, stage) && !isCleared(progress, stage.id)) ?? null;
 }
 
+// The chapter the player is in (audit step 4): the one holding the next stage, or the last
+// chapter once everything is cleared. Home card, summary and route count only its stages.
+export function currentChapter(campaign, progress) {
+  const next = nextStage(campaign, progress);
+  return campaign.chapters.find((chapter) => chapter.stages.some((stage) => stage.id === next?.id)) ?? campaign.chapters.at(-1);
+}
+
 // A squad is valid when it has 1..squadSize distinct owned heroes.
 export function validSquad(campaign, progress, squad) {
   const ids = [...new Set(squad)];

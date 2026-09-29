@@ -24,6 +24,14 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
     assert.ok(e.roster.some((id) => slotOf.get(id) === "road") && e.roster.some((id) => slotOf.get(id) === "platform"), "road and platform hero");
   }
   assert.equal(a.lives, tuning.run.lives, "full lives at the start");
+  // Route length is a setting: a fourth map widens the pool, the run stays EXPEDITION.stages long.
+  assert.equal(EXPEDITION.stageHp.length, EXPEDITION.stages, "one enemy health step per stage");
+  const wider = { ...data, maps: [...maps, { ...maps[0], id: "fourth-map" }] };
+  for (let seed = 1; seed < 20; seed += 1) {
+    const e = newExpedition(seed, wider);
+    assert.equal(e.stages.length, EXPEDITION.stages, "route length fixed with a bigger map pool");
+    assert.equal(new Set(e.stages).size, e.stages.length, "no battlefield twice");
+  }
 }
 
 // --- Stage options and the sim: roster only, relics, veterans, lives, health scale ---

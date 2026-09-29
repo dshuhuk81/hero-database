@@ -52,6 +52,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createNav } from "../../game/td/page/nav";
   import { createOrientGate } from "../../game/td/page/orient";
   import { createMenuFrame } from "../../game/td/page/frame";
+  import { createWallet } from "../../game/td/page/wallet";
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
@@ -170,8 +171,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
     const favor = availableFavor(store.data);
     q("[data-td-favor-count]").textContent = favor.toLocaleString();
-    q("[data-td-favor-chip]").textContent = favor.toLocaleString();
-    q("[data-td-favor-chip-button]").setAttribute("aria-label", `Divine Blessings, ${favor} Favor available`);
+    wallet.render();
     q("[data-td-map-pick]").textContent = `${state.selectedMap.name} - Boss: ${ctx.bossFor(state.selectedMap).name}`;
     renderChallengeBadges(root!, store.data, data.tuning.tiers);
     dailyTrial.render();
@@ -259,6 +259,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // ------------------------------------------------------------------
   // Page modules
   // ------------------------------------------------------------------
+  const wallet = createWallet(ctx);
+  store.onPersist = wallet.render;
   const savePanel = createSavePanel(ctx);
   const buffBar = createBuffBar(ctx);
   const runOffer = createRunOffer(ctx);
@@ -274,6 +276,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: hud.tick, buffBar, runOffer, results, debugPanel, popover, recruit });
   const nav = createNav(ctx, {
     onShow(id) {
+      wallet.close();
       if (id === "play") return;
       renderLobby();
       if (id === "mode") renderModeScreen();

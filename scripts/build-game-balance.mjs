@@ -1,3 +1,18 @@
+// Tower defense hero balance (src/data/gameBalance.json).
+//
+// Stable baselines (audit step 4): stats come from percentile ranks, so ranking against the
+// whole roster made every new hero shift everyone else. Ranks are now taken against a fixed
+// reference set, `tuning.balanceReference`:
+//   - reference heroes are ranked among themselves (class-kit edits still rebuild them);
+//   - any other roster hero from the database is ranked *against* the reference, one at a
+//     time, so adding a hero never changes an existing row;
+//   - roster ids with no database entry (the recruits) are hand-authored rows, kept as-is.
+// `rarity` is kept from the file, or derived from tier for a new hero.
+//
+//   npm run build:game-balance                 rewrite gameBalance.json
+//   npm run build:game-balance -- --check      fail when the file is stale (tests)
+//   npm run build:game-balance -- --propose=id print the row a new database hero would get
+//                                              (add the id to tuning.roster to ship it)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -8,30 +23,34 @@ import { calculateOverall } from "../src/data/ratings/ratingSystem.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(here, "../src/data/gameBalance.json");
+const current = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, "utf8")) : [];
+const currentById = new Map(current.map((row) => [row.id, row]));
 const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 const lerp = (a, b, t) => a + (b - a) * t;
 const round5 = (n) => Math.round(n / 5) * 5;
-const roster = tuning.roster.map((id) => {
+const TIER_RARITY = { S: "legendary", A: "legendary", B: "epic", C: "epic", D: "common" };
+const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1];
+
+const source = (id) => {
   const hero = heroes[id];
   if (!hero) throw new Error(`Missing tower-defense hero: ${id}`);
   if (!hero.stats || !hero.baseAttackRate || !hero.bossUltimatesPer90s) throw new Error(`Incomplete tower-defense hero: ${id}`);
   return hero;
-});
-if (roster.length < 2) throw new Error(`Roster too small: ${roster.length}`);
+};
+const reference = (tuning.balanceReference ?? []).map(source);
+if (reference.length < 2) throw new Error(`tuning.balanceReference too small: ${reference.length}`);
 
-function ranks(values) {
-  const sorted = [...values].sort((a, b) => a - b);
-  return values.map((value) => sorted.findIndex((entry) => entry === value) / (values.length - 1));
-}
+// Rank of `value` within `pool` (ties share the lowest index), 0..1.
+const rankIn = (pool, value) => [...pool].sort((a, b) => a - b).findIndex((entry) => entry === value) / (pool.length - 1);
+const rawDpsOf = (h) => h.stats.atk * h.baseAttackRate;
+const mitigation = (res) => res / (res + 260);
 
-const rawDps = roster.map((h) => h.stats.atk * h.baseAttackRate);
-const hpRank = ranks(roster.map((h) => h.stats.hp));
-const armorRank = ranks(roster.map((h) => h.stats.armor));
-const resistRank = ranks(roster.map((h) => h.stats.magicRes));
-const dpsRank = ranks(rawDps);
-const basics = roster.map((h, i) => {
+// Row before pricing for database hero `h`, its values ranked in `group` (reference heroes,
+// plus `h` when it is not one of them).
+function basicRow(h, group) {
+  const rank = (get) => rankIn(group.map(get), get(h));
   const aps = clamp(h.baseAttackRate, 0.5, 2.2);
-  const dps = lerp(18, 55, dpsRank[i]);
+  const dps = lerp(18, 55, rank(rawDpsOf));
   const tier = calculateOverall(ratings[h.id]).tier ?? "C";
   const classTuning = tuning.classes[h.class];
   if (!classTuning) throw new Error(`No class tuning for ${h.class}`);
@@ -42,49 +61,74 @@ const basics = roster.map((h, i) => {
     range: classTuning.range, ability: classTuning.ability, damageType,
     image: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs/${h.id}-96.webp`,
     atk: Math.round(dps / aps), aps: Math.round(aps * 100) / 100, dps: Math.round(dps),
-    hp: Math.round(lerp(340, 880, hpRank[i])), armor: Math.round(lerp(30, 230, armorRank[i])),
-    magicRes: Math.round(lerp(30, 230, resistRank[i])), critChance: h.stats.critRate / 100,
+    hp: Math.round(lerp(340, 880, rank((x) => x.stats.hp))), armor: Math.round(lerp(30, 230, rank((x) => x.stats.armor))),
+    magicRes: Math.round(lerp(30, 230, rank((x) => x.stats.magicRes))), critChance: h.stats.critRate / 100,
     ultCooldown: Math.round((90 / h.bossUltimatesPer90s) * 10) / 10, ultPower: tuning.tierUltPower[tier] ?? 1,
     synergies: Array.isArray(h.synergies) ? h.synergies : [],
   };
-});
+}
 
-const mitigation = (res) => res / (res + 260);
-const ehpRank = ranks(basics.map((h) => h.hp / (1 - (mitigation(h.armor) + mitigation(h.magicRes)) / 2)));
-const ultRank = ranks(basics.map((h) => (90 / h.ultCooldown) * h.ultPower));
-// Effective damage for pricing: class kits (tuning.classes valueDps) scale single-target
-// DPS by what the kit adds, e.g. Mage splash or Warrior cleave hitting several enemies.
-const effDpsRank = ranks(rawDps.map((dps, i) => dps * (tuning.classes[basics[i].class].valueDps ?? 1)));
-for (let i = 0; i < basics.length; i += 1) {
-  const h = basics[i];
-  h._value = h.slot === "road"
-    ? 0.3 * effDpsRank[i] + 0.5 * ehpRank[i] + 0.2 * ultRank[i]
-    : 0.65 * effDpsRank[i] + 0.1 * ehpRank[i] + 0.25 * ultRank[i];
+// Full row for database hero `h` ranked in `group` (see basicRow).
+function buildRow(h, group) {
+  const rows = new Map(group.map((x) => [x.id, basicRow(x, group)]));
+  const row = rows.get(h.id);
+  const all = [...rows.values()];
+  // Effective damage for pricing: class kits (tuning.classes valueDps) scale single-target
+  // DPS by what the kit adds, e.g. Mage splash or Warrior cleave hitting several enemies.
+  const byId = new Map(group.map((x) => [x.id, x]));
+  const effDps = (r) => rawDpsOf(byId.get(r.id)) * (tuning.classes[r.class].valueDps ?? 1);
+  const ehp = (r) => r.hp / (1 - (mitigation(r.armor) + mitigation(r.magicRes)) / 2);
+  const ult = (r) => (90 / r.ultCooldown) * r.ultPower;
+  const value = (r) => {
+    const rank = (get) => rankIn(all.map(get), get(r));
+    return r.slot === "road"
+      ? 0.3 * rank(effDps) + 0.5 * rank(ehp) + 0.2 * rank(ult)
+      : 0.65 * rank(effDps) + 0.1 * rank(ehp) + 0.25 * rank(ult);
+  };
+  // Cost is ranked within the slot type.
+  const slotValues = all.filter((r) => r.slot === row.slot).map(value);
+  row.cost = round5(lerp(85, 150, rankIn(slotValues, value(row))));
+  // Class kits apply after pricing, so they shift a whole class without re-ranking costs:
+  // durability (hpMult/armorMult), attack rhythm (apsMult keeps DPS, so fewer but heavier
+  // hits; maxAps caps it), class damage (dpsMult), damage type and crit.
+  const { hpMult = 1, armorMult = 1, apsMult = 1, maxAps = 2.2, dpsMult = 1, damageType, crit = 0 } = tuning.classes[row.class];
+  row.hp = Math.round(row.hp * hpMult);
+  row.armor = Math.round(row.armor * armorMult);
+  const dps = row.dps * dpsMult;
+  row.aps = Math.round(clamp(row.aps * apsMult, 0.3, maxAps) * 100) / 100;
+  row.atk = Math.round(dps / row.aps);
+  row.dps = Math.round(dps);
+  if (damageType) row.damageType = damageType;
+  if (crit) row.critChance = Math.round((row.critChance + crit) * 100) / 100;
+  row.rarity = currentById.get(row.id)?.rarity ?? TIER_RARITY[String(row.tier)[0]] ?? "epic";
+  return row;
 }
-for (const slot of ["road", "platform"]) {
-  const group = basics.filter((h) => h.slot === slot);
-  const groupRanks = ranks(group.map((h) => h._value));
-  group.forEach((hero, index) => { hero.cost = round5(lerp(85, 150, groupRanks[index])); });
+
+const referenceIds = new Set(reference.map((h) => h.id));
+const rowFor = (id) => (referenceIds.has(id) ? buildRow(source(id), reference) : buildRow(source(id), [...reference, source(id)]));
+
+const proposed = arg("propose");
+if (proposed) {
+  const row = rowFor(proposed);
+  console.log(JSON.stringify(row, null, 2));
+  const peers = current.filter((r) => r.class === row.class && r.slot === row.slot).map((r) => `${r.id} ${r.cost}g atk ${r.atk} hp ${r.hp}`);
+  console.log(`\n${row.class} peers today: ${peers.join(", ")}\nNo existing row changes. Add "${proposed}" to tuning.roster and run npm run build:game-balance to ship it.`);
+  process.exit(0);
 }
-// Class kits (tuning.classes) are applied after pricing, so they shift a whole class
-// without re-ranking costs: durability (hpMult/armorMult), attack rhythm (apsMult keeps
-// DPS, so fewer but heavier hits; maxAps caps it), class damage (dpsMult), damage type and crit.
-for (const h of basics) {
-  const { hpMult = 1, armorMult = 1, apsMult = 1, maxAps = 2.2, dpsMult = 1, damageType, crit = 0 } = tuning.classes[h.class];
-  h.hp = Math.round(h.hp * hpMult);
-  h.armor = Math.round(h.armor * armorMult);
-  const dps = h.dps * dpsMult;
-  h.aps = Math.round(clamp(h.aps * apsMult, 0.3, maxAps) * 100) / 100;
-  h.atk = Math.round(dps / h.aps);
-  h.dps = Math.round(dps);
-  if (damageType) h.damageType = damageType;
-  if (crit) h.critChance = Math.round((h.critChance + crit) * 100) / 100;
+
+const generated = [];
+const authored = [];
+for (const id of tuning.roster) {
+  if (heroes[id]) generated.push(rowFor(id));
+  else if (currentById.has(id)) authored.push(currentById.get(id));
+  else throw new Error(`Roster id ${id} has no database entry and no authored row in gameBalance.json`);
 }
-const output = basics.map(({ _value, ...hero }) => hero).sort((a, b) => b.cost - a.cost || a.name.localeCompare(b.name));
+generated.sort((a, b) => b.cost - a.cost || a.name.localeCompare(b.name));
+const output = [...generated, ...authored];
 const json = `${JSON.stringify(output, null, 2)}\n`;
 if (process.argv.includes("--check")) {
-  if (!fs.existsSync(outputPath) || fs.readFileSync(outputPath, "utf8") !== json) throw new Error("gameBalance.json is stale; run npm run build:game-balance");
+  if (fs.readFileSync(outputPath, "utf8") !== json) throw new Error("gameBalance.json is stale; run npm run build:game-balance");
 } else {
   fs.writeFileSync(outputPath, json);
 }
-console.log(`Tower defense balance: ${output.length} heroes, ${Math.min(...output.map((h) => h.cost))}-${Math.max(...output.map((h) => h.cost))} gold`);
+console.log(`Tower defense balance: ${output.length} heroes (${generated.length} generated against ${reference.length} reference heroes, ${authored.length} authored), ${Math.min(...output.map((h) => h.cost))}-${Math.max(...output.map((h) => h.cost))} gold`);

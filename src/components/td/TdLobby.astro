@@ -41,10 +41,15 @@ const modes = [
       <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" /></svg>
     </button>
     <h1 class="td-appbar-title" data-td-appbar-title tabindex="-1">Tower Defense</h1>
-    <button class="td-favor-chip" type="button" data-td-go="blessings" data-td-favor-chip-button aria-label="Divine Blessings">
-      <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z" /></svg>
-      <strong data-td-favor-chip>0</strong><span>Favor</span>
-    </button>
+    <!-- Global wallet: the chips shown depend on the screen (td.css, .td-wallet-chip), the
+         button opens the full inventory. src/game/td/page/wallet.ts fills both. -->
+    <div class="td-wallet" data-td-wallet>
+      <button class="td-wallet-button" type="button" data-td-wallet-button aria-expanded="false" aria-controls="td-wallet-panel" aria-label="Inventory">
+        <span class="td-wallet-chips" data-td-wallet-chips></span>
+        <svg class="td-icon td-wallet-caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" fill="none" /></svg>
+      </button>
+      <div class="td-wallet-panel" id="td-wallet-panel" data-td-wallet-panel role="region" aria-label="Inventory" hidden></div>
+    </div>
     {isDev && <button class="td-icon-button td-debug-toggle td-camp-debug-toggle" type="button" data-td-camp-debug-toggle aria-label="Toggle campaign debug panel" aria-pressed="false">DBG</button>}
     <button class="td-icon-button td-appbar-settings" type="button" data-td-go="settings" aria-label="Settings">
       <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" /><circle cx="15" cy="7" r="2" fill="none" /><circle cx="9" cy="17" r="2" fill="none" /></svg>
@@ -167,10 +172,7 @@ const modes = [
       <div class="td-screen-body td-camp-screen td-camp-home">
         <div class="td-camp-campfire">
           <div class="td-camp-welcome">
-            <div class="td-camp-welcome-top">
-              <span class="td-label">Your campaign headquarters</span>
-              <div class="td-camp-resources" aria-label="Campaign resources" data-td-camp-resources></div>
-            </div>
+            <span class="td-label">Your campaign headquarters</span>
             <h2>Campaign camp</h2>
             <p>Gather your heroes. Strengthen your ranks.<br />Prepare for the road ahead.</p>
           </div>

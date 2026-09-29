@@ -89,11 +89,43 @@
 .td-appbar-title:focus { outline: none; }
 .td-appbar-title:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
 .td-appbar .td-icon { fill: none; }
-.td-favor-chip { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 44px; margin-left: auto; padding: 0 var(--space-3); border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent); border-radius: var(--radius-full); background: var(--accent-gold-dim); color: var(--accent-gold); font: 600 var(--text-sm) var(--font-base); white-space: nowrap; cursor: pointer; transition: var(--transition-colors); }
-.td-favor-chip strong { font-variant-numeric: tabular-nums; }
-.td-favor-chip:hover, .td-favor-chip:focus-visible { border-color: var(--accent-gold); }
-.td-favor-chip .td-icon { width: 14px; height: 14px; fill: currentColor; stroke: none; }
-.td-favor-chip:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+/* Global wallet: chips for the currencies that matter on this screen, a dropdown with all of them. */
+.td-wallet { position: relative; margin-left: auto; }
+.td-wallet-button { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 44px; padding: 0 var(--space-2) 0 var(--space-3); border: 1px solid color-mix(in srgb, var(--accent-gold) 45%, transparent); border-radius: var(--radius-full); background: var(--accent-gold-dim); color: var(--text-bright); font: 600 var(--text-sm) var(--font-base); white-space: nowrap; cursor: pointer; transition: var(--transition-colors); }
+.td-wallet-button:hover, .td-wallet-button[aria-expanded="true"] { border-color: var(--accent-gold); }
+.td-wallet-button:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+.td-wallet-chips { display: inline-flex; align-items: center; gap: var(--space-3); }
+.td-wallet-chip { display: none; }
+.td-app .td-cur-icon--favor { fill: var(--accent-gold); stroke: none; }
+.td-wallet-caret { width: 16px; height: 16px; stroke: var(--accent-gold); transition: var(--transition-transform); }
+.td-wallet-button[aria-expanded="true"] .td-wallet-caret { transform: rotate(180deg); }
+/* Which chips show: Favor and Seals on the shared screens, campaign currencies on campaign screens. */
+.td-shell .td-wallet-chip:is([data-chip="favor"], [data-chip="divineSeals"]) { display: inline-flex; }
+.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="squad"], [data-screen="heroes"], [data-screen="summon"]) .td-wallet-chip[data-chip="favor"] { display: none; }
+.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="squad"], [data-screen="heroes"]) .td-wallet-chip[data-chip="gold"] { display: inline-flex; }
+.td-shell[data-screen="heroes"] .td-wallet-chip:is([data-chip="heroXp"], [data-chip="sealDust"]) { display: inline-flex; }
+.td-shell[data-screen="heroes"] .td-wallet-chip[data-chip="divineSeals"] { display: none; }
+.td-shell[data-screen="summon"] .td-wallet-chip[data-chip="sealDust"] { display: inline-flex; }
+.td-wallet-panel { position: absolute; top: calc(100% + var(--space-2)); right: 0; z-index: var(--z-dropdown, 30); width: min(360px, calc(100vw - 2 * var(--space-4))); max-height: min(70vh, 560px); overflow-y: auto; overscroll-behavior: contain; padding: var(--space-2) var(--space-4); box-sizing: border-box; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: var(--bg-raised); box-shadow: var(--shadow-md); }
+.td-wallet-group { padding: var(--space-3) 0; }
+.td-wallet-group + .td-wallet-group { border-top: 1px solid var(--border-subtle); }
+.td-wallet-group h2 { margin: 0 0 var(--space-2); color: var(--accent-gold); }
+.td-wallet-group ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+.td-wallet-row { display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: var(--space-3); }
+.td-wallet-row-icon { display: inline-grid; place-items: center; }
+.td-wallet-row-icon .td-cur-icon { width: 24px; height: 24px; }
+.td-wallet-row-text, .td-wallet-insight { display: grid; gap: 2px; min-width: 0; }
+.td-wallet-row-text strong, .td-wallet-insight strong { color: var(--text-bright); font-size: var(--text-sm); }
+.td-wallet-row-text small, .td-wallet-insight small { color: var(--text-muted); font-size: var(--td-fs-label); line-height: 1.4; }
+.td-wallet-row-amount { color: var(--text-bright); font-variant-numeric: tabular-nums; }
+.td-wallet-insight { margin-top: var(--space-3); }
+.td-wallet-insight-chips { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-1); }
+.td-wallet-links { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.td-wallet-links .td-link-button { min-height: 36px; font-size: var(--text-sm); }
+@media (max-width: 480px) {
+  .td-wallet-button { gap: var(--space-2); padding-left: var(--space-2); }
+  .td-wallet-chips { gap: var(--space-2); }
+}
 .td-screens { flex: 1 1 auto; min-height: 0; }
 .td-screen { height: 100%; display: flex; flex-direction: column; }
 .td-screen-body { position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-5) var(--space-4); box-sizing: border-box; }
@@ -1622,8 +1654,6 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 
 /* Campaign camp: a resource and preparation hub above the chapter route. */
 .td-camp-home { gap: 20px; }
-.td-camp-welcome-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.td-camp-resources { display: flex; align-items: center; gap: 20px; }
 .td-camp-campfire { overflow: hidden; border: 1px solid var(--border-medium); border-radius: var(--radius-lg); background: linear-gradient(90deg, rgba(9,9,16,.92), rgba(9,9,16,.15)), url('/td/campaign.webp') center 45% / cover; }
 .td-camp-welcome { padding: 36px 32px 48px; }
 .td-camp-welcome h2 { margin: 10px 0; font-size: clamp(28px, 4vw, 42px); color: var(--text-bright); }
@@ -1649,13 +1679,10 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-camp-activity--summon .td-camp-activity-icon { color: #c4a5f5; }
 .td-camp-activity-cta { display: flex; justify-content: space-between; gap: 16px; width: 100%; margin-top: auto; padding-top: 12px; color: var(--accent-gold); font-size: 14px; }
 .td-camp-activity progress { width: 100%; height: 6px; accent-color: var(--accent-gold); }
-.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-favor-chip { display: none; }
 
-.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-appbar-settings { margin-left: auto; }
 /* Campaign debug (dev builds only): DBG in the app bar on campaign screens, panel below it. */
 .td-camp-debug-toggle { display: none; }
-.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-camp-debug-toggle { display: inline-grid; margin-left: auto; }
-.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-camp-debug-toggle + .td-appbar-settings { margin-left: 0; }
+.td-shell:is([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-camp-debug-toggle { display: inline-grid; }
 .td-camp-debug { top: calc(56px + var(--space-2)); left: auto; right: var(--space-2); height: auto; }
 .td-shell:not([data-screen="campaign"], [data-screen="stages"], [data-screen="heroes"], [data-screen="summon"], [data-screen="squad"]) .td-camp-debug { display: none; }
 .td-camp-home { grid-auto-rows: max-content; }
@@ -1852,8 +1879,6 @@ button .td-cur { color: inherit; }
 .td-app .td-camp-home { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-auto-rows: auto; align-content: stretch; gap: var(--space-3); height: 100%; }
 .td-app .td-camp-campfire { display: flex; flex-direction: column; min-height: 0; }
 .td-app .td-camp-welcome { flex: 1 1 auto; padding: var(--space-3) var(--space-4); }
-.td-app .td-camp-welcome-top { flex-wrap: wrap; gap: var(--space-2) var(--space-3); }
-.td-app .td-camp-resources { gap: var(--space-3); font-size: var(--td-fs-body); }
 .td-app .td-camp-welcome h2 { margin: var(--space-2) 0 var(--space-1); font-size: 26px; }
 .td-app .td-camp-welcome p { font-size: var(--td-fs-body); line-height: var(--leading-snug); }
 .td-app .td-camp-party { padding: var(--space-3) var(--space-4); }

@@ -88,7 +88,7 @@ Hard rules:
   (no separate button row), so all three fit without clipping (fixed September 29, 2026).
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
-- Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
+- Presentation: `render.js` (PixiJS 8.21.0 and filter-glow 5.2.1 from jsDelivr, exact versions pinned; bump deliberately), `map-scene.js`, `fx-kit.js`,
   `hero-fx.js`, `status-fx.js`, `zeus-fx.js`, `skin.js`, `audio.ts`, `ui.js`.
   Presentation never affects combat or consumes combat RNG.
 - Styles: `src/styles/td.css`, `td-*` classes.
@@ -97,7 +97,8 @@ Hard rules:
 
 ## 4. Roster and hero stats
 
-21 heroes, literal array `roster` in the tuning file:
+33 heroes, literal array `roster` in the tuning file: 21 database heroes (below) plus 12
+hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
 
 | Class | Slot | Heroes (internal ids) |
 |---|---|---|
@@ -111,9 +112,20 @@ Hard rules:
 12 road, 9 platform. The build fails on a missing id or missing `stats`,
 `baseAttackRate` or `bossUltimatesPer90s`.
 
+Stable baselines (audit step 4, September 29, 2026): ranks are taken against the fixed
+set `tuning.balanceReference` (the 21 database heroes above), not the whole roster.
+Reference heroes are ranked among themselves; any other database hero in the roster is
+ranked against the reference alone, so adding a hero never changes an existing row
+(verified: adding `ares` changed 0 rows). Rows for roster ids without a database entry
+(recruits) are hand-authored and kept as-is; `rarity` is kept, or derived from tier for a
+new hero (S/A legendary, B/C epic, D common). `npm run build:game-balance -- --propose=<id>`
+prints a new hero's row next to its class peers; `--check` runs first in
+`npm run test:tower-defense`.
+
 ### Generator (`scripts/build-game-balance.mjs`)
 
-`rank(x)` = percentile rank across the roster (ties share the lowest index).
+`rank(x)` = percentile rank within the reference set, plus the hero itself when it is not
+a reference hero (ties share the lowest index).
 
 ```
 aps          = clamp(baseAttackRate, 0.5, 2.2)
@@ -266,7 +278,7 @@ replace the map value, so tuned stages keep their numbers.
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
 | Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps. Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 5x | `campaign.js`, `tdSummon.json` |
-| Expedition | Roguelite chain of 10-wave stages, starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
+| Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
 | Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
 
@@ -528,6 +540,42 @@ into Seal Dust at 1:150).
 Per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic`, so
 older builds can still read `td:v1`. Export/import: save code (`TD1:` prefix) or file.
 Audio volume and mute have their own keys.
+
+## Content checklists (audit step 4)
+
+Content is not JSON-only. Before shipping, walk the matching list.
+
+**New hero (database hero)**
+1. `npm run build:game-balance -- --propose=<id>`; compare with the class peers it prints.
+2. Add the id to `tuning.roster` (not to `balanceReference`), run `npm run build:game-balance`
+   and check `git diff src/data/gameBalance.json` adds one row and changes none.
+3. `heroSkills.<id>` in the tuning (ultimate variant and numbers); display name, title and
+   skill names in `tdSkinMythic.json` (white label, section 2).
+4. Art and sound: token/portrait on R2 (`assets.js`, new file names, R2 caches for a year),
+   sounds plus `tdAudioLevels.json` (`node scripts/td-audio-levels.mjs`), attack/ultimate
+   effects (`hero-fx.js`, `TOWER_DEFENSE_HERO_SKILLS.md`).
+5. Acquisition: summon pool by default (rarity from tier); a stage-reward hero instead goes
+   into a stage's `rewards` (`heroRewardStage` / `summonableHeroes` in `campaign.js`).
+6. Checks: `npm run test:tower-defense` (skin test, ultimate edge cases run every roster
+   hero), `npm run test:td-balance`, `npm run td:upgrade-sweep` for the summon economy.
+
+**New campaign stage or chapter**
+1. Stage in `tdCampaign.json` under its chapter: `unlockAfter`, `mapId`, lives, `hpScale`,
+   waves, rewards (a hero reward removes that hero from the banner until earned).
+2. A new chapter's first stage unlocks after the previous chapter's last one; the home card
+   and route follow `currentChapter()`, the Stages screen shows chapter tabs.
+3. Checks: `test-td-campaign.mjs` (prints the sampled win rate per stage; keep late stages
+   above the 20% floor) and `npm run td:pacing -- --only=campaign`.
+
+**New map**
+1. Art per `map.md` (theme in `map-scene.js`), route or `lanes` (multi-lane targeting
+   expects equal route lengths), `grid` block, then `node scripts/build-td-grid.mjs`.
+2. Optional authored side tiles (`grid.platforms`), measured with `npm run td:layout`.
+3. Boss assignment, special tiles (`grid.rings`), music.
+4. Modes pick it up automatically: Free Play map select, Daily Trial, Expedition pool
+   (route length stays `EXPEDITION.stages`, so a fourth map adds variety, not duration).
+5. Checks: `npm run test:tower-defense` (tile hit test covers every map), `npm run td:sweep`,
+   Chromium at phone and desktop size.
 
 ## 11. Tests and tools
 

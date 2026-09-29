@@ -4,6 +4,7 @@ import { bossSprite } from "../assets.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
 import { addSeals } from "../campaign.js";
+import { currencyList } from "../currency-icons.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -109,7 +110,7 @@ export function createExpedition(ctx: PageContext) {
   function render() {
     const state = store.data.expedition;
     const best = store.data.expeditionBest;
-    const stops = data.maps.length;
+    const stops = state ? state.stages.length : Math.min(EXPEDITION.stages, data.maps.length);
     bestEl.textContent = best.stages ? `Best: ${best.stages} ${best.stages === 1 ? "stage" : "stages"} cleared, ${best.completed} ${best.completed === 1 ? "expedition" : "expeditions"} completed.` : "No expedition yet.";
     abandonButton.hidden = !state;
     abandonButton.textContent = abandonArmed ? "Confirm abandon" : "Abandon";
@@ -126,12 +127,12 @@ export function createExpedition(ctx: PageContext) {
       statusEl.className = "td-trial-reward td-exp-status";
       statusEl.innerHTML = `<span class="td-label">Complete all ${stops}</span><strong>+${EXPEDITION.completeFavor} <small>Favor${sealsText}</small></strong><span class="td-trial-reward-state">Paid once per expedition</span>`;
       routeNoteEl.textContent = "Order is drawn at the start";
-      routeEl.innerHTML = data.maps.map((_: any, i: number) => stopHtml(null, i, "ahead")).join("");
+      routeEl.innerHTML = Array.from({ length: stops }, (_, i) => stopHtml(null, i, "ahead")).join("");
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
       summaryTitleEl.textContent = "Not started";
-      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> <b>+${EXPEDITION.completeFavor} Favor${sealsText}</b>`;
+      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> ${currencyList({ favor: EXPEDITION.completeFavor, ...(EXP_SEALS ? { divineSeals: EXP_SEALS } : {}) }, { plus: true })}`;
       summaryRouteEl.innerHTML = routeHtml(data.maps.map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
       summaryCtaEl.textContent = "Start";
       return;

@@ -49,7 +49,7 @@ export type SaveData = {
 
 // persist() returns false when the browser refused the write (storage full, blocked site data);
 // onPersistError, set by the page, tells the player once so they can export their progress.
-export type SaveStore = { data: SaveData; persist(): boolean; onPersistError?: () => void };
+export type SaveStore = { data: SaveData; persist(): boolean; onPersistError?: () => void; onPersist?: () => void };
 
 export type RunMode = "classic" | "long" | "endless";
 export type RunTier = "normal" | "heroic" | "mythic";
@@ -192,6 +192,7 @@ export function createSaveStore(rules: SaveRules): SaveStore {
       try { localStorage.setItem(SAVE_KEY, JSON.stringify(store.data)); } catch { ok = false; }
       if (!ok && !warned) { warned = true; store.onPersistError?.(); }
       if (ok) warned = false;
+      store.onPersist?.(); // the app bar wallet follows every change to the save
       // Ask once, only after there is progress, so the browser is less likely to evict it.
       if (!persistRequested) {
         persistRequested = true;

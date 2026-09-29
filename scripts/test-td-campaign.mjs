@@ -5,8 +5,23 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
-import { allStages, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { allStages, currentChapter, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
+
+// Chapter-aware progress (audit step 4): a second chapter unlocks after the first one's last
+// stage; the current chapter follows the next stage and stays on the last chapter at the end.
+{
+  const first = campaign.chapters[0];
+  const last = first.stages.at(-1);
+  const two = { ...campaign, chapters: [first, { id: "2", name: "Test", stages: [{ ...first.stages[0], id: "2-1", unlockAfter: last.id }] }] };
+  let p = newCampaignProgress(two);
+  assert.equal(currentChapter(two, p).id, first.id, "fresh save: chapter 1");
+  for (const stage of first.stages) p = finishCampaignStage(two, p, stage.id, { won: true, lives: 1 }).progress;
+  assert.equal(nextStage(two, p)?.id, "2-1", "chapter 2 opens after chapter 1");
+  assert.equal(currentChapter(two, p).id, "2", "current chapter follows the next stage");
+  p = finishCampaignStage(two, p, "2-1", { won: true, lives: 1 }).progress;
+  assert.equal(currentChapter(two, p).id, "2", "all clear: last chapter");
+}
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const enemyKinds = new Set([...Object.keys(tuning.enemies), "boss"]);

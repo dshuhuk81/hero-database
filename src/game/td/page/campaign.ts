@@ -8,7 +8,7 @@ import { mapSceneFor } from "../map-scene.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { allStages, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCIES, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -125,11 +125,10 @@ export function createCampaign(ctx: PageContext) {
 
   function render() {
     const p = progress();
-    const stages = allStages(campaign);
-    const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     const next = nextStage(campaign, p);
-    const chapter = campaign.chapters[0];
-    q("[data-td-camp-resources]").innerHTML = wallet();
+    const chapter = currentChapter(campaign, p);
+    const stages: any[] = chapter.stages;
+    const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
     q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
     q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
     const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");

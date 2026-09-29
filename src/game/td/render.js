@@ -11,8 +11,10 @@ import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 
-const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs";
-const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs";
+// Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
+// deliberately and re-run the Chromium checks.
+const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8.21.0/dist/pixi.mjs";
+const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5.2.1/dist/filter-glow.mjs";
 
 const COLORS = {
   grunt:  0xaaa4bb,

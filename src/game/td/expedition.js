@@ -1,4 +1,4 @@
-// Expedition (M21): a roguelite chain of 10-wave stages, one per battlefield. It starts
+// Expedition (M21): a roguelite chain of 10-wave stages on EXPEDITION.stages battlefields. It starts
 // with three random heroes; after each won stage the camp offers three cards (a new hero,
 // a relic or a veteran) and the player takes one. Lives carry over between stages, gold
 // does not, and every stage is tougher than the last. Relics are the rare and epic run
@@ -8,6 +8,9 @@ import { createRng } from "./sim.js";
 
 export const EXPEDITION = {
   startHeroes: 3, // at least one road and one platform hero
+  // Route length is a content setting (audit step 4): an expedition draws this many distinct
+  // battlefields, so a new map adds variety, not duration. One stageHp entry per stage.
+  stages: 3,
   stageHp: [0.35, 0.5, 0.65], // enemy health per stage, on top of the Normal difficulty
   veteranLevel: 2, // veterans enter every stage at this level (below the level 3 focus)
   completeFavor: 300, // once per finished expedition, on top of each stage's normal Favor
@@ -21,12 +24,13 @@ function pickFrom(list, rng) {
 // Seed for a stage or camp: the expedition seed mixed with the stage number and a salt.
 const mix = (seed, stage, salt) => (Math.imul(seed ^ (stage + 1) * 0x9e3779b1, 0x85ebca6b) ^ salt) >>> 0;
 
-// A new expedition. `maps` sets the stage order (shuffled), `heroes` the roster pool.
+// A new expedition. `maps` is the battlefield pool (EXPEDITION.stages drawn in random order),
+// `heroes` the roster pool.
 export function newExpedition(seed, { heroes, maps, tuning }) {
   const rng = createRng(seed >>> 0);
   const order = maps.map((map) => map.id);
   const stages = [];
-  while (order.length) stages.push(pickFrom(order, rng));
+  while (order.length && stages.length < EXPEDITION.stages) stages.push(pickFrom(order, rng));
   const road = heroes.filter((hero) => hero.slot === "road").map((hero) => hero.id);
   const platform = heroes.filter((hero) => hero.slot === "platform").map((hero) => hero.id);
   const roster = [pickFrom(road, rng), pickFrom(platform, rng)];
