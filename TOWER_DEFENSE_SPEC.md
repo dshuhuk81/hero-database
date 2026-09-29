@@ -290,7 +290,20 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   fades. Sets: `painted` (default; warp frames from our own `grunt-v2` by
   `scripts/td-warp-anim.py`, see below) and `pixel` (`&set=pixel`: a free pixel-art pack,
   Orc as grunt, Soldier with bow as archer, license not confirmed, so it stays local).
-  A kind missing from a set logs one 404 and keeps its still sprite.
+  A kind missing from a set logs one 404 and keeps its still sprite. The renderer loads
+  `grunt`, `archer` and `flyer`, scales by the idle body's larger side (bird wingspan), keeps
+  flyers at `FLYER_LIFT` with the bob, beats their wings on game time with a per-enemy offset,
+  and drops a dying flyer to the ground while its death clip plays. Clips that share one
+  strip (a flyer's idle, walk and attack) share one sheet row.
+- Painted flyer (set `painted`): a 6-frame flight cycle generated from text on black
+  (`~/hero-database-assets/td/enemy-sprites-src/flyerSpriteFlying.png`), turned into clips by
+  the `STRIPS` mode of `scripts/td-warp-anim.py`: only dark pixels connected to the border are
+  background (flood fill), so dark feathers stay opaque, and the rim gets a soft brightness key
+  with un-premultiplied colour; frames aligned on the beak tip, hurt (white flash, jolt) and death (tumbling spin)
+  derived from the flap frames. Sheet about 69 KB.
+- A generated grunt walk strip was tried and dropped by the owner (weak walk cycle); the
+  grunt stays on the warp frames. `STRIPS` also supports `derive: "walker"` (idle, lunge
+  attack, hurt and death derived from a walk strip) for a better strip later.
 - Warp frames (`scripts/td-warp-anim.py <kind> <outdir>`, numpy + Pillow, local only as
   `*.py` is gitignored): per kind a rig in `RIGS` (hip and foot lines, leg split, shoulder,
   weapon-arm polygon on the 256 px still). The arm is cut out as a rigid layer and the gap
@@ -319,6 +332,7 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 | `moonlit-pass` | Moonlit Pass | one path | `baphomet` |
 | `verdant-crossing` | Verdant Crossing | one path | `lilith` |
 | `sunscar-ruins` | Sunscar Ruins | 2 `lanes`, one base | `baphomet` |
+| `sunscar-basin` | Sunscar Basin | one path, **generated** (`orthogonal-v1`, seed 3) | `baphomet` |
 
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
@@ -361,6 +375,7 @@ Current baseline:
 | Moonlit Pass | 1,574 | 6 | 74% | `switchback` | yes |
 | Verdant Crossing | 2,292 | 4 | 97% | `open-road` | yes |
 | Sunscar Ruins | 1,180 per lane | 12 total | 99% | `twin-gate` | yes |
+| Sunscar Basin (generated) | 1,672 | 8 | 81% | `defense-basin` | yes |
 
 These values describe the existing maps; they are baselines for generation, not automatic
 balance targets.
@@ -378,9 +393,41 @@ Daily shows the battlefield name; review those surfaces before calling preview i
 complete. A future preview cache key must contain `geometryHash`, `skinId` and a preview
 renderer version.
 
+### Map generator `orthogonal-v1` (September 29, 2026)
+
+`src/game/td/map-generator.js` `generateMap(recipe, identity)`: one deterministic,
+single-lane, self-avoiding orthogonal route, published as an ordinary `tdMaps.json`
+record. Development-time only; the game never generates at runtime.
+
+- Recipe: `{ generator: "orthogonal-v1", ruleset: 1, seed, topology: "single-lane",
+  difficultyBand, parameters: { turns, length, coverageGap }, constraints: { exclude } }`.
+  `exclude` rects are the skin's safe regions (painted edge props); the road band keeps
+  out of them and they become `grid.exclude`.
+- Ruleset 1: gate at x 48, sanctuary at x 880, both on rows 120-420; corners on a 30 px
+  lattice anchored at the gate inside [150, 110, 800, 450]; inner legs 150-480 px; any two
+  non-adjacent legs at least 150 px apart (room for a platform row between); even turn
+  counts (leave and enter horizontally); at most 400 attempts with rejection counts
+  (`WALK_STUCK`, `NO_BASE_CONNECTION`, `TURNS_OUT_OF_RANGE`, `LENGTH_OUT_OF_RANGE`,
+  `COVERAGE_GAP_OUT_OF_RANGE`, `RECIPE_INVALID`, plus `validateMap` codes).
+- Special tiles come from geometry, not the RNG: Shrine on the road tile nearest the route
+  middle, High Ground on the platform seeing the most route at range 160, Cursed on the
+  strongest of the next platforms closest to the sanctuary.
+- Published records keep `recipe` and `geometryHash` (FNV-1a over endpoints, route, grid,
+  slots and rings). `node scripts/generate-td-map.mjs --check` regenerates every
+  published generated map from its recipe and fails on any difference; the test
+  `scripts/test-td-map-generator.mjs` (in `test:tower-defense`) checks determinism,
+  validity, lattice, exclusions, bounded failure and provenance.
+- CLI: `npm run td:generate-map -- --seed=N --skin=sunscar|moonlit|verdant` prints a
+  candidate; add `--id=... --name="..." --publish` to write it. Skin presets (theme, art,
+  music, boss, safe regions) live in the script; only the Sunscar regions were checked
+  against the painting so far.
+- First published map: `sunscar-basin` (seed 3, turns 6-8, length 1600-2200, coverage gap
+  3-20%), Chapter 2's battlefield. Free Play 20 waves 4/5 wins, in line with the others.
+- Free Play map select shows four battlefields in one row in the menu frame.
+
 ### Map authoring workflow today
 
-Automatic route generation is not implemented yet. To add a map now:
+Hand-authored maps still work as before. To add one:
 
 1. Add its complete runtime record to `tdMaps.json`: identity, scene art, boss, music,
    spawn/base and `path` or `lanes`, plus the `grid` settings.
@@ -443,7 +490,7 @@ only then optional live seeded generation.
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target, plus hp relief on 1-9/1-10). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target, plus hp relief on 1-9/1-10). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
@@ -459,7 +506,7 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    Hero XP and Divine Seal balances inside the headquarters banner, the last deployed
    squad (or the starter company), and three activity cards: Journey, Heroes and
    Summoning.
-2. **Campaign stages** opens from Journey / Venture forth. It owns the stage grid (5 per row, 3 below 900px, 2 on phones) and chapter tabs below it
+2. **Campaign stages** opens from Journey / Venture forth. It owns the stage row (in the menu frame: one row of full-height cards, five in view at the earlier width, swiped sideways for more; it scrolls to the next stage on open; the rating track sits compact on one line below), then chapter tabs below it
    (authored chapters, then locked "Coming soon" tabs up to 3). Stage state reads at a glance:
    cleared cards fade back (translucent, desaturated art) with a green check badge and green
    status, the next stage is bright with a gold play badge and glow, locked ones go grey with
@@ -724,9 +771,9 @@ Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLeve
 `mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
 `campaign`.
 
-The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 7): `owned`, `cleared`,
+The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 8): `owned`, `cleared`,
 `lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust),
-`levels`, `summons`, `copies`, `stars`, `evolution`, `skillLevels`. Older versions migrate on load
+`levels`, `summons`, `copies`, `stars`, `evolution`, `skillLevels`, `milestones`. Older versions migrate on load
 (version 3 gets empty copies, stars and Evolution; version 7 turns leftover Divine Essence
 into Seal Dust at 1:150).
 
@@ -785,6 +832,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:economy` | In-run gold ledger: income by source vs. spend by sink, per mode/tier |
 | `npm run td:layout -- --map=<id>` | Tile layout A/B: committed vs working `tdMaps.json`, Free Play + campaign stages on that map |
 | `npm run td:maps` / `npm run td:maps -- --json` | Map geometry baseline, landmark metrics and stable validation errors |
+| `npm run td:generate-map -- --seed=N --skin=...` / `--check` | Generate a map candidate (orthogonal-v1), publish it, or verify published ones regenerate |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

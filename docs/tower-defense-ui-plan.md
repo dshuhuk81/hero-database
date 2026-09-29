@@ -88,6 +88,8 @@ Each step is usable on its own; stop when the result is good enough at 44 to 108
 5. **Optional experiment: local image-to-video.** ComfyUI with an open image-to-video model and `rembg` for the background is free but slow on the Mac, and the clips need hand-picked loop points. Only worth a try for the bosses.
 6. **Checks per new sheet.** Download size per kind (target well under 300 KB), frame rate on a real phone with a full wave, reduced motion (hold the first walk frame), `npm run test:tower-defense`, and a Chromium pass at phone size.
 
+Also in place (September 29, 2026): a painted `flyer` from a generated 6-frame flight cycle (`STRIPS` mode of `scripts/td-warp-anim.py`). Generating a short frame series from text and keying it is a fifth free route for kinds where warping one still is not enough.
+
 Order suggestion: 1, 2 and a warp-frame `grunt` (3) are in place; judge it in play (`?anim=sheets`, compare `&set=pixel`) before any cut-out work (4).
 
 ## Scope and evidence

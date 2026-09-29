@@ -82,6 +82,7 @@ Not in the game yet; the plan and the free workflow are in `docs/tower-defense-u
 - Feet on the same line in every frame (the renderer anchors at 90% height); facing right.
 - Clips and frame counts: `idle` 6 (loop), `walk` 8 (loop), `attack` 6 (strike lands on frame 3), `hurt` 3 to 4, `death` 4 to 6 (last frame lying down). 12 fps.
 - Packer input (`scripts/build-td-enemy-anims.mjs`): one horizontal strip PNG per clip, square frames (frame size = strip height), clips `idle`, `walk`, `attack`, `hurt`, `death`; map the files per kind in its `PACKS` table. The packer crops all frames to one shared box and takes the feet point from `idle` frame 0.
+- Generated frame series can work well (the flyer, September 29, 2026; a grunt walk strip was rejected for a weak walk cycle): one horizontal strip of 6 frames per clip, same spacing, transparent (or plain black) background, facing right, the last frame leading back into the first. Walk comes first; an attack strip (6 frames, strike on frame 3) is the next most useful. Source strips live in `~/hero-database-assets/td/enemy-sprites-src/`, not in `public/`, and `scripts/td-warp-anim.py` (`STRIPS`) turns them into clips.
 - Same white label rule as the stills: made from our own sprites or from text, never from Motto Immortal art.
 
 ## Output Filenames

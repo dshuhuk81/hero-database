@@ -1450,6 +1450,930 @@
           ]
         }
       ]
+    },
+    {
+      "id": 2,
+      "name": "The Sunscar March",
+      "milestones": [
+        {
+          "laurels": 6,
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 600
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 300
+            }
+          ]
+        },
+        {
+          "laurels": 12,
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 110
+            }
+          ]
+        },
+        {
+          "laurels": 18,
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 180
+            },
+            {
+              "type": "currency",
+              "id": "sealDust",
+              "amount": 60
+            }
+          ]
+        }
+      ],
+      "stages": [
+        {
+          "id": "2-1",
+          "name": "The Dry Basin",
+          "mapId": "sunscar-basin",
+          "text": "A new road winds through the basin and doubles back on itself. The platforms in its heart see three stretches of road at once; claim them early.",
+          "lives": 16,
+          "hpScale": 0.75,
+          "unlockAfter": "1-10",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1200
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 600
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 520
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "grunt",
+                  "count": 8,
+                  "gapMs": 500
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 560
+                },
+                {
+                  "kind": "grunt",
+                  "count": 10,
+                  "gapMs": 480
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1100
+                },
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 380
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 520
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 420
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2-2",
+          "name": "Glass Sands",
+          "mapId": "sunscar-basin",
+          "text": "Archers dig in on the dunes and shoot at your platforms; shieldbearers cover their advance. Blockers on the road draw their fire.",
+          "lives": 15,
+          "hpScale": 0.75,
+          "unlockAfter": "2-1",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1300
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 650
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 500
+                },
+                {
+                  "kind": "archer",
+                  "count": 3,
+                  "gapMs": 1000
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "shieldbearer",
+                  "count": 5,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "runner",
+                  "count": 10,
+                  "gapMs": 420
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 450
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "archer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 560
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 360
+                }
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {
+                  "kind": "shieldbearer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 380
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2-3",
+          "name": "Serpent Wells",
+          "mapId": "sunscar-basin",
+          "text": "Menders tend the brutes at the old wells while hexers curse your heroes. Break the healers first. Stheno waits at the last well.",
+          "lives": 15,
+          "hpScale": 0.72,
+          "unlockAfter": "2-2",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1400
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 700
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            },
+            {
+              "type": "hero",
+              "id": "medusa"
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 480
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 900
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1100
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 850
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 380
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 5,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 12,
+                  "gapMs": 420
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 520
+                }
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 7,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 14,
+                  "gapMs": 340
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2-4",
+          "name": "Brood of Noon",
+          "mapId": "sunscar-basin",
+          "text": "Broodcallers hatch swarms in the heat. Kill them before they reach the long bends, or the brood floods the basin.",
+          "lives": 16,
+          "hpScale": 0.7,
+          "unlockAfter": "2-3",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1500
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 750
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "runner",
+                  "count": 16,
+                  "gapMs": 380
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 1,
+                  "gapMs": 1500
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 14,
+                  "gapMs": 440
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 540
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1400
+                },
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 1000
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "runner",
+                  "count": 18,
+                  "gapMs": 320
+                },
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 900
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                }
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 950
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 1400
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 480
+                }
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 18,
+                  "gapMs": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2-5",
+          "name": "Mirage Gate",
+          "mapId": "sunscar-basin",
+          "text": "Everything the desert has, and the sky full of wings. Keep platform heroes spread along the whole road.",
+          "lives": 16,
+          "hpScale": 0.6,
+          "unlockAfter": "2-4",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1600
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 800
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 50
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 16,
+                  "gapMs": 440
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 520
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "archer",
+                  "count": 5,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 950
+                },
+                {
+                  "kind": "mender",
+                  "count": 3,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 460
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "runner",
+                  "count": 18,
+                  "gapMs": 320
+                },
+                {
+                  "kind": "archer",
+                  "count": 4,
+                  "gapMs": 900
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 420
+                }
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {
+                  "kind": "shieldbearer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "hexer",
+                  "count": 4,
+                  "gapMs": 850
+                }
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 8,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "flyer",
+                  "count": 14,
+                  "gapMs": 400
+                },
+                {
+                  "kind": "runner",
+                  "count": 16,
+                  "gapMs": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2-6",
+          "name": "Throne of Ash",
+          "mapId": "sunscar-basin",
+          "text": "The Horned Warden returns to the basin with the whole desert at his back. Hold the Sanctuary and Helios will stand with you.",
+          "lives": 18,
+          "hpScale": 0.6,
+          "unlockAfter": "2-5",
+          "rewards": [
+            {
+              "type": "currency",
+              "id": "gold",
+              "amount": 1800
+            },
+            {
+              "type": "currency",
+              "id": "heroXp",
+              "amount": 900
+            },
+            {
+              "type": "currency",
+              "id": "divineSeals",
+              "amount": 100
+            },
+            {
+              "type": "hero",
+              "id": "amunra"
+            }
+          ],
+          "waves": [
+            {
+              "wave": 1,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 16,
+                  "gapMs": 420
+                },
+                {
+                  "kind": "runner",
+                  "count": 12,
+                  "gapMs": 380
+                }
+              ]
+            },
+            {
+              "wave": 2,
+              "spawns": [
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                },
+                {
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 500
+                }
+              ]
+            },
+            {
+              "wave": 3,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 950
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 780
+                },
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 900
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1300
+                },
+                {
+                  "kind": "runner",
+                  "count": 18,
+                  "gapMs": 300
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "shieldbearer",
+                  "count": 8,
+                  "gapMs": 650
+                },
+                {
+                  "kind": "brute",
+                  "count": 6,
+                  "gapMs": 900
+                },
+                {
+                  "kind": "flyer",
+                  "count": 12,
+                  "gapMs": 420
+                }
+              ]
+            },
+            {
+              "wave": 6,
+              "spawns": [
+                {
+                  "kind": "hexer",
+                  "count": 5,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "mender",
+                  "count": 4,
+                  "gapMs": 750
+                },
+                {
+                  "kind": "archer",
+                  "count": 6,
+                  "gapMs": 800
+                },
+                {
+                  "kind": "grunt",
+                  "count": 16,
+                  "gapMs": 340
+                }
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 8,
+                  "gapMs": 850
+                },
+                {
+                  "kind": "broodcaller",
+                  "count": 3,
+                  "gapMs": 1200
+                },
+                {
+                  "kind": "flyer",
+                  "count": 14,
+                  "gapMs": 400
+                }
+              ]
+            },
+            {
+              "wave": 8,
+              "spawns": [
+                {
+                  "kind": "boss",
+                  "count": 1,
+                  "gapMs": 1000
+                },
+                {
+                  "kind": "grunt",
+                  "count": 16,
+                  "gapMs": 400
+                },
+                {
+                  "kind": "flyer",
+                  "count": 10,
+                  "gapMs": 480
+                },
+                {
+                  "kind": "shieldbearer",
+                  "count": 6,
+                  "gapMs": 700
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

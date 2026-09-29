@@ -33,8 +33,12 @@ const SETS = {
   },
   painted: {
     grunt: { dir: "grunt", clips: clipFiles("grunt") },
+    // Flyers never stop or strike: idle, walk and attack all use the flap cycle.
+    flyer: { dir: "flyer", clips: { idle: "flyer_fly", walk: "flyer_fly", attack: "flyer_fly", hurt: "flyer_hurt", death: "flyer_death" } },
   },
 };
+// PixelLab test grunt: walk from its grid, the other clips derived (scripts/td-warp-anim.py).
+SETS.pixellab = { grunt: { dir: "grunt-pixellab", clips: clipFiles("grunt-pixellab") } };
 const PACKS = SETS[SET];
 if (!PACKS) { console.error(`unknown --set ${SET}; one of ${Object.keys(SETS).join(", ")}`); process.exit(1); }
 
@@ -85,7 +89,12 @@ for (const [kind, pack] of Object.entries(PACKS)) {
   const composites = [];
   const frames = {};
   const animations = {};
-  for (const [row, c] of clips.entries()) {
+  // Clips that use the same strip (a flyer's idle, walk and attack) share one row.
+  const rowOf = new Map(); // strip path -> { row, names }
+  for (const c of clips) {
+    const shared = rowOf.get(c.path);
+    if (shared) { animations[c.clip] = shared.names; continue; }
+    const row = rowOf.size;
     animations[c.clip] = [];
     for (let i = 0; i < c.count; i++) {
       const name = `${c.clip}_${i}`;
@@ -95,16 +104,17 @@ for (const [kind, pack] of Object.entries(PACKS)) {
         spriteSourceSize: { x: 0, y: 0, w: box.w, h: box.h }, sourceSize: { w: box.w, h: box.h } };
       animations[c.clip].push(name);
     }
+    rowOf.set(c.path, { row, names: animations[c.clip] });
   }
-  const width = columns * box.w, height = clips.length * box.h;
+  const width = columns * box.w, height = rowOf.size * box.h;
   await sharp({ create: { width, height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite(composites).webp(pack.pixelArt ? { lossless: true } : { quality: 82, alphaQuality: 90 }).toFile(join(OUT_DIR, `${kind}.webp`));
   const json = {
     frames, animations,
     meta: { image: `${kind}.webp`, format: "RGBA8888", size: { w: width, h: height }, scale: "1" },
     // Renderer data: feet point inside a frame (idle frame 0: bottom centre of the body),
-    // the idle body height for scaling to the kind's sprite size, and the frame rate.
-    td: { anchor: { x: (idle.minX + idle.maxX + 1) / 2 - box.x, y: idle.maxY + 1 - box.y }, bodyHeight: idle.maxY - idle.minY + 1, fps: FPS, pixelArt: Boolean(pack.pixelArt) },
+    // the idle body size for scaling to the kind's sprite size, and the frame rate.
+    td: { anchor: { x: (idle.minX + idle.maxX + 1) / 2 - box.x, y: idle.maxY + 1 - box.y }, bodyHeight: idle.maxY - idle.minY + 1, bodyWidth: idle.maxX - idle.minX + 1, fps: FPS, pixelArt: Boolean(pack.pixelArt) },
   };
   writeFileSync(join(OUT_DIR, `${kind}.json`), JSON.stringify(json, null, 1));
   console.log(`built ${kind}: ${clips.map((c) => `${c.clip} ${c.count}`).join(", ")}; frame ${box.w}x${box.h}, sheet ${width}x${height}`);

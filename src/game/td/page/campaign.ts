@@ -186,6 +186,9 @@ export function createCampaign(ctx: PageContext) {
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
         <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(stageLaurels(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
+    // The stage row scrolls sideways: bring the next stage into view.
+    const nextCard = stagesEl.querySelector<HTMLElement>(".is-next");
+    stagesEl.scrollLeft = nextCard ? Math.max(0, nextCard.offsetLeft - (stagesEl.clientWidth - nextCard.offsetWidth) / 2) : 0;
     // Authored chapters first; later ones show as locked until their stages exist.
     const tabs = chapters.map((entry) => {
       const unlocked = entry.stages.some((stage: any) => isUnlocked(p, stage));

@@ -17,7 +17,8 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   const a = newExpedition(42, data), b = newExpedition(42, data), c = newExpedition(43, data);
   assert.deepEqual(a, b, "same seed, same expedition");
   assert.notDeepEqual(a.roster, c.roster, "another seed differs");
-  assert.deepEqual([...a.stages].sort(), maps.map((m) => m.id).sort(), "every battlefield once");
+  const mapIds = new Set(maps.map((m) => m.id));
+  assert.ok(a.stages.length === Math.min(EXPEDITION.stages, mapIds.size) && new Set(a.stages).size === a.stages.length && a.stages.every((id) => mapIds.has(id)), "distinct battlefields from the pool");
   for (let seed = 1; seed < 40; seed += 1) {
     const e = newExpedition(seed, data);
     assert.equal(e.roster.length, EXPEDITION.startHeroes);

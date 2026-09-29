@@ -65,7 +65,7 @@ The following map-system foundations are implemented:
 - Free Play and Campaign full-map previews use the shared preview model.
 - `npm run td:maps` prints analysis and validation for the current catalog.
 
-Automatic route generation is not implemented yet.
+`orthogonal-v1` is implemented (September 29, 2026): `src/game/td/map-generator.js`, CLI `scripts/generate-td-map.mjs` (`npm run td:generate-map`), tests `scripts/test-td-map-generator.mjs`. First published map: `sunscar-basin` (Campaign Chapter 2). Details in `TOWER_DEFENSE_SPEC.md` section 7. Next bounded step: batch candidate generation and a development atlas (the per-seed PNG overlay used to pick seed 3 was a throwaway script).
 
 ## Existing-map workflow
 
@@ -197,7 +197,9 @@ Use non-overlapping level ranges:
 
 A band supplies defaults such as layout pool, skin pool, wave profile, lives, and health scaling. A published Campaign stage stores its selected layout and skin IDs and may override any band default. Tutorial stages and bosses should remain explicitly authored.
 
-## Next milestone: `orthogonal-v1`
+## Milestone `orthogonal-v1` (done September 29, 2026)
+
+Kept below as the reference for what it had to do. Deviations: the lattice is anchored at the gate (corner x values step by 30 from x 48), and skin safe regions travel in `recipe.constraints.exclude` so a published recipe regenerates without the skin catalog.
 
 Implement one deterministic single-lane generator before adding catalogs or Campaign expansion.
 

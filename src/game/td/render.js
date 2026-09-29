@@ -223,7 +223,7 @@ export async function createRenderer(canvas, game, options = {}) {
   if (ENEMY_SHEETS) {
     // Sheet set: painted (warp frames from our sprites, default) or pixel (free test pack).
     const set = new URLSearchParams(location.search).get("set") ?? "painted";
-    for (const kind of ["grunt", "archer"]) {
+    for (const kind of ["grunt", "archer", "flyer"]) {
       PIXI.Assets.load(`/td-local/sheets/${set}/${kind}.json`).then((sheet) => {
         if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";
         enemySheets.set(kind, { anims: sheet.animations, td: sheet.data.td });
@@ -1023,6 +1023,7 @@ export async function createRenderer(canvas, game, options = {}) {
         const death = d.c._sheet.anims.death;
         const p = 1 - Math.max(0, d.timer) / DEATH_FALL;
         d.c._fullSprite.texture = death[Math.min(death.length - 1, Math.floor(p * 1.4 * death.length))];
+        if (d.c._flying) d.c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT * (1 - Math.min(1, p * 1.4) ** 2); // falls to the ground
         d.c.alpha = Math.min(1, Math.max(0, d.timer) / (DEATH_FALL * 0.4));
       } else if (d.c._anim) {
         // Topple backwards (away from the facing), then fade.
@@ -1060,10 +1061,10 @@ export async function createRenderer(canvas, game, options = {}) {
       c.addChild(shadow);
       const sp = new PIXI.Sprite(sheet ? sheet.anims.idle[0] : fullTex);
       if (sheet) {
-        // Feet point from the packer; the idle body gets the still sprite's ~80% height.
+        // Feet point from the packer; the idle body's larger side gets the still sprite's ~80%.
         const frame = sheet.anims.idle[0];
         sp.anchor.set(sheet.td.anchor.x / frame.width, sheet.td.anchor.y / frame.height);
-        sp.scale.set(size * 0.8 / sheet.td.bodyHeight);
+        sp.scale.set(size * 0.8 / Math.max(sheet.td.bodyHeight, sheet.td.bodyWidth ?? 0));
         c._sheet = sheet;
       } else {
         sp.anchor.set(0.5, 0.9);
@@ -1297,13 +1298,15 @@ export async function createRenderer(canvas, game, options = {}) {
       if (!held) {
         sp.texture = at < anims.attack.length / td.fps ? play("attack", at)
           : ht < anims.hurt.length / td.fps ? play("hurt", ht)
+          : unit.flying ? anims.walk[Math.floor(t * td.fps + unit.entityId * 2.3) % anims.walk.length] // own wingbeat, regardless of pace
           : a.moving > 0.3 ? anims.walk[Math.floor(a.phase / (Math.PI * 2) * anims.walk.length) % anims.walk.length]
           : anims.idle[Math.floor(t * td.fps * 0.6) % anims.idle.length];
       }
-      sp.position.set(0, FULL_SPRITE_FEET);
+      sp.position.set(0, FULL_SPRITE_FEET - (unit.flying ? FLYER_LIFT - flyerBob(unit) : 0));
       sp.rotation = 0;
       sp.scale.set(f * c._fullScale, c._fullScale);
       c._glint.alpha = 0; // the hurt clip has its own flash
+      c._flying = unit.flying;
       return;
     }
     let rot = 0, dx = 0, dy = 0, sx = 1, sy = 1;

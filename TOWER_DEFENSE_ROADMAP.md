@@ -40,6 +40,10 @@ From audit step 3 (numbers in the archive). Each needs a yes/no, then a small da
 
 Owner decisions: no player-facing name (wreath icons only, internally "laurels"), rule 1 / 50% / 90% lives, rewards as proposed (may be a bit high, revisit later), automatic payout. Shipped: `laurelLives` / `stageLaurels` / `chapterLaurels` / `payMilestones` in `campaign.js`, `laurels.thresholds` and chapter `milestones` in `tdCampaign.json`, save v8 (`milestones`; reached ones are paid once on load), wreaths on stage cards, drawer "Goals", chapter track under the stage grid, result lines. Tests: new block in `test-td-campaign.mjs` (thresholds, automatic payout once, idempotence, v7 -> v8), stale version asserts in `test-td-summon.mjs` now use `CAMPAIGN_SAVE_VERSION`. Checks: full suite, no new TD type errors, Chromium 1440x900 and 390x844 with a seeded v7 save (12 / 30, first milestone paid), no overflow or page errors. Proposal and measurements: [docs/tower-defense-stage-laurels-plan.md](docs/tower-defense-stage-laurels-plan.md). Open: look in play; stage 1-3 may need +2 lives if 3 wreaths stay out of reach. Move to the archive after that.
 
+### 2c. Chapter 2 on a generated map (done September 29, 2026)
+
+Map generator `orthogonal-v1` built per the map runbook (`map-generator.js`, `npm run td:generate-map`, tests in the suite), first map `sunscar-basin` published (seed 3, Sunscar art, 8 turns, "defense-basin"), Chapter 2 "The Sunscar March": 6 stages on it, Stheno on 2-3, Helios on the 2-6 finale, rating milestones 6 / 12 / 18. Bot win rates 86 -> 40% (cheapest) / 89 -> 34% (carry). Free Play map select now 4 in a row. Expedition test updated (it assumed exactly three maps). Details in the spec (section 7 and Game modes). Open: look in play; Moonlit / Verdant safe regions in the generator script are unverified guesses; Lilith replacement (M24d) still applies to Verdant.
+
 ### 2b. Class audit (owner request, September 29, 2026)
 
 Check that each class looks and plays like its fantasy.
