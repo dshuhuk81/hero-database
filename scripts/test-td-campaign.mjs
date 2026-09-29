@@ -48,7 +48,11 @@ stages.forEach((stage, i) => {
   assert.equal(nextStage(campaign, p).id, stages[0].id, "first stage suggested");
   assert.ok(isUnlocked(p, stages[0]) && !isUnlocked(p, stages[1]), "only the first stage is open");
   assert.ok(validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize)), "owned squad valid");
-  assert.ok(!validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize + 1)), "too many heroes");
+  // Starters can all fit in the squad; add one more owned hero to exceed the cap.
+  const extra = stages.flatMap((stage) => stage.rewards).find((reward) => reward.type === "hero").id;
+  p = { ...p, owned: [...p.owned, extra] };
+  assert.ok(!validSquad(campaign, p, [...campaign.starters, extra].slice(0, campaign.squadSize + 1)), "too many heroes");
+  p = newCampaignProgress(campaign);
   assert.ok(!validSquad(campaign, p, [stages[0].rewards.find((reward) => reward.type === "hero").id]), "locked hero not allowed");
   assert.ok(!validSquad(campaign, p, []), "empty squad");
   const lost = finishCampaignStage(campaign, p, stages[0].id, { won: false, lives: 0 });

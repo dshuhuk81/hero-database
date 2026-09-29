@@ -230,13 +230,15 @@ Campaign stages only. The Blessings screen carries the mirror note. Campaign
 levels deliberately stay out of Free Play — daily/trial comparability is
 preserved.
 
-**6. Watch the deploy-cap asymmetry.** *(Implemented September 28, 2026.)*
+**6. Watch the deploy-cap asymmetry.** *(Implemented September 28, 2026;
+raised further September 29, 2026.)*
 Free Play fields up to 7 (deploy cap); campaign squads were 4, which read as
 punishment for the mode that gates heroes. A sweep (35 sampled squads per
-stage) showed late-stage win rates of 34-54% at squad 4, 49-81% at 5, and
-near-Free-Play ease at 6 — squad size was raised to 5 and the squad screen
-now names the remaining gap: "Campaign squads field 5 heroes — a tighter
-fight than Free Play's 7. Your levels, stars and evolution carry you here."
+stage) showed late-stage win rates of 34-54% at squad 4 and 49-81% at 5, so
+squad size was raised to 5. A dedicated Tank measurement
+(`td-tank-slot.mjs`, September 29, 2026) then showed size 5 still punished
+Tank squads (64% vs 93% without — the Tank replaced a damage dealer), while
+size 6 closed most of the gap (80% vs 94%). Squad size is now 6.
 
 **7. Training is your best sink — protect it.** *(Implemented September 28,
 2026.)* Measured first (12 seeds × 5 squads × 3 maps, classic Normal): a

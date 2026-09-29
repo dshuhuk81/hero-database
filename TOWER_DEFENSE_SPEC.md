@@ -493,7 +493,7 @@ only then optional live seeded generation.
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target, plus hp relief on 1-9/1-10). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 5 owned heroes, 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target, plus hp relief on 1-9/1-10). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
@@ -540,9 +540,11 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    hero is picked). No squad count text; the slots show it.
    The whole screen fits the menu frame (844 x 390) without vertical scroll. Roster top,
    slots bottom is fixed: do not move the lineup into a side column. Role hints and skill names live in tile tooltips and on the Heroes screen.
-   Campaign squads field 5 heroes (Free Play deploys 7). Squad size was raised
+   Campaign squads field 6 heroes (Free Play deploys 7). Squad size was raised
    4 → 5 on September 28, 2026 after a sweep showed 4 read as punishment (late-stage
-   win rates 34-54% at 4, 49-81% at 5, near-Free-Play ease at 6).
+   win rates 34-54% at 4, 49-81% at 5), and 5 → 6 on September 29, 2026 to make Tanks
+   viable: measured at size 5 Tank squads won 64% vs 93% without (the Tank replaced a
+   damage dealer); at size 6 they win 80% vs 94% (`td-tank-slot.mjs`).
    Class icons across the whole TD UI are `classGlyph()` (assets.js; `classIconImg()`
    delegates to it): simplified solid SVGs readable at small sizes (shield, sword, crossed
    daggers, star, bow, cross), currentColor. Squad/popover badges sit on a class-tinted
