@@ -1,10 +1,11 @@
 // Balance and pacing report (audit step 3). Measures before any tuning, with several seeds
 // and both bot policies (td-runner.mjs POLICIES), so a finding that only one play style
 // shows is visible as such:
-//   1. Endless depth of the mixed squad without each class (Tank payoff, Mage coverage)
+//   1. Endless depth of the mixed squad without each class, refilled to full size
+//      (removal alone measured "playing short-handed", not the class contribution)
 //   2. Win rate per map and per run length (Verdant, 10 vs 20 waves)
-//   3. Campaign Chapter 1: winning squads and play time per stage
-//   4. Divine Seal income after Chapter 1 (arithmetic from tdSummon.json)
+//   3. Campaign: winning squads and play time per stage
+//   4. Divine Seal income (arithmetic from tdSummon.json)
 // Run with: npm run td:pacing -- --seeds=3 --sample=35 --only=classes,maps,campaign,seals
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
@@ -27,8 +28,27 @@ if (only.has("classes")) {
   console.log("\n1. Endless waves reached, mixed squad without each class (mean over maps x seeds)");
   const squad = SQUADS["balanced (S-tier core)"];
   const depth = (ids, policy) => mean(maps.flatMap((map) => SEEDS.map((seed) => playRun(ids, seed, map, { mode: "endless", policy }).wave)));
-  console.log("variant".padEnd(18) + POLICIES.map((p) => pad(p, 10)).join(""));
-  const variants = [["full squad", squad], ...CLASSES.map((cls) => [`without ${cls}`, squad.filter((id) => classOf[id] !== cls)]).filter(([, ids]) => ids.length < squad.length)];
+  console.log("variant".padEnd(28) + POLICIES.map((p) => pad(p, 10)).join(""));
+  // Class removal must keep the squad full, or it measures "playing short-handed"
+  // instead of the class's contribution (the old "without Mages -17" was mostly that
+  // artefact). Each removed hero is replaced by the strongest roster hero of another
+  // class not already in the squad (tier, then cost as the strength proxy).
+  const tierRank = { S: 0, A: 1, B: 2, C: 3, D: 4 };
+  const tierOf = Object.fromEntries(heroes.map((h) => [h.id, h.tier]));
+  const costOf = Object.fromEntries(heroes.map((h) => [h.id, h.cost]));
+  const refill = (ids, removedCls) => {
+    const out = [...ids];
+    const candidates = heroes.map((h) => h.id).filter((id) => classOf[id] !== removedCls && !out.includes(id))
+      .sort((a, b) => (tierRank[tierOf[a]] ?? 9) - (tierRank[tierOf[b]] ?? 9) || costOf[b] - costOf[a]);
+    while (out.length < squad.length && candidates.length) out.push(candidates.shift());
+    return out;
+  };
+  const variants = [["full squad", squad]];
+  for (const cls of CLASSES) {
+    const removed = squad.filter((id) => classOf[id] === cls);
+    if (!removed.length) continue; // class not in the squad: nothing to measure
+    variants.push([`without ${cls} (refilled)`, refill(squad.filter((id) => classOf[id] !== cls), cls)]);
+  }
   const full = {};
   for (const [label, ids] of variants) {
     const cells = POLICIES.map((policy) => {
@@ -36,7 +56,7 @@ if (only.has("classes")) {
       if (label === "full squad") full[policy] = d;
       return label === "full squad" ? d.toFixed(1) : `${d.toFixed(1)} (${d - full[policy] >= 0 ? "+" : ""}${(d - full[policy]).toFixed(1)})`;
     });
-    console.log(label.padEnd(18) + cells.map((c) => pad(c, 14)).join(""));
+    console.log(label.padEnd(28) + cells.map((c) => pad(c, 14)).join(""));
   }
 }
 
