@@ -1,0 +1,186 @@
+---
+
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import "../../styles/timed-challenge.css";
+import "../../styles/components.css";
+import allHeroes from "../../data/all_heroes_db.json";
+import eventsData from "../../data/events.json";
+import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
+import { pickLang } from "../../i18n/helpers";
+import { t } from "../../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const frontLabel = t(locale, "common", "front");
+const backLabel = t(locale, "common", "back");
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+
+function heroCardSrc(heroId: string, width: number) {
+  return `${R2_BASE}/heroes/cards/${encodeURIComponent(heroId)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
+}
+
+function heroCardSrcset(heroId: string) {
+  return [240, 360]
+    .map((width) => `${heroCardSrc(heroId, width)} ${width}w`)
+    .join(", ");
+}
+
+function getHero(heroId: string) {
+  const rawId = String(heroId || "");
+  const lowerId = rawId.toLowerCase();
+  const compactId = lowerId.replace(/[\s_-]+/g, "");
+  return allHeroes[lowerId as keyof typeof allHeroes]
+    ?? allHeroes[compactId as keyof typeof allHeroes]
+    ?? allHeroes[rawId as keyof typeof allHeroes];
+}
+
+const campaigns = eventsData.campaigns.map((campaign) => {
+  const campaignHero = getHero(campaign.hero);
+
+  return {
+    ...campaign,
+    displayName: pickLang(campaign.name, locale),
+    displayDescription: pickLang(campaign.description, locale),
+    heroId: campaignHero?.id ?? campaign.hero,
+    heroName: campaignHero?.name ?? campaign.hero,
+    stages: campaign.stages.map((stage) => ({
+      ...stage,
+      displayName: pickLang(stage.name, locale),
+      frontHeroes: stage.composition.front.map(id => getHero(id)).filter(Boolean),
+      backHeroes: stage.composition.back.map(id => getHero(id)).filter(Boolean),
+    })),
+  };
+});
+
+const stageCount = campaigns.reduce((total, campaign) => total + campaign.stages.length, 0);
+const copy = {
+  directoryKicker: { en: "Team directory", de: "Team-Verzeichnis", es: "Directorio de equipos", ru: "Каталог команд", zh: "阵容目录" },
+  directoryTitle: { en: "Clear every stage with a proven setup", de: "Bewährte Aufstellungen für jede Stufe", es: "Supera cada etapa con una formación probada", ru: "Проверенные составы для каждого этапа", zh: "使用可靠阵容通关每个关卡" },
+  directoryBody: { en: "Choose the stage you are stuck on and copy the formation. Front and Back rows are separated so positioning remains clear on every screen size.", de: "Wähle die Stufe, an der du festhängst, und übernimm die Formation. Vorder- und Hinterreihe bleiben auf jeder Bildschirmgröße klar getrennt.", es: "Elige la etapa donde estás atascado y copia la formación. Las filas delantera y trasera permanecen claramente separadas en cualquier pantalla.", ru: "Выберите сложный этап и скопируйте расстановку. Передний и задний ряды разделены на экране любого размера.", zh: "选择卡关关卡并复制阵容。前排与后排在任何屏幕尺寸下都清晰分开。" },
+  stages: { en: "stage setups", de: "Stufenaufstellungen", es: "formaciones", ru: "составов", zh: "套关卡阵容" },
+  recommended: { en: "Recommended formation", de: "Empfohlene Formation", es: "Formación recomendada", ru: "Рекомендуемая расстановка", zh: "推荐阵容" },
+  openSlot: { en: "Open slot", de: "Freier Platz", es: "Espacio libre", ru: "Свободное место", zh: "空位" },
+};
+---
+
+<Base title={t(locale, "timedChallenge", "metaTitle")} description={t(locale, "timedChallenge", "metaDescription")} locale={locale}>
+<PageHero
+  tag={t(locale, "timedChallenge", "tag")}
+  headline={t(locale, "timedChallenge", "headline")}
+  subtitle={t(locale, "timedChallenge", "subtitle")}
+  locale={locale}
+/>
+
+<main class="page-wrapper tc-page page-content">
+  <section class="tc-intro" aria-labelledby="tc-intro-title">
+    <div>
+      <span class="section-label">{pickLang(copy.directoryKicker, locale)}</span>
+      <h2 id="tc-intro-title">{pickLang(copy.directoryTitle, locale)}</h2>
+      <p>{pickLang(copy.directoryBody, locale)}</p>
+    </div>
+    <span class="tc-count"><strong>{stageCount}</strong> {pickLang(copy.stages, locale)}</span>
+  </section>
+
+  <div class="tc-main">
+    {campaigns.map((campaign) => (
+      <section class="challenge" id={campaign.id} aria-labelledby={`${campaign.id}-title`}>
+        <header class="challenge-header">
+          <div class="challenge-portrait">
+            <img
+              src={heroCardSrc(campaign.heroId, 360)}
+              srcset={heroCardSrcset(campaign.heroId)}
+              sizes="(max-width: 480px) calc(100vw - 72px), (max-width: 720px) 112px, 38vw"
+              alt={campaign.heroName}
+              width="360"
+              height="360"
+              decoding="async"
+            />
+          </div>
+          <div class="challenge-copy">
+            <span class="section-label">{pickLang(copy.recommended, locale)}</span>
+            <h2 id={`${campaign.id}-title`}>{campaign.displayName}</h2>
+            <p>{campaign.displayDescription}</p>
+          </div>
+          <span class="challenge-stage-count">{campaign.stages.length} {pickLang(copy.stages, locale)}</span>
+        </header>
+
+        <div class="stages-container">
+          {campaign.stages.map((stage) => (
+            <article class="stage-card">
+              <header class="stage-header">
+                <span class="stage-number">{String(stage.id).padStart(2, "0")}</span>
+                <div>
+                  <span>{pickLang(copy.recommended, locale)}</span>
+                  <h3 class="stage-title">{stage.displayName.replace(/^\d+\.\s*/, "")}</h3>
+                </div>
+              </header>
+
+              <div class="formation-board">
+                <div class="formation-group formation-group--front">
+                  <span class="formation-label">{frontLabel}</span>
+                  <div class="formation-slots formation-slots--front">
+                    {stage.frontHeroes.map((hero) => (
+                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
+                        <div class="event-hero-image">
+                          <img
+                            src={heroCardSrc(hero.id, 240)}
+                            srcset={heroCardSrcset(hero.id)}
+                            sizes="(max-width: 480px) 42vw, (max-width: 900px) 30vw, 180px"
+                            alt={hero.name}
+                            loading="lazy"
+                            decoding="async"
+                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                          />
+                        </div>
+                        <strong>{hero.name}</strong>
+                      </a>
+                    ))}
+                    {Array.from({ length: Math.max(0, 2 - stage.frontHeroes.length) }).map(() => (
+                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
+                    ))}
+                  </div>
+                </div>
+
+                <div class="formation-divider" aria-hidden="true"></div>
+
+                <div class="formation-group formation-group--back">
+                  <span class="formation-label">{backLabel}</span>
+                  <div class="formation-slots formation-slots--back">
+                    {stage.backHeroes.map((hero) => (
+                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
+                        <div class="event-hero-image">
+                          <img
+                            src={heroCardSrc(hero.id, 240)}
+                            srcset={heroCardSrcset(hero.id)}
+                            sizes="(max-width: 480px) 28vw, (max-width: 900px) 20vw, 180px"
+                            alt={hero.name}
+                            loading="lazy"
+                            decoding="async"
+                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                          />
+                        </div>
+                        <strong>{hero.name}</strong>
+                      </a>
+                    ))}
+                    {Array.from({ length: Math.max(0, 3 - stage.backHeroes.length) }).map(() => (
+                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</main>
+
+</Base>

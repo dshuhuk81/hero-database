@@ -6,6 +6,7 @@ type TranslationTree = {
   hero: Record<string, LocalizedString>;
   home: Record<string, LocalizedString>;
   events: Record<string, LocalizedString>;
+  timedChallenge: Record<string, LocalizedString>;
   tips: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
   language: Record<string, LocalizedString>;
@@ -268,6 +269,19 @@ const translations: TranslationTree = {
     tag: { en: "Global schedule", de: "Globaler Zeitplan", es: "Calendario global", ru: "Расписание Global", zh: "全球服日程" },
     headline: { en: "Event Calendar", de: "Event-Kalender", es: "Calendario de eventos", ru: "Календарь событий", zh: "活动日历" },
     subtitle: { en: "Every dated Global-client event in one interactive timeline", de: "Alle datierten Global-Client-Events in einer interaktiven Zeitleiste", es: "Todos los eventos fechados del cliente global en una cronología interactiva", ru: "Все датированные события Global в одной интерактивной шкале", zh: "在交互式时间轴中查看全球服全部已排期活动" },
+  },
+  timedChallenge: {
+    metaTitle: { en: "Timed Challenge | Motto Immortal", de: "Zeit-Herausforderung | Motto Immortal", es: "Desafío temporal | Motto Immortal", ru: "Временное испытание | Motto Immortal", zh: "限时挑战｜Motto Immortal" },
+    metaDescription: {
+      en: "Stage-by-stage team compositions for Motto Immortal Timed Challenges.",
+      de: "Teamaufstellungen für jede Stufe der Zeit-Herausforderungen in Motto Immortal.",
+      es: "Composiciones por etapa para los desafíos temporales de Motto Immortal.",
+      ru: "Составы команд для каждого этапа временных испытаний Motto Immortal.",
+      zh: "Motto Immortal 限时挑战的逐关阵容搭配。",
+    },
+    tag: { en: "PvE", de: "PvE", es: "PvE", ru: "PvE", zh: "PvE" },
+    headline: { en: "Timed Challenge", de: "Zeit-Herausforderung", es: "Desafío temporal", ru: "Временное испытание", zh: "限时挑战" },
+    subtitle: { en: "Stage-by-stage team compositions with clear Front and Back positioning", de: "Teamaufstellungen für jede Stufe mit klarer Vorder- und Hinterreihe", es: "Composiciones por etapa con posiciones delanteras y traseras claras", ru: "Составы для каждого этапа с четким разделением переднего и заднего ряда", zh: "逐关阵容搭配，清晰区分前排与后排" },
   },
   tips: {
     metaTitle: { en: "Tips | Motto Immortal", de: "Tipps | Motto Immortal", es: "Consejos | Motto Immortal", ru: "Советы | Motto Immortal", zh: "攻略技巧｜Motto Immortal" },

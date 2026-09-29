@@ -95,6 +95,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M4 4h16v16H4zM8 4v12h8V8H8v4h4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>`,
   },
   {
+    label: "Timed Challenge",
+    href: "/guides/timed-challenge",
+    group: "content",
+    sidebar: false,
+    description: {
+      en: "Campaign stages & event team guides",
+      de: "Kampagnenstufen und Event-Teamguides",
+      es: "Etapas de campaña y guías de equipos para eventos",
+      ru: "Этапы кампании и гайды по командам для событий",
+      zh: "战役关卡与活动队伍攻略",
+    },
+    icon: `<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5M12 2v3"/>`,
+  },
+  {
   label: "Event Calendar",
   href: "/events",
   group: "content",
