@@ -62,12 +62,12 @@ stages.forEach((stage, i) => {
   assert.equal(heroSkillLevel(fresh, id, "ultimate"), 1, "skills start at level 1");
   assert.deepEqual(skillUpCost(campaign, fresh, id, "ultimate"), { gold: 150 }, "first skill rank costs Gold");
   assert.equal(canSkillUp(campaign, fresh, id, "ultimate"), false, "cannot upgrade without the cost");
-  let p = { ...fresh, currencies: { ...fresh.currencies, gold: 5000, divineEssence: 1 } };
+  let p = { ...fresh, currencies: { ...fresh.currencies, gold: 5000, sealDust: 200 } };
   p = skillUp(campaign, p, id, "ultimate");
   p = skillUp(campaign, p, id, "ultimate");
   p = skillUp(campaign, p, id, "ultimate");
   assert.equal(heroSkillLevel(p, id, "ultimate"), 4, "ultimate levels independently");
-  assert.deepEqual(skillUpCost(campaign, p, id, "ultimate"), { gold: 1000, divineEssence: 1 }, "final rank also costs rare material");
+  assert.deepEqual(skillUpCost(campaign, p, id, "ultimate"), { gold: 1000, sealDust: 150 }, "final rank also costs rare material");
   p = skillUp(campaign, p, id, "ultimate");
   assert.equal(heroSkillLevel(p, id, "ultimate"), 5, "skill reaches its cap");
   assert.equal(skillUp(campaign, p, id, "ultimate"), null, "skill cannot pass its cap");

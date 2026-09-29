@@ -46,7 +46,7 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
 }
 
 export function createCampaign(ctx: PageContext) {
-  const { q, store, data, heroById } = ctx;
+  const { root, q, store, data, heroById } = ctx;
   const stagesEl = q("[data-td-camp-stages]");
   const chapterEl = q("[data-td-camp-chapter]");
   const progressEl = q("[data-td-camp-progress]");
@@ -62,7 +62,6 @@ export function createCampaign(ctx: PageContext) {
   const summonBannerEl = q("[data-td-summon-banner]");
   const summonCopyEl = q("[data-td-summon-copy]");
   const summonWalletEl = q("[data-td-summon-wallet]");
-  const summonNoteEl = q("[data-td-summon-note]");
   const summonButton = q<HTMLButtonElement>("[data-td-summon-button]");
   const summonMultiButton = q<HTMLButtonElement>("[data-td-summon-multi]");
   const summonSkipInput = q<HTMLInputElement>("[data-td-summon-skip]");
@@ -76,8 +75,9 @@ export function createCampaign(ctx: PageContext) {
   let drawerId: string | null = null; // stage shown in the details drawer
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
+  let heroDetailKey = ""; // hero + tab last drawn, to keep scroll when an upgrade redraws it
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
-  let evoPick: "copy" | "essence" | null = null; // Evolution: material the player picked
+  let evoPick: "copy" | "dust" | null = null; // Evolution: material the player picked
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -303,7 +303,7 @@ export function createCampaign(ctx: PageContext) {
 
   // Heroes screen: owned heroes and their three campaign upgrades, one tab each:
   // Level (Gold + Hero XP), Stars (spare copies of any hero + Gold: attack and health) and
-  // Evolution (a copy of the same hero or Divine Essence: ultimate and crit).
+  // Evolution (a copy of the same hero or Seal Dust: ultimate and crit).
   function renderHeroes() {
     const p = progress();
     q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in campaign stages only.";
@@ -346,13 +346,21 @@ export function createCampaign(ctx: PageContext) {
       <p class="td-hero-might"><strong>${might(hero).toLocaleString()}</strong> Might</p>
       <p class="td-hero-badges">${stars(heroStars(p, hero.id))}${heroEvolution(p, hero.id) ? `<span class="td-evo-badge">Evolved ${roman(heroEvolution(p, hero.id))}</span>` : ""}${p.copies?.[hero.id] ? `<span>${p.copies[hero.id]} spare ${p.copies[hero.id] === 1 ? "copy" : "copies"}</span>` : ""}</p>
       ${powerLayers(p, hero)}</div>` : "";
-    q("[data-td-hero-detail]").innerHTML = `<article class="td-hero-profile">
+    // Redrawing replaces the scroll containers: keep their offsets when the same hero and tab
+    // redraw (an upgrade), so the button just pressed stays under the pointer.
+    const detailEl = q("[data-td-hero-detail]");
+    const scrollSel = ".td-hero-profile-copy, .td-hero-tab-panel";
+    const detailKey = `${hero.id}:${heroTab}`;
+    const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
+    heroDetailKey = detailKey;
+    detailEl.innerHTML = `<article class="td-hero-profile">
       <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}"></div>
       <div class="td-hero-profile-copy${heroTab === "level" ? "" : " is-detail-only"}">${summary}
       <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
       </div>
       <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
       </article>`;
+    detailEl.querySelectorAll<HTMLElement>(scrollSel).forEach((el, i) => { if (scrolls[i]) el.scrollTop = scrolls[i]; });
   }
 
   function skillsPanel(p: any, hero: any, skill: any) {
@@ -377,7 +385,7 @@ export function createCampaign(ctx: PageContext) {
         <div class="td-skill-rank"><span>Level ${level} / ${max}</span>${action}</div>
       </div>`;
     }).join("");
-    return `<div class="td-hero-skill"><header><span class="td-label">Skill training</span><p>Upgrade each skill separately. Higher ranks eventually require Divine Essence.</p></header>${rows}</div>`;
+    return `<div class="td-hero-skill"><header><span class="td-label">Skill training</span><p>Upgrade each skill separately. The final rank also costs Seal Dust.</p></header>${rows}</div>`;
   }
 
   // Attack and health in campaign stages: base x level x stars.
@@ -465,23 +473,25 @@ export function createCampaign(ctx: PageContext) {
   }
 
   // Evolution: tiers I-V with their bonus; each costs a copy of this hero (used first) or
-  // 1 Divine Essence. Spare copies can also become Seal Dust here.
+  // heroEvolution.dustPrice Seal Dust. Spare copies can also become Seal Dust here.
   function evolutionPanel(p: any, hero: any) {
     const tier = heroEvolution(p, hero.id);
     const tiers = campaign.heroEvolution?.tiers ?? [];
     const copies = p.copies?.[hero.id] ?? 0;
-    const essence = p.currencies.divineEssence || 0;
+    const dustPrice = campaign.heroEvolution?.dustPrice ?? 0;
+    const dust = p.currencies.sealDust || 0;
+    const dustOk = dustPrice > 0 && dust >= dustPrice;
     if (evoPick === "copy" && !copies) evoPick = null;
-    if (evoPick === "essence" && !essence) evoPick = null;
+    if (evoPick === "dust" && !dustOk) evoPick = null;
     const list = tiers.map((entry: any, i: number) => `<li class="${i < tier ? "is-done" : i === tier ? "is-next" : "is-locked"}"><span class="td-evo-mark" aria-hidden="true">${i < tier ? "✓" : roman(i + 1)}</span><span><strong>${entry.name}</strong><small>${entry.text}</small></span></li>`).join("");
     const maxed = tier >= tiers.length;
     // The player picks the material (tap a slot), then confirms with Evolve.
-    const slot = (kind: "copy" | "essence", have: number, inner: string, label: string) => `<button type="button" class="td-evo-slot${kind === "essence" ? " td-evo-slot--essence" : ""}${have ? " is-ready" : ""}${evoPick === kind ? " is-picked" : ""}" data-camp-evo-pick="${kind}" aria-pressed="${evoPick === kind}" aria-label="${label}"${have ? "" : " disabled"}>${inner}</button>`;
+    const slot = (kind: "copy" | "dust", ready: boolean, inner: string, label: string) => `<button type="button" class="td-evo-slot${kind === "dust" ? " td-evo-slot--essence" : ""}${ready ? " is-ready" : ""}${evoPick === kind ? " is-picked" : ""}" data-camp-evo-pick="${kind}" aria-pressed="${evoPick === kind}" aria-label="${label}"${ready ? "" : " disabled"}>${inner}</button>`;
     const materialHtml = maxed ? "" : `<div class="td-evo-material">
-        ${slot("copy", copies, `<img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small>`, `Use 1 copy of ${hero.name} (${copies} owned)`)}
+        ${slot("copy", copies > 0, `<img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small>`, `Use 1 copy of ${hero.name} (${copies} owned)`)}
         <span>or</span>
-        ${slot("essence", essence, `<span class="td-cur td-cur--divineEssence td-evo-essence-icon" aria-hidden="true">${currencyIcon("divineEssence")}</span><small>${essence} Essence</small>`, `Use 1 Divine Essence (${essence} owned)`)}
-        <p>${evoPick === "copy" ? `Uses 1 copy of ${hero.name}.` : evoPick === "essence" ? "Uses 1 Divine Essence." : copies || essence ? "Tap a material to use it." : `Needs a copy of ${hero.name} or 1 Divine Essence.`}</p>
+        ${slot("dust", dustOk, `<span class="td-cur td-cur--sealDust td-evo-essence-icon" aria-hidden="true">${currencyIcon("sealDust")}</span><small>${dustPrice} Dust</small>`, `Use ${dustPrice} Seal Dust (${dust} owned)`)}
+        <p>${evoPick === "copy" ? `Uses 1 copy of ${hero.name}.` : evoPick === "dust" ? `Uses ${dustPrice} Seal Dust.` : copies || dustOk ? "Tap a material to use it." : `Needs a copy of ${hero.name} or ${dustPrice} Seal Dust.`}</p>
       </div>`;
     const dustPer = summonCfg.dust?.perCopy ?? 0;
     return `<p class="td-hero-tab-copy">Evolution improves the ultimate and crit chance, one tier per copy of ${hero.name}.</p>
@@ -548,19 +558,15 @@ export function createCampaign(ctx: PageContext) {
       return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
     }).join("");
     q("[data-td-summon-source]").textContent = nextStage(campaign, p)
-      ? "Divine Seals come from first clears in Campaign, the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. Stage-reward heroes join this banner once earned."
-      : "All current campaign stages are cleared. Divine Seals still come from the Daily Trial goal, finished Expeditions and Seal Dust.";
-    summonNoteEl.textContent = canAfford(p, banner.cost) ? "Summon available" : `${Math.max(0, banner.cost.divineSeals - seals)} more needed`;
-    // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals or Essence.
+      ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. Stage-reward heroes join this banner once earned."
+      : "All current campaign stages are cleared. Divine Seals still come from replays (a quarter of first-clear), the Daily Trial goal, finished Expeditions and Seal Dust.";
+    // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals.
     const d = summonCfg.dust ?? {};
-    q("[data-td-dust-wallet]").innerHTML = currencyList({ sealDust: dust, divineEssence: p.currencies.divineEssence || 0 });
+    q("[data-td-dust-wallet]").innerHTML = currencyList({ sealDust: dust });
     const sealsFor = Math.floor(dust / (d.perSeal || Infinity));
     const sealsButton = q<HTMLButtonElement>("[data-td-dust-seals]");
     sealsButton.disabled = sealsFor < 1;
     sealsButton.innerHTML = `${currencyAmount("sealDust", (sealsFor || 1) * d.perSeal)} → ${currencyAmount("divineSeals", sealsFor || 1)}`;
-    const essenceButton = q<HTMLButtonElement>("[data-td-dust-essence]");
-    essenceButton.disabled = dust < d.perEssence;
-    essenceButton.innerHTML = `${currencyAmount("sealDust", d.perEssence)} → ${currencyAmount("divineEssence", 1)}`;
     // Dust → spare copies of an owned hero (feeds Stars and Evolution).
     const copySelect = q<HTMLSelectElement>("[data-td-dust-copy-hero]");
     const prevPick = copySelect.value;
@@ -782,7 +788,7 @@ export function createCampaign(ctx: PageContext) {
       commit(next, `${heroName(id)} reached ${heroStars(next, id)} stars.`, "[data-camp-fodder-auto]");
     } else if (d.campEvolve) {
       if (!evoPick) return true;
-      const next = evolve(campaign, p, id, evoPick === "essence");
+      const next = evolve(campaign, p, id, evoPick === "dust");
       if (!next) return true;
       evoPick = null;
       commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evo-pick]");
@@ -805,15 +811,6 @@ export function createCampaign(ctx: PageContext) {
     renderSummon();
     render();
     ctx.notice(`+${n} Divine Seals from Seal Dust.`);
-  });
-  q("[data-td-dust-essence]").addEventListener("click", () => {
-    const next = exchangeDust(summonCfg, progress(), "essence", 1);
-    if (!next) return;
-    store.data.campaign = next as CampaignProgress;
-    store.persist();
-    renderSummon();
-    render();
-    ctx.notice("+1 Divine Essence from Seal Dust.");
   });
   q("[data-td-dust-copy]").addEventListener("click", () => {
     const id = q<HTMLSelectElement>("[data-td-dust-copy-hero]").value;
@@ -849,6 +846,34 @@ export function createCampaign(ctx: PageContext) {
   summonSkipInput.addEventListener("change", () => {
     try { localStorage.setItem(SKIP_KEY, summonSkipInput.checked ? "1" : "0"); } catch { /* storage blocked */ }
   });
+
+  // Debug panel (dev builds only): adds campaign currencies to the save for testing.
+  const DEBUG_GRANTS: Record<string, number> = { gold: 10000, heroXp: 10000, divineSeals: 600, sealDust: 1000 };
+  const debugEl = root.querySelector<HTMLElement>("[data-td-camp-debug]");
+  const debugToggle = root.querySelector<HTMLButtonElement>("[data-td-camp-debug-toggle]");
+  if (debugEl && debugToggle) {
+    debugToggle.addEventListener("click", () => {
+      debugEl.hidden = !debugEl.hidden;
+      debugToggle.setAttribute("aria-pressed", String(!debugEl.hidden));
+    });
+    debugEl.addEventListener("click", (event) => {
+      const id = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-debug]")?.dataset.campDebug;
+      if (!id) return;
+      const grants = id === "all" ? DEBUG_GRANTS : { [id]: DEBUG_GRANTS[id] ?? 0 };
+      const p = progress();
+      const currencies = { ...p.currencies };
+      for (const [key, amount] of Object.entries(grants)) currencies[key] = (currencies[key] || 0) + amount;
+      store.data.campaign = { ...p, currencies };
+      store.persist();
+      // Redraw whichever campaign screen is open so wallets and upgrade buttons update.
+      const screen = root.dataset.screen;
+      render();
+      if (screen === "heroes") renderHeroes();
+      if (screen === "summon") renderSummon();
+      if (screen === "squad") renderSquad();
+      ctx.notice(`Debug: ${Object.entries(grants).map(([key, amount]) => `+${amount.toLocaleString()} ${(CURRENCY_NAMES as Record<string, string>)[key] ?? key}`).join(", ")}.`);
+    });
+  }
 
   return { render, renderSquad, renderHeroes, renderSummon, selectStage };
 }

@@ -5,18 +5,20 @@
 // in campaign stages only. Static stage data lives in
 // src/data/tdCampaign.json; the player's campaign progress is its own versioned section
 // of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
-// clears, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
+// clears, replays at a quarter, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 
-export const CAMPAIGN_SAVE_VERSION = 6; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills
-export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust", "divineEssence"];
-export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust", divineEssence: "Divine Essence" };
+export const CAMPAIGN_SAVE_VERSION = 7; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8)
+export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
+export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
 // Save version that introduced each currency: stages cleared under an older save are paid
 // that currency's first-clear amount once on migration.
-const CURRENCY_SINCE = { gold: 2, heroXp: 2, divineSeals: 3, sealDust: 4, divineEssence: 4 };
-// Currencies only a first clear pays; replays pay a share of the others.
-const FIRST_CLEAR_ONLY = ["divineSeals"];
+const CURRENCY_SINCE = { gold: 2, heroXp: 2, divineSeals: 3, sealDust: 4 };
+// Currencies only a first clear pays; replays pay a share of the others. Empty since
+// September 28, 2026: replays pay repeatShare of Divine Seals too (owner feedback — with
+// one chapter, first clears alone (600 seals) made summoning feel impossible).
+const FIRST_CLEAR_ONLY = [];
 
 // Every stage in play order, with its chapter.
 export function allStages(campaign) {
@@ -160,9 +162,11 @@ const evolutionNeed = (campaign, progress, id) => Math.max(0, evolutionMax(campa
 // Quick add: `count` spare copies for `heroId`'s next star. Copies no Evolution still needs
 // go first (most plentiful first), then other heroes' copies; the hero's own copies are
 // never taken (they are its Evolution material). Returns { heroId: n } or null.
+/** @param {any} campaign @param {any} progress @param {number} count @param {string | null} [heroId] @returns {Record<string, number> | null} */
 export function autoFodder(campaign, progress, count, heroId = null) {
   const spare = Object.entries(progress.copies ?? {}).filter(([id, n]) => id !== heroId && n > 0);
   const surplus = spare.map(([id, n]) => [id, Math.min(n, n - evolutionNeed(campaign, progress, id))]).filter(([, n]) => n > 0);
+  /** @type {Record<string, number>} */
   const pick = {};
   let left = count;
   const take = (list) => {
@@ -193,7 +197,7 @@ export function starUp(campaign, progress, id, fodder) {
   return { ...progress, copies, currencies: { ...progress.currencies, gold: progress.currencies.gold - cost.gold }, stars: { ...progress.stars, [id]: heroStars(progress, id) + 1 } };
 }
 
-// --- Evolution (M26 sprint 9): a copy of the same hero (or Divine Essence) improves its skill ---
+// --- Evolution (M26 sprint 9): a copy of the same hero (or Seal Dust) improves its skill ---
 export const heroEvolution = (progress, id) => progress.evolution?.[id] ?? 0;
 export const evolutionMax = (campaign) => campaign.heroEvolution?.tiers?.length ?? 0;
 
@@ -209,17 +213,20 @@ export function heroMight(campaign, progress, hero) {
   return Math.round((hero.atk * attackSkill + hero.hp * healthSkill) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
 }
 
-// What evolving would spend now: "copy" (a copy of the hero first), "essence", or null.
+// What evolving would spend now: "copy" (a copy of the hero first), "dust"
+// (heroEvolution.dustPrice Seal Dust), or null.
 export function evolutionMaterial(campaign, progress, id) {
   if (!progress.owned.includes(id) || heroEvolution(progress, id) >= evolutionMax(campaign)) return null;
   if ((progress.copies?.[id] ?? 0) > 0) return "copy";
-  return (progress.currencies.divineEssence || 0) > 0 ? "essence" : null;
+  const price = campaign.heroEvolution?.dustPrice ?? 0;
+  return price > 0 && (progress.currencies.sealDust || 0) >= price ? "dust" : null;
 }
 
-// Spends a copy of the hero (or, with `useEssence` or no copy, 1 Divine Essence) and
-// raises its Evolution tier. Returns the new progress or null when not possible.
-export function evolve(campaign, progress, id, useEssence = false) {
-  const material = useEssence ? ((progress.currencies.divineEssence || 0) > 0 && evolutionMaterial(campaign, progress, id) ? "essence" : null) : evolutionMaterial(campaign, progress, id);
+// Spends a copy of the hero (or, with `useDust` or no copy, heroEvolution.dustPrice Seal
+// Dust) and raises its Evolution tier. Returns the new progress or null when not possible.
+export function evolve(campaign, progress, id, useDust = false) {
+  const price = campaign.heroEvolution?.dustPrice ?? 0;
+  const material = useDust ? (price > 0 && (progress.currencies.sealDust || 0) >= price && evolutionMaterial(campaign, progress, id) ? "dust" : null) : evolutionMaterial(campaign, progress, id);
   if (!material) return null;
   const next = { ...progress, evolution: { ...progress.evolution, [id]: heroEvolution(progress, id) + 1 } };
   if (material === "copy") {
@@ -227,7 +234,7 @@ export function evolve(campaign, progress, id, useEssence = false) {
     if (!copies[id]) delete copies[id];
     return { ...next, copies };
   }
-  return { ...next, currencies: { ...progress.currencies, divineEssence: progress.currencies.divineEssence - 1 } };
+  return { ...next, currencies: { ...progress.currencies, sealDust: progress.currencies.sealDust - price } };
 }
 
 // Sum of the unlocked tiers' bonuses: { ultPower, crit, ultCooldown, awakenedUlt }.
@@ -275,7 +282,7 @@ export function skillUp(campaign, progress, id, skillId) {
   };
 }
 
-// --- Seal Dust (M26 sprint 9): spare copies become dust; dust buys Divine Seals or Divine Essence ---
+// --- Seal Dust (M26 sprint 9): spare copies become dust; dust buys Divine Seals ---
 // Converts `count` spare copies of a hero to Seal Dust (summonCfg.dust.perCopy each).
 export function convertCopies(summonCfg, progress, id, count = 1) {
   const n = Math.floor(Number(count) || 0);
@@ -286,14 +293,13 @@ export function convertCopies(summonCfg, progress, id, count = 1) {
   return { ...progress, copies, currencies: { ...progress.currencies, sealDust: (progress.currencies.sealDust || 0) + n * per } };
 }
 
-// Exchanges Seal Dust for `count` Divine Seals ("seals", dust.perSeal each) or Divine
-// Essence ("essence", dust.perEssence each). Returns the new progress or null.
+// Exchanges Seal Dust for `count` Divine Seals (dust.perSeal each). Returns the new
+// progress or null. (Divine Essence was merged into Seal Dust in save version 7.)
 export function exchangeDust(summonCfg, progress, kind, count = 1) {
   const n = Math.floor(Number(count) || 0);
-  const price = kind === "seals" ? summonCfg?.dust?.perSeal : kind === "essence" ? summonCfg?.dust?.perEssence : 0;
-  const target = kind === "seals" ? "divineSeals" : "divineEssence";
+  const price = kind === "seals" ? summonCfg?.dust?.perSeal : 0;
   if (n < 1 || !price || (progress.currencies.sealDust || 0) < n * price) return null;
-  return { ...progress, currencies: { ...progress.currencies, sealDust: progress.currencies.sealDust - n * price, [target]: (progress.currencies[target] || 0) + n } };
+  return { ...progress, currencies: { ...progress.currencies, sealDust: progress.currencies.sealDust - n * price, divineSeals: (progress.currencies.divineSeals || 0) + n } };
 }
 
 // Buys spare copies of an owned hero with Seal Dust (summonCfg.dust.copyPrice each),
@@ -539,9 +545,12 @@ export function sanitizeCampaign(value, campaign, heroIds) {
   const lastSquad = (Array.isArray(value.lastSquad) ? [...new Set(value.lastSquad)] : []).filter((id) => owned.includes(id)).slice(0, campaign.squadSize);
   // Version 1 had no currencies or levels: they start at zero and level 1.
   const currencies = Object.fromEntries(CURRENCIES.map((id) => [id, Math.max(0, Math.floor(Number(value.currencies?.[id]) || 0))]));
+  const version = Number(value.version) || 1;
+  // Version 7 merged Divine Essence into Seal Dust: leftover essence converts at the
+  // historical rate (1 essence cost 150 dust, tdSummon.json dust.perEssence at version 6).
+  if (version < 7) currencies.sealDust += Math.max(0, Math.floor(Number(value.currencies?.divineEssence) || 0)) * 150;
   // Stages cleared under an older version did not pay the currencies added since (version 1:
   // all of them, version 2: Divine Seals); those first-clear amounts are paid once now.
-  const version = Number(value.version) || 1;
   for (const stage of allStages(campaign)) {
     if (!cleared[stage.id]) continue;
     for (const reward of stage.rewards ?? []) {

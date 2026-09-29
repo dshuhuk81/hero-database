@@ -62,6 +62,7 @@
     "evolutionPerTier": 0.06
   },
   "heroEvolution": {
+    "dustPrice": 150,
     "tiers": [
       {
         "name": "Evolved I",
@@ -101,11 +102,11 @@
         600,
         1000
       ],
-      "divineEssence": [
+      "sealDust": [
         0,
         0,
         0,
-        1
+        150
       ]
     }
   },

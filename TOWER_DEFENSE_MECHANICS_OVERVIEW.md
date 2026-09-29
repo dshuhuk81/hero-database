@@ -32,9 +32,12 @@ more heroes to pick (summons).
 | **Shards** | run-start boost | runs reaching wave 3+: pick gold (+60), a starting virtue, or bonus Favor (10% of run Favor, min 5) | consumed on the next run | `shards` |
 | **Campaign Gold** | meta | stage clears (replays pay 25%) | campaign hero levels, star promotions | `tdCampaign.json` |
 | **Hero XP** | meta | stage clears | campaign hero levels | `tdCampaign.json` |
-| **Divine Seals** | meta | first stage clears, daily trial goal (15), expedition complete (60) | summons (60 per pull, 10-pulls) | `tdSummon.json` |
-| **Seal Dust** | meta | 30 per duplicate copy, 2 per seal | (conversion currency) | `tdSummon.json` |
-| **Divine Essence** | meta | 150 per dust conversion / late stages | hero evolution tiers | `tdSummon.json`, `tdCampaign.json` |
+| **Divine Seals** | meta | stage clears (replays pay a quarter of the first-clear seals), daily trial goal (15), expedition complete (60) | summons (60 per pull, 10-pulls) | `tdSummon.json` |
+| **Seal Dust** | meta | 30 per duplicate copy (manual conversion) | 2 → 1 seal, 100 → 1 spare copy, 150 → 1 evolution tier (without a copy), 150 for the final skill rank | `tdSummon.json`, `tdCampaign.json` |
+
+Divine Essence was merged into Seal Dust on September 29, 2026 (save version 7;
+leftover essence converts at the historical 1:150 rate). It had no income source of
+its own and only gated evolution behind a second conversion step.
 
 ## 3. In-run economy (Free Play)
 
@@ -119,16 +122,18 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
   copies + 100/200/400/600/800 Gold promote to 1–5 stars at +10% stats each.
 - **Level cap:** 0–5 stars cap levels at 10/20/30/40/50/60. Per-level gain
   drops by band: +6% (2–10), +3%, +2%, +1.5%, +1.5%, +1% (Lv 60 = +144%).
-- **Evolution:** Divine Essence buys tiers (Evolved I: +20% ult damage, II:
+- **Evolution:** a copy of the same hero or 150 Seal Dust buys tiers (Evolved I: +20% ult damage, II:
   +10% crit, III: −15% ult cooldown, …).
 - **Might:** one battle-power number per hero, (Attack + Health) × level ×
   stars × (1 + 0.06 per evolution tier). Sorts the Heroes roster; squad Might
   is compared to each stage's recommended Might (from its hp scale).
 - **Summons:** one banner ("Ember at the Crossing"), 60 Divine Seals per pull,
   10-pull option, pool = full roster, featured 4 heroes rotate every 14 days
-  at 5× weight. Duplicates → copies + 30 Seal Dust; dust converts to Divine
-  Essence at 150.
-- **Seal income:** daily goal 15, expedition complete 60, first clears —
+  at 5× weight. Duplicates → copies, convertible to 30 Seal Dust each; dust
+  buys seals, targeted copies and evolution tiers.
+- **Seal income:** daily goal 15, expedition complete 60, campaign clears
+  (first clear full, replays a quarter — ≈150 extra seals per chapter run
+  since September 28, 2026) —
   so a free player earns roughly **one pull every 4 days** from the daily
   alone, faster with expeditions and campaign progress.
 

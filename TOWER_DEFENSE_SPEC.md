@@ -82,6 +82,10 @@ Hard rules:
   follows the zoom; percentages and container queries do). Pointer maths inside the frame
   divides by `zoomOf(el)` (Blessings graph pan and zoom). Checked at 667x375, 844x390,
   915x412, 1280x720, 1440x900 and 1920x1080.
+  Lobby home in the frame: Free Play card left, the side column (1.25x wider) holds
+  Campaign, Daily Trial and Expedition as three separate bordered cards with a gap. In each
+  side card the CTA sits in a right column beside the route/chips and the one-line summary
+  (no separate button row), so all three fit without clipping (fixed September 29, 2026).
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS v8 from jsDelivr), `map-scene.js`, `fx-kit.js`,
@@ -216,7 +220,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   9 brute/mender/shieldbearer/runner, 10 boss + escort.
 - Run lengths (`waves.js`): `classic` 10 waves (boss on 10), `long` 20, `endless`.
   Long and endless reuse waves 1-10 plus a mid-boss on 5, then generate waves with a
-  boss every 5 (`waveGen`).
+  boss every 5 (`waveGen`). Free-play run cards show only glyph, name, best and Play;
+  the description lives in the card's `title` tooltip.
 - Tiers: Normal, Heroic (enemy hp x2, attack x1.3, Favor x1.3), Mythic (x3.2, x1.6,
   x1.6). Global `difficulty.enemyHp` 3.75 applies on top.
 - Mutators: every 10 waves pick 1 of 3 (fortified, haste, warded, horde, ironclad,
@@ -327,10 +332,11 @@ everyone). Then four tabs:
 - **Stars**: current stars, Attack/Health now and at the next star, fodder slots, the
   other heroes' spare copies to tap into them, Quick add and Star up.
 - **Evolution**: the five tiers (done / next / locked) with their bonus, two material
-  slots (a copy of this hero, Divine Essence), Evolve, and "1 copy -> 30 Dust".
+  slots (a copy of this hero, 150 Seal Dust), Evolve, and "1 copy -> 30 Dust".
 - **Skills**: ultimate and class passives, each upgraded separately (save v6).
 
-The detail column scrolls inside its panel. A small red dot on a roster card's top-right corner means a
+The detail column scrolls inside its panel; an upgrade redraw on the same hero and tab keeps
+the scroll position, so the button stays in place for repeat presses. A small red dot on a roster card's top-right corner means a
 level-up is affordable or the hero has its own copy for Evolution. On narrow screens the
 roster stacks above the detail panel while retaining its own scroll. On short landscape
 screens (phones, height up to 540px) the screen fits the viewport so the page itself never
@@ -385,16 +391,19 @@ carry the "hard to get" goal now — a specific legendary sits at ≈0.45% per d
 so the x10 new-hero pity is enabled: it only fires when a full x10 yields nothing
 new and does not cheapen the early game.
 
-Divine Seal sources: campaign first clears (600 in Chapter 1, enough for one full x10),
+Divine Seal sources: campaign first clears (600 in Chapter 1) plus replays at a quarter
+of the first-clear seals (≈150 more per chapter run; since September 28, 2026 — with one
+chapter, first clears alone made summoning feel impossible, owner feedback),
 the Daily Trial goal (+15, once per day) and a finished Expedition (+60).
 
 The Summon screen is centered on the featured target: large art, name/title, remaining
-rotation time, exact featured chance, Divine Seal balance, Summon x1 / Summon x10 and a
-Skip animation toggle (per browser, `td:summonSkip`). The pool below shows each hero as
-New or with its stars and spare copies. When the banner has `pityNewInMulti` and
-unowned heroes remain, a line under the pool count states that Summon x10 guarantees
-at least one hero not owned yet. A Seal Dust panel exchanges dust for seals, Divine
-Essence or — via a hero select — spare copies of an owned hero (`dust.copyPrice`).
+rotation time, Divine Seal balance (on one line with the buttons, no "N more needed"),
+Summon x1 / Summon x10 and a Skip animation toggle (per browser, `td:summonSkip`). An
+info button next to the name opens a native `popover` with the odds and rules: exact
+featured chance, "owned heroes return as copies", the not-owned count, rarity rates and,
+when the banner has `pityNewInMulti` and unowned heroes remain, the Summon x10 new-hero
+guarantee. The pool below shows each hero as New or with its stars and spare copies. A Seal Dust panel exchanges dust for seals or — via a
+hero select — spare copies of an owned hero (`dust.copyPrice`).
 
 **Reveal** (`page/summon-reveal.ts`): a full-screen `<dialog>` over the Summon screen.
 The summon is paid and saved before it opens. Cards deal in face down (10 cards as 3/4/3)
@@ -415,6 +424,12 @@ wallets (Campaign camp, Stages, Heroes, Summon, Seal Dust), stage rewards (drawe
 screen; hero rewards as a portrait + name chip), level/star costs, summon prices and dust
 exchanges. Plain
 sentences (result screen, notices) still spell names out.
+
+Campaign debug (dev builds only, `import.meta.env.DEV`): a DBG button in the app bar on
+the campaign screens (camp, stages, heroes, summon, squad) toggles a panel (`TdLobby`,
+`data-td-camp-debug`, wired in `page/campaign.ts`) that adds +10,000 Gold, +10,000 Hero XP,
++600 Divine Seals, +1,000 Seal Dust, or all four, to the saved campaign wallet and redraws
+the open screen. Not present in production builds.
 
 ### Might (campaign only)
 
@@ -441,13 +456,16 @@ Every upgrade is chosen and confirmed by the player; nothing is spent automatica
   from 1) by one star down, so stats are unchanged. A hero's own copies are never star fodder (they are its Evolution material).
   Quick add takes surplus copies (beyond what their hero's Evolution still needs) first,
   then the largest piles.
-- **Evolution I-V**: each tier costs 1 copy of the same hero or 1 Divine Essence; the
+- **Evolution I-V**: each tier costs 1 copy of the same hero or 150 Seal Dust
+  (`heroEvolution.dustPrice`); the
   player taps the material, then Evolve. Tiers: ultimate +20%, crit +10%, ultimate cooldown
   -15%, ultimate +25%, and V: the ultimate starts with its awakened upgrade (the same
   per-ultimate upgrade the in-run Awaken unlocks; `hero.awakenedUlt` in `sim.js`).
-- **Seal Dust**: 1 spare copy -> 30 dust (by hand); 2 dust -> 1 Divine Seal; 150 dust ->
-  1 Divine Essence; 100 dust -> 1 spare copy of an owned hero (`buyCopiesWithDust`,
-  September 28, 2026).
+- **Seal Dust**: 1 spare copy -> 30 dust (by hand); 2 dust -> 1 Divine Seal;
+  100 dust -> 1 spare copy of an owned hero (`buyCopiesWithDust`,
+  September 28, 2026). Divine Essence was merged into Seal Dust on September 29, 2026
+  (save version 7; leftover essence converts at the historical 1:150 rate) — evolution and
+  the final skill rank (150 dust) spend dust directly.
 - `campaignHeroes()` applies level x stars to attack/health and Evolution to
   `ultPower`, `critChance`, `ultCooldown` and `awakenedUlt`.
 
@@ -482,10 +500,11 @@ Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLeve
 `mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
 `campaign`.
 
-The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 4): `owned`, `cleared`,
-`lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust, Divine Essence),
-`levels`, `summons`, `copies`, `stars`, `evolution`. Older versions migrate on load
-(version 3 gets empty copies, stars and Evolution).
+The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 7): `owned`, `cleared`,
+`lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust),
+`levels`, `summons`, `copies`, `stars`, `evolution`, `skillLevels`. Older versions migrate on load
+(version 3 gets empty copies, stars and Evolution; version 7 turns leftover Divine Essence
+into Seal Dust at 1:150).
 
 Per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic`, so
 older builds can still read `td:v1`. Export/import: save code (`TD1:` prefix) or file.

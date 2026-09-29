@@ -4,7 +4,7 @@
 import { CURRENCY_NAMES } from "./campaign.js";
 import { tdAsset } from "./assets.js";
 
-const FILES = { gold: "gold", heroXp: "hero-xp", divineSeals: "divine-seals", sealDust: "seal-dust", divineEssence: "divine-essence" };
+const FILES = { gold: "gold", heroXp: "hero-xp", divineSeals: "divine-seals", sealDust: "seal-dust" };
 
 export const currencyName = (id) => CURRENCY_NAMES[id] ?? id;
 

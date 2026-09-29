@@ -10,7 +10,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
 ---
 
 <div class="td-shell" data-td-root data-screen="home">
-  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} />
+  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} isDev={isDev} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
   <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
   <dialog class="td-orient-gate" data-td-orient-gate aria-labelledby="td-orient-title" aria-describedby="td-orient-text">

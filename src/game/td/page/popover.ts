@@ -402,7 +402,7 @@ export function createPopover(ctx: PageContext) {
   popDetailsButton.addEventListener("click", () => {
     const unit = findUnit(state.selectedEntityId);
     if (!unit) return;
-    const open = popDetails.hidden;
+    const open = !!popDetails.hidden; // hidden may also be "until-found" in the DOM types
     detailsChoice = open; // kept for the rest of the session
     popDetails.hidden = !open;
     popDetailsButton.setAttribute("aria-expanded", String(open));
