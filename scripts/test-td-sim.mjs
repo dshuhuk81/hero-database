@@ -103,6 +103,41 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(archer.held, true, "and the blocker holds it");
 }
 
+// Enemy archers (targetsPlatforms, M24 trial): a road hero in reach comes first; otherwise the
+// nearest living platform hero within attackRange, for platformAttack damage; never in melee.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 19 });
+  g.setTeam(["nuwa", "zeus", "diana"]);
+  g.gold = 10000;
+  g.place("nuwa", "road", 0); g.place("zeus", "platform", 0); g.place("diana", "platform", 1);
+  const [nuwa, zeus, diana] = ["nuwa", "zeus", "diana"].map((id) => g.heroes.find((h) => h.id === id));
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  const archer = g.spawnEnemy("archer");
+  assert.equal(archer.targetsPlatforms, true, "archer tuning enables platform shots");
+  const at = (unit, x, y) => { unit.x = x; unit.y = y; };
+  at(archer, 500, 300); at(nuwa, 560, 300); at(zeus, 590, 300); at(diana, 700, 300);
+  assert.equal(g.findEnemyTarget(archer), nuwa, "a road hero in reach comes first");
+  at(nuwa, 800, 300);
+  assert.equal(g.findEnemyTarget(archer), zeus, "no road hero in reach: nearest platform hero in range");
+  zeus.hpLeft = 0;
+  assert.equal(g.findEnemyTarget(archer), null, "fallen and out-of-range platform heroes are skipped");
+  zeus.hpLeft = zeus.hp;
+  archer.rangedTime = tuning.enemies.archer.holdSeconds;
+  assert.equal(g.findEnemyTarget(archer), null, "after the hold (melee) platforms are out of reach");
+  archer.rangedTime = 0;
+  archer.targetsPlatforms = false;
+  assert.equal(g.findEnemyTarget(archer), null, "without the flag archers ignore platforms (old rule)");
+  archer.targetsPlatforms = true;
+  // One shot at the platform hero: platformAttack share of the normal hit, target marked.
+  g.heroes = [zeus];
+  archer.attackClock = 0; archer.hp = archer.maxHp = 1e9;
+  const before = zeus.hpLeft;
+  g.step(1 / 60);
+  const expected = resolveDamage(archer.attack * tuning.enemies.archer.platformAttack, zeus.armor * (1 + g.modifiers().res), "physical") * (1 - g.guardFor(zeus));
+  assert.ok(Math.abs(before - zeus.hpLeft - expected) < 1e-6, `platform hit uses platformAttack (${(before - zeus.hpLeft).toFixed(2)} vs ${expected.toFixed(2)})`);
+  assert.ok(zeus.aimedAt > 0, "target warning timestamp set for the renderer");
+}
+
 // Blocker death frees enemies and fires a death event.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 14 });

@@ -1174,6 +1174,15 @@ export async function createRenderer(canvas, game, options = {}) {
         g.circle(unit.x, unit.y, r).stroke({ width: 2, color: 0xff4d4d, alpha: 0.9 });
         for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) g.moveTo(unit.x + dx * (r - 8), unit.y + dy * (r - 8)).lineTo(unit.x + dx * (r + 6), unit.y + dy * (r + 6)).stroke({ width: 3, color: 0xff4d4d, cap: "round" });
       }
+      // Enemy archer aiming at a platform hero (targetsPlatforms): amber corner brackets.
+      if (game.time - (unit.aimedAt ?? -Infinity) < 0.15) {
+        const r = 30, arm = 9;
+        for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+          const cx = unit.x + sx * r, cy = unit.y + sy * r;
+          g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
+        }
+        g.stroke({ width: 3, color: 0xfbbf24, alpha: 0.95, cap: "round", join: "round" });
+      }
       if (game.isSilenced?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
         g.circle(unit.x, unit.y, 33).stroke({ width: 3, color: 0xff4d4d, alpha: pulse });

@@ -20,6 +20,12 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "gaiya",
+    href: "/guides/gaiya",
+    title: "Gaiya",
+    updated: "2026-09-29",
+  },
+  {
     href: "/guides/infinite-labyrinth",
     image: "/images/guides/infinite-labyrinth/A_UI_BagBattle_Background_Chapter_Bg.png",
     title: "Infinite Labyrinth - System Guide",

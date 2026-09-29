@@ -192,7 +192,7 @@ export const ENEMY_INFO = {
   grunt: { name: "Grunt", text: "The basic foot soldier. Walks the path, stops at road heroes and fights them in melee." },
   runner: { name: "Runner", text: "Fast and fragile. Slips past full blockers quickly; Assassins hit fast enemies nobody holds hardest." },
   flyer: { name: "Flyer", text: "Flies over the road: ignores blockers and never attacks. Road heroes and their ultimates cannot reach it, so only platform heroes can. Archers hit it twice as hard." },
-  archer: { name: "Archer", text: "Stops at range and shoots road heroes for 8 seconds, then closes in to melee." },
+  archer: { name: "Archer", text: "Stops at range for 8 seconds and shoots the nearest road hero. With no road hero in reach it shoots a platform hero within range instead, for half damage (amber brackets mark the target). Then closes in to melee." },
   brute: { name: "Brute", text: "Slow and heavily armored against physical damage, but weak to magic. Costs 2 lives if it gets through." },
   boss: { name: "Boss", text: "The battlefield's final boss, arriving with an escort. Very tough, hits hard and costs 3 lives if it gets through." },
   mender: { name: "Mender", text: "Every 2.5 seconds heals nearby enemies (not other Menders) for 8% of their health. Each enemy can be healed for at most half its health in total. Walks inside the pack, so splash damage, Last enemy targeting or an Assassin's dash reach it." },

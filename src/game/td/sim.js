@@ -659,12 +659,14 @@ export class TowerDefenseGame {
         // Ranged enemies hold position for holdSeconds, then close in (no endless standoff
         // against a healed blocker nobody else can reach).
         if (ranged) enemy.rangedTime = (enemy.rangedTime ?? 0) + dt;
+        if (target.slotType === "platform") target.aimedAt = this.time; // renderer: target warning
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
           const mods = this.modifiers();
           // A veiled Assassin keeps holding its enemy, but nothing can hurt it.
           if (!this.isVeiled(target) && this.rng() >= mods.dodge) {
-            const taken = resolveDamage(enemy.attack, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
+            const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
+            const taken = resolveDamage(enemy.attack * reach, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
             const thorns = this.pathFx(target, "thorns");
             if (thorns && !enemy.dead) this.hit(enemy, taken * thorns.reflect, target, { showShot: false, showHit: false });
@@ -910,6 +912,15 @@ export class TowerDefenseGame {
         continue;
       }
       if (distance <= reach && (!best || distance < best.distance)) best = { hero, distance };
+    }
+    // Enemy archers (targetsPlatforms, M24 trial): with no road hero in reach they shoot the
+    // nearest platform hero in range instead. Only while shooting from range; contact stays road.
+    if (!best && !melee && enemy.targetsPlatforms) {
+      for (const hero of this.heroes) {
+        if (hero.slotType !== "platform" || hero.hpLeft <= 0) continue;
+        const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
+        if (distance <= reach && (!best || distance < best.distance)) best = { hero, distance };
+      }
     }
     if (best && melee && this.engaged) this.engaged.set(best.hero, (this.engaged.get(best.hero) || 0) + 1);
     enemy.heldBy = best && melee ? best.hero : null;

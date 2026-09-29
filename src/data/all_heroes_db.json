@@ -3967,7 +3967,8 @@
     "heroID": 5010,
     "name": "Gaiya",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/gaiya.webp",
-    "release": false,
+    "release": true,
+    "nerHero": true,
     "faction": "Starglint",
     "role": "Hefty",
     "class": "Tank",
@@ -4009,57 +4010,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Rebirth of All Things",
-        "description": "Immediately restores HP to all allied units equal to 30% of Gaiya's max HP. For the next 8s, Grace Field's recovery effect is doubled, all allied units take 30% reduced DMG, and Gaiya is immune to control effects for the duration.",
+        "name": "Nature's Revival",
+        "description": "Immediately recovers HP equal to 30% of Gaiya's max HP for all allies. For the next 8s, the recovery effect of Grace Domain is doubled, and DMG taken by all allies is reduced by 30%; self is immune to Control effects for the duration.",
         "upgrades": {
-          "level2": "Restores HP equal to 40% of Gaiya's max HP.",
-          "level3": "During the effect, all allied units take 40% reduced DMG.",
-          "level4": "Restores HP equal to 50% of Gaiya's max HP."
+          "level2": "Recovers HP equal to 40% of Gaiya's max HP.",
+          "level3": "All allies take 40% reduced DMG for the duration.",
+          "level4": "Recovers HP equal to 50% of Gaiya's max HP."
         },
         "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Thorn Overgrowth",
-        "description": "Deals 200% ATK DMG to surrounding enemies and reduces hit enemies' ATK by 20% for 5s. For each enemy hit, Gaiya gains a shield that can absorb damage equal to 10% of her max HP for 8s.",
+        "name": "Overgrown Thorns",
+        "description": "Deals DMG equal to 200% of ATK to surrounding enemies and reduces the ATK of hit enemies by 20% for 5s. For each enemy hit, self gains a Shield that absorbs DMG equal to 10% of max HP for 8s.",
         "upgrades": {
-          "level2": "Damage dealt increases to 220% of ATK.",
-          "level3": "Reduces hit enemies' ATK by 30%.",
-          "level4": "For each enemy hit, Gaiya gains a shield that can absorb damage equal to 12% of her max HP."
+          "level2": "Increases DMG dealt to 220% ATK.",
+          "level3": "Reduces the ATK of hit enemies by 30%.",
+          "level4": "For each enemy hit, self gains a Shield that absorbs DMG equal to 12% of max HP."
         },
         "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "Grace Field",
-        "description": "Gaiya opens Grace Field at the start of battle. All allied units recover HP equal to 2% of Gaiya's max HP every second, and their healing and shield effects received are increased by 15%.",
+        "name": "Grace Domain",
+        "description": "Gaiya deploys Grace Domain at the start of the battle. All allies recover HP equal to 2% of Gaiya's Max HP per second, and the Heal and Shield effects they receive are increased by 15%.",
         "upgrades": {
-          "level2": "All allied units recover HP equal to 3% of Gaiya's max HP every second.",
-          "level3": "Healing and shield effects received are increased by 20%.",
-          "level4": "While inside Grace Field, Gaiya recovers HP equal to 5% of her max HP every second."
+          "level2": "All allies recover HP equal to 3% of Gaiya's Max HP per second.",
+          "level3": "Heal and Shield effects received are increased by 20%.",
+          "level4": "Gaiya recovers HP equal to 5% of her Max HP per second while in Grace Domain."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
         "name": "Nature's Armor",
-        "description": "During battle, Gaiya increases her max HP by 10%. Each time she casts her Ultimate, she gains an additional 5% max HP, stacking up to 5 times.",
+        "description": "Gaiya increases max HP by 10% in battle. Each time an Ultimate is cast, max HP is additionally increased by 5%, up to 5 stacks.",
         "upgrades": {
-          "level2": "During battle, Gaiya increases her max HP by 15%.",
-          "level3": "Each time she casts her Ultimate, the additional max HP gained increases to 6%.",
-          "level4": "During battle, Gaiya increases her max HP by 20%."
+          "level2": "Gaiya increases max HP by 15% in battle.",
+          "level3": "Each time an Ultimate is cast, max HP is additionally increased by 6%.",
+          "level4": "Gaiya increases max HP by 20% in battle."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Life Spirit Ascension",
-      "description": "Overflow healing received by Gaiya is automatically stored. For every overflow amount equal to 50% of her max HP, one \"Flower of Life\" is created. When any allied unit is about to die, one \"Flower of Life\" is consumed to restore HP to that unit equal to the HP stored by the \"Flower of Life\".",
+      "name": "Life Flora",
+      "description": "Overhealing from Heal received by Gaia is auto-stored. Generates a \"Flower of Life\" for every 50% of Max HP overhealed. When any ally is near death, consumes a \"Flower of Life\" to recover HP stored in the \"Flower of Life\" to them.",
       "upgrades": {
-        "level2": "For each allied unit protected by Grace Field, Gaiya takes 6% reduced DMG, stacking up to 5 times.",
-        "level3": "For each allied unit protected by Grace Field, Gaiya takes 9% reduced DMG, stacking up to 5 times.",
-        "level4": "Every time 3 \"Flowers of Life\" are created, the next overflow healing equal to 50% of max HP creates one \"Flower of Energy\", restoring 400 Energy to the allied unit with the highest ATK and increasing their ATK by 40% for 6s."
+        "level2": "For every ally protected by Grace Domain on the field, DMG taken by Gaia is reduced by 6%, up to 5 stacks.",
+        "level3": "For every ally protected by Grace Domain on the field, DMG taken by Gaia is reduced by 9%, up to 5 stacks.",
+        "level4": "For every 3 \"Flowers of Life\" generated, the next Heal causing Overhealing equal to 50% of Max HP generates a \"Flower of Energy\", recovering 400 Energy to the ally with the highest ATK and increasing their ATK by 40% for 6s."
       }
     },
     "synergies": [],

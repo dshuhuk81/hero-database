@@ -218,6 +218,13 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 
 - Enemy kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`,
   `shieldbearer`, `broodcaller`, `imp`, `hexer`, plus `boss`. Stats in `tuning.enemies`.
+- Enemy archers (`archer`): stop at `attackRange` 110 and shoot for `holdSeconds` 8, then
+  close in to melee (road contact only). While shooting, the nearest road hero in reach
+  comes first; with none, `targetsPlatforms` lets them shoot the nearest living platform
+  hero in range for `platformAttack` 0.5 of their attack (`sim.findEnemyTarget`). The
+  target gets `aimedAt`, drawn as amber corner brackets (`render.js`); the first archer
+  wave of a run says so in a notice (`page/hud.ts`). Other enemies never hit platform
+  heroes directly (Baphomet's mark and Hexers still affect them).
 - Bosses: `baphomet` (mark, stance) and `lilith` (summons brood, enrages below 50%).
   Each map names its boss.
 - Enemy art: full-body sprites from R2 `td/enemies/sprites/` (`render.js`), loaded with

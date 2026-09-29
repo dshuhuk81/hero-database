@@ -226,8 +226,13 @@ export function createHud(ctx: PageContext) {
       // Flyers look like ground units to new players: the first flyer wave of a run explains them.
       const flyers = !session.flyerHint && game.waves[game.wave - 1]?.spawns.some((group: any) => group.kind === "flyer");
       if (flyers) session.flyerHint = true;
+      // Same for enemy archers once they can shoot platform heroes (tuning targetsPlatforms).
+      const archers = !flyers && !session.archerHint && game.tuning.enemies.archer?.targetsPlatforms
+        && game.waves[game.wave - 1]?.spawns.some((group: any) => group.kind === "archer");
+      if (archers) session.archerHint = true;
       ctx.notice(bossWave(game, game.wave) ? `${bossName()} has entered ${session.map.name}.`
         : flyers ? `Wave ${game.wave}: flyers pass over blockers. Only platform heroes can hit them.`
+        : archers ? `Wave ${game.wave}: archers shoot platform heroes in reach when no road hero is. Amber brackets mark their target.`
         : `Wave ${game.wave} incoming. Heroes attack automatically.`);
     }
     syncMainAction();

@@ -165,7 +165,9 @@
       "attack": 34,
       "attackPeriod": 1.2,
       "attackRange": 110,
-      "holdSeconds": 8
+      "holdSeconds": 8,
+      "targetsPlatforms": true,
+      "platformAttack": 0.5
     },
     "brute": {
       "hp": 1200,

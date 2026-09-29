@@ -139,7 +139,7 @@ const LEAK_HINTS = {
   grunt: "Crowds overran the line: Warrior cleave and Mage splash thin them out.",
   runner: "Runners slip past full blockers: Assassins catch loose enemies, Tanks hold 3, and Frost or Crippling slow them.",
   flyer: "Flyers pass over road heroes: add platform heroes, Archers hit them twice as hard.",
-  archer: "Enemy archers shoot your blockers from range: keep a Support behind the line.",
+  archer: "Enemy archers shoot from range, and platform heroes near the road when no blocker is in reach: keep a blocker ahead of them and a Support behind the line.",
   brute: "Brutes are armored: Mages deal magic damage, Sunder and Hunter's Mark help physical heroes.",
   boss: "The boss got through: Archers, Hunter's Mark and Boss first targeting focus it.",
   brood: "While her children stand, Lilith cannot be hit: splash and cleave clear them faster.",
