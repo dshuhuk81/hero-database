@@ -837,7 +837,8 @@ export function createCampaign(ctx: PageContext) {
       featuredId: featuredHeroId(banner),
       isNew: result.isNew,
       skip: summonSkipInput.checked,
-      again: { label: `Summon x${count} again ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
+      again: { label: `Summon x${count} ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
+      wallet: currencyAmount("divineSeals", progress().currencies.divineSeals || 0),
     });
   }
 

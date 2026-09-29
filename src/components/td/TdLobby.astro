@@ -268,8 +268,9 @@ const modes = [
       <dialog class="td-summon-stage" data-td-summon-stage aria-labelledby="td-summon-stage-title">
         <div class="td-summon-stage-inner">
           <header class="td-summon-stage-head">
-            <h2 id="td-summon-stage-title" data-td-summon-stage-title>Summon</h2>
+            <h2 class="sr-only" id="td-summon-stage-title" data-td-summon-stage-title>Summon</h2>
             <p data-td-summon-stage-hint></p>
+            <span class="td-summon-stage-wallet" data-td-summon-stage-wallet></span>
           </header>
           <div class="td-summon-cards" data-td-summon-cards></div>
           <p class="sr-only" aria-live="polite" data-td-summon-live></p>
@@ -277,7 +278,6 @@ const modes = [
             <button class="action-button action-button--primary" type="button" data-td-summon-reveal-all>Reveal all</button>
             <div class="td-summon-done" data-td-summon-done hidden>
               <button class="action-button action-button--primary" type="button" data-td-summon-again></button>
-              <button class="action-button action-button--quiet" type="button" data-td-go="stages">Build squad</button>
               <button class="action-button action-button--quiet" type="button" data-td-summon-close>Close</button>
             </div>
           </div>

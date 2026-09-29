@@ -351,7 +351,11 @@
 .td-summon-stage-inner { position: relative; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: var(--space-4); box-sizing: border-box; min-height: 100%; padding: clamp(16px, 4vh, 40px) 16px calc(clamp(16px, 4vh, 40px) + env(safe-area-inset-bottom)); }
 /* faint star field */
 .td-summon-stage-inner::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55; background-image: radial-gradient(1px 1px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 72% 12%, #fff, transparent), radial-gradient(1.5px 1.5px at 38% 64%, #cfd8ff, transparent), radial-gradient(1px 1px at 86% 58%, #fff, transparent), radial-gradient(1px 1px at 24% 86%, #cfd8ff, transparent), radial-gradient(1.5px 1.5px at 58% 30%, #fff, transparent), radial-gradient(1px 1px at 92% 88%, #fff, transparent); }
-.td-summon-stage-head { position: relative; text-align: center; }
+.td-summon-stage-head { position: relative; justify-self: stretch; min-height: 36px; text-align: center; }
+.td-summon-stage-head p:empty { display: none; }
+.td-summon-stage-head p { padding-inline: 96px; } /* clear of the wallet chip */
+/* Divine Seal balance only, top right. */
+.td-summon-stage-wallet { position: absolute; top: 0; right: 0; display: inline-flex; align-items: center; min-height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-md); background: rgb(5 6 12 / .6); font-size: var(--td-fs-body); }
 .td-summon-stage-head h2 { margin: 0; color: var(--accent-gold); font-size: var(--td-fs-screen); letter-spacing: .04em; }
 .td-summon-stage-head p { margin: var(--space-1) 0 0; color: var(--text-secondary); font-size: var(--td-fs-body); }
 .td-summon-cards { --card-w: min(132px, calc((100vw - 32px - 3 * var(--space-3)) / 4), calc((100dvh - 250px) / 3 / 1.5)); position: relative; display: grid; align-content: center; justify-items: center; gap: var(--space-3); perspective: 1400px; }
@@ -365,12 +369,7 @@
 .td-summon-face { position: absolute; inset: 0; overflow: hidden; border-radius: 10px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .td-summon-face--back { background: #0b0f22 url("/td/summon-card-back-wolf.webp") center / cover no-repeat; box-shadow: 0 8px 20px rgb(0 0 0 / .6); }
 .td-summon-face--front { transform: rotateY(180deg); display: grid; align-items: end; border: 2px solid var(--border-medium); background: radial-gradient(ellipse at 50% 30%, #2a2350, #0b0c18 75%); box-shadow: 0 8px 20px rgb(0 0 0 / .6); }
-.td-summon-face--front > img { position: absolute; inset: 5% 4% 14%; width: 92%; height: 81%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 6px 10px rgb(0 0 0 / .7)); }
-.td-summon-face-copy { position: relative; display: grid; gap: 2px; padding: 28% 6px 8px; text-align: center; background: linear-gradient(transparent, rgb(5 6 12 / .92) 55%); }
-.td-summon-face-copy strong { color: var(--text-bright); font-size: clamp(12px, calc(var(--card-w) / 9), 22px); line-height: 1.1; }
-.td-summon-face-copy small img { flex: none; }
-.td-summon-face-copy small { display: flex; align-items: center; justify-content: center; gap: 4px; color: var(--text-secondary); font-size: clamp(10px, calc(var(--card-w) / 13), 14px); }
-.td-summon-face-copy em { color: var(--accent-gold); font-size: clamp(9px, calc(var(--card-w) / 14), 13px); font-style: normal; font-weight: var(--weight-bold); letter-spacing: .08em; text-transform: uppercase; }
+.td-summon-face--front > img { position: absolute; inset: 3% 3% 0; width: 94%; height: 97%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 6px 10px rgb(0 0 0 / .7)); }
 /* Tier glow: visible on the back before the flip, kept as the front's frame after it */
 .td-summon-flip--gold .td-summon-face--back { box-shadow: 0 0 0 2px var(--accent-gold), 0 0 22px 4px color-mix(in srgb, var(--accent-gold) 60%, transparent); animation: td-glow-pulse 1.6s ease-in-out infinite alternate; }
 .td-summon-flip--purple .td-summon-face--back { box-shadow: 0 0 0 2px var(--accent-purple), 0 0 18px 3px color-mix(in srgb, var(--accent-purple) 55%, transparent); }
@@ -1774,8 +1773,7 @@ button.td-squad-slot:hover .td-squad-slot-card { border-color: var(--accent-gold
 .td-dust small { color: var(--text-secondary); font-size: var(--td-fs-label); }
 .td-dust-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .td-dust-actions button:disabled { opacity: .45; cursor: not-allowed; }
-.td-summon-face-tag { position: absolute; top: 6px; left: 50%; z-index: 1; transform: translateX(-50%); padding: 1px 8px; border-radius: var(--radius-full); background: rgb(5 6 12 / .8); color: var(--text-secondary); font-size: clamp(9px, calc(var(--card-w) / 14), 13px); font-weight: var(--weight-bold); white-space: nowrap; }
-.td-summon-face-tag.is-new { background: var(--accent-gold); color: #1a1405; }
+.td-summon-face-tag { position: absolute; top: 5px; left: 5px; z-index: 1; padding: 0 5px; border-radius: var(--radius-full); background: var(--accent-gold); color: #1a1405; font-size: clamp(8px, calc(var(--card-w) / 16), 11px); font-weight: var(--weight-bold); line-height: 1.5; white-space: nowrap; }
 .td-evo-slot:disabled { cursor: not-allowed; }
 .td-evo-slot:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
 .td-evo-slot.is-picked { border-color: var(--accent-gold); box-shadow: 0 0 0 2px var(--accent-gold-dim), 0 0 14px color-mix(in srgb, var(--accent-purple) 45%, transparent); }

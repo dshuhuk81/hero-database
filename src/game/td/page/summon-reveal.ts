@@ -1,9 +1,8 @@
 // Summon reveal (M27b): the full-screen stage a summon opens over the Summon screen. Cards
 // deal in face down; the back's glow tells the tier (gold: the featured hero, purple: an S or
 // A tier hero, none: the rest). A tap flips one card, Reveal all flips the rest, and the
-// result bar offers the same summon again, the squad screen or closing. The summon itself
+// result bar offers the same summon again or closing. Face-up cards are art only (plus a small New tag); names are in each card's accessible label. The summon itself
 // is already paid and saved before the stage opens; this module only shows it.
-import { classIconImg } from "../assets.js";
 import type { PageContext } from "./context";
 
 export type RevealOptions = {
@@ -11,6 +10,7 @@ export type RevealOptions = {
   isNew: boolean[]; // per card: a hero not owned before, else a spare copy
   skip: boolean; // "Skip animation": open with every card already face up
   again: { label: string; enabled: boolean } | null;
+  wallet: string; // trusted markup: the Divine Seal balance after this summon
 };
 
 const HIGH_TIERS = new Set(["S", "A"]);
@@ -30,6 +30,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   const cardsEl = q("[data-td-summon-cards]");
   const titleEl = q("[data-td-summon-stage-title]");
   const hintEl = q("[data-td-summon-stage-hint]");
+  const walletEl = q("[data-td-summon-stage-wallet]");
   const liveEl = q("[data-td-summon-live]");
   const revealAllButton = q<HTMLButtonElement>("[data-td-summon-reveal-all]");
   const doneEl = q("[data-td-summon-done]");
@@ -51,8 +52,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
       `<span class="td-summon-face td-summon-face--back" aria-hidden="true"></span>` +
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +
       `<img src="${hero.portrait ?? hero.image ?? ""}" alt="" decoding="async">` +
-      `<span class="td-summon-face-tag${isNew[index] ? " is-new" : ""}">${isNew[index] ? "New" : "+1 copy"}</span>` +
-      `<span class="td-summon-face-copy">${id === featured ? `<em>Featured</em>` : ""}<strong>${hero.name}</strong><small>${hero.class ? classIconImg(hero.class, 14) : ""}${hero.class ?? ""}</small></span>` +
+      (isNew[index] ? `<span class="td-summon-face-tag">New</span>` : "") +
       `</span></span></button>`;
   }
 
@@ -75,9 +75,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     timers = [];
     revealAllButton.hidden = true;
     doneEl.hidden = false;
-    const fresh = isNew.filter(Boolean).length;
-    const spare = heroIds.length - fresh;
-    hintEl.textContent = [fresh && `${fresh} new ${fresh === 1 ? "hero" : "heroes"}`, spare && `${spare} spare ${spare === 1 ? "copy" : "copies"} for Stars and Evolution`].filter(Boolean).join(" · ");
+    hintEl.textContent = "";
     liveEl.textContent = `Summoned: ${heroIds.map((id, i) => `${heroById.get(id)?.name ?? id}${isNew[i] ? " (new)" : ""}`).join(", ")}.`;
     // Reveal all is hidden now: keep focus inside the stage.
     if (!stageEl.contains(document.activeElement) || document.activeElement === revealAllButton) focusDone();
@@ -104,6 +102,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     titleEl.textContent = ids.length === 1 ? "Summon" : `Summon x${ids.length}`;
     hintEl.textContent = ids.length === 1 ? "Tap the card to reveal it." : "Tap a card to reveal it, or reveal all.";
     liveEl.textContent = "";
+    walletEl.innerHTML = options.wallet;
     revealAllButton.hidden = false;
     doneEl.hidden = true;
     againButton.hidden = !options.again;
@@ -128,10 +127,6 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   revealAllButton.addEventListener("click", revealAll);
   againButton.addEventListener("click", onAgain);
   q("[data-td-summon-close]").addEventListener("click", close);
-  // Build squad navigates through the page's [data-td-go] handler; the stage closes first.
-  stageEl.addEventListener("click", (event) => {
-    if ((event.target as HTMLElement).closest("[data-td-go]")) close();
-  });
   // Escape closes the stage only; the menu's own Escape (one screen up) must not see it,
   // wherever focus is, so this listens before it (capture on window).
   window.addEventListener("keydown", (event) => {

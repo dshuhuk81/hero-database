@@ -409,8 +409,11 @@ hero select — spare copies of an owned hero (`dust.copyPrice`).
 The summon is paid and saved before it opens. Cards deal in face down (10 cards as 3/4/3)
 with the wolf card back (`public/td/summon-card-back-wolf.webp`); the back's glow shows
 the tier before the flip: gold = featured hero, purple = S or A tier, none = the rest. Tap
-flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards say
-"New" or "+1 copy". The result bar offers Summon again, Build squad and Close; Escape
+flips a card, Reveal all flips the rest, the featured hero bursts. Face-up cards are
+large art only, with a small "New" tag on first-time heroes (spare copies carry no tag);
+name, class and featured status are in each card's aria-label. No visible title or result
+summary; a "Tap a card" hint shows until all cards are face up. The Divine Seal balance
+sits top right. The result bar offers Summon xN (same size, with price) and Close; Escape
 closes only the dialog. Reduced motion fades instead of flipping.
 
 ### Currency display (campaign)
