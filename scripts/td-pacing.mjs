@@ -60,7 +60,7 @@ if (only.has("maps")) {
 }
 
 if (only.has("campaign")) {
-  console.log(`\n3. Campaign: share of sampled 4-hero squads that win (max ${SAMPLE} squads, owned heroes levelled evenly)`);
+  console.log(`\n3. Campaign: share of sampled squads (campaign.squadSize heroes) that win (max ${SAMPLE} squads, owned heroes levelled evenly)`);
   const stages = allStages(campaign);
   const cost = Object.fromEntries(heroes.map((h) => [h.id, h.cost]));
   const combos = (list, k) => (k === 0 ? [[]] : list.flatMap((x, i) => combos(list.slice(i + 1), k - 1).map((c) => [x, ...c])));
