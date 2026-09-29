@@ -4,13 +4,11 @@
 // height, fps). Frames are cropped to one shared box per kind, so the feet stay put.
 //
 // Input: horizontal strips of square frames, one PNG per clip (frame size = strip height).
-// SETS map each kind to its strips. `pixel`: a free pixel-art pack under
-// ~/hero-database-assets/td/newAssetTest (license not confirmed: local only, not on R2).
-// `painted`: warp frames from our own sprites (scripts/td-warp-anim.py), e.g.
-// ~/hero-database-assets/td/warp-anims. Each set goes to its own folder; the renderer picks
-// one with ?anim=sheets&set=<name> (default painted).
+// SETS map each kind to its strips. `painted`: clips from scripts/td-warp-anim.py (PixelLab
+// jobs, generated frame strips or warp frames) in ~/hero-database-assets/td/warp-anims. Each
+// set goes to its own folder; the renderer reads ?anim=sheets&set=<name> (default painted).
 //
-// Usage: node scripts/build-td-enemy-anims.mjs <source root> --set painted|pixel [--out public/td-local/sheets] [--only grunt]
+// Usage: node scripts/build-td-enemy-anims.mjs <source root> --set painted [--out public/td-local/sheets] [--only grunt]
 import sharp from "sharp";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
@@ -18,7 +16,7 @@ import { fileURLToPath } from "url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const arg = (name) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
-const SET = arg("--set") ?? "pixel";
+const SET = arg("--set") ?? "painted";
 const OUT_DIR = join(arg("--out") ?? join(ROOT, "public/td-local/sheets"), SET);
 const ONLY = arg("--only")?.split(",");
 const FPS = 12;
@@ -27,18 +25,19 @@ const FPS = 12;
 // pixelArt: lossless sheet and nearest-neighbour scaling in the renderer.
 const clipFiles = (prefix, attack = "attack") => ({ idle: `${prefix}_idle`, walk: `${prefix}_walk`, attack: `${prefix}_${attack}`, hurt: `${prefix}_hurt`, death: `${prefix}_death` });
 const SETS = {
-  pixel: {
-    grunt: { dir: "Orc/Orc", pixelArt: true, clips: { idle: "Orc_Idle", walk: "Orc_Walk", attack: "Orc_Attack01", hurt: "Orc_Hurt", death: "Orc_Death" } },
-    archer: { dir: "Soldier/Soldier", pixelArt: true, clips: { idle: "Soldier_Idle", walk: "Soldier_Walk", attack: "Soldier_Attack03", hurt: "Soldier_Hurt", death: "Soldier_Death" } },
-  },
   painted: {
     grunt: { dir: "grunt", clips: clipFiles("grunt") },
+    archer: { dir: "archer", clips: clipFiles("archer") },
+    runner: { dir: "runner", clips: clipFiles("runner") },
+    brute: { dir: "brute", clips: clipFiles("brute") },
+    brood: { dir: "brood", clips: clipFiles("brood") },
+    // Bosses: one sheet per boss file (render.js loads the map's boss, see bossSpriteFile).
+    boss: { dir: "boss", clips: clipFiles("boss") },
+    "boss-lilith": { dir: "lilith", clips: clipFiles("lilith") },
     // Flyers never stop or strike: idle, walk and attack all use the flap cycle.
     flyer: { dir: "flyer", clips: { idle: "flyer_fly", walk: "flyer_fly", attack: "flyer_fly", hurt: "flyer_hurt", death: "flyer_death" } },
   },
 };
-// PixelLab test grunt: walk from its grid, the other clips derived (scripts/td-warp-anim.py).
-SETS.pixellab = { grunt: { dir: "grunt-pixellab", clips: clipFiles("grunt-pixellab") } };
 const PACKS = SETS[SET];
 if (!PACKS) { console.error(`unknown --set ${SET}; one of ${Object.keys(SETS).join(", ")}`); process.exit(1); }
 

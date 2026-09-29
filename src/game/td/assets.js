@@ -13,7 +13,7 @@ export function tdAsset(path) {
 // Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
 // M24 white label: grunt, runner, flyer, archer, brute (v2) and Lilith with her brood (v3)
 // were regenerated from text-only prompts (src/game/td/sprite-spec-for-ai.md).
-export const ENEMY_SPRITE_VERSIONS = { grunt: "v2", runner: "v2", flyer: "v2", archer: "v2", brute: "v2", "boss-lilith": "v3", brood: "v3" };
+export const ENEMY_SPRITE_VERSIONS = { grunt: "v2", runner: "v2", flyer: "v2", archer: "v3", brute: "v3", boss: "v2", "boss-lilith": "v4", brood: "v4" };
 export const enemySpriteVersion = (file) => ENEMY_SPRITE_VERSIONS[file] ?? "v1";
 
 // M11 enemies without their own art yet reuse an existing full-body sprite

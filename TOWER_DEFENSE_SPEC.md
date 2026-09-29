@@ -264,7 +264,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 - Enemy art: full-body sprites from R2 `td/enemies/sprites/` (`render.js`), loaded with
   the `?v=cors1` cache bust like hero thumbs. The same files appear in plain `<img>`
   tags (lobby, boss plate, glossary), and a cached non-CORS copy would make WebGL reject
-  the texture and drop the enemy to the 8x8 Kenney tile fallback.
+  the texture and drop the enemy to the 8x8 Kenney tile fallback. Versions live in
+  `ENEMY_SPRITE_VERSIONS` (`assets.js`); since September 29, 2026: archer v3, brute v3,
+  brood v4, Baphomet `boss-v2`, Lilith `boss-lilith-v4` (redrawn complete, feet included,
+  uploaded to R2). The old v2/v3/v1 files stay on R2 until the new build is deployed.
 - Enemy motion prototype (off by default, `?anim` in the URL, skipped with reduced
   motion): `animateEnemy` in `render.js` moves the full-body sprites procedurally, render
   only and on game time. Distance moved drives a walk cycle (bounce, waddle, lean,
@@ -279,40 +282,40 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   (sheet format, packer, `AnimatedSprite`, free art workflow) are in
   `docs/tower-defense-ui-plan.md` (M7); the frame format is in
   `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
-- Enemy sheet test (`?anim=sheets`, M7): `scripts/build-td-enemy-anims.mjs --set <name>` packs
-  clip strips (`idle`, `walk`, `attack`, `hurt`, `death`) into
-  `public/td-local/sheets/<set>/{kind}.webp` + `.json` (Pixi spritesheet plus a `td` block: feet anchor, idle body height, fps,
-  `pixelArt` for nearest scaling). The folder is gitignored and never deployed. `render.js`
-  loads sheets for `grunt` and `archer`; such a kind swaps its still sprite for the sheet,
-  scaled so the idle body is 80% of the kind's sprite size. `animateEnemy` only picks the
-  frame on game time: attack after an `attackClock` jump, hurt after a real hit, walk from
-  distance moved (one cycle per ~0.9 body widths), idle otherwise; dying plays `death` and
-  fades. Sets: `painted` (default; warp frames from our own `grunt-v2` by
-  `scripts/td-warp-anim.py`, see below) and `pixel` (`&set=pixel`: a free pixel-art pack,
-  Orc as grunt, Soldier with bow as archer, license not confirmed, so it stays local).
-  A kind missing from a set logs one 404 and keeps its still sprite. The renderer loads
-  `grunt`, `archer` and `flyer`, scales by the idle body's larger side (bird wingspan), keeps
-  flyers at `FLYER_LIFT` with the bob, beats their wings on game time with a per-enemy offset,
-  and drops a dying flyer to the ground while its death clip plays. Clips that share one
-  strip (a flyer's idle, walk and attack) share one sheet row.
-- Painted flyer (set `painted`): a 6-frame flight cycle generated from text on black
-  (`~/hero-database-assets/td/enemy-sprites-src/flyerSpriteFlying.png`), turned into clips by
-  the `STRIPS` mode of `scripts/td-warp-anim.py`: only dark pixels connected to the border are
-  background (flood fill), so dark feathers stay opaque, and the rim gets a soft brightness key
-  with un-premultiplied colour; frames aligned on the beak tip, hurt (white flash, jolt) and death (tumbling spin)
-  derived from the flap frames. Sheet about 69 KB.
-- A generated grunt walk strip was tried and dropped by the owner (weak walk cycle); the
-  grunt stays on the warp frames. `STRIPS` also supports `derive: "walker"` (idle, lunge
-  attack, hurt and death derived from a walk strip) for a better strip later.
-- Warp frames (`scripts/td-warp-anim.py <kind> <outdir>`, numpy + Pillow, local only as
-  `*.py` is gitignored): per kind a rig in `RIGS` (hip and foot lines, leg split, shoulder,
-  weapon-arm polygon on the 256 px still). The arm is cut out as a rigid layer and the gap
-  behind it filled by colour and alpha diffusion; legs swing as pendulums from the hip, the
-  upper body bobs and breathes, the whole figure leans around the feet. Clips: idle 6, walk 8,
-  attack 6 (raise, slash on frame 3, recover), hurt 4 (lean back, white flash), death 6
-  (topple backwards, lying). Frames at 0.35 scale on a 448 px canvas (idle body ~70 px,
-  2x its size on screen); the grunt sheet is about 100 KB. Frame-rate check during wave 1:
-  no measurable difference between still, procedural and sheet variants. Known artefact: a soft blur where the blade covered the skirt.
+- Enemy animation sheets (`?anim=sheets`, M7, not live yet): `scripts/build-td-enemy-anims.mjs`
+  packs clip strips (`idle`, `walk`, `attack`, `hurt`, `death`) into
+  `public/td-local/sheets/painted/{kind}.webp` + `.json` (Pixi spritesheet plus a `td` block:
+  feet anchor, idle body size, fps, `pixelArt` for nearest scaling). The folder is gitignored
+  and never deployed. `render.js` loads sheets for `grunt`, `archer`, `flyer`, `runner`,
+  `brute` and `brood`; such a kind swaps its still sprite for the sheet, scaled so the idle
+  body's larger side is 80% of the kind's sprite size. `animateEnemy` only picks the frame on
+  game time: attack after an `attackClock` jump, hurt after a real hit, walk from distance
+  moved (one cycle per ~0.9 body widths), idle otherwise; dying plays `death` and fades.
+  Flyers stay at `FLYER_LIFT` with the bob, beat their wings on game time with a per-enemy
+  offset and drop to the ground while dying. Clips that share one strip share one sheet row.
+  A kind without a sheet logs one 404 and keeps its still sprite. The `boss` kind loads the
+  map's boss sheet (`boss.json` for Baphomet, `boss-lilith.json`), like `bossSpriteFile`.
+- Clip sources (`scripts/td-warp-anim.py`, numpy + Pillow, local only as `*.py` is gitignored;
+  outputs in `~/hero-database-assets/td/warp-anims/<kind>/`):
+  - `--pixellab` (archer, grunt, runner, brute, brood, Baphomet as `boss`, Lilith as `lilith`
+    packed to `boss-lilith`): PixelLab PixMiniMax image-to-animation
+    via the API (`POST /v2/animate-pixminimax`, Tier 1: max 8 concurrent jobs, about 1
+    generation per clip). First frame = the kind's complete still (feet included). Looping clips
+    (walk 8, idle 4, attack 8) and hurt (4) also send `last_frame` = the same still, which the web
+    UI does not offer, so they end in the start pose; death (8) runs open. Raw frames:
+    `~/hero-database-assets/td/enemy-sprites-src/pixellab-<kind>/<clip>/NN.png` (00 is the
+    unchanged input). Loops drop their last frame (= frame 0), hurt and death drop frame 0.
+    Frames scaled so the first walk frame's larger side is 90 px.
+  - `STRIPS` (flyer): a 6-frame flight cycle generated from text on black
+    (`enemy-sprites-src/flyerSpriteFlying.png`). Only dark pixels connected to the border are
+    background (flood fill), so dark feathers stay opaque; the rim gets a soft brightness key.
+    Frames align on the beak tip; hurt (flash, jolt) and death (tumbling spin) derive from the
+    flap frames. `derive: "walker"` does the same for a walk strip (idle, lunge, hurt, death).
+  - `RIGS` / `--warp` (fallback): warp frames from one still (weapon arm as a rigid layer,
+    legs as pendulums). Superseded by PixelLab clips.
+- Tried and dropped (September 29, 2026): Meshy 3D renders, a free pixel-art pack, a
+  generated grunt walk strip and a first PixelLab grunt without a pinned last frame (view
+  drifted, no loop). Test sets, their code paths and files were removed.
 - Base waves (`tdWaves.json`): 1-2 grunt, 3 +runner, 4 flyer, 5 brute/mender/runner,
   6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/archer,
   9 brute/mender/shieldbearer/runner, 10 boss + escort.

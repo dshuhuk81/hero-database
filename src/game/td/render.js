@@ -184,7 +184,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // portraits when present. Missing files fail quietly and portraits stay in use.
   // Per-file version (R2 caches a year): bump a file here and in the build script's --version together.
   const fullBodyTextures = new Map(); // kind -> PIXI.Texture
-  // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-vN (the map's boss).
+  // Baphomet's sprite is boss-vN; other final bosses use boss-{id}-vN (the map's boss).
   const bossFile = bossSpriteFile(options.boss?.id);
   const bossSpriteSize = { lilith: 108 }[options.boss?.id] ?? 96;
   const fullSpriteSize = (kind) => (kind === "boss" ? bossSpriteSize : kind === "brute" ? 64 : ENEMY_ART[kind]?.size ?? 44);
@@ -221,10 +221,11 @@ export async function createRenderer(canvas, game, options = {}) {
   const ENEMY_SHEETS = ENEMY_ANIM && new URLSearchParams(location.search).get("anim") === "sheets";
   const enemySheets = new Map(); // kind -> { anims: { idle, walk, attack, hurt, death }, td }
   if (ENEMY_SHEETS) {
-    // Sheet set: painted (warp frames from our sprites, default) or pixel (free test pack).
+    // Sheet set (?anim=sheets&set=<name>, default painted), see scripts/build-td-enemy-anims.mjs.
     const set = new URLSearchParams(location.search).get("set") ?? "painted";
-    for (const kind of ["grunt", "archer", "flyer"]) {
-      PIXI.Assets.load(`/td-local/sheets/${set}/${kind}.json`).then((sheet) => {
+    // The boss sheet is the map's boss (boss.json for Baphomet, boss-lilith.json, ...).
+    for (const [kind, file] of [...["grunt", "archer", "flyer", "runner", "brute", "brood"].map((k) => [k, k]), ["boss", bossFile]]) {
+      PIXI.Assets.load(`/td-local/sheets/${set}/${file}.json`).then((sheet) => {
         if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";
         enemySheets.set(kind, { anims: sheet.animations, td: sheet.data.td });
       }).catch(() => {});

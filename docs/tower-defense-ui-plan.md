@@ -90,7 +90,7 @@ Each step is usable on its own; stop when the result is good enough at 44 to 108
 
 Also in place (September 29, 2026): a painted `flyer` from a generated 6-frame flight cycle (`STRIPS` mode of `scripts/td-warp-anim.py`). Generating a short frame series from text and keying it is a fifth free route for kinds where warping one still is not enough.
 
-Order suggestion: 1, 2 and a warp-frame `grunt` (3) are in place; judge it in play (`?anim=sheets`, compare `&set=pixel`) before any cut-out work (4).
+Current route (September 29, 2026): PixelLab image-to-animation through the API with the kind's complete still as first frame and, for loops, as last frame (details in `TOWER_DEFENSE_SPEC.md` section 6). Archer, grunt, runner, brute and brood are built this way, the flyer from a generated strip; bosses wait for complete stills. Open: owner review in play, then ship the sheets (versioned names, R2 upload, `ENEMY_SHEETS` on by default) and delete superseded R2 files after the deploy.
 
 ## Scope and evidence
 
