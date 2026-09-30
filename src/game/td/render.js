@@ -140,6 +140,25 @@ export async function createRenderer(canvas, game, options = {}) {
     if (hero.token) PIXI.Assets.load(hero.token).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }
 
+  // Prototype: ?anim=fengyi draws that hero as an animated figure (idle, attack, ultimate)
+  // from the local anim lab frames (public/td-local/anim-lab/, gitignored, dev only) instead
+  // of the token. Lab ids differ from game ids (fengyi = Boreas). Without the parameter
+  // nothing changes; remove this block and updateHeroAnim once heroes get real sheets.
+  const animHeroes = new Map(); // hero id -> { idle: [tex], attack: [tex], ultimate: [tex] }
+  const animParam = new URLSearchParams(window.location.search).get("anim");
+  if (animParam) {
+    const LAB_IDS = { fengyi: "boreas" };
+    fetch("/td-local/anim-lab/manifest.json").then((r) => r.json()).then(async ({ characters }) => {
+      for (const heroId of animParam.split(",")) {
+        const char = characters.find((c) => c.id === (LAB_IDS[heroId] ?? heroId));
+        if (!char?.clips.idle) continue;
+        const clips = {};
+        for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
+        animHeroes.set(heroId, clips);
+      }
+    }).catch((err) => console.warn("anim lab frames not loaded", err));
+  }
+
   // Version query forces a fresh CORS-enabled fetch: browsers may still hold
   // pre-CORS copies of the immutable R2 hero thumbs, which WebGL rejects.
   const TEXTURE_CACHE_BUST = "v=cors1";
@@ -897,6 +916,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
+    updateHeroAnim(unit, container);
 
     // Ult charge arc
     const ur = container._ultRing;
@@ -919,6 +939,57 @@ export async function createRenderer(canvas, game, options = {}) {
       container._badgeDisc.clear().circle(0, 0, 8).fill(unit.awakened ? 0xfff4c2 : palette.gold).stroke({ width: 1.5, color: 0x13111c });
       drawLevelBorder(container._border, level, unit.awakened);
     }
+  }
+
+  // Prototype figure (see animHeroes). Frames are 256x256 with the figure about 225px tall and
+  // its feet at y 247. A basic attack resets attackClock upwards; casting the ultimate drops
+  // ultClock, so both clips trigger without touching the sim.
+  // hand: where basic shots leave, relative to the slot centre (art facing right).
+  // The attack clip starts at startFrame so the hand thrust lines up with the shot.
+  const HERO_ANIM = { height: 90, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 }, hand: [37, -69] };
+  const animShotSeen = new WeakSet();
+  function moveAnimShotOrigins() {
+    if (!animHeroes.size) return;
+    for (const effect of game.effects) {
+      if (animShotSeen.has(effect)) continue;
+      animShotSeen.add(effect);
+      if (effect.type !== "shot" || !animHeroes.has(effect.heroId)) continue;
+      const unit = game.heroes.find((h) => h.entityId === effect.sourceId);
+      if (!unit) continue;
+      const dir = Math.cos(unit.rotation || 0) < 0 ? -1 : 1;
+      const hx = unit.x + HERO_ANIM.hand[0] * dir, hy = unit.y + HERO_ANIM.hand[1];
+      if (effect.x1 === unit.x && effect.y1 === unit.y) { effect.x1 = hx; effect.y1 = hy; }
+      effect.sourceX = hx; effect.sourceY = hy;
+    }
+  }
+  function updateHeroAnim(unit, container) {
+    const clips = animHeroes.get(unit.id);
+    if (!clips) return;
+    const now = performance.now();
+    let sp = container._anim;
+    if (!sp) {
+      sp = new PIXI.Sprite(clips.idle[0]);
+      sp.anchor.set(0.5, 247 / 256);
+      sp.position.set(0, HERO_ANIM.feetY);
+      container.addChildAt(sp, container.getChildIndex(container._ultRing));
+      container._anim = sp;
+      container._animState = { clip: "idle", start: now, atk: unit.attackClock, ult: unit.ultClock };
+    }
+    container._img.visible = false;
+    const st = container._animState;
+    if (clips.ultimate && unit.ultClock < st.ult - 0.05) { st.clip = "ultimate"; st.start = now; }
+    else if (clips.attack && st.clip !== "ultimate" && unit.attackClock > st.atk + 0.01) {
+      st.clip = "attack"; st.start = now - HERO_ANIM.startFrame.attack / HERO_ANIM.fps.attack * 1000;
+    }
+    st.atk = unit.attackClock; st.ult = unit.ultClock;
+    let frames = clips[st.clip];
+    let i = Math.floor((now - st.start) / 1000 * HERO_ANIM.fps[st.clip]);
+    if (st.clip !== "idle" && i >= frames.length) { st.clip = "idle"; st.start = now; frames = clips.idle; i = 0; }
+    if (reducedMotion && st.clip === "idle") i = 0;
+    sp.texture = frames[i % frames.length];
+    // The art faces right; mirror when the target is on the left.
+    const scale = HERO_ANIM.height / 225;
+    sp.scale.set(Math.cos(unit.rotation || 0) < 0 ? -scale : scale, scale);
   }
 
   // Token: the cutout overflows the ring top so the head pops out of the frame.
@@ -1639,6 +1710,7 @@ export async function createRenderer(canvas, game, options = {}) {
     if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); heroFx.reset(); }
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;
+    moveAnimShotOrigins();
     heroFx.update(game);
     zeusFx.update(game.effects);
     statusFx.update(game.enemies, fxDt, enemyBody, enemyStatuses);

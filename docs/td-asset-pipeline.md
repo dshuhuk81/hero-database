@@ -93,6 +93,13 @@ Input from the job: which still (e.g. `brute-v3`), optionally prompt wishes.
    Flyers: `walk` is the flight cycle ("flies in place ... wings beat"); the hover height comes
    from the game, not the frames. Quadrupeds: say "on four legs"; multi-headed bosses: state the
    exact head count in `keep`.
+
+   **No effects in clips.** Clips are pure character motion: no particles, snow, wind swirls,
+   mist, glow, magic or projectiles. The game's renderer draws all effects, so the frames stay
+   clear and crisp. Start `keep` with "Character motion only: no visual effects, no particles,
+   no snow, no wind swirls, no mist, no glow, no magic; colors stay exactly as in the still."
+   and describe gestures ("thrusts the palm forward", "raises the staff"), never the effect.
+   `frame_count` must be a multiple of 4 (4, 8, 12, ...); 12 frames cost 2 generations.
 3. **Generate** (runs 5-20 minutes; safe to rerun, finished clips are skipped, running jobs are
    picked up from `jobs.json`):
 

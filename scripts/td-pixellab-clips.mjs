@@ -29,7 +29,7 @@ if (!still || !promptsFile || !out) {
 }
 
 const API = "https://api.pixellab.ai/v2";
-const LOOPS = new Set(["idle", "walk", "attack", "hurt"]); // end pinned to the still
+const LOOPS = new Set(["idle", "walk", "attack", "hurt", "ultimate"]); // end pinned to the still (ultimate: hero clips)
 const FRAMES = { idle: 4, walk: 8, attack: 8, hurt: 4, death: 8 };
 const END = " Stays in place, keeps its size and ground line, and ends in exactly the starting pose.";
 const MAX_RUNNING = 8;

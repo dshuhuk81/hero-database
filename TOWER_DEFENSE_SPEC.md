@@ -57,6 +57,13 @@ Hard rules:
   Redrawn heroes carry `"art": "v2"` (etc.) in `tdSkinMythic.json`: files become
   `{id}-{art}-{card-240|thumb-96|token-192}.webp` and `anims/{id}-idle-{art}.webp`, since
   R2 caches immutable. Odin (`zeus`) uses v2 (source `review-set-v1/odin-v2*`).
+- **Prototype, animated hero figures (September 30, 2026):** `?anim=fengyi` on the game page
+  draws Boreas as a standing PixelLab figure (idle, attack, ultimate) instead of his token
+  (`animHeroes` / `updateHeroAnim` in `render.js`). Frames come from the local anim lab
+  (`public/td-local/anim-lab/`, gitignored), previewed at `/games/tower-defense/anim-lab`.
+  Presentation only: attack triggers when `attackClock` resets, ultimate when `ultClock`
+  drops; his basic shots start at the figure's hand (`HERO_ANIM.hand`). Not shipped; without
+  the parameter nothing changes.
 - Page disclaimer (lobby and glossary): "Not affiliated with GOAT Games or Motto
   Immortal. Heroes, art and text are original; music and sounds are CC0."
 

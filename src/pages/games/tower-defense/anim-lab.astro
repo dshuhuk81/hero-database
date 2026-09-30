@@ -33,6 +33,7 @@ const dev = import.meta.env.DEV;
           <button id="lab-play" class="lab-btn" type="button">Pause</button>
           <button id="lab-prev" class="lab-btn" type="button" aria-label="Previous frame">‹</button>
           <button id="lab-next" class="lab-btn" type="button" aria-label="Next frame">›</button>
+          <button id="lab-ult" class="lab-btn" type="button" hidden>Cast ultimate</button>
           <label class="lab-field">FPS <input id="lab-fps" type="range" min="2" max="24" value="8" /><output id="lab-fps-out">8</output></label>
           <label class="lab-field">Zoom
             <select id="lab-zoom" class="lab-select">
@@ -64,7 +65,8 @@ const dev = import.meta.env.DEV;
 <script>
   type Clip = { frames: string[]; loop?: boolean };
   type Character = { id: string; name: string; still?: string; clips: Record<string, Clip> };
-  // "Combat" plays idle and fires the attack every two seconds, like a tower would.
+  // "Combat" plays idle and fires the attack every two seconds, like a tower would;
+  // "Cast ultimate" plays the ultimate once in combat, then idle resumes.
   const COMBAT = 'combat';
   const ATTACK_EVERY_MS = 2000;
 
@@ -74,7 +76,7 @@ const dev = import.meta.env.DEV;
   const state = {
     chars: [] as Character[], char: null as Character | null, images: {} as Record<string, HTMLImageElement[]>,
     clip: 'idle', frame: 0, playing: true, fps: 8, zoom: 1, flip: false, smooth: false,
-    last: 0, combatClip: 'idle', nextAttack: 0,
+    last: 0, combatClip: 'idle', nextAttack: 0, ultQueued: false,
   };
 
   const load = (src: string) => new Promise<HTMLImageElement>((resolve) => {
@@ -98,6 +100,7 @@ const dev = import.meta.env.DEV;
       b.addEventListener('click', () => setClip(name));
       chips.append(b);
     }
+    $('lab-ult').hidden = !(char.clips.ultimate && char.clips.idle);
     renderStrips();
     setClip(names.includes(state.clip) ? state.clip : names[0]);
   }
@@ -132,7 +135,7 @@ const dev = import.meta.env.DEV;
     const frames = state.images[activeClip()] ?? [];
     if (!frames.length) return;
     let next = state.frame + dir;
-    if (state.clip === COMBAT && state.combatClip === 'attack' && next >= frames.length) {
+    if (state.clip === COMBAT && state.combatClip !== 'idle' && next >= frames.length) {
       state.combatClip = 'idle'; next = 0;
     }
     state.frame = (next + frames.length) % frames.length;
@@ -141,7 +144,9 @@ const dev = import.meta.env.DEV;
   function tick(now: number) {
     if (state.playing && now - state.last >= 1000 / state.fps) {
       state.last = now;
-      if (state.clip === COMBAT && state.combatClip === 'idle' && now >= state.nextAttack) {
+      if (state.clip === COMBAT && state.combatClip === 'idle' && state.ultQueued) {
+        state.ultQueued = false; state.combatClip = 'ultimate'; state.frame = 0; state.nextAttack = now + ATTACK_EVERY_MS * 2;
+      } else if (state.clip === COMBAT && state.combatClip === 'idle' && now >= state.nextAttack) {
         state.combatClip = 'attack'; state.frame = 0; state.nextAttack = now + ATTACK_EVERY_MS;
       } else step(1);
       draw();
@@ -174,6 +179,10 @@ const dev = import.meta.env.DEV;
   function setPlaying(on: boolean) { state.playing = on; $('lab-play').textContent = on ? 'Pause' : 'Play'; }
 
   $('lab-play').addEventListener('click', () => setPlaying(!state.playing));
+  $('lab-ult').addEventListener('click', () => {
+    if (state.clip !== COMBAT) setClip(COMBAT);
+    state.ultQueued = true; setPlaying(true);
+  });
   $('lab-prev').addEventListener('click', () => { setPlaying(false); step(-1); draw(); });
   $('lab-next').addEventListener('click', () => { setPlaying(false); step(1); draw(); });
   $<HTMLInputElement>('lab-fps').addEventListener('input', (e) => {
