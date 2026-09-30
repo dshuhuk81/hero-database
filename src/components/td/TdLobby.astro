@@ -380,6 +380,14 @@ const modes = [
         <section class="td-settings-group" aria-labelledby="td-settings-sound">
           <h2 class="td-label" id="td-settings-sound">Sound</h2>
           <TdSoundControls />
+          <div class="td-settings-display" data-td-fullscreen-row hidden>
+            <h2 class="td-label" id="td-settings-display">Display</h2>
+            <button class="action-button action-button--quiet td-fullscreen-button td-settings-link" type="button" data-td-fullscreen aria-label="Enter full screen" aria-pressed="false">
+              <svg class="td-icon td-icon-expand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" /></svg>
+              <svg class="td-icon td-icon-compress" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" /></svg>
+              <span data-td-fullscreen-label>Full screen</span>
+            </button>
+          </div>
         </section>
         <section class="td-settings-group" aria-labelledby="td-settings-progress">
           <h2 class="td-label" id="td-settings-progress">Progress</h2>

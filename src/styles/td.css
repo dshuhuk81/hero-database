@@ -490,6 +490,10 @@
 .td-settings .td-menu-sound-row { display: grid; grid-template-columns: 116px minmax(0, 1fr); }
 .td-settings .td-volume-label { min-width: 0; color: var(--text-secondary); font-size: var(--td-fs-body); }
 .td-settings .td-volume { flex: 1 1 auto; min-width: 0; width: auto; }
+.td-settings-display { display: grid; gap: var(--space-3); margin-top: var(--space-3); }
+.td-settings-display[hidden] { display: none; }
+.td-settings-display h2 { margin: 0; }
+.td-settings-display .td-fullscreen-button { display: inline-flex; align-items: center; gap: var(--space-2); }
 
 .td-map-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
 .td-map-card { display: grid; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--surface-tint); color: var(--text-primary); font-family: inherit; text-align: left; cursor: pointer; transition: var(--transition-colors); }

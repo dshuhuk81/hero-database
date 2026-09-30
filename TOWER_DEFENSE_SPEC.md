@@ -95,6 +95,11 @@ Hard rules:
   Where element full screen exists, "Enter fullscreen" requests it on the shell and tries
   `screen.orientation.lock("landscape")` (Android); hidden while already full screen and on
   iPhone Safari. The lock is only an enhancement; the gate is the dependable part.
+- Full screen toggle (`page/hud.ts`): every `[data-td-fullscreen]` button toggles element
+  full screen on the shell - the fight top bar icon button and Settings > Display
+  (same expand/compress icon plus a "Full screen" / "Exit full screen" label). All copies
+  sync on `fullscreenchange`; F toggles too. Hidden (incl. the Display block) where the
+  browser has no element full screen (iPhone Safari).
 - Menu frame (`page/frame.ts`): every menu screen (lobby, its dialogs and the embedded
   Blessings, help and save panels) is laid out once for a phone held sideways, 844 x 390
   CSS px, and must fit it without page scrolling; only long lists scroll inside their own

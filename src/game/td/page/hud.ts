@@ -266,10 +266,14 @@ export function createHud(ctx: PageContext) {
 
   // Full screen for the whole game shell (board, panels, overlays). Hidden where the
   // browser can't do element full screen (iPhone Safari). F toggles, Escape exits.
-  const fullscreenButton = q<HTMLButtonElement>("[data-td-fullscreen]");
-  const shell = fullscreenButton.closest<HTMLElement>("[data-td-root]")!;
+  // Two buttons share this: the fight top bar and the Settings screen (Display).
+  const shell = q("[data-td-root]");
+  const fullscreenButtons = [...shell.querySelectorAll<HTMLButtonElement>("[data-td-fullscreen]")];
   const doc = document as any;
-  fullscreenButton.hidden = !(document.fullscreenEnabled || doc.webkitFullscreenEnabled);
+  const canFullscreen = Boolean(document.fullscreenEnabled || doc.webkitFullscreenEnabled);
+  for (const button of fullscreenButtons) button.hidden = !canFullscreen;
+  const settingsRow = shell.querySelector<HTMLElement>("[data-td-fullscreen-row]");
+  if (settingsRow) settingsRow.hidden = !canFullscreen;
   const isFullscreen = () => (document.fullscreenElement || doc.webkitFullscreenElement) === shell;
   function toggleFullscreen() {
     const request = isFullscreen()
@@ -279,15 +283,19 @@ export function createHud(ctx: PageContext) {
   }
   function syncFullscreenButton() {
     const on = isFullscreen();
-    fullscreenButton.setAttribute("aria-pressed", String(on));
-    fullscreenButton.setAttribute("aria-label", on ? "Exit full screen" : "Enter full screen");
-    fullscreenButton.classList.toggle("is-on", on);
+    for (const button of fullscreenButtons) {
+      button.setAttribute("aria-pressed", String(on));
+      button.setAttribute("aria-label", on ? "Exit full screen" : "Enter full screen");
+      button.classList.toggle("is-on", on);
+      const label = button.querySelector("[data-td-fullscreen-label]");
+      if (label) label.textContent = on ? "Exit full screen" : "Full screen";
+    }
   }
-  fullscreenButton.addEventListener("click", toggleFullscreen);
+  for (const button of fullscreenButtons) button.addEventListener("click", toggleFullscreen);
   document.addEventListener("fullscreenchange", syncFullscreenButton);
   document.addEventListener("webkitfullscreenchange", syncFullscreenButton);
   document.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() !== "f" || event.metaKey || event.ctrlKey || event.altKey || fullscreenButton.hidden) return;
+    if (event.key.toLowerCase() !== "f" || event.metaKey || event.ctrlKey || event.altKey || !canFullscreen) return;
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
     toggleFullscreen();
   });
