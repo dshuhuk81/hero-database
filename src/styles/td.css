@@ -11069,29 +11069,29 @@ button .td-cur {
 }
 
 /* Squad (menu frame 844 x 390): no stage head, the player picked the stage one screen up.
-   Roster on top: two rows of bare 50 x 75 art cards, scrolling sideways. Lineup at the
+   Roster on top: two rows of portrait cards filling the available height, scrolling sideways. Lineup at the
    bottom: 84 x 84 slots centered, cost under each, one 11px hint line. No panels around either. */
 .td-app .td-squad-screen {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
   align-content: stretch;
-  gap: var(--space-3);
+  gap: 20px;
   height: 100%;
 }
 
 .td-app [data-td-screen="squad"] .td-screen-body {
-  padding-block: 0 var(--space-3);
+  padding: var(--space-2) 0 var(--space-3) var(--space-4);
 }
 
 .td-app .td-squad-roster {
   grid-auto-flow: column;
-  grid-template-rows: repeat(2, 75px);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-columns: none;
-  grid-auto-columns: 50px;
-  align-self: start;
+  grid-auto-columns: max-content;
+  align-self: stretch;
   gap: 6px;
   min-height: 0;
-  padding: 2px;
+  padding: 2px 0 2px 2px;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -11100,8 +11100,10 @@ button .td-cur {
 
 .td-app .td-squad-tile {
   display: block;
-  width: 50px;
-  height: 75px;
+  width: auto;
+  height: 100%;
+  aspect-ratio: 2 / 3;
+  box-sizing: border-box;
   padding: 0;
   border-radius: var(--radius-sm);
   touch-action: pan-x;
