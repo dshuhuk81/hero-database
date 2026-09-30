@@ -148,15 +148,20 @@ export async function createRenderer(canvas, game, options = {}) {
   const animParam = new URLSearchParams(window.location.search).get("anim");
   if (animParam) {
     const LAB_IDS = { fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius" };
-    fetch("/td-local/anim-lab/manifest.json").then((r) => r.json()).then(async ({ characters }) => {
-      for (const heroId of animParam.split(",")) {
+    // Each hero loads on its own, so one broken clip cannot block the others.
+    fetch("/td-local/anim-lab/manifest.json", { cache: "no-store" }).then((r) => r.json()).then(({ characters }) =>
+      Promise.all(animParam.split(",").map((id) => id.trim()).filter(Boolean).map(async (heroId) => {
         const char = characters.find((c) => c.id === (LAB_IDS[heroId] ?? heroId));
-        if (!char?.clips.idle) continue;
-        const clips = {};
-        for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
-        animHeroes.set(heroId, { clips, hand: char.hand ?? [200, 80] });
-      }
-    }).catch((err) => console.warn("anim lab frames not loaded", err));
+        if (!char?.clips.idle) return `${heroId}: no lab frames`;
+        try {
+          const clips = {};
+          for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
+          animHeroes.set(heroId, { clips, hand: char.hand ?? [200, 80] });
+          return `${heroId}: ok`;
+        } catch (err) { return `${heroId}: ${err?.message ?? err}`; }
+      }))
+    ).then((report) => console.info("anim heroes", report.join(", ")))
+      .catch((err) => console.warn("anim lab frames not loaded", err));
   }
 
   // Version query forces a fresh CORS-enabled fetch: browsers may still hold
@@ -859,6 +864,16 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const [id, container] of heroSprites) {
       if (!seen.has(id)) { layerUnits.removeChild(container); container.destroy({ children: true }); heroSprites.delete(id); }
     }
+    if (animHeroes.size) sortHeroDepth();
+  }
+
+  // Standing figures reach into the slot above, so the lower hero must draw in front.
+  // Heroes swap places among the indices they already hold; enemies keep their order.
+  function sortHeroDepth() {
+    const list = [...heroSprites.values()];
+    const slots = list.map((c) => layerUnits.getChildIndex(c)).sort((a, b) => a - b);
+    list.sort((a, b) => a.y - b.y);
+    list.forEach((c, i) => { if (layerUnits.getChildIndex(c) !== slots[i]) layerUnits.setChildIndex(c, slots[i]); });
   }
 
   function buildHeroSprite(unit) {
@@ -868,6 +883,7 @@ export async function createRenderer(canvas, game, options = {}) {
     // Ground shadow and a dark disc behind the cutout token.
     const base = new PIXI.Graphics();
     base.ellipse(0, 24, 25, 7).fill({ color: 0x000000, alpha: 0.45 });
+    container._base = base;
     base.circle(0, 0, 25).fill({ color: 0x1b1530 });
     container.addChild(base);
 
@@ -946,7 +962,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // ultClock, so both clips trigger without touching the sim.
   // Basic shots leave from the manifest's hand point (frame pixels, art facing right).
   // The attack clip starts at startFrame so the hand thrust lines up with the shot.
-  const HERO_ANIM = { height: 90, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
+  const HERO_ANIM = { height: 80, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
   const ANIM_SCALE = HERO_ANIM.height / 225;
   const animPoint = ([fx, fy]) => [(fx - 128) * ANIM_SCALE, HERO_ANIM.feetY + (fy - 247) * ANIM_SCALE];
   const animShotSeen = new WeakSet();
@@ -976,6 +992,12 @@ export async function createRenderer(canvas, game, options = {}) {
       sp.position.set(0, HERO_ANIM.feetY);
       container.addChildAt(sp, container.getChildIndex(container._ultRing));
       container._anim = sp;
+      // A figure stands on the slot: shadow only, no token disc or level ring behind it. The
+      // number badge still shows the level; the ult charge becomes a flat ring at the feet.
+      container._base.clear().ellipse(0, HERO_ANIM.feetY, 22, 6).fill({ color: 0x000000, alpha: 0.45 });
+      container._border.visible = false;
+      container._ultRing.position.set(0, HERO_ANIM.feetY);
+      container._ultRing.scale.set(1, 0.3);
       container._animState = { clip: "idle", start: now, atk: unit.attackClock, ult: unit.ultClock };
     }
     container._img.visible = false;

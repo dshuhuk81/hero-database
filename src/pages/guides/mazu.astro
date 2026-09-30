@@ -1,0 +1,234 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+import mazuData from "../../data/heroes/mazu.json";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/mazu_${id}.webp`;
+
+const takeaways: Record<string, string> = {
+  skill_1: "Thousand-Mile Tailwind is Mazu's emergency recovery tool rather than a conventional team heal. It targets the weakest ally and combines ATK-based healing with additional recovery based on missing HP. Recorded battles show that Mazu concentrates healing on injured targets instead of continuously topping off the entire formation, making the skill most valuable when one ally is under concentrated pressure.",
+  skill_2: "Moon Blocks Divination gives Mazu immediate battle-opening utility. Allies can receive both Energy and ATK from Sacred Blocks, helping the formation reach important skills earlier while creating additional opening pressure. Because the effect is established at the start of battle, Mazu contributes before her first Mercy's Wake cast.",
+  skill_3: "Holy Mother of Heaven rewards keeping the formation alive. Each surviving ally contributes defensive value and Energy regeneration, so Mazu becomes more effective when the team survives long enough to maintain all five members. Losing allies therefore weakens both the formation and part of Mazu's own support engine.",
+  skill_4: "Mercy's Wake is the center of Mazu's kit. It creates a team-wide Shield and converts part of incoming burst damage into damage received over time instead of allowing the full hit to land immediately. Recorded combat data shows that Mazu can cast Mercy's Wake repeatedly during long encounters, so Energy generation directly affects how often the team receives these defensive windows.",
+};
+
+const skills = mazuData.skills.map((skill) => {
+  const number = skill.id.replace("skill_", "");
+  return {
+    ...skill,
+    badge: skill.isUltimate ? `Skill ${number} - Ultimate` : `Skill ${number}`,
+    takeaway: takeaways[skill.id],
+    upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+  };
+});
+
+const relic = {
+  ...mazuData.relic,
+  badge: "Relic",
+  takeaway: "Merciful Salvation turns Mercy's Wake from a purely defensive tool into an offensive support window. Each cast can add a temporary team ATK increase while higher Relic levels improve how much incoming damage is delayed, accelerate Mazu's first major cast through starting Energy, and stretch delayed damage over a longer period. The Relic therefore strengthens the mechanic that defines her rather than adding an unrelated secondary effect.",
+  upgrades: Object.entries(mazuData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+};
+
+const mercySkill = skills.find((skill) => skill.name === "Mercy's Wake") ?? skills.find((skill) => skill.isUltimate) ?? skills[0];
+
+const strengths = [
+  "Strong protection against burst damage",
+  "Team-wide Shields through Mercy's Wake",
+  "Delays part of incoming damage instead of letting the full hit land immediately",
+  "Can repeatedly refresh defensive windows during longer fights",
+  "Provides temporary team-wide ATK support through her Relic",
+  "Targeted healing becomes stronger when an ally is already heavily injured",
+  "Benefits strongly from additional Energy generation",
+  "Provides battle-opening Energy and ATK utility through Moon Blocks Divination",
+  "Rewards keeping the full formation alive",
+];
+
+const weaknesses = [
+  "Delayed damage is not prevented and still has to be survived or healed",
+  "Her personal survival can become a limiting factor under extreme pressure",
+  "Not a replacement for a dedicated high-output healer",
+  "Targeted healing does not provide constant team-wide recovery",
+  "Losing allies reduces part of her passive support value",
+  "Teams that already survive comfortably may gain more from an offensive slot",
+  "Timed encounters can punish excessive defensive investment",
+  "Her strongest opening tempo depends heavily on Relic investment",
+];
+---
+
+<Base title="Mazu Guide - Damage Smoothing & Mercy's Wake | Motto Immortal" description="Complete Mazu guide covering Mercy's Wake, delayed damage, Shields, targeted healing, Energy support, Relic investment, teams, PvE, bosses, PvP, and counterplay.">
+  <div class="guide-banner guide-banner--heket guide-banner--diamonds">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage(mazuData.id)}'); --guide-banner-y: 10%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">{mazuData.name}</h1>
+      <p class="guide-hero-subtitle">Damage Smoothing &middot; Shield &amp; ATK Support</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/${mazuData.faction.toLowerCase()}.webp`} alt={mazuData.faction} />{mazuData.faction}</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/${mazuData.class.toLowerCase()}.webp`} alt={mazuData.class} />{mazuData.class}</span>
+        <span class="guide-badge guide-badge--legendary">{mazuData.rarity}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket guide-body--diamonds">
+    <GuideSectionNav />
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Mazu at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-verdict">
+        <div class="heket-verdict-main">
+          <div class="heket-verdict-icon" style={`background-image: url('${skillImage(mercySkill.id)}');`} role="img" aria-label={mercySkill.name}></div>
+          <div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Turn lethal burst into damage your team has time to survive.</h3><p>Mazu combines team-wide Shields, delayed incoming damage, targeted emergency healing, Energy support, and temporary ATK amplification. Her defining strength is not simply reducing damage: Mercy's Wake changes when part of that damage arrives. This gives healing, Shields, and other sustain mechanics additional time to stabilize the formation. She is most valuable when the team has enough damage to win but is being overwhelmed before that damage can be delivered.</p></div>
+        </div>
+        <div class="heket-fact-strip"><div><span>Role</span><strong>Damage smoothing and support</strong></div><div><span>Core mechanic</span><strong>Delay burst damage</strong></div><div><span>Best fit</span><strong>Teams that need more time to stabilize</strong></div></div>
+        <div class="heket-verdict-warning"><strong>Key warning</strong><span>Delayed damage is still damage. Mazu buys time; the team still needs enough sustain to use it.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The Mercy's Wake Cycle</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-engine">
+        <div class="heket-engine-flow">
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage(mercySkill.id)}');`} role="img" aria-label={mercySkill.name}></div><span>Shield</span><strong>Create the defensive window</strong><p>Mercy's Wake applies a team-wide Shield before incoming pressure is fully resolved.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage(mercySkill.id)}');`} role="img" aria-label={mercySkill.name}></div><span>Delay</span><strong>Spread burst damage over time</strong><p>A portion of incoming damage is delayed instead of arriving immediately, reducing the chance that one large burst removes an ally before recovery can happen.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Thousand-Mile Tailwind"></div><span>Recover</span><strong>Give sustain time to respond</strong><p>Thousand-Mile Tailwind and other healing sources now have more time to repair the damage before the delayed portion finishes resolving.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label={relic.name}></div><span>Pressure</span><strong>Turn survival into offense</strong><p>Merciful Salvation adds temporary ATK support to Mercy's Wake, allowing the same defensive cycle to create an offensive window.</p></div>
+        </div>
+        <div class="heket-engine-return"><span>Gain Energy and establish the next Mercy's Wake window</span></div>
+        <div class="heket-engine-rule"><strong>Damage smoothing is most valuable when the team can recover during the extra time it creates.</strong><span>Mazu does not erase incoming damage. She changes its timing. Energy generation, healing, shielding, and Mazu's own survival therefore determine how much value the team gets from repeated Mercy's Wake casts.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Skills: What They Mean</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-skill-explorer" data-guide-skill-explorer>
+        <div class="guide-skill-detail">
+          {skills.map((skill, index) => <article class={`guide-skill-panel${index === 0 ? " is-active" : ""}`} data-guide-skill={skill.id}>
+            <header class="guide-skill-panel-head"><div><h3>{skill.name}</h3><span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div><img src={skillImage(skill.id)} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{skill.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{skill.upgrades.map((upgrade) => <div><span>{upgrade.level}</span><p>{upgrade.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>{skill.takeaway}</p>
+          </article>)}
+          <article class="guide-skill-panel" data-guide-skill="relic">
+            <header class="guide-skill-panel-head"><div><h3>{relic.name}</h3><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span><span class="guide-skill-badge guide-skill-badge--level">Defining mechanic</span></div></div><img src={skillImage("relic")} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{relic.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{relic.upgrades.map((upgrade) => <div><span>{upgrade.level}</span><p>{upgrade.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>{relic.takeaway}</p>
+          </article>
+        </div>
+        <ol class="guide-skill-selector">
+          {skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><small>{skill.badge}</small></span></button></li>)}
+          <li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><small>{relic.badge}</small></span></button></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Relic Investment</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Base Relic</span><strong>Mercy's Wake also becomes an offensive window</strong><p>The Relic adds a temporary ATK increase to allies affected by Mercy's Wake. Every successful defensive cycle can therefore contribute additional offensive pressure.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv10</span><strong>More of the burst is smoothed</strong><p>A larger portion of incoming damage is delayed, giving Shields and healing more time to stabilize the team.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv20 &middot; Key breakpoint</span><strong>Reach Mercy's Wake sooner</strong><p>The starting Energy bonus accelerates Mazu's first major defensive cast. Because Mercy's Wake provides Shielding, damage smoothing, and Relic ATK support at the same time, reaching the first cast earlier affects several parts of her kit at once.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv30</span><strong>More time to repair delayed damage</strong><p>Spreading the delayed portion across a longer window gives healing and defensive effects additional time to respond before the full damage has been resolved.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment takeaway:</strong> Relic investment directly improves the Mercy's Wake cycle. The starting-Energy upgrade is especially important because it changes how quickly Mazu can establish her first major defensive and offensive support window.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Strengths &amp; Weaknesses</h2><div class="lt-flourish lt-flourish-center"></div><StrengthWeakness strengths={strengths} weaknesses={weaknesses} /></section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Team Building</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Build around the extra time she creates</span><h3>Mazu works best when someone can use that time to recover or deal damage.</h3></div>
+        <div class="heket-tactics">
+          <article><div class="heket-tactic-marker">Sustain</div><h4>Pair damage smoothing with recovery</h4><p>Mercy's Wake delays damage rather than deleting it. Healing becomes especially valuable because the team receives additional time to recover before the delayed portion has fully resolved.</p></article>
+          <article><div class="heket-tactic-marker">Energy</div><h4>More Energy means more Mercy's Wake windows</h4><p>Recorded combat data shows repeated Mercy's Wake casts throughout longer encounters. Increasing Mazu's access to Energy can shorten the gap between defensive windows and improve both protection and Relic ATK uptime.</p></article>
+          <article><div class="heket-tactic-marker">Carry</div><h4>Protect a real win condition</h4><p>Mazu creates time and temporary ATK support, but she does not replace the team's damage dealer. Use that protection to keep a strong carry active long enough to finish the encounter.</p></article>
+        </div>
+      </div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Mazu &amp; Gaiya</span><h3>A promising sustain combination, but not a controlled comparison.</h3></div>
+        <p class="heket-hades-note">Available player reports have highlighted the combination of Mazu and Gaiya, and recorded Spire combat also showed Gaiya providing substantial healing to Mazu while Mazu remained alive through the encounter. This interaction makes mechanical sense: Mazu delays part of incoming damage while Gaiya provides sustained recovery and additional protection.</p>
+        <div class="guide-callout"><strong>Evidence limit:</strong> Cleared Spire stages cannot be replayed. The recorded fights therefore cannot be treated as controlled A/B evidence that Gaiya alone caused Mazu to survive.</div>
+        <p class="heket-hades-note">The important interaction is the mechanic itself: Mazu creates more time for healing to work, while Gaiya provides the kind of sustained recovery that can make use of that extra time.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">PvE Use Cases</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Difficult progression</span><strong>Buy more time against overwhelming damage</strong><p>When enemy damage starts removing heroes before the team can establish its normal rotation, Mercy's Wake can soften the initial pressure by shielding the formation and delaying part of the incoming damage. This is most valuable when the team already has enough offensive power but cannot stay alive long enough to use it.</p></div>
+          <div class="heket-matchup-good"><span>Sustained pressure</span><strong>Repeated casts become increasingly valuable</strong><p>Longer fights give Mazu more opportunities to cycle Mercy's Wake, apply targeted healing, and benefit from Energy generation. Her value increases when the encounter lasts long enough for several defensive windows to matter.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Boss Battles</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Long encounters</span><h3>Long fights let Mazu repeat the full support cycle.</h3></div>
+        <p class="heket-hades-note">Boss battles are a natural environment for Mazu when survival is part of the problem. Recorded encounters show Mercy's Wake being cast repeatedly across long fights rather than functioning as a one-time defensive button. Each cycle can add Shields, delayed damage, and Relic-based ATK support while Thousand-Mile Tailwind restores heavily injured allies.</p>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Energy scaling</span><strong>Energy directly affects support frequency</strong><p>Recorded fights showed substantially different Mercy's Wake timing depending on the Energy environment. When Mazu gained Energy more quickly, the gap between casts became noticeably shorter.</p></div>
+          <div class="heket-matchup-bad"><span>Sustain requirement</span><strong>Delayed damage still needs an answer</strong><p>Mercy's Wake gives the team more time, but the delayed damage eventually arrives. Boss teams still need enough healing, Shields, durability, or encounter-specific mitigation to survive the full damage sequence.</p></div>
+        </div>
+        <p class="heket-hades-note"><strong>The limitation remains damage:</strong> If the formation already survives the boss comfortably but fails the timer, Mazu may be occupying a slot that could instead provide more damage.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">PvP</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Opening tempo</span><h3>The first Mercy's Wake can decide how much of Mazu's kit becomes available.</h3></div>
+        <p class="heket-hades-note">Mazu has useful opening support through Moon Blocks Divination, but the larger defensive cycle depends on reaching Mercy's Wake before the opposing burst removes key units. The starting-Energy Relic upgrade is therefore particularly relevant in fast fights.</p>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-bad"><span>Fast burst</span><strong>She can still be removed before stabilizing</strong><p>Extremely concentrated opening damage remains dangerous. Mazu cannot benefit from repeated Mercy's Wake cycles if she or a key ally is eliminated before the cycle is established.</p></div>
+          <div class="heket-matchup-good"><span>Extended PvP</span><strong>Longer fights favor repeated support windows</strong><p>When the opening burst is survived, repeated Mercy's Wake casts can continue providing Shields, damage smoothing, and temporary ATK support throughout the fight.</p></div>
+        </div>
+        <div class="guide-callout"><strong>PvP takeaway:</strong> Mazu is more reliable when the team can survive long enough for her Energy and Mercy's Wake cycle to begin repeating.</div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Build, Battle Plan &amp; Counterplay</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Winning pattern</span><h3>Survive the burst, recover during the delay, and establish the next window.</h3></div>
+        <div class="heket-tactics">
+          <article><div class="heket-tactic-marker">Energy</div><h4>Reach Mercy's Wake consistently</h4><p>Mazu's strongest team contribution is tied to repeated Mercy's Wake casts. Energy support and her starting-Energy Relic breakpoint therefore have direct practical value.</p></article>
+          <article><div class="heket-tactic-marker">Survival</div><h4>Keep Mazu alive</h4><p>Mazu must remain active for the team to receive repeated Shields, damage smoothing, targeted healing, and ATK support. Do not treat her as expendable simply because she is a defensive support.</p></article>
+          <article><div class="heket-tactic-marker">Sustain</div><h4>Use the delayed window</h4><p>Mercy's Wake creates time. Healing, Shields, and defensive effects must use that time to repair the incoming pressure before the delayed damage has fully resolved.</p></article>
+        </div>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Favorable fights</span><strong>Burst that can be survived and repaired</strong><p>Mazu is strongest when the initial hit would normally overwhelm the formation but becomes manageable once part of it is delayed and the team has enough sustain to recover.</p></div>
+          <div class="heket-matchup-bad"><span>Difficult conditions</span><strong>Immediate kills and insufficient recovery</strong><p>Damage that removes Mazu or a key ally before Mercy's Wake is established can bypass much of her value. Heavy delayed damage can also remain lethal if the team has no recovery mechanism capable of repairing it.</p></div>
+        </div>
+        <p class="heket-hades-note"><strong>If the team keeps losing:</strong> If the team dies before Mercy's Wake, improve opening survival or Energy. If the team survives the initial burst but dies during the delayed damage window, improve sustain. If everyone survives but the timer expires, trade excess defense for offense.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">Mazu does not erase burst damage; she gives your team time to answer it.</h3><p class="guide-verdict-text">Mazu is built around controlling the timing of incoming damage. Mercy's Wake shields the entire formation and delays part of the damage that would otherwise arrive immediately, while Thousand-Mile Tailwind restores heavily injured allies and Moon Blocks Divination adds opening Energy and ATK utility. Her Relic extends this identity by adding temporary team ATK support and strengthening the Mercy's Wake cycle.<br><br>Her performance depends on what the team does with the extra time she creates. Healing and Shields can repair delayed damage, Energy generation can create more Mercy's Wake windows, and a strong carry can use the resulting ATK support to keep pressure on the enemy.<br><br>She is most valuable when survival is preventing an otherwise capable team from winning. If the team already survives comfortably, the remaining problem is probably offense rather than protection.</p></div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+  <script>
+    for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {
+      const buttons = Array.from(explorer.querySelectorAll("[data-guide-skill-button]"));
+      const panels = Array.from(explorer.querySelectorAll("[data-guide-skill]"));
+      for (const button of buttons) button.addEventListener("click", () => {
+        const id = button.getAttribute("data-guide-skill-button");
+        for (const other of buttons) { const active = other === button; other.classList.toggle("is-active", active); other.setAttribute("aria-pressed", String(active)); }
+        for (const panel of panels) panel.classList.toggle("is-active", panel.getAttribute("data-guide-skill") === id);
+      });
+    }
+  </script>
+</Base>
