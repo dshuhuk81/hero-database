@@ -487,7 +487,8 @@ export async function createRenderer(canvas, game, options = {}) {
       core.position.set(0, 5);
       const halo = new PIXI.Graphics();
       halo.ellipse(0, 4, 34, 22).stroke({ color, width: kind === "shrine" ? 3 : 2, alpha: 0.42 });
-      const underglow = softSprite(color, 116, 116, 0.5, blend);
+      // Standing figures reach into the slot above, so the occupant glow lies flat at the feet.
+      const underglow = softSprite(color, 116, FIGURES ? 40 : 116, 0.5, blend);
       underglow.visible = false;
       ground.addChild(bleed, core, halo, underglow);
       layerSlotAuras.addChild(ground);
@@ -529,11 +530,18 @@ export async function createRenderer(canvas, game, options = {}) {
         if (kind === "shrine") rim.circle(0, 0, 36).stroke({ color, width: 1, alpha: 0.4 });
       }
       rim.blendMode = blend;
-      rim.visible = false;
-      top.addChild(rim);
+      // Figures: the rim becomes a ground ring at the feet (squashed wrapper, so the highground
+      // arcs still rotate) under the units; tokens keep the rim drawn over the token.
+      const rimHolder = new PIXI.Container();
+      rimHolder.addChild(rim);
+      rimHolder.visible = false;
+      if (FIGURES) {
+        rimHolder.scale.set(1, 0.32);
+        ground.addChild(rimHolder);
+      } else top.addChild(rimHolder);
       layerSlotAurasTop.addChild(top);
 
-      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], bleed, core, halo, underglow, parts, rim });
+      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], bleed, core, halo, underglow, parts, rim, rimHolder });
     }
   }
 
@@ -542,10 +550,11 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const fx of specialTileFx) {
       const unit = game.heroes.find((h) => h.slotType === fx.type && h.slotIndex === fx.index);
       const veil = unit && game.isVeiled?.(unit) ? 0.45 : 1;
-      fx.underglow.visible = fx.rim.visible = !!unit;
+      fx.underglow.visible = fx.rimHolder.visible = !!unit;
       if (unit) {
-        fx.underglow.position.set(unit.x - fx.x, unit.y - fx.y);
-        fx.rim.position.set(unit.x - fx.x, unit.y - fx.y);
+        const feet = FIGURES ? HERO_ANIM.feetY : 0;
+        fx.underglow.position.set(unit.x - fx.x, unit.y - fx.y + feet);
+        fx.rimHolder.position.set(unit.x - fx.x, unit.y - fx.y + feet);
       }
       if (reducedMotion) {
         fx.bleed.alpha = fx.kind === "cursed" ? 0.5 : 0.42;
@@ -631,11 +640,14 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       const veil = game.isVeiled?.(hero) ? 0.45 : 1;
       const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * 2.4 + fx.phase);
-      fx.glow.position.set(hero.x, hero.y + 6);
+      // Figures: glow and ring lie flat at the feet instead of circling the body.
+      fx.glow.position.set(hero.x, hero.y + (FIGURES ? HERO_ANIM.feetY : 6));
       fx.glow.width = 88 + pulse * 22;
-      fx.glow.height = 56 + pulse * 14;
+      fx.glow.height = FIGURES ? 30 + pulse * 6 : 56 + pulse * 14;
       fx.glow.alpha = (0.32 + pulse * 0.3) * veil;
-      auraGfx.circle(hero.x, hero.y, 31 + pulse * 4).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
+      const ringR = 31 + pulse * 4;
+      if (FIGURES) auraGfx.ellipse(hero.x, hero.y + HERO_ANIM.feetY, ringR, ringR * 0.32).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
+      else auraGfx.circle(hero.x, hero.y, ringR).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
       if (reducedMotion) {
         auraGfx.circle(hero.x, hero.y, hero.range).stroke({ color: fx.color, width: 1.5, alpha: 0.12 * veil });
       } else {
@@ -917,6 +929,11 @@ export async function createRenderer(canvas, game, options = {}) {
     container._ultRing = ultRing;
     container.addChild(ultRing);
 
+    // HP bar lives in the container (not layerBars) so a lower hero's figure draws in front of it.
+    const hpBar = new PIXI.Graphics();
+    container._hpBar = hpBar;
+    container.addChild(hpBar);
+
     // Level number disc sitting on the border at bottom-right.
     const badge = new PIXI.Container();
     badge.position.set(19, 19);
@@ -942,6 +959,7 @@ export async function createRenderer(canvas, game, options = {}) {
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
     updateHeroAnim(unit, container);
+    drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
 
     // Ult charge arc
     const ur = container._ultRing;
@@ -1516,7 +1534,6 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
     for (const unit of game.heroes) {
-      drawBar(g, unit.x - 24, unit.y + 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
       // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
       if ((unit.markedByBossUntil ?? 0) > game.time) {
         const r = 34;
@@ -1534,15 +1551,21 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       if (game.isSilenced?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
-        g.circle(unit.x, unit.y, 33).stroke({ width: 3, color: 0xff4d4d, alpha: pulse });
+        statusRing(g, unit, 0xff4d4d, pulse);
       }
       // Hexed (Hexer): a pulsing violet ring while the hero cannot act.
       if (game.isHexed?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
-        g.circle(unit.x, unit.y, 33).stroke({ width: 3, color: 0xc084fc, alpha: pulse });
+        statusRing(g, unit, 0xc084fc, pulse);
       }
     }
     layerBars.addChild(g);
+  }
+
+  // Figures get a flat ring at the feet so it does not cross the body or the hero above.
+  function statusRing(g, unit, color, alpha) {
+    if (animHeroes.has(unit.id)) g.ellipse(unit.x, unit.y + HERO_ANIM.feetY, 33, 11).stroke({ width: 3, color, alpha });
+    else g.circle(unit.x, unit.y, 33).stroke({ width: 3, color, alpha });
   }
 
   function drawBar(g, x, y, width, ratio, color) {

@@ -65,7 +65,11 @@ Hard rules:
   only: attack plays when `attackClock` resets, ultimate when `ultClock` drops; ranged shots start
   at the sheet's `hand` point; figures are 80 px tall, drawn in row order (lower in front), with a
   ground shadow, flat ult ring and the level badge. Clips carry no effects (the renderer draws
-  them). `?figures=off` or `?anim=off` shows tokens, `?figures=lab` loads the unpacked dev frames.
+  them). Since figures reach into the slot above, everything tied to a hero sits on the ground
+  plane at its feet: the HP bar is part of the hero container (so a lower figure covers it);
+  the special-tile underglow, rim and support aura ring are flat ellipses at the feet
+  under the units, and the silenced/hexed warnings are flat rings at the feet, not circles around
+  the body. Tokens keep the old circles. `?figures=off` or `?anim=off` shows tokens, `?figures=lab` loads the unpacked dev frames.
   Workflow: `docs/td-asset-pipeline.md` part D.
 - Page disclaimer (lobby and glossary): "Not affiliated with GOAT Games or Motto
   Immortal. Heroes, art and text are original; music and sounds are CC0."
