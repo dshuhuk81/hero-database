@@ -36,7 +36,7 @@ Replace the current card-grid main menu (`data-td-screen="home"` in `src/compone
 | Mode badges | Daily: "1" when today's trial not yet cleared. Others: none for now. | `daily.ts` |
 | Play button | Launches the selected mode (see Navigation). Kicker shows its context: "Stage 2-2", "Today", "Stage III", "Best 155,868". | per mode |
 | Dock | Heroes, Summon, Divine Blessings, Glossary, How to play. | `data-td-go` |
-| Armory, Bestiary | Not built. No equipment feature exists; Bestiary content lives in Glossary (enemies section). See open questions. | |
+| Armory, Bestiary | Left out (owner decision). | |
 | "Current menu" exit | "Exit to database" link (`/`). | |
 | Rotate cover | Dropped; the existing orient gate (`orient.ts`) already covers phones in portrait for every screen. | |
 
@@ -60,8 +60,8 @@ home ─┬─ maps ─ mode ─ play           (Free Play)
 New tree:
 
 ```text
-home ─┬─ [Play: Campaign]   → squad (next stage) ─ play
-      │      stages reachable from squad ("All stages") and from objective card
+home ─┬─ [Play: Campaign]   → stages ─ squad ─ play
+      │      run ends → back to stages; Back from stages → home
       ├─ [Play: Daily]      → daily ─ play
       ├─ [Play: Expedition] → expedition ─ play
       ├─ [Play: Free Play]  → maps ─ mode ─ play
@@ -74,8 +74,8 @@ home ─┬─ [Play: Campaign]   → squad (next stage) ─ play
 Consequences:
 
 1. **`campaign` hub screen goes away.** Its three activities (journey, heroes, summon) are now home elements (objective + Play, dock). Its "Your company" strip moves to the Heroes screen header or is dropped. `PARENT`: `heroes: "home"`, `summon: "home"`, `stages: "home"`. Remove `"campaign"` from `ScreenId`; old history entries with `tdScreen: "campaign"` fall back to `home` via `isScreen`.
-2. **Play for Campaign skips a level.** Home → squad screen of the next uncleared stage (squad already knows its stage). Squad gets an "All stages" link to `stages` for replays. Back from squad returns to home (stack-based `parentOf` already handles this).
-3. **`exitPlay` targets.** Today a campaign run returns to `campaign` via `below === "squad"`. Change to `stages`? No: return to `home` so the new objective and Play are the next step. Free Play still returns to `maps`, Daily and Expedition to their screens.
+2. **Play for Campaign opens the stage list** (owner decision), with the next uncleared stage preselected. Back from stages goes to home.
+3. **`exitPlay` targets.** A campaign run returns to `stages` (owner decision): `exitPlay` maps `below === "squad"` to `stages`; `go("stages")` finds stages lower in the stack and goes back in history, so the stack becomes home → stages and Back from there reaches home. Result screen buttons (`results.ts` `tdToLobby = "campaign"`, two places) change to `stages`. Free Play still returns to `maps`, Daily and Expedition to their screens.
 4. **Selected mode is state.** Persist the last selected mode in the save (`save.ts`, e.g. `ui.homeMode`), default Campaign for new players. Finishing a run sets it to that run's mode, so Play means "again / next".
 5. **Home has no app bar.** `nav.render` hides `.td-appbar` when `id === "home"`; the camp top bar replaces it. Wallet element is shared: move the wallet node into the camp top bar on home and back into the app bar elsewhere (same move pattern as `panels.embed`), or render the wallet chips twice from `wallet.ts`. Recommend the move: one DOM node, one listener.
 6. **Wallet chip rules** (`td.css` `data-screen` selectors) lose the `campaign` entry.
@@ -100,15 +100,62 @@ Consequences:
 2. New component `src/components/td/TdHome.astro` (markup of the home screen), included from `TdLobby.astro` in place of the current home section. Styles in `td.css` under `.td-camp-home-*`.
 3. New module `src/game/td/page/home.ts`: mode selection, Play target, objective, badges; wire through `ctx.actions` like the other modules. Move summary rendering for the four modes out of `campaign.ts` / `daily.ts` / `expedition.ts` home hooks into data these modules expose.
 4. `nav.ts`: remove `campaign`, update `PARENT`, hide app bar on home, update `exitPlay`.
-5. Remove the Campaign hub section and its styles; add "All stages" to the squad screen.
+5. Remove the Campaign hub section and its styles; point result screen buttons at `stages`.
 6. Save field for selected mode.
 7. Tests: `npm run test:tower-defense`; manual pass at the viewports listed in `docs/tower-defense-ui-plan.md` (owner tests visuals).
 8. Delete `menu-concept.astro` and the `public/td/concepts` image once live. Update `TOWER_DEFENSE_SPEC.md` and the UI plan status.
 
-## Open questions
+## Decisions (owner, September 30, 2026)
 
-1. **Armory and Bestiary.** Neither exists. Options: drop from dock (recommended for now), or Bestiary = direct link to Glossary's enemy section. An Armory needs a whole equipment system; separate decision.
-2. **Commander level / player profile.** The concept shows one; the game has none. Drop, or plan a profile (total stars, stages cleared) later?
-3. **Play for Campaign:** straight to squad of the next stage (recommended), or to the stage list?
-4. **After a campaign run:** back to home (recommended) or to the stage list?
-5. **Heroes and Summon on the dock** means they are no longer framed as campaign-only. They still only matter for Campaign (Free Play uses the full roster). OK, or show a short "Campaign" label on those screens?
+1. Armory and Bestiary: left out.
+2. Commander level / player profile: left out.
+3. Play for Campaign: opens the stage list.
+4. After a campaign run: back to the stage list; Back from there goes home.
+5. Heroes and Summon: on the dock now. Making the collection count in every mode is Phase 2 below, planned but not started.
+
+## Phase 2: one hero collection for every mode (planned, not started)
+
+### Problem
+
+Today Free Play and Expedition give every player the full roster at base stats, while Campaign uses only owned heroes with their levels, Stars, Evolution and skill levels (`campaignHeroes` in `src/game/td/campaign.js`, applied only for campaign stages in `session.ts`). So Free Play already offers all content for free, and nothing earned in Campaign shows up anywhere else. With Heroes and Summon on the home dock, the split becomes even more visible.
+
+### Target
+
+One collection, owned and upgraded through Campaign, used by every mode except the Daily Trial.
+
+| Mode | Heroes available | Upgrades applied | Rewards |
+| --- | --- | --- | --- |
+| Campaign | Owned, squad of `squadSize` | Yes | Gold, Hero XP, Seals (as today) |
+| Free Play | Owned only | Yes | Favor (as today) plus a small share of Gold / Hero XP |
+| Expedition | Owned only | Yes | Favor + Seals (as today) plus a small share of Gold / Hero XP |
+| Daily Trial | Full roster, base stats (unchanged) | No | As today |
+
+Daily Trial stays equal for everyone: it is the one mode that compares players on the same setup (`session.ts` already skips Favor there for that reason).
+
+Campaign keeps its own reason to exist: it is the only place to unlock heroes through stage rewards and the main Seal source, and its stages are authored challenges. Free Play and Expedition become places where your collection matters and that feed back into it.
+
+### Design questions to settle before building
+
+1. **Balance of upgraded heroes in Free Play.** Levels and Stars scale attack and health many times over (levels to 60, Stars to 5, Evolution V). Free Play tiers are tuned for base heroes. Options:
+   a. Apply upgrades and let difficulty tiers scale with squad strength (`heroMight`), so the best score still needs skill.
+   b. Apply upgrades as they are, add harder tiers on top; high scores follow collection strength.
+   c. Owned heroes only, base stats (collection matters, upgrades do not). Simplest, weakest link to Campaign.
+   Recommendation: start with c as a first step, then a once `td:sweep` can measure it.
+2. **Squad limit.** Campaign uses a squad of 6 picked before the run; Free Play recruits in-run from the whole deck. Free Play with all owned heroes in the deck, or a squad pick before the run too? Recommendation: whole owned deck, no squad screen, so Free Play stays quick to start.
+3. **Divine Blessings (Favor).** They apply to Free Play and Expedition, not to Campaign. Keep that split, or let them apply everywhere? Keeping it avoids rebalancing Campaign stages.
+4. **Rewards from Free Play and Expedition.** How much Gold / Hero XP, if any. Must not make new heroes faster to get (see summon progression decisions): no extra Seals beyond the current Expedition reward.
+5. **Existing saves.** Players who only played Free Play have used all heroes; after the change they own only the 6 starters. Accept (fan project, small player base), or grant a one-time Seal gift on migration?
+6. **Free Play maps.** Stay open from the start, or unlock with campaign chapters? Recommendation: stay open; the hero gate is enough.
+
+### Implementation outline
+
+1. Rename the save's `campaign` block concept to "collection" in code (`campaignHeroes` → `collectionHeroes`); keep the save key and add a migration only if the shape changes (`campaign.js` save check).
+2. `session.ts`: build the hero list for Free Play and Expedition from the collection (owned filter, and upgrades per decision 1); Daily unchanged.
+3. `recruit.ts`: deck shows owned heroes only; empty-state text when a class is missing.
+4. Rewards: extend `results.ts` / `expedition.ts` with Gold and Hero XP per decision 4.
+5. Wallet chip rules in `td.css`: Gold / Hero XP visible where they are earned.
+6. Glossary and How to play: explain that heroes are unlocked in Campaign and summoned with Seals.
+7. Balance: extend `npm run td:sweep` and `npm run test:td-balance` with owned-roster and upgraded-roster cases; retune Free Play and Expedition tiers.
+8. Tests: `npm run test:tower-defense`; update `TOWER_DEFENSE_SPEC.md`.
+
+Phase 2 is independent of the home screen work and can ship after it.
