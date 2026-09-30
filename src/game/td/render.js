@@ -144,17 +144,17 @@ export async function createRenderer(canvas, game, options = {}) {
   // from the local anim lab frames (public/td-local/anim-lab/, gitignored, dev only) instead
   // of the token. Lab ids differ from game ids (fengyi = Boreas). Without the parameter
   // nothing changes; remove this block and updateHeroAnim once heroes get real sheets.
-  const animHeroes = new Map(); // hero id -> { idle: [tex], attack: [tex], ultimate: [tex] }
+  const animHeroes = new Map(); // hero id -> { clips: { idle: [tex], attack, ultimate }, hand: [x, y] frame px }
   const animParam = new URLSearchParams(window.location.search).get("anim");
   if (animParam) {
-    const LAB_IDS = { fengyi: "boreas" };
+    const LAB_IDS = { fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius" };
     fetch("/td-local/anim-lab/manifest.json").then((r) => r.json()).then(async ({ characters }) => {
       for (const heroId of animParam.split(",")) {
         const char = characters.find((c) => c.id === (LAB_IDS[heroId] ?? heroId));
         if (!char?.clips.idle) continue;
         const clips = {};
         for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
-        animHeroes.set(heroId, clips);
+        animHeroes.set(heroId, { clips, hand: char.hand ?? [200, 80] });
       }
     }).catch((err) => console.warn("anim lab frames not loaded", err));
   }
@@ -944,9 +944,11 @@ export async function createRenderer(canvas, game, options = {}) {
   // Prototype figure (see animHeroes). Frames are 256x256 with the figure about 225px tall and
   // its feet at y 247. A basic attack resets attackClock upwards; casting the ultimate drops
   // ultClock, so both clips trigger without touching the sim.
-  // hand: where basic shots leave, relative to the slot centre (art facing right).
+  // Basic shots leave from the manifest's hand point (frame pixels, art facing right).
   // The attack clip starts at startFrame so the hand thrust lines up with the shot.
-  const HERO_ANIM = { height: 90, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 }, hand: [37, -69] };
+  const HERO_ANIM = { height: 90, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
+  const ANIM_SCALE = HERO_ANIM.height / 225;
+  const animPoint = ([fx, fy]) => [(fx - 128) * ANIM_SCALE, HERO_ANIM.feetY + (fy - 247) * ANIM_SCALE];
   const animShotSeen = new WeakSet();
   function moveAnimShotOrigins() {
     if (!animHeroes.size) return;
@@ -957,13 +959,14 @@ export async function createRenderer(canvas, game, options = {}) {
       const unit = game.heroes.find((h) => h.entityId === effect.sourceId);
       if (!unit) continue;
       const dir = Math.cos(unit.rotation || 0) < 0 ? -1 : 1;
-      const hx = unit.x + HERO_ANIM.hand[0] * dir, hy = unit.y + HERO_ANIM.hand[1];
+      const [dx, dy] = animPoint(animHeroes.get(effect.heroId).hand);
+      const hx = unit.x + dx * dir, hy = unit.y + dy;
       if (effect.x1 === unit.x && effect.y1 === unit.y) { effect.x1 = hx; effect.y1 = hy; }
       effect.sourceX = hx; effect.sourceY = hy;
     }
   }
   function updateHeroAnim(unit, container) {
-    const clips = animHeroes.get(unit.id);
+    const clips = animHeroes.get(unit.id)?.clips;
     if (!clips) return;
     const now = performance.now();
     let sp = container._anim;
@@ -988,8 +991,7 @@ export async function createRenderer(canvas, game, options = {}) {
     if (reducedMotion && st.clip === "idle") i = 0;
     sp.texture = frames[i % frames.length];
     // The art faces right; mirror when the target is on the left.
-    const scale = HERO_ANIM.height / 225;
-    sp.scale.set(Math.cos(unit.rotation || 0) < 0 ? -scale : scale, scale);
+    sp.scale.set(Math.cos(unit.rotation || 0) < 0 ? -ANIM_SCALE : ANIM_SCALE, ANIM_SCALE);
   }
 
   // Token: the cutout overflows the ring top so the head pops out of the frame.

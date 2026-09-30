@@ -170,7 +170,7 @@
           "mapId": "moonlit-pass",
           "text": "The first refugees are on the road. Hold the pass against grunts and fast runners; road heroes block them, platform heroes shoot from above.",
           "lives": 20,
-          "hpScale": 0.8,
+          "hpScale": 1.0,
           "unlockAfter": null,
           "rewards": [
             {
@@ -252,7 +252,7 @@
           "mapId": "verdant-crossing",
           "text": "Flyers arrive: they soar over your blockers and only platform heroes can hit them. Keep at least two heroes on the platforms.",
           "lives": 15,
-          "hpScale": 0.95,
+          "hpScale": 1.1,
           "unlockAfter": "1-1",
           "rewards": [
             {
@@ -354,7 +354,7 @@
           "mapId": "moonlit-terraces",
           "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
           "lives": 15,
-          "hpScale": 0.9,
+          "hpScale": 1.05,
           "unlockAfter": "1-2",
           "rewards": [
             {
@@ -466,7 +466,7 @@
           "mapId": "verdant-thicket",
           "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
           "lives": 15,
-          "hpScale": 0.68,
+          "hpScale": 1.05,
           "unlockAfter": "1-3",
           "rewards": [
             {
@@ -1115,7 +1115,7 @@
           "mapId": "sunscar-ruins",
           "text": "Every enemy you have met comes at once, through both gates. Ten long waves test your whole squad; level your heroes if you fall short.",
           "lives": 18,
-          "hpScale": 0.5,
+          "hpScale": 0.6,
           "unlockAfter": "1-8",
           "rewards": [
             {
@@ -1273,7 +1273,7 @@
           "mapId": "verdant-crossing",
           "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. Eleven waves and the chapter's final battle.",
           "lives": 15,
-          "hpScale": 0.6,
+          "hpScale": 0.7,
           "unlockAfter": "1-9",
           "rewards": [
             {
