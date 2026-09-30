@@ -267,7 +267,7 @@ export function createHud(ctx: PageContext) {
   // Full screen for the whole game shell (board, panels, overlays). Hidden where the
   // browser can't do element full screen (iPhone Safari). F toggles, Escape exits.
   // Two buttons share this: the fight top bar and the Settings screen (Display).
-  const shell = q("[data-td-root]");
+  const shell = q("[data-td-fullscreen]").closest<HTMLElement>("[data-td-root]")!;
   const fullscreenButtons = [...shell.querySelectorAll<HTMLButtonElement>("[data-td-fullscreen]")];
   const doc = document as any;
   const canFullscreen = Boolean(document.fullscreenEnabled || doc.webkitFullscreenEnabled);
