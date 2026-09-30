@@ -38,12 +38,13 @@ import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type CampaignProgress, type RunBoost } from "./save";
 import { finishDaily } from "./daily";
 import { clearedWaves } from "../daily.js";
-import { collectionReward, grantRewards } from "../campaign.js";
+import { collectionReward, grantRewards, laurelLives } from "../campaign.js";
 import { currencyList } from "../currency-icons.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import { finishExpeditionStage } from "./expedition";
 import { finishCampaignRun } from "./campaign";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
+import { createStageClear } from "./stage-clear";
 
 type ShardChoice = "favor" | "gold" | "virtue";
 
@@ -57,6 +58,11 @@ export function createResults(ctx: PageContext) {
   const { q, data, store, blessingNames } = ctx;
   const resultEl = q("[data-td-result]");
   const shardsEl = q("[data-td-result-shards]");
+  const playEl = q("[data-td-play]");
+  const statsButton = q<HTMLButtonElement>("[data-td-result-stats-toggle]");
+  // Button the final Stage Clear scene focuses (Continue or Retry).
+  let primaryAction: HTMLButtonElement | null = null;
+  const stageClear = createStageClear(ctx, () => primaryAction?.focus({ preventScroll: true }));
   // Run-end shard (6C). The Favor shard is granted with the run's Favor so nothing
   // is lost if the page closes; picking a boost converts it back.
   let shard: { favor: number; earned: number; virtue: string; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
@@ -92,8 +98,26 @@ export function createResults(ctx: PageContext) {
     event.preventDefault();
   });
 
+  // Stats (cleared stages): back to Hero contribution; pressed again it returns to Rewards.
+  statsButton.addEventListener("click", () => {
+    const toStats = resultEl.dataset.scene !== "performance";
+    stageClear.showScene(toStats ? "performance" : "rewards");
+    statsButton.setAttribute("aria-pressed", String(toStats));
+    statsButton.textContent = toStats ? "Back" : "Stats";
+    statsButton.focus({ preventScroll: true });
+  });
+
   function reset() {
+    stageClear.stop();
     resultEl.hidden = true;
+    playEl.classList.remove("is-result-open");
+    resultEl.dataset.view = "report";
+    delete resultEl.dataset.scene;
+    delete resultEl.dataset.final;
+    resultEl.setAttribute("aria-labelledby", "td-result-title");
+    statsButton.hidden = true;
+    statsButton.setAttribute("aria-pressed", "false");
+    statsButton.textContent = "Stats";
     shard = null;
     rewards = [];
     collectionHtml = "";
@@ -201,9 +225,10 @@ export function createResults(ctx: PageContext) {
     const daily = session.daily;
     const expedition = session.expedition;
     const prevRun = daily || expedition || campaign ? null : saved.mapBests[key] || null;
+    const prevTop = daily || expedition || campaign ? null : saved.mapTop[key] || null;
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
-      : campaign ? (({ text, won, followUp }) => ({ text, reached: won, reward: 0, followUp }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
+      : campaign ? (({ text, won, followUp, paid }) => ({ text, reached: won, reward: 0, followUp, paid }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
     // Free Play and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
     const collection = daily || campaign || session.debug ? [] : collectionReward(campaignData, clearedWaves(game));
     if (collection.length) {
@@ -251,11 +276,15 @@ export function createResults(ctx: PageContext) {
     if (followUp) continueButton.dataset.tdCampStage = followUp; else delete continueButton.dataset.tdCampStage;
     continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
       : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
+    // One primary action: Retry steps back when Continue leads on.
+    const retryButton = q<HTMLButtonElement>("[data-td-retry]");
+    retryButton.classList.toggle("action-button--primary", continueButton.hidden);
+    retryButton.classList.toggle("action-button--quiet", !continueButton.hidden);
     // Campaign stages lead back to the stage list instead of the main menu.
     const menuButton = q<HTMLButtonElement>("[data-td-result-menu]");
     menuButton.hidden = !!expedition || (!!campaign && !followUp);
     menuButton.dataset.tdToLobby = campaign ? "stages" : "home";
-    menuButton.textContent = campaign ? "Campaign" : "Main menu";
+    menuButton.textContent = campaign ? "Campaign" : "Back to Camp";
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
     q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
@@ -321,9 +350,36 @@ export function createResults(ctx: PageContext) {
     favorEl.hidden = false;
     ctx.actions.syncSpendButton();
     showTab("summary");
+    playEl.classList.add("is-result-open");
     resultEl.hidden = false;
     resultEl.scrollTop = 0;
-    q<HTMLButtonElement>(expedition || (campaign && game.won) ? "[data-td-result-continue]" : "[data-td-retry]").focus({ preventScroll: true });
+    primaryAction = q<HTMLButtonElement>(expedition || (campaign && game.won) ? "[data-td-result-continue]" : "[data-td-retry]");
+    retryButton.textContent = game.won && !endless ? `Retry ${map.name}` : "Retry";
+    statsButton.hidden = !game.won || endless;
+    if (statsButton.hidden) { primaryAction.focus({ preventScroll: true }); return; }
+
+    // Stage Clear sequence: rewards are what the save gained this run.
+    const favorGained = session.debug || campaign ? 0
+      : rewards.reduce((sum, part) => sum + part.favor, 0) + (shard?.choice === "favor" ? shard.favor : 0);
+    const paid: Record<string, number> = { gold: 0, heroXp: 0 };
+    for (const reward of [...collection, ...(((dailyRun as any)?.paid ?? []) as any[])]) paid[reward.id] = (paid[reward.id] ?? 0) + reward.amount;
+    const expeditionSeals = (dailyRun as any)?.seals ?? 0;
+    if (expeditionSeals) paid.divineSeals = (paid.divineSeals ?? 0) + expeditionSeals;
+    stageClear.play({
+      mapName: map.name,
+      context: [daily || expedition || campaign ? context : "", `${game.totalWaves} waves`, tierName].filter(Boolean).join(" · "),
+      score: game.score,
+      personalBest: !session.debug && !daily && !expedition && !campaign && (!prevTop || game.score > prevTop.score),
+      lives: game.lives,
+      leaks: game.totalLeaks ?? 0,
+      duration: fmtDuration(game.runDuration ?? 0),
+      // Same rule as campaign stage ratings: a clear, half the lives, 90% of the lives.
+      rating: laurelLives(campaignData, { lives: game.maxLives }).filter((lives: number) => game.lives >= lives).length,
+      rewards: [...(campaign ? [] : [{ id: "favor", amount: favorGained }]), ...Object.entries(paid).map(([id, amount]) => ({ id, amount }))],
+      note: session.debug ? "Debug run: score, bests and rewards were not recorded." : dailyRun?.text ?? "",
+      rows: damageRows(game.heroStats ?? {}),
+    });
+    resultEl.focus({ preventScroll: true });
   }
 
   return { finishRun, reset };

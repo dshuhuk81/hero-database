@@ -100,8 +100,17 @@ Input from the job: which still (e.g. `brute-v3`), optionally prompt wishes.
    like "no fire, no flames, no sparks" made Surtr's clips burn more). Start `keep` with "Clean
    crisp frames that show only the <figure>; nothing else appears in the image, the background
    stays empty. Colors stay exactly as in the still." and describe gestures ("thrusts the palm
-   forward", "raises the staff"), never the effect. Art that already glows (Surtr's sword) still
-   tends to get swing trails in attacks; remove detached bits afterwards and accept small leftovers.
+   forward", "raises the staff"), never the effect. Weapon swings ("slash", "swing", "chop") almost
+   always get a white swing trail and a bigger blade; write thrusts, pushes and drops instead
+   ("thrusts the sword straight forward", "drops the hammer onto the ground in front of him") and
+   add "the <weapon> stays the same size and plain in every frame". Calm gestures and object moves
+   (horn, lyre, raised staff) come out clean on the first try.
+
+   **Match the attack to the hero's class and weapon.** Look up the class in
+   `src/data/gameBalance.json` before writing prompts. Melee heroes (Warrior, Tank, Assassin) attack
+   with their weapon (thrust, drop, stab); an open-hand gesture is only for ranged casters and
+   supports. Name the weapon exactly as it is meant to be (spear, blade-spear, oar, dagger). If the
+   art does not show it clearly or the owner's reference says otherwise, ask the owner first.
    `frame_count` must be a multiple of 4 (4, 8, 12, ...); 12 frames cost 2 generations.
 3. **Generate** (runs 5-20 minutes; safe to rerun, finished clips are skipped, running jobs are
    picked up from `jobs.json`):

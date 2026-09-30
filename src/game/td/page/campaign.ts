@@ -35,7 +35,7 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   if (record) save.campaign = result.progress as CampaignProgress;
   const label = `Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
-  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId };
+  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[] };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
@@ -44,8 +44,17 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   for (const milestone of result.milestones ?? []) parts.push(`Chapter reward for ${milestone.laurels} rating points: ${rewardText(milestone.rewards)}.`);
   if (result.unlocked) parts.push(`Stage ${result.unlocked.id} ${result.unlocked.name} unlocked.`);
   if (!record) parts.push("Debug run: progress was not recorded.");
-  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null };
+  // Currencies paid by the clear and its chapter milestones, for the Stage Clear reward cards.
+  const paid = record ? [...currencies, ...(result.milestones ?? []).flatMap((milestone: any) => milestone.rewards.filter((reward: any) => reward.type === "currency"))] : [];
+  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null, paid };
 }
+
+// Stage rating (M26 sprint 10, internally "laurels"): a laurel wreath per point, no
+// player-facing name. Earned ones are gold, the rest hollow (also the Stage Clear rating).
+const LEAVES = [[7.4, 18, -60], [5.4, 15.2, -35], [4.6, 11.8, -12], [5, 8.4, 12], [6.6, 5.4, 35]]
+  .flatMap(([x, y, a]) => [[x, y, a], [24 - x, y, -a]])
+  .map(([x, y, a]) => `<ellipse cx="${x}" cy="${y}" rx="2.1" ry="1.05" transform="rotate(${a} ${x} ${y})" />`).join("");
+export const laurelIcon = (earned: boolean) => `<svg class="td-laurel${earned ? " is-earned" : ""}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5c-4.2-.8-7.4-4.6-7.4-9.8M12 20.5c4.2-.8 7.4-4.6 7.4-9.8" fill="none" />${LEAVES}</svg>`;
 
 export function createCampaign(ctx: PageContext) {
   const { root, q, store, data, heroById } = ctx;
@@ -112,12 +121,6 @@ export function createCampaign(ctx: PageContext) {
     ? `<span class="td-camp-stage-badge is-${state}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${BADGE_PATHS[state]}</svg></span>`
     : "";
 
-  // Stage rating (M26 sprint 10, internally "laurels"): a laurel wreath per point, no
-  // player-facing name. Earned ones are gold, the rest hollow.
-  const LEAVES = [[7.4, 18, -60], [5.4, 15.2, -35], [4.6, 11.8, -12], [5, 8.4, 12], [6.6, 5.4, 35]]
-    .flatMap(([x, y, a]) => [[x, y, a], [24 - x, y, -a]])
-    .map(([x, y, a]) => `<ellipse cx="${x}" cy="${y}" rx="2.1" ry="1.05" transform="rotate(${a} ${x} ${y})" />`).join("");
-  const laurelIcon = (earned: boolean) => `<svg class="td-laurel${earned ? " is-earned" : ""}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.5c-4.2-.8-7.4-4.6-7.4-9.8M12 20.5c4.2-.8 7.4-4.6 7.4-9.8" fill="none" />${LEAVES}</svg>`;
   const laurelRow = (n: number, label = true) => `<span class="td-laurels"${label ? ` role="img" aria-label="Rating ${n} of 3"` : ' aria-hidden="true"'}>${[0, 1, 2].map((i) => laurelIcon(i < n)).join("")}</span>`;
 
   // Battlefield preview (as on the map select): terrain, lane routes, spawn gates and base.

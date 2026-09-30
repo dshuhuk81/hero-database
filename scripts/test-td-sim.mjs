@@ -1574,8 +1574,22 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const zeus = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("grunt");
-  g.hit(g.enemies[0], 1, zeus, { crit: true });
+  const grunt = g.enemies[0];
+  g.hit(grunt, 1, zeus, { crit: true });
   assert.equal(g.effects.find((e) => e.type === "hit")?.crit, true, "crit flag on hit effect");
+  assert.deepEqual(
+    (({ enemyId, amount, crit }) => ({ enemyId, amount, crit }))(g.effects.find((e) => e.type === "damageNumber")),
+    { enemyId: grunt.entityId, amount: 1, crit: true },
+    "damage number identifies the enemy and actual health damage",
+  );
+  g.effects = [];
+  grunt.shield = grunt.shieldMax = 10;
+  g.hit(grunt, 4, zeus);
+  assert.deepEqual(
+    (({ amount, shielded }) => ({ amount, shielded }))(g.effects.find((e) => e.type === "damageNumber")),
+    { amount: 4, shielded: true },
+    "shield damage also produces a damage number",
+  );
   g.spawnEnemy("boss");
   const boss = g.enemies.find((e) => e.kind === "boss");
   g.hit(boss, boss.hp + 1, zeus);

@@ -132,7 +132,71 @@
   </div>
 </div>
 
-<div class="td-result" data-td-result role="dialog" aria-modal="true" aria-labelledby="td-result-title" hidden>
+<!-- Results: a won stage plays the Stage Clear sequence (data-view="clear", stage-clear.ts):
+     Rewards, Victory, Hero contribution. Stats and every other outcome show the detailed report
+     (data-view="report"). The footer actions are shared by both views. -->
+<div class="td-result" data-td-result data-view="report" role="dialog" aria-modal="true" aria-labelledby="td-result-title" tabindex="-1" hidden>
+  <div class="td-clear" data-td-clear aria-live="polite">
+    <section class="td-clear-scene td-clear-rewards" data-clear-scene="rewards" aria-labelledby="td-clear-rewards-title">
+      <div class="td-clear-panel">
+        <div class="td-clear-head">
+          <div>
+            <span class="td-label" data-clear-rewards-kicker>Victory</span>
+            <h2 id="td-clear-rewards-title">Rewards received</h2>
+          </div>
+          <span class="td-clear-chip">Clear reward</span>
+        </div>
+        <div class="td-clear-reward-list" data-clear-rewards></div>
+        <p class="td-clear-note" data-clear-note hidden></p>
+      </div>
+    </section>
+
+    <section class="td-clear-scene td-clear-victory" data-clear-scene="victory" aria-labelledby="td-clear-victory-title">
+      <div class="td-clear-outcome">
+        <div class="td-clear-kicker"><span class="td-clear-kicker-mark" aria-hidden="true">✦</span> Victory</div>
+        <h2 id="td-clear-victory-title" data-clear-title>Stage secured</h2>
+        <p class="td-clear-context" data-clear-context></p>
+        <div class="td-clear-score-row">
+          <div class="td-clear-score">
+            <span>Final score</span>
+            <strong data-clear-score>0</strong>
+            <small data-clear-best hidden>New personal best</small>
+          </div>
+          <dl class="td-clear-facts" aria-label="Run outcome">
+            <div><dt>Lives left</dt><dd data-clear-lives>0</dd></div>
+            <div><dt>Leaks</dt><dd data-clear-leaks>0</dd></div>
+            <div><dt>Duration</dt><dd data-clear-duration>0s</dd></div>
+          </dl>
+        </div>
+        <div class="td-clear-laurels" data-clear-laurels role="img"></div>
+      </div>
+      <div class="td-clear-mvp" data-clear-mvp hidden>
+        <div class="td-clear-mvp-glow" aria-hidden="true"></div>
+        <img data-clear-mvp-art alt="" decoding="async" />
+        <div class="td-clear-mvp-copy">
+          <span>MVP</span>
+          <strong data-clear-mvp-name></strong>
+          <small data-clear-mvp-stats></small>
+        </div>
+      </div>
+    </section>
+
+    <section class="td-clear-scene td-clear-performance" data-clear-scene="performance" aria-labelledby="td-clear-performance-title">
+      <div class="td-clear-panel">
+        <div class="td-clear-head">
+          <div>
+            <span class="td-label" data-clear-performance-kicker>Victory</span>
+            <h2 id="td-clear-performance-title">Hero contribution</h2>
+          </div>
+          <span class="td-clear-total" data-clear-total></span>
+        </div>
+        <div class="td-clear-legend" aria-hidden="true"><span>Hero</span><span>Damage</span><span>Boss</span><span>Kills</span></div>
+        <ol class="td-clear-rankings" data-clear-rankings></ol>
+        <p class="td-clear-note" data-clear-rankings-empty hidden>No hero dealt damage this run.</p>
+      </div>
+    </section>
+  </div>
+
   <div class="td-result-inner">
     <header class="td-result-head">
       <span class="td-result-kicker" data-td-result-kicker>Run complete</span>
@@ -162,11 +226,13 @@
         <p class="td-result-empty" data-td-result-battle-empty hidden>No hero dealt damage this run.</p>
       </section>
     </div>
-    <div class="td-result-actions">
-      <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
-      <button class="action-button action-button--primary" type="button" data-td-to-lobby="expedition" data-td-result-continue hidden>Continue</button>
-      <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>
-      <button class="action-button action-button--quiet" type="button" data-td-to-lobby="home" data-td-result-menu>Main menu</button>
-    </div>
+  </div>
+
+  <div class="td-result-actions">
+    <button class="action-button action-button--quiet td-result-menu" type="button" data-td-to-lobby="home" data-td-result-menu>Back to Camp</button>
+    <button class="action-button action-button--quiet" type="button" data-td-result-stats-toggle aria-pressed="false" hidden>Stats</button>
+    <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>
+    <button class="action-button action-button--primary" type="button" data-td-to-lobby="expedition" data-td-result-continue hidden>Continue</button>
+    <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
   </div>
 </div>

@@ -1503,12 +1503,16 @@ export class TowerDefenseGame {
     const rot = this.boons.length && this.isPoisoned(enemy) ? 1 + (this.hasBoon("venom_rot")?.bonus || 0) : 1;
     const shatter = this.boons.length && (enemy.frozenUntil ?? 0) > this.time ? 1 + (this.hasBoon("shattering_cold")?.bonus || 0) : 1;
     const before = enemy.hp;
+    const shieldBefore = enemy.shield || 0;
     const stance = (enemy.stanceUntil ?? 0) > this.time ? 1 - (this.bossTuning?.stance?.reduction || 0) : 1;
     enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter * stance);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     const dealt = Math.max(0, before - Math.max(0, enemy.hp));
+    const shieldDealt = Math.max(0, shieldBefore - (enemy.shield || 0));
+    if (dealt + shieldDealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind,
+      x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
     if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
     if (enemy.hp <= 0) this.killEnemy(enemy, hero);
     return dealt;

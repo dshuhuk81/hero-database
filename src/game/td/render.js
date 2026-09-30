@@ -3,7 +3,7 @@
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
 import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, tdAsset } from "./assets.js";
-import { fitRect } from "./ui.js";
+import { fitRect, shortNumber } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
@@ -117,8 +117,9 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerBars   = new PIXI.Container(); // hp bars (redrawn each frame)
   const layerFx     = new PIXI.Container(); // shot tracers, hit rings
   const layerParts  = new PIXI.Container(); // particles
+  const layerNumbers = new PIXI.Container(); // floating damage numbers
   const layerHud    = new PIXI.Container(); // portals, labels
-  for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerHud]) {
+  for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
     stage.addChild(l);
   }
 
@@ -150,6 +151,12 @@ export async function createRenderer(canvas, game, options = {}) {
     const LAB_IDS = {
       fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius", prometheus: "ymir", momus: "heimdall",
       demeter: "gaia", poseidon: "aegir", nyx: "nott", horus: "vidar", caishen: "plutus", yuelao: "harmonia",
+      diana: "skadi", artemis: "atalanta", medusa: "stheno",
+      // Recruit pairs share one design per class.
+      "recruit-bram": "recruit-tank", "recruit-tilda": "recruit-tank", "recruit-kellan": "recruit-warrior",
+      "recruit-sable": "recruit-warrior", "recruit-ash": "recruit-assassin", "recruit-nyra": "recruit-assassin",
+      "recruit-elm": "recruit-mage", "recruit-ives": "recruit-mage", "recruit-wren": "recruit-archer",
+      "recruit-hollis": "recruit-archer", "recruit-poppy": "recruit-support", "recruit-jory": "recruit-support",
     };
     // Each hero loads on its own, so one broken clip cannot block the others.
     fetch("/td-local/anim-lab/manifest.json", { cache: "no-store" }).then((r) => r.json()).then(({ characters }) =>
@@ -1545,6 +1552,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Effects + particles
   // ------------------------------------------------------------------
   const particles = [];
+  const damageNumbers = [];
   const seenEffects = new WeakSet();
   let particleClock = null;
   let fxClock = 0;
@@ -1564,6 +1572,41 @@ export async function createRenderer(canvas, game, options = {}) {
     else if (unit.chill > 0) list.push("chill");
     if (game.isWet?.(unit)) list.push("wet");
     return list;
+  }
+
+  function spawnDamageNumber(effect) {
+    const stack = damageNumbers.reduce((count, popup) => count + (popup.enemyId === effect.enemyId ? 1 : 0), 0);
+    const body = enemyBody({ kind: effect.enemyKind, x: effect.x, y: effect.y, flying: effect.flying });
+    const text = new PIXI.Text({
+      text: shortNumber(Math.max(1, effect.amount)),
+      style: {
+        fill: effect.crit ? 0xffe27a : effect.shielded ? 0x9de7ff : 0xf8f5ff,
+        fontFamily: "system-ui, sans-serif",
+        fontSize: effect.crit ? 15 : 12,
+        fontWeight: effect.crit ? "600" : "400",
+        stroke: { color: 0x160f20, width: 3, join: "round" },
+      },
+    });
+    text.anchor.set(0.5, 1);
+    text.position.set(effect.x + ((stack % 3) - 1) * 8, body.top - 3 - Math.min(stack, 3) * 4);
+    layerNumbers.addChild(text);
+    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, life: effect.life, maxLife: 0.75 });
+  }
+
+  function advanceDamageNumbers(dt) {
+    for (let i = damageNumbers.length - 1; i >= 0; i--) {
+      const popup = damageNumbers[i];
+      popup.life -= dt;
+      if (popup.life <= 0) {
+        layerNumbers.removeChild(popup.text);
+        popup.text.destroy();
+        damageNumbers.splice(i, 1);
+        continue;
+      }
+      const progress = 1 - popup.life / popup.maxLife;
+      popup.text.y = popup.y - (reducedMotion ? 8 : 24) * progress;
+      popup.text.alpha = Math.min(1, popup.life * 5) * Math.min(1, progress * 8 + 0.35);
+    }
   }
 
   function spawnParticle(texName, x, y, { size = 28, life = 0.3, vx = 0, vy = 0, rot = 0, vr = 0, tint = "gold" } = {}) {
@@ -1610,6 +1653,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function spawnParticles(effect) {
+    if (effect.type === "damageNumber") return spawnDamageNumber(effect);
     if (hasHeroFx(effect)) return;
     if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) return;
     // Travelling replacements for the old tracer lines; the kit tones them down for reduced motion.
@@ -1744,10 +1788,12 @@ export async function createRenderer(canvas, game, options = {}) {
     zeusFx.update(game.effects);
     statusFx.update(game.enemies, fxDt, enemyBody, enemyStatuses);
     fxKit.update(fxDt);
+    advanceDamageNumbers(fxDt);
 
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
     for (const effect of game.effects) {
+      if (effect.type === "damageNumber") continue;
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
       if (effect.type === "veil") continue; // the hero token turns translucent instead (particles mark the start)
       if (hasHeroFx(effect)) continue;

@@ -25,6 +25,7 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
   // Camp recruits come from the owned heroes (Phase 2), like the starting roster.
   const result = finishStage(state, { won: !!game.won, lives: game.lives ?? 0 }, { ...data, heroes: ownedHeroes(save.campaign, data.heroes) });
   let reward = 0;
+  let seals = 0;
   if (record) {
     save.expedition = result.state as ExpeditionState | null;
     save.expeditionBest = { ...save.expeditionBest, stages: Math.max(save.expeditionBest.stages, result.cleared) };
@@ -32,6 +33,7 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
       reward = EXPEDITION.completeFavor;
       save.favor = (save.favor || 0) + reward;
       save.campaign = addSeals(save.campaign, EXP_SEALS) as SaveData["campaign"];
+      seals = EXP_SEALS;
       save.expeditionBest.completed += 1;
     }
   }
@@ -40,7 +42,7 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
     : result.outcome === "complete"
       ? `Expedition complete: all ${total} stages cleared.${reward ? ` +${reward} Favor${EXP_SEALS ? `, +${EXP_SEALS} Divine Seals` : ""}.` : ""}`
       : `The expedition ends at stage ${state.stage + 1} of ${total} (${result.cleared} cleared).`;
-  return { outcome: result.outcome, text, reward };
+  return { outcome: result.outcome, text, reward, seals };
 }
 
 export function createExpedition(ctx: PageContext) {

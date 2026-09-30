@@ -864,9 +864,29 @@ base 25% on 1-8 and 1-10; 3 stars about +20 points; Evolution V alone about +35;
 
 ### Results screen
 
+The result (`[data-td-result]` in `TdOverlays.astro`, `page/results.ts`) covers the whole
+play screen: `.td-play.is-result-open` hides the top and bottom bars. Its footer is shared
+by every view: Back to Camp, Stats (cleared stages only), Spend Favor, Continue, Retry.
+
+**Stage Clear** (any won stage, `page/stage-clear.ts`, `data-view="clear"`): three scenes
+on the same surface, in this order: Victory (stage, waves and tier, final score, New
+personal best for a Free Play top score, lives, leaks, duration, the stage rating as three
+laurels that start dark and fill gold one after another, MVP art with damage and kills), Hero contribution (heroes ranked by damage: portrait, name and title, damage and
+share bar, support, boss damage, kills; the list scrolls) and Rewards (Divine Favor, Hero
+Gold, Hero XP and any other currency the save gained, plus the Daily, Expedition or
+Campaign outcome line). Victory and Hero contribution advance after `SCENE_MS` (2000 ms)
+each; Rewards stays and shows the footer buttons (`data-final`). The footer bar itself is
+there from the first scene, empty, so the layout does not jump. One timer at a time, cleared by
+`results.reset()` (restart, exit, new run). Reduced motion drops the animations, not the
+timing. Stats switches to Hero contribution, Back returns to Rewards. The MVP is the
+damage leader. The rating uses the campaign laurel rule for every mode (`laurelLives()`:
+a clear, 50% and 90% of the run's `maxLives` kept). Visual prototype for comparison: `/games/tower-defense/result-redesign-review`.
+
+Losses and Endless runs open the detailed report directly (`data-view="report"`).
+
 A campaign stage's result screen offers Retry, the follow-up (Next: stage X after a win,
 Change squad after a loss) and **Campaign** (back to the stage list) instead of
-Main menu. Spend Favor is hidden after campaign stages (they earn no Favor).
+Back to Camp. Spend Favor is hidden after campaign stages (they earn no Favor).
 
 ## 9. Meta progression
 
