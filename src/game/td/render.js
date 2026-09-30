@@ -147,10 +147,15 @@ export async function createRenderer(canvas, game, options = {}) {
   const animHeroes = new Map(); // hero id -> { clips: { idle: [tex], attack, ultimate }, hand: [x, y] frame px }
   const animParam = new URLSearchParams(window.location.search).get("anim");
   if (animParam) {
-    const LAB_IDS = { fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius" };
+    const LAB_IDS = {
+      fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius", prometheus: "ymir", momus: "heimdall",
+      demeter: "gaia", poseidon: "aegir", nyx: "nott", horus: "vidar", caishen: "plutus", yuelao: "harmonia",
+    };
     // Each hero loads on its own, so one broken clip cannot block the others.
     fetch("/td-local/anim-lab/manifest.json", { cache: "no-store" }).then((r) => r.json()).then(({ characters }) =>
-      Promise.all(animParam.split(",").map((id) => id.trim()).filter(Boolean).map(async (heroId) => {
+      // ?anim=all: every hero with lab frames.
+      Promise.all((animParam === "all" ? Object.keys(LAB_IDS).filter((id) => characters.some((c) => c.id === LAB_IDS[id]))
+        : animParam.split(",").map((id) => id.trim()).filter(Boolean)).map(async (heroId) => {
         const char = characters.find((c) => c.id === (LAB_IDS[heroId] ?? heroId));
         if (!char?.clips.idle) return `${heroId}: no lab frames`;
         try {
