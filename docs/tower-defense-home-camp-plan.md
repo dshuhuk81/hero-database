@@ -1,6 +1,6 @@
 # Tower Defense home screen: War Camp plan
 
-Status: plan, September 30, 2026. Reference prototype: `src/pages/games/tower-defense/menu-concept.astro` (layout and interaction only; icons, font and colors there are placeholders).
+Status: home screen built September 30, 2026 on branch `tower-main-home-screen` (steps 1-8 below; the background still needs its R2 upload). Phase 2 is planned, not started. The reference prototype (`menu-concept.astro`) and its concept image were deleted once the screen was in place.
 
 ## Goal
 
@@ -96,6 +96,8 @@ Consequences:
 
 ## Implementation steps
 
+All done September 30, 2026, except the R2 upload in step 1 (owner). Where the build differs from the plan text, see "As built" below.
+
 1. Upload background to R2, add path to `assets.js`.
 2. New component `src/components/td/TdHome.astro` (markup of the home screen), included from `TdLobby.astro` in place of the current home section. Styles in `td.css` under `.td-camp-home-*`.
 3. New module `src/game/td/page/home.ts`: mode selection, Play target, objective, badges; wire through `ctx.actions` like the other modules. Move summary rendering for the four modes out of `campaign.ts` / `daily.ts` / `expedition.ts` home hooks into data these modules expose.
@@ -104,6 +106,17 @@ Consequences:
 6. Save field for selected mode.
 7. Tests: `npm run test:tower-defense`; manual pass at the viewports listed in `docs/tower-defense-ui-plan.md` (owner tests visuals).
 8. Delete `menu-concept.astro` and the `public/td/concepts` image once live. Update `TOWER_DEFENSE_SPEC.md` and the UI plan status.
+
+## As built (September 30, 2026)
+
+- Background: `public/td/ui/camp-home.webp` (1672x941, WebP q80, about 300 KB, converted from the concept PNG) is the upload source, like the other R2 art kept under `public/td/`. `assets.js` exports `campHomeArt()` (`td/ui/camp-home.webp`); `home.ts` sets it on the scene, and `--bg-overlay` shows until it loads. Upload: `node scripts/upload-to-r2.mjs --prefix td/ui/`.
+- Files: `src/components/td/TdHome.astro` (markup), `src/game/td/page/home.ts` (mode rail, Play, objective, badges), `.td-camp-home*` in `td.css`. `campaign.ts`, `daily.ts` and `expedition.ts` expose `homeSummary()` in place of the old home card hooks; `campaign.ts` also exposes `focusNextStage()` so Play opens the stage list on the next stage's chapter (its card has autofocus). `route.ts` keeps only `roman()`; the route rail markup and styles went with the home cards.
+- Save: `ui.homeMode` (`"campaign" | "daily" | "expedition" | "free"`, default Campaign, sanitized in `sanitizeSave`). A run sets it when it starts (`session.ts`), so a quit run also counts; picking a mode on the rail sets it too.
+- Wallet: one node, moved between the app bar and the home top bar by `wallet.place()` from the page's `onShow`. Its dropdown is capped to the home screen's height there and scrolls.
+- Objective: not a button; Play is the one action. When every stage is cleared it shows the Daily Trial (cleared or not, with the reset time).
+- Mode notes: Campaign "Begin 1-1" / "Continue 2-2" / "All stages cleared"; Daily "New trial" (badge 1) / "Cleared today"; Expedition "Not started" / "Stage II of III" / "Camp reward waiting"; Free Play "Best 155,868" / "No runs yet". The Play note under the button carries the stage name, today's battlefield with the reset countdown, lives left, or the Free Play map (the next-run shard boost when one is pending).
+- Small screens: the menu frame keeps every landscape phone at about 390 logical px tall, so "short" means a frame up to 420px (slim bars, one-line objective). Dock labels drop only below 360px (frames under the zoom floor), since at 390 they fit and hiding them there would hide them on every phone. Portrait frames use `@container td-home (orientation: portrait)`.
+- "Your company" strip: dropped with the Campaign hub.
 
 ## Decisions (owner, September 30, 2026)
 

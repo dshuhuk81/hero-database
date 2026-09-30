@@ -47,6 +47,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       state.selectedMap = map;
       try { localStorage.setItem("td:map", map.id); } catch {}
     }
+    // The home screen's Play picks this mode next time ("again" or "next").
+    const homeMode = daily ? "daily" : expedition ? "expedition" : campaign ? "campaign" : "free";
+    if (store.data.ui.homeMode !== homeMode) {
+      store.data.ui = { ...store.data.ui, homeMode };
+      store.persist();
+    }
     deps.music.play(map.music);
     ctx.actions.showScreen("play");
     pause.clear();

@@ -1,0 +1,82 @@
+---
+// Home screen (War Camp, docs/tower-defense-home-camp-plan.md): the camp scene fills the
+// screen and the controls float on its edges. Top bar (title crest, wallet, settings), the
+// current objective, the mode rail (a radio group: picking a mode changes what Play opens),
+// the Play button and the dock. src/game/td/page/home.ts fills the data-td-home-* hooks and
+// moves the global wallet into data-td-home-wallet; styles are .td-camp-home-* in td.css.
+const modes = [
+  { id: "campaign", label: "Campaign", icon: "M6 21V3M6 4h11l-2.5 4L17 12H6" },
+  { id: "daily", label: "Daily Trial", icon: "M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9" },
+  { id: "expedition", label: "Expedition", icon: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M15.5 8.5l-2 5-5 2 2-5z" },
+  { id: "free", label: "Free Play", icon: "M4 4l10 10M14 14l-2 2M14 14l2-2M16.5 16.5l3 3M20 4L10 14M10 14l2 2M10 14l-2-2M7.5 16.5l-3 3" },
+];
+const dock = [
+  { id: "heroes", label: "Heroes", icon: "M7 8a3 3 0 106 0a3 3 0 10-6 0M3 20c0-4 3-6 7-6s7 2 7 6M15 5a3 3 0 010 6M17 14c2.5.5 4 2.5 4 6" },
+  { id: "summon", label: "Summon", icon: "M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18" },
+  { id: "blessings", label: "Blessings", icon: "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z" },
+  { id: "glossary", label: "Glossary", icon: "M5 4h10a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h10" },
+  { id: "help", label: "How to play", icon: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M9.5 9.5a2.5 2.5 0 114 2c-1 .7-1.5 1.2-1.5 2.5M12 17h.01" },
+];
+---
+
+<section class="td-screen td-camp-home" data-td-screen="home" data-title="Tower Defense" aria-label="Main menu">
+  <div class="td-camp-home-scene" data-td-home-scene aria-hidden="true"></div>
+  <div class="td-camp-home-layout">
+    <header class="td-camp-home-top">
+      <div class="td-camp-home-crest">
+        <svg class="td-camp-home-crest-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5l8 3v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10v-6z" /><path d="M9 17v-5.5h6V17M8.5 11.5V8.5h1.5v1.2h1.2V8.5h1.6v1.2h1.2V8.5h1.5v3" /></svg>
+        <h2 class="td-camp-home-title">Tower Defense</h2>
+      </div>
+      <div class="td-camp-home-wallet" data-td-home-wallet></div>
+      <button class="td-icon-button td-camp-home-round" type="button" data-td-go="settings" aria-label="Settings">
+        <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" /><circle cx="15" cy="7" r="2" fill="none" /><circle cx="9" cy="17" r="2" fill="none" /></svg>
+      </button>
+    </header>
+
+    <!-- Next campaign stage and chapter progress; the Daily Trial once the campaign is done. -->
+    <aside class="td-camp-home-quest" aria-labelledby="td-home-quest-title">
+      <span class="td-camp-home-kicker">Current objective</span>
+      <strong id="td-home-quest-title" data-td-home-quest-title></strong>
+      <span class="td-camp-home-quest-note" data-td-home-quest-note></span>
+      <span class="td-camp-home-meter" data-td-home-quest-meter aria-hidden="true"><i></i></span>
+    </aside>
+
+    <div class="td-camp-home-rail" role="radiogroup" aria-label="Game mode" data-td-home-modes>
+      {modes.map((mode) => (
+        <button class="td-camp-home-mode" type="button" role="radio" aria-checked="false" tabindex="-1" data-home-mode={mode.id}>
+          <span class="td-camp-home-mode-copy"><strong>{mode.label}</strong><small data-home-mode-note></small></span>
+          <span class="td-camp-home-medal">
+            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={mode.icon} fill="none" /></svg>
+            <span class="td-camp-home-badge" data-home-mode-badge aria-hidden="true" hidden></span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <button class="td-camp-home-play" type="button" data-td-home-play data-td-autofocus>
+      <span class="td-camp-home-play-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 6l9 6-9 6z" /></svg></span>
+      <span class="td-camp-home-play-copy">
+        <small data-td-home-play-kicker></small>
+        <strong>Play</strong>
+        <span data-td-home-play-note></span>
+      </span>
+    </button>
+
+    <nav class="td-camp-home-dock" aria-label="Camp">
+      {dock.map((item) => (
+        <button class="td-camp-home-dock-item" type="button" data-td-go={item.id} data-home-dock={item.id} aria-label={item.label}>
+          <span class="td-camp-home-dock-icon">
+            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={item.icon} fill="none" /></svg>
+            <span class="td-camp-home-badge td-camp-home-badge--dot" data-home-dock-badge hidden></span>
+          </span>
+          <span class="td-camp-home-dock-label" aria-hidden="true">{item.label}</span>
+        </button>
+      ))}
+    </nav>
+
+    <a class="td-camp-home-exit" href="/">
+      <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" /></svg>
+      Exit to database
+    </a>
+  </div>
+</section>

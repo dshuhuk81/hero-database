@@ -1,5 +1,5 @@
-// Campaign (M26) on the page: the Campaign screen (chapter, currencies, stages with lock
-// and clear state and their rewards), the Squad screen (pick up to squadSize owned heroes),
+// Campaign (M26) on the page: the Stages screen (chapter tabs, stages with lock and clear
+// state and their rewards, opened from the home screen's Play), the Squad screen (pick up to squadSize owned heroes),
 // the Heroes screen (level heroes with Gold and Hero XP), the Summon screen (Divine Seals
 // buy one or ten heroes not owned yet; the reveal stage is ./summon-reveal.ts) and recording a finished stage for the result screen. Rules
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
@@ -14,7 +14,7 @@ import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
-import { roman, routeHtml } from "./route";
+import { roman } from "./route";
 import { currencyAmount, currencyIcon, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
 
@@ -53,11 +53,6 @@ export function createCampaign(ctx: PageContext) {
   const chapterEl = q("[data-td-camp-chapter]");
   const progressEl = q("[data-td-camp-progress]");
   const laurelTrackEl = q("[data-td-camp-laurels]");
-  const summaryTitleEl = q("[data-td-camp-summary-title]");
-  const summaryEl = q("[data-td-camp-summary]");
-  const summaryChapterEl = q("[data-td-camp-summary-chapter]");
-  const summaryRouteEl = q("[data-td-camp-summary-route]");
-  const summaryCtaEl = q("[data-td-camp-summary-cta]");
   const squadListEl = q("[data-td-squad-list]");
   const squadStart = q<HTMLButtonElement>("[data-td-squad-start]");
   const heroListEl = q("[data-td-camp-heroes]");
@@ -93,7 +88,6 @@ export function createCampaign(ctx: PageContext) {
   const rewardHtml = (rewards: any[]) => `<span class="td-cur-list">${rewards.map((reward) => reward.type === "currency"
     ? currencyAmount(reward.id, reward.amount, { plus: true })
     : `<span class="td-cur td-cur--hero">${heroById.get(reward.id)?.portrait ? `<img src="${heroById.get(reward.id).portrait}" alt="">` : ""}<b>${heroName(reward.id)}</b></span>`).join("")}</span>`;
-  const costText = (cost: Record<string, number>) => Object.entries(cost).map(([id, n]) => `${n} ${(CURRENCY_NAMES as Record<string, string>)[id] ?? id}`).join(", ");
 
   // Squad Might vs. a stage's recommendation: a legible readout of the same hpScale
   // knob the simulator uses to scale enemy HP, not a separate invented difficulty axis.
@@ -140,32 +134,31 @@ export function createCampaign(ctx: PageContext) {
   }
 
   function render() {
+    renderStages();
+  }
+
+  // Play on the home screen: the stage list opens on the chapter of the next stage.
+  function focusNextStage() {
+    chapterId = null;
+    renderStages();
+  }
+
+  // Home screen data (home.ts): the next stage with its chapter progress, and whether a
+  // summon or a hero upgrade can be bought right now (dock badges).
+  function homeSummary() {
     const p = progress();
     const next = nextStage(campaign, p);
     const chapter = currentChapter(campaign, p);
     const stages: any[] = chapter.stages;
-    const cleared = stages.filter((stage: any) => isCleared(p, stage.id)).length;
-    q("[data-td-camp-home-chapter]").textContent = `Chapter ${chapter.id} · ${chapter.name}`;
-    q("[data-td-camp-home-progress]").textContent = next ? `${cleared} of ${stages.length} stages cleared · ${stages.length - cleared} ahead` : "Chapter complete · Revisit stages for Gold and Hero XP";
-    const meter = q<HTMLProgressElement>("[data-td-camp-home-meter]");
-    meter.max = stages.length;
-    meter.value = cleared;
-    const upgrades = p.owned.filter((id) => canLevelUp(campaign, p, id) || evolutionMaterial(campaign, p, id) === "copy").length;
-    q("[data-td-camp-home-heroes]").textContent = `${p.owned.length} / ${data.heroes.length} collected · ${upgrades ? `${upgrades} ready to upgrade` : "Earn Gold and Hero XP to level up"}`;
-    const remaining = summonPool(p, allHeroIds()).length;
-    q("[data-td-camp-home-summon]").textContent = canSummon(summonCfg, banner.id, p, allHeroIds()) ? `Summon available${remaining ? ` · ${remaining} heroes not owned yet` : " · duplicates become copies"}` : `${costText(banner.cost)} per summon`;
-    const company = (p.lastSquad.length ? p.lastSquad : p.owned.slice(0, campaign.squadSize)).filter((id) => p.owned.includes(id));
-    q("[data-td-camp-company-note]").textContent = p.lastSquad.length ? "Last deployed squad" : "Your first defenders";
-    q("[data-td-camp-company]").innerHTML = company.map((id) => {
-      const hero = heroById.get(id);
-      return hero ? `<div class="td-camp-companion"><img src="${hero.portrait ?? hero.image}" alt=""><div><strong>${hero.name}</strong><small>${hero.class} · Lv ${heroLevel(p, id)}</small></div></div>` : "";
-    }).join("");
-    summaryTitleEl.textContent = next ? `Stage ${next.id}: ${next.name}` : "Chapter complete";
-    summaryEl.textContent = `${cleared} / ${stages.length} stages cleared \u00b7 ${p.owned.length} heroes`;
-    summaryChapterEl.textContent = `Chapter ${roman(Number(chapter.id) || 1)} \u00b7 ${chapter.name}`;
-    summaryRouteEl.innerHTML = routeHtml(stages.map((stage: any) => ({ label: stage.id, state: isCleared(p, stage.id) ? "done" : stage.id === next?.id ? "current" : "ahead" })));
-    summaryCtaEl.textContent = !cleared ? "Begin" : next ? "Continue" : "Replay";
-    renderStages();
+    return {
+      next: next ? { id: next.id as string, name: next.name as string } : null,
+      chapter: { id: String(chapter.id), name: chapter.name as string },
+      cleared: stages.filter((stage: any) => isCleared(p, stage.id)).length,
+      total: stages.length,
+      started: Object.keys(p.cleared).length > 0,
+      canSummon: canSummon(summonCfg, banner.id, p, allHeroIds()),
+      canLevelUp: p.owned.some((id) => canLevelUp(campaign, p, id)),
+    };
   }
 
   // Stages screen: chapter tabs, the chapter's route and stage cards; tapping a card opens
@@ -883,5 +876,5 @@ export function createCampaign(ctx: PageContext) {
     });
   }
 
-  return { render, renderSquad, renderHeroes, renderSummon, selectStage };
+  return { render, renderSquad, renderHeroes, renderSummon, selectStage, homeSummary, focusNextStage };
 }

@@ -7,6 +7,7 @@ import { CHALLENGES } from "../../game/td/challenges.js"; // M20 badges, filled 
 import tuning from "../../data/gameBalance.tuning.json";
 import TdSoundControls from "./TdSoundControls.astro";
 import TdGlossaryContent from "./TdGlossaryContent.astro";
+import TdHome from "./TdHome.astro";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
 const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
 // Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
@@ -65,136 +66,10 @@ const modes = [
   )}
 
   <div class="td-screens">
-    <!-- 1. Main menu: Free Play as the large lead panel, the other three modes stacked
-         beside it, each with its own read of progress (stage route, today's trial, the
-         expedition route). Every mode stays one button; the page modules fill the
-         data-td-*-summary* hooks (campaign.ts, daily.ts, expedition.ts, renderLobby). -->
-    <section class="td-screen td-screen--home" data-td-screen="home" data-title="Tower Defense" aria-label="Main menu">
-      <div class="td-screen-body td-home">
-        <div class="td-home-modes">
-          <button class="td-hmode td-hmode--free" type="button" data-td-go="maps" data-td-autofocus>
-            <span class="td-hmode-head">
-              <svg class="td-hmode-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4l10 10M14 14l-2 2M14 14l2-2M16.5 16.5l3 3M20 4L10 14M10 14l2 2M10 14l-2-2M7.5 16.5l-3 3" fill="none" /></svg>
-              <span class="td-label">Free Play</span>
-              <span class="td-hmode-chip" data-td-free-map></span>
-            </span>
-            <span class="td-free-score">
-              <small>Personal best</small>
-              <strong data-td-best>0</strong>
-              <span class="td-hmode-badge" data-td-perfect hidden>Perfect defense</span>
-            </span>
-            <span class="action-button action-button--primary td-hmode-cta td-hmode-cta--main">Play</span>
-            <small class="td-free-boost" data-td-next-boost hidden></small>
-          </button>
+    <!-- 1. Home screen (War Camp): TdHome.astro, filled by src/game/td/page/home.ts -->
+    <TdHome />
 
-          <div class="td-home-side">
-            <button class="td-hmode td-hmode--campaign" type="button" data-td-go="campaign">
-              <span class="td-hmode-head">
-                <svg class="td-hmode-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 21V3M6 4h11l-2.5 4L17 12H6" fill="none" /></svg>
-                <span class="td-label">Campaign</span>
-                <span class="td-hmode-sub" data-td-camp-summary-chapter></span>
-              </span>
-              <strong class="td-hmode-title" data-td-camp-summary-title>Stage 1-1</strong>
-              <span class="td-route td-route--stages" data-td-camp-summary-route aria-hidden="true"></span>
-              <span class="td-hmode-foot">
-                <small data-td-camp-summary></small>
-                <span class="action-button action-button--quiet td-hmode-cta" data-td-camp-summary-cta>Continue</span>
-              </span>
-            </button>
-
-            <button class="td-hmode td-hmode--daily" type="button" data-td-go="daily">
-              <span class="td-hmode-head">
-                <svg class="td-hmode-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9" fill="none" /></svg>
-                <span class="td-label">Daily Trial</span>
-                <span class="td-hmode-tag">Today<span class="td-hmode-tag-time" data-td-daily-summary-reset></span></span>
-              </span>
-              <strong class="td-hmode-title" data-td-daily-summary-map>Today's battlefield</strong>
-              <span class="td-mutator-chips" data-td-daily-summary-mutators></span>
-              <span class="td-hmode-foot">
-                <span class="td-daily-goal">
-                  <small data-td-daily-summary></small>
-                  <span class="td-daily-prize" data-td-daily-summary-reward></span>
-                </span>
-                <span class="action-button action-button--quiet td-hmode-cta">Enter</span>
-              </span>
-            </button>
-
-            <button class="td-hmode td-hmode--expedition" type="button" data-td-go="expedition">
-              <span class="td-hmode-head">
-                <svg class="td-hmode-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" /><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="none" /></svg>
-                <span class="td-label">Expedition</span>
-                <span class="td-hmode-sub" data-td-exp-summary-title>Start</span>
-              </span>
-              <span class="td-route td-route--journey" data-td-exp-summary-route aria-hidden="true"></span>
-              <span class="td-hmode-foot">
-                <small data-td-exp-summary></small>
-                <span class="action-button action-button--quiet td-hmode-cta" data-td-exp-summary-cta>Start</span>
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <nav class="td-home-links" aria-label="More">
-          <button class="td-home-link" type="button" data-td-go="blessings">
-            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z" /></svg>
-            Divine Blessings <span class="td-favor-count" data-td-favor-count></span>
-          </button>
-          <button class="td-home-link" type="button" data-td-go="glossary">
-            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h10a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h10" fill="none" /></svg>
-            Glossary
-          </button>
-          <button class="td-home-link" type="button" data-td-go="help">
-            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" /><path d="M9.5 9.5a2.5 2.5 0 114 2c-1 .7-1.5 1.2-1.5 2.5M12 17h.01" fill="none" /></svg>
-            How to play
-          </button>
-          <button class="td-home-link" type="button" data-td-go="settings">
-            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" /><circle cx="15" cy="7" r="2" fill="none" /><circle cx="9" cy="17" r="2" fill="none" /></svg>
-            Settings
-          </button>
-          <a class="td-home-link td-home-link--exit" href="/">
-            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" fill="none" /></svg>
-            Exit to database
-          </a>
-        </nav>
-      </div>
-    </section>
-
-    <!-- Campaign home: resources and activities, with stages one level deeper. -->
-    <section class="td-screen" data-td-screen="campaign" data-title="Campaign" aria-label="Campaign camp" hidden>
-      <div class="td-screen-body td-camp-screen td-camp-home">
-        <div class="td-camp-campfire">
-          <div class="td-camp-welcome">
-            <span class="td-label">Your campaign headquarters</span>
-            <h2>Campaign camp</h2>
-            <p>Gather your heroes. Strengthen your ranks.<br />Prepare for the road ahead.</p>
-          </div>
-          <div class="td-camp-party">
-            <div class="td-collection-head"><h3 class="td-label">Your company</h3><span data-td-camp-company-note></span></div>
-            <div class="td-camp-company" data-td-camp-company></div>
-          </div>
-        </div>
-        <div class="td-camp-activities">
-          <button class="td-camp-activity td-camp-activity--journey" type="button" data-td-go="stages" data-td-autofocus>
-            <span class="td-label">The journey</span><h3 data-td-camp-home-chapter></h3>
-            <span data-td-camp-home-progress></span>
-            <progress data-td-camp-home-meter aria-label="Campaign stages cleared"></progress>
-            <strong class="td-camp-activity-cta">Venture forth <span aria-hidden="true">→</span></strong>
-          </button>
-          <button class="td-camp-activity" type="button" data-td-go="heroes">
-            <span class="td-camp-activity-icon" aria-hidden="true">♜</span><h3>Heroes</h3>
-            <span>Manage your collection and level up your defenders.</span>
-            <small data-td-camp-home-heroes></small><strong class="td-camp-activity-cta">Visit heroes <span aria-hidden="true">→</span></strong>
-          </button>
-          <button class="td-camp-activity td-camp-activity--summon" type="button" data-td-go="summon">
-            <span class="td-camp-activity-icon" aria-hidden="true">✧</span><h3>Summoning</h3>
-            <span>Spend Divine Seals to welcome a new hero to camp.</span>
-            <small data-td-camp-home-summon></small><strong class="td-camp-activity-cta">Visit summoning <span aria-hidden="true">→</span></strong>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 1b. Campaign (M26): src/game/td/page/campaign.ts, stages in src/data/tdCampaign.json -->
+    <!-- 1b. Campaign stages (M26): src/game/td/page/campaign.ts, stages in src/data/tdCampaign.json -->
     <section class="td-screen" data-td-screen="stages" data-title="Campaign stages" aria-label="Campaign stages" hidden>
       <div class="td-screen-body td-camp-screen">
         <div class="td-camp-head">

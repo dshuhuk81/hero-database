@@ -232,16 +232,16 @@ export function createResults(ctx: PageContext) {
     q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition;
     const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
     continueButton.hidden = !expedition && !campaign;
-    continueButton.dataset.tdToLobby = campaign ? "campaign" : "expedition";
+    continueButton.dataset.tdToLobby = campaign ? "stages" : "expedition";
     // Campaign: after a loss go straight to this stage's squad, after a win to the next stage's.
     const followUp: string | null = campaign ? (dailyRun as any)?.followUp ?? null : null;
     if (followUp) continueButton.dataset.tdCampStage = followUp; else delete continueButton.dataset.tdCampStage;
     continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
       : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
-    // Campaign stages lead back to the Campaign screen (stage list) instead of the main menu.
+    // Campaign stages lead back to the stage list instead of the main menu.
     const menuButton = q<HTMLButtonElement>("[data-td-result-menu]");
     menuButton.hidden = !!expedition || (!!campaign && !followUp);
-    menuButton.dataset.tdToLobby = campaign ? "campaign" : "home";
+    menuButton.dataset.tdToLobby = campaign ? "stages" : "home";
     menuButton.textContent = campaign ? "Campaign" : "Main menu";
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;

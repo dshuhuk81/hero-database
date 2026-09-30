@@ -1,6 +1,7 @@
 // Global wallet in the app bar: a few chips picked per screen (td.css, .td-wallet-chip) and a
 // dropdown with the full inventory, every currency with where it comes from and where it goes.
 // The page calls render() after each save (store.onPersist) and on every screen change.
+// The home screen has no app bar: place() moves the one wallet node into its top bar there.
 import type { PageContext } from "./context";
 import { availableFavor, availableInsight } from "./save";
 import { CLASSES } from "../favor.js";
@@ -23,6 +24,9 @@ export function createWallet(ctx: PageContext) {
   const button = q<HTMLButtonElement>("[data-td-wallet-button]");
   const chipsEl = q("[data-td-wallet-chips]");
   const panel = q("[data-td-wallet-panel]");
+  const appbarParent = rootEl.parentElement!;
+  const appbarNext = rootEl.nextSibling;
+  const homeSlot = q("[data-td-home-wallet]");
 
   const amounts = (): Record<string, number> => {
     const currencies = store.data.campaign.currencies as Record<string, number>;
@@ -71,5 +75,11 @@ export function createWallet(ctx: PageContext) {
     if (!panel.hidden && !rootEl.contains(event.target as Node)) setOpen(false);
   });
 
-  return { render, close: () => setOpen(false) };
+  // In the home screen's top bar on home, else back in the app bar.
+  function place(onHome: boolean) {
+    if (onHome && rootEl.parentElement !== homeSlot) homeSlot.append(rootEl);
+    else if (!onHome && rootEl.parentElement !== appbarParent) appbarParent.insertBefore(rootEl, appbarNext);
+  }
+
+  return { render, place, close: () => setOpen(false) };
 }
