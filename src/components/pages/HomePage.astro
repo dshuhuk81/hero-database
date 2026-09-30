@@ -33,7 +33,7 @@ const jsonLd = {
 
 
 const hrefFor = (href: string) => localizePath(href, locale);
-const launchHero = getHeroById("zaojun");
+const launchHero = getHeroById("mazu");
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -124,7 +124,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
         <aside class="launch-card">
           <div class="launch-backdrop" aria-hidden="true"></div>
           <div class="launch-content">
-            <div class="launch-character" aria-label="Zaojun hero card">
+            <div class="launch-character" aria-label="Mazu hero card">
               <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
                 <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
                 <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
@@ -133,14 +133,14 @@ const featuredImageFor = (href: string) => href === "/heroes"
             </div>
           </div>
           <div class="launch-meta">
-            <strong class="launch-meta-name">Zaojun</strong>
-            <a class="launch-meta-action" href={hrefFor("/heroes/zaojun")}>
+            <strong class="launch-meta-name">Mazu</strong>
+            <a class="launch-meta-action" href={hrefFor("/heroes/mazu")}>
               Explore the hero
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>
-            <span class="launch-date"><span aria-hidden="true">◷</span> Sep 16 — Sep 29, 2026 <span class="launch-age" data-banner-start="2026-09-16">· today</span></span>
+            <span class="launch-date"><span aria-hidden="true">◷</span> Sep 30 — Oct 13, 2026 <span class="launch-age" data-banner-start="2026-09-30">· today</span></span>
           </div>
         </aside>
 
@@ -494,7 +494,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     inset: 0;
     background:
       linear-gradient(90deg, rgba(5, 11, 20, .62), rgba(7, 20, 32, .12) 55%, rgba(4, 10, 18, .38)),
-      url('/banners/zaojun-preview.png') center / cover no-repeat;
+      url('/banners/hero-preview.png') center / cover no-repeat;
   }
 
   .launch-card::after {

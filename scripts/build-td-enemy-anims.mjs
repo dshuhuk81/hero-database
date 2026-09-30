@@ -17,12 +17,12 @@ import { fileURLToPath } from "url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const arg = (name) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : null; };
 const SET = arg("--set") ?? "painted";
-// --release vN writes the shipped files public/td/enemies/sheets/{kind}-vN.(webp|json) (upload
-// with scripts/upload-to-r2.mjs, list the version in ENEMY_SHEET_VERSIONS); without it the
-// set goes to public/td-local/sheets/<set>/ for local testing.
-const RELEASE = arg("--release");
-const OUT_DIR = RELEASE ? join(ROOT, "public/td/enemies/sheets") : join(arg("--out") ?? join(ROOT, "public/td-local/sheets"), SET);
-const fileName = (kind) => (RELEASE ? `${kind}-${RELEASE}` : kind);
+// --release writes the shipped files public/td/enemies/clips/{name}.(webp|json) (upload with
+// scripts/upload-to-r2.mjs, add the name to ENEMY_SHEETS in assets.js); without it the set goes
+// to public/td-local/sheets/<set>/ for local testing.
+const RELEASE = process.argv.includes("--release");
+const OUT_DIR = RELEASE ? join(ROOT, "public/td/enemies/clips") : join(arg("--out") ?? join(ROOT, "public/td-local/sheets"), SET);
+const fileName = (kind) => kind;
 const ONLY = arg("--only")?.split(",");
 const FPS = 12;
 
@@ -30,21 +30,25 @@ const FPS = 12;
 // pixelArt: lossless sheet and nearest-neighbour scaling in the renderer.
 const clipFiles = (prefix, attack = "attack") => ({ idle: `${prefix}_idle`, walk: `${prefix}_walk`, attack: `${prefix}_${attack}`, hurt: `${prefix}_hurt`, death: `${prefix}_death` });
 const SETS = {
+  // Keys are the published sheet names: {sprite file}-{sprite version} (assets.js ENEMY_SHEETS).
   painted: {
-    grunt: { dir: "grunt", clips: clipFiles("grunt") },
-    archer: { dir: "archer", clips: clipFiles("archer") },
-    runner: { dir: "runner", clips: clipFiles("runner") },
-    brute: { dir: "brute", clips: clipFiles("brute") },
-    brood: { dir: "brood", clips: clipFiles("brood") },
+    "grunt-v2": { dir: "grunt", clips: clipFiles("grunt") },
+    "archer-v3": { dir: "archer", clips: clipFiles("archer") },
+    "runner-v2": { dir: "runner", clips: clipFiles("runner") },
+    "brute-v3": { dir: "brute", clips: clipFiles("brute") },
+    "brood-v4": { dir: "brood", clips: clipFiles("brood") },
     // Bosses: one sheet per boss file (render.js loads the map's boss, see bossSpriteFile).
-    boss: { dir: "boss", clips: clipFiles("boss") },
-    "boss-lilith": { dir: "lilith", clips: clipFiles("lilith") },
+    "boss-v2": { dir: "boss", clips: clipFiles("boss") },
+    "boss-lilith-v4": { dir: "lilith", clips: clipFiles("lilith") },
     // TD-original bosses, ready for a map or stage (tdBosses.json).
-    "boss-lerna": { dir: "lerna", clips: clipFiles("lerna") },
-    "boss-kraghorn": { dir: "kraghorn", clips: clipFiles("kraghorn") },
-    "boss-vorruk": { dir: "vorruk", clips: clipFiles("vorruk") },
+    "boss-lerna-v1": { dir: "lerna", clips: clipFiles("lerna") },
+    "boss-kraghorn-v1": { dir: "kraghorn", clips: clipFiles("kraghorn") },
+    "boss-vorruk-v1": { dir: "vorruk", clips: clipFiles("vorruk") },
+    // Older stills kept on purpose for the broodcaller and the hexer (assets.js ENEMY_ART).
+    "brood-v1": { dir: "broodcaller", clips: clipFiles("broodcaller") },
+    "boss-lilith-v1": { dir: "hexer", clips: clipFiles("hexer") },
     // Flyers never stop or strike: idle, walk and attack all use the flap cycle.
-    flyer: { dir: "flyer", clips: { idle: "flyer_fly", walk: "flyer_fly", attack: "flyer_fly", hurt: "flyer_hurt", death: "flyer_death" } },
+    "flyer-v2": { dir: "flyer", clips: { idle: "flyer_fly", walk: "flyer_fly", attack: "flyer_fly", hurt: "flyer_hurt", death: "flyer_death" } },
   },
 };
 const PACKS = SETS[SET];

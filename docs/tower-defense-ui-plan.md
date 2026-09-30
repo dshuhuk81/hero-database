@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026, M7 (enemy animation) open with a procedural prototype behind `?anim` (September 29, 2026). The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026, M7 (enemy animation) done and live September 29, 2026 (commit 37654230). The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
 
 ## Status
 
@@ -61,9 +61,18 @@ Squad screen follow-up (September 28, 2026, owner measurements against a gacha t
 
 Skipped on purpose: a Lord-hero/support-hero slot pair from the reference's squad screen - would need a new data model and an undefined gameplay effect; not adopted without a design decision. Already equivalent and left alone: the redeploy-cost deck badge and the per-unit ultimate charge ring (both existed, just canvas-side rather than reference-style HTML). Checks: `npm run test:tower-defense`, `npm run check`, manual Chromium pass at 420x900 via the Playwright skill.
 
-## M7: Enemy animation (open)
+## M7: Enemy animation (done, live September 29, 2026)
 
-Goal: enemies that walk, strike, react to hits and die, in the painted style of the current full-body sprites, with free tools only while this is a test.
+Goal: enemies that walk, strike, react to hits and die, in the painted style of the current full-body sprites.
+
+### Shipped
+
+- Every enemy kind and both live bosses play animation sheets (idle, walk, attack, hurt, death); the three prepared TD bosses (Lerna, Kraghorn, Vorruk) have theirs too. Kinds that borrow a sprite use the sheet of exactly that still, including the broodcaller (brood-v1) and the hexer (boss-lilith-v1), animated September 30, 2026. On by default, off with reduced motion or `?anim=off`; `?sheets=off` keeps stills with procedural motion. Details: `TOWER_DEFENSE_SPEC.md` section 6.
+- Art route: PixelLab image-to-animation (PixMiniMax, `POST /v2/animate-pixminimax`) from each kind's complete still, with `last_frame` = the same still for loops so every loop ends in its start pose (the web UI does not offer a last frame; the API does). About 1 generation per clip, 8 concurrent jobs on Tier 1. The flyer comes from a generated 6-frame flight strip instead. Stills with missing feet or cut-off gowns were redrawn first (archer v3, brute v3, brood v4, Baphomet `boss-v2`, Lilith `boss-lilith-v4`).
+- Pipeline: raw frames in `~/hero-database-assets/td/enemy-sprites-src/pixellab-<kind>/<clip>/` -> `scripts/td-warp-anim.py <kind> <out> --pixellab` (drops the untouched input frame, scales) -> `scripts/build-td-enemy-anims.mjs --release` -> `upload-to-r2.mjs --prefix td/enemies/clips` -> `ENEMY_SHEETS`. Sheets are named after the still they animate (`clips/brood-v4` = `sprites/brood-v4`); the first release used a separate sheet version (`sheets/brood-v1` was the brood-v4 animation), which read like the broodcaller's `sprites/brood-v1`, so the names were aligned. The frame format is in `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
+- Checks done: frame rate with sheets vs. stills showed no measurable difference in wave 1; sheets 70-170 KB each; superseded R2 files deleted after the deploy.
+
+The sections below are the history of how the route was found.
 
 ### Tried and dropped (September 29, 2026)
 
@@ -77,8 +86,8 @@ Goal: enemies that walk, strike, react to hits and die, in the painted style of 
 
 Each step is usable on its own; stop when the result is good enough at 44 to 108 px.
 
-1. **Frame format and packer (done as a test, September 29, 2026).** `scripts/build-td-enemy-anims.mjs` (sharp) turns one horizontal strip per clip into a WebP sheet plus a Pixi spritesheet JSON with a `td` block (feet anchor, idle body height, fps, pixel-art flag). Frames are cropped to one shared box per kind so the feet never jump. Output goes to `public/td-local/sheets/` (gitignored). Open: versioned file names and an R2 upload once real art exists.
-2. **Renderer support (done as a test).** With `?anim=sheets`, `grunt` and `archer` load their sheet and play `idle`, `walk`, `attack`, `hurt` and `death` from the signals `animateEnemy` already reads; other kinds keep the still sprite and the procedural motion. Frames are picked on game time rather than with `AnimatedSprite`'s own ticker, so pause and game speed apply. Test art: a free pixel-art pack in `~/hero-database-assets/td/newAssetTest` (Orc, Soldier); it proves the pipeline but does not match the painted style, and its license is not confirmed, so it is not deployed. Open: a real sheet for a painted enemy, checked the same way.
+1. **Frame format and packer (done, shipped).** `scripts/build-td-enemy-anims.mjs` (sharp) turns one horizontal strip per clip into a WebP sheet plus a Pixi spritesheet JSON with a `td` block (feet anchor, idle body height, fps, pixel-art flag). Frames are cropped to one shared box per kind so the feet never jump. Output goes to `public/td-local/sheets/` (gitignored). Open: versioned file names and an R2 upload once real art exists.
+2. **Renderer support (done, shipped; the `?anim=sheets` test flag is gone).** With `?anim=sheets`, `grunt` and `archer` load their sheet and play `idle`, `walk`, `attack`, `hurt` and `death` from the signals `animateEnemy` already reads; other kinds keep the still sprite and the procedural motion. Frames are picked on game time rather than with `AnimatedSprite`'s own ticker, so pause and game speed apply. Test art: a free pixel-art pack in `~/hero-database-assets/td/newAssetTest` (Orc, Soldier); it proves the pipeline but does not match the painted style, and its license is not confirmed, so it is not deployed. Open: a real sheet for a painted enemy, checked the same way.
 3. **Warp frames from the existing sprite (cheapest art; grunt done as a test, September 29, 2026: `scripts/td-warp-anim.py`, set `painted`, see `TOWER_DEFENSE_SPEC.md` section 6).** Extend `scripts/td-idle-anim.py` (numpy + Pillow, already used for the recruit idle loops) with region warps: legs shear in opposite directions per step, torso leans, weapon-arm region rotates for the swing, cloth ripples. Test with `grunt` and one boss. No new drawing, no hidden limbs, so it stays a deformation, not a real step.
 4. **Cut-out puppet (best quality, most work).** Per enemy:
    - Split the sprite into parts (head, torso, upper and lower arms, legs, weapon, shield, cape). Free options: Krita or GIMP by hand, or Meta's SAM 2 locally (runs on the Mac) for rough masks, then clean up.

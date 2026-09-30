@@ -211,6 +211,18 @@ Add a shared trunk first, then create two entrance branches with the same total 
 
 Use integer segment lengths and compensate the shorter branch before materializing it. Do not correct lane length with hidden movement multipliers.
 
+### Lattice v2 (implemented September 29, 2026)
+
+`src/game/td/map-generator-v2.js`, generator id `lattice-v2`. Maps are two layers: a theme (terrain art, gate and base sprites, palette, `exclude` rectangles) and a generated route on top, drawn by `map-scene.js`, so any theme takes any route. `orthogonal-v1` stays unchanged for the maps it published.
+
+- Lattice: 60 px nodes, 15 x 7 (x 60-900, y 90-450). Gates on the left edge (col 0), top or bottom edge (cols 1-8); base anywhere in cols 10-13 (the right third), rows 1-5. Nodes whose road band (+-40 px) enters a skin `exclude` rectangle are blocked.
+- Route: depth-first walk in straight runs of at least two nodes (120 px); legs may go in any direction, including back to the left. A node may not touch any earlier node in its 8-neighbourhood except the corner it continues from, so parallel roads stay >= 120 px apart and side tiles fit. The goal may end a run early (60 px last leg).
+- No dead ends: before every step a breadth-first search from the new head checks that the goal is still reachable (Red Blob Games' flow-field idea, used at generation time only; the game keeps fixed roads).
+- `two-gate`: shared tail first (junction in cols 3-8 -> base, 1-4 corners so both lanes end in the same segment), then two branches of exactly equal node count from the junction out to gates on two different edges (exact-length walk with a parity check). Lanes are therefore equal in length and merge, as `validateMap` requires.
+- Recipe: `{ generator: "lattice-v2", ruleset: 1, seed, topology: "single-lane" | "two-gate", difficultyBand, parameters: { turns, length, coverageGap, entry: ["left","top","bottom"] }, constraints: { exclude } }`. Pure and deterministic; `geometryHashV2` also covers `lanes`. Up to 800 attempts per seed; single-lane maps take a few milliseconds, two-gate seeds succeed roughly half the time.
+- CLI: `node scripts/generate-td-map.mjs --gen=lattice-v2 --skin=<sunscar|moonlit|verdant> [--gates=2] [--entry=left,top,bottom] [--turns=4,14] [--length=1300,2600] [--gap=0,0.3] --gallery=24` writes a candidate sheet (terrain, route, gates, base, metrics) to `public/td-local/` (gitignored); `--seed=N --id=... --name=... --publish` writes one map into `tdMaps.json`; `--check` regenerates maps of both generators. Tests: `scripts/test-td-map-generator.mjs`.
+- In use (September 29, 2026): nine campaign-only maps (`campaignOnly: true`) for the regular stages 1-3, 1-4, 1-6, 1-8 and 2-2 to 2-6 (2-6 with two gates), each on its chapter's theme; picked for a length close to the map they replaced, tower coverage and varied gate edges, then `hpScale` retuned per stage (`TOWER_DEFENSE_SPEC.md`, section 7).
+
 ## Validation and scoring
 
 ### Hard validation
@@ -317,6 +329,8 @@ Add generated catalog entries to Free Play first. Let Expedition sample them onl
 Exit condition: adding generated maps increases variety without changing Expedition length, invalidating saves, or silently changing a Daily battlefield.
 
 ### Phase 5: split-and-merge and skin packs
+
+Split-and-merge done in `lattice-v2` (`two-gate`, September 29, 2026). Skin packs remain open.
 
 Implement the second topology, then add new skins that satisfy the skin capability contract. A skin pack needs terrain, road, gate, base, palette, safe bounds, exclusions, and endpoint support; it does not need new gameplay geometry.
 

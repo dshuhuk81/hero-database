@@ -51,6 +51,12 @@ const activeChallengeDateRange = activeChallenge
   ? formatChallengeDateRange(activeChallenge.startDate, activeChallenge.endDate)
   : undefined;
 
+const activeChallengeHero = activeChallenge
+  ? (allHeroes[activeChallenge.hero as keyof typeof allHeroes] as
+      | { id?: string; name?: string }
+      | undefined)
+  : undefined;
+
 const cards = guides
   .filter((guide) => import.meta.env.DEV || !guide.localOnly)
   .filter((guide) => Boolean(guide.heroId))
@@ -115,15 +121,30 @@ const heroDirectory = cards.slice(1);
             <span class="guide-feature-label">Featured strategy</span>
             <h3>{featuredMode.displayLabel}</h3>
             {featuredMode.description && <p>{pickLang(featuredMode.description, "en")}</p>}
-            {featuredMode.href === "/guides/timed-challenge" && activeChallengeDateRange && (
-              <div class="guide-feature-meta" aria-label="Challenge availability">
-                <span class="guide-feature-date">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="5" width="18" height="16" rx="2" />
-                    <path d="M16 3v4M8 3v4M3 10h18" />
-                  </svg>
-                  <span>{activeChallengeDateRange}</span>
-                </span>
+            {featuredMode.href === "/guides/timed-challenge" && (activeChallengeHero || activeChallengeDateRange) && (
+              <div class="guide-feature-meta" aria-label="Current challenge">
+                {activeChallengeHero?.id && (
+                  <span class="guide-feature-date guide-feature-hero">
+                    <img
+                      src={heroCardImage(activeChallengeHero.id)}
+                      alt=""
+                      width="24"
+                      height="24"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span>{activeChallengeHero.name}</span>
+                  </span>
+                )}
+                {activeChallengeDateRange && (
+                  <span class="guide-feature-date">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="16" rx="2" />
+                      <path d="M16 3v4M8 3v4M3 10h18" />
+                    </svg>
+                    <span>{activeChallengeDateRange}</span>
+                  </span>
+                )}
               </div>
             )}
             <span class="guide-feature-cta">Open guide <span aria-hidden="true">→</span></span>
@@ -319,6 +340,18 @@ const heroDirectory = cards.slice(1);
     width: 17px;
     height: 17px;
     color: var(--accent-purple);
+  }
+
+  .guide-feature-hero {
+    padding-left: var(--space-1);
+  }
+
+  .guide-feature-hero img {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    object-position: center top;
   }
 
   .guide-feature-cta {

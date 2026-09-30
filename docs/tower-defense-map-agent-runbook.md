@@ -249,6 +249,18 @@ The generator must be pure: the same recipe and generator version always produce
 
 Do not implement live runtime generation in this milestone.
 
+## Milestone `lattice-v2` (done September 29, 2026)
+
+Second generator, `src/game/td/map-generator-v2.js`, for varied routes on any theme (the path layer; the theme only supplies art and `exclude` rectangles). Details and the campaign maps it produced: `docs/tower-defense-map-generator-plan.md` ("Lattice v2").
+
+- Lattice: 60 px nodes, 15 x 7 (x 60-900, y 90-450). Gates on the left edge (col 0), top or bottom edge (cols 1-8); base anywhere in cols 10-13 (the right third), rows 1-5. Nodes whose road band (+-40 px) enters a skin `exclude` rectangle are blocked.
+- Route: depth-first walk in straight runs of at least two nodes (120 px); legs may go in any direction, including back to the left. A node may not touch any earlier node in its 8-neighbourhood except the corner it continues from, so parallel roads stay >= 120 px apart and side tiles fit. The goal may end a run early (60 px last leg).
+- No dead ends: before every step a breadth-first search from the new head checks that the goal is still reachable (Red Blob Games' flow-field idea, used at generation time only; the game keeps fixed roads).
+- `two-gate`: shared tail first (junction in cols 3-8 -> base, 1-4 corners so both lanes end in the same segment), then two branches of exactly equal node count from the junction out to gates on two different edges (exact-length walk with a parity check). Lanes are therefore equal in length and merge, as `validateMap` requires.
+- Recipe: `{ generator: "lattice-v2", ruleset: 1, seed, topology: "single-lane" | "two-gate", difficultyBand, parameters: { turns, length, coverageGap, entry: ["left","top","bottom"] }, constraints: { exclude } }`. Pure and deterministic; `geometryHashV2` also covers `lanes`. Up to 800 attempts per seed; single-lane maps take a few milliseconds, two-gate seeds succeed roughly half the time.
+- CLI: `node scripts/generate-td-map.mjs --gen=lattice-v2 --skin=<sunscar|moonlit|verdant> [--gates=2] [--entry=left,top,bottom] [--turns=4,14] [--length=1300,2600] [--gap=0,0.3] --gallery=24` writes a candidate sheet (terrain, route, gates, base, metrics) to `public/td-local/` (gitignored); `--seed=N --id=... --name=... --publish` writes one map into `tdMaps.json`; `--check` regenerates maps of both generators. Tests: `scripts/test-td-map-generator.mjs`.
+- In use (September 29, 2026): nine campaign-only maps (`campaignOnly: true`) for the regular stages 1-3, 1-4, 1-6, 1-8 and 2-2 to 2-6 (2-6 with two gates), each on its chapter's theme; picked for a length close to the map they replaced, tower coverage and varied gate edges, then `hpScale` retuned per stage (`TOWER_DEFENSE_SPEC.md`, section 7).
+
 ## Subsequent milestones
 
 Complete these one at a time:
@@ -260,7 +272,7 @@ Complete these one at a time:
 5. First reviewed pack of three to six generated maps.
 6. Campaign progression bands and reusable wave profiles.
 7. Expedition and Daily integration using stable published map IDs.
-8. Equal-length split-and-merge generation.
+8. Equal-length split-and-merge generation (done in `lattice-v2`, `two-gate`).
 9. Optional live seeded generation after validation predicts real outcomes reliably.
 
 ## Small-step working agreement

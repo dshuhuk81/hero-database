@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "zaojun-event",
+      "id": "mazu-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "zaojun",
-      "startDate": "2026-09-16",
-      "endDate": "2026-09-29",
+      "hero": "mazu",
+      "startDate": "2026-09-30",
+      "endDate": "2026-10-13",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,99 +23,99 @@
         {
           "id": 1,
           "name": {
-            "en": "Deep in the Forest",
-            "de": "Tief im Wald",
-            "es": "En lo profundo del bosque",
-            "ru": "В глубине леса",
-            "zh": "森林深处"
+            "en": "The First Salty Breeze",
+            "de": "Die erste salzige Brise",
+            "es": "La primera brisa salada",
+            "ru": "Первый солёный бриз",
+            "zh": "初来咸风"
           },
           "composition": {
-            "front": ["traurus", "caishen"],
-            "back": ["zaojun"]
+            "front": ["Taurus", "Aries"],
+            "back": ["Mazu"]
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "Swirling Hearthsmoke",
-            "de": "Wirbelnder Herdrauch",
-            "es": "Humo del hogar arremolinado",
-            "ru": "Клубящийся дым очага",
-            "zh": "袅袅炉烟"
+            "en": "Drifting Like Duckweed",
+            "de": "Treibend wie Wasserlinsen",
+            "es": "A la deriva como lentejas de agua",
+            "ru": "Дрейфуя, как ряска",
+            "zh": "萍水漂泊"
           },
           "composition": {
-            "front": ["taurus"],
-            "back": ["zaojun", "caishen"]
+            "front": ["Taurus", "Sagittarius"],
+            "back": ["Capricorn", "Mazu", "Virgo"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "Chill of the Night",
-            "de": "Kühle der Nacht",
-            "es": "El frío de la noche",
-            "ru": "Ночная прохлада",
-            "zh": "夜之寒意"
+            "en": "No Waves Without Wind",
+            "de": "Keine Wellen ohne Wind",
+            "es": "No hay olas sin viento",
+            "ru": "Нет волн без ветра",
+            "zh": "无风不起浪"
           },
           "composition": {
-            "front": ["idunn", "nut"],
-            "back": ["mengpo", "caishen", "cronus"]
+            "front": ["Heracles", "Prometheus"],
+            "back": ["Caishen", "Mazu", "Phoenix"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "One Bite to Soothe the Weary",
-            "de": "Ein Bissen, um die Müden zu besänftigen",
-            "es": "Un bocado para aliviar a los cansados",
-            "ru": "Один кусочек, чтобы утешить утомлённых",
-            "zh": "一口慰疲惫"
+            "en": "In the Sky, Far Away",
+            "de": "Am Himmel, weit entfernt",
+            "es": "En el cielo, muy lejos",
+            "ru": "В небе, далеко-далеко",
+            "zh": "远在天边"
           },
           "composition": {
-            "front": ["hladgunnr", "mengpo"],
-            "back": ["zaojun", "caishen", "yuelao"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "Chopsticks Stir Spring Ripples",
-            "de": "Essstäbchen wirbeln Frühlingswellen auf",
-            "es": "Los palillos agitan las ondas primaverales",
-            "ru": "Палочки будоражат весеннюю рябь",
-            "zh": "箸搅春波"
+            "en": "Once Tightly Held Hands",
+            "de": "Einst fest gehaltene Hände",
+            "es": "Manos que una vez se sostuvieron con fuerza",
+            "ru": "Когда-то крепко сжатые руки",
+            "zh": "曾经紧握的手"
           },
           "composition": {
-            "front": ["hladgunnr", "mengpo"],
-            "back": ["zaojun", "caishen", "yuelao"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "The Lingering Flavor",
-            "de": "Der nachklingende Geschmack",
-            "es": "El sabor persistente",
-            "ru": "Долгое послевкусие",
-            "zh": "余味悠长"
+            "en": "Eyes Full of Attachment",
+            "de": "Augen voller Zuneigung",
+            "es": "Ojos llenos de apego",
+            "ru": "Глаза, полные привязанности",
+            "zh": "满眼眷恋"
           },
           "composition": {
-            "front": ["hladgunnr", "mengpo"],
-            "back": ["yuelao", "caishen", "zaojun"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "Warmth of a Thousand Homes",
-            "de": "Die Wärme tausender Heime",
-            "es": "El calor de mil hogares",
-            "ru": "Тепло тысячи домов",
-            "zh": "千家暖意"
+            "en": "A Bright Light in the Deep Fog",
+            "de": "Ein helles Licht im dichten Nebel",
+            "es": "Una luz brillante en la niebla profunda",
+            "ru": "Яркий свет в густом тумане",
+            "zh": "深雾明灯"
           },
           "composition": {
-            "front": ["hladgunnr", "caishen"],
-            "back": ["yuelao", "mengpo", "zaojun"]
+            "front": [],
+            "back": []
           }
         }
       ]

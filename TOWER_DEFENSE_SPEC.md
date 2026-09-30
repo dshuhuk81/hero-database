@@ -274,7 +274,7 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   boss (a simulated Moonlit Pass run with `kraghorn` wins normally).
 - Adding a boss to a level:
   1. Art: still `boss-<id>-vN.webp` on R2 (`build-td-enemy-sprites.mjs`, `FILES` maps
-     `boss_<id>.png`), animation sheet `boss-<id>` in `build-td-enemy-anims.mjs` (dev, `?anim=sheets`).
+     `boss_<id>.png`), animation sheet `clips/boss-<id>-vN`, named after the still (`build-td-enemy-anims.mjs --release`, `ENEMY_SHEETS`).
   2. Name: `tdBosses.json` for TD-original bosses (`bosses.json` only for database bosses).
   3. Placement, either
      - one campaign stage: `"boss": "<id>"` on the stage in `tdCampaign.json`. It replaces that
@@ -293,7 +293,10 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   the texture and drop the enemy to the 8x8 Kenney tile fallback. Versions live in
   `ENEMY_SPRITE_VERSIONS` (`assets.js`); since September 29, 2026: archer v3, brute v3,
   brood v4, Baphomet `boss-v2`, Lilith `boss-lilith-v4` (redrawn complete, feet included,
-  uploaded to R2). The old v2/v3/v1 files stay on R2 until the new build is deployed.
+  uploaded to R2). Superseded files (older sprite versions, the `td/enemies/*.png` portraits) were
+  deleted from R2 after the deploy of commit 37654230 (the first sheet release, `td/enemies/sheets/*-v1`,
+  is superseded by `td/enemies/clips/` and goes after the next deploy); `brood-v1` and `boss-lilith-v1` stay for
+  the broodcaller and hexer.
 - Procedural enemy motion (on with the enemy animation below, skipped with reduced
   motion): `animateEnemy` in `render.js` moves the full-body sprites procedurally, render
   only and on game time. Distance moved drives a walk cycle (bounce, waddle, lean,
@@ -308,16 +311,20 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `docs/tower-defense-ui-plan.md` (M7); frame format: `src/game/td/sprite-spec-for-ai.md`.
 - Enemy animation (M7, on by default since September 29, 2026; off with reduced motion or
   `?anim=off`): every full-body enemy moves (`animateEnemy`), and kinds with an animation sheet
-  play clips instead of the still. Sheets: `enemies/sheets/{file}-vN.json` + `.webp` on R2
-  (`ENEMY_SHEET_VERSIONS`, `enemySheetUrl` in `assets.js`), built with
-  `scripts/build-td-enemy-anims.mjs <clips> --set painted --release vN` into
-  `public/td/enemies/sheets/` and uploaded with `upload-to-r2.mjs --prefix td/enemies/sheets`.
-  v1 sheets: grunt, runner, flyer, archer, brute, brood, boss (Baphomet), boss-lilith,
-  boss-lerna, boss-kraghorn, boss-vorruk (about 70-170 KB each). A sheet is a Pixi spritesheet
-  plus a `td` block (feet anchor, idle body size, fps, `pixelArt`). The boss loads the map's
-  boss sheet; ENEMY_ART kinds use their borrowed sprite's sheet while they borrow its current
-  version (mender -> archer, shieldbearer -> grunt, imp -> runner; tint and rim glow apply),
-  broodcaller and hexer keep their v1 stills with procedural motion. `?sheets=off` shows stills
+  play clips instead of the still. Sheets: `enemies/clips/{file}-{version}.json` + `.webp` on R2,
+  named after the still they animate (`clips/brood-v4` animates `sprites/brood-v4`), listed in
+  `ENEMY_SHEETS` (`enemySheetUrl(file, version)` in `assets.js`), built with
+  `scripts/build-td-enemy-anims.mjs <clips> --set painted --release` into
+  `public/td/enemies/clips/` and uploaded with `upload-to-r2.mjs --prefix td/enemies/clips`.
+  A new still version needs new clips; a remade sheet for the same still gets a suffix
+  (`brood-v4b`) because R2 caches a year. Sheets (September 30, 2026): grunt-v2, runner-v2,
+  flyer-v2, archer-v3, brute-v3, brood-v4, boss-v2 (Baphomet), boss-lilith-v4, boss-lerna-v1,
+  boss-kraghorn-v1, boss-vorruk-v1, plus brood-v1 (broodcaller) and boss-lilith-v1 (hexer),
+  the older stills those two keep on purpose (about 70-170 KB each). A sheet is a Pixi
+  spritesheet plus a `td` block (feet anchor, idle body size, fps, `pixelArt`). The boss loads
+  the map's boss sheet; ENEMY_ART kinds load the sheet of exactly the still they borrow
+  (mender -> archer-v3, shieldbearer -> grunt-v2, imp -> runner-v2, broodcaller -> brood-v1,
+  hexer -> boss-lilith-v1; tint and rim glow apply). `?sheets=off` shows stills
   with procedural motion; `?sheets=local&set=<name>` loads an unreleased set from
   `public/td-local/sheets/` in dev. `animateEnemy` picks the frame on game time: attack after
   an `attackClock` jump, hurt after a real hit, walk from distance moved, idle otherwise; dying
@@ -898,7 +905,12 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:economy` | In-run gold ledger: income by source vs. spend by sink, per mode/tier |
 | `npm run td:layout -- --map=<id>` | Tile layout A/B: committed vs working `tdMaps.json`, Free Play + campaign stages on that map |
 | `npm run td:maps` / `npm run td:maps -- --json` | Map geometry baseline, landmark metrics and stable validation errors |
-| `npm run td:generate-map -- --seed=N --skin=...` / `--check` | Generate a map candidate (orthogonal-v1), publish it, or verify published ones regenerate |
+| `npm run td:generate-map -- --seed=N --skin=...` / `--check` | Generate a map candidate (orthogonal-v1), publish it, or verify published ones regenerate (both generators) |
+| `npm run td:generate-map -- --gen=lattice-v2 --skin=... [--gates=2] --gallery=24` | lattice-v2 candidates as an HTML sheet in `public/td-local/`; `--seed=N --id=... --name=... --publish` publishes one |
+| `node scripts/build-td-enemy-sprites.mjs <folder> --only <names> --version vN` | Enemy stills (256 px WebP) from `~/hero-database-assets/td/enemy-sprites-src/` |
+| `python3 scripts/td-warp-anim.py <kind> <outdir> --pixellab` | Clip strips from saved PixelLab frames (also `STRIPS` and `--warp` modes; local only, `*.py` is gitignored) |
+| `node scripts/build-td-enemy-anims.mjs <clips> --set painted --release` | Enemy animation sheets into `public/td/enemies/clips/`, named after their still (without `--release`: local test set) |
+| `node scripts/upload-to-r2.mjs --prefix td/enemies/...` | Upload stills or sheets to R2 (versioned names, cached a year) |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |
 | `npm run build:game-balance` | Regenerate `gameBalance.json` |
 | `node scripts/build-td-grid.mjs` | Regenerate map tiles |

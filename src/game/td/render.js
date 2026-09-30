@@ -219,16 +219,18 @@ export async function createRenderer(canvas, game, options = {}) {
   }
   // Animation sheets (M7, enemySheetUrl): a kind with a sheet plays its clips instead of the
   // still sprite (animateEnemy picks the frame). The boss uses the map's boss sheet; kinds that
-  // borrow a sprite (ENEMY_ART) use that sprite's sheet while they borrow its current version
-  // (tint and rim glow still apply). ?sheets=off keeps the stills with procedural motion;
+  // borrow a sprite (ENEMY_ART) use the sheet of exactly the still they borrow (tint and rim
+  // glow still apply). ?sheets=off keeps the stills with procedural motion;
   // ?sheets=local&set=<name> loads an unreleased set from public/td-local/sheets/ in dev.
   const ENEMY_SHEETS = ENEMY_ANIM && urlParams.get("sheets") !== "off";
   const enemySheets = new Map(); // kind -> { anims: { idle, walk, attack, hurt, death }, td }
   if (ENEMY_SHEETS) {
     const localSet = urlParams.get("sheets") === "local" ? urlParams.get("set") ?? "painted" : null;
-    const borrowed = Object.entries(ENEMY_ART).filter(([, art]) => art.version === enemySpriteVersion(art.file)).map(([kind, art]) => [kind, art.file]);
-    for (const [kind, file] of [...["grunt", "archer", "flyer", "runner", "brute", "brood"].map((k) => [k, k]), ["boss", bossFile], ...borrowed]) {
-      const url = localSet ? `/td-local/sheets/${localSet}/${file}.json` : enemySheetUrl(file);
+    const own = [...["grunt", "archer", "flyer", "runner", "brute", "brood"].map((k) => [k, k]), ["boss", bossFile]]
+      .map(([kind, file]) => [kind, file, enemySpriteVersion(file)]);
+    const borrowed = Object.entries(ENEMY_ART).map(([kind, art]) => [kind, art.file, art.version]);
+    for (const [kind, file, version] of [...own, ...borrowed]) {
+      const url = localSet ? `/td-local/sheets/${localSet}/${file}-${version}.json` : enemySheetUrl(file, version);
       if (!url) continue;
       PIXI.Assets.load(url).then((sheet) => {
         if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";

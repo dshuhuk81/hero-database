@@ -76,14 +76,20 @@ Write new prompts from the myth, in the table format above. The concepts below f
 
 ---
 
-## Animation frames (M7, test pipeline in place)
-Not in the game yet; the plan and the free workflow are in `docs/tower-defense-ui-plan.md` (M7). Until a kind has a sheet, it uses the still sprite with the procedural motion prototype (`?anim`). Frames for a sheet follow the still sprite's rules, so a kind can switch without resizing or re-anchoring:
-- 256x256 PNG-32 per frame, transparent, same scale as the kind's still sprite (subject about 80% of the canvas in the widest frame of all clips, not per frame).
-- Feet on the same line in every frame (the renderer anchors at 90% height); facing right.
-- Clips and frame counts: `idle` 6 (loop), `walk` 8 (loop), `attack` 6 (strike lands on frame 3), `hurt` 3 to 4, `death` 4 to 6 (last frame lying down). 12 fps.
-- Packer input (`scripts/build-td-enemy-anims.mjs`): one horizontal strip PNG per clip, square frames (frame size = strip height), clips `idle`, `walk`, `attack`, `hurt`, `death`; map the files per kind in its `PACKS` table. The packer crops all frames to one shared box and takes the feet point from `idle` frame 0.
-- Preferred source (September 29, 2026): PixelLab image-to-animation from the kind's complete still (feet included), with `last_frame` = the same still for loops so the clip ends in the start pose; see `TOWER_DEFENSE_SPEC.md` section 6. v3/v4 stills: archer and brute were redrawn with feet, brood completed. Sources live in `~/hero-database-assets/td/enemy-sprites-src/`, never in `public/`.
+## Animation frames (M7, live)
+Every still the game shows has an animation sheet with the same name: `enemies/clips/brood-v4` animates `enemies/sprites/brood-v4` (`ENEMY_SHEETS` in `src/game/td/assets.js`). A new or redrawn still needs new clips; a remade sheet for the same still gets a suffix (`brood-v4b`), since R2 caches a year.
+
+Frame format (what the packer and renderer expect):
+- Square frames, transparent, facing right, the same canvas and scale in every frame of every clip; feet (lowest contact point) on one line. The packer crops all frames to one shared box and takes the feet point from the first `idle` frame; the renderer scales the idle body's larger side to 80% of the kind's sprite size.
+- Clips: `idle` (4, loop), `walk` (8, loop), `attack` (8, loop back to the start pose; strike in the first half), `hurt` (4, returns to the start pose), `death` (8, last frame lying). 12 fps. Kinds that never stop or strike (flyer) may reuse one strip for idle, walk and attack.
+
+Workflow (September 29, 2026):
+1. Start from a complete still: feet or lowest contact point visible, nothing cut off, 256x256, transparent (`~/hero-database-assets/td/enemy-sprites-src/`, never `public/`). Build and upload the still first (`build-td-enemy-sprites.mjs`, `ENEMY_SPRITE_VERSIONS`).
+2. PixelLab PixMiniMax through the API (`POST /v2/animate-pixminimax`, key from the local `pixellab` MCP config): `first_frame` = the still; for idle, walk, attack and hurt also `last_frame` = the same still, so the clip ends in the start pose. Describe motion only, end with "stays in place ... ends in exactly the starting pose", and name what must not change (head count, legs, broken tusk). Death runs open. `frame_count` 4 or 8; about 1 generation per clip; Tier 1 allows 8 concurrent jobs; poll `GET /v2/background-jobs/{id}`.
+3. Save each job's frames as `pixellab-<kind>/<clip>/NN.png` (00 = the unchanged input), then `python3 scripts/td-warp-anim.py <kind> ~/hero-database-assets/td/warp-anims --pixellab`. Check every clip for extra or missing limbs, changed head counts, cropped extremities and drift.
+4. Add `<file>-<version>` of the still to the `painted` set in `scripts/build-td-enemy-anims.mjs` (e.g. `"boss-lerna-v1": { dir: "lerna", ... }`), build with `--release`, upload with `upload-to-r2.mjs --prefix td/enemies/clips`, add the name to `ENEMY_SHEETS`. Local test before release: build without `--release` and open the game with `?sheets=local&set=painted`.
 - Same white label rule as the stills: made from our own sprites or from text, never from Motto Immortal art.
+- Tried and dropped for animation: Meshy 3D renders, a free pixel-art pack, warped single stills, generated walk strips without a pinned end pose.
 
 ## Output Filenames
 ```
