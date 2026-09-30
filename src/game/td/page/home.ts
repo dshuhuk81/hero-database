@@ -1,12 +1,12 @@
 // Home screen (War Camp, docs/tower-defense-home-camp-plan.md; markup in TdHome.astro):
-// the mode rail picks what Play opens (the pick is kept in the save, ui.homeMode), the
-// objective shows the next campaign stage, and dock badges mark actions that can be taken
-// right now. The mode screens themselves stay where they were: Play only navigates.
+// each mode on the rail opens its screen (the last played mode, ui.homeMode in the save,
+// stays expanded), the objective shows the next campaign stage, and dock badges mark actions
+// that can be taken right now. The mode screens themselves stay where they were.
 import { campHomeArt } from "../assets.js";
 import { canBuy, levelCost, TREE } from "../favor.js";
 import { resetText } from "./daily";
 import { roman } from "./route";
-import { availableFavor, HOME_MODES, isHomeMode, type HomeMode } from "./save";
+import { availableFavor, isHomeMode, type HomeMode } from "./save";
 import type { PageContext } from "./context";
 
 type CampaignSummary = {
@@ -27,14 +27,14 @@ type Deps = {
   expedition: { homeSummary(): ExpeditionSummary };
 };
 
-// What the rail, the Play button and its note say for one mode.
-type ModeView = { note: string; kicker: string; playNote: string; badge: string };
+// What the rail says for one mode.
+type ModeView = { note: string; badge: string };
 
 export function createHome(ctx: PageContext, deps: Deps) {
-  const { root, q, store, state } = ctx;
+  const { root, q, store } = ctx;
   const railEl = q("[data-td-home-modes]");
   const modeButtons = [...railEl.querySelectorAll<HTMLButtonElement>("[data-home-mode]")];
-  const playButton = q<HTMLButtonElement>("[data-td-home-play]");
+  const questKickerEl = q("[data-td-home-quest-kicker]");
   const questTitleEl = q("[data-td-home-quest-title]");
   const questNoteEl = q("[data-td-home-quest-note]");
   const questMeterEl = q("[data-td-home-quest-meter]");
@@ -59,18 +59,16 @@ export function createHome(ctx: PageContext, deps: Deps) {
     const boost = store.data.nextRunBoost;
     return {
       campaign: camp.next
-        ? { note: `${camp.started ? "Continue" : "Begin"} ${camp.next.id}`, kicker: `Stage ${camp.next.id}`, playNote: camp.next.name, badge: "" }
-        : { note: "All stages cleared", kicker: "Replay", playNote: "Replay stages for Gold and Hero XP", badge: "" },
+        ? { note: `${camp.started ? "Continue" : "Begin"} ${camp.next.id}`, badge: "" }
+        : { note: "Replay stages", badge: "" },
       daily: daily.cleared
-        ? { note: "Cleared today", kicker: "Today", playNote: `${daily.mapName} · new trial in ${resetText()}`, badge: "" }
-        : { note: "New trial", kicker: "Today", playNote: `${daily.mapName} · resets in ${resetText()}`, badge: "1" },
+        ? { note: `New in ${resetText()}`, badge: "" }
+        : { note: "New trial", badge: "1" },
       expedition: exp
-        ? { note: exp.camp ? "Camp reward waiting" : `Stage ${roman(exp.stage + 1)} of ${roman(exp.stages)}`, kicker: `Stage ${roman(exp.stage + 1)}`, playNote: `${exp.lives} ${exp.lives === 1 ? "life" : "lives"} left${exp.camp ? " · camp reward waiting" : ""}`, badge: "" }
-        : { note: "Not started", kicker: "New expedition", playNote: "Three battlefields, one squad", badge: "" },
+        ? { note: exp.camp ? "Camp reward waiting" : `Stage ${roman(exp.stage + 1)} of ${roman(exp.stages)}`, badge: "" }
+        : { note: "Not started", badge: "" },
       free: {
-        note: best ? `Best ${best.toLocaleString()}` : "No runs yet",
-        kicker: best ? `Best ${best.toLocaleString()}` : "First run",
-        playNote: boost ? (boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`) : state.selectedMap.name,
+        note: boost ? "Next run boosted" : best ? `Best ${best.toLocaleString()}` : "No runs yet",
         badge: "",
       },
     };
@@ -87,28 +85,24 @@ export function createHome(ctx: PageContext, deps: Deps) {
       const id = button.dataset.homeMode as HomeMode;
       const view = all[id];
       const on = id === mode;
-      button.setAttribute("aria-checked", String(on));
       button.classList.toggle("is-selected", on);
-      button.tabIndex = on ? 0 : -1;
+      button.toggleAttribute("data-td-autofocus", on); // the screen opens on the last played mode
       button.querySelector<HTMLElement>("[data-home-mode-note]")!.textContent = view.note;
+      button.setAttribute("aria-label", `${button.querySelector("strong")?.textContent ?? ""}: ${view.note}`);
       const badge = button.querySelector<HTMLElement>("[data-home-mode-badge]")!;
       badge.hidden = !view.badge;
       badge.textContent = view.badge;
     });
 
-    const view = all[mode];
-    playButton.dataset.mode = mode;
-    q("[data-td-home-play-kicker]").textContent = view.kicker;
-    q("[data-td-home-play-note]").textContent = view.playNote;
-    playButton.setAttribute("aria-label", `Play ${modeButtons.find((b) => b.dataset.homeMode === mode)?.querySelector("strong")?.textContent ?? ""}: ${view.kicker}, ${view.playNote}`);
-
     // Objective: the next campaign stage; the Daily Trial once every stage is cleared.
     questMeterEl.hidden = !camp.next;
     if (camp.next) {
+      questKickerEl.textContent = "Next stage";
       questTitleEl.textContent = camp.next.name;
       questNoteEl.textContent = `Stage ${camp.next.id} · ${camp.cleared} of ${camp.total} cleared`;
       questMeterEl.style.setProperty("--td-home-progress", `${camp.total ? Math.round((camp.cleared / camp.total) * 100) : 0}%`);
     } else {
+      questKickerEl.textContent = "Today";
       questTitleEl.textContent = daily.cleared ? "Daily Trial cleared" : "Today's Daily Trial";
       questNoteEl.textContent = daily.cleared ? `New trial in ${resetText()}` : `${daily.mapName} · first clear pays Favor and Seals`;
     }
@@ -127,17 +121,13 @@ export function createHome(ctx: PageContext, deps: Deps) {
     });
   }
 
-  function select(mode: HomeMode, focus = false) {
+  // A mode opens its screen and becomes the expanded one on the rail. Campaign opens the
+  // stage list on the next stage.
+  function launch(mode: HomeMode) {
     if (mode !== selected()) {
       store.data.ui = { ...store.data.ui, homeMode: mode };
       store.persist();
     }
-    render();
-    if (focus) modeButtons.find((button) => button.dataset.homeMode === mode)?.focus();
-  }
-
-  // Play: open the selected mode's screen. Campaign opens the stage list on the next stage.
-  function launch(mode = selected()) {
     if (mode === "campaign") {
       deps.campaign.focusNextStage();
       ctx.actions.showScreen("stages");
@@ -146,25 +136,10 @@ export function createHome(ctx: PageContext, deps: Deps) {
 
   railEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-home-mode]");
-    if (button && isHomeMode(button.dataset.homeMode)) select(button.dataset.homeMode);
+    if (button && isHomeMode(button.dataset.homeMode)) launch(button.dataset.homeMode);
   });
-  // Radio group keys: arrows move and select; Enter launches the selected mode.
-  railEl.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // no click: Enter plays instead of selecting again
-      launch();
-      return;
-    }
-    const step = event.key === "ArrowDown" || event.key === "ArrowRight" ? 1 : event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 0;
-    const edge = event.key === "Home" ? 0 : event.key === "End" ? HOME_MODES.length - 1 : -1;
-    if (!step && edge < 0) return;
-    event.preventDefault();
-    const index = HOME_MODES.indexOf(selected());
-    select(edge >= 0 ? HOME_MODES[edge] : HOME_MODES[(index + step + HOME_MODES.length) % HOME_MODES.length], true);
-  });
-  playButton.addEventListener("click", () => launch());
 
-  // The Daily Trial reset countdown on the rail and Play note.
+  // The Daily Trial reset countdown on the rail.
   setInterval(() => { if (root.dataset.screen === "home") render(); }, 60000);
 
   return { render };

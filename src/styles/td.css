@@ -156,11 +156,28 @@
    above Play. Sizes are logical px inside the menu frame (844 x 390 and up). */
 .td-camp-home { --td-home-medal: 46px; --td-home-edge: color-mix(in srgb, var(--accent-gold) 38%, transparent); position: relative; isolation: isolate; container: td-home / size; color: var(--text-primary); }
 .td-camp-home .td-icon { fill: none; }
-.td-camp-home-scene { position: absolute; inset: 0; z-index: -2; background: var(--bg-overlay) center / cover no-repeat; }
+.td-camp-home-scene { position: absolute; inset: 0; z-index: -3; background: var(--bg-overlay) center / cover no-repeat; }
+.td-camp-home-fire { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; overflow: visible; pointer-events: none; mix-blend-mode: screen; }
+.td-camp-home-fire-ambient, .td-camp-home-fire-core { transform-box: fill-box; transform-origin: center; }
+.td-camp-home-fire-ambient { filter: blur(18px); animation: td-camp-fire-ambient 3.8s ease-in-out infinite alternate; }
+.td-camp-home-fire-core { filter: blur(10px); animation: td-camp-fire-core 1.7s ease-in-out infinite alternate; }
 .td-camp-home::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background:
   linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 80%, transparent), transparent 18%, transparent 68%, color-mix(in srgb, var(--bg-base) 90%, transparent)),
   linear-gradient(90deg, color-mix(in srgb, var(--bg-base) 70%, transparent), transparent 22%, transparent 74%, color-mix(in srgb, var(--bg-base) 65%, transparent)); }
-.td-camp-home-layout { height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top top top" "quest play rail" "dock dock dock"; gap: var(--space-2) var(--space-4); padding: 0 var(--space-4) var(--space-2); box-sizing: border-box; }
+.td-camp-home-layout { height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top top top" "quest . rail" "dock dock dock"; gap: var(--space-2) var(--space-4); padding: 0 var(--space-4) var(--space-2); box-sizing: border-box; }
+
+@keyframes td-camp-fire-ambient {
+  0%, 18% { opacity: .68; transform: scale(.96, .92); }
+  37% { opacity: .9; transform: scale(1.03, 1.06); }
+  61% { opacity: .72; transform: scale(.98, .95); }
+  82%, 100% { opacity: 1; transform: scale(1.06, 1.02); }
+}
+@keyframes td-camp-fire-core {
+  0%, 16% { opacity: .62; transform: translateY(4px) scale(.88, .91); }
+  38% { opacity: .96; transform: translateY(-3px) scale(1.02, 1.08); }
+  57% { opacity: .7; transform: translateY(2px) scale(.93, .96); }
+  79%, 100% { opacity: 1; transform: translateY(-5px) scale(1.06, 1.12); }
+}
 
 /* Top bar: title crest, the global wallet (moved in by wallet.place), settings. */
 .td-camp-home-top { grid-area: top; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); min-height: 56px; margin-inline: calc(-1 * var(--space-4)); padding: var(--space-1) var(--space-4); box-sizing: border-box; border-bottom: 1px solid color-mix(in srgb, var(--accent-gold) 20%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 92%, transparent), color-mix(in srgb, var(--bg-base) 55%, transparent)); }
@@ -184,11 +201,12 @@
 /* Mode rail: medallions on the right edge; the selected one (and a hovered or focused one)
    slides out its name and status to the left. */
 .td-camp-home-rail { grid-area: rail; align-self: start; display: grid; justify-items: end; gap: 6px; margin-top: var(--space-3); }
-.td-camp-home-mode { display: grid; grid-template-columns: 0fr var(--td-home-medal); align-items: center; padding: 0; border: 0; background: none; color: var(--text-secondary); font: inherit; text-align: left; cursor: pointer; transition: grid-template-columns 0.2s ease, color 0.2s ease; }
+.td-camp-home-mode { display: grid; grid-template-columns: 0fr var(--td-home-medal); align-items: center; padding: 0; gap: 8px; border: 0; background: none; color: var(--text-secondary); font: inherit; text-align: left; cursor: pointer; transition: grid-template-columns 0.2s ease, color 0.2s ease; }
 .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) { grid-template-columns: 124px var(--td-home-medal); color: var(--text-bright); }
 .td-camp-home-mode:focus-visible { outline: none; }
-.td-camp-home-mode-copy { grid-area: 1 / 1; display: grid; min-width: 0; overflow: hidden; border-radius: var(--radius-sm) 0 0 var(--radius-sm); background: color-mix(in srgb, var(--bg-base) 80%, transparent); opacity: 0; white-space: nowrap; transition: opacity 0.15s ease; }
-.td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy { padding: 6px var(--space-3); opacity: 1; }
+/* The label panel matches the medal height, so expanding it never grows the row. */
+.td-camp-home-mode-copy { grid-area: 1 / 1; display: grid; align-content: center; height: var(--td-home-medal); box-sizing: border-box; min-width: 0; overflow: hidden; line-height: 1.25; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--bg-base) 80%, transparent); opacity: 0; white-space: nowrap; transition: opacity 0.15s ease; }
+.td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy { padding-inline: var(--space-3); opacity: 1; }
 .td-camp-home-mode-copy strong { overflow: hidden; font-size: var(--text-sm); text-overflow: ellipsis; }
 .td-camp-home-mode-copy small { overflow: hidden; color: var(--text-muted); font-size: var(--td-fs-label); text-overflow: ellipsis; }
 .td-camp-home-mode.is-selected .td-camp-home-mode-copy small { color: var(--accent-gold); }
@@ -201,27 +219,14 @@
 .td-camp-home-badge { position: absolute; top: -5px; right: -5px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box; border: 2px solid var(--bg-base); border-radius: var(--radius-full); background: var(--td-danger, #ef4444); color: #fff; font-size: var(--td-fs-label); font-weight: var(--weight-bold); line-height: 1; }
 .td-camp-home-badge--dot { top: -1px; right: -1px; min-width: 12px; width: 12px; height: 12px; padding: 0; }
 
-/* Play: the one gold action, launching the selected mode. */
-.td-camp-home-play { grid-area: play; align-self: end; justify-self: end; display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); padding: 0; border: 0; background: none; color: var(--text-bright); font: inherit; text-align: left; cursor: pointer; filter: drop-shadow(0 6px 18px var(--bg-base)); }
-.td-camp-home-play:focus-visible { outline: none; }
-.td-camp-home-play-ring { display: grid; place-items: center; width: 68px; aspect-ratio: 1; flex: 0 0 auto; box-sizing: border-box; border: 2px solid var(--accent-gold-light); border-radius: 50%; background: radial-gradient(circle, var(--accent-gold) 45%, color-mix(in srgb, var(--accent-gold) 35%, var(--bg-base)) 100%); box-shadow: 0 0 12px color-mix(in srgb, var(--accent-gold) 70%, transparent), 0 0 32px color-mix(in srgb, var(--accent-gold) 40%, transparent); transition: transform 0.18s ease; animation: td-home-pulse 2.4s ease-in-out infinite; }
-.td-camp-home-play-ring svg { width: 40%; height: 40%; fill: var(--bg-base); transform: translateX(2px); }
-.td-camp-home-play:hover .td-camp-home-play-ring { transform: scale(1.06); }
-.td-camp-home-play:focus-visible .td-camp-home-play-ring { outline: 2px solid var(--text-bright); outline-offset: 3px; }
-.td-camp-home-play-copy { display: grid; min-width: 0; max-width: 200px; text-shadow: 0 2px 8px var(--bg-base); }
-.td-camp-home-play-copy small { color: var(--accent-gold); font-size: var(--td-fs-label); font-weight: var(--weight-bold); letter-spacing: var(--tracking-widest); text-transform: uppercase; }
-.td-camp-home-play-copy strong { font-size: var(--text-2xl); font-weight: var(--weight-black); line-height: 1.1; letter-spacing: var(--tracking-widest); text-transform: uppercase; }
-.td-camp-home-play-copy span { overflow: hidden; color: var(--text-secondary); font-size: var(--td-fs-label); white-space: nowrap; text-overflow: ellipsis; }
-@keyframes td-home-pulse { 50% { box-shadow: 0 0 18px color-mix(in srgb, var(--accent-gold) 85%, transparent), 0 0 44px color-mix(in srgb, var(--accent-gold) 50%, transparent); } }
-
 /* Dock: collection and help screens. */
 .td-camp-home-dock { grid-area: dock; justify-self: center; display: flex; gap: var(--space-1); padding: 6px var(--space-3); border: 1px solid color-mix(in srgb, var(--accent-gold) 20%, transparent); border-radius: var(--radius-xl); background: linear-gradient(180deg, color-mix(in srgb, var(--bg-raised) 88%, transparent), color-mix(in srgb, var(--bg-base) 96%, transparent)); box-shadow: var(--shadow-lg); }
 .td-camp-home-dock-item { display: grid; justify-items: center; gap: 3px; min-width: 64px; padding: 0 var(--space-1); border: 0; background: none; color: var(--text-secondary); font: inherit; cursor: pointer; transition: var(--transition-colors); }
-.td-camp-home-dock-icon { position: relative; display: grid; place-items: center; width: 38px; height: 38px; box-sizing: border-box; border: 1px solid color-mix(in srgb, var(--accent-gold) 26%, transparent); border-radius: 50%; background: radial-gradient(circle at 45% 35%, color-mix(in srgb, var(--accent-gold) 18%, var(--bg-raised)), var(--bg-base) 70%); transition: border-color 0.18s ease, transform 0.18s ease; }
+.td-camp-home-dock-icon { position: relative; display: grid; place-items: center; width: 38px; height: 38px; box-sizing: border-box; border: 1px solid color-mix(in srgb, var(--accent-gold) 26%, transparent); border-radius: 50%; background: radial-gradient(circle at 45% 35%, color-mix(in srgb, var(--accent-gold) 18%, var(--bg-raised)), var(--bg-base) 70%); transition: border-color 0.18s ease; }
 .td-camp-home-dock-icon .td-icon { width: 20px; height: 20px; stroke-width: 1.75; stroke-linejoin: round; }
 .td-camp-home-dock-label { font-size: var(--td-fs-label); font-weight: var(--weight-semibold); line-height: 1.1; white-space: nowrap; }
 .td-camp-home-dock-item:is(:hover, :focus-visible) { color: var(--text-bright); outline: none; }
-.td-camp-home-dock-item:is(:hover, :focus-visible) .td-camp-home-dock-icon { border-color: var(--accent-gold); color: var(--accent-gold); transform: translateY(-2px); }
+.td-camp-home-dock-item:is(:hover, :focus-visible) .td-camp-home-dock-icon { border-color: var(--accent-gold); color: var(--accent-gold); }
 .td-camp-home-dock-item:focus-visible .td-camp-home-dock-icon { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
 .td-camp-home-exit { grid-area: dock; justify-self: end; align-self: center; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; color: var(--text-muted); font-size: var(--td-fs-label); font-weight: var(--weight-semibold); text-decoration: none; text-shadow: 0 2px 8px var(--bg-base); }
 .td-camp-home-exit .td-icon { width: 16px; height: 16px; stroke-width: 1.75; stroke-linejoin: round; }
@@ -233,9 +238,8 @@
   .td-camp-home-layout { --td-home-medal: 42px; row-gap: 6px; }
   .td-camp-home-top { min-height: 52px; }
   .td-camp-home-quest, .td-camp-home-rail { margin-top: var(--space-2); }
-  .td-camp-home-quest :is(.td-camp-home-kicker, .td-camp-home-quest-note) { display: none; }
+  .td-camp-home-quest .td-camp-home-quest-note { display: none; }
   .td-camp-home-quest strong { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .td-camp-home-play { margin-bottom: var(--space-2); }
   .td-camp-home-dock { padding-block: var(--space-1); }
 }
 /* The smallest frames (below the zoom floor): dock icons only; labels stay as aria-label. */
@@ -245,17 +249,16 @@
 }
 /* Portrait frames (tablets, tall windows): objective and rail above Play, dock at the bottom. */
 @container td-home (orientation: portrait) {
-  .td-camp-home-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "quest" "rail" "play" "dock"; row-gap: var(--space-4); }
+  .td-camp-home-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; grid-template-areas: "top" "quest" "rail" "." "dock"; row-gap: var(--space-4); }
   .td-camp-home-quest { justify-self: center; width: min(420px, 100%); margin-top: var(--space-5); }
   .td-camp-home-rail { justify-self: center; grid-auto-flow: column; justify-items: center; gap: var(--space-3); margin-top: 0; }
   .td-camp-home-mode, .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) { grid-template-columns: 110px; grid-template-rows: auto auto; justify-items: center; gap: var(--space-1); }
   .td-camp-home-medal { grid-area: 1 / 1; }
-  .td-camp-home-mode-copy, .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy { grid-area: 2 / 1; justify-items: center; max-width: 100%; padding: 2px var(--space-2); border-radius: var(--radius-sm); opacity: 1; text-align: center; }
-  .td-camp-home-play { align-self: center; justify-self: center; margin: 0; }
+  .td-camp-home-mode-copy, .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy { grid-area: 2 / 1; justify-items: center; height: auto; max-width: 100%; padding: 2px var(--space-2); border-radius: var(--radius-sm); opacity: 1; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .td-camp-home-play-ring { animation: none; }
-  .td-camp-home-mode, .td-camp-home-mode-copy, .td-camp-home-play-ring, .td-camp-home-dock-icon { transition: none; }
+  .td-camp-home-fire-ambient, .td-camp-home-fire-core { animation: none; opacity: .72; }
+  .td-camp-home-mode, .td-camp-home-mode-copy, .td-camp-home-dock-icon { transition: none; }
 }
 
 /* Campaign (M26): stage list and squad picker */

@@ -1,8 +1,8 @@
 ---
 // Home screen (War Camp, docs/tower-defense-home-camp-plan.md): the camp scene fills the
 // screen and the controls float on its edges. Top bar (title crest, wallet, settings), the
-// current objective, the mode rail (a radio group: picking a mode changes what Play opens),
-// the Play button and the dock. src/game/td/page/home.ts fills the data-td-home-* hooks and
+// current objective, the mode rail (each mode opens its screen; the last played one stays
+// expanded) and the dock. src/game/td/page/home.ts fills the data-td-home-* hooks and
 // moves the global wallet into data-td-home-wallet; styles are .td-camp-home-* in td.css.
 const modes = [
   { id: "campaign", label: "Campaign", icon: "M6 21V3M6 4h11l-2.5 4L17 12H6" },
@@ -21,6 +21,22 @@ const dock = [
 
 <section class="td-screen td-camp-home" data-td-screen="home" data-title="Tower Defense" aria-label="Main menu">
   <div class="td-camp-home-scene" data-td-home-scene aria-hidden="true"></div>
+  <svg class="td-camp-home-fire" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="td-camp-fire-ambient">
+        <stop offset="0" stop-color="#ffb33e" stop-opacity=".32" />
+        <stop offset=".42" stop-color="#ff751f" stop-opacity=".16" />
+        <stop offset="1" stop-color="#ff5a16" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="td-camp-fire-core">
+        <stop offset="0" stop-color="#fff3ad" stop-opacity=".48" />
+        <stop offset=".34" stop-color="#ffbd42" stop-opacity=".3" />
+        <stop offset="1" stop-color="#ff6a1c" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <ellipse class="td-camp-home-fire-ambient" cx="836" cy="625" rx="174" ry="126" fill="url(#td-camp-fire-ambient)" />
+    <ellipse class="td-camp-home-fire-core" cx="836" cy="606" rx="78" ry="96" fill="url(#td-camp-fire-core)" />
+  </svg>
   <div class="td-camp-home-layout">
     <header class="td-camp-home-top">
       <div class="td-camp-home-crest">
@@ -35,15 +51,15 @@ const dock = [
 
     <!-- Next campaign stage and chapter progress; the Daily Trial once the campaign is done. -->
     <aside class="td-camp-home-quest" aria-labelledby="td-home-quest-title">
-      <span class="td-camp-home-kicker">Current objective</span>
+      <span class="td-camp-home-kicker" data-td-home-quest-kicker>Next stage</span>
       <strong id="td-home-quest-title" data-td-home-quest-title></strong>
       <span class="td-camp-home-quest-note" data-td-home-quest-note></span>
       <span class="td-camp-home-meter" data-td-home-quest-meter aria-hidden="true"><i></i></span>
     </aside>
 
-    <div class="td-camp-home-rail" role="radiogroup" aria-label="Game mode" data-td-home-modes>
+    <nav class="td-camp-home-rail" aria-label="Game modes" data-td-home-modes>
       {modes.map((mode) => (
-        <button class="td-camp-home-mode" type="button" role="radio" aria-checked="false" tabindex="-1" data-home-mode={mode.id}>
+        <button class="td-camp-home-mode" type="button" data-home-mode={mode.id}>
           <span class="td-camp-home-mode-copy"><strong>{mode.label}</strong><small data-home-mode-note></small></span>
           <span class="td-camp-home-medal">
             <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={mode.icon} fill="none" /></svg>
@@ -51,16 +67,7 @@ const dock = [
           </span>
         </button>
       ))}
-    </div>
-
-    <button class="td-camp-home-play" type="button" data-td-home-play data-td-autofocus>
-      <span class="td-camp-home-play-ring" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 6l9 6-9 6z" /></svg></span>
-      <span class="td-camp-home-play-copy">
-        <small data-td-home-play-kicker></small>
-        <strong>Play</strong>
-        <span data-td-home-play-note></span>
-      </span>
-    </button>
+    </nav>
 
     <nav class="td-camp-home-dock" aria-label="Camp">
       {dock.map((item) => (
