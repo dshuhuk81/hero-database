@@ -3,7 +3,7 @@
 import { bossSprite } from "../assets.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
-import { addSeals } from "../campaign.js";
+import { addSeals, ownedHeroes } from "../campaign.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -22,7 +22,8 @@ const relicInfo = RUN_BOON_INFO as Record<string, { name: string; text: string }
 // The caller persists the save.
 export function finishExpeditionStage(save: SaveData, game: any, state: ExpeditionState, data: any, record: boolean) {
   const total = state.stages.length;
-  const result = finishStage(state, { won: !!game.won, lives: game.lives ?? 0 }, data);
+  // Camp recruits come from the owned heroes (Phase 2), like the starting roster.
+  const result = finishStage(state, { won: !!game.won, lives: game.lives ?? 0 }, { ...data, heroes: ownedHeroes(save.campaign, data.heroes) });
   let reward = 0;
   if (record) {
     save.expedition = result.state as ExpeditionState | null;
@@ -114,7 +115,7 @@ export function createExpedition(ctx: PageContext) {
     stepsEl.hidden = !!state;
     bossArtEl.hidden = !state;
     rulesEl.innerHTML = [`${stops} battlefields`, "Normal", "Lives carry over", "Divine Blessings apply", "No shard boosts"].map((rule) => `<li>${rule}</li>`).join("");
-    q("[data-td-exp-step-squad]").textContent = `Start with ${EXPEDITION.startHeroes} random heroes. Only they can be deployed.`;
+    q("[data-td-exp-step-squad]").textContent = `Start with ${EXPEDITION.startHeroes} random heroes from your collection. Only they can be deployed.`;
     if (!state) {
       stageEl.textContent = "";
       titleEl.textContent = "Three battlefields, one squad";
@@ -159,7 +160,7 @@ export function createExpedition(ctx: PageContext) {
   function start() {
     let state = store.data.expedition;
     if (!state) {
-      state = newExpedition(Math.floor(Math.random() * 2 ** 31), data) as ExpeditionState;
+      state = newExpedition(Math.floor(Math.random() * 2 ** 31), { ...data, heroes: ownedHeroes(store.data.campaign, data.heroes) }) as ExpeditionState;
       store.data.expedition = state;
       store.persist();
     }

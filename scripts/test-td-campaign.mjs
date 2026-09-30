@@ -5,7 +5,7 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
-import { allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, campaignHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 import dbBosses from "../src/data/bosses.json" with { type: "json" };
 import tdBosses from "../src/data/tdBosses.json" with { type: "json" };
@@ -98,7 +98,7 @@ stages.forEach((stage, i) => {
   const passive = skillUp(campaign, { ...p, currencies: { ...p.currencies, gold: 5000 } }, id, "passiveAttack");
   assert.equal(heroSkillLevel(passive, id, "passiveAttack"), 2, "passives level separately from the ultimate");
   const baseHero = heroes.find((hero) => hero.id === id);
-  const skilledHero = campaignHeroes(campaign, passive, heroes).find((hero) => hero.id === id);
+  const skilledHero = collectionHeroes(campaign, passive, heroes).find((hero) => hero.id === id);
   assert.ok(skilledHero.atk > baseHero.atk && skilledHero.hp === baseHero.hp, "attack passive affects campaign attack only");
   assert.ok(skilledHero.ultPower > baseHero.ultPower, "ultimate level affects campaign Ultimate power");
 }
@@ -122,10 +122,10 @@ stages.forEach((stage, i) => {
   // Banded gains: levels 1-10 keep +6% each, later bands add less.
   assert.equal(+levelScale(campaign, 10).toFixed(4), +(1 + 0.06 * 9).toFixed(4), "levels 2-10 unchanged at +6%");
   assert.ok(levelScale(campaign, 20) - levelScale(campaign, 10) < levelScale(campaign, 10) - levelScale(campaign, 1), "later band adds less");
-  const scaled = campaignHeroes(campaign, p, heroes).find((hero) => hero.id === id);
+  const scaled = collectionHeroes(campaign, p, heroes).find((hero) => hero.id === id);
   const base = heroes.find((hero) => hero.id === id);
   assert.equal(scaled.atk, Math.round(base.atk * levelScale(campaign, cap0)), "level scales attack");
-  assert.equal(campaignHeroes(campaign, p, heroes).find((hero) => hero.id === "zeus"), heroes.find((hero) => hero.id === "zeus"), "level 1 heroes unchanged");
+  assert.equal(collectionHeroes(campaign, p, heroes).find((hero) => hero.id === "zeus"), heroes.find((hero) => hero.id === "zeus"), "level 1 heroes unchanged");
 }
 
 // --- Save section ---
@@ -168,7 +168,7 @@ stages.forEach((stage, i) => {
   let progress = newCampaignProgress(campaign);
   for (const stage of stages) {
     const leveled = spendEvenly(progress);
-    const runHeroes = campaignHeroes(campaign, leveled, heroes);
+    const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const levels = leveled.owned.map((id) => heroLevel(leveled, id));
     const map = maps.find((entry) => entry.id === stage.mapId);
     const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
@@ -231,5 +231,18 @@ stages.forEach((stage, i) => {
   assert.deepEqual([migrated.version, migrated.milestones[chapter.id], migrated.currencies.gold], [CAMPAIGN_SAVE_VERSION, [10], ten.rewards.find((r) => r.id === "gold").amount], "v7 -> v8 pays reached milestones once");
   assert.equal(sanitizeCampaign(migrated, campaign, heroIds).currencies.gold, migrated.currencies.gold, "not paid again on reload");
   assert.deepEqual(sanitizeCampaign({ ...migrated, milestones: { [chapter.id]: [10, 999, "x"] } }, campaign, heroIds).milestones[chapter.id], [10], "unknown milestones dropped");
+}
+
+// One collection (Phase 2): Free Play and Expedition pay Gold and Hero XP per cleared wave,
+// capped per run, never Divine Seals; they deploy only owned heroes.
+{
+  const cfg = campaign.collectionRewards;
+  const amounts = (waves) => Object.fromEntries(collectionReward(campaign, waves).map((reward) => [reward.id, reward.amount]));
+  assert.deepEqual(amounts(10), { gold: cfg.perWave.gold * 10, heroXp: cfg.perWave.heroXp * 10 }, "10 waves pay perWave x10");
+  assert.deepEqual(amounts(cfg.maxWaves + 50), amounts(cfg.maxWaves), "capped at maxWaves");
+  assert.deepEqual(collectionReward(campaign, 0), [], "no cleared wave, no reward");
+  assert.deepEqual(collectionReward({ ...campaign, collectionRewards: { perWave: { divineSeals: 5, gold: 1 } } }, 3), [{ type: "currency", id: "gold", amount: 3 }], "never Divine Seals");
+  const fresh = newCampaignProgress(campaign);
+  assert.deepEqual(ownedHeroes(fresh, heroes).map((hero) => hero.id).sort(), [...campaign.starters].sort(), "new save owns the starters");
 }
 console.log("Tower defense campaign checks passed.");

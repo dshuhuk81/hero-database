@@ -1,6 +1,6 @@
 # Tower Defense home screen: War Camp plan
 
-Status: home screen built September 30, 2026 on branch `tower-main-home-screen` (steps 1-8 below; the background still needs its R2 upload). Phase 2 is planned, not started. The reference prototype (`menu-concept.astro`) and its concept image were deleted once the screen was in place.
+Status: home screen built September 30, 2026 on branch `tower-main-home-screen` (steps 1-8 below; the background still needs its R2 upload). Phase 2 first step built the same day (see "Phase 2 as built"). The reference prototype (`menu-concept.astro`) and its concept image were deleted once the screen was in place.
 
 ## Goal
 
@@ -126,7 +126,7 @@ All done September 30, 2026, except the R2 upload in step 1 (owner). Where the b
 4. After a campaign run: back to the stage list; Back from there goes home.
 5. Heroes and Summon: on the dock now. Making the collection count in every mode is Phase 2 below, planned but not started.
 
-## Phase 2: one hero collection for every mode (planned, not started)
+## Phase 2: one hero collection for every mode (first step built September 30, 2026)
 
 ### Problem
 
@@ -172,3 +172,21 @@ Campaign keeps its own reason to exist: it is the only place to unlock heroes th
 8. Tests: `npm run test:tower-defense`; update `TOWER_DEFENSE_SPEC.md`.
 
 Phase 2 is independent of the home screen work and can ship after it.
+
+### Phase 2 as built (September 30, 2026)
+
+Decisions taken (the plan's recommendations where it had one):
+
+1. Balance: option c. Free Play and Expedition use owned heroes at base stats; upgrades stay Campaign only. Option a (upgrades plus tiers scaled by `heroMight`) is the next step once measured.
+2. Squad limit: the whole owned deck in Free Play, no squad screen.
+3. Divine Blessings: unchanged split (Free Play and Expedition only).
+4. Rewards: `collectionRewards` in `tdCampaign.json`, 10 Gold + 5 Hero XP per cleared wave, up to 30 waves per run (a 10-wave run pays 100 + 50, about 40% of a campaign replay's rate per wave). No Seals. Expedition pays per stage, on top of its Favor and Seals.
+5. Existing saves: no migration gift. An Expedition already in progress keeps its roster.
+6. Free Play maps: stay open.
+
+Implementation: `ownedHeroes()` and `collectionReward()` in `campaign.js` (`campaignHeroes` renamed to `collectionHeroes` in code and scripts; the save key stays `campaign`, no migration). `session.ts` passes the owned ids as Free Play's `allowedHeroes`; `page/expedition.ts` passes the owned heroes as the pool for `newExpedition` and the camp; `newExpedition` tolerates a pool with one slot type. `recruit.ts` shows an empty-state line when a tile type has no owned hero. `results.ts` pays the collection share for Free Play and Expedition (not Daily, Campaign or debug runs) and shows it under "For your heroes". Wallet: Gold chip also on the map select, run length and Expedition screens; the inventory group is "Hero collection". How to play has a "Your heroes" section; the Glossary's "Campaign upgrades" entry became "Hero collection".
+
+Balance: starters only (demeter, jormungandr, horus, fengyi, artemis, freya), seed 99, Normal, cheapest / carry policy: Moonlit Pass L10 / W19, Verdant Crossing L8 / W2, Sunscar Ruins W5 / W17, Sunscar Basin W19 / W25. `test:td-balance` now requires at least one starter win on a Free Play battlefield; `td:sweep -- --owned=starters` adds the starter deck. Tiers were not retuned: a new player can win, and more heroes still help.
+
+Open for the next step: decision 1a (upgrades in Free Play and Expedition with tier scaling), upgraded-roster cases in `td:sweep`, and a Free Play screen line showing how many heroes the player owns.
+

@@ -40,6 +40,13 @@
     }
   },
   "repeatShare": 0.25,
+  "collectionRewards": {
+    "perWave": {
+      "gold": 10,
+      "heroXp": 5
+    },
+    "maxWaves": 30
+  },
   "laurels": {
     "thresholds": [
       0,

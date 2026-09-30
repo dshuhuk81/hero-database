@@ -109,4 +109,19 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   assert.deepEqual(old.expeditionBest, { stages: 0, completed: 0 });
 }
 
+// Owned pool (Phase 2): the page passes only owned heroes; the roster and camp recruits
+// stay inside that pool, and a pool with one slot type still starts.
+{
+  const owned = heroes.filter((hero) => ["demeter", "jormungandr", "horus", "fengyi", "artemis", "freya"].includes(hero.id));
+  const pool = { ...data, heroes: owned };
+  for (let seed = 1; seed <= 20; seed++) {
+    const e = newExpedition(seed, pool);
+    assert.ok(e.roster.every((id) => owned.some((hero) => hero.id === id)), "roster from the owned pool");
+    const camp = campOffer({ ...e, stage: 1 }, pool).find((card) => card.type === "hero");
+    assert.ok(!camp || owned.some((hero) => hero.id === camp.id), "camp recruit from the owned pool");
+  }
+  const roadOnly = newExpedition(7, { ...data, heroes: owned.filter((hero) => hero.slot === "road") });
+  assert.ok(roadOnly.roster.length === EXPEDITION.startHeroes && roadOnly.roster.every(Boolean), "road-only pool still fills the roster");
+}
+
 console.log("Tower defense expedition checks passed.");

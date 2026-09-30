@@ -6,7 +6,7 @@ import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, campaignHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { maps, playRun, POLICIES, SQUADS } from "./lib/td-runner.mjs";
 
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
@@ -68,7 +68,7 @@ if (stages.some((stage) => stage.mapId === mapId)) {
   for (const stage of stages) {
     if (stage.mapId === mapId) {
       const leveled = spendEvenly(progress);
-      const runHeroes = campaignHeroes(campaign, leveled, heroes);
+      const runHeroes = collectionHeroes(campaign, leveled, heroes);
       const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
       const cells = Object.entries(layouts).map(([key, map]) => {
         let won = 0, total = 0;

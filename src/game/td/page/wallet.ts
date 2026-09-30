@@ -12,8 +12,8 @@ import { classIconImg } from "../assets.js";
 const CHIPS = ["favor", ...CURRENCIES];
 const SOURCES: Record<string, string> = {
   favor: "Every run outside the campaign. Spent on Divine Blessings.",
-  gold: "Campaign stages. Spent on hero levels.",
-  heroXp: "Campaign stages. Spent on hero levels.",
+  gold: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
+  heroXp: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
   divineSeals: "Campaign first clears, Daily Trial and Expedition. Spent on summons.",
   sealDust: "Spare hero copies. Spent on Evolution, copies and Divine Seals.",
 };
@@ -44,7 +44,7 @@ export function createWallet(ctx: PageContext) {
     return `<section class="td-wallet-group"><h2 class="td-label">Divine Blessings</h2><ul>${row("favor", have.favor)}</ul>` +
       `<div class="td-wallet-insight"><strong>Insight</strong><small>Deployed heroes earn it for their class. Spent on that class's blessings.</small><div class="td-wallet-insight-chips">${insight}</div></div>` +
       `<div class="td-wallet-links"><button class="td-link-button" type="button" data-td-go="blessings">Open Divine Blessings</button></div></section>` +
-      `<section class="td-wallet-group"><h2 class="td-label">Campaign</h2><ul>${CURRENCIES.map((id: string) => row(id, have[id])).join("")}</ul>` +
+      `<section class="td-wallet-group"><h2 class="td-label">Hero collection</h2><ul>${CURRENCIES.map((id: string) => row(id, have[id])).join("")}</ul>` +
       `<div class="td-wallet-links"><button class="td-link-button" type="button" data-td-go="heroes">Heroes</button><button class="td-link-button" type="button" data-td-go="summon">Summon</button></div></section>`;
   }
 

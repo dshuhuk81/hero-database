@@ -8,8 +8,13 @@ import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "js
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import waves from "../../src/data/tdWaves.json" with { type: "json" };
 import { rankedTiles } from "../../src/game/td/grid.js";
+import campaign from "../../src/data/tdCampaign.json" with { type: "json" };
 
 export { maps };
+// Free Play battlefields (campaign-only maps excluded), and a new player's Free Play deck:
+// since Phase 2 only owned heroes can be recruited, and a new save owns the campaign starters.
+export const freePlayMaps = maps.filter((map) => !map.campaignOnly);
+export const STARTERS = campaign.starters;
 
 const STALL_SECONDS = 120; // this long without a kill or leak counts as a standoff (lost run)
 

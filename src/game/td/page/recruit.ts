@@ -138,11 +138,14 @@ export function createRecruit(ctx: PageContext) {
     // Class roles now live on the chosen hero; the note only carries the tile's own bonus.
     sheetNote.textContent = ring ? `${ring.name}: ${ring.text}` : "";
     sheetNote.hidden = !ring;
-    // Daily Trial (M19): only the day's heroes are listed.
-    sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id))).map((hero: any) =>
+    // Restricted rosters list only their heroes: the day's (Daily Trial), the squad
+    // (Campaign, Expedition) or the owned collection (Free Play).
+    const listed = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id)));
+    sheetList.innerHTML = listed.length ? listed.map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" aria-pressed="false">` +
       `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
-      `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("");
+      `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("")
+      : `<p class="td-sheet-empty">No ${road ? "road" : "platform"} heroes ${state.session?.daily || state.session?.campaign || state.session?.expedition ? "in this squad" : "in your collection yet. Unlock heroes in the Campaign or summon them with Divine Seals"}.</p>`;
     update();
     previewId = "";
     detailsEl.open = false;

@@ -6,7 +6,7 @@
 // Run with: node scripts/td-tank-slot.mjs [--sample=21]
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, campaignHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { maps, playRun, POLICIES } from "./lib/td-runner.mjs";
 
 const SAMPLE = Number(process.argv.find((a) => a.startsWith("--sample="))?.split("=")[1] ?? 21);
@@ -29,7 +29,7 @@ let progress = newCampaignProgress(campaign);
 const totals = { 5: { tank: [0, 0], none: [0, 0] }, 6: { tank: [0, 0], none: [0, 0] } };
 for (const stage of allStages(campaign)) {
   progress = spendEvenly(progress);
-  const runHeroes = campaignHeroes(campaign, progress, heroes);
+  const runHeroes = collectionHeroes(campaign, progress, heroes);
   const map = maps.find((m) => m.id === stage.mapId);
   const cells = [];
   for (const size of [5, 6]) {

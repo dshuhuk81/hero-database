@@ -5,7 +5,7 @@
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, campaignHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions, stageRewardHeroes, summonMany } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions, stageRewardHeroes, summonMany } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 
 const SAMPLE = 20;
@@ -34,7 +34,7 @@ for (const stage of stages) {
   const row = [stage.id];
   for (const [, stars, evo] of scenarios) {
     const upgraded = { ...leveled, stars: Object.fromEntries(leveled.owned.map((id) => [id, stars])), evolution: Object.fromEntries(leveled.owned.map((id) => [id, evo])) };
-    const runHeroes = campaignHeroes(campaign, upgraded, heroes);
+    const runHeroes = collectionHeroes(campaign, upgraded, heroes);
     const wins = squads.filter((squad, i) => playRun([...squad].sort((a, b) => cost[a] - cost[b]), i + 1, map, { game: stageGameOptions(stage, squad, i + 1, runHeroes) }).won).length;
     row.push(`${Math.round((wins / squads.length) * 100)}%`);
   }

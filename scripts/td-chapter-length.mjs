@@ -4,7 +4,7 @@
 // Run with: node scripts/td-chapter-length.mjs [--seeds=3] [--sample=35]
 import baseCampaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, campaignHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { maps, playRun, POLICIES } from "./lib/td-runner.mjs";
 
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
@@ -54,7 +54,7 @@ for (const [label, vary] of variants) {
   let progress = newCampaignProgress(campaign);
   for (const stage of stages) {
     const leveled = spendEvenly(campaign, progress);
-    const runHeroes = campaignHeroes(campaign, leveled, heroes);
+    const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const map = maps.find((m) => m.id === stage.mapId);
     const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
     const cells = [];

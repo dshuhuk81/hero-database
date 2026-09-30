@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, campaignHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, collectionHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -242,12 +242,12 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(evolve(campaignData, { ...p, currencies: { ...p.currencies, sealDust: dustPrice - 1 } }, hero), null, "not enough dust");
   // Evolution bonuses reach the run's hero list; V gives the awakened ultimate.
   const base = heroes.find((h) => h.id === featured);
-  const run = campaignHeroes(campaignData, { ...e, stars: { [featured]: 3 } }, heroes).find((h) => h.id === featured);
+  const run = collectionHeroes(campaignData, { ...e, stars: { [featured]: 3 } }, heroes).find((h) => h.id === featured);
   const bonus = evolutionBonus(campaignData, tiers);
   assert.equal(run.atk, Math.round(base.atk * starScale(campaignData, 3)), "stars scale attack");
   assert.equal(run.critChance, +(base.critChance + bonus.crit).toFixed(4), "evolution crit");
   assert.ok(run.ultPower > base.ultPower && run.ultCooldown < base.ultCooldown && run.awakenedUlt, "evolution ultimate power, cooldown, awakened");
-  assert.equal(campaignHeroes(campaignData, newCampaignProgress(campaignData), heroes)[0], heroes[0], "no upgrades: hero unchanged");
+  assert.equal(collectionHeroes(campaignData, newCampaignProgress(campaignData), heroes)[0], heroes[0], "no upgrades: hero unchanged");
   // Dust.
   const d = cfg.dust;
   assert.equal(convertCopies(cfg, p, hero, 1), null, "no copy to convert");

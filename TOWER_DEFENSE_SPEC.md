@@ -582,14 +582,33 @@ only then optional live seeded generation.
 
 | Mode | Rules | Source |
 |---|---|---|
-| Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
+| Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave. Recruits only owned heroes, at base stats (Phase 2, September 30, 2026); pays Favor plus Gold and Hero XP into the collection | `sim.js`, `waves.js` |
 | Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target; hpScale re-tightened on 1-1..1-4 and 1-9/1-10 to 1.0/1.1/1.05/1.05/0.6/0.7 on September 30, 2026 after the owner's playtest read too easy at squad size 6). Play on the home screen (Campaign selected) opens the stage list. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
-| Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
+| Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random owned heroes, camp offers hero (owned, not yet in the roster) / relic / veteran after each win, lives carry over; each stage pays Gold and Hero XP into the collection | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
 | Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
 
-Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
+Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`; Free Play's
+owned list (`allowedHeroes`) restricts who can be recruited.
+
+### One hero collection (Phase 2, September 30, 2026)
+
+Heroes are owned and upgraded through the campaign (save key `campaign`), and every mode
+except the Daily Trial uses the owned heroes (`ownedHeroes()` in `campaign.js`). Free Play
+passes them as `allowedHeroes`; the recruit sheet lists only those and says so when a tile
+type has none. Expedition draws its starting roster and camp recruits from them (the page
+passes the owned heroes as the pool). Upgrades (levels, Stars, Evolution, skills;
+`collectionHeroes()`, formerly `campaignHeroes()`) still apply in Campaign stages only, and
+Divine Blessings still apply in Free Play and Expedition only. Free Play runs and Expedition
+stages pay `collectionRewards` from `tdCampaign.json` (10 Gold + 5 Hero XP per cleared wave,
+up to 30 waves a run, never Divine Seals; `collectionReward()`); the result screen shows it
+under "For your heroes". Existing saves keep their Expedition in progress and get no
+migration gift. Balance: `test:td-balance` requires the six starters to win at least one
+Free Play battlefield at Normal; measured at seed 99 (cheapest / carry): Moonlit Pass
+L10 / W19, Verdant Crossing L8 / W2, Sunscar Ruins W5 / W17, Sunscar Basin W19 / W25.
+`npm run td:sweep -- --owned=starters` adds the starter deck to the sweep. Plan and open
+follow-ups: `docs/tower-defense-home-camp-plan.md` (Phase 2).
 
 ### Campaign navigation and screens
 
@@ -854,6 +873,9 @@ Main menu. Spend Favor is hidden after campaign stages (they earn no Favor).
   can roll with requirements such as `chain` or `wet`.
 - **Shards / next-run boost**: gold or virtue boost for the next run.
 - Favor purchases are allowed anytime and apply on the next run.
+- **Hero collection**: heroes unlocked in the campaign and summoned with Divine Seals are
+  the only ones Free Play and Expedition can field; both pay a share of Gold and Hero XP
+  (see "One hero collection" above).
 
 ## 10. Persistence
 
@@ -863,7 +885,7 @@ is dropped, a corrupt blob starts fresh, unknown hero ids are removed.
 Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLevels`,
 `insight`, `resetSpent`, `refundNotice`, `treeVersion`, `repriceNotice`, `mapBests`,
 `mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
-`campaign`.
+`campaign` (the hero collection), `ui` (`homeMode`, the home screen's mode pick).
 
 The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 8): `owned`, `cleared`,
 `lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust),
