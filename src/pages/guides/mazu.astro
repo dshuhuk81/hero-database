@@ -61,7 +61,7 @@ const weaknesses = [
 ---
 
 <Base title="Mazu Guide - Damage Smoothing & Mercy's Wake | Motto Immortal" description="Complete Mazu guide covering Mercy's Wake, delayed damage, Shields, targeted healing, Energy support, Relic investment, teams, PvE, bosses, PvP, and counterplay.">
-  <div class="guide-banner guide-banner--heket guide-banner--diamonds">
+  <div class="guide-banner guide-banner--heket guide-banner--diamonds guide-banner--mazu">
     <div class="guide-banner-bg" style={`background-image: url('${heroImage(mazuData.id)}'); --guide-banner-y: 10%;`}></div>
     <div class="guide-banner-overlay"></div>
     <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
@@ -77,7 +77,7 @@ const weaknesses = [
     </div>
   </div>
 
-  <div class="guide-body guide-body--heket guide-body--diamonds">
+  <div class="guide-body guide-body--heket guide-body--diamonds guide-body--mazu">
     <GuideSectionNav />
 
     <section class="guide-section guide-section--detail-heading">
@@ -85,7 +85,7 @@ const weaknesses = [
       <div class="heket-verdict">
         <div class="heket-verdict-main">
           <div class="heket-verdict-icon" style={`background-image: url('${skillImage(mercySkill.id)}');`} role="img" aria-label={mercySkill.name}></div>
-          <div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Turn lethal burst into damage your team has time to survive.</h3><p>Mazu combines team-wide Shields, delayed incoming damage, targeted emergency healing, Energy support, and temporary ATK amplification. Her defining strength is not simply reducing damage: Mercy's Wake changes when part of that damage arrives. This gives healing, Shields, and other sustain mechanics additional time to stabilize the formation. She is most valuable when the team has enough damage to win but is being overwhelmed before that damage can be delivered.</p></div>
+          <div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Give your team time to recover from burst damage.</h3><p>Mazu combines team-wide Shields, delayed incoming damage, targeted emergency healing, Energy support, and temporary ATK amplification. Her defining strength is not simply reducing damage: Mercy's Wake changes when part of that damage arrives. This gives healing, Shields, and other sustain mechanics additional time to stabilize the formation. She is most valuable when the team has enough damage to win but is being overwhelmed before that damage can be delivered.</p></div>
         </div>
         <div class="heket-fact-strip"><div><span>Role</span><strong>Damage smoothing and support</strong></div><div><span>Core mechanic</span><strong>Delay burst damage</strong></div><div><span>Best fit</span><strong>Teams that need more time to stabilize</strong></div></div>
         <div class="heket-verdict-warning"><strong>Key warning</strong><span>Delayed damage is still damage. Mazu buys time; the team still needs enough sustain to use it.</span></div>
@@ -156,7 +156,6 @@ const weaknesses = [
       <div class="heket-battle-plan">
         <div class="heket-battle-heading"><span>Mazu &amp; Gaiya</span><h3>A promising sustain combination, but not a controlled comparison.</h3></div>
         <p class="heket-hades-note">Available player reports have highlighted the combination of Mazu and Gaiya, and recorded Spire combat also showed Gaiya providing substantial healing to Mazu while Mazu remained alive through the encounter. This interaction makes mechanical sense: Mazu delays part of incoming damage while Gaiya provides sustained recovery and additional protection.</p>
-        <div class="guide-callout"><strong>Evidence limit:</strong> Cleared Spire stages cannot be replayed. The recorded fights therefore cannot be treated as controlled A/B evidence that Gaiya alone caused Mazu to survive.</div>
         <p class="heket-hades-note">The important interaction is the mechanic itself: Mazu creates more time for healing to work, while Gaiya provides the kind of sustained recovery that can make use of that extra time.</p>
       </div>
     </section>
@@ -232,3 +231,13 @@ const weaknesses = [
     }
   </script>
 </Base>
+
+<style>
+  .guide-banner--mazu,
+  .guide-body--mazu {
+    --guide-accent: #f6c84c;
+    --guide-accent-dim: rgba(246, 200, 76, 0.14);
+    --guide-accent-line: rgba(246, 200, 76, 0.38);
+    --guide-legendary-dim: rgba(246, 200, 76, 0.14);
+  }
+</style>
