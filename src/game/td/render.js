@@ -152,6 +152,7 @@ export async function createRenderer(canvas, game, options = {}) {
       fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius", prometheus: "ymir", momus: "heimdall",
       demeter: "gaia", poseidon: "aegir", nyx: "nott", horus: "vidar", caishen: "plutus", yuelao: "harmonia",
       diana: "skadi", artemis: "atalanta", medusa: "stheno",
+      zeus: "odin", amunra: "helios", phoenix: "hephaestus", bastet: "hecate", anubis: "thanatos", nuwa: "atlas",
       // Recruit pairs share one design per class.
       "recruit-bram": "recruit-tank", "recruit-tilda": "recruit-tank", "recruit-kellan": "recruit-warrior",
       "recruit-sable": "recruit-warrior", "recruit-ash": "recruit-assassin", "recruit-nyra": "recruit-assassin",

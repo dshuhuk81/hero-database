@@ -133,6 +133,19 @@ Input from the job: which still (e.g. `brute-v3`), optionally prompt wishes.
    `brute-v3_preview.png`. **Open the preview and check every row** (rule 5). To redo one clip,
    delete `.td-work/pixellab/brute-v3/<clip>/` and its line in `jobs.json`, adjust the prompt,
    rerun step 3 with `--only <clip>`, then step 4.
+
+   Small flaws can be fixed for free instead of paying for a new clip. Run the cleanup on the
+   frame folders before step 4 (it edits them in place; copy a folder first if you want to keep
+   the raw frames):
+
+   ```bash
+   python3 scripts/td-clip-cleanup.py .td-work/pixellab/brute-v3/attack            # loose specks
+   python3 scripts/td-clip-cleanup.py .td-work/pixellab/brute-v3/ultimate --specks 400   # also loose swirls
+   python3 scripts/td-clip-cleanup.py .td-work/pixellab/<archer>/* --string         # coloured bowstring
+   python3 scripts/td-clip-cleanup.py .td-work/pixellab/<id>/attack --flash         # yellow flashes
+   ```
+
+   Look at the frames again afterwards: a costume or weapon in the flagged colour loses it too.
 5. **Pack the sheet.** Add the sheet name to the `painted` set in
    `scripts/build-td-enemy-anims.mjs`, pointing at the strips (the `dir` is relative to the
    folder you pass as the first argument):
