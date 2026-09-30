@@ -73,6 +73,11 @@ function frameBox(data, stripWidth, x0, size) {
 
 for (const [kind, pack] of Object.entries(PACKS)) {
   if (ONLY && !ONLY.includes(kind)) continue;
+  // Published sheets are cached a year on R2: a release never overwrites one (use a new name).
+  if (RELEASE && !process.argv.includes("--force") && existsSync(join(OUT_DIR, `${fileName(kind)}.json`)) && ONLY) {
+    console.error(`${fileName(kind)} is already published in ${OUT_DIR}; give the remade sheet a new name (e.g. ${kind}b)`);
+    process.exit(1);
+  }
   const clips = [];
   for (const [clip, file] of Object.entries(pack.clips)) {
     const path = join(srcRoot, pack.dir, `${file}.png`);

@@ -1,0 +1,290 @@
+---
+// Dev-only preview for character animation prototypes (docs/td-asset-pipeline.md).
+// Reads /td-local/anim-lab/manifest.json (public/td-local/ is gitignored), so a production
+// build shows the empty state. Manifest: { characters: [{ id, name, still, clips: { idle:
+// { frames: [url...], loop: true }, attack: { ... } } }] }.
+import Base from '../../../layouts/Base.astro';
+const dev = import.meta.env.DEV;
+---
+<Base title="Animation Lab | Tower Defense" description="Preview character animation prototypes.">
+  <main class="lab">
+    <header class="lab-head">
+      <p class="kicker">Tower defense · prototype</p>
+      <h1>Animation Lab</h1>
+      <select id="lab-char" class="lab-select" aria-label="Character" hidden></select>
+    </header>
+
+    <p id="lab-empty" class="lab-empty" hidden>
+      {dev ? 'No prototype frames found in public/td-local/anim-lab/.' : 'This page only works in local development.'}
+    </p>
+
+    <div id="lab-body" class="lab-body" hidden>
+      <section class="lab-stage-wrap" aria-label="Preview">
+        <div id="lab-stage" class="lab-stage" data-bg="dark">
+          <canvas id="lab-canvas" width="256" height="256"></canvas>
+          <span id="lab-frame-label" class="lab-frame-label"></span>
+        </div>
+
+        <div class="lab-row" role="group" aria-label="Clip">
+          <div id="lab-clips" class="lab-chips"></div>
+        </div>
+
+        <div class="lab-controls">
+          <button id="lab-play" class="lab-btn" type="button">Pause</button>
+          <button id="lab-prev" class="lab-btn" type="button" aria-label="Previous frame">‹</button>
+          <button id="lab-next" class="lab-btn" type="button" aria-label="Next frame">›</button>
+          <label class="lab-field">FPS <input id="lab-fps" type="range" min="2" max="24" value="8" /><output id="lab-fps-out">8</output></label>
+          <label class="lab-field">Zoom
+            <select id="lab-zoom" class="lab-select">
+              <option value="0.375">Board (96px)</option>
+              <option value="1" selected>1x</option>
+              <option value="2">2x</option>
+            </select>
+          </label>
+          <label class="lab-field">Background
+            <select id="lab-bg" class="lab-select">
+              <option value="dark" selected>Dark</option>
+              <option value="grass">Grass</option>
+              <option value="check">Checker</option>
+            </select>
+          </label>
+          <label class="lab-field"><input id="lab-flip" type="checkbox" /> Mirror</label>
+          <label class="lab-field"><input id="lab-smooth" type="checkbox" /> Smooth scaling</label>
+        </div>
+      </section>
+
+      <section class="lab-strips" aria-labelledby="lab-strips-title">
+        <h2 id="lab-strips-title">All frames</h2>
+        <div id="lab-strip-list"></div>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<script>
+  type Clip = { frames: string[]; loop?: boolean };
+  type Character = { id: string; name: string; still?: string; clips: Record<string, Clip> };
+  // "Combat" plays idle and fires the attack every two seconds, like a tower would.
+  const COMBAT = 'combat';
+  const ATTACK_EVERY_MS = 2000;
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const canvas = $<HTMLCanvasElement>('lab-canvas');
+  const ctx = canvas.getContext('2d')!;
+  const state = {
+    chars: [] as Character[], char: null as Character | null, images: {} as Record<string, HTMLImageElement[]>,
+    clip: 'idle', frame: 0, playing: true, fps: 8, zoom: 1, flip: false, smooth: false,
+    last: 0, combatClip: 'idle', nextAttack: 0,
+  };
+
+  const load = (src: string) => new Promise<HTMLImageElement>((resolve) => {
+    const img = new Image(); img.onload = () => resolve(img); img.onerror = () => resolve(img); img.src = src;
+  });
+
+  async function selectChar(id: string) {
+    const char = state.chars.find((c) => c.id === id)!;
+    state.char = char;
+    state.images = {};
+    for (const [name, clip] of Object.entries(char.clips)) state.images[name] = await Promise.all(clip.frames.map(load));
+    if (char.still) state.images.still = [await load(char.still)];
+    const names = [...Object.keys(char.clips), ...(char.clips.idle && char.clips.attack ? [COMBAT] : []), ...(char.still ? ['still'] : [])];
+    const chips = $('lab-clips');
+    chips.innerHTML = '';
+    for (const name of names) {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'lab-chip'; b.dataset.clip = name;
+      const count = state.images[name]?.length;
+      b.textContent = count ? `${name} · ${count}` : name;
+      b.addEventListener('click', () => setClip(name));
+      chips.append(b);
+    }
+    renderStrips();
+    setClip(names.includes(state.clip) ? state.clip : names[0]);
+  }
+
+  function setClip(name: string) {
+    state.clip = name; state.frame = 0; state.combatClip = 'idle'; state.nextAttack = performance.now() + ATTACK_EVERY_MS;
+    for (const b of document.querySelectorAll<HTMLElement>('.lab-chip')) b.setAttribute('aria-pressed', String(b.dataset.clip === name));
+    draw();
+  }
+
+  const activeClip = () => (state.clip === COMBAT ? state.combatClip : state.clip);
+
+  function draw() {
+    const frames = state.images[activeClip()] ?? [];
+    const img = frames[state.frame % Math.max(1, frames.length)];
+    const size = Math.round((img?.naturalWidth || 256) * state.zoom);
+    if (canvas.width !== size) { canvas.width = size; canvas.height = size; }
+    ctx.imageSmoothingEnabled = state.smooth;
+    ctx.clearRect(0, 0, size, size);
+    if (!img) return;
+    ctx.save();
+    if (state.flip) { ctx.translate(size, 0); ctx.scale(-1, 1); }
+    ctx.drawImage(img, 0, 0, size, size);
+    ctx.restore();
+    $('lab-frame-label').textContent = `${activeClip()} ${state.frame + 1}/${frames.length}`;
+    for (const cell of document.querySelectorAll<HTMLElement>('.lab-cell')) {
+      cell.classList.toggle('is-current', cell.dataset.clip === activeClip() && Number(cell.dataset.frame) === state.frame);
+    }
+  }
+
+  function step(dir: number) {
+    const frames = state.images[activeClip()] ?? [];
+    if (!frames.length) return;
+    let next = state.frame + dir;
+    if (state.clip === COMBAT && state.combatClip === 'attack' && next >= frames.length) {
+      state.combatClip = 'idle'; next = 0;
+    }
+    state.frame = (next + frames.length) % frames.length;
+  }
+
+  function tick(now: number) {
+    if (state.playing && now - state.last >= 1000 / state.fps) {
+      state.last = now;
+      if (state.clip === COMBAT && state.combatClip === 'idle' && now >= state.nextAttack) {
+        state.combatClip = 'attack'; state.frame = 0; state.nextAttack = now + ATTACK_EVERY_MS;
+      } else step(1);
+      draw();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function renderStrips() {
+    const list = $('lab-strip-list');
+    list.innerHTML = '';
+    for (const [name, frames] of Object.entries(state.images)) {
+      const row = document.createElement('div');
+      row.className = 'lab-strip';
+      const h = document.createElement('h3'); h.textContent = `${name} (${frames.length})`;
+      const cells = document.createElement('div'); cells.className = 'lab-cells';
+      frames.forEach((img, i) => {
+        const cell = document.createElement('button');
+        cell.type = 'button'; cell.className = 'lab-cell'; cell.dataset.clip = name; cell.dataset.frame = String(i);
+        cell.setAttribute('aria-label', `${name} frame ${i + 1}`);
+        const copy = img.cloneNode() as HTMLImageElement; copy.alt = '';
+        cell.append(copy);
+        cell.addEventListener('click', () => { setPlaying(false); setClip(name); state.frame = i; draw(); });
+        cells.append(cell);
+      });
+      row.append(h, cells);
+      list.append(row);
+    }
+  }
+
+  function setPlaying(on: boolean) { state.playing = on; $('lab-play').textContent = on ? 'Pause' : 'Play'; }
+
+  $('lab-play').addEventListener('click', () => setPlaying(!state.playing));
+  $('lab-prev').addEventListener('click', () => { setPlaying(false); step(-1); draw(); });
+  $('lab-next').addEventListener('click', () => { setPlaying(false); step(1); draw(); });
+  $<HTMLInputElement>('lab-fps').addEventListener('input', (e) => {
+    state.fps = Number((e.target as HTMLInputElement).value); $('lab-fps-out').textContent = String(state.fps);
+  });
+  $<HTMLSelectElement>('lab-zoom').addEventListener('change', (e) => { state.zoom = Number((e.target as HTMLSelectElement).value); draw(); });
+  $<HTMLSelectElement>('lab-bg').addEventListener('change', (e) => { $('lab-stage').dataset.bg = (e.target as HTMLSelectElement).value; });
+  $<HTMLInputElement>('lab-flip').addEventListener('change', (e) => { state.flip = (e.target as HTMLInputElement).checked; draw(); });
+  $<HTMLInputElement>('lab-smooth').addEventListener('change', (e) => { state.smooth = (e.target as HTMLInputElement).checked; draw(); });
+  $<HTMLSelectElement>('lab-char').addEventListener('change', (e) => selectChar((e.target as HTMLSelectElement).value));
+
+  (async () => {
+    try {
+      const res = await fetch('/td-local/anim-lab/manifest.json', { cache: 'no-store' });
+      state.chars = res.ok ? (await res.json()).characters ?? [] : [];
+    } catch { state.chars = []; }
+    if (!state.chars.length) { $('lab-empty').hidden = false; return; }
+    const select = $<HTMLSelectElement>('lab-char');
+    for (const c of state.chars) select.append(new Option(c.name, c.id));
+    select.hidden = state.chars.length < 2;
+    $('lab-body').hidden = false;
+    await selectChar(state.chars[0].id);
+    requestAnimationFrame(tick);
+  })();
+</script>
+
+<style>
+  .lab {
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    padding: var(--space-8) var(--page-gutter) var(--space-16);
+    display: grid;
+    gap: var(--space-8);
+  }
+  .lab-head { display: grid; gap: var(--space-2); }
+  .kicker {
+    margin: 0;
+    color: var(--section-kicker-color);
+    font-size: var(--section-kicker-size);
+    font-weight: var(--section-kicker-weight);
+    letter-spacing: var(--section-kicker-tracking);
+    text-transform: uppercase;
+  }
+  h1 { margin: 0; font-size: var(--text-3xl); color: var(--text-bright); letter-spacing: var(--tracking-tight); }
+  h2 { margin: 0 0 var(--space-4); font-size: var(--section-title-size); font-weight: var(--section-title-weight); color: var(--section-title-color); }
+  h3 { margin: 0 0 var(--space-2); font-size: var(--text-sm); color: var(--text-secondary); text-transform: capitalize; }
+  .lab-empty { color: var(--text-secondary); }
+  .lab-body { display: grid; gap: var(--space-12); }
+  .lab-stage-wrap { display: grid; gap: var(--space-4); justify-items: start; }
+
+  .lab-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(100%, 560px);
+    min-height: 320px;
+    padding: var(--space-6);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    overflow: hidden;
+  }
+  .lab-stage[data-bg="grass"] { background: #3f5a2e; }
+  .lab-stage[data-bg="check"] { background: repeating-conic-gradient(#8a8a8a 0 25%, #bdbdbd 0 50%) 0 0 / 16px 16px; }
+  .lab-stage canvas { max-width: 100%; height: auto; }
+  .lab-frame-label {
+    position: absolute; left: var(--space-3); bottom: var(--space-2);
+    font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted);
+  }
+
+  .lab-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .lab-chip, .lab-btn {
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--chip-border);
+    border-radius: var(--chip-radius);
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    font: inherit;
+    font-size: var(--chip-font-size);
+    font-weight: var(--chip-font-weight);
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  }
+  .lab-btn { min-width: 44px; }
+  .lab-chip:hover, .lab-btn:hover { background: var(--chip-bg-hover); }
+  .lab-chip[aria-pressed="true"] { background: var(--chip-bg-active); border-color: var(--chip-border-active); color: var(--chip-text-active); }
+  .lab-chip:focus-visible, .lab-btn:focus-visible, .lab-cell:focus-visible, .lab-select:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+
+  .lab-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); color: var(--text-secondary); font-size: var(--text-sm); }
+  .lab-field { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .lab-field output { min-width: 2ch; font-family: var(--font-mono); color: var(--text-primary); }
+  .lab-select {
+    min-height: 40px; padding: 0 var(--space-3);
+    border: 1px solid var(--input-border); border-radius: var(--input-radius);
+    background: var(--input-bg); color: var(--input-text); font: inherit;
+  }
+  .lab-head .lab-select { justify-self: start; }
+
+  #lab-strip-list { display: grid; gap: var(--space-6); }
+  .lab-cells { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .lab-cell {
+    width: 96px; height: 96px; padding: 0;
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    background: var(--bg-raised); cursor: pointer;
+  }
+  .lab-cell img { width: 100%; height: 100%; object-fit: contain; }
+  .lab-cell.is-current { border-color: var(--accent-gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lab-chip, .lab-btn { transition: none; }
+  }
+</style>

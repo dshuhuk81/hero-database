@@ -72,7 +72,7 @@ Goal: enemies that walk, strike, react to hits and die, in the painted style of 
 - Pipeline: raw frames in `~/hero-database-assets/td/enemy-sprites-src/pixellab-<kind>/<clip>/` -> `scripts/td-warp-anim.py <kind> <out> --pixellab` (drops the untouched input frame, scales) -> `scripts/build-td-enemy-anims.mjs --release` -> `upload-to-r2.mjs --prefix td/enemies/clips` -> `ENEMY_SHEETS`. Sheets are named after the still they animate (`clips/brood-v4` = `sprites/brood-v4`); the first release used a separate sheet version (`sheets/brood-v1` was the brood-v4 animation), which read like the broodcaller's `sprites/brood-v1`, so the names were aligned. The frame format is in `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
 - Checks done: frame rate with sheets vs. stills showed no measurable difference in wave 1; sheets 70-170 KB each; superseded R2 files deleted after the deploy.
 
-The sections below are the history of how the route was found.
+Runbook for new clips, stills and hero art: `docs/td-asset-pipeline.md`. The sections below are the history of how the route was found.
 
 ### Tried and dropped (September 29, 2026)
 

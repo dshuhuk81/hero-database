@@ -295,7 +295,7 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   brood v4, Baphomet `boss-v2`, Lilith `boss-lilith-v4` (redrawn complete, feet included,
   uploaded to R2). Superseded files (older sprite versions, the `td/enemies/*.png` portraits) were
   deleted from R2 after the deploy of commit 37654230 (the first sheet release, `td/enemies/sheets/*-v1`,
-  is superseded by `td/enemies/clips/` and goes after the next deploy); `brood-v1` and `boss-lilith-v1` stay for
+  was deleted after `clips/` went live on September 30, 2026); `brood-v1` and `boss-lilith-v1` stay for
   the broodcaller and hexer.
 - Procedural enemy motion (on with the enemy animation below, skipped with reduced
   motion): `animateEnemy` in `render.js` moves the full-body sprites procedurally, render
@@ -908,7 +908,11 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:generate-map -- --seed=N --skin=...` / `--check` | Generate a map candidate (orthogonal-v1), publish it, or verify published ones regenerate (both generators) |
 | `npm run td:generate-map -- --gen=lattice-v2 --skin=... [--gates=2] --gallery=24` | lattice-v2 candidates as an HTML sheet in `public/td-local/`; `--seed=N --id=... --name=... --publish` publishes one |
 | `node scripts/build-td-enemy-sprites.mjs <folder> --only <names> --version vN` | Enemy stills (256 px WebP) from `~/hero-database-assets/td/enemy-sprites-src/` |
-| `python3 scripts/td-warp-anim.py <kind> <outdir> --pixellab` | Clip strips from saved PixelLab frames (also `STRIPS` and `--warp` modes; local only, `*.py` is gitignored) |
+| `node scripts/td-pixellab-clips.mjs --still <webp> --prompts <json> --out <dir>` | PixelLab clips for one still (8 jobs at once, resumable via `jobs.json`; key from `PIXELLAB_API_KEY`) |
+| `python3 scripts/td-warp-anim.py <name> <outdir> --pixellab --src <frames>` | Clip strips from saved PixelLab frames (also `STRIPS` and `--warp` modes) |
+| `node scripts/td-hero-assets.mjs --id <id> --source <png> [--art vN]` | Hero card-240, thumb-96, token-192 from one transparent portrait |
+| `python3 scripts/td-idle-anim.py <png> <id> <outdir> [--version vN] [--gif]` | Hero idle loop (24 frames, 5376x224) |
+| Runbook for asset jobs (agents, cloud) | `docs/td-asset-pipeline.md`: enemy clips, new stills, new hero art, delivery |
 | `node scripts/build-td-enemy-anims.mjs <clips> --set painted --release` | Enemy animation sheets into `public/td/enemies/clips/`, named after their still (without `--release`: local test set) |
 | `node scripts/upload-to-r2.mjs --prefix td/enemies/...` | Upload stills or sheets to R2 (versioned names, cached a year) |
 | `npm run td:pacing` | Balance and pacing report with two bot policies (`cheapest`, `carry` in `scripts/lib/td-runner.mjs`) |

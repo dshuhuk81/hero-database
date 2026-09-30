@@ -44,6 +44,8 @@ google_credentials.json*
 token.json*
 export_ratings_to_sheets.py*
 *.py
+# Tower defense asset tools (docs/td-asset-pipeline.md) are part of the repo.
+!scripts/td-*.py
 !hero_combat_capture.py
 !combat_analysis.py
 !tests/
@@ -53,3 +55,5 @@ export_ratings_to_sheets.py*
 # build-td-tokens.mjs source art cache
 .cache/
 public/td-local/
+# Asset pipeline work folder (PixelLab frames, clip strips), see docs/td-asset-pipeline.md
+.td-work/

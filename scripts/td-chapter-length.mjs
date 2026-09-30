@@ -26,6 +26,10 @@ const variants = [
   ["waves x0.7", (stage) => ({ ...stage, waves: trim(stage.waves, Math.max(4, Math.ceil(stage.waves.length * 0.7))) })],
   ["waves x0.7 + late hp relief", (stage) => ({ ...stage, waves: trim(stage.waves, Math.max(4, Math.ceil(stage.waves.length * 0.7))), hpScale: stage.id === "1-9" ? 0.5 : stage.id === "1-10" ? 0.6 : stage.hpScale })],
   ["late hp relief only", (stage) => ({ ...stage, hpScale: stage.id === "1-9" ? 0.5 : stage.id === "1-10" ? 0.6 : stage.hpScale })],
+  // Chapter 1 re-tightening at squad size 6 (owner playtest September 29, 2026: too easy,
+  // leaks only on 1-5/1-6). Bump early and finale stages, keep the mid-chapter pinch.
+  ["ch1 re-tighten", (stage) => ({ ...stage, hpScale: { "1-1": 1.0, "1-2": 1.1, "1-3": 1.05, "1-4": 1.1, "1-9": 0.6, "1-10": 0.7 }[stage.id] ?? stage.hpScale })],
+  ["ch1 re-tighten harder", (stage) => ({ ...stage, hpScale: { "1-1": 1.1, "1-2": 1.2, "1-3": 1.15, "1-4": 1.2, "1-9": 0.65, "1-10": 0.75 }[stage.id] ?? stage.hpScale })],
 ].filter((_, i) => arg("variant", "0,1,2,3").split(",").map(Number).includes(i));
 
 const combos = (list, k) => (k === 0 ? [[]] : list.flatMap((x, i) => combos(list.slice(i + 1), k - 1).map((c) => [x, ...c])));
