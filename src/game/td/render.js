@@ -2,7 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
-import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, tdAsset } from "./assets.js";
+import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, tdAsset } from "./assets.js";
 import { fitRect, shortNumber } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
@@ -141,40 +141,36 @@ export async function createRenderer(canvas, game, options = {}) {
     if (hero.token) PIXI.Assets.load(hero.token).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }
 
-  // Prototype: ?anim=fengyi draws that hero as an animated figure (idle, attack, ultimate)
-  // from the local anim lab frames (public/td-local/anim-lab/, gitignored, dev only) instead
-  // of the token. Lab ids differ from game ids (fengyi = Boreas). Without the parameter
-  // nothing changes; remove this block and updateHeroAnim once heroes get real sheets.
-  const animHeroes = new Map(); // hero id -> { clips: { idle: [tex], attack, ultimate }, hand: [x, y] frame px }
-  const animParam = new URLSearchParams(window.location.search).get("anim");
-  if (animParam) {
-    const LAB_IDS = {
-      fengyi: "boreas", set: "surtr", jormungandr: "fenrir", freya: "asclepius", prometheus: "ymir", momus: "heimdall",
-      demeter: "gaia", poseidon: "aegir", nyx: "nott", horus: "vidar", caishen: "plutus", yuelao: "harmonia",
-      diana: "skadi", artemis: "atalanta", medusa: "stheno",
-      zeus: "odin", amunra: "helios", phoenix: "hephaestus", bastet: "hecate", anubis: "thanatos", nuwa: "atlas",
-      // Recruit pairs share one design per class.
-      "recruit-bram": "recruit-tank", "recruit-tilda": "recruit-tank", "recruit-kellan": "recruit-warrior",
-      "recruit-sable": "recruit-warrior", "recruit-ash": "recruit-assassin", "recruit-nyra": "recruit-assassin",
-      "recruit-elm": "recruit-mage", "recruit-ives": "recruit-mage", "recruit-wren": "recruit-archer",
-      "recruit-hollis": "recruit-archer", "recruit-poppy": "recruit-support", "recruit-jory": "recruit-support",
-    };
-    // Each hero loads on its own, so one broken clip cannot block the others.
-    fetch("/td-local/anim-lab/manifest.json", { cache: "no-store" }).then((r) => r.json()).then(({ characters }) =>
-      // ?anim=all: every hero with lab frames.
-      Promise.all((animParam === "all" ? Object.keys(LAB_IDS).filter((id) => characters.some((c) => c.id === LAB_IDS[id]))
-        : animParam.split(",").map((id) => id.trim()).filter(Boolean)).map(async (heroId) => {
-        const char = characters.find((c) => c.id === (LAB_IDS[heroId] ?? heroId));
-        if (!char?.clips.idle) return `${heroId}: no lab frames`;
-        try {
-          const clips = {};
-          for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
-          animHeroes.set(heroId, { clips, hand: char.hand ?? [200, 80] });
-          return `${heroId}: ok`;
-        } catch (err) { return `${heroId}: ${err?.message ?? err}`; }
-      }))
-    ).then((report) => console.info("anim heroes", report.join(", ")))
-      .catch((err) => console.warn("anim lab frames not loaded", err));
+  // Hero board figures (HERO_FIGURES, assets.js): a standing figure with idle, attack and
+  // ultimate clips instead of the token. A sheet loads when its hero first appears on the board.
+  // ?figures=off (or ?anim=off) keeps the tokens; ?figures=lab loads the unpacked anim lab frames
+  // (public/td-local/anim-lab/, dev only) to try new clips before build-td-hero-figures packs them.
+  // Figure data is in frame pixels: anchor (feet), bodyHeight, hand (where ranged shots start).
+  const figureParams = new URLSearchParams(location.search);
+  const figureParam = figureParams.get("figures");
+  const FIGURES = figureParam !== "off" && figureParams.get("anim") !== "off";
+  const animHeroes = new Map(); // hero id -> { clips: { idle, attack, ultimate }, anchor, bodyHeight, hand }
+  const figureRequested = new Set();
+  let labManifest = null;
+  function requestFigure(heroId) {
+    if (!FIGURES || figureRequested.has(heroId) || !HERO_FIGURES[heroId]) return;
+    figureRequested.add(heroId);
+    if (figureParam === "lab") {
+      const labId = HERO_FIGURES[heroId].replace(/-v\d+$/, "");
+      labManifest ??= fetch("/td-local/anim-lab/manifest.json", { cache: "no-store" }).then((r) => r.json());
+      labManifest.then(async ({ characters }) => {
+        const char = characters.find((c) => c.id === labId);
+        if (!char?.clips.idle) return;
+        const clips = {};
+        for (const [name, clip] of Object.entries(char.clips)) clips[name] = await Promise.all(clip.frames.map((f) => PIXI.Assets.load(f)));
+        animHeroes.set(heroId, { clips, anchor: [128, 247], bodyHeight: 225, hand: char.hand });
+      }).catch((err) => console.warn(`anim lab frames for ${heroId} not loaded`, err));
+      return;
+    }
+    PIXI.Assets.load(heroFigureUrl(heroId)).then((sheet) => {
+      const td = sheet.data.td;
+      animHeroes.set(heroId, { clips: sheet.animations, anchor: [td.anchor.x, td.anchor.y], bodyHeight: td.bodyHeight, hand: td.hand });
+    }).catch(() => {}); // no sheet yet (not uploaded): the token stays
   }
 
   // Version query forces a fresh CORS-enabled fetch: browsers may still hold
@@ -970,38 +966,43 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
-  // Prototype figure (see animHeroes). Frames are 256x256 with the figure about 225px tall and
-  // its feet at y 247. A basic attack resets attackClock upwards; casting the ultimate drops
-  // ultClock, so both clips trigger without touching the sim.
-  // Basic shots leave from the manifest's hand point (frame pixels, art facing right).
-  // The attack clip starts at startFrame so the hand thrust lines up with the shot.
+  // Hero figure (see animHeroes). A basic attack resets attackClock upwards; casting the
+  // ultimate drops ultClock, so both clips trigger without touching the sim. The attack clip
+  // starts at startFrame so the hand thrust lines up with the shot. The art faces right.
   const HERO_ANIM = { height: 80, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
-  const ANIM_SCALE = HERO_ANIM.height / 225;
-  const animPoint = ([fx, fy]) => [(fx - 128) * ANIM_SCALE, HERO_ANIM.feetY + (fy - 247) * ANIM_SCALE];
+  // A figure point (frame px) relative to the slot centre, before mirroring.
+  const figurePoint = (fig, [fx, fy]) => {
+    const s = HERO_ANIM.height / fig.bodyHeight;
+    return [(fx - fig.anchor[0]) * s, HERO_ANIM.feetY + (fy - fig.anchor[1]) * s];
+  };
   const animShotSeen = new WeakSet();
   function moveAnimShotOrigins() {
     if (!animHeroes.size) return;
     for (const effect of game.effects) {
       if (animShotSeen.has(effect)) continue;
       animShotSeen.add(effect);
-      if (effect.type !== "shot" || !animHeroes.has(effect.heroId)) continue;
+      const fig = effect.type === "shot" && animHeroes.get(effect.heroId);
+      if (!fig?.hand) continue;
       const unit = game.heroes.find((h) => h.entityId === effect.sourceId);
       if (!unit) continue;
       const dir = Math.cos(unit.rotation || 0) < 0 ? -1 : 1;
-      const [dx, dy] = animPoint(animHeroes.get(effect.heroId).hand);
+      const [dx, dy] = figurePoint(fig, fig.hand);
       const hx = unit.x + dx * dir, hy = unit.y + dy;
       if (effect.x1 === unit.x && effect.y1 === unit.y) { effect.x1 = hx; effect.y1 = hy; }
       effect.sourceX = hx; effect.sourceY = hy;
     }
   }
   function updateHeroAnim(unit, container) {
-    const clips = animHeroes.get(unit.id)?.clips;
-    if (!clips) return;
+    requestFigure(unit.id);
+    const fig = animHeroes.get(unit.id);
+    if (!fig) return;
+    const clips = fig.clips;
     const now = performance.now();
     let sp = container._anim;
     if (!sp) {
-      sp = new PIXI.Sprite(clips.idle[0]);
-      sp.anchor.set(0.5, 247 / 256);
+      const first = clips.idle[0];
+      sp = new PIXI.Sprite(first);
+      sp.anchor.set(fig.anchor[0] / first.width, fig.anchor[1] / first.height);
       sp.position.set(0, HERO_ANIM.feetY);
       container.addChildAt(sp, container.getChildIndex(container._ultRing));
       container._anim = sp;
@@ -1025,8 +1026,9 @@ export async function createRenderer(canvas, game, options = {}) {
     if (st.clip !== "idle" && i >= frames.length) { st.clip = "idle"; st.start = now; frames = clips.idle; i = 0; }
     if (reducedMotion && st.clip === "idle") i = 0;
     sp.texture = frames[i % frames.length];
-    // The art faces right; mirror when the target is on the left.
-    sp.scale.set(Math.cos(unit.rotation || 0) < 0 ? -ANIM_SCALE : ANIM_SCALE, ANIM_SCALE);
+    // Mirror when the target is on the left.
+    const scale = HERO_ANIM.height / fig.bodyHeight;
+    sp.scale.set(Math.cos(unit.rotation || 0) < 0 ? -scale : scale, scale);
   }
 
   // Token: the cutout overflows the ring top so the head pops out of the frame.

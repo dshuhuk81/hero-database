@@ -68,12 +68,15 @@ const MIME_TYPES = {
   ".mp4": "video/mp4",
 };
 
+// Local-only folders under public/ (gitignored work files, never published)
+const SKIP_DIRS = new Set(["td-local"]);
+
 function getAllFiles(dir, files = []) {
   for (const entry of readdirSync(dir)) {
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
     if (stat.isDirectory()) {
-      getAllFiles(fullPath, files);
+      if (!SKIP_DIRS.has(entry)) getAllFiles(fullPath, files);
     } else if (!SKIP_FILES.has(entry)) {
       files.push(fullPath);
     }

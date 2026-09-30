@@ -57,14 +57,16 @@ Hard rules:
   Redrawn heroes carry `"art": "v2"` (etc.) in `tdSkinMythic.json`: files become
   `{id}-{art}-{card-240|thumb-96|token-192}.webp` and `anims/{id}-idle-{art}.webp`, since
   R2 caches immutable. Odin (`zeus`) uses v2 (source `review-set-v1/odin-v2*`).
-- **Prototype, animated hero figures (September 30, 2026):** `?anim=fengyi,set,jormungandr,freya`
-  on the game page draws those heroes (Boreas, Surtr, Fenrir, Asclepius) as standing PixelLab
-  figures (idle, attack, ultimate) instead of their tokens (`animHeroes` / `updateHeroAnim` in
-  `render.js`, lab ids in `LAB_IDS`). Frames come from the local anim lab
-  (`public/td-local/anim-lab/`, gitignored), previewed at `/games/tower-defense/anim-lab`.
-  Presentation only: attack triggers when `attackClock` resets, ultimate when `ultClock`
-  drops; basic shots start at the manifest's `hand` point. Clips carry no effects (the
-  renderer draws them). Not shipped; without the parameter nothing changes.
+- **Hero board figures (September 30, 2026):** every hero stands on its slot as an animated
+  PixelLab figure (idle, attack, ultimate) instead of the round token: sheets
+  `td/heroes-alt/figures/{figure}-v1.{webp,json}`, registered in `HERO_FIGURES` (`assets.js`),
+  drawn by `updateHeroAnim` in `render.js`; recruit pairs share one figure per class. A sheet loads
+  when its hero first appears; until then (or without a sheet) the token shows. Presentation
+  only: attack plays when `attackClock` resets, ultimate when `ultClock` drops; ranged shots start
+  at the sheet's `hand` point; figures are 80 px tall, drawn in row order (lower in front), with a
+  ground shadow, flat ult ring and the level badge. Clips carry no effects (the renderer draws
+  them). `?figures=off` or `?anim=off` shows tokens, `?figures=lab` loads the unpacked dev frames.
+  Workflow: `docs/td-asset-pipeline.md` part D.
 - Page disclaimer (lobby and glossary): "Not affiliated with GOAT Games or Motto
   Immortal. Heroes, art and text are original; music and sounds are CC0."
 

@@ -11080,7 +11080,7 @@ button .td-cur {
 }
 
 .td-app [data-td-screen="squad"] .td-screen-body {
-  padding: var(--space-2) 0 var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-4) var(--space-3);
 }
 
 .td-app .td-squad-roster {
@@ -11090,7 +11090,9 @@ button .td-cur {
   grid-auto-columns: max-content;
   align-self: stretch;
   gap: 6px;
+  width: calc(100% + var(--space-4));
   min-height: 0;
+  margin-right: calc(-1 * var(--space-4));
   padding: 2px 0 2px 2px;
   overflow-x: auto;
   overflow-y: hidden;

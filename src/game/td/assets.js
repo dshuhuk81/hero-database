@@ -32,6 +32,25 @@ export const ENEMY_SHEETS = new Set([
 export const enemySheetUrl = (file, version = enemySpriteVersion(file)) =>
   (ENEMY_SHEETS.has(`${file}-${version}`) ? tdAsset(`enemies/clips/${file}-${version}.json`) : null);
 
+// Hero board figures: heroes-alt/figures/{figure}-{version}.json (Pixi spritesheet with idle,
+// attack and ultimate) plus .webp, drawn instead of the token (render.js). Built from the anim
+// lab by `node scripts/build-td-hero-figures.mjs`; recruit pairs share one figure per class.
+// A remade figure gets the next version (boreas-v2), since R2 caches a year.
+export const HERO_FIGURES = {
+  fengyi: "boreas-v1", set: "surtr-v1", jormungandr: "fenrir-v1", freya: "asclepius-v1", prometheus: "ymir-v1",
+  momus: "heimdall-v1", demeter: "gaia-v1", poseidon: "aegir-v1", nyx: "nott-v1", horus: "vidar-v1",
+  caishen: "plutus-v1", yuelao: "harmonia-v1", diana: "skadi-v1", artemis: "atalanta-v1", medusa: "stheno-v1",
+  zeus: "odin-v1", amunra: "helios-v1", phoenix: "hephaestus-v1", bastet: "hecate-v1", anubis: "thanatos-v1",
+  nuwa: "atlas-v1",
+  "recruit-bram": "recruit-tank-v1", "recruit-tilda": "recruit-tank-v1",
+  "recruit-kellan": "recruit-warrior-v1", "recruit-sable": "recruit-warrior-v1",
+  "recruit-ash": "recruit-assassin-v1", "recruit-nyra": "recruit-assassin-v1",
+  "recruit-elm": "recruit-mage-v1", "recruit-ives": "recruit-mage-v1",
+  "recruit-wren": "recruit-archer-v1", "recruit-hollis": "recruit-archer-v1",
+  "recruit-poppy": "recruit-support-v1", "recruit-jory": "recruit-support-v1",
+};
+export const heroFigureUrl = (heroId) => (HERO_FIGURES[heroId] ? tdAsset(`heroes-alt/figures/${HERO_FIGURES[heroId]}.json`) : null);
+
 // M11 enemies without their own art yet reuse an existing full-body sprite
 // (enemies/sprites/{file}-{version}.webp), tinted and sized so they read as their own
 // kind. Plain <img> previews (glossary) use the .td-enemy-art--{kind} filters in td.css.

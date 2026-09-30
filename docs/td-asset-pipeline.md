@@ -56,6 +56,7 @@ the rest. Work files go to `.td-work/` (gitignored).
 | Enemy/boss source art | `~/hero-database-assets/td/enemy-sprites-src/` on the owner's Mac; in a cloud job, the path the owner gives you | build map `FILES` in `scripts/build-td-enemy-sprites.mjs` |
 | Hero art | `public/td/heroes-alt/{file}-card-240.webp`, `-thumb-96.webp`, `-token-192.webp` | `src/data/tdSkinMythic.json` (`"art"` for redrawn heroes) |
 | Hero idle loop | `public/td/heroes-alt/anims/{id}-idle-{art or v1}.webp` (24 frames, 5376x224) | same |
+| Hero board figure | `public/td/heroes-alt/figures/{figure}-{version}.webp` + `.json` (idle, attack, ultimate) | `HERO_FIGURES` in `src/game/td/assets.js` |
 | Hero sounds | `public/td/sfx/mythic-{id}-v4_attack.ogg`, `..._ultimate.ogg` | `SOUND_VERSION` in `src/game/td/skin.js`, credits in `public/td/sfx/CREDITS-mythic.txt` |
 
 `{file}` for enemies is the kind (`grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`); bosses are
@@ -196,7 +197,7 @@ the kind or boss id, and the version it replaces (if any).
 ## 5. Part C: art for a new hero
 
 A hero shows a portrait card, a thumbnail, a round board token and a 24-frame idle loop in the
-recruit preview; it plays two sounds. Heroes do not use PixelLab clips.
+recruit preview; it plays two sounds. On the board it stands as an animated figure (part D).
 
 Input from the job (ask the owner for anything missing, do not invent it):
 
@@ -240,6 +241,29 @@ Steps:
    ready but the hero is not in the game.
 7. **Test:** `node scripts/test-td-skin.mjs` checks that every hero has all files, then
    `npm run test:tower-defense`.
+
+## 5b. Part D: board figure for a hero
+
+The board draws each hero as a standing figure with three PixelLab clips: idle (8 frames),
+attack (8) and ultimate (12). Recruit pairs with identical art share one figure.
+
+1. **Still:** fit the full-body portrait into 256x256 with the feet 8 px above the bottom (the
+   same trim and fit as part B), transparent.
+2. **Prompts:** as part A step 2, with the clips `idle`, `attack`, `ultimate` and
+   `"frames": { "idle": 8, "attack": 8, "ultimate": 12 }`. The attack follows the hero's class
+   (melee attacks with the weapon, ranged casters and supports gesture or aim). No effects.
+3. **Generate** with `scripts/td-pixellab-clips.mjs` (part A step 3; `ultimate` ends pinned to
+   the still like the loops). About 4 generations per figure.
+4. **Check and fix:** open every frame; redo a clip or use `scripts/td-clip-cleanup.py`.
+5. **Lab:** copy the frames without frame 00 to `public/td-local/anim-lab/<figure>/<clip>/NN.png`
+   and add the figure to `public/td-local/anim-lab/manifest.json` (`id`, `name`, `still`,
+   `clips.{clip}.frames`, and `hand: [x, y]` in 256 frame pixels for heroes whose shots fly).
+   Preview at `/games/tower-defense/anim-lab` (dev only) and in the game with `?figures=lab`.
+6. **Pack:** `node scripts/build-td-hero-figures.mjs --only <figure>` writes
+   `public/td/heroes-alt/figures/<figure>-v1.webp` and `.json`. A remade figure needs
+   `--version v2`; the script refuses to overwrite.
+7. **Register:** map the hero id to the figure in `HERO_FIGURES` (`src/game/td/assets.js`).
+   A hero without an entry keeps the round token.
 
 ## 6. Checks and delivery
 
