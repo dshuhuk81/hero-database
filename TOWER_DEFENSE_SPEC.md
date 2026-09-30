@@ -82,7 +82,9 @@ Hard rules:
   padding so nothing shows above the sticky bar.
 - Page logic: `src/game/td/page/`. One shared `PageContext` (`context.ts`); modules call
   each other only through `ctx.actions`. Screens are a stack mirrored in browser history
-  (`nav.ts`). The summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.
+  (`nav.ts`): home opens stages (Play: Campaign), daily, expedition and maps (Play: the
+  other modes), and heroes, summon, blessings, glossary, help and settings directly. The
+  summon reveal dialog is `summon-reveal.ts`, driven by `campaign.ts`.
 - Portrait gate (`page/orient.ts`): the game has no portrait layout. While
   `(orientation: portrait) and (pointer: coarse) and (max-width: 767px)` matches (touch
   phones only; narrow desktop windows and tablets are not blocked), a full-screen modal
@@ -104,10 +106,22 @@ Hard rules:
   follows the zoom; percentages and container queries do). Pointer maths inside the frame
   divides by `zoomOf(el)` (Blessings graph pan and zoom). Checked at 667x375, 844x390,
   915x412, 1280x720, 1440x900 and 1920x1080.
-  Lobby home in the frame: Free Play card left, the side column (1.25x wider) holds
-  Campaign, Daily Trial and Expedition as three separate bordered cards with a gap. In each
-  side card the CTA sits in a right column beside the route/chips and the one-line summary
-  (no separate button row), so all three fit without clipping (fixed September 29, 2026).
+  Home screen (War Camp, September 30, 2026; `docs/tower-defense-home-camp-plan.md`):
+  `TdHome.astro` + `page/home.ts`. The camp art (R2 `td/ui/camp-home.webp`, `campHomeArt()`
+  in `assets.js`, solid fallback color) fills the screen and the app bar is hidden; its own
+  top bar holds the title crest, the global wallet (`wallet.place()` moves the one node in
+  and back out) and Settings. Left: the current objective (next campaign stage and chapter
+  meter; the Daily Trial once every stage is cleared). Right: the mode rail, a radio group
+  of Campaign, Daily Trial, Expedition and Free Play medallions (arrows move and select,
+  Enter plays; the selected one slides out its name and status; Daily shows a "1" badge
+  until today's goal is cleared), and the Play button beside it, which opens the selected
+  mode's screen (Campaign: the stage list on the next stage; Free Play: the map select).
+  The pick is saved as `ui.homeMode`; starting a run sets it to that run's mode. Bottom:
+  the dock (Heroes, Summon, Divine Blessings, Glossary, How to play; a dot badge when a
+  hero can level up, a summon is affordable, or Favor covers an open trunk blessing) and
+  "Exit to database". Layout is a grid inside a size container (`td-home`): frames up to
+  420px tall slim the bars and cut the objective to one line, below 360px the dock drops
+  its labels, portrait frames stack objective and rail above a centered Play.
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS 8.21.0 and filter-glow 5.2.1 from jsDelivr, exact versions pinned; bump deliberately), `map-scene.js`, `fx-kit.js`,
@@ -568,30 +582,47 @@ only then optional live seeded generation.
 
 | Mode | Rules | Source |
 |---|---|---|
-| Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave | `sim.js`, `waves.js` |
-| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target; hpScale re-tightened on 1-1..1-4 and 1-9/1-10 to 1.0/1.1/1.05/1.05/0.6/0.7 on September 30, 2026 after the owner's playtest read too easy at squad size 6). Campaign opens on a headquarters hub; stages are one screen deeper. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave. Recruits only owned heroes, at base stats (Phase 2, September 30, 2026); pays Favor plus Gold and Hero XP into the collection | `sim.js`, `waves.js` |
+| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target; hpScale re-tightened on 1-1..1-4 and 1-9/1-10 to 1.0/1.1/1.05/1.05/0.6/0.7 on September 30, 2026 after the owner's playtest read too easy at squad size 6). Play on the home screen (Campaign selected) opens the stage list. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
-| Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random heroes, camp offers hero / relic / veteran after each win, lives carry over | `expedition.js` |
+| Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random owned heroes, camp offers hero (owned, not yet in the roster) / relic / veteran after each win, lives carry over; each stage pays Gold and Hero XP into the collection | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
 | Challenges | Optional per-map, per-length goals checked on a won 10/20-wave run; one-time Favor reward | `challenges.js` |
 
-Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
+Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`; Free Play's
+owned list (`allowedHeroes`) restricts who can be recruited.
+
+### One hero collection (Phase 2, September 30, 2026)
+
+Heroes are owned and upgraded through the campaign (save key `campaign`), and every mode
+except the Daily Trial uses the owned heroes (`ownedHeroes()` in `campaign.js`). Free Play
+passes them as `allowedHeroes`; the recruit sheet lists only those and says so when a tile
+type has none. Expedition draws its starting roster and camp recruits from them (the page
+passes the owned heroes as the pool). Upgrades (levels, Stars, Evolution, skills;
+`collectionHeroes()`, formerly `campaignHeroes()`) still apply in Campaign stages only, and
+Divine Blessings still apply in Free Play and Expedition only. Free Play runs and Expedition
+stages pay `collectionRewards` from `tdCampaign.json` (10 Gold + 5 Hero XP per cleared wave,
+up to 30 waves a run, never Divine Seals; `collectionReward()`); the result screen shows it
+under "For your heroes". Existing saves keep their Expedition in progress and get no
+migration gift. Balance: `test:td-balance` requires the six starters to win at least one
+Free Play battlefield at Normal; measured at seed 99 (cheapest / carry): Moonlit Pass
+L10 / W19, Verdant Crossing L8 / W2, Sunscar Ruins W5 / W17, Sunscar Basin W19 / W25.
+`npm run td:sweep -- --owned=starters` adds the starter deck to the sweep. Plan and open
+follow-ups: `docs/tower-defense-home-camp-plan.md` (Phase 2).
 
 ### Campaign navigation and screens
 
-Campaign is a small screen hierarchy rather than a stage list with utility buttons:
+Campaign has no hub screen of its own (removed with the War Camp home, September 30,
+2026): Play with Campaign selected opens the stage list, and Heroes and Summon sit on the
+home dock.
 
-1. **Campaign headquarters** is the Campaign entry screen. It shows compact Gold,
-   Hero XP and Divine Seal balances inside the headquarters banner, the last deployed
-   squad (or the starter company), and three activity cards: Journey, Heroes and
-   Summoning.
-2. **Campaign stages** opens from Journey / Venture forth. It owns the stage row (in the menu frame: one row of full-height cards, five in view at the earlier width, swiped sideways for more; it scrolls to the next stage on open; the rating track sits compact on one line below), then chapter tabs below it
+1. (Removed: the Campaign headquarters screen. Old history entries that name it open home.)
+2. **Campaign stages** opens from the home screen's Play (Campaign selected), on the
+   chapter of the next stage; Back goes home. It owns the stage row (in the menu frame: one row of full-height cards, five in view at the earlier width, swiped sideways for more; it scrolls to the next stage on open; the rating track sits compact on one line below), then chapter tabs below it
    (authored chapters, then locked "Coming soon" tabs up to 3). Stage state reads at a glance:
    cleared cards fade back (translucent, desaturated art) with a green check badge and green
    status, the next stage is bright with a gold play badge and glow, locked ones go grey with
-   a lock. No route rail here (the cards already show progress); the home Campaign card's route
-   uses the same states: green check dots and line behind, pulsing gold ring on the next
-   stage, hollow grey ahead. Tapping an unlocked stage
+   a lock. No route rail here (the cards already show progress). Tapping an unlocked stage
    card opens a details drawer from the right (modal dialog: stage id and name, the
    battlefield map preview (terrain, lane routes, spawn gates, base; same drawing as the map
    select), about text (2px below body size), a plain inline facts row without boxes
@@ -599,7 +630,8 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    recommended Might plus the last squad's Might). Its "Choose squad" / "Replay stage" button is the
    transition into squad selection; Escape, the close button or the backdrop close it.
 3. **Squad selection** remains between a stage and the run. Browser/app Back returns to
-   Campaign stages; exiting a campaign run also resolves through this hierarchy.
+   Campaign stages; a finished or abandoned campaign run returns to Campaign stages
+   (`exitPlay` maps a run started from squad to stages), and Back from there goes home.
    Layout (top to bottom), measured against a gacha team screen (owner, September 28,
    2026): no stage head and no Clear heroes / Quick pick buttons (the player saw the stage
    in the drawer one screen up). Roster: two rows of bare 50 x 75 art cards scrolling
@@ -629,8 +661,8 @@ Campaign is a small screen hierarchy rather than a stage list with utility butto
    slot swaps, slot dropped outside the lineup removes. Tap still toggles. On touch a
    roster tile drags only on a mostly vertical pull, so sideways swipes keep scrolling.
 
-Heroes and Summoning are campaign activities, so they are cards on the headquarters
-screen rather than persistent footer navigation buttons.
+Heroes and Summon open from the home screen's dock (Back returns home); the Phase 2 plan in
+`docs/tower-defense-home-camp-plan.md` makes the collection count in every mode.
 
 The **Heroes** screen follows the Watcher of Realms hero view: four columns inside the menu
 frame. Left, a narrow (176px) scrollable three-column roster of 4:5 portrait cards: a face
@@ -761,16 +793,16 @@ Currencies always show as icon + value, never as a spelled-out name: `currency-i
 from the 760px source art in `public/td/icons/items/`; the "Divine Dust" art is Seal Dust).
 Favor has no item art and uses the star glyph (`currencyIcon("favor")`). The name is the
 chip's tooltip and aria-label. Used for the app bar wallet, the Summon and Seal Dust
-wallets, the reward lines on the Daily Trial and Expedition home cards, stage rewards (drawer, Squad
+wallets, stage rewards (drawer, Squad
 screen; hero rewards as a portrait + name chip), level/star costs, summon prices and dust
 exchanges. Plain
 sentences (result screen, notices) still spell names out.
 
-Global wallet (`page/wallet.ts`, markup in the `TdLobby` app bar): one button on every menu
-screen, replacing the old Favor chip and the per-screen wallet rows (Campaign camp, Stages,
-Heroes). It shows the currencies that matter on the open screen, picked in `td.css` by
-`.td-shell[data-screen]`: Favor + Divine Seals by default; Gold + Divine Seals on camp,
-stages and squad; Gold + Hero XP + Seal Dust on Heroes; Divine Seals + Seal Dust on Summon.
+Global wallet (`page/wallet.ts`, markup in the `TdLobby` app bar, moved into the home
+screen's top bar on home): one button on every menu screen, replacing the old Favor chip
+and the per-screen wallet rows. It shows the currencies that matter on the open screen,
+picked in `td.css` by `.td-shell[data-screen]`: Favor + Divine Seals by default (home
+included); Gold + Divine Seals on stages and squad; Gold + Hero XP + Seal Dust on Heroes; Divine Seals + Seal Dust on Summon.
 Clicking it opens the inventory dropdown: Favor and per-class Insight (Divine Blessings),
 then Gold, Hero XP, Divine Seals and Seal Dust (Campaign), each with where it is earned and
 spent, and links to Divine Blessings, Heroes and Summon. Escape, a click outside, a link or
@@ -778,7 +810,7 @@ any screen change closes it. It redraws after every save (`store.onPersist`) and
 screen change (`renderLobby`).
 
 Campaign debug (dev builds only, `import.meta.env.DEV`): a DBG button in the app bar on
-the campaign screens (camp, stages, heroes, summon, squad) toggles a panel (`TdLobby`,
+the campaign screens (stages, heroes, summon, squad) toggles a panel (`TdLobby`,
 `data-td-camp-debug`, wired in `page/campaign.ts`) that adds +10,000 Gold, +10,000 Hero XP,
 +600 Divine Seals, +1,000 Seal Dust, or all four, to the saved campaign wallet and redraws
 the open screen. Not present in production builds.
@@ -828,7 +860,7 @@ base 25% on 1-8 and 1-10; 3 stars about +20 points; Evolution V alone about +35;
 ### Results screen
 
 A campaign stage's result screen offers Retry, the follow-up (Next: stage X after a win,
-Change squad after a loss) and **Campaign** (back to the Campaign headquarters) instead of
+Change squad after a loss) and **Campaign** (back to the stage list) instead of
 Main menu. Spend Favor is hidden after campaign stages (they earn no Favor).
 
 ## 9. Meta progression
@@ -841,6 +873,9 @@ Main menu. Spend Favor is hidden after campaign stages (they earn no Favor).
   can roll with requirements such as `chain` or `wet`.
 - **Shards / next-run boost**: gold or virtue boost for the next run.
 - Favor purchases are allowed anytime and apply on the next run.
+- **Hero collection**: heroes unlocked in the campaign and summoned with Divine Seals are
+  the only ones Free Play and Expedition can field; both pay a share of Gold and Hero XP
+  (see "One hero collection" above).
 
 ## 10. Persistence
 
@@ -850,7 +885,7 @@ is dropped, a corrupt blob starts fresh, unknown hero ids are removed.
 Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLevels`,
 `insight`, `resetSpent`, `refundNotice`, `treeVersion`, `repriceNotice`, `mapBests`,
 `mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`,
-`campaign`.
+`campaign` (the hero collection), `ui` (`homeMode`, the home screen's mode pick).
 
 The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 8): `owned`, `cleared`,
 `lastSquad`, `currencies` (Gold, Hero XP, Divine Seals, Seal Dust),
@@ -884,8 +919,8 @@ Content is not JSON-only. Before shipping, walk the matching list.
 **New campaign stage or chapter**
 1. Stage in `tdCampaign.json` under its chapter: `unlockAfter`, `mapId`, lives, `hpScale`,
    waves and rewards (an already-owned hero reward becomes a spare copy).
-2. A new chapter's first stage unlocks after the previous chapter's last one; the home card
-   and route follow `currentChapter()`, the Stages screen shows chapter tabs.
+2. A new chapter's first stage unlocks after the previous chapter's last one; the home
+   screen's objective and Campaign note follow `nextStage()` / `currentChapter()`, the Stages screen shows chapter tabs.
 3. Checks: `test-td-campaign.mjs` (prints the sampled win rate per stage; keep late stages
    above the 20% floor) and `npm run td:pacing -- --only=campaign`.
 

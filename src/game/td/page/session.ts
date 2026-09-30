@@ -9,7 +9,7 @@ import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 import { dailyGameOptions } from "../daily.js";
 import { stageGameOptions } from "../expedition.js";
-import { campaignHeroes, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
+import { collectionHeroes, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
@@ -47,6 +47,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       state.selectedMap = map;
       try { localStorage.setItem("td:map", map.id); } catch {}
     }
+    // The home screen's Play picks this mode next time ("again" or "next").
+    const homeMode = daily ? "daily" : expedition ? "expedition" : campaign ? "campaign" : "free";
+    if (store.data.ui.homeMode !== homeMode) {
+      store.data.ui = { ...store.data.ui, homeMode };
+      store.persist();
+    }
     deps.music.play(map.music);
     ctx.actions.showScreen("play");
     pause.clear();
@@ -68,8 +74,11 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const runLevels = daily || campaign ? {} : { ...store.data.favLevels };
     // Expedition stages (M21) keep Divine Blessings but skip the shard boost (it waits for a normal run).
     const boost = daily || expedition || campaign ? null : store.data.nextRunBoost;
+    // Free Play deploys only owned heroes (Phase 2, base stats for now); an Expedition
+    // roster is drawn from them when it starts. The Daily Trial keeps its own squad.
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
-      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, campaignHeroes(campaignData, store.data.campaign, data.heroes)) : {};
+      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, collectionHeroes(campaignData, store.data.campaign, data.heroes))
+      : { allowedHeroes: [...store.data.campaign.owned] };
     const tuning = buildRunTuning(data.tuning, runLevels, boost);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
     const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });

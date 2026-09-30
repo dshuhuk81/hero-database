@@ -2,7 +2,7 @@
 // simple policy (deploy affordable heroes, spend spare gold on upgrades, take the
 // first virtue offered) and reports duration, spending, leaks, and win rate.
 // Run with: npm run test:td-balance
-import { maps, playRun, SQUADS } from "./lib/td-runner.mjs";
+import { freePlayMaps, maps, playRun, SQUADS, STARTERS } from "./lib/td-runner.mjs";
 import { bestClass, classMatrix, EXPECTED, printMatrix } from "./lib/td-class-matrix.mjs";
 
 console.log("map".padEnd(20), "squad".padEnd(30), "result  lives  leaks  score  spent  duration");
@@ -24,6 +24,13 @@ for (const map of maps) {
   if (mapWins < 1) throw new Error(`Balance: expected at least 1 winning squad on ${map.id}, got ${mapWins}`);
 }
 if (imperfect < 1) throw new Error("Balance: every win was perfect — the run is too easy");
+
+// Owned roster (Phase 2): a new player's Free Play deck is only the campaign starters. They
+// must win at least one Free Play battlefield at Normal with either upgrade policy, so the
+// mode never opens as a dead end; not every one, so new heroes still matter.
+const starterRuns = freePlayMaps.map((map) => ({ map, runs: ["cheapest", "carry"].map((policy) => playRun(STARTERS, 99, map, { policy, game: { allowedHeroes: STARTERS } })) }));
+for (const { map, runs } of starterRuns) console.log(`${map.id.padEnd(20)} starters only: ${runs.map((run) => (run.won ? `W${run.lives}` : `L${run.wave}`)).join(" / ")} (cheapest / carry)`);
+if (!starterRuns.some(({ runs }) => runs.some((run) => run.won))) throw new Error("Balance: the starter heroes win no Free Play battlefield");
 
 // Run modes (M2): 20 waves must be winnable but not by every squad; endless must end
 // (no runaway past the 150-wave guard) and the best squad should get past wave 20.

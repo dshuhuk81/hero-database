@@ -1,6 +1,7 @@
 // Global wallet in the app bar: a few chips picked per screen (td.css, .td-wallet-chip) and a
 // dropdown with the full inventory, every currency with where it comes from and where it goes.
 // The page calls render() after each save (store.onPersist) and on every screen change.
+// The home screen has no app bar: place() moves the one wallet node into its top bar there.
 import type { PageContext } from "./context";
 import { availableFavor, availableInsight } from "./save";
 import { CLASSES } from "../favor.js";
@@ -11,8 +12,8 @@ import { classIconImg } from "../assets.js";
 const CHIPS = ["favor", ...CURRENCIES];
 const SOURCES: Record<string, string> = {
   favor: "Every run outside the campaign. Spent on Divine Blessings.",
-  gold: "Campaign stages. Spent on hero levels.",
-  heroXp: "Campaign stages. Spent on hero levels.",
+  gold: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
+  heroXp: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
   divineSeals: "Campaign first clears, Daily Trial and Expedition. Spent on summons.",
   sealDust: "Spare hero copies. Spent on Evolution, copies and Divine Seals.",
 };
@@ -23,6 +24,9 @@ export function createWallet(ctx: PageContext) {
   const button = q<HTMLButtonElement>("[data-td-wallet-button]");
   const chipsEl = q("[data-td-wallet-chips]");
   const panel = q("[data-td-wallet-panel]");
+  const appbarParent = rootEl.parentElement!;
+  const appbarNext = rootEl.nextSibling;
+  const homeSlot = q("[data-td-home-wallet]");
 
   const amounts = (): Record<string, number> => {
     const currencies = store.data.campaign.currencies as Record<string, number>;
@@ -40,7 +44,7 @@ export function createWallet(ctx: PageContext) {
     return `<section class="td-wallet-group"><h2 class="td-label">Divine Blessings</h2><ul>${row("favor", have.favor)}</ul>` +
       `<div class="td-wallet-insight"><strong>Insight</strong><small>Deployed heroes earn it for their class. Spent on that class's blessings.</small><div class="td-wallet-insight-chips">${insight}</div></div>` +
       `<div class="td-wallet-links"><button class="td-link-button" type="button" data-td-go="blessings">Open Divine Blessings</button></div></section>` +
-      `<section class="td-wallet-group"><h2 class="td-label">Campaign</h2><ul>${CURRENCIES.map((id: string) => row(id, have[id])).join("")}</ul>` +
+      `<section class="td-wallet-group"><h2 class="td-label">Hero collection</h2><ul>${CURRENCIES.map((id: string) => row(id, have[id])).join("")}</ul>` +
       `<div class="td-wallet-links"><button class="td-link-button" type="button" data-td-go="heroes">Heroes</button><button class="td-link-button" type="button" data-td-go="summon">Summon</button></div></section>`;
   }
 
@@ -71,5 +75,11 @@ export function createWallet(ctx: PageContext) {
     if (!panel.hidden && !rootEl.contains(event.target as Node)) setOpen(false);
   });
 
-  return { render, close: () => setOpen(false) };
+  // In the home screen's top bar on home, else back in the app bar.
+  function place(onHome: boolean) {
+    if (onHome && rootEl.parentElement !== homeSlot) homeSlot.append(rootEl);
+    else if (!onHome && rootEl.parentElement !== appbarParent) appbarParent.insertBefore(rootEl, appbarNext);
+  }
+
+  return { render, place, close: () => setOpen(false) };
 }

@@ -25,7 +25,7 @@ function pickFrom(list, rng) {
 const mix = (seed, stage, salt) => (Math.imul(seed ^ (stage + 1) * 0x9e3779b1, 0x85ebca6b) ^ salt) >>> 0;
 
 // A new expedition. `maps` is the battlefield pool (EXPEDITION.stages drawn in random order),
-// `heroes` the roster pool.
+// `heroes` the roster pool (the page passes the owned heroes).
 export function newExpedition(seed, { heroes, maps, tuning }) {
   const rng = createRng(seed >>> 0);
   // Campaign-only battlefields (tdMaps.json campaignOnly) stay out of the expedition pool.
@@ -34,7 +34,8 @@ export function newExpedition(seed, { heroes, maps, tuning }) {
   while (order.length && stages.length < EXPEDITION.stages) stages.push(pickFrom(order, rng));
   const road = heroes.filter((hero) => hero.slot === "road").map((hero) => hero.id);
   const platform = heroes.filter((hero) => hero.slot === "platform").map((hero) => hero.id);
-  const roster = [pickFrom(road, rng), pickFrom(platform, rng)];
+  // One of each slot type when the pool has both (a small owned collection may not).
+  const roster = [pickFrom(road, rng), pickFrom(platform, rng)].filter(Boolean);
   const rest = [...road, ...platform];
   while (roster.length < EXPEDITION.startHeroes && rest.length) roster.push(pickFrom(rest, rng));
   return { seed: seed >>> 0, stages, stage: 0, roster, relics: [], veterans: [], lives: tuning.run.lives, camp: null };

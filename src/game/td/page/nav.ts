@@ -5,11 +5,12 @@
 // stays in the game and opens its menu instead (deps.onGameBack).
 import type { PageContext } from "./context";
 
-export type ScreenId = "home" | "campaign" | "stages" | "squad" | "heroes" | "summon" | "maps" | "mode" | "daily" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
+export type ScreenId = "home" | "stages" | "squad" | "heroes" | "summon" | "maps" | "mode" | "daily" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
 
 // One level up when there is no history entry to go back to (for example after a reload).
+// History entries from older builds that name a removed screen (the Campaign hub) open home.
 const PARENT: Record<ScreenId, ScreenId> = {
-  home: "home", campaign: "home", stages: "campaign", squad: "stages", heroes: "campaign", summon: "campaign", maps: "home", mode: "maps", daily: "home", expedition: "home", blessings: "home",
+  home: "home", stages: "home", squad: "stages", heroes: "home", summon: "home", maps: "home", mode: "maps", daily: "home", expedition: "home", blessings: "home",
   help: "home", settings: "home", save: "settings", glossary: "home", play: "home",
 };
 const isScreen = (value: unknown): value is ScreenId => typeof value === "string" && value in PARENT;
@@ -18,6 +19,7 @@ export function createNav(ctx: PageContext, deps: { onShow(id: ScreenId): void; 
   const { root, q } = ctx;
   const menuEl = q("[data-td-lobby]");
   const playEl = q("[data-td-play]");
+  const appbarEl = q(".td-appbar");
   const titleEl = q("[data-td-appbar-title]");
   const backButton = q<HTMLButtonElement>("[data-td-nav-back]");
   const screens = new Map<string, HTMLElement>();
@@ -34,6 +36,7 @@ export function createNav(ctx: PageContext, deps: { onShow(id: ScreenId): void; 
     playEl.hidden = id !== "play";
     if (id !== "play") {
       screens.forEach((el, key) => { el.hidden = key !== id; });
+      appbarEl.hidden = id === "home"; // the home screen has its own top bar
       const screen = screens.get(id)!;
       titleEl.textContent = screen.dataset.title ?? "";
       backButton.hidden = id === "home";
@@ -85,10 +88,12 @@ export function createNav(ctx: PageContext, deps: { onShow(id: ScreenId): void; 
   }
 
   // Leaving a run: to the given screen, else back where the run was started from (the
-  // map select for a normal run, the Daily Trial or Expedition screen for those).
+  // map select for a normal run, the stage list for a campaign stage, the Daily Trial or
+  // Expedition screen for those). go() finds the stage list lower in the stack, so Back
+  // from there reaches home.
   function exitPlay(target?: ScreenId) {
     const below = current === "play" && index > 0 ? stack[index - 1] : undefined;
-    go(target ?? (below === "mode" ? "maps" : below === "squad" ? "campaign" : below && below !== "play" ? below : "home"));
+    go(target ?? (below === "mode" ? "maps" : below === "squad" ? "stages" : below && below !== "play" ? below : "home"));
   }
 
   function back() {

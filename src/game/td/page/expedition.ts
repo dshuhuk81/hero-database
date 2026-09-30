@@ -1,15 +1,14 @@
 // Expedition (M21) on the page: the Expedition screen (start, continue, abandon, camp
-// choice), its card on the main menu and recording a finished stage for the result screen. Rules live in ../expedition.js.
+// choice), its summary for the home screen and recording a finished stage for the result screen. Rules live in ../expedition.js.
 import { bossSprite } from "../assets.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
-import { addSeals } from "../campaign.js";
-import { currencyList } from "../currency-icons.js";
+import { addSeals, ownedHeroes } from "../campaign.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
 import type { ExpeditionState, SaveData } from "./save";
-import { roman, routeHtml } from "./route";
+import { roman } from "./route";
 import { trialCardHtml } from "./daily";
 
 // Divine Seals for a finished expedition, on top of the Favor (summon currency, M26).
@@ -23,7 +22,8 @@ const relicInfo = RUN_BOON_INFO as Record<string, { name: string; text: string }
 // The caller persists the save.
 export function finishExpeditionStage(save: SaveData, game: any, state: ExpeditionState, data: any, record: boolean) {
   const total = state.stages.length;
-  const result = finishStage(state, { won: !!game.won, lives: game.lives ?? 0 }, data);
+  // Camp recruits come from the owned heroes (Phase 2), like the starting roster.
+  const result = finishStage(state, { won: !!game.won, lives: game.lives ?? 0 }, { ...data, heroes: ownedHeroes(save.campaign, data.heroes) });
   let reward = 0;
   if (record) {
     save.expedition = result.state as ExpeditionState | null;
@@ -64,10 +64,6 @@ export function createExpedition(ctx: PageContext) {
   const bossArtEl = q<HTMLImageElement>("[data-td-exp-boss-art]");
   const relicsEl = q("[data-td-exp-relics]");
   const bestEl = q("[data-td-exp-best]");
-  const summaryTitleEl = q("[data-td-exp-summary-title]");
-  const summaryEl = q("[data-td-exp-summary]");
-  const summaryRouteEl = q("[data-td-exp-summary-route]");
-  const summaryCtaEl = q("[data-td-exp-summary-cta]");
   let abandonArmed = false;
 
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -119,7 +115,7 @@ export function createExpedition(ctx: PageContext) {
     stepsEl.hidden = !!state;
     bossArtEl.hidden = !state;
     rulesEl.innerHTML = [`${stops} battlefields`, "Normal", "Lives carry over", "Divine Blessings apply", "No shard boosts"].map((rule) => `<li>${rule}</li>`).join("");
-    q("[data-td-exp-step-squad]").textContent = `Start with ${EXPEDITION.startHeroes} random heroes. Only they can be deployed.`;
+    q("[data-td-exp-step-squad]").textContent = `Start with ${EXPEDITION.startHeroes} random heroes from your collection. Only they can be deployed.`;
     if (!state) {
       stageEl.textContent = "";
       titleEl.textContent = "Three battlefields, one squad";
@@ -131,22 +127,9 @@ export function createExpedition(ctx: PageContext) {
       startButton.textContent = "Start expedition";
       startButton.hidden = false;
       campEl.hidden = true;
-      summaryTitleEl.textContent = "Not started";
-      summaryEl.innerHTML = `<span>Three battlefields, one squad</span> ${currencyList({ favor: EXPEDITION.completeFavor, ...(EXP_SEALS ? { divineSeals: EXP_SEALS } : {}) }, { plus: true })}`;
-      summaryRouteEl.innerHTML = routeHtml(data.maps.filter((map: any) => !map.campaignOnly).map((_: any, i: number) => ({ label: roman(i + 1), state: "ahead" as const })));
-      summaryCtaEl.textContent = "Start";
       return;
     }
     const map = mapOf(state.stages[state.stage]);
-    summaryTitleEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
-    summaryEl.innerHTML = `<span class="td-exp-lives"><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg><b>${state.lives}</b> lives remaining</span>` +
-      (state.camp ? `<span class="td-exp-camp">Camp reward waiting</span>` : "");
-    summaryRouteEl.innerHTML = routeHtml(state.stages.map((id, i) => ({
-      label: roman(i + 1),
-      state: i < state.stage ? "done" : i === state.stage ? "current" : "ahead",
-      note: mapOf(id)?.name ?? id,
-    })));
-    summaryCtaEl.textContent = state.camp ? "Make camp" : "Continue";
     stageEl.textContent = `Stage ${state.stage + 1} of ${state.stages.length}`;
     titleEl.textContent = map?.name ?? state.stages[state.stage];
     copyEl.innerHTML = state.camp
@@ -168,10 +151,16 @@ export function createExpedition(ctx: PageContext) {
     startButton.textContent = `Continue to stage ${state.stage + 1}`;
   }
 
+  // Home screen data (home.ts): the stage an expedition in progress is on, and its camp.
+  function homeSummary() {
+    const state = store.data.expedition;
+    return state ? { stage: state.stage, stages: state.stages.length, lives: state.lives, camp: !!state.camp } : null;
+  }
+
   function start() {
     let state = store.data.expedition;
     if (!state) {
-      state = newExpedition(Math.floor(Math.random() * 2 ** 31), data) as ExpeditionState;
+      state = newExpedition(Math.floor(Math.random() * 2 ** 31), { ...data, heroes: ownedHeroes(store.data.campaign, data.heroes) }) as ExpeditionState;
       store.data.expedition = state;
       store.persist();
     }
@@ -202,5 +191,5 @@ export function createExpedition(ctx: PageContext) {
     startButton.focus({ preventScroll: true });
   });
 
-  return { render, start };
+  return { render, start, homeSummary };
 }

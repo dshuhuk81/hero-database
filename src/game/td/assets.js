@@ -10,6 +10,9 @@ export function tdAsset(path) {
   return `${base}/td/${path.replace(/^\/+/, "")}`;
 }
 
+// Home screen camp scene (TdHome.astro, page/home.ts).
+export const campHomeArt = () => tdAsset("ui/camp-home.webp");
+
 // Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
 // M24 white label: grunt, runner, flyer, archer, brute (v2) and Lilith with her brood (v3)
 // were regenerated from text-only prompts (src/game/td/sprite-spec-for-ai.md).

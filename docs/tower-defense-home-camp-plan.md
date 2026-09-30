@@ -1,6 +1,6 @@
 # Tower Defense home screen: War Camp plan
 
-Status: plan, September 30, 2026. Reference prototype: `src/pages/games/tower-defense/menu-concept.astro` (layout and interaction only; icons, font and colors there are placeholders).
+Status: home screen built September 30, 2026 on branch `tower-main-home-screen` (steps 1-8 below; the background still needs its R2 upload). Phase 2 first step built the same day (see "Phase 2 as built"). The reference prototype (`menu-concept.astro`) and its concept image were deleted once the screen was in place.
 
 ## Goal
 
@@ -96,6 +96,8 @@ Consequences:
 
 ## Implementation steps
 
+All done September 30, 2026, except the R2 upload in step 1 (owner). Where the build differs from the plan text, see "As built" below.
+
 1. Upload background to R2, add path to `assets.js`.
 2. New component `src/components/td/TdHome.astro` (markup of the home screen), included from `TdLobby.astro` in place of the current home section. Styles in `td.css` under `.td-camp-home-*`.
 3. New module `src/game/td/page/home.ts`: mode selection, Play target, objective, badges; wire through `ctx.actions` like the other modules. Move summary rendering for the four modes out of `campaign.ts` / `daily.ts` / `expedition.ts` home hooks into data these modules expose.
@@ -105,6 +107,17 @@ Consequences:
 7. Tests: `npm run test:tower-defense`; manual pass at the viewports listed in `docs/tower-defense-ui-plan.md` (owner tests visuals).
 8. Delete `menu-concept.astro` and the `public/td/concepts` image once live. Update `TOWER_DEFENSE_SPEC.md` and the UI plan status.
 
+## As built (September 30, 2026)
+
+- Background: `public/td/ui/camp-home.webp` (1672x941, WebP q80, about 300 KB, converted from the concept PNG) is the upload source, like the other R2 art kept under `public/td/`. `assets.js` exports `campHomeArt()` (`td/ui/camp-home.webp`); `home.ts` sets it on the scene, and `--bg-overlay` shows until it loads. Upload: `node scripts/upload-to-r2.mjs --prefix td/ui/`.
+- Files: `src/components/td/TdHome.astro` (markup), `src/game/td/page/home.ts` (mode rail, Play, objective, badges), `.td-camp-home*` in `td.css`. `campaign.ts`, `daily.ts` and `expedition.ts` expose `homeSummary()` in place of the old home card hooks; `campaign.ts` also exposes `focusNextStage()` so Play opens the stage list on the next stage's chapter (its card has autofocus). `route.ts` keeps only `roman()`; the route rail markup and styles went with the home cards.
+- Save: `ui.homeMode` (`"campaign" | "daily" | "expedition" | "free"`, default Campaign, sanitized in `sanitizeSave`). A run sets it when it starts (`session.ts`), so a quit run also counts; picking a mode on the rail sets it too.
+- Wallet: one node, moved between the app bar and the home top bar by `wallet.place()` from the page's `onShow`. Its dropdown is capped to the home screen's height there and scrolls.
+- Objective: not a button; Play is the one action. When every stage is cleared it shows the Daily Trial (cleared or not, with the reset time).
+- Mode notes: Campaign "Begin 1-1" / "Continue 2-2" / "All stages cleared"; Daily "New trial" (badge 1) / "Cleared today"; Expedition "Not started" / "Stage II of III" / "Camp reward waiting"; Free Play "Best 155,868" / "No runs yet". The Play note under the button carries the stage name, today's battlefield with the reset countdown, lives left, or the Free Play map (the next-run shard boost when one is pending).
+- Small screens: the menu frame keeps every landscape phone at about 390 logical px tall, so "short" means a frame up to 420px (slim bars, one-line objective). Dock labels drop only below 360px (frames under the zoom floor), since at 390 they fit and hiding them there would hide them on every phone. Portrait frames use `@container td-home (orientation: portrait)`.
+- "Your company" strip: dropped with the Campaign hub.
+
 ## Decisions (owner, September 30, 2026)
 
 1. Armory and Bestiary: left out.
@@ -113,7 +126,7 @@ Consequences:
 4. After a campaign run: back to the stage list; Back from there goes home.
 5. Heroes and Summon: on the dock now. Making the collection count in every mode is Phase 2 below, planned but not started.
 
-## Phase 2: one hero collection for every mode (planned, not started)
+## Phase 2: one hero collection for every mode (first step built September 30, 2026)
 
 ### Problem
 
@@ -159,3 +172,21 @@ Campaign keeps its own reason to exist: it is the only place to unlock heroes th
 8. Tests: `npm run test:tower-defense`; update `TOWER_DEFENSE_SPEC.md`.
 
 Phase 2 is independent of the home screen work and can ship after it.
+
+### Phase 2 as built (September 30, 2026)
+
+Decisions taken (the plan's recommendations where it had one):
+
+1. Balance: option c. Free Play and Expedition use owned heroes at base stats; upgrades stay Campaign only. Option a (upgrades plus tiers scaled by `heroMight`) is the next step once measured.
+2. Squad limit: the whole owned deck in Free Play, no squad screen.
+3. Divine Blessings: unchanged split (Free Play and Expedition only).
+4. Rewards: `collectionRewards` in `tdCampaign.json`, 10 Gold + 5 Hero XP per cleared wave, up to 30 waves per run (a 10-wave run pays 100 + 50, about 40% of a campaign replay's rate per wave). No Seals. Expedition pays per stage, on top of its Favor and Seals.
+5. Existing saves: no migration gift. An Expedition already in progress keeps its roster.
+6. Free Play maps: stay open.
+
+Implementation: `ownedHeroes()` and `collectionReward()` in `campaign.js` (`campaignHeroes` renamed to `collectionHeroes` in code and scripts; the save key stays `campaign`, no migration). `session.ts` passes the owned ids as Free Play's `allowedHeroes`; `page/expedition.ts` passes the owned heroes as the pool for `newExpedition` and the camp; `newExpedition` tolerates a pool with one slot type. `recruit.ts` shows an empty-state line when a tile type has no owned hero. `results.ts` pays the collection share for Free Play and Expedition (not Daily, Campaign or debug runs) and shows it under "For your heroes". Wallet: Gold chip also on the map select, run length and Expedition screens; the inventory group is "Hero collection". How to play has a "Your heroes" section; the Glossary's "Campaign upgrades" entry became "Hero collection".
+
+Balance: starters only (demeter, jormungandr, horus, fengyi, artemis, freya), seed 99, Normal, cheapest / carry policy: Moonlit Pass L10 / W19, Verdant Crossing L8 / W2, Sunscar Ruins W5 / W17, Sunscar Basin W19 / W25. `test:td-balance` now requires at least one starter win on a Free Play battlefield; `td:sweep -- --owned=starters` adds the starter deck. Tiers were not retuned: a new player can win, and more heroes still help.
+
+Open for the next step: decision 1a (upgrades in Free Play and Expedition with tier scaling), upgraded-roster cases in `td:sweep`, and a Free Play screen line showing how many heroes the player owns.
+

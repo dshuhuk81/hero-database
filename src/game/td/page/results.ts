@@ -35,8 +35,12 @@ function insightStat(earned: Record<string, number>) {
 import type { PageContext } from "./context";
 import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
-import { availableFavor, runKey, type RunBoost } from "./save";
+import { availableFavor, runKey, type CampaignProgress, type RunBoost } from "./save";
 import { finishDaily } from "./daily";
+import { clearedWaves } from "../daily.js";
+import { collectionReward, grantRewards } from "../campaign.js";
+import { currencyList } from "../currency-icons.js";
+import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import { finishExpeditionStage } from "./expedition";
 import { finishCampaignRun } from "./campaign";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
@@ -58,6 +62,8 @@ export function createResults(ctx: PageContext) {
   let shard: { favor: number; earned: number; virtue: string; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
   // Favor this run paid, by source, so the summary adds up to what the save gained.
   let rewards: { label: string; favor: number }[] = [];
+  // Gold and Hero XP this run paid into the hero collection (Free Play, Expedition).
+  let collectionHtml = "";
 
   // Summary / Battle tabs (narrow screens; wide screens show both columns).
   const tabs = [...resultEl.querySelectorAll<HTMLButtonElement>("[data-td-result-tab]")];
@@ -90,6 +96,7 @@ export function createResults(ctx: PageContext) {
     resultEl.hidden = true;
     shard = null;
     rewards = [];
+    collectionHtml = "";
     showTab("summary");
     for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
   }
@@ -122,7 +129,7 @@ export function createResults(ctx: PageContext) {
     const chips = parts.filter((part) => part.favor > 0 || part === parts[0])
       .map((part) => `<li><span>${part.label}</span><strong>+${part.favor}</strong></li>`).join("");
     favorEl.innerHTML = `<div class="td-result-favor-head"><span class="td-label">Divine Favor</span><strong>+${earned}</strong><small>Total ${store.data.favor}</small></div>` +
-      `<ul class="td-result-favor-parts">${chips}</ul>` + (note ? `<p class="td-result-favor-note">${note}</p>` : "");
+      `<ul class="td-result-favor-parts">${chips}</ul>` + collectionHtml + (note ? `<p class="td-result-favor-note">${note}</p>` : "");
   }
 
   function renderShards() {
@@ -197,6 +204,12 @@ export function createResults(ctx: PageContext) {
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
       : campaign ? (({ text, won, followUp }) => ({ text, reached: won, reward: 0, followUp }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
+    // Free Play and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
+    const collection = daily || campaign || session.debug ? [] : collectionReward(campaignData, clearedWaves(game));
+    if (collection.length) {
+      saved.campaign = grantRewards(saved.campaign, collection) as CampaignProgress;
+      collectionHtml = `<p class="td-result-collection"><span class="td-label">For your heroes</span>${currencyList(Object.fromEntries(collection.map((reward: any) => [reward.id, reward.amount])), { plus: true })}</p>`;
+    }
     // Challenges (M20): stored and paid only for non-debug, non-campaign runs; persisted with the run below.
     const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
@@ -232,16 +245,16 @@ export function createResults(ctx: PageContext) {
     q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition;
     const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
     continueButton.hidden = !expedition && !campaign;
-    continueButton.dataset.tdToLobby = campaign ? "campaign" : "expedition";
+    continueButton.dataset.tdToLobby = campaign ? "stages" : "expedition";
     // Campaign: after a loss go straight to this stage's squad, after a win to the next stage's.
     const followUp: string | null = campaign ? (dailyRun as any)?.followUp ?? null : null;
     if (followUp) continueButton.dataset.tdCampStage = followUp; else delete continueButton.dataset.tdCampStage;
     continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
       : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
-    // Campaign stages lead back to the Campaign screen (stage list) instead of the main menu.
+    // Campaign stages lead back to the stage list instead of the main menu.
     const menuButton = q<HTMLButtonElement>("[data-td-result-menu]");
     menuButton.hidden = !!expedition || (!!campaign && !followUp);
-    menuButton.dataset.tdToLobby = campaign ? "campaign" : "home";
+    menuButton.dataset.tdToLobby = campaign ? "stages" : "home";
     menuButton.textContent = campaign ? "Campaign" : "Main menu";
     const outcome = endless ? "endless" : game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;

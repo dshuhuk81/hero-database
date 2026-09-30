@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026, M7 (enemy animation) done and live September 29, 2026 (commit 37654230). The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open, M6 (menu UI pass) done September 28, 2026, M7 (enemy animation) done and live September 29, 2026 (commit 37654230). War Camp home screen built September 30, 2026 on branch `tower-main-home-screen` (see `docs/tower-defense-home-camp-plan.md`; background waits for its R2 upload). The original audit and plan below are kept for reference; the status, decision log, M4 and M6 sections are current.
 
 ## Status
 
@@ -28,6 +28,10 @@ Added after the plan (user requests):
 | Run blessing offer stays optional: starting the next wave forfeits it (stated in the modal). | Open question in the plan. | Keeps the simulator's offer-expiry behavior. |
 | Styles in a dedicated `src/styles/td.css` loaded by `GameLayout.astro`. | `components.css`. | Game-only styles; the old TD block was removed from `components.css`. |
 | Debug panel only in `npm run dev` builds. | Not planned. | Balance tuning tool, not a player feature. |
+
+## War Camp home screen (built September 30, 2026)
+
+The card-grid main menu and the Campaign hub were replaced by one scene menu (`TdHome.astro`, `page/home.ts`): camp art full screen, top bar with the wallet, current objective, a mode rail (radio group) that picks what Play opens, and a dock for Heroes, Summon, Divine Blessings, Glossary and How to play. Plan, navigation tree and decisions: `docs/tower-defense-home-camp-plan.md`. Checked in headless Chromium at 667x375, 844x390, 1440x810 and 820x1180 (no scroll, no page errors; wallet dropdown scrolls inside the screen).
 
 ## M4: Live readiness (done)
 

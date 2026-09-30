@@ -10,7 +10,7 @@
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
-import { allStages, campaignHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { CLASSES } from "./lib/td-class-matrix.mjs";
 import { maps, playRun, POLICIES, SQUADS } from "./lib/td-runner.mjs";
 
@@ -98,7 +98,7 @@ if (only.has("campaign")) {
   const chapter = Object.fromEntries(POLICIES.map((p) => [p, { first: 0, expected: 0 }]));
   for (const stage of stages) {
     const leveled = spendEvenly(progress);
-    const runHeroes = campaignHeroes(campaign, leveled, heroes);
+    const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const map = maps.find((m) => m.id === stage.mapId);
     const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
     const cells = [];

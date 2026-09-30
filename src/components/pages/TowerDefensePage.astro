@@ -34,7 +34,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { mapSceneFor } from "../../game/td/map-scene.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
-  import { availableFavor, createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
+  import { createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
   import { MUTATOR_INFO } from "../../game/td/skills.js";
   import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
@@ -53,6 +53,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { createOrientGate } from "../../game/td/page/orient";
   import { createMenuFrame } from "../../game/td/page/frame";
   import { createWallet } from "../../game/td/page/wallet";
+  import { createHome } from "../../game/td/page/home";
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
@@ -149,7 +150,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   syncMusicUi();
 
   // ------------------------------------------------------------------
-  // Menu screens (main menu, map select, difficulty and run length)
+  // Menu screens (map select, difficulty and run length; the home screen is page/home.ts)
   // ------------------------------------------------------------------
   function renderLobby() {
     root!.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
@@ -162,21 +163,13 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
       const top = store.data.mapTop[el.dataset.mapBest!];
       el.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
     });
-    q("[data-td-best]").textContent = store.data.bestScore.toLocaleString();
-    q("[data-td-perfect]").hidden = !store.data.perfectDefense;
-    q("[data-td-free-map]").textContent = state.selectedMap.name;
-    const boost = store.data.nextRunBoost;
-    const boostEl = q("[data-td-next-boost]");
-    boostEl.hidden = !boost;
-    if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
-    const favor = availableFavor(store.data);
-    q("[data-td-favor-count]").textContent = favor.toLocaleString();
     wallet.render();
     q("[data-td-map-pick]").textContent = `${state.selectedMap.name} - Boss: ${ctx.bossFor(state.selectedMap).name}`;
     renderChallengeBadges(root!, store.data, data.tuning.tiers);
     dailyTrial.render();
     expedition.render();
     campaignScreens.render();
+    home.render();
   }
 
   q("[data-td-maps]").addEventListener("click", (event) => {
@@ -268,6 +261,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const dailyTrial = createDaily(ctx);
   const expedition = createExpedition(ctx);
   const campaignScreens = createCampaign(ctx);
+  const home = createHome(ctx, { campaign: campaignScreens, daily: dailyTrial, expedition });
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
   const popover = createPopover(ctx);
@@ -277,6 +271,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const nav = createNav(ctx, {
     onShow(id) {
       wallet.close();
+      wallet.place(id === "home");
       if (id === "play") return;
       renderLobby();
       if (id === "mode") renderModeScreen();

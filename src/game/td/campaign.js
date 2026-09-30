@@ -60,7 +60,7 @@ export function validSquad(campaign, progress, squad) {
 
 // Options for new TowerDefenseGame(...) on top of heroes, tuning and map. The stage's own
 // waves replace tdWaves.json; classic mode plays exactly that list.
-// `heroes`: the run's hero list with campaign levels applied (campaignHeroes), if any.
+// `heroes`: the run's hero list with campaign levels applied (collectionHeroes), if any.
 export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null) {
   return {
     ...(heroes && { heroes }),
@@ -308,9 +308,27 @@ export function buyCopiesWithDust(summonCfg, progress, heroId, count = 1) {
   };
 }
 
+// --- One collection for every mode (Phase 2, docs/tower-defense-home-camp-plan.md) ---
+// Heroes are unlocked and upgraded through the campaign (the save key stays `campaign`).
+// Free Play and Expedition use the owned heroes at base stats for now (decision 1c);
+// the Daily Trial keeps the full roster so every player gets the same setup.
+export const ownedHeroes = (progress, heroes) => heroes.filter((hero) => progress.owned.includes(hero.id));
+
+// Gold and Hero XP a Free Play run or an Expedition stage pays into the collection:
+// `collectionRewards.perWave` for each cleared wave, up to `maxWaves` per run. Never Divine
+// Seals, so new heroes come no faster than before.
+export function collectionReward(campaign, wavesCleared) {
+  const cfg = campaign.collectionRewards;
+  const waves = Math.max(0, Math.min(Math.floor(Number(wavesCleared) || 0), cfg?.maxWaves ?? Infinity));
+  if (!cfg || !waves) return [];
+  return Object.entries(cfg.perWave ?? {})
+    .filter(([id, amount]) => CURRENCIES.includes(id) && id !== "divineSeals" && amount > 0)
+    .map(([id, amount]) => ({ type: "currency", id, amount: Math.round(amount * waves) }));
+}
+
 // The run's hero list with campaign levels and stars applied to attack and health and
 // Evolution to the ultimate and crit (campaign stages only).
-export function campaignHeroes(campaign, progress, heroes) {
+export function collectionHeroes(campaign, progress, heroes) {
   return heroes.map((hero) => {
     const level = heroLevel(progress, hero.id), stars = heroStars(progress, hero.id), tier = heroEvolution(progress, hero.id);
     const scale = levelScale(campaign, level) * starScale(campaign, stars);
