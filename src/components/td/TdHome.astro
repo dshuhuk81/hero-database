@@ -10,6 +10,14 @@ const modes = [
   { id: "expedition", label: "Expedition", icon: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M15.5 8.5l-2 5-5 2 2-5z" },
   { id: "free", label: "Free Play", icon: "M4 4l10 10M14 14l-2 2M14 14l2-2M16.5 16.5l3 3M20 4L10 14M10 14l2 2M10 14l-2-2M7.5 16.5l-3 3" },
 ];
+// Campfire embers in camp-home.webp pixels (the fire sits at 836, 606): start x, drift, rise,
+// radius, duration and delay. Fixed values so the loop never looks mechanical.
+const embers = [
+  [826, -18, 170, 2.4, 3.4, 0], [842, 22, 210, 1.8, 4.1, 0.7], [834, -6, 140, 2.8, 2.9, 1.5],
+  [850, 30, 190, 1.6, 3.7, 2.2], [820, -32, 160, 2, 3.2, 2.9], [838, 10, 230, 1.5, 4.4, 0.35],
+  [846, -24, 150, 2.2, 3, 1.1], [830, 16, 200, 1.7, 3.9, 3.3], [840, -12, 180, 2.5, 3.5, 2.6],
+  [824, 26, 130, 1.9, 2.7, 1.9],
+];
 const dock = [
   { id: "heroes", label: "Heroes", icon: "M7 8a3 3 0 106 0a3 3 0 10-6 0M3 20c0-4 3-6 7-6s7 2 7 6M15 5a3 3 0 010 6M17 14c2.5.5 4 2.5 4 6" },
   { id: "summon", label: "Summon", icon: "M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18" },
@@ -36,6 +44,11 @@ const dock = [
     </defs>
     <ellipse class="td-camp-home-fire-ambient" cx="836" cy="625" rx="174" ry="126" fill="url(#td-camp-fire-ambient)" />
     <ellipse class="td-camp-home-fire-core" cx="836" cy="606" rx="78" ry="96" fill="url(#td-camp-fire-core)" />
+    <g class="td-camp-home-embers">
+      {embers.map(([x, drift, rise, r, dur, delay]) => (
+        <circle cx={x} cy="596" r={r} style={`--ember-x: ${drift}px; --ember-y: -${rise}px; animation-duration: ${dur}s; animation-delay: -${delay}s;`} />
+      ))}
+    </g>
   </svg>
   <div class="td-camp-home-layout">
     <header class="td-camp-home-top">
