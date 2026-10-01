@@ -25,6 +25,9 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 
 ## What's next (priority order)
 
+Planning input (October 1, 2026): [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md)
+analyses the current state and proposes gameplay ideas with a suggested order. Not approved work.
+
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
 ### Bugs / Enhancements
