@@ -443,7 +443,54 @@ What the focus rule does:
    instead of 4/20 and Mage boss damage rises from 20% to 32%; every mixed squad stays within one
    win. It belongs to the shaped model, so it stays off in the live game.
 
-Next steps for the prototype: test shaped attack 3× with focus to win back the blocker gain,
+#### Attack, Archer and flyer tests (October 1, 2026)
+
+All runs: 3 seeds, 60 runs per row, Mage focus on, 0.2× ground enemies, 2.5× attack unless
+stated. Raw output in `docs/audits/td-2026-10-01-wave-shape/`.
+
+- **Stronger enemy attack does not make blockers necessary.** At 3× and 3.5× attack the
+  no-blocker squad still wins 52/60 and 54/60. Enemies only fight the heroes holding them, so a
+  squad without blockers never meets that attack.
+- **Archer numbers are not the cause.** Armor pierce 0.35 → 0.2 changes nothing measurable
+  (19/60 without Archers either way). The crit test changed nothing because Archer crit is
+  baked into `gameBalance.json` by the generator; the runtime kit value is not read.
+- **Flyers are the cause.** Counting lives lost by enemy kind (balanced squad, 60 runs): every
+  life is lost to flyers, 270 with the full squad, 1,040 without Archers, 870 without Mages.
+  Flyers skip blockers, and in the shaped model each flyer costs 5 lives. Ground enemies die
+  before the base even without blockers, which is why the no-blocker squad keeps winning.
+
+So flyers got their own shape (`waveShape.kinds.flyer`, report flag `--flyer=count:hp`):
+0.4× count and 1.75× health, so they come in pairs and cost 2.5 lives each. Two ground variants:
+
+| 3 seeds, 60 runs | Today | Ground 3.5× health | Ground 5× health |
+|---|---|---|---|
+| Balanced squad | 54/60, 85% lives | 48/60, 93% | 42/60, 92% |
+| Budget squad | 54/60 | 54/60 | 48/60 |
+| All platform, no blockers | 57/60 | 55/60 | **24/60** |
+| Balanced without Mage | 41/60 | 44/60 | 35/60 |
+| Balanced without Archer | 38/60 | 38/60 | 31/60 |
+| Balanced without Support | 44/60 | 43/60 | **23/60** |
+| Balanced without Tank | 54/60 | 54/60 | 54/60 |
+| Best one-class squad | Archer 26/60, Mage 12/60 | Archer 6/60 | none (0/60) |
+
+**Ground 5× with separate flyers is the most promising shape so far.** Road heroes become
+necessary (no-blocker squad 57/60 → 24/60), neither Mages nor Archers are required (35/60 and
+31/60 without them, close to the full squad's 42/60), Supports become important (23/60 without),
+and no one-class squad wins. Overall difficulty rises a little (balanced 54 → 42, budget
+54 → 48), which campaign tuning can absorb. Tanks are the open item: removing the Tank still does
+not hurt, because the bot then deploys another damage dealer in that slot. The Kraghorn boss
+(A3) and tile patterns that reward holding a choke point are the planned answers.
+
+Current best prototype settings:
+
+```json
+"waveShape": { "enabled": true, "count": 0.2, "gap": 2.5, "hp": 5, "attack": 2.5,
+  "kinds": { "flyer": { "count": 0.4, "hp": 1.75, "attack": 1, "power": 2.5 } } }
+```
+
+plus `"focus": { "slots": 2, "share": 1 }` in `classes.Mage`.
+
+Earlier next steps (kept for history): test shaped attack 3× with focus to win back the blocker gain,
 then look at Archer `target: "strongest"` and crit against tanky single enemies. After that,
 step 2 (tile patterns on a compact board) can start from these numbers. Raw output:
 `docs/audits/td-2026-10-01-wave-shape/variant-b-3-seeds.txt`,
