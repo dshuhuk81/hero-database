@@ -9,13 +9,13 @@ import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman } from "./route";
-import { currencyAmount, currencyIcon, currencyList } from "../currency-icons.js";
+import { currencyAmount, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
 
 export type CampaignRun = { stageId: string; squad: string[] };
@@ -83,7 +83,11 @@ export function createCampaign(ctx: PageContext) {
   let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
   let heroDetailKey = ""; // hero + tab last drawn, to keep scroll when an upgrade redraws it
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
-  let evoPick: "copy" | "dust" | null = null; // Evolution: material the player picked
+  let evoTarget: number | null = null; // Evolution tier currently being prepared (1 based)
+  let evoCopies: number[] = []; // Physical duplicate indexes placed into the target tier's slots
+  let evoPicker = false; // The hero stage becomes the material picker while true
+  let evoPick: "dust" | null = null; // Existing alternative material path
+  const resetEvolutionDraft = () => { evoTarget = null; evoCopies = []; evoPicker = false; evoPick = null; };
 
   const progress = () => store.data.campaign;
   const mapOf = (id: string) => data.maps.find((map: any) => map.id === id);
@@ -332,7 +336,7 @@ export function createCampaign(ctx: PageContext) {
 
   // Heroes screen: owned heroes and their three campaign upgrades, one tab each:
   // Level (Gold + Hero XP), Stars (duplicates of that hero + Gold: attack and health) and
-  // Evolution (a copy of the same hero or Seal Dust: ultimate and crit).
+  // Evolution (tier-specific duplicate costs or Seal Dust: ultimate and crit).
   function renderHeroes() {
     const p = progress();
     q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in campaign stages only.";
@@ -385,8 +389,10 @@ export function createCampaign(ctx: PageContext) {
     const detailKey = `${hero.id}:${heroTab}`;
     const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
     heroDetailKey = detailKey;
+    const pickerOpen = heroTab === "evolution" && evoPicker && evoTarget !== null;
+    const art = pickerOpen ? evolutionPicker(p, hero) : `<img src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}`;
     detailEl.innerHTML = `<article class="td-hero-profile${hero.id.startsWith("recruit-") ? " is-recruit" : ""}">
-      <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}</div>
+      <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${art}</div>
       <div class="td-hero-profile-copy">
       <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
       </div>
@@ -487,8 +493,25 @@ export function createCampaign(ctx: PageContext) {
       </div>`;
   }
 
-  // Evolution: tiers I-V with their bonus; each costs a copy of this hero (used first) or
-  // heroEvolution.dustPrice Seal Dust. Spare copies can also become Seal Dust here.
+  function evolutionPicker(p: any, hero: any) {
+    const available = p.copies?.[hero.id] ?? 0;
+    const need = evoTarget === null ? 0 : evolutionCopyCost(campaign, evoTarget - 1);
+    const cards = Array.from({ length: available }, (_, i) => {
+      const selected = evoCopies.includes(i);
+      const disabled = !selected && evoCopies.length >= need;
+      return `<button type="button" class="td-evo-picker-card${selected ? " is-selected" : ""}" data-camp-evo-material-index="${i}" aria-pressed="${selected}"${disabled ? " disabled" : ""}>
+        <img src="${hero.portrait ?? hero.image}" alt=""><strong>${hero.name}</strong><small>Copy ${i + 1}</small><span aria-hidden="true">${selected ? "✓" : "+"}</span>
+      </button>`;
+    }).join("");
+    return `<section class="td-evo-picker" aria-label="Select evolution materials">
+      <header class="td-evo-picker-head"><span><small>Upgrade materials</small><strong>Select ${need} ${need === 1 ? "copy" : "copies"}</strong></span><button type="button" data-camp-evo-picker-close aria-label="Close material picker">×</button></header>
+      <p>${evoCopies.length} of ${need} selected. Tap a selected copy to remove it.</p>
+      <div class="td-evo-picker-grid">${cards || `<p class="td-evo-picker-empty">No spare copies of ${hero.name} available.</p>`}</div>
+    </section>`;
+  }
+
+  // Evolution starts in a tier overview. Preparing the next tier reveals its copy slots;
+  // tapping a slot opens the copy picker in the large hero-art area.
   function evolutionPanel(p: any, hero: any) {
     const tier = heroEvolution(p, hero.id);
     const tiers = campaign.heroEvolution?.tiers ?? [];
@@ -496,26 +519,35 @@ export function createCampaign(ctx: PageContext) {
     const dustPrice = campaign.heroEvolution?.dustPrice ?? 0;
     const dust = p.currencies.sealDust || 0;
     const dustOk = dustPrice > 0 && dust >= dustPrice;
-    if (evoPick === "copy" && !copies) evoPick = null;
     if (evoPick === "dust" && !dustOk) evoPick = null;
-    const list = tiers.map((entry: any, i: number) => `<li class="${i < tier ? "is-done" : i === tier ? "is-next" : "is-locked"}"><span class="td-evo-mark" aria-hidden="true">${i < tier ? "✓" : roman(i + 1)}</span><span><strong>${entry.name}</strong><small>${entry.text}</small></span></li>`).join("");
     const maxed = tier >= tiers.length;
-    // The player picks the material (tap a slot), then confirms with Evolve.
-    const slot = (kind: "copy" | "dust", ready: boolean, inner: string, label: string) => `<button type="button" class="td-evo-slot${kind === "dust" ? " td-evo-slot--essence" : ""}${ready ? " is-ready" : ""}${evoPick === kind ? " is-picked" : ""}" data-camp-evo-pick="${kind}" aria-pressed="${evoPick === kind}" aria-label="${label}"${ready ? "" : " disabled"}>${inner}</button>`;
-    const materialHtml = maxed ? "" : `<div class="td-evo-material">
-        ${slot("copy", copies > 0, `<img src="${hero.portrait ?? hero.image}" alt=""><small>${copies} ${copies === 1 ? "copy" : "copies"}</small>`, `Use 1 copy of ${hero.name} (${copies} owned)`)}
-        <span>or</span>
-        ${slot("dust", dustOk, `<span class="td-cur td-cur--sealDust td-evo-essence-icon" aria-hidden="true">${currencyIcon("sealDust")}</span><small>${dustPrice} Dust</small>`, `Use ${dustPrice} Seal Dust (${dust} owned)`)}
-        <p>${evoPick === "copy" ? `Uses 1 copy of ${hero.name}.` : evoPick === "dust" ? `Uses ${dustPrice} Seal Dust.` : copies || dustOk ? "Tap a material to use it." : `Needs a copy of ${hero.name} or ${dustPrice} Seal Dust.`}</p>
-      </div>`;
+    if (evoTarget !== null && evoTarget !== tier + 1) resetEvolutionDraft();
+    if (evoTarget === null) {
+      const list = tiers.map((entry: any, i: number) => {
+        const state = i < tier ? "is-done" : i === tier ? "is-next" : "is-locked";
+        return `<li class="${state}"><button type="button" data-camp-evo-start="${i + 1}"${i === tier ? "" : " disabled"}><span class="td-evo-mark" aria-hidden="true">${i < tier ? "✓" : roman(i + 1)}</span><span><strong>${entry.name}</strong><small>${entry.text}</small></span></button></li>`;
+      }).join("");
+      return `<div class="td-evo-overview"><header><small>Evolution rank</small><strong>${tier ? `Evolved ${roman(tier)}` : "Not evolved"}</strong></header><ol class="td-evo-tiers">${list}</ol></div>
+        <div class="td-hero-upgrade">${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evo-start="${tier + 1}">Evolve to ${roman(tier + 1)}</button>`}</div>`;
+    }
+
+    const target = tiers[evoTarget - 1];
+    const need = evolutionCopyCost(campaign, evoTarget - 1);
     const dustPer = summonCfg.dust?.perCopy ?? 0;
-    return `<p class="td-hero-tab-copy">Evolution improves the ultimate and crit chance, one tier per copy of ${hero.name}.</p>
-      <ol class="td-evo-tiers">${list}</ol>
-      ${materialHtml}
-      <div class="td-hero-upgrade td-hero-upgrade--split">
-        ${copies && dustPer ? `<button type="button" class="action-button action-button--quiet" data-camp-dust="${hero.id}">1 copy → ${currencyAmount("sealDust", dustPer)}</button>` : ""}
-        ${maxed ? `<span class="td-camp-maxed">Fully evolved</span>` : `<button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${evoPick ? "" : " disabled"}>Evolve to ${roman(tier + 1)}</button>`}
-      </div>`;
+    evoCopies = evoCopies.filter((index) => index < copies).slice(0, need);
+    const slots = Array.from({ length: need }, (_, i) => i < evoCopies.length
+      ? `<button type="button" class="td-evo-copy-slot is-filled" data-camp-evo-slot="${i}" aria-label="Remove selected copy"><img src="${hero.portrait ?? hero.image}" alt=""><span aria-hidden="true">×</span></button>`
+      : `<button type="button" class="td-evo-copy-slot" data-camp-evo-slot="${i}" aria-label="Choose a copy"><span aria-hidden="true">+</span>${i < copies ? `<i class="td-evo-copy-dot" aria-hidden="true"></i>` : ""}</button>`).join("");
+    const ready = evoCopies.length === need || evoPick === "dust";
+    return `<div class="td-evo-detail">
+      <header class="td-evo-detail-head"><button type="button" data-camp-evo-back aria-label="Back to evolution overview">‹</button><span><small>Evolve to ${roman(evoTarget)}</small><strong>${target?.name ?? "Evolution"}</strong></span></header>
+      <p class="td-hero-tab-copy">${target?.text ?? ""}</p>
+      <div class="td-evo-material-head"><strong>Upgrade materials</strong><span>${evoPick === "dust" ? "Dust selected" : `${evoCopies.length} / ${need}`}</span></div>
+      <div class="td-evo-copy-slots">${slots}</div>
+      ${dustPrice ? `<button type="button" class="td-evo-dust-option${evoPick === "dust" ? " is-selected" : ""}" data-camp-evo-dust aria-pressed="${evoPick === "dust"}"${dustOk ? "" : " disabled"}>${currencyAmount("sealDust", dustPrice)}<span>${evoPick === "dust" ? "Using Seal Dust" : `Use Seal Dust · ${dust} owned`}</span></button>` : ""}
+      ${copies && dustPer ? `<button type="button" class="td-evo-convert" data-camp-dust="${hero.id}">Convert 1 spare copy to ${currencyAmount("sealDust", dustPer)}</button>` : ""}
+      </div>
+      <div class="td-hero-upgrade"><button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-evolve="${hero.id}"${ready ? "" : " disabled"}>Evolve to ${roman(evoTarget)}</button></div>`;
   }
 
   // Summon screen: the banner, its cost, the player's Divine Seals and Seal Dust, x1 / x10.
@@ -732,7 +764,7 @@ export function createCampaign(ctx: PageContext) {
   ctx.root.querySelector<HTMLElement>('[data-td-screen="heroes"]')!.addEventListener("click", (event) => {
     const select = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-hero-select]");
     if (select && !select.disabled) {
-      if (selectedHeroId !== select.dataset.campHeroSelect) { fodder = {}; evoPick = null; }
+      if (selectedHeroId !== select.dataset.campHeroSelect) { fodder = {}; resetEvolutionDraft(); }
       selectedHeroId = select.dataset.campHeroSelect!;
       renderHeroes();
       heroListEl.querySelector<HTMLButtonElement>(`[data-camp-hero-select="${selectedHeroId}"]`)?.focus({ preventScroll: true });
@@ -763,7 +795,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${focus}:not([disabled])`)?.focus({ preventScroll: true });
   }
   function upgradeClick(target: HTMLElement) {
-    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-skillup], [data-camp-evo-pick], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
+    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-skillup], [data-camp-evo-start], [data-camp-evo-back], [data-camp-evo-slot], [data-camp-evo-material-index], [data-camp-evo-picker-close], [data-camp-evo-dust], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
     if (!el || el.disabled || !selectedHeroId) return !!el;
     const id = selectedHeroId;
     const d = el.dataset;
@@ -771,17 +803,45 @@ export function createCampaign(ctx: PageContext) {
     if (d.campHeroTab) {
       heroTab = d.campHeroTab as typeof heroTab;
       fodder = {};
-      evoPick = null;
+      resetEvolutionDraft();
       renderHeroes();
       q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-hero-tab="${heroTab}"]`)?.focus({ preventScroll: true });
     } else if (d.campSkillup) {
       const next = skillUp(campaign, p, id, d.campSkillup);
       if (!next) return true;
       commit(next, `${heroName(id)}'s skill reached level ${heroSkillLevel(next, id, d.campSkillup)}.`, `[data-camp-skillup="${d.campSkillup}"]`);
-    } else if (d.campEvoPick) {
-      evoPick = evoPick === d.campEvoPick ? null : d.campEvoPick as typeof evoPick;
+    } else if (d.campEvoStart) {
+      evoTarget = Number(d.campEvoStart);
+      evoCopies = [];
+      evoPicker = false;
+      evoPick = null;
       renderHeroes();
-      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(evoPick ? "[data-camp-evolve]" : `[data-camp-evo-pick="${d.campEvoPick}"]`)?.focus({ preventScroll: true });
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>("[data-camp-evo-slot]")?.focus({ preventScroll: true });
+    } else if (el.hasAttribute("data-camp-evo-back")) {
+      resetEvolutionDraft();
+      renderHeroes();
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>("[data-camp-evo-start]")?.focus({ preventScroll: true });
+    } else if (d.campEvoSlot !== undefined) {
+      const index = Number(d.campEvoSlot);
+      if (index < evoCopies.length) evoCopies = evoCopies.filter((_, slot) => slot !== index);
+      else evoPicker = true;
+      evoPick = null;
+      renderHeroes();
+    } else if (d.campEvoMaterialIndex !== undefined) {
+      const index = Number(d.campEvoMaterialIndex);
+      const need = evoTarget === null ? 0 : evolutionCopyCost(campaign, evoTarget - 1);
+      if (evoCopies.includes(index)) evoCopies = evoCopies.filter((copy) => copy !== index);
+      else if (evoCopies.length < need) evoCopies = [...evoCopies, index];
+      evoPick = null;
+      renderHeroes();
+    } else if (el.hasAttribute("data-camp-evo-picker-close")) {
+      evoPicker = false;
+      renderHeroes();
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>("[data-camp-evo-slot]")?.focus({ preventScroll: true });
+    } else if (el.hasAttribute("data-camp-evo-dust")) {
+      evoPick = evoPick === "dust" ? null : "dust";
+      if (evoPick) { evoCopies = []; evoPicker = false; }
+      renderHeroes();
     } else if (d.campFodderAdd || d.campFodderRemove || el.hasAttribute("data-camp-fodder-auto")) {
       const need = starUpCost(campaign, heroStars(p, id))?.copies ?? 0;
       if (d.campFodderAdd) fodder = { ...fodder, [d.campFodderAdd]: (fodder[d.campFodderAdd] ?? 0) + 1 };
@@ -800,11 +860,13 @@ export function createCampaign(ctx: PageContext) {
       fodder = {};
       commit(next, `${heroName(id)} reached ${heroStars(next, id)} stars.`, "[data-camp-fodder-auto]");
     } else if (d.campEvolve) {
-      if (!evoPick) return true;
+      if (evoTarget === null) return true;
+      const need = evolutionCopyCost(campaign, evoTarget - 1);
+      if (evoPick !== "dust" && evoCopies.length !== need) return true;
       const next = evolve(campaign, p, id, evoPick === "dust");
       if (!next) return true;
-      evoPick = null;
-      commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evo-pick]");
+      resetEvolutionDraft();
+      commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evo-start]");
     } else if (d.campDust) {
       const next = convertCopies(summonCfg, p, id, 1);
       if (!next) return true;

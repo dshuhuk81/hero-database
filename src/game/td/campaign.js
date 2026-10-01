@@ -187,9 +187,10 @@ export function starUp(campaign, progress, id, fodder) {
   return { ...progress, copies, currencies: { ...progress.currencies, gold: progress.currencies.gold - cost.gold }, stars: { ...progress.stars, [id]: heroStars(progress, id) + 1 } };
 }
 
-// --- Evolution (M26 sprint 9): a copy of the same hero (or Seal Dust) improves its skill ---
+// --- Evolution (M26 sprint 9): tier-specific duplicate costs (or Seal Dust) improve its skill ---
 export const heroEvolution = (progress, id) => progress.evolution?.[id] ?? 0;
 export const evolutionMax = (campaign) => campaign.heroEvolution?.tiers?.length ?? 0;
+export const evolutionCopyCost = (campaign, tier) => campaign.heroEvolution?.tiers?.[tier]?.copies ?? 1;
 
 // --- Might: one battle-power number per hero, from base attack + health scaled by level,
 // stars and evolution tier (heroMight.evolutionPerTier in tdCampaign.json). Sorts the Heroes
@@ -203,24 +204,27 @@ export function heroMight(campaign, progress, hero) {
   return Math.round((hero.atk * attackSkill + hero.hp * healthSkill) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
 }
 
-// What evolving would spend now: "copy" (a copy of the hero first), "dust"
+// What evolving would spend now: "copy" (the tier's required hero copies first), "dust"
 // (heroEvolution.dustPrice Seal Dust), or null.
 export function evolutionMaterial(campaign, progress, id) {
-  if (!progress.owned.includes(id) || heroEvolution(progress, id) >= evolutionMax(campaign)) return null;
-  if ((progress.copies?.[id] ?? 0) > 0) return "copy";
+  const tier = heroEvolution(progress, id);
+  if (!progress.owned.includes(id) || tier >= evolutionMax(campaign)) return null;
+  if ((progress.copies?.[id] ?? 0) >= evolutionCopyCost(campaign, tier)) return "copy";
   const price = campaign.heroEvolution?.dustPrice ?? 0;
   return price > 0 && (progress.currencies.sealDust || 0) >= price ? "dust" : null;
 }
 
-// Spends a copy of the hero (or, with `useDust` or no copy, heroEvolution.dustPrice Seal
-// Dust) and raises its Evolution tier. Returns the new progress or null when not possible.
+// Spends the tier's configured hero copies or, with `useDust`, the flat Seal Dust price and
+// raises its Evolution tier. Returns the new progress or null when not possible.
 export function evolve(campaign, progress, id, useDust = false) {
   const price = campaign.heroEvolution?.dustPrice ?? 0;
+  const tier = heroEvolution(progress, id);
+  const copyCost = evolutionCopyCost(campaign, tier);
   const material = useDust ? (price > 0 && (progress.currencies.sealDust || 0) >= price && evolutionMaterial(campaign, progress, id) ? "dust" : null) : evolutionMaterial(campaign, progress, id);
   if (!material) return null;
-  const next = { ...progress, evolution: { ...progress.evolution, [id]: heroEvolution(progress, id) + 1 } };
+  const next = { ...progress, evolution: { ...progress.evolution, [id]: tier + 1 } };
   if (material === "copy") {
-    const copies = { ...progress.copies, [id]: progress.copies[id] - 1 };
+    const copies = { ...progress.copies, [id]: progress.copies[id] - copyCost };
     if (!copies[id]) delete copies[id];
     return { ...next, copies };
   }

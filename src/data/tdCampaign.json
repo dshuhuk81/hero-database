@@ -80,26 +80,31 @@
     "tiers": [
       {
         "name": "Evolved I",
+        "copies": 1,
         "ultPower": 0.2,
         "text": "Ultimate deals 20% more"
       },
       {
         "name": "Evolved II",
+        "copies": 1,
         "crit": 0.1,
         "text": "+10% critical chance"
       },
       {
         "name": "Evolved III",
+        "copies": 2,
         "ultCooldown": -0.15,
         "text": "Ultimate recharges 15% faster"
       },
       {
         "name": "Evolved IV",
+        "copies": 2,
         "ultPower": 0.25,
         "text": "Ultimate deals 25% more"
       },
       {
         "name": "Evolved V",
+        "copies": 3,
         "awakenedUlt": true,
         "text": "Ultimate starts with its awakened upgrade"
       }

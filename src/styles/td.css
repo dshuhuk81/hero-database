@@ -10739,16 +10739,36 @@ button.td-squad-slot:hover .td-squad-slot-card {
 }
 
 .td-evo-tiers li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
+  display: block;
+  padding: 0;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   background: var(--bg-base);
 }
 
-.td-evo-tiers li>span:last-child {
+.td-evo-tiers li>button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.td-evo-tiers li.is-next>button {
+  cursor: pointer;
+}
+
+.td-evo-tiers li>button:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: -2px;
+}
+
+.td-evo-tiers li>button>span:last-child {
   display: grid;
 }
 
@@ -10793,6 +10813,280 @@ button.td-squad-slot:hover .td-squad-slot-card {
 
 .td-evo-tiers li.is-locked {
   opacity: .55;
+}
+
+.td-evo-overview>header,
+.td-evo-detail-head,
+.td-evo-material-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.td-evo-overview>header {
+  margin-bottom: var(--space-3);
+}
+
+.td-evo-overview>header small,
+.td-evo-detail-head small {
+  color: var(--text-secondary);
+  font-size: var(--td-fs-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.td-evo-overview>header strong {
+  color: var(--accent-purple);
+}
+
+.td-evo-detail {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.td-evo-detail-head {
+  justify-content: flex-start;
+}
+
+.td-evo-detail-head>button,
+.td-evo-picker-head>button {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.td-evo-detail-head>span,
+.td-evo-picker-head>span {
+  display: grid;
+}
+
+.td-evo-material-head {
+  margin-top: var(--space-2);
+  font-size: var(--td-fs-label);
+}
+
+.td-evo-material-head span {
+  color: var(--text-secondary);
+}
+
+.td-evo-copy-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: var(--space-2);
+}
+
+.td-evo-copy-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 78px;
+  overflow: hidden;
+  padding: 0;
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-base);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.td-evo-copy-slot.is-filled {
+  border-style: solid;
+  border-color: var(--accent-gold);
+}
+
+.td-evo-copy-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.td-evo-copy-slot.is-filled>span {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgb(9 9 16 / .82);
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.td-evo-copy-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--td-danger, #ef4444);
+  box-shadow: 0 0 0 2px var(--bg-base);
+}
+
+.td-evo-dust-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--td-fs-label);
+  cursor: pointer;
+}
+
+.td-evo-dust-option.is-selected {
+  border-color: var(--accent-purple);
+  background: color-mix(in srgb, var(--accent-purple) 12%, transparent);
+  color: var(--text-primary);
+}
+
+.td-evo-dust-option:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.td-evo-convert {
+  justify-self: start;
+  padding: var(--space-1) 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--td-fs-label);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.td-hero-profile-art.is-picker {
+  overflow-y: auto;
+  padding: var(--space-4);
+  background: var(--bg-base);
+}
+
+.td-hero-profile-art.is-picker::after {
+  display: none;
+}
+
+.td-evo-picker {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-height: 100%;
+}
+
+.td-evo-picker-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.td-evo-picker-head small {
+  color: var(--accent-gold);
+  font-size: var(--td-fs-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.td-evo-picker>p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--td-fs-label);
+}
+
+.td-evo-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: var(--space-3);
+}
+
+.td-evo-picker-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(110px, 1fr) auto auto;
+  overflow: hidden;
+  min-width: 0;
+  padding: 0 0 var(--space-2);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.td-hero-profile-art .td-evo-picker-card img {
+  width: 100%;
+  height: 110px;
+  object-fit: contain;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, .08), transparent 70%);
+}
+
+.td-evo-picker-card strong,
+.td-evo-picker-card small {
+  overflow: hidden;
+  padding-inline: var(--space-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.td-evo-picker-card small {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.td-evo-picker-card>span {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border-medium);
+  border-radius: 50%;
+  background: rgb(9 9 16 / .8);
+}
+
+.td-evo-picker-card.is-selected {
+  border-color: var(--accent-gold);
+  box-shadow: inset 0 0 0 1px var(--accent-gold);
+}
+
+.td-evo-picker-card.is-selected>span {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold);
+  color: #1a1405;
+}
+
+.td-evo-picker-card:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.td-evo-picker-empty {
+  color: var(--text-secondary);
 }
 
 .td-evo-material {
@@ -12109,7 +12403,7 @@ button .td-cur {
   height: 44px;
 }
 
-.td-app .td-evo-tiers li {
+.td-app .td-evo-tiers li>button {
   gap: var(--space-2);
   padding: var(--space-1) var(--space-2);
 }
