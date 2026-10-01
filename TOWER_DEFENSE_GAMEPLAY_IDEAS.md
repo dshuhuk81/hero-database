@@ -251,6 +251,71 @@ everywhere. Measure with `td:sweep` upgraded-roster cases before shipping.
 
 ---
 
+### F. Combat model change: tile patterns, fewer and stronger enemies (owner idea)
+
+Owner proposal (October 1, 2026), modelled on Watcher of Realms: each hero attacks a pattern of
+tiles instead of a circle, waves bring far fewer enemies with much more health, and ultimates
+can fire automatically or by hand.
+
+**Verdict: worth doing, and it fixes several gaps at once, but it is a combat redesign.** It
+should be built as a prototype behind a flag and measured before the campaign moves over.
+
+What it solves:
+
+- **Mage dominance (gap 4).** Splash, chain and pierce get their value from crowds. With a third
+  as many enemies, single-target damage (Assassin execute, Archer crit) gains value and area
+  damage loses some, without nerfing Mages directly.
+- **Readable enemies.** Ten strong enemies with abilities can each be read and answered. Sixty
+  runners cannot. The new creature families (A4) and boss rules (A3) need this kind of space to
+  show.
+- **Placement becomes the puzzle.** A circle of 140 px covers almost the same road from any
+  nearby tile. A pattern (a cross, a line of three, a 3x3 block) makes the exact tile matter,
+  and gives each class a visible identity on the board.
+- **Manual ultimates (B2's goal).** With few enemies, timing an ultimate on the boss or a healer
+  is a real decision. That covers the "nothing to do during a wave" gap with the heroes the player
+  already owns, and may make Divine Interventions unnecessary.
+- **Phones.** Fewer sprites and effects at once, and bigger figures fit better.
+
+Grid check (measured from `tdMaps.json`). Every tile is drawn the same size (56 px on a 60 px
+cell). The difference is alignment:
+
+| Maps | Layout | Nearest neighbour |
+|---|---|---|
+| 15 `lattice-v2` maps (all campaign-only stages from 1-3 on, Chapters 2-3) | true 60 px lattice, 15 x 7 nodes | 60 px |
+| `verdant-crossing`, `sunscar-ruins`, `sunscar-basin` | tiles spaced along each road segment, centred per segment, so rows on different segments do not line up | 60-91 px |
+| `moonlit-pass` | hand-placed side tiles (M24 layout trial) | 60-82 px, 20 different x offsets |
+
+Tile patterns need a lattice, so the 15 lattice maps can take patterns as they are. The four
+older maps (used by 1-1, 1-2, 1-5, 1-7, 1-9, 1-10 and Free Play) would need regenerating on the
+lattice or retiring. If tiles also look different in size on screen, that comes from the map art
+or the canvas scaling, and needs a screenshot of the affected map to check.
+
+What it costs:
+
+- `sim.js` checks circular range in about 45 places (targeting, auras, dashes, ult areas, archer
+  reach). Patterns replace basic-attack range; ultimates can keep radius areas at first.
+- Facing: the game removed hero rotation in M24 for touch reasons, so patterns should be
+  symmetric (cross, diamond, ring, block) and need no turning.
+- All 22 campaign stages need their waves re-authored, and every bot script (`td:sweep`,
+  `td:classes`, `td:pacing`) must be re-baselined. The economy shifts too: kill rewards rise per
+  enemy, wave quests and the training sink need new numbers.
+- Statuses and reactions lose some value when fewer enemies stand together; Steam and Conduct may
+  need larger radii.
+
+Prototype plan, smallest first:
+
+1. **Fewer, stronger enemies alone** (S). One wave transform in the simulation: count ×0.35, HP
+   and reward ×2.85, so total health and gold per wave stay equal. Run `td:classes` and
+   `td:sweep` with it on and off. This shows the class shift before any grid work.
+2. **Patterns on one lattice map** (M). A `pattern` per class (later per hero) as tile offsets;
+   an enemy counts as in range when its current lattice cell is in the pattern. Show the covered
+   tiles when a hero is selected or being placed, in place of the range circle.
+3. **Manual ultimate toggle** (S-M). A global Auto switch on the HUD (on by default) and a tap
+   on a hero's portrait in the deck to cast when charged.
+4. Decide from steps 1-3 whether the campaign moves over. If yes: regenerate the four old maps on
+   the lattice, re-author waves chapter by chapter, keep Free Play Endless on the old model until
+   the new one is balanced.
+
 ## 3. Suggested order
 
 The audit's warning still holds: the game is at risk of too many layers to learn. Every idea
