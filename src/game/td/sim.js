@@ -619,9 +619,11 @@ export class TowerDefenseGame {
   // `count` multiplies every non-boss group's count; `hp`, `reward`, `attack` and `leak`
   // multiply each remaining enemy; `gap` multiplies the spawn gap. With count 0.2 and the
   // rest at 5, a wave keeps its total health, gold, pressure and lives at stake.
-  waveShape() {
-    const cfg = this.tuning.waveShape;
-    if (!cfg?.enabled) return null;
+  // `kinds` overrides any of these per enemy kind (e.g. flyers, which skip blockers).
+  waveShape(kind = null) {
+    const base = this.tuning.waveShape;
+    if (!base?.enabled) return null;
+    const cfg = { ...base, ...(kind ? base.kinds?.[kind] : null) };
     const power = cfg.power ?? 1 / (cfg.count || 1);
     return { count: cfg.count ?? 1, gap: cfg.gap ?? 1, hp: cfg.hp ?? power, reward: cfg.reward ?? power, attack: cfg.attack ?? power, leak: cfg.leak ?? power };
   }
@@ -649,7 +651,7 @@ export class TowerDefenseGame {
     const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
       const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
-      const shape = this.waveShape();
+      const shape = this.waveShape(group.kind);
       const mutated = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
       const count = shape && group.kind !== "boss" ? Math.max(1, Math.round(mutated * shape.count)) : mutated;
       const gapMs = shape && group.kind !== "boss" ? group.gapMs * shape.gap : group.gapMs;
@@ -831,7 +833,7 @@ export class TowerDefenseGame {
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     // Wave shape prototype: wave enemies (not bosses, not summoned children) carry the
     // health, gold, attack and leak damage of the enemies the shape removed.
-    const shape = this.waveShape();
+    const shape = this.waveShape(kind);
     if (shape && kind !== "boss" && !extra) {
       enemy.maxHp *= shape.hp; enemy.hp *= shape.hp;
       enemy.reward = (enemy.reward || 0) * shape.reward;

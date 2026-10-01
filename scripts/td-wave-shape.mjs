@@ -5,7 +5,9 @@
 // --hp and --attack override the per-enemy multipliers (default 1 / count).
 // --focus=1 also gives Mages the focus rule (classes.Mage.focus, see sim.focusShare) in the
 // shaped runs; --focus-today=1 adds it to today's runs too, to see what it does there.
-// --kit=Archer.pierce:0.2,Archer.crit:0.05 overrides class kit numbers in the shaped runs.
+// --kit=Archer.pierce:0.2 overrides class kit numbers in the shaped runs (runtime kit values
+// only; crit is baked into gameBalance.json by the generator).
+// --flyer=0.4:1.75 gives flyers their own count:hp (gold and leak follow 1 / count).
 import baseTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import { classMatrix, bestClass, CLASSES } from "./lib/td-class-matrix.mjs";
@@ -22,7 +24,9 @@ const mode = args.mode || "classic";
 const extra = Object.fromEntries(["hp", "attack"].filter((k) => args[k]).map((k) => [k, Number(args[k])]));
 
 const withFocus = (tuning) => ({ ...tuning, classes: { ...tuning.classes, Mage: { ...tuning.classes.Mage, focus: { slots: 2, share: 1 } } } });
-const shaped = { ...baseTuning, waveShape: { enabled: true, count, gap, ...extra } };
+const [flyerCount, flyerHp] = (args.flyer || "").split(":").map(Number);
+const kinds = args.flyer ? { flyer: { count: flyerCount, hp: flyerHp, attack: 1, power: 1 / flyerCount } } : undefined;
+const shaped = { ...baseTuning, waveShape: { enabled: true, count, gap, ...extra, ...(kinds ? { kinds } : {}) } };
 const kitEdits = (args.kit || "").split(",").filter(Boolean).map((entry) => {
   const [path, value] = entry.split(":");
   const [cls, key] = path.split(".");
@@ -43,6 +47,7 @@ const pct = (v) => `${Math.round(v * 100)}%`;
 const power = (1 / count).toFixed(2);
 console.log(`Wave shape: count x${count}, health x${extra.hp ?? power}, attack x${extra.attack ?? power}, gold/leak x${power}, spawn gap x${gap}`);
 if (args.focus || args["focus-today"]) console.log(`Mage focus: ${args["focus-today"] ? "today and shaped" : "shaped only"}`);
+if (kinds) console.log(`Flyers: count x${flyerCount}, health x${flyerHp}, gold/leak x${(1 / flyerCount).toFixed(2)}`);
 if (kitEdits.length) console.log(`Kit changes (shaped only): ${args.kit}`);
 console.log(`Runs: ${mode}, Normal, seeds ${seeds.join(",")}, maps ${freePlayMaps.map((m) => m.id).join(", ")}\n`);
 
