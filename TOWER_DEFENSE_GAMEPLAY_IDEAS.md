@@ -285,7 +285,8 @@ cell). The difference is alignment:
 | `verdant-crossing`, `sunscar-ruins`, `sunscar-basin` | tiles spaced along each road segment, centred per segment, so rows on different segments do not line up | 60-91 px |
 | `moonlit-pass` | hand-placed side tiles (M24 layout trial) | 60-82 px, 20 different x offsets |
 
-Tile patterns need a lattice, so the 15 lattice maps can take patterns as they are. The four
+Tile patterns need a lattice, so the 15 lattice maps could take patterns as they are (but see
+the reference screens below: a coarser lattice is the better target). The four
 older maps (used by 1-1, 1-2, 1-5, 1-7, 1-9, 1-10 and Free Play) would need regenerating on the
 lattice or retiring. If tiles also look different in size on screen, that comes from the map art
 or the canvas scaling, and needs a screenshot of the affected map to check.
