@@ -12,6 +12,7 @@ import { generateMap, geometryHash, GENERATOR_ID, GENERATOR_RULESET } from "../s
 import { generateMapV2, geometryHashV2, GENERATOR_V2_ID, GENERATOR_V2_RULESET } from "../src/game/td/map-generator-v2.js";
 import { mapLanes } from "../src/game/td/lanes.js";
 import { analyzeMap } from "../src/game/td/map-analysis.js";
+import { ENVIRONMENTS } from "../src/game/td/environments.js";
 
 const file = new URL("../src/data/tdMaps.json", import.meta.url);
 const source = readFileSync(file, "utf8");
@@ -27,6 +28,10 @@ const SKINS = {
   jungle: { theme: "jungle", art: "jungle-heart-v1", music: "cc0_knights_challenge", boss: "lilith",
     exclude: [[0, 0, 110, 100], [760, 0, 200, 120], [0, 430, 145, 110], [815, 425, 145, 115]] },
 };
+for (const environment of Object.values(ENVIRONMENTS)) {
+  SKINS[environment.id] = { theme: environment.id, art: `${environment.id}-sanctuary-v1`,
+    music: "cc0_battlegrounds", boss: "baphomet", exclude: [[0, 0, 120, 90], [770, 0, 190, 90], [0, 450, 120, 90], [820, 450, 140, 90]] };
+}
 
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=").slice(1).join("=") ?? fallback;
 const flag = (name) => process.argv.includes(`--${name}`);

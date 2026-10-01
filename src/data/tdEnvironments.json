@@ -1,0 +1,154 @@
+[
+  {
+    "id": "frostbound",
+    "name": "Frostbound",
+    "chapter": "The Frozen Covenant",
+    "setting": "icy temple courtyard, snow banks, frozen pines, blue glaciers, frost-covered rune pillars",
+    "palette": "cold slate blue, ice cyan, muted snow white",
+    "reuse": "moonlit",
+    "color": 11066346,
+    "rule": "Deep Frost",
+    "text": "Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+    "mods": {
+      "enemySpeed": 0.88,
+      "heroAps": 0.92,
+      "shrineAps": 1.0869565217391304
+    }
+  },
+  {
+    "id": "ashen",
+    "name": "Ashen Forge",
+    "chapter": "The Cinder Oath",
+    "setting": "obsidian forge courtyard, lava channels only along borders, scorched dwarven pillars, ember-lit furnaces",
+    "palette": "charcoal, rusty copper, lava orange",
+    "reuse": "sunscar",
+    "color": 15636574,
+    "rule": "Forge Heat",
+    "text": "Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+    "mods": {
+      "roadAttack": 1.15,
+      "roadHeal": 0.8
+    }
+  },
+  {
+    "id": "stormpeak",
+    "name": "Stormpeak",
+    "chapter": "The Thunder Stair",
+    "setting": "mountaintop storm temple courtyard, broken lightning rods, rain-darkened stone, cloud banks outside edges",
+    "palette": "slate violet, electric blue, subdued silver",
+    "reuse": "moonlit",
+    "color": 10201326,
+    "rule": "Headwinds",
+    "text": "Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+    "mods": {
+      "flyerSpeed": 0.8,
+      "platformRange": 0.9,
+      "highgroundRange": 1.1111111111111112
+    }
+  },
+  {
+    "id": "tidal",
+    "name": "Tidal Ruins",
+    "chapter": "The Drowned Crown",
+    "setting": "sunken coastal temple courtyard above shallow sea, coral pillars, tide pools and turquoise surf strictly at borders",
+    "palette": "teal, weathered sandstone, seafoam",
+    "reuse": "verdant",
+    "color": 7985355,
+    "rule": "Tidal Rhythm",
+    "text": "Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+    "mods": {
+      "oddSpeed": 0.85,
+      "evenSpeed": 1.1
+    }
+  },
+  {
+    "id": "mycelium",
+    "name": "Mycelium Hollow",
+    "chapter": "The Spore Lanterns",
+    "setting": "underground mushroom sanctuary courtyard, giant bioluminescent fungi, twisting fungal roots and cave walls only at edges",
+    "palette": "deep plum, muted turquoise, luminous mint",
+    "reuse": "verdant",
+    "color": 11459744,
+    "rule": "Restorative Spores",
+    "text": "Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+    "mods": {
+      "heroHeal": 1.25,
+      "enemyHp": 1.1
+    }
+  },
+  {
+    "id": "crystal",
+    "name": "Crystal Vault",
+    "chapter": "The Shattered Prism",
+    "setting": "ancient crystal cavern temple courtyard, amethyst and aquamarine formations, fractured rune obelisks only at edges",
+    "palette": "dark indigo, amethyst, aqua highlights",
+    "reuse": "moonlit",
+    "color": 12625135,
+    "rule": "Prismatic Resonance",
+    "text": "Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+    "mods": {
+      "magicAttack": 1.15,
+      "physicalAps": 1.1
+    }
+  },
+  {
+    "id": "necropolis",
+    "name": "Haunted Necropolis",
+    "chapter": "The Silent Procession",
+    "setting": "abandoned necropolis temple courtyard, mausoleums, skeletal trees, spectral mist and gravestones confined to edges",
+    "palette": "charcoal, ghostly green, faded stone",
+    "reuse": "moonlit",
+    "color": 10210223,
+    "rule": "Grave Tribute",
+    "text": "Kills pay 20% more gold. Heroes receive 15% less healing.",
+    "mods": {
+      "killGold": 1.2,
+      "heroHeal": 0.85
+    }
+  },
+  {
+    "id": "autumn",
+    "name": "Autumn Sanctuary",
+    "chapter": "The Last Harvest",
+    "setting": "autumn temple courtyard in ancient woodland, red and orange maple canopy, fallen leaves, harvest stone statues at edges",
+    "palette": "muted ochre, russet, moss, warm stone",
+    "reuse": "verdant",
+    "color": 15317623,
+    "rule": "Harvest Blessing",
+    "text": "Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+    "mods": {
+      "killGold": 1.15,
+      "roadCharge": 1.15
+    }
+  },
+  {
+    "id": "celestial",
+    "name": "Celestial Observatory",
+    "chapter": "The Astral Meridian",
+    "setting": "astral observatory temple courtyard floating among stars, antique gold armillary mechanisms and celestial columns at perimeter",
+    "palette": "midnight blue, pale gold, subdued starlight",
+    "reuse": "moonlit",
+    "color": 15785381,
+    "rule": "Astral Convergence",
+    "text": "Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+    "mods": {
+      "oddCharge": 1.2,
+      "evenAps": 1.1
+    }
+  },
+  {
+    "id": "clockwork",
+    "name": "Clockwork Citadel",
+    "chapter": "The Brass Reckoning",
+    "setting": "ancient clockwork temple courtyard, brass gears, steam vents, mechanical pillars and bronze conduits only at perimeter",
+    "palette": "dark iron, tarnished brass, restrained turquoise",
+    "reuse": "sunscar",
+    "color": 13414011,
+    "rule": "Overdrive",
+    "text": "Heroes attack 15% faster. Enemies move 10% faster.",
+    "mods": {
+      "heroAps": 1.15,
+      "enemySpeed": 1.1
+    }
+  }
+]

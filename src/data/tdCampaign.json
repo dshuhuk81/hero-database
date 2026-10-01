@@ -2488,6 +2488,1226 @@
           ]
         }
       ]
+    },
+    {
+      "id": 4,
+      "name": "The Frozen Covenant",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1000},{"type":"currency","id":"heroXp","amount":500}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":150}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":240},{"type":"currency","id":"sealDust","amount":100}]}],
+      "stages": [
+        {
+          "id": "4-1",
+          "name": "White Gate",
+          "mapId": "frostbound-1",
+          "text": "Enter Frostbound and establish your first defense. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 16,
+          "hpScale": 0.707,
+          "unlockAfter": "3-6",
+          "rewards": [{"type":"currency","id":"gold","amount":2600},{"type":"currency","id":"heroXp","amount":1300},{"type":"currency","id":"divineSeals","amount":70}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":16,"gapMs":430},{"kind":"runner","count":10,"gapMs":360}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":6,"gapMs":720},{"kind":"archer","count":4,"gapMs":850}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":5,"gapMs":980},{"kind":"mender","count":3,"gapMs":820}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":12,"gapMs":470},{"kind":"hexer","count":3,"gapMs":900}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1350},{"kind":"runner","count":18,"gapMs":320}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":650},{"kind":"brute","count":6,"gapMs":900},{"kind":"flyer","count":10,"gapMs":430}]}
+          ]
+        },
+        {
+          "id": "4-2",
+          "name": "Rime Causeway",
+          "mapId": "frostbound-2",
+          "text": "Advance through Rime Causeway; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 16,
+          "hpScale": 0.686,
+          "unlockAfter": "4-1",
+          "rewards": [{"type":"currency","id":"gold","amount":2720},{"type":"currency","id":"heroXp","amount":1360},{"type":"currency","id":"divineSeals","amount":70}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":5,"gapMs":820},{"kind":"grunt","count":16,"gapMs":400}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":680},{"kind":"runner","count":16,"gapMs":340}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":4,"gapMs":880},{"kind":"flyer","count":10,"gapMs":480}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":6,"gapMs":920},{"kind":"mender","count":4,"gapMs":760}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1250},{"kind":"archer","count":6,"gapMs":760}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":620},{"kind":"hexer","count":4,"gapMs":820},{"kind":"runner","count":20,"gapMs":290}]}
+          ]
+        },
+        {
+          "id": "4-3",
+          "name": "Glacier Court",
+          "mapId": "frostbound-3",
+          "text": "Advance through Glacier Court; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 16,
+          "hpScale": 0.645,
+          "unlockAfter": "4-2",
+          "rewards": [{"type":"currency","id":"gold","amount":2840},{"type":"currency","id":"heroXp","amount":1420},{"type":"currency","id":"divineSeals","amount":70},{"type":"hero","id":"ymir"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":390},{"kind":"mender","count":3,"gapMs":850}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":6,"gapMs":940},{"kind":"mender","count":4,"gapMs":760}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":14,"gapMs":440},{"kind":"archer","count":5,"gapMs":800}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":5,"gapMs":820},{"kind":"shieldbearer","count":8,"gapMs":640}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1250},{"kind":"runner","count":20,"gapMs":300}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":8,"gapMs":860},{"kind":"mender","count":5,"gapMs":720},{"kind":"grunt","count":18,"gapMs":350}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":600},{"kind":"flyer","count":14,"gapMs":400},{"kind":"hexer","count":4,"gapMs":800}]}
+          ]
+        },
+        {
+          "id": "4-4",
+          "name": "Frozen Sigils",
+          "mapId": "frostbound-4",
+          "text": "Advance through Frozen Sigils; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 16,
+          "hpScale": 0.603,
+          "unlockAfter": "4-3",
+          "rewards": [{"type":"currency","id":"gold","amount":2960},{"type":"currency","id":"heroXp","amount":1480},{"type":"currency","id":"divineSeals","amount":70}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":20,"gapMs":310},{"kind":"broodcaller","count":2,"gapMs":1300}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":620},{"kind":"archer","count":6,"gapMs":780}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":7,"gapMs":900},{"kind":"hexer","count":4,"gapMs":820}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":16,"gapMs":410},{"kind":"mender","count":4,"gapMs":760}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1150},{"kind":"grunt","count":16,"gapMs":340},{"kind":"brute","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":580},{"kind":"archer","count":7,"gapMs":730},{"kind":"runner","count":20,"gapMs":280}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":9,"gapMs":820},{"kind":"broodcaller","count":3,"gapMs":1150},{"kind":"flyer","count":14,"gapMs":390}]}
+          ]
+        },
+        {
+          "id": "4-5",
+          "name": "Winter Coil",
+          "mapId": "frostbound-5",
+          "text": "Advance through Winter Coil; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 16,
+          "hpScale": 0.562,
+          "unlockAfter": "4-4",
+          "rewards": [{"type":"currency","id":"gold","amount":3080},{"type":"currency","id":"heroXp","amount":1540},{"type":"currency","id":"divineSeals","amount":70}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":360},{"kind":"archer","count":6,"gapMs":760}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":600},{"kind":"mender","count":4,"gapMs":740}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":22,"gapMs":280},{"kind":"hexer","count":5,"gapMs":790}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":8,"gapMs":860},{"kind":"flyer","count":16,"gapMs":400}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1120},{"kind":"shieldbearer","count":9,"gapMs":590}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":8,"gapMs":700},{"kind":"hexer","count":5,"gapMs":760},{"kind":"grunt","count":20,"gapMs":320}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":790},{"kind":"mender","count":6,"gapMs":680},{"kind":"runner","count":22,"gapMs":260}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1050},{"kind":"flyer","count":18,"gapMs":370},{"kind":"shieldbearer","count":10,"gapMs":560}]}
+          ]
+        },
+        {
+          "id": "4-6",
+          "name": "Covenant Spire",
+          "mapId": "frostbound-6",
+          "text": "Defend the sanctuary against the final assault. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+          "lives": 18,
+          "hpScale": 0.437,
+          "unlockAfter": "4-5",
+          "rewards": [{"type":"currency","id":"gold","amount":3200},{"type":"currency","id":"heroXp","amount":1600},{"type":"currency","id":"divineSeals","amount":140},{"type":"hero","id":"ymir"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":360},{"kind":"runner","count":18,"gapMs":300}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":610},{"kind":"archer","count":7,"gapMs":740},{"kind":"flyer","count":12,"gapMs":430}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":850},{"kind":"mender","count":5,"gapMs":710},{"kind":"hexer","count":5,"gapMs":780}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1100},{"kind":"runner","count":22,"gapMs":260}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":570},{"kind":"brute","count":9,"gapMs":810},{"kind":"flyer","count":16,"gapMs":390}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":6,"gapMs":740},{"kind":"mender","count":6,"gapMs":670},{"kind":"archer","count":8,"gapMs":690}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1000},{"kind":"brute","count":10,"gapMs":760},{"kind":"runner","count":24,"gapMs":240}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":12,"gapMs":540},{"kind":"flyer","count":18,"gapMs":360},{"kind":"hexer","count":6,"gapMs":700}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":20,"gapMs":360},{"kind":"mender","count":5,"gapMs":690},{"kind":"flyer","count":14,"gapMs":410}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "The Cinder Oath",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1100},{"type":"currency","id":"heroXp","amount":550}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":160}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":250},{"type":"currency","id":"sealDust","amount":110}]}],
+      "stages": [
+        {
+          "id": "5-1",
+          "name": "Coal Gate",
+          "mapId": "ashen-1",
+          "text": "Enter Ashen Forge and establish your first defense. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 16,
+          "hpScale": 0.734,
+          "unlockAfter": "4-6",
+          "rewards": [{"type":"currency","id":"gold","amount":2950},{"type":"currency","id":"heroXp","amount":1475},{"type":"currency","id":"divineSeals","amount":75}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":16,"gapMs":424},{"kind":"runner","count":10,"gapMs":355}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":6,"gapMs":709},{"kind":"archer","count":4,"gapMs":837}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":5,"gapMs":965},{"kind":"mender","count":3,"gapMs":808}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":12,"gapMs":463},{"kind":"hexer","count":3,"gapMs":887}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1330},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":640},{"kind":"brute","count":6,"gapMs":887},{"kind":"flyer","count":10,"gapMs":424}]}
+          ]
+        },
+        {
+          "id": "5-2",
+          "name": "Copper Descent",
+          "mapId": "ashen-2",
+          "text": "Advance through Copper Descent; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 16,
+          "hpScale": 0.713,
+          "unlockAfter": "5-1",
+          "rewards": [{"type":"currency","id":"gold","amount":3070},{"type":"currency","id":"heroXp","amount":1535},{"type":"currency","id":"divineSeals","amount":75}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":5,"gapMs":808},{"kind":"grunt","count":16,"gapMs":394}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":670},{"kind":"runner","count":16,"gapMs":335}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":4,"gapMs":867},{"kind":"flyer","count":10,"gapMs":473}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":6,"gapMs":906},{"kind":"mender","count":4,"gapMs":749}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1231},{"kind":"archer","count":6,"gapMs":749}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":611},{"kind":"hexer","count":4,"gapMs":808},{"kind":"runner","count":21,"gapMs":286}]}
+          ]
+        },
+        {
+          "id": "5-3",
+          "name": "Furnace Court",
+          "mapId": "ashen-3",
+          "text": "Advance through Furnace Court; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 16,
+          "hpScale": 0.67,
+          "unlockAfter": "5-2",
+          "rewards": [{"type":"currency","id":"gold","amount":3190},{"type":"currency","id":"heroXp","amount":1595},{"type":"currency","id":"divineSeals","amount":75},{"type":"hero","id":"hephaestus"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":384},{"kind":"mender","count":3,"gapMs":837}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":6,"gapMs":926},{"kind":"mender","count":4,"gapMs":749}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":14,"gapMs":433},{"kind":"archer","count":5,"gapMs":788}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":5,"gapMs":808},{"kind":"shieldbearer","count":8,"gapMs":630}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1231},{"kind":"runner","count":21,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":8,"gapMs":847},{"kind":"mender","count":5,"gapMs":709},{"kind":"grunt","count":18,"gapMs":345}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":591},{"kind":"flyer","count":14,"gapMs":394},{"kind":"hexer","count":4,"gapMs":788}]}
+          ]
+        },
+        {
+          "id": "5-4",
+          "name": "Ember Locks",
+          "mapId": "ashen-4",
+          "text": "Advance through Ember Locks; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 16,
+          "hpScale": 0.626,
+          "unlockAfter": "5-3",
+          "rewards": [{"type":"currency","id":"gold","amount":3310},{"type":"currency","id":"heroXp","amount":1655},{"type":"currency","id":"divineSeals","amount":75}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":21,"gapMs":305},{"kind":"broodcaller","count":2,"gapMs":1281}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":611},{"kind":"archer","count":6,"gapMs":768}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":7,"gapMs":887},{"kind":"hexer","count":4,"gapMs":808}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":16,"gapMs":404},{"kind":"mender","count":4,"gapMs":749}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1133},{"kind":"grunt","count":17,"gapMs":335},{"kind":"shieldbearer","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":571},{"kind":"archer","count":7,"gapMs":719},{"kind":"runner","count":21,"gapMs":276}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":9,"gapMs":808},{"kind":"broodcaller","count":3,"gapMs":1133},{"kind":"flyer","count":14,"gapMs":384}]}
+          ]
+        },
+        {
+          "id": "5-5",
+          "name": "Cinder Circuit",
+          "mapId": "ashen-5",
+          "text": "Advance through Cinder Circuit; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 16,
+          "hpScale": 0.583,
+          "unlockAfter": "5-4",
+          "rewards": [{"type":"currency","id":"gold","amount":3430},{"type":"currency","id":"heroXp","amount":1715},{"type":"currency","id":"divineSeals","amount":75}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":21,"gapMs":355},{"kind":"archer","count":6,"gapMs":749}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":591},{"kind":"mender","count":4,"gapMs":729}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":23,"gapMs":276},{"kind":"hexer","count":5,"gapMs":778}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":8,"gapMs":847},{"kind":"flyer","count":16,"gapMs":394}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1103},{"kind":"shieldbearer","count":9,"gapMs":581}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":8,"gapMs":690},{"kind":"hexer","count":5,"gapMs":749},{"kind":"grunt","count":21,"gapMs":315}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":778},{"kind":"mender","count":6,"gapMs":670},{"kind":"runner","count":23,"gapMs":256}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1034},{"kind":"flyer","count":18,"gapMs":364},{"kind":"shieldbearer","count":10,"gapMs":552}]}
+          ]
+        },
+        {
+          "id": "5-6",
+          "name": "Forge Heart",
+          "mapId": "ashen-6",
+          "text": "Defend the sanctuary against the final assault. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+          "lives": 18,
+          "hpScale": 0.454,
+          "unlockAfter": "5-5",
+          "rewards": [{"type":"currency","id":"gold","amount":3550},{"type":"currency","id":"heroXp","amount":1775},{"type":"currency","id":"divineSeals","amount":145},{"type":"hero","id":"hephaestus"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":21,"gapMs":355},{"kind":"runner","count":18,"gapMs":296}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"archer","count":7,"gapMs":729},{"kind":"flyer","count":12,"gapMs":424}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":837},{"kind":"mender","count":5,"gapMs":699},{"kind":"hexer","count":5,"gapMs":768}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1084},{"kind":"runner","count":23,"gapMs":256}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":561},{"kind":"brute","count":9,"gapMs":798},{"kind":"flyer","count":16,"gapMs":384}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":6,"gapMs":729},{"kind":"mender","count":6,"gapMs":660},{"kind":"archer","count":8,"gapMs":680}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":5,"gapMs":985},{"kind":"brute","count":10,"gapMs":749},{"kind":"runner","count":25,"gapMs":236}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":12,"gapMs":532},{"kind":"flyer","count":18,"gapMs":355},{"kind":"hexer","count":6,"gapMs":690}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":21,"gapMs":355},{"kind":"mender","count":5,"gapMs":680},{"kind":"flyer","count":14,"gapMs":404}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "The Thunder Stair",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1200},{"type":"currency","id":"heroXp","amount":600}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":170}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":260},{"type":"currency","id":"sealDust","amount":120}]}],
+      "stages": [
+        {
+          "id": "6-1",
+          "name": "Cloud Gate",
+          "mapId": "stormpeak-1",
+          "text": "Enter Stormpeak and establish your first defense. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 16,
+          "hpScale": 0.762,
+          "unlockAfter": "5-6",
+          "rewards": [{"type":"currency","id":"gold","amount":3300},{"type":"currency","id":"heroXp","amount":1650},{"type":"currency","id":"divineSeals","amount":80}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":17,"gapMs":417},{"kind":"runner","count":11,"gapMs":349}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":6,"gapMs":698},{"kind":"archer","count":4,"gapMs":825}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":5,"gapMs":951},{"kind":"mender","count":3,"gapMs":795}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":13,"gapMs":456},{"kind":"hexer","count":3,"gapMs":873}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1310},{"kind":"runner","count":19,"gapMs":310}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":631},{"kind":"brute","count":6,"gapMs":873},{"kind":"flyer","count":11,"gapMs":417}]}
+          ]
+        },
+        {
+          "id": "6-2",
+          "name": "Thunder Steps",
+          "mapId": "stormpeak-2",
+          "text": "Advance through Thunder Steps; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 16,
+          "hpScale": 0.739,
+          "unlockAfter": "6-1",
+          "rewards": [{"type":"currency","id":"gold","amount":3420},{"type":"currency","id":"heroXp","amount":1710},{"type":"currency","id":"divineSeals","amount":80}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":5,"gapMs":795},{"kind":"grunt","count":17,"gapMs":388}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":660},{"kind":"runner","count":17,"gapMs":330}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":4,"gapMs":854},{"kind":"flyer","count":11,"gapMs":466}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":6,"gapMs":892},{"kind":"mender","count":4,"gapMs":737}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1213},{"kind":"archer","count":6,"gapMs":737}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":601},{"kind":"hexer","count":4,"gapMs":795},{"kind":"runner","count":21,"gapMs":281}]}
+          ]
+        },
+        {
+          "id": "6-3",
+          "name": "Rain Court",
+          "mapId": "stormpeak-3",
+          "text": "Advance through Rain Court; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 16,
+          "hpScale": 0.694,
+          "unlockAfter": "6-2",
+          "rewards": [{"type":"currency","id":"gold","amount":3540},{"type":"currency","id":"heroXp","amount":1770},{"type":"currency","id":"divineSeals","amount":80},{"type":"hero","id":"heimdall"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":19,"gapMs":378},{"kind":"mender","count":3,"gapMs":825}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":6,"gapMs":912},{"kind":"mender","count":4,"gapMs":737}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":15,"gapMs":427},{"kind":"archer","count":5,"gapMs":776}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":5,"gapMs":795},{"kind":"shieldbearer","count":8,"gapMs":621}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1213},{"kind":"runner","count":21,"gapMs":291}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":8,"gapMs":834},{"kind":"mender","count":5,"gapMs":698},{"kind":"grunt","count":19,"gapMs":340}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":582},{"kind":"flyer","count":15,"gapMs":388},{"kind":"hexer","count":4,"gapMs":776}]}
+          ]
+        },
+        {
+          "id": "6-4",
+          "name": "Windbreak",
+          "mapId": "stormpeak-4",
+          "text": "Advance through Windbreak; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 16,
+          "hpScale": 0.65,
+          "unlockAfter": "6-3",
+          "rewards": [{"type":"currency","id":"gold","amount":3660},{"type":"currency","id":"heroXp","amount":1830},{"type":"currency","id":"divineSeals","amount":80}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":21,"gapMs":301},{"kind":"broodcaller","count":2,"gapMs":1261}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":601},{"kind":"archer","count":6,"gapMs":757}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":7,"gapMs":873},{"kind":"hexer","count":4,"gapMs":795}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":17,"gapMs":398},{"kind":"mender","count":4,"gapMs":737}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1116},{"kind":"grunt","count":17,"gapMs":330},{"kind":"flyer","count":5,"gapMs":500}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":563},{"kind":"archer","count":7,"gapMs":708},{"kind":"runner","count":21,"gapMs":272}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":9,"gapMs":795},{"kind":"broodcaller","count":3,"gapMs":1116},{"kind":"flyer","count":15,"gapMs":378}]}
+          ]
+        },
+        {
+          "id": "6-5",
+          "name": "Lightning Coil",
+          "mapId": "stormpeak-5",
+          "text": "Advance through Lightning Coil; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 16,
+          "hpScale": 0.605,
+          "unlockAfter": "6-4",
+          "rewards": [{"type":"currency","id":"gold","amount":3780},{"type":"currency","id":"heroXp","amount":1890},{"type":"currency","id":"divineSeals","amount":80}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":21,"gapMs":349},{"kind":"archer","count":6,"gapMs":737}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":582},{"kind":"mender","count":4,"gapMs":718}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":23,"gapMs":272},{"kind":"hexer","count":5,"gapMs":766}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":8,"gapMs":834},{"kind":"flyer","count":17,"gapMs":388}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1086},{"kind":"shieldbearer","count":9,"gapMs":572}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":8,"gapMs":679},{"kind":"hexer","count":5,"gapMs":737},{"kind":"grunt","count":21,"gapMs":310}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":766},{"kind":"mender","count":6,"gapMs":660},{"kind":"runner","count":23,"gapMs":252}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1019},{"kind":"flyer","count":19,"gapMs":359},{"kind":"shieldbearer","count":11,"gapMs":543}]}
+          ]
+        },
+        {
+          "id": "6-6",
+          "name": "Storm Crown",
+          "mapId": "stormpeak-6",
+          "text": "Defend the sanctuary against the final assault. Flying enemies move 20% slower. Platform heroes lose 10% range; high-ground tiles shelter them.",
+          "lives": 18,
+          "hpScale": 0.47,
+          "unlockAfter": "6-5",
+          "rewards": [{"type":"currency","id":"gold","amount":3900},{"type":"currency","id":"heroXp","amount":1950},{"type":"currency","id":"divineSeals","amount":150},{"type":"hero","id":"heimdall"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":21,"gapMs":349},{"kind":"runner","count":19,"gapMs":291}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":592},{"kind":"archer","count":7,"gapMs":718},{"kind":"flyer","count":13,"gapMs":417}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":825},{"kind":"mender","count":5,"gapMs":689},{"kind":"hexer","count":5,"gapMs":757}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1067},{"kind":"runner","count":23,"gapMs":252}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":553},{"kind":"brute","count":9,"gapMs":786},{"kind":"flyer","count":17,"gapMs":378}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":6,"gapMs":718},{"kind":"mender","count":6,"gapMs":650},{"kind":"archer","count":8,"gapMs":669}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":5,"gapMs":970},{"kind":"brute","count":11,"gapMs":737},{"kind":"runner","count":25,"gapMs":233}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":13,"gapMs":524},{"kind":"flyer","count":19,"gapMs":349},{"kind":"hexer","count":6,"gapMs":679}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":21,"gapMs":349},{"kind":"mender","count":5,"gapMs":669},{"kind":"flyer","count":15,"gapMs":398}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "The Drowned Crown",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1300},{"type":"currency","id":"heroXp","amount":650}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":180}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":270},{"type":"currency","id":"sealDust","amount":130}]}],
+      "stages": [
+        {
+          "id": "7-1",
+          "name": "Coral Gate",
+          "mapId": "tidal-1",
+          "text": "Enter Tidal Ruins and establish your first defense. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 16,
+          "hpScale": 0.789,
+          "unlockAfter": "6-6",
+          "rewards": [{"type":"currency","id":"gold","amount":3650},{"type":"currency","id":"heroXp","amount":1825},{"type":"currency","id":"divineSeals","amount":85}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":17,"gapMs":411},{"kind":"runner","count":11,"gapMs":344}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":6,"gapMs":688},{"kind":"archer","count":4,"gapMs":812}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":5,"gapMs":936},{"kind":"mender","count":3,"gapMs":783}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":13,"gapMs":449},{"kind":"hexer","count":3,"gapMs":860}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1289},{"kind":"runner","count":19,"gapMs":306}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":621},{"kind":"brute","count":6,"gapMs":860},{"kind":"flyer","count":11,"gapMs":411}]}
+          ]
+        },
+        {
+          "id": "7-2",
+          "name": "Tideway",
+          "mapId": "tidal-2",
+          "text": "Advance through Tideway; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 16,
+          "hpScale": 0.766,
+          "unlockAfter": "7-1",
+          "rewards": [{"type":"currency","id":"gold","amount":3770},{"type":"currency","id":"heroXp","amount":1885},{"type":"currency","id":"divineSeals","amount":85}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":5,"gapMs":783},{"kind":"grunt","count":17,"gapMs":382}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":649},{"kind":"runner","count":17,"gapMs":325}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":4,"gapMs":840},{"kind":"flyer","count":11,"gapMs":458}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":6,"gapMs":879},{"kind":"mender","count":4,"gapMs":726}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1194},{"kind":"archer","count":6,"gapMs":726}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":592},{"kind":"hexer","count":4,"gapMs":783},{"kind":"runner","count":22,"gapMs":277}]}
+          ]
+        },
+        {
+          "id": "7-3",
+          "name": "Pearl Court",
+          "mapId": "tidal-3",
+          "text": "Advance through Pearl Court; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 16,
+          "hpScale": 0.719,
+          "unlockAfter": "7-2",
+          "rewards": [{"type":"currency","id":"gold","amount":3890},{"type":"currency","id":"heroXp","amount":1945},{"type":"currency","id":"divineSeals","amount":85},{"type":"hero","id":"aegir"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":19,"gapMs":372},{"kind":"mender","count":3,"gapMs":812}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":6,"gapMs":898},{"kind":"mender","count":4,"gapMs":726}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":15,"gapMs":420},{"kind":"archer","count":5,"gapMs":764}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":5,"gapMs":783},{"kind":"shieldbearer","count":9,"gapMs":611}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1194},{"kind":"runner","count":22,"gapMs":287}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":821},{"kind":"mender","count":5,"gapMs":688},{"kind":"grunt","count":19,"gapMs":334}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":573},{"kind":"flyer","count":15,"gapMs":382},{"kind":"hexer","count":4,"gapMs":764}]}
+          ]
+        },
+        {
+          "id": "7-4",
+          "name": "Sunken Bells",
+          "mapId": "tidal-4",
+          "text": "Advance through Sunken Bells; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 16,
+          "hpScale": 0.673,
+          "unlockAfter": "7-3",
+          "rewards": [{"type":"currency","id":"gold","amount":4010},{"type":"currency","id":"heroXp","amount":2005},{"type":"currency","id":"divineSeals","amount":85}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":22,"gapMs":296},{"kind":"broodcaller","count":2,"gapMs":1242}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":592},{"kind":"archer","count":6,"gapMs":745}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":860},{"kind":"hexer","count":4,"gapMs":783}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":17,"gapMs":392},{"kind":"mender","count":4,"gapMs":726}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1098},{"kind":"grunt","count":18,"gapMs":325},{"kind":"runner","count":5,"gapMs":500}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":554},{"kind":"archer","count":8,"gapMs":697},{"kind":"runner","count":22,"gapMs":267}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":783},{"kind":"broodcaller","count":3,"gapMs":1098},{"kind":"flyer","count":15,"gapMs":372}]}
+          ]
+        },
+        {
+          "id": "7-5",
+          "name": "Undertow",
+          "mapId": "tidal-5",
+          "text": "Advance through Undertow; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 16,
+          "hpScale": 0.626,
+          "unlockAfter": "7-4",
+          "rewards": [{"type":"currency","id":"gold","amount":4130},{"type":"currency","id":"heroXp","amount":2065},{"type":"currency","id":"divineSeals","amount":85}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":22,"gapMs":344},{"kind":"archer","count":6,"gapMs":726}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":573},{"kind":"mender","count":4,"gapMs":707}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":24,"gapMs":267},{"kind":"hexer","count":5,"gapMs":754}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":821},{"kind":"flyer","count":17,"gapMs":382}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1070},{"kind":"shieldbearer","count":10,"gapMs":563}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":669},{"kind":"hexer","count":5,"gapMs":726},{"kind":"grunt","count":22,"gapMs":306}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":754},{"kind":"mender","count":6,"gapMs":649},{"kind":"runner","count":24,"gapMs":248}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1003},{"kind":"flyer","count":19,"gapMs":353},{"kind":"shieldbearer","count":11,"gapMs":535}]}
+          ]
+        },
+        {
+          "id": "7-6",
+          "name": "Drowned Throne",
+          "mapId": "tidal-6",
+          "text": "Defend the sanctuary against the final assault. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "lives": 18,
+          "hpScale": 0.487,
+          "unlockAfter": "7-5",
+          "rewards": [{"type":"currency","id":"gold","amount":4250},{"type":"currency","id":"heroXp","amount":2125},{"type":"currency","id":"divineSeals","amount":155},{"type":"hero","id":"aegir"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":22,"gapMs":344},{"kind":"runner","count":19,"gapMs":287}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":583},{"kind":"archer","count":8,"gapMs":707},{"kind":"flyer","count":13,"gapMs":411}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":812},{"kind":"mender","count":5,"gapMs":678},{"kind":"hexer","count":5,"gapMs":745}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1051},{"kind":"runner","count":24,"gapMs":248}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":544},{"kind":"brute","count":10,"gapMs":774},{"kind":"flyer","count":17,"gapMs":372}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":6,"gapMs":707},{"kind":"mender","count":6,"gapMs":640},{"kind":"archer","count":9,"gapMs":659}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":5,"gapMs":955},{"kind":"brute","count":11,"gapMs":726},{"kind":"runner","count":26,"gapMs":229}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":13,"gapMs":516},{"kind":"flyer","count":19,"gapMs":344},{"kind":"hexer","count":6,"gapMs":669}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":22,"gapMs":344},{"kind":"mender","count":5,"gapMs":659},{"kind":"flyer","count":15,"gapMs":392}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "The Spore Lanterns",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1400},{"type":"currency","id":"heroXp","amount":700}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":190}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":280},{"type":"currency","id":"sealDust","amount":140}]}],
+      "stages": [
+        {
+          "id": "8-1",
+          "name": "Spore Gate",
+          "mapId": "mycelium-1",
+          "text": "Enter Mycelium Hollow and establish your first defense. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "7-6",
+          "rewards": [{"type":"currency","id":"gold","amount":4000},{"type":"currency","id":"heroXp","amount":2000},{"type":"currency","id":"divineSeals","amount":90}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":404},{"kind":"runner","count":11,"gapMs":338}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":677},{"kind":"archer","count":4,"gapMs":799}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":921},{"kind":"mender","count":3,"gapMs":771}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":13,"gapMs":442},{"kind":"hexer","count":3,"gapMs":846}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1269},{"kind":"runner","count":20,"gapMs":301}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":611},{"kind":"brute","count":7,"gapMs":846},{"kind":"flyer","count":11,"gapMs":404}]}
+          ]
+        },
+        {
+          "id": "8-2",
+          "name": "Lantern Roots",
+          "mapId": "mycelium-2",
+          "text": "Advance through Lantern Roots; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "8-1",
+          "rewards": [{"type":"currency","id":"gold","amount":4120},{"type":"currency","id":"heroXp","amount":2060},{"type":"currency","id":"divineSeals","amount":90}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":771},{"kind":"grunt","count":18,"gapMs":376}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":639},{"kind":"runner","count":18,"gapMs":320}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":4,"gapMs":827},{"kind":"flyer","count":11,"gapMs":451}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":865},{"kind":"mender","count":4,"gapMs":714}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1175},{"kind":"archer","count":7,"gapMs":714}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":583},{"kind":"hexer","count":4,"gapMs":771},{"kind":"runner","count":22,"gapMs":273}]}
+          ]
+        },
+        {
+          "id": "8-3",
+          "name": "Fungal Court",
+          "mapId": "mycelium-3",
+          "text": "Advance through Fungal Court; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "8-2",
+          "rewards": [{"type":"currency","id":"gold","amount":4240},{"type":"currency","id":"heroXp","amount":2120},{"type":"currency","id":"divineSeals","amount":90},{"type":"hero","id":"plutus"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":367},{"kind":"mender","count":3,"gapMs":799}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":884},{"kind":"mender","count":4,"gapMs":714}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":15,"gapMs":414},{"kind":"archer","count":6,"gapMs":752}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":771},{"kind":"shieldbearer","count":9,"gapMs":602}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1175},{"kind":"runner","count":22,"gapMs":282}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":808},{"kind":"mender","count":6,"gapMs":677},{"kind":"grunt","count":20,"gapMs":329}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"flyer","count":15,"gapMs":376},{"kind":"hexer","count":4,"gapMs":752}]}
+          ]
+        },
+        {
+          "id": "8-4",
+          "name": "Bloom Chambers",
+          "mapId": "mycelium-4",
+          "text": "Advance through Bloom Chambers; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "8-3",
+          "rewards": [{"type":"currency","id":"gold","amount":4360},{"type":"currency","id":"heroXp","amount":2180},{"type":"currency","id":"divineSeals","amount":90}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":22,"gapMs":291},{"kind":"broodcaller","count":2,"gapMs":1222}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":583},{"kind":"archer","count":7,"gapMs":733}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":846},{"kind":"hexer","count":4,"gapMs":771}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":385},{"kind":"mender","count":4,"gapMs":714}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1081},{"kind":"grunt","count":18,"gapMs":320},{"kind":"mender","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":545},{"kind":"archer","count":8,"gapMs":686},{"kind":"runner","count":22,"gapMs":263}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":771},{"kind":"broodcaller","count":3,"gapMs":1081},{"kind":"flyer","count":15,"gapMs":367}]}
+          ]
+        },
+        {
+          "id": "8-5",
+          "name": "Mycelial Coil",
+          "mapId": "mycelium-5",
+          "text": "Advance through Mycelial Coil; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "8-4",
+          "rewards": [{"type":"currency","id":"gold","amount":4480},{"type":"currency","id":"heroXp","amount":2240},{"type":"currency","id":"divineSeals","amount":90}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":22,"gapMs":338},{"kind":"archer","count":7,"gapMs":714}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"mender","count":4,"gapMs":696}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":24,"gapMs":263},{"kind":"hexer","count":6,"gapMs":743}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":808},{"kind":"flyer","count":18,"gapMs":376}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1053},{"kind":"shieldbearer","count":10,"gapMs":555}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":658},{"kind":"hexer","count":6,"gapMs":714},{"kind":"grunt","count":22,"gapMs":301}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":743},{"kind":"mender","count":7,"gapMs":639},{"kind":"runner","count":24,"gapMs":244}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":4,"gapMs":987},{"kind":"flyer","count":20,"gapMs":348},{"kind":"shieldbearer","count":11,"gapMs":526}]}
+          ]
+        },
+        {
+          "id": "8-6",
+          "name": "Spore Heart",
+          "mapId": "mycelium-6",
+          "text": "Defend the sanctuary against the final assault. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "8-5",
+          "rewards": [{"type":"currency","id":"gold","amount":4600},{"type":"currency","id":"heroXp","amount":2300},{"type":"currency","id":"divineSeals","amount":160},{"type":"hero","id":"plutus"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":22,"gapMs":338},{"kind":"runner","count":20,"gapMs":282}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":573},{"kind":"archer","count":8,"gapMs":696},{"kind":"flyer","count":13,"gapMs":404}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":799},{"kind":"mender","count":6,"gapMs":667},{"kind":"hexer","count":6,"gapMs":733}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":4,"gapMs":1034},{"kind":"runner","count":24,"gapMs":244}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":536},{"kind":"brute","count":10,"gapMs":761},{"kind":"flyer","count":18,"gapMs":367}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":696},{"kind":"mender","count":7,"gapMs":630},{"kind":"archer","count":9,"gapMs":649}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":940},{"kind":"brute","count":11,"gapMs":714},{"kind":"runner","count":26,"gapMs":226}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":13,"gapMs":508},{"kind":"flyer","count":20,"gapMs":338},{"kind":"hexer","count":7,"gapMs":658}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":22,"gapMs":338},{"kind":"mender","count":6,"gapMs":649},{"kind":"flyer","count":15,"gapMs":385}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "The Shattered Prism",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1500},{"type":"currency","id":"heroXp","amount":750}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":200}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":290},{"type":"currency","id":"sealDust","amount":150}]}],
+      "stages": [
+        {
+          "id": "9-1",
+          "name": "Quartz Gate",
+          "mapId": "crystal-1",
+          "text": "Enter Crystal Vault and establish your first defense. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "8-6",
+          "rewards": [{"type":"currency","id":"gold","amount":4350},{"type":"currency","id":"heroXp","amount":2175},{"type":"currency","id":"divineSeals","amount":95}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":398},{"kind":"runner","count":11,"gapMs":333}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":666},{"kind":"archer","count":5,"gapMs":786}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":907},{"kind":"mender","count":3,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":14,"gapMs":435},{"kind":"hexer","count":3,"gapMs":833}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1249},{"kind":"runner","count":20,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"brute","count":7,"gapMs":833},{"kind":"flyer","count":11,"gapMs":398}]}
+          ]
+        },
+        {
+          "id": "9-2",
+          "name": "Prism Steps",
+          "mapId": "crystal-2",
+          "text": "Advance through Prism Steps; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "9-1",
+          "rewards": [{"type":"currency","id":"gold","amount":4470},{"type":"currency","id":"heroXp","amount":2235},{"type":"currency","id":"divineSeals","amount":95}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":759},{"kind":"grunt","count":18,"gapMs":370}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":629},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":5,"gapMs":814},{"kind":"flyer","count":11,"gapMs":444}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":851},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"hexer","count":5,"gapMs":759},{"kind":"runner","count":23,"gapMs":268}]}
+          ]
+        },
+        {
+          "id": "9-3",
+          "name": "Facet Court",
+          "mapId": "crystal-3",
+          "text": "Advance through Facet Court; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "9-2",
+          "rewards": [{"type":"currency","id":"gold","amount":4590},{"type":"currency","id":"heroXp","amount":2295},{"type":"currency","id":"divineSeals","amount":95},{"type":"hero","id":"hecate"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":361},{"kind":"mender","count":3,"gapMs":786}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":870},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":16,"gapMs":407},{"kind":"archer","count":6,"gapMs":740}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":759},{"kind":"shieldbearer","count":9,"gapMs":592}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"runner","count":23,"gapMs":278}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"mender","count":6,"gapMs":666},{"kind":"grunt","count":20,"gapMs":324}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"flyer","count":16,"gapMs":370},{"kind":"hexer","count":5,"gapMs":740}]}
+          ]
+        },
+        {
+          "id": "9-4",
+          "name": "Resonance Hall",
+          "mapId": "crystal-4",
+          "text": "Advance through Resonance Hall; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "9-3",
+          "rewards": [{"type":"currency","id":"gold","amount":4710},{"type":"currency","id":"heroXp","amount":2355},{"type":"currency","id":"divineSeals","amount":95}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":23,"gapMs":287},{"kind":"broodcaller","count":2,"gapMs":1203}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"archer","count":7,"gapMs":722}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":833},{"kind":"hexer","count":5,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":379},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1064},{"kind":"grunt","count":19,"gapMs":315},{"kind":"hexer","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":537},{"kind":"archer","count":8,"gapMs":675},{"kind":"runner","count":23,"gapMs":259}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":759},{"kind":"broodcaller","count":3,"gapMs":1064},{"kind":"flyer","count":16,"gapMs":361}]}
+          ]
+        },
+        {
+          "id": "9-5",
+          "name": "Mirror Coil",
+          "mapId": "crystal-5",
+          "text": "Advance through Mirror Coil; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "9-4",
+          "rewards": [{"type":"currency","id":"gold","amount":4830},{"type":"currency","id":"heroXp","amount":2415},{"type":"currency","id":"divineSeals","amount":95}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"mender","count":5,"gapMs":685}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":25,"gapMs":259},{"kind":"hexer","count":6,"gapMs":731}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"flyer","count":18,"gapMs":370}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1036},{"kind":"shieldbearer","count":10,"gapMs":546}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":648},{"kind":"hexer","count":6,"gapMs":703},{"kind":"grunt","count":23,"gapMs":296}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":731},{"kind":"mender","count":7,"gapMs":629},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":5,"gapMs":971},{"kind":"flyer","count":20,"gapMs":342},{"kind":"shieldbearer","count":11,"gapMs":518}]}
+          ]
+        },
+        {
+          "id": "9-6",
+          "name": "Crystal Crown",
+          "mapId": "crystal-6",
+          "text": "Defend the sanctuary against the final assault. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "9-5",
+          "rewards": [{"type":"currency","id":"gold","amount":4950},{"type":"currency","id":"heroXp","amount":2475},{"type":"currency","id":"divineSeals","amount":165},{"type":"hero","id":"hecate"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"runner","count":20,"gapMs":278}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"archer","count":8,"gapMs":685},{"kind":"flyer","count":14,"gapMs":398}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":786},{"kind":"mender","count":6,"gapMs":657},{"kind":"hexer","count":6,"gapMs":722}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1018},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":527},{"kind":"brute","count":10,"gapMs":749},{"kind":"flyer","count":18,"gapMs":361}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":685},{"kind":"mender","count":7,"gapMs":620},{"kind":"archer","count":9,"gapMs":638}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":925},{"kind":"brute","count":11,"gapMs":703},{"kind":"runner","count":27,"gapMs":222}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":14,"gapMs":500},{"kind":"flyer","count":20,"gapMs":333},{"kind":"hexer","count":7,"gapMs":648}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":23,"gapMs":333},{"kind":"mender","count":6,"gapMs":638},{"kind":"flyer","count":16,"gapMs":379}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "The Silent Procession",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1600},{"type":"currency","id":"heroXp","amount":800}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":210}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":300},{"type":"currency","id":"sealDust","amount":160}]}],
+      "stages": [
+        {
+          "id": "10-1",
+          "name": "Mourning Gate",
+          "mapId": "necropolis-1",
+          "text": "Enter Haunted Necropolis and establish your first defense. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "9-6",
+          "rewards": [{"type":"currency","id":"gold","amount":4700},{"type":"currency","id":"heroXp","amount":2350},{"type":"currency","id":"divineSeals","amount":100}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":398},{"kind":"runner","count":11,"gapMs":333}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":666},{"kind":"archer","count":5,"gapMs":786}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":907},{"kind":"mender","count":3,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":14,"gapMs":435},{"kind":"hexer","count":3,"gapMs":833}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1249},{"kind":"runner","count":20,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"brute","count":7,"gapMs":833},{"kind":"flyer","count":11,"gapMs":398}]}
+          ]
+        },
+        {
+          "id": "10-2",
+          "name": "Bone Road",
+          "mapId": "necropolis-2",
+          "text": "Advance through Bone Road; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "10-1",
+          "rewards": [{"type":"currency","id":"gold","amount":4820},{"type":"currency","id":"heroXp","amount":2410},{"type":"currency","id":"divineSeals","amount":100}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":759},{"kind":"grunt","count":18,"gapMs":370}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":629},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":5,"gapMs":814},{"kind":"flyer","count":11,"gapMs":444}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":851},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"hexer","count":5,"gapMs":759},{"kind":"runner","count":23,"gapMs":268}]}
+          ]
+        },
+        {
+          "id": "10-3",
+          "name": "Silent Court",
+          "mapId": "necropolis-3",
+          "text": "Advance through Silent Court; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "10-2",
+          "rewards": [{"type":"currency","id":"gold","amount":4940},{"type":"currency","id":"heroXp","amount":2470},{"type":"currency","id":"divineSeals","amount":100},{"type":"hero","id":"thanatos"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":361},{"kind":"mender","count":3,"gapMs":786}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":870},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":16,"gapMs":407},{"kind":"archer","count":6,"gapMs":740}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":759},{"kind":"shieldbearer","count":9,"gapMs":592}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"runner","count":23,"gapMs":278}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"mender","count":6,"gapMs":666},{"kind":"grunt","count":20,"gapMs":324}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"flyer","count":16,"gapMs":370},{"kind":"hexer","count":5,"gapMs":740}]}
+          ]
+        },
+        {
+          "id": "10-4",
+          "name": "Wraith Watch",
+          "mapId": "necropolis-4",
+          "text": "Advance through Wraith Watch; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "10-3",
+          "rewards": [{"type":"currency","id":"gold","amount":5060},{"type":"currency","id":"heroXp","amount":2530},{"type":"currency","id":"divineSeals","amount":100}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":23,"gapMs":287},{"kind":"broodcaller","count":2,"gapMs":1203}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"archer","count":7,"gapMs":722}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":833},{"kind":"hexer","count":5,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":379},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1064},{"kind":"grunt","count":19,"gapMs":315},{"kind":"broodcaller","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":537},{"kind":"archer","count":8,"gapMs":675},{"kind":"runner","count":23,"gapMs":259}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":759},{"kind":"broodcaller","count":3,"gapMs":1064},{"kind":"flyer","count":16,"gapMs":361}]}
+          ]
+        },
+        {
+          "id": "10-5",
+          "name": "Funeral Coil",
+          "mapId": "necropolis-5",
+          "text": "Advance through Funeral Coil; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "10-4",
+          "rewards": [{"type":"currency","id":"gold","amount":5180},{"type":"currency","id":"heroXp","amount":2590},{"type":"currency","id":"divineSeals","amount":100}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"mender","count":5,"gapMs":685}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":25,"gapMs":259},{"kind":"hexer","count":6,"gapMs":731}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"flyer","count":18,"gapMs":370}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1036},{"kind":"shieldbearer","count":10,"gapMs":546}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":648},{"kind":"hexer","count":6,"gapMs":703},{"kind":"grunt","count":23,"gapMs":296}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":731},{"kind":"mender","count":7,"gapMs":629},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":5,"gapMs":971},{"kind":"flyer","count":20,"gapMs":342},{"kind":"shieldbearer","count":11,"gapMs":518}]}
+          ]
+        },
+        {
+          "id": "10-6",
+          "name": "Grave Throne",
+          "mapId": "necropolis-6",
+          "text": "Defend the sanctuary against the final assault. Kills pay 20% more gold. Heroes receive 15% less healing.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "10-5",
+          "rewards": [{"type":"currency","id":"gold","amount":5300},{"type":"currency","id":"heroXp","amount":2650},{"type":"currency","id":"divineSeals","amount":170},{"type":"hero","id":"thanatos"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"runner","count":20,"gapMs":278}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"archer","count":8,"gapMs":685},{"kind":"flyer","count":14,"gapMs":398}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":786},{"kind":"mender","count":6,"gapMs":657},{"kind":"hexer","count":6,"gapMs":722}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1018},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":527},{"kind":"brute","count":10,"gapMs":749},{"kind":"flyer","count":18,"gapMs":361}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":685},{"kind":"mender","count":7,"gapMs":620},{"kind":"archer","count":9,"gapMs":638}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":925},{"kind":"brute","count":11,"gapMs":703},{"kind":"runner","count":27,"gapMs":222}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":14,"gapMs":500},{"kind":"flyer","count":20,"gapMs":333},{"kind":"hexer","count":7,"gapMs":648}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":23,"gapMs":333},{"kind":"mender","count":6,"gapMs":638},{"kind":"flyer","count":16,"gapMs":379}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "The Last Harvest",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1700},{"type":"currency","id":"heroXp","amount":850}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":220}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":310},{"type":"currency","id":"sealDust","amount":170}]}],
+      "stages": [
+        {
+          "id": "11-1",
+          "name": "Amber Gate",
+          "mapId": "autumn-1",
+          "text": "Enter Autumn Sanctuary and establish your first defense. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "10-6",
+          "rewards": [{"type":"currency","id":"gold","amount":5050},{"type":"currency","id":"heroXp","amount":2525},{"type":"currency","id":"divineSeals","amount":105}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":398},{"kind":"runner","count":11,"gapMs":333}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":666},{"kind":"archer","count":5,"gapMs":786}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":907},{"kind":"mender","count":3,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":14,"gapMs":435},{"kind":"hexer","count":3,"gapMs":833}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1249},{"kind":"runner","count":20,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"brute","count":7,"gapMs":833},{"kind":"flyer","count":11,"gapMs":398}]}
+          ]
+        },
+        {
+          "id": "11-2",
+          "name": "Maple Road",
+          "mapId": "autumn-2",
+          "text": "Advance through Maple Road; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "11-1",
+          "rewards": [{"type":"currency","id":"gold","amount":5170},{"type":"currency","id":"heroXp","amount":2585},{"type":"currency","id":"divineSeals","amount":105}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":759},{"kind":"grunt","count":18,"gapMs":370}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":629},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":5,"gapMs":814},{"kind":"flyer","count":11,"gapMs":444}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":851},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"hexer","count":5,"gapMs":759},{"kind":"runner","count":23,"gapMs":268}]}
+          ]
+        },
+        {
+          "id": "11-3",
+          "name": "Harvest Court",
+          "mapId": "autumn-3",
+          "text": "Advance through Harvest Court; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "11-2",
+          "rewards": [{"type":"currency","id":"gold","amount":5290},{"type":"currency","id":"heroXp","amount":2645},{"type":"currency","id":"divineSeals","amount":105},{"type":"hero","id":"heimdall"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":361},{"kind":"mender","count":3,"gapMs":786}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":870},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":16,"gapMs":407},{"kind":"archer","count":6,"gapMs":740}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":759},{"kind":"shieldbearer","count":9,"gapMs":592}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"runner","count":23,"gapMs":278}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"mender","count":6,"gapMs":666},{"kind":"grunt","count":20,"gapMs":324}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"flyer","count":16,"gapMs":370},{"kind":"hexer","count":5,"gapMs":740}]}
+          ]
+        },
+        {
+          "id": "11-4",
+          "name": "Falling Leaves",
+          "mapId": "autumn-4",
+          "text": "Advance through Falling Leaves; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "11-3",
+          "rewards": [{"type":"currency","id":"gold","amount":5410},{"type":"currency","id":"heroXp","amount":2705},{"type":"currency","id":"divineSeals","amount":105}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":23,"gapMs":287},{"kind":"broodcaller","count":2,"gapMs":1203}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"archer","count":7,"gapMs":722}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":833},{"kind":"hexer","count":5,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":379},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1064},{"kind":"grunt","count":19,"gapMs":315},{"kind":"archer","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":537},{"kind":"archer","count":8,"gapMs":675},{"kind":"runner","count":23,"gapMs":259}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":759},{"kind":"broodcaller","count":3,"gapMs":1064},{"kind":"flyer","count":16,"gapMs":361}]}
+          ]
+        },
+        {
+          "id": "11-5",
+          "name": "Golden Coil",
+          "mapId": "autumn-5",
+          "text": "Advance through Golden Coil; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "11-4",
+          "rewards": [{"type":"currency","id":"gold","amount":5530},{"type":"currency","id":"heroXp","amount":2765},{"type":"currency","id":"divineSeals","amount":105}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"mender","count":5,"gapMs":685}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":25,"gapMs":259},{"kind":"hexer","count":6,"gapMs":731}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"flyer","count":18,"gapMs":370}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1036},{"kind":"shieldbearer","count":10,"gapMs":546}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":648},{"kind":"hexer","count":6,"gapMs":703},{"kind":"grunt","count":23,"gapMs":296}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":731},{"kind":"mender","count":7,"gapMs":629},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":5,"gapMs":971},{"kind":"flyer","count":20,"gapMs":342},{"kind":"shieldbearer","count":11,"gapMs":518}]}
+          ]
+        },
+        {
+          "id": "11-6",
+          "name": "Last Orchard",
+          "mapId": "autumn-6",
+          "text": "Defend the sanctuary against the final assault. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "11-5",
+          "rewards": [{"type":"currency","id":"gold","amount":5650},{"type":"currency","id":"heroXp","amount":2825},{"type":"currency","id":"divineSeals","amount":175},{"type":"hero","id":"heimdall"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"runner","count":20,"gapMs":278}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"archer","count":8,"gapMs":685},{"kind":"flyer","count":14,"gapMs":398}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":786},{"kind":"mender","count":6,"gapMs":657},{"kind":"hexer","count":6,"gapMs":722}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1018},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":527},{"kind":"brute","count":10,"gapMs":749},{"kind":"flyer","count":18,"gapMs":361}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":685},{"kind":"mender","count":7,"gapMs":620},{"kind":"archer","count":9,"gapMs":638}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":925},{"kind":"brute","count":11,"gapMs":703},{"kind":"runner","count":27,"gapMs":222}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":14,"gapMs":500},{"kind":"flyer","count":20,"gapMs":333},{"kind":"hexer","count":7,"gapMs":648}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":23,"gapMs":333},{"kind":"mender","count":6,"gapMs":638},{"kind":"flyer","count":16,"gapMs":379}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "The Astral Meridian",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1800},{"type":"currency","id":"heroXp","amount":900}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":230}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":320},{"type":"currency","id":"sealDust","amount":180}]}],
+      "stages": [
+        {
+          "id": "12-1",
+          "name": "Star Gate",
+          "mapId": "celestial-1",
+          "text": "Enter Celestial Observatory and establish your first defense. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "11-6",
+          "rewards": [{"type":"currency","id":"gold","amount":5400},{"type":"currency","id":"heroXp","amount":2700},{"type":"currency","id":"divineSeals","amount":110}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":398},{"kind":"runner","count":11,"gapMs":333}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":666},{"kind":"archer","count":5,"gapMs":786}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":907},{"kind":"mender","count":3,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":14,"gapMs":435},{"kind":"hexer","count":3,"gapMs":833}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1249},{"kind":"runner","count":20,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"brute","count":7,"gapMs":833},{"kind":"flyer","count":11,"gapMs":398}]}
+          ]
+        },
+        {
+          "id": "12-2",
+          "name": "Moon Meridian",
+          "mapId": "celestial-2",
+          "text": "Advance through Moon Meridian; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "12-1",
+          "rewards": [{"type":"currency","id":"gold","amount":5520},{"type":"currency","id":"heroXp","amount":2760},{"type":"currency","id":"divineSeals","amount":110}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":759},{"kind":"grunt","count":18,"gapMs":370}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":629},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":5,"gapMs":814},{"kind":"flyer","count":11,"gapMs":444}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":851},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"hexer","count":5,"gapMs":759},{"kind":"runner","count":23,"gapMs":268}]}
+          ]
+        },
+        {
+          "id": "12-3",
+          "name": "Astral Court",
+          "mapId": "celestial-3",
+          "text": "Advance through Astral Court; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "12-2",
+          "rewards": [{"type":"currency","id":"gold","amount":5640},{"type":"currency","id":"heroXp","amount":2820},{"type":"currency","id":"divineSeals","amount":110},{"type":"hero","id":"nott"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":361},{"kind":"mender","count":3,"gapMs":786}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":870},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":16,"gapMs":407},{"kind":"archer","count":6,"gapMs":740}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":759},{"kind":"shieldbearer","count":9,"gapMs":592}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"runner","count":23,"gapMs":278}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"mender","count":6,"gapMs":666},{"kind":"grunt","count":20,"gapMs":324}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"flyer","count":16,"gapMs":370},{"kind":"hexer","count":5,"gapMs":740}]}
+          ]
+        },
+        {
+          "id": "12-4",
+          "name": "Orbit Hall",
+          "mapId": "celestial-4",
+          "text": "Advance through Orbit Hall; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "12-3",
+          "rewards": [{"type":"currency","id":"gold","amount":5760},{"type":"currency","id":"heroXp","amount":2880},{"type":"currency","id":"divineSeals","amount":110}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":23,"gapMs":287},{"kind":"broodcaller","count":2,"gapMs":1203}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"archer","count":7,"gapMs":722}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":833},{"kind":"hexer","count":5,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":379},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1064},{"kind":"grunt","count":19,"gapMs":315},{"kind":"flyer","count":5,"gapMs":500}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":537},{"kind":"archer","count":8,"gapMs":675},{"kind":"runner","count":23,"gapMs":259}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":759},{"kind":"broodcaller","count":3,"gapMs":1064},{"kind":"flyer","count":16,"gapMs":361}]}
+          ]
+        },
+        {
+          "id": "12-5",
+          "name": "Comet Coil",
+          "mapId": "celestial-5",
+          "text": "Advance through Comet Coil; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "12-4",
+          "rewards": [{"type":"currency","id":"gold","amount":5880},{"type":"currency","id":"heroXp","amount":2940},{"type":"currency","id":"divineSeals","amount":110}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"mender","count":5,"gapMs":685}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":25,"gapMs":259},{"kind":"hexer","count":6,"gapMs":731}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"flyer","count":18,"gapMs":370}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1036},{"kind":"shieldbearer","count":10,"gapMs":546}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":648},{"kind":"hexer","count":6,"gapMs":703},{"kind":"grunt","count":23,"gapMs":296}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":731},{"kind":"mender","count":7,"gapMs":629},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":5,"gapMs":971},{"kind":"flyer","count":20,"gapMs":342},{"kind":"shieldbearer","count":11,"gapMs":518}]}
+          ]
+        },
+        {
+          "id": "12-6",
+          "name": "Zenith Crown",
+          "mapId": "celestial-6",
+          "text": "Defend the sanctuary against the final assault. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "12-5",
+          "rewards": [{"type":"currency","id":"gold","amount":6000},{"type":"currency","id":"heroXp","amount":3000},{"type":"currency","id":"divineSeals","amount":180},{"type":"hero","id":"nott"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"runner","count":20,"gapMs":278}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"archer","count":8,"gapMs":685},{"kind":"flyer","count":14,"gapMs":398}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":786},{"kind":"mender","count":6,"gapMs":657},{"kind":"hexer","count":6,"gapMs":722}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1018},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":527},{"kind":"brute","count":10,"gapMs":749},{"kind":"flyer","count":18,"gapMs":361}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":685},{"kind":"mender","count":7,"gapMs":620},{"kind":"archer","count":9,"gapMs":638}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":925},{"kind":"brute","count":11,"gapMs":703},{"kind":"runner","count":27,"gapMs":222}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":14,"gapMs":500},{"kind":"flyer","count":20,"gapMs":333},{"kind":"hexer","count":7,"gapMs":648}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":23,"gapMs":333},{"kind":"mender","count":6,"gapMs":638},{"kind":"flyer","count":16,"gapMs":379}]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "The Brass Reckoning",
+      "milestones": [{"laurels":6,"rewards":[{"type":"currency","id":"gold","amount":1900},{"type":"currency","id":"heroXp","amount":950}]},{"laurels":12,"rewards":[{"type":"currency","id":"divineSeals","amount":240}]},{"laurels":18,"rewards":[{"type":"currency","id":"divineSeals","amount":330},{"type":"currency","id":"sealDust","amount":190}]}],
+      "stages": [
+        {
+          "id": "13-1",
+          "name": "Brass Gate",
+          "mapId": "clockwork-1",
+          "text": "Enter Clockwork Citadel and establish your first defense. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 16,
+          "hpScale": 0.816,
+          "unlockAfter": "12-6",
+          "rewards": [{"type":"currency","id":"gold","amount":5750},{"type":"currency","id":"heroXp","amount":2875},{"type":"currency","id":"divineSeals","amount":115}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":18,"gapMs":398},{"kind":"runner","count":11,"gapMs":333}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":7,"gapMs":666},{"kind":"archer","count":5,"gapMs":786}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":6,"gapMs":907},{"kind":"mender","count":3,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":14,"gapMs":435},{"kind":"hexer","count":3,"gapMs":833}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":2,"gapMs":1249},{"kind":"runner","count":20,"gapMs":296}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":601},{"kind":"brute","count":7,"gapMs":833},{"kind":"flyer","count":11,"gapMs":398}]}
+          ]
+        },
+        {
+          "id": "13-2",
+          "name": "Gearway",
+          "mapId": "clockwork-2",
+          "text": "Advance through Gearway; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 16,
+          "hpScale": 0.792,
+          "unlockAfter": "13-1",
+          "rewards": [{"type":"currency","id":"gold","amount":5870},{"type":"currency","id":"heroXp","amount":2935},{"type":"currency","id":"divineSeals","amount":115}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"archer","count":6,"gapMs":759},{"kind":"grunt","count":18,"gapMs":370}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":8,"gapMs":629},{"kind":"runner","count":18,"gapMs":315}]},
+            {"wave":3,"spawns":[{"kind":"hexer","count":5,"gapMs":814},{"kind":"flyer","count":11,"gapMs":444}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":7,"gapMs":851},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"hexer","count":5,"gapMs":759},{"kind":"runner","count":23,"gapMs":268}]}
+          ]
+        },
+        {
+          "id": "13-3",
+          "name": "Piston Court",
+          "mapId": "clockwork-3",
+          "text": "Advance through Piston Court; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 16,
+          "hpScale": 0.744,
+          "unlockAfter": "13-2",
+          "rewards": [{"type":"currency","id":"gold","amount":5990},{"type":"currency","id":"heroXp","amount":2995},{"type":"currency","id":"divineSeals","amount":115},{"type":"hero","id":"surtr"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":20,"gapMs":361},{"kind":"mender","count":3,"gapMs":786}]},
+            {"wave":2,"spawns":[{"kind":"brute","count":7,"gapMs":870},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":3,"spawns":[{"kind":"flyer","count":16,"gapMs":407},{"kind":"archer","count":6,"gapMs":740}]},
+            {"wave":4,"spawns":[{"kind":"hexer","count":6,"gapMs":759},{"kind":"shieldbearer","count":9,"gapMs":592}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":3,"gapMs":1156},{"kind":"runner","count":23,"gapMs":278}]},
+            {"wave":6,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"mender","count":6,"gapMs":666},{"kind":"grunt","count":20,"gapMs":324}]},
+            {"wave":7,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"flyer","count":16,"gapMs":370},{"kind":"hexer","count":5,"gapMs":740}]}
+          ]
+        },
+        {
+          "id": "13-4",
+          "name": "Steam Locks",
+          "mapId": "clockwork-4",
+          "text": "Advance through Steam Locks; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 16,
+          "hpScale": 0.696,
+          "unlockAfter": "13-3",
+          "rewards": [{"type":"currency","id":"gold","amount":6110},{"type":"currency","id":"heroXp","amount":3055},{"type":"currency","id":"divineSeals","amount":115}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"runner","count":23,"gapMs":287},{"kind":"broodcaller","count":2,"gapMs":1203}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":9,"gapMs":574},{"kind":"archer","count":7,"gapMs":722}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":8,"gapMs":833},{"kind":"hexer","count":5,"gapMs":759}]},
+            {"wave":4,"spawns":[{"kind":"flyer","count":18,"gapMs":379},{"kind":"mender","count":5,"gapMs":703}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1064},{"kind":"grunt","count":19,"gapMs":315},{"kind":"shieldbearer","count":2,"gapMs":950}]},
+            {"wave":6,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":537},{"kind":"archer","count":8,"gapMs":675},{"kind":"runner","count":23,"gapMs":259}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":10,"gapMs":759},{"kind":"broodcaller","count":3,"gapMs":1064},{"kind":"flyer","count":16,"gapMs":361}]}
+          ]
+        },
+        {
+          "id": "13-5",
+          "name": "Escapement",
+          "mapId": "clockwork-5",
+          "text": "Advance through Escapement; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 16,
+          "hpScale": 0.648,
+          "unlockAfter": "13-4",
+          "rewards": [{"type":"currency","id":"gold","amount":6230},{"type":"currency","id":"heroXp","amount":3115},{"type":"currency","id":"divineSeals","amount":115}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"archer","count":7,"gapMs":703}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":555},{"kind":"mender","count":5,"gapMs":685}]},
+            {"wave":3,"spawns":[{"kind":"runner","count":25,"gapMs":259},{"kind":"hexer","count":6,"gapMs":731}]},
+            {"wave":4,"spawns":[{"kind":"brute","count":9,"gapMs":796},{"kind":"flyer","count":18,"gapMs":370}]},
+            {"wave":5,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1036},{"kind":"shieldbearer","count":10,"gapMs":546}]},
+            {"wave":6,"spawns":[{"kind":"archer","count":9,"gapMs":648},{"kind":"hexer","count":6,"gapMs":703},{"kind":"grunt","count":23,"gapMs":296}]},
+            {"wave":7,"spawns":[{"kind":"brute","count":11,"gapMs":731},{"kind":"mender","count":7,"gapMs":629},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":8,"spawns":[{"kind":"broodcaller","count":5,"gapMs":971},{"kind":"flyer","count":20,"gapMs":342},{"kind":"shieldbearer","count":11,"gapMs":518}]}
+          ]
+        },
+        {
+          "id": "13-6",
+          "name": "Clockwork Heart",
+          "mapId": "clockwork-6",
+          "text": "Defend the sanctuary against the final assault. Heroes attack 15% faster. Enemies move 10% faster.",
+          "lives": 18,
+          "hpScale": 0.504,
+          "unlockAfter": "13-5",
+          "rewards": [{"type":"currency","id":"gold","amount":6350},{"type":"currency","id":"heroXp","amount":3175},{"type":"currency","id":"divineSeals","amount":185},{"type":"hero","id":"surtr"}],
+          "waves": [
+            {"wave":1,"spawns":[{"kind":"grunt","count":23,"gapMs":333},{"kind":"runner","count":20,"gapMs":278}]},
+            {"wave":2,"spawns":[{"kind":"shieldbearer","count":10,"gapMs":564},{"kind":"archer","count":8,"gapMs":685},{"kind":"flyer","count":14,"gapMs":398}]},
+            {"wave":3,"spawns":[{"kind":"brute","count":9,"gapMs":786},{"kind":"mender","count":6,"gapMs":657},{"kind":"hexer","count":6,"gapMs":722}]},
+            {"wave":4,"spawns":[{"kind":"broodcaller","count":5,"gapMs":1018},{"kind":"runner","count":25,"gapMs":241}]},
+            {"wave":5,"spawns":[{"kind":"shieldbearer","count":11,"gapMs":527},{"kind":"brute","count":10,"gapMs":749},{"kind":"flyer","count":18,"gapMs":361}]},
+            {"wave":6,"spawns":[{"kind":"hexer","count":7,"gapMs":685},{"kind":"mender","count":7,"gapMs":620},{"kind":"archer","count":9,"gapMs":638}]},
+            {"wave":7,"spawns":[{"kind":"broodcaller","count":6,"gapMs":925},{"kind":"brute","count":11,"gapMs":703},{"kind":"runner","count":27,"gapMs":222}]},
+            {"wave":8,"spawns":[{"kind":"shieldbearer","count":14,"gapMs":500},{"kind":"flyer","count":20,"gapMs":333},{"kind":"hexer","count":7,"gapMs":648}]},
+            {"wave":9,"spawns":[{"kind":"boss","count":1,"gapMs":1000},{"kind":"grunt","count":23,"gapMs":333},{"kind":"mender","count":6,"gapMs":638},{"kind":"flyer","count":16,"gapMs":379}]}
+          ]
+        }
+      ]
     }
   ]
 }
