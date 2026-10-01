@@ -1,6 +1,6 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
-import { boardOf, inPattern, patternFor } from "./board.js";
+import { boardOf, boardRules, inPattern, patternFor } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
@@ -114,8 +114,10 @@ export class TowerDefenseGame {
     this.maxLives = Math.max(1, maxLives ?? lives ?? tuning.run.lives);
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
-    // Prototype board maps (board.js) carry their own rules: Mage focus, wave shape, patterns.
-    if (map?.rules?.focus && this.classes.Mage) this.classes = { ...this.classes, Mage: { ...this.classes.Mage, focus: map.rules.focus } };
+    // Board maps (board.js): tuning.board plus the map's own rules (wave shape, Mage focus,
+    // attack patterns, unit sizes); null on maps that still use range circles.
+    this.boardRules = boardRules(map, tuning);
+    if (this.boardRules?.focus && this.classes.Mage) this.classes = { ...this.classes, Mage: { ...this.classes.Mage, focus: this.boardRules.focus } };
     this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
@@ -318,8 +320,8 @@ export class TowerDefenseGame {
     return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp) * awake * this.focusMult(focus, "health") * this.trainMult(trained, "health"));
   }
 
-  // Training (tuning.training): after Awakening a hero can train attack, health or range
-  // again and again; each training adds its share, range at most rangeCap times.
+  // Training (tuning.training): after Awakening a hero can train attack or health again and
+  // again; each training adds its share. Range is not trained in battle.
   trainMult(trained, stat) {
     return 1 + (this.tuning.training?.[stat] || 0) * (trained?.[stat] || 0);
   }
@@ -336,7 +338,8 @@ export class TowerDefenseGame {
     return this.tuning.paths?.[hero.class]?.[hero.path] ?? null;
   }
 
-  // Level focus (tuning.upgrades.focus): reaching focus.level asks for attack, health or range.
+  // Level focus (tuning.upgrades.focus): reaching focus.level asks for attack or health.
+  // Range is not upgraded in battle (board plan, October 1, 2026).
   focusMult(focus, stat) {
     const bonus = this.tuning.upgrades.focus?.[stat];
     return focus === stat && bonus ? 1 + bonus : 1;
@@ -483,7 +486,6 @@ export class TowerDefenseGame {
     const focusOptions = needsFocus ? {
       attack: { nextAtk: this.atkFor(hero, hero.level + 1, false, "attack"), nextHp, nextRange: hero.range },
       health: { nextAtk, nextHp: this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, "health"), nextRange: hero.range },
-      range: { nextAtk, nextHp, nextRange: Math.round(hero.range * this.focusMult("range", "range")) },
     } : null;
     // The step to path.level asks for one of the class paths (tuning.paths, M12).
     const needsPath = !hero.path && hero.level + 1 === tuning.path?.level && !!this.tuning.paths?.[hero.class];
@@ -493,9 +495,8 @@ export class TowerDefenseGame {
   }
 
   // Training offer, shaped like the level focus choice (needsFocus + focusOptions), so
-  // upgrade(entityId, stat) and the popover picker handle both. Range drops out at its cap.
+  // upgrade(entityId, stat) and the popover picker handle both.
   trainingInfo(hero) {
-    const cfg = this.tuning.training;
     const cost = this.trainingCost(hero);
     const trained = hero.trained || {};
     const plus = (stat) => ({ ...trained, [stat]: (trained[stat] || 0) + 1 });
@@ -504,9 +505,6 @@ export class TowerDefenseGame {
       attack: { nextAtk: this.atkFor(hero, hero.level, true, hero.focus, plus("attack")), nextHp: hero.hp, nextRange: hero.range },
       health: { nextAtk: hero.atk, nextHp: hp(plus("health")), nextRange: hero.range },
     };
-    if ((trained.range || 0) < cfg.rangeCap) {
-      focusOptions.range = { nextAtk: hero.atk, nextHp: hero.hp, nextRange: hero.range + Math.round(this.rangeFor(this.heroesById.get(hero.id)) * cfg.range * this.environment("range", hero)) };
-    }
     const info = { train: true, needsFocus: true, focusOptions, hero, cost, nextAtk: hero.atk, nextHp: hero.hp };
     if (this.gold < cost) return { ...info, ok: false, reason: `Needs ${cost} gold, you have ${this.gold}.` };
     return { ...info, ok: true };
@@ -517,7 +515,7 @@ export class TowerDefenseGame {
     if (!info.ok) return info;
     if (info.needsFocus) {
       const option = info.focusOptions[focus];
-      if (!option) return { ...info, ok: false, reason: info.train ? "Choose what to train: attack, health or range." : `Choose a focus for level ${info.hero.level + 1}: attack, health or range.` };
+      if (!option) return { ...info, ok: false, reason: info.train ? "Choose what to train: attack or health." : `Choose a focus for level ${info.hero.level + 1}: attack or health.` };
       info = { ...info, ...option };
       if (info.train) info.hero.trained = { ...(info.hero.trained || {}), [focus]: (info.hero.trained?.[focus] || 0) + 1 };
       else info.hero.focus = focus;
@@ -640,7 +638,7 @@ export class TowerDefenseGame {
   // rest at 5, a wave keeps its total health, gold, pressure and lives at stake.
   // `kinds` overrides any of these per enemy kind (e.g. flyers, which skip blockers).
   waveShape(kind = null) {
-    const base = this.map?.rules?.waveShape ?? this.tuning.waveShape;
+    const base = this.boardRules?.waveShape ?? this.tuning.waveShape;
     if (!base?.enabled) return null;
     const cfg = { ...base, ...(kind ? base.kinds?.[kind] : null) };
     const power = cfg.power ?? 1 / (cfg.count || 1);
@@ -1143,7 +1141,7 @@ export class TowerDefenseGame {
   // Whether a hero's basic attack reaches an enemy: its pattern of board cells on a prototype
   // board with `rules.patterns`, otherwise its range circle.
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
-    const pattern = patternFor(this.map, hero.class);
+    const pattern = patternFor(this.boardRules, hero.class);
     const board = pattern && boardOf(this.map);
     return board ? inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y) : distance <= hero.range;
   }

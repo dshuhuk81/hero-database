@@ -2,6 +2,7 @@
 // portrait screens. Upgrade, target, sell and details. Buttons are updated in place so
 // focus survives game events. The game keeps running while the panel is open.
 import { CLASS_ROLES, worldToLocal } from "../ui.js";
+import { patternFor, patternSvg } from "../board.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
@@ -33,6 +34,7 @@ export function createPopover(ctx: PageContext) {
   const popAtk = q("[data-pop-atk]");
   const popAps = q("[data-pop-aps]");
   const popRange = q("[data-pop-range]");
+  const popRangeLabel = q("[data-pop-range-label]");
   const popCrit = q("[data-pop-crit]");
   const popUpgrade = q<HTMLButtonElement>("[data-pop-upgrade]");
   const popUpgradeLabel = q("[data-pop-upgrade-label]");
@@ -51,7 +53,7 @@ export function createPopover(ctx: PageContext) {
   const TARGET_NAMES: Record<string, string> = { first: "First enemy", last: "Last enemy", strongest: "Highest health", weakest: "Lowest health", fastest: "Fastest enemy", ground: "Ground first", flying: "Flyers first", boss: "Boss first" };
   // What "auto" does per class (targetOrder / dashTarget in sim.js).
   const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
-  const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health", range: "Range" };
+  const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health" };
   let focusOpen = false; // level-focus picker shown under the upgrade button
   const coarsePointer = window.matchMedia?.("(pointer: coarse)");
   let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
@@ -109,7 +111,11 @@ export function createPopover(ctx: PageContext) {
     popAtk.classList.toggle("is-buffed", atk > unit.atk);
     popAtk.title = atk > unit.atk ? `Base ${unit.atk}, boosted by auras, synergy or buffs` : "";
     popAps.textContent = `${Math.round(unit.aps * 100) / 100}/s`;
-    popRange.textContent = String(Math.round(unit.range));
+    // Board maps: the attack pattern as a grid instead of the range number.
+    const pattern = patternFor(state.session!.game.boardRules, unit.class);
+    if (pattern) popRange.innerHTML = patternSvg(pattern, 6);
+    else popRange.textContent = String(Math.round(unit.range));
+    popRangeLabel.textContent = pattern ? "Reach" : "Range";
     popCrit.textContent = `${Math.round(unit.critChance * 1000) / 10}%`;
   }
 
@@ -152,7 +158,7 @@ export function createPopover(ctx: PageContext) {
     const info = game.upgradeInfo(unit.entityId);
     const awakenText = AWAKEN_TEXT[unit.variant] ? ` ${unit.skillName ?? "Ultimate"}: ${AWAKEN_TEXT[unit.variant]}.` : "";
     if (info.train) {
-      // Training after Awakening: the button opens the attack/health/range picker again.
+      // Training after Awakening: the button opens the attack/health picker again.
       const t = data.tuning.training;
       popUpgrade.disabled = !info.ok;
       popUpgradeLabel.textContent = "Train";
@@ -162,7 +168,6 @@ export function createPopover(ctx: PageContext) {
       const texts: Record<string, string> = {
         attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(options.attack.nextAtk * boost)}`,
         health: `Health ${unit.hp} to ${options.health.nextHp}`,
-        range: options.range ? `Range ${Math.round(unit.range)} to ${options.range.nextRange} (${unit.trained?.range || 0} of ${t.rangeCap})` : `Range fully trained (${t.rangeCap} of ${t.rangeCap})`,
       };
       for (const [stat, text] of Object.entries(texts)) q(`[data-focus-text="${stat}"]`).textContent = text;
       // Honest diminishing returns (mechanics overview recommendation 7): training adds
@@ -172,12 +177,10 @@ export function createPopover(ctx: PageContext) {
       const gains: Record<string, string> = {
         attack: rel(Math.round(unit.atk * boost), Math.round(options.attack.nextAtk * boost)),
         health: rel(unit.hp, options.health.nextHp),
-        range: options.range ? rel(Math.round(unit.range), options.range.nextRange) : "maxed",
       };
       for (const stat of Object.keys(texts)) q(`[data-focus-bonus="${stat}"]`).textContent = gains[stat];
-      q<HTMLButtonElement>('[data-focus="range"]').disabled = !options.range;
       popPreview.textContent = !info.ok ? info.reason
-        : focusOpen ? "Pick one. Every training makes the next one pricier." : "Awakened heroes can keep training attack, health or range.";
+        : focusOpen ? "Pick one. Every training makes the next one pricier." : "Awakened heroes can keep training attack or health.";
     } else if (info.awaken) {
       popUpgrade.disabled = !info.ok;
       popUpgradeLabel.textContent = "Awaken";
@@ -203,17 +206,15 @@ export function createPopover(ctx: PageContext) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
       popCost.textContent = `${info.cost} gold`;
-      q<HTMLButtonElement>('[data-focus="range"]').disabled = false;
       const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
       const f = data.tuning.upgrades.focus;
       const texts: Record<string, string> = {
         attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.focusOptions.attack.nextAtk * boost)} (${Math.round(info.nextAtk * boost)} without focus)`,
         health: `Health ${unit.hp} to ${info.focusOptions.health.nextHp} (${info.nextHp} without focus)`,
-        range: `Range ${Math.round(unit.range)} to ${info.focusOptions.range.nextRange}`,
       };
       for (const [focus, text] of Object.entries(texts)) q(`[data-focus-text="${focus}"]`).textContent = text;
       for (const focus of Object.keys(texts)) q(`[data-focus-bonus="${focus}"]`).textContent = `+${Math.round(f[focus] * 100)}%`;
-      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Rank ${battleRank(f.level)} adds a focus of your choice: attack, health or range.`;
+      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Rank ${battleRank(f.level)} adds a focus of your choice: attack or health.`;
     } else if (info.ok) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;

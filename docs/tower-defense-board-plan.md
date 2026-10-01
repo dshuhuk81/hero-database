@@ -28,11 +28,12 @@ chapters of content already authored.
 
 ## Still open
 
-1. **In-battle upgrades in general.** Decided: no range upgrades in battle. Not yet decided:
-   whether levels, focus, class paths, Awakening and training also stay in battle (the plan
-   assumes yes), or whether all hero upgrades move outside battle.
-2. **Map freeze (decision 4):** pause map edits on `main` during steps 3 and 4, or run those
-   steps on `main` after this branch is merged.
+1. **In-battle upgrades in general.** Decided (October 1, 2026): hero upgrades belong outside
+   battle. For now the economy stays as is: levels, focus (attack or health), class paths,
+   Awakening and training remain in battle until the gold economy is redesigned; only range
+   left in step 1.
+2. **Map freeze (decision 4):** settled. The owner's map workflow is finished and was merged
+   into this branch before step 1, so no freeze is needed.
 3. **Reach ladder cost:** which resource buys a reach step on the Heroes screen: an Evolution
    tier, a skill rank, or its own upgrade with Gold and Seal Dust.
 4. **Patterns per class or per hero:** the prototype gives each class one pattern. Per-hero
@@ -102,6 +103,12 @@ two steps on `main` right after this branch is merged.
 Sizes: S is a day or less, M a few days, L a week or more.
 
 ### Step 1: make the board a first-class mode (M)
+
+Status (October 1, 2026): done except the step-1 tests listed last, which exist for patterns,
+shaped waves and the focus and training pickers (`test-td-sim.mjs`). Range left the battle
+on every map, not only on boards. Owner direction recorded: hero upgrades belong outside
+battle; the in-battle gold economy stays as is until it is redesigned.
+
 
 - `tuning.board` holds the wave shape, Mage focus and class patterns; any map with
   `grid.board` uses it, map `rules` override single values.

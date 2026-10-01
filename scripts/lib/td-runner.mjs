@@ -8,6 +8,7 @@ import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "js
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import waves from "../../src/data/tdWaves.json" with { type: "json" };
 import { rankedTiles } from "../../src/game/td/grid.js";
+import { patternFor } from "../../src/game/td/board.js";
 import campaign from "../../src/data/tdCampaign.json" with { type: "json" };
 
 export { maps };
@@ -44,7 +45,7 @@ export const SQUADS = {
 };
 
 // `tuning` overrides the base tuning (balance experiments). `focus` is the level focus
-// bots pick ("attack", "health", "range"); default: health on the road, attack on platforms.
+// bots pick ("attack", "health"); default: health on the road, attack on platforms.
 // `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
 // `game` adds constructor options (campaign stages: waves, allowedHeroes, lives, hpScale).
@@ -70,7 +71,7 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
         if (g.gold < g.deployCost(id)) continue;
-        const rings = rankedTiles(map, base.slot, g.rangeFor(base));
+        const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class));
         if (base.class === "Support") {
           const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
           const rank = new Map(rings.map((i, n) => [i, n]));

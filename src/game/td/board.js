@@ -31,9 +31,22 @@ export function cellAt(board, x, y) {
 
 export const onBoard = (board, [c, r]) => c >= 0 && r >= 0 && c < board.cols && r < board.rows;
 
-// Pattern name for a class on this map, or null when the map uses circles.
-export function patternFor(map, heroClass) {
-  const name = map?.rules?.patterns?.[heroClass];
+// Rules for a board map: tuning.board (shared by every board) with the map's own `rules`
+// on top, one level deep. Maps without `grid.board` get null and play with circles.
+export function boardRules(map, tuning) {
+  if (!boardOf(map)) return null;
+  const shared = tuning?.board ?? {};
+  const own = map.rules ?? {};
+  const out = { ...shared, ...own };
+  for (const key of Object.keys(own)) {
+    if (shared[key] && typeof shared[key] === "object" && typeof own[key] === "object") out[key] = { ...shared[key], ...own[key] };
+  }
+  return out;
+}
+
+// Pattern name for a class under these board rules, or null (range circle).
+export function patternFor(rules, heroClass) {
+  const name = rules?.patterns?.[heroClass];
   return name && PATTERNS[name] ? name : null;
 }
 
@@ -48,4 +61,21 @@ export function inPattern(board, name, hx, hy, x, y) {
   const [hc, hr] = cellAt(board, hx, hy);
   const [c, r] = cellAt(board, x, y);
   return (PATTERNS[name] ?? []).some(([dc, dr]) => hc + dc === c && hr + dr === r);
+}
+
+// A pattern as a small inline SVG grid for the UI (recruit card, hero panel): the hero's own
+// cell in gold, the cells it reaches in green, on the smallest square that holds the pattern.
+export function patternSvg(name, cell = 7) {
+  const offsets = PATTERNS[name];
+  if (!offsets) return "";
+  const n = Math.max(...offsets.map(([dc, dr]) => Math.max(Math.abs(dc), Math.abs(dr))));
+  const size = (2 * n + 1) * cell;
+  const covered = new Set(offsets.map((o) => o.join(",")));
+  let rects = "";
+  for (let dr = -n; dr <= n; dr++) for (let dc = -n; dc <= n; dc++) {
+    const own = dc === 0 && dr === 0;
+    const fill = own ? "#f2c35a" : covered.has(`${dc},${dr}`) ? "#5fd67a" : "rgba(255,255,255,0.12)";
+    rects += `<rect x="${(dc + n) * cell + 0.5}" y="${(dr + n) * cell + 0.5}" width="${cell - 1}" height="${cell - 1}" rx="1" fill="${fill}"/>`;
+  }
+  return `<svg class="td-pattern-grid" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Attack pattern: ${offsets.length} tiles">${rects}</svg>`;
 }

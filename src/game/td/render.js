@@ -750,7 +750,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // like the placement view of grid tower defense games; everyone else keeps the ring.
   function drawReach(x, y, radius, color, heroClass) {
     const board = boardOf(game.map);
-    const pattern = board && patternFor(game.map, heroClass);
+    const pattern = board && patternFor(game.boardRules, heroClass);
     if (!pattern) { drawRangeRing(layerRanges, x, y, radius, color); return; }
     const g = new PIXI.Graphics();
     const size = board.cell - 6;
@@ -937,6 +937,8 @@ export async function createRenderer(canvas, game, options = {}) {
     container._badgeDisc = disc;
     container.addChild(badge);
 
+    // Board maps: unit sizes from tuning.board (heroScale), tuned by eye.
+    container.scale.set(game.boardRules?.heroScale ?? 1);
     return container;
   }
 
@@ -1282,6 +1284,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c._iceOverlay = ice;
     c.addChild(ice);
 
+    c.scale.set(game.boardRules?.enemyScale ?? 1); // board maps: tuning.board.enemyScale
     return c;
   }
 
@@ -1489,9 +1492,10 @@ export async function createRenderer(canvas, game, options = {}) {
   function drawBars() {
     layerBars.removeChildren();
     const g = new PIXI.Graphics();
+    const enemyScale = game.boardRules?.enemyScale ?? 1; // bars follow the scaled sprites
     for (const unit of game.enemies) {
-      const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
-      const top = (fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9) - (unit.flying ? FLYER_LIFT : 0);
+      const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
+      const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });

@@ -56,13 +56,14 @@ which is the pressure valve for misplacement.
 **Progression steps per hero (all in-run, all lost when the hero falls):**
 
 1. **Levels 1→4** — +10% attack, +20% max HP per level (80/120/160 gold).
-2. **Focus (at L3)** — pick attack +10%, health +25%, or range +20%.
+2. **Focus (at L3)** — pick attack +10% or health +25%. Range is never upgraded in battle
+   (owner decision, October 1, 2026; reach grows outside battle, see the board plan).
 3. **Class path (at L4)** — one of three class-defining passives (e.g. Tank:
    Bulwark/Thorns/Warden; Mage: Wildfire/Frost/Arc).
 4. **Awakening (past L4, 220 gold)** — +15% attack, +25% HP, and a stronger
    ultimate (per-hero awaken text in `skills.js`).
-5. **Training (after awakening)** — repeatable +8% attack / +12% HP / +8% range
-   (range capped at 3 buys), price grows ×1.3 per buy — the infinite gold sink.
+5. **Training (after awakening)** — repeatable +8% attack / +12% HP, price grows ×1.3
+   per buy — the infinite gold sink.
 
 ## 4. Combat mechanics stack
 

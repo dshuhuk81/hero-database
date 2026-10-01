@@ -2,6 +2,7 @@
 // touch and keyboard all go through activateSlot. Choosing a card only inspects that hero
 // (touch has no hover); the Deploy button in the sheet footer is the one action that places.
 import { classIconImg } from "../assets.js";
+import { patternFor, patternSvg } from "../board.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { CLASS_ROLES, ROLE_HINTS, slotHitRadius } from "../ui.js";
 import { CLASS_ULT_TEXT, RING_INFO, SKILL_TEXT } from "../skills.js";
@@ -80,8 +81,11 @@ export function createRecruit(ctx: PageContext) {
     q("[data-td-preview-role]").textContent = (ROLE_HINTS as Record<string, string>)[hero.class] ?? "";
     const ring = ringOf(game, slot);
     const rangeBonus = ring && game.ringAt(slot.type, slot.index)?.range ? ` (${ring.name})` : "";
-    q("[data-td-preview-facts]").textContent = stats
-      ? `${stats.hitsFlyers ? "Hits ground and flying enemies" : "Hits ground enemies only"} · Range ${Math.round(stats.range)}${rangeBonus}`
+    // Board maps show the attack pattern as a small grid instead of a range number.
+    const pattern = patternFor(game.boardRules, hero.class);
+    const reach = pattern ? `Reach ${patternSvg(pattern)}` : `Range ${Math.round(stats?.range ?? 0)}${rangeBonus}`;
+    q("[data-td-preview-facts]").innerHTML = stats
+      ? `${stats.hitsFlyers ? "Hits ground and flying enemies" : "Hits ground enemies only"} · ${reach}`
       : "";
     const skill = data.tuning.heroSkills?.[heroId];
     const ultText = skill ? (SKILL_TEXT as Record<string, string>)[skill.variant] : "";

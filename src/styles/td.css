@@ -12904,3 +12904,6 @@ button .td-cur {
   min-height: 84px;
   box-sizing: border-box;
 }
+
+/* Board maps (board.js patternSvg): attack pattern grid in the recruit card and hero panel. */
+.td-pattern-grid { display: inline-block; vertical-align: middle; margin-left: 2px; }

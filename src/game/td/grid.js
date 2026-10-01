@@ -2,7 +2,7 @@
 // (ranged). Pure and deterministic; scripts/build-td-grid.mjs writes the result into
 // tdMaps.json as roadSlots / platformSlots / rings, so the game reads plain arrays.
 import { mapLanes } from "./lanes.js";
-import { cellCenter } from "./board.js";
+import { cellCenter, inPattern } from "./board.js";
 
 export const GRID_DEFAULTS = {
   cell: 60,        // tile size and spacing along the road
@@ -143,12 +143,15 @@ function samplesFor(map) {
 
 // Tiles for a hero, best first: most route inside its range, then later along the route
 // (closer to the sanctuary). Test bots use it to pick tiles like a player would.
-export function rankedTiles(map, type, range) {
+// On a board map, pass the hero's attack `pattern` (board.js) to score by its cells instead.
+export function rankedTiles(map, type, range, pattern = null) {
   const tiles = type === "road" ? map.roadSlots : map.platformSlots;
   const samples = samplesFor(map);
+  const board = pattern ? map.grid?.board : null;
+  const reaches = board ? (x, y, px, py) => inPattern(board, pattern, x, y, px, py) : (x, y, px, py) => Math.hypot(px - x, py - y) <= range;
   const score = tiles.map(([x, y]) => {
     let covered = 0, last = 0;
-    for (const [px, py, order] of samples) if (Math.hypot(px - x, py - y) <= range) { covered++; last = Math.max(last, order); }
+    for (const [px, py, order] of samples) if (reaches(x, y, px, py)) { covered++; last = Math.max(last, order); }
     return { covered, last };
   });
   return tiles.map((_, i) => i).sort((a, b) => score[b].covered - score[a].covered || score[b].last - score[a].last || a - b);

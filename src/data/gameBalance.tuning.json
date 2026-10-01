@@ -417,8 +417,7 @@
     "focus": {
       "level": 3,
       "attack": 0.1,
-      "health": 0.25,
-      "range": 0.2
+      "health": 0.25
     },
     "path": {
       "level": 4
@@ -681,9 +680,7 @@
     "cost": 120,
     "costGrowth": 1.3,
     "attack": 0.08,
-    "health": 0.12,
-    "range": 0.08,
-    "rangeCap": 3
+    "health": 0.12
   },
   "virtueEffects": {
     "Wildness": {
@@ -811,7 +808,37 @@
       }
     }
   ],
-  "waveShape": { "enabled": false, "count": 0.2, "gap": 2.5 },
+  "board": {
+    "waveShape": {
+      "enabled": true,
+      "count": 0.2,
+      "gap": 2.5,
+      "hp": 5,
+      "attack": 2.5,
+      "kinds": {
+        "flyer": {
+          "count": 0.4,
+          "hp": 1.75,
+          "attack": 1,
+          "power": 2.5
+        }
+      }
+    },
+    "focus": {
+      "slots": 2,
+      "share": 1
+    },
+    "patterns": {
+      "Tank": "plus",
+      "Warrior": "block",
+      "Assassin": "plus",
+      "Mage": "diamond2",
+      "Archer": "cross3",
+      "Support": "block"
+    },
+    "heroScale": 1,
+    "enemyScale": 1
+  },
   "run": {
     "startingGold": 340,
     "sellRefund": 0.5,

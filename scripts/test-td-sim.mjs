@@ -1432,7 +1432,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.gold = 100000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
-  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, odin.entityId, "range").ok);
+  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, odin.entityId, "attack").ok);
   const info = g.upgradeInfo(odin.entityId);
   assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
   assert.equal(info.cost, aw.cost);
@@ -1666,7 +1666,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(!g.enemies.some((e) => e.entityId === boss.entityId), "dead lilith leaves the field");
 }
 
-// --- Level focus: the step to focus.level asks for attack, health or range ---
+// --- Level focus: the step to focus.level asks for attack or health (no range in battle) ---
 {
   const f = tuning.upgrades.focus;
   const setup = () => {
@@ -1686,9 +1686,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(refused.reason.includes("focus"));
   assert.equal(g.gold, gold, "refused choice costs nothing");
   assert.equal(lv(g, odin.entityId, "speed").ok, false, "unknown focus rejected");
+  assert.deepEqual(Object.keys(info.focusOptions), ["attack", "health"], "range is not a battle focus");
+  assert.equal(lv(g, odin.entityId, "range").ok, false, "range focus rejected");
   // Each option previews and applies only its own stat.
   const plain = { atk: info.nextAtk, hp: info.nextHp, range: odin.range };
-  for (const focus of ["attack", "health", "range"]) {
+  for (const focus of ["attack", "health"]) {
     ({ g, odin } = setup());
     const option = g.upgradeInfo(odin.entityId).focusOptions[focus];
     assert.ok(lv(g, odin.entityId, focus).ok);
@@ -1697,7 +1699,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.equal(odin.atk, option.nextAtk); assert.equal(odin.hp, option.nextHp); assert.equal(odin.range, option.nextRange);
     assert.equal(odin.atk > plain.atk, focus === "attack", `${focus}: attack bonus only for attack`);
     assert.equal(odin.hp > plain.hp, focus === "health", `${focus}: health bonus only for health`);
-    assert.equal(odin.range > plain.range, focus === "range", `${focus}: range bonus only for range`);
+    assert.equal(odin.range, plain.range, `${focus}: range unchanged`);
     // The focus carries into later levels and Awakening, and is asked only once.
     const next = g.upgradeInfo(odin.entityId);
     assert.ok(!next.needsFocus, "focus is asked once");
@@ -2575,10 +2577,9 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(g.upgradeInfo(odin.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
   lv(g, odin.entityId, "health");
   assert.ok(odin.hp > hp, "health trained");
-  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(lv(g, odin.entityId, "range").ok, true);
-  assert.ok(odin.range > range, "range trained");
-  assert.equal(g.upgradeInfo(odin.entityId).focusOptions.range, undefined, "range stops at its cap");
+  assert.equal(g.upgradeInfo(odin.entityId).focusOptions.range, undefined, "range is not trained in battle");
   assert.equal(lv(g, odin.entityId, "range").ok, false);
+  assert.equal(odin.range, range, "training never changes range");
   assert.equal(odin.level, tuning.upgrades.maxLevel, "training adds no level");
 }
 

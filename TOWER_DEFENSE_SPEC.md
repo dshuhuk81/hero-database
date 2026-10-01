@@ -273,6 +273,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   double ring, flickering red ring). Reduced motion: static glow and rim, no drifting parts.
 - Hero actions: upgrade Lv1-4 (costs 80/120/160; Lv3 focus, Lv4 class path such as
   Mage wildfire/frost/arc), awakening, training, target mode, sell (50% refund).
+  Focus and training offer attack or health only: range is never upgraded in battle (owner,
+  October 1, 2026; `docs/tower-defense-board-plan.md`).
   The training picker shows each option's real relative gain ("+6.9% this time")
   instead of the base rate, because training adds a fixed share of base per buy —
   the relative gain shrinks as trainings pile up while the cost grows ×1.3
@@ -477,10 +479,15 @@ Compact board prototype (October 1, 2026; `src/game/td/board.js`, plan and measu
 [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) section F). A map with
 `grid.board` (`cell`, `cols`, `rows`, `origin`, `road` and `platforms` as cell lists) gets one
 tile per listed cell (`buildGrid`); the road and tiles are drawn at the cell size, and taps
-pick the cell under the pointer (`nearestSlot`). Its `rules` switch on prototype behaviour for
-that map only: `waveShape` (fewer, stronger enemies; flyers via `kinds`), `focus` (Mage focus
-rule) and `patterns` (class -> named pattern from `PATTERNS`: `plus`, `block`, `diamond2`,
-`cross3`, `block2`). With patterns a hero's basic attack reaches the enemies inside its pattern
+pick the cell under the pointer (`nearestSlot`). The rules apply to
+every board map: `tuning.board` holds the shared rules, a map's own `rules` override single
+values (`boardRules()` in `board.js`, `sim.boardRules`): `waveShape` (fewer, stronger enemies;
+flyers via `kinds`), `focus` (Mage focus rule), `patterns` (class -> named pattern from
+`PATTERNS`: `plus`, `block`, `diamond2`, `cross3`, `block2`), and `heroScale` / `enemyScale`
+(unit size on boards: hero and enemy containers scale as a whole, enemy health bars follow).
+The recruit card and the hero panel show the pattern as a small grid labelled "Reach"
+(`patternSvg`). Test bots rank board tiles by the route cells their pattern covers
+(`rankedTiles(map, type, range, pattern)`). With patterns a hero's basic attack reaches the enemies inside its pattern
 cells (`sim.reaches`); ultimates, auras, heals and Assassin dashes keep their range circles.
 Selecting or placing a hero highlights its cells in green instead of the range ring. A shaped
 group sends at least one enemy per gate, splitting the group's strength between them
