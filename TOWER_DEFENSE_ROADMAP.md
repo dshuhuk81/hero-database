@@ -35,6 +35,13 @@ Only open work. Use subagents for more than one milestone; coordinate file chang
 - [x] Fixed: Hero roster portraits use a gentler crop and sit lower in their tiles so heads remain inside the visible area.
 - [x] Fixed: Generic recruit art now uses a dedicated full-body fit in both roster tiles and the main hero view, keeping every recruit visible instead of applying the named-hero close-up crop.
 
+### Compact board adoption (owner, October 1, 2026)
+
+The owner kept the compact board direction (prototype `proto-board`, dev builds only). Plan,
+open decisions and steps: [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md).
+All maps move to boards, no two maps share a layout, range upgrades leave the battle, hero and
+enemy sizes get rebalanced.
+
 ### 4. Doc drift (audit)
 
 - `PROJECT_MEMORY.md`: still says the page is one `is:inline` script (split into `src/game/td/page/` long ago).
