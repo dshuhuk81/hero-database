@@ -1,6 +1,7 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
 import { boardOf, inPattern, patternFor } from "./board.js";
+import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
 // Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
@@ -258,7 +259,11 @@ export class TowerDefenseGame {
   }
 
   deployRange(base, slotType, slotIndex) {
-    return this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0));
+    return this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)) * this.environment("range", { ...base, slotType, slotIndex });
+  }
+
+  environment(stat, hero = null, kind = null) {
+    return environmentMultiplier(this.map, stat, { wave: this.wave, hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
   }
 
   // What place() would field on this tile, without spending anything (recruit preview).
@@ -350,7 +355,7 @@ export class TowerDefenseGame {
 
   // Kill gold with difficulty and Favor bonus; fractions carry over so small rewards still gain.
   killReward(reward) {
-    this.goldCarry += reward * this.difficulty.killGold * (1 + (this.favor.killGoldBonus || 0));
+    this.goldCarry += reward * this.difficulty.killGold * (1 + (this.favor.killGoldBonus || 0)) * this.environment("killGold");
     const paid = Math.floor(this.goldCarry + 1e-9);
     this.goldCarry -= paid;
     return paid;
@@ -361,7 +366,7 @@ export class TowerDefenseGame {
   }
 
   ultChargeRate(hero = null) {
-    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0));
+    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0)) * this.environment("charge", hero);
   }
 
   // Special rings (M16): a map's `rings` names the kind per "road:0" / "platform:2"; the
@@ -500,7 +505,7 @@ export class TowerDefenseGame {
       health: { nextAtk: hero.atk, nextHp: hp(plus("health")), nextRange: hero.range },
     };
     if ((trained.range || 0) < cfg.rangeCap) {
-      focusOptions.range = { nextAtk: hero.atk, nextHp: hero.hp, nextRange: hero.range + Math.round(this.rangeFor(this.heroesById.get(hero.id)) * cfg.range) };
+      focusOptions.range = { nextAtk: hero.atk, nextHp: hero.hp, nextRange: hero.range + Math.round(this.rangeFor(this.heroesById.get(hero.id)) * cfg.range * this.environment("range", hero)) };
     }
     const info = { train: true, needsFocus: true, focusOptions, hero, cost, nextAtk: hero.atk, nextHp: hero.hp };
     if (this.gold < cost) return { ...info, ok: false, reason: `Needs ${cost} gold, you have ${this.gold}.` };
@@ -664,7 +669,7 @@ export class TowerDefenseGame {
     const laneFree = this.lanes.map(() => 0);
     const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
-      const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
+      const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed * this.environment("enemySpeed", null, group.kind);
       const shape = this.waveShape(group.kind);
       const mutated = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
       const { count, split } = this.shapedGroup(group.kind, mutated);
@@ -788,7 +793,7 @@ export class TowerDefenseGame {
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps) * this.environment("aps", hero));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -840,10 +845,10 @@ export class TowerDefenseGame {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
     const ramp = this.endlessRamp();
-    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * statScale * ramp;
+    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * statScale * ramp * this.environment("enemyHp");
     const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
-    const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
+    const speed = base.speed * favorSpeed * this.difficulty.enemySpeed * this.environment("enemySpeed", null, kind);
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     // Wave shape prototype: wave enemies (not bosses, not summoned children) carry the
     // health, gold, attack and leak damage of the enemies the shape removed.
@@ -1075,7 +1080,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk);
+    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -1627,6 +1632,7 @@ export class TowerDefenseGame {
 
   // Heals a hero up to its maximum and credits the healer (M14). Returns the amount healed.
   healHero(target, amount, by) {
+    amount *= this.environment("heal", target);
     const healed = Math.max(0, Math.min(target.hp, target.hpLeft + amount) - target.hpLeft);
     target.hpLeft += healed;
     if (by?.id && healed > 0) this.statFor(by).heal += healed;
@@ -1924,7 +1930,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.rangeFor(base) * (1 + (this.ringAt(fallen.slotType, fallen.slotIndex)?.range || 0)), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
@@ -2181,7 +2187,7 @@ export class TowerDefenseGame {
       // Scaled to the slowest enemy's time to walk the whole path, so the limit
       // fits the map length and wave mix instead of one fixed number.
       const spawns = this.waves[this.wave - 1].spawns;
-      const slowest = Math.min(...spawns.map((group) => this.tuning.enemies[group.kind]?.speed ?? Infinity)) * this.difficulty.enemySpeed;
+      const slowest = Math.min(...spawns.map((group) => (this.tuning.enemies[group.kind]?.speed ?? Infinity) * this.environment("enemySpeed", null, group.kind))) * this.difficulty.enemySpeed;
       quest.seconds = Math.round((this.path.total / slowest) * cfg.speedClearTravel);
     }
     if (type === "heroKills") {

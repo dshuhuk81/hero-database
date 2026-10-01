@@ -5,6 +5,7 @@
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
+import { environmentFor } from "../environments.js";
 import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
@@ -235,6 +236,7 @@ export function createCampaign(ctx: PageContext) {
       <div class="td-camp-drawer-content">
         ${mapPreview(mapOf(stage.mapId))}
         <section><p class="td-camp-drawer-about">${stage.text}</p>
+          ${environmentFor(mapOf(stage.mapId)) ? `<p class="td-camp-drawer-about"><strong>${environmentFor(mapOf(stage.mapId))!.rule}:</strong> ${environmentFor(mapOf(stage.mapId))!.text}</p>` : ""}
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
             <div><dt>Waves</dt><dd>${stage.waves.length}</dd></div>

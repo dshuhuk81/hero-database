@@ -4,6 +4,7 @@
 import { buildRunTuning } from "../favor.js";
 import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
+import { environmentFor } from "../environments.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
@@ -63,10 +64,18 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     }
     deps.music.play(map.music);
     ctx.actions.showScreen("play");
-    stageNameEl.hidden = !campaignStage;
+    const environment = environmentFor(map);
+    const environmentLabel = q("[data-td-environment-rule]");
+    environmentLabel.hidden = !environment;
+    environmentLabel.textContent = environment?.rule ?? "";
+    stageNameEl.title = environment?.text ?? "";
+    stageNameEl.hidden = !campaignStage && !environment;
     if (campaignStage) {
       stageNumberEl.textContent = `Stage ${campaignStage.id}`;
       stageTitleEl.textContent = campaignStage.name;
+    } else if (environment) {
+      stageNumberEl.textContent = "Battlefield";
+      stageTitleEl.textContent = map.name;
     }
     pause.clear();
     ctx.actions.syncPauseButton();

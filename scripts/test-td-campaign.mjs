@@ -166,8 +166,13 @@ stages.forEach((stage, i) => {
     }
   };
   let progress = newCampaignProgress(campaign);
+  const fromChapter = Number(process.argv.find(arg => arg.startsWith("--from-chapter="))?.split("=")[1] ?? 1);
   for (const stage of stages) {
     const leveled = spendEvenly(progress);
+    if (stage.chapter < fromChapter) {
+      progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
+      continue;
+    }
     const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const levels = leveled.owned.map((id) => heroLevel(leveled, id));
     const map = maps.find((entry) => entry.id === stage.mapId);

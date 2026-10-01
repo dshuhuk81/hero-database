@@ -2,6 +2,7 @@
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf } from "./board.js";
+import { ENVIRONMENTS } from "./environments.js";
 
 const TAU = Math.PI * 2;
 
@@ -82,6 +83,23 @@ export const MAP_SCENES = {
     decorate: decorateJungle,
   },
 };
+
+// New environments share proven transparent architecture and road textures, with
+// their own terrain, grading, highlights and gameplay rules.
+for (const environment of Object.values(ENVIRONMENTS)) {
+  const source = MAP_SCENES[environment.reuse === "verdant" ? "verdant-shrine-v1" : `${environment.reuse}-sanctuary-v1`];
+  MAP_SCENES[`${environment.id}-sanctuary-v1`] = {
+    ...source, name: environment.name, baseName: "Sanctuary",
+    assets: { ...source.assets, terrain: `/td/maps/${environment.id}-terrain-v1.png` },
+    grade: { color: 0x080d16, alpha: 0.1 },
+    seed: environment.id.split("").reduce((seed, character) => (Math.imul(seed, 31) + character.charCodeAt(0)) >>> 0, 7),
+    structureTint: environment.color,
+    labels: { ...source.labels, base: ["SANCTUARY", environment.color] },
+    glow: { ...source.glow, base: environment.color, place: environment.color, mote: environment.color },
+    pad: { ...source.pad, platform: environment.color },
+    decorate: undefined,
+  };
+}
 
 export function mapSceneFor(map) {
   return MAP_SCENES[map?.art] ?? null;
@@ -302,6 +320,7 @@ export function createMapScene(PIXI, game, {
     back.ellipse(2, 14, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
     const sprite = add(structures, new PIXI.Sprite(texture));
+    if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
     sprite.position.set(point.x, point.y);
     sprite.width = width; sprite.height = height;
