@@ -121,6 +121,8 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
   (100 + 50/level) and Hero XP (50 + 25/level) — **campaign stages only**.
 - **Stars:** duplicates become copies; heroes start at 0 stars; 1/1/2/3/4
   copies + 100/200/400/600/800 Gold promote to 1–5 stars at +10% stats each.
+- **Reach steps:** 3 stars give one permanent attack-pattern step, 5 stars two
+  (board plan decision 1: range grows outside battle only).
 - **Level cap:** 0–5 stars cap levels at 10/20/30/40/50/60. Per-level gain
   drops by band: +6% (2–10), +3%, +2%, +1.5%, +1.5%, +1% (Lv 60 = +144%).
 - **Evolution:** a copy of the same hero or 150 Seal Dust buys tiers (Evolved I: +20% ult damage, II:

@@ -11,7 +11,7 @@ export const CLASS_ROLES = {
   Assassin: "Holds 1 enemy and dashes to enemies that slip past the line, hitting fast runners hardest. Its ultimate makes it untouchable for a moment while it strikes an extra enemy.",
   Mage: "Slow magic blasts that splash around the target (chain-lightning Mages chain instead). Best against packs and armored Brutes.",
   Archer: "Slow, heavy shots at the toughest enemy in range. Pierces armor and hits flyers twice as hard.",
-  Support: "Heals the most injured ally in range and raises the attack of allies inside its ring. Barely attacks.",
+  Support: "Heals the most injured ally in reach and raises the attack of allies inside its reach. Barely attacks.",
 };
 
 // One-line class summary for cards (campaign squad, recruit sheet).

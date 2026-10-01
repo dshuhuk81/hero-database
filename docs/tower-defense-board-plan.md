@@ -34,8 +34,8 @@ chapters of content already authored.
    left in step 1.
 2. **Map freeze (decision 4):** settled. The owner's map workflow is finished and was merged
    into this branch before step 1, so no freeze is needed.
-3. **Reach ladder cost:** which resource buys a reach step on the Heroes screen: an Evolution
-   tier, a skill rank, or its own upgrade with Gold and Seal Dust.
+3. **Reach ladder cost:** default chosen in step 5: stars (+1 step at 3 stars, +2 at 5). Can
+   move to Evolution or its own upgrade later (`heroStars.reachSteps`).
 4. **Patterns per class or per hero:** the prototype gives each class one pattern. Per-hero
    patterns give heroes more identity but cost a balance pass per hero.
 5. **Manual ultimates:** the Auto switch and tap-to-cast from section F step 3 of the ideas
@@ -164,6 +164,15 @@ A `board-v1` generator next to `lattice-v2`, same recipe and `geometryHash` cont
 
 ### Step 3: migrate every map (L)
 
+Status (October 1, 2026): done. `scripts/migrate-td-boards.mjs` regenerated all 79 maps and
+added `moonlit-horned-gate` (1-5), `sunscar-eve` (1-9) and `verdant-last-crossing` (1-10): 82
+stage maps, each its own layout, plus `proto-board`. Chapter 1 is 8 x 4, finales 10 x 5, the
+rest 9 x 5; maps that had two lanes, every finale and stage 3 of chapters 2-13 have two gates.
+High ground gives +1 reach step, Stormpeak takes one step off platform heroes unless they
+stand on high ground; texts changed accordingly. Rule tests that need range circles run on
+the pre-board maps kept as `scripts/fixtures/td-classic-maps.json`. The old grid code path
+stays for that fixture. Review page: `npm run td:board -- --current`.
+
 - Regenerate all 80 maps as boards, keeping ids, names, themes, art, music, bosses and
   environment, so campaign stages, saves and Free Play bests need no migration.
 - Give the three shared maps a second map each, so every one of the 82 stages has its own
@@ -184,6 +193,15 @@ A `board-v1` generator next to `lattice-v2`, same recipe and `geometryHash` cont
 
 ### Step 5: ultimates, auras and polish (M)
 
+Status (October 1, 2026): done in a general form rather than hero by hero. On a board a hero's
+`range` is the radius of a circle with its pattern's area, so every ultimate area and scaled
+reach fits the board, and every check of the form "ally or enemy in range" (heals, auras,
+buffs, ultimates without a multiplier) uses the pattern cells (`sim.inReach`). Cone and
+multiplied areas (1.8x, 2.5x range) stay circles of the new radius. Permanent reach steps come
+from stars (open question 3, default chosen: +1 step at 3 stars, +2 at 5). Glossary ("Reach"
+with the pattern name), How to play, class hints and the spec describe patterns. Sizes stay at
+`heroScale` / `enemyScale` 1 for the owner's refinement.
+
 - Ultimates, Support auras and heals move from range circles to patterns, hero by hero,
   starting with the ones whose area is drawn on the board.
 - Hero and enemy sizes per the owner's refinement (requirement D).
@@ -192,6 +210,10 @@ A `board-v1` generator next to `lattice-v2`, same recipe and `geometryHash` cont
 - Spec and mechanics overview updated to the board as the only mode.
 
 ### Step 6: blessing tree cleanup (S)
+
+Status (October 1, 2026): done without a save migration: the six `*_reach` nodes keep their
+ids and bought levels and now give Tank guard, Warrior / Assassin / Archer crit and Mage /
+Support ultimate charge, so nothing has to be refunded.
 
 - Replace the six `*_reach` nodes with new class bonuses; save migration refunds Insight
   spent on them.

@@ -24,6 +24,7 @@ import bosses from "../../data/bosses.json";
 import tdBosses from "../../data/tdBosses.json";
 import campaign from "../../data/tdCampaign.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
+import { patternLabel } from "../../game/td/board.js";
 import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
@@ -52,7 +53,7 @@ const tagLabel = (tag: string) => tag.toLowerCase().replace(/_/g, " ").replace(/
 // Material Symbols (Rounded), loaded as a subset: only the icons named here. Every icon the
 // glossary shows must come from these maps so the subset URL stays complete.
 const STAT_ICON: Record<string, string> = {
-  "Health": "favorite", "Attack": "swords", "Attacks / s": "speed", "Range": "radar",
+  "Health": "favorite", "Attack": "swords", "Attacks / s": "speed", "Reach": "radar",
   "Armor": "shield", "Magic res": "shield_moon", "Crit": "crisis_alert",
   "Ult charge": "hourglass_top", "Ult power": "bolt", "Speed": "directions_run",
   "Attack range": "radar", "Shield": "security", "Lives lost": "heart_broken", "Gold": "paid",
@@ -104,7 +105,7 @@ const heroCards = [...(heroes as any[])]
         ["Health", hero.hp],
         ["Attack", hero.atk],
         ["Attacks / s", hero.aps],
-        ["Range", hero.range],
+        ["Reach", patternLabel((rawTuning as any).board?.patterns?.[hero.class])],
         ["Armor", hero.armor],
         ["Magic res", hero.magicRes],
         ["Crit", pct(hero.critChance)],
@@ -183,7 +184,7 @@ const heroAttrs: [string, string, string][] = [
   ["favorite", "Health", "Damage a hero takes before it falls. A fallen hero can be recruited again at battle rank I."],
   ["swords", "Attack", "Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it."],
   ["speed", "Attacks / s", "Basic attacks per second."],
-  ["radar", "Range", "How far the hero reaches, in map pixels. The ring on the map shows it."],
+  ["radar", "Reach", "The tiles around its own tile that a hero's basic attack covers. Selecting or placing a hero lights them up green. High ground adds one step while the hero stands there; stars add steps outside battle. Range is never upgraded in battle."],
   ["auto_fix_high", "Damage type", "Physical damage is reduced by armor, magic damage by magic resistance. 260 points halve the damage."],
   ["shield", "Armor / Magic res", "Reduce physical and magic damage the hero takes. Enemies only deal physical damage."],
   ["crisis_alert", "Crit", "Chance for a basic hit to deal 1.5x damage."],

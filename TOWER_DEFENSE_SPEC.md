@@ -455,22 +455,24 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 
 ## 7. Maps (`tdMaps.json`)
 
-| id | Name | Routes | Boss |
-|---|---|---|---|
-| `moonlit-pass` | Moonlit Pass | one path | `baphomet` |
-| `verdant-crossing` | Verdant Crossing | one path | `lilith` |
-| `sunscar-ruins` | Sunscar Ruins | 2 `lanes`, one base | `baphomet` |
-| `sunscar-basin` | Sunscar Basin | one path, **generated** (`orthogonal-v1`, seed 3) | `baphomet` |
-| `sunscar-glass` | Glass Flats | one path, lattice-v2 seed 114 (top gate), campaign only (2-2) | `baphomet` |
-| `sunscar-wells` | Well Road | one path, lattice-v2 seed 95 (bottom gate), campaign only (2-3) | `baphomet` |
-| `sunscar-noon` | Noon Terraces | one path, lattice-v2 seed 107 (left gate), campaign only (2-4) | `baphomet` |
-| `sunscar-mirage` | Mirage Steps | one path, lattice-v2 seed 74 (bottom gate), campaign only (2-5) | `baphomet` |
-| `sunscar-throne` | Ash Throne Approach | 2 gates (bottom + left), lattice-v2 seed 101, campaign only (2-6) | `baphomet` |
-| `moonlit-terraces` | Moonlit Terraces | one path, lattice-v2 seed 74 (bottom gate), campaign only (1-3) | `baphomet` |
-| `verdant-thicket` | Thorn Thicket | one path, lattice-v2 seed 120 (top gate), campaign only (1-4) | `lilith` |
-| `verdant-glade` | Hexed Glade | one path, lattice-v2 seed 70 (bottom gate), campaign only (1-6) | `lilith` |
-| `verdant-hollow` | Root Hollow | one path, lattice-v2 seed 33 (left gate), campaign only (1-8) | `lilith` |
-| `proto-board` | Prototype Board | 2 lanes on a compact 9 x 5 board, `prototype: true`, dev builds only (Free Play map select) | `baphomet` |
+Every battlefield is a compact board (October 1, 2026, `docs/tower-defense-board-plan.md`
+step 3, `scripts/migrate-td-boards.mjs`): 82 stage maps plus the dev-only `proto-board`, each
+with a unique layout (`npm run td:board -- --check`; `npm run td:board -- --current` draws them
+all). Ids, names, themes, art, music and bosses stayed as they were.
+
+| Group | Board | Gates |
+|---|---|---|
+| Chapter 1 stages 1-1 to 1-9 | 8 x 4 cells (118 px) | 1; 2 on 1-7 and 1-9 |
+| Chapter finales (1-10, 2-6, ... 13-6) | 10 x 5 cells (94 px) | 2 |
+| Every other stage | 9 x 5 cells (104 px) | 1; 2 on stage 3 of chapters 2-13 |
+
+Stages 1-5, 1-9 and 1-10 used to share a map with 1-1, 1-7 and 1-2; they now have their own
+maps (`moonlit-horned-gate`, `sunscar-eve`, `verdant-last-crossing`). Free Play battlefields
+(not `campaignOnly`): `moonlit-pass`, `verdant-crossing`, `sunscar-ruins`, `sunscar-basin` and
+the six `jungle-*` maps; each carries its own `enemyHp` for open modes (0.5 Heart Temple to
+1.25 Verdant Crossing), set so bot squads win about 7-9 of 12 runs. The pre-board versions of
+the first four live on as a test fixture (`scripts/fixtures/td-classic-maps.json`) for rule
+tests that need the range-circle geometry.
 
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
@@ -491,8 +493,16 @@ pick the cell under the pointer (`nearestSlot`). The rules apply to
 every board map: `tuning.board` holds the shared rules, a map's own `rules` override single
 values (`boardRules()` in `board.js`, `sim.boardRules`): `waveShape` (fewer, stronger enemies;
 flyers via `kinds`), `focus` (Mage focus rule), `patterns` (class -> named pattern from
-`PATTERNS`: `plus`, `block`, `diamond2`, `cross3`, `block2`), and `heroScale` / `enemyScale`
+`PATTERNS`: `plus`, `block`, `blockPlus`, `diamond2`, `star3`, `cross3`, `cross4`, `diamond3`,
+`block2`), and `heroScale` / `enemyScale`
 (unit size on boards: hero and enemy containers scale as a whole, enemy health bars follow).
+Reach steps (`steppedPattern`, `sim.patternAt`): high ground moves a hero one step up its
+class ladder (Mage `diamond2` -> `star3`, Archer `cross3` -> `cross4`, Tank `plus` -> `block`,
+...), Stormpeak's headwinds move platform heroes one step down unless they stand on high ground,
+and stars add permanent steps (`heroStars.reachSteps`: +1 at 3 stars, +2 at 5; campaign only,
+shown on the Stars tab). On a board a hero's `range` is the radius of the circle with its
+pattern's area (`patternRadius`), so ultimate areas and scaled reaches fit the board; heals,
+auras and ultimates that check "in range" use the pattern cells (`sim.inReach`).
 The recruit card and the hero panel show the pattern as a small grid labelled "Reach"
 (`patternSvg`). Test bots rank board tiles by the route cells their pattern covers
 (`rankedTiles(map, type, range, pattern)`). With patterns a hero's basic attack reaches the enemies inside its pattern
@@ -984,7 +994,12 @@ Back to Camp. Spend Favor is hidden after campaign stages (they earn no Favor).
 
 - **Favor**: earned per wave, perfect wave, boss kill, remaining lives (`favorEarn`),
   scaled by tier and mutators. Spent in the Divine Blessings tree.
-- **Insight**: per-class currency for the class branches of the tree.
+- **Insight**: per-class currency for the class branches of the tree. The six Mythic
+  "Reach" nodes (`*_reach`) no longer raise range (range is not upgraded on boards); since
+  October 1, 2026 they keep their ids and bought levels but give Iron Hide (Tank guard
+  +2%/level), Keen Edge (Warrior crit +2%), Killer Instinct (Assassin crit +3%), Focused Mind
+  (Mage ultimate charge +3%), Steady Aim (Archer crit +2%) and Swift Grace (Support ultimate
+  charge +3%), so saves need no migration or refund.
 - **Virtue blessings**: between-wave offers from 12 virtues (Wildness, Desire, ...),
   with virtue pairs (e.g. Storm Bond) granting extra run effects. Run boons (rare/epic)
   can roll with requirements such as `chain` or `wet`.

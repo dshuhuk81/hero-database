@@ -80,6 +80,10 @@ export function inPattern(board, name, hx, hy, x, y) {
   return (PATTERNS[name] ?? []).some(([dc, dr]) => hc + dc === c && hr + dr === r);
 }
 
+// Plain names for the UI (glossary, help).
+const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square" };
+export const patternLabel = (name) => (PATTERNS[name] ? `${LABELS[name] ?? name}, ${PATTERNS[name].length} tiles` : "");
+
 // Radius of the circle with the same area as a pattern, in px: on boards a hero's `range`
 // (ultimate areas, auras drawn as circles, scaled reaches) follows its pattern.
 export function patternRadius(name, cell) {
