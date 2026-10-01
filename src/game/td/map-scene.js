@@ -303,7 +303,9 @@ export function createMapScene(PIXI, game, {
   }
 
   function label(text, x, y, size, color) {
-    const t = add(overlay, new PIXI.Text({ text, style: {
+    // Labels belong to the battlefield, behind placement tiles and combatants. Putting
+    // them on the HUD layer made them paint over enemies, health bars and heroes.
+    const t = add(structures, new PIXI.Text({ text, style: {
       fontFamily: "Georgia, serif", fontSize: size, fontWeight: "600", fill: color,
       letterSpacing: size >= 10 ? 1.3 : 0.5,
       stroke: { color: theme.labels.stroke, width: 3 },

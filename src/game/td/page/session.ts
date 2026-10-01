@@ -16,6 +16,10 @@ import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
 import type { ScreenId } from "./nav";
 
+// Enemy death and final-impact animations use up to 0.5s of wall time in render.js.
+// Keep transition UI off the battlefield until those animations have resolved.
+const BATTLE_SETTLE_MS = 650;
+
 type Deps = {
   music: { play(track: string): void; stop(): void };
   speed(): number;
@@ -38,6 +42,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   const stageTitleEl = q("[data-td-stage-title]");
   let sessionToken = 0;
   let loadingCanvas: HTMLCanvasElement | null = null;
+  let battleSettleTimer: number | undefined;
 
   async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null; campaign?: CampaignRun | null } = {}) {
     const token = ++sessionToken;
@@ -102,7 +107,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     loadingCanvas = null;
     loadingEl.hidden = true;
 
-    game.onChange = handleChange;
+    game.onChange = (type: string) => handleChange(type);
     game.onEffect = ctx.actions.playEffect;
     const keyboardSlots: Slot[] = [
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
@@ -128,6 +133,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   }
 
   function end() {
+    window.clearTimeout(battleSettleTimer);
+    battleSettleTimer = undefined;
     stageNameEl.hidden = true;
     deps.buffBar.reset();
     ctx.actions.closePopover(false);
@@ -158,10 +165,19 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.exitPlay(target);
   }
 
-  function handleChange(type: string) {
+  function handleChange(type: string, settled = false) {
     const session = state.session;
     if (!session) return;
     const game = session.game;
+    if (!settled && (type === "clear" || type === "finish")) {
+      const token = sessionToken;
+      window.clearTimeout(battleSettleTimer);
+      battleSettleTimer = window.setTimeout(() => {
+        battleSettleTimer = undefined;
+        if (token === sessionToken && state.session === session) handleChange(type, true);
+      }, BATTLE_SETTLE_MS);
+      return;
+    }
     ctx.actions.updateHud();
     if (type === "leak" && game.lives > 0) ctx.notice(`${game.map.base ? `${mapSceneFor(game.map)?.baseName ?? "Sanctuary"} hit.` : "An enemy broke through."} ${game.lives} ${game.lives === 1 ? "life" : "lives"} left.`);
     if (type === "death") {

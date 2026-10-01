@@ -323,6 +323,9 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   heroes directly (Baphomet's mark and Hexers still affect them).
 - Bosses: `baphomet` (mark, stance) and `lilith` (summons brood, enrages below 50%).
   Each map names its boss.
+- The boss comes last (October 1, 2026): `startWave` moves boss entries to the end of the
+  spawn queue, and `step` spawns one only when no regular enemy is left on the field (killed or
+  leaked; a boss's own children do not count, `fieldHasMinions`). Applies to every mode.
 - TD-original bosses, prepared but on no map yet (September 29, 2026): `lerna` (Lerna, the
   Root-Maw, three-headed root hydra), `kraghorn` (Kraghorn, the Broken Tusk, stone-plated boar)
   and `vorruk` (Vorruk, the Hollow Hunger, segmented worm). Art and concept notes in

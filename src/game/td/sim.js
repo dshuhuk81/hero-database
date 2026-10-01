@@ -648,6 +648,9 @@ export class TowerDefenseGame {
       }
       at += 0.8;
     }
+    // The boss comes last: its entries move to the end of the queue and wait until every
+    // other enemy of the wave has spawned and is gone (killed or leaked), see step().
+    this.spawnQueue = [...this.spawnQueue.filter((entry) => entry.kind !== "boss"), ...this.spawnQueue.filter((entry) => entry.kind === "boss")];
     this.spawnClock = 0;
     this.running = true;
     this.paused = false;
@@ -668,7 +671,7 @@ export class TowerDefenseGame {
     if (!this.running) return;
     this.time += dt;
     this.spawnClock += dt;
-    while (this.spawnQueue.length && this.spawnQueue[0].at <= this.spawnClock) {
+    while (this.spawnQueue.length && (this.spawnQueue[0].kind === "boss" ? !this.fieldHasMinions() : this.spawnQueue[0].at <= this.spawnClock)) {
       const next = this.spawnQueue.shift();
       this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0, sway: next.sway ?? 0 });
       if (!this.spawnQueue.length && this.waveStats) this.waveStats.lastSpawnAt = this.time;
@@ -792,6 +795,11 @@ export class TowerDefenseGame {
         this.offerVirtues(); this.offerMutators(); this.onChange("clear", this);
       }
     }
+  }
+
+  // Regular enemies still on the field (not bosses, not a boss's children): the boss waits for them.
+  fieldHasMinions() {
+    return this.enemies.some((enemy) => !enemy.dead && enemy.kind !== "boss" && !enemy.parentId);
   }
 
   laneOf(enemy) {

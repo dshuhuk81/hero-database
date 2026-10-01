@@ -650,6 +650,22 @@ export function createCampaign(ctx: PageContext) {
     if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad] } });
   }
 
+  // The stage rail hides its scrollbar to fit the landscape menu. A mouse wheel only
+  // tries to move the vertical screen body, so chapters with more than five stages had
+  // no practical desktop path to the cards off-screen. Keep native horizontal trackpad
+  // and touch scrolling, and translate a predominantly vertical wheel over the rail.
+  stagesEl.addEventListener("wheel", (event) => {
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    const maxScroll = stagesEl.scrollWidth - stagesEl.clientWidth;
+    if (maxScroll <= 0) return;
+    const unit = event.deltaMode === WheelEvent.DOM_DELTA_LINE ? 16
+      : event.deltaMode === WheelEvent.DOM_DELTA_PAGE ? stagesEl.clientWidth
+      : 1;
+    const before = stagesEl.scrollLeft;
+    stagesEl.scrollLeft = Math.max(0, Math.min(maxScroll, before + event.deltaY * unit));
+    if (stagesEl.scrollLeft !== before) event.preventDefault();
+  }, { passive: false });
+
   ctx.root.querySelector<HTMLElement>('[data-td-screen="stages"]')!.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     const chapterButton = target.closest<HTMLButtonElement>("[data-camp-chapter]");

@@ -1733,12 +1733,27 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const g = new TowerDefenseGame({ heroes, tuning, map: lilithMap, waves, mode: "long", seed: 3 });
   assert.equal(g.totalWaves, 20, "long mode total");
   g.wave = 4; g.startWave();
-  g.spawnQueue.find((e) => e.kind === "boss").at = 0;
+  g.spawnQueue = g.spawnQueue.filter((e) => e.kind === "boss");
   g.step(1 / 60);
   const boss = g.enemies.find((e) => e.kind === "boss");
   assert.equal(boss.statScale, tuning.waveGen.midBossScale, "wave 5 boss scaled");
   const child = g.enemies.find((e) => e.parentId === boss.entityId);
   assert.equal(child.statScale, tuning.waveGen.midBossScale, "children share the boss scale");
+
+  // The boss comes last: it waits until every other enemy of its wave is gone.
+  {
+    const last = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 4 });
+    last.wave = waves.findIndex((w) => w.spawns.some((sp) => sp.kind === "boss") && w.spawns.length > 1);
+    last.startWave();
+    assert.equal(last.spawnQueue.at(-1).kind, "boss", "boss queued last");
+    for (let i = 0; i < 60 * 120 && last.spawnQueue.length > 1; i += 1) last.step(1 / 60);
+    assert.equal(last.spawnQueue.length, 1, "minions all spawned");
+    last.step(1 / 60);
+    assert.ok(!last.enemies.some((e) => e.kind === "boss") && last.spawnQueue.length === 1, "boss waits while minions stand");
+    for (const e of last.enemies) e.dead = true;
+    last.step(1 / 60); last.step(1 / 60);
+    assert.ok(last.enemies.some((e) => e.kind === "boss"), "boss spawns once the field is clear");
+  }
 
   // A finite long run ends in a win after wave 20; endless keeps going.
   const finish = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "long", seed: 5 });
