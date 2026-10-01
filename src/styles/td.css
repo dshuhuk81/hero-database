@@ -3078,6 +3078,8 @@
   max-width: calc(100% - var(--space-4));
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: var(--space-1);
   pointer-events: none;
 }
@@ -7470,7 +7472,9 @@ svg.td-class-icon {
     height: 14px;
   }
 
-  .td-wave-preview {
+  /* Match the stage-name rule's specificity, or its top: 64px wins and stretches the chips. */
+  .td-wave-preview,
+  .td-stage-name:not([hidden])~.td-wave-preview {
     top: auto;
     bottom: var(--space-2);
     max-width: 45%;
