@@ -19,6 +19,31 @@ chapters of content already authored.
 - **D. Hero and enemy sizes** need rebalancing for the larger tiles. The owner refines these
   by eye; the code should make them easy to tune.
 
+## Owner decisions (October 1, 2026)
+
+- **Range:** upgrades stay, but never during battle. Range leaves focus, training and the
+  blessing tree; reach grows only in discrete steps on the Heroes screen, plus the high ground
+  tile's positional step (decision 1 below).
+- **Board sizes, shared rule set, plan order:** accepted as recommended below.
+
+## Still open
+
+1. **In-battle upgrades in general.** Decided: no range upgrades in battle. Not yet decided:
+   whether levels, focus, class paths, Awakening and training also stay in battle (the plan
+   assumes yes), or whether all hero upgrades move outside battle.
+2. **Map freeze (decision 4):** pause map edits on `main` during steps 3 and 4, or run those
+   steps on `main` after this branch is merged.
+3. **Reach ladder cost:** which resource buys a reach step on the Heroes screen: an Evolution
+   tier, a skill rank, or its own upgrade with Gold and Seal Dust.
+4. **Patterns per class or per hero:** the prototype gives each class one pattern. Per-hero
+   patterns give heroes more identity but cost a balance pass per hero.
+5. **Manual ultimates:** the Auto switch and tap-to-cast from section F step 3 of the ideas
+   document are not built yet. Build them with step 1 or later?
+6. **Deploy economy:** the plan keeps gold. The Watcher of Realms style regenerating deploy
+   counter stays rejected unless playtests say otherwise.
+7. **Open from the earlier ideas list:** Divine Interventions (possibly unnecessary with
+   manual ultimates), pantheon bonds, early call or wave interest, Heroic campaign.
+
 ## Decisions for the owner
 
 Each has a recommendation; the plan below assumes it.
