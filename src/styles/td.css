@@ -11589,16 +11589,27 @@ button .td-cur {
   right: 0;
   bottom: 0;
   left: 0;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
   padding: 8px 2px 2px;
   background: linear-gradient(transparent, rgba(9, 9, 16, .9) 55%);
   color: var(--text-bright);
-  font-size: 9px;
-  font-weight: var(--weight-semibold);
-  line-height: 1.5;
+  line-height: 1;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.td-app .td-squad-tile-foot>small {
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+}
+
+.td-app .td-squad-tile-foot .td-stars {
+  font-size: 7px;
+  letter-spacing: 0;
 }
 
 /* Bottom row: slots and hint centered, Might above Start on the right; no screen footer. */
@@ -11622,10 +11633,11 @@ button .td-cur {
 
 .td-app .td-squad-go {
   grid-column: 3;
-  grid-row: 1 / span 2;
-  justify-self: end;
+  grid-row: 1;
+  justify-self: center;
   display: grid;
   justify-items: center;
+  align-self: center;
   gap: 4px;
 }
 
@@ -11637,6 +11649,7 @@ button .td-cur {
 .td-app .td-squad-power {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   margin: 0;
   font-size: 12px;
@@ -11653,8 +11666,8 @@ button .td-cur {
   width: auto;
   grid-template-columns: none;
   grid-auto-flow: column;
-  grid-auto-columns: 84px;
-  gap: var(--space-3);
+  grid-auto-columns: 64px;
+  gap: var(--space-2);
 }
 
 .td-app .td-squad-slot {
@@ -11662,16 +11675,16 @@ button .td-cur {
 }
 
 .td-app .td-squad-slot-card {
-  width: 84px;
-  height: 84px;
+  width: 64px;
+  height: 72px;
   aspect-ratio: auto;
 }
 
 .td-app .td-squad-slot-class {
   top: 3px;
   right: 3px;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
 }
 
 .td-app .td-squad-slot-cost {

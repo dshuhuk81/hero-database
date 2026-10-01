@@ -307,7 +307,7 @@ export function createCampaign(ctx: PageContext) {
         <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
         <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
     }).join("");
-    // Roster: 50 x 75 art cards, class icon on the art, level over its foot; name and (for
+    // Roster: 50 x 75 art cards, class icon on the art, level and stars over its foot; name and (for
     // locked heroes) the unlock source are in the tooltip and label. Locked heroes trail the owned ones, dimmed.
     const mightOf = new Map<string, number>(data.heroes.map((hero: any) => [hero.id, might(hero)]));
     const heroes = [...data.heroes].sort((a: any, b: any) =>
@@ -321,11 +321,11 @@ export function createCampaign(ctx: PageContext) {
       const heroMight = mightOf.get(hero.id) ?? 0;
       const tip = owned ? `${hero.name} · ${heroMight.toLocaleString()} Might · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
-      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
+      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} of ${campaign.heroStars?.max ?? 5} stars` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" src="${hero.image}" alt="" loading="lazy">
         <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
-        ${owned ? `<small class="td-squad-tile-foot">Lv ${heroLevel(p, hero.id)}</small>` : ""}</button>`;
+        ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
