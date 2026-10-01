@@ -10,6 +10,7 @@ import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
+import { boardOf, cellCenter, patternCells, patternFor } from "./board.js";
 
 // Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
 // deliberately and re-run the Chromium checks.
@@ -740,9 +741,25 @@ export async function createRenderer(canvas, game, options = {}) {
   function buildRanges() {
     layerRanges.removeChildren();
     const placement = game.uiPlacement;
-    if (placement) drawRangeRing(layerRanges, placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple");
+    if (placement) drawReach(placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple", placement.heroClass);
     const selected = game.heroes.find((u) => u.entityId === game.uiSelected);
-    if (selected) drawRangeRing(layerRanges, selected.x, selected.y, selected.range, selected.slotType === "road" ? "gold" : "purple");
+    if (selected) drawReach(selected.x, selected.y, selected.range, selected.slotType === "road" ? "gold" : "purple", selected.class);
+  }
+
+  // Prototype board (board.js): a hero with an attack pattern shows its cells in green,
+  // like the placement view of grid tower defense games; everyone else keeps the ring.
+  function drawReach(x, y, radius, color, heroClass) {
+    const board = boardOf(game.map);
+    const pattern = board && patternFor(game.map, heroClass);
+    if (!pattern) { drawRangeRing(layerRanges, x, y, radius, color); return; }
+    const g = new PIXI.Graphics();
+    const size = board.cell - 6;
+    for (const cell of patternCells(board, pattern, x, y)) {
+      const [cx, cy] = cellCenter(board, cell);
+      g.rect(cx - size / 2, cy - size / 2, size, size).fill({ color: 0x47d16b, alpha: 0.2 });
+      g.rect(cx - size / 2, cy - size / 2, size, size).stroke({ width: 3, color: 0x6dff8e, alpha: 0.85 });
+    }
+    layerRanges.addChild(g);
   }
 
   function drawRangeRing(container, x, y, radius, color) {
@@ -1914,16 +1931,19 @@ export function canvasPoint(canvas, event) {
   return { x: (event.clientX - rect.left) * 960 / rect.width, y: (event.clientY - rect.top) * 540 / rect.height };
 }
 
-// A point inside a drawn tile (56 px square) always picks that tile, so the corners of
-// staggered tiles at road bends are not stolen by a neighbour whose centre is closer.
+// A point inside a drawn tile (56 px square, a board cell on a prototype board) always picks
+// that tile, so the corners of staggered tiles at road bends are not stolen by a neighbour
+// whose centre is closer.
 const TILE_HALF = 28;
 export function nearestSlot(map, point, maxDistance = 38) {
+  const board = boardOf(map);
+  const half = board ? board.cell / 2 : TILE_HALF;
   let best = null, bestInside = false;
   for (const type of ["road", "platform"]) {
     const slots = type === "road" ? map.roadSlots : map.platformSlots;
     slots.forEach(([x, y], index) => {
       const distance = Math.hypot(point.x - x, point.y - y);
-      const inside = Math.abs(point.x - x) <= TILE_HALF && Math.abs(point.y - y) <= TILE_HALF;
+      const inside = Math.abs(point.x - x) <= half && Math.abs(point.y - y) <= half;
       if (!inside && distance > maxDistance) return;
       if (!best || (inside && !bestInside) || (inside === bestInside && distance < best.distance)) {
         best = { type, index, distance };

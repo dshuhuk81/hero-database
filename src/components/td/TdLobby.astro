@@ -11,7 +11,8 @@ import TdHome from "./TdHome.astro";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
 const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
 // Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
-const previews = maps.filter((entry: any) => !entry.campaignOnly).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
+// Dev builds also list prototype maps (`prototype: true`, e.g. the compact board, board.js).
+const previews = maps.filter((entry: any) => !entry.campaignOnly || (isDev && entry.prototype)).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
 const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({

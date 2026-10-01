@@ -1,6 +1,7 @@
 // Retained scenery for authored battlefields. Coordinates use the game's 960 × 540 world.
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
 import { mapLanes, routeStrokes } from "./lanes.js";
+import { boardOf } from "./board.js";
 
 const TAU = Math.PI * 2;
 
@@ -97,6 +98,9 @@ export function createMapScene(PIXI, game, {
   let seed = theme.seed;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   const spawns = mapLanes(game.map).map((lane) => lane.spawn);
+  // Prototype board (board.js): the road and tiles grow to the board's cell size.
+  const board = boardOf(game.map);
+  const roadScale = board ? board.cell / 70 : 1;
   const strokes = routeStrokes(game.map);
   const base = game.map.base;
   const maxLives = game.maxLives ?? Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
@@ -114,6 +118,7 @@ export function createMapScene(PIXI, game, {
 
   // One stroke per route; merged lanes are drawn once, so translucent layers do not double up.
   function strokePath(g, width, color, alpha = 1, routes = strokes) {
+    width *= roadScale;
     for (const points of routes) {
       g.moveTo(points[0][0], points[0][1]);
       for (let i = 1; i < points.length; i++) g.lineTo(points[i][0], points[i][1]);
@@ -167,7 +172,7 @@ export function createMapScene(PIXI, game, {
     for (const side of [-1, 1]) {
       for (let distance = 5; distance < length - 8; distance += 18) {
         if (random() < 0.23) continue;
-        const across = side * (36 + random() * 2);
+        const across = side * (36 + random() * 2) * roadScale;
         const p = [project(distance, across - 2.3), project(distance + 12, across - 2),
           project(distance + 11, across + 2), project(distance + 1, across + 2.8)];
         polygon(road, p.map(([x, y]) => [x, y + 2]), theme.road.shoulderShadow, textures.road ? 0.2 : 0.6);
@@ -190,7 +195,7 @@ export function createMapScene(PIXI, game, {
   const fragments = graphic(ground);
   for (let i = 0; i < theme.fragments.count; i++) {
     const x = 22 + random() * 916, y = 24 + random() * 492;
-    if (distanceToPath(x, y) < 49 || allSlots.some(([sx, sy]) => Math.hypot(x - sx, y - sy) < 47)
+    if (distanceToPath(x, y) < 49 * roadScale || allSlots.some(([sx, sy]) => Math.hypot(x - sx, y - sy) < 47 * roadScale)
       || Math.hypot(x - base.x, y - base.y) < 86 || spawns.some((spawn) => Math.hypot(x - spawn.x, y - spawn.y) < 70)) continue;
     const w = 2 + random() * 6, h = 1.5 + random() * 3;
     fragments.ellipse(x + 2, y + 3, w + 1, h + 1).fill({ color: 0x07121b, alpha: 0.3 });
@@ -396,7 +401,7 @@ export function createMapScene(PIXI, game, {
   // chevron (high ground for ranged heroes). mode: "eligible" brightens a valid target
   // while a hero is being placed, "dim" fades the wrong tile type, "idle" quiets empty
   // tiles when the team is full. Occupied tiles stay faint so the hero token reads first.
-  const TILE = 56;
+  const TILE = board ? board.cell - 6 : 56;
   const DARK = 0x04070c;
   function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
     const g = new PIXI.Graphics();

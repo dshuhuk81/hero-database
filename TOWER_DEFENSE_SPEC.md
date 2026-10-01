@@ -468,9 +468,25 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 | `verdant-thicket` | Thorn Thicket | one path, lattice-v2 seed 120 (top gate), campaign only (1-4) | `lilith` |
 | `verdant-glade` | Hexed Glade | one path, lattice-v2 seed 70 (bottom gate), campaign only (1-6) | `lilith` |
 | `verdant-hollow` | Root Hollow | one path, lattice-v2 seed 33 (left gate), campaign only (1-8) | `lilith` |
+| `proto-board` | Prototype Board | 2 lanes on a compact 9 x 5 board, `prototype: true`, dev builds only (Free Play map select) | `baphomet` |
 
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
+
+Compact board prototype (October 1, 2026; `src/game/td/board.js`, plan and measurements in
+[TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) section F). A map with
+`grid.board` (`cell`, `cols`, `rows`, `origin`, `road` and `platforms` as cell lists) gets one
+tile per listed cell (`buildGrid`); the road and tiles are drawn at the cell size, and taps
+pick the cell under the pointer (`nearestSlot`). Its `rules` switch on prototype behaviour for
+that map only: `waveShape` (fewer, stronger enemies; flyers via `kinds`), `focus` (Mage focus
+rule) and `patterns` (class -> named pattern from `PATTERNS`: `plus`, `block`, `diamond2`,
+`cross3`, `block2`). With patterns a hero's basic attack reaches the enemies inside its pattern
+cells (`sim.reaches`); ultimates, auras, heals and Assassin dashes keep their range circles.
+Selecting or placing a hero highlights its cells in green instead of the range ring. A shaped
+group sends at least one enemy per gate, splitting the group's strength between them
+(`sim.shapedGroup`); the wave preview shows the shaped counts. `prototype: true` maps are
+campaign-only and appear in the Free Play map select in dev builds only (`TdLobby`). The live
+tuning has no `waveShape` and no Mage `focus`, so every other map plays as before.
 
 `campaignOnly: true` keeps a map out of Free Play (map select, help text), the Daily Trial
 pool and the Expedition pool; campaign stages still use it by `mapId`. Campaign layout (September

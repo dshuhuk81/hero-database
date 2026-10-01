@@ -1048,7 +1048,9 @@ function runWaveOne(g) {
     for (const [x, y] of map.platformSlots) assert.ok(distance(map, x, y) >= 60, `${map.id} side tile ${x},${y} clear of the road`);
     const all = [...map.roadSlots, ...map.platformSlots];
     all.forEach(([x, y], i) => all.slice(i + 1).forEach(([u, v]) => assert.ok(Math.max(Math.abs(x - u), Math.abs(y - v)) >= 52, `${map.id} tiles ${x},${y} and ${u},${v} overlap`)));
-    assert.ok(map.roadSlots.length >= 15 && map.platformSlots.length >= 20, `${map.id} has tiles along the whole road`);
+    // Compact board prototypes (grid.board, board.js) hold few large tiles by design.
+    const [minRoad, minSide] = map.grid?.board ? [8, 10] : [15, 20];
+    assert.ok(map.roadSlots.length >= minRoad && map.platformSlots.length >= minSide, `${map.id} has tiles along the whole road`);
   }
 }
 
@@ -2284,7 +2286,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     close(g.ultChargeRate(sh) / plain.ultChargeRate(p2), 1 + R.shrine.ultCharge, "Shrine charge");
     assert.equal(g.ringKind("platform", 1), "cursed");
     assert.equal(g.ringKind("road", 0), null, "plain ring");
-    for (const m of maps) assert.ok(Object.keys(m.rings ?? {}).length >= 1, `${m.id} has a special ring`);
+    for (const m of maps) if (!m.grid?.board) assert.ok(Object.keys(m.rings ?? {}).length >= 1, `${m.id} has a special ring`);
     for (const m of maps) for (const [key, kind] of Object.entries(m.rings ?? {})) {
       const [type, index] = key.split(":");
       assert.ok((type === "road" ? m.roadSlots : m.platformSlots)[Number(index)], `${m.id} ${key} exists`);

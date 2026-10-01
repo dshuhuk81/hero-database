@@ -2,6 +2,7 @@
 // (ranged). Pure and deterministic; scripts/build-td-grid.mjs writes the result into
 // tdMaps.json as roadSlots / platformSlots / rings, so the game reads plain arrays.
 import { mapLanes } from "./lanes.js";
+import { cellCenter } from "./board.js";
 
 export const GRID_DEFAULTS = {
   cell: 60,        // tile size and spacing along the road
@@ -53,6 +54,12 @@ const round = (v) => Math.round(v);
 
 // map.grid: { cell?, bounds?, exclude?: [[x, y, w, h], ...], rings?: [{ at: [x, y], kind }] }.
 export function buildGrid(map) {
+  // Compact board (board.js): tiles are authored as cells, one tile per listed cell.
+  const board = map.grid?.board;
+  if (board) {
+    const centers = (cells) => cells.map((cell) => cellCenter(board, cell).map(round));
+    return { roadSlots: centers(board.road ?? []), platformSlots: centers(board.platforms ?? []), rings: {} };
+  }
   const cfg = { ...GRID_DEFAULTS, ...(map.grid ?? {}) };
   const { cell, roadHalf, gap, endClear, bounds: [x0, y0, x1, y1] } = cfg;
   const segments = routeSegments(map);

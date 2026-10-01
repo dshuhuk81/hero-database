@@ -490,6 +490,39 @@ Current best prototype settings:
 
 plus `"focus": { "slots": 2, "share": 1 }` in `classes.Mage`.
 
+#### Step 2 built: compact board with tile patterns (October 1, 2026)
+
+A playable prototype map, `proto-board` ("Prototype Board"), in dev builds: run `npm run dev`,
+open Free Play and pick it at the end of the map list. It is a 9 x 5 board of 104 px cells, two
+spawn lanes along the top and bottom rows that merge in the middle row and run to the base on
+the right, 10 road tiles and 13 platform tiles in blocks (two 2 x 2 blocks, a column of three
+between the lanes, two single tiles by the base). Its own `rules` turn on the best wave shape
+above, the Mage focus rule and these class patterns:
+
+| Class | Pattern | Cells |
+|---|---|---|
+| Tank, Assassin | `plus`: own cell and the four next to it | 5 |
+| Warrior, Support | `block`: 3 x 3 | 9 |
+| Mage | `diamond2`: every cell within two steps | 13 |
+| Archer | `cross3`: three cells in each straight direction over a 3 x 3 core | 17 |
+
+Screenshots: `docs/audits/td-2026-10-01-wave-shape/board-mage-pattern.jpg`,
+`board-archer-pattern.jpg`, `board-wave-1.jpg` (hero and enemy art is missing in these
+because the screenshot sandbox cannot reach R2; tokens show instead).
+
+Bot results on the board (seeds 99-101, both policies, 6 runs each, `enemyHp` 0.75): starters,
+balanced, budget and glass cannon squads 6/6; the no-blocker squad 0/6. Without the per-gate
+strength split the starters lost every run, because small groups doubled at full strength.
+On the same board with circles instead of patterns the bots did worse (balanced 2/6 vs 3/6,
+budget 0/6 vs 4/6 at `enemyHp` 1), so patterns as set here are slightly more generous than
+circles.
+
+What is still circles or open: ultimates, Support auras and heals, Assassin dash reach and the
+bot's tile ranking still use the range radius. Recruit-sheet stats still list a range number.
+Free Play difficulty tiers, Endless and the boss on this board are untuned. Next: play it by
+hand, then decide on per-hero patterns, pattern-shaped ultimates, and whether the generator
+should build compact boards.
+
 Earlier next steps (kept for history): test shaped attack 3× with focus to win back the blocker gain,
 then look at Archer `target: "strongest"` and crit against tanky single enemies. After that,
 step 2 (tile patterns on a compact board) can start from these numbers. Raw output:

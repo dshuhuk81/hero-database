@@ -1,5 +1,6 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
+import { boardOf, inPattern, patternFor } from "./board.js";
 
 const K = 260;
 // Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
@@ -112,6 +113,8 @@ export class TowerDefenseGame {
     this.maxLives = Math.max(1, maxLives ?? lives ?? tuning.run.lives);
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
+    // Prototype board maps (board.js) carry their own rules: Mage focus, wave shape, patterns.
+    if (map?.rules?.focus && this.classes.Mage) this.classes = { ...this.classes, Mage: { ...this.classes.Mage, focus: map.rules.focus } };
     this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
@@ -591,11 +594,22 @@ export class TowerDefenseGame {
     if (target) hero.rotation = Math.atan2(target.y - hero.y, target.x - hero.x);
   }
 
+  // Enemies a group really sends under the wave shape prototype. A shaped group still sends
+  // at least one enemy through every gate; when that adds enemies, each carries a matching
+  // share of the group's strength (`split`, a stat scale).
+  shapedGroup(kind, count) {
+    const shape = this.waveShape(kind);
+    if (!shape || kind === "boss") return { count, split: 1 };
+    const shaped = Math.max(1, Math.round(count * shape.count));
+    const sent = Math.max(this.lanes.length, shaped);
+    return { count: sent, split: shaped / sent };
+  }
+
   wavePreview(waveIndex = this.wave) {
     const wave = this.waves[waveIndex];
     if (!wave) return null;
     const counts = {};
-    for (const group of wave.spawns) counts[group.kind] = (counts[group.kind] || 0) + group.count;
+    for (const group of wave.spawns) counts[group.kind] = (counts[group.kind] || 0) + this.shapedGroup(group.kind, group.count).count;
     if (!this.favor.showEnemyHp) return { wave: waveIndex + 1, counts };
     return { wave: waveIndex + 1, counts, totalHp: this.waveTotalHp(waveIndex) };
   }
@@ -621,7 +635,7 @@ export class TowerDefenseGame {
   // rest at 5, a wave keeps its total health, gold, pressure and lives at stake.
   // `kinds` overrides any of these per enemy kind (e.g. flyers, which skip blockers).
   waveShape(kind = null) {
-    const base = this.tuning.waveShape;
+    const base = this.map?.rules?.waveShape ?? this.tuning.waveShape;
     if (!base?.enabled) return null;
     const cfg = { ...base, ...(kind ? base.kinds?.[kind] : null) };
     const power = cfg.power ?? 1 / (cfg.count || 1);
@@ -653,12 +667,12 @@ export class TowerDefenseGame {
       const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
       const shape = this.waveShape(group.kind);
       const mutated = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
-      const count = shape && group.kind !== "boss" ? Math.max(1, Math.round(mutated * shape.count)) : mutated;
+      const { count, split } = this.shapedGroup(group.kind, mutated);
       const gapMs = shape && group.kind !== "boss" ? group.gapMs * shape.gap : group.gapMs;
       for (let i = 0; i < count; i += 1) {
         const gate = lane++ % this.lanes.length;
         at = Math.max(at, laneFree[gate]);
-        this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
+        this.spawnQueue.push({ at, kind: group.kind, scale: (group.scale ?? 1) * split, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
         laneFree[gate] = at + spacing / speed;
         at += gapMs / 1000;
       }
@@ -1121,6 +1135,14 @@ export class TowerDefenseGame {
     return !enemy.dead && !enemy.untargetable && !(enemy.flying && hero.slotType === "road");
   }
 
+  // Whether a hero's basic attack reaches an enemy: its pattern of board cells on a prototype
+  // board with `rules.patterns`, otherwise its range circle.
+  reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
+    const pattern = patternFor(this.map, hero.class);
+    const board = pattern && boardOf(this.map);
+    return board ? inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y) : distance <= hero.range;
+  }
+
   findTarget(hero) {
     if ((hero.targeting ?? "auto") !== "auto") {
       // A chosen priority ranks everything the hero can reach: its range, plus loose
@@ -1128,7 +1150,7 @@ export class TowerDefenseGame {
       const targets = this.enemies.filter((enemy) => {
         if (!this.canHit(hero, enemy)) return false;
         const d = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
-        return d <= hero.range || this.canDashTo(hero, enemy, d);
+        return this.reaches(hero, enemy, d) || this.canDashTo(hero, enemy, d);
       });
       targets.sort(this.targetOrder(hero));
       return targets[0] ?? null;
@@ -1136,12 +1158,12 @@ export class TowerDefenseGame {
     const loose = this.dashTarget(hero);
     if (loose) return loose;
     if (hero.variant === "shadow_step") {
-      const alive = this.enemies.filter((e) => this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range);
+      const alive = this.enemies.filter((e) => this.canHit(hero, e) && this.reaches(hero, e));
       alive.sort((a, b) => a.hp - b.hp);
       return alive[0] ?? null;
     }
     // Melee heroes on the road cannot reach flyers; platform coverage is required.
-    const targets = this.enemies.filter((enemy) => this.canHit(hero, enemy) && Math.hypot(hero.x - enemy.x, hero.y - enemy.y) <= hero.range);
+    const targets = this.enemies.filter((enemy) => this.canHit(hero, enemy) && this.reaches(hero, enemy));
     targets.sort(this.targetOrder(hero));
     return targets[0] ?? null;
   }
