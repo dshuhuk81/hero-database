@@ -120,7 +120,7 @@ export const RUN_BOON_INFO = {
 // Special rings (M16); numbers in tuning.rings, placement in tdMaps.json "rings".
 /** @type {Record<string, { name: string, text: string }>} */
 export const RING_INFO = {
-  highground: { name: "High ground", text: "+20% range for the hero standing here." },
+  highground: { name: "High ground", text: "Reach one step further for the hero standing here." },
   shrine: { name: "Shrine", text: "The hero's ultimate charges 30% faster." },
   cursed: { name: "Cursed tile", text: "+30% damage, but 20% slower attacks." },
 };

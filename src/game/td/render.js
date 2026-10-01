@@ -10,7 +10,7 @@ import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
-import { boardOf, cellCenter, patternCells, patternFor } from "./board.js";
+import { boardOf, cellCenter, patternCells } from "./board.js";
 
 // Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
 // deliberately and re-run the Chromium checks.
@@ -741,16 +741,15 @@ export async function createRenderer(canvas, game, options = {}) {
   function buildRanges() {
     layerRanges.removeChildren();
     const placement = game.uiPlacement;
-    if (placement) drawReach(placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple", placement.heroClass);
+    if (placement) drawReach(placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple", game.patternAt?.(placement.heroClass, placement.type, placement.index));
     const selected = game.heroes.find((u) => u.entityId === game.uiSelected);
-    if (selected) drawReach(selected.x, selected.y, selected.range, selected.slotType === "road" ? "gold" : "purple", selected.class);
+    if (selected) drawReach(selected.x, selected.y, selected.range, selected.slotType === "road" ? "gold" : "purple", game.patternOf?.(selected));
   }
 
   // Prototype board (board.js): a hero with an attack pattern shows its cells in green,
   // like the placement view of grid tower defense games; everyone else keeps the ring.
-  function drawReach(x, y, radius, color, heroClass) {
+  function drawReach(x, y, radius, color, pattern) {
     const board = boardOf(game.map);
-    const pattern = board && patternFor(game.boardRules, heroClass);
     if (!pattern) { drawRangeRing(layerRanges, x, y, radius, color); return; }
     const g = new PIXI.Graphics();
     const size = board.cell - 6;

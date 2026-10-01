@@ -39,7 +39,8 @@ const range = (text) => text.split(",").map(Number);
 
 if (flag("check")) {
   let failed = 0;
-  for (const map of maps.filter((entry) => entry.recipe)) {
+  // board-v1 maps are checked by scripts/generate-td-board.mjs --check.
+  for (const map of maps.filter((entry) => entry.recipe && entry.recipe.generator !== "board-v1")) {
     const identity = { id: map.id, name: map.name, theme: map.theme, art: map.art, music: map.music, boss: map.boss };
     const v2 = map.recipe.generator === GENERATOR_V2_ID;
     const result = v2 ? generateMapV2(map.recipe, identity) : generateMap(map.recipe, identity);

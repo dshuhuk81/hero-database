@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import maps from "../src/data/tdMaps.json" with { type: "json" };
+// Rule checks on the classic (pre-board) map; boards shape waves (docs/tower-defense-board-plan.md).
+import maps from "./fixtures/td-classic-maps.json" with { type: "json" };
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 
 // Tests start from the sim defaults; the shipped tuning.difficulty is checked separately below.

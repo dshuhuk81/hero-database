@@ -12,13 +12,30 @@ const square = (n) => {
 const diamond = (n) => square(n).filter(([dc, dr]) => Math.abs(dc) + Math.abs(dr) <= n);
 const cross = (n) => square(n).filter(([dc, dr]) => dc === 0 || dr === 0);
 
+const union = (...lists) => [...new Map(lists.flat().map((o) => [o.join(","), o])).values()];
+
 export const PATTERNS = {
   plus: diamond(1), // own cell and the four next to it
   block: square(1), // 3 x 3
+  blockPlus: union(square(1), cross(2)), // 3 x 3 and one more cell in each straight line
   diamond2: diamond(2), // 13 cells
-  cross3: [...new Map([...cross(3), ...square(1)].map((o) => [o.join(","), o])).values()], // long cross over a 3 x 3 core
+  star3: union(diamond(2), cross(3)), // diamond2 and one more cell in each straight line
+  cross3: union(cross(3), square(1)), // long cross over a 3 x 3 core
+  cross4: union(cross(4), square(1)),
+  diamond3: diamond(3),
   block2: square(2), // 5 x 5
 };
+
+// Reach steps (board plan decision 1): a step up or down the ladder from a pattern. High
+// ground gives +1 while the hero stands there, a hostile environment -1, and permanent hero
+// upgrades outside battle add steps.
+const UP = { plus: "block", block: "blockPlus", blockPlus: "diamond3", diamond2: "star3", star3: "diamond3", cross3: "cross4", cross4: "cross4", diamond3: "diamond3", block2: "block2" };
+const DOWN = { plus: "plus", block: "plus", blockPlus: "block", diamond2: "block", star3: "diamond2", cross3: "blockPlus", cross4: "cross3", diamond3: "star3", block2: "blockPlus" };
+export function steppedPattern(name, steps = 0) {
+  let out = name;
+  for (let i = 0; i < Math.abs(steps); i++) out = (steps > 0 ? UP : DOWN)[out] ?? out;
+  return out;
+}
 
 // map.grid.board: { cell, cols, rows, origin: [x0, y0] } (origin = top-left corner, world px).
 export const boardOf = (map) => map?.grid?.board ?? null;

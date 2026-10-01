@@ -5,6 +5,7 @@ import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import realMaps from "../src/data/tdMaps.json" with { type: "json" };
 import legacyRings from "./fixtures/td-legacy-rings.json" with { type: "json" };
+import classicMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
 import { mapLanes } from "../src/game/td/lanes.js";
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 import { buildWave, isBossWave, wavesForMode } from "../src/game/td/waves.js";
@@ -16,7 +17,10 @@ assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 
 
 // Rule tests place heroes by ring index and rely on where those rings are, so they run on
 // the hand-placed rings from before the tile grid (M22b); real tiles are checked below.
-const maps = realMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
+// Since every battlefield became a compact board (docs/tower-defense-board-plan.md step 3),
+// the rule tests run on the classic maps as they were before the migration
+// (fixtures/td-classic-maps.json); board rules have their own section at the end.
+const maps = classicMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
 
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
 // Upgrade with a focus; the path step (M12) takes the class's first path.
@@ -1049,7 +1053,7 @@ function runWaveOne(g) {
     const all = [...map.roadSlots, ...map.platformSlots];
     all.forEach(([x, y], i) => all.slice(i + 1).forEach(([u, v]) => assert.ok(Math.max(Math.abs(x - u), Math.abs(y - v)) >= 52, `${map.id} tiles ${x},${y} and ${u},${v} overlap`)));
     // Compact board prototypes (grid.board, board.js) hold few large tiles by design.
-    const [minRoad, minSide] = map.grid?.board ? [8, 10] : [15, 20];
+    const [minRoad, minSide] = map.grid?.board ? [6, 8] : [15, 20];
     assert.ok(map.roadSlots.length >= minRoad && map.platformSlots.length >= minSide, `${map.id} has tiles along the whole road`);
   }
 }
@@ -2587,8 +2591,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // tuning.board shapes the waves, and every gate still sends enemies.
 {
   const { cellCenter } = await import("../src/game/td/board.js");
-  const map = maps.find((m) => m.grid?.board);
-  assert.ok(map, "a board map exists");
+  const map = realMaps.find((m) => m.id === "proto-board");
+  assert.ok(map, "the prototype board exists");
   const board = map.grid.board;
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
   assert.ok(g.boardRules?.patterns, "board maps get tuning.board rules");
@@ -2606,6 +2610,21 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(count, g.lanes.length, "a small group still sends one enemy per gate");
   assert.ok(Math.abs(count * split - Math.round(7 * tuning.board.waveShape.count)) < 1e-9, "the split keeps the shaped strength");
   assert.deepEqual(g.shapedGroup("boss", 1), { count: 1, split: 1 }, "bosses are not shaped");
+  // Reach steps: high ground +1, Stormpeak's headwinds -1 for platform heroes elsewhere.
+  const withRing = (m, kind) => Object.entries(m.rings).find(([, k]) => k === kind)?.[0].split(":");
+  const jungle = realMaps.find((m) => m.grid?.board && m.theme === "jungle" && withRing(m, "highground"));
+  const jg = new TowerDefenseGame({ heroes, tuning, map: jungle, waves, seed: 7 });
+  const [hgType, hgIndex] = withRing(jungle, "highground");
+  const plainIndex = jungle.platformSlots.findIndex((_, i) => !jungle.rings[`platform:${i}`]);
+  assert.equal(jg.patternAt("Mage", hgType, Number(hgIndex)), "star3", "high ground: one reach step up");
+  assert.equal(jg.patternAt("Mage", "platform", plainIndex), "diamond2", "plain tile: class pattern");
+  const storm = realMaps.find((m) => m.theme === "stormpeak");
+  const sg = new TowerDefenseGame({ heroes, tuning, map: storm, waves, seed: 7 });
+  const stormPlain = storm.platformSlots.findIndex((_, i) => !storm.rings[`platform:${i}`]);
+  const [stType, stIndex] = withRing(storm, "highground");
+  assert.equal(sg.patternAt("Mage", "platform", stormPlain), "block", "Stormpeak: platform heroes lose a step");
+  assert.equal(sg.patternAt("Mage", stType, Number(stIndex)), "star3", "Stormpeak: high ground shelters and adds its step");
+  assert.equal(sg.patternAt("Tank", "road", storm.roadSlots.findIndex((_, i) => !storm.rings[`road:${i}`])), "plus", "Stormpeak: road heroes keep their pattern");
   // Maps without a board keep circles and today's waves.
   const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
   assert.equal(plain.boardRules, null, "no board rules off the board");

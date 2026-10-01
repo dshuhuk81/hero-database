@@ -16,11 +16,46 @@ const boards = maps.filter((map) => map.grid?.board);
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=").slice(1).join("=") ?? fallback;
 const flag = (name) => process.argv.includes(`--${name}`);
 
+const RING_COLOR = { highground: "#ffd166", cursed: "#ef476f", shrine: "#4cc9f0" };
+// One card per map: theme terrain under the board cells (road, platforms, special
+// tiles), gates and base, the lanes as lines.
+const card = (map, terrain, title = `seed ${map.recipe.seed}`) => {
+  const b = map.grid.board;
+  const rect = ([c, r], fill, stroke = "none") => `<rect x="${b.origin[0] + c * b.cell + 3}" y="${b.origin[1] + r * b.cell + 3}" width="${b.cell - 6}" height="${b.cell - 6}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="4"/>`;
+  const lanes = map.lanes ?? [{ spawn: map.spawn, path: map.path }];
+  const lines = lanes.map((lane) => `<polyline points="${lane.path.map((p) => p.join(",")).join(" ")}" fill="none" stroke="#f4d58d" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>`).join("");
+  const rings = (b.rings ?? []).map(({ cell, kind }) => rect(cell, "none", RING_COLOR[kind]));
+  const gatesSvg = lanes.map((lane) => `<circle cx="${lane.spawn.x}" cy="${lane.spawn.y}" r="20" fill="#d64545" stroke="#14121c" stroke-width="4"/>`).join("");
+  const length = Math.round(lanes[0].path.slice(1).reduce((sum, p, i) => sum + Math.abs(p[0] - lanes[0].path[i][0]) + Math.abs(p[1] - lanes[0].path[i][1]), 0) / b.cell);
+  return `<figure><svg viewBox="0 0 960 540"><image href="${terrain}" width="960" height="540" preserveAspectRatio="none" opacity="0.55"/>
+    ${b.road.map((cell) => rect(cell, "rgba(199,163,84,0.55)")).join("")}${b.platforms.map((cell) => rect(cell, "rgba(116,208,160,0.6)")).join("")}
+    ${rings.join("")}${lines}${gatesSvg}<rect x="${map.base.x - 26}" y="${map.base.y - 26}" width="52" height="52" rx="10" fill="#ffd98a" stroke="#14121c" stroke-width="4"/></svg>
+    <figcaption>${title} · ${b.cols}x${b.rows} · ${lanes.length} gate${lanes.length > 1 ? "s" : ""} · lane ${length} cells · road tiles ${map.roadSlots.length} · platform tiles ${map.platformSlots.length}</figcaption></figure>`;
+};
+
+
+function write(name, heading, cards) {
+  mkdirSync(new URL("../public/td-local/", import.meta.url), { recursive: true });
+  const out = new URL(`../public/td-local/${name}.html`, import.meta.url);
+  writeFileSync(out, `<!doctype html><meta charset="utf-8"><title>Board maps</title><style>
+  body { background: #14121c; color: #e6e1f2; font: 14px system-ui; margin: 16px; }
+  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  figure { margin: 0; background: #1f1c2b; border-radius: 12px; overflow: hidden; }
+  svg { display: block; width: 100%; } figcaption { padding: 8px 12px; }
+  .key span { display: inline-block; margin-right: 14px; }
+</style><h1>${heading}</h1>
+<p class="key"><span>gold: road tiles</span><span>green: platform tiles</span><span>yellow rim: high ground</span><span>red rim: cursed</span><span>blue rim: shrine</span><span>red dot: gate</span></p>
+<main>${cards.join("")}</main>`);
+  console.log(`wrote ${cards.length} maps to ${out.pathname}`);
+}
+
 if (flag("check")) {
   let failed = 0;
   for (const map of boards.filter((entry) => entry.recipe?.generator === BOARD_GENERATOR_ID)) {
     const identity = Object.fromEntries(["id", "name", "theme", "art", "music", "boss"].map((k) => [k, map[k]]));
-    const result = generateBoardMap(map.recipe, identity, { avoid: boards.filter((other) => other.id !== map.id && other.id < map.id) });
+    // Recipes are generated without `avoid` (a clashing seed is skipped instead), so a map
+    // regenerates from its recipe alone.
+    const result = generateBoardMap(map.recipe, identity);
     const same = result.ok && result.map.geometryHash === map.geometryHash && boardGeometryHash(map) === map.geometryHash;
     if (!same) { console.log(`${map.id}: DIFFERS from its recipe`); failed++; }
   }
@@ -30,6 +65,18 @@ if (flag("check")) {
   }
   console.log(failed ? `${failed} problem(s)` : `${boards.length} board map(s): recipes regenerate, every layout unique`);
   process.exit(failed ? 1 : 0);
+}
+
+// --current: every board map in tdMaps.json on one page, in campaign order, for review.
+if (flag("current")) {
+  const campaign = JSON.parse(readFileSync(new URL("../src/data/tdCampaign.json", import.meta.url), "utf8"));
+  const stageOf = {};
+  for (const chapter of campaign.chapters) for (const stage of chapter.stages) stageOf[stage.mapId] ??= stage.id;
+  const order = (map) => { const [c, n] = String(stageOf[map.id] ?? "99-99").split("-").map(Number); return c * 100 + n; };
+  const list = [...boards].sort((a, b) => order(a) - order(b));
+  const cards = list.map((map) => card(map, mapSceneFor(map)?.assets?.terrain ?? "", `${stageOf[map.id] ?? (map.prototype ? "dev" : "-")} · ${map.name}${map.campaignOnly ? "" : " · Free Play"}`));
+  write("board-atlas-current", `All board maps · ${list.length}`, cards);
+  process.exit(0);
 }
 
 const size = arg("size", "9x5");
@@ -48,36 +95,8 @@ let seed = Number(arg("seed", "1"));
 const lastSeed = seed + count * 20;
 for (; made.length < count && seed < lastSeed; seed++) {
   const recipe = { generator: BOARD_GENERATOR_ID, ruleset: BOARD_GENERATOR_RULESET, seed, size, gates, entry };
-  const result = generateBoardMap(recipe, { ...identity, id: `candidate-${seed}`, name: `Candidate ${seed}` }, { avoid: [...boards, ...made] });
-  if (result.ok) made.push(result.map);
+  const result = generateBoardMap(recipe, { ...identity, id: `candidate-${seed}`, name: `Candidate ${seed}` });
+  if (result.ok && ![...boards, ...made].some((other) => layoutConflict(result.map, other))) made.push(result.map);
 }
 
-// One card per candidate: theme terrain under the board cells (road, platforms, special
-// tiles), gates and base, the lanes as lines.
-const RING_COLOR = { highground: "#ffd166", cursed: "#ef476f", shrine: "#4cc9f0" };
-const card = (map) => {
-  const b = map.grid.board;
-  const rect = ([c, r], fill, stroke = "none") => `<rect x="${b.origin[0] + c * b.cell + 3}" y="${b.origin[1] + r * b.cell + 3}" width="${b.cell - 6}" height="${b.cell - 6}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="4"/>`;
-  const lanes = map.lanes ?? [{ spawn: map.spawn, path: map.path }];
-  const lines = lanes.map((lane) => `<polyline points="${lane.path.map((p) => p.join(",")).join(" ")}" fill="none" stroke="#f4d58d" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.9"/>`).join("");
-  const rings = (b.rings ?? []).map(({ cell, kind }) => rect(cell, "none", RING_COLOR[kind]));
-  const gatesSvg = lanes.map((lane) => `<circle cx="${lane.spawn.x}" cy="${lane.spawn.y}" r="20" fill="#d64545" stroke="#14121c" stroke-width="4"/>`).join("");
-  const length = Math.round(lanes[0].path.slice(1).reduce((sum, p, i) => sum + Math.abs(p[0] - lanes[0].path[i][0]) + Math.abs(p[1] - lanes[0].path[i][1]), 0) / b.cell);
-  return `<figure><svg viewBox="0 0 960 540"><image href="${terrain}" width="960" height="540" preserveAspectRatio="none" opacity="0.55"/>
-    ${b.road.map((cell) => rect(cell, "rgba(199,163,84,0.55)")).join("")}${b.platforms.map((cell) => rect(cell, "rgba(116,208,160,0.6)")).join("")}
-    ${rings.join("")}${lines}${gatesSvg}<rect x="${map.base.x - 26}" y="${map.base.y - 26}" width="52" height="52" rx="10" fill="#ffd98a" stroke="#14121c" stroke-width="4"/></svg>
-    <figcaption>seed ${map.recipe.seed} · ${lanes.length} gate${lanes.length > 1 ? "s" : ""} · lane ${length} cells · road tiles ${map.roadSlots.length} · platform tiles ${map.platformSlots.length}</figcaption></figure>`;
-};
-
-mkdirSync(new URL("../public/td-local/", import.meta.url), { recursive: true });
-const out = new URL(`../public/td-local/board-atlas-${theme}-${size}-${gates}g.html`, import.meta.url);
-writeFileSync(out, `<!doctype html><meta charset="utf-8"><title>Board candidates</title><style>
-  body { background: #14121c; color: #e6e1f2; font: 14px system-ui; margin: 16px; }
-  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-  figure { margin: 0; background: #1f1c2b; border-radius: 12px; overflow: hidden; }
-  svg { display: block; width: 100%; } figcaption { padding: 8px 12px; }
-  .key span { display: inline-block; margin-right: 14px; }
-</style><h1>${theme} · ${size} · ${gates} gate${gates > 1 ? "s" : ""} · ${made.length} unique candidates</h1>
-<p class="key"><span>gold: road tiles</span><span>green: platform tiles</span><span>yellow rim: high ground</span><span>red rim: cursed</span><span>blue rim: shrine</span><span>red dot: gate</span></p>
-<main>${made.map(card).join("")}</main>`);
-console.log(`wrote ${made.length} unique candidates (seeds up to ${seed - 1}) to ${out.pathname}`);
+write(`board-atlas-${theme}-${size}-${gates}g`, `${theme} · ${size} · ${gates} gate${gates > 1 ? "s" : ""} · ${made.length} unique candidates`, made.map((map) => card(map, terrain)));

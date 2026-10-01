@@ -64,7 +64,8 @@ for (let seed = 1; seed <= 25; seed++) {
 // Published generated maps regenerate from their stored recipe.
 for (const map of maps.filter((entry) => entry.recipe)) {
   const who = { id: map.id, name: map.name, theme: map.theme, art: map.art, music: map.music, boss: map.boss };
-  const r = map.recipe.generator === "lattice-v2" ? generateMapV2(map.recipe, who) : generateMap(map.recipe, who);
+  const r = map.recipe.generator === "board-v1" ? generateBoardMap(map.recipe, who)
+    : map.recipe.generator === "lattice-v2" ? generateMapV2(map.recipe, who) : generateMap(map.recipe, who);
   assert.ok(r.ok, `${map.id} regenerates`);
   assert.equal(r.map.geometryHash, map.geometryHash, `${map.id} geometry unchanged`);
 }

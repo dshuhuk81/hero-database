@@ -2,7 +2,7 @@
 // portrait screens. Upgrade, target, sell and details. Buttons are updated in place so
 // focus survives game events. The game keeps running while the panel is open.
 import { CLASS_ROLES, worldToLocal } from "../ui.js";
-import { patternFor, patternSvg } from "../board.js";
+import { patternSvg } from "../board.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
@@ -112,7 +112,7 @@ export function createPopover(ctx: PageContext) {
     popAtk.title = atk > unit.atk ? `Base ${unit.atk}, boosted by auras, synergy or buffs` : "";
     popAps.textContent = `${Math.round(unit.aps * 100) / 100}/s`;
     // Board maps: the attack pattern as a grid instead of the range number.
-    const pattern = patternFor(state.session!.game.boardRules, unit.class);
+    const pattern = state.session!.game.patternOf(unit);
     if (pattern) popRange.innerHTML = patternSvg(pattern, 6);
     else popRange.textContent = String(Math.round(unit.range));
     popRangeLabel.textContent = pattern ? "Reach" : "Range";

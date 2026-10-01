@@ -1,6 +1,6 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
-import { boardOf, boardRules, inPattern, patternFor } from "./board.js";
+import { boardOf, boardRules, inPattern, patternFor, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
@@ -1140,8 +1140,24 @@ export class TowerDefenseGame {
 
   // Whether a hero's basic attack reaches an enemy: its pattern of board cells on a prototype
   // board with `rules.patterns`, otherwise its range circle.
+  // The attack pattern a hero has on a tile: its class pattern, +1 step on high ground, -1 in
+  // an environment that cuts platform range (Stormpeak) unless high ground shelters it, plus
+  // permanent reach steps (`reachSteps`, upgrades outside battle). Null off the board.
+  patternAt(heroClass, slotType, slotIndex, reachSteps = 0) {
+    const base = patternFor(this.boardRules, heroClass);
+    if (!base) return null;
+    const ring = this.ringKind(slotType, slotIndex);
+    const env = this.environment("range", { slotType, slotIndex });
+    const steps = (ring === "highground" ? 1 : 0) + (env < 1 - 1e-9 ? -1 : 0) + reachSteps;
+    return steppedPattern(base, steps);
+  }
+
+  patternOf(hero) {
+    return this.patternAt(hero.class, hero.slotType, hero.slotIndex, hero.reachSteps ?? 0);
+  }
+
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
-    const pattern = patternFor(this.boardRules, hero.class);
+    const pattern = this.patternOf(hero);
     const board = pattern && boardOf(this.map);
     return board ? inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y) : distance <= hero.range;
   }

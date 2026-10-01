@@ -14,7 +14,7 @@ const format = (list) => `[\n${list.map((map) => `  {\n${Object.entries(map).map
 const next = maps.map((map) => {
   if (!map.grid) throw new Error(`${map.id}: no grid block`);
   const { roadSlots, platformSlots, rings } = buildGrid(map);
-  if (Object.keys(rings).length !== (map.grid.rings ?? []).length) throw new Error(`${map.id}: two rings landed on one tile`);
+  if (Object.keys(rings).length !== (map.grid.board?.rings ?? map.grid.rings ?? []).length) throw new Error(`${map.id}: two rings landed on one tile`);
   return { ...map, rings, roadSlots, platformSlots };
 });
 const output = format(next);
