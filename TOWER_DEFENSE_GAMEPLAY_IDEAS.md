@@ -302,12 +302,50 @@ What it costs:
 - Statuses and reactions lose some value when fewer enemies stand together; Steam and Conduct may
   need larger radii.
 
+#### Reference screens (owner, October 1, 2026)
+
+Five Watcher of Realms battle screens (jungle, desert and cave boards) compared with our game:
+
+| Aspect | Watcher of Realms (screens) | The Last Crossing today |
+|---|---|---|
+| Board | about 8-9 columns by 5 rows, every tile on one lattice | 15 x 7 lattice of 60 px (lattice-v2), older maps off-lattice |
+| Tile size | about a ninth of the screen width; hero figures fill a tile | 56 px in a 960 px world, about a seventeenth; 80 px figures reach into the tile above |
+| Ranged tiles | a few raised stone blocks (2x2, L shapes, rows of 3) at chosen spots | one row on each side of almost every road segment, 27-43 per map |
+| Road | wide, short, enemies cross the board in seconds; melee heroes stand on road tiles | one long winding path from edge to edge |
+| Spawns and exits | two to three red spawn portals and one or two blue exit portals per board | one gate (two on a few maps), one sanctuary |
+| Range display | the covered tiles light up green when a hero is placed or selected | a circle |
+| Enemies per stage | 11, 21, 24, 38, 40 (counter "4/38") | 53 (1-1) to 280 (3-6) |
+| Lives | 3-5 | 14-20 |
+| Deploy resource | a regenerating cost counter ("19") plus a deploy limit ("Deployable: 6") | gold from kills and wave bonuses, deploy cap 6-7 |
+| Ultimates | ready marker above the hero; auto and manual | automatic |
+
+What follows for our game:
+
+- **The scale gap is bigger than the first estimate.** Their stages have about a fifth to a
+  seventh of our enemy count and a quarter of our lives, so every leak hurts. Prototype step 1
+  below uses ×0.2 instead of ×0.35, with lives cut to 5.
+- **Bigger tiles, fewer of them.** A 9 x 5 lattice of about 106 px fits the 960 x 540 world
+  and holds an 80 px figure inside its own tile. This replaces the 60 px lattice in
+  `map-generator-v2.js` (`cols: 15, rows: 7`), so every lattice map is regenerated, not only the
+  four older ones. Patterns of 1-2 tiles then cover meaningful ground.
+- **Ranged tiles as blocks, not rows.** Two to four stone blocks per board make placement a
+  real choice; today a player can almost always find a platform beside any spot on the road.
+- **Compact boards with several portals.** Short routes from two or three spawns into one or
+  two exits put the fight in the middle of the board, where patterns overlap. This is map
+  generator work, so it belongs in `docs/tower-defense-map-generator-plan.md` as a new layout
+  family.
+- **Keep gold and the upgrade layer.** Their regenerating deploy counter replaces our in-run
+  economy entirely. Our levels, focus, class paths, awakening and training are a distinct part of
+  the game; keep them and raise gold per kill instead. Revisit only if the prototype feels slow.
+- **Show the pattern in green tiles**, exactly like their placement view, during the recruit
+  sheet preview and on selection.
+
 Prototype plan, smallest first:
 
-1. **Fewer, stronger enemies alone** (S). One wave transform in the simulation: count ×0.35, HP
-   and reward ×2.85, so total health and gold per wave stay equal. Run `td:classes` and
+1. **Fewer, stronger enemies alone** (S). One wave transform in the simulation: count ×0.2, HP
+   and reward ×5, so total health and gold per wave stay equal; lives 5. Run `td:classes` and
    `td:sweep` with it on and off. This shows the class shift before any grid work.
-2. **Patterns on one lattice map** (M). A `pattern` per class (later per hero) as tile offsets;
+2. **Patterns on one compact 9 x 5 board** (M). A `pattern` per class (later per hero) as tile offsets;
    an enemy counts as in range when its current lattice cell is in the pattern. Show the covered
    tiles when a hero is selected or being placed, in place of the range circle.
 3. **Manual ultimate toggle** (S-M). A global Auto switch on the HUD (on by default) and a tap
