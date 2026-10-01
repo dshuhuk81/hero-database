@@ -1,0 +1,417 @@
+---
+export const prerender = true;
+// Community hero submissions for the tower defense game. The form posts to the Pages Function
+// functions/api/hero-submission.js, which forwards each entry to a private Discord channel.
+import Base from "../../../layouts/Base.astro";
+import PageHero from "../../../components/PageHero.astro";
+
+const CLASSES = [
+  ["Tank", "holds the line"], ["Warrior", "melee damage"], ["Assassin", "burst, picks targets"],
+  ["Mage", "magic, areas"], ["Archer", "ranged"], ["Support", "heals, buffs"],
+];
+const ULTS = [
+  ["Atlas (Tank): A Place to Stand", "slow and heal the frontline"],
+  ["Ymir (Tank): Faults Beneath the Ice", "enemies take more damage"],
+  ["Heimdall (Tank): The Gate Hears You", "pull enemies onto him"],
+  ["Aegir (Warrior): The Sea Takes a Step", "push enemies back"],
+  ["Surtr (Warrior): Fuel for the Last Fire", "cleave that heals"],
+  ["Fenrir (Warrior): Leave the Wound Open", "cleave with poison"],
+  ["Helios (Warrior): Noon at the Narrow Gate", "cleave and slow"],
+  ["Hecate (Assassin): Every Exit Is Mine", "sweeping strike"],
+  ["Vidar (Assassin): The Debt Comes Due", "flurry on one target"],
+  ["Nott (Assassin): Where the Lantern Ends", "teleport and execute"],
+  ["Thanatos (Assassin): One Breath Remaining", "drain life"],
+  ["Odin (Mage): The Answer Travels", "bouncing lightning"],
+  ["Boreas (Mage): Winter Comes Through the Door", "freeze an area"],
+  ["Hephaestus (Mage): Work the Living Furnace", "fire burst"],
+  ["Atalanta (Archer): Fire in the Brambles", "burning arrows"],
+  ["Skadi (Archer): Follow My Arrow", "arrow barrage"],
+  ["Stheno (Archer): Hold That Last Step", "turn to stone"],
+  ["Harmonia (Support): Together, Once More", "link allies"],
+  ["Plutus (Support): Enough for Everyone", "gold and buffs"],
+  ["Gaia (Support): Where the Roots Hold", "healing zone"],
+  ["Asclepius (Support): There Is Still a Pulse", "revive and heal"],
+];
+const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals the team", "Shields", "Buffs allies", "Weakens enemies", "Very tough", "Fast attacks", "Summons"];
+---
+
+<Base
+  title="Submit a Hero | The Last Crossing"
+  description="Design a hero for The Last Crossing, the tower defense game on Motto Immortal Database. No account needed."
+>
+  <PageHero
+    tag="Tower Defense"
+    headline="Design a hero"
+    subtitle="Heroes in The Last Crossing come from Greek and Norse myth. Tell us who yours is, how they fight and what they look like."
+  />
+
+  <main class="main-content page-content hs-page">
+    <p class="hs-lede">No account needed. Stats, cost and rarity are set during balancing, so you don't need to pick them. Fields marked <span class="hs-req">*</span> are required.</p>
+
+    <form id="hs-form" class="hs-form" novalidate>
+      <input type="hidden" name="startedAt" id="hs-started">
+      <div class="hs-trap" aria-hidden="true">
+        <label for="hs-website">Website</label>
+        <input type="text" id="hs-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">1</span>About you</legend>
+        <div class="hs-row">
+          <div class="hs-field" data-req>
+            <label for="creator">Your name or handle<span class="hs-req">*</span></label>
+            <input type="text" id="creator" name="creator" maxlength="80" autocomplete="nickname" placeholder="How we credit you">
+          </div>
+          <div class="hs-field">
+            <label for="contact">How to reach you</label>
+            <input type="text" id="contact" name="contact" maxlength="120" placeholder="Discord name or email">
+            <span class="hs-hint">For follow-up questions only. Never shown publicly.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">2</span>Identity</legend>
+        <div class="hs-row">
+          <div class="hs-field" data-req>
+            <label for="heroName">Hero name<span class="hs-req">*</span></label>
+            <input type="text" id="heroName" name="heroName" maxlength="60" placeholder="Atlas">
+          </div>
+          <div class="hs-field" data-req>
+            <label for="heroTitle">Title<span class="hs-req">*</span></label>
+            <input type="text" id="heroTitle" name="heroTitle" maxlength="100" placeholder="Shoulder of the Crossing">
+          </div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-field" data-req>
+            <label for="myth">Myth or figure it comes from<span class="hs-req">*</span></label>
+            <input type="text" id="myth" name="myth" maxlength="200" placeholder="Atlas, Titan who holds up the sky (Greek)">
+          </div>
+          <div class="hs-field">
+            <label for="mythSource">Source link</label>
+            <input type="url" id="mythSource" name="mythSource" maxlength="300" placeholder="https://www.theoi.com/...">
+          </div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-field">
+            <label for="pronouns">Pronouns</label>
+            <input type="text" id="pronouns" name="pronouns" maxlength="40" placeholder="she/her, he/him, they/them">
+          </div>
+          <div class="hs-field" data-req>
+            <label for="cardLine">Card line, one sentence<span class="hs-req">*</span></label>
+            <input type="text" id="cardLine" name="cardLine" maxlength="200" placeholder="Holds the road and restores nearby frontline allies.">
+          </div>
+        </div>
+        <div class="hs-field">
+          <label for="bio">Biography</label>
+          <textarea id="bio" name="bio" maxlength="1500" placeholder="3 to 5 sentences: who they are and why they stand at the Crossing."></textarea>
+        </div>
+        <div class="hs-row hs-row--3">
+          <div class="hs-field"><label for="lineRecruit">Line when recruited</label><input type="text" id="lineRecruit" name="lineRecruit" maxlength="150" placeholder="There is room beneath my shoulder."></div>
+          <div class="hs-field"><label for="lineUlt">Line on ultimate</label><input type="text" id="lineUlt" name="lineUlt" maxlength="150" placeholder="Stand with me."></div>
+          <div class="hs-field"><label for="lineDefeat">Line on defeat</label><input type="text" id="lineDefeat" name="lineDefeat" maxlength="150" placeholder="Take the weight."></div>
+        </div>
+      </fieldset>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">3</span>Role on the board</legend>
+        <div class="hs-field" data-req data-group="heroClass">
+          <span class="hs-label" id="class-label">Class<span class="hs-req">*</span></span>
+          <div class="hs-chips" role="radiogroup" aria-labelledby="class-label">
+            {CLASSES.map(([name, note]) => (
+              <label class="hs-chip"><input type="radio" name="heroClass" value={name}><span>{name}<small>{note}</small></span></label>
+            ))}
+          </div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-field">
+            <span class="hs-label" id="pos-label">Position</span>
+            <div class="hs-chips" role="radiogroup" aria-labelledby="pos-label">
+              <label class="hs-chip"><input type="radio" name="position" value="road"><span>Road<small>blocks, can fall</small></span></label>
+              <label class="hs-chip"><input type="radio" name="position" value="platform"><span>Platform<small>beside the road</small></span></label>
+              <label class="hs-chip"><input type="radio" name="position" value="unsure"><span>Not sure</span></label>
+            </div>
+          </div>
+          <div class="hs-field">
+            <span class="hs-label" id="dmg-label">Damage type</span>
+            <div class="hs-chips" role="radiogroup" aria-labelledby="dmg-label">
+              <label class="hs-chip"><input type="radio" name="damageType" value="physical"><span>Physical</span></label>
+              <label class="hs-chip hs-chip--magic"><input type="radio" name="damageType" value="magical"><span>Magical</span></label>
+              <label class="hs-chip"><input type="radio" name="damageType" value="unsure"><span>Not sure</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="hs-field" data-req>
+          <label for="weapon">Weapon<span class="hs-req">*</span></label>
+          <input type="text" id="weapon" name="weapon" maxlength="200" placeholder="Long spear with a red banner, held in the left hand">
+          <span class="hs-hint">Name it exactly. The board animation is drawn from it.</span>
+        </div>
+      </fieldset>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">4</span>Skills</legend>
+        <div class="hs-row">
+          <div class="hs-field"><label for="basicName">Basic attack name</label><input type="text" id="basicName" name="basicName" maxlength="80" placeholder="Stone at the Heel"></div>
+          <div class="hs-field"><label for="basicText">Basic attack, one sentence</label><input type="text" id="basicText" name="basicText" maxlength="300" placeholder="Drives a short, heavy blow into one enemy."></div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-field" data-req><label for="ultName">Ultimate name<span class="hs-req">*</span></label><input type="text" id="ultName" name="ultName" maxlength="80" placeholder="A Place to Stand"></div>
+          <div class="hs-field"><label for="ultFlavor">Ultimate flavor line</label><input type="text" id="ultFlavor" name="ultFlavor" maxlength="200" placeholder="For a moment, the whole line finds its footing."></div>
+        </div>
+        <div class="hs-field" data-req>
+          <label for="ultText">What the ultimate does<span class="hs-req">*</span></label>
+          <textarea id="ultText" name="ultText" maxlength="1500" placeholder="Plain words: who it hits, how big the area is, what happens, how long it lasts. Example: slows enemies near him for 3 seconds and heals road allies in range by 15% of their health."></textarea>
+        </div>
+        <div class="hs-field">
+          <label for="awakening">Awakening: how the ultimate gets stronger at battle rank IV</label>
+          <input type="text" id="awakening" name="awakening" maxlength="400" placeholder="Healing becomes 30%; the slow lasts 4 seconds.">
+        </div>
+        <div class="hs-field">
+          <label for="closestUlt">Closest existing ultimate</label>
+          <select id="closestUlt" name="closestUlt">
+            <option value="">Not sure / something new</option>
+            {ULTS.map(([name, note]) => <option value={name}>{`${name} - ${note}`}</option>)}
+          </select>
+          <span class="hs-hint">A close match is quick to build. Something new is welcome too, it just takes longer.</span>
+        </div>
+        <div class="hs-field" data-group="strengths">
+          <span class="hs-label" id="str-label">Strengths, pick up to 4</span>
+          <div class="hs-chips" aria-labelledby="str-label">
+            {STRENGTHS.map((name) => (
+              <label class="hs-chip"><input type="checkbox" name="strengths" value={name}><span>{name}</span></label>
+            ))}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">5</span>Look</legend>
+        <p class="hs-note">Best: a transparent PNG with one full-body figure, feet visible, nothing cut off, tall portrait shape (about 2:5), facing the viewer or slightly turned.</p>
+        <div class="hs-row">
+          <div class="hs-field">
+            <label for="artFile">Upload the art</label>
+            <input type="file" id="artFile" name="artFile" accept="image/png,image/jpeg,image/webp,image/gif">
+            <span class="hs-hint">PNG, JPG, WebP or GIF, up to 8 MB.</span>
+            <img class="hs-preview" id="hs-preview" alt="Preview of the uploaded art" hidden>
+          </div>
+          <div class="hs-field">
+            <label for="artLink">Or link to it</label>
+            <input type="url" id="artLink" name="artLink" maxlength="500" placeholder="https://...">
+          </div>
+        </div>
+        <div class="hs-field" data-group="rights">
+          <label class="hs-check"><input type="checkbox" id="rightsOwn" name="rightsOwn"><span>I made this art myself, or I have permission to give it to the project.</span></label>
+          <label class="hs-check"><input type="checkbox" id="rightsNotGame" name="rightsNotGame"><span>It is not taken or traced from Motto Immortal or any other game.</span></label>
+          <span class="hs-hint">Both are required when you add art. Art without them can't be used.</span>
+        </div>
+        <div class="hs-field">
+          <label for="features">Colors and key features</label>
+          <input type="text" id="features" name="features" maxlength="300" placeholder="Grey wolf head, gold crown, raven on the right shoulder, red banner">
+          <span class="hs-hint">On the board the hero is about 60 pixels tall. What must still be recognizable?</span>
+        </div>
+        <div class="hs-field">
+          <label for="lookText">No art? Describe the look</label>
+          <textarea id="lookText" name="lookText" maxlength="1500" placeholder="Full body, from head to feet: body, face, clothing, armor, colors, pose."></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="hs-step">
+        <legend><span class="hs-num">6</span>Sounds</legend>
+        <div class="hs-field">
+          <span class="hs-label" id="snd-label">Attack and ultimate sounds</span>
+          <div class="hs-chips" role="radiogroup" aria-labelledby="snd-label">
+            <label class="hs-chip"><input type="radio" name="sounds" value="class" checked><span>Reuse the class sounds</span></label>
+            <label class="hs-chip"><input type="radio" name="sounds" value="own"><span>I have my own</span></label>
+          </div>
+        </div>
+        <div class="hs-row" id="hs-own-sounds" hidden>
+          <div class="hs-field"><label for="soundLink">Link to the sound files</label><input type="url" id="soundLink" name="soundLink" maxlength="500" placeholder="https://..."></div>
+          <div class="hs-field"><label for="soundLicense">License or source</label><input type="text" id="soundLicense" name="soundLicense" maxlength="200" placeholder="Recorded myself / CC0 from freesound.org"></div>
+        </div>
+        <div class="hs-field">
+          <label for="notes">Anything else</label>
+          <textarea id="notes" name="notes" maxlength="1500" placeholder="Ideas, references, wishes."></textarea>
+        </div>
+      </fieldset>
+
+      <div class="hs-actions">
+        <button type="submit" class="hs-submit" id="hs-submit">Submit hero</button>
+        <span class="hs-status" id="hs-status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <section class="hs-done" id="hs-done" hidden>
+      <h2>Thank you!</h2>
+      <p id="hs-done-text">Your hero was sent.</p>
+      <button type="button" class="hs-again" id="hs-again">Submit another hero</button>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .hs-page {
+    max-width: 780px;
+    display: grid;
+    gap: var(--space-10);
+    padding-bottom: var(--space-16);
+  }
+  .hs-lede { margin: 0; color: var(--text-secondary); max-width: 62ch; }
+  .hs-form { display: grid; gap: var(--space-12); }
+  .hs-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .hs-step { margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-5); min-width: 0; }
+  .hs-step legend {
+    display: flex; align-items: center; gap: var(--space-3); padding: 0; margin-bottom: var(--space-5);
+    font-size: var(--text-xl); font-weight: var(--weight-bold); color: var(--text-bright);
+  }
+  .hs-num {
+    display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-full);
+    border: 1px solid var(--accent-gold); color: var(--accent-gold); font-size: var(--text-sm);
+  }
+  .hs-note { margin: calc(-1 * var(--space-2)) 0 0; color: var(--text-secondary); font-size: var(--text-sm); max-width: 62ch; }
+  .hs-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-5); }
+  .hs-field { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
+  .hs-field label, .hs-label { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-primary); }
+  .hs-req { color: var(--accent-gold); margin-left: 2px; }
+  .hs-hint { font-size: var(--text-xs); color: var(--text-muted); }
+  .hs-field input[type="text"], .hs-field input[type="url"], .hs-field textarea, .hs-field select, .hs-field input[type="file"] {
+    width: 100%; padding: var(--space-3); border: 1px solid var(--border-medium); border-radius: var(--radius-md);
+    background: var(--bg-surface); color: var(--text-bright); font: inherit; font-size: var(--text-base);
+  }
+  .hs-field textarea { min-height: 96px; resize: vertical; }
+  .hs-field select option { background: var(--bg-raised); }
+  .hs-field ::placeholder { color: var(--text-muted); }
+  .hs-page :focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+  .hs-preview { max-width: 160px; max-height: 240px; object-fit: contain; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-raised); }
+
+  .hs-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); border: 1px solid transparent; border-radius: var(--radius-md); }
+  .hs-chip { position: relative; }
+  .hs-chip input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .hs-chip span {
+    display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--border-medium); border-radius: var(--radius-full); background: var(--bg-surface);
+    color: var(--text-secondary); font-size: var(--text-sm); cursor: pointer;
+  }
+  .hs-chip small { color: var(--text-muted); font-size: var(--text-xs); }
+  .hs-chip input:checked + span { border-color: var(--accent-gold); background: var(--accent-gold-dim); color: var(--text-bright); }
+  .hs-chip--magic input:checked + span { border-color: var(--accent-purple); background: var(--accent-purple-dim); }
+  .hs-chip input:focus-visible + span { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+  .hs-check { display: flex; gap: var(--space-3); align-items: flex-start; font-weight: var(--weight-normal) !important; }
+  .hs-check input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--accent-gold); }
+
+  .hs-field.is-invalid input:not([type="checkbox"]):not([type="radio"]), .hs-field.is-invalid textarea, .hs-field.is-invalid .hs-chips { border-color: #f87171; }
+  .hs-error { font-size: var(--text-xs); color: #f87171; }
+
+  .hs-actions {
+    position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3);
+    padding: var(--space-4) 0 calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(transparent, var(--bg-base) 35%);
+  }
+  .hs-submit, .hs-again {
+    min-height: 44px; padding: var(--space-3) var(--space-6); border: 1px solid var(--accent-gold); border-radius: var(--radius-md);
+    background: var(--accent-gold); color: #17140a; font: inherit; font-weight: var(--weight-bold); cursor: pointer;
+  }
+  .hs-submit:disabled { opacity: .55; cursor: default; }
+  .hs-status { font-size: var(--text-sm); color: var(--text-secondary); }
+  .hs-status.is-bad { color: #f87171; }
+
+  .hs-done { display: grid; gap: var(--space-4); justify-items: start; padding: var(--space-8); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); }
+  .hs-done h2 { margin: 0; color: var(--text-bright); font-size: var(--text-2xl); }
+  .hs-done p { margin: 0; color: var(--text-secondary); }
+</style>
+
+<script>
+  const form = document.getElementById("hs-form") as HTMLFormElement;
+  const statusEl = document.getElementById("hs-status")!;
+  const submit = document.getElementById("hs-submit") as HTMLButtonElement;
+  const started = document.getElementById("hs-started") as HTMLInputElement;
+  const fileInput = document.getElementById("artFile") as HTMLInputElement;
+  const preview = document.getElementById("hs-preview") as HTMLImageElement;
+  const MAX_IMAGE = 8 * 1024 * 1024;
+  started.value = String(Date.now());
+
+  const setStatus = (text: string, bad = false) => { statusEl.textContent = text; statusEl.classList.toggle("is-bad", bad); };
+
+  form.addEventListener("change", (event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.name === "sounds") document.getElementById("hs-own-sounds")!.hidden = target.value !== "own";
+  });
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files?.[0];
+    if (preview.src) URL.revokeObjectURL(preview.src);
+    preview.hidden = !file;
+    if (file) preview.src = URL.createObjectURL(file);
+  });
+
+  function validate() {
+    form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
+    form.querySelectorAll(".hs-error").forEach((el) => el.remove());
+    const fd = new FormData(form);
+    const problems: HTMLElement[] = [];
+    const flag = (field: HTMLElement | null, message: string) => {
+      if (!field) return;
+      field.classList.add("is-invalid");
+      const error = document.createElement("span");
+      error.className = "hs-error";
+      error.textContent = message;
+      field.appendChild(error);
+      problems.push(field);
+    };
+    form.querySelectorAll<HTMLElement>("[data-req]").forEach((field) => {
+      const group = field.dataset.group;
+      const input = field.querySelector<HTMLInputElement>("input, textarea, select");
+      const value = String(fd.get(group ?? input?.name ?? "") ?? "").trim();
+      if (!value) flag(field, group === "heroClass" ? "Pick a class." : "Fill this in.");
+    });
+    const file = fileInput.files?.[0];
+    const link = String(fd.get("artLink") ?? "").trim();
+    const look = String(fd.get("lookText") ?? "").trim();
+    if (file && file.size > MAX_IMAGE) flag(fileInput.closest(".hs-field"), "The image is larger than 8 MB.");
+    if ((file || link) && !(fd.get("rightsOwn") && fd.get("rightsNotGame"))) flag(form.querySelector('[data-group="rights"]'), "Confirm both points for the art.");
+    if (!file && !link && !look) flag(document.getElementById("lookText")!.closest(".hs-field"), "Add art or describe the look.");
+    if (fd.getAll("strengths").length > 4) flag(form.querySelector('[data-group="strengths"]'), "Pick at most 4.");
+    if (problems.length) {
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      problems[0].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      problems[0].querySelector<HTMLElement>("input, textarea, select")?.focus({ preventScroll: true });
+    }
+    return problems.length === 0;
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!validate()) { setStatus("Some fields need attention.", true); return; }
+    submit.disabled = true;
+    setStatus("Sending...");
+    try {
+      const res = await fetch("/api/hero-submission", { method: "POST", body: new FormData(form) });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.ok) {
+        const message = body.error === "bad_image" ? "The image must be PNG, JPG, WebP or GIF and at most 8 MB."
+          : body.error === "missing" ? "Some required fields are empty."
+          : "Sending failed. Please try again in a few minutes.";
+        setStatus(message, true);
+        return;
+      }
+      const name = String(new FormData(form).get("heroName") ?? "").trim();
+      document.getElementById("hs-done-text")!.textContent = `${name} was sent. We read every submission and may contact you with questions.`;
+      form.hidden = true;
+      document.getElementById("hs-done")!.hidden = false;
+      setStatus("");
+    } catch {
+      setStatus("Sending failed. Check your connection and try again.", true);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  document.getElementById("hs-again")!.addEventListener("click", () => {
+    form.reset();
+    preview.hidden = true;
+    document.getElementById("hs-own-sounds")!.hidden = true;
+    started.value = String(Date.now());
+    form.hidden = false;
+    document.getElementById("hs-done")!.hidden = true;
+    form.scrollIntoView();
+  });
+</script>

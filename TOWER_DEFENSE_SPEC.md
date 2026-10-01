@@ -214,6 +214,14 @@ therefore does not track the tier badge; that is intended.
 After pricing, class kits apply (`hpMult`, `armorMult`, `apsMult`/`maxAps`, `dpsMult`,
 forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 
+- Community hero submissions (October 1, 2026): public form `/games/tower-defense/submit-hero`
+  (`src/pages/games/tower-defense/submit-hero.astro`, no account needed) posts to the Pages
+  Function `functions/api/hero-submission.js`, which sends each entry (summary embed, full entry
+  as `.md`, optional art upload up to 8 MB) to a private Discord channel. Needs the Cloudflare
+  secret `DISCORD_HERO_WEBHOOK`; without it the endpoint answers 503. Spam traps: hidden
+  `website` field and a 4-second minimum fill time. Stats, cost and rarity are not asked; the
+  owner sets them when a hero is added (pipeline part C).
+
 ## 5. Combat rules (`sim.js`)
 
 - Fixed step 60/s, accumulator loop, deterministic, seeded RNG. Speed toggle scales
