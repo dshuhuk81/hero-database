@@ -475,6 +475,14 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
 Each map: `theme`, `art`, `music`, `path` or `lanes`, `base`, generated `roadSlots`,
 `platformSlots`, `rings`, `grid`. Asset assignments: [map.md](map.md).
 
+Board map generator `board-v1` (`src/game/td/map-generator-board.js`, `npm run td:board`): boards
+of 8 x 4, 9 x 5 or 10 x 5 cells, one or two gates with equal lanes merging before the base, a
+one-cell road, platform blocks next to the road, high ground, cursed and shrine tiles, and a
+uniqueness rule (`layoutConflict`: no identical or mirrored cells, at most 70% shared road per
+board size), checked over `tdMaps.json` by `test-td-map-generator.mjs`. Board special tiles are
+authored as `grid.board.rings` (`{ type, cell, kind }`); `validateMap` asks boards for at least 6
+road and 8 platform tiles. Details: `docs/tower-defense-board-plan.md` step 2.
+
 Compact board prototype (October 1, 2026; `src/game/td/board.js`, plan and measurements in
 [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) section F). A map with
 `grid.board` (`cell`, `cols`, `rows`, `origin`, `road` and `platforms` as cell lists) gets one

@@ -58,7 +58,14 @@ export function buildGrid(map) {
   const board = map.grid?.board;
   if (board) {
     const centers = (cells) => cells.map((cell) => cellCenter(board, cell).map(round));
-    return { roadSlots: centers(board.road ?? []), platformSlots: centers(board.platforms ?? []), rings: {} };
+    const road = board.road ?? [], platform = board.platforms ?? [];
+    // Special tiles: { type, cell, kind } on one of the listed cells.
+    const rings = {};
+    for (const { type, cell, kind } of board.rings ?? []) {
+      const index = (type === "road" ? road : platform).findIndex(([c, r]) => c === cell?.[0] && r === cell?.[1]);
+      if (index >= 0) rings[`${type}:${index}`] = kind;
+    }
+    return { roadSlots: centers(road), platformSlots: centers(platform), rings };
   }
   const cfg = { ...GRID_DEFAULTS, ...(map.grid ?? {}) };
   const { cell, roadHalf, gap, endClear, bounds: [x0, y0, x1, y1] } = cfg;

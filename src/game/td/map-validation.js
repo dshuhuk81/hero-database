@@ -80,8 +80,8 @@ export function validateMap(map, {
   width = 960,
   height = 540,
   minSegment = 60,
-  minRoadSlots = 15,
-  minPlatformSlots = 20,
+  minRoadSlots = map?.grid?.board ? 6 : 15, // compact boards (board.js) hold few large tiles
+  minPlatformSlots = map?.grid?.board ? 8 : 20,
 } = {}) {
   const errors = [];
   if (!map?.base || !Number.isInteger(map.base.x) || !Number.isInteger(map.base.y)) {

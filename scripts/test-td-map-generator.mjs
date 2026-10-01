@@ -6,6 +6,7 @@ import { validateMap } from "../src/game/td/map-validation.js";
 import { buildGrid } from "../src/game/td/grid.js";
 import { generateMapV2, geometryHashV2 } from "../src/game/td/map-generator-v2.js";
 import { mapLanes } from "../src/game/td/lanes.js";
+import { boardLayout, generateBoardMap, layoutConflict } from "../src/game/td/map-generator-board.js";
 
 const identity = { id: "test-map", name: "Test", theme: "sunscar", art: "sunscar-sanctuary-v1", music: "cc0_hope_orchestral", boss: "baphomet" };
 const recipe = (seed, parameters = {}, constraints = {}) => ({
@@ -96,5 +97,61 @@ for (const map of maps.filter((entry) => entry.recipe)) {
     assert.ok(validateMap(r.map).ok, `v2 two-gate seed ${seed} valid`);
   }
   assert.ok(twoGate >= 3, "v2 two-gate maps generate");
+}
+// Map generator board-v1 (docs/tower-defense-board-plan.md step 2): deterministic, valid,
+// a one-cell road, equal lanes, and no two board maps sharing a layout (owner requirement B).
+{
+  const board = (seed, size = "9x5", gates = 1) => ({ generator: "board-v1", ruleset: 1, seed, size, gates, entry: ["left", "top", "bottom"] });
+  const who = { ...identity, id: "board-test" };
+  const len = (path) => path.slice(1).reduce((t, p, i) => t + Math.abs(p[0] - path[i][0]) + Math.abs(p[1] - path[i][1]), 0);
+  const a = generateBoardMap(board(5), who), b = generateBoardMap(board(5), who);
+  assert.ok(a.ok && b.ok, "board-v1 generates");
+  assert.equal(a.map.geometryHash, b.map.geometryHash, "board-v1 is deterministic");
+  const made = [];
+  for (const size of ["8x4", "9x5", "10x5"]) for (const gates of [1, 2]) for (let seed = 1; seed <= 6; seed++) {
+    const r = generateBoardMap(board(seed, size, gates), who, { avoid: made });
+    if (!r.ok) continue;
+    const m = r.map;
+    assert.ok(validateMap(m).ok, `board ${size} ${gates}g seed ${seed} valid`);
+    const lanes = mapLanes(m);
+    assert.equal(lanes.length, gates, `board ${size} seed ${seed}: ${gates} gate(s)`);
+    assert.ok(lanes.every((lane) => len(lane.path) === len(lanes[0].path)), `board ${size} seed ${seed}: equal lanes`);
+    // One cell wide: road cells side by side are always consecutive on a lane.
+    const layout = boardLayout(m);
+    const steps = new Set();
+    const bd = m.grid.board;
+    const cellOf = ([x, y]) => [Math.min(bd.cols - 1, Math.max(0, Math.floor((x - bd.origin[0]) / bd.cell))), Math.min(bd.rows - 1, Math.max(0, Math.floor((y - bd.origin[1]) / bd.cell)))];
+    for (const lane of lanes) {
+      const pts = lane.path.map(cellOf);
+      let prev = pts[0];
+      for (let i = 1; i < pts.length; i++) {
+        while (prev[0] !== pts[i][0] || prev[1] !== pts[i][1]) {
+          const next = [prev[0] + Math.sign(pts[i][0] - prev[0]), prev[1] + Math.sign(pts[i][1] - prev[1])];
+          steps.add([prev.join(","), next.join(",")].sort().join("|"));
+          prev = next;
+        }
+      }
+    }
+    for (const k of layout.road) {
+      const [c, r] = k.split(",").map(Number);
+      for (const n of [`${c + 1},${r}`, `${c},${r + 1}`]) if (layout.road.has(n)) assert.ok(steps.has([k, n].sort().join("|")), `board ${size} seed ${seed}: road ${k} and ${n} side by side`);
+    }
+    made.push(m);
+  }
+  assert.ok(made.length >= 24, `board-v1 makes unique maps in every size (${made.length})`);
+  for (let i = 0; i < made.length; i++) for (let j = i + 1; j < made.length; j++) assert.equal(layoutConflict(made[i], made[j]), null, "avoid keeps layouts unique");
+  // A mirrored copy is the same layout.
+  const m = made.find((x) => x.grid.board.cols === 9);
+  const bd = m.grid.board, width = bd.cell * bd.cols, mirrorX = (x) => 2 * bd.origin[0] + width - x;
+  const flip = (lane) => ({ spawn: { x: mirrorX(lane.spawn.x), y: lane.spawn.y }, path: lane.path.map(([x, y]) => [mirrorX(x), y]) });
+  const lanes = mapLanes(m);
+  const mirrored = { ...m, base: { x: mirrorX(m.base.x), y: m.base.y }, ...(lanes.length > 1 ? { lanes: lanes.map(flip) } : { spawn: flip(lanes[0]).spawn, path: flip(lanes[0]).path }),
+    grid: { board: { ...bd, platforms: bd.platforms.map(([c, r]) => [bd.cols - 1 - c, r]) } } };
+  assert.equal(layoutConflict(m, mirrored), "identical", "a mirrored copy counts as the same layout");
+  // Requirement B on the real data: no two board maps share a layout.
+  const boards = maps.filter((map) => map.grid?.board);
+  for (let i = 0; i < boards.length; i++) for (let j = i + 1; j < boards.length; j++) {
+    assert.equal(layoutConflict(boards[i], boards[j]), null, `${boards[i].id} and ${boards[j].id} share a layout`);
+  }
 }
 console.log("Tower defense map generator checks passed.");

@@ -81,8 +81,8 @@ variety; that is a bigger change and not needed for the board.
 
 ### 2. Board size
 
-**Recommendation:** three sizes. 8 x 4 cells (120 px) for Chapter 1 and the tutorial stages,
-9 x 5 (104 px) for everything else, and 10 x 5 (96 px) for chapter finales and a few late
+**Recommendation:** three sizes. 8 x 4 cells (118 px) for Chapter 1 and the tutorial stages,
+9 x 5 (104 px) for everything else, and 10 x 5 (94 px) for chapter finales and a few late
 Free Play maps. More sizes make 83 distinct layouts easier to reach and let early maps feel
 calmer.
 
@@ -123,6 +123,30 @@ battle; the in-battle gold economy stays as is until it is redesigned.
   focus and training pickers on boards.
 
 ### Step 2: board map generator (L)
+
+Status (October 1, 2026): done. `src/game/td/map-generator-board.js` (`board-v1`), CLI
+`npm run td:board` (`scripts/generate-td-board.mjs`), tests in `test-td-map-generator.mjs`.
+
+- Sizes: 8 x 4 at 118 px cells, 9 x 5 at 104 px, 10 x 5 at 94 px (the largest square cell
+  that fits the 960 x 540 world with a margin; the earlier 120 / 96 px estimates do not fit).
+- One or two gates work reliably (two gates succeed for 53-90% of seeds; the CLI just tries
+  more). Three gates almost never fit: three one-cell lanes cannot meet at one junction on a
+  board five cells tall without touching. They need a second merge point; left for later.
+- The road is one cell wide: road cells side by side are always consecutive on a lane.
+- Special tiles: every map gets high ground and cursed on platforms and a shrine on the road.
+- Uniqueness: `layoutConflict()` compares two maps of the same size under the four
+  symmetries (as is, mirrored left-right, mirrored top-bottom, half turn) and rejects
+  identical cells or more than 70% of the road shared. `generateBoardMap(..., { avoid })`
+  skips layouts that conflict with existing maps; the test fails when two board maps in
+  `tdMaps.json` share a layout.
+- Capacity: 83 mutually unique maps (10 at 8 x 4, 60 at 9 x 5, 13 at 10 x 5, a third with
+  two gates) came from 88 recipes in half a second.
+- Atlas: `npm run td:board -- --size=9x5 --gates=2 --theme=jungle --count=24` writes
+  `public/td-local/board-atlas-<theme>-<size>-<gates>g.html` (open it through `npm run dev`
+  at `/td-local/...` so the theme art loads); `--check` regenerates every board-v1 map and
+  checks uniqueness.
+
+Original step description:
 
 A `board-v1` generator next to `lattice-v2`, same recipe and `geometryHash` contract:
 
