@@ -36,11 +36,11 @@ export function maxBlessings(scope = "all") {
 // Priority lists: bots deploy in this order while gold and free rings last. The first
 // five are the original squad; the rest fill the remaining rings (no team cap since M5).
 export const SQUADS = {
-  "balanced (S-tier core)": ["nuwa", "poseidon", "zeus", "diana", "caishen", "amunra", "phoenix", "yuelao", "momus", "fengyi", "nyx", "prometheus"],
-  "budget (D-tier)": ["demeter", "horus", "fengyi", "artemis", "freya", "medusa", "jormungandr", "set", "anubis", "prometheus", "diana"],
-  "road wall": ["prometheus", "amunra", "momus", "jormungandr", "yuelao", "nuwa", "demeter", "freya", "caishen", "set"],
-  "all platform (no blockers)": ["zeus", "phoenix", "diana", "artemis", "caishen", "fengyi", "medusa", "yuelao", "freya"],
-  "glass cannon": ["nyx", "bastet", "phoenix", "zeus", "yuelao", "poseidon", "anubis", "fengyi", "diana", "horus", "medusa"],
+  "balanced (S-tier core)": ["atlas", "aegir", "odin", "skadi", "plutus", "helios", "hephaestus", "harmonia", "heimdall", "boreas", "nott", "ymir"],
+  "budget (D-tier)": ["gaia", "vidar", "boreas", "atalanta", "asclepius", "stheno", "fenrir", "surtr", "thanatos", "ymir", "skadi"],
+  "road wall": ["ymir", "helios", "heimdall", "fenrir", "harmonia", "atlas", "gaia", "asclepius", "plutus", "surtr"],
+  "all platform (no blockers)": ["odin", "hephaestus", "skadi", "atalanta", "plutus", "boreas", "stheno", "harmonia", "asclepius"],
+  "glass cannon": ["nott", "hecate", "hephaestus", "odin", "harmonia", "aegir", "thanatos", "boreas", "skadi", "vidar", "stheno"],
 };
 
 // `tuning` overrides the base tuning (balance experiments). `focus` is the level focus

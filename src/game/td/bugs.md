@@ -44,8 +44,8 @@ When i have a hero selected, and i click on the canvas - i d like to deselect th
 Root cause: activateSlot() showed a text prompt when clicking an empty slot with nothing selected, never cleared selectedEntityId. Clicks on open canvas (no slot) were ignored entirely.
 Fix: clicking an empty slot or open canvas with no selectedHeroId now clears selectedEntityId, hides inspector, resets uiSelected.
 
-## Bug 02 [FIXED] Nyx attacks out of range
-Nyx attacks the enemies when they come on the battlefield no matter how far she is away. since she is a ground hero that should be possible. she should only attack when enemies come into her attack range.
+## Bug 02 [FIXED] Nott attacks out of range
+Nott attacks the enemies when they come on the battlefield no matter how far she is away. since she is a ground hero that should be possible. she should only attack when enemies come into her attack range.
 
-Root cause: findTarget() for shadow_step variant returned any alive enemy sorted by HP, with no range filter. Normal heroes filter by hero.range first; Nyx skipped it.
+Root cause: findTarget() for shadow_step variant returned any alive enemy sorted by HP, with no range filter. Normal heroes filter by hero.range first; Nott skipped it.
 Fix: added Math.hypot range check to shadow_step target list in sim.js:436.

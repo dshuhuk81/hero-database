@@ -4,16 +4,17 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import mythic from "../src/data/tdSkinMythic.json" with { type: "json" };
 import { skinHeroes, skinTuning } from "../src/game/td/skin.js";
 
 const base = "https://r2.example";
 const skinned = skinHeroes(heroes, base);
-const oldNames = new Set(heroes.map((hero) => hero.name));
 skinned.forEach((hero, i) => {
   const { name, title, image, portrait, token, anim, sounds, ...rest } = hero;
   const { name: _n, image: _i, ...original } = heroes[i];
   assert.deepEqual(rest, original, `${hero.id}: only display fields change`);
-  assert.ok(name && title && !oldNames.has(name), `${hero.id}: new name ${name}`);
+  assert.ok(name && title && name === mythic.heroes[hero.id].name, `${hero.id}: mythic name ${name}`);
+  assert.ok(!heroes[i].image, `${hero.id}: no database image in gameBalance.json`);
   assert.equal(anim.frames, 24, `${hero.id}: idle loop`);
   for (const url of [image, portrait, token, anim.url]) {
     assert.ok(url.startsWith(`${base}/td/heroes-alt/`) && url.includes(`/${hero.id}-`), `${hero.id}: TD-owned art ${url}`);

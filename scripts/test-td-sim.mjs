@@ -26,11 +26,11 @@ const lv = (g, entityId, focus) => {
 };
 
 const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
-assert.equal(game.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]), true, "valid team");
+assert.equal(game.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]), true, "valid team");
 game.gold = 10000;
-assert.equal(game.place("nuwa", "road", 0), true, "road placement");
-assert.equal(game.place("zeus", "road", 1), false, "class-gated placement");
-assert.equal(game.place("zeus", "platform", 0), true, "platform placement");
+assert.equal(game.place("atlas", "road", 0), true, "road placement");
+assert.equal(game.place("odin", "road", 1), false, "class-gated placement");
+assert.equal(game.place("odin", "platform", 0), true, "platform placement");
 assert.equal(game.startWave(), true, "wave starts");
 for (let i = 0; i < 60 * 90 && game.running; i += 1) game.step(1 / 60);
 assert.equal(game.running, false, "wave terminates");
@@ -41,31 +41,31 @@ assert.equal(game.wave, 1, "wave advances once");
 // Hero armor mitigates incoming enemy damage.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 11 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes[0];
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes[0];
   g.startWave();
   g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt");
   const grunt = g.enemies[0];
-  grunt.x = nuwa.x - 20; grunt.y = nuwa.y; // contact range
-  const before = nuwa.hpLeft;
+  grunt.x = atlas.x - 20; grunt.y = atlas.y; // contact range
+  const before = atlas.hpLeft;
   for (let i = 0; i < 30; i += 1) g.step(1 / 60); // exactly one attack lands (period 0.9s)
   // Tanks also shrug off their class guard share (M6 class kit).
-  const expected = resolveDamage(grunt.attack, nuwa.armor, "physical") * (1 - g.guardFor(nuwa));
-  assert.ok(g.guardFor(nuwa) > 0, "Tank guard applies");
-  assert.ok(nuwa.hpLeft < before, "blocker takes damage");
-  assert.ok(Math.abs((before - nuwa.hpLeft) - expected) < 1e-6, `armor mitigation applied (${expected})`);
+  const expected = resolveDamage(grunt.attack, atlas.armor, "physical") * (1 - g.guardFor(atlas));
+  assert.ok(g.guardFor(atlas) > 0, "Tank guard applies");
+  assert.ok(atlas.hpLeft < before, "blocker takes damage");
+  assert.ok(Math.abs((before - atlas.hpLeft) - expected) < 1e-6, `armor mitigation applied (${expected})`);
   assert.ok(expected < grunt.attack, "mitigation reduces raw attack");
 }
 
 // Road heroes cannot target flyers; flyers leak past full road coverage.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 12 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
+  g.place("atlas", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("flyer");
   const flyer = g.enemies[0];
@@ -83,23 +83,23 @@ assert.equal(game.wave, 1, "wave advances once");
 // Enemy archers stop and shoot from range instead of contact, for holdSeconds.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 13 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 2); // (410, 290), near path point (410, 180)
-  const nuwa = g.heroes[0];
+  g.place("atlas", "road", 2); // (410, 290), near path point (410, 180)
+  const atlas = g.heroes[0];
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("archer");
   const archer = g.enemies[0];
-  for (let i = 0; i < 60 * 30 && nuwa.hpLeft === nuwa.hp; i += 1) g.step(1 / 60);
-  assert.ok(nuwa.hpLeft < nuwa.hp, "archer damages blocker");
-  const distance = Math.hypot(archer.x - nuwa.x, archer.y - nuwa.y);
+  for (let i = 0; i < 60 * 30 && atlas.hpLeft === atlas.hp; i += 1) g.step(1 / 60);
+  assert.ok(atlas.hpLeft < atlas.hp, "archer damages blocker");
+  const distance = Math.hypot(archer.x - atlas.x, archer.y - atlas.y);
   assert.ok(distance > 42 && distance <= archer.attackRange, `archer fires from range (${Math.round(distance)}px)`);
   for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
-  assert.ok(Math.hypot(archer.x - nuwa.x, archer.y - nuwa.y) > 42, "archer holds position at range");
+  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) > 42, "archer holds position at range");
   // After holdSeconds it closes in and is blocked in contact like a melee enemy (no standoff).
   archer.hp = archer.maxHp = 1e9;
   for (let i = 0; i < 60 * (tuning.enemies.archer.holdSeconds + 5); i += 1) g.step(1 / 60);
-  assert.ok(Math.hypot(archer.x - nuwa.x, archer.y - nuwa.y) <= 42 + 1e-6, "archer closes in after holdSeconds");
+  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) <= 42 + 1e-6, "archer closes in after holdSeconds");
   assert.equal(archer.held, true, "and the blocker holds it");
 }
 
@@ -107,21 +107,21 @@ assert.equal(game.wave, 1, "wave advances once");
 // nearest living platform hero within attackRange, for platformAttack damage; never in melee.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 19 });
-  g.setTeam(["nuwa", "zeus", "diana"]);
+  g.setTeam(["atlas", "odin", "skadi"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0); g.place("zeus", "platform", 0); g.place("diana", "platform", 1);
-  const [nuwa, zeus, diana] = ["nuwa", "zeus", "diana"].map((id) => g.heroes.find((h) => h.id === id));
+  g.place("atlas", "road", 0); g.place("odin", "platform", 0); g.place("skadi", "platform", 1);
+  const [atlas, odin, skadi] = ["atlas", "odin", "skadi"].map((id) => g.heroes.find((h) => h.id === id));
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   const archer = g.spawnEnemy("archer");
   assert.equal(archer.targetsPlatforms, true, "archer tuning enables platform shots");
   const at = (unit, x, y) => { unit.x = x; unit.y = y; };
-  at(archer, 500, 300); at(nuwa, 560, 300); at(zeus, 590, 300); at(diana, 700, 300);
-  assert.equal(g.findEnemyTarget(archer), nuwa, "a road hero in reach comes first");
-  at(nuwa, 800, 300);
-  assert.equal(g.findEnemyTarget(archer), zeus, "no road hero in reach: nearest platform hero in range");
-  zeus.hpLeft = 0;
+  at(archer, 500, 300); at(atlas, 560, 300); at(odin, 590, 300); at(skadi, 700, 300);
+  assert.equal(g.findEnemyTarget(archer), atlas, "a road hero in reach comes first");
+  at(atlas, 800, 300);
+  assert.equal(g.findEnemyTarget(archer), odin, "no road hero in reach: nearest platform hero in range");
+  odin.hpLeft = 0;
   assert.equal(g.findEnemyTarget(archer), null, "fallen and out-of-range platform heroes are skipped");
-  zeus.hpLeft = zeus.hp;
+  odin.hpLeft = odin.hp;
   archer.rangedTime = tuning.enemies.archer.holdSeconds;
   assert.equal(g.findEnemyTarget(archer), null, "after the hold (melee) platforms are out of reach");
   archer.rangedTime = 0;
@@ -129,29 +129,29 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(g.findEnemyTarget(archer), null, "without the flag archers ignore platforms (old rule)");
   archer.targetsPlatforms = true;
   // One shot at the platform hero: platformAttack share of the normal hit, target marked.
-  g.heroes = [zeus];
+  g.heroes = [odin];
   archer.attackClock = 0; archer.hp = archer.maxHp = 1e9;
-  const before = zeus.hpLeft;
+  const before = odin.hpLeft;
   g.step(1 / 60);
-  const expected = resolveDamage(archer.attack * tuning.enemies.archer.platformAttack, zeus.armor * (1 + g.modifiers().res), "physical") * (1 - g.guardFor(zeus));
-  assert.ok(Math.abs(before - zeus.hpLeft - expected) < 1e-6, `platform hit uses platformAttack (${(before - zeus.hpLeft).toFixed(2)} vs ${expected.toFixed(2)})`);
-  assert.ok(zeus.aimedAt > 0, "target warning timestamp set for the renderer");
+  const expected = resolveDamage(archer.attack * tuning.enemies.archer.platformAttack, odin.armor * (1 + g.modifiers().res), "physical") * (1 - g.guardFor(odin));
+  assert.ok(Math.abs(before - odin.hpLeft - expected) < 1e-6, `platform hit uses platformAttack (${(before - odin.hpLeft).toFixed(2)} vs ${expected.toFixed(2)})`);
+  assert.ok(odin.aimedAt > 0, "target warning timestamp set for the renderer");
 }
 
 // Blocker death frees enemies and fires a death event.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 14 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes[0];
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes[0];
   let deaths = 0;
   g.onChange = (type) => { if (type === "death") deaths += 1; };
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("boss");
   const boss = g.enemies[0];
-  boss.x = nuwa.x - 30; boss.y = nuwa.y;
-  nuwa.hpLeft = 50;
+  boss.x = atlas.x - 30; boss.y = atlas.y;
+  atlas.hpLeft = 50;
   const distanceBefore = boss.distance;
   for (let i = 0; i < 60 * 10 && g.heroes.length; i += 1) g.step(1 / 60);
   assert.equal(deaths, 1, "death event fires once");
@@ -162,11 +162,11 @@ assert.equal(game.wave, 1, "wave advances once");
 // Support heal is limited to allies inside the support's range.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 15 });
-  g.setTeam(["caishen", "nuwa", "poseidon", "zeus", "diana"]);
+  g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
   g.gold = 10000;
-  g.place("caishen", "platform", 0); // (82, 225)
-  g.place("nuwa", "road", 0);        // (168, 230) - 86px away, inside 150 range
-  g.place("poseidon", "road", 2);    // (410, 290) - far away
+  g.place("plutus", "platform", 0); // (82, 225)
+  g.place("atlas", "road", 0);        // (168, 230) - 86px away, inside 150 range
+  g.place("aegir", "road", 2);    // (410, 290) - far away
   const [support, near, far] = g.heroes;
   near.hpLeft = 100; far.hpLeft = 100;
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -181,9 +181,9 @@ assert.equal(game.wave, 1, "wave advances once");
 // Cleave respects facing: enemies behind the hero are spared when the cone is occupied.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 16 });
-  g.setTeam(["poseidon", "zeus", "diana", "caishen", "nuwa"]);
+  g.setTeam(["aegir", "odin", "skadi", "plutus", "atlas"]);
   g.gold = 10000;
-  g.place("poseidon", "road", 0);
+  g.place("aegir", "road", 0);
   const warrior = g.heroes[0];
   warrior.rotation = 0; // facing +x
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -220,28 +220,28 @@ assert.equal(game.wave, 1, "wave advances once");
     return { g, hero, target, opposite, rest, result };
   };
   for (const angle of sides) {
-    for (const id of ["poseidon", "amunra", "set", "jormungandr"]) {
+    for (const id of ["aegir", "helios", "surtr", "fenrir"]) {
       if (!heroes.some((h) => h.id === id)) continue;
       const r = cast(id, angle);
       assert.ok(r.target.hp < r.target.maxHp, `${id} hits a target at ${angle.toFixed(2)} rad`);
       assert.equal(r.opposite.hp, r.opposite.maxHp, `${id} spares the enemy behind at ${angle.toFixed(2)} rad`);
     }
-    const m = cast("medusa", angle, 1);
-    assert.notEqual(m.result, false, `medusa fires at ${angle.toFixed(2)} rad`);
-    assert.ok((m.target.petrifiedUntil ?? 0) > m.g.time && (m.rest[0].petrifiedUntil ?? 0) > m.g.time, `medusa petrifies target and cone neighbour at ${angle.toFixed(2)} rad`);
-    assert.ok(!((m.opposite.petrifiedUntil ?? 0) > m.g.time), `medusa misses the enemy behind at ${angle.toFixed(2)} rad`);
-    const d = cast("diana", angle, 2);
-    assert.ok(d.rest.every((e) => e.hp < e.maxHp), `diana's spread follows her target at ${angle.toFixed(2)} rad`);
-    assert.equal(d.opposite.hp, d.opposite.maxHp, `diana's spread skips the enemy behind at ${angle.toFixed(2)} rad`);
+    const m = cast("stheno", angle, 1);
+    assert.notEqual(m.result, false, `stheno fires at ${angle.toFixed(2)} rad`);
+    assert.ok((m.target.petrifiedUntil ?? 0) > m.g.time && (m.rest[0].petrifiedUntil ?? 0) > m.g.time, `stheno petrifies target and cone neighbour at ${angle.toFixed(2)} rad`);
+    assert.ok(!((m.opposite.petrifiedUntil ?? 0) > m.g.time), `stheno misses the enemy behind at ${angle.toFixed(2)} rad`);
+    const d = cast("skadi", angle, 2);
+    assert.ok(d.rest.every((e) => e.hp < e.maxHp), `skadi's spread follows her target at ${angle.toFixed(2)} rad`);
+    assert.equal(d.opposite.hp, d.opposite.maxHp, `skadi's spread skips the enemy behind at ${angle.toFixed(2)} rad`);
   }
   // Facing also follows the current target every step, so effects point the right way.
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 18 });
-  g.gold = 100000; g.place("diana", "platform", 0);
+  g.gold = 100000; g.place("skadi", "platform", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   const hero = g.heroes[0]; hero.rotation = 0;
   g.spawnEnemy("brute"); const e = g.enemies[0]; e.hp = e.maxHp = 1e9;
   for (let i = 0; i < 600 && !g.findTarget(hero); i += 1) g.step(1 / 30); // walk it into range
-  assert.ok(g.findTarget(hero), "enemy reaches diana's range");
+  assert.ok(g.findTarget(hero), "enemy reaches skadi's range");
   g.step(1 / 60);
   const t = g.findTarget(hero);
   assert.ok(Math.abs(hero.rotation - Math.atan2(t.y - hero.y, t.x - hero.x)) < 1e-6, "hero turns to its target during combat");
@@ -252,10 +252,10 @@ assert.equal(game.wave, 1, "wave advances once");
 // Mechanics check at base difficulty; balance at the shipped difficulty is covered by test:td-balance.
 {
   const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 1 } }, map: maps[0], waves, seed: 21 });
-  g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
+  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0); g.place("poseidon", "road", 3);
-  g.place("zeus", "platform", 1); g.place("diana", "platform", 2); g.place("caishen", "platform", 0);
+  g.place("atlas", "road", 0); g.place("aegir", "road", 3);
+  g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   let upgraded = false;
   while (!g.complete) {
     if (!g.running) {
@@ -274,7 +274,7 @@ assert.equal(game.wave, 1, "wave advances once");
 // Full run, loss: an empty defense loses every leak and the run ends.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 22 });
-  g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
+  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   while (!g.complete) {
     if (!g.running) g.startWave();
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
@@ -300,13 +300,13 @@ assert.equal(game.wave, 1, "wave advances once");
 // Attacks and enemy strikes emit visible tracer effects.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 51 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("zeus", "platform", 1);
+  g.place("odin", "platform", 1);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("brute");
   const brute = g.enemies[0];
-  brute.speed = 0; brute.distance = 320; brute.x = 168; brute.y = 240; // inside zeus's range
+  brute.speed = 0; brute.distance = 320; brute.x = 168; brute.y = 240; // inside odin's range
   g.step(1 / 60);
   assert.ok(g.effects.some((effect) => effect.type === "shot" && effect.color !== "red"), "hero attacks emit a tracer");
 }
@@ -316,54 +316,54 @@ assert.equal(game.wave, 1, "wave advances once");
 // Aura applies in range, not out of range, and never stacks.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 41 });
-  g.setTeam(["caishen", "yuelao", "nuwa", "poseidon", "zeus"]);
+  g.setTeam(["plutus", "harmonia", "atlas", "aegir", "odin"]);
   g.gold = 10000;
-  g.place("caishen", "platform", 0); // (82, 225)
-  g.place("yuelao", "platform", 1);  // (274, 292) - also in range of nuwa
-  g.place("nuwa", "road", 0);        // (168, 230) - inside both support ranges
-  g.place("poseidon", "road", 4);    // (650, 300) - outside all support ranges
-  const [, , nuwa, poseidon] = g.heroes;
+  g.place("plutus", "platform", 0); // (82, 225)
+  g.place("harmonia", "platform", 1);  // (274, 292) - also in range of atlas
+  g.place("atlas", "road", 0);        // (168, 230) - inside both support ranges
+  g.place("aegir", "road", 4);    // (650, 300) - outside all support ranges
+  const [, , atlas, aegir] = g.heroes;
   const auraBonus = 1 + tuning.support.passiveAuraBonus;
-  const synBonusNuwa = g.synergyBonusFor(nuwa);
-  assert.ok(Math.abs(g.attackValue(nuwa) - nuwa.atk * auraBonus * (1 + synBonusNuwa)) < 1e-9, "ally in range gains aura bonus plus synergy");
-  assert.equal(g.supportAuraFor(poseidon), null, "ally out of range gains nothing");
-  assert.equal(g.synergyBonusFor(poseidon), 0, "poseidon out of synergy range");
-  assert.equal(g.attackValue(poseidon), poseidon.atk, "out-of-range attack unchanged");
+  const synBonusAtlas = g.synergyBonusFor(atlas);
+  assert.ok(Math.abs(g.attackValue(atlas) - atlas.atk * auraBonus * (1 + synBonusAtlas)) < 1e-9, "ally in range gains aura bonus plus synergy");
+  assert.equal(g.supportAuraFor(aegir), null, "ally out of range gains nothing");
+  assert.equal(g.synergyBonusFor(aegir), 0, "aegir out of synergy range");
+  assert.equal(g.attackValue(aegir), aegir.atk, "out-of-range attack unchanged");
 }
 
 // Aura ends immediately when the support falls.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 42 });
-  g.setTeam(["caishen", "nuwa", "poseidon", "zeus", "diana"]);
+  g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
   g.gold = 10000;
-  g.place("caishen", "platform", 0);
-  g.place("nuwa", "road", 0);
-  const [caishen, nuwa] = g.heroes;
-  assert.ok(g.supportAuraFor(nuwa), "aura active while support lives");
-  g.damageHero(caishen, 99999);
-  assert.equal(g.supportAuraFor(nuwa), null, "aura gone when support falls");
-  assert.equal(g.attackValue(nuwa), nuwa.atk, "attack returns to base");
+  g.place("plutus", "platform", 0);
+  g.place("atlas", "road", 0);
+  const [plutus, atlas] = g.heroes;
+  assert.ok(g.supportAuraFor(atlas), "aura active while support lives");
+  g.damageHero(plutus, 99999);
+  assert.equal(g.supportAuraFor(atlas), null, "aura gone when support falls");
+  assert.equal(g.attackValue(atlas), atlas.atk, "attack returns to base");
 }
 
 // Aura bonus affects real damage dealt.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 43 });
-  g.setTeam(["caishen", "zeus", "diana", "nuwa", "poseidon"]);
+  g.setTeam(["plutus", "odin", "skadi", "atlas", "aegir"]);
   g.gold = 10000;
-  g.place("caishen", "platform", 0);
-  g.place("zeus", "platform", 1);
-  const [caishen, zeus] = g.heroes;
-  caishen.aps = 0; // isolate zeus's damage from the support's own attacks
-  caishen.x = zeus.x - 100; caishen.y = zeus.y; // well inside the aura, whatever the ring spacing
+  g.place("plutus", "platform", 0);
+  g.place("odin", "platform", 1);
+  const [plutus, odin] = g.heroes;
+  plutus.aps = 0; // isolate odin's damage from the support's own attacks
+  plutus.x = odin.x - 100; plutus.y = odin.y; // well inside the aura, whatever the ring spacing
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("brute");
   const brute = g.enemies[0];
-  brute.speed = 0; brute.distance = 320; // path point (168, 240): inside zeus's and caishen's range
+  brute.speed = 0; brute.distance = 320; // path point (168, 240): inside odin's and plutus's range
   brute.x = 168; brute.y = 240;
   const before = brute.hp;
   for (let i = 0; i < 60; i += 1) g.step(1 / 60);
-  const unbuffedHit = resolveDamage(zeus.atk, brute.magicRes, "magical", false);
-  const buffedHit = resolveDamage(zeus.atk * (1 + tuning.support.passiveAuraBonus), brute.magicRes, "magical", false);
+  const unbuffedHit = resolveDamage(odin.atk, brute.magicRes, "magical", false);
+  const buffedHit = resolveDamage(odin.atk * (1 + tuning.support.passiveAuraBonus), brute.magicRes, "magical", false);
   assert.ok(buffedHit > unbuffedHit, "aura raises attack damage");
   assert.ok(before - brute.hp >= buffedHit - 1e-6, "buffed attack deals aura-increased damage");
 }
@@ -371,10 +371,10 @@ assert.equal(game.wave, 1, "wave advances once");
 // --- 3B virtue choices ---
 
 function runWaveOne(g) {
-  g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
+  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0); g.place("poseidon", "road", 3);
-  g.place("zeus", "platform", 1); g.place("diana", "platform", 2); g.place("caishen", "platform", 0);
+  g.place("atlas", "road", 0); g.place("aegir", "road", 3);
+  g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
 }
@@ -401,18 +401,18 @@ function runWaveOne(g) {
 // The chosen effect is applied to combat math.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 63 });
-  g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
+  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("zeus", "platform", 1);
+  g.place("odin", "platform", 1);
   g.virtueOffer = ["Wildness", "Mercy", "Gnosis"];
   g.chooseVirtue("Wildness");
-  const zeus = g.heroes[0];
-  assert.ok(Math.abs(g.attackValue(zeus) - zeus.atk * 1.15) < 1e-9, "Wildness adds +15% attack");
-  const hpBefore = zeus.hp;
+  const odin = g.heroes[0];
+  assert.ok(Math.abs(g.attackValue(odin) - odin.atk * 1.15) < 1e-9, "Wildness adds +15% attack");
+  const hpBefore = odin.hp;
   g.virtueOffer = ["Defiance"];
   g.chooseVirtue("Defiance");
-  assert.equal(zeus.hp, Math.round(zeus.baseHp * 1.15), "Defiance raises max health for deployed heroes");
-  assert.ok(zeus.hpLeft > hpBefore - 1 && zeus.hpLeft === zeus.hp, "health bonus granted as current health");
+  assert.equal(odin.hp, Math.round(odin.baseHp * 1.15), "Defiance raises max health for deployed heroes");
+  assert.ok(odin.hpLeft > hpBefore - 1 && odin.hpLeft === odin.hp, "health bonus granted as current health");
 }
 
 // Unclaimed offers expire when the next wave starts; restart clears everything.
@@ -433,45 +433,45 @@ function runWaveOne(g) {
 // Exact cost, stat math, and no free full heal.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 31 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes[0];
-  nuwa.hpLeft = 200; // damaged: upgrade must not fully heal
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes[0];
+  atlas.hpLeft = 200; // damaged: upgrade must not fully heal
   g.gold = tuning.upgrades.costs[1];
-  const info = lv(g, nuwa.entityId);
+  const info = lv(g, atlas.entityId);
   assert.equal(info.ok, true, "exact-cost purchase is allowed");
   assert.equal(g.gold, 0, "gold deducted exactly");
-  assert.equal(nuwa.level, 2, "level increases");
-  assert.equal(nuwa.atk, Math.round(nuwa.baseAtk * 1.1), "attack gains 10% of base");
-  const expectedHp = Math.round(nuwa.baseHp * 1.2);
-  assert.equal(nuwa.hp, expectedHp, "max health gains 20% of base");
-  assert.equal(nuwa.hpLeft, 200 + (expectedHp - nuwa.baseHp), "max health gain granted without full heal");
+  assert.equal(atlas.level, 2, "level increases");
+  assert.equal(atlas.atk, Math.round(atlas.baseAtk * 1.1), "attack gains 10% of base");
+  const expectedHp = Math.round(atlas.baseHp * 1.2);
+  assert.equal(atlas.hp, expectedHp, "max health gains 20% of base");
+  assert.equal(atlas.hpLeft, 200 + (expectedHp - atlas.baseHp), "max health gain granted without full heal");
 }
 
 // Rejections carry reasons: insufficient funds, level cap. Upgrades are allowed mid-wave.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 32 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes[0];
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes[0];
   g.gold = tuning.upgrades.costs[1] - 1;
-  assert.equal(lv(g, nuwa.entityId).ok, false, "insufficient funds rejected");
+  assert.equal(lv(g, atlas.entityId).ok, false, "insufficient funds rejected");
   assert.equal(g.gold, tuning.upgrades.costs[1] - 1, "failed purchase keeps gold");
   g.gold = 10000;
   g.startWave();
-  assert.equal(lv(g, nuwa.entityId).ok, true, "mid-wave upgrade allowed");
-  assert.equal(nuwa.level, 2, "mid-wave upgrade applied");
+  assert.equal(lv(g, atlas.entityId).ok, true, "mid-wave upgrade allowed");
+  assert.equal(atlas.level, 2, "mid-wave upgrade applied");
   g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
   assert.equal(g.running, false, "wave cleared");
-  while (nuwa.level < tuning.upgrades.maxLevel) assert.ok(lv(g, nuwa.entityId, "health").ok);
-  assert.equal(nuwa.level, tuning.upgrades.maxLevel, "level cap reached");
-  const capped = g.upgradeInfo(nuwa.entityId);
+  while (atlas.level < tuning.upgrades.maxLevel) assert.ok(lv(g, atlas.entityId, "health").ok);
+  assert.equal(atlas.level, tuning.upgrades.maxLevel, "level cap reached");
+  const capped = g.upgradeInfo(atlas.entityId);
   assert.equal(capped.awaken, true, "past the level cap only Awakening is offered");
   g.gold = 10000;
-  lv(g, nuwa.entityId);
-  const done = lv(g, nuwa.entityId);
+  lv(g, atlas.entityId);
+  const done = lv(g, atlas.entityId);
   assert.equal(done.ok, false, "after Awakening only training, which needs a stat");
   assert.equal(done.train, true, "training is offered");
   assert.ok(done.reason.includes("train"), "reason is stated");
@@ -480,13 +480,13 @@ function runWaveOne(g) {
 // A fallen hero re-enters at level 1.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 33 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
+  g.place("atlas", "road", 0);
   lv(g, g.heroes[0].entityId);
   g.damageHero(g.heroes[0], 99999);
   assert.equal(g.heroes.length, 0, "fallen hero leaves the field");
-  g.place("nuwa", "road", 1);
+  g.place("atlas", "road", 1);
   assert.equal(g.heroes[0].level, 1, "re-recruited hero starts at level 1");
   assert.equal(g.heroes[0].atk, g.heroes[0].baseAtk, "re-recruited hero uses base stats");
 }
@@ -494,10 +494,10 @@ function runWaveOne(g) {
 // Wave result totals agree with the simulation.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 24 });
-  g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
+  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0); g.place("poseidon", "road", 3);
-  g.place("zeus", "platform", 1); g.place("diana", "platform", 2); g.place("caishen", "platform", 0);
+  g.place("atlas", "road", 0); g.place("aegir", "road", 3);
+  g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   const goldBefore = g.gold;
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
@@ -529,7 +529,7 @@ function runWaveOne(g) {
 // virtue_pair_triggered: choosing both pair virtues activates the pair.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 41 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   // Manually inject an offer with the Storm Bond pair virtues.
@@ -544,7 +544,7 @@ function runWaveOne(g) {
 // virtue_pair_bonus_applied: pair bonus stacks on top of individual virtue bonuses.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 42 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Wildness", "Resolve"];
@@ -560,7 +560,7 @@ function runWaveOne(g) {
 // virtue_pair_not_double: same pair cannot be triggered twice.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 43 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Wildness", "Resolve"];
@@ -579,7 +579,7 @@ function runWaveOne(g) {
 // virtue_pair_order_independent: pair triggers regardless of which virtue is chosen first.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 44 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Desire", "Resolve"];
@@ -594,10 +594,10 @@ function runWaveOne(g) {
 // hero_kills_tracked: kills attributed to the attacking hero.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 55 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  g.place("zeus", "platform", 0);
+  g.place("atlas", "road", 0);
+  g.place("odin", "platform", 0);
   g.startWave();
   g.enemies = []; g.spawnQueue = [];
   const gruntsKilled = 3;
@@ -617,9 +617,9 @@ function runWaveOne(g) {
 // run_duration_set_on_finish: runDuration reflects sim time at end of run.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 56 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
+  g.place("atlas", "road", 0);
   g.startWave();
   assert.equal(g.runDuration, 0, "runDuration 0 before finish");
   for (let i = 0; i < 60 * 90 && g.running; i += 1) g.step(1 / 60);
@@ -632,11 +632,11 @@ function runWaveOne(g) {
 // gold_spent_tracked: totalGoldSpent accumulates placement and upgrade costs.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 57 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
   assert.equal(g.totalGoldSpent, 0, "totalGoldSpent zero before any placement");
-  const nuwaHero = heroes.find((h) => h.id === "nuwa");
-  g.place("nuwa", "road", 0);
+  const nuwaHero = heroes.find((h) => h.id === "atlas");
+  g.place("atlas", "road", 0);
   assert.equal(g.totalGoldSpent, nuwaHero.cost, "placement cost tracked");
   // Upgrade between waves (no wave running).
   const eid = g.heroes[0].entityId;
@@ -649,9 +649,9 @@ function runWaveOne(g) {
 // gold_earned_tracked: totalGoldEarned accumulates kill rewards and wave clear bonuses.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 58 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
+  g.place("atlas", "road", 0);
   // Manually kill one grunt to verify kill reward is tracked.
   g.startWave();
   g.enemies = []; g.spawnQueue = [];
@@ -691,11 +691,11 @@ function runWaveOne(g) {
 // synergy_no_shared_tags: heroes with no overlapping tags get zero bonus.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 70 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  g.place("zeus", "platform", 0); // (82, 225) — close to nuwa (168, 230), dist ~86
-  // Force no shared tags between nuwa and zeus for this test.
+  g.place("atlas", "road", 0);
+  g.place("odin", "platform", 0); // (82, 225) — close to atlas (168, 230), dist ~86
+  // Force no shared tags between atlas and odin for this test.
   g.heroes[0].synergies = ["TAG_A"];
   g.heroes[1].synergies = ["TAG_B"];
   assert.equal(g.synergyBonusFor(g.heroes[0]), 0, "no shared tags = 0 bonus");
@@ -705,10 +705,10 @@ function runWaveOne(g) {
 // synergy_one_shared: one shared tag within range yields bonusPerTag.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 71 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  g.place("zeus", "platform", 0);
+  g.place("atlas", "road", 0);
+  g.place("odin", "platform", 0);
   g.heroes[0].synergies = ["TAG_X", "TAG_Y"];
   g.heroes[1].synergies = ["TAG_X", "TAG_Z"];
   const bonus = g.synergyBonusFor(g.heroes[0]);
@@ -721,10 +721,10 @@ function runWaveOne(g) {
 // synergy_cap: many shared tags are capped at tuning.synergy.cap.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 72 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  g.place("zeus", "platform", 0);
+  g.place("atlas", "road", 0);
+  g.place("odin", "platform", 0);
   const manyTags = ["T1", "T2", "T3", "T4", "T5", "T6"];
   g.heroes[0].synergies = manyTags;
   g.heroes[1].synergies = manyTags;
@@ -734,10 +734,10 @@ function runWaveOne(g) {
 // synergy_out_of_range: shared tags beyond range yield zero.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 73 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0); // (168, 230)
-  g.place("zeus", "platform", 4); // (850, 292) — dist ~686 >> 250
+  g.place("atlas", "road", 0); // (168, 230)
+  g.place("odin", "platform", 4); // (850, 292) — dist ~686 >> 250
   g.heroes[0].synergies = ["SHARED_TAG"];
   g.heroes[1].synergies = ["SHARED_TAG"];
   assert.equal(g.synergyBonusFor(g.heroes[0]), 0, "out of range = 0 bonus");
@@ -747,10 +747,10 @@ function runWaveOne(g) {
 // synergy_dead_hero: a fallen hero does not contribute synergy bonus.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 74 });
-  g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
+  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.gold = 10000;
-  g.place("nuwa", "road", 0);
-  g.place("zeus", "platform", 0);
+  g.place("atlas", "road", 0);
+  g.place("odin", "platform", 0);
   g.heroes[0].synergies = ["SHARED_TAG"];
   g.heroes[1].synergies = ["SHARED_TAG"];
   assert.ok(g.synergyBonusFor(g.heroes[0]) > 0, "synergy present before death");
@@ -763,62 +763,62 @@ function runWaveOne(g) {
 // variant_loaded: heroSkills merged into placed heroes.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 80 });
-  g.setTeam(["nyx", "poseidon", "zeus", "medusa", "freya"]);
+  g.setTeam(["nott", "aegir", "odin", "stheno", "asclepius"]);
   g.gold = 10000;
-  g.place("nyx", "road", 0);
-  g.place("poseidon", "road", 1);
-  g.place("medusa", "platform", 0);
-  g.place("freya", "platform", 1);
-  g.place("zeus", "platform", 2);
-  const nyx = g.heroes.find((h) => h.id === "nyx");
-  const poseidon = g.heroes.find((h) => h.id === "poseidon");
-  const medusa = g.heroes.find((h) => h.id === "medusa");
-  const freya = g.heroes.find((h) => h.id === "freya");
-  const zeus = g.heroes.find((h) => h.id === "zeus");
-  assert.equal(nyx.variant, "shadow_step", "nyx variant loaded");
-  assert.equal(poseidon.variant, "knockback", "poseidon variant loaded");
-  assert.equal(medusa.variant, "petrify_shot", "medusa variant loaded");
-  assert.equal(freya.variant, "valkyrie_call", "freya variant loaded");
-  assert.equal(zeus.variant, "chain_lightning", "zeus variant loaded");
-  assert.ok(nyx.skillName, "nyx has skill name");
-  assert.ok(zeus.skillName, "zeus has skill name");
+  g.place("nott", "road", 0);
+  g.place("aegir", "road", 1);
+  g.place("stheno", "platform", 0);
+  g.place("asclepius", "platform", 1);
+  g.place("odin", "platform", 2);
+  const nott = g.heroes.find((h) => h.id === "nott");
+  const aegir = g.heroes.find((h) => h.id === "aegir");
+  const stheno = g.heroes.find((h) => h.id === "stheno");
+  const asclepius = g.heroes.find((h) => h.id === "asclepius");
+  const odin = g.heroes.find((h) => h.id === "odin");
+  assert.equal(nott.variant, "shadow_step", "nott variant loaded");
+  assert.equal(aegir.variant, "knockback", "aegir variant loaded");
+  assert.equal(stheno.variant, "petrify_shot", "stheno variant loaded");
+  assert.equal(asclepius.variant, "valkyrie_call", "asclepius variant loaded");
+  assert.equal(odin.variant, "chain_lightning", "odin variant loaded");
+  assert.ok(nott.skillName, "nott has skill name");
+  assert.ok(odin.skillName, "odin has skill name");
 }
 
-// variant_knockback: Poseidon cleave reduces enemy distance.
+// variant_knockback: Aegir cleave reduces enemy distance.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 81 });
-  g.setTeam(["poseidon", "nuwa", "zeus", "diana", "caishen"]);
+  g.setTeam(["aegir", "atlas", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("poseidon", "road", 0);
+  g.place("aegir", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt");
-  const poseidon = g.heroes[0];
+  const aegir = g.heroes[0];
   const grunt = g.enemies[0];
-  grunt.x = poseidon.x; grunt.y = poseidon.y; grunt.distance = 200;
+  grunt.x = aegir.x; grunt.y = aegir.y; grunt.distance = 200;
   const distBefore = grunt.distance;
-  g.castUltimate(poseidon, grunt);
+  g.castUltimate(aegir, grunt);
   assert.ok(grunt.distance < distBefore, "knockback reduces enemy distance");
   assert.ok(grunt.distance >= 0, "distance cannot go below 0");
 }
 
-// variant_petrify_shot: Medusa petrifies up to petrifyTargets enemies in her facing cone for petrifyDuration seconds.
+// variant_petrify_shot: Stheno petrifies up to petrifyTargets enemies in her facing cone for petrifyDuration seconds.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 82 });
-  g.setTeam(["medusa", "nuwa", "zeus", "diana", "caishen"]);
+  g.setTeam(["stheno", "atlas", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("medusa", "platform", 0);
+  g.place("stheno", "platform", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
-  const medusa = g.heroes[0];
-  const skill = tuning.heroSkills.medusa;
-  assert.equal(g.castUltimate(medusa, null), false, "no target in the cone keeps the ultimate ready");
+  const stheno = g.heroes[0];
+  const skill = tuning.heroSkills.stheno;
+  assert.equal(g.castUltimate(stheno, null), false, "no target in the cone keeps the ultimate ready");
   for (let i = 0; i < skill.petrifyTargets + 1; i += 1) g.spawnEnemy("brute");
   g.enemies.forEach((enemy, i) => {
     const reach = 30 + i * 5;
-    enemy.x = medusa.x + Math.cos(medusa.rotation) * reach;
-    enemy.y = medusa.y + Math.sin(medusa.rotation) * reach;
+    enemy.x = stheno.x + Math.cos(stheno.rotation) * reach;
+    enemy.y = stheno.y + Math.sin(stheno.rotation) * reach;
     enemy.distance = 100 + i;
   });
-  g.castUltimate(medusa, g.enemies[0]);
+  g.castUltimate(stheno, g.enemies[0]);
   const stoned = g.enemies.filter((enemy) => (enemy.petrifiedUntil ?? 0) > g.time);
   assert.equal(stoned.length, skill.petrifyTargets, "petrifies up to petrifyTargets enemies");
   assert.ok(stoned.every((enemy) => Math.abs(enemy.petrifiedUntil - (g.time + skill.petrifyDuration)) < 1e-9), "petrify lasts petrifyDuration");
@@ -828,46 +828,46 @@ function runWaveOne(g) {
   assert.equal(target.distance, before, "petrified enemy does not move");
 }
 
-// variant_shadow_step: Nyx can target enemies outside normal range.
+// variant_shadow_step: Nott can target enemies outside normal range.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 83 });
-  g.setTeam(["nyx", "nuwa", "zeus", "diana", "caishen"]);
+  g.setTeam(["nott", "atlas", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("nyx", "road", 0);
+  g.place("nott", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt");
-  const nyx = g.heroes[0];
+  const nott = g.heroes[0];
   const grunt = g.enemies[0];
   grunt.x = 900; grunt.y = 500; // far away
   grunt.hp = 1; grunt.maxHp = 100;
-  assert.equal(g.findTarget(nyx), null, "normal attacks stay within range");
-  assert.ok(g.findUltTarget(nyx) === grunt, "shadow_step targets enemy outside normal range");
-  nyx.ultClock = nyx.ultCooldown;
-  nyx.attackClock = 1; // the step moves the grunt onto the path; keep the dash basic out of it
+  assert.equal(g.findTarget(nott), null, "normal attacks stay within range");
+  assert.ok(g.findUltTarget(nott) === grunt, "shadow_step targets enemy outside normal range");
+  nott.ultClock = nott.ultCooldown;
+  nott.attackClock = 1; // the step moves the grunt onto the path; keep the dash basic out of it
   g.step(1 / 60);
-  assert.equal(nyx.ultClock < nyx.ultCooldown, true, "ultimate fires with no enemy in normal range");
+  assert.equal(nott.ultClock < nott.ultCooldown, true, "ultimate fires with no enemy in normal range");
   assert.ok(grunt.hp <= 0 || grunt.dead, "far low-HP enemy is executed");
 }
 
-// variant_valkyrie_call: Freya revives a fallen hero.
+// variant_valkyrie_call: Asclepius revives a fallen hero.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 84 });
-  g.setTeam(["freya", "nuwa", "zeus", "diana", "caishen"]);
+  g.setTeam(["asclepius", "atlas", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("freya", "platform", 0);
-  g.place("nuwa", "road", 0);
+  g.place("asclepius", "platform", 0);
+  g.place("atlas", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
-  const nuwa = g.heroes.find((h) => h.id === "nuwa");
-  const slotType = nuwa.slotType; const slotIndex = nuwa.slotIndex;
-  // Kill nuwa directly
-  g.fallenHeroes.push({ id: "nuwa", slotType, slotIndex });
-  g.heroes = g.heroes.filter((h) => h.id !== "nuwa");
-  assert.equal(g.heroes.filter((h) => h.id === "nuwa").length, 0, "nuwa fallen");
-  const freya = g.heroes.find((h) => h.id === "freya");
+  const atlas = g.heroes.find((h) => h.id === "atlas");
+  const slotType = atlas.slotType; const slotIndex = atlas.slotIndex;
+  // Kill atlas directly
+  g.fallenHeroes.push({ id: "atlas", slotType, slotIndex });
+  g.heroes = g.heroes.filter((h) => h.id !== "atlas");
+  assert.equal(g.heroes.filter((h) => h.id === "atlas").length, 0, "atlas fallen");
+  const asclepius = g.heroes.find((h) => h.id === "asclepius");
   g.spawnEnemy("grunt");
-  g.castUltimate(freya, g.enemies[0]);
-  const revived = g.heroes.find((h) => h.id === "nuwa");
-  assert.ok(revived, "nuwa revived by valkyrie_call");
+  g.castUltimate(asclepius, g.enemies[0]);
+  const revived = g.heroes.find((h) => h.id === "atlas");
+  assert.ok(revived, "atlas revived by valkyrie_call");
   assert.ok(revived.hpLeft <= revived.hp * 0.55, "revived hero has at most 55% HP");
   assert.ok(revived.hpLeft >= revived.hp * 0.45, "revived hero has at least 45% HP");
 }
@@ -881,84 +881,84 @@ function runWaveOne(g) {
     return g;
   };
   const kill = (g, id) => { const unit = g.heroes.find((h) => h.id === id); g.damageHero(unit, unit.hpLeft + 1, null); };
-  const castFreya = (g) => {
-    const freya = g.heroes.find((h) => h.id === "freya");
+  const castAsclepius = (g) => {
+    const asclepius = g.heroes.find((h) => h.id === "asclepius");
     g.startWave(); g.enemies = []; g.spawnQueue = [];
     g.spawnEnemy("grunt");
-    g.castUltimate(freya, g.enemies[0]);
+    g.castUltimate(asclepius, g.enemies[0]);
   };
 
-  // A: five fielded, one falls, Freya revives it; more heroes can still join (no cap).
+  // A: five fielded, one falls, Asclepius revives it; more heroes can still join (no cap).
   {
     const g = make();
-    for (const [id, type, index] of [["freya", "platform", 0], ["nuwa", "road", 0], ["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1]]) g.place(id, type, index);
-    kill(g, "nuwa");
-    castFreya(g);
-    assert.ok(g.heroes.some((h) => h.id === "nuwa"), "A: nuwa revived");
-    assert.ok(g.team.includes("nuwa"), "A: revived hero is back in the team");
-    assert.equal(g.place("caishen", "platform", 3), true, "A: sixth hero after a revive");
+    for (const [id, type, index] of [["asclepius", "platform", 0], ["atlas", "road", 0], ["odin", "platform", 1], ["skadi", "platform", 2], ["aegir", "road", 1]]) g.place(id, type, index);
+    kill(g, "atlas");
+    castAsclepius(g);
+    assert.ok(g.heroes.some((h) => h.id === "atlas"), "A: atlas revived");
+    assert.ok(g.team.includes("atlas"), "A: revived hero is back in the team");
+    assert.equal(g.place("plutus", "platform", 3), true, "A: sixth hero after a revive");
   }
 
   // B: the fallen hero was redeployed elsewhere first: no second copy.
   {
     const g = make();
-    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
-    kill(g, "nuwa");
-    g.place("nuwa", "road", 2);
-    castFreya(g);
-    assert.equal(g.heroes.filter((h) => h.id === "nuwa").length, 1, "B: no duplicate hero");
+    g.place("asclepius", "platform", 0); g.place("atlas", "road", 0);
+    kill(g, "atlas");
+    g.place("atlas", "road", 2);
+    castAsclepius(g);
+    assert.equal(g.heroes.filter((h) => h.id === "atlas").length, 1, "B: no duplicate hero");
   }
 
   // C: another hero took the fallen hero's ring: no stacking on that ring.
   {
     const g = make();
-    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
-    kill(g, "nuwa");
-    g.place("poseidon", "road", 0);
-    castFreya(g);
+    g.place("asclepius", "platform", 0); g.place("atlas", "road", 0);
+    kill(g, "atlas");
+    g.place("aegir", "road", 0);
+    castAsclepius(g);
     assert.equal(g.heroes.filter((h) => h.slotType === "road" && h.slotIndex === 0).length, 1, "C: one hero per ring");
-    assert.ok(!g.heroes.some((h) => h.id === "nuwa"), "C: nuwa stays fallen");
+    assert.ok(!g.heroes.some((h) => h.id === "atlas"), "C: atlas stays fallen");
   }
 
   // D: five alive plus a fallen hero: the revive adds a sixth (no team cap).
   {
     const g = make();
-    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
-    kill(g, "nuwa");
-    for (const [id, type, index] of [["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1], ["caishen", "platform", 3]]) g.place(id, type, index);
-    castFreya(g);
+    g.place("asclepius", "platform", 0); g.place("atlas", "road", 0);
+    kill(g, "atlas");
+    for (const [id, type, index] of [["odin", "platform", 1], ["skadi", "platform", 2], ["aegir", "road", 1], ["plutus", "platform", 3]]) g.place(id, type, index);
+    castAsclepius(g);
     assert.equal(g.heroes.length, 6, "D: revive past five heroes");
   }
 
   // E: an older eligible fallen hero is revived when the newest one is not eligible.
   {
     const g = make();
-    g.place("freya", "platform", 0); g.place("nuwa", "road", 0); g.place("poseidon", "road", 1);
-    kill(g, "nuwa");
-    kill(g, "poseidon");
-    g.place("poseidon", "road", 3); // newest fallen is back on the field
-    castFreya(g);
-    assert.ok(g.heroes.some((h) => h.id === "nuwa" && h.slotIndex === 0), "E: older fallen hero revived on its ring");
+    g.place("asclepius", "platform", 0); g.place("atlas", "road", 0); g.place("aegir", "road", 1);
+    kill(g, "atlas");
+    kill(g, "aegir");
+    g.place("aegir", "road", 3); // newest fallen is back on the field
+    castAsclepius(g);
+    assert.ok(g.heroes.some((h) => h.id === "atlas" && h.slotIndex === 0), "E: older fallen hero revived on its ring");
   }
 }
 
-// variant_expose: Prometheus-exposed enemies take 30% more damage.
+// variant_expose: Ymir-exposed enemies take 30% more damage.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
-  g.setTeam(["prometheus", "nuwa", "zeus", "diana", "caishen"]);
+  g.setTeam(["ymir", "atlas", "odin", "skadi", "plutus"]);
   g.gold = 10000;
-  g.place("prometheus", "road", 0);
+  g.place("ymir", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
-  const prometheus = g.heroes[0];
+  const ymir = g.heroes[0];
   const [g1, g2] = g.enemies;
-  g1.x = prometheus.x; g1.y = prometheus.y;
+  g1.x = ymir.x; g1.y = ymir.y;
   g2.x = 900; g2.y = 500; // far, not exposed
-  g.castUltimate(prometheus, g1);
+  g.castUltimate(ymir, g1);
   assert.ok(g1.exposed && g1.exposed > g.time, "nearby enemy exposed");
   assert.equal(g2.exposed, undefined, "far enemy not exposed");
   const hpBefore = g1.hp;
-  g.hit(g1, 100, prometheus);
+  g.hit(g1, 100, ymir);
   assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
 }
 
@@ -1057,7 +1057,7 @@ function runWaveOne(g) {
 // One quest per wave, none on the final wave, none without tuning.quests.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
-  g.place("zeus", "platform", 0);
+  g.place("odin", "platform", 0);
   g.startWave();
   assert.ok(g.quest, "quest rolled at wave start");
   assert.equal(g.quest.status, "active");
@@ -1067,7 +1067,7 @@ function runWaveOne(g) {
   g.startWave();
   assert.equal(g.quest, null, "no quest on the final wave");
   const off = new TowerDefenseGame({ heroes, tuning: { ...tuning, quests: undefined }, map: maps[0], waves, seed: 91 });
-  off.place("zeus", "platform", 0);
+  off.place("odin", "platform", 0);
   off.startWave();
   assert.equal(off.quest, null, "no quests without config");
 }
@@ -1085,7 +1085,7 @@ function runWaveOne(g) {
   const setup = (type) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 93 });
     g.gold = 10000;
-    g.place("nuwa", "road", 0); g.place("zeus", "platform", 0);
+    g.place("atlas", "road", 0); g.place("odin", "platform", 0);
     g.startWave();
     g.quest = { ...g.quest, type, seconds: 5 };
     return g;
@@ -1098,8 +1098,8 @@ function runWaveOne(g) {
   assert.equal(g.quest.status, "failed", "leak fails noLeaks");
   // A fallen hero fails survival.
   g = setup("heroSurvival");
-  const nuwa = g.heroes.find((h) => h.id === "nuwa");
-  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  const atlas = g.heroes.find((h) => h.id === "atlas");
+  g.damageHero(atlas, atlas.hpLeft + 1, null);
   assert.equal(g.quest.status, "failed", "hero death fails heroSurvival");
   // Speed clear fails once the clock runs out after the last spawn.
   g = setup("speedClear");
@@ -1131,7 +1131,7 @@ function runWaveOne(g) {
   const byLength = [...maps].sort((m1, m2) => new TowerDefenseGame({ heroes, tuning, map: m1, waves }).path.total - new TowerDefenseGame({ heroes, tuning, map: m2, waves }).path.total);
   const [short, long] = [byLength[0], byLength.at(-1)]; // shortest and longest map
   const g = new TowerDefenseGame({ heroes, tuning, map: long, waves, seed: 94 });
-  g.place("zeus", "platform", 0);
+  g.place("odin", "platform", 0);
   for (let seed = 0; seed < 50 && g.quest?.type !== "speedClear"; seed += 1) {
     g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
   }
@@ -1145,7 +1145,7 @@ function runWaveOne(g) {
   const rollSlayer = () => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
     g.gold = 10000;
-    g.place("nuwa", "road", 0); g.place("zeus", "platform", 0);
+    g.place("atlas", "road", 0); g.place("odin", "platform", 0);
     for (let seed = 0; seed < 50 && g.quest?.type !== "heroKills"; seed += 1) {
       g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
     }
@@ -1181,16 +1181,16 @@ function runWaveOne(g) {
   assert.equal(g.gold, before + tuning.run.waveClearBonus.base + g.quest.gold);
   // The named hero falling before the target fails it at once.
   g = rollSlayer();
-  const nuwa = g.heroes.find((h) => h.id === "nuwa");
-  g.quest.heroEntityId = nuwa.entityId;
-  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  const atlas = g.heroes.find((h) => h.id === "atlas");
+  g.quest.heroEntityId = atlas.entityId;
+  g.damageHero(atlas, atlas.hpLeft + 1, null);
   assert.equal(g.quest.status, "failed", "named hero falling fails slayer");
 }
 
 // Slayer needs two deployed heroes.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
-  g.place("zeus", "platform", 0);
+  g.place("odin", "platform", 0);
   for (let seed = 0; seed < 50; seed += 1) {
     g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
     assert.notEqual(g.quest.type, "heroKills", "no slayer with a single hero");
@@ -1214,7 +1214,7 @@ function runWaveOne(g) {
       g.gold = 100000;
       const base = g.heroesById.get(id);
       assert.ok(g.place(id, base.slot, 0), `${id} placed`);
-      g.place(base.slot === "road" ? "zeus" : "nuwa", base.slot === "road" ? "platform" : "road", 0);
+      g.place(base.slot === "road" ? "odin" : "atlas", base.slot === "road" ? "platform" : "road", 0);
       g.startWave(); g.spawnQueue = []; g.enemies = [];
       const hero = g.heroes.find((h) => h.id === id);
       const target = setup(g);
@@ -1232,33 +1232,33 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 97 });
   g.gold = 10000;
-  g.place("horus", "road", 0);
-  const horus = g.heroes[0];
+  g.place("vidar", "road", 0);
+  const vidar = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
   const [weak, other] = g.enemies;
-  for (const e of g.enemies) { e.x = horus.x + 20; e.y = horus.y; e.distance = 1; }
+  for (const e of g.enemies) { e.x = vidar.x + 20; e.y = vidar.y; e.distance = 1; }
   weak.hp = 1; weak.distance = 2; // furthest along: the attack target, dies to the basic hit
   other.petrifiedUntil = 1e9; // keep it in range (an Assassin blocks only one enemy)
-  horus.attackClock = 0;
-  horus.ultClock = horus.ultCooldown + 1;
+  vidar.attackClock = 0;
+  vidar.ultClock = vidar.ultCooldown + 1;
   const hpBefore = other.hp;
   g.step(1 / 60);
   assert.ok(weak.dead, "basic attack killed the weak grunt");
   assert.ok(other.hp < hpBefore, "ultimate went to a living enemy instead of the corpse");
 }
 
-// Poseidon's knockback moves the enemy on the map, not just its path distance,
+// Aegir's knockback moves the enemy on the map, not just its path distance,
 // so a blocked enemy is actually pushed out of the pile.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
   g.gold = 10000;
-  g.place("poseidon", "road", 1);
+  g.place("aegir", "road", 1);
   const pos = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("brute");
   const e = g.enemies[0];
-  // Park the brute on the path next to Poseidon.
+  // Park the brute on the path next to Aegir.
   let best = 0;
   for (let d = 0; d < g.path.total; d += 2) {
     const p = pointOnPath(maps[0].path, d);
@@ -1274,18 +1274,18 @@ function runWaveOne(g) {
   assert.ok(Math.hypot(e.x - before.x, e.y - before.y) > 1, "enemy visibly moved");
 }
 
-// Zeus: chain bounces go to enemies the primary blast did not already hit.
+// Odin: chain bounces go to enemies the primary blast did not already hit.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 99 });
   g.gold = 10000;
-  g.place("zeus", "platform", 0);
-  const zeus = g.heroes[0];
+  g.place("odin", "platform", 0);
+  const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   for (let i = 0; i < 3; i += 1) g.spawnEnemy("brute");
   const [a, near, far] = g.enemies;
   for (const e of g.enemies) e.hp = e.maxHp = 1e9;
   a.x = 400; a.y = 300; near.x = 430; near.y = 300; far.x = 520; far.y = 300; // near is inside the 72px blast, far only bounce range
-  g.castUltimate(zeus, a);
+  g.castUltimate(odin, a);
   const lost = (e) => 1e9 - e.hp;
   assert.ok(lost(far) > 0, "bounce reached the enemy outside the blast");
   assert.ok(Math.abs(lost(near) - lost(a)) < lost(a) * 0.3, "enemy inside the blast is not hit again by the bounce");
@@ -1385,41 +1385,41 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 100 });
   g.gold = 10000;
-  g.place("zeus", "platform", 0);
-  const zeus = g.heroes[0];
+  g.place("odin", "platform", 0);
+  const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.lives = 1;
   g.spawnEnemy("runner"); g.spawnEnemy("grunt");
   const [leaker, victim] = g.enemies;
   leaker.distance = g.path.total - 0.01;
-  victim.x = zeus.x + 20; victim.y = zeus.y; victim.distance = 5;
-  victim.petrifiedUntil = 1e9; // hold it in Zeus's range
-  zeus.attackClock = 0; zeus.ultClock = zeus.ultCooldown + 1;
+  victim.x = odin.x + 20; victim.y = odin.y; victim.distance = 5;
+  victim.petrifiedUntil = 1e9; // hold it in Odin's range
+  odin.attackClock = 0; odin.ultClock = odin.ultCooldown + 1;
   const score = g.score;
   g.step(1 / 60);
   assert.equal(g.complete, true, "run lost on the leak");
   assert.equal(g.score, score, "no score after the run ended");
-  assert.equal(zeus.ultClock > zeus.ultCooldown, true, "no ultimate after the run ended");
+  assert.equal(odin.ultClock > odin.ultCooldown, true, "no ultimate after the run ended");
 }
 
 // Road heroes' ultimates skip flyers (damage, slows, pushes, debuffs); platform ultimates still hit them.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 103 });
   g.gold = 100000;
-  g.place("amunra", "road", 0); g.place("momus", "road", 2); g.place("zeus", "platform", 0);
-  const [amunra, momus, zeus] = ["amunra", "momus", "zeus"].map((id) => g.heroes.find((h) => h.id === id));
+  g.place("helios", "road", 0); g.place("heimdall", "road", 2); g.place("odin", "platform", 0);
+  const [helios, heimdall, odin] = ["helios", "heimdall", "odin"].map((id) => g.heroes.find((h) => h.id === id));
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("flyer");
   const [grunt, flyer] = g.enemies;
-  for (const e of g.enemies) { e.hp = e.maxHp = 1e9; e.x = amunra.x + 20; e.y = amunra.y; }
-  g.castUltimate(amunra, grunt);
+  for (const e of g.enemies) { e.hp = e.maxHp = 1e9; e.x = helios.x + 20; e.y = helios.y; }
+  g.castUltimate(helios, grunt);
   assert.ok(grunt.hp < 1e9, "warrior cleave hits the ground enemy");
   assert.equal(flyer.hp, 1e9, "warrior cleave skips the flyer");
-  flyer.slow = 0; flyer.x = momus.x + 10; flyer.y = momus.y;
-  g.castUltimate(momus, grunt);
+  flyer.slow = 0; flyer.x = heimdall.x + 10; flyer.y = heimdall.y;
+  g.castUltimate(heimdall, grunt);
   assert.equal(flyer.slow, 0, "tank taunt does not slow flyers");
-  flyer.x = zeus.x + 20; flyer.y = zeus.y;
-  g.castUltimate(zeus, flyer);
+  flyer.x = odin.x + 20; flyer.y = odin.y;
+  g.castUltimate(odin, flyer);
   assert.ok(flyer.hp < 1e9, "platform ultimate still hits flyers");
 }
 
@@ -1428,23 +1428,23 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const aw = tuning.awakening;
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 104 });
   g.gold = 100000;
-  g.place("zeus", "platform", 0);
-  const zeus = g.heroes[0];
-  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, zeus.entityId, "range").ok);
-  const info = g.upgradeInfo(zeus.entityId);
+  g.place("odin", "platform", 0);
+  const odin = g.heroes[0];
+  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, odin.entityId, "range").ok);
+  const info = g.upgradeInfo(odin.entityId);
   assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
   assert.equal(info.cost, aw.cost);
-  const atk = zeus.atk, hp = zeus.hp, gold = g.gold;
-  assert.ok(lv(g, zeus.entityId).ok);
-  assert.equal(zeus.awakened, true);
-  assert.equal(zeus.level, tuning.upgrades.maxLevel, "awakening does not add a level");
+  const atk = odin.atk, hp = odin.hp, gold = g.gold;
+  assert.ok(lv(g, odin.entityId).ok);
+  assert.equal(odin.awakened, true);
+  assert.equal(odin.level, tuning.upgrades.maxLevel, "awakening does not add a level");
   assert.equal(g.gold, gold - aw.cost);
-  assert.ok(Math.abs(zeus.atk - atk * (1 + aw.attackBonus)) <= 1, "attack bonus");
-  assert.ok(Math.abs(zeus.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
-  assert.notEqual(g.upgradeInfo(zeus.entityId).awaken, true, "only once (training follows)");
-  g.damageHero(zeus, zeus.hpLeft + 1, null);
-  assert.ok(g.place("zeus", "platform", 0));
-  const back = g.heroes.find((h) => h.id === "zeus");
+  assert.ok(Math.abs(odin.atk - atk * (1 + aw.attackBonus)) <= 1, "attack bonus");
+  assert.ok(Math.abs(odin.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
+  assert.notEqual(g.upgradeInfo(odin.entityId).awaken, true, "only once (training follows)");
+  g.damageHero(odin, odin.hpLeft + 1, null);
+  assert.ok(g.place("odin", "platform", 0));
+  const back = g.heroes.find((h) => h.id === "odin");
   assert.equal(!!back.awakened, false, "lost on death");
   assert.equal(back.level, 1);
 }
@@ -1484,49 +1484,49 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     return { g, hero };
   };
   const hitCount = (g) => g.enemies.filter((e) => e.hp < 1e9).length;
-  let r = setup("zeus", false); r.g.castUltimate(r.hero, r.g.enemies[0]); const zeusNormal = hitCount(r.g);
-  r = setup("zeus", true); r.g.castUltimate(r.hero, r.g.enemies[0]);
-  assert.equal(hitCount(r.g), zeusNormal + 2, "awakened Zeus bounces twice more");
-  for (const [id, normal, awake] of [["medusa", 3, 5], ["poseidon", 3, 5]]) {
+  let r = setup("odin", false); r.g.castUltimate(r.hero, r.g.enemies[0]); const zeusNormal = hitCount(r.g);
+  r = setup("odin", true); r.g.castUltimate(r.hero, r.g.enemies[0]);
+  assert.equal(hitCount(r.g), zeusNormal + 2, "awakened Odin bounces twice more");
+  for (const [id, normal, awake] of [["stheno", 3, 5], ["aegir", 3, 5]]) {
     r = setup(id, false); for (const e of r.g.enemies) { e.x = r.hero.x + 25; e.y = r.hero.y; } r.g.castUltimate(r.hero, r.g.enemies[0]);
     assert.equal(hitCount(r.g), normal, `${id} normal targets`);
     r = setup(id, true); for (const e of r.g.enemies) { e.x = r.hero.x + 25; e.y = r.hero.y; } r.g.castUltimate(r.hero, r.g.enemies[0]);
     assert.equal(hitCount(r.g), awake, `${id} awakened targets`);
   }
-  r = setup("caishen", true, 1);
+  r = setup("plutus", true, 1);
   const gold = r.g.gold; r.g.castUltimate(r.hero, r.g.enemies[0]);
-  assert.equal(r.g.gold, gold + 15, "awakened Caishen pays 15 gold");
-  r = setup("horus", true, 1);
-  const horus = r.hero; const e = r.g.enemies[0];
-  const single = r.g.attackValue(horus) * 2.5 * horus.ultPower * 0.5;
-  r.g.castUltimate(horus, e);
-  assert.ok(Math.abs((1e9 - e.hp) - single * 5 * (e.exposed > r.g.time ? 1.2 : 1)) < 1, "awakened Horus hits 5 times");
+  assert.equal(r.g.gold, gold + 15, "awakened Plutus pays 15 gold");
+  r = setup("vidar", true, 1);
+  const vidar = r.hero; const e = r.g.enemies[0];
+  const single = r.g.attackValue(vidar) * 2.5 * vidar.ultPower * 0.5;
+  r.g.castUltimate(vidar, e);
+  assert.ok(Math.abs((1e9 - e.hp) - single * 5 * (e.exposed > r.g.time ? 1.2 : 1)) < 1, "awakened Vidar hits 5 times");
 }
 
-// Anubis, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.
+// Thanatos, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 102 });
   g.gold = 10000;
-  assert.ok(g.place("anubis", "road", 0), "anubis is playable");
-  const anubis = g.heroes[0];
-  assert.equal(anubis.variant, "soul_drain");
+  assert.ok(g.place("thanatos", "road", 0), "thanatos is playable");
+  const thanatos = g.heroes[0];
+  assert.equal(thanatos.variant, "soul_drain");
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("brute");
   const tough = g.enemies[0];
-  tough.hp = tough.maxHp = 1e9; tough.x = anubis.x + 20; tough.y = anubis.y;
-  g.castUltimate(anubis, tough);
+  tough.hp = tough.maxHp = 1e9; tough.x = thanatos.x + 20; tough.y = thanatos.y;
+  g.castUltimate(thanatos, tough);
   assert.ok(tough.stunnedUntil > g.time + 1.9, "survivor stunned for 2s");
   const pos = tough.distance;
   for (let i = 0; i < 60; i += 1) g.step(1 / 60);
   assert.equal(tough.distance, pos, "stunned enemy does not move");
   g.spawnEnemy("grunt");
   const weak = g.enemies.at(-1);
-  weak.hp = 1; weak.x = anubis.x + 10; weak.y = anubis.y; weak.distance = pos + 1;
-  anubis.attackClock = 99; // only the ultimate acts
-  anubis.ultClock = anubis.ultCooldown + 1;
+  weak.hp = 1; weak.x = thanatos.x + 10; weak.y = thanatos.y; weak.distance = pos + 1;
+  thanatos.attackClock = 99; // only the ultimate acts
+  thanatos.ultClock = thanatos.ultCooldown + 1;
   g.step(1 / 60);
   assert.ok(weak.dead, "ultimate killed the weakest enemy");
-  assert.ok(Math.abs(anubis.ultClock - anubis.ultCooldown * 0.6) < 0.05, "kill refunds 60% of the charge");
+  assert.ok(Math.abs(thanatos.ultClock - thanatos.ultCooldown * 0.6) < 0.05, "kill refunds 60% of the charge");
 }
 
 // --- M5 blocking switches (tuning.blocking; absent = old behavior) ---
@@ -1534,14 +1534,14 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const setup = (blocking) => {
     const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, blocking: blocking ?? undefined }, map: maps[0], waves, seed: 101 });
     g.gold = 10000;
-    g.place("nuwa", "road", 1);
+    g.place("atlas", "road", 1);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
-    const nuwa = g.heroes[0];
+    const atlas = g.heroes[0];
     for (let i = 0; i < 4; i += 1) g.spawnEnemy("grunt");
-    for (const e of g.enemies) { e.x = nuwa.x + 10; e.y = nuwa.y; e.hp = e.maxHp = 1e9; }
+    for (const e of g.enemies) { e.x = atlas.x + 10; e.y = atlas.y; e.hp = e.maxHp = 1e9; }
     return g;
   };
-  // A: block limit. Nuwa (Tank) holds 2 here; the other two walk on.
+  // A: block limit. Atlas (Tank) holds 2 here; the other two walk on.
   let g = setup({ blockLimit: { Tank: 2 } });
   g.step(1 / 60);
   assert.equal(g.enemies.filter((e) => e.held).length, 2, "tank holds its limit");
@@ -1557,12 +1557,12 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(hp - e.hp, 150, "held enemy takes +50%");
   // B: fallen heroes redeploy at a discount.
   g = setup({ redeployCostFactor: 0.5 });
-  const nuwa = g.heroes[0];
-  const full = g.deployCost("nuwa");
-  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
-  assert.equal(g.deployCost("nuwa"), Math.round(full * 0.5), "redeploy at half price");
+  const atlas = g.heroes[0];
+  const full = g.deployCost("atlas");
+  g.damageHero(atlas, atlas.hpLeft + 1, null);
+  assert.equal(g.deployCost("atlas"), Math.round(full * 0.5), "redeploy at half price");
   const gold = g.gold;
-  assert.ok(g.place("nuwa", "road", 1));
+  assert.ok(g.place("atlas", "road", 1));
   assert.equal(gold - g.gold, Math.round(full * 0.5), "discounted price charged");
 }
 
@@ -1570,12 +1570,12 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
   g.gold = 10000;
-  g.place("zeus", "platform", 0);
-  const zeus = g.heroes[0];
+  g.place("odin", "platform", 0);
+  const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("grunt");
   const grunt = g.enemies[0];
-  g.hit(grunt, 1, zeus, { crit: true });
+  g.hit(grunt, 1, odin, { crit: true });
   assert.equal(g.effects.find((e) => e.type === "hit")?.crit, true, "crit flag on hit effect");
   assert.deepEqual(
     (({ enemyId, amount, crit }) => ({ enemyId, amount, crit }))(g.effects.find((e) => e.type === "damageNumber")),
@@ -1584,7 +1584,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   );
   g.effects = [];
   grunt.shield = grunt.shieldMax = 10;
-  g.hit(grunt, 4, zeus);
+  g.hit(grunt, 4, odin);
   assert.deepEqual(
     (({ amount, shielded }) => ({ amount, shielded }))(g.effects.find((e) => e.type === "damageNumber")),
     { amount: 4, shielded: true },
@@ -1592,7 +1592,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   );
   g.spawnEnemy("boss");
   const boss = g.enemies.find((e) => e.kind === "boss");
-  g.hit(boss, boss.hp + 1, zeus);
+  g.hit(boss, boss.hp + 1, odin);
   assert.ok(g.effects.some((e) => e.type === "bossDown"), "boss kill emits bossDown");
 }
 
@@ -1605,7 +1605,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const setup = (map) => {
     const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 97 });
     g.gold = 10000;
-    g.place("zeus", "platform", 0);
+    g.place("odin", "platform", 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
     return g;
   };
@@ -1636,20 +1636,20 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   for (const e of [midBoss, ...midChildren]) g.enemies.splice(g.enemies.indexOf(e), 1);
   assert.ok(g.effects.some((e) => e.type === "summon"), "summon emits an effect");
   assert.ok(boss.untargetable, "lilith cannot be targeted");
-  const zeus = g.heroes[0];
+  const odin = g.heroes[0];
   const hpBefore = boss.hp;
-  g.hit(boss, 1e9, zeus);
+  g.hit(boss, 1e9, odin);
   assert.equal(boss.hp, hpBefore, "direct hits do nothing");
-  assert.ok(!g.canHit(zeus, boss), "heroes skip her when choosing targets");
+  assert.ok(!g.canHit(odin, boss), "heroes skip her when choosing targets");
   // Damage to a child is shared with Lilith, capped at the child's remaining hp.
   const child = children()[0];
-  g.hit(child, 100, zeus);
+  g.hit(child, 100, odin);
   assert.equal(boss.hp, hpBefore - 100, "child damage reaches lilith");
   const left = child.hp;
-  g.hit(child, 1e9, zeus);
+  g.hit(child, 1e9, odin);
   assert.equal(boss.hp, hpBefore - 100 - left, "overkill on a child is not shared");
   // When all children fall, she summons them again at resummonScale.
-  for (const c of children()) g.hit(c, 1e9, zeus);
+  for (const c of children()) g.hit(c, 1e9, odin);
   g.step(1 / 60);
   const second = children();
   assert.equal(second.length, cfg.summon.count, "children return when all have fallen");
@@ -1657,7 +1657,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(Math.abs(second[0].attack - tuning.enemies.brood.attack * cfg.summon.resummonScale) < 1e-6);
   // Killing her through her children ends her (kill credited, bossDown emitted).
   boss.hp = 1;
-  g.hit(second[0], 50, zeus);
+  g.hit(second[0], 50, odin);
   assert.ok(boss.dead, "lilith dies from shared damage");
   assert.ok(g.effects.some((e) => e.type === "bossDown"));
   g.step(1 / 60);
@@ -1670,46 +1670,46 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const setup = () => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
     g.gold = 10000;
-    g.place("zeus", "platform", 0);
-    const zeus = g.heroes[0];
-    while (zeus.level < f.level - 1) assert.ok(lv(g, zeus.entityId).ok, "levels before the focus need no choice");
-    return { g, zeus };
+    g.place("odin", "platform", 0);
+    const odin = g.heroes[0];
+    while (odin.level < f.level - 1) assert.ok(lv(g, odin.entityId).ok, "levels before the focus need no choice");
+    return { g, odin };
   };
-  let { g, zeus } = setup();
-  const info = g.upgradeInfo(zeus.entityId);
+  let { g, odin } = setup();
+  const info = g.upgradeInfo(odin.entityId);
   assert.equal(info.needsFocus, true, "focus level asks for a choice");
   const gold = g.gold;
-  const refused = lv(g, zeus.entityId);
+  const refused = lv(g, odin.entityId);
   assert.equal(refused.ok, false, "no upgrade without a focus");
   assert.ok(refused.reason.includes("focus"));
   assert.equal(g.gold, gold, "refused choice costs nothing");
-  assert.equal(lv(g, zeus.entityId, "speed").ok, false, "unknown focus rejected");
+  assert.equal(lv(g, odin.entityId, "speed").ok, false, "unknown focus rejected");
   // Each option previews and applies only its own stat.
-  const plain = { atk: info.nextAtk, hp: info.nextHp, range: zeus.range };
+  const plain = { atk: info.nextAtk, hp: info.nextHp, range: odin.range };
   for (const focus of ["attack", "health", "range"]) {
-    ({ g, zeus } = setup());
-    const option = g.upgradeInfo(zeus.entityId).focusOptions[focus];
-    assert.ok(lv(g, zeus.entityId, focus).ok);
-    assert.equal(zeus.focus, focus);
-    assert.equal(zeus.level, f.level);
-    assert.equal(zeus.atk, option.nextAtk); assert.equal(zeus.hp, option.nextHp); assert.equal(zeus.range, option.nextRange);
-    assert.equal(zeus.atk > plain.atk, focus === "attack", `${focus}: attack bonus only for attack`);
-    assert.equal(zeus.hp > plain.hp, focus === "health", `${focus}: health bonus only for health`);
-    assert.equal(zeus.range > plain.range, focus === "range", `${focus}: range bonus only for range`);
+    ({ g, odin } = setup());
+    const option = g.upgradeInfo(odin.entityId).focusOptions[focus];
+    assert.ok(lv(g, odin.entityId, focus).ok);
+    assert.equal(odin.focus, focus);
+    assert.equal(odin.level, f.level);
+    assert.equal(odin.atk, option.nextAtk); assert.equal(odin.hp, option.nextHp); assert.equal(odin.range, option.nextRange);
+    assert.equal(odin.atk > plain.atk, focus === "attack", `${focus}: attack bonus only for attack`);
+    assert.equal(odin.hp > plain.hp, focus === "health", `${focus}: health bonus only for health`);
+    assert.equal(odin.range > plain.range, focus === "range", `${focus}: range bonus only for range`);
     // The focus carries into later levels and Awakening, and is asked only once.
-    const next = g.upgradeInfo(zeus.entityId);
+    const next = g.upgradeInfo(odin.entityId);
     assert.ok(!next.needsFocus, "focus is asked once");
-    while (zeus.level < tuning.upgrades.maxLevel) assert.ok(lv(g, zeus.entityId).ok);
-    assert.ok(lv(g, zeus.entityId).ok, "awaken");
-    const expected = Math.round(zeus.baseAtk * (1 + tuning.upgrades.attackPerLevel * (zeus.level - 1)) * (1 + tuning.awakening.attackBonus) * (focus === "attack" ? 1 + f.attack : 1));
-    assert.equal(zeus.atk, expected, `${focus}: attack focus kept through awakening`);
+    while (odin.level < tuning.upgrades.maxLevel) assert.ok(lv(g, odin.entityId).ok);
+    assert.ok(lv(g, odin.entityId).ok, "awaken");
+    const expected = Math.round(odin.baseAtk * (1 + tuning.upgrades.attackPerLevel * (odin.level - 1)) * (1 + tuning.awakening.attackBonus) * (focus === "attack" ? 1 + f.attack : 1));
+    assert.equal(odin.atk, expected, `${focus}: attack focus kept through awakening`);
   }
   // A fallen hero re-enters without its focus.
-  ({ g, zeus } = setup());
-  lv(g, zeus.entityId, "attack");
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes.find((h) => h.id === "nuwa");
-  assert.equal(nuwa.focus, undefined, "new units start without a focus");
+  ({ g, odin } = setup());
+  lv(g, odin.entityId, "attack");
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes.find((h) => h.id === "atlas");
+  assert.equal(atlas.focus, undefined, "new units start without a focus");
 }
 
 // --- M2 run modes: 20 waves and endless ---
@@ -1789,7 +1789,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Enemy resistances: armored kinds carry their own magic resistance (magic beats armor).
   {
-    const { g } = setup("zeus");
+    const { g } = setup("odin");
     const brute = g.spawnEnemy("brute");
     assert.equal(brute.magicRes, tuning.enemies.brute.magicRes, "brute magic resistance from tuning");
     assert.ok(brute.magicRes < brute.armor, "brutes are armored, not warded");
@@ -1797,7 +1797,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Mage splash: enemies next to the target take a share, farther ones none.
   {
-    const { g, units: [mage] } = setup("phoenix");
+    const { g, units: [mage] } = setup("hephaestus");
     assert.equal(mage.damageType, "magical", "Mages deal magic damage");
     const t = enemyAt(g, "grunt", mage.x + 60, mage.y);
     const near = enemyAt(g, "grunt", t.x + kit.Mage.splash.radius - 5, t.y);
@@ -1809,22 +1809,22 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(g.effects.some((e) => e.type === "splash" && e.radius === kit.Mage.splash.radius), "splash effect at its real radius");
   }
 
-  // Zeus (basic "chain"): bounces enemy to enemy instead of splashing.
+  // Odin (basic "chain"): bounces enemy to enemy instead of splashing.
   {
-    const { g, units: [zeus] } = setup("zeus");
-    assert.equal(zeus.basic, "chain");
-    const t = enemyAt(g, "grunt", zeus.x + 60, zeus.y);
+    const { g, units: [odin] } = setup("odin");
+    assert.equal(odin.basic, "chain");
+    const t = enemyAt(g, "grunt", odin.x + 60, odin.y);
     const a = enemyAt(g, "grunt", t.x + 80, t.y);
     const b = enemyAt(g, "grunt", a.x + 80, a.y);
     const c = enemyAt(g, "grunt", b.x + 80, b.y);
-    g.basicAttack(zeus, t);
+    g.basicAttack(odin, t);
     assert.ok(hurt(t) && hurt(a) && hurt(b), "chain reaches two bounces");
     assert.ok(!hurt(c), `chain stops after ${kit.Mage.chain.falloff.length} bounces`);
   }
 
   // Warrior cleave: up to `targets` enemies next to the target.
   {
-    const { g, units: [warrior] } = setup("amunra");
+    const { g, units: [warrior] } = setup("helios");
     const t = enemyAt(g, "grunt", warrior.x + 30, warrior.y);
     const others = Array.from({ length: kit.Warrior.cleave.targets + 2 }, (_, i) => enemyAt(g, "grunt", t.x + Math.cos(i) * 20, t.y + Math.sin(i) * 20));
     g.basicAttack(warrior, t);
@@ -1834,7 +1834,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Archer: pierces armor, bonus against flyers, snipes the toughest enemy in range.
   {
-    const { g, units: [archer] } = setup("artemis");
+    const { g, units: [archer] } = setup("atalanta");
     const value = g.attackValue(archer);
     const brute = enemyAt(g, "brute", archer.x + 60, archer.y);
     g.basicAttack(archer, brute);
@@ -1851,57 +1851,57 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   // Assassin attacks approaching enemies only in melee, then dashes after a loose enemy
   // that has already slipped past its tile.
   {
-    const { g, units: [nyx] } = setup("nyx");
-    const crossing = closestPathDistance(g, nyx);
+    const { g, units: [nott] } = setup("nott");
+    const crossing = closestPathDistance(g, nott);
     const loose = moveOnPath(g, enemyAt(g, "runner", 0, 0), crossing - 70);
-    assert.equal(g.findTarget(nyx), null, "an approaching enemy outside melee range is not attacked");
+    assert.equal(g.findTarget(nott), null, "an approaching enemy outside melee range is not attacked");
     moveOnPath(g, loose, crossing + 70);
-    assert.equal(g.findTarget(nyx), loose, "dash catches a loose enemy after it passes");
+    assert.equal(g.findTarget(nott), loose, "dash catches a loose enemy after it passes");
     loose.held = true;
-    assert.equal(g.findTarget(nyx), null, "a held enemy beyond range is left alone");
+    assert.equal(g.findTarget(nott), null, "a held enemy beyond range is left alone");
     loose.held = false;
-    g.basicAttack(nyx, loose);
+    g.basicAttack(nott, loose);
     assert.ok(g.effects.some((e) => e.type === "dash"), "dash trail effect");
-    close(loose.maxHp - loose.hp, resolveDamage(g.attackValue(nyx) * (1 + kit.Assassin.looseBonus), loose.armor, nyx.damageType), "runners take the full loose bonus");
+    close(loose.maxHp - loose.hp, resolveDamage(g.attackValue(nott) * (1 + kit.Assassin.looseBonus), loose.armor, nott.damageType), "runners take the full loose bonus");
   }
 
   // Target priority (M1): each mode picks its enemy, "auto" keeps the class rule.
   {
-    const { g, units: [zeus, nyx] } = setup("zeus", "nyx");
+    const { g, units: [odin, nott] } = setup("odin", "nott");
     const near = (e, x, y, dist, hp) => { const u = enemyAt(g, e, x, y, hp); u.distance = dist; return u; };
-    const front = near("grunt", zeus.x + 20, zeus.y, 300, 500);
-    const back = near("grunt", zeus.x - 20, zeus.y, 100, 400);
-    const tank = near("brute", zeus.x, zeus.y + 20, 200, 3000);
-    const runner = near("runner", zeus.x, zeus.y - 20, 150, 50);
-    const flyer = near("flyer", zeus.x + 10, zeus.y + 10, 50, 60);
-    assert.equal(zeus.targeting, "auto", "placed heroes start on the class rule");
-    assert.equal(g.findTarget(zeus), front, "auto: Mage takes the enemy furthest along");
+    const front = near("grunt", odin.x + 20, odin.y, 300, 500);
+    const back = near("grunt", odin.x - 20, odin.y, 100, 400);
+    const tank = near("brute", odin.x, odin.y + 20, 200, 3000);
+    const runner = near("runner", odin.x, odin.y - 20, 150, 50);
+    const flyer = near("flyer", odin.x + 10, odin.y + 10, 50, 60);
+    assert.equal(odin.targeting, "auto", "placed heroes start on the class rule");
+    assert.equal(g.findTarget(odin), front, "auto: Mage takes the enemy furthest along");
     const expect = { first: front, last: flyer, strongest: tank, weakest: runner, fastest: runner, flying: flyer, ground: front };
     for (const [mode, target] of Object.entries(expect)) {
-      assert.equal(g.setTargeting(zeus.entityId, mode), true, `${mode} accepted`);
-      assert.equal(g.findTarget(zeus), target, `${mode} picks its enemy`);
+      assert.equal(g.setTargeting(odin.entityId, mode), true, `${mode} accepted`);
+      assert.equal(g.findTarget(odin), target, `${mode} picks its enemy`);
     }
-    g.setTargeting(zeus.entityId, "boss");
-    assert.equal(g.findTarget(zeus), front, "boss falls back to the class rule without a boss");
-    const boss = near("boss", zeus.x, zeus.y, 10, 5000);
-    assert.equal(g.findTarget(zeus), boss, "boss first");
+    g.setTargeting(odin.entityId, "boss");
+    assert.equal(g.findTarget(odin), front, "boss falls back to the class rule without a boss");
+    const boss = near("boss", odin.x, odin.y, 10, 5000);
+    assert.equal(g.findTarget(odin), boss, "boss first");
     boss.untargetable = true;
-    assert.equal(g.findTarget(zeus), front, "an untargetable boss is skipped");
-    assert.equal(g.setTargeting(zeus.entityId, "nonsense"), false, "unknown mode rejected");
-    assert.equal(g.setTargeting(nyx.entityId, "flying"), false, "road heroes cannot pick flyers");
+    assert.equal(g.findTarget(odin), front, "an untargetable boss is skipped");
+    assert.equal(g.setTargeting(odin.entityId, "nonsense"), false, "unknown mode rejected");
+    assert.equal(g.setTargeting(nott.entityId, "flying"), false, "road heroes cannot pick flyers");
     // Explicit modes keep the Assassin dash reach for loose enemies that have passed.
     g.enemies = [];
-    const crossing = closestPathDistance(g, nyx);
+    const crossing = closestPathDistance(g, nott);
     const loose = moveOnPath(g, enemyAt(g, "runner", 0, 0, 80), crossing + 70);
-    g.setTargeting(nyx.entityId, "strongest");
-    assert.equal(g.findTarget(nyx), loose, "strongest still dashes to loose enemies");
+    g.setTargeting(nott.entityId, "strongest");
+    assert.equal(g.findTarget(nott), loose, "strongest still dashes to loose enemies");
     loose.held = true;
-    assert.equal(g.findTarget(nyx), null, "held enemies beyond range stay out of reach");
+    assert.equal(g.findTarget(nott), null, "held enemies beyond range stay out of reach");
   }
 
   // M11 enemies. Mender: heals nearby enemies, not other Menders, within its budget.
   {
-    const { g } = setup("zeus");
+    const { g } = setup("odin");
     const cfg = tuning.enemies.mender.heal;
     const mender = enemyAt(g, "mender", 100, 100, 50);
     const other = enemyAt(g, "mender", 110, 100, 50);
@@ -1919,15 +1919,15 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Shieldbearer: shield first, minimum chip per hit, regrows after a quiet spell.
   {
-    const { g, units: [zeus] } = setup("zeus");
+    const { g, units: [odin] } = setup("odin");
     const cfg = tuning.enemies.shieldbearer.shield;
     const sb = g.spawnEnemy("shieldbearer");
     close(sb.shieldMax, sb.maxHp * cfg.hp, "shield scales with health");
     const hp = sb.hp;
-    g.hit(sb, 1, zeus);
+    g.hit(sb, 1, odin);
     close(sb.shield, sb.shieldMax * (1 - cfg.minChip), "a small hit still strips minChip");
     assert.equal(sb.hp, hp, "health untouched while the shield holds");
-    g.hit(sb, sb.shield + 30, zeus);
+    g.hit(sb, sb.shield + 30, odin);
     assert.equal(sb.shield, 0, "shield broken");
     close(sb.hp, hp - 30, "overflow reaches health");
     g.time += cfg.regenDelay + 1;
@@ -1937,7 +1937,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Broodcaller: imps per call, alive cap, lifetime total.
   {
-    const { g } = setup("zeus");
+    const { g } = setup("odin");
     const cfg = tuning.enemies.broodcaller.summon;
     const caller = g.spawnEnemy("broodcaller");
     const imps = () => g.enemies.filter((e) => e.summonerId === caller.entityId && !e.dead);
@@ -1952,68 +1952,68 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Hexer: the nearest hero in range cannot act; veiled heroes are skipped.
   {
-    const { g, units: [zeus, nyx] } = setup("zeus", "nyx");
+    const { g, units: [odin, nott] } = setup("odin", "nott");
     const cfg = tuning.enemies.hexer.hex;
-    const hexer = enemyAt(g, "hexer", zeus.x + 20, zeus.y, 1e6);
+    const hexer = enemyAt(g, "hexer", odin.x + 20, odin.y, 1e6);
     hexer.distance = 5;
     g.enemyTraits(hexer, cfg.every);
-    assert.ok(g.isHexed(zeus), "nearest hero hexed");
-    assert.ok(!g.isHexed(nyx), "one hero per hex");
-    const grunt = enemyAt(g, "grunt", zeus.x + 30, zeus.y, 1e6);
-    zeus.attackClock = 0;
+    assert.ok(g.isHexed(odin), "nearest hero hexed");
+    assert.ok(!g.isHexed(nott), "one hero per hex");
+    const grunt = enemyAt(g, "grunt", odin.x + 30, odin.y, 1e6);
+    odin.attackClock = 0;
     const before = grunt.hp;
     g.step(1 / 60);
     assert.equal(grunt.hp, before, "a hexed hero does not attack");
-    g.time = zeus.hexedUntil + 0.01;
-    nyx.veilUntil = g.time + 10;
-    hexer.x = nyx.x; hexer.y = nyx.y;
+    g.time = odin.hexedUntil + 0.01;
+    nott.veilUntil = g.time + 10;
+    hexer.x = nott.x; hexer.y = nott.y;
     g.enemyTraits(hexer, cfg.every);
-    assert.ok(!g.isHexed(nyx), "veiled heroes cannot be hexed");
+    assert.ok(!g.isHexed(nott), "veiled heroes cannot be hexed");
   }
 
   // M12 class paths: the level 4 upgrade needs one, and each changes how the hero fights.
   {
-    const { g, units: [zeus] } = setup("zeus");
-    while (zeus.level < tuning.upgrades.path.level - 1) lv(g, zeus.entityId, "attack");
-    const info = g.upgradeInfo(zeus.entityId);
+    const { g, units: [odin] } = setup("odin");
+    while (odin.level < tuning.upgrades.path.level - 1) lv(g, odin.entityId, "attack");
+    const info = g.upgradeInfo(odin.entityId);
     assert.equal(info.needsPath, true, "level 4 asks for a path");
     assert.deepEqual(info.pathOptions, Object.keys(tuning.paths.Mage), "Mage paths offered");
-    assert.equal(g.upgrade(zeus.entityId, "attack").ok, false, "a focus is not a path");
-    assert.equal(g.upgrade(zeus.entityId, "bulwark").ok, false, "another class's path is refused");
-    assert.ok(g.upgrade(zeus.entityId, "frost").ok);
-    assert.equal(zeus.path, "frost");
-    assert.ok(!g.upgradeInfo(zeus.entityId).needsPath, "asked once");
+    assert.equal(g.upgrade(odin.entityId, "attack").ok, false, "a focus is not a path");
+    assert.equal(g.upgrade(odin.entityId, "bulwark").ok, false, "another class's path is refused");
+    assert.ok(g.upgrade(odin.entityId, "frost").ok);
+    assert.equal(odin.path, "frost");
+    assert.ok(!g.upgradeInfo(odin.entityId).needsPath, "asked once");
   }
   const P = tuning.paths;
   const hp = (e) => e.maxHp - e.hp;
   // Tank: Bulwark holds one more, Thorns reflects, Warden makes held enemies take more.
   {
-    const { g, units: [nuwa] } = setup("nuwa");
+    const { g, units: [atlas] } = setup("atlas");
     const limit = tuning.blocking.blockLimit.Tank;
-    const crowd = Array.from({ length: limit + 2 }, () => enemyAt(g, "grunt", nuwa.x, nuwa.y));
+    const crowd = Array.from({ length: limit + 2 }, () => enemyAt(g, "grunt", atlas.x, atlas.y));
     g.engaged = new Map();
     crowd.forEach((e) => g.findEnemyTarget(e));
-    assert.equal(g.engaged.get(nuwa), limit, "block limit without a path");
-    nuwa.path = "bulwark";
+    assert.equal(g.engaged.get(atlas), limit, "block limit without a path");
+    atlas.path = "bulwark";
     g.engaged = new Map();
     crowd.forEach((e) => g.findEnemyTarget(e));
-    assert.equal(g.engaged.get(nuwa), limit + P.Tank.bulwark.blockLimit, "Bulwark holds one more");
+    assert.equal(g.engaged.get(atlas), limit + P.Tank.bulwark.blockLimit, "Bulwark holds one more");
     g.enemies = [];
-    nuwa.path = "thorns";
-    const biter = enemyAt(g, "grunt", nuwa.x, nuwa.y);
+    atlas.path = "thorns";
+    const biter = enemyAt(g, "grunt", atlas.x, atlas.y);
     biter.attackClock = 0;
     g.step(1 / 60);
     assert.ok(hp(biter) > 0 || biter.dead, "Thorns hurts the attacker");
     g.enemies = [];
-    nuwa.path = "warden";
+    atlas.path = "warden";
     const held = enemyAt(g, "grunt", 0, 0);
-    held.held = true; held.heldBy = nuwa;
-    g.hit(held, 100, nuwa, { showShot: false });
+    held.held = true; held.heldBy = atlas;
+    g.hit(held, 100, atlas, { showShot: false });
     close(hp(held), 100 * (1 + tuning.blocking.heldDamageBonus) * (1 + P.Tank.warden.heldBonus), "Warden bonus on held enemies");
   }
   // Warrior: Whirlwind cleaves more, Sunder shreds resistance, Bloodlust heals.
   {
-    const { g, units: [war] } = setup("poseidon");
+    const { g, units: [war] } = setup("aegir");
     const crowd = Array.from({ length: 9 }, (_, i) => enemyAt(g, "grunt", war.x + 20 + (i % 3) * 8, war.y + Math.floor(i / 3) * 8));
     g.basicAttack(war, crowd[0]);
     const plain = crowd.filter((e) => hp(e) > 0).length;
@@ -2035,28 +2035,28 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
   // Assassin: Long Reach, Ambush, Twin Blades.
   {
-    const { g, units: [nyx] } = setup("nyx");
-    const base = g.dashReach(nyx);
-    nyx.path = "reach";
-    assert.equal(g.dashReach(nyx), base + P.Assassin.reach.dash, "Long Reach");
-    nyx.path = "ambush";
-    const a = enemyAt(g, "grunt", nyx.x + 10, nyx.y);
+    const { g, units: [nott] } = setup("nott");
+    const base = g.dashReach(nott);
+    nott.path = "reach";
+    assert.equal(g.dashReach(nott), base + P.Assassin.reach.dash, "Long Reach");
+    nott.path = "ambush";
+    const a = enemyAt(g, "grunt", nott.x + 10, nott.y);
     a.held = true;
-    g.basicAttack(nyx, a);
+    g.basicAttack(nott, a);
     const opener = hp(a);
-    g.basicAttack(nyx, a);
+    g.basicAttack(nott, a);
     close(opener / (hp(a) - opener), P.Assassin.ambush.firstHit, "Ambush opener");
     g.enemies = [];
-    nyx.path = "twin";
-    const t1 = enemyAt(g, "grunt", nyx.x + 10, nyx.y);
-    const t2 = enemyAt(g, "grunt", nyx.x - 10, nyx.y);
+    nott.path = "twin";
+    const t1 = enemyAt(g, "grunt", nott.x + 10, nott.y);
+    const t2 = enemyAt(g, "grunt", nott.x - 10, nott.y);
     t1.held = t2.held = true;
-    g.basicAttack(nyx, t1);
+    g.basicAttack(nott, t1);
     assert.ok(hp(t2) > 0, "Twin Blades strikes a second enemy");
   }
   // Mage: Wildfire burns, Frost slows, Arc chains beyond the splash.
   {
-    const { g, units: [mage] } = setup("phoenix");
+    const { g, units: [mage] } = setup("hephaestus");
     mage.path = "wildfire";
     const e = enemyAt(g, "grunt", mage.x + 30, mage.y);
     g.basicAttack(mage, e);
@@ -2077,7 +2077,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
   // Archer: Piercing, Hunter's Mark, Crippling.
   {
-    const { g, units: [archer] } = setup("diana");
+    const { g, units: [archer] } = setup("skadi");
     archer.path = "piercing";
     const front = enemyAt(g, "grunt", archer.x + 60, archer.y, 5000);
     const behind = enemyAt(g, "grunt", archer.x + 90, archer.y);
@@ -2095,7 +2095,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
   // Support: Sanctuary splashes heals, War Hymn speeds allies, Purify lifts hexes.
   {
-    const { g, units: [sup, a, b] } = setup("caishen", "zeus", "phoenix");
+    const { g, units: [sup, a, b] } = setup("plutus", "odin", "hephaestus");
     sup.path = "sanctuary";
     a.x = sup.x + 20; a.y = sup.y; b.x = a.x + 10; b.y = a.y;
     a.hpLeft = 1; b.hpLeft = b.hp - 1;
@@ -2114,11 +2114,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   {
     const S = tuning.statuses;
     const R = S.reactions;
-    const { g, units: [pos, phx, zeus] } = setup("poseidon", "phoenix", "zeus");
+    const { g, units: [pos, phx, odin] } = setup("aegir", "hephaestus", "odin");
     const e = enemyAt(g, "grunt", 0, 0);
-    // Wet from Poseidon, then Burn from Phoenix: Steam bursts and clears both.
+    // Wet from Aegir, then Burn from Hephaestus: Steam bursts and clears both.
     g.applyHeroStatus(pos, e, 100);
-    assert.ok(g.isWet(e), "Poseidon applies Wet");
+    assert.ok(g.isWet(e), "Aegir applies Wet");
     const before = hp(e);
     g.applyHeroStatus(phx, e, 100);
     close(hp(e) - before, 100 * S.burn.share * R.steam.burst, "Steam burst");
@@ -2127,33 +2127,33 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     // Plain Burn ticks over its duration.
     const b = enemyAt(g, "grunt", 500, 500);
     g.applyHeroStatus(phx, b, 100);
-    assert.ok(g.isBurning(b), "Phoenix applies Burn");
+    assert.ok(g.isBurning(b), "Hephaestus applies Burn");
     close(b.burnDps, 100 * S.burn.share / S.burn.seconds, "burn damage per second");
-    // Conduct: Zeus's chain on a Wet target bounces further and hits Wet enemies harder.
+    // Conduct: Odin's chain on a Wet target bounces further and hits Wet enemies harder.
     g.enemies = [];
-    const line = Array.from({ length: 8 }, (_, i) => enemyAt(g, "grunt", zeus.x + 30 + i * 25, zeus.y));
-    g.basicAttack(zeus, line[0]);
+    const line = Array.from({ length: 8 }, (_, i) => enemyAt(g, "grunt", odin.x + 30 + i * 25, odin.y));
+    g.basicAttack(odin, line[0]);
     const dry = line.filter((x) => hp(x) > 0).length;
     line.forEach((x) => { x.hp = x.maxHp; x.wetUntil = g.time + 5; });
-    g.basicAttack(zeus, line[0]);
+    g.basicAttack(odin, line[0]);
     assert.ok(line.filter((x) => hp(x) > 0).length > dry, "Conduct adds bounces");
     assert.ok(g.reactionsSeen.has("conduct"));
   }
   {
     const S = tuning.statuses;
     const R = S.reactions;
-    const { g, units: [med, phx] } = setup("medusa", "phoenix");
+    const { g, units: [med, phx] } = setup("stheno", "hephaestus");
     // Blight: burning a poisoned enemy spreads a stronger poison.
     const a = enemyAt(g, "grunt", 100, 100);
     const n = enemyAt(g, "grunt", 100 + R.blight.radius - 10, 100);
     const far = enemyAt(g, "grunt", 100 + R.blight.radius + 40, 100);
     g.applyHeroStatus(med, a, 100);
-    assert.ok(g.isPoisoned(a), "Medusa applies Poison");
+    assert.ok(g.isPoisoned(a), "Stheno applies Poison");
     g.applyHeroStatus(phx, a, 100);
     assert.ok(g.isPoisoned(n) && !g.isPoisoned(far), "Blight spreads within its radius");
     close(n.poisonDps, a.poisonDps * R.blight.boost, "spread poison is stronger");
     // Freeze: a Wet enemy that gets chilled is stunned, then has a cooldown.
-    const { g: g2, units: [pos] } = setup("poseidon");
+    const { g: g2, units: [pos] } = setup("aegir");
     const f = enemyAt(g2, "grunt", 0, 0);
     g2.applyHeroStatus(pos, f, 100);
     f.chill = 1;
@@ -2163,16 +2163,16 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     f.stunnedUntil = 0;
     g2.tryFreeze(f, pos);
     assert.ok(!g2.isStopped(f), "Freeze cooldown");
-    // Soul Harvest: a poisoned enemy that dies charges Anubis.
-    const { g: g3, units: [anubis, jor] } = setup("anubis", "jormungandr");
+    // Soul Harvest: a poisoned enemy that dies charges Thanatos.
+    const { g: g3, units: [thanatos, jor] } = setup("thanatos", "fenrir");
     const h = enemyAt(g3, "grunt", 0, 0, 10);
     g3.applyHeroStatus(jor, h, 100);
-    const clock = anubis.ultClock;
+    const clock = thanatos.ultClock;
     g3.hit(h, 1e6, jor);
-    close(anubis.ultClock - clock, R.harvest.charge, "Soul Harvest charge");
+    close(thanatos.ultClock - clock, R.harvest.charge, "Soul Harvest charge");
     // Reactions off: statuses stay, no reactions.
     const g4 = new TowerDefenseGame({ heroes, tuning: { ...tuning, statuses: { ...S, reactions: {} } }, map: maps[0], waves, seed: 1 });
-    g4.gold = 1e6; g4.place("poseidon", "road", 0); g4.place("phoenix", "platform", 0);
+    g4.gold = 1e6; g4.place("aegir", "road", 0); g4.place("hephaestus", "platform", 0);
     const [p4, x4] = g4.heroes;
     const e4 = g4.spawnEnemy("grunt");
     g4.applyHeroStatus(p4, e4, 100); g4.applyHeroStatus(x4, e4, 100);
@@ -2181,23 +2181,23 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // M14 run statistics: damage, boss damage, damage over time, heals, aura credit, kills, leaks.
   {
-    const { g, units: [zeus, caishen, phx] } = setup("zeus", "caishen", "phoenix");
-    const e = enemyAt(g, "grunt", zeus.x + 20, zeus.y, 100);
-    g.hit(e, 30, zeus);
-    assert.equal(g.heroStats.zeus.damage, 30, "damage recorded");
-    const aura = g.supportAuraFor(zeus);
+    const { g, units: [odin, plutus, phx] } = setup("odin", "plutus", "hephaestus");
+    const e = enemyAt(g, "grunt", odin.x + 20, odin.y, 100);
+    g.hit(e, 30, odin);
+    assert.equal(g.heroStats.odin.damage, 30, "damage recorded");
+    const aura = g.supportAuraFor(odin);
     if (aura) close(g.heroStats[aura.source.id].buff, 30 * aura.bonus / (1 + aura.bonus), "aura share credited");
-    g.hit(e, 1000, zeus);
-    assert.equal(g.heroStats.zeus.damage, 100, "overkill not counted");
-    assert.equal(g.heroStats.zeus.kills, 1, "kill recorded");
+    g.hit(e, 1000, odin);
+    assert.equal(g.heroStats.odin.damage, 100, "overkill not counted");
+    assert.equal(g.heroStats.odin.kills, 1, "kill recorded");
     const boss = g.spawnEnemy("boss");
     g.hit(boss, 50, phx);
-    assert.equal(g.heroStats.phoenix.boss, 50, "boss damage");
+    assert.equal(g.heroStats.hephaestus.boss, 50, "boss damage");
     g.hit(boss, 20, phx, { dot: true, showShot: false });
-    assert.equal(g.heroStats.phoenix.dot, 20, "damage over time");
-    zeus.hpLeft = zeus.hp - 40;
-    assert.equal(g.healHero(zeus, 100, caishen), 40, "heal capped at max health");
-    assert.ok(g.heroStats.caishen.heal >= 40, "heal credited");
+    assert.equal(g.heroStats.hephaestus.dot, 20, "damage over time");
+    odin.hpLeft = odin.hp - 40;
+    assert.equal(g.healHero(odin, 100, plutus), 40, "heal capped at max health");
+    assert.ok(g.heroStats.plutus.heal >= 40, "heal credited");
     const leaker = g.spawnEnemy("flyer");
     leaker.distance = g.laneOf(leaker).total - 0.1;
     g.step(1 / 60);
@@ -2262,7 +2262,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 4 });
     const plain = new TowerDefenseGame({ heroes, tuning, map: { ...maps[0], rings: {} }, waves, seed: 4 });
     g.gold = plain.gold = 1e6;
-    for (const [i, id] of ["zeus", "phoenix", "fengyi"].entries()) { g.place(id, "platform", i); plain.place(id, "platform", i); }
+    for (const [i, id] of ["odin", "hephaestus", "boreas"].entries()) { g.place(id, "platform", i); plain.place(id, "platform", i); }
     const [hg, cu, sh] = g.heroes, [p0, p1, p2] = plain.heroes;
     close(hg.range, p0.range * (1 + R.highground.range), "High ground range");
     close(g.attackValue(cu) / plain.attackValue(p1), 1 + R.cursed.atk, "Cursed damage");
@@ -2280,9 +2280,9 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   // M17 rare and epic run blessings: offers, eligibility, effects.
   {
     const B = tuning.runBoons.list;
-    const { g, units: [pos, zeus] } = setup("poseidon", "zeus");
+    const { g, units: [pos, odin] } = setup("aegir", "odin");
     assert.ok(g.boonEligible("tidal_pull"), "Wet source on the field");
-    assert.ok(g.boonEligible("storm_surge"), "Zeus chains");
+    assert.ok(g.boonEligible("storm_surge"), "Odin chains");
     assert.ok(!g.boonEligible("venom_rot"), "no poison source");
     assert.ok(!g.boonEligible("shattering_cold"), "no chill source, no freeze");
     let rare = 0;
@@ -2301,74 +2301,74 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
   {
     const B = tuning.runBoons.list;
-    const { g, units: [zeus] } = setup("zeus");
+    const { g, units: [odin] } = setup("odin");
     g.boons = ["venom_rot", "shattering_cold", "drowned_burst", "soul_reaper", "wildfire_spread", "rally", "storm_surge"];
     const p = enemyAt(g, "grunt", 0, 0); p.poisonUntil = g.time + 5; p.poisonDps = 0;
-    g.hit(p, 100, zeus, { showShot: false });
+    g.hit(p, 100, odin, { showShot: false });
     close(hp(p), 100 * (1 + B.venom_rot.bonus), "Venom Rot");
     const f = enemyAt(g, "grunt", 0, 0); f.frozenUntil = g.time + 1;
-    g.hit(f, 100, zeus, { showShot: false });
+    g.hit(f, 100, odin, { showShot: false });
     close(hp(f), 100 * (1 + B.shattering_cold.bonus), "Shattering Cold");
     // Drowned Burst: a Wet enemy's death hurts its neighbours.
     const w = enemyAt(g, "grunt", 300, 300, 50); w.wetUntil = g.time + 5;
     const n = enemyAt(g, "grunt", 310, 300);
-    g.hit(w, 1000, zeus);
+    g.hit(w, 1000, odin);
     close(hp(n), 50 * B.drowned_burst.share, "Drowned Burst");
     // Wildfire Spread: a burning enemy's fire passes on.
-    const b = enemyAt(g, "grunt", 500, 300, 10); b.burnUntil = g.time + 3; b.burnDps = 7; b.burnBy = zeus;
+    const b = enemyAt(g, "grunt", 500, 300, 10); b.burnUntil = g.time + 3; b.burnDps = 7; b.burnBy = odin;
     const b2 = enemyAt(g, "grunt", 520, 300);
-    g.hit(b, 1000, zeus);
+    g.hit(b, 1000, odin);
     assert.ok(g.isBurning(b2) && b2.burnDps === 7, "Wildfire Spread");
     // Soul Reaper: every Nth kill pays gold and charges ultimates.
     g.reaperKills = B.soul_reaper.every - 1;
-    const gold = g.gold, clock = zeus.ultClock;
-    g.hit(enemyAt(g, "grunt", 700, 100, 1), 10, zeus);
-    assert.ok(g.gold >= gold + B.soul_reaper.gold && zeus.ultClock - clock >= B.soul_reaper.charge, "Soul Reaper");
+    const gold = g.gold, clock = odin.ultClock;
+    g.hit(enemyAt(g, "grunt", 700, 100, 1), 10, odin);
+    assert.ok(g.gold >= gold + B.soul_reaper.gold && odin.ultClock - clock >= B.soul_reaper.charge, "Soul Reaper");
     // Storm Surge: bounces stun.
     g.enemies = [];
-    const line = Array.from({ length: 3 }, (_, i) => enemyAt(g, "grunt", zeus.x + 30 + i * 25, zeus.y));
-    g.basicAttack(zeus, line[0]);
+    const line = Array.from({ length: 3 }, (_, i) => enemyAt(g, "grunt", odin.x + 30 + i * 25, odin.y));
+    g.basicAttack(odin, line[0]);
     assert.ok(g.isStopped(line[1]), "Storm Surge stuns a bounce target");
   }
   {
     const B = tuning.runBoons.list;
-    const { g, units: [nuwa, zeus] } = setup("nuwa", "zeus");
+    const { g, units: [atlas, odin] } = setup("atlas", "odin");
     g.boons = ["rally"];
-    g.damageHero(nuwa, 1e9, null);
+    g.damageHero(atlas, 1e9, null);
     assert.ok(g.rallyUntil > g.time, "a fallen road hero starts the rally");
-    const rallied = g.attackValue(zeus);
+    const rallied = g.attackValue(odin);
     g.rallyUntil = 0;
-    close(rallied / g.attackValue(zeus), 1 + B.rally.atk, "Rally attack bonus");
+    close(rallied / g.attackValue(odin), 1 + B.rally.atk, "Rally attack bonus");
   }
 
   // M18 boss rules: Baphomet's mark and stance, Lilith's End of All.
   {
     const cfg = tuning.bosses.baphomet;
-    const { g, units: [zeus, phx] } = setup("zeus", "phoenix");
+    const { g, units: [odin, phx] } = setup("odin", "hephaestus");
     const boss = g.spawnEnemy("boss");
     boss.x = 0; boss.y = 0;
-    g.hit(enemyAt(g, "brute", 900, 500), 500, zeus, { showShot: false });
+    g.hit(enemyAt(g, "brute", 900, 500), 500, odin, { showShot: false });
     g.hit(enemyAt(g, "brute", 900, 500), 100, phx, { showShot: false });
     boss.markClock = 0;
     g.bossRules(boss, 0.01);
-    assert.equal(boss.markTarget, zeus.entityId, "marks the top recent damage dealer");
-    assert.ok(!g.isSilenced(zeus), "warning first");
-    const hpBefore = zeus.hpLeft;
+    assert.equal(boss.markTarget, odin.entityId, "marks the top recent damage dealer");
+    assert.ok(!g.isSilenced(odin), "warning first");
+    const hpBefore = odin.hpLeft;
     g.time = boss.markAt + 0.01;
     g.bossRules(boss, 0.01);
-    assert.ok(g.isSilenced(zeus), "silenced after the warning");
-    close(hpBefore - zeus.hpLeft, zeus.hp * cfg.mark.selfDamage, "self-damage share");
+    assert.ok(g.isSilenced(odin), "silenced after the warning");
+    close(hpBefore - odin.hpLeft, odin.hp * cfg.mark.selfDamage, "self-damage share");
     const e = enemyAt(g, "grunt", 800, 100);
-    zeus.attackClock = 0;
+    odin.attackClock = 0;
     const b0 = e.hp;
-    g.heroes = [zeus];
+    g.heroes = [odin];
     g.step(1 / 60);
     assert.equal(e.hp, b0, "a silenced hero does not attack");
     // Stance halves (and more) incoming damage.
     boss.stanceClock = 0;
     g.bossRules(boss, 0.01);
     const before = boss.hp;
-    g.hit(boss, 100, zeus, { showShot: false });
+    g.hit(boss, 100, odin, { showShot: false });
     close(before - boss.hp, 100 * (1 - cfg.stance.reduction) * (1 + (g.favor.bossDamage || 0)) * (boss.held ? 1 + tuning.blocking.heldDamageBonus : 1), "Defensive Stance");
   }
   {
@@ -2387,15 +2387,15 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // A revived hero keeps its target priority.
   {
-    const { g, units: [nuwa] } = setup("nuwa");
-    g.setTargeting(nuwa.entityId, "weakest");
-    g.damageHero(nuwa, 1e9, null);
+    const { g, units: [atlas] } = setup("atlas");
+    g.setTargeting(atlas.entityId, "weakest");
+    g.damageHero(atlas, 1e9, null);
     assert.equal(g.fallenHeroes.at(-1)?.targeting, "weakest", "fallen record keeps the priority");
   }
 
   // Tank ultimate holds every ground enemy in taunt range; flyers are not held.
   {
-    const { g, units: [tank] } = setup("momus");
+    const { g, units: [tank] } = setup("heimdall");
     const grunt = enemyAt(g, "grunt", tank.x + tank.range, tank.y);
     const flyer = enemyAt(g, "flyer", tank.x + 20, tank.y);
     g.castUltimate(tank, grunt);
@@ -2406,22 +2406,22 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   // Assassin veil: after its ultimate the blocked enemy stays blocked but deals no damage.
   {
-    const { g, units: [nyx] } = setup("nyx");
-    const grunt = enemyAt(g, "grunt", nyx.x - 20, nyx.y);
+    const { g, units: [nott] } = setup("nott");
+    const grunt = enemyAt(g, "grunt", nott.x - 20, nott.y);
     grunt.distance = 50;
-    g.castUltimate(nyx, grunt);
-    assert.equal(g.isVeiled(nyx), true, "veiled after the ultimate");
-    const hp = nyx.hpLeft, distance = grunt.distance;
+    g.castUltimate(nott, grunt);
+    assert.equal(g.isVeiled(nott), true, "veiled after the ultimate");
+    const hp = nott.hpLeft, distance = grunt.distance;
     for (let i = 0; i < 60; i += 1) g.step(1 / 60);
-    assert.equal(nyx.hpLeft, hp, "veiled Assassin takes no damage");
+    assert.equal(nott.hpLeft, hp, "veiled Assassin takes no damage");
     assert.equal(grunt.distance, distance, "the blocked enemy stays blocked");
     for (let i = 0; i < 60 * kit.Assassin.veil.seconds; i += 1) g.step(1 / 60);
-    assert.equal(g.isVeiled(nyx), false, "veil ends");
+    assert.equal(g.isVeiled(nott), false, "veil ends");
   }
 
   // Support: heals the most injured ally in range; otherwise a weak attack.
   {
-    const { g, units: [support, tank] } = setup("caishen", "nuwa");
+    const { g, units: [support, tank] } = setup("plutus", "atlas");
     assert.ok(Math.hypot(support.x - tank.x, support.y - tank.y) <= support.range, "test layout: ally in range");
     const grunt = enemyAt(g, "grunt", support.x + 60, support.y);
     tank.hpLeft = tank.hp / 2;
@@ -2440,32 +2440,32 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 150 });
   g.gold = 1000;
-  g.place("nuwa", "road", 0);
-  const nuwa = g.heroes[0];
-  const deploy = heroes.find((h) => h.id === "nuwa").cost;
-  const up = lv(g, nuwa.entityId);
-  assert.equal(nuwa.invested, deploy + up.cost, "invested tracks deploy and upgrades");
-  assert.equal(g.sellValue(nuwa.entityId), Math.floor((deploy + up.cost) * tuning.run.sellRefund), "refund is the sell share");
+  g.place("atlas", "road", 0);
+  const atlas = g.heroes[0];
+  const deploy = heroes.find((h) => h.id === "atlas").cost;
+  const up = lv(g, atlas.entityId);
+  assert.equal(atlas.invested, deploy + up.cost, "invested tracks deploy and upgrades");
+  assert.equal(g.sellValue(atlas.entityId), Math.floor((deploy + up.cost) * tuning.run.sellRefund), "refund is the sell share");
   const gold = g.gold;
   g.startWave(); // selling works mid-wave too
-  const result = g.sell(nuwa.entityId);
+  const result = g.sell(atlas.entityId);
   assert.equal(result.ok, true);
   assert.equal(g.gold, gold + result.refund, "refund paid");
   assert.equal(g.heroes.length, 0, "unit leaves the field");
   assert.equal(g.fallenHeroes.length, 0, "a sold hero did not fall (no revive, no redeploy discount)");
-  assert.equal(g.deployCost("nuwa"), deploy, "redeploy at full price");
-  assert.equal(g.place("nuwa", "road", 0), true, "ring and hero free again");
+  assert.equal(g.deployCost("atlas"), deploy, "redeploy at full price");
+  assert.equal(g.place("atlas", "road", 0), true, "ring and hero free again");
   assert.equal(g.sell(-1).ok, false, "unknown unit");
 }
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 151 });
   g.gold = 1000;
-  g.place("nyx", "road", 0); // Assassin: holds 1
-  const nyx = g.heroes[0];
+  g.place("nott", "road", 0); // Assassin: holds 1
+  const nott = g.heroes[0];
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   const held = g.spawnEnemy("grunt"); const passer = g.spawnEnemy("grunt");
-  for (const e of [held, passer]) { e.hp = e.maxHp = 1e9; e.x = nyx.x; e.y = nyx.y; }
-  nyx.attackClock = 99; nyx.ultClock = -99;
+  for (const e of [held, passer]) { e.hp = e.maxHp = 1e9; e.x = nott.x; e.y = nott.y; }
+  nott.attackClock = 99; nott.ultClock = -99;
   g.step(1 / 60);
   assert.equal(held.held, true, "the first enemy is held");
   assert.equal(passer.held, false, "the second walks past the full blocker");
@@ -2502,27 +2502,27 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const t = tuning.training;
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 162 });
   g.gold = 1e5;
-  g.place("zeus", "platform", 0);
-  const zeus = g.heroes[0];
-  while (zeus.level < tuning.upgrades.maxLevel) lv(g, zeus.entityId, "attack");
-  assert.equal(g.upgradeInfo(zeus.entityId).awaken, true, "Awakening first");
-  lv(g, zeus.entityId);
-  const info = g.upgradeInfo(zeus.entityId);
+  g.place("odin", "platform", 0);
+  const odin = g.heroes[0];
+  while (odin.level < tuning.upgrades.maxLevel) lv(g, odin.entityId, "attack");
+  assert.equal(g.upgradeInfo(odin.entityId).awaken, true, "Awakening first");
+  lv(g, odin.entityId);
+  const info = g.upgradeInfo(odin.entityId);
   assert.equal(info.train, true, "after Awakening the next step is training");
   assert.equal(info.cost, t.cost);
-  const atk = zeus.atk, hp = zeus.hp, range = zeus.range;
-  assert.equal(lv(g, zeus.entityId).ok, false, "training needs a stat");
-  assert.equal(lv(g, zeus.entityId, "attack").ok, true);
-  assert.ok(zeus.atk > atk, "attack trained");
-  assert.equal(zeus.trained.attack, 1);
-  assert.equal(g.upgradeInfo(zeus.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
-  lv(g, zeus.entityId, "health");
-  assert.ok(zeus.hp > hp, "health trained");
-  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(lv(g, zeus.entityId, "range").ok, true);
-  assert.ok(zeus.range > range, "range trained");
-  assert.equal(g.upgradeInfo(zeus.entityId).focusOptions.range, undefined, "range stops at its cap");
-  assert.equal(lv(g, zeus.entityId, "range").ok, false);
-  assert.equal(zeus.level, tuning.upgrades.maxLevel, "training adds no level");
+  const atk = odin.atk, hp = odin.hp, range = odin.range;
+  assert.equal(lv(g, odin.entityId).ok, false, "training needs a stat");
+  assert.equal(lv(g, odin.entityId, "attack").ok, true);
+  assert.ok(odin.atk > atk, "attack trained");
+  assert.equal(odin.trained.attack, 1);
+  assert.equal(g.upgradeInfo(odin.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
+  lv(g, odin.entityId, "health");
+  assert.ok(odin.hp > hp, "health trained");
+  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(lv(g, odin.entityId, "range").ok, true);
+  assert.ok(odin.range > range, "range trained");
+  assert.equal(g.upgradeInfo(odin.entityId).focusOptions.range, undefined, "range stops at its cap");
+  assert.equal(lv(g, odin.entityId, "range").ok, false);
+  assert.equal(odin.level, tuning.upgrades.maxLevel, "training adds no level");
 }
 
 console.log("Tower defense checks passed");

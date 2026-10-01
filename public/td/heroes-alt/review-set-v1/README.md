@@ -10,27 +10,27 @@ All originals were generated with the built-in `image_gen` tool. Exact prompts a
 
 | Hero | Intended internal slot | Full portrait | Board token |
 |---|---|---|---|
-| Odin | `zeus` | [odin.webp](odin.webp) | [odin-token-192.webp](odin-token-192.webp) |
-| Atlas | `nuwa` | [atlas.webp](atlas.webp) | [atlas-token-192.webp](atlas-token-192.webp) |
-| Skadi | `diana` | [skadi.webp](skadi.webp) | [skadi-token-192.webp](skadi-token-192.webp) |
-| Hecate | `bastet` | [hecate.webp](hecate.webp) | [hecate-token-192.webp](hecate-token-192.webp) |
-| Hephaestus | `phoenix` | [hephaestus.webp](hephaestus.webp) | [hephaestus-token-192.webp](hephaestus-token-192.webp) |
-| Ymir | `prometheus` | [ymir.webp](ymir.webp) | [ymir-token-192.webp](ymir-token-192.webp) |
-| Heimdall | `momus` | [heimdall.webp](heimdall.webp) | [heimdall-token-192.webp](heimdall-token-192.webp) |
-| Gaia | `demeter` | [gaia.webp](gaia.webp) | [gaia-token-192.webp](gaia-token-192.webp) |
-| Aegir | `poseidon` | [aegir.webp](aegir.webp) | [aegir-token-192.webp](aegir-token-192.webp) |
-| Helios | `amunra` | [helios.webp](helios.webp) | [helios-token-192.webp](helios-token-192.webp) |
-| Surtr | `set` | [surtr.webp](surtr.webp) | [surtr-token-192.webp](surtr-token-192.webp) |
-| Fenrir | `jormungandr` | [fenrir.webp](fenrir.webp) | [fenrir-token-192.webp](fenrir-token-192.webp) |
-| Nott | `nyx` | [nott.webp](nott.webp) | [nott-token-192.webp](nott-token-192.webp) |
-| Vidar | `horus` | [vidar.webp](vidar.webp) | [vidar-token-192.webp](vidar-token-192.webp) |
-| Thanatos | `anubis` | [thanatos.webp](thanatos.webp) | [thanatos-token-192.webp](thanatos-token-192.webp) |
-| Boreas | `fengyi` | [boreas.webp](boreas.webp) | [boreas-token-192.webp](boreas-token-192.webp) |
-| Atalanta | `artemis` | [atalanta.webp](atalanta.webp) | [atalanta-token-192.webp](atalanta-token-192.webp) |
-| Stheno | `medusa` | [stheno.webp](stheno.webp) | [stheno-token-192.webp](stheno-token-192.webp) |
-| Plutus | `caishen` | [plutus.webp](plutus.webp) | [plutus-token-192.webp](plutus-token-192.webp) |
-| Harmonia | `yuelao` | [harmonia.webp](harmonia.webp) | [harmonia-token-192.webp](harmonia-token-192.webp) |
-| Asclepius | `freya` | [asclepius.webp](asclepius.webp) | [asclepius-token-192.webp](asclepius-token-192.webp) |
+| Odin | `odin` | [odin.webp](odin.webp) | [odin-token-192.webp](odin-token-192.webp) |
+| Atlas | `atlas` | [atlas.webp](atlas.webp) | [atlas-token-192.webp](atlas-token-192.webp) |
+| Skadi | `skadi` | [skadi.webp](skadi.webp) | [skadi-token-192.webp](skadi-token-192.webp) |
+| Hecate | `hecate` | [hecate.webp](hecate.webp) | [hecate-token-192.webp](hecate-token-192.webp) |
+| Hephaestus | `hephaestus` | [hephaestus.webp](hephaestus.webp) | [hephaestus-token-192.webp](hephaestus-token-192.webp) |
+| Ymir | `ymir` | [ymir.webp](ymir.webp) | [ymir-token-192.webp](ymir-token-192.webp) |
+| Heimdall | `heimdall` | [heimdall.webp](heimdall.webp) | [heimdall-token-192.webp](heimdall-token-192.webp) |
+| Gaia | `gaia` | [gaia.webp](gaia.webp) | [gaia-token-192.webp](gaia-token-192.webp) |
+| Aegir | `aegir` | [aegir.webp](aegir.webp) | [aegir-token-192.webp](aegir-token-192.webp) |
+| Helios | `helios` | [helios.webp](helios.webp) | [helios-token-192.webp](helios-token-192.webp) |
+| Surtr | `surtr` | [surtr.webp](surtr.webp) | [surtr-token-192.webp](surtr-token-192.webp) |
+| Fenrir | `fenrir` | [fenrir.webp](fenrir.webp) | [fenrir-token-192.webp](fenrir-token-192.webp) |
+| Nott | `nott` | [nott.webp](nott.webp) | [nott-token-192.webp](nott-token-192.webp) |
+| Vidar | `vidar` | [vidar.webp](vidar.webp) | [vidar-token-192.webp](vidar-token-192.webp) |
+| Thanatos | `thanatos` | [thanatos.webp](thanatos.webp) | [thanatos-token-192.webp](thanatos-token-192.webp) |
+| Boreas | `boreas` | [boreas.webp](boreas.webp) | [boreas-token-192.webp](boreas-token-192.webp) |
+| Atalanta | `atalanta` | [atalanta.webp](atalanta.webp) | [atalanta-token-192.webp](atalanta-token-192.webp) |
+| Stheno | `stheno` | [stheno.webp](stheno.webp) | [stheno-token-192.webp](stheno-token-192.webp) |
+| Plutus | `plutus` | [plutus.webp](plutus.webp) | [plutus-token-192.webp](plutus-token-192.webp) |
+| Harmonia | `harmonia` | [harmonia.webp](harmonia.webp) | [harmonia-token-192.webp](harmonia-token-192.webp) |
+| Asclepius | `asclepius` | [asclepius.webp](asclepius.webp) | [asclepius-token-192.webp](asclepius-token-192.webp) |
 
 ## Files per hero
 
@@ -64,4 +64,4 @@ No animation strips were generated. These files have not replaced the original h
 
 See [ODIN-V2-PROMPT.md](ODIN-V2-PROMPT.md) for the exact built-in generation prompt, `odin-v2-manifest.json` for export metadata, and `export-odin-v2.mjs` to reproduce exports. The original 21-hero manifest is unchanged; this is an alternate appearance for the same Odin slot.
 
-**In game since 2026-09-29:** card, thumb and token copied to `../zeus-v2-*.webp`, idle loop rendered to `../anims/zeus-idle-v2.webp` (`scripts/td-idle-anim.py`), uploaded to R2, and `tdSkinMythic.json` sets `"art": "v2"` for `zeus`.
+**In game since 2026-09-29:** card, thumb and token copied to `../odin-v2-*.webp`, idle loop rendered to `../anims/odin-idle-v2.webp` (`scripts/td-idle-anim.py`), uploaded to R2, and `tdSkinMythic.json` sets `"art": "v2"` for `odin`.

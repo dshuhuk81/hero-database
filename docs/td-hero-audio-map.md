@@ -12,27 +12,27 @@ Pick rules:
 
 | Hero | Internal (APK) | Attack | Ultimate | Voice | Attack file | Ultimate file | Voice file (sec) |
 |---|---|:-:|:-:|:-:|---|---|---|
-| amunra | amengla | ✅ | ✅ | ✅ | SW_H_AMengLa@attack1.wav | SW_H_AMengLa@skill3.wav | amengla901.wav (3.21) |
-| anubis | anubisi | ✅ | ✅ | ✅ | SW_H_ANuBiSi@attack1.wav | SW_H_ANuBiSi@skill3.wav | anubisi901.wav (5.17) |
-| artemis | aertemisi | ✅ | ✅ | ✅ | SW_H_AErTeMiSi@attack1.wav | SW_H_AErTeMiSi@skill3_1.wav | aertemisi801.wav (2.66) |
-| bastet | basite | ✅ | ✅ | ✅ | SW_H_BaSiTe@attack1.wav | SW_H_BaSiTe@skill3.wav | basite401.wav (5.59) |
-| caishen | caishen | ✅ | ✅ | ✅ | SW_H_CaiShen@attack1_fly.wav | SW_H_CaiShen@skill3.wav | caishen901.wav (4.05) |
-| demeter | demoteer | ✅ | ✅ | ✅ | SW_H_DeMoTeEr@attack1.wav | SW_H_DeMoTeEr@skill3.wav | demoteer301.wav (3.47) |
-| diana | dianna | ✅ | ✅ | ✅ | SW_H_DiAnNa@attack1.wav | SW_H_DiAnNa@skill3.wav | dianna401.wav (2.53) |
-| fengyi | fengyi | ✅ | ✅ | ✅ | SW_H_FengYi@attack1_fly.wav | SW_H_FengYi@skill3.wav | fengyi801.wav (3.29) |
-| freya | fuleiya | ✅ | ✅ | ✅ | SW_H_FuLeiYa@attack1.wav | SW_H_FuLeiYa@skill3.wav | fuleiya801.wav (3.11) |
-| horus | helusi | ✅ | ✅ | ✅ | SW_H_HeLuSi@attack1.wav | SW_H_HeLuSi@skill3.wav | helusi801.wav (3.71) |
-| jormungandr | yemengjiade | ✅ | ✅ | ✅ | SW_H_YeMengJiaDe@attack1.wav | SW_H_YeMengJiaDe@skill3.wav | yemengjiade402.wav (6.06) |
-| medusa | meidusha | ✅ | ✅ | ✅ | SW_H_MeiDuSha@attack1.wav | SW_H_MeiDuSha@skill3.wav | meidusha801.wav (3.13) |
-| momus | momosi | ✅ | ✅ | ✅ | SW_H_MoMoSi@attack1.wav | SW_H_MoMoSi@skill3.wav | momosi801.wav (4.73) |
-| nuwa | nvwa | ✅ | ✅ | ✅ | SW_H_NvWa@attack1.wav | SW_H_NvWa@skill3.wav | nvwa301.wav (5.77) |
-| nyx | nikesi | ✅ | ✅ | ✅ | SW_H_NiKeSi@attack1.wav | SW_H_NiKeSi@skill3.wav | nikesi801.wav (4.21) |
-| phoenix | feinikesi | ✅ | ✅ | ✅ | SW_H_FeiNiKeSi@attack1.wav | SW_H_FeiNiKeSi@skill3.wav | feinikesi801.wav (6.66) |
-| poseidon | bosaidong | ✅ | ✅ | ✅ | SW_H_BoSaiDong@attack1.wav | SW_H_BoSaiDong@skill3.wav | bosaidong801.wav (3.24) |
-| prometheus | puluomixiusi | ✅ | ✅ | ✅ | SW_H_PuLuoMiXiuSi@attack1.wav | SW_H_PuLuoMiXiuSi@skill3.wav | puluomixiusi901.wav (4.18) |
+| helios | amengla | ✅ | ✅ | ✅ | SW_H_AMengLa@attack1.wav | SW_H_AMengLa@skill3.wav | amengla901.wav (3.21) |
+| thanatos | anubisi | ✅ | ✅ | ✅ | SW_H_ANuBiSi@attack1.wav | SW_H_ANuBiSi@skill3.wav | anubisi901.wav (5.17) |
+| atalanta | aertemisi | ✅ | ✅ | ✅ | SW_H_AErTeMiSi@attack1.wav | SW_H_AErTeMiSi@skill3_1.wav | aertemisi801.wav (2.66) |
+| hecate | basite | ✅ | ✅ | ✅ | SW_H_BaSiTe@attack1.wav | SW_H_BaSiTe@skill3.wav | basite401.wav (5.59) |
+| plutus | plutus | ✅ | ✅ | ✅ | SW_H_CaiShen@attack1_fly.wav | SW_H_CaiShen@skill3.wav | caishen901.wav (4.05) |
+| gaia | demoteer | ✅ | ✅ | ✅ | SW_H_DeMoTeEr@attack1.wav | SW_H_DeMoTeEr@skill3.wav | demoteer301.wav (3.47) |
+| skadi | dianna | ✅ | ✅ | ✅ | SW_H_DiAnNa@attack1.wav | SW_H_DiAnNa@skill3.wav | dianna401.wav (2.53) |
+| boreas | boreas | ✅ | ✅ | ✅ | SW_H_FengYi@attack1_fly.wav | SW_H_FengYi@skill3.wav | fengyi801.wav (3.29) |
+| asclepius | fuleiya | ✅ | ✅ | ✅ | SW_H_FuLeiYa@attack1.wav | SW_H_FuLeiYa@skill3.wav | fuleiya801.wav (3.11) |
+| vidar | helusi | ✅ | ✅ | ✅ | SW_H_HeLuSi@attack1.wav | SW_H_HeLuSi@skill3.wav | helusi801.wav (3.71) |
+| fenrir | yemengjiade | ✅ | ✅ | ✅ | SW_H_YeMengJiaDe@attack1.wav | SW_H_YeMengJiaDe@skill3.wav | yemengjiade402.wav (6.06) |
+| stheno | meidusha | ✅ | ✅ | ✅ | SW_H_MeiDuSha@attack1.wav | SW_H_MeiDuSha@skill3.wav | meidusha801.wav (3.13) |
+| heimdall | momosi | ✅ | ✅ | ✅ | SW_H_MoMoSi@attack1.wav | SW_H_MoMoSi@skill3.wav | momosi801.wav (4.73) |
+| atlas | nvwa | ✅ | ✅ | ✅ | SW_H_NvWa@attack1.wav | SW_H_NvWa@skill3.wav | nvwa301.wav (5.77) |
+| nott | nikesi | ✅ | ✅ | ✅ | SW_H_NiKeSi@attack1.wav | SW_H_NiKeSi@skill3.wav | nikesi801.wav (4.21) |
+| hephaestus | feinikesi | ✅ | ✅ | ✅ | SW_H_FeiNiKeSi@attack1.wav | SW_H_FeiNiKeSi@skill3.wav | feinikesi801.wav (6.66) |
+| aegir | bosaidong | ✅ | ✅ | ✅ | SW_H_BoSaiDong@attack1.wav | SW_H_BoSaiDong@skill3.wav | bosaidong801.wav (3.24) |
+| ymir | puluomixiusi | ✅ | ✅ | ✅ | SW_H_PuLuoMiXiuSi@attack1.wav | SW_H_PuLuoMiXiuSi@skill3.wav | puluomixiusi901.wav (4.18) |
 | set | saite | ✅ | ✅ | ✅ | SW_H_SaiTe@attack1.wav | SW_H_SaiTe@skill3.wav | saite303.wav (5.2) |
-| yuelao | yuelao | ✅ | ✅ | ✅ | SW_H_YueLao@attack1.wav | SW_H_YueLao@skill3.wav | yuelao302.wav (3.71) |
-| zeus | zhousi | ✅ | ✅ | ✅ | SW_H_ZhouSi@attack1.wav | SW_H_ZhouSi@skill3.wav | zhousi901.wav (4.94) |
+| harmonia | harmonia | ✅ | ✅ | ✅ | SW_H_YueLao@attack1.wav | SW_H_YueLao@skill3.wav | yuelao302.wav (3.71) |
+| odin | zhousi | ✅ | ✅ | ✅ | SW_H_ZhouSi@attack1.wav | SW_H_ZhouSi@skill3.wav | zhousi901.wav (4.94) |
 
 ## Other database heroes (37/67 complete)
 

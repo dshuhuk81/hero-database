@@ -29,18 +29,18 @@ ART = ROOT / "assets/td/recruit-placeholders"
 
 RECRUITS = {
     # id: (class, display name, donor id for sounds)
-    "recruit-bram": ("tank", "Bram", "momus"),
-    "recruit-tilda": ("tank", "Tilda", "momus"),
-    "recruit-kellan": ("warrior", "Kellan", "amunra"),
-    "recruit-sable": ("warrior", "Sable", "amunra"),
-    "recruit-ash": ("assassin", "Ash", "horus"),
-    "recruit-nyra": ("assassin", "Nyra", "horus"),
-    "recruit-elm": ("mage", "Elm", "fengyi"),
-    "recruit-ives": ("mage", "Ives", "fengyi"),
-    "recruit-wren": ("archer", "Wren", "artemis"),
-    "recruit-hollis": ("archer", "Hollis", "artemis"),
-    "recruit-poppy": ("support", "Poppy", "freya"),
-    "recruit-jory": ("support", "Jory", "freya"),
+    "recruit-bram": ("tank", "Bram", "heimdall"),
+    "recruit-tilda": ("tank", "Tilda", "heimdall"),
+    "recruit-kellan": ("warrior", "Kellan", "helios"),
+    "recruit-sable": ("warrior", "Sable", "helios"),
+    "recruit-ash": ("assassin", "Ash", "vidar"),
+    "recruit-nyra": ("assassin", "Nyra", "vidar"),
+    "recruit-elm": ("mage", "Elm", "boreas"),
+    "recruit-ives": ("mage", "Ives", "boreas"),
+    "recruit-wren": ("archer", "Wren", "atalanta"),
+    "recruit-hollis": ("archer", "Hollis", "atalanta"),
+    "recruit-poppy": ("support", "Poppy", "asclepius"),
+    "recruit-jory": ("support", "Jory", "asclepius"),
 }
 
 def class_art(cls):

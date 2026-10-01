@@ -101,7 +101,7 @@ Risk: **High** = copied game files (art, audio, animation rigs). **Medium** = th
 - `src/pages/games/tower-defense.astro` title "Tower Defense | Motto Immortal" and description "Command Motto Immortal heroes..."; `TdLobby.astro` About text ("played with heroes from the game") and disclaimer; `TdGlossary.astro` disclaimer. Change when the swap ships.
 
 ### Not game content (no action)
-Mechanics and systems (classes, blocking, virtues as a mechanic, awakening, paths), all numbers, enemy kinds and names (grunt, runner, ...), map art (`public/td/maps`), hero effects (`hero-fx.js`, `zeus-fx.js`, procedural), UI sounds (`click_001` etc., Kenney), internal ids (`zeus`, `nuwa`, ...; players never see them, saves use them).
+Mechanics and systems (classes, blocking, virtues as a mechanic, awakening, paths), all numbers, enemy kinds and names (grunt, runner, ...), map art (`public/td/maps`), hero effects (`hero-fx.js`, `odin-fx.js`, procedural), UI sounds (`click_001` etc., Kenney), internal ids (`odin`, `atlas`, ...; players never see them, saves use them).
 
 ## How to be ready: one switch
 

@@ -112,7 +112,7 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
 // Owned pool (Phase 2): the page passes only owned heroes; the roster and camp recruits
 // stay inside that pool, and a pool with one slot type still starts.
 {
-  const owned = heroes.filter((hero) => ["demeter", "jormungandr", "horus", "fengyi", "artemis", "freya"].includes(hero.id));
+  const owned = heroes.filter((hero) => ["gaia", "fenrir", "vidar", "boreas", "atalanta", "asclepius"].includes(hero.id));
   const pool = { ...data, heroes: owned };
   for (let seed = 1; seed <= 20; seed++) {
     const e = newExpedition(seed, pool);
@@ -120,7 +120,7 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
     const camp = campOffer({ ...e, stage: 1 }, pool).find((card) => card.type === "hero");
     assert.ok(!camp || owned.some((hero) => hero.id === camp.id), "camp recruit from the owned pool");
   }
-  const roadOnly = newExpedition(7, { ...data, heroes: heroes.filter((hero) => ["nuwa", "jormungandr", "horus"].includes(hero.id)) });
+  const roadOnly = newExpedition(7, { ...data, heroes: heroes.filter((hero) => ["atlas", "fenrir", "vidar"].includes(hero.id)) });
   assert.ok(roadOnly.roster.length === EXPEDITION.startHeroes && roadOnly.roster.every(Boolean), "road-only pool still fills the roster");
 }
 

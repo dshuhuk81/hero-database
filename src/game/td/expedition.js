@@ -66,7 +66,7 @@ function relicFits(id, state, tuning, heroesById) {
   const has = (status) => state.roster.some((heroId) => sources[heroId] === status);
   switch (need) {
     case null: case undefined: return true;
-    case "chain": return state.roster.includes("zeus");
+    case "chain": return state.roster.includes("odin");
     case "road": return state.roster.some((heroId) => heroesById.get(heroId)?.slot === "road");
     case "freeze": return false;
     default: return has(need);

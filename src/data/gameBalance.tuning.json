@@ -1,52 +1,52 @@
 {
   "balanceReference": [
-    "nuwa",
-    "prometheus",
-    "momus",
-    "demeter",
-    "poseidon",
-    "amunra",
-    "set",
-    "jormungandr",
-    "nyx",
-    "bastet",
-    "horus",
-    "zeus",
-    "phoenix",
-    "fengyi",
-    "diana",
-    "artemis",
-    "medusa",
-    "caishen",
-    "yuelao",
-    "freya",
-    "anubis"
+    "atlas",
+    "ymir",
+    "heimdall",
+    "gaia",
+    "aegir",
+    "helios",
+    "surtr",
+    "fenrir",
+    "nott",
+    "hecate",
+    "vidar",
+    "odin",
+    "hephaestus",
+    "boreas",
+    "skadi",
+    "atalanta",
+    "stheno",
+    "plutus",
+    "harmonia",
+    "asclepius",
+    "thanatos"
   ],
   "classOverrides": {
-    "demeter": "Support"
+    "gaia": "Support"
   },
   "roster": [
-    "nuwa",
-    "prometheus",
-    "momus",
-    "demeter",
-    "poseidon",
-    "amunra",
-    "set",
-    "jormungandr",
-    "nyx",
-    "bastet",
-    "horus",
-    "zeus",
-    "phoenix",
-    "fengyi",
-    "diana",
-    "artemis",
-    "medusa",
-    "caishen",
-    "yuelao",
-    "freya",
-    "anubis",
+    "atlas",
+    "ymir",
+    "heimdall",
+    "gaia",
+    "aegir",
+    "helios",
+    "surtr",
+    "fenrir",
+    "nott",
+    "hecate",
+    "vidar",
+    "odin",
+    "hephaestus",
+    "boreas",
+    "skadi",
+    "atalanta",
+    "stheno",
+    "plutus",
+    "harmonia",
+    "asclepius",
+    "thanatos",
     "recruit-bram",
     "recruit-tilda",
     "recruit-kellan",
@@ -60,6 +60,29 @@
     "recruit-poppy",
     "recruit-jory"
   ],
+  "statSource": {
+    "atlas": "nuwa",
+    "ymir": "prometheus",
+    "heimdall": "momus",
+    "gaia": "demeter",
+    "aegir": "poseidon",
+    "helios": "amunra",
+    "surtr": "set",
+    "fenrir": "jormungandr",
+    "nott": "nyx",
+    "hecate": "bastet",
+    "vidar": "horus",
+    "odin": "zeus",
+    "hephaestus": "phoenix",
+    "boreas": "fengyi",
+    "skadi": "diana",
+    "atalanta": "artemis",
+    "stheno": "medusa",
+    "plutus": "caishen",
+    "harmonia": "yuelao",
+    "asclepius": "freya",
+    "thanatos": "anubis"
+  },
   "classes": {
     "Tank": {
       "slot": "road",
@@ -485,11 +508,11 @@
   },
   "statuses": {
     "sources": {
-      "poseidon": "wet",
-      "phoenix": "burn",
-      "prometheus": "chill",
-      "medusa": "poison",
-      "jormungandr": "poison"
+      "aegir": "wet",
+      "hephaestus": "burn",
+      "ymir": "chill",
+      "stheno": "poison",
+      "fenrir": "poison"
     },
     "wet": {
       "seconds": 4
@@ -805,19 +828,19 @@
     "range": 250
   },
   "heroSkills": {
-    "nuwa": {
+    "atlas": {
       "skillName": "Celestial Bulwark",
       "variant": "shield_wall"
     },
-    "prometheus": {
+    "ymir": {
       "skillName": "Titan's Expose",
       "variant": "expose"
     },
-    "momus": {
+    "heimdall": {
       "skillName": "Grand Mockery",
       "variant": "mass_taunt"
     },
-    "demeter": {
+    "gaia": {
       "skillName": "Rooted Sanctuary",
       "variant": "rooted_sanctuary",
       "heal": 0.3,
@@ -826,44 +849,44 @@
       "awakenWard": 0.4,
       "wardSeconds": 8
     },
-    "poseidon": {
+    "aegir": {
       "skillName": "Tidal Surge",
       "variant": "knockback"
     },
-    "amunra": {
+    "helios": {
       "skillName": "Solar War Cry",
       "variant": "war_cry"
     },
-    "set": {
+    "surtr": {
       "skillName": "Crimson Cleave",
       "variant": "lifesteal_cleave"
     },
-    "jormungandr": {
+    "fenrir": {
       "skillName": "Venom Coil",
       "variant": "venom_cleave"
     },
-    "nyx": {
+    "nott": {
       "skillName": "Shadow Step",
       "variant": "shadow_step"
     },
-    "bastet": {
+    "hecate": {
       "skillName": "Claw Sweep",
       "variant": "claw_sweep"
     },
-    "horus": {
+    "vidar": {
       "skillName": "Rapid Strike",
       "variant": "rapid_strike"
     },
-    "zeus": {
+    "odin": {
       "skillName": "Chain Lightning",
       "variant": "chain_lightning",
       "basic": "chain"
     },
-    "phoenix": {
+    "hephaestus": {
       "skillName": "Rebirth Flame",
       "variant": "rebirth_flame"
     },
-    "fengyi": {
+    "boreas": {
       "skillName": "Ice Shockwave",
       "variant": "ice_shockwave",
       "damage": 1.4,
@@ -872,11 +895,11 @@
       "awakenFreezeChance": 0.1,
       "awakenFreezeSeconds": 1
     },
-    "diana": {
+    "skadi": {
       "skillName": "Moon Barrage",
       "variant": "moon_barrage"
     },
-    "artemis": {
+    "atalanta": {
       "skillName": "Burning Volley",
       "variant": "burning_volley",
       "radius": 80,
@@ -887,25 +910,25 @@
       "rapidAps": 0.5,
       "rapidAtk": 0.3
     },
-    "medusa": {
+    "stheno": {
       "skillName": "Petrifying Gaze",
       "variant": "petrify_shot",
       "petrifyTargets": 3,
       "petrifyDuration": 3
     },
-    "caishen": {
+    "plutus": {
       "skillName": "Fortune Shower",
       "variant": "fortune_shower"
     },
-    "yuelao": {
+    "harmonia": {
       "skillName": "Fate Link",
       "variant": "fate_link"
     },
-    "freya": {
+    "asclepius": {
       "skillName": "Valkyrie's Call",
       "variant": "valkyrie_call"
     },
-    "anubis": {
+    "thanatos": {
       "skillName": "Featherfall Judgment",
       "variant": "soul_drain"
     },

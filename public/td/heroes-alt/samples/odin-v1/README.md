@@ -1,6 +1,6 @@
 # Odin — first static hero sample
 
-Original Odin artwork for the proposed `zeus` replacement slot. Created with the built-in image generation tool; the exact prompt is in [PROMPT.md](PROMPT.md). These are review assets, not wired into the running game.
+Original Odin artwork for the proposed `odin` replacement slot. Created with the built-in image generation tool; the exact prompt is in [PROMPT.md](PROMPT.md). These are review assets, not wired into the running game.
 
 ## Reference inspected
 

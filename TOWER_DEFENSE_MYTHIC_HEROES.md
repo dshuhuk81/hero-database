@@ -16,33 +16,33 @@ This alliance, its setting, each hero's motivation here, and all battlefield pow
 
 Names use readable English spellings: Aegir, Skadi, Vidar, Nott, Hephaestus, Asclepius, and Hecate. Search aliases may include Ægir, Skaði, Víðarr, Nótt, Hephaistos, Asklepios, and Hekate. Aliases are search metadata, not additional heroes.
 
-Two changes from the earlier plan: **Asclepius replaces Sif** for `freya`, since medicine and restoration fit the implemented revival ability; **Harmonia replaces Aphrodite** for `yuelao`, since concord fits collective recovery and readiness without borrowing Yuelao's red-thread identity.
+Two changes from the earlier plan: **Asclepius replaces Sif** for `asclepius`, since medicine and restoration fit the implemented revival ability; **Harmonia replaces Aphrodite** for `harmonia`, since concord fits collective recovery and readiness without borrowing Yuelao's red-thread identity.
 
 ## Roster map
 
 | Internal ID | Display name | Original title | Tradition | Class / placement | Ultimate |
 |---|---|---|---|---|---|
-| `nuwa` | Atlas | Shoulder of the Crossing | Greek | Tank / road | A Place to Stand |
-| `prometheus` | Ymir | Memory of the First Frost | Norse | Tank / road | Faults Beneath the Ice |
-| `momus` | Heimdall | Watchman at the World-Seam | Norse | Tank / road | The Gate Hears You |
-| `demeter` | Gaia | Ground Beneath the Refuge | Greek | Support / platform | Where the Roots Hold |
-| `poseidon` | Aegir | Host of the Deep Hall | Norse | Warrior / road | The Sea Takes a Step |
-| `amunra` | Helios | Keeper of the Eastern Road | Greek | Warrior / road | Noon at the Narrow Gate |
-| `set` | Surtr | Ember at the Boundary | Norse | Warrior / road | Fuel for the Last Fire |
-| `jormungandr` | Fenrir | The Unfastened Jaw | Norse | Warrior / road | Leave the Wound Open |
-| `nyx` | Nott | Rider Between Watchfires | Norse | Assassin / road | Where the Lantern Ends |
-| `bastet` | Hecate | Keeper of the Third Turning | Greek | Assassin / road | Every Exit Is Mine |
-| `horus` | Vidar | Answer Without a Word | Norse | Assassin / road | The Debt Comes Due |
-| `anubis` | Thanatos | Witness of the Final Breath | Greek | Assassin / road | One Breath Remaining |
-| `zeus` | Odin | Reader of Unfinished Roads | Norse | Mage / platform | The Answer Travels |
-| `phoenix` | Hephaestus | Smith of the Refuge Gate | Greek | Mage / platform | Work the Living Furnace |
-| `fengyi` | Boreas | Winter at the Open Door | Greek | Mage / platform | Winter Comes Through the Door |
-| `diana` | Skadi | Hunter Above the Pass | Norse | Archer / platform | Follow My Arrow |
-| `artemis` | Atalanta | First Through the Brambles | Greek | Archer / platform | Fire in the Brambles |
-| `medusa` | Stheno | Stillness at the Threshold | Greek | Archer / platform | Hold That Last Step |
-| `caishen` | Plutus | Keeper of the Common Store | Greek | Support / platform | Enough for Everyone |
-| `yuelao` | Harmonia | The Meeting of Many Hands | Greek | Support / platform | Together, Once More |
-| `freya` | Asclepius | Physician of the Last Watch | Greek | Support / platform | There Is Still a Pulse |
+| `atlas` | Atlas | Shoulder of the Crossing | Greek | Tank / road | A Place to Stand |
+| `ymir` | Ymir | Memory of the First Frost | Norse | Tank / road | Faults Beneath the Ice |
+| `heimdall` | Heimdall | Watchman at the World-Seam | Norse | Tank / road | The Gate Hears You |
+| `gaia` | Gaia | Ground Beneath the Refuge | Greek | Support / platform | Where the Roots Hold |
+| `aegir` | Aegir | Host of the Deep Hall | Norse | Warrior / road | The Sea Takes a Step |
+| `helios` | Helios | Keeper of the Eastern Road | Greek | Warrior / road | Noon at the Narrow Gate |
+| `surtr` | Surtr | Ember at the Boundary | Norse | Warrior / road | Fuel for the Last Fire |
+| `fenrir` | Fenrir | The Unfastened Jaw | Norse | Warrior / road | Leave the Wound Open |
+| `nott` | Nott | Rider Between Watchfires | Norse | Assassin / road | Where the Lantern Ends |
+| `hecate` | Hecate | Keeper of the Third Turning | Greek | Assassin / road | Every Exit Is Mine |
+| `vidar` | Vidar | Answer Without a Word | Norse | Assassin / road | The Debt Comes Due |
+| `thanatos` | Thanatos | Witness of the Final Breath | Greek | Assassin / road | One Breath Remaining |
+| `odin` | Odin | Reader of Unfinished Roads | Norse | Mage / platform | The Answer Travels |
+| `hephaestus` | Hephaestus | Smith of the Refuge Gate | Greek | Mage / platform | Work the Living Furnace |
+| `boreas` | Boreas | Winter at the Open Door | Greek | Mage / platform | Winter Comes Through the Door |
+| `skadi` | Skadi | Hunter Above the Pass | Norse | Archer / platform | Follow My Arrow |
+| `atalanta` | Atalanta | First Through the Brambles | Greek | Archer / platform | Fire in the Brambles |
+| `stheno` | Stheno | Stillness at the Threshold | Greek | Archer / platform | Hold That Last Step |
+| `plutus` | Plutus | Keeper of the Common Store | Greek | Support / platform | Enough for Everyone |
+| `harmonia` | Harmonia | The Meeting of Many Hands | Greek | Support / platform | Together, Once More |
+| `asclepius` | Asclepius | Physician of the Last Watch | Greek | Support / platform | There Is Still a Pulse |
 
 ## How to use the copy
 
@@ -77,7 +77,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 01. Atlas — Shoulder of the Crossing
 
-**Binding:** `nuwa` · `shield_wall` · Tank · road · he/him
+**Binding:** `atlas` · `shield_wall` · Tank · road · he/him
 
 **Myth anchor:** Atlas bears the heavens in Greek tradition. He is not carrying the planet. [Source: Atlas](https://www.theoi.com/Titan/TitanAtlas.html).
 
@@ -100,7 +100,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 02. Ymir — Memory of the First Frost
 
-**Binding:** `prometheus` · `expose` · Tank · road · he/him
+**Binding:** `ymir` · `expose` · Tank · road · he/him
 
 **Myth anchor:** Ymir is the primordial giant whose body becomes the world. [Source: Prose Edda, Creation](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -123,7 +123,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 03. Heimdall — Watchman at the World-Seam
 
-**Binding:** `momus` · `mass_taunt` · Tank · road · he/him
+**Binding:** `heimdall` · `mass_taunt` · Tank · road · he/him
 
 **Myth anchor:** Heimdall guards Bifrost and bears Gjallarhorn. [Source: Prose Edda](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -146,7 +146,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 04. Gaia — Ground Beneath the Refuge
 
-**Binding:** `demeter` · `rooted_sanctuary` · Support · platform · she/her (Tank until October 1, 2026; TD-only class override)
+**Binding:** `gaia` · `rooted_sanctuary` · Support · platform · she/her (Tank until October 1, 2026; TD-only class override)
 
 **Myth anchor:** Gaia personifies the earth and belongs to the earliest Greek divine generations. [Source: Gaia](https://www.theoi.com/Protogenos/Gaia.html).
 
@@ -171,7 +171,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 05. Aegir — Host of the Deep Hall
 
-**Binding:** `poseidon` · `knockback` · Warrior · road · he/him
+**Binding:** `aegir` · `knockback` · Warrior · road · he/him
 
 **Myth anchor:** Aegir is associated with the sea and feasts for the gods. [Source: Prose Edda, Aegir's Feast](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -194,7 +194,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 06. Helios — Keeper of the Eastern Road
 
-**Binding:** `amunra` · `war_cry` · Warrior · road · he/him
+**Binding:** `helios` · `war_cry` · Warrior · road · he/him
 
 **Myth anchor:** Helios drives the sun's chariot across the sky. [Source: Helios](https://www.theoi.com/Titan/Helios.html).
 
@@ -217,7 +217,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 07. Surtr — Ember at the Boundary
 
-**Binding:** `set` · `lifesteal_cleave` · Warrior · road · he/him
+**Binding:** `surtr` · `lifesteal_cleave` · Warrior · road · he/him
 
 **Myth anchor:** Surtr bears a fiery sword and is a destructive force at Ragnarok. [Source: Prose Edda, Ragnarok](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -240,7 +240,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 08. Fenrir — The Unfastened Jaw
 
-**Binding:** `jormungandr` · `venom_cleave` · Warrior · road · he/him
+**Binding:** `fenrir` · `venom_cleave` · Warrior · road · he/him
 
 **Myth anchor:** Fenrir is the great wolf bound by the gods with Gleipnir. [Source: Prose Edda, Loki and His Offspring](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -265,7 +265,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 09. Nott — Rider Between Watchfires
 
-**Binding:** `nyx` · `shadow_step` · Assassin · road · she/her
+**Binding:** `nott` · `shadow_step` · Assassin · road · she/her
 
 **Myth anchor:** Nott personifies night and rides across the sky on Hrimfaxi. [Source: Prose Edda](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -288,7 +288,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 10. Hecate — Keeper of the Third Turning
 
-**Binding:** `bastet` · `claw_sweep` · Assassin · road · she/her
+**Binding:** `hecate` · `claw_sweep` · Assassin · road · she/her
 
 **Myth anchor:** Hecate is associated with crossroads, torches, and magic. [Source: Hecate](https://www.theoi.com/Khthonios/Hekate.html).
 
@@ -311,7 +311,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 11. Vidar — Answer Without a Word
 
-**Binding:** `horus` · `rapid_strike` · Assassin · road · he/him
+**Binding:** `vidar` · `rapid_strike` · Assassin · road · he/him
 
 **Myth anchor:** Vidar is the silent god who avenges Odin against Fenrir. [Source: Prose Edda](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -334,7 +334,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 12. Thanatos — Witness of the Final Breath
 
-**Binding:** `anubis` · `soul_drain` · Assassin · road · he/him
+**Binding:** `thanatos` · `soul_drain` · Assassin · road · he/him
 
 **Myth anchor:** Thanatos personifies death in Greek mythology. [Source: Thanatos](https://www.theoi.com/Daimon/Thanatos.html).
 
@@ -359,7 +359,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 13. Odin — Reader of Unfinished Roads
 
-**Binding:** `zeus` · `chain_lightning` · basic override `chain` · Mage · platform · he/him
+**Binding:** `odin` · `chain_lightning` · basic override `chain` · Mage · platform · he/him
 
 **Myth anchor:** Odin seeks wisdom, sacrifices an eye, and is associated with ravens and the spear Gungnir. [Source: Prose Edda](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -384,7 +384,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 14. Hephaestus — Smith of the Refuge Gate
 
-**Binding:** `phoenix` · `rebirth_flame` · Mage · platform · he/him
+**Binding:** `hephaestus` · `rebirth_flame` · Mage · platform · he/him
 
 **Myth anchor:** Hephaestus is the Greek god of metalworking and divine craftsmanship. [Source: Hephaestus](https://www.theoi.com/Olympios/Hephaistos.html).
 
@@ -405,11 +405,11 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 **Dialogue:** Recruit: “Bring me what is broken.” · Ultimate: “Open the furnace.” · Defeat: “The tools are still good.”
 
-**Adaptation note:** Furnace healing is a game invention. This kit has no sacrifice cost, burn stacks, phoenix transformation, or resurrection.
+**Adaptation note:** Furnace healing is a game invention. This kit has no sacrifice cost, burn stacks, hephaestus transformation, or resurrection.
 
 ### 15. Boreas — Winter at the Open Door
 
-**Binding:** `fengyi` · `ice_shockwave` · Mage · platform · he/him
+**Binding:** `boreas` · `ice_shockwave` · Mage · platform · he/him
 
 **Myth anchor:** Boreas personifies the north wind. [Source: Boreas](https://www.theoi.com/Titan/AnemosBoreas.html).
 
@@ -434,7 +434,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 16. Skadi — Hunter Above the Pass
 
-**Binding:** `diana` · `moon_barrage` · Archer · platform · she/her
+**Binding:** `skadi` · `moon_barrage` · Archer · platform · she/her
 
 **Myth anchor:** Skadi is associated with mountains, skiing, and hunting. [Source: Prose Edda](https://www.gutenberg.org/files/18947/18947-h/18947-h.htm).
 
@@ -457,7 +457,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 17. Atalanta — First Through the Brambles
 
-**Binding:** `artemis` · `piercing_shot` · Archer · platform · she/her
+**Binding:** `atalanta` · `piercing_shot` · Archer · platform · she/her
 
 **Myth anchor:** Atalanta is a renowned huntress associated with the Calydonian boar hunt and a footrace. [Source: Atalanta](https://www.theoi.com/Heroine/Atalanta.html).
 
@@ -480,7 +480,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 18. Stheno — Stillness at the Threshold
 
-**Binding:** `medusa` · `petrify_shot` · Archer · platform · she/her
+**Binding:** `stheno` · `petrify_shot` · Archer · platform · she/her
 
 **Myth anchor:** Stheno is one of the immortal Gorgon sisters; Gorgon traditions include a petrifying gaze. [Source: Gorgons](https://www.theoi.com/Pontios/Gorgones.html).
 
@@ -507,7 +507,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 19. Plutus — Keeper of the Common Store
 
-**Binding:** `caishen` · `fortune_shower` · Support · platform · he/him
+**Binding:** `plutus` · `fortune_shower` · Support · platform · he/him
 
 **Myth anchor:** Plutus represents wealth and agricultural abundance. [Source: Plutus](https://www.theoi.com/Georgikos/Ploutos.html).
 
@@ -530,7 +530,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 20. Harmonia — The Meeting of Many Hands
 
-**Binding:** `yuelao` · `fate_link` · Support · platform · she/her
+**Binding:** `harmonia` · `fate_link` · Support · platform · she/her
 
 **Myth anchor:** Harmonia personifies harmony and concord. [Source: Harmonia](https://www.theoi.com/Ouranios/Harmonia.html).
 
@@ -553,7 +553,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 21. Asclepius — Physician of the Last Watch
 
-**Binding:** `freya` · `valkyrie_call` · Support · platform · he/him
+**Binding:** `asclepius` · `valkyrie_call` · Support · platform · he/him
 
 **Myth anchor:** Asclepius is associated with medicine; myths describe him restoring the dead to life. [Source: Asclepius](https://www.theoi.com/Ouranios/Asklepios.html).
 

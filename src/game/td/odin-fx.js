@@ -1,12 +1,12 @@
 // Odin's runic lightning (heroVariant chain_lightning, M24c). Also used by the Mage Arc path.
 // Bolts are midpoint-displaced, forked and re-struck ~20 times a second; CC0 lightning strips
-// (public/td/fx/zeus) overlay the procedural core. Presentation only; no combat changes.
+// (public/td/fx/odin) overlay the procedural core. Presentation only; no combat changes.
 import { tdAsset } from "./assets.js";
 
 const BOLT = 0x8fb4ff;
 const DEEP = 0x5b6cff;
 
-export function createZeusFx(PIXI, parent, kit, { reducedMotion = false } = {}) {
+export function createOdinFx(PIXI, parent, kit, { reducedMotion = false } = {}) {
   const layer = new PIXI.Container();
   parent.addChild(layer);
   const graphics = new PIXI.Graphics();
@@ -14,7 +14,7 @@ export function createZeusFx(PIXI, parent, kit, { reducedMotion = false } = {}) 
   const active = new Map();
   const textures = [];
   ["lightning_b", "lightning1_b", "lightning2_b", "lightning3_b"].forEach((name, i) => {
-    PIXI.Assets.load(tdAsset(`fx/zeus/${name}.png`)).then((t) => { textures[i] = t; }).catch(() => {});
+    PIXI.Assets.load(tdAsset(`fx/odin/${name}.png`)).then((t) => { textures[i] = t; }).catch(() => {});
   });
   const strips = new PIXI.Container();
   layer.addChild(strips, graphics);

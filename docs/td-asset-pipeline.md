@@ -63,7 +63,7 @@ the rest. Work files go to `.td-work/` (gitignored).
 `boss` (Baphomet) and `boss-{id}` (`boss-lilith`, `boss-lerna`, ...). **A sheet is named after the
 still it animates:** `clips/brute-v3` animates `sprites/brute-v3`. Kinds that borrow another
 kind's still (`ENEMY_ART` in `assets.js`: mender, shieldbearer, imp, broodcaller, hexer) use the
-sheet of exactly that still. For heroes, `{file}` is the internal id (`zeus`, `nuwa`, ...) or
+sheet of exactly that still. For heroes, `{file}` is the internal id (`odin`, `atlas`, ...) or
 `{id}-{art}` for a redrawn hero.
 
 ## 3. Part A: animation clips for an existing still
@@ -201,7 +201,7 @@ recruit preview; it plays two sounds. On the board it stands as an animated figu
 
 Input from the job (ask the owner for anything missing, do not invent it):
 
-- the internal id (`zeus`, `nuwa`, a new `recruit-...`), and whether it is a new hero or a redraw;
+- the internal id (`odin`, `atlas`, a new `recruit-...`), and whether it is a new hero or a redraw;
 - the source portrait: transparent PNG, one full-body figure, tall (roughly 2:5, like the
   review set), facing the viewer or slightly turned, nothing cut off;
 - the mythic persona: name, title, ultimate name (`TOWER_DEFENSE_MYTHIC_HEROES.md` style);
@@ -214,7 +214,7 @@ Steps:
 2. **Export the three images:**
 
    ```bash
-   node scripts/td-hero-assets.mjs --id zeus --source <portrait.png> --art v3
+   node scripts/td-hero-assets.mjs --id odin --source <portrait.png> --art v3
    ```
 
    Writes `{file}-card-240.webp` (240x587), `{file}-thumb-96.webp` (96x96, top crop) and
@@ -223,11 +223,11 @@ Steps:
 3. **Idle loop** (procedural: feet pinned, sway, breathing, cloth ripple):
 
    ```bash
-   python3 scripts/td-idle-anim.py <portrait.png> zeus public/td/heroes-alt/anims --version v3
-   python3 scripts/td-idle-anim.py <portrait.png> zeus .td-work --version v3 --gif   # preview to look at
+   python3 scripts/td-idle-anim.py <portrait.png> odin public/td/heroes-alt/anims --version v3
+   python3 scripts/td-idle-anim.py <portrait.png> odin .td-work --version v3 --gif   # preview to look at
    ```
 
-   Output `public/td/heroes-alt/anims/zeus-idle-v3.webp` (5376x224, 24 frames). Leave out
+   Output `public/td/heroes-alt/anims/odin-idle-v3.webp` (5376x224, 24 frames). Leave out
    `--version` for a new hero (`-idle-v1`). Keep the GIF out of `public/`.
 4. **Sounds** (new hero only, or when the job asks): copy to `public/td/sfx/mythic-{id}-v4_attack.ogg`
    and `..._ultimate.ogg`, add the source and license to `public/td/sfx/CREDITS-mythic.txt`, then

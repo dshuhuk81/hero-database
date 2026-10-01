@@ -6,26 +6,26 @@ All files are kept in this folder. Status refers to first-pass static artwork, n
 
 ## Saved before this batch (5 / 21)
 
-Odin (`zeus`), Atlas (`nuwa`), Skadi (`diana`), Hecate (`bastet`), Hephaestus (`phoenix`). Each has an original PNG and six WebP exports.
+Odin, Atlas, Skadi, Hecate, Hephaestus. Each has an original PNG and six WebP exports.
 
 ## Completed in this batch (16)
 
-- [x] Ymir — `prometheus`
-- [x] Heimdall — `momus`
-- [x] Gaia — `demeter`
-- [x] Aegir — `poseidon`
-- [x] Helios — `amunra`
-- [x] Surtr — `set`
-- [x] Fenrir — `jormungandr`
-- [x] Nott — `nyx`
-- [x] Vidar — `horus`
-- [x] Thanatos — `anubis`
-- [x] Boreas — `fengyi`
-- [x] Atalanta — `artemis`
-- [x] Stheno — `medusa`
-- [x] Plutus — `caishen`
-- [x] Harmonia — `yuelao`
-- [x] Asclepius — `freya`
+- [x] Ymir — `ymir`
+- [x] Heimdall — `heimdall`
+- [x] Gaia — `gaia`
+- [x] Aegir — `aegir`
+- [x] Helios — `helios`
+- [x] Surtr — `surtr`
+- [x] Fenrir — `fenrir`
+- [x] Nott — `nott`
+- [x] Vidar — `vidar`
+- [x] Thanatos — `thanatos`
+- [x] Boreas — `boreas`
+- [x] Atalanta — `atalanta`
+- [x] Stheno — `stheno`
+- [x] Plutus — `plutus`
+- [x] Harmonia — `harmonia`
+- [x] Asclepius — `asclepius`
 
 All checked entries have their source and six matching-size WebP exports saved and verified. Source alpha, export alpha channels, dimensions, roster coverage, and board-token framing were checked.
 

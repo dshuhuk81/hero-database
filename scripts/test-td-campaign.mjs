@@ -75,8 +75,8 @@ stages.forEach((stage, i) => {
   assert.deepEqual(again.granted, repeatRewards(campaign, stages[0]), "replay pays the repeat share");
   assert.equal(again.progress.currencies.gold, gold + Math.round(gold * campaign.repeatShare), "replay gold added");
   assert.deepEqual(again.progress.cleared[stages[0].id], { clears: 2, bestLives: 18 }, "clears and best lives tracked");
-  const options = stageGameOptions(stages[0], ["demeter"], 7);
-  assert.deepEqual([options.mode, options.allowedHeroes, options.lives, options.waves], ["classic", ["demeter"], stages[0].lives, stages[0].waves], "game options");
+  const options = stageGameOptions(stages[0], ["gaia"], 7);
+  assert.deepEqual([options.mode, options.allowedHeroes, options.lives, options.waves], ["classic", ["gaia"], stages[0].lives, stages[0].waves], "game options");
 }
 
 // --- Skill levels ---
@@ -109,7 +109,7 @@ stages.forEach((stage, i) => {
   const id = campaign.starters[0];
   assert.deepEqual(levelUpCost(campaign, 1), { gold: campaign.heroLevels.cost.gold.base, heroXp: campaign.heroLevels.cost.heroXp.base }, "level 1 -> 2 cost");
   assert.equal(levelUp(campaign, newCampaignProgress(campaign), id), null, "no level up without currencies");
-  assert.equal(levelUp(campaign, p, "zeus"), null, "only owned heroes level up");
+  assert.equal(levelUp(campaign, p, "odin"), null, "only owned heroes level up");
   // Caps by stars: 0 stars -> 10 ... 5 stars -> 60.
   assert.deepEqual([0, 1, 2, 3, 4, 5].map((s) => levelCap(campaign, s)), [10, 20, 30, 40, 50, 60], "level caps by stars");
   const cap0 = heroLevelCap(campaign, p, id);
@@ -125,26 +125,26 @@ stages.forEach((stage, i) => {
   const scaled = collectionHeroes(campaign, p, heroes).find((hero) => hero.id === id);
   const base = heroes.find((hero) => hero.id === id);
   assert.equal(scaled.atk, Math.round(base.atk * levelScale(campaign, cap0)), "level scales attack");
-  assert.equal(collectionHeroes(campaign, p, heroes).find((hero) => hero.id === "zeus"), heroes.find((hero) => hero.id === "zeus"), "level 1 heroes unchanged");
+  assert.equal(collectionHeroes(campaign, p, heroes).find((hero) => hero.id === "odin"), heroes.find((hero) => hero.id === "odin"), "level 1 heroes unchanged");
 }
 
 // --- Save section ---
 {
   assert.deepEqual(sanitizeCampaign(undefined, campaign, heroIds), newCampaignProgress(campaign), "missing section: fresh progress");
-  const clean = sanitizeCampaign({ owned: ["zeus", "ghost"], cleared: { "1-1": { clears: "2", bestLives: 9 }, "9-9": { clears: 1 } }, lastSquad: ["zeus", "ghost", "nyx"] }, campaign, heroIds);
-  assert.deepEqual(clean.owned, [...campaign.starters, "zeus"], "starters kept, unknown heroes dropped");
+  const clean = sanitizeCampaign({ owned: ["odin", "ghost"], cleared: { "1-1": { clears: "2", bestLives: 9 }, "9-9": { clears: 1 } }, lastSquad: ["odin", "ghost", "nott"] }, campaign, heroIds);
+  assert.deepEqual(clean.owned, [...campaign.starters, "odin"], "starters kept, unknown heroes dropped");
   assert.deepEqual(clean.cleared, { "1-1": { clears: 2, bestLives: 9 } }, "unknown stages dropped");
-  assert.deepEqual(clean.lastSquad, ["zeus"], "last squad only owned heroes");
+  assert.deepEqual(clean.lastSquad, ["odin"], "last squad only owned heroes");
   const v1 = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared: {}, lastSquad: [] }, campaign, heroIds);
   const zero = Object.fromEntries(CURRENCIES.map((id) => [id, 0]));
   assert.deepEqual([v1.version, v1.currencies, v1.levels], [CAMPAIGN_SAVE_VERSION, zero, {}], "version 1 saves migrate: no currencies, level 1");
   const paid = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared: { [stages[0].id]: { clears: 3, bestLives: 5 } } }, campaign, heroIds);
   assert.equal(paid.currencies.gold, stages[0].rewards.find((reward) => reward.id === "gold").amount, "version 1 clears are paid once on migration");
   assert.equal(sanitizeCampaign(paid, campaign, heroIds).currencies.gold, paid.currencies.gold, "not paid again");
-  const levels = sanitizeCampaign({ owned: ["zeus"], levels: { zeus: 99, demeter: 3, ghost: 4, nyx: 2 }, currencies: { gold: "40", heroXp: -5, gems: 9 } }, campaign, heroIds);
-  assert.deepEqual([levels.levels, levels.currencies], [{ zeus: levelCap(campaign, 0), demeter: 3 }, { ...zero, gold: 40 }], "levels capped by stars, only owned heroes; currencies cleaned");
-  const skills = sanitizeCampaign({ owned: ["zeus"], skillLevels: { zeus: { ultimate: 99, passiveAttack: 3, unknown: 4 }, ghost: { ultimate: 2 } } }, campaign, heroIds);
-  assert.deepEqual(skills.skillLevels, { zeus: { ultimate: campaign.heroSkillLevels.max, passiveAttack: 3 } }, "skill levels are capped and unknown skills and heroes are dropped");
+  const levels = sanitizeCampaign({ owned: ["odin"], levels: { odin: 99, gaia: 3, ghost: 4, nott: 2 }, currencies: { gold: "40", heroXp: -5, gems: 9 } }, campaign, heroIds);
+  assert.deepEqual([levels.levels, levels.currencies], [{ odin: levelCap(campaign, 0), gaia: 3 }, { ...zero, gold: 40 }], "levels capped by stars, only owned heroes; currencies cleaned");
+  const skills = sanitizeCampaign({ owned: ["odin"], skillLevels: { odin: { ultimate: 99, passiveAttack: 3, unknown: 4 }, ghost: { ultimate: 2 } } }, campaign, heroIds);
+  assert.deepEqual(skills.skillLevels, { odin: { ultimate: campaign.heroSkillLevels.max, passiveAttack: 3 } }, "skill levels are capped and unknown skills and heroes are dropped");
 }
 
 // --- Winnable: every stage, with the heroes owned by then at the level the chapter's

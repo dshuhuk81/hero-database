@@ -12,12 +12,12 @@ import waves from "../src/data/tdWaves.json" with { type: "json" };
 const tiers = tuning.tiers;
 
 // A won 10 wave run that clears every challenge; each case below breaks exactly one.
-const base = { won: true, mode: "classic", tier: "normal", trial: false, perfect: true, fielded: ["zeus", "fengyi"], classes: ["Mage"], upgrades: 0, seconds: SWIFT_SECONDS.classic, gold: HOARDER_GOLD.classic };
+const base = { won: true, mode: "classic", tier: "normal", trial: false, perfect: true, fielded: ["odin", "boreas"], classes: ["Mage"], upgrades: 0, seconds: SWIFT_SECONDS.classic, gold: HOARDER_GOLD.classic };
 assert.deepEqual(evaluateChallenges(base), CHALLENGE_IDS, "all six at the exact thresholds");
 
 const breaks = {
   perfect: { perfect: false },
-  trio: { fielded: ["zeus", "fengyi", "phoenix", "diana"] },
+  trio: { fielded: ["odin", "boreas", "hephaestus", "skadi"] },
   oneClass: { classes: ["Mage", "Archer"] },
   unrefined: { upgrades: 1 },
   swift: { seconds: SWIFT_SECONDS.classic + 0.5 },
@@ -29,7 +29,7 @@ for (const [id, change] of Object.entries(breaks)) {
   assert.equal(ids.length, CHALLENGE_IDS.length - 1, `${id}: the other challenges still count`);
 }
 assert.equal(TRIO_MAX, 3, "Trio allows 3 heroes");
-assert.ok(evaluateChallenges({ ...base, fielded: ["zeus", "fengyi", "phoenix"] }).includes("trio"), "exactly 3 heroes is a Trio");
+assert.ok(evaluateChallenges({ ...base, fielded: ["odin", "boreas", "hephaestus"] }).includes("trio"), "exactly 3 heroes is a Trio");
 assert.ok(!evaluateChallenges({ ...base, fielded: [], classes: [] }).includes("trio"), "no hero deployed is no Trio");
 
 // No challenges for losses, endless and Daily Trial runs; 20 waves use their own thresholds.
@@ -48,26 +48,26 @@ assert.deepEqual(evaluateChallenges({ ...base, trial: true }), [], "Daily Trial 
   const map = maps[0];
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
   g.gold = 5000;
-  const zeus = heroes.find((h) => h.id === "zeus");
-  const fengyi = heroes.find((h) => h.id === "fengyi");
-  assert.ok(g.place("zeus", zeus.slot, 0), "zeus placed");
-  assert.ok(g.place("fengyi", fengyi.slot, 1), "fengyi placed");
+  const odin = heroes.find((h) => h.id === "odin");
+  const boreas = heroes.find((h) => h.id === "boreas");
+  assert.ok(g.place("odin", odin.slot, 0), "odin placed");
+  assert.ok(g.place("boreas", boreas.slot, 1), "boreas placed");
   let facts = runFacts(g);
-  assert.deepEqual(facts.fielded, ["zeus", "fengyi"], "fielded heroes");
+  assert.deepEqual(facts.fielded, ["odin", "boreas"], "fielded heroes");
   assert.deepEqual(facts.classes, ["Mage"], "one class");
   assert.equal(facts.upgrades, 0, "nothing bought yet");
-  const unit = g.heroes.find((h) => h.id === "fengyi");
+  const unit = g.heroes.find((h) => h.id === "boreas");
   assert.ok(g.upgrade(unit.entityId).ok, "level bought");
   g.sell(unit.entityId);
-  assert.ok(g.place("diana", "platform", 1), "diana placed on the freed ring");
+  assert.ok(g.place("skadi", "platform", 1), "skadi placed on the freed ring");
   facts = runFacts(g);
-  assert.deepEqual(facts.fielded, ["zeus", "fengyi", "diana"], "a sold hero stays fielded");
+  assert.deepEqual(facts.fielded, ["odin", "boreas", "skadi"], "a sold hero stays fielded");
   assert.deepEqual(facts.classes.sort(), ["Archer", "Mage"], "classes of every fielded hero");
   assert.equal(facts.upgrades, 1, "sold hero's level still counts");
   g.reset();
   assert.deepEqual(runFacts(g).fielded, [], "reset clears fielded heroes");
   assert.equal(runFacts(g).upgrades, 0, "reset clears upgrades");
-  const trial = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7, allowedHeroes: ["zeus"] });
+  const trial = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7, allowedHeroes: ["odin"] });
   assert.equal(runFacts(trial).trial, true, "restricted roster marks a Daily Trial run");
 }
 
@@ -97,7 +97,7 @@ assert.deepEqual(evaluateChallenges({ ...base, trial: true }), [], "Daily Trial 
 
 // Save: challenges persist across reload and save codes; junk is dropped; old saves still load.
 {
-  const rules = { heroIds: new Set(["zeus"]) };
+  const rules = { heroIds: new Set(["odin"]) };
   const save = { ...emptySave(), bestScore: 10 };
   recordChallenges(save.challenges, runKey("moonlit-pass", "classic"), ["swift", "hoarder"], "classic", "heroic", tiers);
   const reloaded = sanitizeSave(JSON.parse(JSON.stringify(save)), rules);

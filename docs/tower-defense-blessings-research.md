@@ -57,7 +57,7 @@ So the whole tree is bought after **5 to 6 runs, roughly 45 to 60 minutes of pla
 
 ```
                 [ Hero branches: 21, colored by class ]
-     Nyx   Bastet   Anubis ...        Zeus   Phoenix   Fengyi ...
+     Nott   Hecate   Thanatos ...        Odin   Hephaestus   Boreas ...
        \      |      /                   \      |      /
         [ Assassin hub ]                  [ Mage hub ]        ... 6 class hubs
                  \                          /

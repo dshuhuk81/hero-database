@@ -5,11 +5,11 @@ import {fileURLToPath} from 'node:url';
 const dir=dirname(fileURLToPath(import.meta.url));
 const generated='/Users/daschultheiss/.codex/generated_images/01a0ddd8-ab64-7171-8932-1775a08b6d12';
 const heroes=[
- {name:'odin',id:'zeus',crop:[140,40,560]},
- {name:'atlas',id:'nuwa',file:'exec-b513d753-b09f-4936-9768-e0a8f1838dbb.png',crop:[145,65,560]},
- {name:'skadi',id:'diana',file:'exec-f91aeac1-aa91-4d86-8006-3175c07d56c0.png',crop:[135,0,550]},
- {name:'hecate',id:'bastet',file:'exec-7e3dbdc6-2c60-4b27-b306-2e82d2ee4202.png',crop:[125,0,550]},
- {name:'hephaestus',id:'phoenix',file:'exec-733a090e-ff94-4676-a340-215df789fcec.png',crop:[140,0,550]}
+ {name:'odin',id:'odin',crop:[140,40,560]},
+ {name:'atlas',id:'atlas',file:'exec-b513d753-b09f-4936-9768-e0a8f1838dbb.png',crop:[145,65,560]},
+ {name:'skadi',id:'skadi',file:'exec-f91aeac1-aa91-4d86-8006-3175c07d56c0.png',crop:[135,0,550]},
+ {name:'hecate',id:'hecate',file:'exec-7e3dbdc6-2c60-4b27-b306-2e82d2ee4202.png',crop:[125,0,550]},
+ {name:'hephaestus',id:'hephaestus',file:'exec-733a090e-ff94-4676-a340-215df789fcec.png',crop:[140,0,550]}
 ];
 const previous=JSON.parse(await readFile(join(dir,'manifest.json'),'utf8').catch(()=>'[]'));
 const manifest=previous.filter(entry=>!heroes.some(hero=>hero.name===entry.hero));

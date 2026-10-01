@@ -225,7 +225,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(starUp(campaignData, { ...ownCopies, currencies: { ...ownCopies.currencies, gold: 0 } }, hero, { [hero]: 1 }), null, "star up needs gold");
   // Quick add only selects duplicates of the hero being upgraded.
   const tiers = campaignData.heroEvolution.tiers.length;
-  const mixed = { ...p, copies: { [featured]: 9, [hero]: 2, nyx: 1 } };
+  const mixed = { ...p, copies: { [featured]: 9, [hero]: 2, nott: 1 } };
   assert.deepEqual(autoFodder(campaignData, mixed, 2, hero), { [hero]: 2 }, "select the hero's duplicates");
   assert.equal(autoFodder(campaignData, mixed, 3, hero), null, "other heroes cannot cover a duplicate shortage");
   // Evolution: copies of the same hero first, then Seal Dust (heroEvolution.dustPrice).
@@ -261,7 +261,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const copyPrice = cfg.dust.copyPrice;
   assert.ok(copyPrice > 0, "dust copy price authored");
   const dustRich = { ...p, currencies: { ...p.currencies, sealDust: copyPrice * 2 } };
-  assert.equal(buyCopiesWithDust(cfg, dustRich, "medusa", 1), null, "dust copies need an owned hero");
+  assert.equal(buyCopiesWithDust(cfg, dustRich, "stheno", 1), null, "dust copies need an owned hero");
   assert.equal(buyCopiesWithDust(cfg, { ...dustRich, currencies: { ...dustRich.currencies, sealDust: copyPrice - 1 } }, hero, 1), null, "dust copies need the dust");
   const bought = buyCopiesWithDust(cfg, dustRich, hero, 2);
   assert.deepEqual([bought.copies[hero], bought.currencies.sealDust], [(p.copies[hero] || 0) + 2, 0], "dust becomes targeted copies");
@@ -284,7 +284,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 // after the rarity weights and the 33-hero pool landed).
 {
   const cfg = { ...summonData, banners: [{ ...authored, pityNewInMulti: true }] };
-  const missing = "caishen";
+  const missing = "plutus";
   const ownedRest = ids.filter((id) => id !== missing);
   const pAllButOne = withSeals({ ...newCampaignProgress(campaignData), owned: [...ownedRest] }, cost * 30);
   // rng pinned high: every draw lands on the last pool entry (owned) -> all duplicates.

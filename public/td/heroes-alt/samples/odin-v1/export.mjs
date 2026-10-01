@@ -18,5 +18,5 @@ await sharp(source).extract(crop).resize(192,192).webp({quality:82,alphaQuality:
 const files=['source.png','odin.webp','cards/odin-240.webp','cards/odin-360.webp','cards/odin-480.webp','thumbs/odin-96.webp','tokens/odin-v1.webp'];
 const assets=[];
 for(const file of files){const m=await sharp(join(dir,file)).metadata();const stats=await sharp(join(dir,file)).stats();const alpha=stats.channels[3];if(!m.hasAlpha||!alpha||alpha.min!==0||alpha.max<250)throw Error(`Transparency check failed: ${file}`);assets.push({file,width:m.width,height:m.height,format:m.format,alpha:m.hasAlpha});}
-await writeFile(join(dir,'manifest.json'),JSON.stringify({displayName:'Odin',intendedInternalId:'zeus',status:'sample; not wired into game',generator:'built-in image_gen',referenceMaster:{width:2514,height:6144,format:'webp',alpha:true},sourceCrop:crop,masterUpscaled:true,assets},null,2)+'\n');
+await writeFile(join(dir,'manifest.json'),JSON.stringify({displayName:'Odin',intendedInternalId:'odin',status:'sample; not wired into game',generator:'built-in image_gen',referenceMaster:{width:2514,height:6144,format:'webp',alpha:true},sourceCrop:crop,masterUpscaled:true,assets},null,2)+'\n');
 console.log(JSON.stringify(assets,null,2));

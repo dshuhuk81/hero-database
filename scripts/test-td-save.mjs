@@ -14,13 +14,13 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 {
   const clean = sanitizeSave({
     bestScore: 900, bestWave: "7", favor: "25", perfectDefense: 1, treeVersion: 3,
-    lastTeam: ["zeus", "ghost", "nuwa", "zeus", "diana"],
-    favLevels: { demeter_bounty: 2, bad: -1, nan: "x", frac: 2.7 },
+    lastTeam: ["odin", "ghost", "atlas", "odin", "skadi"],
+    favLevels: { gaia_bounty: 2, bad: -1, nan: "x", frac: 2.7 },
     insight: { Mage: 12, Tank: 0 },
     mapBests: { "moonlit-pass": { score: 500, wave: 6 }, broken: { wave: 3 } },
   }, rules);
-  assert.deepEqual(clean.lastTeam, ["zeus", "nuwa", "diana"], "team filtered, no cap");
-  assert.deepEqual(clean.favLevels, { demeter_bounty: 2, frac: 2 }, "blessing levels cleaned");
+  assert.deepEqual(clean.lastTeam, ["odin", "atlas", "skadi"], "team filtered, no cap");
+  assert.deepEqual(clean.favLevels, { gaia_bounty: 2, frac: 2 }, "blessing levels cleaned");
   assert.deepEqual(clean.insight, { Mage: 12 }, "insight cleaned");
   assert.equal(clean.refundNotice, 0, "new saves have nothing to refund");
   assert.equal(clean.bestWave, 7, "numeric bestWave");
@@ -30,9 +30,25 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.deepEqual(clean.mapTop["moonlit-pass"], { score: 500, wave: 6 }, "old saves seed mapTop from last run");
 }
 
+// Saves from before October 1, 2026 used the database ids (zeus, nuwa, ...): they load
+// under the mythic ids, blessing node ids included.
+{
+  const old = sanitizeSave({
+    ...emptySave(), bestScore: 10, lastTeam: ["zeus", "set", "odin"],
+    favLevels: { demeter_bounty: 2, set_command: 1, mage_might: 1 },
+    campaign: { ...emptySave().campaign, owned: ["zeus", "nuwa"], lastSquad: ["zeus"], levels: { zeus: 4 }, copies: { nuwa: 2 } },
+  }, rules);
+  assert.deepEqual(old.lastTeam, ["odin", "surtr"], "team renamed, duplicates dropped");
+  assert.deepEqual(old.favLevels, { gaia_bounty: 2, surtr_command: 1, mage_might: 1 }, "blessing node ids renamed");
+  assert.ok(old.campaign.owned.includes("odin") && old.campaign.owned.includes("atlas") && !old.campaign.owned.includes("zeus"), "owned renamed");
+  assert.deepEqual(old.campaign.lastSquad, ["odin"], "squad renamed");
+  assert.equal(old.campaign.levels.odin, 4, "levels renamed");
+  assert.equal(old.campaign.copies.atlas, 2, "copies renamed");
+}
+
 // Save code and save file round-trip; garbage is rejected.
 {
-  const save = { ...emptySave(), bestScore: 1234, favor: 60, favLevels: { demeter_bounty: 1 }, insight: { Mage: 4 }, resetSpent: 150, lastTeam: ["zeus"] };
+  const save = { ...emptySave(), bestScore: 1234, favor: 60, favLevels: { gaia_bounty: 1 }, insight: { Mage: 4 }, resetSpent: 150, lastTeam: ["odin"] };
   const code = encodeSaveCode(save);
   assert.ok(code.startsWith(SAVE_CODE_PREFIX), "code prefix");
   assert.deepEqual(parseSaveText(code, rules), save, "code round-trip");
@@ -44,9 +60,9 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 
 // Available Favor and Insight: earned minus levels bought (and resets); unknown ids cost nothing.
 {
-  const gold = findNode("demeter_bounty");
+  const gold = findNode("gaia_bounty");
   const might = findNode("mage_might");
-  const save = { ...emptySave(), favor: 500, resetSpent: 150, insight: { Mage: 40 }, favLevels: { demeter_bounty: 2, mage_might: 1, gone: 3 } };
+  const save = { ...emptySave(), favor: 500, resetSpent: 150, insight: { Mage: 40 }, favLevels: { gaia_bounty: 2, mage_might: 1, gone: 3 } };
   assert.equal(availableFavor(save), 500 - 150 - nodeSpent(gold, 2), "spent favor and resets subtracted");
   assert.equal(availableInsight(save, "Mage"), 40 - might.cost, "class insight spent");
   assert.equal(availableInsight(save, "Tank"), 0, "no insight earned, none spent");
@@ -54,7 +70,7 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 
 // The first tree (favTree ids) is refunded once: levels start empty, the notice holds the old total.
 {
-  const old = sanitizeSave({ ...emptySave(), favor: 400, favTree: ["demeter_bounty", "amunra_surge"], favLevels: undefined }, rules);
+  const old = sanitizeSave({ ...emptySave(), favor: 400, favTree: ["gaia_bounty", "helios_surge"], favLevels: undefined }, rules);
   assert.deepEqual(old.favLevels, {}, "old purchases dropped");
   assert.equal(old.refundNotice, 25 + 120, "refund notice holds the old prices");
   assert.equal(availableFavor(old), 400, "all Favor available again");
@@ -91,10 +107,10 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 // Tree v3 (M3): a v2 save keeps its levels and its available Favor and Insight; Surge
 // levels drop out and their Insight comes back.
 {
-  const v2 = { ...emptySave(), favor: 1000, insight: { Mage: 300 }, favLevels: { demeter_bounty: 2, mage_might: 5, mage_ascension: 1, mage_surge: 1 } };
+  const v2 = { ...emptySave(), favor: 1000, insight: { Mage: 300 }, favLevels: { gaia_bounty: 2, mage_might: 5, mage_ascension: 1, mage_surge: 1 } };
   delete v2.treeVersion;
   delete v2.repriceNotice;
-  // v2 prices: Demeter 30 + 41; Might 5 + 7 + 9 + 12 + 17; Ascension 40; Surge 80.
+  // v2 prices: Gaia 30 + 41; Might 5 + 7 + 9 + 12 + 17; Ascension 40; Surge 80.
   const favorBefore = 1000 - (30 + 41);
   const mageBefore = 300 - (5 + 7 + 9 + 12 + 17) - 40 - 80;
   const migrated = sanitizeSave(v2, rules);

@@ -17,5 +17,5 @@ await sharp(bust).resize(192,192).webp({quality:82,alphaQuality:90}).toFile(join
 await sharp(bust).resize(96,96).webp({quality:72}).toFile(join(dir,'odin-v2-thumb-96.webp'));
 const files=['odin-v2-source.png','odin-v2.webp',...[240,360,480].map(w=>`odin-v2-card-${w}.webp`),'odin-v2-token-192.webp','odin-v2-thumb-96.webp'];
 const outputs=[];for(const file of files){const meta=await sharp(join(dir,file)).metadata();if(!meta.hasAlpha)throw Error(file);outputs.push({file,width:meta.width,height:meta.height,alpha:meta.hasAlpha});}
-await writeFile(join(dir,'odin-v2-manifest.json'),JSON.stringify({hero:'Odin',intendedInternalId:'zeus',variant:'v2 — fur mantle and red cloak',generator:'built-in image_gen',sourceReference:'user-provided Odin illustration',masterUpscaled:true,tokenCrop:{left,top,side},outputs},null,2)+'\n');
+await writeFile(join(dir,'odin-v2-manifest.json'),JSON.stringify({hero:'Odin',intendedInternalId:'odin',variant:'v2 — fur mantle and red cloak',generator:'built-in image_gen',sourceReference:'user-provided Odin illustration',masterUpscaled:true,tokenCrop:{left,top,side},outputs},null,2)+'\n');
 console.log(JSON.stringify(outputs,null,2));

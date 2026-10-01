@@ -27,7 +27,7 @@ export const WAVE_TYPES = {
 };
 export const CLASSES = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 export const ROAD = ["Tank", "Warrior", "Assassin"];
-export const PARTNER = { road: "yuelao", platform: "prometheus" };
+export const PARTNER = { road: "harmonia", platform: "ymir" };
 // Design intent (TOWER_DEFENSE_ROADMAP.md M6): the class each wave type should call for.
 // Flyers have no road answer and every road class holds the lone boss, so those are unset.
 export const EXPECTED = {

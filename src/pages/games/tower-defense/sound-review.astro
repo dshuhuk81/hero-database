@@ -1,0 +1,417 @@
+---
+// Owner tool: play every sound file in public/td/sfx and mark the ones to replace. The list
+// comes from the folder itself (any file name), grouped by name pattern; plays the local
+// file with its tdAudioLevels.json gain like the game. Marks stay in localStorage.
+export const prerender = true;
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
+import GameLayout from "../../../layouts/GameLayout.astro";
+import levels from "../../../data/tdAudioLevels.json";
+import mythic from "../../../data/tdSkinMythic.json";
+
+const SFX_DIR = join(process.cwd(), "public/td/sfx");
+const AUDIO = /\.(ogg|mp3|wav|m4a|flac)$/i;
+const files = readdirSync(SFX_DIR).filter((name) => AUDIO.test(name)).sort();
+
+// "id|kind|source" lines from the credits files.
+const credits = new Map<string, string>();
+for (const name of readdirSync(SFX_DIR).filter((n) => n.startsWith("CREDITS"))) {
+  for (const line of readFileSync(join(SFX_DIR, name), "utf-8").split("\n")) {
+    const [id, kind, source] = line.split("|");
+    if (id && kind && source) credits.set(`${id.trim()}|${kind.trim()}`, source.trim());
+  }
+}
+const LEVELS = levels as Record<string, number>;
+const skin = (mythic as any).heroes as Record<string, { name?: string; title?: string }>;
+
+// mythic-{id}-v{n}_{kind}.ext -> hero group; ui-*.ext -> interface; anything else -> other.
+type Sound = { file: string; base: string; kind: string; source: string; gain: number };
+const heroGroups = new Map<string, Sound[]>();
+const uiSounds: Sound[] = [];
+const otherSounds: Sound[] = [];
+for (const file of files) {
+  const base = file.replace(AUDIO, "");
+  const hero = base.match(/^mythic-(.+?)-v\d+_(.+)$/);
+  const sound = { file, base, kind: hero?.[2] ?? base, source: "", gain: LEVELS[base] ?? 0 };
+  if (hero) {
+    sound.source = credits.get(`${hero[1]}|${hero[2]}`) ?? "";
+    if (!heroGroups.has(hero[1])) heroGroups.set(hero[1], []);
+    heroGroups.get(hero[1])!.push(sound);
+  } else if (base.startsWith("ui-")) {
+    sound.kind = base.replace(/^ui-/, "").replace(/-v\d+$/, "");
+    uiSounds.push(sound);
+  } else {
+    otherSounds.push(sound);
+  }
+}
+const KIND_ORDER = ["attack", "ultimate"];
+const kindRank = (kind: string) => (KIND_ORDER.includes(kind) ? KIND_ORDER.indexOf(kind) : KIND_ORDER.length);
+const heroRows = [...heroGroups.entries()]
+  .map(([id, sounds]) => ({
+    id,
+    name: skin[id]?.name ?? id,
+    title: skin[id]?.title ?? "",
+    recruit: id.startsWith("recruit-"),
+    sounds: sounds.sort((a, b) => kindRank(a.kind) - kindRank(b.kind) || a.kind.localeCompare(b.kind)),
+  }))
+  .sort((a, b) => Number(a.recruit) - Number(b.recruit) || a.name.localeCompare(b.name));
+const kindLabel = (kind: string) => kind.charAt(0).toUpperCase() + kind.slice(1).replace(/-/g, " ");
+const groups = [
+  { title: "Interface and combat", sounds: uiSounds },
+  { title: "Other files", sounds: otherSounds },
+].filter((group) => group.sounds.length);
+---
+
+<GameLayout title="Sound Review | The Last Crossing" description="Play every tower defense sound and mark the ones to replace.">
+  <main class="sr-page" data-base="/td/sfx">
+    <header class="sr-head">
+      <div>
+        <p class="sr-kicker">Tower defense</p>
+        <h1>Sound review</h1>
+        <p class="sr-sub">{files.length} files in public/td/sfx. Play each one, mark what should change, then copy the list.</p>
+      </div>
+      <div class="sr-controls">
+        <label class="sr-vol">Volume <input type="range" min="0" max="1" step="0.05" value="0.7" data-volume /></label>
+        <div class="sr-seg" role="radiogroup" aria-label="Filter">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="marked" aria-pressed="false">Marked</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="sr-section">
+      <h2>Heroes</h2>
+      <div class="sr-grid">
+        {heroRows.map((hero) => (
+          <article class="sr-card">
+            <div class="sr-card-head">
+              <div>
+                <h3>{hero.name}</h3>
+                <p>{hero.title && `${hero.title} · `}<code>{hero.id}</code></p>
+              </div>
+            </div>
+            {hero.sounds.map((sound) => (
+              <div class="sr-row" data-row data-file={sound.file} data-gain={sound.gain} data-label={`${hero.name} (${hero.id}) ${sound.kind}`}>
+                <button type="button" class="sr-play" data-play aria-label={`Play ${hero.name} ${sound.kind}`}>▶</button>
+                <div class="sr-info">
+                  <strong>{kindLabel(sound.kind)}</strong>
+                  <span class="sr-src" title={`${sound.file}${sound.source ? ` - ${sound.source}` : ""}`}>{sound.file}{sound.source && ` · ${sound.source}`}</span>
+                </div>
+                <label class="sr-mark"><input type="checkbox" data-mark /> Change</label>
+                <input type="text" class="sr-note" data-note placeholder="What should it sound like?" hidden />
+              </div>
+            ))}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    {groups.map((group) => (
+      <section class="sr-section">
+        <h2>{group.title}</h2>
+        <div class="sr-grid">
+          <article class="sr-card">
+            {group.sounds.map((sound) => (
+              <div class="sr-row" data-row data-file={sound.file} data-gain={sound.gain} data-label={`${kindLabel(sound.kind)}`}>
+                <button type="button" class="sr-play" data-play aria-label={`Play ${sound.kind}`}>▶</button>
+                <div class="sr-info">
+                  <strong>{kindLabel(sound.kind)}</strong>
+                  <span class="sr-src">{sound.file}</span>
+                </div>
+                <label class="sr-mark"><input type="checkbox" data-mark /> Change</label>
+                <input type="text" class="sr-note" data-note placeholder="What should it sound like?" hidden />
+              </div>
+            ))}
+          </article>
+        </div>
+      </section>
+    ))}
+
+    <footer class="sr-bar">
+      <span data-count>0 marked</span>
+      <button type="button" class="sr-btn sr-btn-primary" data-copy>Copy list</button>
+    </footer>
+  </main>
+</GameLayout>
+
+<script>
+  const page = document.querySelector<HTMLElement>(".sr-page")!;
+  const rows = [...page.querySelectorAll<HTMLElement>("[data-row]")];
+  const STORE = "td:sound-review";
+  let volume = 0.7;
+  let ctx: AudioContext | null = null;
+  let current: AudioBufferSourceNode | null = null;
+  let currentRow: HTMLElement | null = null;
+
+  function setPlaying(row: HTMLElement | null) {
+    currentRow?.classList.remove("is-playing");
+    currentRow = row;
+    row?.classList.add("is-playing");
+  }
+
+  // cache: "reload" so a replaced file plays its new version right away.
+  async function play(row: HTMLElement) {
+    ctx ??= new AudioContext();
+    if (ctx.state === "suspended") await ctx.resume();
+    current?.stop();
+    setPlaying(row);
+    const data = await fetch(`${page.dataset.base}/${row.dataset.file}`, { cache: "reload" })
+      .then((r) => (r.ok ? r.arrayBuffer() : null))
+      .catch(() => null);
+    if (!data) { setPlaying(null); return; }
+    const audio = await ctx.decodeAudioData(data);
+    const node = ctx.createBufferSource();
+    const gain = ctx.createGain();
+    gain.gain.value = volume * 10 ** (Number(row.dataset.gain || 0) / 20);
+    node.buffer = audio;
+    node.connect(gain).connect(ctx.destination);
+    node.onended = () => { if (current === node) { current = null; setPlaying(null); } };
+    current = node;
+    node.start();
+  }
+
+  // Marks and notes per file name.
+  type Mark = { note: string };
+  let marks: Record<string, Mark> = {};
+  try { marks = JSON.parse(localStorage.getItem(STORE) || "{}") || {}; } catch {}
+  const save = () => { try { localStorage.setItem(STORE, JSON.stringify(marks)); } catch {} };
+
+  function syncRow(row: HTMLElement) {
+    const mark = marks[row.dataset.file!];
+    const box = row.querySelector<HTMLInputElement>("[data-mark]")!;
+    const note = row.querySelector<HTMLInputElement>("[data-note]")!;
+    box.checked = !!mark;
+    note.hidden = !mark;
+    if (mark && note.value !== mark.note) note.value = mark.note;
+    row.classList.toggle("is-marked", !!mark);
+  }
+
+  function syncCount() {
+    page.querySelector("[data-count]")!.textContent = `${Object.keys(marks).length} marked`;
+  }
+
+  let filter = "all";
+  function applyFilter() {
+    rows.forEach((row) => { row.hidden = filter === "marked" && !marks[row.dataset.file!]; });
+    page.querySelectorAll<HTMLElement>(".sr-card").forEach((card) => {
+      card.hidden = ![...card.querySelectorAll<HTMLElement>("[data-row]")].some((row) => !row.hidden);
+    });
+  }
+
+  rows.forEach((row) => {
+    syncRow(row);
+    row.querySelector("[data-play]")!.addEventListener("click", () => play(row));
+    row.querySelector<HTMLInputElement>("[data-mark]")!.addEventListener("change", (event) => {
+      const file = row.dataset.file!;
+      if ((event.target as HTMLInputElement).checked) marks[file] = { note: "" };
+      else delete marks[file];
+      save(); syncRow(row); syncCount(); applyFilter();
+      if (marks[file]) row.querySelector<HTMLInputElement>("[data-note]")!.focus();
+    });
+    row.querySelector<HTMLInputElement>("[data-note]")!.addEventListener("input", (event) => {
+      const file = row.dataset.file!;
+      if (marks[file]) { marks[file].note = (event.target as HTMLInputElement).value; save(); }
+    });
+  });
+  syncCount();
+
+  const filterButtons = [...page.querySelectorAll<HTMLButtonElement>("[data-filter]")];
+  filterButtons.forEach((button) => button.addEventListener("click", () => {
+    filterButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+    filter = button.dataset.filter!;
+    applyFilter();
+  }));
+
+  page.querySelector<HTMLInputElement>("[data-volume]")!.addEventListener("input", (event) => {
+    volume = Number((event.target as HTMLInputElement).value);
+  });
+
+  page.querySelector<HTMLButtonElement>("[data-copy]")!.addEventListener("click", async (event) => {
+    const button = event.currentTarget as HTMLButtonElement;
+    const lines = rows
+      .filter((row) => marks[row.dataset.file!])
+      .map((row) => {
+        const note = marks[row.dataset.file!].note.trim();
+        return `- ${row.dataset.label} [public/td/sfx/${row.dataset.file}]${note ? `: ${note}` : ""}`;
+      });
+    const text = lines.length ? `Sounds to change:\n${lines.join("\n")}` : "No sounds marked.";
+    try { await navigator.clipboard.writeText(text); button.textContent = "Copied"; }
+    catch { button.textContent = "Copy failed"; }
+    setTimeout(() => { button.textContent = "Copy list"; }, 1500);
+  });
+</script>
+
+<style>
+  /* GameLayout locks body scroll (.game-body), so the page scrolls itself. */
+  .sr-page {
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-base);
+    padding: var(--space-8) max(var(--space-6), calc((100% - 1280px) / 2)) var(--space-24);
+  }
+  .sr-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+  .sr-kicker {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+  .sr-head h1 {
+    margin: var(--space-1) 0 var(--space-2);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--text-bright);
+  }
+  .sr-sub { margin: 0; color: var(--text-secondary); font-size: var(--text-sm); }
+  .sr-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .sr-seg {
+    display: inline-flex;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: 2px;
+    background: var(--bg-surface);
+  }
+  .sr-seg button {
+    min-height: 36px;
+    padding: 0 var(--space-4);
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    transition: var(--transition-colors);
+  }
+  .sr-seg button[aria-pressed="true"] { background: var(--bg-raised); color: var(--text-bright); }
+  .sr-vol { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--text-secondary); }
+  .sr-vol input { accent-color: var(--accent-gold); width: 110px; }
+  .sr-btn {
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+    transition: var(--transition-colors);
+  }
+  .sr-btn:hover { border-color: var(--border-strong); }
+  .sr-btn:disabled { opacity: 0.6; cursor: wait; }
+  .sr-btn-primary { background: var(--accent-gold); border-color: var(--accent-gold); color: var(--bg-base); }
+  .sr-btn-primary:hover { background: var(--accent-gold-light); }
+
+  .sr-section + .sr-section { margin-top: var(--space-12); }
+  .sr-section h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--text-bright);
+  }
+  .sr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-4); }
+  .sr-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+  .sr-card[hidden], .sr-row[hidden] { display: none; }
+  .sr-card-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .sr-card-head h3 { margin: 0; font-size: var(--text-md); font-weight: var(--weight-bold); color: var(--text-bright); }
+  .sr-card-head p { margin: 0; font-size: var(--text-xs); color: var(--text-muted); }
+  .sr-card-head code { font-family: var(--font-mono); }
+
+  .sr-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: var(--transition-colors);
+  }
+  .sr-row + .sr-row { margin-top: var(--space-1); }
+  .sr-row.is-marked { background: color-mix(in srgb, var(--accent-gold) 10%, transparent); }
+  .sr-play {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-full);
+    background: var(--bg-raised);
+    color: var(--text-bright);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: var(--transition-colors);
+  }
+  .sr-play:hover { border-color: var(--accent-gold); }
+  .is-playing .sr-play { background: var(--accent-gold); border-color: var(--accent-gold); color: var(--bg-base); }
+  .sr-info { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .sr-info strong { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--text-primary); }
+  .sr-src { font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sr-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+  .sr-mark input { width: 18px; height: 18px; accent-color: var(--accent-gold); }
+  .sr-note {
+    grid-column: 2 / -1;
+    min-height: 36px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+  }
+  .sr-note[hidden] { display: none; }
+  .sr-note:focus { outline: none; border-color: var(--accent-gold); }
+
+  .sr-bar {
+    position: fixed;
+    left: 50%;
+    bottom: var(--space-4);
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-full);
+    background: var(--bg-overlay);
+    box-shadow: var(--shadow-lg);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    z-index: var(--z-sticky);
+  }
+  .sr-bar .sr-btn { border-radius: var(--radius-full); }
+
+  @media (max-width: 480px) {
+    .sr-page { padding-inline: var(--space-4); }
+    .sr-head h1 { font-size: var(--text-3xl); }
+    .sr-grid { grid-template-columns: 1fr; }
+  }
+</style>

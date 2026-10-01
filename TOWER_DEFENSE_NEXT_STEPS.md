@@ -268,7 +268,7 @@ Player state can become:
 
 ``` json
 {
-  "heroId": "zeus",
+  "heroId": "odin",
   "level": 12,
   "rank": 2,
   "copies": 1

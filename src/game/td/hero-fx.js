@@ -3,34 +3,34 @@
 // durations here never affect combat. Everything draws through the pooled fx-kit.
 // Rule: no instant straight tracer lines. Ranged attacks travel (arrow, fragment, gust,
 // coin, pulse), melee shows a weapon arc or impact, heals flow along curves.
-// Odin's lightning (heroVariant chain_lightning) lives in zeus-fx.js.
+// Odin's lightning (heroVariant chain_lightning) lives in odin-fx.js.
 
 const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash"]);
 const LIGHTNING = new Set(["shot", "hit", "ult"]);
 
 // name/color/accent are also used by the docs table; ranged heroes launch projectiles.
 export const PROFILES = {
-  nuwa:        { name: "Atlas", color: 0xd9b26f, accent: 0xfff1c9, mote: "twinkle" },
-  prometheus:  { name: "Ymir", color: 0x8fd0ff, accent: 0xeaf8ff, mote: "flake" },
-  momus:       { name: "Heimdall", color: 0xffd66e, accent: 0xffffff, mote: "twinkle" },
-  demeter:     { name: "Gaia", color: 0x7fcf6a, accent: 0xc9a46a, mote: "leaf", ranged: true, speed: 480 },
-  poseidon:    { name: "Aegir", color: 0x3fa8ff, accent: 0xd8f6ff, mote: "drop" },
-  amunra:      { name: "Helios", color: 0xffc233, accent: 0xfff4c4, mote: "twinkle" },
-  set:         { name: "Surtr", color: 0xff5a1f, accent: 0xffc26b, mote: "ember" },
-  jormungandr: { name: "Fenrir", color: 0x8fdc4a, accent: 0xd8ff8a, mote: "drop" },
-  nyx:         { name: "Nott", color: 0x7c6cff, accent: 0xcfd6ff, mote: "twinkle", kind: "assassin" },
-  bastet:      { name: "Hecate", color: 0xb36bff, accent: 0xffb86b, mote: "twinkle", kind: "assassin" },
-  horus:       { name: "Vidar", color: 0xa9b8cc, accent: 0xeef5ff, mote: "twinkle", kind: "assassin" },
-  anubis:      { name: "Thanatos", color: 0xb9c3d6, accent: 0xf2f5fb, mote: "glow", kind: "assassin" },
-  zeus:        { name: "Odin", color: 0x8fb4ff, accent: 0xffffff, mote: "twinkle", ranged: true },
-  phoenix:     { name: "Hephaestus", color: 0xff7a2e, accent: 0xffd27a, mote: "ember", ranged: true, speed: 520 },
-  fengyi:      { name: "Boreas", color: 0x9be7ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 560 },
-  diana:       { name: "Skadi", color: 0xbfe3ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 900 },
-  artemis:     { name: "Atalanta", color: 0xa6dd6b, accent: 0xf1ffd6, mote: "leaf", ranged: true, speed: 1100 },
-  medusa:      { name: "Stheno", color: 0x74d16b, accent: 0xd9f7c7, mote: "drop", ranged: true, speed: 900 },
-  caishen:     { name: "Plutus", color: 0xffd24a, accent: 0xfff3b0, mote: "coin", ranged: true, speed: 480 },
-  yuelao:      { name: "Harmonia", color: 0xff8fb1, accent: 0xffe1a8, mote: "note", ranged: true, speed: 520 },
-  freya:       { name: "Asclepius", color: 0x5fe0a0, accent: 0xfff7d6, mote: "plus", ranged: true, speed: 540 },
+  atlas:        { name: "Atlas", color: 0xd9b26f, accent: 0xfff1c9, mote: "twinkle" },
+  ymir:  { name: "Ymir", color: 0x8fd0ff, accent: 0xeaf8ff, mote: "flake" },
+  heimdall:       { name: "Heimdall", color: 0xffd66e, accent: 0xffffff, mote: "twinkle" },
+  gaia:     { name: "Gaia", color: 0x7fcf6a, accent: 0xc9a46a, mote: "leaf", ranged: true, speed: 480 },
+  aegir:    { name: "Aegir", color: 0x3fa8ff, accent: 0xd8f6ff, mote: "drop" },
+  helios:      { name: "Helios", color: 0xffc233, accent: 0xfff4c4, mote: "twinkle" },
+  surtr:         { name: "Surtr", color: 0xff5a1f, accent: 0xffc26b, mote: "ember" },
+  fenrir: { name: "Fenrir", color: 0x8fdc4a, accent: 0xd8ff8a, mote: "drop" },
+  nott:         { name: "Nott", color: 0x7c6cff, accent: 0xcfd6ff, mote: "twinkle", kind: "assassin" },
+  hecate:      { name: "Hecate", color: 0xb36bff, accent: 0xffb86b, mote: "twinkle", kind: "assassin" },
+  vidar:       { name: "Vidar", color: 0xa9b8cc, accent: 0xeef5ff, mote: "twinkle", kind: "assassin" },
+  thanatos:      { name: "Thanatos", color: 0xb9c3d6, accent: 0xf2f5fb, mote: "glow", kind: "assassin" },
+  odin:        { name: "Odin", color: 0x8fb4ff, accent: 0xffffff, mote: "twinkle", ranged: true },
+  hephaestus:     { name: "Hephaestus", color: 0xff7a2e, accent: 0xffd27a, mote: "ember", ranged: true, speed: 520 },
+  boreas:      { name: "Boreas", color: 0x9be7ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 560 },
+  skadi:       { name: "Skadi", color: 0xbfe3ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 900 },
+  atalanta:     { name: "Atalanta", color: 0xa6dd6b, accent: 0xf1ffd6, mote: "leaf", ranged: true, speed: 1100 },
+  stheno:      { name: "Stheno", color: 0x74d16b, accent: 0xd9f7c7, mote: "drop", ranged: true, speed: 900 },
+  plutus:     { name: "Plutus", color: 0xffd24a, accent: 0xfff3b0, mote: "coin", ranged: true, speed: 480 },
+  harmonia:      { name: "Harmonia", color: 0xff8fb1, accent: 0xffe1a8, mote: "note", ranged: true, speed: 520 },
+  asclepius:       { name: "Asclepius", color: 0x5fe0a0, accent: 0xfff7d6, mote: "plus", ranged: true, speed: 540 },
   // Recruits (common heroes): plain mortal materials, drawn by the class builders (`kind`).
   "recruit-bram":   { name: "Bram", color: 0xa8b4c0, accent: 0xe8eef4, mote: "twinkle", kind: "tank" },
   "recruit-tilda":  { name: "Tilda", color: 0xc79a5a, accent: 0xffe2b0, mote: "twinkle", kind: "tank" },
@@ -48,7 +48,7 @@ export const PROFILES = {
 
 export const hasHeroFx = (effect) => {
   if (!TYPES.has(effect.type) || !PROFILES[effect.heroId]) return false;
-  // Lightning shots, hits and ultimates belong to zeus-fx.
+  // Lightning shots, hits and ultimates belong to odin-fx.
   return !(effect.heroVariant === "chain_lightning" && LIGHTNING.has(effect.type));
 };
 
@@ -153,27 +153,27 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
 
   // ------------------------------------------------------------ melee impacts per hero
   const MELEE = {
-    nuwa(x, y, a, p, big) { // Stone at the Heel: heavy downward blow, dust and rock chips
+    atlas(x, y, a, p, big) { // Stone at the Heel: heavy downward blow, dust and rock chips
       slash(x, y, Math.PI / 2, p.color, { r: 18, thick: 8, sweep: 1.6, offset: 0.9 });
       groundRing(x, y + 6, 4, 24 * big, 0xc8a878, { add: false, width: 4, alpha: 0.6, life: 0.4 });
       debris("rock", x, y, 4, 0xb49a72, { size: 7 });
       flash(x, y, p.accent, 26 * big);
     },
-    prometheus(x, y, a, p, big) { // First Ice: frost crescent and flying shards
+    ymir(x, y, a, p, big) { // First Ice: frost crescent and flying shards
       slash(x, y, a, p.color, { r: 21, thick: 7 });
       sparks(x, y, 5, p.accent, { tex: "shard", size: 9, speed: 160, gravity: 320, dir: a, spread: 2.2 });
       flash(x, y, p.color, 28 * big);
     },
-    momus(x, y, a, p, big) { // Watchman's Measure: clean gold arc and a glint
+    heimdall(x, y, a, p, big) { // Watchman's Measure: clean gold arc and a glint
       slash(x, y, a, p.color, { r: 22, thick: 6, sweep: 2.6 });
       kit.spawn("twinkle", x + rand(-6, 6), y - 8, { tint: 0xffffff, size: 18 * big, sizeEnd: 4, life: 0.3, spin: 4 });
     },
-    poseidon(x, y, a, p, big) { // Breakwater Blow: water crescent and spray
+    aegir(x, y, a, p, big) { // Breakwater Blow: water crescent and spray
       slash(x, y, a, p.color, { r: 23, thick: 8, core: p.accent });
       sparks(x, y, 6, p.accent, { tex: "drop", size: 7, speed: 140, gravity: 420, up: 60, dir: a, spread: 2.4, add: false });
       flash(x, y, p.color, 26 * big);
     },
-    amunra(x, y, a, p, big) { // Rim of the Sun: white-hot gold arc and a sun flare
+    helios(x, y, a, p, big) { // Rim of the Sun: white-hot gold arc and a sun flare
       slash(x, y, a, p.color, { r: 23, thick: 7, core: 0xffffff });
       kit.spawn("twinkle", x, y, { tint: p.accent, size: 30 * big, sizeEnd: 8, life: 0.25, spin: 2 });
       flash(x, y, p.color, 34 * big, { alpha: 0.7 });
@@ -183,7 +183,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       sparks(x, y, 6, p.accent, { size: 9, speed: 90, gravity: -140, up: 20, life: 0.5 });
       kit.spawn("flame", x, y - 4, { tint: p.color, size: 16 * big, sizeEnd: 8, vy: -40, life: 0.35 });
     },
-    jormungandr(x, y, a, p, big) { // Jaw Across the Road: fangs snap shut, venom spills
+    fenrir(x, y, a, p, big) { // Jaw Across the Road: fangs snap shut, venom spills
       for (const side of [-1, 1]) {
         kit.spawn("fang", x + 4 * side, y + side * 16, { tint: 0xeef3f6, size: 9 * big, life: 0.18, rot: side > 0 ? Math.PI : 0, add: false, hold: 0.7,
           path: { x1: x + 4 * side, y1: y + side * 16, x2: x, y2: y + side * 3 } });
@@ -191,20 +191,20 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       sparks(x, y, 4, p.color, { tex: "drop", size: 7, speed: 80, gravity: 380, up: 40, delay: 0.12, add: false });
       flash(x, y, p.color, 22 * big, { delay: 0.12 });
     },
-    nyx(x, y, a, p, big) { // Between Hoofbeats: quick night crescent and a star
+    nott(x, y, a, p, big) { // Between Hoofbeats: quick night crescent and a star
       slash(x, y, a - 0.4, p.color, { r: 19, thick: 6, core: p.accent });
       kit.spawn("twinkle", x + rand(-8, 8), y - rand(4, 12), { tint: p.accent, size: 14 * big, sizeEnd: 3, life: 0.35, delay: 0.06 });
     },
-    bastet(x, y, a, p, big) { // Key at the Turning: three short cuts, one per road
+    hecate(x, y, a, p, big) { // Key at the Turning: three short cuts, one per road
       for (let i = 0; i < 3; i++) slash(x, y, a + i * TAU / 3, p.color, { r: 14, thick: 4, sweep: 1.5, life: 0.2, delay: i * 0.035, core: p.accent, offset: 0 });
       kit.spawn("flame", x, y - 10, { tint: p.accent, size: 9, sizeEnd: 4, vy: -30, life: 0.3 });
     },
-    horus(x, y, a, p, big) { // Measured Answer: one precise thrust glint
+    vidar(x, y, a, p, big) { // Measured Answer: one precise thrust glint
       kit.spawn("streak", x - Math.cos(a) * 10, y - Math.sin(a) * 10, { tint: p.accent, size: 34 * big, sizeEnd: 20, stretch: 0.14, rot: a, life: 0.16, hold: 0.2 });
       kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 20 * big, sizeEnd: 5, life: 0.22, rot: 0.4 });
       sparks(x, y, 3, p.color, { dir: a, spread: 1.2, speed: 170, size: 8 });
     },
-    anubis(x, y, a, p, big) { // Quiet Touch: a pale breath and black feathers
+    thanatos(x, y, a, p, big) { // Quiet Touch: a pale breath and black feathers
       flash(x, y, p.accent, 26 * big, { life: 0.3, alpha: 0.6 });
       for (let i = 0; i < kit.n(2); i++) kit.spawn("feather", x + rand(-8, 8), y - 6, { tint: 0x23262f, size: 5, vx: rand(-25, 25), vy: 10, ay: 30,
         life: 0.8, rot: rand(-1, 1), spin: rand(-3, 3), wobble: 5, wobbleFreq: 1.5, add: false, hold: 0.5 });
@@ -258,45 +258,45 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
 
   // ------------------------------------------------------------ ranged shots per hero
   const SHOTS = {
-    phoenix(e, sx, sy, x, y, p) { // Scale from the Anvil: lobbed molten fragment
+    hephaestus(e, sx, sy, x, y, p) { // Scale from the Anvil: lobbed molten fragment
       return projectile("fragment", sx, sy, x, y, p.color, { speed: p.speed, arc: 26, size: 11, spin: 10,
         trail: (tx, ty) => { kit.spawn("ember", tx, ty, { tint: p.accent, size: 8, vx: rand(-20, 20), vy: rand(-10, 20), ay: 160, life: 0.3, align: true, optional: true });
           kit.spawn("glow", tx, ty, { tint: p.color, size: 12, sizeEnd: 4, life: 0.18, optional: true }); }, trailEvery: 0.018 });
     },
-    fengyi(e, sx, sy, x, y, p) { // Sleet Through the Gap: spiralling shards in a gust
+    boreas(e, sx, sy, x, y, p) { // Sleet Through the Gap: spiralling shards in a gust
       let end = 0;
       for (let i = 0; i < 3; i++) end = Math.max(end, projectile("shard", sx, sy, x, y, i ? p.color : p.accent, { speed: p.speed, size: 6, helix: 9, helixFreq: 1.5, phase: i * TAU / 3,
         trail: i === 0 ? moteTrail("flake", p.accent, { size: 7, life: 0.35 }) : null, trailEvery: 0.03 }));
       projectile("streak", sx, sy, x, y, p.color, { speed: p.speed, size: 30 });
       return end;
     },
-    diana(e, sx, sy, x, y, p) { // Ridge-Line Arrow: pale arrow with a frost trail
+    skadi(e, sx, sy, x, y, p) { // Ridge-Line Arrow: pale arrow with a frost trail
       return projectile("arrow", sx, sy, x, y, p.accent, { speed: p.speed, arc: 10, size: 24, add: false,
         trail: (tx, ty, a) => { streakTrail(p.color, { size: 22 })(tx, ty, a); if (Math.random() < 0.35) kit.spawn("flake", tx, ty, { tint: p.accent, size: 5, vy: 20, life: 0.4, spin: 3, optional: true }); } });
     },
-    artemis(e, sx, sy, x, y, p) { // The Clear Shot: fast arrow with a green streak and leaf flutter
+    atalanta(e, sx, sy, x, y, p) { // The Clear Shot: fast arrow with a green streak and leaf flutter
       return projectile("arrow", sx, sy, x, y, 0xfff6d8, { speed: p.speed, arc: 4, size: 24, add: false,
         trail: (tx, ty, a) => { streakTrail(p.color, { size: 30 })(tx, ty, a); if (Math.random() < 0.15) kit.spawn("leaf", tx, ty, { tint: p.color, size: 6, vx: rand(-30, 30), vy: 10, ay: 90, spin: 6, life: 0.5, add: false, optional: true }); } });
     },
-    medusa(e, sx, sy, x, y, p) { // Arrow from the Parapet: venom-tipped arrow dripping poison
+    stheno(e, sx, sy, x, y, p) { // Arrow from the Parapet: venom-tipped arrow dripping poison
       return projectile("arrow", sx, sy, x, y, p.accent, { speed: p.speed, arc: 8, size: 24, add: false,
         trail: (tx, ty, a) => { streakTrail(p.color, { size: 20 })(tx, ty, a); if (Math.random() < 0.4) kit.spawn("drop", tx, ty, { tint: p.color, size: 4, vy: 30, ay: 300, life: 0.35, align: true, add: false, optional: true }); } });
     },
-    demeter(e, sx, sy, x, y, p) { // Knuckle of Earth: a clod of earth lobbed from her palm, shedding leaves
+    gaia(e, sx, sy, x, y, p) { // Knuckle of Earth: a clod of earth lobbed from her palm, shedding leaves
       return projectile("rock", sx, sy, x, y, p.accent, { speed: p.speed, arc: 28, size: 10, spin: 6, add: false,
         trail: (tx, ty) => { if (Math.random() < 0.4) kit.spawn("leaf", tx, ty, { tint: p.color, size: 6, vx: rand(-20, 20), vy: 10, ay: 90, spin: 6, life: 0.45, add: false, optional: true }); }, trailEvery: 0.03 });
     },
-    caishen(e, sx, sy, x, y, p) { // A Portion Set Aside: a spinning coin
+    plutus(e, sx, sy, x, y, p) { // A Portion Set Aside: a spinning coin
       return projectile("coin", sx, sy, x, y, p.color, { speed: p.speed, arc: 30, size: 11, add: false,
         trail: (tx, ty) => kit.spawn("twinkle", tx, ty, { tint: p.accent, size: 7, sizeEnd: 2, life: 0.25, optional: true }), trailEvery: 0.035 });
     },
-    yuelao(e, sx, sy, x, y, p) { // Set the Breath: a pulse carried by two harmonising motes
+    harmonia(e, sx, sy, x, y, p) { // Set the Breath: a pulse carried by two harmonising motes
       const end = projectile("glow", sx, sy, x, y, p.color, { speed: p.speed, size: 16 });
       for (let i = 0; i < 2; i++) projectile("dot", sx, sy, x, y, i ? p.accent : 0xffffff, { speed: p.speed, size: 6, helix: 8, helixFreq: 2, phase: i * Math.PI,
         trail: moteTrail("dot", p.color, { size: 4, life: 0.25 }), trailEvery: 0.03 });
       return end;
     },
-    freya(e, sx, sy, x, y, p) { // Steady Hands: staff pulse with a twin-serpent helix
+    asclepius(e, sx, sy, x, y, p) { // Steady Hands: staff pulse with a twin-serpent helix
       const end = projectile("glow", sx, sy, x, y, p.color, { speed: p.speed, size: 15 });
       for (let i = 0; i < 2; i++) projectile("dot", sx, sy, x, y, i ? p.accent : p.color, { speed: p.speed, size: 5, helix: 7, helixFreq: 3, phase: i * Math.PI,
         trail: moteTrail("dot", p.color, { size: 4, life: 0.3 }), trailEvery: 0.025 });
@@ -305,40 +305,40 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
   };
 
   const IMPACTS = {
-    phoenix(x, y, p, big) { // anvil sparks spray up and fall
+    hephaestus(x, y, p, big) { // anvil sparks spray up and fall
       flash(x, y, p.accent, 30 * big);
       sparks(x, y, 7, p.accent, { speed: 170, up: 120, gravity: 520, size: 10, spread: 2.4, dir: -Math.PI / 2 });
     },
-    fengyi(x, y, p, big) {
+    boreas(x, y, p, big) {
       flash(x, y, p.color, 26 * big);
       debris("flake", x, y, 5, p.accent, { add: true, speed: 90, up: 20, gravity: 60, size: 8, spin: 5, life: 0.6 });
     },
-    diana(x, y, p, big) {
+    skadi(x, y, p, big) {
       kit.spawn("twinkle", x, y, { tint: p.accent, size: 18 * big, sizeEnd: 4, life: 0.25, rot: 0.3 });
       sparks(x, y, 3, p.color, { tex: "shard", size: 7, speed: 120 });
     },
-    artemis(x, y, p, big) {
+    atalanta(x, y, p, big) {
       kit.spawn("twinkle", x, y, { tint: p.accent, size: 16 * big, sizeEnd: 4, life: 0.22 });
       sparks(x, y, 3, p.color, { size: 8, speed: 140 });
     },
-    medusa(x, y, p, big) { // venom splash with bubbles
+    stheno(x, y, p, big) { // venom splash with bubbles
       sparks(x, y, 4, p.color, { tex: "drop", size: 6, speed: 90, up: 50, gravity: 380, add: false });
       for (let i = 0; i < kit.n(2); i++) kit.spawn("bubble", x + rand(-6, 6), y - 4, { tint: p.color, size: 6, sizeEnd: 9, vy: -35, life: 0.55, wobble: 2, add: false, delay: i * 0.08 });
       flash(x, y, p.color, 20 * big, { alpha: 0.6 });
     },
-    demeter(x, y, p, big) { // earth bursts up under the target
+    gaia(x, y, p, big) { // earth bursts up under the target
       debris("rock", x, y + 6, 4, 0x9c8058, { up: 150, speed: 60, spread: 1, size: 7 });
       groundRing(x, y + 6, 4, 20 * big, 0x8a6d45, { add: false, width: 4, alpha: 0.55 });
       flash(x, y, p.color, 22 * big, { alpha: 0.7 });
     },
-    caishen(x, y, p, big) {
+    plutus(x, y, p, big) {
       for (let i = 0; i < kit.n(3); i++) kit.spawn("twinkle", x + rand(-10, 10), y + rand(-10, 6), { tint: i % 2 ? p.accent : p.color, size: 10 * big, sizeEnd: 2, life: 0.3, delay: i * 0.04 });
       flash(x, y, p.color, 20 * big, { alpha: 0.6 });
     },
-    yuelao(x, y, p, big) { // soft chord rings
+    harmonia(x, y, p, big) { // soft chord rings
       for (let i = 0; i < 2; i++) kit.spawn("ring", x, y, { tint: i ? p.accent : p.color, size: 8, sizeEnd: 34 * big, stretch: 0.55, life: 0.35, delay: i * 0.08, alpha: 0.8, hold: 0.2 });
     },
-    freya(x, y, p, big) {
+    asclepius(x, y, p, big) {
       flash(x, y, p.color, 24 * big);
       kit.spawn("plus", x, y - 6, { tint: p.accent, size: 8, vy: -40, life: 0.45 });
     },
@@ -346,7 +346,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
 
   // ------------------------------------------------------------ ultimates per hero
   const ULTS = {
-    nuwa(e, p, sx, sy) { // A Place to Stand: the sky vault is lifted, the ground steadies
+    atlas(e, p, sx, sy) { // A Place to Stand: the sky vault is lifted, the ground steadies
       kit.shape((g, t) => {
         const lift = reducedMotion ? 1 : Math.min(1, t * 3);
         const alpha = t < 0.6 ? 1 : 1 - (t - 0.6) / 0.4;
@@ -362,7 +362,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       for (let i = 0; i < 2; i++) groundRing(sx, sy + 14, 10, (e.range ?? 70) * 1.2, p.color, { delay: i * 0.18, width: 4, life: 0.6 });
       debris("rock", sx, sy + 14, 6, 0xb49a72, { up: 120, size: 8 });
     },
-    prometheus(e, p, sx, sy) { // Faults Beneath the Ice: jagged cracks race out, ice spikes erupt
+    ymir(e, p, sx, sy) { // Faults Beneath the Ice: jagged cracks race out, ice spikes erupt
       const reach = (e.range ?? 70) * 1.1;
       for (let i = 0; i < 7; i++) {
         const a = i / 7 * TAU + rand(-0.2, 0.2);
@@ -381,7 +381,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       flash(sx, sy, p.color, 70, { life: 0.5, alpha: 0.5 });
       debris("flake", sx, sy, 10, p.accent, { add: true, up: 60, gravity: 40, speed: 120, life: 0.9, size: 8 });
     },
-    momus(e, p, sx, sy) { // The Gate Hears You: horn blast in waves of bridge colours
+    heimdall(e, p, sx, sy) { // The Gate Hears You: horn blast in waves of bridge colours
       const facing = e.facing ?? 0;
       const colors = [0xff7a7a, 0xffd66e, 0x7ee0a0, 0x7cc8ff, 0xc39bff];
       colors.forEach((color, i) => kit.shape((g, t) => {
@@ -391,7 +391,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       groundRing(sx, sy + 10, 20, (e.range ?? 70) * 2.5, p.color, { life: 0.9, width: 3, alpha: 0.5 });
       flash(sx, sy - 10, p.accent, 60, { life: 0.35 });
     },
-    demeter(e, p, sx, sy) { // Where the Roots Hold: a green field spreads over her range, stone wards rise
+    gaia(e, p, sx, sy) { // Where the Roots Hold: a green field spreads over her range, stone wards rise
       const reach = (e.range ?? 170) * 0.9;
       for (let i = 0; i < 2; i++) groundRing(sx, sy + 12, 15, reach, i ? p.accent : p.color, { delay: i * 0.2, life: 0.9, width: 4, alpha: 0.7 });
       for (let i = 0; i < 9; i++) {
@@ -402,7 +402,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       rise("leaf", sx, sy - 8, 8, p.color, { spread: 60, size: 10, life: 1, add: false });
       flash(sx, sy, p.color, 60, { life: 0.4, alpha: 0.5 });
     },
-    poseidon(e, p, sx, sy) { // The Sea Takes a Step: a rolling wave along his facing
+    aegir(e, p, sx, sy) { // The Sea Takes a Step: a rolling wave along his facing
       const facing = e.facing ?? Math.atan2(e.y - sy, e.x - sx);
       for (let i = 0; i < 3; i++) kit.shape((g, t) => {
         const d = 10 + t * 90;
@@ -417,7 +417,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
           { tint: i % 3 ? p.color : p.accent, vx: Math.cos(facing) * 160, vy: Math.sin(facing) * 100 - 90, ay: 420, size: 7, life: 0.55, align: true, delay: i * 0.02, add: false });
       }
     },
-    amunra(e, p, sx, sy) { // Noon at the Narrow Gate: sun disc, then a cone of noon light
+    helios(e, p, sx, sy) { // Noon at the Narrow Gate: sun disc, then a cone of noon light
       const facing = e.facing ?? Math.atan2(e.y - sy, e.x - sx);
       flash(sx, sy - 34, p.accent, 46, { life: 0.9, grow: 1.1 });
       kit.shape((g, t) => {
@@ -446,7 +446,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       }
       flow("ember", e.x, e.y, sx, sy, 5, p.accent, { speed: 260, bend: 20, size: 10, stagger: 0.07 });
     },
-    jormungandr(e, p, sx, sy) { // Leave the Wound Open: the great jaw closes, venom floods out
+    fenrir(e, p, sx, sy) { // Leave the Wound Open: the great jaw closes, venom floods out
       const facing = e.facing ?? Math.atan2(e.y - sy, e.x - sx);
       const cx = sx + Math.cos(facing) * 40, cy = sy + Math.sin(facing) * 28;
       for (const side of [-1, 1]) for (let i = -1; i <= 1; i++) {
@@ -459,7 +459,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       for (let i = 0; i < kit.n(8); i++) kit.spawn("bubble", cx + rand(-40, 40), cy + rand(-10, 16), { tint: p.color, size: 5, sizeEnd: 11, vy: -30, life: 0.8, delay: 0.25 + i * 0.05, wobble: 3, add: false });
       groundRing(sx, sy, 10, 40, 0xb8c0cc, { width: 2, life: 0.4 });
     },
-    nyx(e, p, sx, sy) { // Where the Lantern Ends: darkness gathers on the target, four crescent cuts
+    nott(e, p, sx, sy) { // Where the Lantern Ends: darkness gathers on the target, four crescent cuts
       kit.shape((g, t) => {
         g.circle(e.x, e.y, 40 * (1 - t) + 6).fill({ color: 0x0b0820, alpha: 0.45 * (1 - t) });
       }, 0.7, { add: false });
@@ -467,18 +467,18 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       for (let i = 0; i < kit.n(6); i++) kit.spawn("twinkle", e.x + rand(-30, 30), e.y + rand(-26, 10), { tint: p.accent, size: 10, sizeEnd: 2, life: 0.6, delay: 0.2 + i * 0.05 });
       flash(sx, sy, p.color, 50, { life: 0.3, alpha: 0.6 });
     },
-    bastet(e, p, sx, sy) { // Every Exit Is Mine: three torches circle the crossroads, three cuts
+    hecate(e, p, sx, sy) { // Every Exit Is Mine: three torches circle the crossroads, three cuts
       orbit("flame", e.x, e.y - 6, 3, p.accent, { r: 34, size: 14, life: 0.9, speed: 6 });
       for (let i = 0; i < 3; i++) slash(e.x, e.y, i * TAU / 3 + 0.5, p.color, { r: 36, thick: 8, sweep: 1.8, delay: 0.15 + i * 0.12, offset: 0, life: 0.28, core: p.accent });
       groundRing(e.x, e.y + 6, 10, e.awakened ? 90 : 55, p.color, { delay: 0.15, life: 0.6 });
     },
-    horus(e, p, sx, sy) { // The Debt Comes Due: crossed strikes and a heavy stomp
+    vidar(e, p, sx, sy) { // The Debt Comes Due: crossed strikes and a heavy stomp
       for (const a of [0.8, -0.8, Math.PI / 2]) slash(e.x, e.y, a + Math.PI / 2, p.accent, { r: 26, thick: 6, offset: 0, delay: 0.05, life: 0.25 });
       groundRing(e.x, e.y + 8, 6, 46, p.color, { delay: 0.2, width: 5, life: 0.5, add: false, alpha: 0.6 });
       debris("rock", e.x, e.y + 8, 5, 0x7d8a6a, { delay: 0.2, size: 7 });
       kit.spawn("twinkle", e.x, e.y - 20, { tint: 0xffffff, size: 36, sizeEnd: 6, life: 0.4, spin: 3 });
     },
-    anubis(e, p, sx, sy) { // One Breath Remaining: a pale scythe sweep, the breath leaves
+    thanatos(e, p, sx, sy) { // One Breath Remaining: a pale scythe sweep, the breath leaves
       kit.shape((g, t) => {
         const prog = Math.min(1, t * 2.5), alpha = t < 0.5 ? 1 : 1 - (t - 0.5) / 0.5;
         kit.crescent(g, e.x, e.y - 6, 42, -2.6, 0.5, { thick: 12, color: 0x14161d, alpha: alpha * 0.7, progress: prog, squash: 0.75 });
@@ -491,7 +491,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         path: { x1: e.x, y1: e.y - 8, x2: e.x + rand(-10, 10), y2: e.y - 70, helix: 8, helixFreq: 1.5, phase: i } });
       for (let i = 0; i < 2; i++) groundRing(e.x, e.y + 6, 8, 36, p.color, { delay: 0.3 + i * 0.3, life: 0.6, width: 2 });
     },
-    phoenix(e, p, sx, sy) { // Work the Living Furnace: the hammer lands, molten rings and a spark fountain
+    hephaestus(e, p, sx, sy) { // Work the Living Furnace: the hammer lands, molten rings and a spark fountain
       const r = e.awakened ? 110 : 72;
       flash(e.x, e.y, 0xffffff, 60, { life: 0.25 });
       for (let i = 0; i < 3; i++) groundRing(e.x, e.y + 6, 8, r * (0.6 + i * 0.2), i ? p.color : p.accent, { delay: i * 0.08, width: 5 - i, life: 0.55 });
@@ -501,7 +501,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         kit.spawn("flame", e.x + Math.cos(a) * r * 0.55, e.y + Math.sin(a) * r * 0.3, { tint: i % 2 ? p.color : p.accent, size: 14, sizeEnd: 24, vy: -50, life: 0.6, delay: 0.1 + i * 0.03 });
       }
     },
-    fengyi(e, p, sx, sy) { // Winter Comes Through the Door: an ice shockwave fills his attack range
+    boreas(e, p, sx, sy) { // Winter Comes Through the Door: an ice shockwave fills his attack range
       const r = e.range ?? 160;
       flash(sx, sy, 0xffffff, 60, { life: 0.25 });
       // Round like his range circle (not the squashed ground ring), so the blast matches the area it hits.
@@ -513,12 +513,12 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       }
       flash(sx, sy, p.color, r * 0.8, { life: 0.5, alpha: 0.35 });
     },
-    diana(e, p, sx, sy) { // Follow My Arrow: the hunt mark and a frost ring under the volley
+    skadi(e, p, sx, sy) { // Follow My Arrow: the hunt mark and a frost ring under the volley
       kit.spawn("twinkle", sx, sy - 30, { tint: p.accent, size: 30, sizeEnd: 8, life: 0.5, spin: 3 });
       groundRing(e.x, e.y + 6, 6, 40, p.color, { life: 0.6, delay: 0.1 });
       debris("flake", e.x, e.y, 6, p.accent, { add: true, up: 40, gravity: 50, speed: 80, life: 0.8, size: 8, delay: 0.1 });
     },
-    artemis(e, p, sx, sy) { // Fire in the Brambles: a volley of burning arrows lands on the pack
+    atalanta(e, p, sx, sy) { // Fire in the Brambles: a volley of burning arrows lands on the pack
       const r = 80;
       let land = 0;
       for (let i = 0; i < kit.n(7); i++) {
@@ -533,7 +533,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       flash(sx, sy, p.accent, 40, { life: 0.25 });
       if (e.awakened) orbit("twinkle", sx, sy, 5, p.accent, { r: 26, size: 9, life: 0.8, speed: 8, climb: 16 });
     },
-    medusa(e, p, sx, sy) { // Hold That Last Step: serpent eyes flare, stone creeps along each gaze
+    stheno(e, p, sx, sy) { // Hold That Last Step: serpent eyes flare, stone creeps along each gaze
       for (const side of [-1, 1]) flash(sx + side * 6, sy - 12, p.accent, 16, { life: 0.5, grow: 1.1 });
       for (const v of e.gazeTargets ?? [{ x: e.x, y: e.y }]) {
         const end = flow("glow", sx, sy - 12, v.x, v.y, 5, 0xc9d1c4, { speed: 380, bend: 18, arc: 6, size: 10, helix: 10, helixFreq: 2.5, stagger: 0.04 });
@@ -541,7 +541,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         groundRing(v.x, v.y + 4, 4, 26, 0xd2d9cf, { delay: end, life: 0.4 });
       }
     },
-    caishen(e, p, sx, sy) { // Enough for Everyone: a fountain of coins for the whole line
+    plutus(e, p, sx, sy) { // Enough for Everyone: a fountain of coins for the whole line
       for (let i = 0; i < kit.n(16); i++) {
         const a = -Math.PI / 2 + rand(-0.9, 0.9);
         kit.spawn("coin", sx, sy - 10, { tint: i % 3 ? p.color : p.accent, vx: Math.cos(a) * rand(60, 130), vy: Math.sin(a) * rand(140, 220), ay: 420,
@@ -550,7 +550,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       groundRing(sx, sy + 12, 10, (e.range ?? 90) * 0.9, p.color, { life: 0.8, width: 3 });
       flash(sx, sy, p.accent, 60, { life: 0.4 });
     },
-    yuelao(e, p, sx, sy) { // Together, Once More: interlocking rings widen, notes rise
+    harmonia(e, p, sx, sy) { // Together, Once More: interlocking rings widen, notes rise
       kit.shape((g, t) => {
         const r = 12 + t * 55, alpha = (1 - t) * 0.9;
         kit.ring(g, sx - r * 0.35, sy, r, { color: p.color, width: 3, alpha, squash: 0.55 });
@@ -558,7 +558,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       }, 0.9);
       rise("note", sx, sy - 10, 7, p.accent, { spread: 50, speed: 50, size: 12, life: 1 });
     },
-    freya(e, p, sx, sy) { // There Is Still a Pulse: twin serpents climb the staff, two heartbeats
+    asclepius(e, p, sx, sy) { // There Is Still a Pulse: twin serpents climb the staff, two heartbeats
       for (let i = 0; i < 2; i++) for (let j = 0; j < kit.n(6); j++) {
         kit.spawn("dot", sx, sy + 14, { tint: i ? p.accent : p.color, size: 6, life: 0.8, delay: j * 0.06,
           path: { x1: sx, y1: sy + 14, x2: sx, y2: sy - 46, helix: 10, helixFreq: 2, phase: i * Math.PI } });
@@ -620,21 +620,21 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       case "shot": {
         // Melee heroes show their weapon at the impact (hit event); nothing crosses the gap.
         if (!p.ranged) return;
-        (SHOTS[e.heroId] ?? CLASS_SHOTS[p.kind] ?? SHOTS.freya)(e, sx, sy, x, y, p);
+        (SHOTS[e.heroId] ?? CLASS_SHOTS[p.kind] ?? SHOTS.asclepius)(e, sx, sy, x, y, p);
         return;
       }
       case "hit": {
         if (p.ranged) {
           // Impact waits for the projectile launched by the matching shot.
           const delay = travelTime(sx, sy, x, y, p.speed);
-          const impact = IMPACTS[e.heroId] ?? CLASS_IMPACTS[p.kind] ?? IMPACTS.freya;
+          const impact = IMPACTS[e.heroId] ?? CLASS_IMPACTS[p.kind] ?? IMPACTS.asclepius;
           kit.spawn("dot", x, y, { size: 0.1, life: delay, alpha: 0, onEnd: () => {
             impact(x, y, p, big);
             if (e.crit) kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 34, sizeEnd: 8, life: 0.3, spin: 3 });
           } });
           return;
         }
-        (MELEE[e.heroId] ?? CLASS_MELEE[p.kind] ?? MELEE.momus)(x, y, angle, p, big);
+        (MELEE[e.heroId] ?? CLASS_MELEE[p.kind] ?? MELEE.heimdall)(x, y, angle, p, big);
         if (p.kind === "assassin") daggerGlint(x, y, angle, p);
         if (e.crit) kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 34, sizeEnd: 8, life: 0.3, spin: 3 });
         return;
@@ -643,17 +643,17 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         // Crescent wrapped around the target group, sized by the cleave radius.
         const r = Math.min(34, Math.max(20, (e.radius ?? 60) * 0.45));
         slash(e.x, e.y, Math.atan2(e.y - sy, e.x - sx), p.color, { r, thick: 8, sweep: 2.4, offset: 0.2, life: 0.26, core: p.accent, dir: Math.random() < 0.5 ? 1 : -1 });
-        if (e.heroId === "poseidon") sparks(e.x, e.y, 4, p.accent, { tex: "drop", size: 6, up: 50, gravity: 400, add: false });
-        if (e.heroId === "set") sparks(e.x, e.y, 4, p.accent, { size: 8, gravity: -120, life: 0.5 });
-        if (e.heroId === "jormungandr") for (let i = 0; i < kit.n(2); i++) kit.spawn("bubble", e.x + rand(-12, 12), e.y, { tint: p.color, size: 5, sizeEnd: 8, vy: -30, life: 0.5, add: false });
+        if (e.heroId === "aegir") sparks(e.x, e.y, 4, p.accent, { tex: "drop", size: 6, up: 50, gravity: 400, add: false });
+        if (e.heroId === "surtr") sparks(e.x, e.y, 4, p.accent, { size: 8, gravity: -120, life: 0.5 });
+        if (e.heroId === "fenrir") for (let i = 0; i < kit.n(2); i++) kit.spawn("bubble", e.x + rand(-12, 12), e.y, { tint: p.color, size: 5, sizeEnd: 8, vy: -30, life: 0.5, add: false });
         return;
       }
       case "splash": { // Mage splash at its real radius
         const r = e.radius ?? 42;
         const delay = travelTime(sx, sy, e.x, e.y, p.speed);
         groundRing(e.x, e.y + 4, r * 0.3, r, p.color, { delay, life: 0.35, width: 3 });
-        if (e.heroId === "phoenix") for (let i = 0; i < kit.n(3); i++) kit.spawn("flame", e.x + rand(-r, r) * 0.6, e.y + rand(-r, r) * 0.3, { tint: i % 2 ? p.color : p.accent, size: 10, sizeEnd: 16, vy: -40, life: 0.4, delay });
-        if (e.heroId === "fengyi") debris("flake", e.x, e.y, 4, p.accent, { add: true, delay, up: 30, gravity: 40, speed: r * 2, life: 0.5, size: 7 });
+        if (e.heroId === "hephaestus") for (let i = 0; i < kit.n(3); i++) kit.spawn("flame", e.x + rand(-r, r) * 0.6, e.y + rand(-r, r) * 0.3, { tint: i % 2 ? p.color : p.accent, size: 10, sizeEnd: 16, vy: -40, life: 0.4, delay });
+        if (e.heroId === "boreas") debris("flake", e.x, e.y, 4, p.accent, { add: true, delay, up: 30, gravity: 40, speed: r * 2, life: 0.5, size: 7 });
         return;
       }
       case "dash": { // Assassin reach cue: speed streaks mark the path while the portrait stays at its slot
@@ -666,20 +666,20 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         return;
       }
       case "beam": { // Support heal: motes flow along a curve to the ally
-        const tex = { caishen: "coin", yuelao: "note", freya: "dot", demeter: "leaf", "recruit-poppy": "plus" }[e.heroId] ?? "dot";
+        const tex = { plutus: "coin", harmonia: "note", asclepius: "dot", gaia: "leaf", "recruit-poppy": "plus" }[e.heroId] ?? "dot";
         const add = tex === "dot" || tex === "plus";
-        const end = flow(tex, sx, sy, x, y, e.heroId === "freya" ? 6 : 4, p.color, { speed: 380, bend: 26, arc: 16, size: tex === "dot" ? 6 : 9,
-          helix: e.heroId === "freya" ? 8 : 0, helixFreq: 3, add, spin: tex === "coin" ? 8 : 0 });
+        const end = flow(tex, sx, sy, x, y, e.heroId === "asclepius" ? 6 : 4, p.color, { speed: 380, bend: 26, arc: 16, size: tex === "dot" ? 6 : 9,
+          helix: e.heroId === "asclepius" ? 8 : 0, helixFreq: 3, add, spin: tex === "coin" ? 8 : 0 });
         flash(x, y, p.color, 36, { delay: end, life: 0.3, alpha: 0.6 });
         return;
       }
       case "heal": {
-        if (e.heroId === "caishen") {
+        if (e.heroId === "plutus") {
           for (let i = 0; i < kit.n(5); i++) kit.spawn("coin", x + rand(-16, 16), y - 44, { tint: i % 2 ? p.color : p.accent, vy: 40, ay: 260, size: 8, life: 0.45, delay: i * 0.06, spin: rand(-6, 6), add: false, hold: 0.7 });
-        } else if (e.heroId === "set" || e.heroId === "phoenix") {
+        } else if (e.heroId === "surtr" || e.heroId === "hephaestus") {
           orbit("ember", x, y, 6, p.accent, { r: 30, size: 9, life: 0.7, speed: 7, climb: 20 });
         } else {
-          const tex = { yuelao: "note", freya: "plus", demeter: "leaf", nuwa: "twinkle" }[e.heroId] ?? "plus";
+          const tex = { harmonia: "note", asclepius: "plus", gaia: "leaf", atlas: "twinkle" }[e.heroId] ?? "plus";
           rise(tex, x, y, 5, tex === "plus" ? p.color : p.accent, { size: tex === "note" ? 11 : 9, add: tex !== "leaf" });
         }
         kit.spawn("ring", x, y + 10, { tint: 0x82e89a, size: 20, sizeEnd: 52, stretch: 0.5, life: 0.5, alpha: 0.7, hold: 0.2 });

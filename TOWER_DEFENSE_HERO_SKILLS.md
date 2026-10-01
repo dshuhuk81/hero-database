@@ -34,27 +34,27 @@ in git history.
 
 | Hero (id) | Class | Basic attack | Status | Ultimate |
 |---|---|---|---|---|
-| Atlas (`nuwa`) | Tank | Heavy downward arc, dust ring, rock chips | none | Sky vault lifts over him with stars, ground shockwaves; golden motes on healed allies |
-| Ymir (`prometheus`) | Tank | Frost crescent, flying ice shards | Burn (flames on enemies) | Jagged fault cracks race out, ice spikes erupt at their ends, frost mist |
-| Heimdall (`momus`) | Tank | Clean gold arc and a white glint | none | Horn blast: five bridge-coloured sound waves in his facing, wide warning ring |
-| Gaia (`demeter`) | Tank | Earth bursts up under the target, dust, a leaf | none | Ring of stone spikes rises, leaves spiral in to heal her |
-| Aegir (`poseidon`) | Warrior | Water crescent with spray | Wet (drips) | Three rolling wave crests travel forward with spray |
-| Helios (`amunra`) | Warrior | White-hot gold arc, sun twinkle | none | Sun disc with turning rays, a cone of noon light, flare on the target |
-| Surtr (`set`) | Warrior | Flaming sword arc, rising embers | none | Three alternating sweeps of a burning sword, flame pillars, embers flow back to him |
-| Fenrir (`jormungandr`) | Warrior | Fangs snap shut on the target, venom drips | Poison (bubbles) | Great jaw closes, venom ring and bubbles, a short howl ring |
-| Nott (`nyx`) | Assassin | Night crescent and a star | none | Darkness gathers on the target, four crescent cuts, scattered stars |
-| Hecate (`bastet`) | Assassin | Three short cuts, one per road, torch flicker | none | Three torches circle the crossroads, three large cuts, splash ring |
-| Vidar (`horus`) | Assassin | Single precise thrust glint | none | Crossed strikes and a heavy stomp with debris (each ultimate hit also lands a thrust) |
-| Thanatos (`anubis`) | Assassin | Pale breath and falling black feathers | none | Dark scythe sweep with a pale edge, soul wisps rise, slow breathing rings |
-| Odin (`zeus`) | Mage | Forked runic lightning, re-struck 20 times a second, sparks and a rune at impact | none | Rune circle turns under the target, five bolts fall from the sky |
-| Hephaestus (`phoenix`) | Mage | Lobbed molten fragment with ember trail, anvil sparks | Burn | Hammer lands: molten rings, spark fountain, flame pillars |
-| Boreas (`fengyi`) | Mage | Three shards spiral in a gust, snow burst | none | Snow vortex spins up and climbs, inward frost rings |
-| Skadi (`diana`) | Archer | Pale arrow with frost trail, ice glint | none | Hunt mark over her, frost ring under the volley; buffed allies get white twinkles |
-| Atalanta (`artemis`) | Archer | Fast arrow, green streak, leaves | none | Charged arrow flies the full pierce line with wind rings and torn leaves |
-| Stheno (`medusa`) | Archer | Venom arrow dripping poison, splash with bubbles | Poison | Serpent eyes flare, grey motes snake to each gazed enemy, stone burst |
-| Plutus (`caishen`) | Support | Spinning coin | none | Coin fountain and a gold ring; coins rain on healed allies |
-| Harmonia (`yuelao`) | Support | Pulse with two harmonising motes, chord rings | none | Two interlocking rings widen, notes rise |
-| Asclepius (`freya`) | Support | Staff pulse with a twin-serpent helix | none | Twin serpents climb the staff, two heartbeat rings, rising crosses |
+| Atlas | Tank | Heavy downward arc, dust ring, rock chips | none | Sky vault lifts over him with stars, ground shockwaves; golden motes on healed allies |
+| Ymir | Tank | Frost crescent, flying ice shards | Burn (flames on enemies) | Jagged fault cracks race out, ice spikes erupt at their ends, frost mist |
+| Heimdall | Tank | Clean gold arc and a white glint | none | Horn blast: five bridge-coloured sound waves in his facing, wide warning ring |
+| Gaia | Tank | Earth bursts up under the target, dust, a leaf | none | Ring of stone spikes rises, leaves spiral in to heal her |
+| Aegir | Warrior | Water crescent with spray | Wet (drips) | Three rolling wave crests travel forward with spray |
+| Helios | Warrior | White-hot gold arc, sun twinkle | none | Sun disc with turning rays, a cone of noon light, flare on the target |
+| Surtr | Warrior | Flaming sword arc, rising embers | none | Three alternating sweeps of a burning sword, flame pillars, embers flow back to him |
+| Fenrir | Warrior | Fangs snap shut on the target, venom drips | Poison (bubbles) | Great jaw closes, venom ring and bubbles, a short howl ring |
+| Nott | Assassin | Night crescent and a star | none | Darkness gathers on the target, four crescent cuts, scattered stars |
+| Hecate | Assassin | Three short cuts, one per road, torch flicker | none | Three torches circle the crossroads, three large cuts, splash ring |
+| Vidar | Assassin | Single precise thrust glint | none | Crossed strikes and a heavy stomp with debris (each ultimate hit also lands a thrust) |
+| Thanatos | Assassin | Pale breath and falling black feathers | none | Dark scythe sweep with a pale edge, soul wisps rise, slow breathing rings |
+| Odin | Mage | Forked runic lightning, re-struck 20 times a second, sparks and a rune at impact | none | Rune circle turns under the target, five bolts fall from the sky |
+| Hephaestus | Mage | Lobbed molten fragment with ember trail, anvil sparks | Burn | Hammer lands: molten rings, spark fountain, flame pillars |
+| Boreas | Mage | Three shards spiral in a gust, snow burst | none | Snow vortex spins up and climbs, inward frost rings |
+| Skadi | Archer | Pale arrow with frost trail, ice glint | none | Hunt mark over her, frost ring under the volley; buffed allies get white twinkles |
+| Atalanta | Archer | Fast arrow, green streak, leaves | none | Charged arrow flies the full pierce line with wind rings and torn leaves |
+| Stheno | Archer | Venom arrow dripping poison, splash with bubbles | Poison | Serpent eyes flare, grey motes snake to each gazed enemy, stone burst |
+| Plutus | Support | Spinning coin | none | Coin fountain and a gold ring; coins rain on healed allies |
+| Harmonia | Support | Pulse with two harmonising motes, chord rings | none | Two interlocking rings widen, notes rise |
+| Asclepius | Support | Staff pulse with a twin-serpent helix | none | Twin serpents climb the staff, two heartbeat rings, rising crosses |
 
 Support heal actions flow to the ally along a curve: coins (Plutus), notes (Harmonia),
 a serpent helix of motes (Asclepius). Warrior cleaves draw a crescent around the target in
@@ -100,7 +100,7 @@ fixed range ring. Presentation only.
   with helix, trails, end callbacks) and shape helpers (bolt, crescent, ring).
 - `src/game/td/hero-fx.js`: `PROFILES` (name, colour, accent) and the per-hero melee,
   projectile, impact and ultimate builders.
-- `src/game/td/zeus-fx.js`: Odin's lightning, with the CC0 strips in `public/td/fx/zeus`.
+- `src/game/td/odin-fx.js`: Odin's lightning, with the CC0 strips in `public/td/fx/odin`.
 - `src/game/td/status-fx.js`: status particles on enemies.
 - `src/game/td/render.js`: wiring, the ice shell and chill tint, travelling enemy shots,
   curses, dash afterimages and heal flows for effects without a hero profile.

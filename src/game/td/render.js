@@ -4,7 +4,7 @@
 
 import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, tdAsset } from "./assets.js";
 import { fitRect, shortNumber } from "./ui.js";
-import { createZeusFx } from "./zeus-fx.js";
+import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
@@ -131,7 +131,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const fxTex    = new Map(); // name -> PIXI.Texture
   // M24c: one pooled particle/shape kit shared by hero, lightning and status effects.
   const fxKit = createFxKit(PIXI, layerParts, { reducedMotion });
-  const zeusFx = createZeusFx(PIXI, layerParts, fxKit, { reducedMotion });
+  const zeusFx = createOdinFx(PIXI, layerParts, fxKit, { reducedMotion });
   const heroFx = createHeroFx(fxKit, { reducedMotion });
   const statusFx = createStatusFx(fxKit, { reducedMotion });
 

@@ -1,7 +1,7 @@
 # Procedural idle loop (M24) from a static full-body portrait: feet pinned, body sways from
 # the hips up, chest breathes, cloth and hair ripple slightly. Writes {name}-idle-v1.webp (24
 # square head-to-waist frames at 224 px, the recruit preview's format) and a preview GIF.
-#   python3 scripts/td-idle-anim.py public/td/heroes-alt/review-set-v1/odin.webp zeus <outdir> [--version v2]
+#   python3 scripts/td-idle-anim.py public/td/heroes-alt/review-set-v1/odin.webp odin <outdir> [--version v2]
 # Needs numpy and Pillow. Output goes to public/td/heroes-alt/anims/ and R2 td/heroes-alt/anims/.
 import sys, math, numpy as np
 from PIL import Image

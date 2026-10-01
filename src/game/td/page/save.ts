@@ -113,9 +113,43 @@ function sanitizeBoost(value: unknown): RunBoost | null {
   return null;
 }
 
+// Hero ids before October 1, 2026 were the database ids; saves from then load under the
+// mythic ids (zeus -> odin, ...).
+export const LEGACY_HERO_IDS: Record<string, string> = {
+  nuwa: "atlas", prometheus: "ymir", momus: "heimdall", demeter: "gaia", poseidon: "aegir", amunra: "helios",
+  set: "surtr", jormungandr: "fenrir", nyx: "nott", bastet: "hecate", horus: "vidar", anubis: "thanatos",
+  zeus: "odin", phoenix: "hephaestus", fengyi: "boreas", diana: "skadi", artemis: "atalanta", medusa: "stheno",
+  caishen: "plutus", yuelao: "harmonia", freya: "asclepius",
+};
+const heroId = (id: unknown) => (typeof id === "string" ? LEGACY_HERO_IDS[id] ?? id : id);
+const heroList = (list: unknown) => (Array.isArray(list) ? list.map(heroId) : list);
+const heroKeys = (obj: unknown) => (isRecord(obj) ? Object.fromEntries(Object.entries(obj).map(([id, v]) => [heroId(id), v])) : obj);
+
+function renameLegacyHeroes(save: Record<string, any>): Record<string, any> {
+  const campaign = isRecord(save.campaign) ? { ...save.campaign } : save.campaign;
+  if (isRecord(campaign)) {
+    for (const key of ["owned", "lastSquad"]) campaign[key] = heroList(campaign[key]);
+    for (const key of ["levels", "copies", "stars", "evolution", "skillLevels"]) campaign[key] = heroKeys(campaign[key]);
+  }
+  const expedition = isRecord(save.expedition) ? { ...save.expedition } : save.expedition;
+  if (isRecord(expedition)) {
+    expedition.roster = heroList(expedition.roster);
+    expedition.veterans = heroList(expedition.veterans);
+    if (Array.isArray(expedition.camp)) expedition.camp = expedition.camp.map((card: any) => (!isRecord(card) ? card
+      : card.type === "hero" ? { ...card, id: heroId(card.id) }
+      : card.type === "veteran" ? { ...card, ids: heroList(card.ids) } : card));
+  }
+  // Blessing node ids carried the hero id too (zeus_dominion -> odin_dominion).
+  const nodeId = (id: unknown) => (typeof id === "string" ? id.replace(/^([a-z]+)_/, (m, hero) => (LEGACY_HERO_IDS[hero] ? `${LEGACY_HERO_IDS[hero]}_` : m)) : id);
+  const favLevels = isRecord(save.favLevels) ? Object.fromEntries(Object.entries(save.favLevels).map(([id, n]) => [nodeId(id), n])) : save.favLevels;
+  const favTree = Array.isArray(save.favTree) ? save.favTree.map(nodeId) : save.favTree;
+  return { ...save, lastTeam: heroList(save.lastTeam), campaign, expedition, favLevels, favTree };
+}
+
 // Shared by the localStorage load and the save-code import. Returns null when the data is not a td:v1 save.
-export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | null {
-  if (!isRecord(candidate) || !Number.isFinite(candidate.bestScore)) return null;
+export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
+  if (!isRecord(raw) || !Number.isFinite(raw.bestScore)) return null;
+  const candidate = renameLegacyHeroes(raw);
   const clean: SaveData = {
     bestScore: candidate.bestScore,
     bestWave: Number(candidate.bestWave) || 0,

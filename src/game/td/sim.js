@@ -1051,7 +1051,7 @@ export class TowerDefenseGame {
     }
   }
 
-  // Ultimate target: normally the attack target. Nyx's Shadow Step phases to the
+  // Ultimate target: normally the attack target. Nott's Shadow Step phases to the
   // lowest-HP reachable enemy anywhere on the map (road heroes still cannot hit flyers).
   findUltTarget(hero, attackTarget = this.findTarget(hero)) {
     if (hero.variant !== "shadow_step") return attackTarget;
@@ -1191,7 +1191,7 @@ export class TowerDefenseGame {
   // One basic attack, shaped by the class kit (tuning.classes, M6). Returns false when
   // the hero had nothing to do, so its attack timer stays ready.
   //   Support: heals the most injured ally in range, else a weak attack (damageShare).
-  //   Mage: splash around the target, or a chain (hero skill basic "chain", Zeus).
+  //   Mage: splash around the target, or a chain (hero skill basic "chain", Odin).
   //   Warrior: cleaves up to `targets` enemies next to the target.
   //   Archer: pierces a share of armor or magic resistance.
   //   Assassin: dashes to loose enemies; while veiled strikes extra enemies too.
@@ -1230,7 +1230,7 @@ export class TowerDefenseGame {
     const others = (radius) => this.enemies
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
-    // Arc (Mage path): every Mage chains; a chaining Mage (Zeus) gets the extra bounces.
+    // Arc (Mage path): every Mage chains; a chaining Mage (Odin) gets the extra bounces.
     const arc = hero.path === "arc" ? path : null;
     let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;
     // Conduct (M13): a chain that starts on a Wet enemy bounces further.
@@ -1318,7 +1318,7 @@ export class TowerDefenseGame {
   //   wet: no effect alone; poison and burn: `share` of the hit again over `seconds`.
   // Reactions: Conduct (chain hits on Wet enemies), Steam (Burn meets Wet: burst),
   // Blight (Burn on a poisoned enemy spreads a stronger copy of its poison), Freeze (Chill meets Wet: stun),
-  // Soul Harvest (poisoned enemies that die charge Anubis's ultimate).
+  // Soul Harvest (poisoned enemies that die charge Thanatos's ultimate).
   statusCfg() {
     return this.tuning.statuses ?? null;
   }
@@ -1705,9 +1705,9 @@ export class TowerDefenseGame {
     if (this.boons.length) this.boonsOnKill(enemy, hero);
     const harvest = this.statusCfg()?.reactions?.harvest;
     if (harvest && this.isPoisoned(enemy)) {
-      for (const anubis of this.heroes.filter((h) => h.id === "anubis")) {
-        anubis.ultClock += harvest.charge;
-        this.reaction("harvest", enemy, anubis, 20);
+      for (const thanatos of this.heroes.filter((h) => h.id === "thanatos")) {
+        thanatos.ultClock += harvest.charge;
+        this.reaction("harvest", enemy, thanatos, 20);
       }
     }
     if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
@@ -1744,7 +1744,7 @@ export class TowerDefenseGame {
     const aw = !!hero.awakened || !!hero.awakenedUlt;
 
     if (variant === "shadow_step") {
-      // Nyx: phase to lowest-HP enemy, execute it, slow nearby
+      // Nott: phase to lowest-HP enemy, execute it, slow nearby
       // Awakened: also strikes the second weakest enemy.
       const struck = aw ? foes.filter((e) => !e.dead).sort((a, b) => a.hp - b.hp).slice(0, 2) : [target];
       if (!struck.includes(target)) struck[0] = target;
@@ -1753,14 +1753,14 @@ export class TowerDefenseGame {
         foes.filter((e) => !e.dead && Math.hypot(victim.x - e.x, victim.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
       }
     } else if (variant === "soul_drain") {
-      // Anubis, Featherfall Judgment: drain the weakest enemy (his attack target as an
+      // Thanatos, Featherfall Judgment: drain the weakest enemy (his attack target as an
       // Assassin), stun it for 2s, 450% ATK (1.8x the standard ultimate). A kill hands
       // back 60% of the charge (the skill restores 600 of 1000 Energy).
       this.hit(target, power * 1.8, hero);
       if (target.dead) hero.ultRefund = hero.ultCooldown * (aw ? 0.8 : 0.6);
       else target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + (aw ? 3 : 2));
     } else if (variant === "valkyrie_call") {
-      // Freya: revive the most recent eligible fallen hero at 50% HP; fallback heal if none.
+      // Asclepius: revive the most recent eligible fallen hero at 50% HP; fallback heal if none.
       // Eligible: not already back on the field, ring still free, and room in the team.
       const fallen = this.takeRevivableFallen();
       if (fallen) {
@@ -1782,7 +1782,7 @@ export class TowerDefenseGame {
         });
       }
     } else if (variant === "knockback") {
-      // Poseidon: cleave + push up to 3 enemies back on path (sorted by furthest progress = most dangerous first)
+      // Aegir: cleave + push up to 3 enemies back on path (sorted by furthest progress = most dangerous first)
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
       const victims = (cone.length ? cone : around).sort((a, b) => b.distance - a.distance).slice(0, aw ? 5 : 3);
@@ -1811,17 +1811,17 @@ export class TowerDefenseGame {
         gazeTargets, life: 0.55, color: "purple" });
       return;
     } else if (variant === "shield_wall") {
-      // Nuwa: taunt + heal nearby road allies
+      // Atlas: taunt + heal nearby road allies
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = aw ? 4 : 3; });
       this.heroes.filter((a) => a.slotType === "road" && Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
         this.healHero(a, a.hp * (aw ? 0.3 : 0.15), hero);
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
-      // Prometheus: taunt + expose enemies (take +20% damage for 4s, see hit())
+      // Ymir: taunt + expose enemies (take +20% damage for 4s, see hit())
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4)); });
     } else if (variant === "mass_taunt") {
-      // Momus: wide taunt (2.5x range)
+      // Heimdall: wide taunt (2.5x range)
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * (aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
     } else if (variant === "rooted_sanctuary") {
       // Gaia (Support): heals allies in range from her own max health, then they take less damage.
@@ -1836,7 +1836,7 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "war_cry") {
-      // Amunra: cleave + slow hit enemies
+      // Helios: cleave + slow hit enemies
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power * (aw ? 1.5 : 1), hero); e.slow = aw ? 4 : 2; });
@@ -1852,22 +1852,22 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.4, color: "green" });
       }
     } else if (variant === "venom_cleave") {
-      // Jormungandr: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
+      // Fenrir: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= (aw ? 100 : 72));
       const cone = around.filter((e) => this.inCone(hero, e));
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 8 : 4)); });
     } else if (variant === "claw_sweep") {
-      // Bastet: execute target + AoE execute around it
+      // Hecate: execute target + AoE execute around it
       const execMult = target.hp / target.maxHp < this.executeThreshold(hero) ? 1.8 : 1;
       this.hit(target, power * execMult, hero);
       foes.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 90 : 55)).forEach((e) => {
         this.hit(e, power * (e.hp / e.maxHp < this.executeThreshold(hero) ? 1.8 : 0.7), hero);
       });
     } else if (variant === "rapid_strike") {
-      // Horus: 3 rapid hits at 50% power
+      // Vidar: 3 rapid hits at 50% power
       for (let i = 0; i < (aw ? 5 : 3); i += 1) if (!target.dead) this.hit(target, power * 0.5, hero);
     } else if (variant === "chain_lightning") {
-      // Zeus: nuke primary cluster + bounce to 2 nearest others
+      // Odin: nuke primary cluster + bounce to 2 nearest others
       const blasted = foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72);
       blasted.forEach((e) => this.hit(e, power, hero));
       // Bounces jump from enemy to enemy, skipping anyone already hit; each one weaker.
@@ -1884,7 +1884,7 @@ export class TowerDefenseGame {
         from = next;
       }
     } else if (variant === "rebirth_flame") {
-      // Phoenix: nuke + self heal for 20% max HP
+      // Hephaestus: nuke + self heal for 20% max HP
       foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
       this.healHero(hero, hero.hp * (aw ? 0.4 : 0.2), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
@@ -1903,7 +1903,7 @@ export class TowerDefenseGame {
       // Recruit Elm: nuke + expose hit targets
       foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + 4); });
     } else if (variant === "moon_barrage") {
-      // Diana: volley + grant atk buff to nearby allies
+      // Skadi: volley + grant atk buff to nearby allies
       const shots = aw ? 5 : 3;
       const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, shots - 1);
       const victims = [target, ...spread];
@@ -1927,7 +1927,7 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "gold" });
       }
     } else if (variant === "piercing_shot") {
-      // Artemis: single shot piercing all enemies in line from hero through target
+      // Atalanta: single shot piercing all enemies in line from hero through target
       const dx = target.x - hero.x; const dy = target.y - hero.y;
       const len = Math.hypot(dx, dy) || 1;
       const ux = dx / len; const uy = dy / len;
@@ -1938,7 +1938,7 @@ export class TowerDefenseGame {
         if (Math.abs(ex * uy - ey * ux) <= 18) this.hit(e, power * (aw ? 0.9 : 0.55), hero);
       });
     } else if (variant === "fortune_shower") {
-      // Caishen: heal all allies + grant atk buff together
+      // Plutus: heal all allies + grant atk buff together
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
         this.healHero(a, a.hp * fraction, hero);
@@ -1952,7 +1952,7 @@ export class TowerDefenseGame {
         if (this.waveStats) this.waveStats.goldEarned += 15;
       }
     } else if (variant === "fate_link") {
-      // Yuelao: heal allies + accelerate their ult charge by 30%
+      // Harmonia: heal allies + accelerate their ult charge by 30%
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
         this.healHero(a, a.hp * fraction, hero);

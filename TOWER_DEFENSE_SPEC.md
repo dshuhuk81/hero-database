@@ -50,13 +50,19 @@ Hard rules:
 - Never write TD numbers back into `src/data/heroes/*.json`, `hero-ratings.json`,
   `bosses.json` or any CN block. `npm run db:merge` stays unaware of TD files.
 - **White label (M24):** the player never sees database hero art, names or sounds.
-  `src/game/td/skin.js` maps each internal id (`nuwa`, `zeus`, ...) to a mythic persona
-  (e.g. `nuwa` -> Atlas) with TD-owned art on R2 `td/heroes-alt/` and sounds on
-  `td/sfx/mythic-*`. Internal ids, stats and rules are unchanged. `gameBalance.json`
-  still carries DB names and thumb URLs; UI code must go through `skin.js`.
+  `src/game/td/skin.js` gives each hero its mythic persona (title, art, sounds, ultimate
+  name) from `tdSkinMythic.json`, with TD-owned art on R2 `td/heroes-alt/` and sounds on
+  `td/sfx/mythic-*`. UI code must go through `skin.js`.
+- **Hero ids are the mythic names (October 1, 2026):** `odin`, `atlas`, `surtr`, ... in
+  code, data, tests, asset and sound file names (`odin-v2-thumb-96.webp`,
+  `mythic-odin-v4_attack.ogg`, `fx/odin/`, `odin-fx.js`), blessing node ids included
+  (`gaia_bounty`, `odin_dominion`, `surtr_command`). The database ids (zeus, nuwa, set, ...)
+  appear only in `tuning.statSource` (which database hero seeds a row's stats) and in
+  `LEGACY_HERO_IDS` (`page/save.ts`), which loads older saves and save codes under the new
+  ids. `gameBalance.json` rows carry the mythic name and no database image.
   Redrawn heroes carry `"art": "v2"` (etc.) in `tdSkinMythic.json`: files become
   `{id}-{art}-{card-240|thumb-96|token-192}.webp` and `anims/{id}-idle-{art}.webp`, since
-  R2 caches immutable. Odin (`zeus`) uses v2 (source `review-set-v1/odin-v2*`).
+  R2 caches immutable. Odin uses v2 (source `review-set-v1/odin-v2*`).
 - **Hero board figures (September 30, 2026):** every hero stands on its slot as an animated
   PixelLab figure (idle, attack, ultimate) instead of the round token: sheets
   `td/heroes-alt/figures/{figure}-v1.{webp,json}`, registered in `HERO_FIGURES` (`assets.js`),
@@ -136,7 +142,7 @@ Hard rules:
 - Rules (pure, headless-testable): `sim.js`, `waves.js`, `lanes.js`, `grid.js`,
   `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js`.
 - Presentation: `render.js` (PixiJS 8.21.0 and filter-glow 5.2.1 from jsDelivr, exact versions pinned; bump deliberately), `map-scene.js`, `fx-kit.js`,
-  `hero-fx.js`, `status-fx.js`, `zeus-fx.js`, `skin.js`, `audio.ts`, `ui.js`.
+  `hero-fx.js`, `status-fx.js`, `odin-fx.js`, `skin.js`, `audio.ts`, `ui.js`.
   Presentation never affects combat or consumes combat RNG.
 - Styles: `src/styles/td.css`, `td-*` classes.
 - Assets: Cloudflare R2 under `td/`, resolved by `assets.js` (R2 public URL in
@@ -149,20 +155,21 @@ hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
 
 | Class | Slot | Heroes (internal ids) |
 |---|---|---|
-| Tank | road | `nuwa`, `prometheus`, `momus` |
-| Warrior | road | `poseidon`, `amunra`, `set`, `jormungandr` |
-| Assassin | road | `nyx`, `bastet`, `horus`, `anubis` |
-| Mage | platform | `zeus`, `phoenix`, `fengyi` |
-| Archer | platform | `diana`, `artemis`, `medusa` |
-| Support | platform | `caishen`, `yuelao`, `freya`, `demeter` |
+| Tank | road | `atlas`, `ymir`, `heimdall` |
+| Warrior | road | `aegir`, `helios`, `surtr`, `fenrir` |
+| Assassin | road | `nott`, `hecate`, `vidar`, `thanatos` |
+| Mage | platform | `odin`, `hephaestus`, `boreas` |
+| Archer | platform | `skadi`, `atalanta`, `stheno` |
+| Support | platform | `plutus`, `harmonia`, `asclepius`, `gaia` |
 
-11 road, 10 platform. Gaia (`demeter`) is a Support in TD only (October 1, 2026):
-`tuning.classOverrides` swaps a database hero's class before the generator runs; the
+11 road, 10 platform. Gaia is a Support in TD only (October 1, 2026):
+`tuning.classOverrides` (keyed by TD id) swaps a database hero's class before the generator runs; the
 database keeps the real game's class (Tank). The build fails on a missing id or missing `stats`,
 `baseAttackRate` or `bossUltimatesPer90s`.
 
 Stable baselines (audit step 4, September 29, 2026): ranks are taken against the fixed
-set `tuning.balanceReference` (the 21 database heroes above), not the whole roster.
+set `tuning.balanceReference` (the 21 heroes above, stats from their `tuning.statSource`
+database hero), not the whole roster.
 Reference heroes are ranked among themselves; any other database hero in the roster is
 ranked against the reference alone, so adding a hero never changes an existing row
 (verified: adding `ares` changed 0 rows). Rows for roster ids without a database entry
@@ -277,19 +284,19 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   waves not generated yet.
 - Statuses: wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
   `freeze`, `harvest`.
-- Exposed (`enemy.exposed`, end time): +20% damage taken in `hit()`. Set by Prometheus
+- Exposed (`enemy.exposed`, end time): +20% damage taken in `hit()`. Set by Ymir
   `expose`, the 72px cleave with 8s awakened exposure, and recruit Elm `weaken_burst`; reapplying
   keeps the later end time (`Math.max`), so a short exposure never cuts a longer one.
-- Boreas `ice_shockwave` (tuning `heroSkills.fengyi`): shockwave around him within `hero.range`,
+- Boreas `ice_shockwave` (tuning `heroSkills.boreas`): shockwave around him within `hero.range`,
   140% U per enemy, 10% chance per enemy (seeded `rng`) to freeze 2s (`stunnedUntil` +
   `frozenUntil`, so Shattering Cold applies). Awakened: +10% chance, +1s. Replaces the old
   `weaken_burst` binding; no exposure. FX: the blast rings are true circles (`squash: 1`) centred on
   the hero, matching his range circle.
-- Gaia `rooted_sanctuary` (tuning `heroSkills.demeter`): heals allies in her range for 30% of
+- Gaia `rooted_sanctuary` (tuning `heroSkills.gaia`): heals allies in her range for 30% of
   her own max health (Support class blessings raise it) and wards them for 8s: `damageHero`
   cuts damage taken by `wardCut` (30%) while `wardUntil` runs; overlapping wards keep the
   stronger cut and the later end. Awakened: 50% heal, 40% cut.
-- Atalanta `burning_volley` (tuning `heroSkills.artemis`): every enemy within 80px of the
+- Atalanta `burning_volley` (tuning `heroSkills.atalanta`): every enemy within 80px of the
   target takes 60% U (150% attack) and burns for 50% of the hit dealt over 5s (`applyBurn`,
   so Steam/Blight reactions apply). Awakened: rapid fire for 10s (`hero.rapid`,
   `rapidUntil`; `rapidFx()`): +50% attack speed and +30% attack. Replaces `piercing_shot`
@@ -607,7 +614,7 @@ only then optional live seeded generation.
 | Mode | Rules | Source |
 |---|---|---|
 | Free play | Any map, run length and tier. Starting gold 340, 25 lives, deploy cap 7, wave-clear bonus 100 + 20/wave. Recruits only owned heroes, at base stats (Phase 2, September 30, 2026); pays Favor plus Gold and Hero XP into the collection | `sim.js`, `waves.js` |
-| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno (`medusa`) on 2-3, Helios (`amunra`) on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target; hpScale re-tightened on 1-1..1-4 and 1-9/1-10 to 1.0/1.1/1.05/1.05/0.6/0.7 on September 30, 2026 after the owner's playtest read too easy at squad size 6). Play on the home screen (Campaign selected) opens the stage list. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
+| Campaign | Chapter 2 "The Sunscar March" (September 29, 2026): 6 stages, all on the generated Sunscar Basin, unlocked by 1-10; 39 waves, lives 15-18, hpScale 0.75 down to 0.6; Stheno on 2-3, Helios on the 2-6 boss finale; rating milestones 6 / 12 / 18 (600 Gold + 300 Hero XP / 110 Divine Seals / 180 Divine Seals + 60 Seal Dust). Bots (35 squads, after Chapter 1 at Lv 4-7): 86 / 80 / 69 / 69 / 43 / 40% (cheapest), 89 / 77 / 66 / 54 / 34 / 34% (carry); winning runs about 26 min. Chapter 1 "The Road to the Crossing", 10 authored stages across all 3 maps (59 waves total; trimmed from 79 on September 29, 2026 so a chapter clear lands near the 30-60 min target; hpScale re-tightened on 1-1..1-4 and 1-9/1-10 to 1.0/1.1/1.05/1.05/0.6/0.7 on September 30, 2026 after the owner's playtest read too easy at squad size 6). Play on the home screen (Campaign selected) opens the stage list. Squad of up to 6 owned heroes (raised 5 → 6 on September 29, 2026 for Tank viability), 6 starters, stage lives and hp scale, first-clear rewards (repeat pays 25%). Hero levels 1-60 bought with Gold + Hero XP, capped by stars (0-5 stars: cap 10/20/30/40/50/60), stat gain per level falls by band (+6/3/2/1.5/1.5/1%); Stars 0-5 and Evolution I-V from spare copies (campaign stages only) | `campaign.js`, `tdCampaign.json` |
 | Summon | Banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600), duplicates become spare copies, 14-day featured rotation, featured hero weighted 2x | `campaign.js`, `tdSummon.json` |
 | Expedition | Roguelite chain of 10-wave stages on `EXPEDITION.stages` (3) distinct battlefields drawn at random, one `stageHp` step per stage; starts with 3 random owned heroes, camp offers hero (owned, not yet in the roster) / relic / veteran after each win, lives carry over; each stage pays Gold and Hero XP into the collection | `expedition.js` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts | `daily.js` |
@@ -741,7 +748,7 @@ description gets the full column width.
 
 `tdSummon.json` authors the banner, seal sources and dust rates. The current banner uses:
 
-- rotation: `set` (Surtr), `nyx` (Nott), `phoenix` (Hephaestus), `bastet` (Hecate);
+- rotation: `surtr` (Surtr), `nott` (Nott), `hephaestus` (Hephaestus), `hecate` (Hecate);
 - one featured hero for 14 days, calculated from `rotationEpoch`;
 - rarity weights (`rarityWeights`): every hero carries a `rarity` in
   `gameBalance.json` — legendary (tiers S/A, 5 heroes), epic (B/C, 13), common
@@ -924,7 +931,10 @@ Back to Camp. Spend Favor is hidden after campaign stages (they earn no Favor).
 ## 10. Persistence
 
 `localStorage` key `td:v1`, one JSON blob, sanitized on load (`save.ts`): any bad field
-is dropped, a corrupt blob starts fresh, unknown hero ids are removed.
+is dropped, a corrupt blob starts fresh, unknown hero ids are removed. Hero ids from before
+October 1, 2026 (database ids such as `zeus`) are renamed first (`LEGACY_HERO_IDS`):
+`lastTeam`, campaign `owned`/`lastSquad`/`levels`/`copies`/`stars`/`evolution`/`skillLevels`,
+expedition roster, veterans and camp cards, and blessing node ids in `favLevels`/`favTree`.
 
 Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLevels`,
 `insight`, `resetSpent`, `refundNotice`, `treeVersion`, `repriceNotice`, `mapBests`,

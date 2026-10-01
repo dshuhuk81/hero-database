@@ -33,6 +33,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   const stageEl = q("[data-td-stage]");
   const loadingEl = q("[data-td-loading]");
   const noticeEl = q("[data-td-notice]");
+  const stageNameEl = q("[data-td-stage-name]");
+  const stageNumberEl = q("[data-td-stage-number]");
+  const stageTitleEl = q("[data-td-stage-title]");
   let sessionToken = 0;
   let loadingCanvas: HTMLCanvasElement | null = null;
 
@@ -55,6 +58,11 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     }
     deps.music.play(map.music);
     ctx.actions.showScreen("play");
+    stageNameEl.hidden = !campaignStage;
+    if (campaignStage) {
+      stageNumberEl.textContent = `Stage ${campaignStage.id}`;
+      stageTitleEl.textContent = campaignStage.name;
+    }
     pause.clear();
     ctx.actions.syncPauseButton();
     deps.results.reset();
@@ -120,6 +128,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   }
 
   function end() {
+    stageNameEl.hidden = true;
     deps.buffBar.reset();
     ctx.actions.closePopover(false);
     ctx.actions.closeSheet(false);

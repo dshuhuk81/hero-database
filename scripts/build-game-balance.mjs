@@ -7,17 +7,21 @@
 //   - any other roster hero from the database is ranked *against* the reference, one at a
 //     time, so adding a hero never changes an existing row;
 //   - roster ids with no database entry (the recruits) are hand-authored rows, kept as-is.
+// TD ids are the mythic names (odin, atlas, ...); `tuning.statSource` names the database hero
+// whose stats seed each generated row. Row names come from the mythic skin (tdSkinMythic.json).
 // `rarity` is kept from the file, or derived from tier for a new hero.
 //
 //   npm run build:game-balance                 rewrite gameBalance.json
 //   npm run build:game-balance -- --check      fail when the file is stale (tests)
 //   npm run build:game-balance -- --propose=id print the row a new database hero would get
-//                                              (add the id to tuning.roster to ship it)
+//                                              (id = database id; ship it under a new TD id in
+//                                              tuning.roster and tuning.statSource)
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import heroes from "../src/data/all_heroes_db.json" with { type: "json" };
+import mythic from "../src/data/tdSkinMythic.json" with { type: "json" };
 import ratings from "../src/data/ratings/hero-ratings.json" with { type: "json" };
 import { calculateOverall } from "../src/data/ratings/ratingSystem.js";
 
@@ -31,15 +35,16 @@ const round5 = (n) => Math.round(n / 5) * 5;
 const TIER_RARITY = { S: "legendary", A: "legendary", B: "epic", C: "epic", D: "common" };
 const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1];
 
-const source = (id) => {
-  const hero = heroes[id];
-  if (!hero) throw new Error(`Missing tower-defense hero: ${id}`);
+// Database hero for TD id `id` (tuning.statSource), carrying the TD id and mythic name.
+const source = (id, dbId = tuning.statSource?.[id]) => {
+  const hero = heroes[dbId];
+  if (!hero) throw new Error(`Missing tower-defense hero: ${id} (database ${dbId})`);
   if (!hero.stats || !hero.baseAttackRate || !hero.bossUltimatesPer90s) throw new Error(`Incomplete tower-defense hero: ${id}`);
   // TD-only class swaps (tuning.classOverrides); the database keeps the real game's class.
   const override = tuning.classOverrides?.[id];
-  return override ? { ...hero, class: override } : hero;
+  return { ...hero, id, dbId, name: mythic.heroes[id]?.name ?? hero.name, class: override ?? hero.class };
 };
-const reference = (tuning.balanceReference ?? []).map(source);
+const reference = (tuning.balanceReference ?? []).map((id) => source(id));
 if (reference.length < 2) throw new Error(`tuning.balanceReference too small: ${reference.length}`);
 
 // Rank of `value` within `pool` (ties share the lowest index), 0..1.
@@ -53,7 +58,7 @@ function basicRow(h, group) {
   const rank = (get) => rankIn(group.map(get), get(h));
   const aps = clamp(h.baseAttackRate, 0.5, 2.2);
   const dps = lerp(18, 55, rank(rawDpsOf));
-  const tier = calculateOverall(ratings[h.id]).tier ?? "C";
+  const tier = calculateOverall(ratings[h.dbId]).tier ?? "C";
   const classTuning = tuning.classes[h.class];
   if (!classTuning) throw new Error(`No class tuning for ${h.class}`);
   const rawType = String(h.skills?.[0]?.damageType ?? "").toLowerCase();
@@ -61,7 +66,7 @@ function basicRow(h, group) {
   return {
     id: h.id, name: h.name, class: h.class, tier, slot: classTuning.slot,
     range: classTuning.range, ability: classTuning.ability, damageType,
-    image: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs/${h.id}-96.webp`,
+    image: "",
     atk: Math.round(dps / aps), aps: Math.round(aps * 100) / 100, dps: Math.round(dps),
     hp: Math.round(lerp(340, 880, rank((x) => x.stats.hp))), armor: Math.round(lerp(30, 230, rank((x) => x.stats.armor))),
     magicRes: Math.round(lerp(30, 230, rank((x) => x.stats.magicRes))), critChance: h.stats.critRate / 100,
@@ -107,21 +112,21 @@ function buildRow(h, group) {
 }
 
 const referenceIds = new Set(reference.map((h) => h.id));
-const rowFor = (id) => (referenceIds.has(id) ? buildRow(source(id), reference) : buildRow(source(id), [...reference, source(id)]));
+const rowFor = (id, dbId) => (referenceIds.has(id) ? buildRow(source(id, dbId), reference) : buildRow(source(id, dbId), [...reference, source(id, dbId)]));
 
 const proposed = arg("propose");
 if (proposed) {
-  const row = rowFor(proposed);
+  const row = rowFor(proposed, proposed);
   console.log(JSON.stringify(row, null, 2));
   const peers = current.filter((r) => r.class === row.class && r.slot === row.slot).map((r) => `${r.id} ${r.cost}g atk ${r.atk} hp ${r.hp}`);
-  console.log(`\n${row.class} peers today: ${peers.join(", ")}\nNo existing row changes. Add "${proposed}" to tuning.roster and run npm run build:game-balance to ship it.`);
+  console.log(`\n${row.class} peers today: ${peers.join(", ")}\nNo existing row changes. To ship it, pick a TD id, add it to tuning.roster and tuning.statSource ("<id>": "${proposed}"), give it a tdSkinMythic.json entry and run npm run build:game-balance.`);
   process.exit(0);
 }
 
 const generated = [];
 const authored = [];
 for (const id of tuning.roster) {
-  if (heroes[id]) generated.push(rowFor(id));
+  if (tuning.statSource?.[id]) generated.push(rowFor(id));
   else if (currentById.has(id)) authored.push(currentById.get(id));
   else throw new Error(`Roster id ${id} has no database entry and no authored row in gameBalance.json`);
 }

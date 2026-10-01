@@ -93,7 +93,7 @@ export function canBuy(nodeId, levels, tree = TREE) {
 // class's Surge with an Infusion. Saves from version 2 keep every level they own: the
 // price increase is credited back per currency, so nothing they own costs them more.
 // Surge levels simply drop out (their node is gone), which returns that Insight too.
-const V2_TRUNK_COSTS = { demeter_bounty: 30, freya_blessing: 40, horus_sight: 30, jormungandr_hide: 40, caishen_treasury: 80, amunra_surge: 100, yuelao_bond: 90, nyx_veil: 60, zeus_dominion: 200, poseidon_tide: 180, nuwa_wall: 150, fengyi_favor: 900, anubis_judgment: 400, set_command: 3000 };
+const V2_TRUNK_COSTS = { gaia_bounty: 30, asclepius_blessing: 40, vidar_sight: 30, fenrir_hide: 40, plutus_treasury: 80, helios_surge: 100, harmonia_bond: 90, nott_veil: 60, odin_dominion: 200, aegir_tide: 180, atlas_wall: 150, boreas_favor: 900, thanatos_judgment: 400, surtr_command: 3000 };
 const V2_CLASS_COSTS = { might: 5, vigor: 5, swiftness: 5, reach: 5, ascension: 40, special: 60, wrath: 80, rite: 100, apotheosis: 140 };
 const v2Cost = (node) => (node.tree === "trunk" ? V2_TRUNK_COSTS[node.id] : V2_CLASS_COSTS[node.id.slice(node.tree.length + 1)]);
 
@@ -115,7 +115,7 @@ export function repriceCredit(levels, tree = TREE) {
 // Old saves stored bought node ids of the first tree (favTree, 12 nodes). Those are
 // refunded: dropping them frees the Favor, because available Favor is earned minus
 // spent. The old prices only serve the one-time "refunded" notice.
-const LEGACY_COSTS = { demeter_bounty: 25, freya_blessing: 25, horus_sight: 25, jormungandr_hide: 25, nuwa_wall: 60, zeus_dominion: 60, caishen_treasury: 60, bastet_edge: 60, amunra_surge: 120, yuelao_bond: 120, poseidon_tide: 120, nyx_veil: 120 };
+const LEGACY_COSTS = { gaia_bounty: 25, asclepius_blessing: 25, vidar_sight: 25, fenrir_hide: 25, atlas_wall: 60, odin_dominion: 60, plutus_treasury: 60, hecate_edge: 60, helios_surge: 120, harmonia_bond: 120, aegir_tide: 120, nott_veil: 120 };
 export function legacyRefund(favTree) {
   return (favTree || []).reduce((sum, id) => sum + (LEGACY_COSTS[id] || 0), 0);
 }

@@ -105,8 +105,8 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(run.run.lives, tuning.run.lives + lives.effect.value, "lives");
   assert.equal(tuning.run.startingGold, buildRunTuning(tuning, {}).run.startingGold, "base tuning not mutated");
 
-  assert.equal(make().wavePreview(2).totalHp, undefined, "no HP without Horus");
-  assert.ok(make({ [trunkNode("showHp").id]: 1 }).wavePreview(2).totalHp > 0, "Horus shows wave HP");
+  assert.equal(make().wavePreview(2).totalHp, undefined, "no HP without Vidar");
+  assert.ok(make({ [trunkNode("showHp").id]: 1 }).wavePreview(2).totalHp > 0, "Vidar shows wave HP");
 
   const mage = heroOf("Mage");
   const plain = place(make(), mage).hp;
@@ -143,18 +143,18 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(offers.virtueOffer.length, 4, "one more blessing offered");
 
   const boss = make({ [trunkNode("bossDamage").id]: 4 });
-  const zeus = place(boss, heroOf("Mage"));
+  const odin = place(boss, heroOf("Mage"));
   boss.startWave(); boss.spawnQueue = []; boss.enemies = [];
   const b = boss.spawnEnemy("boss");
   const g = boss.spawnEnemy("grunt");
   const bHp = b.hp, gHp = g.hp;
-  boss.hit(b, 100, zeus); boss.hit(g, 10, zeus);
+  boss.hit(b, 100, odin); boss.hit(g, 10, odin);
   close(bHp - b.hp, 100 * (1 + trunkNode("bossDamage").effect.value * 4), "boss damage bonus");
   close(gHp - g.hp, 10, "no bonus on other enemies");
 
   // Set's Command (former team slot, now starting gold) keeps its id so bought levels carry over.
-  const command = buildRunTuning(tuning, { set_command: 1 });
-  assert.equal(command.run.startingGold, tuning.run.startingGold + findNode("set_command").effect.value, "Set's Command adds starting gold");
+  const command = buildRunTuning(tuning, { surtr_command: 1 });
+  assert.equal(command.run.startingGold, tuning.run.startingGold + findNode("surtr_command").effect.value, "War Chest adds starting gold");
   assert.equal(command.run.maxTeam, undefined, "no team cap");
 
   const wall = make({ [trunkNode("contactRange").id]: 4 });
@@ -200,7 +200,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   // Infusion (Divine III): the class's attacks apply its status; other classes don't.
   // Heroes without a status of their own, so only the Infusion can apply one.
   const byId = (id) => heroes.find((h) => h.id === id);
-  for (const [cls, hero, status] of [["Mage", byId("fengyi"), "burn"], ["Warrior", byId("amunra"), "wet"], ["Archer", byId("diana"), "chill"]]) {
+  for (const [cls, hero, status] of [["Mage", byId("boreas"), "burn"], ["Warrior", byId("helios"), "wet"], ["Archer", byId("skadi"), "chill"]]) {
     assert.equal(applyBlessings(lv(cls, "infuse")).classBonus[cls].infuse, status, `${cls} infusion stored`);
     const game = make(lv(cls, "infuse"));
     const unit = place(game, hero);
@@ -211,7 +211,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   }
   const bareGame = make({});
   const bareFoe = bareGame.spawnEnemy("grunt");
-  bareGame.applyHeroStatus(place(bareGame, byId("fengyi")), bareFoe, 100);
+  bareGame.applyHeroStatus(place(bareGame, byId("boreas")), bareFoe, 100);
   assert.ok(!bareGame.isBurning(bareFoe), "no Infusion, no status");
   assert.equal(applyBlessings(lv("Support", "purify")).classBonus.Support.purify, 1, "Radiance stored");
 
@@ -245,10 +245,10 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 // --- Insight: waves on the field and kills per class, credited at wave clear ---
 {
   const game = make();
-  const zeus = place(game, heroOf("Mage"));
+  const odin = place(game, heroOf("Mage"));
   const tank = place(game, heroOf("Tank"));
   game.startWave(); game.spawnQueue = []; game.enemies = [];
-  for (let i = 0; i < TREE.insight.killsPerPoint; i += 1) game.hit(game.spawnEnemy("grunt"), 1e9, zeus);
+  for (let i = 0; i < TREE.insight.killsPerPoint; i += 1) game.hit(game.spawnEnemy("grunt"), 1e9, odin);
   game.enemies = [];
   game.step(1 / 60);
   assert.deepEqual(game.insightLog.Mage, { waves: 1, kills: TREE.insight.killsPerPoint });
@@ -265,9 +265,9 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
 // --- Old tree refund ---
 {
-  assert.equal(legacyRefund(["demeter_bounty", "amunra_surge", "gone"]), 25 + 120, "old prices refunded, unknown ids ignored");
+  assert.equal(legacyRefund(["gaia_bounty", "helios_surge", "gone"]), 25 + 120, "old prices refunded, unknown ids ignored");
   assert.equal(legacyRefund([]), 0);
-  assert.ok(findNode("demeter_bounty"), "old ids that still exist are new nodes, bought from level 0 again");
+  assert.ok(findNode("gaia_bounty"), "old ids that still exist are new nodes, bought from level 0 again");
 }
 
 // --- 6C run-end shards: eligibility, Favor size, and boosts folded into run tuning ---

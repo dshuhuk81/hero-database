@@ -75,8 +75,8 @@ which is the pressure valve for misplacement.
   (heals, +35% passive attack aura on allies in range).
 - **Hero ultimates:** 21 unique variants (`heroSkills`), each ~250% × tier
   ult power, plus class add-ons; awakened versions are ~30–50% stronger.
-- **Statuses & reactions:** Poseidon→wet, Phoenix→burn, Medusa/Jormungandr→
-  poison, Prometheus→chill. Pairs react: Conduct (wet+chain), Steam (wet+burn),
+- **Statuses & reactions:** Aegir→wet, Hephaestus→burn, Stheno/Fenrir→
+  poison, Ymir→chill. Pairs react: Conduct (wet+chain), Steam (wet+burn),
   Blight (poison+burn), Freeze (wet+chill), Soul Harvest (poison+soul drain).
   Class Infusion blessings let any class apply a status.
 - **Virtues:** 12 common stat blessings with hero-flavored names + 4 pair
@@ -115,7 +115,7 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
 - **Structure:** chapters of authored stages on the existing maps; squad of up
   to 4 owned heroes; win to unlock the next stage. First clears pay full
   rewards, replays 25% (Divine Seals are first-clear only).
-- **Starters:** demeter, jormungandr, horus, fengyi, artemis, freya.
+- **Starters:** gaia, fenrir, vidar, boreas, atalanta, asclepius.
 - **Campaign hero levels:** 1–10, +6% atk/HP per level, costing campaign Gold
   (100 + 50/level) and Hero XP (50 + 25/level) — **campaign stages only**.
 - **Stars:** duplicates become copies; heroes start at 0 stars; 1/1/2/3/4
