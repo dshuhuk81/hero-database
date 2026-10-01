@@ -755,3 +755,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 - **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
   `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
+- **Road class variety on boards:** the board class matrix (`test-td-balance.mjs`, printed for
+  information) has the Tank as the best blocker on 8 of 9 wave types; Warriors and Assassins
+  need a clearer payoff. Mage leads Archer on most ground wave types; Archer owns flyers.

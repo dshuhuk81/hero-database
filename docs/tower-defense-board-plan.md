@@ -184,8 +184,13 @@ stays for that fixture. Review page: `npm run td:board -- --current`.
 
 ### Step 4: rebalance the campaign (L)
 
-Status (October 1, 2026): campaign and Free Play done; class matrix and long / Endless checks
-in `test-td-balance.mjs` reviewed separately. `scripts/td-board-tune.mjs` searched every
+Status (October 1, 2026): done. `test-td-balance.mjs` passes: on the 10 Free Play boards every
+map has winners, 20-wave runs have winners and losers, Endless gets past wave 20, and starters
+win on 8 of 10 maps. Its per-map checks now cover Free Play maps only (campaign boards are
+checked by `test-td-campaign.mjs`), and the class kit check runs on the classic fixture map.
+The board class matrix it prints shows the Tank as the best blocker on 8 of 9 wave types
+(Warrior on summoners) and Mage ahead of Archer on most ground types, with Archer best on
+flyers, summoners and hexers: road class variety is the next balance topic. `scripts/td-board-tune.mjs` searched every
 stage's `hpScale` against the campaign viability setup (35 sampled squads at the levels the
 chapter's first clears buy) with targets 90% (1-1), 65% (Chapter 1), 50% (regular), 35%
 (finales); every stage landed within 0.11 of its target, none under the 20% floor, and
