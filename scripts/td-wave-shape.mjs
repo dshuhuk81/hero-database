@@ -11,7 +11,10 @@
 import baseTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import { classMatrix, bestClass, CLASSES } from "./lib/td-class-matrix.mjs";
-import { freePlayMaps, playRun, SQUADS } from "./lib/td-runner.mjs";
+import { playRun, SQUADS } from "./lib/td-runner.mjs";
+// Classic (pre-board) maps: boards always apply tuning.board.waveShape, so the comparison runs
+// where the shape is off unless this report turns it on.
+import freePlayMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
 
 const args = Object.fromEntries(process.argv.slice(2).map((arg) => {
   const [key, value] = arg.replace(/^--/, "").split("=");
@@ -53,7 +56,7 @@ console.log(`Runs: ${mode}, Normal, seeds ${seeds.join(",")}, maps ${freePlayMap
 
 // 1. Class-vs-enemy matrix, today vs shaped.
 console.log("1. Class-vs-enemy matrix (road: enemies stopped, platform: HP destroyed), today -> shaped");
-const matrices = Object.fromEntries(Object.entries(shapes).map(([name, tuning]) => [name, classMatrix({ tuning })]));
+const matrices = Object.fromEntries(Object.entries(shapes).map(([name, tuning]) => [name, classMatrix({ tuning, map: freePlayMaps[0] })]));
 console.log("wave".padEnd(10) + CLASSES.map((c) => c.padStart(14)).join("") + "   best road / platform");
 for (const wave of Object.keys(matrices.today)) {
   const a = matrices.today[wave], b = matrices.shaped[wave];

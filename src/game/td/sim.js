@@ -860,7 +860,7 @@ export class TowerDefenseGame {
       enemy.maxHp *= shape.hp; enemy.hp *= shape.hp;
       enemy.reward = (enemy.reward || 0) * shape.reward;
       enemy.attack *= shape.attack;
-      enemy.damage = (enemy.damage || 1) * shape.leak;
+      enemy.damage = Math.max(1, Math.round((enemy.damage || 1) * shape.leak)); // whole lives (flyers 2.5 -> 3)
     }
     if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
     this.applyMutators(enemy);

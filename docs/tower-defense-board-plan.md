@@ -184,6 +184,15 @@ stays for that fixture. Review page: `npm run td:board -- --current`.
 
 ### Step 4: rebalance the campaign (L)
 
+Status (October 1, 2026): campaign and Free Play done; class matrix and long / Endless checks
+in `test-td-balance.mjs` reviewed separately. `scripts/td-board-tune.mjs` searched every
+stage's `hpScale` against the campaign viability setup (35 sampled squads at the levels the
+chapter's first clears buy) with targets 90% (1-1), 65% (Chapter 1), 50% (regular), 35%
+(finales); every stage landed within 0.11 of its target, none under the 20% floor, and
+`test-td-campaign.mjs` passes (including 3-6, which failed before the boards). 1-1 wins every
+run even at 3.9x health, so it is set to 2.0. Free Play maps got their own `enemyHp` (bots win
+7-9 of 12 runs). Leak damage is rounded to whole lives (shaped flyers cost 3).
+
 - Campaign waves stay as authored; the wave shape converts them. Each stage's `hpScale` and
   lives get retuned with `test-td-campaign.mjs` (the viability floor) and the campaign sweep,
   chapter by chapter.
