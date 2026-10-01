@@ -2384,6 +2384,46 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(lilith.endOfAll, "End of All below the threshold");
     assert.equal(g.childFrenzy(child), cfg.endOfAll.attackSpeed, "children attack faster");
   }
+  // Ochenta: the Eighty Count, Spanish Resolve, The Final Eight.
+  {
+    const cfg = tuning.bosses.ochenta;
+    const map = { ...maps[0], boss: "ochenta" };
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 3 });
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const boss = g.spawnEnemy("boss");
+    assert.equal(boss.speed, cfg.stats.speed * g.difficulty.enemySpeed, "own stats");
+    const hero = { entityId: 999, x: boss.x + cfg.valor.radius - 1, y: boss.y, hp: 100, hpLeft: 100 };
+    const far = { entityId: 998, x: boss.x + cfg.valor.radius + 50, y: boss.y, hp: 100, hpLeft: 100 };
+    g.heroes = [hero, far];
+    const src = { entityId: 997, damageType: "physical" };
+    for (let i = 0; i < cfg.valor.max - 1; i += 1) g.hit(boss, 0.01, src, { showShot: false, showHit: false });
+    g.hit(boss, 1, src, { showShot: false, showHit: false, dot: true });
+    assert.equal(boss.valor, cfg.valor.max - 1, "damage over time grants no Valor");
+    g.hit(boss, 0.01, src, { showShot: false, showHit: false });
+    assert.equal(boss.valor, 0, "Valor resets at the Eighty Count");
+    assert.ok(g.isHexed(hero) && !g.isHexed(far), "shockwave stuns heroes in range only");
+    close(g.bossBoost(boss).speed, cfg.valor.speed, "rush speed");
+    boss.stunnedUntil = g.time + 1;
+    g.resistCc(boss, 0.1);
+    close(boss.stunnedUntil - g.time, 1 - 0.1 * cfg.valor.ccResist / (1 - cfg.valor.ccResist), "crowd control runs out faster");
+    g.time = boss.rallyUntil + 0.01;
+    assert.equal(g.bossBoost(boss).speed, 0, "rush ends");
+    // Spanish Resolve: one hit across two thresholds grants two steps.
+    g.hit(boss, boss.maxHp * 0.45, src, { showShot: false, showHit: false });
+    assert.equal(boss.resolveSteps, 2, "80% and 60% passed");
+    close(g.bossBoost(boss).attack, 2 * cfg.resolve.attack, "Resolve attack");
+    const before = boss.hp;
+    g.hit(boss, 100, src, { showShot: false, showHit: false });
+    close(before - boss.hp, 100 * (1 - 2 * cfg.resolve.reduction) * (1 + (g.favor.bossDamage || 0)), "Resolve damage reduction");
+    // The Final Eight: a lethal hit leaves 1 HP for the window, then he can fall.
+    g.hit(boss, boss.maxHp * 10, src, { showShot: false, showHit: false });
+    assert.ok(!boss.dead && boss.hp === 1, "cannot fall below 1 HP");
+    assert.equal(boss.resolveSteps, cfg.resolve.at.length, "all Resolve steps");
+    close(g.bossBoost(boss).attackSpeed, cfg.resolve.at.length * cfg.resolve.attackSpeed + cfg.finalEight.attackSpeed, "Final Eight boost");
+    g.time = boss.finalEightUntil + 0.01;
+    g.hit(boss, 10, src, { showShot: false, showHit: false });
+    assert.ok(boss.dead, "falls after the window");
+  }
 
   // A revived hero keeps its target priority.
   {

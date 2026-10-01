@@ -24,6 +24,8 @@ const SKINS = {
     exclude: [[0, 0, 100, 90], [770, 0, 190, 215], [860, 370, 100, 170], [0, 440, 130, 100]] },
   moonlit: { theme: "moonlit", art: "moonlit-sanctuary-v1", music: "cc0_battlegrounds", boss: "baphomet", exclude: [[380, 0, 260, 80]] },
   verdant: { theme: "verdant", art: "verdant-shrine-v1", music: "cc0_knights_challenge", boss: "lilith", exclude: [[790, 0, 170, 125]] },
+  jungle: { theme: "jungle", art: "jungle-heart-v1", music: "cc0_knights_challenge", boss: "lilith",
+    exclude: [[0, 0, 110, 100], [760, 0, 200, 120], [0, 430, 145, 110], [815, 425, 145, 115]] },
 };
 
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=").slice(1).join("=") ?? fallback;

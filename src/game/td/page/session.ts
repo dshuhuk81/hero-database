@@ -189,6 +189,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (marked) ctx.notice(`${ctx.bossFor(game.map).name} marks ${marked.name}: silenced in a moment. Spread your damage to blunt the mark.`);
     }
     if (type === "endOfAll") ctx.notice(`End of All: ${ctx.bossFor(game.map).name}'s children now attack three times as fast.`);
+    if (type === "eightyCount") ctx.notice(`The Eighty Count: ${ctx.bossFor(game.map).name} stuns nearby heroes and charges ahead, shrugging off crowd control.`);
+    if (type === "resolve") ctx.notice(`Spanish Resolve: ${ctx.bossFor(game.map).name} grows stronger.`);
+    if (type === "finalEight") ctx.notice(`The Final Eight: ${ctx.bossFor(game.map).name} cannot fall for 8 seconds. Hold the line.`);
     // First time each reaction fires in a run: name it so players learn the combination.
     if (type === "reaction" && game.lastReaction) {
       const info = (REACTION_INFO as Record<string, { name: string; needs: string; text: string }>)[game.lastReaction.name];

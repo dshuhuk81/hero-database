@@ -61,6 +61,25 @@ export const MAP_SCENES = {
     glow: { spawn: 0xa88be0, base: 0xffd98a, hit: 0xffb08a, ring: 0xf0c191, place: 0xf0d59a, dust: 0xcdb892, mote: 0xf6e2a8 },
     pad: { road: 0xd2a85a, platform: 0x9fb2e0, highlight: 0xf8e2a6 },
   },
+  "jungle-heart-v1": {
+    name: "Jungle", baseName: "Heart Temple",
+    assets: {
+      terrain: "/td/maps/jungle-terrain-v1.png",
+      spawn: "/td/maps/jungle-spawn-v1.png",
+      base: "/td/maps/jungle-base-v1.png",
+      road: "/td/maps/jungle-road-v1.png",
+    },
+    ground: 0x273528, grade: { color: 0x06130c, alpha: 0.1 },
+    seed: 0x6a756e67,
+    stone: [0x465249, 0x526052, 0x3c493e, 0x596354, 0x354137, 0x4b594a],
+    gold: 0xc5a458, light: 0xece2a2,
+    road: { tint: 0xa7b49d, bed: [[84, 0x0b1910, 0.24], [76, 0x243829, 0.4]], shoulders: [0x536849, 0x38533b], shoulderShadow: 0x08150d },
+    fragments: { count: 62, color: 0x61735b, edge: 0xaebc91 },
+    labels: { spawn: ["SPAWN", 0xffa08c], base: ["HEART TEMPLE", 0xbaf6b2], integrity: 0xb9cfb6, stroke: 0x07150c },
+    glow: { spawn: 0xff536b, base: 0x66f0a0, hit: 0xff9d80, ring: 0x8ff0b0, place: 0xd8cf82, dust: 0xa6b78c, mote: 0xdfff9b },
+    pad: { road: 0xc7a354, platform: 0x74d0a0, highlight: 0xf2e59d },
+    decorate: decorateJungle,
+  },
 };
 
 export function mapSceneFor(map) {
@@ -477,6 +496,31 @@ function decorateVerdant({ graphic, random, layers, reducedMotion }) {
         const blink = Math.max(0, Math.sin(t * 2.1 + fly.phase * 3));
         flies.circle(x, y, 3.2).fill({ color: 0xd9f59a, alpha: blink * 0.08 });
         flies.circle(x, y, 1).fill({ color: 0xf2ffc6, alpha: blink * 0.55 });
+      }
+    },
+  };
+}
+
+function decorateJungle({ graphic, random, layers, reducedMotion }) {
+  const atmosphere = graphic(layers.overlay);
+  const sheltered = [[55, 70], [175, 28], [350, 510], [610, 26], [810, 515], [925, 95], [918, 410], [35, 430]];
+  const fireflies = Array.from({ length: 22 }, (_, i) => {
+    const [x, y] = sheltered[i % sheltered.length];
+    return { x: x + (random() - 0.5) * 65, y: y + (random() - 0.5) * 42, phase: random() * TAU, speed: 0.18 + random() * 0.32 };
+  });
+
+  return {
+    draw(now) {
+      atmosphere.clear();
+      if (reducedMotion) return;
+      const seconds = now / 1000;
+      for (const fly of fireflies) {
+        const t = seconds * fly.speed + fly.phase;
+        const x = fly.x + Math.sin(t * 1.3) * 13 + Math.sin(t * 2.7) * 3;
+        const y = fly.y + Math.cos(t) * 8;
+        const blink = Math.max(0, Math.sin(t * 3.2 + fly.phase));
+        atmosphere.circle(x, y, 3.8).fill({ color: 0xbaff75, alpha: blink * 0.07 });
+        atmosphere.circle(x, y, 1).fill({ color: 0xe9ffc0, alpha: blink * 0.58 });
       }
     },
   };

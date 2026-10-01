@@ -1478,6 +1478,12 @@ export async function createRenderer(canvas, game, options = {}) {
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
+      // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red
+      // ring while The Final Eight keeps him standing.
+      const valor = unit.kind === "boss" ? game.bossTuning?.valor : null;
+      if (valor) drawBar(g, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24);
+      if ((unit.rallyUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 38).stroke({ width: 3, color: 0xfbbf24, alpha: 0.8 });
+      if ((unit.finalEightUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 44).stroke({ width: 3, color: 0xef4444, alpha: 0.85 });
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
       for (const [on, color] of [[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]]) {

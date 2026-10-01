@@ -330,6 +330,20 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `bosses.json`); stills `boss-<id>-v1.webp` built and on R2; PixelLab clips packed as
   `boss-<id>` sheets. No special rules yet: without `tuning.bosses[id]` they fight as the plain
   boss (a simulated Moonlit Pass run with `kraghorn` wins normally).
+- Ochenta, the Proud Commander (October 1, 2026): final boss of Heart Temple (`jungle-heart-temple`, stage 3-6 and Free Play). Armored
+  wolf warlord with a banner spear and a raven (owner-supplied source `boss_ochenta.png`).
+  Still `boss-ochenta-v1.webp`, PixelLab sheet `clips/boss-ochenta-v1` (spear thrust attack).
+  Rules in `tuning.bosses.ochenta` (`sim.bossOnHit`, `eightyCount`, `resistCc`, `bossBoost`):
+  stats 8800 HP, speed 18, armor 180, magic res 80, attack 80 / 1.2s, 3 lives, 80 gold.
+  `valor`: every direct hit (not damage over time) adds 1 Valor; at 80 a shockwave stuns
+  heroes within 80px for 2s (hexed, Veil protects), then for 4s +80% speed and 80% crowd-control
+  resistance (stun, freeze, petrify, slow and chill timers run out 5x as fast); Valor resets.
+  `resolve` (Spanish Resolve): at 80/60/40/20% health a permanent step of +8% attack, +8%
+  attack speed, -4% damage taken. `finalEight`: the first drop below 8% starts 8s in which he
+  cannot fall below 1 HP and has +80% attack, +80% attack speed, +40% speed. Renderer: gold
+  Valor bar under the health bar, gold ring during the rush, red ring during The Final Eight;
+  notices in `page/session.ts`; glossary text `BOSS_RULES.ochenta`. Step values are first
+  guesses, not playtested.
 - Adding a boss to a level:
   1. Art: still `boss-<id>-vN.webp` on R2 (`build-td-enemy-sprites.mjs`, `FILES` maps
      `boss_<id>.png`), animation sheet `clips/boss-<id>-vN`, named after the still (`build-td-enemy-anims.mjs --release`, `ENEMY_SHEETS`).
@@ -375,9 +389,9 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `scripts/build-td-enemy-anims.mjs <clips> --set painted --release` into
   `public/td/enemies/clips/` and uploaded with `upload-to-r2.mjs --prefix td/enemies/clips`.
   A new still version needs new clips; a remade sheet for the same still gets a suffix
-  (`brood-v4b`) because R2 caches a year. Sheets (September 30, 2026): grunt-v2, runner-v2,
+  (`brood-v4b`) because R2 caches a year. Sheets (October 1, 2026): grunt-v2, runner-v2,
   flyer-v2, archer-v3, brute-v3, brood-v4, boss-v2 (Baphomet), boss-lilith-v4, boss-lerna-v1,
-  boss-kraghorn-v1, boss-vorruk-v1, plus brood-v1 (broodcaller) and boss-lilith-v1 (hexer),
+  boss-kraghorn-v1, boss-vorruk-v1, boss-ochenta-v1, plus brood-v1 (broodcaller) and boss-lilith-v1 (hexer),
   the older stills those two keep on purpose (about 70-170 KB each). A sheet is a Pixi
   spritesheet plus a `td` block (feet anchor, idle body size, fps, `pixelArt`). The boss loads
   the map's boss sheet; ENEMY_ART kinds load the sheet of exactly the still they borrow

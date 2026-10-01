@@ -5,6 +5,7 @@ const K = 260;
 // Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
 const SWAY = [0, 10, -10, 5, -14, 14, -5];
 const STEP = 1 / 60;
+const NO_BOOST = { attack: 0, attackSpeed: 0, speed: 0 };
 const REACTION_COLORS = { conduct: "purple", steam: "white", blight: "green", freeze: "white", harvest: "purple" };
 // Hero target priorities (popover icons, M1). "auto" is the class rule in targetOrder().
 export const TARGET_MODES = ["auto", "first", "last", "strongest", "weakest", "fastest", "ground", "flying", "boss"];
@@ -684,9 +685,11 @@ export class TowerDefenseGame {
       if (!enemy.dead && (enemy.poisonUntil ?? 0) > this.time) this.hit(enemy, enemy.poisonDps * dt, enemy.poisonBy, { showShot: false, showHit: false, dot: true });
       if (enemy.dead) continue;
       enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
+      if ((enemy.rallyUntil ?? 0) > this.time) this.resistCc(enemy, dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
       this.enemyTraits(enemy, dt);
+      const boost = enemy.kind === "boss" ? this.bossBoost(enemy) : NO_BOOST;
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
       if (target) {
         const ranged = this.shootsFromRange(enemy);
@@ -701,13 +704,13 @@ export class TowerDefenseGame {
           // A veiled Assassin keeps holding its enemy, but nothing can hurt it.
           if (!this.isVeiled(target) && this.rng() >= mods.dodge) {
             const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
-            const taken = resolveDamage(enemy.attack * reach, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
+            const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
             const thorns = this.pathFx(target, "thorns");
             if (thorns && !enemy.dead) this.hit(enemy, taken * thorns.reflect, target, { showShot: false, showHit: false });
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
-          enemy.attackClock = (enemy.attackPeriod || 0.9) / this.childFrenzy(enemy);
+          enemy.attackClock = (enemy.attackPeriod || 0.9) / this.childFrenzy(enemy) / (1 + boost.attackSpeed);
         }
       } else {
         // Walking past a full blocker costs time: a milder slow (passSlowFactor) for passSlow
@@ -716,7 +719,7 @@ export class TowerDefenseGame {
         if (enemy.brushed) enemy.squeeze = Math.max(enemy.squeeze, blocking.passSlow || 0);
         const tidal = this.hasBoon("tidal_pull") && this.isWet(enemy) ? this.hasBoon("tidal_pull").slow : 1;
         const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1) * tidal;
-        enemy.distance += enemy.speed * pace * dt;
+        enemy.distance += enemy.speed * pace * (1 + boost.speed) * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
         enemy.x = point.x; enemy.y = point.y;
@@ -1511,7 +1514,9 @@ export class TowerDefenseGame {
     const before = enemy.hp;
     const shieldBefore = enemy.shield || 0;
     const stance = (enemy.stanceUntil ?? 0) > this.time ? 1 - (this.bossTuning?.stance?.reduction || 0) : 1;
-    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter * stance);
+    const resolve = enemy.resolveSteps ? 1 - enemy.resolveSteps * (this.bossTuning?.resolve?.reduction || 0) : 1;
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter * stance * resolve);
+    if (enemy.kind === "boss" && this.bossTuning) this.bossOnHit(enemy, dot);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
@@ -1682,6 +1687,80 @@ export class TowerDefenseGame {
     if (!enemy.parentId || !this.bossTuning?.endOfAll) return 1;
     const parent = this.enemies.find((e) => e.entityId === enemy.parentId);
     return parent?.endOfAll ? this.bossTuning.endOfAll.attackSpeed : 1;
+  }
+
+  // Ochenta's rules, run on every hit he takes (after the damage, before a kill):
+  //   finalEight: the first time he drops below `below` health he cannot fall below 1 HP for
+  //     `seconds` and gains `attack`, `attackSpeed` and `speed` while it lasts.
+  //   resolve: each threshold in `at` (health shares) he passes adds a permanent step of
+  //     `attack`, `attackSpeed` and `reduction` (less damage taken).
+  //   valor: every direct hit (not damage over time) adds 1 Valor; at `max` he releases the
+  //     Eighty Count (eightyCount).
+  bossOnHit(boss, dot) {
+    const cfg = this.bossTuning;
+    if (cfg.finalEight) {
+      if (!boss.finalEightUntil && boss.hp <= boss.maxHp * cfg.finalEight.below) {
+        boss.finalEightUntil = this.time + cfg.finalEight.seconds;
+        this.emit({ type: "hold", x: boss.x, y: boss.y, radius: 48, life: 0.8, color: "red" });
+        this.onChange("finalEight", this);
+      }
+      if (boss.finalEightUntil > this.time) boss.hp = Math.max(1, boss.hp);
+    }
+    if (boss.hp <= 0) return;
+    if (cfg.resolve) {
+      const steps = boss.resolveSteps ?? 0;
+      while ((boss.resolveSteps ?? 0) < cfg.resolve.at.length && boss.hp <= boss.maxHp * cfg.resolve.at[boss.resolveSteps ?? 0]) boss.resolveSteps = (boss.resolveSteps ?? 0) + 1;
+      if (boss.resolveSteps > steps) {
+        this.emit({ type: "hold", x: boss.x, y: boss.y, radius: 36, life: 0.5, color: "gold" });
+        this.onChange("resolve", this);
+      }
+    }
+    if (cfg.valor && !dot) {
+      boss.valor = (boss.valor ?? 0) + 1;
+      if (boss.valor >= cfg.valor.max) this.eightyCount(boss);
+    }
+  }
+
+  // The Eighty Count (Ochenta, tuning.bosses[id].valor): a shockwave stuns every hero within
+  // `radius` for `stun` s, then for `seconds` he moves `speed` faster and resists `ccResist`
+  // of crowd control (resistCc). Valor starts again from 0.
+  eightyCount(boss) {
+    const cfg = this.bossTuning.valor;
+    boss.valor = 0;
+    boss.rallyUntil = this.time + cfg.seconds;
+    for (const hero of this.heroes) {
+      if (this.isVeiled(hero) || Math.hypot(hero.x - boss.x, hero.y - boss.y) > cfg.radius) continue;
+      hero.hexedUntil = Math.max(hero.hexedUntil ?? 0, this.time + cfg.stun);
+    }
+    this.emit({ type: "splash", x: boss.x, y: boss.y, radius: cfg.radius, life: 0.6, color: "red" });
+    this.onChange("eightyCount", this);
+  }
+
+  // Crowd-control resistance: stuns, freezes, petrification and slows on the enemy run out
+  // 1 / (1 - share) times as fast, so a share of 0.8 cuts their length by 80%.
+  resistCc(enemy, dt) {
+    const share = Math.min(0.95, this.bossTuning?.valor?.ccResist || 0);
+    const extra = dt * share / (1 - share);
+    for (const key of ["stunnedUntil", "petrifiedUntil", "frozenUntil"]) {
+      if ((enemy[key] ?? 0) > this.time) enemy[key] = Math.max(this.time, enemy[key] - extra);
+    }
+    enemy.slow = Math.max(0, enemy.slow - extra);
+    enemy.chill = Math.max(0, (enemy.chill ?? 0) - extra);
+  }
+
+  // Ochenta's summed bonuses (shares): Spanish Resolve steps, the Eighty Count rush and The
+  // Final Eight. Other bosses get none.
+  bossBoost(boss) {
+    const cfg = this.bossTuning;
+    if (!cfg?.resolve && !cfg?.valor && !cfg?.finalEight) return NO_BOOST;
+    const steps = boss.resolveSteps ?? 0;
+    const final = (boss.finalEightUntil ?? 0) > this.time ? cfg.finalEight : null;
+    const rush = (boss.rallyUntil ?? 0) > this.time ? cfg.valor?.speed || 0 : 0;
+    return {
+      attack: steps * (cfg.resolve?.attack || 0) + (final?.attack || 0),
+      attackSpeed: steps * (cfg.resolve?.attackSpeed || 0) + (final?.attackSpeed || 0),
+      speed: rush + (final?.speed || 0),
+    };
   }
 
   recentDamageOf(hero) {

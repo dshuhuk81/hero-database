@@ -355,6 +355,44 @@
         "below": 0.5,
         "attackSpeed": 3
       }
+    },
+    "ochenta": {
+      "stats": {
+        "hp": 8800,
+        "speed": 18,
+        "armor": 180,
+        "magicRes": 80,
+        "attack": 80,
+        "attackPeriod": 1.2,
+        "damage": 3,
+        "reward": 80
+      },
+      "valor": {
+        "max": 80,
+        "radius": 80,
+        "stun": 2,
+        "seconds": 4,
+        "speed": 0.8,
+        "ccResist": 0.8
+      },
+      "resolve": {
+        "at": [
+          0.8,
+          0.6,
+          0.4,
+          0.2
+        ],
+        "attack": 0.08,
+        "attackSpeed": 0.08,
+        "reduction": 0.04
+      },
+      "finalEight": {
+        "below": 0.08,
+        "seconds": 8,
+        "attack": 0.8,
+        "attackSpeed": 0.8,
+        "speed": 0.4
+      }
     }
   },
   "difficulty": {

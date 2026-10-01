@@ -44,6 +44,7 @@ const SETS = {
     "boss-lerna-v1": { dir: "lerna", clips: clipFiles("lerna") },
     "boss-kraghorn-v1": { dir: "kraghorn", clips: clipFiles("kraghorn") },
     "boss-vorruk-v1": { dir: "vorruk", clips: clipFiles("vorruk") },
+    "boss-ochenta-v1": { dir: "boss-ochenta-v1", clips: clipFiles("boss-ochenta-v1") },
     // Older stills kept on purpose for the broodcaller and the hexer (assets.js ENEMY_ART).
     "brood-v1": { dir: "broodcaller", clips: clipFiles("broodcaller") },
     "boss-lilith-v1": { dir: "hexer", clips: clipFiles("hexer") },

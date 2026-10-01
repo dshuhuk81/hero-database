@@ -101,6 +101,7 @@ export const CLASS_ULT_TEXT = {
 export const BOSS_RULES = {
   baphomet: "Mark of the Goat: every 15s marks the hero that dealt the most recent damage; 1.5s later it is silenced for 3s and loses 10% health (Supports with Radiance or Purify can lift it). Defensive Stance: every 20s takes 60% less damage for 4s. Spreading damage over several heroes blunts the mark.",
   lilith: "End of All: below half health her children attack three times as fast.",
+  ochenta: "The Eighty Count: every hit he takes grants 1 Valor; at 80 Valor a shockwave stuns heroes within 80px for 2s, and for 4s he moves 80% faster and shrugs off 80% of crowd control. Fast attacks only fuel his momentum. Spanish Resolve: at 80%, 60%, 40% and 20% health he gains 8% attack, 8% attack speed and takes 4% less damage, for good. The Final Eight: below 8% health he cannot fall below 1 HP for 8s and attacks 80% harder and faster while moving 40% faster.",
 };
 
 // Rare and epic run blessings (M17); numbers in tuning.runBoons.

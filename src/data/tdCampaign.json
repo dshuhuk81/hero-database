@@ -2386,6 +2386,108 @@
           ]
         }
       ]
+    },
+    {
+      "id": 3,
+      "name": "The Emerald Deep",
+      "milestones": [
+        {"laurels": 6, "rewards": [{"type": "currency", "id": "gold", "amount": 900}, {"type": "currency", "id": "heroXp", "amount": 450}]},
+        {"laurels": 12, "rewards": [{"type": "currency", "id": "divineSeals", "amount": 140}]},
+        {"laurels": 18, "rewards": [{"type": "currency", "id": "divineSeals", "amount": 220}, {"type": "currency", "id": "sealDust", "amount": 80}]}
+      ],
+      "stages": [
+        {
+          "id": "3-1", "name": "Beneath the Canopy", "mapId": "jungle-canopy-pass",
+          "text": "The Sunscar road vanishes beneath the canopy. Secure the tight switchbacks before runners and shieldbearers take the inner court.",
+          "lives": 16, "hpScale": 0.68, "unlockAfter": "2-6",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 1900}, {"type": "currency", "id": "heroXp", "amount": 950}, {"type": "currency", "id": "divineSeals", "amount": 60}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "grunt", "count": 16, "gapMs": 430}, {"kind": "runner", "count": 10, "gapMs": 360}]},
+            {"wave": 2, "spawns": [{"kind": "shieldbearer", "count": 6, "gapMs": 720}, {"kind": "archer", "count": 4, "gapMs": 850}]},
+            {"wave": 3, "spawns": [{"kind": "brute", "count": 5, "gapMs": 980}, {"kind": "mender", "count": 3, "gapMs": 820}]},
+            {"wave": 4, "spawns": [{"kind": "flyer", "count": 12, "gapMs": 470}, {"kind": "hexer", "count": 3, "gapMs": 900}]},
+            {"wave": 5, "spawns": [{"kind": "broodcaller", "count": 2, "gapMs": 1350}, {"kind": "runner", "count": 18, "gapMs": 320}]},
+            {"wave": 6, "spawns": [{"kind": "shieldbearer", "count": 8, "gapMs": 650}, {"kind": "brute", "count": 6, "gapMs": 900}, {"kind": "flyer", "count": 10, "gapMs": 430}]}
+          ]
+        },
+        {
+          "id": "3-2", "name": "The Root Maze", "mapId": "jungle-root-maze",
+          "text": "Ancient roots split the road into overlapping kill zones. Hold the central turns while archers and hexers attack from behind the advance.",
+          "lives": 15, "hpScale": 0.66, "unlockAfter": "3-1",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 2000}, {"type": "currency", "id": "heroXp", "amount": 1000}, {"type": "currency", "id": "divineSeals", "amount": 60}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "archer", "count": 5, "gapMs": 820}, {"kind": "grunt", "count": 16, "gapMs": 400}]},
+            {"wave": 2, "spawns": [{"kind": "shieldbearer", "count": 7, "gapMs": 680}, {"kind": "runner", "count": 16, "gapMs": 340}]},
+            {"wave": 3, "spawns": [{"kind": "hexer", "count": 4, "gapMs": 880}, {"kind": "flyer", "count": 10, "gapMs": 480}]},
+            {"wave": 4, "spawns": [{"kind": "brute", "count": 6, "gapMs": 920}, {"kind": "mender", "count": 4, "gapMs": 760}]},
+            {"wave": 5, "spawns": [{"kind": "broodcaller", "count": 3, "gapMs": 1250}, {"kind": "archer", "count": 6, "gapMs": 760}]},
+            {"wave": 6, "spawns": [{"kind": "shieldbearer", "count": 8, "gapMs": 620}, {"kind": "hexer", "count": 4, "gapMs": 820}, {"kind": "runner", "count": 20, "gapMs": 290}]}
+          ]
+        },
+        {
+          "id": "3-3", "name": "Flooded Court", "mapId": "jungle-flooded-court",
+          "text": "The temple court channels every assault through a shallow basin. Break the menders before the brutes climb back out. Hecate guards the far stair.",
+          "lives": 15, "hpScale": 0.62, "unlockAfter": "3-2",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 2100}, {"type": "currency", "id": "heroXp", "amount": 1050}, {"type": "currency", "id": "divineSeals", "amount": 60}, {"type": "hero", "id": "hecate"}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "grunt", "count": 18, "gapMs": 390}, {"kind": "mender", "count": 3, "gapMs": 850}]},
+            {"wave": 2, "spawns": [{"kind": "brute", "count": 6, "gapMs": 940}, {"kind": "mender", "count": 4, "gapMs": 760}]},
+            {"wave": 3, "spawns": [{"kind": "flyer", "count": 14, "gapMs": 440}, {"kind": "archer", "count": 5, "gapMs": 800}]},
+            {"wave": 4, "spawns": [{"kind": "hexer", "count": 5, "gapMs": 820}, {"kind": "shieldbearer", "count": 8, "gapMs": 640}]},
+            {"wave": 5, "spawns": [{"kind": "broodcaller", "count": 3, "gapMs": 1250}, {"kind": "runner", "count": 20, "gapMs": 300}]},
+            {"wave": 6, "spawns": [{"kind": "brute", "count": 8, "gapMs": 860}, {"kind": "mender", "count": 5, "gapMs": 720}, {"kind": "grunt", "count": 18, "gapMs": 350}]},
+            {"wave": 7, "spawns": [{"kind": "shieldbearer", "count": 9, "gapMs": 600}, {"kind": "flyer", "count": 14, "gapMs": 400}, {"kind": "hexer", "count": 4, "gapMs": 800}]}
+          ]
+        },
+        {
+          "id": "3-4", "name": "Jaguar Steps", "mapId": "jungle-jaguar-steps",
+          "text": "The short climb to the jaguar shrine leaves little time to recover. Spread damage across the bends and stop each brood before it multiplies.",
+          "lives": 15, "hpScale": 0.58, "unlockAfter": "3-3",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 2200}, {"type": "currency", "id": "heroXp", "amount": 1100}, {"type": "currency", "id": "divineSeals", "amount": 60}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "runner", "count": 20, "gapMs": 310}, {"kind": "broodcaller", "count": 2, "gapMs": 1300}]},
+            {"wave": 2, "spawns": [{"kind": "shieldbearer", "count": 8, "gapMs": 620}, {"kind": "archer", "count": 6, "gapMs": 780}]},
+            {"wave": 3, "spawns": [{"kind": "brute", "count": 7, "gapMs": 900}, {"kind": "hexer", "count": 4, "gapMs": 820}]},
+            {"wave": 4, "spawns": [{"kind": "flyer", "count": 16, "gapMs": 410}, {"kind": "mender", "count": 4, "gapMs": 760}]},
+            {"wave": 5, "spawns": [{"kind": "broodcaller", "count": 4, "gapMs": 1150}, {"kind": "grunt", "count": 20, "gapMs": 340}]},
+            {"wave": 6, "spawns": [{"kind": "shieldbearer", "count": 10, "gapMs": 580}, {"kind": "archer", "count": 7, "gapMs": 730}, {"kind": "runner", "count": 20, "gapMs": 280}]},
+            {"wave": 7, "spawns": [{"kind": "brute", "count": 9, "gapMs": 820}, {"kind": "broodcaller", "count": 3, "gapMs": 1150}, {"kind": "flyer", "count": 14, "gapMs": 390}]}
+          ]
+        },
+        {
+          "id": "3-5", "name": "Emerald Coil", "mapId": "jungle-emerald-coil",
+          "text": "The longest road coils around the inner ruins. Layer your defenses: every enemy in the jungle joins the march to the Heart Temple.",
+          "lives": 16, "hpScale": 0.54, "unlockAfter": "3-4",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 2300}, {"type": "currency", "id": "heroXp", "amount": 1150}, {"type": "currency", "id": "divineSeals", "amount": 60}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "grunt", "count": 20, "gapMs": 360}, {"kind": "archer", "count": 6, "gapMs": 760}]},
+            {"wave": 2, "spawns": [{"kind": "shieldbearer", "count": 9, "gapMs": 600}, {"kind": "mender", "count": 4, "gapMs": 740}]},
+            {"wave": 3, "spawns": [{"kind": "runner", "count": 22, "gapMs": 280}, {"kind": "hexer", "count": 5, "gapMs": 790}]},
+            {"wave": 4, "spawns": [{"kind": "brute", "count": 8, "gapMs": 860}, {"kind": "flyer", "count": 16, "gapMs": 400}]},
+            {"wave": 5, "spawns": [{"kind": "broodcaller", "count": 4, "gapMs": 1120}, {"kind": "shieldbearer", "count": 9, "gapMs": 590}]},
+            {"wave": 6, "spawns": [{"kind": "archer", "count": 8, "gapMs": 700}, {"kind": "hexer", "count": 5, "gapMs": 760}, {"kind": "grunt", "count": 20, "gapMs": 320}]},
+            {"wave": 7, "spawns": [{"kind": "brute", "count": 10, "gapMs": 790}, {"kind": "mender", "count": 6, "gapMs": 680}, {"kind": "runner", "count": 22, "gapMs": 260}]},
+            {"wave": 8, "spawns": [{"kind": "broodcaller", "count": 4, "gapMs": 1050}, {"kind": "flyer", "count": 18, "gapMs": 370}, {"kind": "shieldbearer", "count": 10, "gapMs": 560}]}
+          ]
+        },
+        {
+          "id": "3-6", "name": "Heart of the Jungle", "mapId": "jungle-heart-temple",
+          "text": "Ochenta, the Proud Commander, marches on the Heart Temple with the whole jungle host behind him. Every blow you land feeds his Valor: hit hard, not often, and keep the jade heart alive.",
+          "lives": 18, "hpScale": 0.42, "unlockAfter": "3-5",
+          "rewards": [{"type": "currency", "id": "gold", "amount": 2500}, {"type": "currency", "id": "heroXp", "amount": 1250}, {"type": "currency", "id": "divineSeals", "amount": 120}, {"type": "hero", "id": "harmonia"}],
+          "waves": [
+            {"wave": 1, "spawns": [{"kind": "grunt", "count": 20, "gapMs": 360}, {"kind": "runner", "count": 18, "gapMs": 300}]},
+            {"wave": 2, "spawns": [{"kind": "shieldbearer", "count": 9, "gapMs": 610}, {"kind": "archer", "count": 7, "gapMs": 740}, {"kind": "flyer", "count": 12, "gapMs": 430}]},
+            {"wave": 3, "spawns": [{"kind": "brute", "count": 8, "gapMs": 850}, {"kind": "mender", "count": 5, "gapMs": 710}, {"kind": "hexer", "count": 5, "gapMs": 780}]},
+            {"wave": 4, "spawns": [{"kind": "broodcaller", "count": 4, "gapMs": 1100}, {"kind": "runner", "count": 22, "gapMs": 260}]},
+            {"wave": 5, "spawns": [{"kind": "shieldbearer", "count": 10, "gapMs": 570}, {"kind": "brute", "count": 9, "gapMs": 810}, {"kind": "flyer", "count": 16, "gapMs": 390}]},
+            {"wave": 6, "spawns": [{"kind": "hexer", "count": 6, "gapMs": 740}, {"kind": "mender", "count": 6, "gapMs": 670}, {"kind": "archer", "count": 8, "gapMs": 690}]},
+            {"wave": 7, "spawns": [{"kind": "broodcaller", "count": 5, "gapMs": 1000}, {"kind": "brute", "count": 10, "gapMs": 760}, {"kind": "runner", "count": 24, "gapMs": 240}]},
+            {"wave": 8, "spawns": [{"kind": "shieldbearer", "count": 12, "gapMs": 540}, {"kind": "flyer", "count": 18, "gapMs": 360}, {"kind": "hexer", "count": 6, "gapMs": 700}]},
+            {"wave": 9, "spawns": [{"kind": "boss", "count": 1, "gapMs": 1000}, {"kind": "grunt", "count": 20, "gapMs": 360}, {"kind": "mender", "count": 5, "gapMs": 690}, {"kind": "flyer", "count": 14, "gapMs": 410}]}
+          ]
+        }
+      ]
     }
   ]
 }
