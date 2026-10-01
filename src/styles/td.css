@@ -11957,11 +11957,12 @@ button .td-cur {
 }
 
 .td-app .td-hero-upgrade--split {
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .td-app .td-hero-upgrade--split>* {
-  flex: 1;
+  width: 100%;
   min-width: 0;
   padding-inline: var(--space-2);
   white-space: nowrap;
@@ -11975,7 +11976,6 @@ button .td-cur {
 }
 
 .td-app .td-hero-upgrade--split .td-camp-levelup {
-  flex: 1.5;
   min-width: 0;
   white-space: nowrap;
 }

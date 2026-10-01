@@ -305,15 +305,19 @@ export function createCampaign(ctx: PageContext) {
     }).join("");
     // Roster: 50 x 75 art cards, class icon on the art, level over its foot; name and (for
     // locked heroes) the unlock source are in the tooltip and label. Locked heroes trail the owned ones, dimmed.
-    const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
-    const heroes = [...data.heroes].sort((a: any, b: any) => order.indexOf(a.class) - order.indexOf(b.class) || a.cost - b.cost);
+    const mightOf = new Map<string, number>(data.heroes.map((hero: any) => [hero.id, might(hero)]));
+    const heroes = [...data.heroes].sort((a: any, b: any) =>
+      Number(!p.owned.includes(a.id)) - Number(!p.owned.includes(b.id)) ||
+      (mightOf.get(b.id) ?? 0) - (mightOf.get(a.id) ?? 0) ||
+      a.name.localeCompare(b.name));
     const tile = (hero: any) => {
       const owned = p.owned.includes(hero.id), picked = squad.includes(hero.id);
       const unlock = owned ? null : heroRewardStage(campaign, hero.id);
       const skill = data.tuning.heroSkills?.[hero.id];
-      const tip = owned ? `${hero.name} · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
+      const heroMight = mightOf.get(hero.id) ?? 0;
+      const tip = owned ? `${hero.name} · ${heroMight.toLocaleString()} Might · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
-      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, level ${heroLevel(p, hero.id)}` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
+      return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" src="${hero.image}" alt="" loading="lazy">
         <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}

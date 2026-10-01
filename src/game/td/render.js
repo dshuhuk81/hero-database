@@ -1573,10 +1573,20 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function spawnDamageNumber(effect) {
+    const amount = Math.max(1, effect.amount);
+    // Damage-over-time ticks arrive faster than the popup fades. Reuse one popup per
+    // enemy so a moving target does not leave a dotted line of numbers behind it.
+    const existingDot = effect.dot && damageNumbers.find((popup) => popup.dot && popup.enemyId === effect.enemyId);
+    if (existingDot) {
+      existingDot.amount += amount;
+      existingDot.text.text = shortNumber(existingDot.amount);
+      existingDot.life = existingDot.maxLife;
+      return;
+    }
     const stack = damageNumbers.reduce((count, popup) => count + (popup.enemyId === effect.enemyId ? 1 : 0), 0);
     const body = enemyBody({ kind: effect.enemyKind, x: effect.x, y: effect.y, flying: effect.flying });
     const text = new PIXI.Text({
-      text: shortNumber(Math.max(1, effect.amount)),
+      text: shortNumber(amount),
       style: {
         fill: effect.crit ? 0xffe27a : effect.shielded ? 0x9de7ff : 0xf8f5ff,
         fontFamily: "system-ui, sans-serif",
@@ -1586,9 +1596,10 @@ export async function createRenderer(canvas, game, options = {}) {
       },
     });
     text.anchor.set(0.5, 1);
-    text.position.set(effect.x + ((stack % 3) - 1) * 8, body.top - 3 - Math.min(stack, 3) * 4);
+    const offsetX = ((stack % 3) - 1) * 8;
+    text.position.set(effect.x + offsetX, body.top - 3 - Math.min(stack, 3) * 4);
     layerNumbers.addChild(text);
-    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, life: effect.life, maxLife: 0.75 });
+    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, offsetX, amount, dot: !!effect.dot, life: effect.life, maxLife: 0.75 });
   }
 
   function advanceDamageNumbers(dt) {
@@ -1600,6 +1611,14 @@ export async function createRenderer(canvas, game, options = {}) {
         popup.text.destroy();
         damageNumbers.splice(i, 1);
         continue;
+      }
+      if (popup.dot) {
+        const enemy = game.enemies.find((unit) => unit.entityId === popup.enemyId);
+        if (enemy) {
+          const body = enemyBody(enemy);
+          popup.text.x = enemy.x + popup.offsetX;
+          popup.y = body.top - 3;
+        }
       }
       const progress = 1 - popup.life / popup.maxLife;
       popup.text.y = popup.y - (reducedMotion ? 8 : 24) * progress;

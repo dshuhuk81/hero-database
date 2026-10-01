@@ -29,7 +29,12 @@ Only open work. Use subagents for more than one milestone; coordinate file chang
 
 ### Bugs / Enhancements
 
-None open. October 1 batch (melee motion, Gaia Support, Atalanta ultimate) -> archive, awaiting playtest.
+- [x] Fixed: Burning and other ticking damage now combines into one moving damage number per enemy instead of leaving a line of numbers behind it.
+
+- [x] Fixed: The stage hero-selection roster now sorts owned heroes by Might from highest to lowest, with locked heroes following in Might order.
+
+- [x] Fixed: Evolution actions now use separate full-width rows, preventing the copy-to-Dust and Evolve buttons from overlapping in the hero-detail panel.
+
 
 ### 4. Doc drift (audit)
 
