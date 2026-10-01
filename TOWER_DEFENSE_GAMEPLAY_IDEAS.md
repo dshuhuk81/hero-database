@@ -355,6 +355,55 @@ Prototype plan, smallest first:
    the lattice, re-author waves chapter by chapter, keep Free Play Endless on the old model until
    the new one is balanced.
 
+#### Step 1 results (October 1, 2026)
+
+Built as `tuning.waveShape` (off by default; `enabled: true` turns it on) in `sim.js`: every
+non-boss wave group spawns `count` times as many enemies, each with `hp`, `reward`, `attack` and
+`leak` (lives lost on a leak) multiplied, spawn gaps multiplied by `gap`. Bosses and summoned
+children are unchanged. Report: `npm run td:wave-shape` (class matrix, five bot squads, the
+balanced squad without each class, one-class squads; 10 Free Play maps, both bot policies; one
+seed for these numbers). Raw output: `docs/audits/td-2026-10-01-wave-shape/`.
+
+Two variants, both with 0.2× enemies, 5× gold and leak damage, and 2.5× spawn gap:
+
+| | Today | A: 5× health, 5× attack | B: 3.5× health, 2.5× attack |
+|---|---|---|---|
+| Balanced squad wins | 18/20 | 7/20 | 16/20 |
+| Budget squad wins | 18/20 | 4/20 | 17/20 |
+| All platform, no blockers | 20/20 | 1/20 | 12/20 |
+| Glass cannon | 14/20 | 0/20 | 6/20 |
+| Balanced without Mage | 15/20, 37% lives | 5/20 | 14/20, 56% lives |
+| Balanced without Archer | 13/20 | 0/20 | 1/20 |
+| Balanced without Support | 15/20 | 0/20 | 7/20 |
+| Best road class (7 wave types; flyer and boss are ties) | Warrior 4, Tank 2, Assassin 1 | Tank 5, Warrior 1, Assassin 1 | Tank 6, Warrior 1 |
+| Best platform class (9 wave types) | Archer 5, Mage 4 | Archer 9 | Archer 9 (swarm, runner and shield by 1-3 points) |
+
+What this shows:
+
+1. **Equal totals are not equal difficulty.** Variant A keeps total health, gold and attack the
+   same and the game becomes far harder: area damage hits a fifth of the bodies, and a single
+   enemy with 5× attack kills a Warrior or Assassin before it dies (Warrior holds 0% of swarm,
+   armored and shield waves). Variant B is close to today's difficulty for normal squads.
+2. **Mage dependence goes away.** Without Mages the balanced squad now wins as often as with
+   them and keeps more lives (56% vs 37% today). Mage platform scores drop on armored (51% to
+   24%), healer (75% to 47%) and flyer (47% to 18%) waves.
+3. **Tanks get their payoff, and blockers matter.** In variant B the Tank is the best road class in 6 of the
+   7 wave types that are not ties, and holds 100% of armored, runner, healer, shield and hexer
+   waves. The no-blocker squad drops
+   from 20/20 to 12/20, so road heroes are no longer optional.
+4. **Archers become the new must-have.** Archer is the best platform class on every wave type,
+   and the balanced squad without Archers falls from 13/20 to 1/20. Their single-target crit and
+   "targets strongest" fit tanky enemies exactly. Supports also matter more (15/20 to 7/20
+   without).
+5. **Runs get shorter.** The balanced squad's classic run drops from 10.1 to 8.0 minutes.
+
+Conclusion: the direction does what it should for Tanks, blockers and Mage reliance, but the
+balance point moves from Mages to Archers. Before step 2, Mages need a single-target role in the
+new model (for example a stronger main-target hit with splash as a bonus, or magic damage that
+ignores the high armor of strong enemies), and Archer crit should be checked. Variant B
+(`"hp": 3.5, "attack": 2.5`) is the better baseline for further tests. More seeds
+(`--seeds=3`, about 18 minutes) should confirm these before any decision.
+
 ## 3. Suggested order
 
 The audit's warning still holds: the game is at risk of too many layers to learn. Every idea

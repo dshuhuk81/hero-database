@@ -1,0 +1,38 @@
+Wave shape: count x0.2, health/gold/attack/leak x5.00, spawn gap x2.5
+Runs: classic, Normal, seeds 99, maps moonlit-pass, verdant-crossing, sunscar-ruins, sunscar-basin, jungle-canopy-pass, jungle-root-maze, jungle-flooded-court, jungle-jaguar-steps, jungle-emerald-coil, jungle-heart-temple
+
+1. Class-vs-enemy matrix (road: enemies stopped, platform: HP destroyed), today -> shaped
+wave                Tank       Warrior      Assassin          Mage        Archer       Support   best road / platform
+swarm           13%->12%       35%->0%      17%->10%      43%->29%      36%->31%        1%->1%   Warrior/Mage -> Tank/Archer
+armored         50%->20%        6%->0%       17%->0%      51%->16%      49%->34%        2%->2%   Tank/Mage -> Tank/Archer
+runner          19%->20%      31%->17%      35%->33%      50%->48%      43%->50%        2%->2%   Assassin/Mage -> Assassin/Archer
+flyer             0%->0%        0%->0%        0%->0%      47%->18%      62%->55%        4%->3%   Tank/Archer -> Tank/Archer
+boss          100%->100%    100%->100%    100%->100%      20%->20%      35%->35%        1%->1%   Tank/Archer -> Tank/Archer
+healer          63%->20%       67%->8%      64%->17%      75%->37%      77%->51%        2%->3%   Warrior/Archer -> Tank/Archer
+shield          25%->80%       26%->0%      11%->25%      31%->37%      26%->42%        1%->1%   Warrior/Mage -> Tank/Archer
+summoner         0%->60%     33%->100%      0%->100%      55%->39%      72%->84%        1%->1%   Warrior/Archer -> Warrior/Archer
+hexer          50%->100%     33%->100%     17%->100%      54%->62%      71%->77%        2%->4%   Tank/Archer -> Tank/Archer
+
+2. Bot squads (wins, mean lives kept on a win, mean run length), today -> shaped
+   balanced (S-tier core)         18/20 won, 86% lives, 10.1 min     -> 7/20 won, 54% lives, 7.8 min
+   budget (D-tier)                18/20 won, 95% lives, 6.9 min      -> 4/20 won, 55% lives, 4.3 min
+   road wall                      0/20 won, 0% lives, 11.7 min       -> 0/20 won, 0% lives, 9.0 min
+   all platform (no blockers)     20/20 won, 87% lives, 6.1 min      -> 1/20 won, 100% lives, 2.9 min
+   glass cannon                   14/20 won, 74% lives, 9.5 min      -> 0/20 won, 0% lives, 3.0 min
+
+3. Balanced squad without each class, today -> shaped
+   full squad                     18/20 won, 86% lives, 10.1 min     -> 7/20 won, 54% lives, 7.8 min
+   without Tank                   18/20 won, 99% lives, 7.3 min      -> 7/20 won, 54% lives, 6.3 min
+   without Warrior                15/20 won, 83% lives, 8.7 min      -> 13/20 won, 71% lives, 9.1 min
+   without Assassin               18/20 won, 86% lives, 10.1 min     -> 7/20 won, 54% lives, 7.8 min
+   without Mage                   15/20 won, 37% lives, 10.4 min     -> 5/20 won, 52% lives, 9.1 min
+   without Archer                 13/20 won, 46% lives, 11.0 min     -> 0/20 won, 0% lives, 9.2 min
+   without Support                15/20 won, 77% lives, 10.2 min     -> 0/20 won, 0% lives, 3.4 min
+
+4. One-class squads, today -> shaped
+   Tank                           0/20 won, 0% lives, 9.7 min        -> 0/20 won, 0% lives, 4.0 min
+   Warrior                        0/20 won, 0% lives, 6.6 min        -> 0/20 won, 0% lives, 2.6 min
+   Assassin                       0/20 won, 0% lives, 5.7 min        -> 0/20 won, 0% lives, 3.0 min
+   Mage                           4/20 won, 39% lives, 6.3 min       -> 0/20 won, 0% lives, 2.0 min
+   Archer                         8/20 won, 42% lives, 4.6 min       -> 0/20 won, 0% lives, 3.1 min
+   Support                        0/20 won, 0% lives, 2.1 min        -> 0/20 won, 0% lives, 1.9 min

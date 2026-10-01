@@ -615,6 +615,17 @@ export class TowerDefenseGame {
     return Math.round(wave.spawns.reduce((sum, group) => sum + group.count * (group.scale ?? 1) * (this.tuning.enemies[group.kind]?.hp || 0), 0) * scale);
   }
 
+  // Wave shape prototype (tuning.waveShape, off unless `enabled`): fewer, stronger enemies.
+  // `count` multiplies every non-boss group's count; `hp`, `reward`, `attack` and `leak`
+  // multiply each remaining enemy; `gap` multiplies the spawn gap. With count 0.2 and the
+  // rest at 5, a wave keeps its total health, gold, pressure and lives at stake.
+  waveShape() {
+    const cfg = this.tuning.waveShape;
+    if (!cfg?.enabled) return null;
+    const power = cfg.power ?? 1 / (cfg.count || 1);
+    return { count: cfg.count ?? 1, gap: cfg.gap ?? 1, hp: cfg.hp ?? power, reward: cfg.reward ?? power, attack: cfg.attack ?? power, leak: cfg.leak ?? power };
+  }
+
   startWave() {
     // Endless: generate this wave and the next, so previews and quests always see it.
     if (this.mode === "endless") {
@@ -638,13 +649,16 @@ export class TowerDefenseGame {
     const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
       const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
-      const count = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
+      const shape = this.waveShape();
+      const mutated = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
+      const count = shape && group.kind !== "boss" ? Math.max(1, Math.round(mutated * shape.count)) : mutated;
+      const gapMs = shape && group.kind !== "boss" ? group.gapMs * shape.gap : group.gapMs;
       for (let i = 0; i < count; i += 1) {
         const gate = lane++ % this.lanes.length;
         at = Math.max(at, laneFree[gate]);
         this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
         laneFree[gate] = at + spacing / speed;
-        at += group.gapMs / 1000;
+        at += gapMs / 1000;
       }
       at += 0.8;
     }
@@ -815,6 +829,15 @@ export class TowerDefenseGame {
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    // Wave shape prototype: wave enemies (not bosses, not summoned children) carry the
+    // health, gold, attack and leak damage of the enemies the shape removed.
+    const shape = this.waveShape();
+    if (shape && kind !== "boss" && !extra) {
+      enemy.maxHp *= shape.hp; enemy.hp *= shape.hp;
+      enemy.reward = (enemy.reward || 0) * shape.reward;
+      enemy.attack *= shape.attack;
+      enemy.damage = (enemy.damage || 1) * shape.leak;
+    }
     if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
     this.applyMutators(enemy);
     this.enemies.push(enemy);

@@ -74,7 +74,7 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
     if (source === unit && !enemy.summonerId) dealt += before - Math.max(0, enemy.hp);
   };
   g.startWave();
-  const count = WAVE_TYPES[waveType].reduce((sum, group) => sum + group.count, 0);
+  const count = g.spawnQueue.length; // the wave as queued (tuning.waveShape can change it)
   for (let i = 0; i < 60 * LIMIT_SECONDS && g.running; i += 1) g.step(1 / 60);
   if (hero.slot === "road") return 1 - g.totalLeaks / count;
   return Math.min(1, dealt / total);
