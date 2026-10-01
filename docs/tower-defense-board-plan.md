@@ -104,8 +104,8 @@ Sizes: S is a day or less, M a few days, L a week or more.
 
 ### Step 1: make the board a first-class mode (M)
 
-Status (October 1, 2026): done except the step-1 tests listed last, which exist for patterns,
-shaped waves and the focus and training pickers (`test-td-sim.mjs`). Range left the battle
+Status (October 1, 2026): done. `test-td-sim.mjs` covers the focus and training pickers
+without range; pattern targeting and shaped waves are checked by the board bot runs. Range left the battle
 on every map, not only on boards. Owner direction recorded: hero upgrades belong outside
 battle; the in-battle gold economy stays as is until it is redesigned.
 
