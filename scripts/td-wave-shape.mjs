@@ -5,6 +5,7 @@
 // --hp and --attack override the per-enemy multipliers (default 1 / count).
 // --focus=1 also gives Mages the focus rule (classes.Mage.focus, see sim.focusShare) in the
 // shaped runs; --focus-today=1 adds it to today's runs too, to see what it does there.
+// --kit=Archer.pierce:0.2,Archer.crit:0.05 overrides class kit numbers in the shaped runs.
 import baseTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import { classMatrix, bestClass, CLASSES } from "./lib/td-class-matrix.mjs";
@@ -22,9 +23,19 @@ const extra = Object.fromEntries(["hp", "attack"].filter((k) => args[k]).map((k)
 
 const withFocus = (tuning) => ({ ...tuning, classes: { ...tuning.classes, Mage: { ...tuning.classes.Mage, focus: { slots: 2, share: 1 } } } });
 const shaped = { ...baseTuning, waveShape: { enabled: true, count, gap, ...extra } };
+const kitEdits = (args.kit || "").split(",").filter(Boolean).map((entry) => {
+  const [path, value] = entry.split(":");
+  const [cls, key] = path.split(".");
+  return { cls, key, value: Number(value) };
+});
+const withKits = (tuning) => {
+  const classes = { ...tuning.classes };
+  for (const { cls, key, value } of kitEdits) classes[cls] = { ...classes[cls], [key]: value };
+  return { ...tuning, classes };
+};
 const shapes = {
   today: args["focus-today"] ? withFocus(baseTuning) : baseTuning,
-  shaped: args.focus ? withFocus(shaped) : shaped,
+  shaped: withKits(args.focus ? withFocus(shaped) : shaped),
 };
 const classOf = Object.fromEntries(heroes.map((h) => [h.id, h.class]));
 const pct = (v) => `${Math.round(v * 100)}%`;
@@ -32,6 +43,7 @@ const pct = (v) => `${Math.round(v * 100)}%`;
 const power = (1 / count).toFixed(2);
 console.log(`Wave shape: count x${count}, health x${extra.hp ?? power}, attack x${extra.attack ?? power}, gold/leak x${power}, spawn gap x${gap}`);
 if (args.focus || args["focus-today"]) console.log(`Mage focus: ${args["focus-today"] ? "today and shaped" : "shaped only"}`);
+if (kitEdits.length) console.log(`Kit changes (shaped only): ${args.kit}`);
 console.log(`Runs: ${mode}, Normal, seeds ${seeds.join(",")}, maps ${freePlayMaps.map((m) => m.id).join(", ")}\n`);
 
 // 1. Class-vs-enemy matrix, today vs shaped.
