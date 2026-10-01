@@ -898,9 +898,9 @@ export async function createRenderer(canvas, game, options = {}) {
     applyHeroTexture(container, unit.id);
 
 
-    const ultRing = new PIXI.Graphics();
-    container._ultRing = ultRing;
-    container.addChild(ultRing);
+    const ultBar = new PIXI.Graphics();
+    container._ultBar = ultBar;
+    container.addChild(ultBar);
 
     // HP bar lives in the container (not layerBars) so a lower hero's figure draws in front of it.
     const hpBar = new PIXI.Graphics();
@@ -933,16 +933,11 @@ export async function createRenderer(canvas, game, options = {}) {
     updateHeroAnim(unit, container);
     drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
 
-    // Ult charge arc
-    const ur = container._ultRing;
-    ur.clear();
+    // Ultimate charge bar, directly below health.
+    const ultBar = container._ultBar.clear();
     if (unit.ultClock !== undefined && unit.ultCooldown) {
       const pct = Math.min(1, unit.ultClock / unit.ultCooldown);
-      if (pct > 0) {
-        ur.setStrokeStyle({ width: 3, color: palette.purple, alpha: 0.65 });
-        ur.arc(0, 0, 30, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
-        ur.stroke();
-      }
+      drawBar(ultBar, -24, 36, 48, pct, palette.purple);
     }
 
     // Level: segmented border + number disc, redrawn only when the level changes.
@@ -994,14 +989,12 @@ export async function createRenderer(canvas, game, options = {}) {
       sp = new PIXI.Sprite(first);
       sp.anchor.set(fig.anchor[0] / first.width, fig.anchor[1] / first.height);
       sp.position.set(0, HERO_ANIM.feetY);
-      container.addChildAt(sp, container.getChildIndex(container._ultRing));
+      container.addChildAt(sp, container.getChildIndex(container._ultBar));
       container._anim = sp;
       // A figure stands on the slot: shadow only, no token disc or level ring behind it. The
-      // number badge still shows the level; the ult charge becomes a flat ring at the feet.
+      // number badge still shows the level; health and ultimate charge remain below it.
       container._base.clear().ellipse(0, HERO_ANIM.feetY, 22, 6).fill({ color: 0x000000, alpha: 0.45 });
       container._border.visible = false;
-      container._ultRing.position.set(0, HERO_ANIM.feetY);
-      container._ultRing.scale.set(1, 0.3);
       container._animState = { clip: "idle", start: now, atk: unit.attackClock, ult: unit.ultClock };
     }
     container._img.visible = false;
