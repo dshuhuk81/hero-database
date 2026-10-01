@@ -48,6 +48,11 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
   <main class="main-content page-content hs-page">
     <p class="hs-lede">No account needed. Stats, cost and rarity are set during balancing, so you don't need to pick them. Fields marked <span class="hs-req">*</span> are required.</p>
 
+    <div class="hs-success" id="hs-success" role="status" tabindex="-1" hidden>
+      <strong>Thank you!</strong>
+      <span id="hs-success-text">Your hero was sent.</span>
+    </div>
+
     <form id="hs-form" class="hs-form" novalidate>
       <input type="hidden" name="startedAt" id="hs-started">
       <div class="hs-trap" aria-hidden="true">
@@ -239,12 +244,6 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
         <span class="hs-status" id="hs-status" role="status" aria-live="polite"></span>
       </div>
     </form>
-
-    <section class="hs-done" id="hs-done" hidden>
-      <h2>Thank you!</h2>
-      <p id="hs-done-text">Your hero was sent.</p>
-      <button type="button" class="hs-again" id="hs-again">Submit another hero</button>
-    </section>
   </main>
 </Base>
 
@@ -255,6 +254,8 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
     gap: var(--space-10);
     padding-bottom: var(--space-16);
   }
+  /* Scoped display rules below would otherwise beat the hidden attribute. */
+  .hs-page [hidden] { display: none !important; }
   .hs-lede { margin: 0; color: var(--text-secondary); max-width: 62ch; }
   .hs-form { display: grid; gap: var(--space-12); }
   .hs-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
@@ -306,17 +307,27 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
     padding: var(--space-4) 0 calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
     background: linear-gradient(transparent, var(--bg-base) 35%);
   }
-  .hs-submit, .hs-again {
+  .hs-submit {
     min-height: 44px; padding: var(--space-3) var(--space-6); border: 1px solid var(--accent-gold); border-radius: var(--radius-md);
     background: var(--accent-gold); color: #17140a; font: inherit; font-weight: var(--weight-bold); cursor: pointer;
   }
-  .hs-submit:disabled { opacity: .55; cursor: default; }
+  .hs-submit:disabled { opacity: .55; cursor: progress; }
+  .hs-submit.is-busy::before {
+    content: ""; display: inline-block; width: 14px; height: 14px; margin-right: var(--space-2); vertical-align: -2px;
+    border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: hs-spin .8s linear infinite;
+  }
+  @keyframes hs-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .hs-submit.is-busy::before { animation: none; } }
   .hs-status { font-size: var(--text-sm); color: var(--text-secondary); }
   .hs-status.is-bad { color: #f87171; }
 
-  .hs-done { display: grid; gap: var(--space-4); justify-items: start; padding: var(--space-8); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); }
-  .hs-done h2 { margin: 0; color: var(--text-bright); font-size: var(--text-2xl); }
-  .hs-done p { margin: 0; color: var(--text-secondary); }
+  .hs-success {
+    display: grid; gap: var(--space-1); padding: var(--space-4) var(--space-5);
+    border: 1px solid rgba(74, 222, 128, .45); border-radius: var(--radius-lg); background: rgba(74, 222, 128, .08);
+    scroll-margin-top: var(--space-16);
+  }
+  .hs-success strong { color: var(--text-bright); font-size: var(--text-lg); }
+  .hs-success span { color: var(--text-secondary); }
 </style>
 
 <script>
@@ -378,13 +389,22 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
     return problems.length === 0;
   }
 
+  const success = document.getElementById("hs-success")!;
+  const SUBMIT_LABEL = submit.textContent ?? "Submit hero";
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (submit.disabled) return;
+    success.hidden = true;
     if (!validate()) { setStatus("Some fields need attention.", true); return; }
+    const data = new FormData(form);
+    const name = String(data.get("heroName") ?? "").trim();
     submit.disabled = true;
-    setStatus("Sending...");
+    submit.classList.add("is-busy");
+    submit.textContent = "Sending...";
+    setStatus("");
     try {
-      const res = await fetch("/api/hero-submission", { method: "POST", body: new FormData(form) });
+      const res = await fetch("/api/hero-submission", { method: "POST", body: data });
       const body = await res.json().catch(() => ({}));
       if (!res.ok || !body.ok) {
         const message = body.error === "bad_image" ? "The image must be PNG, JPG, WebP or GIF and at most 8 MB."
@@ -393,25 +413,24 @@ const STRENGTHS = ["Area damage", "Single-target burst", "Crowd control", "Heals
         setStatus(message, true);
         return;
       }
-      const name = String(new FormData(form).get("heroName") ?? "").trim();
-      document.getElementById("hs-done-text")!.textContent = `${name} was sent. We read every submission and may contact you with questions.`;
-      form.hidden = true;
-      document.getElementById("hs-done")!.hidden = false;
-      setStatus("");
+      // Success: clear everything, show the message at the top.
+      form.reset();
+      if (preview.src) URL.revokeObjectURL(preview.src);
+      preview.removeAttribute("src");
+      preview.hidden = true;
+      document.getElementById("hs-own-sounds")!.hidden = true;
+      started.value = String(Date.now());
+      document.getElementById("hs-success-text")!.textContent = `${name || "Your hero"} was sent. We read every submission and may contact you with questions. You can submit another hero below.`;
+      success.hidden = false;
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      success.focus({ preventScroll: true });
     } catch {
       setStatus("Sending failed. Check your connection and try again.", true);
     } finally {
       submit.disabled = false;
+      submit.classList.remove("is-busy");
+      submit.textContent = SUBMIT_LABEL;
     }
-  });
-
-  document.getElementById("hs-again")!.addEventListener("click", () => {
-    form.reset();
-    preview.hidden = true;
-    document.getElementById("hs-own-sounds")!.hidden = true;
-    started.value = String(Date.now());
-    form.hidden = false;
-    document.getElementById("hs-done")!.hidden = true;
-    form.scrollIntoView();
   });
 </script>
