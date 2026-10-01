@@ -401,8 +401,53 @@ Conclusion: the direction does what it should for Tanks, blockers and Mage relia
 balance point moves from Mages to Archers. Before step 2, Mages need a single-target role in the
 new model (for example a stronger main-target hit with splash as a bonus, or magic damage that
 ignores the high armor of strong enemies), and Archer crit should be checked. Variant B
-(`"hp": 3.5, "attack": 2.5`) is the better baseline for further tests. More seeds
-(`--seeds=3`, about 18 minutes) should confirm these before any decision.
+(`"hp": 3.5, "attack": 2.5`) is the better baseline for further tests.
+
+#### Three seeds and the Mage focus rule (October 1, 2026)
+
+**Three seeds confirm variant B.** Seeds 99-101 (60 runs per row) match the one-seed numbers
+within a few points: balanced squad 54/60 today vs 46/60 shaped, no-blocker squad 57/60 vs
+39/60, without Archers 38/60 vs 6/60, without Mages 41/60 vs 38/60.
+
+**Mage focus rule.** Built as `classes.Mage.focus` (`sim.focusShare`, absent from the live
+tuning): splash shares that find no neighbour fold into the main target (2 expected neighbours,
+so a lone target takes up to 1.7×), and a chaining Mage folds in its unused bounces. Test with
+`npm run td:wave-shape -- --hp=3.5 --attack=2.5 --focus=1`.
+
+| Variant B, 3 seeds (60 runs) | Today | Shaped | Shaped + focus |
+|---|---|---|---|
+| Balanced squad | 54/60 | 46/60 | 47/60 |
+| Budget squad | 54/60 | 51/60 | 53/60 |
+| All platform, no blockers | 57/60 | 39/60 | 52/60 |
+| Glass cannon | 42/60 | 21/60 | 43/60 |
+| Balanced without Mage | 41/60, 39% lives | 38/60, 55% | 38/60, 55% |
+| Balanced without Archer | 38/60, 39% lives | 6/60 | 19/60, 59% |
+| Balanced without Support | 44/60 | 29/60 | 42/60 |
+| Mage platform score: armored / boss / healer | 51 / 20 / 75% | 24 / 20 / 47% | 38 / 32 / 70% |
+| Best platform class (9 wave types) | Archer 5, Mage 4 | Archer 9 | Archer 7, Mage 2 |
+
+What the focus rule does:
+
+1. **Mages get a role back without becoming required again.** Mage scores on armored, healer and
+   boss waves recover most of the way, and Mage is again the best ranged answer to runners and
+   shields. Removing Mages still costs nothing (38/60 either way), so the old Mage dependence
+   stays gone.
+2. **Archer dependence is cut by more than half**, from 6/60 to 19/60 wins without Archers, and
+   the squads that lose Archers keep more lives. Archers stay the strongest ranged class, which
+   fits their design as the boss and flyer answer, but not a must-have to the old Mage degree.
+3. **The cost: blockers matter less again.** The no-blocker squad climbs back from 39/60 to
+   52/60. That is still below today's 57/60, but most of the gain for road heroes is gone. In the
+   real redesign, tile patterns (step 2) and enemies that attack platform heroes would restore
+   it; a stronger shaped attack (3×) is the quick knob to test first.
+4. **On today's waves the focus rule changes little** (one seed): Mage-only squads win 8/20
+   instead of 4/20 and Mage boss damage rises from 20% to 32%; every mixed squad stays within one
+   win. It belongs to the shaped model, so it stays off in the live game.
+
+Next steps for the prototype: test shaped attack 3× with focus to win back the blocker gain,
+then look at Archer `target: "strongest"` and crit against tanky single enemies. After that,
+step 2 (tile patterns on a compact board) can start from these numbers. Raw output:
+`docs/audits/td-2026-10-01-wave-shape/variant-b-3-seeds.txt`,
+`variant-b-mage-focus-3-seeds.txt`, `mage-focus-today-1-seed.txt`.
 
 ## 3. Suggested order
 
