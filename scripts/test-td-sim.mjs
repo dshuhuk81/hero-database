@@ -2583,4 +2583,33 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(odin.level, tuning.upgrades.maxLevel, "training adds no level");
 }
 
+// Compact board (board.js, docs/tower-defense-board-plan.md): attack patterns decide reach,
+// tuning.board shapes the waves, and every gate still sends enemies.
+{
+  const { cellCenter } = await import("../src/game/td/board.js");
+  const map = maps.find((m) => m.grid?.board);
+  assert.ok(map, "a board map exists");
+  const board = map.grid.board;
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
+  assert.ok(g.boardRules?.patterns, "board maps get tuning.board rules");
+  const mageId = heroes.find((h) => h.class === "Mage").id;
+  const index = map.platformSlots.findIndex(([x, y]) => x === cellCenter(board, [1, 2])[0] && y === cellCenter(board, [1, 2])[1]);
+  assert.ok(g.place(mageId, "platform", index), "Mage placed on cell 1,2");
+  const mage = g.heroes[0];
+  const at = (cell) => { const [x, y] = cellCenter(board, cell); return { x, y, dead: false, flying: false }; };
+  assert.ok(g.reaches(mage, at([3, 2])), "diamond2 reaches two cells (208 px) away, past the Mage range circle");
+  assert.ok(g.reaches(mage, at([2, 3])), "diamond2 reaches a diagonal neighbour");
+  assert.ok(!g.reaches(mage, at([3, 3])), "diamond2 does not reach three steps away");
+  assert.ok(!g.reaches(mage, at([4, 2])), "no reach three cells away in a line");
+  // Shaped waves: wave 1 is 7 grunts, shaped to one per gate with the strength split.
+  const { count, split } = g.shapedGroup("grunt", 7);
+  assert.equal(count, g.lanes.length, "a small group still sends one enemy per gate");
+  assert.ok(Math.abs(count * split - Math.round(7 * tuning.board.waveShape.count)) < 1e-9, "the split keeps the shaped strength");
+  assert.deepEqual(g.shapedGroup("boss", 1), { count: 1, split: 1 }, "bosses are not shaped");
+  // Maps without a board keep circles and today's waves.
+  const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
+  assert.equal(plain.boardRules, null, "no board rules off the board");
+  assert.deepEqual(plain.shapedGroup("grunt", 7), { count: 7, split: 1 }, "no wave shape off the board");
+}
+
 console.log("Tower defense checks passed");
