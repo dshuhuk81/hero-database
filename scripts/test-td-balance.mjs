@@ -2,13 +2,18 @@
 // simple policy (deploy affordable heroes, spend spare gold on upgrades, take the
 // first virtue offered) and reports duration, spending, leaks, and win rate.
 // Run with: npm run test:td-balance
-import { freePlayMaps, maps, playRun, SQUADS, STARTERS } from "./lib/td-runner.mjs";
+import { freePlayMaps, playRun, SQUADS, STARTERS } from "./lib/td-runner.mjs";
 import { bestClass, classMatrix, EXPECTED, printMatrix } from "./lib/td-class-matrix.mjs";
+import classicMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
+
+// Free Play rules (base waves, map enemyHp) only run on Free Play battlefields; campaign-only
+// boards are checked with their stage settings by test-td-campaign.mjs.
+const openMaps = freePlayMaps;
 
 console.log("map".padEnd(20), "squad".padEnd(30), "result  lives  leaks  score  spent  duration");
 let wins = 0;
 let imperfect = 0;
-for (const map of maps) {
+for (const map of openMaps) {
   let mapWins = 0;
   for (const [name, ids] of Object.entries(SQUADS)) {
     const run = playRun(ids, 99, map);
@@ -34,7 +39,7 @@ if (!starterRuns.some(({ runs }) => runs.some((run) => run.won))) throw new Erro
 
 // Run modes (M2): 20 waves must be winnable but not by every squad; endless must end
 // (no runaway past the 150-wave guard) and the best squad should get past wave 20.
-for (const map of maps) {
+for (const map of openMaps) {
   const long = Object.values(SQUADS).map((ids) => playRun(ids, 99, map, { mode: "long" }));
   const longWins = long.filter((run) => run.won).length;
   const endless = Object.values(SQUADS).map((ids) => playRun(ids, 99, map, { mode: "endless" }));
@@ -50,8 +55,12 @@ for (const map of maps) {
 // healer/platform: Atalanta's Burning Volley clears the small healer pack on her own
 // (roadmap: archers must handle swarms), which lifts the Archer mean just past Mage.
 const TOLERANCE = { shield: { road: 0.03 }, healer: { platform: 0.03 } };
-const matrix = classMatrix();
+// Class kits are checked on a classic map, where range circles keep the M6 measure meaningful;
+// on boards the attack patterns decide reach, so the board matrix is printed for information.
+const matrix = classMatrix({ map: classicMaps[0] });
 printMatrix(matrix);
+console.log("Board (patterns, wave shape), for information:");
+printMatrix(classMatrix({ map: openMaps[0] }));
 for (const [waveType, want] of Object.entries(EXPECTED)) {
   for (const [group, cls] of Object.entries(want)) {
     const got = bestClass(matrix[waveType], group);
