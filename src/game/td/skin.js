@@ -7,6 +7,8 @@ import mythic from "../../data/tdSkinMythic.json" with { type: "json" };
 
 // Sound set: v4 = per-hero picks from the owner's packs (Hove Audio sword combat, Mixkit,
 // Tactical Interface SFX); archers and a few ultimates keep the generated v3 sounds.
+// v5 = single sounds replaced after the owner's audio audit (generated), listed per hero in
+// tdSkinMythic.json as entry.sounds = { attack|ultimate: "v5" }.
 // Sources per file: public/td/sfx/CREDITS-mythic.txt.
 export const SOUND_VERSION = "v4";
 
@@ -28,9 +30,10 @@ export function skinHeroes(heroes, base) {
       token: art("token-192"),
       // Idle loop for the recruit preview (scripts/td-idle-anim.py): 24 square frames, 2.4 s.
       anim: { url: `${base}/td/heroes-alt/anims/${hero.id}-idle-${entry.art ?? "v1"}.webp`, frames: 24, duration: 2.4 },
-      // One file per hero and sound (td/sfx/mythic-{id}-{SOUND_VERSION}_{kind}.ogg); to replace
-      // sounds, add files under a new version and bump SOUND_VERSION (R2 files are cached).
-      sounds: { attack: `mythic-${hero.id}-${SOUND_VERSION}_attack`, ultimate: `mythic-${hero.id}-${SOUND_VERSION}_ultimate` },
+      // One file per hero and sound (td/sfx/mythic-{id}-{version}_{kind}.ogg). R2 files are
+      // cached, so a replaced sound gets a new version: entry.sounds per hero, else SOUND_VERSION.
+      sounds: Object.fromEntries(["attack", "ultimate"].map((kind) =>
+        [kind, `mythic-${hero.id}-${entry.sounds?.[kind] ?? SOUND_VERSION}_${kind}`])),
     };
   });
 }

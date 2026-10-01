@@ -175,6 +175,10 @@ const groups = [
   let marks: Record<string, Mark> = {};
   try { marks = JSON.parse(localStorage.getItem(STORE) || "{}") || {}; } catch {}
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(marks)); } catch {} };
+  // Replaced files leave the folder (new version name), so their marks go too.
+  const onPage = new Set(rows.map((row) => row.dataset.file));
+  for (const file of Object.keys(marks)) if (!onPage.has(file)) delete marks[file];
+  save();
 
   function syncRow(row: HTMLElement) {
     const mark = marks[row.dataset.file!];

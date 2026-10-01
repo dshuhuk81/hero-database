@@ -5,32 +5,50 @@
     "atlas": {
       "name": "Atlas",
       "title": "Shoulder of the Crossing",
-      "skillName": "A Place to Stand"
+      "skillName": "A Place to Stand",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "ymir": {
       "name": "Ymir",
       "title": "Memory of the First Frost",
-      "skillName": "Faults Beneath the Ice"
+      "skillName": "Faults Beneath the Ice",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "heimdall": {
       "name": "Heimdall",
       "title": "Watchman at the World-Seam",
-      "skillName": "The Gate Hears You"
+      "skillName": "The Gate Hears You",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "gaia": {
       "name": "Gaia",
       "title": "Ground Beneath the Refuge",
-      "skillName": "Where the Roots Hold"
+      "skillName": "Where the Roots Hold",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "aegir": {
       "name": "Aegir",
       "title": "Host of the Deep Hall",
-      "skillName": "The Sea Takes a Step"
+      "skillName": "The Sea Takes a Step",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "helios": {
       "name": "Helios",
       "title": "Keeper of the Eastern Road",
-      "skillName": "Noon at the Narrow Gate"
+      "skillName": "Noon at the Narrow Gate",
+      "sounds": {
+        "attack": "v5"
+      }
     },
     "surtr": {
       "name": "Surtr",
@@ -40,7 +58,10 @@
     "fenrir": {
       "name": "Fenrir",
       "title": "The Unfastened Jaw",
-      "skillName": "Leave the Wound Open"
+      "skillName": "Leave the Wound Open",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "nott": {
       "name": "Nott",
@@ -60,7 +81,10 @@
     "thanatos": {
       "name": "Thanatos",
       "title": "Witness of the Final Breath",
-      "skillName": "One Breath Remaining"
+      "skillName": "One Breath Remaining",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "odin": {
       "name": "Odin",
@@ -71,7 +95,10 @@
     "hephaestus": {
       "name": "Hephaestus",
       "title": "Smith of the Refuge Gate",
-      "skillName": "Work the Living Furnace"
+      "skillName": "Work the Living Furnace",
+      "sounds": {
+        "attack": "v5"
+      }
     },
     "boreas": {
       "name": "Boreas",
@@ -81,22 +108,37 @@
     "skadi": {
       "name": "Skadi",
       "title": "Hunter Above the Pass",
-      "skillName": "Follow My Arrow"
+      "skillName": "Follow My Arrow",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "atalanta": {
       "name": "Atalanta",
       "title": "First Through the Brambles",
-      "skillName": "Fire in the Brambles"
+      "skillName": "Fire in the Brambles",
+      "sounds": {
+        "attack": "v5",
+        "ultimate": "v5"
+      }
     },
     "stheno": {
       "name": "Stheno",
       "title": "Stillness at the Threshold",
-      "skillName": "Hold That Last Step"
+      "skillName": "Hold That Last Step",
+      "sounds": {
+        "attack": "v5",
+        "ultimate": "v5"
+      }
     },
     "plutus": {
       "name": "Plutus",
       "title": "Keeper of the Common Store",
-      "skillName": "Enough for Everyone"
+      "skillName": "Enough for Everyone",
+      "sounds": {
+        "attack": "v5",
+        "ultimate": "v5"
+      }
     },
     "harmonia": {
       "name": "Harmonia",
@@ -111,12 +153,18 @@
     "recruit-bram": {
       "name": "Bram",
       "title": "Shield of the Watch",
-      "skillName": "Hold the Gate"
+      "skillName": "Hold the Gate",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "recruit-tilda": {
       "name": "Tilda",
       "title": "Voice at the Barricade",
-      "skillName": "Everyone Behind Me"
+      "skillName": "Everyone Behind Me",
+      "sounds": {
+        "ultimate": "v5"
+      }
     },
     "recruit-kellan": {
       "name": "Kellan",
@@ -126,7 +174,10 @@
     "recruit-sable": {
       "name": "Sable",
       "title": "The Crossing's Bouncer",
-      "skillName": "Not One Step"
+      "skillName": "Not One Step",
+      "sounds": {
+        "attack": "v5"
+      }
     },
     "recruit-ash": {
       "name": "Ash",
@@ -151,12 +202,20 @@
     "recruit-wren": {
       "name": "Wren",
       "title": "Bow of the Militia",
-      "skillName": "Volley at Will"
+      "skillName": "Volley at Will",
+      "sounds": {
+        "attack": "v5",
+        "ultimate": "v5"
+      }
     },
     "recruit-hollis": {
       "name": "Hollis",
       "title": "Fletcher's Eye",
-      "skillName": "Straight Through"
+      "skillName": "Straight Through",
+      "sounds": {
+        "attack": "v5",
+        "ultimate": "v5"
+      }
     },
     "recruit-poppy": {
       "name": "Poppy",

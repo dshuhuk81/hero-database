@@ -57,7 +57,7 @@ the rest. Work files go to `.td-work/` (gitignored).
 | Hero art | `public/td/heroes-alt/{file}-card-240.webp`, `-thumb-96.webp`, `-token-192.webp` | `src/data/tdSkinMythic.json` (`"art"` for redrawn heroes) |
 | Hero idle loop | `public/td/heroes-alt/anims/{id}-idle-{art or v1}.webp` (24 frames, 5376x224) | same |
 | Hero board figure | `public/td/heroes-alt/figures/{figure}-{version}.webp` + `.json` (idle, attack, ultimate) | `HERO_FIGURES` in `src/game/td/assets.js` |
-| Hero sounds | `public/td/sfx/mythic-{id}-v4_attack.ogg`, `..._ultimate.ogg` | `SOUND_VERSION` in `src/game/td/skin.js`, credits in `public/td/sfx/CREDITS-mythic.txt` |
+| Hero sounds | `public/td/sfx/mythic-{id}-v4_attack.ogg`, `..._ultimate.ogg` | `SOUND_VERSION` in `src/game/td/skin.js`, per-sound override `"sounds": { "attack": "v5" }` in `tdSkinMythic.json`, credits in `public/td/sfx/CREDITS-mythic.txt` |
 
 `{file}` for enemies is the kind (`grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`); bosses are
 `boss` (Baphomet) and `boss-{id}` (`boss-lilith`, `boss-lerna`, ...). **A sheet is named after the
@@ -231,7 +231,13 @@ Steps:
    `--version` for a new hero (`-idle-v1`). Keep the GIF out of `public/`.
 4. **Sounds** (new hero only, or when the job asks): copy to `public/td/sfx/mythic-{id}-v4_attack.ogg`
    and `..._ultimate.ogg`, add the source and license to `public/td/sfx/CREDITS-mythic.txt`, then
-   `node scripts/td-audio-levels.mjs` to set their volume.
+   `node scripts/td-audio-levels.mjs` to set their volume. To replace one sound of an existing
+   hero, never overwrite the file (R2 caches it): save it under the next version
+   (`mythic-{id}-v5_ultimate.ogg`), set `"sounds": { "ultimate": "v5" }` in the hero's
+   `tdSkinMythic.json` entry, delete the old local file, update the credits, rerun the levels
+   script. Convert with `ffmpeg -i in.wav -af "silenceremove=start_periods=1:start_threshold=-50dB,atrim=0:0.8,afade=t=out:st=0.7:d=0.1" -ac 1 -ar 48000 -c:a flac -f ogg out.ogg`
+   (attacks; ultimates `atrim=0:2.5`, fade `st=2.2:d=0.3`), and check the peak afterwards
+   (`-af volumedetect`): a level above +20 dB in `tdAudioLevels.json` means a near-silent file.
 5. **Register** in `src/data/tdSkinMythic.json` under `heroes.{id}`: `name`, `title`, `skillName`,
    and `"art": "v3"` for a redraw. For a new hero also add its persona section to
    `TOWER_DEFENSE_MYTHIC_HEROES.md`.

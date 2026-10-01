@@ -52,7 +52,12 @@ Hard rules:
 - **White label (M24):** the player never sees database hero art, names or sounds.
   `src/game/td/skin.js` gives each hero its mythic persona (title, art, sounds, ultimate
   name) from `tdSkinMythic.json`, with TD-owned art on R2 `td/heroes-alt/` and sounds on
-  `td/sfx/mythic-*`. UI code must go through `skin.js`.
+  `td/sfx/mythic-*`. UI code must go through `skin.js`. Sound files are
+  `mythic-{id}-{version}_{attack|ultimate}.ogg`: `v4` by default, a replaced sound gets
+  a new version in the hero's `tdSkinMythic.json` entry (`"sounds": { "ultimate": "v5" }`).
+  The October 1, 2026 audio audit replaced 23 sounds with generated v5 files
+  (bows, shields, wolf howl, blessings, ...); owner review page:
+  `/games/tower-defense/sound-review` (plays every file in `public/td/sfx`).
 - **Hero ids are the mythic names (October 1, 2026):** `odin`, `atlas`, `surtr`, ... in
   code, data, tests, asset and sound file names (`odin-v2-thumb-96.webp`,
   `mythic-odin-v4_attack.ogg`, `fx/odin/`, `odin-fx.js`), blessing node ids included

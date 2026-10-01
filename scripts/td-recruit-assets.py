@@ -74,6 +74,10 @@ def main():
     (ALT / "anims").mkdir(parents=True, exist_ok=True)
     levels_path = ROOT / "src/data/tdAudioLevels.json"
     levels = json.load(open(levels_path))
+    # Per-sound versions (v5 = replaced after the audio audit); recruits with their own
+    # sound keep it, the rest copy the donor's current file.
+    skin = json.load(open(ROOT / "src/data/tdSkinMythic.json"))["heroes"]
+    version = lambda hid, kind: skin.get(hid, {}).get("sounds", {}).get(kind, "v4")
     art_owner = {}
     for rid, (cls, _name, donor) in RECRUITS.items():
         owner = art_owner.get(cls)
@@ -99,10 +103,12 @@ def main():
             art_owner[cls] = rid
         # Sounds: reuse the class donor's files and levels.
         for kind in ("attack", "ultimate"):
-            src = SFX / f"mythic-{donor}-v4_{kind}.ogg"
+            if version(rid, kind) != "v4":
+                continue
+            src = SFX / f"mythic-{donor}-{version(donor, kind)}_{kind}.ogg"
             dst = SFX / f"mythic-{rid}-v4_{kind}.ogg"
             shutil.copyfile(src, dst)
-            levels[f"mythic-{rid}-v4_{kind}"] = levels[f"mythic-{donor}-v4_{kind}"]
+            levels[f"mythic-{rid}-v4_{kind}"] = levels[f"mythic-{donor}-{version(donor, kind)}_{kind}"]
     json.dump(levels, open(levels_path, "w"), indent=2, ensure_ascii=False)
     open(levels_path, "a").write("\n")
     print(f"recruit assets written for {len(RECRUITS)} heroes")

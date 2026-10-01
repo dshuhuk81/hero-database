@@ -1,6 +1,7 @@
 Tower defense sounds (public/td/sfx), September 27, 2026.
 
-Hero sounds: mythic-{id}-v4_{attack|ultimate}.ogg. Interface and combat sounds: ui-*-v1.ogg.
+Hero sounds: mythic-{id}-v4_{attack|ultimate}.ogg; sounds replaced after the owner's audio audit
+(October 1, 2026) are v5 files, generated with Coplay generate_sfx and converted the same way. Interface and combat sounds: ui-*-v1.ogg.
 All converted to mono Ogg FLAC: leading silence removed, attacks cut to 0.8 s and ultimates to
 2.5 s with a short fade (every hit peak lies inside the cut), levels in src/data/tdAudioLevels.json
 (hero sounds) or matched to the sounds they replaced (ui-*).
@@ -14,21 +15,21 @@ Sources (owner-supplied packs; originals in ~/hero-database-assets/td/newFx, out
 
 Per file (id | kind | source):
 atlas|attack|Sword Collisions/Base Metal/WEAPSwrd_BaseMetal_HoveAud_SwordCombat_03.wav
-atlas|ultimate|Tactical Interface SFX/04_COMBAT/32_knockout_A.wav
+atlas|ultimate|generated (Coplay, v5 prompt)
 ymir|attack|Sword Collisions/Base Metal/WEAPSwrd_BaseMetal_HoveAud_SwordCombat_06.wav
-ymir|ultimate|Tactical Interface SFX/05_MAGIC/34_ice_A.wav
+ymir|ultimate|generated (Coplay, v5 prompt)
 heimdall|attack|mixkit-sword-strikes-armor-2765.wav
-heimdall|ultimate|generated (Coplay, v3 prompt)
+heimdall|ultimate|generated (Coplay, v5 prompt)
 gaia|attack|Sword Collisions/Base Wood/WEAPSwrd_BaseWood_HoveAud_SwordCombat_03.wav
-gaia|ultimate|generated (Coplay, v3 prompt)
+gaia|ultimate|generated (Coplay, v5 prompt)
 aegir|attack|Sword Stabs/w:Whoosh/WEAPSwrd_SwordStabwWhoosh_HoveAud_SwordCombat_01.wav
-aegir|ultimate|generated (Coplay, v3 prompt)
-helios|attack|mixkit-medieval-metal-sword-blade-2766.wav
+aegir|ultimate|generated (Coplay, v5 prompt)
+helios|attack|generated (Coplay, v5 prompt)
 helios|ultimate|mixkit-big-fire-spell-burning-1332.wav
 set|attack|mixkit-heavy-sword-smashes-metal-2795.wav
 set|ultimate|mixkit-explosion-spell-1685.wav
 fenrir|attack|Sword Stabs/w:Gore/GOREStab_SwordStabGore_HoveAud_SwordCombat_01.wav
-fenrir|ultimate|generated (Coplay, v3 prompt)
+fenrir|ultimate|generated (Coplay, v5 prompt)
 nott|attack|mixkit-quick-knife-slice-cutting-2152.mp3
 nott|ultimate|Sword Stabs/Full Stab Combo/WEAPSwrd_SwordStabCombo_HoveAud_SwordCombat_11.wav
 hecate|attack|mixkit-quick-saber-cut-2158.mp3
@@ -36,21 +37,21 @@ hecate|ultimate|mixkit-spellcaster-fairy-swoosh-1463.wav
 vidar|attack|sword combat/Whooshes/WHSH_Whoosh_HoveAud_SwordCombat_26.wav
 vidar|ultimate|Sword Stabs/Full Stab Combo/WEAPSwrd_SwordStabCombo_HoveAud_SwordCombat_17.wav
 thanatos|attack|mixkit-samurai-sword-impact-2789.wav
-thanatos|ultimate|generated (Coplay, v3 prompt)
+thanatos|ultimate|generated (Coplay, v5 prompt)
 odin|attack|Tactical Interface SFX/05_MAGIC/35_lightning_A.wav
 odin|ultimate|mixkit-arcane-chain-spell-879.wav
-hephaestus|attack|Tactical Interface SFX/05_MAGIC/33_fire_A.wav
+hephaestus|attack|generated (Coplay, v5 prompt)
 hephaestus|ultimate|mixkit-fireball-spell-1347.wav
 boreas|attack|mixkit-thin-icicles-spell-882.wav
 boreas|ultimate|mixkit-icicles-spell-whoosh-881.wav
 skadi|attack|generated (Coplay, v3 prompt)
-skadi|ultimate|generated (Coplay, v3 prompt)
-atalanta|attack|generated (Coplay, v3 prompt)
-atalanta|ultimate|generated (Coplay, v3 prompt)
-stheno|attack|generated (Coplay, v3 prompt)
-stheno|ultimate|generated (Coplay, v3 prompt)
-plutus|attack|Tactical Interface SFX/06_REWARDS/41_coin_A.wav
-plutus|ultimate|Tactical Interface SFX/06_REWARDS/44_epic_loot_A.wav
+skadi|ultimate|generated (Coplay, v5 prompt)
+atalanta|attack|generated (Coplay, v5 prompt)
+atalanta|ultimate|generated (Coplay, v5 prompt)
+stheno|attack|generated (Coplay, v5 prompt)
+stheno|ultimate|generated (Coplay, v5 prompt)
+plutus|attack|generated (Coplay, v5 prompt)
+plutus|ultimate|generated (Coplay, v5 prompt)
 harmonia|attack|mixkit-magic-wand-sparkle-3062.wav
 harmonia|ultimate|mixkit-spell-of-healing-876.wav
 asclepius|attack|mixkit-magic-glitter-shot-2353.wav
