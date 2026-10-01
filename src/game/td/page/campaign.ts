@@ -345,6 +345,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-heroes-count]").textContent = `${p.owned.length} / ${heroes.length}`;
     heroListEl.innerHTML = heroes.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
+      const isRecruit = hero.id.startsWith("recruit-");
       const unlock = heroRewardStage(campaign, hero.id);
       const tier = heroEvolution(p, hero.id);
       const source = unlock ? `Stage ${unlock.id}` : "Summon";
@@ -354,7 +355,7 @@ export function createCampaign(ctx: PageContext) {
       const label = isOwned
         ? `${hero.name}, ${hero.class}, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} stars${tier ? `, Evolved ${roman(tier)}` : ""}, ${(mightOf.get(hero.id) ?? 0).toLocaleString()} Might${ready ? ", upgrade available" : ""}`
         : `${hero.name}, ${hero.class}, unlocks from ${source}`;
-      return `<button type="button" class="td-hero-tile${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}" aria-label="${label}" title="${hero.name}"${isOwned ? "" : " disabled"}>
+      return `<button type="button" class="td-hero-tile${isRecruit ? " is-recruit" : ""}${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}" aria-label="${label}" title="${hero.name}"${isOwned ? "" : " disabled"}>
         <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"${FACE_FOCUS[hero.id] ? ` style="--td-face-y: ${FACE_FOCUS[hero.id]}"` : ""}>
         <span class="td-hero-tile-class" aria-hidden="true">${classIconImg(hero.class, 16)}</span>
         ${tier ? `<span class="td-hero-tile-evo" aria-hidden="true">${roman(tier)}</span>` : ""}
@@ -384,7 +385,7 @@ export function createCampaign(ctx: PageContext) {
     const detailKey = `${hero.id}:${heroTab}`;
     const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
     heroDetailKey = detailKey;
-    detailEl.innerHTML = `<article class="td-hero-profile">
+    detailEl.innerHTML = `<article class="td-hero-profile${hero.id.startsWith("recruit-") ? " is-recruit" : ""}">
       <div class="td-hero-profile-art"><img src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}</div>
       <div class="td-hero-profile-copy">
       <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
@@ -465,18 +466,23 @@ export function createCampaign(ctx: PageContext) {
     const copies = p.copies?.[hero.id] ?? 0;
     const free = copies - (fodder[hero.id] ?? 0);
     const pickHtml = copies > 0
-      ? `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${hero.id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${hero.portrait ?? hero.image}" alt=""><strong>${hero.name}</strong><small>${free} left</small></button>`
+      ? `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${hero.id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${hero.portrait ?? hero.image}" alt=""><span><strong>${hero.name}</strong><small>${free} ${free === 1 ? "copy" : "copies"} available</small></span><b>${free > 0 && fodderCount() < cost.copies ? "Add" : "Selected"}</b></button>`
       : `<p class="td-hero-tab-copy">No duplicate of ${hero.name} yet. Summon another copy to raise this hero's stars.</p>`;
-    const full = fodderCount() === cost.copies;
+    const selectedCopies = fodderCount();
+    const full = selectedCopies === cost.copies;
     const goldOk = (p.currencies.gold || 0) >= cost.gold;
-    return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health and raises the level cap to ${levelCap(campaign, starCount + 1)}. Star up uses duplicate copies of ${hero.name}; the same copies can also be spent on Evolution.</p>
-      <div class="td-hero-level-head"><strong>${stars(starCount)}</strong><span>${starCount} / ${max}</span></div>
-      ${statRows(hero, heroScale(p, hero.id), heroScale(p, hero.id, undefined, starCount + 1))}
-      <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Copies needed</span><span>${fodderCount()} / ${cost.copies}</span></div>
+    const now = heroScale(p, hero.id);
+    const next = heroScale(p, hero.id, undefined, starCount + 1);
+    const previewRow = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()} <span>→ ${Math.round(base * next).toLocaleString()}</span></dd></div>`;
+    const preview = selectedCopies ? `<section class="td-star-preview"><div class="td-star-preview-head"><strong>Next star preview</strong><span>Star ${starCount + 1}</span></div><dl>${previewRow("Attack", hero.atk)}${previewRow("Health", hero.hp)}<div><dt>Level cap</dt><dd><span>→ ${levelCap(campaign, starCount + 1)}</span></dd></div></dl></section>` : "";
+    const quickAdd = !full && copies >= cost.copies
+      ? `<button type="button" class="action-button action-button--quiet td-fodder-auto" data-camp-fodder-auto>Fill all slots</button>` : "";
+    return `<div class="td-star-heading"><span><small>Star rank</small><strong>${stars(starCount)}</strong></span><b>${starCount} / ${max}</b></div>
+      <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Upgrade materials</span><span>${selectedCopies} / ${cost.copies}</span></div>
       <div class="td-fodder-slots">${slotHtml}</div>
-      <div class="td-fodder-picks">${pickHtml}</div></div>
-      <div class="td-hero-upgrade td-hero-upgrade--split">
-        <button type="button" class="action-button action-button--quiet" data-camp-fodder-auto${copies >= cost.copies ? "" : " disabled"}>Quick add</button>
+      <div class="td-fodder-picks">${pickHtml}</div>${quickAdd}</div>
+      ${preview}
+      <div class="td-hero-upgrade">
         <button type="button" class="action-button action-button--primary td-camp-levelup" data-camp-starup="${hero.id}"${full && goldOk ? "" : " disabled"}>Star up <small>${currencyAmount("gold", cost.gold)}</small></button>
       </div>`;
   }

@@ -28,13 +28,9 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
 ### Bugs / Enhancements
-
-- [x] Fixed: Burning and other ticking damage now combines into one moving damage number per enemy instead of leaving a line of numbers behind it.
-
-- [x] Fixed: The stage hero-selection roster now sorts owned heroes by Might from highest to lowest, with locked heroes following in Might order.
-
-- [x] Fixed: Evolution actions now use separate full-width rows, preventing the copy-to-Dust and Evolve buttons from overlapping in the hero-detail panel.
-
+- [x] Fixed: The Stars panel now opens directly on large material slots and a full-width copy picker. Fill all slots lives inside the material box, the sticky footer contains only Star up, and the stat/level-cap preview appears after the first copy is selected.
+- [x] Fixed: Hero roster portraits use a gentler crop and sit lower in their tiles so heads remain inside the visible area.
+- [x] Fixed: Generic recruit art now uses a dedicated full-body fit in both roster tiles and the main hero view, keeping every recruit visible instead of applying the named-hero close-up crop.
 
 ### 4. Doc drift (audit)
 
@@ -46,11 +42,11 @@ Only open work. Use subagents for more than one milestone; coordinate file chang
 
 ### 6. M26 Sprint 11 - Quests
 
-Only once enough systems exist to reference.
+- We already have some "achievements" but not quests. Quests or lets say daily quests should be part of the home screen. list of 10 daily "tasks" that players can achieve due to playing. they ll get rewards when doing so.
+- need: new quest entry point on the home screen. Quest screen. Rewards. Reset daily.
 
 ### Skipped / deferred
 
-- M23 Tutorial stage: skipped (owner, September 27, 2026).
 - M25 Leaderboard: needs an anti-tamper design first (spec section 9; likely Cloudflare Worker + D1); maybe Endless only.
 - M99 Login/Register: evaluate cost (Google / Apple auth) for a free setup; skip if too heavy.
 - P3: prestige/Ascension reset (once players reach the end of the blessing tree); map editor (non-goal).

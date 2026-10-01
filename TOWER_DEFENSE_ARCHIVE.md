@@ -16,6 +16,11 @@ One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave r
   rapid fire (+50% attack speed, +30% attack). Class matrix: Archer swarm 30% -> 36%.
 - Balance rebuild: Gaia 115g -> 100g; zeus, artemis, fengyi, caishen, diana, momus +5g,
   yuelao -5g (slot-group re-ranking).
+  - [x] Fixed: Burning and other ticking damage now combines into one moving damage number per enemy instead of leaving a line of numbers behind it.
+
+- [x] Fixed: The stage hero-selection roster now sorts owned heroes by Might from highest to lowest, with locked heroes following in Might order.
+
+- [x] Fixed: Evolution actions now use separate full-width rows, preventing the copy-to-Dust and Evolve buttons from overlapping in the hero-detail panel.
 
 ### M5: Sound variant listening pass (ready for listening)
 
