@@ -24,7 +24,10 @@ When code and this file disagree, the code wins. Update this file in the same ch
 ## 1. Scope
 
 - Route `/games/tower-defense` (plus `/games/tower-defense/glossary`). Public, not in
-  `LOCAL_ONLY_ROUTES`. There is currently no entry in `src/data/nav.ts`.
+  `LOCAL_ONLY_ROUTES`. There is currently no entry in `src/data/nav.ts`. The home page
+  (`HomePage.astro`) links it through an "Alpha" teaser card ("The Last Crossing", camp art
+  `td/ui/camp-home.webp`) beside the Latest Banner card. It has no links to database hero pages,
+  because the TD heroes are not the Motto Immortal heroes.
 - Fully client side on the static Cloudflare build. No backend, no accounts, no server
   leaderboard, no replays.
 - English only, route not localized.

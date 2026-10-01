@@ -115,36 +115,66 @@ const featuredImageFor = (href: string) => href === "/heroes"
     </section>
 
     <main class="home-main">
-      <section class="launch-section" aria-labelledby="launchTitle">
-        <header class="section-heading launch-heading">
-          <p class="section-kicker">Current release</p>
-          <h2 id="launchTitle">Latest Banner</h2>
-        </header>
+      <div class="teaser-grid">
+        <section class="launch-section" aria-labelledby="launchTitle">
+          <header class="section-heading launch-heading">
+            <p class="section-kicker">Current release</p>
+            <h2 id="launchTitle">Latest Banner</h2>
+          </header>
 
-        <aside class="launch-card">
-          <div class="launch-backdrop" aria-hidden="true"></div>
-          <div class="launch-content">
-            <div class="launch-character" aria-label="Mazu hero card">
-              <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
-                <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
-                <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
+          <aside class="launch-card">
+            <div class="launch-backdrop" aria-hidden="true"></div>
+            <div class="launch-content">
+              <div class="launch-character" aria-label="Mazu hero card">
+                <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
+                  <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
+                  <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
+                </div>
+                {launchHero && <HeroCard hero={launchHero} />}
               </div>
-              {launchHero && <HeroCard hero={launchHero} />}
             </div>
-          </div>
-          <div class="launch-meta">
-            <strong class="launch-meta-name">Mazu</strong>
-            <a class="launch-meta-action" href={hrefFor("/heroes/mazu")}>
-              Explore the hero
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </a>
-            <span class="launch-date"><span aria-hidden="true">◷</span> Sep 30 — Oct 13, 2026 <span class="launch-age" data-banner-start="2026-09-30">· today</span></span>
-          </div>
-        </aside>
+            <div class="launch-meta">
+              <strong class="launch-meta-name">Mazu</strong>
+              <a class="launch-meta-action" href={hrefFor("/heroes/mazu")}>
+                Explore the hero
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+              <span class="launch-date"><span aria-hidden="true">◷</span> Sep 30 — Oct 13, 2026 <span class="launch-age" data-banner-start="2026-09-30">· today</span></span>
+            </div>
+          </aside>
 
-      </section>
+        </section>
+
+        <section class="launch-section" aria-labelledby="gameTitle">
+          <header class="section-heading launch-heading">
+            <p class="section-kicker">Play</p>
+            <h2 id="gameTitle">Tower Defense</h2>
+          </header>
+
+          <a class="game-card" href={hrefFor("/games/tower-defense")}>
+            <img
+              class="game-card-art"
+              src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/td/ui/camp-home.webp"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="game-card-content">
+              <span class="entry-badge" style="--badge-color: var(--accent-gold)">Alpha</span>
+              <h3>The Last Crossing</h3>
+              <p>Hold the line with gods of Greek and Norse myth. A free tower defense game, right in your browser.</p>
+              <span class="game-card-cta">
+                Play now
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </section>
+      </div>
 
       <aside id="support" class="support-card" aria-labelledby="supportTitle">
         <div>
@@ -472,8 +502,121 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-top: var(--space-20);
   }
 
+  .teaser-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .teaser-grid .launch-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .teaser-grid .launch-card,
+  .teaser-grid .game-card {
+    flex: 1;
+  }
+
   .launch-heading {
     margin-bottom: var(--space-8);
+  }
+
+  .game-card {
+    position: relative;
+    min-height: 390px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+    color: inherit;
+    text-decoration: none;
+    isolation: isolate;
+    transition: var(--transition-colors);
+  }
+
+  .game-card::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(7, 6, 12, .94) 8%, rgba(7, 6, 12, .55) 42%, transparent 72%);
+    pointer-events: none;
+  }
+
+  .game-card-art {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+    transition: transform 280ms ease;
+  }
+
+  .game-card:hover {
+    border-color: var(--border-medium);
+  }
+
+  .game-card:hover .game-card-art {
+    transform: scale(1.025);
+  }
+
+  .game-card:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .game-card-content {
+    max-width: 440px;
+    padding: clamp(var(--space-5), 3vw, var(--space-8));
+  }
+
+  .game-card-content h3 {
+    margin: var(--space-3) 0 0;
+    color: var(--text-bright);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .game-card-content p {
+    margin: var(--space-2) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .game-card-cta {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--accent-gold);
+    color: var(--bg-base);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    transition: var(--transition-colors);
+  }
+
+  .game-card-cta svg {
+    width: 18px;
+    height: 18px;
+    transition: var(--transition-transform);
+  }
+
+  .game-card:hover .game-card-cta {
+    background: var(--accent-gold-light);
+  }
+
+  .game-card:hover .game-card-cta svg {
+    transform: translateX(var(--space-1));
   }
 
   .launch-card {
@@ -588,6 +731,10 @@ const featuredImageFor = (href: string) => href === "/heroes"
     background: rgba(10, 8, 14, .7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+  }
+
+  .teaser-grid .launch-meta {
+    flex-wrap: wrap;
   }
 
   .launch-meta-name {
@@ -1074,6 +1221,11 @@ const featuredImageFor = (href: string) => href === "/heroes"
   }
 
   @media (max-width: 900px) {
+    .teaser-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+    }
+
     .featured-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1160,6 +1312,10 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
     .launch-backdrop {
       background-position: 63% center;
+    }
+
+    .game-card {
+      min-height: 360px;
     }
 
     .launch-character {
@@ -1251,6 +1407,10 @@ const featuredImageFor = (href: string) => href === "/heroes"
     .launch-meta-action svg,
     .featured-card,
     .featured-image,
+    .game-card,
+    .game-card-art,
+    .game-card-cta,
+    .game-card-cta svg,
     .featured-arrow,
     .link-arrow,
     .support-primary,
