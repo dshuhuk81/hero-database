@@ -332,6 +332,15 @@ export function collectionReward(campaign, wavesCleared) {
 
 // The run's hero list with campaign levels and stars applied to attack and health and
 // Evolution to the ultimate and crit (campaign stages only).
+// Permanent reach steps on boards (docs/tower-defense-board-plan.md decision 1): range grows
+// outside battle only, one pattern step per threshold in heroStars.reachSteps
+// ({ "3": 1, "5": 2 }: one step at 3 stars, two at 5).
+export function starReachSteps(campaign, stars) {
+  let steps = 0;
+  for (const [at, value] of Object.entries(campaign.heroStars?.reachSteps ?? {})) if (stars >= Number(at)) steps = Math.max(steps, value);
+  return steps;
+}
+
 export function collectionHeroes(campaign, progress, heroes) {
   return heroes.map((hero) => {
     const level = heroLevel(progress, hero.id), stars = heroStars(progress, hero.id), tier = heroEvolution(progress, hero.id);
@@ -341,10 +350,12 @@ export function collectionHeroes(campaign, progress, heroes) {
     const attackSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveAttack") - 1);
     const healthSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveHealth") - 1);
     const ultimateSkill = 1 + (skillCfg.ultimatePowerPerLevel ?? 0) * (heroSkillLevel(progress, hero.id, "ultimate") - 1);
-    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1) return hero;
+    const reachSteps = starReachSteps(campaign, stars);
+    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1 && !reachSteps) return hero;
     const bonus = evolutionBonus(campaign, tier);
     return {
       ...hero,
+      ...(reachSteps && { reachSteps }),
       atk: Math.round(hero.atk * scale * attackSkill),
       hp: Math.round(hero.hp * scale * healthSkill),
       ultPower: +(hero.ultPower * (1 + bonus.ultPower) * ultimateSkill).toFixed(4),

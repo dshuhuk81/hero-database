@@ -1,6 +1,6 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
-import { boardOf, boardRules, inPattern, patternFor, steppedPattern } from "./board.js";
+import { boardOf, boardRules, inPattern, patternFor, patternRadius, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
@@ -260,7 +260,12 @@ export class TowerDefenseGame {
     return Math.min(Math.max(1 + (this.classBonus(base).startLevel || 0), this.startLevels[base.id] || 1), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
   }
 
+  // On a board the range is the radius of the hero's pattern (patternRadius), so ultimate
+  // areas and scaled reaches fit the board; elsewhere the tuned range with tile and
+  // environment bonuses.
   deployRange(base, slotType, slotIndex) {
+    const pattern = this.patternAt(base.class, slotType, slotIndex, base.reachSteps ?? 0);
+    if (pattern) return patternRadius(pattern, boardOf(this.map).cell);
     return this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)) * this.environment("range", { ...base, slotType, slotIndex });
   }
 
@@ -1024,7 +1029,7 @@ export class TowerDefenseGame {
     // Passive local aura: allies inside a support's range gain attack. Does not stack.
     for (const support of this.heroes) {
       if (support.ability !== "aura" || support === hero) continue;
-      if (Math.hypot(support.x - hero.x, support.y - hero.y) <= support.range) return { source: support, bonus: this.support.passiveAuraBonus * (1 + (this.classBonus(support).support || 0)) };
+      if (this.inReach(support, hero)) return { source: support, bonus: this.support.passiveAuraBonus * (1 + (this.classBonus(support).support || 0)) };
     }
     return null;
   }
@@ -1154,6 +1159,14 @@ export class TowerDefenseGame {
 
   patternOf(hero) {
     return this.patternAt(hero.class, hero.slotType, hero.slotIndex, hero.reachSteps ?? 0);
+  }
+
+  // Whether a hero's own reach covers another unit (ally or enemy): pattern cells on a board,
+  // the range circle elsewhere. Ultimates, heals and auras use it for "in range".
+  inReach(hero, unit) {
+    const pattern = this.patternOf(hero);
+    const board = pattern && boardOf(this.map);
+    return board ? inPattern(board, pattern, hero.x, hero.y, unit.x, unit.y) : Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range;
   }
 
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
@@ -1321,7 +1334,7 @@ export class TowerDefenseGame {
       this.onStrike(hero, enemy, dealt);
       return dealt;
     };
-    if (kit.dash && Math.hypot(hero.x - target.x, hero.y - target.y) > hero.range) {
+    if (kit.dash && !this.inReach(hero, target)) {
       this.emitHeroEffect(hero, { type: "dash", x1: hero.x, y1: hero.y, x2: target.x, y2: target.y, life: 0.3, color: "purple" });
     }
     const others = (radius) => this.enemies
@@ -1558,7 +1571,7 @@ export class TowerDefenseGame {
     let best = 0;
     for (const support of this.heroes) {
       const hymn = this.pathFx(support, "hymn");
-      if (hymn && support !== hero && Math.hypot(support.x - hero.x, support.y - hero.y) <= support.range) best = Math.max(best, hymn.aps);
+      if (hymn && support !== hero && this.inReach(support, hero)) best = Math.max(best, hymn.aps);
     }
     return best;
   }
@@ -1566,7 +1579,7 @@ export class TowerDefenseGame {
   // Purify (Support path): every action lifts hexes from allies in range.
   purify(hero) {
     for (const ally of this.heroes) {
-      if ((this.isHexed(ally) || this.isSilenced(ally)) && Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range) {
+      if ((this.isHexed(ally) || this.isSilenced(ally)) && this.inReach(hero, ally)) {
         ally.hexedUntil = 0;
         ally.silencedUntil = 0;
         this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
@@ -1578,7 +1591,7 @@ export class TowerDefenseGame {
   healPulse(hero, kit, cb) {
     let ally = null;
     for (const other of this.heroes) {
-      if (other.hpLeft >= other.hp || Math.hypot(hero.x - other.x, hero.y - other.y) > hero.range) continue;
+      if (other.hpLeft >= other.hp || !this.inReach(hero, other)) continue;
       if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
     }
     if (!ally) return false;
@@ -1951,7 +1964,7 @@ export class TowerDefenseGame {
         this.onChange("revive", this);
       } else {
         const fraction = this.healFraction(hero);
-        this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+        this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
           this.healHero(a, a.hp * fraction, hero);
           this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         });
@@ -1988,7 +2001,7 @@ export class TowerDefenseGame {
     } else if (variant === "shield_wall") {
       // Atlas: taunt + heal nearby road allies
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = aw ? 4 : 3; });
-      this.heroes.filter((a) => a.slotType === "road" && Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+      this.heroes.filter((a) => a.slotType === "road" && this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, a.hp * (aw ? 0.3 : 0.15), hero);
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
@@ -2004,7 +2017,7 @@ export class TowerDefenseGame {
       const heal = hero.hp * (aw ? skill?.awakenHeal ?? 0.5 : skill?.heal ?? 0.3) * (1 + (this.classBonus(hero).support || 0));
       const cut = aw ? skill?.awakenWard ?? 0.4 : skill?.ward ?? 0.3;
       const until = this.time + (skill?.wardSeconds ?? 8);
-      this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+      this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, heal, hero);
         a.wardCut = Math.max(cut, this.time < (a.wardUntil || 0) ? a.wardCut : 0);
         a.wardUntil = Math.max(until, a.wardUntil || 0);
@@ -2068,7 +2081,7 @@ export class TowerDefenseGame {
       const skill = this.tuning.heroSkills?.[hero.id];
       const chance = (skill?.freezeChance ?? 0.1) + (aw ? skill?.awakenFreezeChance ?? 0.1 : 0);
       const seconds = (skill?.freezeSeconds ?? 2) + (aw ? skill?.awakenFreezeSeconds ?? 1 : 0);
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range).forEach((e) => {
+      foes.filter((e) => this.inReach(hero, e)).forEach((e) => {
         this.hit(e, power * (skill?.damage ?? 1.15), hero, { showShot: false });
         if (e.dead || this.rng() >= chance) return;
         e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + seconds);
@@ -2083,7 +2096,7 @@ export class TowerDefenseGame {
       const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, shots - 1);
       const victims = [target, ...spread];
       for (let i = 0; i < shots; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
-      this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+      this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
       });
@@ -2115,7 +2128,7 @@ export class TowerDefenseGame {
     } else if (variant === "fortune_shower") {
       // Plutus: heal all allies + grant atk buff together
       const fraction = this.healFraction(hero);
-      this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+      this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, a.hp * fraction, hero);
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
@@ -2129,7 +2142,7 @@ export class TowerDefenseGame {
     } else if (variant === "fate_link") {
       // Harmonia: heal allies + accelerate their ult charge by 30%
       const fraction = this.healFraction(hero);
-      this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+      this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, a.hp * fraction, hero);
         a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * (aw ? 0.6 : 0.3));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
@@ -2149,7 +2162,7 @@ export class TowerDefenseGame {
         const victims = [target, ...spread];
         for (let i = 0; i < 3; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
       } else if (hero.ability === "aura") {
-        const allies = this.heroes.filter((ally) => Math.hypot(hero.x - ally.x, hero.y - ally.y) <= hero.range);
+        const allies = this.heroes.filter((ally) => this.inReach(hero, ally));
         if (hero.synergies?.includes("TEAM_HEAL")) {
           const fraction = this.healFraction(hero);
           allies.forEach((ally) => { this.healHero(ally, ally.hp * fraction, hero); this.emitHeroEffect(hero, { type: "heal", x: ally.x, y: ally.y, life: 0.5, color: "green" }); });

@@ -271,17 +271,17 @@
     {
       "tree": "Tank",
       "id": "tank_reach",
-      "name": "Reach",
+      "name": "Iron Hide",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
+        "type": "guard",
         "value": 0.02
       },
-      "text": "Tanks +{p} range."
+      "text": "Tanks shrug off +{p} of the damage they take."
     },
     {
       "tree": "Tank",
@@ -446,17 +446,17 @@
     {
       "tree": "Warrior",
       "id": "warrior_reach",
-      "name": "Reach",
+      "name": "Keen Edge",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
+        "type": "crit",
         "value": 0.02
       },
-      "text": "Warriors +{p} range."
+      "text": "Warriors +{p} critical chance."
     },
     {
       "tree": "Warrior",
@@ -621,17 +621,17 @@
     {
       "tree": "Assassin",
       "id": "assassin_reach",
-      "name": "Reach",
+      "name": "Killer Instinct",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
-        "value": 0.02
+        "type": "crit",
+        "value": 0.03
       },
-      "text": "Assassins +{p} range."
+      "text": "Assassins +{p} critical chance."
     },
     {
       "tree": "Assassin",
@@ -796,17 +796,17 @@
     {
       "tree": "Mage",
       "id": "mage_reach",
-      "name": "Reach",
+      "name": "Focused Mind",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
-        "value": 0.02
+        "type": "ultCharge",
+        "value": 0.03
       },
-      "text": "Mages +{p} range."
+      "text": "Mages charge their ultimate +{p} faster."
     },
     {
       "tree": "Mage",
@@ -971,17 +971,17 @@
     {
       "tree": "Archer",
       "id": "archer_reach",
-      "name": "Reach",
+      "name": "Steady Aim",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
+        "type": "crit",
         "value": 0.02
       },
-      "text": "Archers +{p} range."
+      "text": "Archers +{p} critical chance."
     },
     {
       "tree": "Archer",
@@ -1146,17 +1146,17 @@
     {
       "tree": "Support",
       "id": "support_reach",
-      "name": "Reach",
+      "name": "Swift Grace",
       "stage": "Mythic",
       "row": 1,
       "col": 1,
       "maxLevel": 5,
       "cost": 15,
       "effect": {
-        "type": "range",
-        "value": 0.02
+        "type": "ultCharge",
+        "value": 0.03
       },
-      "text": "Supports +{p} range."
+      "text": "Supports charge their ultimate +{p} faster."
     },
     {
       "tree": "Support",

@@ -80,6 +80,12 @@ export function inPattern(board, name, hx, hy, x, y) {
   return (PATTERNS[name] ?? []).some(([dc, dr]) => hc + dc === c && hr + dr === r);
 }
 
+// Radius of the circle with the same area as a pattern, in px: on boards a hero's `range`
+// (ultimate areas, auras drawn as circles, scaled reaches) follows its pattern.
+export function patternRadius(name, cell) {
+  return Math.round(cell * Math.sqrt((PATTERNS[name]?.length ?? 1) / Math.PI));
+}
+
 // A pattern as a small inline SVG grid for the UI (recruit card, hero panel): the hero's own
 // cell in gold, the cells it reaches in green, on the smallest square that holds the pattern.
 export function patternSvg(name, cell = 7) {

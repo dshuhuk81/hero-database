@@ -14,7 +14,8 @@
     "platformSlots": [[657,93],[775,93],[893,93],[185,211],[185,329],[185,447],[539,329],[657,329],[421,93]],
     "rings": {"platform:8":"highground","platform:2":"cursed","road:6":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":3766,"size":"8x4","gates":1,"entry":["left","top","bottom"]},
-    "geometryHash": "b583fb34935248a2"
+    "geometryHash": "b583fb34935248a2",
+    "enemyHp": 0.8
   },
   {
     "id": "verdant-crossing",
@@ -48,7 +49,8 @@
     "platformSlots": [[67,211],[67,329],[185,329],[893,211],[893,329],[893,447],[657,329],[657,447],[421,93],[539,93],[657,93]],
     "rings": {"platform:2":"highground","platform:8":"cursed","road:2":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":19199,"size":"8x4","gates":2,"entry":["left","top","bottom"]},
-    "geometryHash": "6582b5212fadd4a7"
+    "geometryHash": "6582b5212fadd4a7",
+    "enemyHp": 0.9
   },
   {
     "id": "sunscar-basin",
@@ -242,7 +244,8 @@
     "platformSlots": [[584,374],[688,374],[792,374],[272,270],[272,374],[272,478],[480,166],[584,166],[896,270],[480,478]],
     "rings": {"platform:4":"highground","platform:8":"cursed","road:1":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":2980,"size":"9x5","gates":1,"entry":["left","top","bottom"]},
-    "geometryHash": "5c4653e346263b41"
+    "geometryHash": "5c4653e346263b41",
+    "enemyHp": 0.9
   },
   {
     "id": "jungle-root-maze",
@@ -259,7 +262,8 @@
     "platformSlots": [[376,270],[272,374],[376,374],[688,374],[792,374],[896,374],[64,166],[168,166],[272,166],[896,166]],
     "rings": {"platform:9":"highground","platform:0":"cursed","road:8":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":46266,"size":"9x5","gates":1,"entry":["left","top","bottom"]},
-    "geometryHash": "d5604b528c8cc808"
+    "geometryHash": "d5604b528c8cc808",
+    "enemyHp": 0.55
   },
   {
     "id": "jungle-flooded-court",
@@ -275,7 +279,8 @@
     "platformSlots": [[896,166],[896,270],[896,374],[168,166],[168,270],[272,270],[376,478],[688,478],[584,62],[584,166]],
     "rings": {"platform:6":"highground","platform:2":"cursed","road:9":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":45803,"size":"9x5","gates":2,"entry":["left","top","bottom"]},
-    "geometryHash": "9f1bab35d4a4cf43"
+    "geometryHash": "9f1bab35d4a4cf43",
+    "enemyHp": 0.8
   },
   {
     "id": "jungle-jaguar-steps",
@@ -292,7 +297,8 @@
     "platformSlots": [[792,62],[896,62],[792,166],[168,270],[272,270],[376,270],[584,62],[584,374],[584,478],[64,62]],
     "rings": {"platform:8":"highground","platform:1":"cursed","road:5":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":49536,"size":"9x5","gates":1,"entry":["left","top","bottom"]},
-    "geometryHash": "a741072b4e9bd709"
+    "geometryHash": "a741072b4e9bd709",
+    "enemyHp": 0.75
   },
   {
     "id": "jungle-emerald-coil",
@@ -309,7 +315,8 @@
     "platformSlots": [[168,62],[168,166],[168,270],[376,374],[272,478],[376,478],[896,270],[896,374],[896,478],[688,374]],
     "rings": {"platform:2":"highground","platform:7":"cursed","road:11":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":47544,"size":"9x5","gates":1,"entry":["left","top","bottom"]},
-    "geometryHash": "f4e3ca980c97094a"
+    "geometryHash": "f4e3ca980c97094a",
+    "enemyHp": 0.62
   },
   {
     "id": "jungle-heart-temple",
@@ -325,7 +332,8 @@
     "platformSlots": [[715,176],[621,270],[715,270],[151,270],[245,270],[339,270],[339,458],[433,458],[527,458],[527,82],[903,364],[903,458]],
     "rings": {"platform:4":"highground","platform:9":"cursed","road:9":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":41638,"size":"10x5","gates":2,"entry":["left","top","bottom"]},
-    "geometryHash": "8c640c6b82038159"
+    "geometryHash": "8c640c6b82038159",
+    "enemyHp": 0.5
   },
   {
     "id": "frostbound-1",

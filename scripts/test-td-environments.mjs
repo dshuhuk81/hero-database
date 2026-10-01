@@ -7,8 +7,10 @@ import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
+import classicMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
 
-const plain = maps[0];
+// Multiplier checks on a classic map; boards turn the range rule into reach steps (test-td-sim).
+const plain = classicMaps[0];
 const game = (theme) => new TowerDefenseGame({ heroes, tuning, map: { ...plain, theme }, waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 1, gapMs: 1000 }] }] });
 const road = { ...heroes.find(h => h.slot === "road"), slotType: "road", slotIndex: 0 };
 const platform = { ...heroes.find(h => h.slot === "platform"), slotType: "platform", slotIndex: 0 };

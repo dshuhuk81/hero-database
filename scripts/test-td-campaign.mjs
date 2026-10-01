@@ -5,7 +5,7 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
-import { collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 import dbBosses from "../src/data/bosses.json" with { type: "json" };
 import tdBosses from "../src/data/tdBosses.json" with { type: "json" };
@@ -101,6 +101,14 @@ stages.forEach((stage, i) => {
   const skilledHero = collectionHeroes(campaign, passive, heroes).find((hero) => hero.id === id);
   assert.ok(skilledHero.atk > baseHero.atk && skilledHero.hp === baseHero.hp, "attack passive affects campaign attack only");
   assert.ok(skilledHero.ultPower > baseHero.ultPower, "ultimate level affects campaign Ultimate power");
+}
+
+// --- Reach steps from stars (board plan decision 1: range grows outside battle only) ---
+{
+  assert.deepEqual([0, 2, 3, 4, 5].map((n) => starReachSteps(campaign, n)), [0, 0, 1, 1, 2], "reach steps at 3 and 5 stars");
+  const id = heroes[0].id;
+  const starred = { ...newCampaignProgress(campaign), owned: [id], stars: { [id]: 3 } };
+  assert.equal(collectionHeroes(campaign, starred, heroes).find((h) => h.id === id).reachSteps, 1, "a 3-star hero carries one reach step");
 }
 
 // --- Hero levels ---

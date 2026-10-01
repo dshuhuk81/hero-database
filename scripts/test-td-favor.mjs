@@ -6,7 +6,8 @@ import {
 } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import maps from "../src/data/tdMaps.json" with { type: "json" };
+// Blessing math on the classic (pre-board) maps; on boards range follows the attack pattern.
+import maps from "./fixtures/td-classic-maps.json" with { type: "json" };
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 
 const trunkNode = (type) => TREE.nodes.find((entry) => entry.tree === "trunk" && entry.effect.type === type);
@@ -176,7 +177,12 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   close(atkGame.attackValue(t), plainGame.attackValue(pt), "tank attack unchanged");
 
   assert.equal(place(make(lv("Tank", "hp")), tank).hp, Math.round(pt.hp * (1 + classNode("Tank", "hp").effect.value * 5)), "tank HP");
-  assert.equal(place(make(lv("Mage", "range")), mage).range, Math.round(mage.range * (1 + classNode("Mage", "range").effect.value * 5)), "range %");
+  // The former Reach nodes (range has no place on boards) give class bonuses instead, same ids.
+  assert.equal(classNode("Mage", "range"), undefined, "no class range nodes left");
+  const guarded = make(lv("Tank", "guard"));
+  close(guarded.guardFor(place(guarded, tank)) - plainGame.guardFor(pt), classNode("Tank", "guard").effect.value * 5, "Iron Hide adds Tank guard");
+  const focused = make(lv("Mage", "ultCharge"));
+  close(focused.ultChargeRate(place(focused, mage)) / plainGame.ultChargeRate(pm), 1 + classNode("Mage", "ultCharge").effect.value * 5, "Focused Mind charges Mage ultimates faster");
   // Class specials strengthen the class kit (M6).
   const wide = make(lv("Mage", "splash"));
   close(wide.splashRadius(place(wide, mage)), tuning.classes.Mage.splash.radius * (1 + classNode("Mage", "splash").effect.value), "Wide Blast");

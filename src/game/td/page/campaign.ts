@@ -10,7 +10,7 @@ import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad } from "../campaign.js";
+import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
@@ -464,7 +464,11 @@ export function createCampaign(ctx: PageContext) {
     const max = campaign.heroStars?.max ?? 5;
     const cost = starUpCost(campaign, starCount);
     const per = Math.round((campaign.heroStars?.statPerStar ?? 0) * 100);
-    if (!cost) return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health.</p>${statRows(hero, heroScale(p, hero.id), null)}<span class="td-camp-maxed">Maximum stars reached</span>`;
+    // Reach grows outside battle only: one attack-pattern step at set star counts.
+    const reachNow = starReachSteps(campaign, starCount);
+    const reachNext = Object.keys(campaign.heroStars?.reachSteps ?? {}).map(Number).sort((a, b) => a - b).find((at) => at > starCount);
+    const reachLine = `<p class="td-hero-tab-copy">Reach: ${reachNow ? `+${reachNow} step${reachNow > 1 ? "s" : ""}` : "class pattern"}${reachNext ? `, +${starReachSteps(campaign, reachNext)} at ${reachNext} stars` : ""}.</p>`;
+    if (!cost) return `<p class="td-hero-tab-copy">Each star adds ${per}% attack and health.</p>${reachLine}${statRows(hero, heroScale(p, hero.id), null)}<span class="td-camp-maxed">Maximum stars reached</span>`;
     const slots = Object.entries(fodder).flatMap(([id, n]) => Array.from({ length: n }, () => id));
     const slotHtml = Array.from({ length: cost.copies }, (_, i) => {
       const id = slots[i];
@@ -486,6 +490,7 @@ export function createCampaign(ctx: PageContext) {
     const quickAdd = !full && copies >= cost.copies
       ? `<button type="button" class="action-button action-button--quiet td-fodder-auto" data-camp-fodder-auto>Fill all slots</button>` : "";
     return `<div class="td-star-heading"><span><small>Star rank</small><strong>${stars(starCount)}</strong></span><b>${starCount} / ${max}</b></div>
+      ${reachLine}
       <div class="td-fodder"><div class="td-fodder-head"><span class="td-label">Upgrade materials</span><span>${selectedCopies} / ${cost.copies}</span></div>
       <div class="td-fodder-slots">${slotHtml}</div>
       <div class="td-fodder-picks">${pickHtml}</div>${quickAdd}</div>
