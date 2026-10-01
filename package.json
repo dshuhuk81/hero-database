@@ -39,6 +39,7 @@
     "build:game-balance": "node scripts/build-game-balance.mjs",
     "test:tower-defense": "node scripts/build-game-balance.mjs --check && node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-skin.mjs && node scripts/test-td-save.mjs && node scripts/test-td-sim.mjs && node scripts/test-td-daily.mjs && node scripts/test-td-challenges.mjs && node scripts/test-td-expedition.mjs && node scripts/test-td-campaign.mjs && node scripts/test-td-summon.mjs && node scripts/test-td-map-generator.mjs",
     "test:td-balance": "node scripts/test-td-balance.mjs",
+    "test:td-environments": "node scripts/test-td-environments.mjs",
     "td:sweep": "node scripts/td-balance-sweep.mjs",
     "td:upgrade-sweep": "node scripts/td-upgrade-sweep.mjs",
     "td:classes": "node scripts/td-classes.mjs",
