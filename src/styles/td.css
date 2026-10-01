@@ -6040,11 +6040,20 @@ svg.td-class-icon {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--node) 25%, transparent);
 }
 
+.td-bnode.is-partial {
+  background: linear-gradient(to top,
+    color-mix(in srgb, var(--node) 22%, var(--bg-raised)) 0 var(--progress),
+    var(--bg-raised) var(--progress) 100%);
+}
+
 .td-bnode.is-owned,
 .td-bnode.is-max {
   border-color: var(--node);
-  background: color-mix(in srgb, var(--node) 22%, var(--bg-raised));
   color: var(--text-bright);
+}
+
+.td-bnode.is-max {
+  background: color-mix(in srgb, var(--node) 22%, var(--bg-raised));
 }
 
 .td-bnode.is-max .td-bnode-level {
@@ -6080,10 +6089,9 @@ svg.td-class-icon {
 
 .td-bdetail {
   display: grid;
-  align-content: start;
-  gap: var(--space-1);
-  padding: var(--space-3);
-  overflow-y: auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+  overflow: hidden;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   background: var(--bg-surface);
@@ -6091,10 +6099,21 @@ svg.td-class-icon {
   font-size: var(--text-sm);
 }
 
+.td-bdetail-content {
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-3);
+  overscroll-behavior: contain;
+}
+
 .td-bdetail h3 {
   margin: 0;
   color: var(--text-bright);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
+  line-height: var(--leading-tight);
 }
 
 .td-bdetail p {
@@ -6116,12 +6135,12 @@ svg.td-class-icon {
 .td-bdetail-row {
   display: grid;
   gap: 2px;
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .td-bdetail-row p {
   color: var(--text-primary);
-  line-height: var(--leading-normal);
+  line-height: 1.35;
 }
 
 .td-bdetail-k {
@@ -6140,7 +6159,6 @@ svg.td-class-icon {
 .td-bdetail-buy {
   width: 100%;
   justify-content: space-between;
-  margin-top: var(--space-2);
   padding: 0 var(--space-3);
 }
 
@@ -6152,6 +6170,48 @@ svg.td-class-icon {
 .td-bdetail-state {
   color: var(--text-secondary);
   font-size: var(--td-fs-body);
+}
+
+.td-bdetail-actions {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  box-shadow: 0 -8px 16px rgba(0, 0, 0, .16);
+}
+
+.td-bdetail-reset {
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: 600 var(--td-fs-body) var(--font-base);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.td-bdetail-reset:hover,
+.td-bdetail-reset:focus-visible {
+  color: var(--text-bright);
+  background: var(--bg-raised);
+}
+
+.td-bdetail-reset:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: -2px;
+}
+
+.td-bdetail-reset:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.td-bdetail-reset.is-armed {
+  color: var(--td-warn);
 }
 
 /* Narrow portrait: detail below the graph. Short landscape keeps it at the side, narrower. */

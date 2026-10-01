@@ -119,8 +119,9 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       const level = store.data.favLevels[node.id] || 0;
       const color = node.tree === "trunk" ? "var(--accent-gold)" : `var(--td-class-${node.tree.toLowerCase()})`;
       const label = `${node.name}, ${node.tree === "trunk" ? "Divine trunk" : `${node.tree} ${node.stage}`}, level ${level} of ${node.maxLevel}`;
-      return `<button type="button" class="td-bnode ${status(node)}${node.id === selectedId ? " is-selected" : ""}" data-bnode="${node.id}" ` +
-        `style="left:${px(pos.x) - NODE / 2}px;top:${px(pos.y) - NODE / 2}px;--node:${color}" aria-label="${label}">` +
+      const partial = level > 0 && level < node.maxLevel ? " is-partial" : "";
+      return `<button type="button" class="td-bnode ${status(node)}${partial}${node.id === selectedId ? " is-selected" : ""}" data-bnode="${node.id}" ` +
+        `style="left:${px(pos.x) - NODE / 2}px;top:${px(pos.y) - NODE / 2}px;--node:${color};--progress:${level / node.maxLevel * 100}%" aria-label="${label}">` +
         `<span class="td-bnode-glyph">${GLYPHS[node.effect.type] ?? "?"}</span><span class="td-bnode-level">${level}/${node.maxLevel}</span></button>`;
     }).join("");
   }
@@ -137,38 +138,33 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     const exclusive = node.exclusive ? `<p class="td-bdetail-note">Pick one: ${nodes.filter((n) => n.tree === node.tree && n.exclusive === node.exclusive).map((n) => n.name).join(" or ")}.</p>` : "";
     // Label above its text, so long effects wrap cleanly instead of flowing under the label.
     const row = (label: string, text: string) => `<div class="td-bdetail-row"><span class="td-bdetail-k">${label}</span><p>${text}</p></div>`;
-    let action = "";
-    if (level >= node.maxLevel) action = `<p class="td-bdetail-state">Fully unlocked.</p>`;
-    else if (!check.ok) action = row("Locked", check.reason);
-    else action = `<button type="button" class="action-button action-button--primary td-bdetail-buy" data-bbuy="${node.id}"${have < cost ? " disabled" : ""}>` +
-      `<span>${level ? `Level ${level + 1}` : "Unlock"}</span><span>${cost} ${currencyName(node)}</span></button>` +
-      (have < cost ? `<p class="td-bdetail-state">Need ${cost - have} more ${currencyName(node)}.</p>` : "");
-    return `<p class="td-label td-bdetail-where">${where}</p><h3>${node.name}</h3>` +
+    let stateText = "";
+    let primary = "";
+    if (level >= node.maxLevel) stateText = `<p class="td-bdetail-state">Fully unlocked.</p>`;
+    else if (!check.ok) stateText = row("Locked", check.reason);
+    else primary = `<button type="button" class="action-button action-button--primary td-bdetail-buy" data-bbuy="${node.id}"${have < cost ? " disabled" : ""}>` +
+      `<span>${level ? `Level ${level + 1}` : "Unlock"}</span><span>${cost} ${currencyName(node)}</span></button>`;
+    const anything = Object.keys(store.data.favLevels).length > 0;
+    const resetCost = TREE.reset.favorCost;
+    const reset = anything
+      ? `<button type="button" class="td-bdetail-reset${resetArmed ? " is-armed" : ""}" data-breset${availableFavor(store.data) >= resetCost ? "" : " disabled"}>` +
+        (resetArmed ? `Confirm reset · ${resetCost} Favor` : `Reset all blessings · ${resetCost} Favor`) + `</button>`
+      : "";
+    const actions = primary || reset ? `<div class="td-bdetail-actions">${primary}${reset}</div>` : "";
+    return `<div class="td-bdetail-content"><p class="td-label td-bdetail-where">${where}</p><h3>${node.name}</h3>` +
       `<p class="td-bdetail-level">Level ${level} of ${node.maxLevel}${pending ? ` <span class="td-wave-chip td-wave-chip--pending">From next run</span>` : ""}</p>` +
       (level ? row("Now", effectText(node, level)) : "") +
       (level < node.maxLevel ? row(level ? "Next" : "Gives", effectText(node, level + 1)) : "") +
-      exclusive + action;
+      exclusive + stateText + `</div>${actions}`;
   }
 
   function summaryHtml() {
-    const insight = CLASSES.map((cls: string) =>
-      `<span class="td-bchip" style="--edge:var(--td-class-${cls.toLowerCase()})">${classIconImg(cls, 16)}${cls} <b>${availableInsight(store.data, cls)}</b></span>`).join("");
     const refund = store.data.refundNotice
       ? `<p class="td-favor-note td-bnotice">The Divine Blessings were rebuilt: ${store.data.refundNotice} Favor from your earlier purchases was refunded. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
     const reprice = store.data.repriceNotice
       ? `<p class="td-favor-note td-bnotice">Blessing prices changed. Everything you already own stays, and the price difference was credited back. Each class's Surge became an Infusion (its attacks apply a status); Insight spent on Surge was returned. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
-    return `<div class="td-bsummary"><span class="td-bchip td-bchip--favor"><b>${availableFavor(store.data)}</b> Favor</span>${insight}</div>` +
-      `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` +
+    return `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` +
       `<p class="td-favor-note td-bexplain">Divine Blessings apply in Free Play and Expeditions. Campaign stages use campaign levels, stars and evolution instead, and the Daily Trial is the same for everyone.</p>` + refund + reprice;
-  }
-
-  function resetHtml() {
-    const anything = Object.keys(store.data.favLevels).length > 0;
-    if (!anything) return "";
-    const cost = TREE.reset.favorCost;
-    const can = availableFavor(store.data) >= cost;
-    return `<button type="button" class="td-respec${resetArmed ? " is-armed" : ""}" data-breset${can ? "" : " disabled"}>` +
-      (resetArmed ? `Confirm: reset all blessings for ${cost} Favor` : `Reset all blessings (${cost} Favor, refunds everything else)`) + `</button>`;
   }
 
   function applyView() {
@@ -230,7 +226,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       `<div class="td-bgraph-zoom"><button type="button" class="td-icon-button td-icon-button--small" data-bzoom="in" aria-label="Zoom in">+</button>` +
       `<button type="button" class="td-icon-button td-icon-button--small" data-bzoom="out" aria-label="Zoom out">-</button>` +
       `<button type="button" class="td-icon-button td-icon-button--small" data-bzoom="fit" aria-label="Fit the whole tree">Fit</button></div></div>` +
-      `<aside class="td-bdetail" aria-live="polite">${detailHtml()}</aside></div>` + resetHtml();
+      `<aside class="td-bdetail" aria-live="polite">${detailHtml()}</aside></div>`;
     if (!fitted) requestAnimationFrame(() => fit(true));
     else applyView();
     if (focusedId) host.querySelector<HTMLElement>(`[data-bnode="${focusedId}"]`)?.focus({ preventScroll: true });

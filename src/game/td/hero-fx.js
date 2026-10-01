@@ -13,7 +13,7 @@ export const PROFILES = {
   nuwa:        { name: "Atlas", color: 0xd9b26f, accent: 0xfff1c9, mote: "twinkle" },
   prometheus:  { name: "Ymir", color: 0x8fd0ff, accent: 0xeaf8ff, mote: "flake" },
   momus:       { name: "Heimdall", color: 0xffd66e, accent: 0xffffff, mote: "twinkle" },
-  demeter:     { name: "Gaia", color: 0x7fcf6a, accent: 0xc9a46a, mote: "leaf" },
+  demeter:     { name: "Gaia", color: 0x7fcf6a, accent: 0xc9a46a, mote: "leaf", ranged: true, speed: 480 },
   poseidon:    { name: "Aegir", color: 0x3fa8ff, accent: 0xd8f6ff, mote: "drop" },
   amunra:      { name: "Helios", color: 0xffc233, accent: 0xfff4c4, mote: "twinkle" },
   set:         { name: "Surtr", color: 0xff5a1f, accent: 0xffc26b, mote: "ember" },
@@ -168,12 +168,6 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       slash(x, y, a, p.color, { r: 22, thick: 6, sweep: 2.6 });
       kit.spawn("twinkle", x + rand(-6, 6), y - 8, { tint: 0xffffff, size: 18 * big, sizeEnd: 4, life: 0.3, spin: 4 });
     },
-    demeter(x, y, a, p, big) { // Knuckle of Earth: earth bursts up under the target
-      debris("rock", x, y + 6, 5, 0x9c8058, { up: 170, speed: 60, spread: 1, size: 8 });
-      kit.spawn("leaf", x, y, { tint: p.color, vx: rand(-40, 40), vy: -70, ay: 120, size: 9, life: 0.6, spin: 5, add: false });
-      groundRing(x, y + 6, 4, 22 * big, 0x8a6d45, { add: false, width: 4, alpha: 0.55 });
-      flash(x, y, p.color, 24 * big);
-    },
     poseidon(x, y, a, p, big) { // Breakwater Blow: water crescent and spray
       slash(x, y, a, p.color, { r: 23, thick: 8, core: p.accent });
       sparks(x, y, 6, p.accent, { tex: "drop", size: 7, speed: 140, gravity: 420, up: 60, dir: a, spread: 2.4, add: false });
@@ -288,6 +282,10 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       return projectile("arrow", sx, sy, x, y, p.accent, { speed: p.speed, arc: 8, size: 24, add: false,
         trail: (tx, ty, a) => { streakTrail(p.color, { size: 20 })(tx, ty, a); if (Math.random() < 0.4) kit.spawn("drop", tx, ty, { tint: p.color, size: 4, vy: 30, ay: 300, life: 0.35, align: true, add: false, optional: true }); } });
     },
+    demeter(e, sx, sy, x, y, p) { // Knuckle of Earth: a clod of earth lobbed from her palm, shedding leaves
+      return projectile("rock", sx, sy, x, y, p.accent, { speed: p.speed, arc: 28, size: 10, spin: 6, add: false,
+        trail: (tx, ty) => { if (Math.random() < 0.4) kit.spawn("leaf", tx, ty, { tint: p.color, size: 6, vx: rand(-20, 20), vy: 10, ay: 90, spin: 6, life: 0.45, add: false, optional: true }); }, trailEvery: 0.03 });
+    },
     caishen(e, sx, sy, x, y, p) { // A Portion Set Aside: a spinning coin
       return projectile("coin", sx, sy, x, y, p.color, { speed: p.speed, arc: 30, size: 11, add: false,
         trail: (tx, ty) => kit.spawn("twinkle", tx, ty, { tint: p.accent, size: 7, sizeEnd: 2, life: 0.25, optional: true }), trailEvery: 0.035 });
@@ -327,6 +325,11 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       sparks(x, y, 4, p.color, { tex: "drop", size: 6, speed: 90, up: 50, gravity: 380, add: false });
       for (let i = 0; i < kit.n(2); i++) kit.spawn("bubble", x + rand(-6, 6), y - 4, { tint: p.color, size: 6, sizeEnd: 9, vy: -35, life: 0.55, wobble: 2, add: false, delay: i * 0.08 });
       flash(x, y, p.color, 20 * big, { alpha: 0.6 });
+    },
+    demeter(x, y, p, big) { // earth bursts up under the target
+      debris("rock", x, y + 6, 4, 0x9c8058, { up: 150, speed: 60, spread: 1, size: 7 });
+      groundRing(x, y + 6, 4, 20 * big, 0x8a6d45, { add: false, width: 4, alpha: 0.55 });
+      flash(x, y, p.color, 22 * big, { alpha: 0.7 });
     },
     caishen(x, y, p, big) {
       for (let i = 0; i < kit.n(3); i++) kit.spawn("twinkle", x + rand(-10, 10), y + rand(-10, 6), { tint: i % 2 ? p.accent : p.color, size: 10 * big, sizeEnd: 2, life: 0.3, delay: i * 0.04 });
@@ -388,16 +391,16 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       groundRing(sx, sy + 10, 20, (e.range ?? 70) * 2.5, p.color, { life: 0.9, width: 3, alpha: 0.5 });
       flash(sx, sy - 10, p.accent, 60, { life: 0.35 });
     },
-    demeter(e, p, sx, sy) { // Borrowed from Bedrock: stone spikes ring her, green strength flows in
+    demeter(e, p, sx, sy) { // Where the Roots Hold: a green field spreads over her range, stone wards rise
+      const reach = (e.range ?? 170) * 0.9;
+      for (let i = 0; i < 2; i++) groundRing(sx, sy + 12, 15, reach, i ? p.accent : p.color, { delay: i * 0.2, life: 0.9, width: 4, alpha: 0.7 });
       for (let i = 0; i < 9; i++) {
         const a = i / 9 * TAU;
-        const x = sx + Math.cos(a) * 52, y = sy + 12 + Math.sin(a) * 26;
+        const x = sx + Math.cos(a) * 46, y = sy + 12 + Math.sin(a) * 22;
         kit.spawn("shard", x, y, { tint: 0xa88a5e, size: 4, sizeEnd: 11, stretch: 3, life: 0.9, delay: i * 0.03, add: false, hold: 0.7 });
-        debris("rock", x, y, 1, 0x8a6d45, { size: 5, up: 90, delay: i * 0.03 });
       }
-      flow("leaf", sx + 60, sy - 30, sx, sy, 3, p.color, { speed: 200, bend: 30, size: 10, add: false, spin: 6 });
-      flow("leaf", sx - 60, sy - 20, sx, sy, 3, p.color, { speed: 200, bend: -30, size: 10, add: false, spin: 6 });
-      groundRing(sx, sy + 12, 15, 60, p.color, { life: 0.7 });
+      rise("leaf", sx, sy - 8, 8, p.color, { spread: 60, size: 10, life: 1, add: false });
+      flash(sx, sy, p.color, 60, { life: 0.4, alpha: 0.5 });
     },
     poseidon(e, p, sx, sy) { // The Sea Takes a Step: a rolling wave along his facing
       const facing = e.facing ?? Math.atan2(e.y - sy, e.x - sx);
@@ -515,20 +518,20 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       groundRing(e.x, e.y + 6, 6, 40, p.color, { life: 0.6, delay: 0.1 });
       debris("flake", e.x, e.y, 6, p.accent, { add: true, up: 40, gravity: 50, speed: 80, life: 0.8, size: 8, delay: 0.1 });
     },
-    artemis(e, p, sx, sy) { // A Path Through the Pack: a charged arrow flies the whole line
-      const angle = Math.atan2(e.y - sy, e.x - sx);
-      const distance = (e.range ?? 140) * (e.awakened ? 2 : 1.5);
-      const tx = sx + Math.cos(angle) * distance, ty = sy + Math.sin(angle) * distance;
-      let lastRing = 0;
-      projectile("arrow", sx, sy, tx, ty, 0xffffff, { speed: 1300, size: 40, add: false,
-        trail: (x, y, a) => {
-          streakTrail(p.color, { size: 46, life: 0.25 })(x, y, a);
-          lastRing += 1;
-          if (lastRing % 3 === 0) kit.spawn("ring", x, y, { tint: p.accent, size: 10, sizeEnd: 30, stretch: 1, life: 0.35, rot: a, alpha: 0.7, hold: 0.1,
-            onStep: (q) => { q.sp.scale.x *= 0.35; } });
-          if (Math.random() < 0.3) kit.spawn("leaf", x, y, { tint: p.color, size: 7, vx: rand(-60, 60), vy: rand(-40, 20), ay: 120, spin: 6, life: 0.6, add: false, optional: true });
-        }, trailEvery: 0.012 });
+    artemis(e, p, sx, sy) { // Fire in the Brambles: a volley of burning arrows lands on the pack
+      const r = 80;
+      let land = 0;
+      for (let i = 0; i < kit.n(7); i++) {
+        const a = rand(0, TAU), d = rand(0, r * 0.8);
+        const x = e.x + Math.cos(a) * d, y = e.y + Math.sin(a) * d * 0.5;
+        land = Math.max(land, projectile("arrow", sx, sy, x, y, 0xffd27a, { speed: 900, arc: 40, size: 22, add: false, delay: i * 0.04,
+          trail: (tx, ty, ta) => { streakTrail(0xff8a3d, { size: 20 })(tx, ty, ta); if (Math.random() < 0.3) kit.spawn("ember", tx, ty, { tint: 0xffc26b, size: 6, vy: 20, life: 0.3, optional: true }); } }));
+        kit.spawn("flame", x, y, { tint: i % 2 ? 0xff7a2e : 0xffc26b, size: 10, sizeEnd: 18, vy: -40, life: 0.5, delay: land });
+      }
+      groundRing(e.x, e.y + 4, 10, r, 0xff8a3d, { delay: land, life: 0.5, width: 3 });
+      flash(e.x, e.y, 0xffc26b, 60, { delay: land, life: 0.35, alpha: 0.6 });
       flash(sx, sy, p.accent, 40, { life: 0.25 });
+      if (e.awakened) orbit("twinkle", sx, sy, 5, p.accent, { r: 26, size: 9, life: 0.8, speed: 8, climb: 16 });
     },
     medusa(e, p, sx, sy) { // Hold That Last Step: serpent eyes flare, stone creeps along each gaze
       for (const side of [-1, 1]) flash(sx + side * 6, sy - 12, p.accent, 16, { life: 0.5, grow: 1.1 });
@@ -663,7 +666,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         return;
       }
       case "beam": { // Support heal: motes flow along a curve to the ally
-        const tex = { caishen: "coin", yuelao: "note", freya: "dot", "recruit-poppy": "plus" }[e.heroId] ?? "dot";
+        const tex = { caishen: "coin", yuelao: "note", freya: "dot", demeter: "leaf", "recruit-poppy": "plus" }[e.heroId] ?? "dot";
         const add = tex === "dot" || tex === "plus";
         const end = flow(tex, sx, sy, x, y, e.heroId === "freya" ? 6 : 4, p.color, { speed: 380, bend: 26, arc: 16, size: tex === "dot" ? 6 : 9,
           helix: e.heroId === "freya" ? 8 : 0, helixFreq: 3, add, spin: tex === "coin" ? 8 : 0 });

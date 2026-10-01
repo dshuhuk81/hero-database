@@ -841,37 +841,10 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   const heroSprites = new Map(); // entityId -> Container
 
-  // Melee strikes give road heroes a short lean toward the target (presentation only;
-  // sim positions never change). Assassin dash effects must not move the portrait away
-  // from its slot; their regular hit uses the same short melee motion as a Warrior.
-  const lungeSeen = new WeakSet();
-  function scanLunges() {
-    if (reducedMotion) return;
-    for (const effect of game.effects) {
-      if (lungeSeen.has(effect)) continue;
-      lungeSeen.add(effect);
-      if (effect.type !== "hit" || !effect.melee) continue;
-      const container = heroSprites.get(effect.sourceId);
-      if (!container) continue;
-      const tx = effect.x2 ?? effect.x, ty = effect.y2 ?? effect.y;
-      container._lunge = { at: game.time, dx: tx - effect.sourceX, dy: ty - effect.sourceY };
-    }
-  }
-  function lungeOffset(container) {
-    const l = container._lunge;
-    if (!l) return [0, 0];
-    const t = game.time - l.at;
-    const out = 0.07, stay = 0.02, back = 0.11;
-    if (t < 0 || t > out + stay + back) { container._lunge = null; return [0, 0]; }
-    const dist = Math.hypot(l.dx, l.dy) || 1;
-    // Stop just short of the enemy so the blade, not the token, lands on it.
-    const reach = Math.min(14, dist * 0.25);
-    const k = t < out ? 1 - (1 - t / out) ** 2 : t < out + stay ? 1 : (1 - (t - out - stay) / back) ** 2;
-    return [l.dx / dist * reach * k, l.dy / dist * reach * k];
-  }
+  // Heroes never move on attack: the whole figure stays on its slot and only the attack
+  // clip (or the token) plays. A full-body step needs its own animation, not a container shift.
 
   function syncHeroes() {
-    scanLunges();
     const seen = new Set();
     for (const unit of game.heroes) {
       seen.add(unit.entityId);
@@ -951,8 +924,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function updateHeroSprite(unit, container) {
-    const [lx, ly] = lungeOffset(container);
-    container.position.set(unit.x + lx, unit.y + ly);
+    container.position.set(unit.x, unit.y);
     // Assassin veil (class ultimate): translucent while nothing can hurt it.
     container.alpha = game.isVeiled?.(unit) ? 0.45 : 1;
 

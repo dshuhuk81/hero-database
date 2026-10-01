@@ -149,14 +149,16 @@ hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
 
 | Class | Slot | Heroes (internal ids) |
 |---|---|---|
-| Tank | road | `nuwa`, `prometheus`, `momus`, `demeter` |
+| Tank | road | `nuwa`, `prometheus`, `momus` |
 | Warrior | road | `poseidon`, `amunra`, `set`, `jormungandr` |
 | Assassin | road | `nyx`, `bastet`, `horus`, `anubis` |
 | Mage | platform | `zeus`, `phoenix`, `fengyi` |
 | Archer | platform | `diana`, `artemis`, `medusa` |
-| Support | platform | `caishen`, `yuelao`, `freya` |
+| Support | platform | `caishen`, `yuelao`, `freya`, `demeter` |
 
-12 road, 9 platform. The build fails on a missing id or missing `stats`,
+11 road, 10 platform. Gaia (`demeter`) is a Support in TD only (October 1, 2026):
+`tuning.classOverrides` swaps a database hero's class before the generator runs; the
+database keeps the real game's class (Tank). The build fails on a missing id or missing `stats`,
 `baseAttackRate` or `bossUltimatesPer90s`.
 
 Stable baselines (audit step 4, September 29, 2026): ranks are taken against the fixed
@@ -234,8 +236,9 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   colour with a slow wave out to their range; allies inside carry a faint rim at their
   feet, allies under a timed ult buff a brighter gold rim. Recruits use the class effect
   builders in `hero-fx.js` (`CLASS_*`).
-  Melee strikes give the hero token a short presentation-only lean; sim positions never
-  change. Assassins use 42 px contact range against approaching enemies. They can dash to
+  Heroes never move on attack (October 1, 2026): the old melee lean that shifted the whole
+  figure toward the target is gone; only the attack clip (or token) plays. A full-body step
+  needs its own animation. Assassins use 42 px contact range against approaching enemies. They can dash to
   an unheld enemy only after it has passed their tile; the portrait remains anchored while
   speed streaks show the catch-up strike.
 - Special tiles (`rings`): `highground` +20% range, `shrine` +30% ult charge,
@@ -282,6 +285,16 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   `frozenUntil`, so Shattering Cold applies). Awakened: +10% chance, +1s. Replaces the old
   `weaken_burst` binding; no exposure. FX: the blast rings are true circles (`squash: 1`) centred on
   the hero, matching his range circle.
+- Gaia `rooted_sanctuary` (tuning `heroSkills.demeter`): heals allies in her range for 30% of
+  her own max health (Support class blessings raise it) and wards them for 8s: `damageHero`
+  cuts damage taken by `wardCut` (30%) while `wardUntil` runs; overlapping wards keep the
+  stronger cut and the later end. Awakened: 50% heal, 40% cut.
+- Atalanta `burning_volley` (tuning `heroSkills.artemis`): every enemy within 80px of the
+  target takes 60% U (150% attack) and burns for 50% of the hit dealt over 5s (`applyBurn`,
+  so Steam/Blight reactions apply). Awakened: rapid fire for 10s (`hero.rapid`,
+  `rapidUntil`; `rapidFx()`): +50% attack speed and +30% attack. Replaces `piercing_shot`
+  (kept for recruit Hollis). Class matrix: healer/platform has 3% tolerance because she
+  clears the small healer pack alone.
 - Synergy: each `synergies` tag shared by 2+ deployed heroes within 250px gives `+8%`
   atk, capped at `+24%`.
 

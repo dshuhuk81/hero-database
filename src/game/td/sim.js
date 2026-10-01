@@ -752,7 +752,7 @@ export class TowerDefenseGame {
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0)));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -1025,11 +1025,17 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally;
+    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk);
+  }
+
+  // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
+  rapidFx(hero) {
+    return this.time < (hero.rapidUntil || 0) ? hero.rapid : { aps: 0, atk: 0 };
   }
 
   damageHero(hero, amount, source) {
     if (amount <= 0 || this.isVeiled(hero)) return;
+    if (this.time < (hero.wardUntil || 0)) amount *= 1 - hero.wardCut; // Gaia's Rooted Sanctuary
     hero.hpLeft -= amount;
     hero._hitFlash = true;
     if (hero.hpLeft <= 0) {
@@ -1817,11 +1823,18 @@ export class TowerDefenseGame {
     } else if (variant === "mass_taunt") {
       // Momus: wide taunt (2.5x range)
       foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * (aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
-    } else if (variant === "drain_field") {
-      // Demeter: taunt + self heal
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
-      this.healHero(hero, hero.hp * (aw ? 0.35 : 0.15), hero);
-      this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
+    } else if (variant === "rooted_sanctuary") {
+      // Gaia (Support): heals allies in range from her own max health, then they take less damage.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const heal = hero.hp * (aw ? skill?.awakenHeal ?? 0.5 : skill?.heal ?? 0.3) * (1 + (this.classBonus(hero).support || 0));
+      const cut = aw ? skill?.awakenWard ?? 0.4 : skill?.ward ?? 0.3;
+      const until = this.time + (skill?.wardSeconds ?? 8);
+      this.heroes.filter((a) => Math.hypot(hero.x - a.x, hero.y - a.y) <= hero.range).forEach((a) => {
+        this.healHero(a, heal, hero);
+        a.wardCut = Math.max(cut, this.time < (a.wardUntil || 0) ? a.wardCut : 0);
+        a.wardUntil = Math.max(until, a.wardUntil || 0);
+        this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
+      });
     } else if (variant === "war_cry") {
       // Amunra: cleave + slow hit enemies
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
@@ -1899,6 +1912,20 @@ export class TowerDefenseGame {
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
       });
+    } else if (variant === "burning_volley") {
+      // Atalanta: burning arrows rain on the target area; every enemy hit burns.
+      // Awakened: rapid fire afterwards (faster, harder basic shots).
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const radius = skill?.radius ?? 80;
+      foes.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= radius).forEach((e) => {
+        const dealt = this.hit(e, power * (skill?.damage ?? 0.6), hero, { showShot: false });
+        if (!e.dead) this.applyBurn(e, hero, (dealt || power * (skill?.damage ?? 0.6)) * (skill?.burnShare ?? 1), skill?.burnSeconds ?? 5);
+      });
+      if (aw) {
+        hero.rapid = { aps: skill?.rapidAps ?? 0.5, atk: skill?.rapidAtk ?? 0.3 };
+        hero.rapidUntil = this.time + (skill?.rapidSeconds ?? 10);
+        this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "gold" });
+      }
     } else if (variant === "piercing_shot") {
       // Artemis: single shot piercing all enemies in line from hero through target
       const dx = target.x - hero.x; const dy = target.y - hero.y;
@@ -1960,7 +1987,7 @@ export class TowerDefenseGame {
       }
     }
     this.classUltimate(hero, foes);
-    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null });
+    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null, awakened: aw });
   }
 
   // Class part of every ultimate (M6), on top of the hero's own skill.

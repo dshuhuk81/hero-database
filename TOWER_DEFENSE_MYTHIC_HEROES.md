@@ -25,7 +25,7 @@ Two changes from the earlier plan: **Asclepius replaces Sif** for `freya`, since
 | `nuwa` | Atlas | Shoulder of the Crossing | Greek | Tank / road | A Place to Stand |
 | `prometheus` | Ymir | Memory of the First Frost | Norse | Tank / road | Faults Beneath the Ice |
 | `momus` | Heimdall | Watchman at the World-Seam | Norse | Tank / road | The Gate Hears You |
-| `demeter` | Gaia | Ground Beneath the Refuge | Greek | Tank / road | Borrowed from Bedrock |
+| `demeter` | Gaia | Ground Beneath the Refuge | Greek | Support / platform | Where the Roots Hold |
 | `poseidon` | Aegir | Host of the Deep Hall | Norse | Warrior / road | The Sea Takes a Step |
 | `amunra` | Helios | Keeper of the Eastern Road | Greek | Warrior / road | Noon at the Narrow Gate |
 | `set` | Surtr | Ember at the Boundary | Norse | Warrior / road | Fuel for the Last Fire |
@@ -38,7 +38,7 @@ Two changes from the earlier plan: **Asclepius replaces Sif** for `freya`, since
 | `phoenix` | Hephaestus | Smith of the Refuge Gate | Greek | Mage / platform | Work the Living Furnace |
 | `fengyi` | Boreas | Winter at the Open Door | Greek | Mage / platform | Winter Comes Through the Door |
 | `diana` | Skadi | Hunter Above the Pass | Norse | Archer / platform | Follow My Arrow |
-| `artemis` | Atalanta | First Through the Brambles | Greek | Archer / platform | A Path Through the Pack |
+| `artemis` | Atalanta | First Through the Brambles | Greek | Archer / platform | Fire in the Brambles |
 | `medusa` | Stheno | Stillness at the Threshold | Greek | Archer / platform | Hold That Last Step |
 | `caishen` | Plutus | Keeper of the Common Store | Greek | Support / platform | Enough for Everyone |
 | `yuelao` | Harmonia | The Meeting of Many Hands | Greek | Support / platform | Together, Once More |
@@ -146,24 +146,24 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 ### 04. Gaia — Ground Beneath the Refuge
 
-**Binding:** `demeter` · `drain_field` · Tank · road · she/her
+**Binding:** `demeter` · `rooted_sanctuary` · Support · platform · she/her (Tank until October 1, 2026; TD-only class override)
 
 **Myth anchor:** Gaia personifies the earth and belongs to the earliest Greek divine generations. [Source: Gaia](https://www.theoi.com/Protogenos/Gaia.html).
 
-**Card:** Stops nearby enemies and restores her own health.
+**Card:** Heals the line and roots it against harm.
 
 **Biography:** Gaia presses her palm into the road and feels what the travelers have carried: seed, ash, broken tools, the weight of children asleep. She gathers their scattered earth into a foundation. If this is the last place left to stand, she will make it deep enough to hold them.
 
-**Basic — Knuckle of Earth:** Gaia lands a single crushing blow.
+**Basic — Knuckle of Earth:** Gaia lobs a clod of earth from her palm.
 
-**Trait — Deep Enough to Hold:** Uses the Tank trait.
+**Trait — Deep Enough to Hold:** Uses the Support trait.
 
-**Ultimate — Borrowed from Bedrock**
+**Ultimate — Where the Roots Hold**
 
-- Flavor: “The road gives back what its guardian needs.”
-- Rules: Slow eligible enemies within 1.8× range for 3 seconds and restore 15% of Gaia's maximum health. Also apply the Tank ultimate stop.
+- Flavor: “The road gives back what its guardians need.”
+- Rules: Heal allies in range for 30% of Gaia's maximum health. For 8 seconds they take 30% less damage.
 
-**Awakening — The Ground Remembers:** Self-healing becomes 35% maximum health.
+**Awakening — The Ground Remembers:** Healing becomes 50% of her maximum health and the damage reduction 40%.
 
 **Dialogue:** Recruit: “Put your feet here.” · Ultimate: “Down to the roots.” · Defeat: “Keep something growing.”
 
@@ -461,7 +461,7 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 **Myth anchor:** Atalanta is a renowned huntress associated with the Calydonian boar hunt and a footrace. [Source: Atalanta](https://www.theoi.com/Heroine/Atalanta.html).
 
-**Card:** Sends one shot through a long line of enemies.
+**Card:** Rains burning arrows on a crowded pack.
 
 **Biography:** Atalanta reaches the crossing ahead of the scouts and immediately asks where the next runner is needed. When the road closes behind the refugees, she takes up her bow. She studies the press of bodies until a narrow line appears through it. That is all the space she requires.
 
@@ -469,12 +469,12 @@ Class upgrades and run bonuses can modify these base values. Support ultimate he
 
 **Trait — An Eye for the Opening:** Uses the Archer trait. Ordinary shots do not pierce multiple enemies.
 
-**Ultimate — A Path Through the Pack**
+**Ultimate — Fire in the Brambles**
 
-- Flavor: “One narrow opening is enough for the whole arrow.”
-- Rules: Shoot along the line through the target, hitting eligible enemies within 18 px of that line for 55% U each, out to 1.5× range.
+- Flavor: “Where the pack is thickest, the brambles burn.”
+- Rules: Hit every eligible enemy within 80 px of the target for 60% U (150% attack) and set it burning for half the damage dealt over 5 seconds.
 
-**Awakening — Clear to the Far Side:** Damage becomes 90% U per enemy and reach becomes 2× hero range.
+**Awakening — Clear to the Far Side:** After the volley she fires rapidly for 10 seconds: 50% faster attacks with 30% more attack.
 
 **Dialogue:** Recruit: “Show me the narrow way.” · Ultimate: “One opening.” · Defeat: “Keep moving.”
 
@@ -625,7 +625,7 @@ Existing synergy memberships stay internal to preserve balance. If tag labels be
 1. Create a TD-owned content map keyed by the 21 existing IDs. Read display names, biographies, titles, basic-action names, trait names, skill names, and awakening text from that map. Preserve the original database files.
 2. Route hero name and skill-name consumers through the new map, including the unit records used by notices and results. Replace gendered skill text where the identity changes; prefer names or neutral phrasing.
 3. Apply the blessing and pair labels above. Update the Mage class exception from Zeus to Odin. Search TD pages, glossary content, audio captions, and accessibility strings for remaining old display names.
-4. Keep numerical descriptions tied to runtime values. Source code takes precedence over old prose. In particular: Surtr heals from raw ultimate strength; Hecate's low-health splash is 180% U, not 70% × 1.8; Atalanta's awakened reach is 2× hero range, not twice her previous ultimate reach; support healing and aura strength can be modified.
+4. Keep numerical descriptions tied to runtime values. Source code takes precedence over old prose. In particular: Surtr heals from raw ultimate strength; Hecate's low-health splash is 180% U, not 70% × 1.8; support healing and aura strength can be modified.
 5. Keep images, animation, effects, and recorded voice replacement as a separate asset pass. Text replacement alone does not complete the wider white-label migration. Boss identities and their copy need their own roster treatment.
 
 No additional mechanics are proposed in this pack. A spell's name or fictional description does not imply a damage-over-time effect, shield, teleport movement, channel, summon, or targeting rule absent from its rules text.

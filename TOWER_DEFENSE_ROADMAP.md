@@ -27,36 +27,9 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
-### 1. Balance decisions (owner call; measurements ready)
+### Bugs / Enhancements
 
-From audit step 3 (numbers in the archive). Each needs a yes/no, then a small data change:
-- (d) 1-10 health: APPROVED + DONE September 29, 2026 (combo with e). Shipped: 1-9 hpScale 0.57 -> 0.50, 1-10 0.67 -> 0.60. Post-change campaign sweep: 1-9 27/35, 1-10 27/35 (was 21/35 and 23/35); `td-chapter-length.mjs --variant=0` confirms the measured values (1-9 86% / 71%, 1-10 76% / 67%).
-- (e) Chapter 1 length: APPROVED + DONE September 29, 2026 (combo: waves x0.7 + hp relief). Every stage trimmed to ~70% waves (first and last wave kept), 79 -> 59 waves total. Measured after the change: winning runs 51 min, expected with retries 70-74 min (was 103-131), inside/near the 30-60 min target for wins.
-- Tanks: APPROVED + DONE September 29, 2026 — campaign squad size raised 5 → 6 (`tdCampaign.json`). Measurement (`td-tank-slot.mjs`, 16 squads per stage and size, both bot policies, all 16 stages): at size 5 Tank squads won 64% vs 93% without (29-point gap — the Tank replaced a damage dealer); at size 6 they win 80% vs 94%, every stage winnable for Tank squads (worst cell 38% on 2-5). Post-change full-chapter re-measure: all stages 43-100% on both policies; Chapter 1 early stages now at 100% (1-1..1-4) — if that reads too easy, a small hpScale bump on 1-1..1-4 is the follow-up knob. Test updated: the "too many heroes" check now adds a reward hero instead of relying on starters exceeding the cap.
-- Free Play difficulty since tiles + deploy cap 7 (M22b): 20 waves 4/5 wins vs 2/5 before. Retune enemy health with `td:sweep` or lower the cap. Re-check once generated maps land.
-- Tooling fix: DONE September 29, 2026. `td:pacing` class removal now refills removed heroes with the strongest other-class roster heroes (tier, then cost), so variants stay full-size and measure the class contribution instead of playing short-handed. First fair measurement (endless, both policies, vs full squad 32.2 / 29.2 waves): without Mage -15.1 / -11.7 (a real, large contribution — Mages carry endless depth), Archer -8.5 / -8.1, Warrior -7.7 / -2.8, Support -5.5 / -6.1, Tank +1.9 / +0.8 (in a 7-deploy Free Play squad Tanks are at best neutral — consistent with the campaign finding), Assassin +0.0 (Nyx is never deployed in the balanced squad: cost-ordered bench, deploy cap 7).
-- Chapter 1 re-tighten after owner playtest (September 29, 2026: "almost too easy with 6 heroes; leaks only on 1-5/1-6 from slow upgrades or misplacement"): APPROVED + SHIPPED September 30, 2026. hpScale 1-1 0.8→1.0, 1-2 0.95→1.1, 1-3 0.9→1.05, 1-4 0.68→1.05 (baseline included an intermediate manual retune), 1-9 0.5→0.6, 1-10 0.6→0.7; mid-chapter 1-5..1-8 untouched (the owner's felt pinch). Post-change measurement matches the approved variant: 1-2 86/100%, 1-3 76/81%, 1-4 52/52%, 1-9 81/90%, 1-10 67/71%. The harder variant (up to 1.2) was rejected — it walled 1-4 at 29-33%.
-- Watch item (owner playtest, September 29, 2026): "with a Support on the field heroes are nearly indestructible." Consistent with the class measurement (without Support -5.5/-6.1 endless waves — a real but not dominant contribution). No action yet; re-check after the chapter re-tighten lands, since harder waves also stress healing more.
-
-### 2. M26 Sprint 10 - Stage rating and chapter milestones (done September 29, 2026)
-
-Owner decisions: no player-facing name (wreath icons only, internally "laurels"), rule 1 / 50% / 90% lives, rewards as proposed (may be a bit high, revisit later), automatic payout. Shipped: `laurelLives` / `stageLaurels` / `chapterLaurels` / `payMilestones` in `campaign.js`, `laurels.thresholds` and chapter `milestones` in `tdCampaign.json`, save v8 (`milestones`; reached ones are paid once on load), wreaths on stage cards, drawer "Goals", chapter track under the stage grid, result lines. Tests: new block in `test-td-campaign.mjs` (thresholds, automatic payout once, idempotence, v7 -> v8), stale version asserts in `test-td-summon.mjs` now use `CAMPAIGN_SAVE_VERSION`. Checks: full suite, no new TD type errors, Chromium 1440x900 and 390x844 with a seeded v7 save (12 / 30, first milestone paid), no overflow or page errors. Proposal and measurements: [docs/tower-defense-stage-laurels-plan.md](docs/tower-defense-stage-laurels-plan.md). Open: look in play; stage 1-3 may need +2 lives if 3 wreaths stay out of reach. Move to the archive after that.
-
-### 2c. Chapter 2 on a generated map (done September 29, 2026)
-
-Map generator `orthogonal-v1` built per the map runbook (`map-generator.js`, `npm run td:generate-map`, tests in the suite), first map `sunscar-basin` published (seed 3, Sunscar art, 8 turns, "defense-basin"), Chapter 2 "The Sunscar March": 6 stages on it, Stheno on 2-3, Helios on the 2-6 finale, rating milestones 6 / 12 / 18. Bot win rates 86 -> 40% (cheapest) / 89 -> 34% (carry). Free Play map select now 4 in a row. Expedition test updated (it assumed exactly three maps). Details in the spec (section 7 and Game modes). Open: look in play; Moonlit / Verdant safe regions in the generator script are unverified guesses; Lilith replacement (M24d) still applies to Verdant.
-
-Independent re-check September 29, 2026 (`td-chapter-length.mjs --variant=0`, 21 squads x 2 policies, heroes levelled from the natural campaign income): every Chapter 2 stage sits at 48-86% (cheapest) / 38-86% (carry), all clearly above the 20% floor; softest is the 2-6 finale under "carry" (38%), matching the authored spike. Seal economy with Chapter 2 in place: 350 seals from first clears + ~290 from the chapter's laurel milestones ≈ one full x10 per chapter, and replays now add a quarter of first-clear seals per run (≈160 per Chapter 2 replay). Two-chapter total for a fresh player: ≈1,720 seals (600 + 480 Chapter 1, 350 + 290 Chapter 2) ≈ 28 pulls before dailies and expeditions. Income fits; no tuning.
-
-### 2b. Class audit (owner request, September 29, 2026)
-
-Check that each class looks and plays like its fantasy.
-- Assassins (done September 29, 2026): normal attacks now use 42 px contact range. Their extended dash only catches a loose enemy after it has passed their tile; approaching enemies must enter melee first. The portrait stays anchored to its tile, while speed streaks and a dagger glint show a leak-catching dash. Tanks and Warriors lean in a little when they strike. Checks cover approaching versus passed enemies, held enemies and explicit targeting modes.
-- Open: go through Tank, Warrior, Mage, Archer, Support the same way (look in play, list mismatches). Known: several Tank hold circles at once fill large areas. Class balance itself (Tanks) is under 1. Balance decisions.
-
-### 3. M24d - New boss to replace Lilith
-
-Lilith is a Motto Immortal character (white-label rule); she is the Verdant boss (`tdMaps.json` `boss`, `tuning.bosses.lilith`, sprites `boss-lilith-v1` / `brood-v1`). Idea from the owner: a Greek mythology monster. Needs: name and mechanic (keep or replace the brood summon), stats, sprite, glossary/skin text, effects, tests. Boss selection may move to the map generator; agree where bosses are assigned first. (Common recruit heroes from M24d are done.)
+None open. October 1 batch (melee motion, Gaia Support, Atalanta ultimate) -> archive, awaiting playtest.
 
 ### 4. Doc drift (audit)
 
@@ -65,11 +38,6 @@ Lilith is a Motto Immortal character (white-label rule); she is the Verdant boss
 - `docs/tower-defense-ui-plan.md`: ring-era requirements (rings, touch rotation).
 - White-label audit (`docs/audits/`): label historical sections.
 
-### 5. Playtest follow-ups (owner)
-
-- Archer platform shots (`tuning.enemies.archer.platformAttack` 0.5): manual phone play; raise it or add archers to more waves only after that.
-- M24c effects second pass (support auras, recruit effects): look in play.
-- Sprint 9 summon/Stars/Evolution numbers: under review in play. Optional: reveal flags "Evolution ready" when a copy makes an upgrade affordable.
 
 ### 6. M26 Sprint 11 - Quests
 

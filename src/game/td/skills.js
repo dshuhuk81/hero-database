@@ -9,7 +9,6 @@ export const SKILL_TEXT = {
   shield_wall: "Slows every enemy within 1.8x her range for 3s and heals road allies in range for 15% of their max health.",
   expose: "Slows every enemy within 1.8x his range for 3s and exposes them: they take 20% more damage for 4s.",
   mass_taunt: "Slows every enemy within 2.5x his range for 3s.",
-  drain_field: "Slows every enemy within 1.8x her range for 3s and heals herself for 15% of her max health.",
   knockback: "Strikes up to 3 enemies in front of him, furthest along first, and pushes them 80px back along the path.",
   war_cry: "Strikes every enemy in front of him and slows them for 2s.",
   lifesteal_cleave: "Strikes every enemy in front of him and heals for 15% of the damage dealt.",
@@ -24,10 +23,12 @@ export const SKILL_TEXT = {
   ice_shockwave: "An ice shockwave hits every enemy within his attack range for 140%. Each enemy hit has a 10% chance to freeze for 2s (cannot move or attack).",
   moon_barrage: "Fires 3 shots for 55% each at enemies in front of her and raises the attack of allies in range by 25% for 5s.",
   piercing_shot: "Fires a shot through the target that hits every enemy on the line, up to 1.5x her range, for 55% each.",
+  burning_volley: "Rains burning arrows on every enemy within 80px of the target for 150% of her attack and sets them on fire: half that damage again over 5s.",
   petrify_shot: "Petrifies up to 3 enemies in front of her for 3s (they cannot move or attack) and hits them for 55%.",
   fortune_shower: "Heals allies in range for 18% of their max health and raises their attack by 25% for 5s.",
   fate_link: "Heals allies in range for 18% of their max health and fills 30% of their ultimate charge.",
   valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",
+  rooted_sanctuary: "Heals allies in range for 30% of her own max health. For 8s they take 30% less damage.",
 };
 
 // Campaign skill progression uses the same two passive slots for every hero so saves stay
@@ -66,7 +67,6 @@ export const AWAKEN_TEXT = {
   shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
   expose: "enemies take extra damage for 7s instead of 4s",
   mass_taunt: "taunt reaches 3.5x range instead of 2.5x, slow lasts 5s",
-  drain_field: "heals herself for 35% instead of 15%",
   knockback: "pushes up to 5 enemies 140px instead of 3 enemies 80px",
   war_cry: "cleave deals 50% more damage, slow lasts 4s",
   lifesteal_cleave: "heals for 30% of the damage dealt instead of 15%",
@@ -80,10 +80,12 @@ export const AWAKEN_TEXT = {
   ice_shockwave: "20% freeze chance, freeze lasts 3s",
   moon_barrage: "5 shots instead of 3, ally buff lasts 8s",
   piercing_shot: "90% damage per enemy hit instead of 55%, twice the range",
+  burning_volley: "then fires rapidly for 10s: 50% faster attacks with 30% more attack",
   petrify_shot: "petrifies 5 enemies for 4s instead of 3 for 3s",
   fortune_shower: "ally buff lasts 8s and every cast pays 15 gold",
   fate_link: "allies gain 60% ultimate charge instead of 30%",
   valkyrie_call: "revived heroes return at full health",
+  rooted_sanctuary: "heals for 50% of her max health, allies take 40% less damage",
   soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
 };
 

@@ -35,7 +35,9 @@ const source = (id) => {
   const hero = heroes[id];
   if (!hero) throw new Error(`Missing tower-defense hero: ${id}`);
   if (!hero.stats || !hero.baseAttackRate || !hero.bossUltimatesPer90s) throw new Error(`Incomplete tower-defense hero: ${id}`);
-  return hero;
+  // TD-only class swaps (tuning.classOverrides); the database keeps the real game's class.
+  const override = tuning.classOverrides?.[id];
+  return override ? { ...hero, class: override } : hero;
 };
 const reference = (tuning.balanceReference ?? []).map(source);
 if (reference.length < 2) throw new Error(`tuning.balanceReference too small: ${reference.length}`);

@@ -120,7 +120,7 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
     const camp = campOffer({ ...e, stage: 1 }, pool).find((card) => card.type === "hero");
     assert.ok(!camp || owned.some((hero) => hero.id === camp.id), "camp recruit from the owned pool");
   }
-  const roadOnly = newExpedition(7, { ...data, heroes: owned.filter((hero) => hero.slot === "road") });
+  const roadOnly = newExpedition(7, { ...data, heroes: heroes.filter((hero) => ["nuwa", "jormungandr", "horus"].includes(hero.id)) });
   assert.ok(roadOnly.roster.length === EXPEDITION.startHeroes && roadOnly.roster.every(Boolean), "road-only pool still fills the roster");
 }
 
