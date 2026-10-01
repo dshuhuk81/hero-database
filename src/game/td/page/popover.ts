@@ -5,6 +5,8 @@ import { CLASS_ROLES, worldToLocal } from "../ui.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
 import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
+import { roman } from "./route";
+import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 
 // Layout: "push" narrows the stage so the whole map sits beside the panel, as long as the map
 // keeps at least PUSH_MIN_MAP px of width. Narrower stages overlay the map on the right (desktop)
@@ -12,6 +14,7 @@ import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
 // map (at least SHEET_MIN px tall).
 const PUSH_MIN_MAP = 520;
 const SHEET_MIN = 220;
+const STAR_MAX = (campaignData as any).heroStars?.max ?? 5;
 const battleRank = (level: number) => ["I", "II", "III", "IV"][level - 1] ?? String(level);
 const HERO_RADIUS = 36; // world units kept clear around the selected hero
 
@@ -22,6 +25,7 @@ export function createPopover(ctx: PageContext) {
   const popBody = q(".td-popover-body");
   const popName = q("[data-pop-name]");
   const popLevel = q("[data-pop-level]");
+  const popBadges = q("[data-pop-badges]");
   const popPortrait = q<HTMLImageElement>("[data-pop-portrait]");
   const popClassIcon = q<HTMLElement>("[data-pop-class-icon]");
   const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
@@ -125,6 +129,17 @@ export function createPopover(ctx: PageContext) {
     const image = heroById.get(unit.id)?.image ?? "";
     if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.innerHTML = classGlyph(unit.class, 14); popClassIcon.dataset.cls = unit.class; popClassIcon.dataset.class = String(unit.class || "").toLowerCase(); }
+    // Campaign stars and Evolution (campaign stages only; they are already in the stats).
+    const stars = unit.campaignStars ?? 0, evo = unit.campaignEvolution ?? 0;
+    const badgeKey = state.session!.campaign ? `${unit.id}:${stars}:${evo}` : "";
+    if (popBadges.dataset.key !== badgeKey) {
+      popBadges.dataset.key = badgeKey;
+      popBadges.hidden = !badgeKey;
+      popBadges.innerHTML = badgeKey
+        ? `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
+          (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "")
+        : "";
+    }
     const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
     popLevel.textContent = `${unit.class} - Battle rank ${battleRank(unit.level)}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
     const refund = game.sellValue(unit.entityId);

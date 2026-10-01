@@ -8,6 +8,8 @@ import { join } from "node:path";
 import GameLayout from "../../../layouts/GameLayout.astro";
 import levels from "../../../data/tdAudioLevels.json";
 import mythic from "../../../data/tdSkinMythic.json";
+import heroes from "../../../data/gameBalance.json";
+import { skinHeroes } from "../../../game/td/skin.js";
 
 const SFX_DIR = join(process.cwd(), "public/td/sfx");
 const AUDIO = /\.(ogg|mp3|wav|m4a|flac)$/i;
@@ -22,6 +24,9 @@ for (const name of readdirSync(SFX_DIR).filter((n) => n.startsWith("CREDITS"))) 
   }
 }
 const LEVELS = levels as Record<string, number>;
+// Portrait thumbnails from the game's skin (R2, or the /r2 dev proxy locally).
+const assetBase = import.meta.env.DEV ? "/r2" : "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const portraits = new Map<string, string>((skinHeroes(heroes, assetBase) as any[]).map((hero) => [hero.id, hero.image]));
 const skin = (mythic as any).heroes as Record<string, { name?: string; title?: string }>;
 
 // mythic-{id}-v{n}_{kind}.ext -> hero group; ui-*.ext -> interface; anything else -> other.
@@ -51,6 +56,7 @@ const heroRows = [...heroGroups.entries()]
     id,
     name: skin[id]?.name ?? id,
     title: skin[id]?.title ?? "",
+    image: portraits.get(id),
     recruit: id.startsWith("recruit-"),
     sounds: sounds.sort((a, b) => kindRank(a.kind) - kindRank(b.kind) || a.kind.localeCompare(b.kind)),
   }))
@@ -85,6 +91,7 @@ const groups = [
         {heroRows.map((hero) => (
           <article class="sr-card">
             <div class="sr-card-head">
+              {hero.image ? <img src={hero.image} alt="" width="56" height="56" loading="lazy" /> : <span class="sr-portrait-empty" aria-hidden="true" />}
               <div>
                 <h3>{hero.name}</h3>
                 <p>{hero.title && `${hero.title} · `}<code>{hero.id}</code></p>
@@ -339,6 +346,15 @@ const groups = [
   }
   .sr-card[hidden], .sr-row[hidden] { display: none; }
   .sr-card-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .sr-card-head img, .sr-portrait-empty {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-raised);
+    object-fit: cover;
+  }
   .sr-card-head h3 { margin: 0; font-size: var(--text-md); font-weight: var(--weight-bold); color: var(--text-bright); }
   .sr-card-head p { margin: 0; font-size: var(--text-xs); color: var(--text-muted); }
   .sr-card-head code { font-family: var(--font-mono); }

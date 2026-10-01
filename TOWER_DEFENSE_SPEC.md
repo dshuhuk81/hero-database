@@ -272,6 +272,8 @@ forced `damageType`, `crit`), shifting a whole class without re-ranking cost.
   step and to the ultimate's primary target at cast, so cones (cleave, knockback, petrify)
   and spreads (volley, moon barrage) centre on that target. `rotation` remains as internal
   combat/effect state; no facing tick is drawn.
+- Hero panel (`page/popover.ts`): in campaign stages the title shows the hero's stars and
+  Evolution badge (`campaignStars`, `campaignEvolution` from `collectionHeroes`) under the class line.
 - Hero panel (`page/popover.ts`): Details is an accordion that starts collapsed on every hero
   selection (it also carries the "battle ranks reset" note). The upgrade flow lives in the
   pinned footer: a one-line preview of the next upgrade sits above Upgrade/Sell, and the rank III

@@ -3314,6 +3314,27 @@
   min-width: 0;
 }
 
+/* Campaign stars and Evolution under the class line (popover.ts). */
+.td-pop-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--td-fs-label);
+}
+
+.td-pop-badges[hidden] {
+  display: none;
+}
+
+.td-pop-badges .td-stars {
+  font-size: 14px;
+}
+
+.td-pop-badges .td-evo-badge {
+  padding: 0 6px;
+}
+
 .td-popover-title strong {
   overflow: hidden;
   color: var(--text-bright);

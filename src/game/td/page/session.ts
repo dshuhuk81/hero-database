@@ -18,7 +18,7 @@ import type { ScreenId } from "./nav";
 
 // Enemy death and final-impact animations use up to 0.5s of wall time in render.js.
 // Keep transition UI off the battlefield until those animations have resolved.
-const BATTLE_SETTLE_MS = 650;
+const BATTLE_SETTLE_MS = 850;
 
 type Deps = {
   music: { play(track: string): void; stop(): void };
