@@ -7,7 +7,7 @@ import { shortNumber } from "../ui.js";
 import { currencyIcon, currencyName } from "../currency-icons.js";
 import { laurelIcon } from "./campaign";
 
-export const SCENE_MS = 2000;
+export const SCENE_MS = 4000;
 const SCENES = ["victory", "performance", "rewards"] as const;
 export type ClearScene = (typeof SCENES)[number];
 
