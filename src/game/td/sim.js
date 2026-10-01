@@ -1222,6 +1222,27 @@ export class TowerDefenseGame {
     return (hero?.veilUntil ?? 0) > this.time;
   }
 
+  // Focus (Mage kit `focus`, wave shape prototype): splash or chain shares that find no
+  // other enemy fold into the main target, so a Mage facing a lone strong enemy keeps most
+  // of its damage. `slots` splash neighbours are expected; each missing one adds
+  // `splash.share * share`. A chaining Mage adds its unused bounce shares the same way.
+  focusShare(hero, kit, others) {
+    const focus = kit.focus;
+    if (!focus) return 0;
+    const chainer = (hero.basic === "chain" && !!kit.chain) || hero.path === "arc";
+    if (chainer) {
+      const basic = hero.basic === "chain" && kit.chain ? kit.chain : null;
+      const arc = this.pathFx(hero, "arc");
+      const falloff = [...(basic?.falloff ?? []), ...(arc?.falloff ?? [])];
+      const reach = basic?.reach ?? arc?.reach ?? 0;
+      const found = others(reach).length;
+      return falloff.slice(found).reduce((sum, share) => sum + share, 0) * (focus.share ?? 1);
+    }
+    if (!kit.splash) return 0;
+    const missing = Math.max(0, (focus.slots ?? 2) - others(this.splashRadius(hero)).length);
+    return missing * kit.splash.share * (focus.share ?? 1);
+  }
+
   // One basic attack, shaped by the class kit (tuning.classes, M6). Returns false when
   // the hero had nothing to do, so its attack timer stays ready.
   //   Support: heals the most injured ally in range, else a weak attack (damageShare).
@@ -1260,10 +1281,10 @@ export class TowerDefenseGame {
     if (kit.dash && Math.hypot(hero.x - target.x, hero.y - target.y) > hero.range) {
       this.emitHeroEffect(hero, { type: "dash", x1: hero.x, y1: hero.y, x2: target.x, y2: target.y, life: 0.3, color: "purple" });
     }
-    strike(target, kit.damageShare ?? 1);
     const others = (radius) => this.enemies
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
+    strike(target, (kit.damageShare ?? 1) + this.focusShare(hero, kit, others));
     // Arc (Mage path): every Mage chains; a chaining Mage (Odin) gets the extra bounces.
     const arc = hero.path === "arc" ? path : null;
     let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;

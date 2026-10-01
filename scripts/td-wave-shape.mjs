@@ -3,6 +3,8 @@
 // pressure and lives at stake; only the number of bodies changes.
 // Run with: npm run td:wave-shape -- [--count=0.2] [--gap=2.5] [--hp=5] [--attack=5] [--seeds=3] [--mode=classic]
 // --hp and --attack override the per-enemy multipliers (default 1 / count).
+// --focus=1 also gives Mages the focus rule (classes.Mage.focus, see sim.focusShare) in the
+// shaped runs; --focus-today=1 adds it to today's runs too, to see what it does there.
 import baseTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import { classMatrix, bestClass, CLASSES } from "./lib/td-class-matrix.mjs";
@@ -18,15 +20,18 @@ const seeds = Array.from({ length: Math.max(1, Number(args.seeds || 3)) }, (_, i
 const mode = args.mode || "classic";
 const extra = Object.fromEntries(["hp", "attack"].filter((k) => args[k]).map((k) => [k, Number(args[k])]));
 
+const withFocus = (tuning) => ({ ...tuning, classes: { ...tuning.classes, Mage: { ...tuning.classes.Mage, focus: { slots: 2, share: 1 } } } });
+const shaped = { ...baseTuning, waveShape: { enabled: true, count, gap, ...extra } };
 const shapes = {
-  today: baseTuning,
-  shaped: { ...baseTuning, waveShape: { enabled: true, count, gap, ...extra } },
+  today: args["focus-today"] ? withFocus(baseTuning) : baseTuning,
+  shaped: args.focus ? withFocus(shaped) : shaped,
 };
 const classOf = Object.fromEntries(heroes.map((h) => [h.id, h.class]));
 const pct = (v) => `${Math.round(v * 100)}%`;
 
 const power = (1 / count).toFixed(2);
 console.log(`Wave shape: count x${count}, health x${extra.hp ?? power}, attack x${extra.attack ?? power}, gold/leak x${power}, spawn gap x${gap}`);
+if (args.focus || args["focus-today"]) console.log(`Mage focus: ${args["focus-today"] ? "today and shaped" : "shaped only"}`);
 console.log(`Runs: ${mode}, Normal, seeds ${seeds.join(",")}, maps ${freePlayMaps.map((m) => m.id).join(", ")}\n`);
 
 // 1. Class-vs-enemy matrix, today vs shaped.
