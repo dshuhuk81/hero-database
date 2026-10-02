@@ -81,7 +81,7 @@ Design first: rules, story or art are not defined yet.
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R14 | Lords concept: a new hero layer on top of the faction bonds (Norse, Greek) | Owner concept, agent builds | - | L |
-| R18 | Top-of-board clipping: heroes, bosses and flyers on the top row are cut off by the canvas edge; options and recommendation in [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent concept, owner picks | - | S-M |
+| R18 | Top-of-board clipping: heroes, bosses and flyers on the top row are cut off by the canvas edge (no shrinking allowed; tilt/squash experiment recommended); options in [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent concept, owner picks | - | S-M |
 
 **R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
 Mechanical frame, ready to build once the owner names the Lords:
