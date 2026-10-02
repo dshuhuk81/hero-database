@@ -51,6 +51,32 @@ Takeaways:
 3. Our figures are not the problem, the board-to-canvas ratio is: they spend ~60% of the
    height on the playfield, we spend 96%.
 
+### 2b. Boss fights in the reference (3 more screenshots)
+
+The reference has two different boss types, and they use the frame differently.
+
+| | Walking boss (stage boss) | Guild boss ("colossus": a dragon, immobile) |
+|---|---|---|
+| Body | A normal sprite, ~1.4 × hero height, walks the lane | Huge painted piece of the **scenery**: fills the top ~35–40% of the screen, head and body cropped by the top edge on purpose; only claws and legs reach down onto the board |
+| Position | Stands fully inside the playfield, in front of the scenery band (scenery starts ~19% down) | Fixed at the top, never moves; heroes fight at its feet |
+| Health | One large HUD bar at the top centre (name or `100.0%`), not a bar over its head | One large HUD bar across the top with phase marker, buff icon and a timer ("Rampage starts in …") |
+| Board | Normal board with the usual margins | Board pushed to the lower half of the screen (~55–65% of the height), tiles tilted at the same ~0.7 |
+
+What this means for us:
+1. **Our current bosses are the walking type** (every chapter boss moves along the road). The tilt
+   plus scenery band (section 3, T) covers them. One cheap extra: **move the boss health bar into
+   a wide HUD bar at the top** like the reference. That removes the ~14 px bar that currently
+   sits above its head and is the first thing to clip.
+2. **A colossus-type boss is a separate feature**, not a layout fix. Fit in our plan: a
+   map-level tilt override (`board.tilt = { k: 0.7, offsetY: 160 }` instead of 70) pushes the
+   board down and leaves a ~160 px band at the top that a big painted boss occupies. The boss is
+   a background layer behind the board with an attack sprite or hitbox at its feet. It
+   matches the roadmap backlog items "A3 Kraghorn finale", "boss rush" and "Expedition" and
+   would need its own concept (rules, hit zones, phases, timer).
+3. **Wording of the owner's rule:** "bosses fully visible" holds for walking bosses. For a
+   colossus the reference deliberately crops the body; decide whether that is acceptable or
+   whether a colossus must be shown whole (then it needs a bigger band and a smaller board).
+
 ## 3. Options (no figure shrinking)
 
 | # | Idea | Headroom gain | Cost / risk |
@@ -80,15 +106,18 @@ smaller figures.
    placeholder. This is the main art cost.
 4. New maps: prefer **R** (4 rows, cell 118, origin ≈ 50) or the reference's few-tiles-in-blocks
    layout; they then need less tilt.
-5. Skip S and D. Keep `enemyScale` as is (no change requested), but note the reference's
+5. Move boss health to a top HUD bar (also removes the above-head bar for walking bosses). Park colossus-type bosses as a separate concept that reuses T through a per-map tilt override.
+6. Skip S and D. Keep `enemyScale` as is (no change requested), but note the reference's
    ordinary enemies are smaller than its heroes if bosses ever need to stand out more.
 
 ## 5. Open questions for the owner
 
 - Is a 25% vertical squash of the painted map art acceptable if it reads as a camera tilt?
-- Reference screenshots received (8). A closer shot of one hero and one boss standing in front of
+- Reference screenshots received (11). A closer shot of one hero and one boss standing in front of
   their scenery band would still help settle the P ratio.
-- Buff pills: move into the 60 px strip T creates, or into the left HUD rail?
+- Buff pills: move into the ~70 px band T creates, or into the left HUD rail?
+- Should we plan a colossus boss type at all (immobile, huge, in the scenery band), or stay with walking bosses? If yes it becomes its own roadmap concept.
+- If we do, is a cropped body (as in the reference) acceptable, or must it be shown whole?
 
 ## 6. Checks once built
 
