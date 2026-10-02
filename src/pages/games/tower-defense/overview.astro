@@ -169,7 +169,7 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
           <table>
             <thead><tr><th colspan="7">{chapter.id}. {chapter.name}</th></tr><tr><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
             <tbody>{chapter.stages.map((s: any) => (
-              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
+              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
             ))}</tbody>
           </table>
         ))}
@@ -220,7 +220,10 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
   .ov-note { margin: 0 0 4px; color: var(--text-muted); }
   .ov-reach { display: flex; align-items: center; gap: 4px; }
   .ov-reach :global(svg) { flex: none; }
-  .ov-chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px; }
-  .ov-chapters table { margin: 0; }
+  .ov-chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 6px; }
+  .ov-chapters table { margin: 0; table-layout: fixed; }
+  /* Long map and hero names truncate instead of spilling into the next chapter. */
+  .ov-chapters td { overflow: hidden; text-overflow: ellipsis; }
+  .ov-chapters tr > :nth-child(2) { width: 30%; }
   .ov-chapters thead tr:first-child th { color: var(--text-primary); }
 </style>
