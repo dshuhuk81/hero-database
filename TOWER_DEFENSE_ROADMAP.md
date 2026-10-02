@@ -51,7 +51,6 @@ start any time and run in parallel.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R2 | Fix the two known failing tests: `test-td-summon` (evolution spends copies), `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound) | Agent | - | S |
 | R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. Add visible in-game effects that reflect each action. | Agent | - | M |
 | R6 | Fix stale SFX on localhost; R2 and production play the correct audio | Agent | - | S |
 | R6b | Allow debug mode in production behind an explicit URL query parameter | Agent | - | S |
@@ -67,6 +66,11 @@ Owner directions recorded October 2:
 
 - R12: Scale Free Play and Expedition enemy health with squad Might, but by less than 100%.
 - R8: Retire tag synergy.
+
+R2 is done (October 2, 2026): the summon test now expects each Evolution tier's authored copy
+cost (1/1/2/2/3), and Tilda's ultimate uses the v4 sound again (the owner deleted v5 and
+copied Sable's new v4 ultimate to Tilda). `test-td-campaign` ("1-1: too hard") still fails and
+was already failing before R4; it belongs to R12.
 
 R4 is done (October 2, 2026): battle gold buys deploys and relocations; battle ranks, focus,
 class paths, Awakening and training are gone; the hero panel shows collection progress with

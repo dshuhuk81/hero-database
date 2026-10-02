@@ -816,6 +816,6 @@ The order and dependencies of the open work live in
   pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
-- **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
-  `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).
+- **Known failing test:** `test-td-campaign` ("1-1: too hard" campaign viability check; already
+  failing before R4, part of the R12 balance pass).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.

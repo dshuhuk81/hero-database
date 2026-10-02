@@ -233,7 +233,8 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(evolutionMaterial(campaignData, p, hero), null, "no copy, not enough dust: cannot evolve");
   let e = p;
   for (let i = 0; i < tiers; i += 1) e = evolve(campaignData, e, featured);
-  assert.deepEqual([heroEvolution(e, featured), e.copies[featured]], [tiers, 9 - tiers], "evolve spends copies of the same hero");
+  const copyTotal = campaignData.heroEvolution.tiers.reduce((sum, tier) => sum + (tier.copies ?? 1), 0);
+  assert.deepEqual([heroEvolution(e, featured), e.copies[featured] ?? 0], [tiers, 9 - copyTotal], "evolve spends each tier's copies of the same hero");
   assert.equal(evolve(campaignData, e, featured), null, "max tier");
   const withDust = { ...p, currencies: { ...p.currencies, sealDust: dustPrice } };
   assert.equal(evolutionMaterial(campaignData, withDust, hero), "dust", "dust evolves when no copy");
@@ -267,7 +268,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.deepEqual([bought.copies[hero], bought.currencies.sealDust], [(p.copies[hero] || 0) + 2, 0], "dust becomes targeted copies");
   // Save round trip and v3 migration.
   const back = sanitizeCampaign(JSON.parse(JSON.stringify({ ...e, stars: { [featured]: 3, nope: 4 }, evolution: { ...e.evolution, [hero]: 99 } })), campaignData, heroIds);
-  assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured]], [3, undefined, tiers, tiers, 9 - tiers], "v4 fields cleaned and clamped");
+  assert.deepEqual([back.stars[featured], back.stars.nope, back.evolution[featured], back.evolution[hero], back.copies[featured] ?? 0], [3, undefined, tiers, tiers, 9 - copyTotal], "v4 fields cleaned and clamped");
   const v3 = sanitizeCampaign({ version: 3, owned: [...campaignData.starters], cleared: {}, currencies: { divineSeals: 40 } }, campaignData, heroIds);
   assert.deepEqual([v3.version, v3.copies, v3.stars, v3.evolution, v3.currencies.sealDust, v3.currencies.divineEssence], [CAMPAIGN_SAVE_VERSION, {}, {}, {}, 0, undefined], "v3 migrates to empty fields");
   // v6 → v7: leftover Divine Essence becomes Seal Dust at the historical 1:150 rate.
