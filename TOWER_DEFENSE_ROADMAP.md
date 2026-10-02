@@ -61,6 +61,9 @@ Design first: rules, story or art are not defined yet.
 |---|---|---|---|---|
 | R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
 | R14 | Lords concept: a new hero class on top of the faction bonds (Norse, Greek). Each faction gets one Lord, always placed first in the selection tab; a placed Lord gives every hero of its faction specific bonuses. Prerequisites: one Lord per faction defined, concept art, animations and descriptions | Owner concept, agent builds | - | L |
+| R15 | New enemies for the new theme maps (ice ...) need to be created. Specs need to be written and behaviour defined. Images should be created with our PixelLab Pipeline once a concept image was done. This should be delivered by the Owner first after text descriptions are availabe. | Agent | - | L |
+| R16 | New animatinos needed for Ymir - Default attack. Use Pixellab pipeline. He should swing his hammer at the enemies to attack. | Agent | - | S |
+
 
 #### SIMULATION / TESTING
 
