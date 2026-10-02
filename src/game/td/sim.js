@@ -1,5 +1,6 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
+import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, inPattern, patternFor, patternRadius, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
@@ -374,7 +375,7 @@ export class TowerDefenseGame {
   }
 
   ultChargeRate(hero = null) {
-    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0)) * this.environment("charge", hero);
+    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0) + (this.bondFx(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0)) * this.environment("charge", hero);
   }
 
   // Special rings (M16): a map's `rings` names the kind per "road:0" / "platform:2"; the
@@ -1094,7 +1095,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
+    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -1310,7 +1311,22 @@ export class TowerDefenseGame {
 
   // Tank passive: a share of incoming damage is shrugged off.
   guardFor(hero) {
-    return Math.min(0.9, (this.kit(hero).guard || 0) + (this.classBonus(hero).guard || 0));
+    return Math.min(0.9, (this.kit(hero).guard || 0) + (this.classBonus(hero).guard || 0) + (this.bondFx(hero).guard || 0));
+  }
+
+  // Pantheon bonds (bonds.js) among the heroes standing on the field; `members` holds their
+  // entity ids.
+  bonds() {
+    const alive = this.heroes.filter((hero) => hero.hpLeft > 0);
+    return bondsOf(this.tuning.bonds, alive.map((hero) => hero.id))
+      .map((bond) => ({ ...bond, members: new Set([...bond.members].map((i) => alive[i].entityId)) }));
+  }
+
+  // The bond effects on one hero ({ atk, guard, ultCharge, heal } shares), empty when none.
+  bondFx(hero) {
+    if (!hero || !this.tuning.bonds) return {};
+    const bond = this.bonds().find((b) => b.tier && b.members.has(hero.entityId));
+    return bond?.tier ?? {};
   }
 
   isStopped(enemy) {
@@ -1702,7 +1718,7 @@ export class TowerDefenseGame {
 
   // Heals a hero up to its maximum and credits the healer (M14). Returns the amount healed.
   healHero(target, amount, by) {
-    amount *= this.environment("heal", target);
+    amount *= this.environment("heal", target) * (1 + (by?.entityId ? this.bondFx(by).heal || 0 : 0));
     const healed = Math.max(0, Math.min(target.hp, target.hpLeft + amount) - target.hpLeft);
     target.hpLeft += healed;
     if (by?.id && healed > 0) this.statFor(by).heal += healed;

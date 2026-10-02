@@ -862,6 +862,27 @@
       "cap": 50
     }
   },
+  "bonds": {
+    "wildcard": "recruit-",
+    "sets": {
+      "norse": {
+        "name": "Norse",
+        "heroes": ["odin", "ymir", "heimdall", "aegir", "surtr", "fenrir", "nott", "vidar", "skadi"],
+        "tiers": [
+          { "count": 2, "atk": 0.06 },
+          { "count": 4, "atk": 0.12, "ultCharge": 0.1 }
+        ]
+      },
+      "greek": {
+        "name": "Greek",
+        "heroes": ["atlas", "helios", "hecate", "thanatos", "hephaestus", "boreas", "atalanta", "stheno", "plutus", "harmonia", "asclepius", "gaia"],
+        "tiers": [
+          { "count": 2, "guard": 0.07 },
+          { "count": 4, "guard": 0.13, "heal": 0.15 }
+        ]
+      }
+    }
+  },
   "waveGen": {
     "minSpacing": 18,
     "endlessRamp": 0.08,

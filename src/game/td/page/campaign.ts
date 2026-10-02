@@ -17,6 +17,7 @@ import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman } from "./route";
+import { bondsOf, bondText } from "../bonds.js";
 import { currencyAmount, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
 
@@ -304,6 +305,15 @@ export function createCampaign(ctx: PageContext) {
     feedbackEl.textContent = noAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
       : "Drag a hero onto a slot to swap, or tap a slot to free it.";
     feedbackEl.classList.toggle("is-warning", noAir);
+    // Pantheon bonds the squad brings (they count once the heroes stand on the field).
+    const bondsEl = q("[data-td-squad-bonds]");
+    const bonds = bondsOf(data.tuning.bonds, selected.map((hero) => hero.id)).filter((bond) => bond.count > 0);
+    bondsEl.hidden = !bonds.length;
+    bondsEl.innerHTML = bonds.map((bond) => {
+      const goal = bond.next ? `${bond.count}/${bond.next.count}` : `${bond.count}`;
+      const text = bond.tier ? bondText(bond.tier) : `${bond.next!.count} for ${bondText(bond.next)}`;
+      return `<span class="td-bond${bond.tier ? " is-active" : ""}" title="${bond.name} bond: ${text}"><b>${bond.name} ${goal}</b> ${text}</span>`;
+    }).join("");
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
     // Slots: portrait card only, class icon on the art, battle gold cost above. Tap or drag out to remove.
     lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => {

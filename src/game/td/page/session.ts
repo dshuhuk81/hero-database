@@ -233,7 +233,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.syncMainAction();
     ctx.actions.renderPreview();
     deps.runOffer.render();
-    if (type === "virtue" || type === "reset" || type === "mutator") deps.buffBar.render();
+    if (type === "virtue" || type === "reset" || type === "mutator" || type === "place" || type === "sell" || type === "death" || type === "revive") deps.buffBar.render();
     ctx.actions.refreshSelection();
     if (deps.recruit.isOpen()) ctx.actions.updateSheet();
     if (ctx.actions.activePanel()?.dataset.tdPanel === "blessings") ctx.actions.renderRunTab();

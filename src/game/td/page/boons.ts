@@ -2,6 +2,7 @@
 // on-map buff bar with summed run blessings, and the between-wave offer modal.
 import { blessingDisplay, buffChips } from "../ui.js";
 import { MUTATOR_INFO, RUN_BOON_INFO } from "../skills.js";
+import { bondText } from "../bonds.js";
 import type { PageContext } from "./context";
 
 export const BOON_ICONS: Record<string, string> = {
@@ -77,13 +78,16 @@ export function createBuffBar(ctx: PageContext) {
     const game = ctx.getSession()?.game;
     const chips = game ? buffChips(game.modifiers()) : [];
     const mutators: string[] = game?.mutators ?? [];
-    buffsEl.hidden = chips.length === 0 && mutators.length === 0;
+    // Pantheon bonds active on the field (bonds.js), before the blessings.
+    const bonds = (game?.bonds?.() ?? []).filter((bond: any) => bond.tier);
+    buffsEl.hidden = chips.length === 0 && mutators.length === 0 && bonds.length === 0;
+    const bondChips = bonds.map((bond: any) => `<span class="td-buff td-buff--bond" title="${bond.name} bond (${bond.count} heroes): ${bondText(bond.tier)}"><b>${bond.count}</b><span>${bond.name}</span></span>`).join("");
     // Endless mutators (M15) sit after the blessings, in warning red.
     const mutatorChips = mutators.map((id) => {
       const info = (MUTATOR_INFO as Record<string, { name: string; text: string }>)[id];
       return `<span class="td-buff td-buff--mutator" title="${info?.text ?? id}"><b>!</b><span>${info?.name ?? id}</span></span>`;
     }).join("");
-    buffsEl.innerHTML = chips.map((chip) => {
+    buffsEl.innerHTML = bondChips + chips.map((chip) => {
       const changed = buffValues[chip.type] !== chip.value;
       const stat = blessingDisplay({ type: chip.type, value: 0 }).stat;
       return `<button type="button" class="td-buff td-boon--${chip.type}${changed ? " is-bumped" : ""}" data-td-buff aria-label="${chip.value} ${stat} from ${sources(game, chip.type)}. Show run blessings.">` +

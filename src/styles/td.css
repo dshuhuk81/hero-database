@@ -7347,6 +7347,11 @@ svg.td-class-icon {
   text-align: center;
 }
 
+.td-buff--bond {
+  --boon: var(--accent-gold);
+  cursor: default;
+}
+
 .td-mutator-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -11768,6 +11773,24 @@ button .td-cur {
 }
 
 .td-app .td-squad-feedback.is-warning {
+  color: var(--accent-gold);
+}
+
+.td-app .td-squad-bonds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.td-app .td-bond.is-active {
+  color: var(--text-primary);
+}
+
+.td-app .td-bond.is-active b {
   color: var(--accent-gold);
 }
 

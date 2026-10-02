@@ -346,6 +346,15 @@ offers attack or health (section 9).
   charge), cursed (+30% attack, -20% attack speed). Every generated board has one of each.
 - **Synergy:** each `synergies` tag shared by 2+ deployed heroes within 250 px gives +8%
   attack, capped at +24%.
+- **Pantheon bonds** (`bonds.js`, `tuning.bonds`): heroes of one pantheon standing on the
+  field together unlock a tier. Norse (Odin, Ymir, Heimdall, Aegir, Surtr, Fenrir, Nott,
+  Vidar, Skadi) 2: +6% attack, 4: +12% attack and ultimates charge 10% faster. Greek (Atlas,
+  Helios, Hecate, Thanatos, Hephaestus, Boreas, Atalanta, Stheno, Plutus, Harmonia,
+  Asclepius, Gaia) 2: 7% less damage taken, 4: 13% less and heals 15% stronger (the healer's
+  bond counts). Recruits are wildcards: each joins the set with more of its own heroes on the
+  field (Norse on a tie) and shares its bonus. The squad screen lists the bonds a squad
+  brings; in battle active bonds show as gold chips in the buff bar. Tag synergy stays
+  underneath as before; `synergy.bonusPerTag: 0` would retire it.
 - **Hero panel** (`page/popover.ts`): stats (attack, speed, reach grid, crit), target priority,
   collapsed details, and a pinned footer with the next upgrade's one-line preview, Upgrade (2/3
   width) and Sell (1/3). The rank III focus, rank IV path and training picks open in the

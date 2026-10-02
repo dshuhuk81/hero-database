@@ -2664,4 +2664,22 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(g.waveStats.interest, Math.min(cap, Math.floor(400 * share)), "interest pays a share of unspent gold, up to the cap");
 }
 
+// Pantheon bonds (bonds.js, tuning.bonds): tiers by heroes on the field, recruits as wildcards.
+{
+  const { bondsOf } = await import("../src/game/td/bonds.js");
+  const cfg = tuning.bonds;
+  const norse = (ids) => bondsOf(cfg, ids).find((b) => b.id === "norse");
+  assert.equal(norse(["odin"]).tier, null, "one hero opens no bond");
+  assert.equal(norse(["odin", "ymir"]).tier.count, 2, "two heroes reach the first tier");
+  assert.equal(norse(["odin", "ymir", "recruit-bram", "recruit-elm"]).tier.count, 4, "recruits fill the larger set");
+  assert.equal(bondsOf(cfg, ["odin", "atlas", "helios", "recruit-bram"]).find((b) => b.id === "greek").count, 3, "a recruit joins the set with more heroes");
+  // Tag synergy off, so only the bond changes attack.
+  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, synergy: null }, map: maps[0], waves, seed: 4 });
+  g.gold = 9999;
+  assert.ok(g.place("odin", "platform", 0));
+  const before = g.attackValue(g.heroes[0]);
+  assert.ok(g.place("ymir", "road", 0));
+  assert.ok(Math.abs(g.attackValue(g.heroes[0]) / before - (1 + cfg.sets.norse.tiers[0].atk)) < 1e-9, "a Norse pair raises attack");
+}
+
 console.log("Tower defense checks passed");
