@@ -274,7 +274,7 @@ pattern plus:
 - -1 step when the map's environment cuts platform range (Stormpeak's Headwinds) and the
   tile is not high ground;
 - the hero's permanent **reach steps** (`reachSteps` on the hero row): +1 at 3 stars, +2 at 5
-  stars (`tdCampaign.json` `heroStars.reachSteps`, campaign stages only, shown on the Stars tab).
+  stars (`tdCampaign.json` `heroStars.reachSteps`, every mode, shown on the Stars tab).
 
 Range is never upgraded in battle: the rank III focus offers attack or health, training
 offers attack or health (section 9).
@@ -559,7 +559,7 @@ geometry. No game mode uses classic maps.
 
 | Mode | Rules | Source |
 |---|---|---|
-| Free Play | Any Free Play map, 10 / 20 waves or Endless, Normal / Heroic / Mythic. Recruits only owned heroes, at base stats; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (10 Gold + 5 Hero XP per cleared wave, up to 30 waves) | `sim.js`, `waves.js` |
+| Free Play | Any Free Play map, 10 / 20 waves or Endless, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (10 Gold + 5 Hero XP per cleared wave, up to 30 waves) | `sim.js`, `waves.js` |
 | Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply | `campaign.js`, `tdCampaign.json` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts; +15 Divine Seals for the goal | `daily.js` |
 | Expedition | Chain of 10-wave stages on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
@@ -569,8 +569,10 @@ Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 
 **One hero collection:** heroes are owned and upgraded through the campaign (save key
 `campaign`), and every mode except the Daily Trial uses the owned heroes (`ownedHeroes()`).
-Campaign upgrades (levels, stars, evolution, skills, reach steps; `collectionHeroes()`) apply
-in Campaign stages only; Divine Blessings apply in Free Play and Expedition only.
+Collection upgrades (levels, stars, evolution, skills, reach steps; `collectionHeroes()`) are
+global stats: they apply in every mode, the Daily Trial included (unowned trial heroes play
+at base stats). `session.ts` builds the hero list once per battle. Divine Blessings apply in
+Free Play and Expedition only.
 
 **Campaign chapters:** 1 The Road to the Crossing (10 stages), 2 The Sunscar March,
 3 The Emerald Deep, 4 The Frozen Covenant, 5 The Cinder Oath, 6 The Thunder Stair,
@@ -780,7 +782,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 - **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.
-- **Campaign upgrades outside the Campaign:** Free Play and Expedition use base stats.
 - **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
   `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.

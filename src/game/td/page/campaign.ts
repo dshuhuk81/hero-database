@@ -345,7 +345,7 @@ export function createCampaign(ctx: PageContext) {
   // Evolution (tier-specific duplicate costs or Seal Dust: ultimate and crit).
   function renderHeroes() {
     const p = progress();
-    q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in campaign stages only.";
+    q("[data-td-heroes-copy]").textContent = "Level, Stars, Evolution and Skills apply in every mode.";
     const order = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     // Owned heroes by Might (strongest first), then the ones still to earn by class.
     const mightOf = new Map<string, number>(p.owned.map((id: string) => [id, heroById.get(id) ? might(heroById.get(id)) : 0]));
@@ -432,7 +432,7 @@ export function createCampaign(ctx: PageContext) {
     return `<div class="td-hero-skill"><header><span class="td-label">Skill training</span><p>Upgrade each skill separately. The final rank also costs Seal Dust.</p></header>${rows}</div>`;
   }
 
-  // Attack and health in campaign stages: base x level x stars.
+  // Attack and health in every mode: base x level x stars.
   const heroScale = (p: any, id: string, level = heroLevel(p, id), starCount = heroStars(p, id)) => levelScale(campaign, level) * starScale(campaign, starCount);
 
   const statRows = (hero: any, now: number, next: number | null) => {

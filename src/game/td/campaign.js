@@ -2,7 +2,7 @@
 // pick a squad of up to `squadSize` heroes you own, win to unlock the next stage. A first
 // clear pays the stage's rewards (currencies, heroes), a replay `repeatShare` of its
 // currencies. Currencies level heroes (`heroLevels`), which raises their attack and health
-// in campaign stages only. Static stage data lives in
+// in every mode (global stats). Static stage data lives in
 // src/data/tdCampaign.json; the player's campaign progress is its own versioned section
 // of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
 // clears, replays at a quarter, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
@@ -331,7 +331,7 @@ export function collectionReward(campaign, wavesCleared) {
 }
 
 // The run's hero list with campaign levels and stars applied to attack and health and
-// Evolution to the ultimate and crit (campaign stages only).
+// Evolution to the ultimate and crit (every mode: global stats).
 // Permanent reach steps on boards (docs/tower-defense-board-plan.md decision 1): range grows
 // outside battle only, one pattern step per threshold in heroStars.reachSteps
 // ({ "3": 1, "5": 2 }: one step at 3 stars, two at 5).

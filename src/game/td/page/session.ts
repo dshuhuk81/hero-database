@@ -92,19 +92,22 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     stageEl.prepend(canvas);
     loadingCanvas = canvas;
 
-    // Daily Trial (M19): the same setup for everyone, so no Divine Blessings and no shard boost.
+    // Daily Trial (M19): the same map, squad and mutators for everyone, so no Divine Blessings
+    // and no shard boost (collection upgrades still apply).
     // Campaign stages (M26) are balanced as authored: no Divine Blessings either.
     const runLevels = daily || campaign ? {} : { ...store.data.favLevels };
     // Expedition stages (M21) keep Divine Blessings but skip the shard boost (it waits for a normal run).
     const boost = daily || expedition || campaign ? null : store.data.nextRunBoost;
-    // Free Play deploys only owned heroes (Phase 2, base stats for now); an Expedition
-    // roster is drawn from them when it starts. The Daily Trial keeps its own squad.
+    // Hero levels, stars, Evolution and skills apply in every mode (global stats).
+    // Free Play deploys only owned heroes; an Expedition roster is drawn from them when it
+    // starts. The Daily Trial keeps its own squad.
+    const heroes = collectionHeroes(campaignData, store.data.campaign, data.heroes);
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
-      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, collectionHeroes(campaignData, store.data.campaign, data.heroes))
+      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes)
       : { allowedHeroes: [...store.data.campaign.owned] };
     const tuning = buildRunTuning(data.tuning, runLevels, boost);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
-    const game: any = new TowerDefenseGame({ ...data, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
+    const game: any = new TowerDefenseGame({ ...data, heroes, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });

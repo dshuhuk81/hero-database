@@ -131,13 +131,13 @@ export function createPopover(ctx: PageContext) {
 
   function update(unit: any) {
     const game = state.session!.game;
-    popName.textContent = state.session!.campaign ? `${unit.name} · Level ${unit.campaignLevel ?? 1}` : unit.name;
+    popName.textContent = unit.campaignLevel ? `${unit.name} · Level ${unit.campaignLevel}` : unit.name;
     const image = heroById.get(unit.id)?.image ?? "";
     if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.innerHTML = classGlyph(unit.class, 14); popClassIcon.dataset.cls = unit.class; popClassIcon.dataset.class = String(unit.class || "").toLowerCase(); }
-    // Campaign stars and Evolution (campaign stages only; they are already in the stats).
+    // Collection stars and Evolution (every mode; they are already in the stats).
     const stars = unit.campaignStars ?? 0, evo = unit.campaignEvolution ?? 0;
-    const badgeKey = state.session!.campaign ? `${unit.id}:${stars}:${evo}` : "";
+    const badgeKey = unit.campaignLevel ? `${unit.id}:${stars}:${evo}` : "";
     if (popBadges.dataset.key !== badgeKey) {
       popBadges.dataset.key = badgeKey;
       popBadges.hidden = !badgeKey;

@@ -205,7 +205,7 @@ const heroAttrs: [string, string, string][] = [
   ["bolt", "Ult power", "Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise."],
   ["hub", "Synergy tags", `Each tag shared with a hero within ${t.synergy?.range}px adds ${pct(t.synergy?.bonusPerTag ?? 0)} attack, up to ${pct(t.synergy?.cap ?? 0)}.`],
   ["auto_awesome", "Awakening", `At battle rank IV a hero can Awaken for ${t.awakening?.cost} gold: +${pct(t.awakening?.attackBonus ?? 0)} attack, +${pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.`],
-  ["military_tech", "Hero collection", "Heroes are unlocked in the Campaign and summoned with Divine Seals. Campaign stages, Free Play and Expeditions use only the heroes you own; the Daily Trial gives everyone the same squad. Level, Stars, Evolution and Skills from the Heroes screen apply in Campaign stages only; Free Play and Expeditions use base stats plus Divine Blessings."],
+  ["military_tech", "Hero collection", "Heroes are unlocked in the Campaign and summoned with Divine Seals. Campaign stages, Free Play and Expeditions use only the heroes you own; the Daily Trial gives everyone the same squad. Level, Stars, Evolution and Skills from the Heroes screen apply in every mode; Free Play and Expeditions add Divine Blessings on top."],
   ["star", "Divine Blessings", "Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial."],
 ];
 const enemyAttrs: [string, string, string][] = [
