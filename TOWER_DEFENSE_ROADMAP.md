@@ -50,7 +50,7 @@ Build work with a clear scope.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. (In-game visuals for Thunderfall and Shield done October 2.) | Agent | - | S |
+| R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. (In-game visuals done October 2; owner playtest: the Shield dome reads weak, make it stronger later.) | Agent | - | S |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 
