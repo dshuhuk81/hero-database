@@ -25,6 +25,27 @@ tile-to-hero ratio.
   reference, so nothing covers a lane, and the left rail stays free for gold, lives, wave, goal
   and the speed buttons.
 
+## Prototype status (October 2, 2026)
+
+Built for **one map only**, `jungle-heart-temple` (campaign 3-6), for owner review. Nothing else
+changes; remove `tuning.board.tilt` to switch it off everywhere.
+
+- **Where:** `tuning.board.tilt = { k: 0.75, offsetY: 70, maps: ["jungle-heart-temple"] }` in
+  `gameBalance.tuning.json`. Code: `render.js` (all layers live in a squashed `tiltRoot`; hero and
+  enemy containers are counter-scaled by 1/k so figures keep their size; damage numbers too),
+  `ui.js` (`tiltView`, used by `worldToLocal`) and `canvasPoint` (inverse mapping for taps).
+  Sim, map data and `geometryHash` are untouched.
+- **Try it:** open the campaign (DBG → All stages playable → Chapter 3 → 3-6). URL switches on the
+  page: `?tilt=off` (today's look), `?tilt=0.7` (any k from 0.5 to 1).
+- **Screenshots** (same map, six heroes, boss and flyer at the top spawn, tilt off vs on) in
+  `artifacts/td-tilt-prototype/`: `tilt-off-*.png` / `tilt-on-*.png`, at 1280 × 640 and 844 × 390.
+  Result: the top-row hero that touches the canvas edge with tilt off stands fully inside with tilt on.
+- **Not in the prototype:** buff pills and the boss health bar are not moved yet; the bands are
+  the first-cut blurred copy of the map art; HP bars, rings and status icons are squashed with the
+  ground (bars ~25% thinner); portal labels are squashed; no depth scaling and no lower hero feet.
+- **Known to check on review:** the seam where ground meets band, how the 25% squash reads on the
+  painted art, tap accuracy near the top and bottom edges on a real phone.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are
