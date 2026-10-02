@@ -166,12 +166,16 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
       <h2>Campaign stages ({chapters.reduce((n: number, ch: any) => n + ch.stages.length, 0)})</h2>
       <div class="ov-chapters">
         {chapters.map((chapter: any) => (
-          <table>
-            <thead><tr><th colspan="7">{chapter.id}. {chapter.name}</th></tr><tr><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
-            <tbody>{chapter.stages.map((s: any) => (
-              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
-            ))}</tbody>
-          </table>
+          <div class="ov-chapter">
+            <table>
+              <caption>{chapter.id}. {chapter.name}</caption>
+              <colgroup><col style="width:11%" /><col style="width:26%" /><col style="width:17%" /><col style="width:9%" /><col style="width:10%" /><col style="width:9%" /><col style="width:18%" /></colgroup>
+              <thead><tr><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
+              <tbody>{chapter.stages.map((s: any) => (
+                <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
+              ))}</tbody>
+            </table>
+          </div>
         ))}
       </div>
       <p class="ov-note">HP = stage enemy health scale. Hover a stage for its name and boss.</p>
@@ -220,10 +224,10 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
   .ov-note { margin: 0 0 4px; color: var(--text-muted); }
   .ov-reach { display: flex; align-items: center; gap: 4px; }
   .ov-reach :global(svg) { flex: none; }
-  .ov-chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 6px; }
-  .ov-chapters table { margin: 0; table-layout: fixed; }
-  /* Long map and hero names truncate instead of spilling into the next chapter. */
-  .ov-chapters td { overflow: hidden; text-overflow: ellipsis; }
-  .ov-chapters tr > :nth-child(2) { width: 30%; }
-  .ov-chapters thead tr:first-child th { color: var(--text-primary); }
+  .ov-chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 6px; }
+  /* Each chapter box can't grow past its grid column; cells truncate with an ellipsis. */
+  .ov-chapter { min-width: 0; overflow: hidden; }
+  .ov-chapter table { margin: 0; width: 100%; table-layout: fixed; }
+  .ov-chapter th, .ov-chapter td { overflow: hidden; text-overflow: ellipsis; }
+  .ov-chapter caption { text-align: left; font-weight: 600; padding: 2px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
