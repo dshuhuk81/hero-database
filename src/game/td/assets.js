@@ -40,7 +40,7 @@ export const enemySheetUrl = (file, version = enemySpriteVersion(file)) =>
 // lab by `node scripts/build-td-hero-figures.mjs`; recruit pairs share one figure per class.
 // A remade figure gets the next version (boreas-v2), since R2 caches a year.
 export const HERO_FIGURES = {
-  boreas: "boreas-v1", surtr: "surtr-v1", fenrir: "fenrir-v1", asclepius: "asclepius-v1", ymir: "ymir-v1",
+  boreas: "boreas-v1", surtr: "surtr-v1", fenrir: "fenrir-v1", asclepius: "asclepius-v1", ymir: "ymir-v2",
   heimdall: "heimdall-v1", gaia: "gaia-v1", aegir: "aegir-v1", nott: "nott-v1", vidar: "vidar-v1",
   plutus: "plutus-v1", harmonia: "harmonia-v1", skadi: "skadi-v1", atalanta: "atalanta-v1", stheno: "stheno-v1",
   odin: "odin-v1", helios: "helios-v1", hephaestus: "hephaestus-v1", hecate: "hecate-v1", thanatos: "thanatos-v1",

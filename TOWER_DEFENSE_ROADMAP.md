@@ -54,7 +54,7 @@ Build work with a clear scope.
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R9 | Bosses Lerna, Kraghorn, Vorruk: implement the three fights | Agent | - | L |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
-| R16 | Ymir default-attack animation: hammer swing via PixelLab pipeline | Agent | - | S |
+| R16 | Ymir default-attack animation: hammer swing via PixelLab pipeline | Agent | - | S | (done October 2: `ymir-v2` figure, owner review + `upload-assets` pending; timing caveat below)
 
 **R9 — Bosses Lerna, Kraghorn, Vorruk.** The full design is written and owner-reviewed in
 [TOWER_DEFENSE_BOSS_CONCEPTS.md](TOWER_DEFENSE_BOSS_CONCEPTS.md) (September 29, 2026):
@@ -146,6 +146,13 @@ facing direction, 1 frame recover; impact frame must line up with the existing a
 timing (attackPeriod from tuning; the damage frame is the swing's second frame). Follow the
 existing hero animation export path (`td-spine` / atlas pipeline, `scripts/td-pixellab-clips.mjs`),
 register as `ymir` attack clip, verify in the anim lab (`anim-lab.astro`). No sim changes.
+
+**R16 status (October 2).** Built as figure `ymir-v2` (new attack clip, idle/ultimate reused);
+`HERO_FIGURES.ymir` in `src/game/td/assets.js` points at it; anim lab frames updated. Caveat:
+the renderer pre-advances every figure's attack clip to a global `startFrame: 2`
+(`src/game/td/render.js`), so the damage tick lands mid-wind-up for Ymir's new clip (impact is
+frame index 5, ~187 ms later). Aligning it needs a per-figure `startFrame` override — flagged
+for the owner, no renderer change made.
 
 **R17 - Campaign Stage Changes.** 1. The Road to the Crossing needs a change cause its Mixing themes. Every Campaign Chapter should only have 1 theme.
 Every Campaign Chapter should also have only 1 boss. Bosses should not be duplicate. Therefore we here is an audit for existing bosses at the moment:
