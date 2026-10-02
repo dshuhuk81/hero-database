@@ -12,6 +12,7 @@ import tdBosses from "../../../data/tdBosses.json";
 import { skinHeroes } from "../../../game/td/skin.js";
 import { patternSvg, patternLabel } from "../../../game/td/board.js";
 import { BOSS_RULES } from "../../../game/td/skills.js";
+import { mapSceneFor } from "../../../game/td/map-scene.js";
 
 const t = tuning as any;
 const c = campaign as any;
@@ -75,7 +76,9 @@ const chapters = c.chapters.map((chapter: any) => ({
     const seals = stage.rewards?.find((r: any) => r.id === "divineSeals")?.amount ?? 0;
     // A boss appears only in stages whose waves spawn "boss": the stage's own or its map's boss.
     const bossWave = (stage.waves ?? []).find((wave: any) => wave.spawns?.some((group: any) => group.kind === "boss"))?.wave ?? null;
-    return { ...stage, bossWave, mapName: map?.name ?? stage.mapId, theme: map?.theme ?? "", boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
+    // Map background: the terrain image the game and lobby use (public/td/maps).
+    const bg = (mapSceneFor(map) as any)?.assets?.terrain ?? "";
+    return { ...stage, bossWave, bg, mapName: map?.name ?? stage.mapId, theme: map?.theme ?? "", boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
   }),
 }));
 const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
@@ -171,16 +174,16 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
           <div class="ov-chapter">
             <table>
               <caption>{chapter.id}. {chapter.name}</caption>
-              <colgroup><col style="width:10%" /><col style="width:21%" /><col style="width:14%" /><col style="width:7%" /><col style="width:8%" /><col style="width:8%" /><col style="width:16%" /><col style="width:16%" /></colgroup>
-              <thead><tr><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th><th>Boss</th></tr></thead>
+              <colgroup><col style="width:12%" /><col style="width:9%" /><col style="width:19%" /><col style="width:12%" /><col style="width:6%" /><col style="width:7%" /><col style="width:7%" /><col style="width:13%" /><col style="width:15%" /></colgroup>
+              <thead><tr><th>BG</th><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th><th>Boss</th></tr></thead>
               <tbody>{chapter.stages.map((s: any) => (
-                <tr class={s.bossWave ? "ov-boss" : undefined} title={s.bossWave ? `${s.name} - boss ${s.boss} in wave ${s.bossWave}` : s.name}><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td><td>{s.bossWave ? `${s.boss} w${s.bossWave}` : ""}</td></tr>
+                <tr class={s.bossWave ? "ov-boss" : undefined} title={s.bossWave ? `${s.name} - boss ${s.boss} in wave ${s.bossWave}` : s.name}><td class="ov-bg">{s.bg && <a href={s.bg} target="_blank" rel="noopener" title={`${s.mapName} background`}><img src={s.bg} alt="" width="40" height="22" loading="lazy" decoding="async" /></a>}</td><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td><td>{s.bossWave ? `${s.boss} w${s.bossWave}` : ""}</td></tr>
               ))}</tbody>
             </table>
           </div>
         ))}
       </div>
-      <p class="ov-note">HP = stage enemy health scale. Boss = which boss appears and in which wave (highlighted rows). Hover a stage for its name.</p>
+      <p class="ov-note">HP = stage enemy health scale. Boss = which boss appears and in which wave (highlighted rows). BG = map background, click to open it. Hover a stage for its name.</p>
     </section>
   </main>
   </div>
@@ -233,5 +236,7 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
   .ov-chapter th, .ov-chapter td { overflow: hidden; text-overflow: ellipsis; }
   .ov-chapter .ov-boss td { background: color-mix(in srgb, var(--accent-gold) 8%, transparent); }
   .ov-chapter .ov-boss td:last-child { color: var(--accent-gold); font-weight: 600; }
+  .ov-chapter .ov-bg { padding: 1px 2px; }
+  .ov-chapter .ov-bg img { display: block; width: 100%; max-width: 40px; height: 22px; object-fit: cover; border-radius: 2px; }
   .ov-chapter caption { text-align: left; font-weight: 600; padding: 2px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
