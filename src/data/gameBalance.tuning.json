@@ -862,6 +862,24 @@
       "cap": 50
     }
   },
+  "interventions": {
+    "thunderfall": {
+      "charge": 45,
+      "killCharge": 1,
+      "delay": 0.8,
+      "radius": 90,
+      "share": 0.35,
+      "bossShare": 0.08,
+      "unlockAfter": "1-3"
+    },
+    "shield": {
+      "charge": 90,
+      "killCharge": 1,
+      "seconds": 6,
+      "oncePerWave": true,
+      "unlockAfter": "1-6"
+    }
+  },
   "bonds": {
     "wildcard": "recruit-",
     "sets": {

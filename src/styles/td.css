@@ -2974,6 +2974,49 @@
   flex: 0 0 auto;
 }
 
+.td-powers {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-2);
+}
+
+/* A Divine Intervention: the gold fill rises with its charge; ready glows, aiming pulses. */
+.td-power {
+  position: relative;
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: var(--weight-black);
+  background: linear-gradient(to top, color-mix(in srgb, var(--accent-gold) 28%, transparent) var(--fill, 0%), transparent var(--fill, 0%));
+  cursor: pointer;
+}
+
+.td-power:disabled {
+  cursor: default;
+  opacity: .7;
+}
+
+.td-power.is-ready {
+  border-color: var(--accent-gold);
+  color: var(--text-bright);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 45%, transparent);
+}
+
+.td-power.is-aiming {
+  animation: td-power-aim 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes td-power-aim {
+  to { box-shadow: 0 0 18px var(--accent-gold); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-power.is-aiming { animation: none; outline: 2px solid var(--accent-gold); }
+}
+
 .td-main-action {
   flex: 0 0 auto;
   min-width: 150px;

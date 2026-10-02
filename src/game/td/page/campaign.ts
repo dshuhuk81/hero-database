@@ -19,6 +19,7 @@ import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
 import { roman } from "./route";
 import { bondsOf, bondText } from "../bonds.js";
+import { POWER_INFO } from "./powers";
 import { currencyAmount, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
 
@@ -50,6 +51,12 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   if (result.laurels && result.laurels.after > result.laurels.before) parts.push(`Stage rating ${result.laurels.after} of 3${result.laurels.before ? " (new best)" : ""}.`);
   for (const milestone of result.milestones ?? []) parts.push(`Chapter reward for ${milestone.laurels} rating points: ${rewardText(milestone.rewards)}.`);
   if (result.unlocked) parts.push(`Stage ${result.unlocked.id} ${result.unlocked.name} unlocked.`);
+  // Divine Interventions unlock with their stage's first clear (tuning.interventions.<id>.unlockAfter).
+  if (result.firstClear && !run.heroic) {
+    for (const [id, cfg] of Object.entries(game.tuning?.interventions ?? {}) as [string, any][]) {
+      if (cfg.unlockAfter === run.stageId) parts.push(`Divine Intervention unlocked: ${POWER_INFO[id]?.name ?? id}. ${POWER_INFO[id]?.text ?? ""}`);
+    }
+  }
   if (!record) parts.push("Debug run: progress was not recorded.");
   // Currencies paid by the clear and its chapter milestones, for the Stage Clear reward cards.
   const paid = record ? [...currencies, ...(result.milestones ?? []).flatMap((milestone: any) => milestone.rewards.filter((reward: any) => reward.type === "currency"))] : [];

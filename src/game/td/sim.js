@@ -1,7 +1,7 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
-import { boardOf, boardRules, inPattern, patternFor, patternRadius, steppedPattern } from "./board.js";
+import { boardOf, boardRules, cellAt, inPattern, patternFor, patternRadius, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
@@ -96,7 +96,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = null, interventions = null, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
@@ -104,6 +104,8 @@ export class TowerDefenseGame {
     // Expedition (M21): relics (run blessings active from wave 1), veteran start levels per
     // hero, lives carried over from the previous stage and a stage health scale.
     this.presetBoons = (boons ?? []).filter((id) => tuning.runBoons?.list?.[id]);
+    // Divine Interventions unlocked for this run (the page passes them; none in the Daily Trial).
+    this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
     this.startLevels = startLevels ?? {};
     this.startLives = lives;
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
@@ -152,6 +154,10 @@ export class TowerDefenseGame {
   }
 
   reset() {
+    this.interventions = Object.fromEntries(this.interventionIds.map((id) => [id, { charge: 0 }]));
+    this.strikes = []; // pending Thunderfall bolts { x, y, at }
+    this.shieldUntil = 0;
+    this.shieldWave = 0;
     this.gold = this.tuning.run.startingGold;
     this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;
@@ -709,6 +715,7 @@ export class TowerDefenseGame {
   step(dt) {
     if (!this.running) return;
     this.time += dt;
+    this.stepInterventions(dt);
     this.spawnClock += dt;
     while (this.spawnQueue.length && (this.spawnQueue[0].kind === "boss" ? !this.fieldHasMinions() : this.spawnQueue[0].at <= this.spawnClock)) {
       const next = this.spawnQueue.shift();
@@ -768,7 +775,7 @@ export class TowerDefenseGame {
         if (enemy.distance >= lane.total) {
           enemy.dead = true;
           const previousLives = this.lives;
-          if (!this.difficulty.invincible) this.lives = Math.max(0, this.lives - enemy.damage);
+          if (!this.difficulty.invincible && !this.shielded()) this.lives = Math.max(0, this.lives - enemy.damage);
           if (this.map.base) {
             enemy.exitReason = "base";
             // Emit before finish: the final breach must still reach the renderer/audio.
@@ -845,6 +852,84 @@ export class TowerDefenseGame {
         this.offerVirtues(); this.offerMutators(); this.onChange("clear", this);
       }
     }
+  }
+
+  // Divine Interventions (tuning.interventions, TOWER_DEFENSE_GAMEPLAY_IDEAS.md B2): player
+  // powers that charge during waves (one point per second plus `killCharge` per kill) and
+  // are ready at `charge` points. Thunderfall strikes a spot after `delay` seconds for a share
+  // of every enemy's health there; Shield of the Crossing makes leaks cost no lives for
+  // `seconds`, once per wave.
+  interventionState(id) {
+    const cfg = this.tuning.interventions?.[id];
+    const state = this.interventions?.[id];
+    if (!cfg || !state) return null;
+    const usedThisWave = !!cfg.oncePerWave && this.shieldWave === this.wave;
+    return { charge: state.charge, max: cfg.charge, ready: this.running && !this.complete && state.charge >= cfg.charge && !usedThisWave, usedThisWave };
+  }
+
+  stepInterventions(dt) {
+    for (const [id, state] of Object.entries(this.interventions ?? {})) state.charge = Math.min(this.tuning.interventions[id].charge, state.charge + dt);
+    if (!this.strikes?.length) return;
+    const due = this.strikes.filter((strike) => strike.at <= this.time);
+    this.strikes = this.strikes.filter((strike) => strike.at > this.time);
+    for (const strike of due) this.thunderStrike(strike);
+  }
+
+  chargeInterventionsOnKill() {
+    for (const [id, state] of Object.entries(this.interventions ?? {})) {
+      const cfg = this.tuning.interventions[id];
+      state.charge = Math.min(cfg.charge, state.charge + (cfg.killCharge || 0));
+    }
+  }
+
+  shielded() {
+    return this.time < (this.shieldUntil || 0);
+  }
+
+  // Tap a spot: the bolt lands `delay` seconds later on the cells around it (nearPoint).
+  castThunderfall(x, y) {
+    if (!this.interventionState("thunderfall")?.ready) return false;
+    const cfg = this.tuning.interventions.thunderfall;
+    this.interventions.thunderfall.charge = 0;
+    this.strikes.push({ x, y, at: this.time + cfg.delay });
+    this.emit({ type: "splash", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: cfg.delay, color: "white" });
+    this.onChange("intervention", this);
+    return true;
+  }
+
+  thunderStrike({ x, y }) {
+    const cfg = this.tuning.interventions.thunderfall;
+    for (const enemy of this.enemies) {
+      if (enemy.dead || enemy.untargetable || !this.nearPoint({ x, y }, enemy, cfg.radius)) continue;
+      // True damage: a share of the enemy's health, smaller for bosses; shields absorb first.
+      const before = enemy.hp;
+      enemy.hp -= this.absorbShield(enemy, enemy.maxHp * (enemy.kind === "boss" ? cfg.bossShare : cfg.share));
+      const dealt = Math.max(0, before - Math.max(0, enemy.hp));
+      if (dealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind, x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt, life: 0.75 });
+      if (enemy.hp <= 0) this.killEnemy(enemy, null);
+    }
+    this.emit({ type: "hold", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: 0.6, color: "white" });
+  }
+
+  // The board cells nearPoint covers around a point as a drawable square ({ x, y, w, h },
+  // the 3 x 3 block; a plus is drawn as its 3 x 3 bounds too), or null off the board.
+  areaRect(x, y, radius) {
+    const board = this.boardRules && boardOf(this.map);
+    if (!board) return null;
+    const [c, r] = cellAt(board, x, y);
+    const n = radius <= 80 ? 0 : 1;
+    return { x: board.origin[0] + (c - n) * board.cell, y: board.origin[1] + (r - n) * board.cell, w: (2 * n + 1) * board.cell, h: (2 * n + 1) * board.cell };
+  }
+
+  castShield() {
+    if (!this.interventionState("shield")?.ready) return false;
+    const cfg = this.tuning.interventions.shield;
+    this.interventions.shield.charge = 0;
+    this.shieldUntil = this.time + cfg.seconds;
+    this.shieldWave = this.wave;
+    if (this.map.base) this.emit({ type: "hold", x: this.map.base.x, y: this.map.base.y, radius: 70, life: cfg.seconds, color: "green" });
+    this.onChange("intervention", this);
+    return true;
   }
 
   // Regular enemies still on the field (not bosses, not a boss's children): the boss waits for them.
@@ -1963,12 +2048,15 @@ export class TowerDefenseGame {
     this.score += Math.round(enemy.maxHp + enemy.reward * 4);
     if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
     this.totalGoldEarned += reward;
-    if (hero?.id) this.statFor(hero).kills += 1;
-    const slot = this.heroKills[hero.entityId];
-    if (slot) slot.kills += 1;
-    else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
-    if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
-    (this.insightLog[hero.class] ||= { waves: 0, kills: 0 }).kills += 1;
+    this.chargeInterventionsOnKill();
+    if (hero) {
+      if (hero.id) this.statFor(hero).kills += 1;
+      const slot = this.heroKills[hero.entityId];
+      if (slot) slot.kills += 1;
+      else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
+      if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
+      (this.insightLog[hero.class] ||= { waves: 0, kills: 0 }).kills += 1;
+    }
     this.onChange("kill", this);
   }
 

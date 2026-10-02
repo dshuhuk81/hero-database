@@ -346,6 +346,15 @@ offers attack or health (section 9).
   charge), cursed (+30% attack, -20% attack speed). Every generated board has one of each.
 - **Synergy:** each `synergies` tag shared by 2+ deployed heroes within 250 px gives +8%
   attack, capped at +24%.
+- **Divine Interventions** (`tuning.interventions`, `page/powers.ts`): two player powers in
+  the bottom bar. Each charges during waves (1 point per second plus 1 per kill) and is ready
+  at its `charge` (Thunderfall 45, Shield 90); casting spends it all. **Thunderfall**
+  (unlocked by clearing 1-3): arm the button, tap the map; 0.8 s later a bolt hits the cells
+  around the spot (`nearPoint`, 90 px: a 3 x 3 block on boards) for 35% of each enemy's max
+  health as true damage (8% for bosses; shields absorb first). **Shield of the Crossing**
+  (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), once per wave.
+  Available in Free Play, Campaign and Expedition, not in the Daily Trial (`session.ts`
+  passes the unlocked list as `interventions`). Upgrades on the blessing tree are not built.
 - **Pantheon bonds** (`bonds.js`, `tuning.bonds`): heroes of one pantheon standing on the
   field together unlock a tier. Norse (Odin, Ymir, Heimdall, Aegir, Surtr, Fenrir, Nott,
   Vidar, Skadi) 2: +6% attack, 4: +12% attack and ultimates charge 10% faster. Greek (Atlas,

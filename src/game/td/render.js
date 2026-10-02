@@ -1847,6 +1847,11 @@ export async function createRenderer(canvas, game, options = {}) {
           const facing = Math.atan2(effect.y - (effect.sourceY ?? effect.y), effect.x - (effect.sourceX ?? effect.x));
           g.arc(effect.sourceX ?? effect.x, effect.sourceY ?? effect.y, Math.hypot(effect.x - effect.sourceX, effect.y - effect.sourceY) || r, facing - 0.9, facing + 0.9)
             .stroke({ width: 6, color: TINTS.gold, alpha: fade * 0.8, cap: "round" });
+        } else if (effect.rect) {
+          // Board areas (Thunderfall) cover whole cells: draw the cells they hit.
+          const { x, y, w, h } = effect.rect;
+          g.rect(x, y, w, h).fill({ color, alpha: fade * (effect.type === "hold" ? 0.3 : 0.16) });
+          g.rect(x, y, w, h).stroke({ width: 2, color, alpha: fade * 0.8 });
         } else {
           g.circle(effect.x, effect.y, r).fill({ color, alpha: fade * (effect.type === "hold" ? 0.12 : 0.18) });
           g.circle(effect.x, effect.y, r).stroke({ width: 2, color, alpha: fade * 0.7 });

@@ -45,6 +45,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   import { renderChallengeBadges, renderChallengeList } from "../../game/td/page/challenges";
   import { createDebugPanel } from "../../game/td/page/debug";
   import { createHud } from "../../game/td/page/hud";
+  import { createPowers } from "../../game/td/page/powers";
   import { createPopover } from "../../game/td/page/popover";
   import { createRecruit } from "../../game/td/page/recruit";
   import { createPanels } from "../../game/td/page/panels";
@@ -264,10 +265,11 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const home = createHome(ctx, { campaign: campaignScreens, daily: dailyTrial, expedition });
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
+  const powers = createPowers(ctx);
   const popover = createPopover(ctx);
   const recruit = createRecruit(ctx);
   const panels = createPanels(ctx, { renderSavePanel: savePanel.render });
-  const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: hud.tick, buffBar, runOffer, results, debugPanel, popover, recruit });
+  const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: (now: number) => { hud.tick(now); powers.render(); }, buffBar, runOffer, results, debugPanel, popover, recruit });
   const nav = createNav(ctx, {
     onShow(id) {
       wallet.close();
@@ -312,6 +314,8 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     closeSheet: recruit.close,
     updateSheet: recruit.update,
     bindCanvas: recruit.bindCanvas,
+    aimPower: powers.aimAt,
+    resetPowers: powers.reset,
     openPanel: panels.open,
     closePanel: panels.close,
     activePanel: panels.active,

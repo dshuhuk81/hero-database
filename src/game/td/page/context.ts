@@ -48,6 +48,9 @@ export type PageActions = {
   spaceBelowMap(): number;
   // hud.ts
   updateHud(): void;
+  // powers.ts: a map tap while a Divine Intervention is armed casts it (true when cast or armed).
+  aimPower(x: number, y: number): boolean;
+  resetPowers(): void;
   syncMainAction(): void;
   renderPreview(): void;
   playSound(kind: string): void;

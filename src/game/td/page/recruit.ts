@@ -218,6 +218,8 @@ export function createRecruit(ctx: PageContext) {
     canvas.addEventListener("pointerdown", (event) => { lastPointerType = event.pointerType || "mouse"; });
     canvas.addEventListener("click", (event) => {
       if (state.session !== current || game.complete) return;
+      const point = canvasPoint(canvas, event);
+      if (ctx.actions.aimPower(point.x, point.y)) return;
       const scale = canvas.getBoundingClientRect().width / 960;
       const slot: any = nearestSlot(map, canvasPoint(canvas, event), slotHitRadius(scale, lastPointerType));
       if (!slot) { close(false); ctx.actions.closePopover(false); ctx.actions.cancelDeploy(); return; }

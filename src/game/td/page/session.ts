@@ -106,8 +106,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
     const tuning = buildRunTuning(data.tuning, runLevels, boost);
+    // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
+    // the Daily Trial stays the same for everyone without them.
+    const interventions = daily ? [] : Object.entries(data.tuning.interventions ?? {})
+      .filter(([, cfg]: [string, any]) => !cfg.unlockAfter || store.data.campaign.cleared?.[cfg.unlockAfter]).map(([id]) => id);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
-    const game: any = new TowerDefenseGame({ ...data, heroes, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
+    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
@@ -137,6 +141,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.syncMainAction();
     ctx.actions.renderPreview();
     deps.buffBar.render();
+    ctx.actions.resetPowers();
     const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`

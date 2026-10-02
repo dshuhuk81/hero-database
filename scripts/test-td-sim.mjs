@@ -2682,4 +2682,29 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(Math.abs(g.attackValue(g.heroes[0]) / before - (1 + cfg.sets.norse.tiers[0].atk)) < 1e-9, "a Norse pair raises attack");
 }
 
+// Divine Interventions (tuning.interventions): charge, Thunderfall strike, Shield of the Crossing.
+{
+  const cfg = tuning.interventions;
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 6, interventions: ["thunderfall", "shield"] });
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 6 }).interventionState("thunderfall"), null, "no powers unless the run unlocks them");
+  g.startWave();
+  g.spawnQueue = [];
+  assert.ok(!g.interventionState("thunderfall").ready && !g.castThunderfall(100, 100), "a fresh power is not charged");
+  g.interventions.thunderfall.charge = cfg.thunderfall.charge;
+  const enemy = g.spawnEnemy("brute");
+  enemy.hp = enemy.maxHp = 1000;
+  assert.ok(g.castThunderfall(enemy.x, enemy.y), "a charged Thunderfall casts");
+  assert.equal(g.interventions.thunderfall.charge, 0, "casting spends the charge");
+  for (let i = 0; i < Math.ceil(cfg.thunderfall.delay * 60) + 1; i += 1) g.step(1 / 60);
+  assert.ok(enemy.hp <= 1000 * (1 - cfg.thunderfall.share) + 1e-6, "the bolt takes its share of health after the delay");
+  g.interventions.shield.charge = cfg.shield.charge;
+  assert.ok(g.castShield(), "a charged Shield casts");
+  g.interventions.shield.charge = cfg.shield.charge;
+  assert.ok(!g.interventionState("shield").ready, "Shield works once per wave");
+  const lives = g.lives;
+  enemy.distance = g.laneOf(enemy).total;
+  g.step(1 / 60);
+  assert.equal(g.lives, lives, "a leak under the Shield costs no lives");
+}
+
 console.log("Tower defense checks passed");
