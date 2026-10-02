@@ -12620,6 +12620,7 @@ button .td-cur {
 
 .td-app .td-camp-drawer-foot {
   padding: var(--space-2) var(--space-4) calc(var(--space-2) + env(safe-area-inset-bottom));
+  gap: 16px;
 }
 
 /* Frame fit, second pass: summon art as a positioned fill, one grid track, slimmer rows. */

@@ -56,11 +56,13 @@ start any time and run in parallel.
 | R6b | Allow debug mode in production behind an explicit URL query parameter | Agent | - | S |
 | R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
 | R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
-| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk, a test pass for Ochenta | Agent | - | M |
+| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations (R4 done); then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
 | R13 | Create a local overview: Create a overview page with all stages, all bosses and the most important settings. That overview page should display the core features of the game that are relevant in order to see them at a glance and make desicions from there. That also includes costs for upgrades, skills and everything we can tune in the game. also heroes, their "attack scheme tile range", their attributes and hp as well as enemy infos. Reason: game files have too many informations all over the place and its hard for me to track that in a overview. | Agent | M |
+| R14 | Currently they are faction like bonuses (Norse, Greek) - but maybe we should add a new hero class in addition. Its "Lords". Each faction has its own lord. We dont have one yet. We need a concept.
+When a lord is placed (he will be always placed first) in the selection tab and then specific faction bonuses will be applied. each hero from the same faction then gets these bonuses. Prerequisites are of course 1 Lord for each faction to be defined, we need concept art, animations and descriptions | L |
 
 Owner directions recorded October 2:
 
