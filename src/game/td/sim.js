@@ -202,6 +202,7 @@ export class TowerDefenseGame {
     this.totalGoldSpent = 0;
     this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
     this.upgradesBought = 0; // levels, Awakenings and trainings bought this run (M20 challenges)
+    this.relocations = 0;
     this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
     // Virtue shard (6C): the run starts with this virtue already chosen.
@@ -223,7 +224,9 @@ export class TowerDefenseGame {
     const base = this.heroesById.get(heroId);
     const factor = this.tuning.blocking?.redeployCostFactor;
     if (!base) return Infinity;
-    return factor && this.fallenHeroes.some((entry) => entry.id === heroId) ? Math.round(base.cost * factor) : base.cost;
+    const raw = factor && this.fallenHeroes.some((entry) => entry.id === heroId) ? base.cost * factor : base.cost;
+    const discount = Math.min(0.5, (this.favor.deployDiscount || 0) + (this.classBonus(base).deployDiscount || 0));
+    return Math.round(raw * (1 - discount));
   }
 
   place(heroId, slotType, slotIndex) {
@@ -296,6 +299,40 @@ export class TowerDefenseGame {
       cost: this.deployCost(heroId),
       hitsFlyers: slotType !== "road",
     };
+  }
+
+  relocationInfo(entityId) {
+    const hero = this.heroes.find((item) => item.entityId === entityId);
+    if (!hero) return { ok: false, reason: "No hero selected." };
+    if (this.complete) return { ok: false, reason: "Run is over.", hero };
+    if (this.running) return { ok: false, reason: "Relocate between waves.", hero };
+    const share = this.tuning.run.relocationCost ?? 0.25;
+    const discount = Math.min(1, this.classBonus(hero).relocateDiscount || 0);
+    const cost = Math.round(this.deployCost(hero.id) * share * (1 - discount));
+    if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost };
+    return { ok: true, hero, cost };
+  }
+
+  relocate(entityId, slotType, slotIndex) {
+    const info = this.relocationInfo(entityId);
+    if (!info.ok) return info;
+    const hero = info.hero;
+    if (hero.slot !== slotType) return { ...info, ok: false, reason: `${hero.name} needs a ${hero.slot} tile.` };
+    const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
+    if (!slot) return { ...info, ok: false, reason: "That tile does not exist." };
+    if (this.heroes.some((item) => item.slotType === slotType && item.slotIndex === slotIndex)) return { ...info, ok: false, reason: "That tile is occupied." };
+    this.gold -= info.cost;
+    this.totalGoldSpent += info.cost;
+    hero.slotType = slotType;
+    hero.slotIndex = slotIndex;
+    hero.x = slot[0];
+    hero.y = slot[1];
+    hero.range = this.deployRange(hero, slotType, slotIndex);
+    hero.rotation = this.defaultRotationFor(slot[0], slot[1]);
+    this.relocations += 1;
+    this.emit({ type: "relocate", heroId: hero.id, x: slot[0], y: slot[1], life: 0.5, color: "gold" });
+    this.onChange("relocate", this);
+    return info;
   }
 
   // Aggregated modifiers from chosen virtues and any triggered pairs.

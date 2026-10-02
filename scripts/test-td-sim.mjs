@@ -434,6 +434,53 @@ function runWaveOne(g) {
 
 // --- 2A upgrades ---
 
+// R4 battle economy: Favor discounts deployment, while relocation is an atomic between-wave
+// purchase that moves the existing unit without resetting its combat state.
+{
+  const discounted = structuredClone(tuning);
+  discounted.favor = { deployDiscount: 0.15, classBonus: { Tank: { deployDiscount: 0.1, relocateDiscount: 0.3 } } };
+  const g = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 301 });
+  g.gold = 1000;
+  assert.equal(g.deployCost("atlas"), 90, "global and class deployment discounts add together");
+  assert.equal(g.place("atlas", "road", 0), true, "discounted hero deploys");
+  const atlas = g.heroes[0];
+  Object.assign(atlas, { hpLeft: 321, ultClock: 7, attackClock: 0.4, stunCooldown: 2 });
+  const before = { entityId: atlas.entityId, hpLeft: atlas.hpLeft, ultClock: atlas.ultClock, attackClock: atlas.attackClock, stunCooldown: atlas.stunCooldown, invested: atlas.invested };
+  assert.deepEqual(g.relocationInfo(atlas.entityId), { ok: true, hero: atlas, cost: 16 }, "relocation price uses discounted deployment cost and class Rite");
+  assert.equal(g.relocate(atlas.entityId, "road", 1).ok, true, "valid relocation succeeds");
+  assert.equal(g.gold, 894, "deployment and relocation spend their exact costs");
+  assert.equal(g.relocations, 1, "relocation is recorded for challenges");
+  assert.deepEqual({ entityId: atlas.entityId, hpLeft: atlas.hpLeft, ultClock: atlas.ultClock, attackClock: atlas.attackClock, stunCooldown: atlas.stunCooldown, invested: atlas.invested }, before, "relocation preserves identity, combat state and refundable investment");
+  assert.deepEqual([atlas.slotType, atlas.slotIndex], ["road", 1], "relocation changes the occupied tile");
+
+  discounted.favor = { deployDiscount: 0.4, classBonus: { Tank: { deployDiscount: 0.3 } } };
+  const capped = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 302 });
+  assert.equal(capped.deployCost("atlas"), 60, "deployment discount is capped at 50 percent");
+}
+
+// Invalid relocation destinations and timing never mutate the hero or spend gold.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 303 });
+  g.gold = 1000;
+  g.place("atlas", "road", 0);
+  g.place("aegir", "road", 1);
+  const atlas = g.heroes.find((hero) => hero.id === "atlas");
+  const unchanged = () => [g.gold, atlas.slotType, atlas.slotIndex, g.relocations];
+  const initial = unchanged();
+  assert.equal(g.relocate(atlas.entityId, "road", 1).ok, false, "occupied relocation destination is rejected");
+  assert.equal(g.relocate(atlas.entityId, "road", 999).ok, false, "missing relocation destination is rejected");
+  assert.equal(g.relocate(atlas.entityId, "platform", 0).ok, false, "wrong tile type is rejected");
+  assert.deepEqual(unchanged(), initial, "invalid destinations spend nothing and keep the hero in place");
+  g.gold = 0;
+  assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation without enough gold is rejected");
+  g.gold = 1000;
+  g.startWave();
+  assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation during a wave is rejected");
+  g.running = false; g.complete = true;
+  assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation after run completion is rejected");
+  assert.deepEqual(unchanged().slice(1), initial.slice(1), "timing rejections keep the hero in place");
+}
+
 // Exact cost, stat math, and no free full heal.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 31 });
