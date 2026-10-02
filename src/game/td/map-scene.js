@@ -112,8 +112,13 @@ export function paintedStructureLayer(layers, role) {
 }
 
 export function createMapScene(PIXI, game, {
-  ground, structures, foreground, overlay, reducedMotion = false, textures = {},
+  ground, structures, foreground, overlay, reducedMotion = false, textures = {}, tilt = null,
 }) {
+  // R18 tilt prototype: `tilt` = { k, units, zHero }. The ground layers are squashed to k, so
+  // upright sprites (gates, sanctuary, labels) are counter-scaled by 1/k, and the painted
+  // spawn gates join the unit layer, depth-sorted with the heroes (a hero below the gate
+  // stands in front of it, one above it behind it; enemies still emerge through it).
+  const tiltK = tilt?.k ?? 1;
   const theme = mapSceneFor(game.map);
   const STONE = theme.stone, GOLD = theme.gold, LIGHT = theme.light;
   const owned = [];
@@ -326,11 +331,13 @@ export function createMapScene(PIXI, game, {
     back.ellipse(3, 16, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
     back.ellipse(2, 14, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
-    const sprite = add(paintedStructureLayer({ structures, foreground }, role), new PIXI.Sprite(texture));
+    const sorted = tilt?.units && role === "spawn";
+    const sprite = add(sorted ? tilt.units : paintedStructureLayer({ structures, foreground }, role), new PIXI.Sprite(texture));
+    if (sorted) sprite.zIndex = tilt.zHero + point.y + 40; // feet of the gate, like a hero's
     if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
     sprite.position.set(point.x, point.y);
-    sprite.width = width; sprite.height = height;
+    sprite.width = width; sprite.height = height / tiltK;
   }
 
   function label(text, x, y, size, color) {
@@ -341,7 +348,7 @@ export function createMapScene(PIXI, game, {
       letterSpacing: size >= 10 ? 1.3 : 0.5,
       stroke: { color: theme.labels.stroke, width: 3 },
     } }));
-    t.anchor.set(0.5); t.position.set(x, y); return t;
+    t.anchor.set(0.5); t.scale.y = 1 / tiltK; t.position.set(x, y); return t;
   }
   for (const spawn of spawns) label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]);
   label(theme.labels.base[0], base.x + 1, base.y + 55, 10, theme.labels.base[1]);

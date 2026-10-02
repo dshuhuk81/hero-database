@@ -2048,7 +2048,7 @@ export async function createRenderer(canvas, game, options = {}) {
       load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK, units: layerUnits, zHero: Z_HERO } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();

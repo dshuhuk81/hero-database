@@ -40,6 +40,7 @@ changes; remove `tuning.board.tilt` to switch it off everywhere.
 - **Screenshots** (same map, six heroes, boss and flyer at the top spawn, tilt off vs on) in
   `artifacts/td-tilt-prototype/`: `tilt-off-*.png` / `tilt-on-*.png`, at 1280 × 640 and 844 × 390.
   Result: the top-row hero that touches the canvas edge with tilt off stands fully inside with tilt on.
+- **Portal overlap fix (owner feedback):** the squashed ground flattened the painted spawn gates and drew them over everything, so heroes next to a gate were covered. Gates and labels are now counter-scaled (upright, full size) and the spawn gates are depth-sorted with the heroes (a hero below a gate stands in front of it, enemies still emerge through it). Before/after crops: `artifacts/td-tilt-prototype/portal-overlap-*.png`. The Heart Temple (base) stays behind units as before but is also counter-scaled.
 - **Not in the prototype:** buff pills and the boss health bar are not moved yet; the bands are
   the first-cut blurred copy of the map art; HP bars, rings and status icons are squashed with the
   ground (bars ~25% thinner); portal labels are squashed; no depth scaling and no lower hero feet.
