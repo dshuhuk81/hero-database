@@ -295,4 +295,25 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.deepEqual(bogus.virtues, [], "unknown virtue ignored");
 }
 
+// --- R5: Divine Intervention upgrades on the trunk ---
+{
+  const boardMaps = (await import("../src/data/tdMaps.json", { with: { type: "json" } })).default;
+  const cfg = tuning.interventions;
+  const power = (levels) => new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: boardMaps[0], waves, seed: 5, interventions: ["thunderfall", "shield"] });
+  const storm = trunkNode("thunderCharge"), wrath = trunkNode("thunderArea"), vigil = trunkNode("shieldCharge"), long = trunkNode("shieldSeconds");
+  assert.ok(storm && wrath && vigil && long, "four power nodes on the trunk");
+  for (const node of [storm, wrath, vigil, long]) assert.equal(node.row, 4, `${node.name} sits on the power row`);
+  close(power({ [storm.id]: 5 }).interventionState("thunderfall").max, cfg.thunderfall.charge * (1 - storm.effect.value * 5), "Thunderfall charges faster");
+  close(power({ [vigil.id]: 5 }).interventionState("shield").max, cfg.shield.charge * (1 - vigil.effect.value * 5), "Shield charges faster");
+  const lasting = power({ [long.id]: 3 });
+  lasting.startWave();
+  lasting.interventions.shield.charge = lasting.interventionState("shield").max;
+  assert.ok(lasting.castShield(), "upgraded Shield casts");
+  close(lasting.shieldUntil - lasting.time, cfg.shield.seconds + long.effect.value * 3, "Shield lasts longer");
+  // Area: each Wrath level widens the bolt's pattern (3 x 3, then 13, then 17 tiles).
+  const sizes = [0, 1, 2].map((level) => power(level ? { [wrath.id]: level } : {}).thunderArea(480, 270)?.cells.length);
+  // Compact boards are only 4 rows tall, so the wider shapes are clipped at the edges here.
+  assert.ok(sizes[0] === 9 && sizes[1] > sizes[0] && sizes[2] > sizes[1], `Thunderfall area grows with Wrath of the Sky: ${sizes}`);
+}
+
 console.log("Tower defense favor checks passed.");

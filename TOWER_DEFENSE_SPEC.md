@@ -355,9 +355,15 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   health as true damage (8% for bosses; shields absorb first). **Shield of the Crossing**
   (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), once per wave.
   Available in Free Play, Campaign and Expedition, not in the Daily Trial (`session.ts`
-  passes the unlocked list as `interventions`). Upgrades on the blessing tree are not built.
+  passes the unlocked list as `interventions`). Upgrades sit on trunk row 4 of the blessing
+  tree (needs 32 trunk points; R5): Storm Caller (`odin_tempest`, Thunderfall charges 8% faster
+  per level, 5 levels), Wrath of the Sky (`helios_wrath`, Thunderfall area 3 x 3, then 13, then
+  17 tiles: `block` / `blockPlus` / `star3`; 2 levels), Bulwark Vigil (`atlas_vigil`, Shield
+  charges 8% faster per level, 5 levels), Long Vigil (`ymir_endurance`, Shield +1 s per level,
+  3 levels). Charge cuts stop at 75% (`sim.interventionMax`). New node ids need no save
+  migration: saves keep every bought level by id.
   Visuals (R5, `render.js drawPowerEffect`): while Thunderfall is armed, the tiles under the
-  mouse light up blue (`game.uiAim`); after the tap they pulse during the delay
+  mouse light up blue (`game.uiAim`, `sim.thunderArea`); after the tap they pulse during the delay
   (`thunderWarn`); the strike draws a jagged bolt from the top edge, flashes the cells, throws
   sparks and shakes the board briefly (`thunderStrike`, sound: Odin's ultimate plus the heavy
   hit). The Shield raises a blue-gold dome over the base for its duration (`shieldUp`), and

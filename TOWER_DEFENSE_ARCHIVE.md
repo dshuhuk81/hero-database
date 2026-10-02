@@ -1,5 +1,14 @@
 # Tower Defense - Completed Work Archive
 
+## R5 part 2: Divine Intervention upgrades, October 2, 2026
+
+- Trunk row 4 of the blessing tree (needs 32 trunk points): Storm Caller (Thunderfall charges
+  8% faster per level, 5 levels, 560 Favor), Wrath of the Sky (Thunderfall area 3 x 3 -> 13 ->
+  17 tiles, 2 levels, 1100), Bulwark Vigil (Shield charges 8% faster per level, 5 levels, 560),
+  Long Vigil (Shield +1 s per level, 3 levels, 700). Prices and values are first guesses (R12).
+- The area preview, warning and flash draw the exact cells (`sim.thunderArea`). No save
+  migration: new node ids are kept like any bought level.
+
 ## R5 part 1: Divine Intervention visuals, October 2, 2026
 
 - Bug fix from the playtest: enemies a road hero blocks stood on its tile and were drawn over

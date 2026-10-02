@@ -63,8 +63,7 @@ export function createPowers(ctx: PageContext) {
   function hover(x: number, y: number) {
     const game = state.session?.game;
     if (!game) return;
-    const radius = game.tuning.interventions?.thunderfall?.radius ?? 0;
-    game.uiAim = aimingId === "thunderfall" ? { x, y, radius, rect: game.areaRect(x, y, radius) } : null;
+    game.uiAim = aimingId === "thunderfall" ? { x, y, radius: game.thunderRadius(), area: game.thunderArea(x, y) } : null;
   }
   const reset = () => { aimingId = null; key = ""; if (state.session) state.session.game.uiAim = null; render(); };
 

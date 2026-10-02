@@ -1804,26 +1804,29 @@ export async function createRenderer(canvas, game, options = {}) {
     return points;
   }
 
+  // Thunderfall area: the board cells it covers (sim.thunderArea), or a circle on classic maps.
+  function drawArea(g, target, fill, stroke) {
+    if (target.area?.cells?.length) {
+      const size = target.area.cell;
+      for (const [x, y] of target.area.cells) g.rect(x, y, size, size).fill(fill);
+      if (stroke) for (const [x, y] of target.area.cells) g.rect(x + 1, y + 1, size - 2, size - 2).stroke(stroke);
+    } else {
+      g.circle(target.x, target.y, target.radius).fill(fill);
+      if (stroke) g.circle(target.x, target.y, target.radius).stroke(stroke);
+    }
+  }
+
   // R5 power visuals drawn every frame on layerFx; true when the effect was handled.
   function drawPowerEffect(effect, g, now) {
     if (effect.type === "thunderWarn") {
       // Target tiles pulse blue-white until the bolt lands.
       const pulse = 0.5 + 0.5 * Math.sin(now / 70);
-      const area = effect.rect;
-      if (area) {
-        g.rect(area.x, area.y, area.w, area.h).fill({ color: TINTS.blue, alpha: 0.12 + pulse * 0.18 });
-        g.rect(area.x, area.y, area.w, area.h).stroke({ width: 3, color: TINTS.white, alpha: 0.5 + pulse * 0.5 });
-      } else {
-        g.circle(effect.x, effect.y, effect.radius).fill({ color: TINTS.blue, alpha: 0.12 + pulse * 0.18 });
-        g.circle(effect.x, effect.y, effect.radius).stroke({ width: 3, color: TINTS.white, alpha: 0.5 + pulse * 0.5 });
-      }
+      drawArea(g, effect, { color: TINTS.blue, alpha: 0.12 + pulse * 0.18 }, { width: 3, color: TINTS.white, alpha: 0.5 + pulse * 0.5 });
       return true;
     }
     if (effect.type === "thunderStrike") {
       const fade = Math.min(1, effect.life / 0.7);
-      const area = effect.rect;
-      if (area) g.rect(area.x, area.y, area.w, area.h).fill({ color: TINTS.white, alpha: fade * 0.45 });
-      else g.circle(effect.x, effect.y, effect.radius).fill({ color: TINTS.white, alpha: fade * 0.4 });
+      drawArea(g, effect, { color: TINTS.white, alpha: fade * 0.45 });
       // The bolt itself is only visible for the first moments of the strike.
       if (effect.life > 0.4) {
         const points = boltPoints(effect);
@@ -1861,13 +1864,7 @@ export async function createRenderer(canvas, game, options = {}) {
     if (!aim) return;
     const g = new PIXI.Graphics();
     const pulse = 0.5 + 0.5 * Math.sin(now / 160);
-    if (aim.rect) {
-      g.rect(aim.rect.x, aim.rect.y, aim.rect.w, aim.rect.h).fill({ color: TINTS.blue, alpha: 0.1 + pulse * 0.08 });
-      g.rect(aim.rect.x, aim.rect.y, aim.rect.w, aim.rect.h).stroke({ width: 2, color: TINTS.blue, alpha: 0.9 });
-    } else {
-      g.circle(aim.x, aim.y, aim.radius).fill({ color: TINTS.blue, alpha: 0.1 + pulse * 0.08 });
-      g.circle(aim.x, aim.y, aim.radius).stroke({ width: 2, color: TINTS.blue, alpha: 0.9 });
-    }
+    drawArea(g, aim, { color: TINTS.blue, alpha: 0.1 + pulse * 0.08 }, { width: 2, color: TINTS.blue, alpha: 0.9 });
     layerFx.addChild(g);
   }
 
@@ -1945,11 +1942,6 @@ export async function createRenderer(canvas, game, options = {}) {
           const facing = Math.atan2(effect.y - (effect.sourceY ?? effect.y), effect.x - (effect.sourceX ?? effect.x));
           g.arc(effect.sourceX ?? effect.x, effect.sourceY ?? effect.y, Math.hypot(effect.x - effect.sourceX, effect.y - effect.sourceY) || r, facing - 0.9, facing + 0.9)
             .stroke({ width: 6, color: TINTS.gold, alpha: fade * 0.8, cap: "round" });
-        } else if (effect.rect) {
-          // Board areas (Thunderfall) cover whole cells: draw the cells they hit.
-          const { x, y, w, h } = effect.rect;
-          g.rect(x, y, w, h).fill({ color, alpha: fade * (effect.type === "hold" ? 0.3 : 0.16) });
-          g.rect(x, y, w, h).stroke({ width: 2, color, alpha: fade * 0.8 });
         } else {
           g.circle(effect.x, effect.y, r).fill({ color, alpha: fade * (effect.type === "hold" ? 0.12 : 0.18) });
           g.circle(effect.x, effect.y, r).stroke({ width: 2, color, alpha: fade * 0.7 });

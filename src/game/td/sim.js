@@ -1,7 +1,7 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
-import { boardOf, boardRules, cellAt, inPattern, patternFor, patternRadius, steppedPattern } from "./board.js";
+import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
@@ -781,11 +781,20 @@ export class TowerDefenseGame {
     const state = this.interventions?.[id];
     if (!cfg || !state) return null;
     const usedThisWave = !!cfg.oncePerWave && this.shieldWave === this.wave;
-    return { charge: state.charge, max: cfg.charge, ready: this.running && !this.complete && state.charge >= cfg.charge && !usedThisWave, usedThisWave };
+    const max = this.interventionMax(id);
+    return { charge: state.charge, max, ready: this.running && !this.complete && state.charge >= max && !usedThisWave, usedThisWave };
+  }
+
+  // Charge a power needs: its tuned `charge`, lowered by the blessing tree (R5: Storm Caller,
+  // Bulwark Vigil), at least a quarter of the base.
+  interventionMax(id) {
+    const base = this.tuning.interventions[id].charge;
+    const cut = id === "thunderfall" ? this.favor.thunderCharge : id === "shield" ? this.favor.shieldCharge : 0;
+    return base * Math.max(0.25, 1 - (cut || 0));
   }
 
   stepInterventions(dt) {
-    for (const [id, state] of Object.entries(this.interventions ?? {})) state.charge = Math.min(this.tuning.interventions[id].charge, state.charge + dt);
+    for (const [id, state] of Object.entries(this.interventions ?? {})) state.charge = Math.min(this.interventionMax(id), state.charge + dt);
     if (!this.strikes?.length) return;
     const due = this.strikes.filter((strike) => strike.at <= this.time);
     this.strikes = this.strikes.filter((strike) => strike.at > this.time);
@@ -795,7 +804,7 @@ export class TowerDefenseGame {
   chargeInterventionsOnKill() {
     for (const [id, state] of Object.entries(this.interventions ?? {})) {
       const cfg = this.tuning.interventions[id];
-      state.charge = Math.min(cfg.charge, state.charge + (cfg.killCharge || 0));
+      state.charge = Math.min(this.interventionMax(id), state.charge + (cfg.killCharge || 0));
     }
   }
 
@@ -810,7 +819,7 @@ export class TowerDefenseGame {
     this.interventions.thunderfall.charge = 0;
     this.strikes.push({ x, y, at: this.time + cfg.delay });
     // R5: the target tiles pulse until the bolt lands (render.js thunderWarn).
-    this.emit({ type: "thunderWarn", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: cfg.delay });
+    this.emit({ type: "thunderWarn", x, y, radius: this.thunderRadius(), area: this.thunderArea(x, y), life: cfg.delay });
     this.onChange("intervention", this);
     return true;
   }
@@ -818,7 +827,7 @@ export class TowerDefenseGame {
   thunderStrike({ x, y }) {
     const cfg = this.tuning.interventions.thunderfall;
     for (const enemy of this.enemies) {
-      if (enemy.dead || enemy.untargetable || !this.nearPoint({ x, y }, enemy, cfg.radius)) continue;
+      if (enemy.dead || enemy.untargetable || !this.inThunderArea({ x, y }, enemy)) continue;
       // True damage: a share of the enemy's health, smaller for bosses; shields absorb first.
       const before = enemy.hp;
       enemy.hp -= this.absorbShield(enemy, enemy.maxHp * (enemy.kind === "boss" ? cfg.bossShare : cfg.share));
@@ -826,27 +835,47 @@ export class TowerDefenseGame {
       if (dealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind, x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt, life: 0.75 });
       if (enemy.hp <= 0) this.killEnemy(enemy, null);
     }
-    this.emit({ type: "thunderStrike", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: 0.7 });
+    this.emit({ type: "thunderStrike", x, y, radius: this.thunderRadius(), area: this.thunderArea(x, y), life: 0.7 });
   }
 
-  // The board cells nearPoint covers around a point as a drawable square ({ x, y, w, h },
-  // the 3 x 3 block; a plus is drawn as its 3 x 3 bounds too), or null off the board.
-  areaRect(x, y, radius) {
+  // Thunderfall area (R5): a 3 x 3 block on boards, widened by Wrath of the Sky to 13 and then
+  // 17 tiles; on classic maps a circle growing by a third per level.
+  thunderPattern() {
+    return ["block", "blockPlus", "star3"][Math.min(2, this.favor.thunderArea || 0)];
+  }
+
+  thunderRadius() {
+    return this.tuning.interventions.thunderfall.radius * (1 + (this.favor.thunderArea || 0) / 3);
+  }
+
+  inThunderArea(point, enemy) {
+    const board = this.boardRules && boardOf(this.map);
+    if (!board) return Math.hypot(point.x - enemy.x, point.y - enemy.y) <= this.thunderRadius();
+    return inPattern(board, this.thunderPattern(), point.x, point.y, enemy.x, enemy.y);
+  }
+
+  // The cells Thunderfall covers around a point ({ cell, cells: [[x, y] top-left] }), for the
+  // renderer's preview, warning and flash; null off boards.
+  thunderArea(x, y) {
     const board = this.boardRules && boardOf(this.map);
     if (!board) return null;
     const [c, r] = cellAt(board, x, y);
-    const n = radius <= 80 ? 0 : 1;
-    return { x: board.origin[0] + (c - n) * board.cell, y: board.origin[1] + (r - n) * board.cell, w: (2 * n + 1) * board.cell, h: (2 * n + 1) * board.cell };
+    const cells = (PATTERNS[this.thunderPattern()] ?? [])
+      .map(([dc, dr]) => [c + dc, r + dr])
+      .filter(([cc, rr]) => cc >= 0 && rr >= 0 && cc < board.cols && rr < board.rows)
+      .map(([cc, rr]) => [board.origin[0] + cc * board.cell, board.origin[1] + rr * board.cell]);
+    return { cell: board.cell, cells };
   }
 
   castShield() {
     if (!this.interventionState("shield")?.ready) return false;
     const cfg = this.tuning.interventions.shield;
     this.interventions.shield.charge = 0;
-    this.shieldUntil = this.time + cfg.seconds;
+    const seconds = cfg.seconds + (this.favor.shieldSeconds || 0); // Long Vigil (R5)
+    this.shieldUntil = this.time + seconds;
     this.shieldWave = this.wave;
     // R5: a dome over the base for as long as the Shield holds (render.js shieldUp).
-    if (this.map.base) this.emit({ type: "shieldUp", x: this.map.base.x, y: this.map.base.y, radius: 70, life: cfg.seconds });
+    if (this.map.base) this.emit({ type: "shieldUp", x: this.map.base.x, y: this.map.base.y, radius: 70, life: seconds });
     this.onChange("intervention", this);
     return true;
   }

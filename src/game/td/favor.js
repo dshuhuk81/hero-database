@@ -151,6 +151,8 @@ export function applyBlessings(levels, tree = TREE) {
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
       case "extraOffer": add(bonuses, "extraOffer", value); break;
       case "bossDamage": add(bonuses, "bossDamage", value); break;
+      // Divine Intervention upgrades (R5); sim.js interventionMax / thunderArea / castShield.
+      case "thunderCharge": case "thunderArea": case "shieldCharge": case "shieldSeconds": add(bonuses, node.effect.type, value); break;
       default: break;
     }
   }

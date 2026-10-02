@@ -224,6 +224,66 @@
       "text": "Starting gold +{v}."
     },
     {
+      "tree": "trunk",
+      "id": "odin_tempest",
+      "name": "Storm Caller",
+      "row": 4,
+      "col": 0,
+      "maxLevel": 5,
+      "cost": 560,
+      "requiresPoints": 32,
+      "effect": {
+        "type": "thunderCharge",
+        "value": 0.08
+      },
+      "text": "Thunderfall charges {p} faster."
+    },
+    {
+      "tree": "trunk",
+      "id": "helios_wrath",
+      "name": "Wrath of the Sky",
+      "row": 4,
+      "col": 1,
+      "maxLevel": 2,
+      "cost": 1100,
+      "requiresPoints": 32,
+      "effect": {
+        "type": "thunderArea",
+        "value": 1
+      },
+      "text": "Thunderfall strikes a wider area (+{v} size)."
+    },
+    {
+      "tree": "trunk",
+      "id": "atlas_vigil",
+      "name": "Bulwark Vigil",
+      "row": 4,
+      "col": 2,
+      "maxLevel": 5,
+      "cost": 560,
+      "requiresPoints": 32,
+      "effect": {
+        "type": "shieldCharge",
+        "value": 0.08
+      },
+      "text": "Shield of the Crossing charges {p} faster."
+    },
+    {
+      "tree": "trunk",
+      "id": "ymir_endurance",
+      "name": "Long Vigil",
+      "row": 4,
+      "col": 3,
+      "maxLevel": 3,
+      "cost": 700,
+      "requiresPoints": 32,
+      "effect": {
+        "type": "shieldSeconds",
+        "value": 1
+      },
+      "text": "Shield of the Crossing lasts {v}s longer."
+    },
+    {
       "tree": "Tank",
       "id": "tank_might",
       "name": "Might",
