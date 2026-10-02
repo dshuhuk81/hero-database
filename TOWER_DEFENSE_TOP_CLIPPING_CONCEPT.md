@@ -8,6 +8,23 @@ shrinking of figures** (they are already small), the board itself may change. Co
 how reference games solve it: smaller battlefield, tilted 3D perspective, or another
 tile-to-hero ratio.
 
+## Owner decisions (October 2, 2026)
+
+- **Approved direction: tilt the ground only** (T). Heroes and bosses keep full size; ground art
+  and tiles are squashed to about 75% height; the board moves down about 70 px. Prototype behind
+  `tuning.board.tilt` on one map per theme, trying k = 0.7 to 0.8.
+- **Polish steps after the tilt works:** depth scaling (far row ~0.9, near row ~1.1) and heroes'
+  feet lower in the tile (B).
+- **Art:** the top and bottom bands are real scenery, not bars. First cut mirrors and blurs each
+  map's own edge; the proper version is one band per theme.
+- **Bosses:** only walking bosses exist and only they are in scope. The immobile colossus type
+  (section 2b) is a possible future feature, not planned now.
+- **Boss health bar** moves into a wide HUD bar at the top (also removes the above-head bar).
+- **Buff pills** (agent's choice): they move into the top scenery band, left of centre, in a
+  single row under the wave/lives counters' height. The band is HUD-only space like in the
+  reference, so nothing covers a lane, and the left rail stays free for gold, lives, wave, goal
+  and the speed buttons.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

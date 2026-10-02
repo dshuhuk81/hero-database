@@ -48,6 +48,7 @@ run in parallel.
 |---|---|---|---|---|
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
+| R18 | Top-of-board clipping: tilt the ground (k ~0.75, board down ~70 px) behind `tuning.board.tilt`, prototype on one map per theme, scenery bands top and bottom, boss health bar and buff pills into the top band; then depth scaling and heroes' feet lower. Approved October 2; see [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent (renderer), Owner (band art) | - | L |
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
@@ -81,7 +82,6 @@ Design first: rules, story or art are not defined yet.
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R14 | Lords concept: a new hero layer on top of the faction bonds (Norse, Greek) | Owner concept, agent builds | - | L |
-| R18 | Top-of-board clipping: heroes, bosses and flyers on the top row are cut off by the canvas edge (no shrinking allowed; tilt/squash experiment recommended); options in [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent concept, owner picks | - | S-M |
 
 **R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
 Mechanical frame, ready to build once the owner names the Lords:
