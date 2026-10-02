@@ -52,6 +52,73 @@ Build work with a clear scope.
 |---|---|---|---|---|
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
+| R9 | Bosses Lerna, Kraghorn, Vorruk: implement the three fights | Agent | - | L |
+| R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
+| R16 | Ymir default-attack animation: hammer swing via PixelLab pipeline | Agent | - | S |
+
+**R9 — Bosses Lerna, Kraghorn, Vorruk.** The full design is written and owner-reviewed in
+[TOWER_DEFENSE_BOSS_CONCEPTS.md](TOWER_DEFENSE_BOSS_CONCEPTS.md) (September 29, 2026):
+rules, numbers (multipliers of the ordinary boss H/A/S), warnings, counterplay, tooltips,
+rollout order and the required-checks list. Sprites already exist (`boss-lerna-v1`,
+`boss-kraghorn-v1`, `boss-vorruk-v1`, see archive September 29). Build scope, in rollout
+order:
+
+1. **Lerna** (Verdant Crossing, replaces Lilith there): threshold ultimate at 70%/35%
+   health (one-shot queue, never re-arms), interruptible 2 s wind-up + 4 s healing channel
+   (1.5% max hp/s, 6% budget per cast, canceled by 4% max hp accumulated damage, stun or
+   petrify; burn suppresses healing ticks), Tender Growth exposure window (+20% damage
+   taken, 5 s) after each cast, and the Bitter Seep ground pool (10 s cooldown, 1.5 s
+   warning, 48 px radius, 4 s, 20% A magic per second, one pool max).
+2. **Kraghorn** (Moonlit Pass alternate): path-distance charge every 18 s (2.5 s hoof-scrape
+   warning marking 140 px of its own path, 3× speed, stops at and hits the first living road
+   hero for 180% A, canceled by stun/petrify/knockback), Cracked Hide recovery (4 s, armor
+   halved), Stones from the Hide fragment attack (12 s, 3 fragments, 45% A each), high
+   armor / low magic resistance profile.
+3. **Vorruk** (Sunscar map): burrow ultimate every 20 s (2 s jagged-ring warning on a fixed
+   platform or road slot, 2 s untargetable underground — road progress paused, block
+   released, damage-over-time keeps ticking, health bar stays visible — then eruption: 90% A
+   in 60 px at the marked spot, Open Throat exposure 5 s), Grit Lance platform poke (9 s,
+   1.5 s lock-on line, 65% A single target, no retarget).
+
+Cross-cutting: extend `sim.js`/tuning `bosses.*` with the per-boss skill blocks; warnings
+must use shape + color and pause with combat; killing a boss mid-warning grants one reward
+and cancels pending zones; deterministic at all sim speeds. Tests: one `test-td-bosses.mjs`
+covering every bullet of the concept doc's "Required checks" list, plus a simulated win per
+boss with the mixed roster. Balance numbers stay first guesses until R12.
+
+**R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
+owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
+sprites and swapped when the art lands. Theme: raiders and beasts of a frozen coast —
+visually pale hides, hoarfrost armor, breath clouds; mechanically they play with Chill,
+Freeze and slick speed (statuses already exist: Chill, Wet, Freeze via `tuning.statuses`).
+Six kinds, matched to the existing roster's roles so wave composition stays familiar:
+
+| ID | Role (existing analog) | Behavior spec | Stat direction |
+|---|---|---|---|
+| `fjord-reaver` | grunt | plain melee walker, hoarfrost-crusted shield | like grunt, +10% hp |
+| `fjord-skater` | runner | very fast, low hp; leaves a 2 s slick trail that speeds other enemies behind it by 15% (new aura, ground decal) | runner stats, speed ×1.1 |
+| `fjord-howler` | archer | ranged; every 3rd shot applies Chill for 2 s (existing status, sources entry) | archer stats, −10% attack |
+| `fjord-jarl` | brute | heavy blocker-cracker; on death breaks into 2 `fjord-reaver` (reuse brood split logic) | brute ×0.8 hp |
+| `fjord-warden` | shieldbearer | projects Frostward: allies within 90 px take 15% less damage (shieldbearer aura re-skinned) | shieldbearer stats |
+| `fjord-draugr` | mender | heals allies; on heal target below 30% hp also applies Chill to its attackers 60 px around the target (new small burst, reuses status sources) | mender stats, −15% heal |
+
+Art brief per kind: same conventions as the boss brief (square canvas, three-quarter
+top-down, facing right, readable at 96 px, silhouette first, pale-blue accents reserved for
+tells). Pipeline: owner approves text → PixelLab concept images → `build-td-enemy-sprites.mjs`
+runtime versions (`fjord-<kind>-v1.webp`) → tuning entries + wave generation allow per-map
+enemy pools (the map decides whether fjord kinds replace or mix with the base roster — first
+fjord map replaces, no mixing). New sim surface: slick-trail aura and the draugr chill
+burst; everything else reuses existing systems. Tests: extend `test-td-sim.mjs` with slick
+trail speed-up and draugr burst; skin test picks up the six new kinds.
+
+**R16 — Ymir hammer swing.** His default attack currently has no dedicated animation; the
+checklist in the archive lists him as done for voice/attack/ultimate, but the attack uses a
+generic strike. Produce a hammer-swing attack clip via the PixelLab pipeline: 3-4 frames
+wind-up (hammer raised over the right shoulder), 2 frames swing across the body toward the
+facing direction, 1 frame recover; impact frame must line up with the existing attack event
+timing (attackPeriod from tuning; the damage frame is the swing's second frame). Follow the
+existing hero animation export path (`td-spine` / atlas pipeline, `scripts/td-pixellab-clips.mjs`),
+register as `ymir` attack clip, verify in the anim lab (`anim-lab.astro`). No sim changes.
 
 #### CONCEPT
 
@@ -59,10 +126,31 @@ Design first: rules, story or art are not defined yet.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
-| R14 | Lords concept: a new hero class on top of the faction bonds (Norse, Greek). Each faction gets one Lord, always placed first in the selection tab; a placed Lord gives every hero of its faction specific bonuses. Prerequisites: one Lord per faction defined, concept art, animations and descriptions | Owner concept, agent builds | - | L |
-| R15 | New enemies for the new theme maps (ice ...) need to be created. Specs need to be written and behaviour defined. Images should be created with our PixelLab Pipeline once a concept image was done. This should be delivered by the Owner first after text descriptions are availabe. | Agent | - | L |
-| R16 | New animatinos needed for Ymir - Default attack. Use Pixellab pipeline. He should swing his hammer at the enemies to attack. | Agent | - | S |
+| R14 | Lords concept: a new hero layer on top of the faction bonds (Norse, Greek) | Owner concept, agent builds | - | L |
+
+**R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
+Mechanical frame, ready to build once the owner names the Lords:
+
+- **What a Lord is:** one designated hero per faction (`norse`, `greek` in `tuning.bonds.sets`)
+  — the faction's mythic head (natural candidates: Odin for Norse, Zeus for Greek; the owner
+  decides, existing hero or new hero). The Lord is marked in data (`bonds.sets.<id>.lord`)
+  and shown first in the hero-selection tab with a crown treatment.
+- **Lord bonus:** while the Lord is deployed, every deployed hero of its faction gains a
+  faction-specific bonus on top of the existing 2/4-hero bond tiers. Proposed identity:
+  Norse Lord — faction heroes' attacks apply a brief stacking Wound (+3% damage taken per
+  stack, 3 stacks max, 3 s; uses the exposed/status system); Greek Lord — faction heroes
+  gain a 6 s Aegis shield after casting their ultimate (absorbs 15% of max hp). Numbers are
+  first guesses for R12.
+- **Rules:** one Lord per faction per squad; the Lord itself counts toward its faction's
+  bond tiers; wildcard recruits do not receive the Lord bonus (they share the bond only);
+  Lord bonus ends when the Lord falls or is sold. No Lord in Daily Trial fixed squads unless
+  the trial authors one in.
+- **Owner deliverables before build:** pick the two Lords (or commission new heroes),
+  concept art + animations for any new Lord, and the short in-game descriptions (selection
+  tab + tooltip). Once named, the task moves to DEVELOPMENT (data + sim + UI, size M).
+- **Open question for the owner:** should a Lord occupy one of the 6 campaign / 7 Free Play
+  deploy slots like any hero (proposed: yes — the bonus is the payoff for the slot), or sit
+  in a separate command slot (bigger rules change, not recommended)?
 
 
 #### SIMULATION / TESTING
