@@ -86,31 +86,30 @@ and cancels pending zones; deterministic at all sim speeds. Tests: one `test-td-
 covering every bullet of the concept doc's "Required checks" list, plus a simulated win per
 boss with the mixed roster. Balance numbers stay first guesses until R12.
 
-**R9 campaign placement (owner thinking, October 2, 2026).** The concept doc's free-map
-suggestions stay untouched. In the campaign every chapter finale currently spawns the same
-generic `boss` — that is where the three monsters belong, matched to the chapter theme.
-Proposed first homes (owner call before wiring):
+**R9 campaign placement (OWNER DECISION, October 2, 2026).** The concept doc's free-map
+suggestions stay untouched. The owner fixed one finale boss per chapter; every chapter
+finale wave names its boss (spawn kind `lilith` / `lerna` / `kraghorn` / `vorruk` /
+`ochenta` / `baphomet` / a new id) instead of the generic `boss`:
 
-- **Vorruk → 2-6 "Throne of Ash" (The Sunscar March).** The burrowing sand worm is the
-  desert chapter's native monster; its story ("followed the buried foundations of Sunscar
-  for centuries") already names this setting. Strongest thematic fit of the three; also the
-  earliest new boss a player meets, and its platform-marker teaches well on Sunscar's
-  spread platforms. Alternative inside the chapter: 2-3 "Serpent Wells" (wells = burrows).
-- **Lerna → 3-6 "Heart of the Jungle" (The Emerald Deep).** Swamp roots and regrowth fit
-  the overgrown temple; 3-5 "Emerald Coil" even telegraphs a serpent. The Root-Maw's story
-  ("roots knotted around something alive beneath the crossing") ports one-to-one to a
-  drowned jungle court. Alternative: 3-3 "Flooded Court" (water + roots).
-- **Kraghorn → 11-6 "Last Orchard" (The Last Harvest).** A gigantic boar is the Calydonian
-  hunt animal — autumn, falling leaves and a hunt finale suit it better than any gate
-  chapter; "every wall eventually opens" reads as the harvest's fences and orchard walls.
-  Alternative if a gate chapter is preferred: 5-6 "Forge Heart" (The Cinder Oath), where the
-  living battering ram besieges the forge gates.
+| Chapter | Finale boss | Status |
+|---|---|---|
+| 1 The Road to the Crossing | Lilith | change: drop Baphomet, only Lilith |
+| 2 The Sunscar March | Vorruk | new (R9) |
+| 3 The Emerald Deep | Lerna | new (R9) |
+| 4 The Frozen Covenant | new boss, topic **Ice** | concept needed (R17) |
+| 5 The Cinder Oath | Ochenta | existing |
+| 6 The Thunder Stair | new boss, topic **Thunder/Lightning** | concept needed (R17) |
+| 7 The Drowned Crown | new boss, topic **Water** | concept needed (R17) |
+| 8 The Spore Lanterns | new boss, topic **Poison** | concept needed (R17) |
+| 9 The Shattered Prism | new boss, topic **Aetheral** | concept needed (R17) |
+| 10 The Silent Procession | new boss, topic **Death** | concept needed (R17) |
+| 11 The Last Harvest | Kraghorn | new (R9) |
+| 12 The Astral Meridian | new boss, topic **Star/Galaxy** | concept needed (R17) |
+| 13 The Brass Reckoning | new boss, topic **Steampunk/Mechanical** | concept needed (R17) |
 
-Long-term each theme family deserves its own finale boss (frost, storm, tidal, mycelium,
-crystal, necropolis, celestial, clockwork have no candidate among these three) — new boss
-concepts, out of R9's scope. Implementation note for R9: chapter finales need a named-boss
-field on the finale wave (spawn kind `boss` → `lerna` / `kraghorn` / `vorruk`); the generic
-`boss` stays the default for all other chapters.
+Implementation note for R9: chapter finales need a named-boss field on the finale wave; the
+generic `boss` stays the fallback. Chapters 2, 3, 11 and the Lilith change on chapter 1 are
+part of R9's build; the eight new theme bosses are R17 (concept first, see CONCEPT).
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
@@ -151,18 +150,18 @@ register as `ymir` attack clip, verify in the anim lab (`anim-lab.astro`). No si
 **R17 - Campaign Stage Changes.** 1. The Road to the Crossing needs a change cause its Mixing themes. Every Campaign Chapter should only have 1 theme.
 Every Campaign Chapter should also have only 1 boss. Bosses should not be duplicate. Therefore we here is an audit for existing bosses at the moment:
 1. The Road to the Crossing (Baphomet, Lilith) -> change to only Lilith
-2. The Sunscar March (Baphomet)
-3. The Emerald Deep (Ochenta)
+2. The Sunscar March (Vorruk)
+3. The Emerald Deep (Lerna)
 4. The Frozen Covenant (Baphomet) -> new Boss needed - topic: Ice
-5. The Cinder Oath (Baphomet) -> new Boss Lerna
+5. The Cinder Oath (Baphomet) -> new Boss Ochenta
 6. The Thunder Stair (Ochenta) -> new Boss needed - topic: Thunder, Lightning
 7. The Drowned Crown (Lilith) -> new Boss needed - topic: Water
 8. The Spore Lanterns (Lilith) -> new Boss needed - topic: Poison
 9. The Shattered Prism (Baphomet) -> new Boss needed - topic: Aetheral
 10. The Silent Procession (Lilith) -> new Boss needed - topic: death
-11. The Last Harvest (Ochenta) -> new Boss: Vorruk
+11. The Last Harvest (Ochenta) -> new Boss: Kraghorn
 12. The Astral Meridian (Lilith) -> new Boss needed - topic: Star, Galaxy
-13. The Brass Reckoning (Ochenta) -> new Boss Kraghorn
+13. The Brass Reckoning (Ochenta) -> new Boss needed - topic: Steampunk, mechanical
 
 #### CONCEPT
 
@@ -171,6 +170,7 @@ Design first: rules, story or art are not defined yet.
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R14 | Lords concept: a new hero layer on top of the faction bonds (Norse, Greek) | Owner concept, agent builds | - | L |
+| R17 | Eight new theme bosses for chapters 4, 6, 7, 8, 9, 10, 12, 13 (owner assignment, October 2, 2026): write one concept doc in the shape of TOWER_DEFENSE_BOSS_CONCEPTS.md — name, story, silhouette + art brief, stat profile as H/A/S multipliers, basic attack, one special, one ultimate with warning + counterplay + recovery window, boss tooltip, required-checks list per boss. Topics: Ice (4), Thunder/Lightning (6), Water (7), Poison (8), Aetheral (9), Death (10), Star/Galaxy (12), Steampunk/Mechanical (13). Each fight must test a different defensive habit than Lerna (sustain), Kraghorn (blocking) and Vorruk (spacing) and reuse existing statuses/systems where possible. Moves to DEVELOPMENT per boss after owner review; art via the PixelLab pipeline like the first three | Agent concept, owner reviews | - | L |
 
 **R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
 Mechanical frame, ready to build once the owner names the Lords:
