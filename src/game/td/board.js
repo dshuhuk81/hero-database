@@ -24,13 +24,17 @@ export const PATTERNS = {
   cross4: union(cross(4), square(1)),
   diamond3: diamond(3),
   block2: square(2), // 5 x 5
+  // Signature patterns (tuning.board.heroPatterns), each as many tiles as its class pattern.
+  cross2: cross(2), // 9 tiles, two cells in each straight line
+  longPlus: cross(3), // 13 tiles, three cells in each straight line
+  lance: cross(4), // 17 tiles, four cells in each straight line
 };
 
 // Reach steps (board plan decision 1): a step up or down the ladder from a pattern. High
 // ground gives +1 while the hero stands there, a hostile environment -1, and permanent hero
 // upgrades outside battle add steps.
-const UP = { plus: "block", block: "blockPlus", blockPlus: "diamond3", diamond2: "star3", star3: "diamond3", cross3: "cross4", cross4: "cross4", diamond3: "diamond3", block2: "block2" };
-const DOWN = { plus: "plus", block: "plus", blockPlus: "block", diamond2: "block", star3: "diamond2", cross3: "blockPlus", cross4: "cross3", diamond3: "star3", block2: "blockPlus" };
+const UP = { plus: "block", block: "blockPlus", blockPlus: "diamond3", diamond2: "star3", star3: "diamond3", cross3: "cross4", cross4: "cross4", diamond3: "diamond3", block2: "block2", cross2: "longPlus", longPlus: "lance", lance: "cross4" };
+const DOWN = { plus: "plus", block: "plus", blockPlus: "block", diamond2: "block", star3: "diamond2", cross3: "blockPlus", cross4: "cross3", diamond3: "star3", block2: "blockPlus", cross2: "plus", longPlus: "cross2", lance: "longPlus" };
 export function steppedPattern(name, steps = 0) {
   let out = name;
   for (let i = 0; i < Math.abs(steps); i++) out = (steps > 0 ? UP : DOWN)[out] ?? out;
@@ -61,9 +65,11 @@ export function boardRules(map, tuning) {
   return out;
 }
 
-// Pattern name for a class under these board rules, or null (range circle).
-export function patternFor(rules, heroClass) {
-  const name = rules?.patterns?.[heroClass];
+// Pattern name for a hero under these board rules, or null (range circle): the hero's own
+// signature pattern (rules.heroPatterns[id]) or its class pattern (rules.patterns[class]).
+export function patternFor(rules, heroClass, heroId = null) {
+  if (!rules?.patterns?.[heroClass]) return null;
+  const name = (heroId && rules.heroPatterns?.[heroId]) || rules.patterns[heroClass];
   return name && PATTERNS[name] ? name : null;
 }
 
@@ -81,7 +87,7 @@ export function inPattern(board, name, hx, hy, x, y) {
 }
 
 // Plain names for the UI (glossary, help).
-const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square" };
+const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square", cross2: "Cross", longPlus: "Long plus", lance: "Lance" };
 export const patternLabel = (name) => (PATTERNS[name] ? `${LABELS[name] ?? name}, ${PATTERNS[name].length} tiles` : "");
 
 // Radius of the circle with the same area as a pattern, in px: on boards a hero's `range`

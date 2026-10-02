@@ -741,7 +741,7 @@ export async function createRenderer(canvas, game, options = {}) {
   function buildRanges() {
     layerRanges.removeChildren();
     const placement = game.uiPlacement;
-    if (placement) drawReach(placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple", game.patternAt?.(placement.heroClass, placement.type, placement.index));
+    if (placement) drawReach(placement.x, placement.y, placement.range, placement.type === "road" ? "gold" : "purple", game.patternAt?.(game.heroesById?.get(placement.heroId) ?? { id: placement.heroId, class: placement.heroClass }, placement.type, placement.index));
     const selected = game.heroes.find((u) => u.entityId === game.uiSelected);
     if (selected) drawReach(selected.x, selected.y, selected.range, selected.slotType === "road" ? "gold" : "purple", game.patternOf?.(selected));
   }

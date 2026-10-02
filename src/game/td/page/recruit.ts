@@ -64,7 +64,7 @@ export function createRecruit(ctx: PageContext) {
     const stats = game.deployPreview(heroId, slot.type, slot.index);
     const points = slot.type === "road" ? session.map.roadSlots : session.map.platformSlots;
     const point = points[slot.index];
-    game.uiPlacement = point && stats ? { x: point[0], y: point[1], range: stats.range, type: slot.type, index: slot.index, heroClass: hero.class } : null;
+    game.uiPlacement = point && stats ? { x: point[0], y: point[1], range: stats.range, type: slot.type, index: slot.index, heroClass: hero.class, heroId: hero.id } : null;
 
     // Idle loop from the hero skin ({ url, frames, duration } sprite sheet), else the still portrait.
     const anim: { url: string; frames: number; duration: number } | undefined = hero.anim || undefined;
@@ -82,7 +82,7 @@ export function createRecruit(ctx: PageContext) {
     const ring = ringOf(game, slot);
     const rangeBonus = ring && game.ringAt(slot.type, slot.index)?.range ? ` (${ring.name})` : "";
     // Board maps show the attack pattern as a small grid instead of a range number.
-    const pattern = game.patternAt(hero.class, slot.type, slot.index);
+    const pattern = game.patternAt(game.heroesById?.get(heroId) ?? hero, slot.type, slot.index);
     const reach = pattern ? `Reach ${patternSvg(pattern)}` : `Range ${Math.round(stats?.range ?? 0)}${rangeBonus}`;
     q("[data-td-preview-facts]").innerHTML = stats
       ? `${stats.hitsFlyers ? "Hits ground and flying enemies" : "Hits ground enemies only"} · ${reach}`
@@ -228,7 +228,7 @@ export function createRecruit(ctx: PageContext) {
       const hero = heroById.get(state.deployHeroId);
       const slot: any = nearestSlot(map, canvasPoint(canvas, event));
       const point = slot && (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
-      game.uiPlacement = slot && slot.type === hero.slot ? { x: point[0], y: point[1], range: hero.range, type: slot.type, index: slot.index, heroClass: hero.class } : null;
+      game.uiPlacement = slot && slot.type === hero.slot ? { x: point[0], y: point[1], range: hero.range, type: slot.type, index: slot.index, heroClass: hero.class, heroId: hero.id } : null;
     });
     canvas.addEventListener("pointerleave", () => { if (state.deployHeroId) game.uiPlacement = null; });
     canvas.addEventListener("focus", () => { if (!state.pendingSlot) game.focusedSlot = keyboardSlots[keyboardIndex]; });

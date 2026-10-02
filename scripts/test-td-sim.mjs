@@ -2593,7 +2593,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Compact board (board.js, docs/tower-defense-board-plan.md): attack patterns decide reach,
 // tuning.board shapes the waves, and every gate still sends enemies.
 {
-  const { cellCenter } = await import("../src/game/td/board.js");
+  const { cellCenter, cellAt, PATTERNS, steppedPattern } = await import("../src/game/td/board.js");
   const map = realMaps.find((m) => m.id === "proto-board");
   assert.ok(map, "the prototype board exists");
   const board = map.grid.board;
@@ -2619,15 +2619,26 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const jg = new TowerDefenseGame({ heroes, tuning, map: jungle, waves, seed: 7 });
   const [hgType, hgIndex] = withRing(jungle, "highground");
   const plainIndex = jungle.platformSlots.findIndex((_, i) => !jungle.rings[`platform:${i}`]);
-  assert.equal(jg.patternAt("Mage", hgType, Number(hgIndex)), "star3", "high ground: one reach step up");
-  assert.equal(jg.patternAt("Mage", "platform", plainIndex), "diamond2", "plain tile: class pattern");
+  assert.equal(jg.patternAt({ class: "Mage" }, hgType, Number(hgIndex)), "star3", "high ground: one reach step up");
+  assert.equal(jg.patternAt({ class: "Mage" }, "platform", plainIndex), "diamond2", "plain tile: class pattern");
   const storm = realMaps.find((m) => m.theme === "stormpeak");
   const sg = new TowerDefenseGame({ heroes, tuning, map: storm, waves, seed: 7 });
   const stormPlain = storm.platformSlots.findIndex((_, i) => !storm.rings[`platform:${i}`]);
   const [stType, stIndex] = withRing(storm, "highground");
-  assert.equal(sg.patternAt("Mage", "platform", stormPlain), "block", "Stormpeak: platform heroes lose a step");
-  assert.equal(sg.patternAt("Mage", stType, Number(stIndex)), "star3", "Stormpeak: high ground shelters and adds its step");
-  assert.equal(sg.patternAt("Tank", "road", storm.roadSlots.findIndex((_, i) => !storm.rings[`road:${i}`])), "plus", "Stormpeak: road heroes keep their pattern");
+  assert.equal(sg.patternAt({ class: "Mage" }, "platform", stormPlain), "block", "Stormpeak: platform heroes lose a step");
+  assert.equal(sg.patternAt({ class: "Mage" }, stType, Number(stIndex)), "star3", "Stormpeak: high ground shelters and adds its step");
+  assert.equal(sg.patternAt({ class: "Tank" }, "road", storm.roadSlots.findIndex((_, i) => !storm.rings[`road:${i}`])), "plus", "Stormpeak: road heroes keep their pattern");
+  // Signature patterns (tuning.board.heroPatterns) replace the class pattern for that hero.
+  assert.equal(jg.patternAt({ id: "boreas", class: "Mage" }, "platform", plainIndex), tuning.board.heroPatterns.boreas, "a signature pattern wins over the class pattern");
+  assert.equal(jg.patternAt({ id: "odin", class: "Mage" }, "platform", plainIndex), "diamond2", "heroes without one use the class pattern");
+  assert.equal(jg.patternAt({ id: "boreas", class: "Mage" }, hgType, Number(hgIndex)), steppedPattern(tuning.board.heroPatterns.boreas, 1), "signature patterns take reach steps too");
+  // Pattern-shaped ultimates: a 1.8x taunt area is the hero's pattern two steps up.
+  const tank = { ...mage, class: "Tank", id: "atlas" };
+  const [tc, tr] = cellAt(board, tank.x, tank.y);
+  assert.equal(g.inUltArea(tank, at([tc + 2, tr]), 1.8), PATTERNS[steppedPattern("plus", 2)].some(([dc, dr]) => dc === 2 && dr === 0), "taunt area follows the stepped pattern");
+  assert.ok(!g.inUltArea(tank, at([tc + 3, tr]), 1.8), "taunt area ends where the stepped pattern ends");
+  assert.ok(g.nearPoint(at([tc, tr]), at([tc + 1, tr]), 72) && !g.nearPoint(at([tc, tr]), at([tc + 1, tr + 1]), 72), "a 72 px blast is a plus of cells");
+  assert.ok(g.nearPoint(at([tc, tr]), at([tc + 1, tr + 1]), 110), "a 110 px blast is a 3 x 3 block");
   // One shown life per leak (board.js shownLives, tuning.board.lifeUnit).
   const { shownLives } = await import("../src/game/td/board.js");
   const lg = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });

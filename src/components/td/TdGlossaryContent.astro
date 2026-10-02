@@ -105,7 +105,7 @@ const heroCards = [...(heroes as any[])]
         ["Health", hero.hp],
         ["Attack", hero.atk],
         ["Attacks / s", hero.aps],
-        ["Reach", patternLabel((rawTuning as any).board?.patterns?.[hero.class])],
+        ["Reach", patternLabel((rawTuning as any).board?.heroPatterns?.[hero.id] ?? (rawTuning as any).board?.patterns?.[hero.class])],
         ["Armor", hero.armor],
         ["Magic res", hero.magicRes],
         ["Crit", pct(hero.critChance)],

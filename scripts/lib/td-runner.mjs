@@ -71,7 +71,7 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
         if (g.gold < g.deployCost(id)) continue;
-        const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class));
+        const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class, base.id));
         if (base.class === "Support") {
           const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
           const rank = new Map(rings.map((i, n) => [i, n]));

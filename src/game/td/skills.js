@@ -6,9 +6,9 @@
 // times the hero's ultimate power, unless the text says otherwise.
 /** @type {Record<string, string>} */
 export const SKILL_TEXT = {
-  shield_wall: "Slows every enemy within 1.8x her range for 3s and heals road allies in range for 15% of their max health.",
-  expose: "Slows every enemy within 1.8x his range for 3s and exposes them: they take 20% more damage for 4s.",
-  mass_taunt: "Slows every enemy within 2.5x his range for 3s.",
+  shield_wall: "Slows every enemy in her reach widened by two steps for 3s and heals road allies in range for 15% of their max health.",
+  expose: "Slows every enemy in his reach widened by two steps for 3s and exposes them: they take 20% more damage for 4s.",
+  mass_taunt: "Slows every enemy in his reach widened by three steps for 3s.",
   knockback: "Strikes up to 3 enemies in front of him, furthest along first, and pushes them 80px back along the path.",
   war_cry: "Strikes every enemy in front of him and slows them for 2s.",
   lifesteal_cleave: "Strikes every enemy in front of him and heals for 15% of the damage dealt.",
@@ -66,7 +66,7 @@ export const CLASS_PASSIVE_SKILLS = {
 export const AWAKEN_TEXT = {
   shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
   expose: "enemies take extra damage for 7s instead of 4s",
-  mass_taunt: "taunt reaches 3.5x range instead of 2.5x, slow lasts 5s",
+  mass_taunt: "reach widened by four steps instead of three, slow lasts 5s",
   knockback: "pushes up to 5 enemies 140px instead of 3 enemies 80px",
   war_cry: "cleave deals 50% more damage, slow lasts 4s",
   lifesteal_cleave: "heals for 30% of the damage dealt instead of 15%",
@@ -92,7 +92,7 @@ export const AWAKEN_TEXT = {
 // Class part added on top of every hero ultimate (classUltimate in sim.js).
 /** @type {Record<string, string>} */
 export const CLASS_ULT_TEXT = {
-  Tank: "Tank: also pins every ground enemy within 1.8x range in place for 2s.",
+  Tank: "Tank: also pins every ground enemy in its reach widened by two steps in place for 2s.",
   Assassin: "Assassin: also becomes untouchable for 3s while striking an extra enemy.",
 };
 

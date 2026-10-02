@@ -264,7 +264,7 @@ export class TowerDefenseGame {
   // areas and scaled reaches fit the board; elsewhere the tuned range with tile and
   // environment bonuses.
   deployRange(base, slotType, slotIndex) {
-    const pattern = this.patternAt(base.class, slotType, slotIndex, base.reachSteps ?? 0);
+    const pattern = this.patternAt(base, slotType, slotIndex);
     if (pattern) return patternRadius(pattern, boardOf(this.map).cell);
     return this.rangeFor(base) * (1 + (this.ringAt(slotType, slotIndex)?.range || 0)) * this.environment("range", { ...base, slotType, slotIndex });
   }
@@ -1143,13 +1143,13 @@ export class TowerDefenseGame {
     return !enemy.dead && !enemy.untargetable && !(enemy.flying && hero.slotType === "road");
   }
 
-  // Whether a hero's basic attack reaches an enemy: its pattern of board cells on a prototype
-  // board with `rules.patterns`, otherwise its range circle.
-  // The attack pattern a hero has on a tile: its class pattern, +1 step on high ground, -1 in
-  // an environment that cuts platform range (Stormpeak) unless high ground shelters it, plus
-  // permanent reach steps (`reachSteps`, upgrades outside battle). Null off the board.
-  patternAt(heroClass, slotType, slotIndex, reachSteps = 0) {
-    const base = patternFor(this.boardRules, heroClass);
+  // The attack pattern a hero ({ id, class, reachSteps }) has on a tile: its signature or
+  // class pattern, +1 step on high ground, -1 in an environment that cuts platform range
+  // (Stormpeak) unless high ground shelters it, plus permanent reach steps (`reachSteps`,
+  // upgrades outside battle). Null off the board.
+  patternAt(hero, slotType, slotIndex) {
+    const base = patternFor(this.boardRules, hero.class, hero.id);
+    const reachSteps = hero.reachSteps ?? 0;
     if (!base) return null;
     const ring = this.ringKind(slotType, slotIndex);
     const env = this.environment("range", { slotType, slotIndex });
@@ -1158,7 +1158,7 @@ export class TowerDefenseGame {
   }
 
   patternOf(hero) {
-    return this.patternAt(hero.class, hero.slotType, hero.slotIndex, hero.reachSteps ?? 0);
+    return this.patternAt(hero, hero.slotType, hero.slotIndex);
   }
 
   // Lives per shown life on boards (tuning.board.lifeUnit); 1 elsewhere.
@@ -1172,6 +1172,26 @@ export class TowerDefenseGame {
     const pattern = this.patternOf(hero);
     const board = pattern && boardOf(this.map);
     return board ? inPattern(board, pattern, hero.x, hero.y, unit.x, unit.y) : Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range;
+  }
+
+  // Ultimate areas around the hero (pattern-shaped ultimates): on a board the hero's pattern
+  // `steps` up the ladder, elsewhere a circle of `scale` x range. Areas sized as a multiple of
+  // the range (taunts 1.8x, Heimdall 2.5x) map to steps by area: 1.8x -> 2, 2.5x -> 3, 3.5x -> 4.
+  inUltArea(hero, unit, scale = 1) {
+    const pattern = this.patternOf(hero);
+    const board = pattern && boardOf(this.map);
+    if (!board) return Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range * scale;
+    const steps = scale >= 3.4 ? 4 : scale >= 2.4 ? 3 : scale >= 1.7 ? 2 : scale > 1 ? 1 : 0;
+    return inPattern(board, steppedPattern(pattern, steps), hero.x, hero.y, unit.x, unit.y);
+  }
+
+  // Close areas (cleaves, blasts around a target, bounces' splash) of `radius` px around a
+  // point: on a board a plus of cells around the point's cell (radius up to 80 px) or a
+  // 3 x 3 block (larger), elsewhere the circle.
+  nearPoint(point, unit, radius) {
+    const board = this.boardRules && boardOf(this.map);
+    if (!board) return Math.hypot(point.x - unit.x, point.y - unit.y) <= radius;
+    return inPattern(board, radius <= 80 ? "plus" : "block", point.x, point.y, unit.x, unit.y);
   }
 
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
@@ -1926,6 +1946,9 @@ export class TowerDefenseGame {
   }
 
   inCone(hero, enemy, halfAngle = Math.PI / 3) {
+    // On a board an enemy in the hero's own cell (held by a road hero) is always in front.
+    const board = this.boardRules && boardOf(this.map);
+    if (board && Math.hypot(enemy.x - hero.x, enemy.y - hero.y) < board.cell / 2) return true;
     const angle = Math.atan2(enemy.y - hero.y, enemy.x - hero.x);
     let delta = angle - (hero.rotation || 0);
     while (delta > Math.PI) delta -= Math.PI * 2;
@@ -1950,7 +1973,7 @@ export class TowerDefenseGame {
       if (!struck.includes(target)) struck[0] = target;
       for (const victim of struck) {
         this.hit(victim, victim.hp / victim.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
-        foes.filter((e) => !e.dead && Math.hypot(victim.x - e.x, victim.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
+        foes.filter((e) => !e.dead && this.nearPoint(victim, e, 70)).forEach((e) => { e.slow = 2; });
       }
     } else if (variant === "soul_drain") {
       // Thanatos, Featherfall Judgment: drain the weakest enemy (his attack target as an
@@ -1983,7 +2006,7 @@ export class TowerDefenseGame {
       }
     } else if (variant === "knockback") {
       // Aegir: cleave + push up to 3 enemies back on path (sorted by furthest progress = most dangerous first)
-      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, 72));
       const cone = around.filter((e) => this.inCone(hero, e));
       const victims = (cone.length ? cone : around).sort((a, b) => this.progress(b) - this.progress(a)).slice(0, aw ? 5 : 3);
       victims.forEach((e) => {
@@ -1999,7 +2022,7 @@ export class TowerDefenseGame {
       const limit = Math.max(1, Math.floor(skill?.petrifyTargets ?? 3)) + (aw ? 2 : 0);
       const duration = Math.max(0, skill?.petrifyDuration ?? 3) + (aw ? 1 : 0);
       const victims = foes.filter(e => !e.dead
-        && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e))
+        && this.inUltArea(hero, e) && this.inCone(hero, e))
         .sort((a, b) => this.progress(b) - this.progress(a)).slice(0, limit);
       if (!victims.length) return false; // Keep the ultimate ready until she faces a target.
       const gazeTargets = victims.map(e => ({ x: e.x, y: e.y }));
@@ -2012,17 +2035,17 @@ export class TowerDefenseGame {
       return;
     } else if (variant === "shield_wall") {
       // Atlas: taunt + heal nearby road allies
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = aw ? 4 : 3; });
+      foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = aw ? 4 : 3; });
       this.heroes.filter((a) => a.slotType === "road" && this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, a.hp * (aw ? 0.3 : 0.15), hero);
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
       // Ymir: taunt + expose enemies (take +20% damage for 4s, see hit())
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4)); });
+      foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4)); });
     } else if (variant === "mass_taunt") {
       // Heimdall: wide taunt (2.5x range)
-      foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * (aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
+      foes.filter((e) => this.inUltArea(hero, e, aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
     } else if (variant === "rooted_sanctuary") {
       // Gaia (Support): heals allies in range from her own max health, then they take less damage.
       const skill = this.tuning.heroSkills?.[hero.id];
@@ -2037,13 +2060,13 @@ export class TowerDefenseGame {
       });
     } else if (variant === "war_cry") {
       // Helios: cleave + slow hit enemies
-      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, 72));
       const cone = around.filter((e) => this.inCone(hero, e));
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power * (aw ? 1.5 : 1), hero); e.slow = aw ? 4 : 2; });
       this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "gold" });
     } else if (variant === "lifesteal_cleave") {
       // Set: cleave + heal self for 15% of power per target hit
-      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+      const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, 72));
       const cone = around.filter((e) => this.inCone(hero, e));
       const targets = cone.length ? cone : around;
       targets.forEach((e) => this.hit(e, power, hero));
@@ -2053,14 +2076,14 @@ export class TowerDefenseGame {
       }
     } else if (variant === "venom_cleave") {
       // Fenrir: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
-      const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= (aw ? 100 : 72));
+      const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, aw ? 100 : 72));
       const cone = around.filter((e) => this.inCone(hero, e));
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 8 : 4)); });
     } else if (variant === "claw_sweep") {
       // Hecate: execute target + AoE execute around it
       const execMult = target.hp / target.maxHp < this.executeThreshold(hero) ? 1.8 : 1;
       this.hit(target, power * execMult, hero);
-      foes.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 90 : 55)).forEach((e) => {
+      foes.filter((e) => !e.dead && e !== target && this.nearPoint(target, e, aw ? 90 : 55)).forEach((e) => {
         this.hit(e, power * (e.hp / e.maxHp < this.executeThreshold(hero) ? 1.8 : 0.7), hero);
       });
     } else if (variant === "rapid_strike") {
@@ -2068,7 +2091,7 @@ export class TowerDefenseGame {
       for (let i = 0; i < (aw ? 5 : 3); i += 1) if (!target.dead) this.hit(target, power * 0.5, hero);
     } else if (variant === "chain_lightning") {
       // Odin: nuke primary cluster + bounce to 2 nearest others
-      const blasted = foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72);
+      const blasted = foes.filter((e) => this.nearPoint(target, e, 72));
       blasted.forEach((e) => this.hit(e, power, hero));
       // Bounces jump from enemy to enemy, skipping anyone already hit; each one weaker.
       const falloff = aw ? [0.7, 0.45, 0.3, 0.2] : [0.7, 0.45];
@@ -2085,7 +2108,7 @@ export class TowerDefenseGame {
       }
     } else if (variant === "rebirth_flame") {
       // Hephaestus: nuke + self heal for 20% max HP
-      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
+      foes.filter((e) => this.nearPoint(target, e, aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
       this.healHero(hero, hero.hp * (aw ? 0.4 : 0.2), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
     } else if (variant === "ice_shockwave") {
@@ -2101,11 +2124,11 @@ export class TowerDefenseGame {
       });
     } else if (variant === "weaken_burst") {
       // Recruit Elm: nuke + expose hit targets
-      foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= (aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + 4); });
+      foes.filter((e) => this.nearPoint(target, e, aw ? 110 : 72)).forEach((e) => { this.hit(e, power, hero); e.exposed = Math.max(e.exposed ?? 0, this.time + 4); });
     } else if (variant === "moon_barrage") {
       // Skadi: volley + grant atk buff to nearby allies
       const shots = aw ? 5 : 3;
-      const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, shots - 1);
+      const spread = foes.filter((e) => !e.dead && e !== target && this.inUltArea(hero, e) && this.inCone(hero, e)).slice(0, shots - 1);
       const victims = [target, ...spread];
       for (let i = 0; i < shots; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
@@ -2117,7 +2140,7 @@ export class TowerDefenseGame {
       // Awakened: rapid fire afterwards (faster, harder basic shots).
       const skill = this.tuning.heroSkills?.[hero.id];
       const radius = skill?.radius ?? 80;
-      foes.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= radius).forEach((e) => {
+      foes.filter((e) => !e.dead && this.nearPoint(target, e, radius)).forEach((e) => {
         const dealt = this.hit(e, power * (skill?.damage ?? 0.6), hero, { showShot: false });
         if (!e.dead) this.applyBurn(e, hero, (dealt || power * (skill?.damage ?? 0.6)) * (skill?.burnShare ?? 1), skill?.burnSeconds ?? 5);
       });
@@ -2162,15 +2185,15 @@ export class TowerDefenseGame {
     } else {
       // Generic class fallback (no variant)
       if (hero.ability === "taunt") {
-        foes.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; });
+        foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = 3; });
       } else if (hero.ability === "cleave") {
-        const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
+        const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, 72));
         const cone = around.filter((e) => this.inCone(hero, e));
         (cone.length ? cone : around).forEach((e) => this.hit(e, power, hero));
       } else if (hero.ability === "nuke") {
-        foes.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => this.hit(e, power, hero));
+        foes.filter((e) => this.nearPoint(target, e, 72)).forEach((e) => this.hit(e, power, hero));
       } else if (hero.ability === "volley") {
-        const spread = foes.filter((e) => !e.dead && e !== target && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e)).slice(0, 2);
+        const spread = foes.filter((e) => !e.dead && e !== target && this.inUltArea(hero, e) && this.inCone(hero, e)).slice(0, 2);
         const victims = [target, ...spread];
         for (let i = 0; i < 3; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55, hero); }
       } else if (hero.ability === "aura") {
@@ -2199,7 +2222,7 @@ export class TowerDefenseGame {
       const radius = hero.range * 1.8;
       const until = this.time + kit.hold + (this.classBonus(hero).hold || 0);
       for (const e of foes) {
-        if (e.dead || e.flying || Math.hypot(hero.x - e.x, hero.y - e.y) > radius) continue;
+        if (e.dead || e.flying || !this.inUltArea(hero, e, 1.8)) continue;
         e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, until);
       }
       this.emitHeroEffect(hero, { type: "hold", x: hero.x, y: hero.y, radius, life: 0.8, color: "gold" });

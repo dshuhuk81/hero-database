@@ -43,13 +43,14 @@ Related documents:
 
 A battle is played on a **board**: a coarse grid of large square tiles laid over themed
 terrain. Every battlefield in the game is a board; there are three sizes, 8 x 4, 9 x 5 and
-10 x 5 tiles. The road runs from one or two spawn gates, tile by tile, to the base. Road
+10 x 5 tiles. The road runs from one to three spawn gates, tile by tile, to the base. Road
 tiles take blocking heroes (Tank, Warrior, Assassin); platform tiles, grouped in a few blocks
 beside the road, take ranged heroes (Mage, Archer, Support).
 
 A hero attacks a **pattern** of tiles around its own tile instead of a circle: Tanks and
 Assassins the four tiles next to them, Warriors and Supports a 3 x 3 square, Mages a
-diamond two steps out, Archers a long cross. Placing or selecting a hero lights its pattern
+diamond two steps out, Archers a long cross. A few heroes have a signature pattern of their
+own with the same number of tiles. Placing or selecting a hero lights its pattern
 up green. Where a hero stands therefore decides which part of the road it covers, and two
 neighbouring tiles can cover very different ground.
 
@@ -164,6 +165,13 @@ hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
 | Archer | platform | `cross3` (17 tiles) | `skadi`, `atalanta`, `stheno` |
 | Support | platform | `block` (3 x 3) | `plutus`, `harmonia`, `asclepius`, `gaia` |
 
+Signature patterns (`tuning.board.heroPatterns`) replace the class pattern for one hero and
+keep its tile count: Aegir `cross2` (pushes along the road), Stheno `lance` (a sniper's long
+lines), Skadi `star3` (her barrage spreads), Boreas `blockPlus` (his shockwave fills it).
+Every other hero, recruits included, uses the class pattern. Line shapes on platform heroes
+cover less road than diamonds: a trial with Boreas on `longPlus` and Plutus on `cross2` cut
+the 1-10 bot win rate from 0.29 to 0.17, so both were dropped (October 2, 2026).
+
 Gaia is a Support in TD only: `tuning.classOverrides` swaps a database hero's class before
 the generator runs. Recruits are two per class.
 
@@ -229,6 +237,7 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 | Key | Value today | Meaning |
 |---|---|---|
 | `patterns` | Tank `plus`, Warrior `block`, Assassin `plus`, Mage `diamond2`, Archer `cross3`, Support `block` | Class attack patterns |
+| `heroPatterns` | `aegir` `cross2`, `stheno` `lance`, `skadi` `star3`, `boreas` `blockPlus` | Signature patterns by hero id (section 5) |
 | `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; flyers count 0.4, hp 1.75, attack 1, power 2.5 | Fewer, stronger enemies (section 8) |
 | `focus` | slots 2, share 1 | Mage focus rule (section 7) |
 | `heroScale`, `enemyScale` | 1, 1 | Unit size on boards; hero and enemy containers scale as a whole, enemy health bars follow. Tuned by eye by the owner |
@@ -249,12 +258,17 @@ turn (`PATTERNS` in `board.js`):
 | `cross4` | 21 | four tiles in each straight line over a 3 x 3 core |
 | `diamond3` | 25 | every tile within three steps |
 | `block2` | 25 | 5 x 5 (unused) |
+| `cross2` | 9 | two tiles in each straight line (signature) |
+| `longPlus` | 13 | three tiles in each straight line (ladder step of `cross2`) |
+| `lance` | 17 | four tiles in each straight line (signature) |
 
 A **reach step** moves a pattern along a fixed ladder (`steppedPattern`): up is
 `plus -> block -> blockPlus -> diamond3`, `diamond2 -> star3 -> diamond3`,
-`cross3 -> cross4`; down is the reverse (`diamond2` and `block` step down to `block` and
-`plus`, `cross3` to `blockPlus`). A hero's pattern on a tile (`game.patternAt(class, slotType,
-slotIndex, reachSteps)`, `game.patternOf(hero)`) is its class pattern plus:
+`cross3 -> cross4`, `cross2 -> longPlus -> lance -> cross4`; down is the reverse
+(`diamond2` and `block` step down to `block` and `plus`, `cross3` to `blockPlus`, `cross2`
+to `plus`). A hero's pattern on a tile (`game.patternAt(hero, slotType, slotIndex)` with
+`hero = { id, class, reachSteps }`, `game.patternOf(hero)`) is its signature or class
+pattern plus:
 
 - +1 step on a **high ground** tile;
 - -1 step when the map's environment cuts platform range (Stormpeak's Headwinds) and the
@@ -271,9 +285,17 @@ offers attack or health (section 9).
   target priority. Assassins can still dash to a loose enemy within their dash distance.
 - **Allies and enemies "in range"** of heals, auras, buffs, purifies and ultimates are those
   inside the pattern cells (`game.inReach(hero, unit)`).
-- **Areas measured as a multiple of range** (for example 1.8x or 2.5x for some ultimates),
-  cones and spreads stay circles. On a board a hero's `range` is the radius of the circle with
-  its pattern's area (`patternRadius`: cell x sqrt(tiles / pi)), so those areas fit the board.
+- **Ultimate areas follow patterns** (`game.inUltArea(hero, unit, scale)`): an area tuned
+  as a multiple of range is the hero's pattern stepped up by area, 1.8x -> two steps (Tank
+  hold, Atlas, Ymir, class taunts), 2.5x -> three and 3.5x -> four (Heimdall). Cones and
+  volleys (Stheno's gaze, Skadi's barrage, class volleys) pick enemies inside the pattern in
+  the 120 degree wedge the hero faces; an enemy on the hero's own tile always counts as in front.
+- **Close areas** (`game.nearPoint(point, unit, radius)`): cleaves around the hero and blasts
+  around a target cover a plus of tiles when tuned up to 80 px and a 3 x 3 block when larger
+  (Hephaestus and Elm awakened, Hecate awakened, Fenrir awakened). Odin's bounce distance,
+  Atalanta's piercing line and basic-attack splash stay in pixels.
+- On a board a hero's `range` is the radius of the circle with its pattern's area
+  (`patternRadius`: cell x sqrt(tiles / pi)); it remains for effects drawn as circles.
 - Bots rank tiles by how many route cells the pattern covers (`rankedTiles(map, type, range,
   pattern)`).
 
@@ -283,7 +305,7 @@ offers attack or health (section 9).
   place of the range ring (`drawReach` in `render.js`).
 - The recruit card and the hero panel show the pattern as a small grid labelled "Reach"
   (`patternSvg`): the hero's tile in gold, reached tiles in green. The glossary names each
-  class pattern ("Diamond, 13 tiles", `patternLabel`).
+  hero's pattern ("Diamond, 13 tiles", `patternLabel`).
 - Taps pick the tile under the pointer: a point inside a board cell always selects that cell
   (`nearestSlot`).
 
@@ -701,7 +723,8 @@ Content is not JSON-only. Before shipping, walk the matching list.
 3. `heroSkills.<id>` in the tuning; names in `tdSkinMythic.json`.
 4. Art and sound on R2 (new file names), `tdAudioLevels.json`, effects in `hero-fx.js`.
 5. Acquisition: summon pool by default; a stage-reward hero also goes into a stage's rewards.
-6. Its class pattern comes from `tuning.board.patterns`; a hero-specific pattern needs code.
+6. Its class pattern comes from `tuning.board.patterns`; a signature pattern is one entry in
+   `tuning.board.heroPatterns` (a new shape is one line in `PATTERNS` plus its ladder steps).
 7. `npm run test:tower-defense`, `npm run test:td-balance`, `npm run td:upgrade-sweep`.
 
 **New campaign stage or chapter**
@@ -757,8 +780,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 - **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.
-- **Per-hero patterns and pattern-shaped ultimates:** patterns are per class; ultimates with
-  multiplied areas and cones are still circles.
 - **Campaign upgrades outside the Campaign:** Free Play and Expedition use base stats.
 - **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
   `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).

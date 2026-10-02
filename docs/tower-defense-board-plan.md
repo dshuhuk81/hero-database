@@ -36,8 +36,10 @@ chapters of content already authored.
    into this branch before step 1, so no freeze is needed.
 3. **Reach ladder cost:** default chosen in step 5: stars (+1 step at 3 stars, +2 at 5). Can
    move to Evolution or its own upgrade later (`heroStars.reachSteps`).
-4. **Patterns per class or per hero:** the prototype gives each class one pattern. Per-hero
-   patterns give heroes more identity but cost a balance pass per hero.
+4. **Patterns per class or per hero:** started (October 2, 2026): classes keep their pattern
+   and four heroes have a signature pattern with the same tile count
+   (`tuning.board.heroPatterns`: Aegir, Stheno, Skadi, Boreas). Ultimate areas now
+   follow patterns too (spec section 6). More signatures are one tuning line each.
 5. **Manual ultimates:** the Auto switch and tap-to-cast from section F step 3 of the ideas
    document are not built yet. Build them with step 1 or later?
 6. **Deploy economy:** the plan keeps gold. The Watcher of Realms style regenerating deploy
