@@ -802,6 +802,10 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 - **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.
+- **Balance pass pending** for global stats in Free Play, Expedition and the Daily Trial,
+  pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
+  first-guess numbers; the owner balances later.
+- **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
 - **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
   `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.

@@ -40,12 +40,19 @@ chapters of content already authored.
    and four heroes have a signature pattern with the same tile count
    (`tuning.board.heroPatterns`: Aegir, Stheno, Skadi, Boreas). Ultimate areas now
    follow patterns too (spec section 6). More signatures are one tuning line each.
-5. **Manual ultimates:** the Auto switch and tap-to-cast from section F step 3 of the ideas
-   document are not built yet. Build them with step 1 or later?
+5. **Manual ultimates:** dropped by the owner (October 2, 2026). Ultimates stay automatic.
 6. **Deploy economy:** the plan keeps gold. The Watcher of Realms style regenerating deploy
    counter stays rejected unless playtests say otherwise.
-7. **Open from the earlier ideas list:** Divine Interventions (possibly unnecessary with
-   manual ultimates), pantheon bonds, early call or wave interest, Heroic campaign.
+7. **From the earlier ideas list:** built on October 2, 2026, without a balance pass (the
+   owner asked to balance later), with these defaults for the ideas document's open questions:
+   - Global stats: collection upgrades apply in every mode, the Daily Trial included.
+   - Divine Interventions: two powers with their own charge (Thunderfall, Shield of the
+     Crossing), in Free Play, Campaign and Expedition, off in the Daily Trial. Blessing tree
+     upgrades for them are not built.
+   - Pantheon bonds: added on top of tag synergy, which stays as a hidden layer.
+   - Wave interest instead of early call (early call needs overlapping waves, which clash with
+     the between-wave blessing offers).
+   - Heroic campaign: pays Divine Seals only, no separate laurels.
 
 ## Decisions for the owner
 
