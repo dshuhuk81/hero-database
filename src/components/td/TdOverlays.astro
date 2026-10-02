@@ -124,9 +124,9 @@
   </div>
 </div>
 
-<!-- Results: a won stage plays the Stage Clear sequence (data-view="clear", stage-clear.ts):
-     Rewards, Victory, Hero contribution. Stats and every other outcome show the detailed report
-     (data-view="report"). The footer actions are shared by both views. -->
+<!-- Results: a won stage plays Victory, Hero contribution and Rewards (data-view="clear").
+     A loss plays Defeat, then blends to its advice/statistics page (data-view="loss"). The
+     footer actions are shared by the final views. Sequences are controlled by stage-clear.ts. -->
 <div class="td-result" data-td-result data-view="report" role="dialog" aria-modal="true" aria-labelledby="td-result-title" tabindex="-1" hidden>
   <div class="td-clear" data-td-clear aria-live="polite">
     <section class="td-clear-scene td-clear-rewards" data-clear-scene="rewards" aria-labelledby="td-clear-rewards-title">
@@ -189,6 +189,54 @@
     </section>
   </div>
 
+  <section class="td-defeat" aria-labelledby="td-defeat-title">
+    <div class="td-defeat-emblem" aria-hidden="true"><span></span></div>
+    <span class="td-defeat-kicker">Defense broken</span>
+    <h2 id="td-defeat-title">Defeat</h2>
+    <p class="td-defeat-map" data-td-defeat-map>Stage fell</p>
+    <p class="td-defeat-context" data-td-defeat-context></p>
+  </section>
+
+  <section class="td-loss" aria-labelledby="td-loss-title">
+    <div class="td-loss-panel td-loss-advice" data-td-loss-panel="advice">
+      <header class="td-loss-head">
+        <span class="td-loss-kicker">Defense broken</span>
+        <h2 id="td-loss-title">Defeat</h2>
+        <p>Develop your heroes regularly to make your team stronger.</p>
+      </header>
+      <div class="td-loss-recommendations">
+        <article class="td-loss-recommendation">
+          <div class="td-loss-recommendation-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><path d="M14 6h20M14 42h20M16 7c0 9 16 9 16 17s-16 8-16 17M32 7c0 9-16 9-16 17s16 8 16 17" /></svg>
+          </div>
+          <div class="td-loss-recommendation-copy">
+            <h3>Run Daily Trials</h3>
+            <p>Gather gold.</p>
+          </div>
+          <button class="action-button action-button--primary" type="button" data-td-to-lobby="daily">Go</button>
+        </article>
+        <article class="td-loss-recommendation">
+          <div class="td-loss-recommendation-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><path d="M16 36V18l8-8 8 8v18M11 39h26M20 25h8M24 25V14" /></svg>
+          </div>
+          <div class="td-loss-recommendation-copy">
+            <h3>Strengthen your heroes</h3>
+            <p>This will help improve them dramatically.</p>
+          </div>
+          <button class="action-button action-button--primary" type="button" data-td-to-lobby="heroes">Go</button>
+        </article>
+      </div>
+    </div>
+    <div class="td-loss-panel td-loss-stat-screen" id="td-loss-stats" data-td-loss-panel="stats">
+      <header class="td-loss-stats-head">
+        <span class="td-loss-kicker">Battle report</span>
+        <h2 id="td-loss-stats-title">Run statistics</h2>
+        <p>Review the run, strengthen your company, and try again.</p>
+      </header>
+      <div class="td-result-stats td-loss-stats" data-td-loss-stats></div>
+    </div>
+  </section>
+
   <div class="td-result-inner">
     <header class="td-result-head">
       <span class="td-result-kicker" data-td-result-kicker>Run complete</span>
@@ -221,10 +269,15 @@
   </div>
 
   <div class="td-result-actions">
+    <button class="action-button action-button--quiet td-loss-nav-action" type="button" data-loss-action data-td-loss-stats-toggle aria-controls="td-loss-stats" aria-pressed="false"><span class="td-loss-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V11M12 19V5M19 19v-9M3 21h18" /></svg></span><span>Stats</span></button>
+    <button class="action-button action-button--quiet td-loss-nav-action" type="button" data-loss-action data-td-to-lobby="heroes"><span class="td-loss-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 7v5c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V7l-7-4Zm-3 9h6M12 9v6" /></svg></span><span>Heroes</span></button>
+    <button class="action-button action-button--quiet td-loss-nav-action td-loss-camp" type="button" data-loss-action data-td-to-lobby="home"><span class="td-loss-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v10h14V10M9 20v-6h6v6" /></svg></span><span>Camp</span></button>
+    <button class="action-button action-button--quiet td-loss-retry" type="button" data-loss-action data-td-loss-retry data-td-retry>Try Again</button>
+    <button class="action-button action-button--primary" type="button" data-loss-action data-td-loss-close data-td-to-lobby="stages">Close</button>
     <button class="action-button action-button--quiet td-result-menu" type="button" data-td-to-lobby="home" data-td-result-menu>Back to Camp</button>
     <button class="action-button action-button--quiet" type="button" data-td-result-stats-toggle aria-pressed="false" hidden>Stats</button>
     <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>
     <button class="action-button action-button--primary" type="button" data-td-to-lobby="expedition" data-td-result-continue hidden>Continue</button>
-    <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
+    <button class="action-button action-button--primary" type="button" data-td-result-retry data-td-retry>Retry</button>
   </div>
 </div>

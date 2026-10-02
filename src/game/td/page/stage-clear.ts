@@ -1,6 +1,6 @@
-// Stage Clear sequence (won stages): three scenes on the result surface, Victory and Hero
-// contribution for SCENE_MS each, then Rewards until the player picks a footer action. One
-// timer at a time; stop() clears it (results.reset on restart or exit, a new play()).
+// Battle-end sequences on the result surface. Won stages play Victory and Hero contribution
+// for SCENE_MS each, then Rewards. Lost stages play Defeat once, then reveal the dedicated
+// advice/statistics page. One timer at a time; stop() clears it (results.reset on restart or exit, a new play()).
 // Reduced motion only drops the CSS animations, the timing stays.
 import type { PageContext } from "./context";
 import { shortNumber } from "../ui.js";
@@ -122,9 +122,26 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
   function play(report: StageClearReport) {
     stop();
     delete resultEl.dataset.final;
+    delete resultEl.dataset.fromDefeat;
     fill(report);
     resultEl.dataset.view = "clear";
     show(0);
+  }
+
+  // Losses have two steps: the cinematic Defeat scene, then the existing report.
+  function playDefeat() {
+    stop();
+    delete resultEl.dataset.final;
+    delete resultEl.dataset.fromDefeat;
+    resultEl.dataset.view = "defeat";
+    resultEl.setAttribute("aria-labelledby", "td-defeat-title");
+    timer = window.setTimeout(() => {
+      stop();
+      resultEl.dataset.fromDefeat = "";
+      resultEl.dataset.view = "loss";
+      resultEl.setAttribute("aria-labelledby", "td-loss-title");
+      onFinal();
+    }, SCENE_MS);
   }
 
   // After the sequence: Stats switches between Rewards and Hero contribution, no timers.
@@ -133,5 +150,5 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
     setScene(scene);
   }
 
-  return { play, stop, showScene };
+  return { play, playDefeat, stop, showScene };
 }

@@ -62,6 +62,11 @@ export function createResults(ctx: PageContext) {
   const shardsEl = q("[data-td-result-shards]");
   const playEl = q("[data-td-play]");
   const statsButton = q<HTMLButtonElement>("[data-td-result-stats-toggle]");
+  const lossStatsButton = q<HTMLButtonElement>("[data-td-loss-stats-toggle]");
+  const lossStatsEl = q("[data-td-loss-stats]");
+  const retryButton = q<HTMLButtonElement>("[data-td-result-retry]");
+  const lossRetryButton = q<HTMLButtonElement>("[data-td-loss-retry]");
+  const lossCloseButton = q<HTMLButtonElement>("[data-td-loss-close]");
   // Button the final Stage Clear scene focuses (Continue or Retry).
   let primaryAction: HTMLButtonElement | null = null;
   const stageClear = createStageClear(ctx, () => primaryAction?.focus({ preventScroll: true }));
@@ -109,6 +114,16 @@ export function createResults(ctx: PageContext) {
     statsButton.focus({ preventScroll: true });
   });
 
+  // The loss footer keeps the reference screen's Stats shortcut. It toggles a compact run
+  // report without the damage/DPS table, while the rest of the loss navigation stays put.
+  lossStatsButton.addEventListener("click", () => {
+    const showStats = resultEl.dataset.lossPage !== "stats";
+    resultEl.dataset.lossPage = showStats ? "stats" : "advice";
+    resultEl.setAttribute("aria-labelledby", showStats ? "td-loss-stats-title" : "td-loss-title");
+    lossStatsButton.setAttribute("aria-pressed", String(showStats));
+    lossStatsButton.focus({ preventScroll: true });
+  });
+
   function reset() {
     stageClear.stop();
     resultEl.hidden = true;
@@ -116,10 +131,13 @@ export function createResults(ctx: PageContext) {
     resultEl.dataset.view = "report";
     delete resultEl.dataset.scene;
     delete resultEl.dataset.final;
+    delete resultEl.dataset.fromDefeat;
+    resultEl.dataset.lossPage = "advice";
     resultEl.setAttribute("aria-labelledby", "td-result-title");
     statsButton.hidden = true;
     statsButton.setAttribute("aria-pressed", "false");
     statsButton.textContent = "Stats";
+    lossStatsButton.setAttribute("aria-pressed", "false");
     shard = null;
     rewards = [];
     collectionHtml = "";
@@ -275,7 +293,8 @@ export function createResults(ctx: PageContext) {
     const endless = game.mode === "endless";
     // Header: outcome, then where and how (map, mode or Daily / Expedition stage, tier), then score.
     // An Expedition stage is final (M21): no Retry; Continue leads back to the camp or the menu.
-    q<HTMLButtonElement>("[data-td-retry]").hidden = !!expedition;
+    retryButton.hidden = !!expedition;
+    lossRetryButton.hidden = !!expedition;
     const continueButton = q<HTMLButtonElement>("[data-td-result-continue]");
     continueButton.hidden = !expedition && !campaign;
     continueButton.dataset.tdToLobby = campaign ? "stages" : "expedition";
@@ -285,7 +304,6 @@ export function createResults(ctx: PageContext) {
     continueButton.textContent = expedition && (dailyRun as any)?.outcome === "camp" ? "Continue to camp"
       : campaign ? (!followUp ? "Campaign" : game.won ? `Next: stage ${followUp}` : "Change squad") : "Continue";
     // One primary action: Retry steps back when Continue leads on.
-    const retryButton = q<HTMLButtonElement>("[data-td-retry]");
     retryButton.classList.toggle("action-button--primary", continueButton.hidden);
     retryButton.classList.toggle("action-button--quiet", !continueButton.hidden);
     // Campaign stages lead back to the stage list instead of the main menu.
@@ -293,7 +311,7 @@ export function createResults(ctx: PageContext) {
     menuButton.hidden = !!expedition || (!!campaign && !followUp);
     menuButton.dataset.tdToLobby = campaign ? "stages" : "home";
     menuButton.textContent = campaign ? "Campaign" : "Back to Camp";
-    const outcome = endless ? "endless" : game.won ? "won" : "lost";
+    const outcome = game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
     q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
     const tierName = data.tuning.tiers?.[game.tier]?.label ?? game.tier;
@@ -307,6 +325,8 @@ export function createResults(ctx: PageContext) {
     dailyEl.textContent = dailyRun?.text ?? "";
     dailyEl.classList.toggle("is-reached", !!dailyRun?.reached);
     q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
+    q("[data-td-defeat-map]").textContent = `${map.name} fell`;
+    q("[data-td-defeat-context]").textContent = context;
     q("[data-td-result-score]").textContent = `${game.score.toLocaleString()} points`;
     q("[data-td-result-copy]").textContent = game.perfect
       ? `All ${game.totalWaves} waves, ${shownLives(game.lives, game.lifeUnit)} lives left, not a single enemy broke through`
@@ -317,7 +337,7 @@ export function createResults(ctx: PageContext) {
     const mvp = kills[0] ?? null;
     const bestVirtueName = game.activePairs?.length ? game.activePairs[0].name : (game.virtues.length ? (blessingNames[game.virtues[0]] ?? game.virtues[0]) : null);
     const statsEl = q("[data-td-result-stats]");
-    statsEl.innerHTML = [
+    const statsHtml = [
       mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
       `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? 0)}</strong></div>`,
       `<div class="td-result-stat"><span>Gold left</span><strong>${game.gold}</strong><small>of ~${Math.round((game.totalGoldEarned ?? 0) + game.tuning.run.startingGold)} earned</small></div>`,
@@ -327,9 +347,16 @@ export function createResults(ctx: PageContext) {
       reactionStat(game.reactionCounts),
       bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
     ].join("");
+    statsEl.innerHTML = statsHtml;
+    lossStatsEl.innerHTML = statsHtml;
     statsEl.hidden = false;
     renderAnalysis(game);
-    renderDamage(game);
+    if (game.won) renderDamage(game);
+    else {
+      const damageEl = q("[data-td-result-damage]");
+      damageEl.innerHTML = "";
+      damageEl.hidden = true;
+    }
     q("[data-td-result-battle-empty]").hidden = !q("[data-td-result-damage]").hidden || !q("[data-td-result-analysis]").hidden;
 
     const compareEl = q("[data-td-result-compare]");
@@ -361,9 +388,18 @@ export function createResults(ctx: PageContext) {
     playEl.classList.add("is-result-open");
     resultEl.hidden = false;
     resultEl.scrollTop = 0;
-    primaryAction = q<HTMLButtonElement>(expedition || (campaign && game.won) ? "[data-td-result-continue]" : "[data-td-retry]");
+    resultEl.dataset.lossPage = "advice";
+    lossStatsButton.setAttribute("aria-pressed", "false");
+    primaryAction = game.won
+      ? q<HTMLButtonElement>(expedition || campaign ? "[data-td-result-continue]" : "[data-td-result-retry]")
+      : lossRetryButton.hidden ? lossCloseButton : lossRetryButton;
     retryButton.textContent = game.won && !endless ? `Retry ${map.name}` : "Retry";
     statsButton.hidden = !game.won || endless;
+    if (!game.won) {
+      stageClear.playDefeat();
+      resultEl.focus({ preventScroll: true });
+      return;
+    }
     if (statsButton.hidden) { primaryAction.focus({ preventScroll: true }); return; }
 
     // Stage Clear sequence: rewards are what the save gained this run.
