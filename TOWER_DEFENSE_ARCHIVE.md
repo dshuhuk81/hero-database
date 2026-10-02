@@ -1,5 +1,21 @@
 # Tower Defense - Completed Work Archive
 
+## R2 failing tests, October 2, 2026
+
+- `test-td-summon`: the test now expects each Evolution tier's authored copy cost (1/1/2/2/3)
+  instead of one copy per tier.
+- `test-td-skin`: Tilda's ultimate uses the v4 sound again (the owner deleted v5 and copied
+  Sable's new v4 ultimate to Tilda; all Tilda sounds are on R2).
+
+## Bugs / Enhancements, October 2, 2026
+
+- The Stars panel opens directly on large material slots and a full-width copy picker. Fill
+  all slots lives inside the material box, the sticky footer contains only Star up, and the
+  stat/level-cap preview appears after the first copy is selected.
+- Hero roster portraits use a gentler crop and sit lower in their tiles so heads stay visible.
+- Generic recruit art uses a dedicated full-body fit in roster tiles and the main hero view
+  instead of the named-hero close-up crop.
+
 ## R4 battle economy redesign, October 2, 2026
 
 - Battle gold buys deploys and relocations only. Deploy discounts (Master Smith 3% per level,
@@ -14,6 +30,9 @@
   Spec: `docs/plans/2026-10-02-tower-defense-r4-economy-design.md`; plan:
   `docs/superpowers/plans/2026-10-02-tower-defense-r4-economy.md`. Gold income is not retuned
   (R12).
+- Review follow-ups: redeploy prices include the deploy discounts, Auto waits while a relocation
+  is picked. Owner decisions: relocating before wave 1 stays paid; selling and redeploying does
+  not count against Hold Position (it costs more than relocating).
 
 ## R1 and R3 board follow-ups, October 2, 2026
 

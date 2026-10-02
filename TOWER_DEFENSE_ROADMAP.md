@@ -31,11 +31,6 @@ rewrite, finished). The game as it is now: [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE
 
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
-### Bugs / Enhancements
-- [x] Fixed: The Stars panel now opens directly on large material slots and a full-width copy picker. Fill all slots lives inside the material box, the sticky footer contains only Star up, and the stat/level-cap preview appears after the first copy is selected.
-- [x] Fixed: Hero roster portraits use a gentler crop and sit lower in their tiles so heads remain inside the visible area.
-- [x] Fixed: Generic recruit art now uses a dedicated full-body fit in both roster tiles and the main hero view, keeping every recruit visible instead of applying the named-hero close-up crop.
-
 ### Open work after the board rewrite (October 2, 2026)
 
 Branch `tower-defense-planning` finished the board rewrite and the first round of ideas: all
@@ -59,25 +54,16 @@ start any time and run in parallel.
 | R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
-| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations (R4 done); then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
-| R13 | Create a local overview: Create a overview page with all stages, all bosses and the most important settings. That overview page should display the core features of the game that are relevant in order to see them at a glance and make desicions from there. That also includes costs for upgrades, skills and everything we can tune in the game. also heroes, their "attack scheme tile range", their attributes and hp as well as enemy infos. Reason: game files have too many informations all over the place and its hard for me to track that in a overview. | Agent | M |
-| R14 | Currently they are faction like bonuses (Norse, Greek) - but maybe we should add a new hero class in addition. Its "Lords". Each faction has its own lord. We dont have one yet. We need a concept.
-When a lord is placed (he will be always placed first) in the selection tab and then specific faction bonuses will be applied. each hero from the same faction then gets these bonuses. Prerequisites are of course 1 Lord for each faction to be defined, we need concept art, animations and descriptions | L |
+| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
+| R13 | Local overview page: all stages, bosses and the most important settings at a glance, to make decisions from there. Includes costs for upgrades, skills and everything tunable in the game, every hero with its attack pattern (tile reach), attributes and HP, and enemy info. Reason: game data is spread over many files and hard to track | Agent | - | M |
+| R14 | Lords concept: a new hero class on top of the faction bonds (Norse, Greek). Each faction gets one Lord, always placed first in the selection tab; a placed Lord gives every hero of its faction specific bonuses. Prerequisites: one Lord per faction defined, concept art, animations and descriptions | Owner concept, agent builds | - | L |
 
 Owner directions recorded October 2:
 
 - R12: Scale Free Play and Expedition enemy health with squad Might, but by less than 100%.
 - R8: Retire tag synergy.
 
-R2 is done (October 2, 2026): the summon test now expects each Evolution tier's authored copy
-cost (1/1/2/2/3), and Tilda's ultimate uses the v4 sound again (the owner deleted v5 and
-copied Sable's new v4 ultimate to Tilda). `test-td-campaign` ("1-1: too hard") still fails and
-was already failing before R4; it belongs to R12.
-
-R4 is done (October 2, 2026): battle gold buys deploys and relocations; battle ranks, focus,
-class paths, Awakening and training are gone; the hero panel shows collection progress with
-Relocate and Sell; blessing nodes, Expedition veterans and the Hold Position challenge were
-migrated in place (spec section 9, archive). The owner tests on dev and runs the simulations.
+Known failing test: `test-td-campaign` ("1-1: too hard"), already failing before R4; part of R12.
 
 Backlog from the ideas document, not scheduled: A1 stage goals, A2 stage
 rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route
