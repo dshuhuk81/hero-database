@@ -1,6 +1,7 @@
 // Challenge goals (M20) on the page: badges on the lobby map cards, the challenge list in
 // the run length panel, and recording a finished run (results.ts). Rules in ../challenges.js.
 import { CHALLENGE_MODES, CHALLENGE_REWARD, CHALLENGES, evaluateChallenges, recordChallenges, runFacts } from "../challenges.js";
+import { notifyQuest } from "../quests.js";
 import { runKey, type RunMode, type RunTier, type SaveData } from "./save";
 
 type ChallengeResult = { id: string; isNew: boolean; tierUp: boolean; favor: number };
@@ -25,6 +26,7 @@ export function recordChallengeRun(save: SaveData, mapId: string, game: any, tie
   if (debug) return { ids, results: ids.map((id) => ({ id, isNew: false, tierUp: false, favor: 0 })), favor: 0 };
   const { favor, results } = recordChallenges(save.challenges, challengeKey(mapId, game.mode), ids, game.mode, game.tier, tiers);
   save.favor = (save.favor || 0) + favor;
+  if (results.some((result) => result.isNew || result.tierUp)) notifyQuest(save, "challenge"); // R10 daily quest #5: a challenge tier clear
   return { ids, results, favor };
 }
 

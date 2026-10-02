@@ -44,6 +44,7 @@ import { currencyList } from "../currency-icons.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import { finishExpeditionStage } from "./expedition";
 import { finishCampaignRun } from "./campaign";
+import { notifyQuest, QUEST_WAVE } from "../quests.js";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 import { createStageClear } from "./stage-clear";
 
@@ -240,6 +241,12 @@ export function createResults(ctx: PageContext) {
     const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
+      // R10 daily quests: Free Play runs ending at wave 10+ (#6) and runs that cast a
+      // Divine Intervention (#9). The campaign clears (#1, #2) report in finishCampaignRun.
+      if (!daily && !expedition && !campaign) {
+        if ((game.wave ?? 0) >= QUEST_WAVE) notifyQuest(saved, "free-wave10");
+        if ((game.interventionsUsed ?? 0) > 0) notifyQuest(saved, "intervention");
+      }
       if (game.perfect) saved.perfectDefense = true;
       // bestScore/bestWave stay the classic record; other modes keep theirs in mapTop.
       if (game.mode === "classic" && game.tier === "normal" && !campaign) {

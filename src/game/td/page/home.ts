@@ -4,6 +4,7 @@
 // that can be taken right now. The mode screens themselves stay where they were.
 import { campHomeArt } from "../assets.js";
 import { canBuy, levelCost, TREE } from "../favor.js";
+import { questBadgeText } from "../quests.js";
 import { resetText } from "./daily";
 import { roman } from "./route";
 import { availableFavor, isHomeMode, type HomeMode } from "./save";
@@ -109,6 +110,7 @@ export function createHome(ctx: PageContext, deps: Deps) {
 
     // Dock badges: only states the player can act on right now.
     const ready: Record<string, string> = {
+      quests: questBadgeText(store.data), // R10: claimable tasks/chests, else today's activity
       heroes: camp.canLevelUp ? "upgrade ready" : "",
       summon: camp.canSummon ? "summon available" : "",
       blessings: canBuyBlessing() ? "Favor to spend" : "",

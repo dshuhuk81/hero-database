@@ -71,6 +71,11 @@ export function enemyRenderScale(kind, rules) {
   return kind === "boss" ? rules?.bossScale ?? rules?.enemyScale ?? 1 : rules?.enemyScale ?? 1;
 }
 
+// Targetability is communicated by combat behavior and boss mechanics, not by degrading art.
+export function enemyRenderAlpha() {
+  return 1;
+}
+
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
   const sceneArt = mapSceneFor(game.map);
@@ -1337,7 +1342,7 @@ export async function createRenderer(canvas, game, options = {}) {
       c.position.set(unit.x, unit.y);
     }
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
-    c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
+    c.alpha = enemyRenderAlpha(unit);
     if (c._anim) animateEnemy(unit, c);
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
 

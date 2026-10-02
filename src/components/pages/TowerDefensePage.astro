@@ -52,6 +52,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   import { createPanels } from "../../game/td/page/panels";
   import { createSessionController } from "../../game/td/page/session";
   import { createNav } from "../../game/td/page/nav";
+  import { createQuests } from "../../game/td/page/quests";
   import { createOrientGate } from "../../game/td/page/orient";
   import { createMenuFrame } from "../../game/td/page/frame";
   import { createWallet } from "../../game/td/page/wallet";
@@ -177,6 +178,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     dailyTrial.render();
     expedition.render();
     campaignScreens.render();
+    quests.render();
     home.render();
   }
 
@@ -269,6 +271,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const dailyTrial = createDaily(ctx);
   const expedition = createExpedition(ctx);
   const campaignScreens = createCampaign(ctx);
+  const quests = createQuests(ctx);
   const home = createHome(ctx, { campaign: campaignScreens, daily: dailyTrial, expedition });
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
@@ -288,6 +291,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
       if (id === "squad" && !campaignScreens.renderSquad()) nav.go("stages");
       if (id === "heroes") campaignScreens.renderHeroes();
       if (id === "summon") campaignScreens.renderSummon(true);
+      if (id === "quests") quests.render();
       if (id === "blessings" || id === "help" || id === "save") panels.embed(id, q(`[data-td-screen-host="${id}"]`));
     },
     // Browser Back during a run: close what is open, else open the menu; a finished run leaves.

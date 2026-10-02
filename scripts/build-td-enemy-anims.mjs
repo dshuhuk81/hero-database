@@ -45,6 +45,15 @@ const SETS = {
     "boss-kraghorn-v1": { dir: "kraghorn", clips: clipFiles("kraghorn") },
     "boss-vorruk-v1": { dir: "vorruk", clips: clipFiles("vorruk") },
     "boss-ochenta-v1": { dir: "boss-ochenta-v1", clips: clipFiles("boss-ochenta-v1") },
+    // Campaign expansion: owner-approved October 2, 2026.
+    "boss-skeld-v1": { dir: "boss-skeld-v1", clips: clipFiles("boss-skeld-v1") },
+    "boss-thyrak-v1": { dir: "boss-thyrak-v1", clips: clipFiles("boss-thyrak-v1") },
+    "boss-neressa-v1": { dir: "boss-neressa-v1", clips: clipFiles("boss-neressa-v1") },
+    "boss-morthul-v1": { dir: "boss-morthul-v1", clips: clipFiles("boss-morthul-v1") },
+    "boss-ilyr-v1": { dir: "boss-ilyr-v1", clips: clipFiles("boss-ilyr-v1") },
+    "boss-eidros-v1": { dir: "boss-eidros-v1", clips: clipFiles("boss-eidros-v1") },
+    "boss-astreon-v1": { dir: "boss-astreon-v1", clips: clipFiles("boss-astreon-v1") },
+    "boss-brontax-v1": { dir: "boss-brontax-v1", clips: clipFiles("boss-brontax-v1") },
     // Older stills kept on purpose for the broodcaller and the hexer (assets.js ENEMY_ART).
     "brood-v1": { dir: "broodcaller", clips: clipFiles("broodcaller") },
     "boss-lilith-v1": { dir: "hexer", clips: clipFiles("hexer") },

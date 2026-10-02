@@ -5,6 +5,7 @@ import { shownLives } from "../board.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
 import { addSeals, ownedHeroes } from "../campaign.js";
+import { notifyQuest } from "../quests.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { RUN_BOON_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -36,6 +37,7 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
       save.campaign = addSeals(save.campaign, EXP_SEALS) as SaveData["campaign"];
       seals = EXP_SEALS;
       save.expeditionBest.completed += 1;
+      notifyQuest(save, "expedition"); // R10 daily quest #4: paid once per finished expedition
     }
   }
   const text = result.outcome === "camp"

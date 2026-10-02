@@ -36,8 +36,8 @@ export function newCampaignProgress(campaign) {
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
 
-export function isUnlocked(progress, stage) {
-  return !stage.unlockAfter || isCleared(progress, stage.unlockAfter);
+export function isUnlocked(progress, stage, override = false) {
+  return override || !stage.unlockAfter || isCleared(progress, stage.unlockAfter);
 }
 
 // The first stage not cleared yet that is open (the campaign screen's suggestion).

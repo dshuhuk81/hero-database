@@ -4,6 +4,7 @@
 import { bossSprite, classIconImg } from "../assets.js";
 import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { addSeals } from "../campaign.js";
+import { notifyQuest } from "../quests.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { MUTATOR_INFO } from "../skills.js";
 import type { PageContext } from "./context";
@@ -57,6 +58,7 @@ export function finishDaily(save: SaveData, game: any, setup: DailySetup, record
     reward = result.reward;
     save.favor = (save.favor || 0) + reward;
     if (reward) save.campaign = addSeals(save.campaign, DAILY_SEALS) as SaveData["campaign"];
+    if (reached) notifyQuest(save, "trial-goal"); // R10 daily quest #3: the trial goal, once per day
   }
   const goal = reached
     ? `Goal reached: ${dailyGoalText(setup).toLowerCase()}.${reward ? ` +${reward} Favor${DAILY_SEALS ? ` and +${DAILY_SEALS} Divine Seals` : ""} for today's first clear.` : ""}`

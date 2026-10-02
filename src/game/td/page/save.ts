@@ -2,7 +2,8 @@
 import type { PageContext } from "./context";
 import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
 import { sanitizeChallenges } from "../challenges.js";
-import { sanitizeDaily } from "../daily.js";
+import { dailyDate, sanitizeDaily } from "../daily.js";
+import { newQuestRecord, sanitizeQuests } from "../quests.js";
 import { sanitizeExpedition } from "../expedition.js";
 import { newCampaignProgress, sanitizeCampaign } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
@@ -18,6 +19,10 @@ export type CampaignProgress = { version: number; owned: string[]; cleared: Reco
 
 // Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
 export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };
+
+// Daily Quests (R10) record per UTC day; tasks map task id to { done, claimed } and
+// milestones lists the claimed chest thresholds (quests.js).
+export type QuestRecord = { date: string; activity: number; tasks: Record<string, { done?: boolean; claimed?: boolean }>; milestones: number[] };
 
 // `mutators`: endless mutators (M15) chosen in that run, kept with the record.
 export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number; mutators?: string[] };
@@ -48,6 +53,7 @@ export type SaveData = {
   challenges: Record<string, Record<string, RunTier>>; // M20: challengeKey -> challenge id -> highest tier cleared (challenges.js)
   nextRunBoost: RunBoost | null;
   daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
+  quests: QuestRecord; // Daily Quests record for the UTC day (quests.js)
   expedition: ExpeditionState | null; // Expedition in progress (M21)
   expeditionBest: { stages: number; completed: number }; // most stages cleared in one expedition, expeditions finished
   campaign: CampaignProgress; // Campaign (M26), its own progression
@@ -94,6 +100,15 @@ export const SAVE_KEY = "td:v1";
 export const SAVE_CODE_PREFIX = "TD1:";
 export const SAVE_FILE_VERSION = 1;
 
+// Matches clearing Tower Defense site data in the browser without touching preferences
+// used by the rest of the database site.
+export function resetTdAccount(storage: Pick<Storage, "length" | "key" | "removeItem">) {
+  for (let index = storage.length - 1; index >= 0; index -= 1) {
+    const key = storage.key(index);
+    if (key?.startsWith("td:")) storage.removeItem(key);
+  }
+}
+
 const isRecord = (value: unknown): value is Record<string, any> => !!value && typeof value === "object" && !Array.isArray(value);
 const hasScore = (run: unknown): run is { score: number } => isRecord(run) && Number.isFinite(run.score);
 // Non-negative whole numbers keyed by id (node levels, Insight per class).
@@ -103,7 +118,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -170,6 +185,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
     challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
     daily: sanitizeDaily(candidate.daily),
+    quests: sanitizeQuests(candidate.quests, dailyDate()),
     expedition: sanitizeExpedition(candidate.expedition, { heroIds: rules.heroIds, mapIds: rules.mapIds ?? new Set(candidate.expedition?.stages ?? []), relicIds: rules.relicIds ?? new Set(candidate.expedition?.relics ?? []) }) as ExpeditionState | null,
     expeditionBest: {
       stages: Math.max(0, Math.floor(Number(candidate.expeditionBest?.stages) || 0)),

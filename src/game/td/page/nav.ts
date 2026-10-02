@@ -5,15 +5,15 @@
 // stays in the game and opens its menu instead (deps.onGameBack).
 import type { PageContext } from "./context";
 
-export type ScreenId = "home" | "stages" | "squad" | "heroes" | "summon" | "maps" | "mode" | "daily" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
+export type ScreenId = "home" | "stages" | "squad" | "heroes" | "summon" | "maps" | "mode" | "daily" | "quests" | "expedition" | "blessings" | "help" | "settings" | "save" | "glossary" | "play";
 
 // One level up when there is no history entry to go back to (for example after a reload).
 // History entries from older builds that name a removed screen (the Campaign hub) open home.
 const PARENT: Record<ScreenId, ScreenId> = {
-  home: "home", stages: "home", squad: "stages", heroes: "home", summon: "home", maps: "home", mode: "maps", daily: "home", expedition: "home", blessings: "home",
+  home: "home", stages: "home", squad: "stages", heroes: "home", summon: "home", maps: "home", mode: "maps", daily: "home", quests: "home", expedition: "home", blessings: "home",
   help: "home", settings: "home", save: "settings", glossary: "home", play: "home",
 };
-const isScreen = (value: unknown): value is ScreenId => typeof value === "string" && value in PARENT;
+export const isScreen = (value: unknown): value is ScreenId => typeof value === "string" && value in PARENT;
 
 export function createNav(ctx: PageContext, deps: { onShow(id: ScreenId): void; onGameBack(): void }) {
   const { root, q } = ctx;

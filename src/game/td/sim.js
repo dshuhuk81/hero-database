@@ -160,6 +160,7 @@ export class TowerDefenseGame {
 
   reset() {
     this.interventions = Object.fromEntries(this.interventionIds.map((id) => [id, { charge: 0 }]));
+    this.interventionsUsed = 0; // Divine Interventions cast this run (R10 daily quest #9)
     this.strikes = []; // pending Thunderfall bolts { x, y, at }
     this.shieldUntil = 0;
     this.shieldWave = 0;
@@ -817,6 +818,7 @@ export class TowerDefenseGame {
     if (!this.interventionState("thunderfall")?.ready) return false;
     const cfg = this.tuning.interventions.thunderfall;
     this.interventions.thunderfall.charge = 0;
+    this.interventionsUsed += 1;
     this.strikes.push({ x, y, at: this.time + cfg.delay });
     // R5: the target tiles pulse until the bolt lands (render.js thunderWarn).
     this.emit({ type: "thunderWarn", x, y, radius: this.thunderRadius(), area: this.thunderArea(x, y), life: cfg.delay });
@@ -871,6 +873,7 @@ export class TowerDefenseGame {
     if (!this.interventionState("shield")?.ready) return false;
     const cfg = this.tuning.interventions.shield;
     this.interventions.shield.charge = 0;
+    this.interventionsUsed += 1;
     const seconds = cfg.seconds + (this.favor.shieldSeconds || 0); // Long Vigil (R5)
     this.shieldUntil = this.time + seconds;
     this.shieldWave = this.wave;

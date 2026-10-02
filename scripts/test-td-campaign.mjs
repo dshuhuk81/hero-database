@@ -52,6 +52,9 @@ stages.forEach((stage, i) => {
   assert.deepEqual(p.owned, campaign.starters, "starts with the starters");
   assert.equal(nextStage(campaign, p).id, stages[0].id, "first stage suggested");
   assert.ok(isUnlocked(p, stages[0]) && !isUnlocked(p, stages[1]), "only the first stage is open");
+  const beforeDebugAccess = structuredClone(p);
+  assert.equal(isUnlocked(p, stages[1], true), true, "debug override makes a locked stage playable");
+  assert.deepEqual(p, beforeDebugAccess, "debug stage access does not fabricate campaign progress");
   assert.ok(validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize)), "owned squad valid");
   // Starters can all fit in the squad; add one more owned hero to exceed the cap.
   const extra = stages.flatMap((stage) => stage.rewards).find((reward) => reward.type === "hero").id;

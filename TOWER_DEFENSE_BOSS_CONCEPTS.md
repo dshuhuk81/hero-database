@@ -1,6 +1,8 @@
 # The Last Crossing — Three New Monster Bosses
 
-Design proposal · 29 September 2026 · No images or gameplay changes made
+Design proposal · 29 September 2026 · mechanics superseded October 2, 2026
+
+> **Current decision:** Lerna, Kraghorn and Vorruk ship with standard boss combat behavior. The specials and ultimates below are retained only as historical concept work and are not planned for implementation. Boss ultimates are descoped from the tower-defense campaign going forward.
 
 ## Direction and fit with the existing game
 

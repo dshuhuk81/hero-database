@@ -1,0 +1,17 @@
+{
+  "keep": "Clean crisp frames that show only this creature; the transparent background stays empty. Colors, brightness, material finish and lighting stay exactly as in the still in every frame. Existing colored markings remain steady and the same size. The creature keeps its original body proportions and full silhouette inside the canvas. Keep exactly four legs, one head, one short tail and three large shell pillars. The shell and ice slabs stay attached, solid and the same size.",
+  "clips": {
+    "idle": "Slow idle breathing: throat rises slightly, head shifts gently, four feet remain planted.",
+    "walk": "Heavy slow walk in place on four legs: legs step alternately under the steady heavy shell.",
+    "attack": "Draws its head back slightly, thrusts its head forward and closes its jaw in a single bite in the first half, then returns.",
+    "hurt": "Recoils its head and bends its four legs slightly, then regains its stance with unchanged coloring.",
+    "death": "Four legs buckle gently, body settles downward onto its belly, head lowers and remains lying still with shell intact."
+  },
+  "frames": {
+    "idle": 4,
+    "walk": 8,
+    "attack": 8,
+    "hurt": 4,
+    "death": 8
+  }
+}

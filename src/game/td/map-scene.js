@@ -105,6 +105,12 @@ export function mapSceneFor(map) {
   return MAP_SCENES[map?.art] ?? null;
 }
 
+// Spawn portals sit in front of entering units so they emerge through the doorway.
+// The sanctuary remains behind units; its small vector face handles exit occlusion.
+export function paintedStructureLayer(layers, role) {
+  return role === "spawn" ? layers.foreground : layers.structures;
+}
+
 export function createMapScene(PIXI, game, {
   ground, structures, foreground, overlay, reducedMotion = false, textures = {},
 }) {
@@ -311,16 +317,16 @@ export function createMapScene(PIXI, game, {
 
   // Painted architecture already carries its own foundation; only a soft contact
   // shadow is needed. Use vector masonry if an image is unavailable.
-  for (const [texture, point, back, front, width, height, padWidth, padDepth] of [
-    ...gates.map(([spawn, gate, gateFront]) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34]),
-    [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39],
+  for (const [texture, point, back, front, width, height, padWidth, padDepth, role] of [
+    ...gates.map(([spawn, gate, gateFront]) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34, "spawn"]),
+    [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39, "base"],
   ]) {
     if (!texture) continue;
     back.clear();
     back.ellipse(3, 16, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
     back.ellipse(2, 14, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
-    const sprite = add(structures, new PIXI.Sprite(texture));
+    const sprite = add(paintedStructureLayer({ structures, foreground }, role), new PIXI.Sprite(texture));
     if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
     sprite.position.set(point.x, point.y);

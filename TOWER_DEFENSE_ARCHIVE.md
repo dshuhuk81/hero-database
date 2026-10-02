@@ -1,5 +1,18 @@
 # Tower Defense - Completed Work Archive
 
+## R16: Ymir hammer-swing attack, October 2, 2026
+
+- His default attack used a generic strike. New attack clip via the PixelLab pipeline (8 frames:
+  4 wind-up with the hammer over the right shoulder, 2 swing across toward the facing direction,
+  2 recover, last frame pinned to the still), 1 generation used. Idle/ultimate clips reused.
+- Shipped as new figure `ymir-v2` (`public/td/heroes-alt/figures/ymir-v2.webp` + `.json`, v1
+  untouched); `HERO_FIGURES.ymir` in `src/game/td/assets.js` points at v2; anim lab attack row
+  updated. Owner uploads with `npm run upload-assets` (new filenames, no `--force` needed).
+- Open point: the renderer pre-advances every figure's attack clip to a global `startFrame: 2`
+  (`src/game/td/render.js`), so the damage tick lands mid-wind-up — Ymir's impact frame
+  (index 5) appears ~187 ms after it. Aligning needs a per-figure `startFrame` override
+  (e.g. a `td.startFrame` in the figure json read by `updateHeroAnim`); flagged, not built.
+
 ## R5 part 2: Divine Intervention upgrades, October 2, 2026
 
 - Trunk row 4 of the blessing tree (needs 32 trunk points): Storm Caller (Thunderfall charges

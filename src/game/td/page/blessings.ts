@@ -3,6 +3,7 @@
 // node graph with a detail panel. Nodes are real buttons, so keyboard and screen
 // readers work; dragging pans, the wheel and pinch zoom.
 import { TREE, CLASSES, canBuy, findNode, levelCost, nodeCurrency, pointsIn } from "../favor.js";
+import { notifyQuest } from "../quests.js";
 import type { PageContext } from "./context";
 import { availableFavor, availableInsight } from "./save";
 import { classIconImg } from "../assets.js";
@@ -245,6 +246,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
     const level = store.data.favLevels[id] || 0;
     if (available(node) < levelCost(node, level + 1)) return;
     store.data.favLevels = { ...store.data.favLevels, [id]: level + 1 };
+    notifyQuest(store.data, "blessing"); // R10 daily quest #8: a bought blessing-tree node
     store.persist();
     resetArmed = false;
     deps.onChange();

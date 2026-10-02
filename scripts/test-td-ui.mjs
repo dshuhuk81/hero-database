@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
 import { buildRunTuning, TREE } from "../src/game/td/favor.js";
 import * as render from "../src/game/td/render.js";
+import { enemySheetUrl } from "../src/game/td/assets.js";
+import * as mapScene from "../src/game/td/map-scene.js";
 const { canvasPoint, nearestSlot } = render;
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
@@ -14,6 +16,18 @@ assert.equal(render.enemyRenderScale("boss", tuning.board), tuning.board.bossSca
 assert.equal(render.enemyRenderScale("boss", { enemyScale: 1.4 }), 1.4, "legacy board rules use enemyScale for bosses");
 assert.equal(render.enemyRenderScale("grunt", null), 1, "classic enemies keep their original scale");
 assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep their original scale");
+
+// Painted gates occlude newly spawned enemies until they emerge onto the road.
+{
+  const structures = {}, foreground = {};
+  assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "spawn"), foreground, "painted spawn gates render in front of units");
+  assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "base"), structures, "painted sanctuary stays behind units");
+}
+
+// Lilith keeps the sharp 256 px still and stays opaque while her children make her
+// untargetable; targetability is a simulation rule, not a transparency effect.
+assert.equal(enemySheetUrl("boss-lilith", "v4"), null, "Lilith does not use the low-resolution animation sheet");
+assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1, "untargetable Lilith remains fully opaque");
 
 // --- fitRect: world fits width AND height, aspect preserved ---
 {

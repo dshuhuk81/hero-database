@@ -15,8 +15,10 @@ import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
+import { notifyQuest } from "../quests.js";
 import type { PageContext } from "./context";
 import type { CampaignProgress, SaveData } from "./save";
+import { resetTdAccount } from "./save";
 import { roman } from "./route";
 import { bondsOf, bondText } from "../bonds.js";
 import { POWER_INFO } from "./powers";
@@ -40,7 +42,10 @@ const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming s
 export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, heroName: (id: string) => string, record: boolean) {
   const stage = stageById(campaign, run.stageId);
   const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic });
-  if (record) save.campaign = result.progress as CampaignProgress;
+  if (record) {
+    save.campaign = result.progress as CampaignProgress;
+    if (game.won) notifyQuest(save, run.heroic ? "heroic-clear" : "campaign-clear"); // R10 daily quests #1 and #2
+  }
   const label = `${run.heroic ? "Heroic " : ""}Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
   if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[] };
@@ -94,6 +99,7 @@ export function createCampaign(ctx: PageContext) {
   let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
   let drawerId: string | null = null; // stage shown in the details drawer
   let heroicRun = false; // the picked stage is played in its Heroic version
+  let allStagesPlayable = false; // debug-only access override; never changes campaign progress
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
   let heroDetailKey = ""; // hero + tab last drawn, to keep scroll when an upgrade redraws it
@@ -198,7 +204,7 @@ export function createCampaign(ctx: PageContext) {
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
     stagesEl.innerHTML = stages.map((stage) => {
-      const open = isUnlocked(p, stage);
+      const open = isUnlocked(p, stage, allStagesPlayable);
       const done = p.cleared[stage.id];
       const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives` : "Ready to play";
       return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
@@ -212,7 +218,7 @@ export function createCampaign(ctx: PageContext) {
     stagesEl.scrollLeft = nextCard ? Math.max(0, nextCard.offsetLeft - (stagesEl.clientWidth - nextCard.offsetWidth) / 2) : 0;
     // Authored chapters first; later ones show as locked until their stages exist.
     const tabs = chapters.map((entry) => {
-      const unlocked = entry.stages.some((stage: any) => isUnlocked(p, stage));
+      const unlocked = entry.stages.some((stage: any) => isUnlocked(p, stage, allStagesPlayable));
       const current = String(entry.id) === chapterId;
       return `<button type="button" class="td-camp-chapter-tab${current ? " is-current" : ""}" data-camp-chapter="${entry.id}"${current ? ' aria-current="true"' : ""}${unlocked ? "" : " disabled"}>Chapter ${entry.id}</button>`;
     });
@@ -359,7 +365,7 @@ export function createCampaign(ctx: PageContext) {
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
-    squadStart.disabled = !validSquad(campaign, p, squad);
+    squadStart.disabled = !isUnlocked(p, stage, allStagesPlayable) || !validSquad(campaign, p, squad);
     squadStart.textContent = heroicRun ? "Start Heroic" : "Start";
     return true;
   }
@@ -663,7 +669,7 @@ export function createCampaign(ctx: PageContext) {
 
   function selectStage(id: string) {
     const stage = stageById(campaign, id);
-    if (!stage || !isUnlocked(progress(), stage)) return false;
+    if (!stage || !isUnlocked(progress(), stage, allStagesPlayable)) return false;
     stageId = id;
     // Start from the last squad, keeping only heroes still owned.
     squad = progress().lastSquad.filter((heroId) => progress().owned.includes(heroId)).slice(0, campaign.squadSize);
@@ -679,7 +685,7 @@ export function createCampaign(ctx: PageContext) {
 
   function start() {
     const stage = stageId ? stageById(campaign, stageId) : null;
-    if (!stage || !validSquad(campaign, progress(), squad)) return;
+    if (!stage || !isUnlocked(progress(), stage, allStagesPlayable) || !validSquad(campaign, progress(), squad)) return;
     store.data.campaign = { ...progress(), lastSquad: [...squad] };
     store.persist();
     const map = stageMap(stage);
@@ -828,6 +834,7 @@ export function createCampaign(ctx: PageContext) {
     const id = button.dataset.campLevelup!;
     const next = levelUp(campaign, progress(), id);
     if (!next) return;
+    notifyQuest(store.data, "hero-upgrade"); // R10 daily quest #10: a bought hero level
     store.data.campaign = next;
     store.persist();
     renderHeroes();
@@ -909,6 +916,7 @@ export function createCampaign(ctx: PageContext) {
     } else if (d.campStarup) {
       const next = starUp(campaign, p, id, fodder);
       if (!next) return true;
+      notifyQuest(store.data, "hero-upgrade"); // R10 daily quest #10: a star promotion
       fodder = {};
       commit(next, `${heroName(id)} reached ${heroStars(next, id)} stars.`, "[data-camp-fodder-auto]");
     } else if (d.campEvolve) {
@@ -917,6 +925,7 @@ export function createCampaign(ctx: PageContext) {
       if (evoPick !== "dust" && evoCopies.length !== need) return true;
       const next = evolve(campaign, p, id, evoPick === "dust");
       if (!next) return true;
+      notifyQuest(store.data, "hero-upgrade"); // R10 daily quest #10: an evolution
       resetEvolutionDraft();
       commit(next, `${heroName(id)} evolved to ${roman(heroEvolution(next, id))}.`, "[data-camp-evo-start]");
     } else if (d.campDust) {
@@ -955,6 +964,7 @@ export function createCampaign(ctx: PageContext) {
     const result = summonMany(summonCfg, banner.id, progress(), allHeroIds(), count);
     if (!result) return;
     lastCount = count;
+    notifyQuest(store.data, "summon"); // R10 daily quest #7: a completed pull
     store.data.campaign = result.progress as CampaignProgress;
     store.persist();
     renderSummon();
@@ -984,9 +994,21 @@ export function createCampaign(ctx: PageContext) {
       debugEl.hidden = !debugEl.hidden;
       debugToggle.setAttribute("aria-pressed", String(!debugEl.hidden));
     });
+    debugEl.querySelector<HTMLInputElement>("[data-camp-debug-stages]")?.addEventListener("change", (event) => {
+      allStagesPlayable = (event.currentTarget as HTMLInputElement).checked;
+      renderStages();
+      if (root.dataset.screen === "squad") renderSquad();
+      ctx.notice(`Debug: all stages ${allStagesPlayable ? "playable" : "use normal unlocks"}.`);
+    });
     debugEl.addEventListener("click", (event) => {
       const id = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-camp-debug]")?.dataset.campDebug;
       if (!id) return;
+      if (id === "resetAccount") {
+        if (!window.confirm("Reset all Tower Defense progress and settings stored in this browser?")) return;
+        resetTdAccount(localStorage);
+        window.location.reload();
+        return;
+      }
       const grants = id === "all" ? DEBUG_GRANTS : { [id]: DEBUG_GRANTS[id] ?? 0 };
       const p = progress();
       const currencies = { ...p.currencies };

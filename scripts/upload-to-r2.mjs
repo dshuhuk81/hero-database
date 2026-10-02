@@ -11,10 +11,15 @@ const DRY_RUN = process.argv.includes("--dry-run");
 const PREFIX = process.argv.includes("--prefix")
   ? process.argv[process.argv.indexOf("--prefix") + 1]?.replace(/^\/+/, "")
   : "";
+const EXACT = process.argv.includes("--exact")
+  ? new Set((process.argv[process.argv.indexOf("--exact") + 1] ?? "").split(",").map((key) => key.replace(/^\/+/, "")).filter(Boolean))
+  : null;
 
 if (process.argv.includes("--prefix") && (!PREFIX || PREFIX.startsWith("--"))) {
   throw new Error("Missing value after --prefix");
 }
+if (process.argv.includes("--exact") && !EXACT?.size) throw new Error("Missing comma-separated keys after --exact");
+if (PREFIX && EXACT) throw new Error("Use either --prefix or --exact, not both");
 
 // Load .env.r2
 const envPath = join(ROOT, ".env.r2");
@@ -117,11 +122,16 @@ async function uploadFile(filePath) {
 
 async function main() {
   const files = getAllFiles(PUBLIC_DIR).filter((filePath) => {
-    if (!PREFIX) return true;
     const key = relative(PUBLIC_DIR, filePath).replace(/\\/g, "/");
+    if (EXACT) return EXACT.has(key);
+    if (!PREFIX) return true;
     return key.startsWith(PREFIX);
   });
-  console.log(`Found ${files.length} files to upload${PREFIX ? ` with prefix ${PREFIX}` : ""}`);
+  if (EXACT && files.length !== EXACT.size) {
+    const found = new Set(files.map((filePath) => relative(PUBLIC_DIR, filePath).replace(/\\/g, "/")));
+    throw new Error(`Missing local files: ${[...EXACT].filter((key) => !found.has(key)).join(", ")}`);
+  }
+  console.log(`Found ${files.length} files to upload${PREFIX ? ` with prefix ${PREFIX}` : EXACT ? " from exact key list" : ""}`);
   if (DRY_RUN) {
     console.log(`[DRY RUN] ${FORCE ? "Overwrite mode enabled" : "Existing remote files will be skipped"}`);
   } else if (FORCE) {

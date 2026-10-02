@@ -1,0 +1,17 @@
+{
+  "keep": "Clean crisp frames that show only this creature; the transparent background stays empty. Colors, brightness, material finish and lighting stay exactly as in the still in every frame. Existing colored markings remain steady and the same size. The creature keeps its original body proportions and full silhouette inside the canvas. Keep exactly two piston legs, two arms, one fist, one tool hand, one head, the attached boiler and two capped exhaust pipes. Brass, copper, iron, turquoise slit and orange furnace window stay identical in color and brightness; every component stays attached.",
+  "clips": {
+    "idle": "Subtle mechanical idle: torso and shoulder joints adjust slightly while both feet stay planted.",
+    "walk": "Heavy walk in place on two piston legs, arms follow gently while boiler and pipes move with the torso.",
+    "attack": "Draws its broad fist back, pushes the fist forward once in the first half, then returns to its original position.",
+    "hurt": "Recoils at the torso with a short piston bend, then regains its original stance.",
+    "death": "Two piston legs buckle, arms lower and the intact mechanical body settles onto its side, ending motionless with all components attached."
+  },
+  "frames": {
+    "idle": 4,
+    "walk": 8,
+    "attack": 8,
+    "hurt": 4,
+    "death": 8
+  }
+}

@@ -1,10 +1,28 @@
 import assert from "node:assert/strict";
 import { findNode, nodeSpent } from "../src/game/td/favor.js";
-import { availableFavor, availableInsight, emptySave, encodeSaveCode, modeBest, parseSaveText, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX } from "../src/game/td/page/save.ts";
+import { availableFavor, availableInsight, emptySave, encodeSaveCode, modeBest, parseSaveText, resetTdAccount, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX } from "../src/game/td/page/save.ts";
 
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 
 const rules = { heroIds: new Set(heroes.map((hero) => hero.id)) };
+
+// Account reset removes all Tower Defense state and preferences, but leaves the rest of
+// the site's local storage alone. A small in-memory Storage exercises the real key scan.
+{
+  const values = new Map([
+    ["td:v1", "save"],
+    ["td:audio", "audio"],
+    ["td:mode", "campaign"],
+    ["heroView", "list"],
+  ]);
+  const storage = {
+    get length() { return values.size; },
+    key(index) { return [...values.keys()][index] ?? null; },
+    removeItem(key) { values.delete(key); },
+  };
+  resetTdAccount(storage);
+  assert.deepEqual([...values.entries()], [["heroView", "list"]], "account reset removes only td:* browser data");
+}
 
 // Not a save: rejected.
 assert.equal(sanitizeSave(null, rules), null, "null rejected");

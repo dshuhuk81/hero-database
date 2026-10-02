@@ -1,9 +1,17 @@
 {
-  "note": "TD-original bosses (The Last Crossing), not Motto Immortal bosses: names for the game UI. Art: artifacts/td-bosses-v1. No special rules yet; without tuning.bosses[id] a boss fights as the plain boss.",
+  "note": "TD-original bosses (The Last Crossing), not Motto Immortal bosses: names for the game UI. Bosses without tuning.bosses[id] intentionally use standard boss combat behavior.",
   "bosses": [
     { "id": "lerna", "name": "Lerna", "title": "the Root-Maw" },
     { "id": "kraghorn", "name": "Kraghorn", "title": "the Broken Tusk" },
     { "id": "vorruk", "name": "Vorruk", "title": "the Hollow Hunger" },
-    { "id": "ochenta", "name": "Ochenta", "title": "the Proud Commander" }
+    { "id": "ochenta", "name": "Ochenta", "title": "the Proud Commander" },
+    { "id": "skeld", "name": "Skeld", "title": "the Oathfrost" },
+    { "id": "thyrak", "name": "Thyrak", "title": "the Storm Antler" },
+    { "id": "neressa", "name": "Neressa", "title": "the Undertow Queen" },
+    { "id": "morthul", "name": "Morthul", "title": "the Bitter Bloom" },
+    { "id": "ilyr", "name": "Ilyr", "title": "the Broken Reflection" },
+    { "id": "eidros", "name": "Eidros", "title": "the Last Bell" },
+    { "id": "astreon", "name": "Astreon", "title": "the Hollow Star" },
+    { "id": "brontax", "name": "Brontax", "title": "the Brass Adjudicator" }
   ]
 }
