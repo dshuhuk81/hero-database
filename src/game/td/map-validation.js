@@ -101,10 +101,8 @@ export function validateMap(map, {
   });
 
   if (lanes.length > 1) {
-    const lengths = lanes.map((lane) => pathLength(lane.path));
-    if (Math.max(...lengths) - Math.min(...lengths) > 1e-9) {
-      errors.push(issue(MAP_VALIDATION.LANE_LENGTH_MISMATCH, `lane lengths differ: ${lengths.join(", ")}`));
-    }
+    // Lanes may differ in length: targeting ranks enemies by distance still to go (sim
+    // progress()), so every lane is fair. They must share their final segment.
     const tails = lanes.map((lane) => lane.path.slice(-2));
     if (!tails.every((tail) => JSON.stringify(tail) === JSON.stringify(tails[0]))) {
       errors.push(issue(MAP_VALIDATION.LANES_DO_NOT_MERGE, "multi-entry lanes need a shared final segment"));

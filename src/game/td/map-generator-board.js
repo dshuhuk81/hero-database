@@ -160,6 +160,7 @@ function routeLanes(rng, g, recipe) {
     const cells = walk(rng, g, gate, base, { min: minLen, max: maxLen, road: [], minTurns: 2, firstDir: INWARD[side] });
     return cells ? { lanes: [cells], base } : "ROUTE_STUCK";
   }
+  if (recipe.gates === 3) return threeGateLanes(rng, g, recipe, base);
   // Several gates: a tail junction -> base with a corner, then equal branches gate -> junction.
   const junctions = [];
   for (let c = 2; c < g.cols - 3; c++) for (let r = 0; r < g.rows; r++) junctions.push([c, r]);
@@ -201,6 +202,67 @@ function routeLanes(rng, g, recipe) {
   const entries = branches.map((b) => key(b[b.length - 2]));
   if (new Set(entries).size !== entries.length || entries.includes(key(tail[1]))) return "JUNCTION_CROWDED";
   return { lanes: branches.map((b) => [...b, ...tail.slice(1)]), base };
+}
+
+// Three gates with two merge points (three one-cell lanes rarely meet at one junction on a
+// board five cells tall): gates A and B merge at J1, a middle road J1 -> J2, gate C merges at
+// J2, and a tail J2 -> base with a corner. Lane lengths may differ. Each junction is entered
+// from distinct sides. Returns { lanes, base } or a rejection code.
+function threeGateLanes(rng, g, recipe, base) {
+  const [minLen, maxLen] = BOARD_SIZES[recipe.size].length;
+  const longest = maxLen + 4;
+  const j2s = [], j1s = [];
+  for (let c = 4; c < g.cols - 2; c++) for (let r = 0; r < g.rows; r++) j2s.push([c, r]);
+  const j2 = pick(rng, j2s);
+  const tail = walk(rng, g, j2, base, { min: 3, max: Math.max(4, Math.floor(maxLen / 2)), road: [], minTurns: 1 });
+  if (!tail) return "TAIL_STUCK";
+  for (let c = 2; c < j2[0]; c++) for (let r = 0; r < g.rows; r++) if (manhattan([c, r], j2) >= 2) j1s.push([c, r]);
+  const j1 = pick(rng, j1s);
+  if (!j1) return "NO_JUNCTION";
+  const tailRoad = tail.slice(1).map(key);
+  const mid = walk(rng, g, j1, j2, { min: Math.max(3, manhattan(j1, j2) + 1), max: manhattan(j1, j2) + 3, road: tailRoad });
+  if (!mid) return "MIDDLE_STUCK";
+  const taken = new Set([...tail, ...mid].map(key));
+  const clear = (cell) => !taken.has(key(cell)) && ![...tail, ...mid].some((t) => manhattan(t, cell) < 2);
+  // C enters J2 from the side the middle road and the tail leave free, so its gate sits on
+  // the edge facing that side; it is built before A and B, which then route around it.
+  const used = [mid.at(-2), tail[1]].map((n) => [n[0] - j2[0], n[1] - j2[1]].join(","));
+  const free = DIRS.filter((d) => !used.includes(d.join(",")));
+  const sideFor = { "0,-1": "top", "0,1": "bottom", "-1,0": "left" };
+  const sideC = pick(rng, free.map((d) => sideFor[d.join(",")]).filter((side) => side && recipe.entry.includes(side)));
+  if (!sideC) return "NO_GATE";
+  const otherSides = shuffle(rng, recipe.entry.filter((side) => side !== sideC));
+  const sideA = otherSides[0] ?? sideC, sideB = otherSides[1 % Math.max(1, otherSides.length)] ?? sideA;
+  // C may also use top or bottom tiles up to J2's column (the left-half rule is for A and B).
+  const cGates = (side) => side === "left" ? gateCells(side, g) : Array.from({ length: Math.max(0, j2[0]) }, (_, i) => [i + 1, side === "top" ? 0 : g.rows - 1]).filter(([col]) => col < g.cols - 2);
+  const gateFor = (side, junction, others, ok, cells = gateCells(side, g)) => pick(rng, cells.filter((cell) => clear(cell)
+    && !others.some((o) => manhattan(o, cell) < 2) && ok(manhattan(cell, junction))));
+  const tailRoadC = [...tailRoad, ...mid.slice(0, -1).map(key)];
+  // Lanes may differ in length (the sim ranks targets by distance still to go), so each
+  // branch walks a length range from its gate. C is walked first, A and B route around it.
+  const c = gateFor(sideC, j2, [], (d) => d >= 2, cGates(sideC));
+  if (!c) return "NO_GATE";
+  const branchC = walk(rng, g, c, j2, { min: manhattan(c, j2) + 1, max: manhattan(c, j2) + 5, road: tailRoadC, firstDir: INWARD[sideC] });
+  if (!branchC) return "BRANCH_C_STUCK";
+  const cRoad = branchC.slice(0, -1).map(key);
+  // A and B gates keep clear of C's lane too.
+  const awayFromC = (cell) => !branchC.some((t) => manhattan(t, cell) < 2);
+  const a = gateFor(sideA, j1, [c], (d) => d >= 1, gateCells(sideA, g).filter(awayFromC));
+  const b = a && gateFor(sideB, j1, [a, c], (d) => d >= 1, gateCells(sideB, g).filter(awayFromC));
+  if (!a || !b) return "NO_GATE";
+  const baseRoad = [...tailRoad, ...mid.slice(1).map(key), ...cRoad];
+  // A must keep clear of B's gate tile (B is walked after A).
+  const branchA = walk(rng, g, a, j1, { min: manhattan(a, j1) + 1, max: manhattan(a, j1) + 5, road: [...baseRoad, key(b)], firstDir: INWARD[sideA] });
+  if (!branchA) return "BRANCH_A_STUCK";
+  const branchB = walk(rng, g, b, j1, { min: manhattan(b, j1) + 1, max: manhattan(b, j1) + 5, road: [...baseRoad, ...branchA.slice(0, -1).map(key)], firstDir: INWARD[sideB] });
+  if (!branchB) return "BRANCH_B_STUCK";
+  const lengths = [branchA.length + mid.length - 1, branchB.length + mid.length - 1, branchC.length].map((k) => k + tail.length - 1);
+  if (Math.min(...lengths) < minLen || Math.max(...lengths) > longest) return "NO_BRANCH_LENGTH";
+  const atJ1 = [branchA.at(-2), branchB.at(-2), mid[1]].map(key);
+  const atJ2 = [mid.at(-2), branchC.at(-2), tail[1]].map(key);
+  if (new Set(atJ1).size !== 3 || new Set(atJ2).size !== 3) return "JUNCTION_CROWDED";
+  const viaMid = [...mid.slice(1), ...tail.slice(1)];
+  return { lanes: [[...branchA, ...viaMid], [...branchB, ...viaMid], [...branchC, ...tail.slice(1)]], base };
 }
 
 // Platform blocks next to the road. Returns { cells, blocks } or a rejection code.

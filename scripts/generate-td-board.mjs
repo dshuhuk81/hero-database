@@ -92,7 +92,7 @@ const terrain = mapSceneFor(sample)?.assets?.terrain ?? "";
 
 const made = [];
 let seed = Number(arg("seed", "1"));
-const lastSeed = seed + count * 20;
+const lastSeed = seed + count * (gates === 3 ? 40 : 20); // three-gate boards fit less often
 for (; made.length < count && seed < lastSeed; seed++) {
   const recipe = { generator: BOARD_GENERATOR_ID, ruleset: BOARD_GENERATOR_RULESET, seed, size, gates, entry };
   const result = generateBoardMap(recipe, { ...identity, id: `candidate-${seed}`, name: `Candidate ${seed}` });

@@ -1213,11 +1213,11 @@ export class TowerDefenseGame {
     const classOrder = this.classTargetOrder(hero);
     const prefer = (match) => (a, b) => (match(b) - match(a)) || classOrder(a, b);
     switch (hero.targeting ?? "auto") {
-      case "first": return (a, b) => b.distance - a.distance;
-      case "last": return (a, b) => a.distance - b.distance;
-      case "strongest": return (a, b) => b.hp - a.hp || b.distance - a.distance;
-      case "weakest": return (a, b) => a.hp - b.hp || b.distance - a.distance;
-      case "fastest": return (a, b) => b.speed - a.speed || b.distance - a.distance;
+      case "first": return (a, b) => this.progress(b) - this.progress(a);
+      case "last": return (a, b) => this.progress(a) - this.progress(b);
+      case "strongest": return (a, b) => b.hp - a.hp || this.progress(b) - this.progress(a);
+      case "weakest": return (a, b) => a.hp - b.hp || this.progress(b) - this.progress(a);
+      case "fastest": return (a, b) => b.speed - a.speed || this.progress(b) - this.progress(a);
       case "ground": return prefer((e) => (e.flying ? 0 : 1));
       case "flying": return prefer((e) => (e.flying ? 1 : 0));
       case "boss": return prefer((e) => (e.kind === "boss" ? 1 : 0));
@@ -1227,17 +1227,24 @@ export class TowerDefenseGame {
 
   classTargetOrder(hero) {
     if (hero.ability === "execute") return (a, b) => a.hp - b.hp;
-    if (this.kit(hero).target === "strongest") return (a, b) => b.hp - a.hp || b.distance - a.distance;
-    return (a, b) => b.distance - a.distance;
+    if (this.kit(hero).target === "strongest") return (a, b) => b.hp - a.hp || this.progress(b) - this.progress(a);
+    return (a, b) => this.progress(b) - this.progress(a);
   }
 
   // Assassin leak catcher (kit dash): a moving enemy that has already passed the Assassin,
   // no blocker holds and remains within dash reach. Approaching enemies must enter melee.
+  // How far along an enemy is, as minus the distance still to go to the base: comparable
+  // across lanes of different length (three-gate boards), and on equal lanes the same order
+  // as distance walked.
+  progress(enemy) {
+    return enemy.distance - this.laneOf(enemy).total;
+  }
+
   dashTarget(hero) {
     let best = null;
     for (const enemy of this.enemies) {
       if (!this.canDashTo(hero, enemy)) continue;
-      if (!best || enemy.distance > best.distance) best = enemy;
+      if (!best || this.progress(enemy) > this.progress(best)) best = enemy;
     }
     return best;
   }
@@ -1978,7 +1985,7 @@ export class TowerDefenseGame {
       // Aegir: cleave + push up to 3 enemies back on path (sorted by furthest progress = most dangerous first)
       const around = foes.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
-      const victims = (cone.length ? cone : around).sort((a, b) => b.distance - a.distance).slice(0, aw ? 5 : 3);
+      const victims = (cone.length ? cone : around).sort((a, b) => this.progress(b) - this.progress(a)).slice(0, aw ? 5 : 3);
       victims.forEach((e) => {
         this.hit(e, power, hero);
         // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
@@ -1993,7 +2000,7 @@ export class TowerDefenseGame {
       const duration = Math.max(0, skill?.petrifyDuration ?? 3) + (aw ? 1 : 0);
       const victims = foes.filter(e => !e.dead
         && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range && this.inCone(hero, e))
-        .sort((a, b) => b.distance - a.distance).slice(0, limit);
+        .sort((a, b) => this.progress(b) - this.progress(a)).slice(0, limit);
       if (!victims.length) return false; // Keep the ultimate ready until she faces a target.
       const gazeTargets = victims.map(e => ({ x: e.x, y: e.y }));
       for (const victim of victims) {

@@ -1327,12 +1327,11 @@ for (const map of maps.filter((entry) => entry.base)) mapLanes(map).forEach((rou
   assert.equal(g.lives, lives - enemy.damage, "removed enemy cannot damage the base again");
 });
 
-// Multi-entrance maps: gates alternate, lanes are equally long and merge before the base.
+// Multi-entrance maps: gates alternate and lanes merge before the base. Lanes may differ in
+// length, so targeting ranks enemies by distance still to go (progress).
 for (const map of maps.filter((entry) => entry.lanes)) {
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105 });
   assert.ok(g.lanes.length >= 2, `${map.id} has several entrances`);
-  // Targeting ranks enemies by distance walked, which is only fair when every lane is as long.
-  for (const lane of g.lanes) assert.equal(lane.total, g.path.total, `${map.id} lanes share one length`);
   const tail = (path) => JSON.stringify(path.slice(-2));
   assert.ok(g.lanes.every((lane) => tail(lane.path) === tail(g.lanes[0].path)), `${map.id} lanes merge into one approach`);
   g.startWave();
@@ -1343,6 +1342,10 @@ for (const map of maps.filter((entry) => entry.lanes)) {
   const second = g.spawnEnemy("grunt", { lane: 1 });
   const [x, y] = mapLanes(map)[1].path[0];
   assert.deepEqual({ x: second.x, y: second.y }, { x, y }, "second lane starts at its own gate");
+  const first = g.spawnEnemy("grunt", { lane: 0 });
+  first.distance = g.lanes[0].total - 30;
+  second.distance = g.lanes[1].total - 60;
+  assert.ok(g.progress(first) > g.progress(second), `${map.id}: the enemy closer to the base counts as further along`);
   // Along its own first leg, whichever way it leaves the gate (lattice-v2 gates sit on any
   // edge), measured mid-leg because the sim rounds corners.
   const [nx, ny] = mapLanes(map)[1].path[1];

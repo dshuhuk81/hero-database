@@ -130,8 +130,9 @@ Status (October 1, 2026): done. `src/game/td/map-generator-board.js` (`board-v1`
 - Sizes: 8 x 4 at 118 px cells, 9 x 5 at 104 px, 10 x 5 at 94 px (the largest square cell
   that fits the 960 x 540 world with a margin; the earlier 120 / 96 px estimates do not fit).
 - One or two gates work reliably (two gates succeed for 53-90% of seeds; the CLI just tries
-  more). Three gates almost never fit: three one-cell lanes cannot meet at one junction on a
-  board five cells tall without touching. They need a second merge point; left for later.
+  more). Three gates use two merge points (A and B meet at J1, C joins at J2) and lanes of
+  different lengths, which the sim handles by ranking targets by distance still to go;
+  11-17% of seeds succeed per size (October 2, 2026).
 - The road is one cell wide: road cells side by side are always consecutive on a lane.
 - Special tiles: every map gets high ground and cursed on platforms and a shrine on the road.
 - Uniqueness: `layoutConflict()` compares two maps of the same size under the four
@@ -152,7 +153,7 @@ A `board-v1` generator next to `lattice-v2`, same recipe and `geometryHash` cont
 
 - Inputs: board size, number of spawn gates (1-3), gate edges, base position, number of
   platform blocks and their shapes (2 x 2, L, row of 3, single), seed.
-- Rules: lanes of equal length merging before the base; every lane passes at least two
+- Rules: lanes merging before the base (equal length dropped on October 2, 2026); every lane passes at least two
   platform blocks; at least one road choke point next to a block; no platform tile without a
   road cell in reach of the shortest pattern.
 - **Uniqueness (requirement B):** a layout signature built from road cells, platform cells,

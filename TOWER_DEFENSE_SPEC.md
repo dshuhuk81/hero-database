@@ -55,8 +55,8 @@ neighbouring tiles can cover very different ground.
 
 Waves bring **fewer, stronger enemies**: the authored waves are converted at run time to a
 fifth of the enemies with five times the health and gold, two and a half times the attack,
-and five lives lost per leak. Flyers, which ignore blockers, are converted more gently
-(two-fifths as many, 1.75 times the health, two and a half lives per leak). Each enemy is
+and one shown life lost per leak. Flyers, which ignore blockers, are converted more gently
+(two-fifths as many, 1.75 times the health, also one shown life per leak). Each enemy is
 readable and matters; area damage loses some of its value, which is why Mages carry a
 **focus** rule (splash that finds no neighbour hits the main target instead).
 
@@ -359,7 +359,11 @@ On boards every authored wave is converted when it starts (`game.waveShape(kind)
 - A non-boss group sends `round(count x 0.2)` enemies (at least one), each with 5x health,
   5x gold, 2.5x attack and 5 lives lost on a leak; spawn gaps are 2.5x longer.
 - Flyers use their own values: `round(count x 0.4)`, 1.75x health, normal attack, 2.5x gold,
-  3 lives lost on a leak (leak damage is rounded to whole lives).
+  5 lives lost on a leak (leak damage is rounded to whole lives).
+- **Shown lives:** the battle keeps its internal lives; the UI shows them in units of
+  `tuning.board.lifeUnit` (5) via `shownLives()` in `board.js`, so a regular leak costs one
+  shown life and the run ends when the shown count reaches 0. Bosses and their children keep
+  their own leak damage and can cost a fraction of a shown life.
 - A group still sends at least one enemy through every gate; when that adds enemies, each
   carries a matching share of the group's strength (`split`, applied as a stat scale).
 - Bosses and summoned children (imps, Lilith's brood) are never converted.
@@ -409,7 +413,7 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 
 ## 9. Battle economy and in-battle upgrades
 
-- Free Play run: 340 starting gold, 25 lives, deploy cap 7, sell refund 50%. Kill rewards
+- Free Play run: 340 starting gold, 25 lives (5 shown), deploy cap 7, sell refund 50%. Kill rewards
   (5x per enemy under the wave shape, so the total per wave stays about the same), wave-clear
   bonus 50 + 10 per wave, a quest per wave (gold 40 + 10 per wave).
 - Battle ranks I-IV cost 80 / 120 / 160 gold (+10% attack, +20% health per rank). Rank III
@@ -455,15 +459,16 @@ derived tiles (`roadSlots`, `platformSlots`, `rings`) and provenance (`recipe`,
 
 - Every path begins exactly at its gate and ends exactly at the base; segments are
   horizontal or vertical, at least 60 px, without self-intersection.
-- Several lanes have equal travel length and share their final segment (targeting ranks
-  enemies by distance walked, which is only fair on equal lanes).
+- Several lanes share their final segment. They may differ in length: targeting ranks
+  enemies by distance still to go to the base (`progress()` in `sim.js`), so an enemy on a
+  short lane is never treated as further behind than one on a long lane.
 - Boards need at least 6 road and 8 platform tiles (classic maps 15 and 20).
 - Committed tiles must equal `buildGrid(map)`.
 
 ### Board generator `board-v1` (`map-generator-board.js`)
 
 `generateBoardMap(recipe, identity)` builds one deterministic board from
-`{ generator: "board-v1", ruleset: 1, seed, size: "8x4" | "9x5" | "10x5", gates: 1 | 2,
+`{ generator: "board-v1", ruleset: 1, seed, size: "8x4" | "9x5" | "10x5", gates: 1 | 2 | 3,
 entry: ["left", "top", "bottom"] }`:
 
 - Gates on the left edge or the left half of the top or bottom edge; the first step goes
@@ -472,12 +477,18 @@ entry: ["left", "top", "bottom"] }`:
   and a lane reaches the cell next to its end only to step into it.
 - Two gates: a tail from a junction to the base with at least one corner, then two branches
   of exactly the same length from the gates to the junction, entering it from different
-  sides. Three gates are accepted by the recipe but almost never fit (section 16).
+  sides.
+- Three gates: two merge points. Gates A and B meet at junction J1, a middle road runs
+  J1 -> J2, gate C joins at J2, and a tail with a corner runs J2 -> base. Each branch walks
+  a length range from its gate (straight distance + 1 to + 5 tiles), so the three lanes
+  usually differ in length; each junction is entered from three different sides, and no gate
+  sits next to another lane. About one seed in eight succeeds; the CLI tries more seeds.
 - Platform blocks (2 x 2, row of 3, L, pair, single) beside the road, never touching each
   other edge to edge; every lane passes at least two blocks, and at least one road tile has
   three platform tiles around it (a choke point). Tile counts per size: 8-12, 10-15, 12-17.
 - Special tiles: high ground and cursed on platform tiles, a shrine on a road tile.
-- Lane length in tiles: 8-13, 10-17, 11-19 per size; two gates may run two tiles longer.
+- Lane length in tiles: 8-13, 10-17, 11-19 per size; two gates may run two tiles longer,
+  three gates four.
 - The result passes `validateMap`; `geometryHash` is FNV-1a over the geometry.
 
 **Uniqueness** (`layoutConflict(a, b)`): two maps of the same size share a layout when their
@@ -606,8 +617,8 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 ### Stage rating and chapter rewards
 
 - Every cleared stage has a rating of 0-3 laurels: a clear, keeping at least 50% of the
-  stage's lives, keeping at least 90% (rounded up). With leaks costing 5 lives on boards,
-  three laurels mean no leak at all on most stages.
+  stage's shown lives, keeping at least 90% (rounded up; `campaign.laurels.lifeUnit` 5).
+  With one shown life per leak, three laurels mean no leak at all on most stages.
 - Chapter milestones at 10 / 20 / 30 rating points pay Gold and Hero XP / Divine Seals /
   Divine Seals and Seal Dust, once (`payMilestones`).
 
@@ -746,9 +757,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 - **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.
-- **Lives:** a ground leak costs 5 of 15-25 lives; showing fewer lives with one per leak
-  (as in grid tower defense games) would read more clearly. Laurel thresholds would move with it.
-- **Three gates:** needs a second merge point in `board-v1`.
 - **Per-hero patterns and pattern-shaped ultimates:** patterns are per class; ultimates with
   multiplied areas and cones are still circles.
 - **Campaign upgrades outside the Campaign:** Free Play and Expedition use base stats.

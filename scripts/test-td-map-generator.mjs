@@ -149,8 +149,36 @@ for (const map of maps.filter((entry) => entry.recipe)) {
   const mirrored = { ...m, base: { x: mirrorX(m.base.x), y: m.base.y }, ...(lanes.length > 1 ? { lanes: lanes.map(flip) } : { spawn: flip(lanes[0]).spawn, path: flip(lanes[0]).path }),
     grid: { board: { ...bd, platforms: bd.platforms.map(([c, r]) => [bd.cols - 1 - c, r]) } } };
   assert.equal(layoutConflict(m, mirrored), "identical", "a mirrored copy counts as the same layout");
+  // No gate tile lies on another lane (a spawn on top of someone else's road).
+  const gateOnLane = (map) => {
+    const b = map.grid.board;
+    const cellOf = ([x, y]) => [Math.min(b.cols - 1, Math.max(0, Math.floor((x - b.origin[0]) / b.cell))), Math.min(b.rows - 1, Math.max(0, Math.floor((y - b.origin[1]) / b.cell)))];
+    const lanes = mapLanes(map);
+    const cells = lanes.map(({ path }) => {
+      const out = new Set();
+      const pts = path.map(cellOf);
+      let cur = pts[0];
+      out.add(cur.join(","));
+      for (const next of pts.slice(1)) while (cur[0] !== next[0] || cur[1] !== next[1]) { cur = [cur[0] + Math.sign(next[0] - cur[0]), cur[1] + Math.sign(next[1] - cur[1])]; out.add(cur.join(",")); }
+      return out;
+    });
+    return lanes.some((lane, i) => cells.some((set, j) => i !== j && set.has(cellOf([lane.spawn.x, lane.spawn.y]).join(","))));
+  };
+  // Three gates (two merge points): valid (shared final segment), no gate on another lane.
+  let threeGate = 0;
+  for (let seed = 1; seed <= 400 && threeGate < 2; seed++) {
+    const r = generateBoardMap(board(seed, "9x5", 3), who);
+    if (!r.ok) continue;
+    threeGate += 1;
+    const lanes = mapLanes(r.map);
+    assert.equal(lanes.length, 3, `three-gate seed ${seed}: three lanes`);
+    assert.ok(validateMap(r.map).ok, `three-gate seed ${seed} valid`);
+    assert.ok(!gateOnLane(r.map), `three-gate seed ${seed}: no gate on another lane`);
+  }
+  assert.ok(threeGate >= 2, "three-gate boards generate");
   // Requirement B on the real data: no two board maps share a layout.
   const boards = maps.filter((map) => map.grid?.board);
+  for (const map of boards) if (map.lanes) assert.ok(!gateOnLane(map), `${map.id}: no gate on another lane`);
   for (let i = 0; i < boards.length; i++) for (let j = i + 1; j < boards.length; j++) {
     assert.equal(layoutConflict(boards[i], boards[j]), null, `${boards[i].id} and ${boards[j].id} share a layout`);
   }
