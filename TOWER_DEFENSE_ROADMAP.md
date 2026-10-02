@@ -63,18 +63,18 @@ rollout order and the required-checks list. Sprites already exist (`boss-lerna-v
 `boss-kraghorn-v1`, `boss-vorruk-v1`, see archive September 29). Build scope, in rollout
 order:
 
-1. **Lerna** (Verdant Crossing, replaces Lilith there): threshold ultimate at 70%/35%
+1. **Lerna** : threshold ultimate at 70%/35%
    health (one-shot queue, never re-arms), interruptible 2 s wind-up + 4 s healing channel
    (1.5% max hp/s, 6% budget per cast, canceled by 4% max hp accumulated damage, stun or
    petrify; burn suppresses healing ticks), Tender Growth exposure window (+20% damage
    taken, 5 s) after each cast, and the Bitter Seep ground pool (10 s cooldown, 1.5 s
    warning, 48 px radius, 4 s, 20% A magic per second, one pool max).
-2. **Kraghorn** (Moonlit Pass alternate): path-distance charge every 18 s (2.5 s hoof-scrape
+2. **Kraghorn** : path-distance charge every 18 s (2.5 s hoof-scrape
    warning marking 140 px of its own path, 3× speed, stops at and hits the first living road
    hero for 180% A, canceled by stun/petrify/knockback), Cracked Hide recovery (4 s, armor
    halved), Stones from the Hide fragment attack (12 s, 3 fragments, 45% A each), high
    armor / low magic resistance profile.
-3. **Vorruk** (Sunscar map): burrow ultimate every 20 s (2 s jagged-ring warning on a fixed
+3. **Vorruk** : burrow ultimate every 20 s (2 s jagged-ring warning on a fixed
    platform or road slot, 2 s untargetable underground — road progress paused, block
    released, damage-over-time keeps ticking, health bar stays visible — then eruption: 90% A
    in 60 px at the marked spot, Open Throat exposure 5 s), Grit Lance platform poke (9 s,
@@ -85,6 +85,32 @@ must use shape + color and pause with combat; killing a boss mid-warning grants 
 and cancels pending zones; deterministic at all sim speeds. Tests: one `test-td-bosses.mjs`
 covering every bullet of the concept doc's "Required checks" list, plus a simulated win per
 boss with the mixed roster. Balance numbers stay first guesses until R12.
+
+**R9 campaign placement (owner thinking, October 2, 2026).** The concept doc's free-map
+suggestions stay untouched. In the campaign every chapter finale currently spawns the same
+generic `boss` — that is where the three monsters belong, matched to the chapter theme.
+Proposed first homes (owner call before wiring):
+
+- **Vorruk → 2-6 "Throne of Ash" (The Sunscar March).** The burrowing sand worm is the
+  desert chapter's native monster; its story ("followed the buried foundations of Sunscar
+  for centuries") already names this setting. Strongest thematic fit of the three; also the
+  earliest new boss a player meets, and its platform-marker teaches well on Sunscar's
+  spread platforms. Alternative inside the chapter: 2-3 "Serpent Wells" (wells = burrows).
+- **Lerna → 3-6 "Heart of the Jungle" (The Emerald Deep).** Swamp roots and regrowth fit
+  the overgrown temple; 3-5 "Emerald Coil" even telegraphs a serpent. The Root-Maw's story
+  ("roots knotted around something alive beneath the crossing") ports one-to-one to a
+  drowned jungle court. Alternative: 3-3 "Flooded Court" (water + roots).
+- **Kraghorn → 11-6 "Last Orchard" (The Last Harvest).** A gigantic boar is the Calydonian
+  hunt animal — autumn, falling leaves and a hunt finale suit it better than any gate
+  chapter; "every wall eventually opens" reads as the harvest's fences and orchard walls.
+  Alternative if a gate chapter is preferred: 5-6 "Forge Heart" (The Cinder Oath), where the
+  living battering ram besieges the forge gates.
+
+Long-term each theme family deserves its own finale boss (frost, storm, tidal, mycelium,
+crystal, necropolis, celestial, clockwork have no candidate among these three) — new boss
+concepts, out of R9's scope. Implementation note for R9: chapter finales need a named-boss
+field on the finale wave (spawn kind `boss` → `lerna` / `kraghorn` / `vorruk`); the generic
+`boss` stays the default for all other chapters.
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
@@ -111,6 +137,8 @@ fjord map replaces, no mixing). New sim surface: slick-trail aura and the draugr
 burst; everything else reuses existing systems. Tests: extend `test-td-sim.mjs` with slick
 trail speed-up and draugr burst; skin test picks up the six new kinds.
 
+Boss Rework for all Campaign Stages:
+
 **R16 — Ymir hammer swing.** His default attack currently has no dedicated animation; the
 checklist in the archive lists him as done for voice/attack/ultimate, but the attack uses a
 generic strike. Produce a hammer-swing attack clip via the PixelLab pipeline: 3-4 frames
@@ -119,6 +147,22 @@ facing direction, 1 frame recover; impact frame must line up with the existing a
 timing (attackPeriod from tuning; the damage frame is the swing's second frame). Follow the
 existing hero animation export path (`td-spine` / atlas pipeline, `scripts/td-pixellab-clips.mjs`),
 register as `ymir` attack clip, verify in the anim lab (`anim-lab.astro`). No sim changes.
+
+**R17 - Campaign Stage Changes.** 1. The Road to the Crossing needs a change cause its Mixing themes. Every Campaign Chapter should only have 1 theme.
+Every Campaign Chapter should also have only 1 boss. Bosses should not be duplicate. Therefore we here is an audit for existing bosses at the moment:
+1. The Road to the Crossing (Baphomet, Lilith) -> change to only Lilith
+2. The Sunscar March (Baphomet)
+3. The Emerald Deep (Ochenta)
+4. The Frozen Covenant (Baphomet) -> new Boss needed - topic: Ice
+5. The Cinder Oath (Baphomet) -> new Boss Lerna
+6. The Thunder Stair (Ochenta) -> new Boss needed - topic: Thunder, Lightning
+7. The Drowned Crown (Lilith) -> new Boss needed - topic: Water
+8. The Spore Lanterns (Lilith) -> new Boss needed - topic: Poison
+9. The Shattered Prism (Baphomet) -> new Boss needed - topic: Aetheral
+10. The Silent Procession (Lilith) -> new Boss needed - topic: death
+11. The Last Harvest (Ochenta) -> new Boss: Vorruk
+12. The Astral Meridian (Lilith) -> new Boss needed - topic: Star, Galaxy
+13. The Brass Reckoning (Ochenta) -> new Boss Kraghorn
 
 #### CONCEPT
 
