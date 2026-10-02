@@ -44,16 +44,13 @@ export const SQUADS = {
   "glass cannon": ["nott", "hecate", "hephaestus", "odin", "harmonia", "aegir", "thanatos", "boreas", "skadi", "vidar", "stheno"],
 };
 
-// `tuning` overrides the base tuning (balance experiments). `focus` is the level focus
-// bots pick ("attack", "health"); default: health on the road, attack on platforms.
-// `paths` maps class -> path id for the level-4 path (M12); default: each class's first path.
+// `tuning` overrides the base tuning (balance experiments).
 // `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
 // `game` adds constructor options (campaign stages: waves, allowedHeroes, lives, hpScale).
-// `policy` is the upgrade policy: "cheapest" (default) buys the cheapest upgrade and the first
-// level-4 path; "carry" pours gold into the strongest hero (highest attack first) and takes the
-// last path, so balance results are not an artefact of one play style (audit step 3).
+// `policy` remains in the result label for historical balance comparisons; heroes now spend
+// battle gold only on deployment, and automated relocation is deferred to the balance pass.
 export const POLICIES = ["cheapest", "carry"];
-export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, focus, paths = null, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150, game: gameOptions = {} } = {}) {
+export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150, game: gameOptions = {} } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
@@ -81,19 +78,6 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
           const before = g.gold;
           if (g.place(id, base.slot, i)) { spent += before - g.gold; break; }
         }
-      }
-      // spend spare gold on the cheapest available upgrade
-      for (let guard = 0; guard < 20; guard += 1) {
-        const options = g.heroes.map((h) => g.upgradeInfo(h.entityId)).filter((i) => i.ok);
-        if (!options.length) break;
-        if (policy === "carry") options.sort((a, b) => b.hero.atk - a.hero.atk || a.cost - b.cost);
-        else options.sort((a, b) => a.cost - b.cost);
-        const before = g.gold;
-        const pick = options[0].hero;
-        const info = options[0];
-        const pathChoice = paths?.[pick.class] ?? (policy === "carry" ? info.pathOptions?.at(-1) : info.pathOptions?.[0]);
-        g.upgrade(pick.entityId, info.needsPath ? pathChoice : focus ?? (pick.slotType === "road" ? "health" : "attack"));
-        spent += before - g.gold;
       }
       // `blessings`: preference list of offer entries ("boon:<id>" or virtue names), else the first card.
       if (g.virtueOffer) g.chooseVirtue((blessings ?? []).find((name) => g.virtueOffer.includes(name)) ?? g.virtueOffer[0]);

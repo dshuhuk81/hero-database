@@ -96,17 +96,16 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, startLevels = null, lives = null, maxLives = null, hpScale = null, interventions = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, onChange = () => {} }) {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
     this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);
-    // Expedition (M21): relics (run blessings active from wave 1), veteran start levels per
-    // hero, lives carried over from the previous stage and a stage health scale.
+    // Expedition (M21): relics (run blessings active from wave 1), lives carried over from
+    // the previous stage and a stage health scale.
     this.presetBoons = (boons ?? []).filter((id) => tuning.runBoons?.list?.[id]);
     // Divine Interventions unlocked for this run (the page passes them; none in the Daily Trial).
     this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
-    this.startLevels = startLevels ?? {};
     this.startLives = lives;
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
     // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play, Daily and Endless).
@@ -201,7 +200,6 @@ export class TowerDefenseGame {
     this.totalGoldEarned = 0;
     this.totalGoldSpent = 0;
     this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
-    this.upgradesBought = 0; // levels, Awakenings and trainings bought this run (M20 challenges)
     this.relocations = 0;
     this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
@@ -248,26 +246,15 @@ export class TowerDefenseGame {
     this.gold -= cost;
     this.totalGoldSpent += cost;
     if (!this.fieldedIds.includes(heroId)) this.fieldedIds.push(heroId);
-    const hp = this.maxHpFor(base.hp, 1, base.class);
+    const hp = this.maxHpFor(base.hp, base.class);
+    const atk = this.atkFor({ ...base, baseAtk: base.atk });
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
-    const startLevel = this.startLevelFor(base);
-    if (startLevel > 1) {
-      const placed = this.heroes.at(-1);
-      placed.level = startLevel;
-      placed.atk = this.atkFor(placed, startLevel);
-      placed.hp = placed.hpLeft = this.maxHpFor(base.hp, startLevel, base.class);
-    }
-    this.heroes.at(-1).invested = cost; // deploy, upgrades and awakening paid for this unit (sell refund)
+    this.heroes.push({ ...base, atk, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    this.heroes.at(-1).invested = cost;
     if (this.running) this.waveHeroes?.set(this.heroes.at(-1).entityId, base.class);
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
     return true;
-  }
-
-  // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
-  startLevelFor(base) {
-    return Math.min(Math.max(1 + (this.classBonus(base).startLevel || 0), this.startLevels[base.id] || 1), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
   }
 
   // On a board the range is the radius of the hero's pattern (patternRadius), so ultimate
@@ -288,11 +275,9 @@ export class TowerDefenseGame {
   deployPreview(heroId, slotType, slotIndex) {
     const base = this.heroesById.get(heroId);
     if (!base) return null;
-    const level = this.startLevelFor(base);
     return {
-      level,
-      atk: level > 1 ? this.atkFor({ ...base, baseAtk: base.atk }, level) : base.atk,
-      hp: this.maxHpFor(base.hp, level, base.class),
+      atk: this.atkFor({ ...base, baseAtk: base.atk }),
+      hp: this.maxHpFor(base.hp, base.class),
       range: this.deployRange(base, slotType, slotIndex),
       aps: base.aps,
       critChance: base.critChance,
@@ -361,43 +346,14 @@ export class TowerDefenseGame {
     return this.classes[cls] ?? {};
   }
 
-  maxHpFor(baseHp, level, heroClass, awakened = false, focus = null, trained = null) {
-    const tuning = this.tuning.upgrades;
+  maxHpFor(baseHp, heroClass) {
     const cb = this.classBonus(heroClass);
     const favorHp = (this.favor.heroHpBonus || 0) + (cb.hp || 0);
-    const awake = awakened ? 1 + (this.tuning.awakening?.healthBonus || 0) + (cb.awakenBonus || 0) : 1;
-    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp) * awake * this.focusMult(focus, "health") * this.trainMult(trained, "health"));
+    return Math.round(baseHp * (1 + this.modifiers().hp) * (1 + favorHp) * (1 + (cb.power || 0)));
   }
 
-  // Training (tuning.training): after Awakening a hero can train attack or health again and
-  // again; each training adds its share. Range is not trained in battle.
-  trainMult(trained, stat) {
-    return 1 + (this.tuning.training?.[stat] || 0) * (trained?.[stat] || 0);
-  }
-
-  trainingCost(hero) {
-    const cfg = this.tuning.training;
-    const done = Object.values(hero.trained || {}).reduce((sum, n) => sum + n, 0);
-    return Math.round(cfg.cost * cfg.costGrowth ** done * (1 - (this.favor.upgradeDiscount || 0)));
-  }
-
-  // Class path chosen at tuning.upgrades.path.level (M12): its numbers from tuning.paths.
-  pathFx(hero, id) {
-    if (!hero?.path || (id && hero.path !== id)) return null;
-    return this.tuning.paths?.[hero.class]?.[hero.path] ?? null;
-  }
-
-  // Level focus (tuning.upgrades.focus): reaching focus.level asks for attack or health.
-  // Range is not upgraded in battle (board plan, October 1, 2026).
-  focusMult(focus, stat) {
-    const bonus = this.tuning.upgrades.focus?.[stat];
-    return focus === stat && bonus ? 1 + bonus : 1;
-  }
-
-  atkFor(hero, level, awakened = false, focus = hero.focus, trained = hero.trained) {
-    const tuning = this.tuning.upgrades;
-    const awake = awakened ? 1 + (this.tuning.awakening?.attackBonus || 0) + (this.classBonus(hero).awakenBonus || 0) : 1;
-    return Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * (level - 1)) * awake * this.focusMult(focus, "attack") * this.trainMult(trained, "attack"));
+  atkFor(hero) {
+    return Math.round((hero.baseAtk ?? hero.atk) * (1 + (this.classBonus(hero).power || 0)));
   }
 
   rangeFor(base) {
@@ -480,11 +436,10 @@ export class TowerDefenseGame {
   // Whether the deployed team can use a mechanic blessing (M17).
   boonEligible(id) {
     const need = this.tuning.runBoons.list[id]?.requires;
-    const applies = (status) => this.heroes.some((h) => this.statusCfg()?.sources?.[h.id] === status || this.classBonus(h).infuse === status
-      || (status === "burn" && h.path === "wildfire") || (status === "chill" && (h.path === "frost" || h.path === "crippling")));
+    const applies = (status) => this.heroes.some((h) => this.statusCfg()?.sources?.[h.id] === status || this.classBonus(h).infuse === status);
     switch (need) {
       case null: case undefined: return true;
-      case "chain": return this.heroes.some((h) => (h.basic === "chain" && this.kit(h).chain) || h.path === "arc");
+      case "chain": return this.heroes.some((h) => h.basic === "chain" && this.kit(h).chain);
       case "road": return this.heroes.some((h) => h.slotType === "road");
       case "freeze": return applies("wet") && applies("chill");
       default: return applies(need);
@@ -504,91 +459,11 @@ export class TowerDefenseGame {
     if (hpGain > 0) {
       // Apply the health bonus to already-deployed heroes, granted as current health.
       for (const hero of this.heroes) {
-        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class, hero.awakened, hero.focus, hero.trained);
+        const next = this.maxHpFor(hero.baseHp, hero.class);
         hero.hpLeft += next - hero.hp;
         hero.hp = next;
       }
     }
-  }
-
-  upgradeInfo(entityId) {
-    const hero = this.heroes.find((item) => item.entityId === entityId);
-    if (!hero) return { ok: false, reason: "No hero selected." };
-    const tuning = this.tuning.upgrades;
-    if (this.complete) return { ok: false, reason: "Run is over.", hero };
-    if (hero.level >= tuning.maxLevel) {
-      // Awakening: one step past the level cap. Lost when the hero falls, like levels.
-      const awakening = this.tuning.awakening;
-      if (hero.awakened && this.tuning.training) return this.trainingInfo(hero);
-      if (!awakening || hero.awakened) return { ok: false, reason: `${hero.name} is fully upgraded.`, hero };
-      const cost = Math.round(awakening.cost * (1 - (this.classBonus(hero).awakenDiscount || 0)));
-      const nextAtk = this.atkFor(hero, hero.level, true);
-      const nextHp = this.maxHpFor(hero.baseHp, hero.level, hero.class, true, hero.focus);
-      if (this.gold < cost) return { ok: false, awaken: true, reason: `Needs ${cost} gold, you have ${this.gold}.`, hero, cost, nextAtk, nextHp };
-      return { ok: true, awaken: true, hero, cost, nextAtk, nextHp };
-    }
-    const cost = Math.round(tuning.costs[hero.level] * (1 - (this.favor.upgradeDiscount || 0)));
-    const nextAtk = this.atkFor(hero, hero.level + 1);
-    const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, hero.focus, hero.trained);
-    // The step to focus.level needs a choice; each option previews its own numbers.
-    const needsFocus = !hero.focus && hero.level + 1 === tuning.focus?.level;
-    const focusOptions = needsFocus ? {
-      attack: { nextAtk: this.atkFor(hero, hero.level + 1, false, "attack"), nextHp, nextRange: hero.range },
-      health: { nextAtk, nextHp: this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, "health"), nextRange: hero.range },
-    } : null;
-    // The step to path.level asks for one of the class paths (tuning.paths, M12).
-    const needsPath = !hero.path && hero.level + 1 === tuning.path?.level && !!this.tuning.paths?.[hero.class];
-    const pathOptions = needsPath ? Object.keys(this.tuning.paths[hero.class]) : null;
-    if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost, nextAtk, nextHp, needsFocus, focusOptions, needsPath, pathOptions };
-    return { ok: true, hero, cost, nextAtk, nextHp, needsFocus, focusOptions, needsPath, pathOptions };
-  }
-
-  // Training offer, shaped like the level focus choice (needsFocus + focusOptions), so
-  // upgrade(entityId, stat) and the popover picker handle both.
-  trainingInfo(hero) {
-    const cost = this.trainingCost(hero);
-    const trained = hero.trained || {};
-    const plus = (stat) => ({ ...trained, [stat]: (trained[stat] || 0) + 1 });
-    const hp = (t) => this.maxHpFor(hero.baseHp, hero.level, hero.class, true, hero.focus, t);
-    const focusOptions = {
-      attack: { nextAtk: this.atkFor(hero, hero.level, true, hero.focus, plus("attack")), nextHp: hero.hp, nextRange: hero.range },
-      health: { nextAtk: hero.atk, nextHp: hp(plus("health")), nextRange: hero.range },
-    };
-    const info = { train: true, needsFocus: true, focusOptions, hero, cost, nextAtk: hero.atk, nextHp: hero.hp };
-    if (this.gold < cost) return { ...info, ok: false, reason: `Needs ${cost} gold, you have ${this.gold}.` };
-    return { ...info, ok: true };
-  }
-
-  upgrade(entityId, focus = null) {
-    let info = this.upgradeInfo(entityId);
-    if (!info.ok) return info;
-    if (info.needsFocus) {
-      const option = info.focusOptions[focus];
-      if (!option) return { ...info, ok: false, reason: info.train ? "Choose what to train: attack or health." : `Choose a focus for level ${info.hero.level + 1}: attack or health.` };
-      info = { ...info, ...option };
-      if (info.train) info.hero.trained = { ...(info.hero.trained || {}), [focus]: (info.hero.trained?.[focus] || 0) + 1 };
-      else info.hero.focus = focus;
-      info.hero.range = option.nextRange;
-    } else if (info.needsPath) {
-      if (!info.pathOptions.includes(focus)) return { ...info, ok: false, reason: `Choose a path for level ${info.hero.level + 1}.` };
-      info.hero.path = focus;
-    }
-    this.gold -= info.cost;
-    this.totalGoldSpent += info.cost;
-    this.upgradesBought += 1;
-    info.hero.invested = (info.hero.invested || 0) + info.cost;
-    if (info.awaken) {
-      info.hero.awakened = true;
-      this.emitHeroEffect(info.hero, { type: "awaken", x: info.hero.x, y: info.hero.y, life: 0.9, color: "gold" });
-    } else if (info.train) {
-      this.emitHeroEffect(info.hero, { type: "buff", x: info.hero.x, y: info.hero.y, life: 0.5, color: "gold" });
-    } else info.hero.level += 1;
-    const hpGain = info.nextHp - info.hero.hp;
-    info.hero.atk = info.nextAtk;
-    info.hero.hp = info.nextHp;
-    info.hero.hpLeft += hpGain; // the new maximum health is granted, but no free full heal
-    this.onChange("upgrade", this);
-    return info;
   }
 
   defaultRotationFor(x, y) {
@@ -792,8 +667,6 @@ export class TowerDefenseGame {
             const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
             const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
-            const thorns = this.pathFx(target, "thorns");
-            if (thorns && !enemy.dead) this.hit(enemy, taken * thorns.reflect, target, { showShot: false, showHit: false });
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
           enemy.attackClock = (enemy.attackPeriod || 0.9) / this.childFrenzy(enemy) / (1 + boost.attackSpeed);
@@ -841,7 +714,7 @@ export class TowerDefenseGame {
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + this.hymnFor(hero) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps) * this.environment("aps", hero));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps) * this.environment("aps", hero));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -1133,7 +1006,7 @@ export class TowerDefenseGame {
       const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
       // Block limit: a blocker that already holds its share lets further melee enemies walk
       // past, but they brush against it (step() slows them, tuning.blocking.passSlow).
-      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) + (this.pathFx(hero, "bulwark")?.blockLimit || 0) : undefined;
+      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) : undefined;
       if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) {
         if (distance <= reach) enemy.brushed = true;
         continue;
@@ -1413,7 +1286,7 @@ export class TowerDefenseGame {
 
   dashReach(hero) {
     const dash = this.kit(hero).dash;
-    return dash ? dash + (this.classBonus(hero).dash || 0) + (this.pathFx(hero, "reach")?.dash || 0) : 0;
+    return dash ? dash + (this.classBonus(hero).dash || 0) : 0;
   }
 
   // Class kit numbers with their class blessings (blessingTree *_special), for sim and UI.
@@ -1466,12 +1339,10 @@ export class TowerDefenseGame {
   focusShare(hero, kit, others) {
     const focus = kit.focus;
     if (!focus) return 0;
-    const chainer = (hero.basic === "chain" && !!kit.chain) || hero.path === "arc";
+    const chainer = hero.basic === "chain" && !!kit.chain;
     if (chainer) {
-      const basic = hero.basic === "chain" && kit.chain ? kit.chain : null;
-      const arc = this.pathFx(hero, "arc");
-      const falloff = [...(basic?.falloff ?? []), ...(arc?.falloff ?? [])];
-      const reach = basic?.reach ?? arc?.reach ?? 0;
+      const falloff = kit.chain.falloff;
+      const reach = kit.chain.reach;
       const found = others(reach).length;
       return falloff.slice(found).reduce((sum, share) => sum + share, 0) * (focus.share ?? 1);
     }
@@ -1490,7 +1361,7 @@ export class TowerDefenseGame {
   basicAttack(hero, target) {
     const kit = this.kit(hero);
     const cb = this.classBonus(hero);
-    if (this.pathFx(hero, "purify") || cb.purify) this.purify(hero);
+    if (cb.purify) this.purify(hero);
     if (kit.heal && this.healPulse(hero, kit, cb)) return true;
     if (!target) return false;
     const mods = this.modifiers();
@@ -1500,17 +1371,13 @@ export class TowerDefenseGame {
     // Archer anti-air (kit airBonus). Assassins hunt enemies nobody holds (kit looseBonus),
     // scaled by (speed / kit.looseSpeed) squared, so runners take the full bonus and slow
     // walkers little of it.
-    const path = this.pathFx(hero);
-    const chainer = (hero.basic === "chain" && !!kit.chain) || hero.path === "arc";
+    const chainer = hero.basic === "chain" && !!kit.chain;
     const strike = (enemy, share, opts = {}) => {
       const shred = (enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0;
       const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce) * (1 - shred);
       const loose = kit.looseBonus && !enemy.held ? kit.looseBonus * (kit.looseSpeed ? Math.min(1, enemy.speed / kit.looseSpeed) ** 2 : 1) : 0;
-      // Ambush (Assassin path): the first strike on each enemy hits much harder.
-      const ambush = hero.path === "ambush" && !enemy.ambushedBy?.has(hero.entityId) ? path.firstHit : 1;
-      if (ambush !== 1) (enemy.ambushedBy ||= new Set()).add(hero.entityId);
       const conducts = chainer && this.isWet(enemy) ? 1 + (this.statusCfg()?.reactions?.conduct?.bonus || 0) : 1;
-      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * ambush * conducts;
+      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * conducts;
       const dealt = this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts }) || 0;
       this.onStrike(hero, enemy, dealt);
       return dealt;
@@ -1522,9 +1389,7 @@ export class TowerDefenseGame {
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
     strike(target, (kit.damageShare ?? 1) + this.focusShare(hero, kit, others));
-    // Arc (Mage path): every Mage chains; a chaining Mage (Odin) gets the extra bounces.
-    const arc = hero.path === "arc" ? path : null;
-    let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff, ...(arc?.falloff ?? [])] } : arc;
+    let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff] } : null;
     // Conduct (M13): a chain that starts on a Wet enemy bounces further.
     const conduct = this.statusCfg()?.reactions?.conduct;
     if (chain && conduct && this.isWet(target)) {
@@ -1551,21 +1416,10 @@ export class TowerDefenseGame {
       this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
       for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
     } else if (kit.cleave) {
-      // Whirlwind (Warrior path): more cleave targets in a wider radius.
-      const whirl = hero.path === "whirlwind" ? path : null;
-      const radius = kit.cleave.radius * (whirl?.radius ?? 1);
-      const victims = others(radius).slice(0, kit.cleave.targets + (whirl?.targets ?? 0));
+      const radius = kit.cleave.radius;
+      const victims = others(radius).slice(0, kit.cleave.targets);
       this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius, life: 0.3, color: "gold" });
       for (const e of victims) strike(e, this.cleaveShare(hero), { showShot: false, showHit: false });
-    }
-    // Piercing (Archer path): the shot carries on into enemies right behind the target.
-    if (hero.path === "piercing") for (const e of others(path.radius).slice(0, path.targets)) strike(e, path.share, { showHit: false });
-    // Twin Blades (Assassin path): a second strike on the nearest other enemy in reach.
-    if (hero.path === "twin") {
-      const reach = Math.max(hero.range, this.dashReach(hero));
-      const second = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= reach)
-        .sort((a, b) => Math.hypot(hero.x - a.x, hero.y - a.y) - Math.hypot(hero.x - b.x, hero.y - b.y))[0];
-      if (second) strike(second, path.share);
     }
     if (kit.veil && this.isVeiled(hero)) {
       const extra = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= Math.max(hero.range, this.dashReach(hero)))
@@ -1575,34 +1429,8 @@ export class TowerDefenseGame {
     return true;
   }
 
-  // Per-strike path effects (M12), after the damage landed.
   onStrike(hero, enemy, dealt) {
     this.applyHeroStatus(hero, enemy, dealt);
-    const path = this.pathFx(hero);
-    if (!path || enemy.dead && hero.path !== "bloodlust") return;
-    switch (hero.path) {
-      case "sunder":
-        enemy.sunder = Math.min(path.max, ((enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0) + path.perHit);
-        enemy.sunderUntil = this.time + path.seconds;
-        break;
-      case "bloodlust":
-        this.healHero(hero, dealt * path.lifesteal, hero);
-        break;
-      case "wildfire":
-        this.applyBurn(enemy, hero, dealt * path.share, path.seconds);
-        break;
-      case "frost":
-      case "crippling":
-        // Keeps the stronger slow while one is still running.
-        enemy.chillFactor = enemy.chill > 0 ? Math.min(path.factor, enemy.chillFactor) : path.factor;
-        enemy.chill = path.seconds;
-        this.tryFreeze(enemy, hero);
-        break;
-      case "mark":
-        enemy.markedUntil = this.time + path.seconds;
-        enemy.markBonus = path.bonus;
-        break;
-    }
   }
 
   // Status effects and reactions (M13, tuning.statuses). Heroes listed in `sources` apply
@@ -1747,17 +1575,7 @@ export class TowerDefenseGame {
     }
   }
 
-  // War Hymn (Support path): allies inside a hymn Support's range attack faster. Does not stack.
-  hymnFor(hero) {
-    let best = 0;
-    for (const support of this.heroes) {
-      const hymn = this.pathFx(support, "hymn");
-      if (hymn && support !== hero && this.inReach(support, hero)) best = Math.max(best, hymn.aps);
-    }
-    return best;
-  }
-
-  // Purify (Support path): every action lifts hexes from allies in range.
+  // A Support class blessing can lift hexes from allies in range.
   purify(hero) {
     for (const ally of this.heroes) {
       if ((this.isHexed(ally) || this.isSilenced(ally)) && this.inReach(hero, ally)) {
@@ -1776,15 +1594,8 @@ export class TowerDefenseGame {
       if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
     }
     if (!ally) return false;
-    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0)) * (1 + (this.pathFx(hero, "purify")?.heal || 0));
+    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0));
     this.healHero(ally, amount, hero);
-    // Sanctuary (Support path): the heal also reaches allies standing next to the target.
-    const sanctuary = this.pathFx(hero, "sanctuary");
-    if (sanctuary) {
-      for (const other of this.heroes) {
-        if (other !== ally && Math.hypot(other.x - ally.x, other.y - ally.y) <= sanctuary.radius) this.healHero(other, amount * sanctuary.share, hero);
-      }
-    }
     this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
     return true;
   }
@@ -1794,9 +1605,6 @@ export class TowerDefenseGame {
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
     const bossHit = enemy.kind === "boss" ? 1 + (this.favor.bossDamage || 0) : 1;
-    // Paths (M12): Warden's held enemies and Hunter's Mark take more from everyone.
-    const warden = enemy.held ? 1 + (this.pathFx(enemy.heldBy, "warden")?.heldBonus || 0) : 1;
-    const marked = (enemy.markedUntil ?? 0) > this.time ? 1 + enemy.markBonus : 1;
     // Run blessings (M17): Venom Rot on poisoned enemies, Shattering Cold on frozen ones.
     const rot = this.boons.length && this.isPoisoned(enemy) ? 1 + (this.hasBoon("venom_rot")?.bonus || 0) : 1;
     const shatter = this.boons.length && (enemy.frozenUntil ?? 0) > this.time ? 1 + (this.hasBoon("shattering_cold")?.bonus || 0) : 1;
@@ -1804,7 +1612,7 @@ export class TowerDefenseGame {
     const shieldBefore = enemy.shield || 0;
     const stance = (enemy.stanceUntil ?? 0) > this.time ? 1 - (this.bossTuning?.stance?.reduction || 0) : 1;
     const resolve = enemy.resolveSteps ? 1 - enemy.resolveSteps * (this.bossTuning?.resolve?.reduction || 0) : 1;
-    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * warden * marked * rot * shatter * stance * resolve);
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * rot * shatter * stance * resolve);
     if (enemy.kind === "boss" && this.bossTuning) this.bossOnHit(enemy, dot);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
@@ -2114,9 +1922,8 @@ export class TowerDefenseGame {
     const variant = hero.variant;
     // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.
     const foes = this.enemies.filter((e) => !e.untargetable && !(e.flying && hero.slotType === "road"));
-    // Awakened heroes (level 5 step, tuning.awakening) get the approved per-ultimate upgrade;
-    // campaign Evolution V (hero.awakenedUlt, campaign.js collectionHeroes) has it from deploy.
-    const aw = !!hero.awakened || !!hero.awakenedUlt;
+    // Campaign Evolution V (campaign.js collectionHeroes) unlocks the upgraded ultimate.
+    const aw = !!hero.awakenedUlt;
 
     if (variant === "shadow_step") {
       // Nott: phase to lowest-HP enemy, execute it, slow nearby
@@ -2142,9 +1949,9 @@ export class TowerDefenseGame {
         const base = this.heroesById.get(fallen.id);
         const slotArr = fallen.slotType === "road" ? this.map.roadSlots : this.map.platformSlots;
         const slot = slotArr[fallen.slotIndex];
-        const fullHp = this.maxHpFor(base.hp, 1, base.class);
+        const fullHp = this.maxHpFor(base.hp, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, atk: this.atkFor({ ...base, baseAtk: base.atk }), range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });

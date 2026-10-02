@@ -23,12 +23,6 @@ assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 
 const maps = classicMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
 
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
-// Upgrade with a focus; the path step (M12) takes the class's first path.
-const lv = (g, entityId, focus) => {
-  const info = g.upgradeInfo(entityId);
-  return g.upgrade(entityId, info.needsPath ? info.pathOptions[0] : focus);
-};
-
 const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
 assert.equal(game.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]), true, "valid team");
 game.gold = 10000;
@@ -252,18 +246,16 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(typeof g.rotate, "undefined", "player rotation is gone");
 }
 
-// Full run, win: a fully deployed squad survives all ten waves, upgrading between waves.
+// Full run, win: a fully deployed squad survives all ten waves.
 // Mechanics check at base difficulty; balance at the shipped difficulty is covered by test:td-balance.
 {
-  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 1 } }, map: maps[0], waves, seed: 21 });
+  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 0.2 } }, map: maps[0], waves, seed: 21 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.gold = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
-  let upgraded = false;
   while (!g.complete) {
     if (!g.running) {
-      for (const hero of g.heroes) if (lv(g, hero.entityId, "attack").ok) upgraded = true;
       g.startWave();
     }
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
@@ -272,7 +264,6 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(g.complete, true, "full run terminates");
   assert.equal(g.won, true, "deployed squad wins");
   assert.ok(g.lives > 0, "winner has lives left");
-  assert.ok(upgraded, "run used upgrades");
 }
 
 // Full run, loss: an empty defense loses every leak and the run ends.
@@ -481,65 +472,33 @@ function runWaveOne(g) {
   assert.deepEqual(unchanged().slice(1), initial.slice(1), "timing rejections keep the hero in place");
 }
 
-// Exact cost, stat math, and no free full heal.
+// Collection stats are the unit's base power; battle placement applies run bonuses once and
+// creates no second progression layer.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 31 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
-  g.place("atlas", "road", 0);
+  const permanentHeroes = heroes.map((hero) => hero.id === "atlas" ? {
+    ...hero,
+    atk: 777,
+    hp: 888,
+    campaignLevel: 23,
+    campaignStars: 4,
+    campaignEvolution: 3,
+    campaignSkillLevels: { ultimate: 2, passiveAttack: 3, passiveHealth: 4, passiveUtility: 2 },
+    awakenedUlt: true,
+  } : hero);
+  const permanentTuning = structuredClone(tuning);
+  permanentTuning.favor = { heroHpBonus: 0.2, classBonus: { Tank: { power: 0.15 } } };
+  const g = new TowerDefenseGame({ heroes: permanentHeroes, tuning: permanentTuning, map: maps[0], waves, seed: 304 });
+  g.gold = 1000;
+  assert.equal(g.place("atlas", "road", 0), true, "collection hero deploys");
   const atlas = g.heroes[0];
-  atlas.hpLeft = 200; // damaged: upgrade must not fully heal
-  g.gold = tuning.upgrades.costs[1];
-  const info = lv(g, atlas.entityId);
-  assert.equal(info.ok, true, "exact-cost purchase is allowed");
-  assert.equal(g.gold, 0, "gold deducted exactly");
-  assert.equal(atlas.level, 2, "level increases");
-  assert.equal(atlas.atk, Math.round(atlas.baseAtk * 1.1), "attack gains 10% of base");
-  const expectedHp = Math.round(atlas.baseHp * 1.2);
-  assert.equal(atlas.hp, expectedHp, "max health gains 20% of base");
-  assert.equal(atlas.hpLeft, 200 + (expectedHp - atlas.baseHp), "max health gain granted without full heal");
-}
-
-// Rejections carry reasons: insufficient funds, level cap. Upgrades are allowed mid-wave.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 32 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
-  g.place("atlas", "road", 0);
-  const atlas = g.heroes[0];
-  g.gold = tuning.upgrades.costs[1] - 1;
-  assert.equal(lv(g, atlas.entityId).ok, false, "insufficient funds rejected");
-  assert.equal(g.gold, tuning.upgrades.costs[1] - 1, "failed purchase keeps gold");
-  g.gold = 10000;
-  g.startWave();
-  assert.equal(lv(g, atlas.entityId).ok, true, "mid-wave upgrade allowed");
-  assert.equal(atlas.level, 2, "mid-wave upgrade applied");
-  g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
-  assert.equal(g.running, false, "wave cleared");
-  while (atlas.level < tuning.upgrades.maxLevel) assert.ok(lv(g, atlas.entityId, "health").ok);
-  assert.equal(atlas.level, tuning.upgrades.maxLevel, "level cap reached");
-  const capped = g.upgradeInfo(atlas.entityId);
-  assert.equal(capped.awaken, true, "past the level cap only Awakening is offered");
-  g.gold = 10000;
-  lv(g, atlas.entityId);
-  const done = lv(g, atlas.entityId);
-  assert.equal(done.ok, false, "after Awakening only training, which needs a stat");
-  assert.equal(done.train, true, "training is offered");
-  assert.ok(done.reason.includes("train"), "reason is stated");
-}
-
-// A fallen hero re-enters at level 1.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 33 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
-  g.place("atlas", "road", 0);
-  lv(g, g.heroes[0].entityId);
-  g.damageHero(g.heroes[0], 99999);
-  assert.equal(g.heroes.length, 0, "fallen hero leaves the field");
-  g.place("atlas", "road", 1);
-  assert.equal(g.heroes[0].level, 1, "re-recruited hero starts at level 1");
-  assert.equal(g.heroes[0].atk, g.heroes[0].baseAtk, "re-recruited hero uses base stats");
+  assert.equal(atlas.baseAtk, 777, "collection attack is the permanent base attack");
+  assert.equal(atlas.baseHp, 888, "collection health is the permanent base health");
+  assert.equal(atlas.atk, 894, "class power applies once to collection attack");
+  assert.equal(atlas.hp, 1225, "run health and class power apply once to collection health");
+  assert.equal(atlas.awakenedUlt, true, "collection Evolution keeps its awakened ultimate");
+  for (const key of ["level", "focus", "path", "awakened", "trained"]) assert.equal(Object.hasOwn(atlas, key), false, `placed hero has no battle ${key} state`);
+  assert.equal(typeof g.upgradeInfo, "undefined", "battle upgrade preview is removed");
+  assert.equal(typeof g.upgrade, "undefined", "battle upgrade purchase is removed");
 }
 
 // Wave result totals agree with the simulation.
@@ -680,7 +639,7 @@ function runWaveOne(g) {
   assert.ok(Math.abs(g.runDuration - g.time) < 1e-9, "runDuration equals g.time at finish");
 }
 
-// gold_spent_tracked: totalGoldSpent accumulates placement and upgrade costs.
+// gold_spent_tracked: totalGoldSpent accumulates placement and relocation costs.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 57 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
@@ -689,12 +648,11 @@ function runWaveOne(g) {
   const nuwaHero = heroes.find((h) => h.id === "atlas");
   g.place("atlas", "road", 0);
   assert.equal(g.totalGoldSpent, nuwaHero.cost, "placement cost tracked");
-  // Upgrade between waves (no wave running).
   const eid = g.heroes[0].entityId;
   g.gold = 10000;
-  const upgradeCost = tuning.upgrades.costs[1]; // hero is level 1 after placement; upgradeInfo uses costs[hero.level]
-  lv(g, eid);
-  assert.equal(g.totalGoldSpent, nuwaHero.cost + upgradeCost, "upgrade cost accumulates");
+  const relocationCost = Math.round(nuwaHero.cost * tuning.run.relocationCost);
+  g.relocate(eid, "road", 1);
+  assert.equal(g.totalGoldSpent, nuwaHero.cost + relocationCost, "relocation cost accumulates");
 }
 
 // gold_earned_tracked: totalGoldEarned accumulates kill rewards and wave clear bonuses.
@@ -1479,33 +1437,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(flyer.hp < 1e9, "platform ultimate still hits flyers");
 }
 
-// --- Awakening: level-5 step (tuning.awakening), stronger ultimate, lost on death ---
-{
-  const aw = tuning.awakening;
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 104 });
-  g.gold = 100000;
-  g.place("odin", "platform", 0);
-  const odin = g.heroes[0];
-  for (let i = 1; i < tuning.upgrades.maxLevel; i += 1) assert.ok(lv(g, odin.entityId, "attack").ok);
-  const info = g.upgradeInfo(odin.entityId);
-  assert.equal(info.awaken, true, "past the level cap the next step is Awakening");
-  assert.equal(info.cost, aw.cost);
-  const atk = odin.atk, hp = odin.hp, gold = g.gold;
-  assert.ok(lv(g, odin.entityId).ok);
-  assert.equal(odin.awakened, true);
-  assert.equal(odin.level, tuning.upgrades.maxLevel, "awakening does not add a level");
-  assert.equal(g.gold, gold - aw.cost);
-  assert.ok(Math.abs(odin.atk - atk * (1 + aw.attackBonus)) <= 1, "attack bonus");
-  assert.ok(Math.abs(odin.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
-  assert.notEqual(g.upgradeInfo(odin.entityId).awaken, true, "only once (training follows)");
-  g.damageHero(odin, odin.hpLeft + 1, null);
-  assert.ok(g.place("odin", "platform", 0));
-  const back = g.heroes.find((h) => h.id === "odin");
-  assert.equal(!!back.awakened, false, "lost on death");
-  assert.equal(back.level, 1);
-}
-
-// Every roster ultimate still survives the edge cases when awakened.
+// Every roster ultimate still survives the edge cases with its permanent Evolution upgrade.
 {
   for (const id of heroes.map((h) => h.id)) {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 105 });
@@ -1514,7 +1446,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     g.place(id, base.slot, 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
     const hero = g.heroes[0];
-    hero.awakened = true;
+    hero.awakenedUlt = true;
     for (const k of ["grunt", "runner", "flyer", "archer", "brute", "grunt"]) g.spawnEnemy(k);
     for (const e of g.enemies) { e.x = hero.x + 20; e.y = hero.y; }
     hero.hpLeft = hero.hp * 0.5;
@@ -1524,7 +1456,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   }
 }
 
-// Awakened numbers for a few ultimates: more hits, bounces, targets, gold, revive health.
+// Evolution V numbers for a few ultimates: more hits, bounces, targets, gold, revive health.
 {
   const setup = (id, awakened, count = 6) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 106 });
@@ -1533,7 +1465,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     g.place(id, base.slot, 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
     const hero = g.heroes[0];
-    hero.awakened = awakened;
+    hero.awakenedUlt = awakened;
     hero.rotation = 0;
     for (let i = 0; i < count; i += 1) g.spawnEnemy("brute");
     g.enemies.forEach((e, i) => { e.hp = e.maxHp = 1e9; e.x = hero.x + 30 + i * 60; e.y = hero.y; e.distance = 500 - i; });
@@ -1718,56 +1650,6 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.effects.some((e) => e.type === "bossDown"));
   g.step(1 / 60);
   assert.ok(!g.enemies.some((e) => e.entityId === boss.entityId), "dead lilith leaves the field");
-}
-
-// --- Level focus: the step to focus.level asks for attack or health (no range in battle) ---
-{
-  const f = tuning.upgrades.focus;
-  const setup = () => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
-    g.gold = 10000;
-    g.place("odin", "platform", 0);
-    const odin = g.heroes[0];
-    while (odin.level < f.level - 1) assert.ok(lv(g, odin.entityId).ok, "levels before the focus need no choice");
-    return { g, odin };
-  };
-  let { g, odin } = setup();
-  const info = g.upgradeInfo(odin.entityId);
-  assert.equal(info.needsFocus, true, "focus level asks for a choice");
-  const gold = g.gold;
-  const refused = lv(g, odin.entityId);
-  assert.equal(refused.ok, false, "no upgrade without a focus");
-  assert.ok(refused.reason.includes("focus"));
-  assert.equal(g.gold, gold, "refused choice costs nothing");
-  assert.equal(lv(g, odin.entityId, "speed").ok, false, "unknown focus rejected");
-  assert.deepEqual(Object.keys(info.focusOptions), ["attack", "health"], "range is not a battle focus");
-  assert.equal(lv(g, odin.entityId, "range").ok, false, "range focus rejected");
-  // Each option previews and applies only its own stat.
-  const plain = { atk: info.nextAtk, hp: info.nextHp, range: odin.range };
-  for (const focus of ["attack", "health"]) {
-    ({ g, odin } = setup());
-    const option = g.upgradeInfo(odin.entityId).focusOptions[focus];
-    assert.ok(lv(g, odin.entityId, focus).ok);
-    assert.equal(odin.focus, focus);
-    assert.equal(odin.level, f.level);
-    assert.equal(odin.atk, option.nextAtk); assert.equal(odin.hp, option.nextHp); assert.equal(odin.range, option.nextRange);
-    assert.equal(odin.atk > plain.atk, focus === "attack", `${focus}: attack bonus only for attack`);
-    assert.equal(odin.hp > plain.hp, focus === "health", `${focus}: health bonus only for health`);
-    assert.equal(odin.range, plain.range, `${focus}: range unchanged`);
-    // The focus carries into later levels and Awakening, and is asked only once.
-    const next = g.upgradeInfo(odin.entityId);
-    assert.ok(!next.needsFocus, "focus is asked once");
-    while (odin.level < tuning.upgrades.maxLevel) assert.ok(lv(g, odin.entityId).ok);
-    assert.ok(lv(g, odin.entityId).ok, "awaken");
-    const expected = Math.round(odin.baseAtk * (1 + tuning.upgrades.attackPerLevel * (odin.level - 1)) * (1 + tuning.awakening.attackBonus) * (focus === "attack" ? 1 + f.attack : 1));
-    assert.equal(odin.atk, expected, `${focus}: attack focus kept through awakening`);
-  }
-  // A fallen hero re-enters without its focus.
-  ({ g, odin } = setup());
-  lv(g, odin.entityId, "attack");
-  g.place("atlas", "road", 0);
-  const atlas = g.heroes.find((h) => h.id === "atlas");
-  assert.equal(atlas.focus, undefined, "new units start without a focus");
 }
 
 // --- M2 run modes: 20 waves and endless ---
@@ -2044,144 +1926,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(!g.isHexed(nott), "veiled heroes cannot be hexed");
   }
 
-  // M12 class paths: the level 4 upgrade needs one, and each changes how the hero fights.
-  {
-    const { g, units: [odin] } = setup("odin");
-    while (odin.level < tuning.upgrades.path.level - 1) lv(g, odin.entityId, "attack");
-    const info = g.upgradeInfo(odin.entityId);
-    assert.equal(info.needsPath, true, "level 4 asks for a path");
-    assert.deepEqual(info.pathOptions, Object.keys(tuning.paths.Mage), "Mage paths offered");
-    assert.equal(g.upgrade(odin.entityId, "attack").ok, false, "a focus is not a path");
-    assert.equal(g.upgrade(odin.entityId, "bulwark").ok, false, "another class's path is refused");
-    assert.ok(g.upgrade(odin.entityId, "frost").ok);
-    assert.equal(odin.path, "frost");
-    assert.ok(!g.upgradeInfo(odin.entityId).needsPath, "asked once");
-  }
-  const P = tuning.paths;
-  const hp = (e) => e.maxHp - e.hp;
-  // Tank: Bulwark holds one more, Thorns reflects, Warden makes held enemies take more.
-  {
-    const { g, units: [atlas] } = setup("atlas");
-    const limit = tuning.blocking.blockLimit.Tank;
-    const crowd = Array.from({ length: limit + 2 }, () => enemyAt(g, "grunt", atlas.x, atlas.y));
-    g.engaged = new Map();
-    crowd.forEach((e) => g.findEnemyTarget(e));
-    assert.equal(g.engaged.get(atlas), limit, "block limit without a path");
-    atlas.path = "bulwark";
-    g.engaged = new Map();
-    crowd.forEach((e) => g.findEnemyTarget(e));
-    assert.equal(g.engaged.get(atlas), limit + P.Tank.bulwark.blockLimit, "Bulwark holds one more");
-    g.enemies = [];
-    atlas.path = "thorns";
-    const biter = enemyAt(g, "grunt", atlas.x, atlas.y);
-    biter.attackClock = 0;
-    g.step(1 / 60);
-    assert.ok(hp(biter) > 0 || biter.dead, "Thorns hurts the attacker");
-    g.enemies = [];
-    atlas.path = "warden";
-    const held = enemyAt(g, "grunt", 0, 0);
-    held.held = true; held.heldBy = atlas;
-    g.hit(held, 100, atlas, { showShot: false });
-    close(hp(held), 100 * (1 + tuning.blocking.heldDamageBonus) * (1 + P.Tank.warden.heldBonus), "Warden bonus on held enemies");
-  }
-  // Warrior: Whirlwind cleaves more, Sunder shreds resistance, Bloodlust heals.
-  {
-    const { g, units: [war] } = setup("aegir");
-    const crowd = Array.from({ length: 9 }, (_, i) => enemyAt(g, "grunt", war.x + 20 + (i % 3) * 8, war.y + Math.floor(i / 3) * 8));
-    g.basicAttack(war, crowd[0]);
-    const plain = crowd.filter((e) => hp(e) > 0).length;
-    crowd.forEach((e) => { e.hp = e.maxHp; });
-    war.path = "whirlwind";
-    g.basicAttack(war, crowd[0]);
-    assert.equal(crowd.filter((e) => hp(e) > 0).length, Math.min(crowd.length, plain + P.Warrior.whirlwind.targets), "Whirlwind hits more");
-    g.enemies = [];
-    war.path = "sunder";
-    const brute = enemyAt(g, "brute", war.x + 20, war.y);
-    g.basicAttack(war, brute);
-    const first = hp(brute);
-    g.basicAttack(war, brute);
-    assert.ok(hp(brute) - first > first, "Sunder: the second hit lands harder");
-    war.path = "bloodlust";
-    war.hpLeft = 1;
-    g.basicAttack(war, brute);
-    assert.ok(war.hpLeft > 1, "Bloodlust heals");
-  }
-  // Assassin: Long Reach, Ambush, Twin Blades.
-  {
-    const { g, units: [nott] } = setup("nott");
-    const base = g.dashReach(nott);
-    nott.path = "reach";
-    assert.equal(g.dashReach(nott), base + P.Assassin.reach.dash, "Long Reach");
-    nott.path = "ambush";
-    const a = enemyAt(g, "grunt", nott.x + 10, nott.y);
-    a.held = true;
-    g.basicAttack(nott, a);
-    const opener = hp(a);
-    g.basicAttack(nott, a);
-    close(opener / (hp(a) - opener), P.Assassin.ambush.firstHit, "Ambush opener");
-    g.enemies = [];
-    nott.path = "twin";
-    const t1 = enemyAt(g, "grunt", nott.x + 10, nott.y);
-    const t2 = enemyAt(g, "grunt", nott.x - 10, nott.y);
-    t1.held = t2.held = true;
-    g.basicAttack(nott, t1);
-    assert.ok(hp(t2) > 0, "Twin Blades strikes a second enemy");
-  }
-  // Mage: Wildfire burns, Frost slows, Arc chains beyond the splash.
-  {
-    const { g, units: [mage] } = setup("hephaestus");
-    mage.path = "wildfire";
-    const e = enemyAt(g, "grunt", mage.x + 30, mage.y);
-    g.basicAttack(mage, e);
-    const hitDmg = hp(e);
-    for (let i = 0; i < 60 * P.Mage.wildfire.seconds + 5; i += 1) g.step(1 / 60);
-    assert.ok(hp(e) > hitDmg * (1 + P.Mage.wildfire.share * 0.9), "Wildfire burns after the hit");
-    g.enemies = [];
-    mage.path = "frost";
-    const f = enemyAt(g, "grunt", mage.x + 30, mage.y);
-    g.basicAttack(mage, f);
-    assert.ok(f.chill > 0 && f.chillFactor === P.Mage.frost.factor, "Frost chills");
-    g.enemies = [];
-    mage.path = "arc";
-    const near = enemyAt(g, "grunt", mage.x + 30, mage.y);
-    const far = enemyAt(g, "grunt", mage.x + 30 + g.splashRadius(mage) + 20, mage.y);
-    g.basicAttack(mage, near);
-    assert.ok(hp(far) > 0, "Arc reaches past the splash");
-  }
-  // Archer: Piercing, Hunter's Mark, Crippling.
-  {
-    const { g, units: [archer] } = setup("skadi");
-    archer.path = "piercing";
-    const front = enemyAt(g, "grunt", archer.x + 60, archer.y, 5000);
-    const behind = enemyAt(g, "grunt", archer.x + 90, archer.y);
-    g.basicAttack(archer, front);
-    assert.ok(hp(behind) > 0, "Piercing hits the enemy behind");
-    archer.path = "mark";
-    g.basicAttack(archer, front);
-    assert.ok(front.markedUntil > g.time, "Hunter's Mark applied");
-    const before = hp(front);
-    g.hit(front, 100, archer, { showShot: false });
-    close(hp(front) - before, 100 * (1 + P.Archer.mark.bonus), "marked enemies take more from every hit");
-    archer.path = "crippling";
-    g.basicAttack(archer, front);
-    assert.equal(front.chillFactor, P.Archer.crippling.factor, "Crippling slows");
-  }
-  // Support: Sanctuary splashes heals, War Hymn speeds allies, Purify lifts hexes.
-  {
-    const { g, units: [sup, a, b] } = setup("plutus", "odin", "hephaestus");
-    sup.path = "sanctuary";
-    a.x = sup.x + 20; a.y = sup.y; b.x = a.x + 10; b.y = a.y;
-    a.hpLeft = 1; b.hpLeft = b.hp - 1;
-    g.basicAttack(sup, null);
-    assert.ok(b.hpLeft === b.hp, "Sanctuary reaches the neighbour");
-    sup.path = "hymn";
-    assert.equal(g.hymnFor(a), P.Support.hymn.aps, "War Hymn in range");
-    assert.equal(g.hymnFor(sup), 0, "not on itself");
-    sup.path = "purify";
-    a.hexedUntil = g.time + 5;
-    g.basicAttack(sup, null);
-    assert.ok(!g.isHexed(a), "Purify lifts the hex");
-  }
+  const hp = (enemy) => enemy.maxHp - enemy.hp;
 
   // M13 statuses and reactions.
   {
@@ -2556,9 +2301,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
   const deploy = heroes.find((h) => h.id === "atlas").cost;
-  const up = lv(g, atlas.entityId);
-  assert.equal(atlas.invested, deploy + up.cost, "invested tracks deploy and upgrades");
-  assert.equal(g.sellValue(atlas.entityId), Math.floor((deploy + up.cost) * tuning.run.sellRefund), "refund is the sell share");
+  assert.equal(atlas.invested, deploy, "invested tracks deployment gold");
+  assert.equal(g.sellValue(atlas.entityId), Math.floor(deploy * tuning.run.sellRefund), "refund is the sell share");
   const gold = g.gold;
   g.startWave(); // selling works mid-wave too
   const result = g.sell(atlas.entityId);
@@ -2585,7 +2329,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(passer.squeeze >= tuning.blocking.passSlow - 1 / 60, "and is slowed while squeezing by");
 }
 
-// --- Tuning M1: spawn spacing, endless ramp, training after Awakening ---
+// --- Tuning M1: spawn spacing and endless ramp ---
 {
   // Enemies on one lane spawn at least waveGen.minSpacing px apart and spread sideways.
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 6, gapMs: 50 }] }], seed: 160 });
@@ -2611,32 +2355,6 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   close(boss.maxHp / ref.maxHp, endless.endlessRamp(24), "HP ramp");
   close(boss.attack / ref.attack, endless.endlessRamp(24), "attack ramp");
 }
-{
-  const t = tuning.training;
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 162 });
-  g.gold = 1e5;
-  g.place("odin", "platform", 0);
-  const odin = g.heroes[0];
-  while (odin.level < tuning.upgrades.maxLevel) lv(g, odin.entityId, "attack");
-  assert.equal(g.upgradeInfo(odin.entityId).awaken, true, "Awakening first");
-  lv(g, odin.entityId);
-  const info = g.upgradeInfo(odin.entityId);
-  assert.equal(info.train, true, "after Awakening the next step is training");
-  assert.equal(info.cost, t.cost);
-  const atk = odin.atk, hp = odin.hp, range = odin.range;
-  assert.equal(lv(g, odin.entityId).ok, false, "training needs a stat");
-  assert.equal(lv(g, odin.entityId, "attack").ok, true);
-  assert.ok(odin.atk > atk, "attack trained");
-  assert.equal(odin.trained.attack, 1);
-  assert.equal(g.upgradeInfo(odin.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
-  lv(g, odin.entityId, "health");
-  assert.ok(odin.hp > hp, "health trained");
-  assert.equal(g.upgradeInfo(odin.entityId).focusOptions.range, undefined, "range is not trained in battle");
-  assert.equal(lv(g, odin.entityId, "range").ok, false);
-  assert.equal(odin.range, range, "training never changes range");
-  assert.equal(odin.level, tuning.upgrades.maxLevel, "training adds no level");
-}
-
 // Compact board (board.js, docs/tower-defense-board-plan.md): attack patterns decide reach,
 // tuning.board shapes the waves, and every gate still sends enemies.
 {
