@@ -73,7 +73,7 @@ const chapters = c.chapters.map((chapter: any) => ({
     const map = mapById.get(stage.mapId);
     const hero = stage.rewards?.find((r: any) => r.type === "hero")?.id;
     const seals = stage.rewards?.find((r: any) => r.id === "divineSeals")?.amount ?? 0;
-    return { ...stage, mapName: map?.name ?? stage.mapId, boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
+    return { ...stage, mapName: map?.name ?? stage.mapId, theme: map?.theme ?? "", boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
   }),
 }));
 const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
@@ -167,9 +167,9 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
       <div class="ov-chapters">
         {chapters.map((chapter: any) => (
           <table>
-            <thead><tr><th colspan="6">{chapter.id}. {chapter.name}</th></tr><tr><th>Stage</th><th>Map</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
+            <thead><tr><th colspan="7">{chapter.id}. {chapter.name}</th></tr><tr><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
             <tbody>{chapter.stages.map((s: any) => (
-              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td>{s.mapName}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
+              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
             ))}</tbody>
           </table>
         ))}
