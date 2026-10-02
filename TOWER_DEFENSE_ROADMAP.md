@@ -62,6 +62,7 @@ start any time and run in parallel.
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | R4 | L |
+| R13 | Create a local overview: Create a overview page with all stages, all bosses and the most important settings. That overview page should display the core features of the game that are relevant in order to see them at a glance and make desicions from there. That also includes costs for upgrades, skills and everything we can tune in the game. also heroes, their "attack scheme tile range", their attributes and hp as well as enemy infos. Reason: game files have too many informations all over the place and its hard for me to track that in a overview. | Agent | M |
 
 Owner directions recorded October 2:
 

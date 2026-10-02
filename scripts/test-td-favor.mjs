@@ -73,18 +73,18 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const node = (type) => classNode(cls, type);
   const mythic = TREE.nodes.filter((n) => n.tree === cls && n.stage === "Mythic");
   const full = Object.fromEntries(mythic.map((n) => [n.id, n.maxLevel]));
-  assert.equal(canBuy(node("startLevel").id, {}).ok, false, "Divine I needs points");
-  assert.equal(canBuy(node("startLevel").id, full).ok, true, "Divine I open after Mythic");
+  assert.equal(canBuy(node("deployDiscount").id, {}).ok, false, "Divine I needs points");
+  assert.equal(canBuy(node("deployDiscount").id, full).ok, true, "Divine I open after Mythic");
   assert.equal(canBuy(node("splash").id, full).ok, false, "Divine II needs Divine I");
-  const withD2 = { ...full, [node("startLevel").id]: 1, [node("splash").id]: 1 };
+  const withD2 = { ...full, [node("deployDiscount").id]: 1, [node("splash").id]: 1 };
   assert.ok(pointsIn(withD2, cls) >= node("infuse").requiresPoints, "enough points for Divine III");
   assert.equal(canBuy(node("infuse").id, withD2).ok, true);
   const pickedInfusion = { ...withD2, [node("infuse").id]: 1 };
   assert.equal(canBuy(node("ultPower").id, pickedInfusion).ok, false, "Infusion and Wrath exclude each other");
   assert.ok(canBuy(node("ultPower").id, pickedInfusion).reason.includes("pick one"));
-  assert.equal(canBuy(node("awakenDiscount").id, withD2).ok, false, "Divine IV needs Infusion or Wrath");
-  assert.ok(canBuy(node("awakenDiscount").id, withD2).reason.includes(" or "));
-  assert.equal(canBuy(node("awakenDiscount").id, pickedInfusion).ok, true, "Divine IV open after Infusion");
+  assert.equal(canBuy(node("relocateDiscount").id, withD2).ok, false, "Divine IV needs Infusion or Wrath");
+  assert.ok(canBuy(node("relocateDiscount").id, withD2).reason.includes(" or "));
+  assert.equal(canBuy(node("relocateDiscount").id, pickedInfusion).ok, true, "Divine IV open after Infusion");
 }
 
 // --- Bonuses scale with the level ---
@@ -127,9 +127,8 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   slow.spawnEnemy("grunt");
   close(slow.enemies.at(-1).speed, tuning.enemies.grunt.speed * (1 - trunkNode("wave1Speed").effect.value * 3), "wave 1 slowed");
 
-  const cheap = make({ [trunkNode("upgradeDiscount").id]: 5 });
-  const unit = place(cheap, mage);
-  assert.equal(cheap.upgradeInfo(unit.entityId).cost, Math.round(tuning.upgrades.costs[1] * (1 - trunkNode("upgradeDiscount").effect.value * 5)), "upgrade discount");
+  const cheap = make({ odin_dominion: 5 });
+  assert.equal(cheap.deployCost(mage.id), Math.round(mage.cost * (1 - findNode("odin_dominion").effect.value * 5)), "deployment discount");
 
   const clear = make({ [trunkNode("clearBonus").id]: 5 });
   place(clear, mage);
@@ -197,12 +196,9 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(reach.dashReach(place(reach, assassin)), tuning.classes.Assassin.dash + classNode("Assassin", "dash").effect.value, "Shadow Reach");
   assert.equal(reach.dashReach(place(reach, mage)), 0, "only Assassins dash");
 
-  const early = make(lv("Archer", "startLevel"));
-  const a = place(early, archer);
-  assert.equal(a.level, 2, "Early Ascension enters at level 2");
-  assert.equal(a.atk, early.atkFor(a, 2));
-  assert.equal(early.upgradeInfo(a.entityId).needsFocus, true, "the focus is still chosen at level 3");
-  assert.equal(place(early, mage).level, 1, "other classes enter at level 1");
+  const muster = make(lv("Archer", "deployDiscount"));
+  assert.equal(muster.deployCost(archer.id), Math.round(archer.cost * 0.9), "class deployment discount");
+  assert.equal(muster.deployCost(mage.id), mage.cost, "other classes keep their deployment cost");
 
 
   // Infusion (Divine III): the class's attacks apply its status; other classes don't.
@@ -239,15 +235,15 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(engagedUntilFull(lv("Tank", "blockLimit"), tank), tuning.blocking.blockLimit.Tank + 1, "Unbreakable Line +1");
   assert.equal(engagedUntilFull(lv("Tank", "blockLimit"), warrior), tuning.blocking.blockLimit.Warrior, "Tank blessing leaves Warriors alone");
 
-  const rite = make(lv("Tank", "awakenDiscount"));
+  const rite = make(lv("Tank", "relocateDiscount"));
   const tu = place(rite, tank);
-  tu.level = tuning.upgrades.maxLevel;
-  assert.equal(rite.upgradeInfo(tu.entityId).cost, Math.round(tuning.awakening.cost * (1 - classNode("Tank", "awakenDiscount").effect.value)), "Divine Rite");
+  assert.equal(rite.relocationInfo(tu.entityId).cost, Math.round(rite.deployCost(tank.id) * tuning.run.relocationCost * 0.7), "Divine Rite");
 
-  const apex = make(lv("Tank", "awakenBonus"));
+  const apex = make(lv("Tank", "power"));
   const ta = place(apex, tank);
-  const bonus = classNode("Tank", "awakenBonus").effect.value;
-  assert.equal(apex.atkFor(ta, 4, true), Math.round(ta.baseAtk * (1 + tuning.upgrades.attackPerLevel * 3) * (1 + tuning.awakening.attackBonus + bonus)), "Apotheosis attack");
+  const bonus = classNode("Tank", "power").effect.value;
+  assert.equal(ta.atk, Math.round(ta.baseAtk * (1 + bonus)), "Apotheosis attack");
+  assert.equal(ta.hp, Math.round(ta.baseHp * (1 + bonus)), "Apotheosis health");
 }
 
 // --- Insight: waves on the field and kills per class, credited at wave clear ---

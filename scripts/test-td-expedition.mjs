@@ -54,7 +54,10 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   const vet = heroes.find((hero) => hero.id === e.roster[0]);
   const rings = vet.slot === "road" ? map.roadSlots : map.platformSlots;
   for (let i = 0; i < rings.length && !g.place(vet.id, vet.slot, i); i += 1);
-  assert.equal(g.heroes.find((h) => h.id === vet.id).level, EXPEDITION.veteranLevel, "veterans enter at level 2");
+  const veteran = g.heroes.find((h) => h.id === vet.id);
+  assert.equal(veteran.atk, Math.round(vet.atk * (1 + EXPEDITION.veteranBonus)), "veterans gain 10 percent attack");
+  assert.equal(veteran.hp, Math.round(vet.hp * (1 + EXPEDITION.veteranBonus)), "veterans gain 10 percent health");
+  assert.deepEqual(opts.heroBonuses, { [vet.id]: { atk: EXPEDITION.veteranBonus, hp: EXPEDITION.veteranBonus } }, "veteran ids stay in the saved expedition state");
 }
 
 // --- Camp: one card of each kind, choices apply, recruiting costs lives ---

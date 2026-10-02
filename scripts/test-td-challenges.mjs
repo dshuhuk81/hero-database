@@ -1,7 +1,7 @@
 // Challenge goals per map (M20): evaluation of finished runs, Favor rewards and save handling.
 // Run: node scripts/test-td-challenges.mjs
 import assert from "node:assert/strict";
-import { CHALLENGE_IDS, challengeReward, evaluateChallenges, HOARDER_GOLD, recordChallenges, runFacts, sanitizeChallenges, SWIFT_SECONDS, TRIO_MAX } from "../src/game/td/challenges.js";
+import { CHALLENGES, CHALLENGE_IDS, challengeReward, evaluateChallenges, HOARDER_GOLD, recordChallenges, runFacts, sanitizeChallenges, SWIFT_SECONDS, TRIO_MAX } from "../src/game/td/challenges.js";
 import { emptySave, encodeSaveCode, parseSaveText, runKey, sanitizeSave } from "../src/game/td/page/save.ts";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
@@ -12,14 +12,15 @@ import waves from "../src/data/tdWaves.json" with { type: "json" };
 const tiers = tuning.tiers;
 
 // A won 10 wave run that clears every challenge; each case below breaks exactly one.
-const base = { won: true, mode: "classic", tier: "normal", trial: false, perfect: true, fielded: ["odin", "boreas"], classes: ["Mage"], upgrades: 0, seconds: SWIFT_SECONDS.classic, gold: HOARDER_GOLD.classic };
+const base = { won: true, mode: "classic", tier: "normal", trial: false, perfect: true, fielded: ["odin", "boreas"], classes: ["Mage"], relocations: 0, seconds: SWIFT_SECONDS.classic, gold: HOARDER_GOLD.classic };
 assert.deepEqual(evaluateChallenges(base), CHALLENGE_IDS, "all six at the exact thresholds");
+assert.equal(CHALLENGES.find((entry) => entry.id === "unrefined").name, "Hold Position", "legacy challenge id has the new name");
 
 const breaks = {
   perfect: { perfect: false },
   trio: { fielded: ["odin", "boreas", "hephaestus", "skadi"] },
   oneClass: { classes: ["Mage", "Archer"] },
-  unrefined: { upgrades: 1 },
+  unrefined: { relocations: 1 },
   swift: { seconds: SWIFT_SECONDS.classic + 0.5 },
   hoarder: { gold: HOARDER_GOLD.classic - 1 },
 };
@@ -43,7 +44,7 @@ assert.deepEqual(evaluateChallenges({ ...base, trial: true }), [], "Daily Trial 
   assert.ok(!short.includes("hoarder") && !short.includes("swift"), "10 wave thresholds are not enough on 20 waves");
 }
 
-// runFacts reads a real game: sold heroes stay counted, upgrades are counted, classes derived.
+// runFacts reads a real game: sold heroes stay counted, relocations are counted, classes derived.
 {
   const map = maps[0];
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
@@ -55,18 +56,18 @@ assert.deepEqual(evaluateChallenges({ ...base, trial: true }), [], "Daily Trial 
   let facts = runFacts(g);
   assert.deepEqual(facts.fielded, ["odin", "boreas"], "fielded heroes");
   assert.deepEqual(facts.classes, ["Mage"], "one class");
-  assert.equal(facts.upgrades, 0, "nothing bought yet");
+  assert.equal(facts.relocations, 0, "nothing moved yet");
   const unit = g.heroes.find((h) => h.id === "boreas");
-  assert.ok(g.upgrade(unit.entityId).ok, "level bought");
+  assert.ok(g.relocate(unit.entityId, "platform", 2).ok, "hero relocated");
   g.sell(unit.entityId);
   assert.ok(g.place("skadi", "platform", 1), "skadi placed on the freed ring");
   facts = runFacts(g);
   assert.deepEqual(facts.fielded, ["odin", "boreas", "skadi"], "a sold hero stays fielded");
   assert.deepEqual(facts.classes.sort(), ["Archer", "Mage"], "classes of every fielded hero");
-  assert.equal(facts.upgrades, 1, "sold hero's level still counts");
+  assert.equal(facts.relocations, 1, "sold hero's relocation still counts");
   g.reset();
   assert.deepEqual(runFacts(g).fielded, [], "reset clears fielded heroes");
-  assert.equal(runFacts(g).upgrades, 0, "reset clears upgrades");
+  assert.equal(runFacts(g).relocations, 0, "reset clears relocations");
   const trial = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7, allowedHeroes: ["odin"] });
   assert.equal(runFacts(trial).trial, true, "restricted roster marks a Daily Trial run");
 }
@@ -108,6 +109,7 @@ assert.deepEqual(evaluateChallenges({ ...base, trial: true }), [], "Daily Trial 
   assert.deepEqual(sanitizeSave(old, rules).challenges, {}, "saves from before M20 start empty");
   assert.deepEqual(sanitizeChallenges({ a: { perfect: "legendary", trio: "normal", ghost: "normal" }, b: "x", c: { perfect: "mythic" }, d: [] }), { a: { trio: "normal" }, c: { perfect: "mythic" } }, "unknown ids and tiers dropped");
   assert.deepEqual(sanitizeChallenges(null), {}, "missing challenges");
+  assert.deepEqual(sanitizeChallenges({ a: { unrefined: "heroic" } }), { a: { unrefined: "heroic" } }, "saved Hold Position completion keeps the legacy id");
 }
 
 console.log("tower defense challenge tests passed");
