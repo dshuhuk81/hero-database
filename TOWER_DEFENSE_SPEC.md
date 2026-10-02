@@ -799,6 +799,9 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 
 ## 16. Open items and known gaps
 
+The order and dependencies of the open work live in
+[TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) (steps R1-R11); this list names the gaps.
+
 - **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.

@@ -180,7 +180,9 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   // The former Reach nodes (range has no place on boards) give class bonuses instead, same ids.
   assert.equal(classNode("Mage", "range"), undefined, "no class range nodes left");
   const guarded = make(lv("Tank", "guard"));
-  close(guarded.guardFor(place(guarded, tank)) - plainGame.guardFor(pt), classNode("Tank", "guard").effect.value * 5, "Iron Hide adds Tank guard");
+  // Against a lone Tank: the plain game's Mage and Tank may share a pantheon bond (guard).
+  const loneTank = make();
+  close(guarded.guardFor(place(guarded, tank)) - loneTank.guardFor(place(loneTank, tank)), classNode("Tank", "guard").effect.value * 5, "Iron Hide adds Tank guard");
   const focused = make(lv("Mage", "ultCharge"));
   close(focused.ultChargeRate(place(focused, mage)) / plainGame.ultChargeRate(pm), 1 + classNode("Mage", "ultCharge").effect.value * 5, "Focused Mind charges Mage ultimates faster");
   // Class specials strengthen the class kit (M6).

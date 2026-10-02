@@ -424,8 +424,10 @@ playable as of September 23, 2026.
 
 Key files:
 - `src/pages/games/tower-defense.astro`: page entry, passes data to component
-- `src/components/pages/TowerDefensePage.astro`: all UI logic (is:inline script)
+- `src/components/pages/TowerDefensePage.astro`: page shell; UI logic lives in `src/game/td/page/*.ts` modules
 - `src/game/td/sim.js`: deterministic fixed-step simulation (1/60s), seeded RNG
+- `src/game/td/board.js`: compact boards (since October 2026 every map): cells, attack patterns, reach steps
+- `src/game/td/map-generator-board.js`: `board-v1` board generator (`npm run td:board`)
 - `src/game/td/render.js`: PixiJS v8 renderer, 960x540 logical space
 - `src/data/gameBalance.tuning.json`: hand-authored balance knobs (enemy stats, hero archetypes, cost curve)
 - `src/data/gameBalance.json`: generated hero stats for the game (run `npm run build:game-balance`)

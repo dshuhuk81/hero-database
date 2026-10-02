@@ -5,6 +5,14 @@ Compiled September 28, 2026, from `gameBalance.tuning.json`, `sim.js`, `favor.js
 Purpose: one reference for what each system is for, how the currencies flow, and
 where the balance levers live — plus recommendations at the end.
 
+**Changes since (October 1-2, 2026, branch `tower-defense-planning`):** battles play on
+compact boards with tile attack patterns and fewer, stronger enemies (spec sections 6-8);
+lives show one per leak; hero levels, stars, Evolution and skills are global stats in every
+mode; wave interest (5% of unspent gold, up to 50, per wave clear); pantheon bonds (Norse,
+Greek); Divine Interventions (Thunderfall, Shield of the Crossing); Heroic campaign stages
+paying Divine Seals. None of these were balanced yet (roadmap R5). Where this overview
+disagrees, the spec wins.
+
 ---
 
 ## 1. The two layers
@@ -84,7 +92,12 @@ which is the pressure valve for misplacement.
   combos; **run boons**: 8 rare/epic mechanic modifiers (Storm Surge … Soul
   Reaper) offered when the deployed team can actually use them.
 - **Synergy:** +8% attack per shared tag between nearby heroes (250px), cap 24%.
-- **Rings:** special map tiles (high ground +20% range, shrine +30% ult
+- **Pantheon bonds:** Norse 2/4 (+6% / +12% attack and 10% faster ultimates), Greek 2/4
+  (7% / 13% less damage taken, heals +15% at 4); recruits are wildcards (`tuning.bonds`).
+- **Divine Interventions:** Thunderfall (35% of each enemy's health on a 3 x 3 area) and
+  Shield of the Crossing (6 s of leaks without life loss, once per wave), charged by time and
+  kills; unlocked by stages 1-3 and 1-6 (`tuning.interventions`).
+- **Rings:** special map tiles (high ground +1 reach step on boards, shrine +30% ult
   charge, cursed +30% atk / −20% speed).
 - **Enemies & counters:** 12 kinds. Flyers need platforms; brutes/bosses are
   physical-armored but magic-weak; shieldbearers want many fast hits; menders
@@ -118,7 +131,8 @@ stage, lives carry over), Challenges (per-map conditional goals paying Favor).
   rewards, replays 25% (Divine Seals are first-clear only).
 - **Starters:** gaia, fenrir, vidar, boreas, atalanta, asclepius.
 - **Campaign hero levels:** 1–10, +6% atk/HP per level, costing campaign Gold
-  (100 + 50/level) and Hero XP (50 + 25/level) — **campaign stages only**.
+  (100 + 50/level) and Hero XP (50 + 25/level) — **every mode since October 2, 2026**
+  (global stats; previously campaign stages only).
 - **Stars:** duplicates become copies; heroes start at 0 stars; 1/1/2/3/4
   copies + 100/200/400/600/800 Gold promote to 1–5 stars at +10% stats each.
 - **Reach steps:** 3 stars give one permanent attack-pattern step, 5 stars two
@@ -230,8 +244,8 @@ shows a progression-layers block: the campaign power multiplier with its
 Level / Stars / Evolution / Skills breakdown, one line each for the two
 non-campaign layers, and the scope note that campaign upgrades apply in
 Campaign stages only. The Blessings screen carries the mirror note. Campaign
-levels deliberately stay out of Free Play — daily/trial comparability is
-preserved.
+levels deliberately stayed out of Free Play until October 2, 2026, when the owner made
+them global stats in every mode.
 
 **6. Watch the deploy-cap asymmetry.** *(Implemented September 28, 2026;
 raised further September 29, 2026.)*

@@ -1,5 +1,9 @@
 # Tower Defense: adopting the compact board
 
+**Status October 2, 2026: finished.** All six steps are done, plus lives per leak, three-gate
+boards, signature patterns and pattern-shaped ultimates. Open work continues in
+[TOWER_DEFENSE_ROADMAP.md](../TOWER_DEFENSE_ROADMAP.md) ("Open work after the board rewrite").
+
 Written October 1, 2026, after the owner played the prototype board (`proto-board`) and
 decided to keep the direction. Background, measurements and the prototype itself:
 [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](../TOWER_DEFENSE_GAMEPLAY_IDEAS.md) section F.

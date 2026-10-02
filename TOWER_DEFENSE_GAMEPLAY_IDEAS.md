@@ -160,13 +160,13 @@ Art can come through the existing PixelLab pipeline. Each kind needs a glossary 
 
 ### B. Give the player something to do during a wave
 
-**B1. Call the next wave early (M).** A button while a wave is still spawning or clearing:
+**B1. Call the next wave early (M).** *Status October 2, 2026: not built; wave interest was chosen instead (overlapping waves clash with the between-wave blessing offers).* A button while a wave is still spawning or clearing:
 calling early pays bonus gold scaled by the time skipped (Kingdom Rush style) and +1 Favor. This
 uses the leftover gold problem: confident players earn more, cautious ones lose nothing. Needs
 `startWave()` to allow overlapping waves (spawn queue append, wave stats per wave). Endless
 benefits most.
 
-**B2. Divine Interventions, two active powers (M-L, high value).** Two buttons on the HUD with
+**B2. Divine Interventions, two active powers (M-L, high value).** *Status October 2, 2026: built (Thunderfall, Shield of the Crossing; Daily Trial off, Expedition on). Blessing tree upgrades open: roadmap R6.* Two buttons on the HUD with
 cooldowns, charged by kills like ultimates:
 
 - **Thunderfall**: tap a spot, 0.8 s later a bolt hits all enemies in 90 px for true damage.
@@ -185,7 +185,7 @@ which punishes learning. This is the cheapest way to make placement experimentat
 
 ### C. Make squad building a decision
 
-**C1. Pantheon bonds instead of hidden tags (M).** Replace tag synergy with readable sets based on
+**C1. Pantheon bonds instead of hidden tags (M).** *Status October 2, 2026: built on top of tag synergy, which stays hidden; retiring it is roadmap R8.* Replace tag synergy with readable sets based on
 the mythic identities. The roster splits cleanly into 9 Norse heroes (Odin, Ymir, Heimdall,
 Aegir, Surtr, Fenrir, Nott, Vidar, Skadi) and 12 Greek heroes (Atlas, Helios, Hecate, Thanatos,
 Hephaestus, Boreas, Atalanta, Stheno, Plutus, Harmonia, Asclepius, Gaia):
@@ -223,7 +223,7 @@ Rewards: Divine Seals (the scarce currency), Gold, Seal Dust. Counters come from
 `runFacts()` and results flow; reset at UTC midnight like the Daily Trial. Entry point: a scroll
 on the War Camp home screen with a progress badge.
 
-**D2. Heroic campaign (M).** After a chapter is cleared, unlock a Heroic version of each stage
+**D2. Heroic campaign (M).** *Status October 2, 2026: built; Heroic pays Divine Seals only, no separate laurels.* After a chapter is cleared, unlock a Heroic version of each stage
 (the existing Heroic tier: HP ×2, attack ×1.3) with its own first-clear reward of Divine Seals.
 This doubles campaign content with no new maps and fixes the seal shortage the owner reported,
 with income tied to skill.
@@ -233,15 +233,15 @@ battle, elite battle (better camp card), shrine (free relic), merchant (spend le
 the previous stage on a relic), boss. Choices between nodes give the roguelite mode its missing
 strategic layer. All node types reuse existing camp cards.
 
-**D4. Campaign upgrades in Free Play and Expedition (M).** Home plan decision 1a: apply levels and
+**D4. Campaign upgrades in Free Play and Expedition (M).** *Status October 2, 2026: built for every mode (the Daily Trial included); enemy health by Might is open in roadmap R5.* Home plan decision 1a: apply levels and
 stars in those modes and scale enemy HP by squad Might. It makes the collection matter
 everywhere. Measure with `td:sweep` upgraded-roster cases before shipping.
 
 ### E. Smaller ideas worth keeping
 
-- **Wave interest**: 5% of unspent gold (cap 50) at wave clear. Adds a save-or-spend choice in
+- **Wave interest** *(built October 2, 2026)*: 5% of unspent gold (cap 50) at wave clear. Adds a save-or-spend choice in
   classic. Conflicts with B1 in spirit; pick one.
-- **Manual ultimate option**: per-hero toggle to hold the ultimate until tapped. Off by default.
+- **Manual ultimate option** *(dropped by the owner, October 2, 2026)*: per-hero toggle to hold the ultimate until tapped. Off by default.
   Good for bosses, heavy on phones.
 - **Map levers**: a gate that switches the path between two routes once per wave, on a new
   generated map. Depends on the map generator work, so park it until maps are back in scope.
@@ -549,6 +549,9 @@ Each step should pass `npm run test:tower-defense`, update the spec in the same 
 `td:sweep` or `td:classes` run when it touches balance. A1 and C1 need a save version bump.
 
 ## 4. Open questions for the owner
+
+*Answered October 2, 2026 with defaults (the owner asked to build them): see the status lines
+above and [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) for the questions still open.*
 
 1. Divine Interventions: two powers on a cooldown, or one power with charges? Should they be
    allowed in Expedition?

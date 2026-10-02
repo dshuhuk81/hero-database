@@ -1,10 +1,10 @@
 # Tower Defense Roadmap
 
-Last updated: September 29, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
+Last updated: October 2, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
 
-Maps are out of scope here: the owner is building a procedural map generator
-([docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)).
-No new-map, layout or per-map art milestones in this file.
+Maps come from generators: `board-v1` for compact boards (`npm run td:board`, spec section 10)
+and the owner's map workflow ([docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)).
+No per-map layout or art milestones in this file.
 
 ## Documentation convention (all agents, September 28, 2026)
 
@@ -25,8 +25,9 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 
 ## What's next (priority order)
 
-Planning input (October 1, 2026): [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md)
-analyses the current state and proposes gameplay ideas with a suggested order. Not approved work.
+Planning input: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) (ideas and
+their status), [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md) (the board
+rewrite, finished). The game as it is now: [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
 
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
@@ -35,16 +36,48 @@ Only open work. Use subagents for more than one milestone; coordinate file chang
 - [x] Fixed: Hero roster portraits use a gentler crop and sit lower in their tiles so heads remain inside the visible area.
 - [x] Fixed: Generic recruit art now uses a dedicated full-body fit in both roster tiles and the main hero view, keeping every recruit visible instead of applying the named-hero close-up crop.
 
-### Compact board adoption (owner, October 1, 2026)
+### Open work after the board rewrite (October 2, 2026)
 
-The owner kept the compact board direction (prototype `proto-board`, dev builds only). Plan,
-open decisions and steps: [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md).
-All maps move to boards, no two maps share a layout, range upgrades leave the battle, hero and
-enemy sizes get rebalanced.
+Branch `tower-defense-planning` finished the board rewrite and the first round of ideas: all
+maps on compact boards with unique layouts, attack patterns and reach steps, fewer and
+stronger enemies, one shown life per leak, three-gate boards, signature patterns and
+pattern-shaped ultimates, global hero stats, wave interest, pantheon bonds, Heroic campaign
+and Divine Interventions (archive: "Board rewrite and ideas round, October 2, 2026"). The
+owner asked to build these without balancing; numbers are first guesses. Manual ultimates
+were dropped.
+
+Steps in order. "Needs" names the steps that must be done first; steps without needs can
+start any time and run in parallel.
+
+| # | Step | Owner or agent | Needs | Size |
+|---|---|---|---|---|
+| R1 | Unit sizes by eye (`tuning.board.heroScale`, `enemyScale`) | Owner | - | S |
+| R2 | Fix the two known failing tests: `test-td-summon` (evolution spends copies), `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound) | Agent | - | S |
+| R3 | Road class variety: Warriors and Assassins need a payoff on boards (the Tank is the best blocker on most wave types in the board class matrix of `test-td-balance.mjs`) | Agent, owner approves | - | M |
+| R4 | In-battle economy redesign: hero upgrades leave the battle (owner direction October 1); decide what battle gold buys, then cut levels, focus, paths, Awakening and training from the battle or move them to the collection | Owner decides, agent builds | R3 | L |
+| R5 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | R1, R3, R4 | L |
+| R6 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes | Agent | R5 | M |
+| R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R5 | S each |
+| R8 | Decide whether tag synergy retires now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Owner | R5 | S |
+| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk, a test pass for Ochenta | Agent | - | M |
+| R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
+| R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
+
+Open questions for the owner, each blocking the step named:
+
+- R4: what does battle gold buy once upgrades leave the battle (deploys only, a shorter rank
+  ladder, or relocation)? Does training stay as the late gold sink?
+- R5: should Free Play and Expedition scale enemy health with squad Might now that upgrades
+  carry over, or should upgraded heroes simply make those modes easier?
+- R8: keep tag synergy as a hidden layer under pantheon bonds, or retire it?
+
+Backlog from the ideas document, not scheduled: A1 stage goals, B3 hero relocation, A2 stage
+rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route
+map, boss rush, hero mastery. Early call stays out (it needs overlapping waves; wave interest
+covers the economy lever).
 
 ### 4. Doc drift (audit)
 
-- `PROJECT_MEMORY.md`: still says the page is one `is:inline` script (split into `src/game/td/page/` long ago).
 - `src/game/td/bugs.md`: "Inspector stats too thin" still TODO although inspector stats exist; blessing graph note.
 - `docs/tower-defense-ui-plan.md`: ring-era requirements (rings, touch rotation).
 - White-label audit (`docs/audits/`): label historical sections.

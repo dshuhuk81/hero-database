@@ -738,6 +738,24 @@ Replays were dropped (September 25, 2026). Open items left by archived milestone
 
 
 
+## Board rewrite and ideas round, October 2, 2026 (branch `tower-defense-planning`)
+
+Plan: [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md); ideas and their
+status: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md). Details in the spec.
+
+- Board model: every map on a compact board (8x4, 9x5, 10x5) from the `board-v1` generator,
+  no two layouts alike; class attack patterns, reach steps from high ground, Stormpeak and
+  stars; range no longer upgraded in battle; blessing tree reach nodes became class bonuses.
+- Waves: fewer, stronger enemies on boards (wave shape), Mage focus rule; campaign `hpScale`
+  retuned per stage to bot win-rate targets.
+- Lives shown as one per leak (`lifeUnit` 5); laurels count shown lives.
+- Three-gate boards with two merge points; lanes may differ in length (targeting ranks by
+  distance still to go).
+- Signature patterns for Aegir, Stheno, Skadi and Boreas; ultimate areas follow patterns.
+- Global stats: collection upgrades apply in every mode.
+- Wave interest, pantheon bonds, Heroic campaign (save version 9), Divine Interventions.
+- Not balanced yet by owner request: roadmap R5.
+
 ## Spec before the board rewrite (archived October 1, 2026)
 
 The full text of `TOWER_DEFENSE_SPEC.md` as it stood before it was restructured around the
