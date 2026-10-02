@@ -109,8 +109,8 @@ export function createHud(ctx: PageContext) {
     return autoNext && !!session?.started && !!game && !game.running && !game.complete && game.wave > 0 && autoWave === game.wave;
   }
 
-  // Held while the player is deciding: blessing offer, a panel or manual pause, the recruit sheet.
-  const countdownHeld = (game: any) => !!game.virtueOffer || !!game.mutatorOffer || pause.paused || !!state.pendingSlot;
+  // Held while the player is deciding: blessing offer, a panel or manual pause, the recruit sheet, a relocation.
+  const countdownHeld = (game: any) => !!game.virtueOffer || !!game.mutatorOffer || pause.paused || !!state.pendingSlot || state.relocateEntityId !== null;
 
   function syncAutoButton() {
     autoButton.setAttribute("aria-pressed", String(autoNext));
@@ -187,10 +187,11 @@ export function createHud(ctx: PageContext) {
     });
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
       const hero = heroById.get(button.dataset.deckFallen!);
-      button.disabled = game.complete || game.gold < hero.cost;
+      const cost = game.deployCost(hero.id); // blessing discounts included (R4)
+      button.disabled = game.complete || game.gold < cost;
       button.classList.toggle("is-selected", state.deployHeroId === hero.id);
-      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${hero.cost} gold.`);
-      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${hero.cost}g`;
+      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${cost} gold.`);
+      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${cost}g`;
     });
   }
 

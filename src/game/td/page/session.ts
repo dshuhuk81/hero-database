@@ -206,7 +206,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (type === "revive" && game.lastRevive) {
       const revived = heroById.get(game.lastRevive.heroId);
       const reviver = heroById.get(game.lastRevive.by);
-      if (revived) ctx.notice(`${reviver?.name ?? "A hero"} revived ${revived.name} (level 1, half health).`);
+      const full = game.heroes.find((unit: any) => unit.id === game.lastRevive.by)?.awakenedUlt;
+      if (revived) ctx.notice(`${reviver?.name ?? "A hero"} revived ${revived.name} with ${full ? "full" : "half"} health.`);
     }
     if (type === "clear" && game.waveStats) {
       ctx.actions.playSound("clear");

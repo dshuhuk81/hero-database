@@ -211,7 +211,7 @@ export function createRecruit(ctx: PageContext) {
       const hero = heroById.get(state.deployHeroId);
       if (hero.slot !== slot.type) { ctx.notice(`${hero.name} needs a ${hero.slot} tile.`); return; }
       if (game.place(hero.id, slot.type, slot.index)) { ctx.notice(`${hero.name} redeployed.`); ctx.actions.cancelDeploy(); }
-      else ctx.notice(game.gold < hero.cost ? `Needs ${hero.cost} gold to redeploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
+      else ctx.notice(game.gold < game.deployCost(hero.id) ? `Needs ${game.deployCost(hero.id)} gold to redeploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
       return;
     }
     if (game.heroes.length >= game.deployCap()) { ctx.notice(`Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`); return; }

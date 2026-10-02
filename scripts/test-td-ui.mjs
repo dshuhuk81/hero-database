@@ -207,3 +207,18 @@ console.log("Tower defense UI helper checks passed.");
   for (const gone of ["upgradeInfo", "battleRank", "PATH_INFO", "AWAKEN_TEXT", "Battle rank"]) assert.ok(!script.includes(gone), `popover.ts drops ${gone}`);
   console.log("Hero panel checks passed.");
 }
+
+// R4 review fixes: redeploy prices use the discounted deployment cost, Auto waits while a
+// relocation is picked, and the revive notice no longer names a battle level.
+{
+  const { readFileSync } = await import("node:fs");
+  const read = (path) => readFileSync(new URL(`../src/game/td/page/${path}`, import.meta.url), "utf8");
+  const hud = read("hud.ts"), recruit = read("recruit.ts"), session = read("session.ts");
+  const fallen = hud.slice(hud.indexOf("[data-deck-fallen]"), hud.indexOf("function cancelDeploy"));
+  assert.ok(fallen.includes("game.deployCost(hero.id)") && !/hero\.cost\b/.test(fallen), "fallen deck buttons price with deployCost");
+  const redeploy = recruit.slice(recruit.indexOf("if (state.deployHeroId) {"), recruit.indexOf("open(slot);"));
+  assert.ok(!/hero\.cost\b/.test(redeploy), "redeploy notice prices with deployCost");
+  assert.match(hud, /countdownHeld = [^\n]*state\.relocateEntityId !== null/, "Auto countdown waits during relocation");
+  assert.ok(!session.includes("(level 1, half health)"), "revive notice drops the battle level");
+  console.log("R4 review fix checks passed.");
+}
