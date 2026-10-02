@@ -2,6 +2,10 @@
 
 ## R5 part 1: Divine Intervention visuals, October 2, 2026
 
+- Bug fix from the playtest: enemies a road hero blocks stood on its tile and were drawn over
+  it. `render.js` now orders units by zIndex: ground enemies, then heroes (lower in front), then
+  flyers.
+
 - Thunderfall: blue aim preview of the target tiles under the mouse, pulsing warning tiles
   during the 0.8 s delay, a jagged bolt from the top edge with cell flash, sparks, a short
   board shake and a thunder sound (Odin's ultimate plus the heavy hit).

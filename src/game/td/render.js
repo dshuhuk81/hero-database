@@ -126,6 +126,10 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerParts  = new PIXI.Container(); // particles
   const layerNumbers = new PIXI.Container(); // floating damage numbers
   const layerHud    = new PIXI.Container(); // portals, labels
+  // Unit depth (zIndex): ground enemies, then heroes sorted top to bottom, then flyers. A road
+  // hero must stay visible while the enemies it blocks stand on its tile.
+  layerUnits.sortableChildren = true;
+  const Z_HERO = 1000, Z_FLYER = 3000;
   for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
     stage.addChild(l);
   }
@@ -875,21 +879,14 @@ export async function createRenderer(canvas, game, options = {}) {
         heroSprites.set(unit.entityId, container);
         layerUnits.addChild(container);
       }
-      updateHeroSprite(unit, heroSprites.get(unit.entityId));
+      const container = heroSprites.get(unit.entityId);
+      updateHeroSprite(unit, container);
+      // Lower heroes in front: standing figures reach into the slot above.
+      if (container.zIndex !== Z_HERO + unit.y) container.zIndex = Z_HERO + unit.y;
     }
     for (const [id, container] of heroSprites) {
       if (!seen.has(id)) { layerUnits.removeChild(container); container.destroy({ children: true }); heroSprites.delete(id); }
     }
-    if (animHeroes.size) sortHeroDepth();
-  }
-
-  // Standing figures reach into the slot above, so the lower hero must draw in front.
-  // Heroes swap places among the indices they already hold; enemies keep their order.
-  function sortHeroDepth() {
-    const list = [...heroSprites.values()];
-    const slots = list.map((c) => layerUnits.getChildIndex(c)).sort((a, b) => a - b);
-    list.sort((a, b) => a.y - b.y);
-    list.forEach((c, i) => { if (layerUnits.getChildIndex(c) !== slots[i]) layerUnits.setChildIndex(c, slots[i]); });
   }
 
   function buildHeroSprite(unit) {
@@ -1084,6 +1081,7 @@ export async function createRenderer(canvas, game, options = {}) {
       if (!existing || stale) {
         const c = buildEnemyContainer(unit);
         c.tdEnemy = unit;
+        c.zIndex = unit.flying ? Z_FLYER : 0;
         enemyContainers.set(unit.entityId, c);
         if (stale) {
           layerUnits.addChildAt(c, layerUnits.getChildIndex(existing));
@@ -1103,6 +1101,7 @@ export async function createRenderer(canvas, game, options = {}) {
       for (const c of enemyContainers.values()) {
         if (c.tdEnemy?.kind === "boss" || c.tdEnemy?.kind === "brood") layerUnits.setChildIndex(c, layerUnits.children.length - 1);
       }
+      layerUnits.sortDirty = true; // re-apply zIndex: the boss stays above its escort, below the heroes
     }
     for (const [id, c] of enemyContainers) {
       if (!seen.has(id)) {
