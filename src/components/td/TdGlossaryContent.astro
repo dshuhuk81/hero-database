@@ -126,8 +126,19 @@ const bossMaps = (id: string) => [...new Set([
   ...(campaign as any).chapters.flatMap((chapter: any) => chapter.stages.filter((stage: any) => stage.boss === id).map((stage: any) => stage.name)),
 ])];
 
+// Wave enemies on boards are converted (tuning.board.waveShape: fewer, stronger enemies);
+// bosses and summoned enemies are not. Cards show the converted values.
+const SHAPE = (rawTuning as any).board?.waveShape ?? {};
+const shapeFor = (kind: string) => {
+  const cfg = { ...SHAPE, ...(SHAPE.kinds?.[kind] ?? {}) };
+  const power = cfg.power ?? 1 / (cfg.count || 1);
+  return { hp: cfg.hp ?? power, attack: cfg.attack ?? power, reward: cfg.reward ?? power };
+};
 function enemyCard(kind: string, overrides: any = {}) {
-  const base = { ...t.enemies[kind], ...(overrides.stats ?? {}) };
+  const unshaped = !SHAPE.enabled || ["boss", "imp", "brood"].includes(kind);
+  const shape = unshaped ? { hp: 1, attack: 1, reward: 1 } : shapeFor(kind);
+  const raw = { ...t.enemies[kind], ...(overrides.stats ?? {}) };
+  const base = { ...raw, hp: raw.hp * shape.hp, attack: raw.attack ? Math.round(raw.attack * shape.attack) : raw.attack, reward: Math.round(raw.reward * shape.reward) };
   const magicRes = base.magicRes ?? base.armor * 0.8;
   const wave = overrides.wave ?? firstWave(kind);
   return {
@@ -145,7 +156,9 @@ function enemyCard(kind: string, overrides: any = {}) {
       ["Attack", base.attack ? `${base.attack} / ${base.attackPeriod}s` : "-"],
       ...(base.attackRange ? [["Attack range", base.attackRange]] : []),
       ...(base.shield ? [["Shield", Math.round(base.hp * hpScale * base.shield.hp)]] : []),
-      ["Lives lost", base.damage],
+      // Shown lives (board.js shownLives): wave enemies are converted so a leak costs their
+      // damage in shown lives; bosses and summoned enemies are not, so they cost a fraction.
+      ["Lives lost", unshaped ? +(base.damage / ((rawTuning as any).board?.lifeUnit ?? 1)).toFixed(1) : base.damage],
       ["Gold", base.reward],
     ],
   };

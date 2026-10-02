@@ -1,6 +1,7 @@
 // Expedition (M21) on the page: the Expedition screen (start, continue, abandon, camp
 // choice), its summary for the home screen and recording a finished stage for the result screen. Rules live in ../expedition.js.
 import { bossSprite } from "../assets.js";
+import { shownLives } from "../board.js";
 import { mapSceneFor } from "../map-scene.js";
 import { chooseCamp, EXPEDITION, finishStage, newExpedition } from "../expedition.js";
 import { addSeals, ownedHeroes } from "../campaign.js";
@@ -38,7 +39,7 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
     }
   }
   const text = result.outcome === "camp"
-    ? `Stage ${result.cleared} of ${total} cleared with ${game.lives} lives left. Choose your reward at the camp on the Expedition screen, then continue.`
+    ? `Stage ${result.cleared} of ${total} cleared with ${shownLives(game.lives, game.lifeUnit)} lives left. Choose your reward at the camp on the Expedition screen, then continue.`
     : result.outcome === "complete"
       ? `Expedition complete: all ${total} stages cleared.${reward ? ` +${reward} Favor${EXP_SEALS ? `, +${EXP_SEALS} Divine Seals` : ""}.` : ""}`
       : `The expedition ends at stage ${state.stage + 1} of ${total} (${result.cleared} cleared).`;
@@ -47,6 +48,8 @@ export function finishExpeditionStage(save: SaveData, game: any, state: Expediti
 
 export function createExpedition(ctx: PageContext) {
   const { q, data, store, heroById } = ctx;
+  // Lives as shown in battle (every Expedition battlefield is a board).
+  const livesShown = (lives: number) => shownLives(lives, data.tuning?.board?.lifeUnit ?? 1);
   const stageEl = q("[data-td-exp-stage]");
   const titleEl = q("[data-td-exp-title]");
   const copyEl = q("[data-td-exp-copy]");
@@ -92,7 +95,7 @@ export function createExpedition(ctx: PageContext) {
       const hero = heroById.get(card.id);
       return `<button type="button" class="td-exp-choice td-exp-choice--hero" data-exp-card="${index}"><img class="td-exp-choice-art" src="${hero.portrait ?? hero.image}" alt="" loading="lazy">` +
         `<span class="td-label">Recruit</span><strong>${hero.name}</strong><small>${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}. Joins the roster for the rest of the expedition.</small>` +
-        `<span class="td-exp-cost">Costs ${Math.min(EXPEDITION.recruitLives, state.lives - 1)} lives</span></button>`;
+        `<span class="td-exp-cost">Costs ${livesShown(Math.min(EXPEDITION.recruitLives, state.lives - 1))} ${livesShown(Math.min(EXPEDITION.recruitLives, state.lives - 1)) === 1 ? "life" : "lives"}</span></button>`;
     }
     if (card.type === "relic") {
       const names = card.ids.map((id: string) => relicInfo[id]?.name ?? id).join(" + ");
@@ -140,7 +143,7 @@ export function createExpedition(ctx: PageContext) {
     const bossArt = bossSprite(ctx.bossFor(map).id ?? map?.boss ?? "baphomet");
     if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
     statusEl.className = "td-trial-reward td-exp-status is-lives";
-    statusEl.innerHTML = `<span class="td-label">Lives left</span><strong><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg>${state.lives}</strong><span class="td-trial-reward-state">Finish for +${EXPEDITION.completeFavor} Favor${sealsText}</span>`;
+    statusEl.innerHTML = `<span class="td-label">Lives left</span><strong><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 10c0 5.5-7 10-7 10z" /></svg>${livesShown(state.lives)}</strong><span class="td-trial-reward-state">Finish for +${EXPEDITION.completeFavor} Favor${sealsText}</span>`;
     routeNoteEl.textContent = `${state.stage} of ${state.stages.length} cleared`;
     routeEl.innerHTML = state.stages.map((id, i) => stopHtml(id, i, i < state.stage ? "done" : i === state.stage ? "current" : "ahead")).join("");
     rosterCountEl.textContent = `${state.roster.length} ${state.roster.length === 1 ? "hero" : "heroes"}`;

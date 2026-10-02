@@ -106,3 +106,8 @@ export function patternSvg(name, cell = 7) {
   }
   return `<svg class="td-pattern-grid" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="Attack pattern: ${offsets.length} tiles">${rects}</svg>`;
 }
+
+// Lives as the player sees them (board plan, "one life per leak"): the battle keeps its lives
+// internally, the UI shows them in units of `lifeUnit` (tuning.board.lifeUnit, 5), so a
+// regular leak costs one shown life and the run ends when the shown count reaches 0.
+export const shownLives = (lives, unit = 1) => Math.max(0, Math.ceil(lives / unit - 1e-9));

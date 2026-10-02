@@ -1,6 +1,7 @@
 // Results screen: records the finished run (unless it was a debug run) and fills
 // the summary, stats, comparison with the last run, achievements and Favor.
 import { computeFavor, computeInsight, shardEligible, shardFavor } from "../favor.js";
+import { shownLives } from "../board.js";
 
 // Insight earned per class this run (Divine Blessings class branches).
 // Reactions triggered this run (M13), most frequent first.
@@ -133,7 +134,7 @@ export function createResults(ctx: PageContext) {
     const report = !game.won ? lossReport(game.waveStats) : null;
     el.hidden = !report;
     if (!report) return;
-    el.innerHTML = `<strong>What went wrong</strong><p>Wave ${report.wave}: ${Math.round(report.share * 100)}% of the lives lost (${report.lives} of ${report.total}) went to ${report.name}.</p><p>${report.hint}</p>`;
+    el.innerHTML = `<strong>What went wrong</strong><p>Wave ${report.wave}: ${Math.round(report.share * 100)}% of the lives lost (${shownLives(report.lives, game.lifeUnit)} of ${shownLives(report.total, game.lifeUnit)}) went to ${report.name}.</p><p>${report.hint}</p>`;
   }
 
   function renderDamage(game: any) {
@@ -301,8 +302,8 @@ export function createResults(ctx: PageContext) {
     q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
     q("[data-td-result-score]").textContent = `${game.score.toLocaleString()} points`;
     q("[data-td-result-copy]").textContent = game.perfect
-      ? `All ${game.totalWaves} waves, ${game.lives} lives left, not a single enemy broke through`
-      : `${endless ? `Wave ${game.wave}` : `Wave ${game.wave} of ${game.totalWaves}`}, ${game.lives} ${game.lives === 1 ? "life" : "lives"} left, ${game.totalLeaks} ${game.totalLeaks === 1 ? "leak" : "leaks"}`;
+      ? `All ${game.totalWaves} waves, ${shownLives(game.lives, game.lifeUnit)} lives left, not a single enemy broke through`
+      : `${endless ? `Wave ${game.wave}` : `Wave ${game.wave} of ${game.totalWaves}`}, ${shownLives(game.lives, game.lifeUnit)} ${shownLives(game.lives, game.lifeUnit) === 1 ? "life" : "lives"} left, ${game.totalLeaks} ${game.totalLeaks === 1 ? "leak" : "leaks"}`;
 
     const kills = Object.values(game.heroKills ?? {}) as { name: string; kills: number }[];
     kills.sort((a, b) => b.kills - a.kills);
@@ -328,7 +329,7 @@ export function createResults(ctx: PageContext) {
     if (prevRun) {
       const improvements: string[] = [];
       if (game.score > prevRun.score) improvements.push(`higher score (+${(game.score - prevRun.score).toLocaleString()})`);
-      if (game.lives > prevRun.lives) improvements.push(`more lives left (+${game.lives - prevRun.lives})`);
+      if (shownLives(game.lives, game.lifeUnit) > shownLives(prevRun.lives, game.lifeUnit)) improvements.push(`more lives left (+${shownLives(game.lives, game.lifeUnit) - shownLives(prevRun.lives, game.lifeUnit)})`);
       if (game.totalLeaks < prevRun.leaks) improvements.push(`fewer leaks (-${prevRun.leaks - game.totalLeaks})`);
       if (game.won && (prevRun.duration ?? 0) > 0 && game.runDuration < prevRun.duration) improvements.push(`faster run (-${fmtDuration(prevRun.duration - game.runDuration)})`);
       if (improvements.length) { compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`; compareEl.hidden = false; }
@@ -370,7 +371,7 @@ export function createResults(ctx: PageContext) {
       context: [daily || expedition || campaign ? context : "", `${game.totalWaves} waves`, tierName].filter(Boolean).join(" · "),
       score: game.score,
       personalBest: !session.debug && !daily && !expedition && !campaign && (!prevTop || game.score > prevTop.score),
-      lives: game.lives,
+      lives: shownLives(game.lives, game.lifeUnit), // shown lives (stage clear screen)
       leaks: game.totalLeaks ?? 0,
       duration: fmtDuration(game.runDuration ?? 0),
       // Same rule as campaign stage ratings: a clear, half the lives, 90% of the lives.

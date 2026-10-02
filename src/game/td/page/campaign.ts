@@ -5,6 +5,7 @@
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
 import { mapSceneFor } from "../map-scene.js";
+import { shownLives } from "../board.js";
 import { environmentFor } from "../environments.js";
 import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
@@ -18,6 +19,9 @@ import type { CampaignProgress, SaveData } from "./save";
 import { roman } from "./route";
 import { currencyAmount, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
+
+// Lives as shown in battle (board.js shownLives, laurels.lifeUnit internal lives per shown life).
+const livesShown = (lives: number) => shownLives(lives, (campaignData as any).laurels?.lifeUnit ?? 1);
 
 export type CampaignRun = { stageId: string; squad: string[] };
 
@@ -186,7 +190,7 @@ export function createCampaign(ctx: PageContext) {
     stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage);
       const done = p.cleared[stage.id];
-      const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${done.bestLives}/${stage.lives} lives` : "Ready to play";
+      const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives` : "Ready to play";
       return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
@@ -240,14 +244,14 @@ export function createCampaign(ctx: PageContext) {
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
             <div><dt>Waves</dt><dd>${stage.waves.length}</dd></div>
-            <div><dt>Lives</dt><dd>${stage.lives}</dd></div>
+            <div><dt>Lives</dt><dd>${livesShown(stage.lives)}</dd></div>
             ${boss ? `<div><dt>Boss</dt><dd>${boss}</dd></div>` : ""}
-            ${done ? `<div><dt>Best</dt><dd>${done.bestLives}/${stage.lives} lives</dd></div>` : ""}
+            ${done ? `<div><dt>Best</dt><dd>${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives</dd></div>` : ""}
           </dl></section>
         <section><h3 class="td-label">Goals</h3>
           <ul class="td-camp-drawer-goals">${laurelLives(campaign, stage).map((lives: number, i: number) => {
             const earned = i < stageLaurels(campaign, p, stage);
-            return `<li class="${earned ? "is-earned" : ""}">${laurelIcon(earned)}<span>${i === 0 ? "Clear the stage" : `Keep ${lives} of ${stage.lives} lives`}</span></li>`;
+            return `<li class="${earned ? "is-earned" : ""}">${laurelIcon(earned)}<span>${i === 0 ? "Clear the stage" : `Keep ${livesShown(lives)} of ${livesShown(stage.lives)} lives`}</span></li>`;
           }).join("")}</ul></section>
         <section><h3 class="td-label">Rewards</h3>
           ${first.length && !replay ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}

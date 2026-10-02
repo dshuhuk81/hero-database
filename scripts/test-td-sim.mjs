@@ -2625,6 +2625,14 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(sg.patternAt("Mage", "platform", stormPlain), "block", "Stormpeak: platform heroes lose a step");
   assert.equal(sg.patternAt("Mage", stType, Number(stIndex)), "star3", "Stormpeak: high ground shelters and adds its step");
   assert.equal(sg.patternAt("Tank", "road", storm.roadSlots.findIndex((_, i) => !storm.rings[`road:${i}`])), "plus", "Stormpeak: road heroes keep their pattern");
+  // One shown life per leak (board.js shownLives, tuning.board.lifeUnit).
+  const { shownLives } = await import("../src/game/td/board.js");
+  const lg = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
+  lg.wave = 1;
+  assert.equal(lg.lifeUnit, tuning.board.lifeUnit, "boards count lives in units");
+  for (const kind of ["grunt", "flyer"]) assert.equal(lg.spawnEnemy(kind).damage, lg.lifeUnit, `a ${kind} leak costs one shown life`);
+  assert.equal(lg.spawnEnemy("brute").damage, 2 * lg.lifeUnit, "a brute leak costs two");
+  assert.deepEqual([shownLives(25, 5), shownLives(21, 5), shownLives(20, 5), shownLives(1, 5), shownLives(0, 5)], [5, 5, 4, 1, 0], "shown lives round up and hit 0 only at 0");
   // Maps without a board keep circles and today's waves.
   const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
   assert.equal(plain.boardRules, null, "no board rules off the board");

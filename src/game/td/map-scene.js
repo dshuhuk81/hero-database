@@ -1,7 +1,7 @@
 // Retained scenery for authored battlefields. Coordinates use the game's 960 × 540 world.
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
 import { mapLanes, routeStrokes } from "./lanes.js";
-import { boardOf } from "./board.js";
+import { boardOf, shownLives } from "./board.js";
 import { ENVIRONMENTS } from "./environments.js";
 
 const TAU = Math.PI * 2;
@@ -122,6 +122,7 @@ export function createMapScene(PIXI, game, {
   const strokes = routeStrokes(game.map);
   const base = game.map.base;
   const maxLives = game.maxLives ?? Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
+  const unit = game.lifeUnit ?? 1; // shown lives (board.js shownLives)
   const seen = new WeakSet();
   let hitAt = -Infinity;
   let lastLives = game.lives;
@@ -368,7 +369,7 @@ export function createMapScene(PIXI, game, {
     const integrity = Math.max(0, Math.min(1, game.lives / maxLives));
     if (lastIntegrity !== integrity) {
       lastIntegrity = integrity;
-      integrityLabel.text = `${Math.max(0, game.lives)} / ${maxLives} INTEGRITY`;
+      integrityLabel.text = `${shownLives(game.lives, unit)} / ${shownLives(maxLives, unit)} INTEGRITY`;
       integrityLabel.style.fill = integrity <= 0.3 ? 0xe8a68b : theme.labels.integrity;
       cracks.clear();
       if (integrity < 0.7) cracks.moveTo(35, -23).lineTo(30, -12).lineTo(35, -5).lineTo(29, 5).stroke({ color: 0x0a1420, width: 2 });

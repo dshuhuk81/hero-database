@@ -1161,6 +1161,11 @@ export class TowerDefenseGame {
     return this.patternAt(hero.class, hero.slotType, hero.slotIndex, hero.reachSteps ?? 0);
   }
 
+  // Lives per shown life on boards (tuning.board.lifeUnit); 1 elsewhere.
+  get lifeUnit() {
+    return this.boardRules?.lifeUnit ?? 1;
+  }
+
   // Whether a hero's own reach covers another unit (ally or enemy): pattern cells on a board,
   // the range circle elsewhere. Ultimates, heals and auras use it for "in range".
   inReach(hero, unit) {

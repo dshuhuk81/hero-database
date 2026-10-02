@@ -14,7 +14,7 @@ export const EXPEDITION = {
   stageHp: [0.35, 0.5, 0.65], // enemy health per stage, on top of the Normal difficulty
   veteranLevel: 2, // veterans enter every stage at this level (below the level 3 focus)
   completeFavor: 300, // once per finished expedition, on top of each stage's normal Favor
-  recruitLives: 3, // a new hero costs this many of the carried-over lives (never below 1)
+  recruitLives: 5, // a new hero costs this many of the carried-over lives (one shown life, never below 1)
 };
 
 function pickFrom(list, rng) {

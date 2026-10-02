@@ -207,11 +207,13 @@ stages.forEach((stage, i) => {
 {
   const chapter = campaign.chapters[0];
   const stage = chapter.stages.find((entry) => entry.lives === 15);
-  assert.deepEqual(laurelLives(campaign, stage), [0, 8, 14], "15 lives: any clear, 8+, 14+");
+  // Goals count shown lives (laurels.lifeUnit 5): 15 lives show as 3; 50% -> 2 shown (6+), 90% -> 3 shown (11+).
+  assert.deepEqual(laurelLives(campaign, stage), [0, 6, 11], "15 lives (3 shown): any clear, 2 shown, 3 shown");
   let progress = newCampaignProgress(campaign);
   assert.equal(stageLaurels(campaign, progress, stage), 0, "uncleared stage has none");
   const rated = (lives) => stageLaurels(campaign, { ...progress, cleared: { [stage.id]: { clears: 1, bestLives: lives } } }, stage);
-  assert.deepEqual([rated(1), rated(7), rated(8), rated(13), rated(14), rated(15)], [1, 1, 2, 2, 3, 3], "laurel thresholds");
+  assert.deepEqual([rated(1), rated(5), rated(6), rated(10), rated(11), rated(15)], [1, 1, 2, 2, 3, 3], "laurel thresholds");
+  assert.equal(campaign.laurels.lifeUnit, tuning.board.lifeUnit, "laurels count lives like the battle shows them");
   // Clearing stages in order: milestones pay automatically and only once.
   const byId = Object.fromEntries(chapter.stages.map((entry) => [entry.id, entry]));
   const gold0 = progress.currencies.gold;

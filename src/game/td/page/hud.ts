@@ -1,6 +1,7 @@
 // HUD (gold, lives, wave, score), wave preview, main wave button, deck of deployed
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
+import { shownLives } from "../board.js";
 import { isBossWave } from "../waves.js";
 import { clearedWaves } from "../daily.js";
 import { bossSprite } from "../assets.js";
@@ -50,7 +51,7 @@ export function createHud(ctx: PageContext) {
     const game = state.session?.game;
     if (!game) return;
     updateGold(game.gold);
-    q("[data-td-lives]").textContent = String(game.lives);
+    q("[data-td-lives]").textContent = String(shownLives(game.lives, game.lifeUnit));
     q("[data-td-wave]").textContent = String(game.wave);
     q("[data-td-wave-total]").textContent = Number.isFinite(game.totalWaves) ? String(game.totalWaves) : "∞";
     // Daily Trial goal (M19): waves cleared out of the goal.

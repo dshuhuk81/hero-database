@@ -2,6 +2,7 @@
 // stale loads cancelled), game event handling, lobby/play screens, global keys and
 // clicks, stage resize and the single frame loop.
 import { buildRunTuning } from "../favor.js";
+import { shownLives } from "../board.js";
 import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { environmentFor } from "../environments.js";
@@ -136,8 +137,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
-      : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${campaignStage.lives} lives.`
-      : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${expedition.lives} lives.` : "";
+      : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
+      : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
     ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${boostText}${dailyText}`);
   }
 
@@ -188,7 +189,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       return;
     }
     ctx.actions.updateHud();
-    if (type === "leak" && game.lives > 0) ctx.notice(`${game.map.base ? `${mapSceneFor(game.map)?.baseName ?? "Sanctuary"} hit.` : "An enemy broke through."} ${game.lives} ${game.lives === 1 ? "life" : "lives"} left.`);
+    if (type === "leak" && game.lives > 0) ctx.notice(`${game.map.base ? `${mapSceneFor(game.map)?.baseName ?? "Sanctuary"} hit.` : "An enemy broke through."} ${shownLives(game.lives, game.lifeUnit)} ${shownLives(game.lives, game.lifeUnit) === 1 ? "life" : "lives"} left.`);
     if (type === "death") {
       const fallen = game.fallenHeroes.at(-1);
       const hero = fallen && heroById.get(fallen.id);

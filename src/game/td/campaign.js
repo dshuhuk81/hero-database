@@ -548,9 +548,16 @@ export function addSeals(progress, amount) {
 
 // Stage rating (M26 sprint 10), internally "laurels": 0-3 per stage, shown to players only
 // as icons. Laurel n needs a clear keeping at least thresholds[n-1] of the stage's lives
-// (1 / 50% / 90%). Derived from the saved bestLives, so older saves rate retroactively.
+// (1 / 50% / 90%), counted in shown lives (`laurels.lifeUnit` internal lives each, like the
+// HUD), so a goal reads as the player sees it. Returns the internal lives each laurel needs.
+// Derived from the saved bestLives, so older saves rate retroactively.
 export function laurelLives(campaign, stage) {
-  return (campaign.laurels?.thresholds ?? [0]).map((share) => Math.ceil(share * stage.lives));
+  const unit = campaign.laurels?.lifeUnit ?? 1;
+  const shownMax = Math.ceil(stage.lives / unit);
+  return (campaign.laurels?.thresholds ?? [0]).map((share) => {
+    const shown = Math.ceil(share * shownMax);
+    return shown ? (shown - 1) * unit + 1 : 0;
+  });
 }
 
 export function stageLaurels(campaign, progress, stage) {
