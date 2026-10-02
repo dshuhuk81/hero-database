@@ -856,6 +856,10 @@
     "waveClearBonus": {
       "base": 50,
       "perWave": 10
+    },
+    "waveInterest": {
+      "share": 0.05,
+      "cap": 50
     }
   },
   "waveGen": {

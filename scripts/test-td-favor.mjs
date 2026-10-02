@@ -137,7 +137,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const before = clear.gold;
   clear.step(1 / 60);
   const base = tuning.run.waveClearBonus.base;
-  assert.equal(clear.gold - before, Math.round(base * (1 + trunkNode("clearBonus").effect.value * 5)) + (clear.quest?.status === "done" ? clear.quest.gold : 0), "wave-clear bonus");
+  assert.equal(clear.gold - before, Math.round(base * (1 + trunkNode("clearBonus").effect.value * 5)) + clear.waveStats.interest + (clear.quest?.status === "done" ? clear.quest.gold : 0), "wave-clear bonus");
 
   const offers = make({ [trunkNode("extraOffer").id]: 1 });
   offers.offerVirtues();

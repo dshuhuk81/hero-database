@@ -210,7 +210,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
       const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
       const dailyText = session.daily && stats.wave === session.daily.goal ? " Daily Trial goal reached." : "";
-      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}${dailyText}`);
+      const interestText = stats.interest ? ` Interest: +${stats.interest} gold.` : "";
+      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${interestText}${questText}${dailyText}`);
     }
     // Boss rules (M18).
     if (type === "bossMark") {

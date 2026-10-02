@@ -437,7 +437,9 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 
 - Free Play run: 340 starting gold, 25 lives (5 shown), deploy cap 7, sell refund 50%. Kill rewards
   (5x per enemy under the wave shape, so the total per wave stays about the same), wave-clear
-  bonus 50 + 10 per wave, a quest per wave (gold 40 + 10 per wave).
+  bonus 50 + 10 per wave, a quest per wave (gold 40 + 10 per wave). **Wave interest**
+  (`run.waveInterest`): each wave clear first pays 5% of the unspent gold, at most 50, so
+  saving gold is a choice; it shows in the wave-clear notice.
 - Battle ranks I-IV cost 80 / 120 / 160 gold (+10% attack, +20% health per rank). Rank III
   asks for a focus: attack +10% or health +25%. Rank IV picks one of three class paths that
   change how the hero fights (for example Mage wildfire / frost / arc).

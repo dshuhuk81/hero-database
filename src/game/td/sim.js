@@ -821,6 +821,17 @@ export class TowerDefenseGame {
       else {
         // Wave-clear bonus: flat, predictable income so early waves fund the
         // next recruit while kill rewards stay scarce (economy milestone 5A).
+        // Wave interest: a share of the gold left unspent, before this wave's bonus lands,
+        // so saving gold pays a little and spending it stays the stronger default.
+        const interest = this.tuning.run.waveInterest;
+        if (interest) {
+          const amount = Math.min(interest.cap, Math.floor(Math.max(0, this.gold) * interest.share));
+          this.lastInterest = amount;
+          this.gold += amount;
+          if (this.waveStats) this.waveStats.interest = amount;
+          if (this.waveStats) this.waveStats.goldEarned += amount;
+          this.totalGoldEarned += amount;
+        }
         const bonus = this.tuning.run.waveClearBonus;
         if (bonus) {
           const amount = Math.round((bonus.base + bonus.perWave * (this.wave - 1)) * (1 + (this.favor.clearBonus || 0)));

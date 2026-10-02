@@ -1122,7 +1122,7 @@ function runWaveOne(g) {
   const clearBonus = tuning.run.waveClearBonus.base;
   g.step(1 / 60);
   assert.equal(g.quest.status, "done", "cleared wave completes the quest");
-  assert.equal(g.gold, gold + clearBonus + g.quest.gold, "quest gold paid on top of the clear bonus");
+  assert.equal(g.gold, gold + clearBonus + g.waveStats.interest + g.quest.gold, "quest gold paid on top of the clear bonus");
   assert.equal(g.questsDone, 1);
 }
 
@@ -1184,7 +1184,7 @@ function runWaveOne(g) {
   const before = g.gold;
   g.step(1 / 60);
   assert.equal(g.quest.status, "done", "reaching the target completes the quest");
-  assert.equal(g.gold, before + tuning.run.waveClearBonus.base + g.quest.gold);
+  assert.equal(g.gold, before + tuning.run.waveClearBonus.base + g.waveStats.interest + g.quest.gold);
   // The named hero falling before the target fails it at once.
   g = rollSlayer();
   const atlas = g.heroes.find((h) => h.id === "atlas");
@@ -2651,6 +2651,17 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
   assert.equal(plain.boardRules, null, "no board rules off the board");
   assert.deepEqual(plain.shapedGroup("grunt", 7), { count: 7, split: 1 }, "no wave shape off the board");
+}
+
+// Wave interest (tuning.run.waveInterest): a share of unspent gold at wave clear, capped.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3 });
+  const { share, cap } = tuning.run.waveInterest;
+  g.startWave();
+  g.spawnQueue = []; g.enemies = [];
+  g.gold = 400;
+  g.step(1 / 60);
+  assert.equal(g.waveStats.interest, Math.min(cap, Math.floor(400 * share)), "interest pays a share of unspent gold, up to the cap");
 }
 
 console.log("Tower defense checks passed");
