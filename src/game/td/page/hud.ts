@@ -182,8 +182,8 @@ export function createHud(ctx: PageContext) {
       const unit = game.heroes.find((entry: any) => entry.entityId === Number(button.dataset.deckUnit));
       if (!unit) return;
       button.classList.toggle("is-selected", unit.entityId === state.selectedEntityId);
-      button.setAttribute("aria-label", `${unit.name}, level ${unit.level}. Show actions.`);
-      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = String(unit.level);
+      button.setAttribute("aria-label", `${unit.name}${unit.campaignLevel ? `, level ${unit.campaignLevel}` : ""}. Show actions.`);
+      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = unit.campaignLevel ? String(unit.campaignLevel) : "";
     });
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
       const hero = heroById.get(button.dataset.deckFallen!);
@@ -194,9 +194,12 @@ export function createHud(ctx: PageContext) {
     });
   }
 
+  // Also ends a relocation (R4): both use the empty-tile highlight and end on the same events
+  // (wave start, run end, an empty map tap, Escape).
   function cancelDeploy() {
-    if (!state.deployHeroId) return;
+    if (!state.deployHeroId && state.relocateEntityId === null) return;
     state.deployHeroId = "";
+    state.relocateEntityId = null;
     if (state.session) { state.session.game.uiPlacement = null; state.session.game.uiDeploySlot = null; }
     renderDeck();
   }

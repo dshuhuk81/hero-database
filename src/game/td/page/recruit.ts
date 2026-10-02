@@ -97,7 +97,6 @@ export function createRecruit(ctx: PageContext) {
     const lines: string[] = [];
     if (stats) {
       lines.push(`<dl class="td-inspect-stats"><div><dt>Attack</dt><dd>${stats.atk}</dd></div><div><dt>Health</dt><dd>${stats.hp}</dd></div><div><dt>Speed</dt><dd>${Math.round(stats.aps * 100) / 100}/s</dd></div><div><dt>Crit</dt><dd>${Math.round(stats.critChance * 1000) / 10}%</dd></div></dl>`);
-      if (stats.level > 1) lines.push(`<p>Enters at battle rank ${stats.level} (Divine Blessing).</p>`);
     }
     const role = (CLASS_ROLES as Record<string, string>)[hero.class];
     if (role) lines.push(`<p>${hero.class}: ${role}</p>`);
@@ -199,6 +198,14 @@ export function createRecruit(ctx: PageContext) {
     if (!session || session.game.complete) return;
     const game = session.game;
     const occupant = game.heroes.find((unit: any) => unit.slotType === slot.type && unit.slotIndex === slot.index);
+    if (state.relocateEntityId !== null) {
+      // Relocation (R4): an invalid tile keeps the mode; tapping the hero itself cancels it.
+      if (occupant?.entityId === state.relocateEntityId) { ctx.actions.cancelDeploy(); return; }
+      const result = game.relocate(state.relocateEntityId, slot.type, slot.index);
+      if (result.ok) { ctx.notice(`${result.hero.name} relocated for ${result.cost} gold.`); ctx.actions.cancelDeploy(); }
+      else ctx.notice(result.reason || "Relocation unavailable.");
+      return;
+    }
     if (occupant) { ctx.actions.selectUnit(occupant); return; }
     if (state.deployHeroId) {
       const hero = heroById.get(state.deployHeroId);
@@ -209,6 +216,18 @@ export function createRecruit(ctx: PageContext) {
     }
     if (game.heroes.length >= game.deployCap()) { ctx.notice(`Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`); return; }
     open(slot);
+  }
+
+  // Relocate (R4) from the hero panel: close it and highlight the empty tiles of the hero's type.
+  function beginRelocation(entityId: number) {
+    const session = state.session;
+    const unit = session?.game.heroes.find((item: any) => item.entityId === entityId);
+    if (!session || !unit) return;
+    ctx.actions.closePopover(false);
+    ctx.actions.cancelDeploy();
+    state.relocateEntityId = entityId;
+    session.game.uiDeploySlot = unit.slotType;
+    ctx.notice(`Tap an empty ${unit.slotType} tile to move ${unit.name}. Tap ${unit.name} again or press Escape to cancel.`);
   }
 
   // Listeners live on the run's own canvas, so they disappear with it.
@@ -226,13 +245,14 @@ export function createRecruit(ctx: PageContext) {
       activateSlot({ type: slot.type, index: slot.index });
     });
     canvas.addEventListener("pointermove", (event) => {
-      if (!state.deployHeroId || event.pointerType !== "mouse") return;
-      const hero = heroById.get(state.deployHeroId);
+      const moving = state.relocateEntityId !== null ? game.heroes.find((unit: any) => unit.entityId === state.relocateEntityId) : null;
+      if ((!state.deployHeroId && !moving) || event.pointerType !== "mouse") return;
+      const hero = moving ?? heroById.get(state.deployHeroId);
       const slot: any = nearestSlot(map, canvasPoint(canvas, event));
       const point = slot && (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
       game.uiPlacement = slot && slot.type === hero.slot ? { x: point[0], y: point[1], range: hero.range, type: slot.type, index: slot.index, heroClass: hero.class, heroId: hero.id } : null;
     });
-    canvas.addEventListener("pointerleave", () => { if (state.deployHeroId) game.uiPlacement = null; });
+    canvas.addEventListener("pointerleave", () => { if (state.deployHeroId || state.relocateEntityId !== null) game.uiPlacement = null; });
     canvas.addEventListener("focus", () => { if (!state.pendingSlot) game.focusedSlot = keyboardSlots[keyboardIndex]; });
     canvas.addEventListener("blur", () => { if (!state.pendingSlot) game.focusedSlot = null; });
     const tileAt = (slot: Slot) => (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
@@ -285,5 +305,5 @@ export function createRecruit(ctx: PageContext) {
     ctx.actions.cancelDeploy();
   });
 
-  return { open, update, close, bindCanvas, isOpen: () => !sheetEl.hidden };
+  return { open, update, close, bindCanvas, beginRelocation, isOpen: () => !sheetEl.hidden };
 }

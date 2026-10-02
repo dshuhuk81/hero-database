@@ -186,3 +186,24 @@ console.log("Tower defense UI helper checks passed.");
   assert.equal(lossReport({ wave: 8, leakKinds: { broodcaller: 2, imp: 3, runner: 4 } }).kind, "broodcaller", "imps count with their Broodcaller");
   console.log("Run statistics checks passed.");
 }
+
+// R4: the battle hero panel shows permanent collection progress and offers Relocate and Sell,
+// with no battle upgrade controls left.
+{
+  const { heroProgress } = await import("../src/game/td/ui.js");
+  const { readFileSync } = await import("node:fs");
+  const full = heroProgress({ class: "Tank", campaignLevel: 7, campaignStars: 3, campaignEvolution: 2, campaignSkillLevels: { ultimate: 4, passiveAttack: 2 } });
+  assert.deepEqual({ level: full.level, stars: full.stars, evolution: full.evolution }, { level: 7, stars: 3, evolution: 2 }, "collection progress");
+  assert.deepEqual(full.skills.map((s) => [s.id, s.level]), [["ultimate", 4], ["passiveAttack", 2], ["passiveHealth", 1]], "skill levels with level 1 defaults");
+  const legacy = heroProgress({ class: "Mage" });
+  assert.deepEqual({ level: legacy.level, stars: legacy.stars, evolution: legacy.evolution }, { level: 1, stars: 0, evolution: 0 }, "hero without campaign data falls back");
+  assert.ok(legacy.skills.every((s) => s.level === 1), "fallback skill levels");
+  const markup = readFileSync(new URL("../src/components/td/TdOverlays.astro", import.meta.url), "utf8");
+  const panel = markup.slice(markup.indexOf("data-td-popover"), markup.indexOf("</aside>"));
+  assert.ok(panel.includes("data-pop-relocate") && panel.includes("data-pop-sell"), "Relocate and Sell");
+  assert.ok(panel.includes("data-pop-progress"), "permanent progress summary");
+  for (const gone of ["data-pop-upgrade", "data-pop-focus", "data-pop-path", "Upgrade", "Awaken", "Train"]) assert.ok(!panel.includes(gone), `no ${gone} in the hero panel`);
+  const script = readFileSync(new URL("../src/game/td/page/popover.ts", import.meta.url), "utf8");
+  for (const gone of ["upgradeInfo", "battleRank", "PATH_INFO", "AWAKEN_TEXT", "Battle rank"]) assert.ok(!script.includes(gone), `popover.ts drops ${gone}`);
+  console.log("Hero panel checks passed.");
+}

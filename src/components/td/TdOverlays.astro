@@ -58,22 +58,14 @@
       <div class="td-pop-details" id="td-pop-details" data-pop-details-body hidden></div>
     </section>
   </div>
-  <!-- Pinned footer: the upgrade preview, the focus/path pick and Upgrade stay together and never
-       scroll out of view on short screens; Upgrade outranks Sell. -->
+  <!-- Pinned footer (R4): permanent progress from the collection, then Relocate and Sell.
+       Relocation is the only battle purchase for a placed hero; it works between waves. -->
   <div class="td-pop-actions">
+    <p class="td-pop-progress td-pop-action-row" data-pop-progress></p>
     <p class="td-pop-preview td-pop-action-row" data-pop-preview></p>
-    <div class="td-pop-focus td-pop-action-row" id="td-pop-focus" data-pop-focus role="group" aria-label="Choose a focus" hidden>
-      <button class="td-pop-focus-option" type="button" data-focus="attack"><strong>Attack <span data-focus-bonus="attack"></span></strong><small data-focus-text="attack"></small></button>
-      <button class="td-pop-focus-option" type="button" data-focus="health"><strong>Health <span data-focus-bonus="health"></span></strong><small data-focus-text="health"></small></button>
-    </div>
-    <div class="td-pop-focus td-pop-action-row" id="td-pop-path" data-pop-path role="group" aria-label="Choose a path" hidden>
-      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-      <button class="td-pop-focus-option" type="button" data-path-option><strong></strong><small></small></button>
-    </div>
-    <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade aria-controls="td-pop-focus">
-      <span data-pop-upgrade-label>Upgrade</span>
-      <span class="td-pop-cost" data-pop-cost></span>
+    <button class="action-button action-button--primary td-pop-relocate" type="button" data-pop-relocate>
+      <span>Relocate</span>
+      <span class="td-pop-cost" data-pop-relocate-cost></span>
     </button>
     <button class="action-button action-button--quiet" type="button" data-pop-sell>Sell</button>
   </div>

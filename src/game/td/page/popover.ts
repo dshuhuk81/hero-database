@@ -1,11 +1,11 @@
 // Hero panel (M22): full-height side panel next to the map, or a sheet below the map on
-// portrait screens. Upgrade, target, sell and details. Buttons are updated in place so
-// focus survives game events. The game keeps running while the panel is open.
-import { CLASS_ROLES, worldToLocal } from "../ui.js";
+// portrait screens. Permanent progress, target, relocate, sell and details. Buttons are updated
+// in place so focus survives game events. The game keeps running while the panel is open.
+import { CLASS_ROLES, heroProgress, worldToLocal } from "../ui.js";
 import { patternSvg } from "../board.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
-import { AWAKEN_TEXT, PATH_INFO, RING_INFO } from "../skills.js";
+import { RING_INFO } from "../skills.js";
 import { roman } from "./route";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 
@@ -16,11 +16,11 @@ import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 const PUSH_MIN_MAP = 520;
 const SHEET_MIN = 220;
 const STAR_MAX = (campaignData as any).heroStars?.max ?? 5;
-const battleRank = (level: number) => ["I", "II", "III", "IV"][level - 1] ?? String(level);
+const SKILL_SHORT: Record<string, string> = { ultimate: "Ultimate", passiveAttack: "Attack", passiveHealth: "Health" };
 const HERO_RADIUS = 36; // world units kept clear around the selected hero
 
 export function createPopover(ctx: PageContext) {
-  const { q, state, data, maxLevel, heroById } = ctx;
+  const { q, state, data, heroById } = ctx;
   const stageEl = q("[data-td-stage]");
   const popover = q("[data-td-popover]");
   const popBody = q(".td-popover-body");
@@ -36,16 +36,13 @@ export function createPopover(ctx: PageContext) {
   const popRange = q("[data-pop-range]");
   const popRangeLabel = q("[data-pop-range-label]");
   const popCrit = q("[data-pop-crit]");
-  const popUpgrade = q<HTMLButtonElement>("[data-pop-upgrade]");
-  const popUpgradeLabel = q("[data-pop-upgrade-label]");
-  const popCost = q("[data-pop-cost]");
+  const popProgress = q("[data-pop-progress]");
+  const popRelocate = q<HTMLButtonElement>("[data-pop-relocate]");
+  const popRelocateCost = q("[data-pop-relocate-cost]");
   const popPreview = q("[data-pop-preview]");
   const popDetailsButton = q<HTMLButtonElement>("[data-pop-details]");
   const popDetails = q("[data-pop-details-body]");
-  const popFocus = q("[data-pop-focus]");
   const popSell = q<HTMLButtonElement>("[data-pop-sell]");
-  const popPath = q("[data-pop-path]");
-  const pathButtons = [...popPath.querySelectorAll<HTMLButtonElement>("[data-path-option]")];
   const popTarget = q("[data-pop-target]");
   const popTargetLabel = q("[data-pop-target-label]");
   const targetButtons = [...popTarget.querySelectorAll<HTMLButtonElement>("[data-target]")];
@@ -53,8 +50,6 @@ export function createPopover(ctx: PageContext) {
   const TARGET_NAMES: Record<string, string> = { first: "First enemy", last: "Last enemy", strongest: "Highest health", weakest: "Lowest health", fastest: "Fastest enemy", ground: "Ground first", flying: "Flyers first", boss: "Boss first" };
   // What "auto" does per class (targetOrder / dashTarget in sim.js).
   const CLASS_TARGETS: Record<string, string> = { Archer: "highest health", Assassin: "loose enemies, then lowest health", Support: "heal first, then first enemy" };
-  const FOCUS_NAMES: Record<string, string> = { attack: "Attack", health: "Health" };
-  let focusOpen = false; // level-focus picker shown under the upgrade button
   const coarsePointer = window.matchMedia?.("(pointer: coarse)");
   let forcedPush = false; // overlay fitted on neither side of this hero: push instead (no flip-flop)
   let lastHealthUpdate = 0;
@@ -69,7 +64,6 @@ export function createPopover(ctx: PageContext) {
     state.selectedEntityId = unit.entityId;
     session.game.uiSelected = unit.entityId;
     setSection(popDetailsButton, popDetails, false); // always starts collapsed
-    focusOpen = false;
     sellArmed = false;
     forcedPush = false;
     popover.hidden = false;
@@ -131,23 +125,23 @@ export function createPopover(ctx: PageContext) {
 
   function update(unit: any) {
     const game = state.session!.game;
-    popName.textContent = unit.campaignLevel ? `${unit.name} · Level ${unit.campaignLevel}` : unit.name;
+    popName.textContent = unit.name;
     const image = heroById.get(unit.id)?.image ?? "";
     if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.innerHTML = classGlyph(unit.class, 14); popClassIcon.dataset.cls = unit.class; popClassIcon.dataset.class = String(unit.class || "").toLowerCase(); }
-    // Collection stars and Evolution (every mode; they are already in the stats).
-    const stars = unit.campaignStars ?? 0, evo = unit.campaignEvolution ?? 0;
-    const badgeKey = unit.campaignLevel ? `${unit.id}:${stars}:${evo}` : "";
+    // Collection stars, Evolution and skill levels (every mode; they are already in the stats).
+    const progress = heroProgress(unit);
+    const { stars, evolution: evo } = progress;
+    const badgeKey = `${unit.id}:${stars}:${evo}`;
     if (popBadges.dataset.key !== badgeKey) {
       popBadges.dataset.key = badgeKey;
-      popBadges.hidden = !badgeKey;
-      popBadges.innerHTML = badgeKey
-        ? `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
-          (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "")
-        : "";
+      popBadges.hidden = false;
+      popBadges.innerHTML =
+        `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
+        (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "");
     }
-    const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
-    popLevel.textContent = `${unit.class} - Battle rank ${battleRank(unit.level)}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.path ? ` - ${PATH_INFO[unit.class]?.[unit.path]?.name ?? unit.path}` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
+    popLevel.textContent = unit.class;
+    popProgress.textContent = `Level ${progress.level} · Skills: ${progress.skills.map((skill) => `${SKILL_SHORT[skill.id] ?? skill.id} ${skill.level}`).join(", ")}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
@@ -155,100 +149,13 @@ export function createPopover(ctx: PageContext) {
     updateHealth(unit);
     updateStats(unit);
     updateTargeting(unit);
-    const info = game.upgradeInfo(unit.entityId);
-    const awakenText = AWAKEN_TEXT[unit.variant] ? ` ${unit.skillName ?? "Ultimate"}: ${AWAKEN_TEXT[unit.variant]}.` : "";
-    if (info.train) {
-      // Training after Awakening: the button opens the attack/health picker again.
-      const t = data.tuning.training;
-      popUpgrade.disabled = !info.ok;
-      popUpgradeLabel.textContent = "Train";
-      popCost.textContent = `${info.cost} gold`;
-      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
-      const options = info.focusOptions;
-      const texts: Record<string, string> = {
-        attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(options.attack.nextAtk * boost)}`,
-        health: `Health ${unit.hp} to ${options.health.nextHp}`,
-      };
-      for (const [stat, text] of Object.entries(texts)) q(`[data-focus-text="${stat}"]`).textContent = text;
-      // Honest diminishing returns (mechanics overview recommendation 7): training adds
-      // a fixed share of base each time, so this buy's relative gain shrinks as trainings
-      // pile up while the cost grows. Show this buy's real relative gain, not the base rate.
-      const rel = (now: number, next: number) => now > 0 ? `+${((next / now - 1) * 100).toFixed(1)}% this time` : `+${Math.round(t.attack * 100)}%`;
-      const gains: Record<string, string> = {
-        attack: rel(Math.round(unit.atk * boost), Math.round(options.attack.nextAtk * boost)),
-        health: rel(unit.hp, options.health.nextHp),
-      };
-      for (const stat of Object.keys(texts)) q(`[data-focus-bonus="${stat}"]`).textContent = gains[stat];
-      popPreview.textContent = !info.ok ? info.reason
-        : focusOpen ? "Pick one. Every training makes the next one pricier." : "Awakened heroes can keep training attack or health.";
-    } else if (info.awaken) {
-      popUpgrade.disabled = !info.ok;
-      popUpgradeLabel.textContent = "Awaken";
-      popCost.textContent = `${info.cost} gold`;
-      popPreview.textContent = info.ok
-        ? `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.${awakenText}`
-        : `Needs ${info.cost} gold, you have ${game.gold}.${awakenText}`;
-    } else if (info.ok && info.needsPath) {
-      // Class path (M12): the upgrade button opens the class's three paths.
-      popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
-      popCost.textContent = `${info.cost} gold`;
-      info.pathOptions.forEach((id: string, i: number) => {
-        const button = pathButtons[i];
-        const path = PATH_INFO[unit.class]?.[id];
-        button.dataset.pathOption = id;
-        button.querySelector("strong")!.textContent = path?.name ?? id;
-        button.querySelector("small")!.textContent = path?.text ?? "";
-      });
-      popPreview.textContent = focusOpen ? "Pick one. The path stays for this unit until it falls." : `Rank ${battleRank(unit.level + 1)} also picks a path that changes how ${unit.name} fights.`;
-    } else if (info.ok && info.needsFocus) {
-      // Level focus: the upgrade button opens three options, each previews its own gain.
-      popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
-      popCost.textContent = `${info.cost} gold`;
-      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
-      const f = data.tuning.upgrades.focus;
-      const texts: Record<string, string> = {
-        attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.focusOptions.attack.nextAtk * boost)} (${Math.round(info.nextAtk * boost)} without focus)`,
-        health: `Health ${unit.hp} to ${info.focusOptions.health.nextHp} (${info.nextHp} without focus)`,
-      };
-      for (const [focus, text] of Object.entries(texts)) q(`[data-focus-text="${focus}"]`).textContent = text;
-      for (const focus of Object.keys(texts)) q(`[data-focus-bonus="${focus}"]`).textContent = `+${Math.round(f[focus] * 100)}%`;
-      popPreview.textContent = focusOpen ? "Pick one. The focus stays for this unit until it falls." : `Rank ${battleRank(f.level)} adds a focus of your choice: attack or health.`;
-    } else if (info.ok) {
-      popUpgrade.disabled = false;
-      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
-      popCost.textContent = `${info.cost} gold`;
-      // Same multiplier as the Attack stat so the preview matches the number shown above it.
-      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
-      popPreview.textContent = `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.nextAtk * boost)}, health ${unit.hp} to ${info.nextHp}.`;
-    } else if (unit.level >= maxLevel) {
-      popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = unit.awakened ? "Awakened" : "Max rank";
-      popCost.textContent = "";
-      popPreview.textContent = unit.awakened ? `Fully upgraded.${awakenText}` : "This hero is at the maximum battle rank.";
-    } else if (Number.isFinite(info.cost)) {
-      popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = `Upgrade to rank ${battleRank(unit.level + 1)}`;
-      popCost.textContent = `${info.cost} gold`;
-      popPreview.textContent = `Needs ${info.cost} gold, you have ${game.gold}.`;
-    } else {
-      popUpgrade.disabled = true;
-      popUpgradeLabel.textContent = "Upgrade unavailable";
-      popCost.textContent = "";
-      popPreview.textContent = info.reason || "";
-    }
-    const showFocus = focusOpen && info.ok && !!info.needsFocus;
-    const showPath = focusOpen && info.ok && !!info.needsPath;
-    popFocus.hidden = !showFocus;
-    popPath.hidden = !showPath;
-    // While the pick is open the Upgrade button closes it again.
-    const picking = showFocus || showPath;
-    if (picking) { popUpgradeLabel.textContent = "Cancel"; popCost.textContent = ""; }
-    popUpgrade.classList.toggle("action-button--primary", !picking);
-    popUpgrade.classList.toggle("action-button--quiet", picking);
-    popUpgrade.setAttribute("aria-controls", info.needsPath ? "td-pop-path" : "td-pop-focus");
-    popUpgrade.setAttribute("aria-expanded", String(showFocus || showPath));
+    // Relocation (R4): between waves, to an empty tile of the same type, for a share of the deployment cost.
+    const move = game.relocationInfo(unit.entityId);
+    popRelocate.disabled = !move.ok || game.gold < (move.cost ?? Infinity);
+    popRelocateCost.textContent = Number.isFinite(move.cost) ? `${move.cost} gold` : "";
+    popPreview.textContent = !move.ok ? move.reason || ""
+      : game.gold < move.cost ? `Needs ${move.cost} gold to relocate, you have ${game.gold}.`
+      : `Move ${unit.name} to an empty ${unit.slotType} tile. Health, charge and cooldowns stay.`;
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
   }
 
@@ -259,7 +166,7 @@ export function createPopover(ctx: PageContext) {
 
   function detailsHtml(unit: any) {
     const game = state.session!.game;
-    const lines: string[] = ["<p>Battle ranks reset each battle or when this hero falls.</p>"];
+    const lines: string[] = [];
     const role = (CLASS_ROLES as Record<string, string>)[unit.class];
     if (role) lines.push(`<p class="td-aura-line">${unit.class}: ${role}</p>`);
     const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
@@ -278,17 +185,14 @@ export function createPopover(ctx: PageContext) {
       lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
     }
     if (unit.variant === "valkyrie_call") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile at battle rank I with ${unit.awakened ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile with ${unit.awakenedUlt ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
     }
     if (unit.variant === "soul_drain") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakened ? 3 : 2} seconds. A kill refunds ${unit.awakened ? 80 : 60}% of the charge.</p>`);
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakenedUlt ? 3 : 2} seconds. A kill refunds ${unit.awakenedUlt ? 80 : 60}% of the charge.</p>`);
     }
     const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(unit.slotType, unit.slotIndex)];
     if (ring) lines.push(`<p class="td-aura-line">Standing on ${ring.name}: ${ring.text}</p>`);
-    if (state.session!.campaign) {
-      lines.push(`<p>Campaign level ${unit.campaignLevel ?? 1} is already included in this hero's attack and health. Campaign upgrades are permanent and stay when the hero falls.</p>`);
-    }
-    lines.push(`<p>Battle ranks and Awakening belong to this deployed unit. A fallen hero re-enters at battle rank I.</p>`);
+    lines.push(`<p>Level, stars, Evolution and skill levels come from your collection and are already included in this hero's stats. Upgrade heroes in the lobby; the upgrades apply in every mode.</p>`);
     return lines.join("");
   }
 
@@ -355,34 +259,12 @@ export function createPopover(ctx: PageContext) {
     updateStats(unit);
   }
 
-  popUpgrade.addEventListener("click", () => {
+  popRelocate.addEventListener("click", () => {
     const session = state.session;
     if (!session || state.selectedEntityId === null) return;
-    const pending = session.game.upgradeInfo(state.selectedEntityId);
-    if (pending.needsFocus || pending.needsPath) {
-      focusOpen = !focusOpen;
-      const unit = findUnit(state.selectedEntityId);
-      if (unit) update(unit);
-      if (focusOpen) (pending.needsPath ? pathButtons[0] : popFocus.querySelector<HTMLButtonElement>("[data-focus]"))?.focus();
-      return;
-    }
-    const result = session.game.upgrade(state.selectedEntityId);
-    if (result.ok) ctx.notice(result.awaken ? `${result.hero.name} has awakened.` : `${result.hero.name} reached battle rank ${battleRank(result.hero.level)}.`);
-    else ctx.notice(result.reason || "Upgrade unavailable.");
-  });
-  popFocus.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-focus]");
-    const session = state.session;
-    if (!button || !session || state.selectedEntityId === null) return;
-    const result = session.game.upgrade(state.selectedEntityId, button.dataset.focus);
-    focusOpen = false;
-    if (result.ok) {
-      ctx.notice(result.train ? `${result.hero.name} trained ${FOCUS_NAMES[button.dataset.focus!].toLowerCase()}.`
-        : `${result.hero.name} reached battle rank ${battleRank(result.hero.level)} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
-      popUpgrade.focus();
-    } else ctx.notice(result.reason || "Upgrade unavailable.");
-    const unit = findUnit(state.selectedEntityId);
-    if (unit) update(unit);
+    const info = session.game.relocationInfo(state.selectedEntityId);
+    if (!info.ok) { ctx.notice(info.reason || "Relocation unavailable."); return; }
+    ctx.actions.beginRelocation(state.selectedEntityId);
   });
   popTarget.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-target]");
@@ -391,19 +273,6 @@ export function createPopover(ctx: PageContext) {
     session.game.setTargeting(state.selectedEntityId, button.dataset.target);
     const unit = findUnit(state.selectedEntityId);
     if (unit) updateTargeting(unit);
-  });
-  popPath.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-path-option]");
-    const session = state.session;
-    if (!button || !session || state.selectedEntityId === null) return;
-    const result = session.game.upgrade(state.selectedEntityId, button.dataset.pathOption);
-    focusOpen = false;
-    if (result.ok) {
-      ctx.notice(`${result.hero.name} reached battle rank ${battleRank(result.hero.level)} on the ${PATH_INFO[result.hero.class]?.[result.hero.path]?.name ?? result.hero.path} path.`);
-      popUpgrade.focus();
-    } else ctx.notice(result.reason || "Upgrade unavailable.");
-    const unit = findUnit(state.selectedEntityId);
-    if (unit) update(unit);
   });
   popSell.addEventListener("click", () => {
     const session = state.session;

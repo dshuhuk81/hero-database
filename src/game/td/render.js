@@ -903,7 +903,7 @@ export async function createRenderer(canvas, game, options = {}) {
     base.circle(0, 0, 25).fill({ color: 0x1b1530 });
     container.addChild(base);
 
-    // Border doubles as the level display (drawLevelBorder); below the token so the head overlaps it.
+    // Token ring (drawTokenRing); below the token so the head overlaps it.
     const border = new PIXI.Graphics();
     container._border = border;
     container.addChild(border);
@@ -929,7 +929,7 @@ export async function createRenderer(canvas, game, options = {}) {
     container._hpBar = hpBar;
     container.addChild(hpBar);
 
-    // Level number disc sitting on the border at bottom-right.
+    // Collection level disc on the border at bottom-right (hidden without campaign data).
     const badge = new PIXI.Container();
     badge.position.set(19, 19);
     const disc = new PIXI.Graphics();
@@ -964,14 +964,13 @@ export async function createRenderer(canvas, game, options = {}) {
       drawBar(ultBar, -24, 36, 48, pct, palette.purple);
     }
 
-    // Level: segmented border + number disc, redrawn only when the level changes.
-    const level = unit.level || 1;
-    const key = `${level}${unit.awakened ? "a" : ""}`;
+    // Permanent collection level (R4): number disc plus a plain ring, redrawn only on change.
+    const key = String(unit.campaignLevel ?? "");
     if (container._level !== key) {
       container._level = key;
-      container._lvlText.text = unit.awakened ? "\u2605" : String(level);
-      container._badgeDisc.clear().circle(0, 0, 8).fill(unit.awakened ? 0xfff4c2 : palette.gold).stroke({ width: 1.5, color: 0x13111c });
-      drawLevelBorder(container._border, level, unit.awakened);
+      container._lvlText.text = key;
+      container._lvlText.parent.visible = !!key;
+      drawTokenRing(container._border);
     }
   }
 
@@ -1062,31 +1061,10 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
-  // One arc per level; owned levels solid gold. At max level the ring closes and glows.
-  function drawLevelBorder(g, level, awakened = false) {
-    const maxLevel = game.tuning.upgrades?.maxLevel ?? 4;
+  // Gold ring around a hero token (battle ranks are gone since R4, so it no longer shows a level).
+  function drawTokenRing(g) {
     g.clear();
-    g.filters = null;
-    if (awakened) {
-      // Awakened: radiant double ring with a stronger glow.
-      g.circle(0, 0, 26).stroke({ width: 3, color: 0xfff4c2 });
-      g.circle(0, 0, 30).stroke({ width: 1.5, color: palette.gold, alpha: 0.8 });
-      if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 14, outerStrength: 2, color: 0xffe27a })];
-      return;
-    }
-    if (level >= maxLevel) {
-      g.circle(0, 0, 26).stroke({ width: 3, color: palette.gold });
-      if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 8, outerStrength: 1.2, color: palette.gold })];
-      return;
-    }
-    const gap = 0.22;
-    const span = (Math.PI * 2) / maxLevel;
-    for (let i = 0; i < maxLevel; i++) {
-      const start = -Math.PI * 0.75 + i * span + gap / 2; // gaps at the diagonals; the badge sits in one
-      const owned = i < level;
-      g.moveTo(Math.cos(start) * 26, Math.sin(start) * 26);
-      g.arc(0, 0, 26, start, start + span - gap).stroke({ width: owned ? 3 : 2, color: palette.gold, alpha: owned ? 1 : 0.3 });
-    }
+    g.circle(0, 0, 26).stroke({ width: 2.5, color: palette.gold });
   }
 
   // ------------------------------------------------------------------

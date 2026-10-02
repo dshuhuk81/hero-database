@@ -25,7 +25,7 @@ import tdBosses from "../../data/tdBosses.json";
 import campaign from "../../data/tdCampaign.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
 import { patternLabel } from "../../game/td/board.js";
-import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, PATH_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
@@ -63,7 +63,7 @@ const REACTION_ICON: Record<string, string> = { conduct: "electric_bolt", steam:
 const UI_ICON = {
   heroes: "groups", enemies: "skull", attributes: "menu_book", classes: "category", status: "science",
   reactions: "join", bosses: "crown", ultimate: "bolt", awakened: "auto_awesome", synergy: "hub",
-  paths: "alt_route", first: "flag", note: "info", cost: "paid",
+  first: "flag", note: "info", cost: "paid",
 };
 
 const CLASS_ORDER = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
@@ -74,7 +74,6 @@ const classes = CLASS_ORDER.map((name) => {
     slot: kit.slot === "road" ? "Road" : "Platform",
     role: (CLASS_ROLES as Record<string, string>)[name],
     block: t.blocking?.blockLimit?.[name],
-    paths: Object.keys(t.paths?.[name] ?? {}).map((id) => PATH_INFO[name]?.[id] ?? { name: id, text: "" }),
   };
 });
 
@@ -83,8 +82,7 @@ const heroName = new Map((heroes as any[]).map((hero) => [hero.id, hero.name]));
 const statusCards = Object.entries(STATUS_INFO).map(([id, info]) => ({
   ...info,
   id,
-  sources: id === "chill" ? "Frost (Mage) and Crippling (Archer) paths"
-    : [...Object.entries(t.statuses?.sources ?? {}).filter(([, kind]) => kind === id).map(([hero]) => heroName.get(hero) ?? hero), ...(id === "burn" ? ["Wildfire path (Mage)"] : [])].join(", "),
+  sources: [...Object.entries(t.statuses?.sources ?? {}).filter(([, kind]) => kind === id).map(([hero]) => heroName.get(hero) ?? hero), "class Infusion blessings"].join(", "),
 }));
 const reactionCards = Object.entries(REACTION_INFO).map(([id, info]) => ({ ...info, id }));
 
@@ -193,8 +191,8 @@ const bossCardsView = bossCards.map(withIcons);
 
 const heroAttrs: [string, string, string][] = [
   ["add_road", "Road / Platform", "Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers."],
-  ["paid", "Cost", "Gold to deploy the hero. Selling returns half of everything spent on it."],
-  ["favorite", "Health", "Damage a hero takes before it falls. A fallen hero can be recruited again at battle rank I."],
+  ["paid", "Cost", "Gold to deploy the hero. Selling returns half of it; relocating between waves costs a quarter of it."],
+  ["favorite", "Health", "Damage a hero takes before it falls. A fallen hero can be recruited again."],
   ["swords", "Attack", "Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it."],
   ["speed", "Attacks / s", "Basic attacks per second."],
   ["radar", "Reach", "The tiles around its own tile that a hero's basic attack covers. Selecting or placing a hero lights them up green. High ground adds one step while the hero stands there; stars add steps outside battle. Range is never upgraded in battle."],
@@ -204,7 +202,7 @@ const heroAttrs: [string, string, string][] = [
   ["hourglass_top", "Ult charge", "Seconds until the ultimate is ready. It fires on its own at the current target."],
   ["bolt", "Ult power", "Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise."],
   ["hub", "Synergy tags", `Each tag shared with a hero within ${t.synergy?.range}px adds ${pct(t.synergy?.bonusPerTag ?? 0)} attack, up to ${pct(t.synergy?.cap ?? 0)}.`],
-  ["auto_awesome", "Awakening", `At battle rank IV a hero can Awaken for ${t.awakening?.cost} gold: +${pct(t.awakening?.attackBonus ?? 0)} attack, +${pct(t.awakening?.healthBonus ?? 0)} health and a stronger ultimate.`],
+  ["auto_awesome", "Awakened ultimate", "Evolution V on the Heroes screen unlocks a stronger ultimate. Each hero card lists what changes."],
   ["military_tech", "Hero collection", "Heroes are unlocked in the Campaign and summoned with Divine Seals. Campaign stages, Free Play and Expeditions use only the heroes you own; the Daily Trial gives everyone the same squad. Level, Stars, Evolution and Skills from the Heroes screen apply in every mode; Free Play and Expeditions add Divine Blessings on top."],
   ["star", "Divine Blessings", "Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial."],
   ["bolt", "Divine Interventions", `Two powers in the bottom bar that charge during waves (one point per second, one per kill). Thunderfall (after stage ${t.interventions?.thunderfall?.unlockAfter}): tap the map, a bolt strikes those tiles for ${pct(t.interventions?.thunderfall?.share ?? 0)} of every enemy's health (${pct(t.interventions?.thunderfall?.bossShare ?? 0)} for bosses). Shield (after stage ${t.interventions?.shield?.unlockAfter}): for ${t.interventions?.shield?.seconds}s leaks cost no lives, once per wave. Not in the Daily Trial.`],
@@ -269,11 +267,6 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
               </div>
             </header>
             <p>{cls.role}</p>
-            {cls.paths.length > 0 && (
-              <ul class="td-glossary-paths" aria-label={`${cls.name} paths at battle rank ${["I", "II", "III", "IV"][(t.upgrades.path?.level ?? 4) - 1]}`}>
-                {cls.paths.map((path) => <li><span class="td-msym" aria-hidden="true">{UI_ICON.paths}</span><span><strong>{path.name}</strong> {path.text}</span></li>)}
-              </ul>
-            )}
           </article>
         ))}
       </div>

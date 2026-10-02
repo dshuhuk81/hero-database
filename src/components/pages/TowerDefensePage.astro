@@ -68,7 +68,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
   const store = createSaveStore({ heroIds: new Set(heroById.keys()), mapIds: new Set(maps.map((map) => map.id)), relicIds: new Set(Object.keys(data.tuning.runBoons?.list ?? {})) });
-  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedTier: "normal", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
+  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedTier: "normal", selectedEntityId: null, deployHeroId: "", relocateEntityId: null, pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
     state.selectedMap = maps.find((entry) => entry.id === savedMapId) ?? maps[0];
@@ -99,7 +99,6 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   const actions = {} as PageActions;
   const ctx: PageContext = {
     root, q, data, heroById,
-    maxLevel: data.tuning.upgrades?.maxLevel ?? 4,
     bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
     blessingNames: data.tuning.virtueBlessings || {},
     store, state, pause,
@@ -314,6 +313,7 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
     closeSheet: recruit.close,
     updateSheet: recruit.update,
     bindCanvas: recruit.bindCanvas,
+    beginRelocation: recruit.beginRelocation,
     aimPower: powers.aimAt,
     resetPowers: powers.reset,
     openPanel: panels.open,

@@ -37,6 +37,7 @@ export type PageState = {
   selectedTier: RunTier; // difficulty tier for 10 and 20 waves (M3)
   selectedEntityId: number | null; // hero with the open popover
   deployHeroId: string; // fallen hero picked from the deck for redeploy
+  relocateEntityId: number | null; // placed hero being moved to another tile (R4)
   pendingSlot: Slot | null; // ring the recruit sheet is open for
 };
 
@@ -67,6 +68,7 @@ export type PageActions = {
   closeSheet(restoreFocus?: boolean): void;
   updateSheet(): void;
   bindCanvas(session: Session): void;
+  beginRelocation(entityId: number): void; // next compatible empty tile receives the hero
   // panels.ts
   openPanel(name: string, opener?: HTMLElement | null): void;
   closePanel(restoreFocus?: boolean): void;
@@ -90,7 +92,6 @@ export type PageContext = {
   q<T extends HTMLElement = HTMLElement>(selector: string): T;
   data: any;
   heroById: Map<string, any>;
-  maxLevel: number;
   bossFor(map: any): any; // bosses.json entry of the map's final boss
   blessingNames: Record<string, string>;
   store: SaveStore;

@@ -1,6 +1,8 @@
 // Pure UI helpers for the tower defense page: battlefield fitting, popover
 // placement, screen-space hit targets and reason-based pausing.
 
+import { CLASS_PASSIVE_SKILLS } from "./skills.js";
+
 export const WORLD_WIDTH = 960;
 export const WORLD_HEIGHT = 540;
 
@@ -164,4 +166,18 @@ export function lossReport(waveStats) {
   }
   const [kind, lives] = Object.entries(merged).sort((a, b) => b[1] - a[1])[0];
   return { wave: waveStats.wave, kind, lives, total, share: lives / total, name: LEAK_NAMES[kind] ?? kind, hint: LEAK_HINTS[kind] ?? "" };
+}
+
+// Permanent collection progress of a placed hero (R4): level, stars, Evolution and skill
+// levels from collectionHeroes(). Heroes without campaign data (Daily Trial, tests) fall
+// back to level 1, no stars, no Evolution and level 1 skills.
+export function heroProgress(unit) {
+  const levels = unit?.campaignSkillLevels ?? {};
+  const ids = ["ultimate", ...(CLASS_PASSIVE_SKILLS[unit?.class] ?? []).map((skill) => skill.id)];
+  return {
+    level: unit?.campaignLevel ?? 1,
+    stars: unit?.campaignStars ?? 0,
+    evolution: unit?.campaignEvolution ?? 0,
+    skills: ids.map((id) => ({ id, level: levels[id] ?? 1 })),
+  };
 }

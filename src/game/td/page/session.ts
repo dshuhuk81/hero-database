@@ -281,7 +281,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (activePanel) ctx.actions.closePanel();
       else if (deps.recruit.isOpen()) ctx.actions.closeSheet();
       else if (deps.popover.isOpen()) ctx.actions.closePopover();
-      else if (state.deployHeroId) ctx.actions.cancelDeploy();
+      else if (state.deployHeroId || state.relocateEntityId !== null) ctx.actions.cancelDeploy();
       else return;
       event.preventDefault();
       return;

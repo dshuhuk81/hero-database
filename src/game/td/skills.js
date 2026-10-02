@@ -61,7 +61,7 @@ export const CLASS_PASSIVE_SKILLS = {
   ],
 };
 
-// What Awakening adds to each ultimate.
+// What the awakened ultimate (collection Evolution V, `awakenedUlt`) adds.
 /** @type {Record<string, string>} */
 export const AWAKEN_TEXT = {
   shield_wall: "heals road allies for 30% instead of 15%, slow lasts 4s",
@@ -152,41 +152,6 @@ export const REACTION_INFO = {
   blight: { name: "Blight", needs: "Poison + Burn", text: "Burning a poisoned enemy spreads its poison, twice as strong, to enemies around it." },
   freeze: { name: "Freeze", needs: "Wet + Chill", text: "A Wet enemy that gets chilled freezes solid for 2s (once every 3s)." },
   harvest: { name: "Soul Harvest", needs: "Poison + soul-draining ultimate", text: "Every poisoned enemy that dies charges the soul-draining Assassin's ultimate by 1.5s." },
-};
-
-// Class paths chosen with the level 4 upgrade (M12); numbers in tuning.paths.
-/** @type {Record<string, Record<string, { name: string, text: string }>>} */
-export const PATH_INFO = {
-  Tank: {
-    bulwark: { name: "Bulwark", text: "Holds 1 more enemy at once." },
-    thorns: { name: "Thorns", text: "Enemies that hit it take 40% of that damage back." },
-    warden: { name: "Warden", text: "Enemies it holds take 30% more damage from every hero." },
-  },
-  Warrior: {
-    whirlwind: { name: "Whirlwind", text: "Cleave hits 3 more enemies in a 30% wider area." },
-    sunder: { name: "Sunder", text: "Each hit strips 8% armor and magic res from the target for 4s, up to 40%." },
-    bloodlust: { name: "Bloodlust", text: "Heals for 25% of the damage its attacks deal." },
-  },
-  Assassin: {
-    reach: { name: "Long Reach", text: "Dashes 80 further to catch loose enemies." },
-    ambush: { name: "Ambush", text: "The first strike on each enemy deals 2.5x damage." },
-    twin: { name: "Twin Blades", text: "Every attack also strikes the nearest other enemy for 70%." },
-  },
-  Mage: {
-    wildfire: { name: "Wildfire", text: "Hits set enemies on fire: 40% of the hit again over 3s." },
-    frost: { name: "Frost", text: "Hits slow enemies to 60% speed for 1.5s." },
-    arc: { name: "Arc", text: "Attacks chain to 2 more enemies (60% and 35%); a Mage whose attacks already chain gets 2 extra bounces." },
-  },
-  Archer: {
-    piercing: { name: "Piercing", text: "Each shot also hits up to 2 enemies right behind the target for 60%." },
-    mark: { name: "Hunter's Mark", text: "Hit enemies take 40% more damage from every hero for 5s." },
-    crippling: { name: "Crippling", text: "Hits slow enemies to 50% speed for 2s." },
-  },
-  Support: {
-    sanctuary: { name: "Sanctuary", text: "Heals also reach allies next to the target for half." },
-    hymn: { name: "War Hymn", text: "Allies in range attack 20% faster." },
-    purify: { name: "Purify", text: "Lifts hexes from allies in range and heals 25% more." },
-  },
 };
 
 // Enemy kinds in the order players meet them; stats come from tuning.enemies.
