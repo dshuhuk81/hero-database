@@ -72,7 +72,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     stageNameEl.title = environment?.text ?? "";
     stageNameEl.hidden = !campaignStage && !environment;
     if (campaignStage) {
-      stageNumberEl.textContent = `Stage ${campaignStage.id}`;
+      stageNumberEl.textContent = `${campaign!.heroic ? "Heroic stage" : "Stage"} ${campaignStage.id}`;
       stageTitleEl.textContent = campaignStage.name;
     } else if (environment) {
       stageNumberEl.textContent = "Battlefield";
@@ -103,7 +103,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     // starts. The Daily Trial keeps its own squad.
     const heroes = collectionHeroes(campaignData, store.data.campaign, data.heroes);
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
-      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes)
+      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
     const tuning = buildRunTuning(data.tuning, runLevels, boost);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.

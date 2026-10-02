@@ -11,6 +11,7 @@ import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
+import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
@@ -24,7 +25,7 @@ import { createSummonReveal } from "./summon-reveal";
 // Lives as shown in battle (board.js shownLives, laurels.lifeUnit internal lives per shown life).
 const livesShown = (lives: number) => shownLives(lives, (campaignData as any).laurels?.lifeUnit ?? 1);
 
-export type CampaignRun = { stageId: string; squad: string[] };
+export type CampaignRun = { stageId: string; squad: string[]; heroic?: boolean };
 
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
@@ -37,9 +38,9 @@ const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming s
 // The caller persists the save.
 export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, heroName: (id: string) => string, record: boolean) {
   const stage = stageById(campaign, run.stageId);
-  const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0 });
+  const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic });
   if (record) save.campaign = result.progress as CampaignProgress;
-  const label = `Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
+  const label = `${run.heroic ? "Heroic " : ""}Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
   if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[] };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
@@ -85,6 +86,7 @@ export function createCampaign(ctx: PageContext) {
   let squad: string[] = [];
   let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
   let drawerId: string | null = null; // stage shown in the details drawer
+  let heroicRun = false; // the picked stage is played in its Heroic version
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
   let heroDetailKey = ""; // hero + tab last drawn, to keep scroll when an upgrade redraws it
@@ -229,6 +231,7 @@ export function createCampaign(ctx: PageContext) {
     const replay = !!done;
     const first = pendingRewards(stage, p);
     const repeat = repeatRewards(campaign, stage);
+    const heroic = heroicRewards(campaign, stage, p);
     const recommended = recommendedPower(stage);
     const last = p.lastSquad.map((id) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
     const lastPower = last.reduce((sum: number, hero: any) => sum + might(hero), 0);
@@ -257,11 +260,15 @@ export function createCampaign(ctx: PageContext) {
         <section><h3 class="td-label">Rewards</h3>
           ${first.length && !replay ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}
           ${repeat.length ? `<div class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardHtml(repeat)}</div>` : ""}</section>
+        ${heroicUnlocked(campaign, p, stage) ? `<section><h3 class="td-label">Heroic</h3>
+          <p class="td-camp-drawer-about">Enemies have ${data.tuning.tiers.heroic.enemyHp}x health and ${data.tuning.tiers.heroic.enemyAttack}x attack. Heroic clears do not count for the chapter rating; the first one pays Divine Seals.</p>
+          ${heroic.length ? `<div class="td-camp-drawer-reward"><span>Heroic first clear</span>${rewardHtml(heroic)}</div>` : `<p class="td-camp-drawer-about">Heroic cleared${p.heroic?.[stage.id] ? ` (best ${livesShown(p.heroic[stage.id].bestLives)}/${livesShown(stage.lives)} lives)` : ""}.</p>`}</section>` : ""}
         <section><h3 class="td-label">Recommended Might</h3>
           <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
           ${last.length ? `<p class="td-camp-drawer-power-note ${lastPower >= recommended ? "is-strong" : "is-weak"}">Your last squad: ${lastPower.toLocaleString()}</p>` : ""}</section>
       </div>
       <footer class="td-camp-drawer-foot">
+        ${heroicUnlocked(campaign, p, stage) ? `<button class="action-button" type="button" data-camp-drawer-start="${stage.id}" data-camp-heroic>${isHeroicCleared(p, stage.id) ? "Replay Heroic" : "Play Heroic"}</button>` : ""}
         <button class="action-button action-button--primary" type="button" data-camp-drawer-start="${stage.id}">${replay ? "Replay stage" : "Choose squad"}</button>
       </footer>`;
   }
@@ -346,7 +353,7 @@ export function createCampaign(ctx: PageContext) {
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
     squadStart.disabled = !validSquad(campaign, p, squad);
-    squadStart.textContent = "Start";
+    squadStart.textContent = heroicRun ? "Start Heroic" : "Start";
     return true;
   }
 
@@ -656,8 +663,9 @@ export function createCampaign(ctx: PageContext) {
     return true;
   }
 
-  function openStage(id: string) {
+  function openStage(id: string, heroic = false) {
     if (!selectStage(id)) return;
+    heroicRun = heroic && heroicUnlocked(campaign, progress(), stageById(campaign, id));
     renderSquad();
     ctx.actions.showScreen("squad");
   }
@@ -668,7 +676,7 @@ export function createCampaign(ctx: PageContext) {
     store.data.campaign = { ...progress(), lastSquad: [...squad] };
     store.persist();
     const map = stageMap(stage);
-    if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad] } });
+    if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad], ...(heroicRun && { heroic: true }) } });
   }
 
   // The stage rail hides its scrollbar to fit the landscape menu. A mouse wheel only
@@ -700,7 +708,7 @@ export function createCampaign(ctx: PageContext) {
     // A click on the dialog itself (not its panel) is the backdrop.
     if (target === drawerEl || target.closest("[data-camp-drawer-close]")) { closeDrawer(); return; }
     const startButton = target.closest<HTMLButtonElement>("[data-camp-drawer-start]");
-    if (startButton) { const id = startButton.dataset.campDrawerStart!; closeDrawer(); openStage(id); }
+    if (startButton) { const id = startButton.dataset.campDrawerStart!; const heroic = startButton.hasAttribute("data-camp-heroic"); closeDrawer(); openStage(id, heroic); }
   });
   // Escape closes the drawer only; the menu's own Escape (one screen up) must not see it.
   window.addEventListener("keydown", (event) => {

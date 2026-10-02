@@ -9,7 +9,7 @@
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 
-export const CAMPAIGN_SAVE_VERSION = 8; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones
+export const CAMPAIGN_SAVE_VERSION = 9; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
 // Save version that introduced each currency: stages cleared under an older save are paid
@@ -31,7 +31,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -61,11 +61,12 @@ export function validSquad(campaign, progress, squad) {
 // Options for new TowerDefenseGame(...) on top of heroes, tuning and map. The stage's own
 // waves replace tdWaves.json; classic mode plays exactly that list.
 // `heroes`: the run's hero list with campaign levels applied (collectionHeroes), if any.
-export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null) {
+// `heroic`: the stage's Heroic version (the Heroic tier: tuning.tiers.heroic).
+export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null, heroic = false) {
   return {
     ...(heroes && { heroes }),
     mode: "classic",
-    tier: "normal",
+    tier: heroic ? "heroic" : "normal",
     seed: seed >>> 0,
     waves: stage.waves,
     allowedHeroes: squad,
@@ -592,12 +593,37 @@ export function payMilestones(campaign, progress) {
   return { progress: next, paid };
 }
 
+// Heroic campaign (TOWER_DEFENSE_GAMEPLAY_IDEAS.md D2): once every stage of a chapter is
+// cleared, each of its stages has a Heroic version on the Heroic tier (tuning.tiers.heroic).
+// Its first clear pays Divine Seals only (`heroic.sealShare` of the stage's own first-clear
+// seals, at least `heroic.minSeals`); Heroic clears give no laurels and no replay rewards.
+export function heroicUnlocked(campaign, progress, stage) {
+  const chapter = campaign.chapters.find((entry) => entry.stages.some((s) => s.id === stage.id));
+  return !!campaign.heroic && !!chapter && chapter.stages.every((s) => isCleared(progress, s.id));
+}
+
+export const isHeroicCleared = (progress, stageId) => !!progress.heroic?.[stageId];
+
+export function heroicRewards(campaign, stage, progress) {
+  if (!campaign.heroic || isHeroicCleared(progress, stage.id)) return [];
+  const seals = (stage.rewards ?? []).filter((reward) => reward.type === "currency" && reward.id === "divineSeals").reduce((sum, reward) => sum + reward.amount, 0);
+  const amount = Math.max(campaign.heroic.minSeals ?? 0, Math.round(seals * (campaign.heroic.sealShare ?? 1)));
+  return amount > 0 ? [{ type: "currency", id: "divineSeals", amount }] : [];
+}
+
 // After a stage: a win records the clear (best lives kept) and pays the first-clear or the
-// replay rewards. A loss changes nothing. Returns the new progress, whether it was a first
+// replay rewards. A Heroic win (`heroic`) records the Heroic clear and pays heroicRewards. A loss changes nothing. Returns the new progress, whether it was a first
 // clear, the rewards granted and the stage it unlocked.
-export function finishCampaignStage(campaign, progress, stageId, { won, lives }) {
+export function finishCampaignStage(campaign, progress, stageId, { won, lives, heroic = false }) {
   const stage = stageById(campaign, stageId);
   if (!stage || !won) return { progress, firstClear: false, granted: [], unlocked: null, laurels: null, milestones: [] };
+  if (heroic) {
+    if (!heroicUnlocked(campaign, progress, stage)) return { progress, firstClear: false, granted: [], unlocked: null, laurels: null, milestones: [] };
+    const before = progress.heroic?.[stageId];
+    const granted = heroicRewards(campaign, stage, progress);
+    const next = { ...grantRewards(progress, granted), heroic: { ...progress.heroic, [stageId]: { clears: (before?.clears ?? 0) + 1, bestLives: Math.max(before?.bestLives ?? 0, lives) } } };
+    return { progress: next, firstClear: !before, granted, unlocked: null, laurels: null, milestones: [], heroic: true };
+  }
   const before = progress.cleared[stageId];
   const firstClear = !before;
   const granted = firstClear ? pendingRewards(stage, progress) : repeatRewards(campaign, stage);
@@ -670,6 +696,13 @@ export function sanitizeCampaign(value, campaign, heroIds) {
     const list = Array.isArray(value.milestones?.[chapter.id]) ? [...new Set(value.milestones[chapter.id].map(Number))].filter((n) => valid.has(n)) : [];
     if (list.length) milestones[chapter.id] = list;
   }
-  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones };
+  // Version 8 had no Heroic clears: they start empty.
+  /** @type {Record<string, { clears: number, bestLives: number }>} */
+  const heroic = {};
+  for (const [id, entry] of Object.entries(value.heroic ?? {})) {
+    if (!stageIds.has(id) || !cleared[id] || !entry || typeof entry !== "object") continue;
+    heroic[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)) };
+  }
+  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic };
   return payMilestones(campaign, clean).progress;
 }

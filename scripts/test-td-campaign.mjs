@@ -236,6 +236,19 @@ stages.forEach((stage, i) => {
     + chapter.milestones.flatMap((m) => m.rewards).filter((r) => r.id === "gold").reduce((n, r) => n + r.amount, 0);
   assert.equal(progress.currencies.gold - gold0, expectedGold, "milestone gold added once");
   assert.ok(byId[chapter.stages[0].id], "stage lookup");
+  // Heroic campaign: open once the whole chapter is cleared; the first Heroic clear pays seals once.
+  const { heroicUnlocked, heroicRewards } = await import("../src/game/td/campaign.js");
+  const first = chapter.stages[0];
+  assert.ok(!heroicUnlocked(campaign, newCampaignProgress(campaign), first), "Heroic stays closed before the chapter is cleared");
+  assert.ok(heroicUnlocked(campaign, progress, first), "a cleared chapter opens Heroic");
+  const seals = heroicRewards(campaign, first, progress)[0]?.amount ?? 0;
+  assert.ok(seals > 0, "a Heroic first clear pays seals");
+  const heroicWin = finishCampaignStage(campaign, progress, first.id, { won: true, lives: 5, heroic: true });
+  assert.equal(heroicWin.progress.currencies.divineSeals - progress.currencies.divineSeals, seals, "Heroic seals paid");
+  assert.deepEqual([heroicWin.progress.cleared, heroicWin.milestones], [progress.cleared, []], "Heroic clears leave laurels and milestones alone");
+  assert.deepEqual(finishCampaignStage(campaign, heroicWin.progress, first.id, { won: true, lives: 5, heroic: true }).granted, [], "a Heroic replay pays nothing");
+  assert.deepEqual(sanitizeCampaign(heroicWin.progress, campaign, heroIds).heroic, heroicWin.progress.heroic, "Heroic clears survive the save");
+  assert.equal(stageGameOptions(first, [], 1, null, true).tier, "heroic", "Heroic plays on the Heroic tier");
   // A loss changes nothing and reports no laurels.
   assert.deepEqual([finishCampaignStage(campaign, progress, stage.id, { won: false, lives: 0 }).laurels], [null], "loss: no laurels");
   // v7 save with 12 laurels already earned: the 10 milestone is paid once on load.

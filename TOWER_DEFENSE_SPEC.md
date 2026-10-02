@@ -571,7 +571,7 @@ geometry. No game mode uses classic maps.
 | Mode | Rules | Source |
 |---|---|---|
 | Free Play | Any Free Play map, 10 / 20 waves or Endless, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (10 Gold + 5 Hero XP per cleared wave, up to 30 waves) | `sim.js`, `waves.js` |
-| Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply | `campaign.js`, `tdCampaign.json` |
+| Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply. **Heroic:** once a chapter is cleared, each of its stages can be played on the Heroic tier (2x enemy health, 1.3x attack); the first Heroic clear pays the stage's first-clear Divine Seals again (`heroic.sealShare` 1, at least `minSeals` 50), with no laurels, milestones or replay pay (`heroicUnlocked`, `heroicRewards`, save version 9 `heroic`) | `campaign.js`, `tdCampaign.json` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts; +15 Divine Seals for the goal | `daily.js` |
 | Expedition | Chain of 10-wave stages on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
 | Challenges | Optional per-map goals on won 10 / 20-wave runs; one-time Favor | `challenges.js` |
