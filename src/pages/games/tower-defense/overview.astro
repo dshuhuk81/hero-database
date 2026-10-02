@@ -80,6 +80,7 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
 ---
 
 <GameLayout title="TD Overview | The Last Crossing" description="Tower defense numbers at a glance: economy, upgrades, heroes, enemies, bosses and stages.">
+  <div class="ov-scroll">
   <main class="ov">
     <header class="ov-head">
       <h1>TD Overview</h1>
@@ -176,9 +177,17 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
       <p class="ov-note">HP = stage enemy health scale. Hover a stage for its name and boss.</p>
     </section>
   </main>
+  </div>
 </GameLayout>
 
 <style>
+  /* GameLayout locks body scroll (.game-body), so the page scrolls itself. */
+  .ov-scroll {
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--bg-base);
+  }
   .ov {
     max-width: 1600px;
     margin: 0 auto;
