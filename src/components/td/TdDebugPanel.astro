@@ -1,8 +1,9 @@
 ---
-// Debug panel (dev builds only): difficulty knobs and shortcuts. Controlled by src/game/td/page/debug.ts.
+// Debug panel (local dev, or production with ?debug=1): difficulty knobs and shortcuts. Controlled by
+// src/game/td/page/debug.ts; the page removes it unless debug is allowed (data-td-debug-gate).
 ---
 
-<section class="td-debug" data-td-debug aria-label="Debug panel" hidden>
+<section class="td-debug" data-td-debug data-td-debug-gate aria-label="Debug panel" hidden>
   <div class="td-debug-head">
     <strong>Debug</strong>
     <span>Runs with debug changes are not recorded.</span>

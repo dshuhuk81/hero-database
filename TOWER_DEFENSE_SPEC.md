@@ -697,8 +697,11 @@ Summon again or Close.
 Currencies show as icon + value (`currency-icons.js`, item icons on R2 `td/icons/items/`;
 Favor uses a star glyph); names are in tooltips and labels. One global wallet button on every
 menu screen (`page/wallet.ts`) shows the currencies that matter on the open screen and opens
-an inventory with where each is earned and spent. Dev builds have a campaign debug panel
-(DBG) that adds currencies.
+an inventory with where each is earned and spent. Debug tools (the campaign debug panel that
+adds currencies, and the battle debug panel with difficulty knobs) are always available in
+local dev; in production they appear only with `?debug=1` in the URL. Every build ships their
+markup (`data-td-debug-gate`); the page removes it otherwise. Runs changed by debug knobs are
+not recorded.
 
 ### Results screen
 

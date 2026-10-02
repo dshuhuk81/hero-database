@@ -4,14 +4,15 @@ import TdPlayScreen from "../td/TdPlayScreen.astro";
 import TdPanels from "../td/TdPanels.astro";
 interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; bosses: Record<string, any>; }
 const { assetBase, heroes, tuning, maps, waves, bosses } = Astro.props;
-const payload = { assetBase, heroes, tuning, maps, waves, bosses };
+const isDev = import.meta.env.DEV; // prototype maps exist only in local dev builds
+// Debug tools ship in every build; the page removes them unless isDev or ?debug=1 (R6b).
+const payload = { assetBase, heroes, tuning, maps, waves, bosses, isDev };
 const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.boss ?? "baphomet"]?.name ?? "Baphomet"]));
-const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
 ---
 
 <div class="td-shell" data-td-root data-screen="home">
   <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} isDev={isDev} />
-  <TdPlayScreen waveCount={waves.length} isDev={isDev} />
+  <TdPlayScreen waveCount={waves.length} />
   <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
   <dialog class="td-orient-gate" data-td-orient-gate aria-labelledby="td-orient-title" aria-describedby="td-orient-text">
     <div class="td-orient-body">
@@ -60,6 +61,9 @@ const isDev = import.meta.env.DEV; // debug panel exists only in local dev build
   if (!root) throw new Error("Tower defense root missing");
   const q = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
   const data = JSON.parse(document.getElementById("td-data")?.textContent || "{}");
+  // Debug tools (R6b): always in local dev; in production only with an explicit ?debug=1.
+  const debugAllowed = data.isDev || new URLSearchParams(location.search).get("debug") === "1";
+  if (!debugAllowed) root.querySelectorAll("[data-td-debug-gate]").forEach((el) => el.remove());
   setAssetBase(data.assetBase);
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;

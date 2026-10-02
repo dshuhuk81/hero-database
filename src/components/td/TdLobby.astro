@@ -44,27 +44,25 @@ const modes = [
       </button>
       <div class="td-wallet-panel" id="td-wallet-panel" data-td-wallet-panel role="region" aria-label="Inventory" hidden></div>
     </div>
-    {isDev && <button class="td-icon-button td-debug-toggle td-camp-debug-toggle" type="button" data-td-camp-debug-toggle aria-label="Toggle campaign debug panel" aria-pressed="false">DBG</button>}
+    <button class="td-icon-button td-debug-toggle td-camp-debug-toggle" type="button" data-td-camp-debug-toggle data-td-debug-gate aria-label="Toggle campaign debug panel" aria-pressed="false">DBG</button>
     <button class="td-icon-button td-appbar-settings" type="button" data-td-go="settings" aria-label="Settings">
       <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h9M17 7h3M4 17h3M11 17h9" fill="none" /><circle cx="15" cy="7" r="2" fill="none" /><circle cx="9" cy="17" r="2" fill="none" /></svg>
     </button>
   </header>
 
-  {isDev && (
-    <section class="td-debug td-camp-debug" data-td-camp-debug aria-label="Campaign debug panel" hidden>
-      <div class="td-debug-head">
-        <strong>Debug</strong>
-        <span>Adds campaign currencies to this save.</span>
-      </div>
-      <div class="td-debug-actions">
-        <button type="button" data-camp-debug="gold">+10,000 Gold</button>
-        <button type="button" data-camp-debug="heroXp">+10,000 Hero XP</button>
-        <button type="button" data-camp-debug="divineSeals">+600 Divine Seals</button>
-        <button type="button" data-camp-debug="sealDust">+1,000 Seal Dust</button>
-        <button type="button" data-camp-debug="all">Give all</button>
-      </div>
-    </section>
-  )}
+  <section class="td-debug td-camp-debug" data-td-camp-debug data-td-debug-gate aria-label="Campaign debug panel" hidden>
+    <div class="td-debug-head">
+      <strong>Debug</strong>
+      <span>Adds campaign currencies to this save.</span>
+    </div>
+    <div class="td-debug-actions">
+      <button type="button" data-camp-debug="gold">+10,000 Gold</button>
+      <button type="button" data-camp-debug="heroXp">+10,000 Hero XP</button>
+      <button type="button" data-camp-debug="divineSeals">+600 Divine Seals</button>
+      <button type="button" data-camp-debug="sealDust">+1,000 Seal Dust</button>
+      <button type="button" data-camp-debug="all">Give all</button>
+    </div>
+  </section>
 
   <div class="td-screens">
     <!-- 1. Home screen (War Camp): TdHome.astro, filled by src/game/td/page/home.ts -->

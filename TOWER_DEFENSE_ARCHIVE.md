@@ -1,5 +1,11 @@
 # Tower Defense - Completed Work Archive
 
+## R6b debug mode in production, October 2, 2026
+
+- Debug tools (battle DBG panel, campaign DBG panel) ship in every build marked
+  `data-td-debug-gate`; `TowerDefensePage.astro` removes them unless the build is local dev or
+  the URL has `?debug=1` (exactly `1`). Prototype maps stay dev-only.
+
 ## R6 stale sounds on localhost, October 2, 2026
 
 - Cause: dev loads assets from R2 through the `/r2` proxy, and R2 sends a one-year cache

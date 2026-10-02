@@ -51,7 +51,6 @@ Build work with a clear scope.
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. Add visible in-game effects that reflect each action. | Agent | - | M |
-| R6b | Allow debug mode in production behind an explicit URL query parameter | Agent | - | S |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R13 | Local overview page: all stages, bosses and the most important settings at a glance, to make decisions from there. Includes costs for upgrades, skills and everything tunable in the game, every hero with its attack pattern (tile reach), attributes and HP, and enemy info. Reason: game data is spread over many files and hard to track | Agent | - | M |
