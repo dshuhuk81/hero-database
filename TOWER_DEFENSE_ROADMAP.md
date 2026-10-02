@@ -41,22 +41,39 @@ and Divine Interventions (archive: "Board rewrite and ideas round, October 2, 20
 owner asked to build these without balancing; numbers are first guesses. Manual ultimates
 were dropped.
 
-Steps in order. "Needs" names the steps that must be done first; steps without needs can
-start any time and run in parallel.
+Steps grouped by type of work, in the owner's order: development, concept, simulation. "Needs" names the steps that must be done first; steps without
+needs can start any time and run in parallel.
+
+#### DEVELOPMENT
+
+Build work with a clear scope.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. Add visible in-game effects that reflect each action. | Agent | - | M |
-| R6 | Fix stale SFX on localhost; R2 and production play the correct audio | Agent | - | S |
 | R6b | Allow debug mode in production behind an explicit URL query parameter | Agent | - | S |
-| R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
-| R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
-| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
-| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
 | R13 | Local overview page: all stages, bosses and the most important settings at a glance, to make decisions from there. Includes costs for upgrades, skills and everything tunable in the game, every hero with its attack pattern (tile reach), attributes and HP, and enemy info. Reason: game data is spread over many files and hard to track | Agent | - | M |
+
+#### CONCEPT
+
+Design first: rules, story or art are not defined yet.
+
+| # | Step | Owner or agent | Needs | Size |
+|---|---|---|---|---|
+| R9 | Bosses: rules for Lerna, Kraghorn and Vorruk | Agent | - | M |
 | R14 | Lords concept: a new hero class on top of the faction bonds (Norse, Greek). Each faction gets one Lord, always placed first in the selection tab; a placed Lord gives every hero of its faction specific bonuses. Prerequisites: one Lord per faction defined, concept art, animations and descriptions | Owner concept, agent builds | - | L |
+
+#### SIMULATION / TESTING
+
+Balance runs, tuning and checks with the simulation scripts.
+
+| # | Step | Owner or agent | Needs | Size |
+|---|---|---|---|---|
+| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
+| R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
+| R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
 
 Owner directions recorded October 2:
 

@@ -6,6 +6,9 @@ export function setAssetBase(url = "") {
   base = url.replace(/\/+$/, "");
 }
 
+// Local dev loads assets through the /r2 proxy (astro.config.mjs).
+export const devAssets = () => base === "/r2";
+
 export function tdAsset(path) {
   return `${base}/td/${path.replace(/^\/+/, "")}`;
 }

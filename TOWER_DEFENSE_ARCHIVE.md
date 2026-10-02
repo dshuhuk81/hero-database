@@ -1,5 +1,13 @@
 # Tower Defense - Completed Work Archive
 
+## R6 stale sounds on localhost, October 2, 2026
+
+- Cause: dev loads assets from R2 through the `/r2` proxy, and R2 sends a one-year cache
+  lifetime, so a sound replaced on R2 under the same name stayed cached on localhost.
+- Fix: the dev proxy (`astro.config.mjs`) sends `cache-control: no-cache`, and `audio.ts`
+  fetches sounds with `cache: "no-cache"` in dev (`assets.js devAssets()`). Production is
+  unchanged; replaced files there still need a new version name.
+
 ## R2 failing tests, October 2, 2026
 
 - `test-td-summon`: the test now expects each Evolution tier's authored copy cost (1/1/2/2/3)

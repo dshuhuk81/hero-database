@@ -143,7 +143,7 @@ Hard rules:
   `status-fx.js`, `odin-fx.js`, `skin.js`, `audio.ts`, `ui.js`. Presentation never affects
   combat or consumes combat RNG.
 - Styles: `src/styles/td.css`, `td-*` classes. Assets: Cloudflare R2 under `td/`, resolved by
-  `assets.js` (R2 public URL in production, `/r2` dev proxy locally).
+  `assets.js` (R2 public URL in production, `/r2` dev proxy locally; the proxy sends `no-cache` and dev sound fetches revalidate, so files replaced on R2 show up locally).
 - Community hero submissions: public form `/games/tower-defense/submit-hero` posts to the
   Pages Function `functions/api/hero-submission.js`, which forwards each entry to a private
   Discord channel (Cloudflare secret `DISCORD_HERO_WEBHOOK`; without it the endpoint answers

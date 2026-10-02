@@ -55,6 +55,11 @@ export default defineConfig({
           target: R2_BASE,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/r2/, ''),
+          // R2 sends a one-year cache lifetime, so a file replaced under the same name stayed
+          // stale on localhost. In dev the browser revalidates every asset instead.
+          configure: (proxy) => {
+            proxy.on('proxyRes', (res) => { res.headers['cache-control'] = 'no-cache'; });
+          },
         },
       },
     },

@@ -2,7 +2,7 @@
 // Combat and interface sounds from td/sfx on R2 (Tactical Interface SFX, commercial license;
 // public/td/sfx/CREDITS-mythic.txt). Volume and mute persist in localStorage; hit sounds are
 // capped so a full wave stays pleasant.
-import { tdAsset } from "./assets.js";
+import { devAssets, tdAsset } from "./assets.js";
 import levels from "../../data/tdAudioLevels.json";
 
 const SOUNDS = {
@@ -51,7 +51,8 @@ export function createAudio(heroSounds: Record<string, { voice?: string; attack?
 
   async function buffer(name: string) {
     if (buffers.has(name)) return buffers.get(name)!;
-    const promise = fetch(tdAsset(`sfx/${name}.ogg`))
+    // Dev: revalidate so sounds replaced on R2 under the same name are not served from an old cache entry.
+    const promise = fetch(tdAsset(`sfx/${name}.ogg`), devAssets() ? { cache: "no-cache" } : undefined)
       .then((response) => response.arrayBuffer())
       .then((data) => ensureContext().decodeAudioData(data))
       .catch(() => null);
