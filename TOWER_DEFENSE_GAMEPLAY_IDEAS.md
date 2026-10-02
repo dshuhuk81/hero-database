@@ -179,7 +179,7 @@ sit on the Favor trunk of the blessing tree (cooldown, radius), which gives Favo
 Daily Trial disables them like other blessings, keeping scores comparable. Touch: tap power, then
 tap the map; the same placement hit test as tiles.
 
-**B3. Hero relocation (S).** Move a deployed hero to an empty tile of the same type for 25% of
+**B3. Hero relocation (S).** *Status October 2, 2026: built with R4 (between waves, 25% of the deployment cost, Divine Rite -30%; the Hold Position challenge rewards never moving).* Move a deployed hero to an empty tile of the same type for 25% of
 its deploy cost, available between waves. Today misplacement costs half of everything invested,
 which punishes learning. This is the cheapest way to make placement experimentation feel safe.
 
@@ -212,7 +212,7 @@ Hephaestus"). No new mechanics, only visibility of an existing reward.
 - Win a Free Play run
 - Trigger 5 reactions
 - Kill 300 enemies
-- Upgrade a hero to rank IV in battle
+- Relocate a hero between waves
 - Level up a hero
 - Summon once
 - Earn 3 laurels

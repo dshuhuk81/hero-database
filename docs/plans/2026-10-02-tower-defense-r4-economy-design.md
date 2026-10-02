@@ -1,6 +1,6 @@
 # Tower Defense R4: Battle Economy Redesign
 
-**Status:** Approved direction; detailed design awaiting owner review  
+**Status:** Implemented October 2, 2026  
 **Roadmap item:** R4  
 **Date:** October 2, 2026
 

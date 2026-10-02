@@ -49,7 +49,7 @@ const LIMIT_SECONDS = 90;
 const nearestRing = (rings, [x, y]) => rings.reduce((best, ring, i) => (Math.hypot(ring[0] - x, ring[1] - y) < Math.hypot(rings[best][0] - x, rings[best][1] - y) ? i : best), 0);
 
 // Score of one hero on one ring (see the header).
-export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = baseTuning, level = 1 } = {}) {
+export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = baseTuning } = {}) {
   const hero = heroes.find((h) => h.id === heroId);
   const waves = [{ wave: 1, spawns: WAVE_TYPES[waveType] }];
   const g = new TowerDefenseGame({ heroes, tuning, map: { ...map, boss: "baphomet" }, waves, seed: 5 });
@@ -57,10 +57,6 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
   g.difficulty.invincible = true; // a leak must not end the run before the wave is scored
   if (!g.place(heroId, hero.slot, ringIndex)) return null;
   const unit = g.heroes[0];
-  for (let l = 1; l < level; l += 1) {
-    const info = g.upgradeInfo(unit.entityId);
-    g.upgrade(unit.entityId, info.needsPath ? info.pathOptions[0] : "attack");
-  }
   const partner = heroes.find((h) => h.id === PARTNER[hero.slot]);
   const rings = partner.slot === "road" ? map.roadSlots : map.platformSlots;
   g.place(partner.id, partner.slot, nearestRing(rings, [unit.x, unit.y]));

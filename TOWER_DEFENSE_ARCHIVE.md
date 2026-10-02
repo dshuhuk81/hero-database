@@ -1,5 +1,20 @@
 # Tower Defense - Completed Work Archive
 
+## R4 battle economy redesign, October 2, 2026
+
+- Battle gold buys deploys and relocations only. Deploy discounts (Master Smith 3% per level,
+  class Swift Muster 10%) add up to at most 50%. Relocation between waves costs 25% of the
+  deployment cost (class Divine Rite -30%) and keeps the hero's health, charge and cooldowns.
+- Removed battle ranks, attack/health focus, class paths, Awakening and training from the
+  simulator, tuning, runners, glossary and help. Collection Evolution V still awakens ultimates.
+- Blessing nodes migrated in place (same ids and levels): `*_ascension` Swift Muster, `*_rite`
+  relocation discount, `*_apotheosis` +15% attack and health always on. Expedition veterans get
+  +10% attack and health (`heroBonuses`); challenge `unrefined` is now Hold Position.
+- Hero panel: collection level, stars, Evolution and skill levels, then Relocate and Sell.
+  Spec: `docs/plans/2026-10-02-tower-defense-r4-economy-design.md`; plan:
+  `docs/superpowers/plans/2026-10-02-tower-defense-r4-economy.md`. Gold income is not retuned
+  (R12).
+
 ## R1 and R3 board follow-ups, October 2, 2026
 
 - Unit sizes set by owner playtest: heroes 1.3x and regular enemies 1.8x. Bosses use a separate

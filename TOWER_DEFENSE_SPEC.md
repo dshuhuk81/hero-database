@@ -66,11 +66,9 @@ grows in steps: a high ground tile gives one step up the class's pattern ladder 
 hero stands there, a hostile environment (Stormpeak) can take one step away, and stars
 bought outside battle give permanent steps (3 and 5 stars).
 
-Around the battle the game is unchanged: battle gold buys deploys and battle ranks (attack
-or health focus, class paths, Awakening, training); the persistent hero collection, campaign
-levels, stars and evolution, summons and Divine Blessings sit outside. The owner's direction
-is that hero upgrades should move out of battle over time; the gold economy stays as it is
-until it is redesigned (section 16).
+Around the battle: battle gold buys deploys and relocations only (section 9). Hero power
+comes from the persistent collection (levels, stars, Evolution, skills), summons and Divine
+Blessings, all outside the battle (R4, October 2, 2026).
 
 Why: before boards, heroes covered almost the same road from any tile, Mages were required
 in every squad, and a squad without blockers won as often as any other. With boards, tile
@@ -276,8 +274,7 @@ pattern plus:
 - the hero's permanent **reach steps** (`reachSteps` on the hero row): +1 at 3 stars, +2 at 5
   stars (`tdCampaign.json` `heroStars.reachSteps`, every mode, shown on the Stars tab).
 
-Range is never upgraded in battle: the rank III focus offers attack or health, training
-offers attack or health (section 9).
+Range is never upgraded in battle; nothing about a hero is upgraded in battle (section 9).
 
 ### What reach decides
 
@@ -336,7 +333,8 @@ offers attack or health (section 9).
   splash shares that find no neighbour (2 expected) fold into the main target, so a lone
   target takes up to 1.7x; a chaining Mage folds in its unused bounces.
 - **Ultimates:** per-hero variants in `tuning.heroSkills`, texts in `skills.js`,
-  ~250% x tier ult power plus class add-ons; Awakening strengthens them (section 9).
+  ~250% x tier ult power plus class add-ons; collection Evolution V awakens them
+  (`awakenedUlt`, section 11).
   `sim.faceTarget()` turns a hero to its target every step and at cast, so cones and spreads
   centre on the target. Heroes never move on attack; only the attack clip plays.
 - **Statuses:** wet, burn, poison, chill, with reactions `conduct`, `steam`, `blight`,
@@ -364,10 +362,14 @@ offers attack or health (section 9).
   field (Norse on a tie) and shares its bonus. The squad screen lists the bonds a squad
   brings; in battle active bonds show as gold chips in the buff bar. Tag synergy stays
   underneath as before; `synergy.bonusPerTag: 0` would retire it.
-- **Hero panel** (`page/popover.ts`): stats (attack, speed, reach grid, crit), target priority,
-  collapsed details, and a pinned footer with the next upgrade's one-line preview, Upgrade (2/3
-  width) and Sell (1/3). The rank III focus, rank IV path and training picks open in the
-  footer. In campaign stages the title shows the hero's stars and Evolution badge.
+- **Hero panel** (`page/popover.ts`): stars and Evolution badge, stats (attack, speed, reach
+  grid, crit), target priority, collapsed details, and a pinned footer with the permanent
+  progress line (collection level and skill levels, `ui.js heroProgress()`; heroes without
+  campaign data show level 1), the relocation preview, Relocate with its cost (2/3 width) and
+  Sell (1/3). Relocate closes the panel and highlights the empty tiles of the hero's type
+  (`state.relocateEntityId`, `game.uiDeploySlot`); the next compatible tile moves the hero, an
+  invalid tile keeps the mode, and tapping the hero again, Escape, an empty map tap, the wave
+  start or the run end cancel it. Deck and board badges show the collection level.
 - **Boss warnings** (`page/hud.ts`): "Face <boss>" and "<boss> has entered" follow the run's
   wave table.
 
@@ -454,26 +456,28 @@ walk, swing, hurt and death motion when a kind has no sheet (`animateEnemy` in `
 Reduced motion or `?anim=off` turns motion off. Versioning, the PixelLab clip workflow and
 build scripts: `docs/td-asset-pipeline.md` and section 15.
 
-## 9. Battle economy and in-battle upgrades
+## 9. Battle economy
 
 - Free Play run: 340 starting gold, 25 lives (5 shown), deploy cap 7, sell refund 50%. Kill rewards
   (5x per enemy under the wave shape, so the total per wave stays about the same), wave-clear
   bonus 50 + 10 per wave, a quest per wave (gold 40 + 10 per wave). **Wave interest**
   (`run.waveInterest`): each wave clear first pays 5% of the unspent gold, at most 50, so
   saving gold is a choice; it shows in the wave-clear notice.
-- Battle ranks I-IV cost 80 / 120 / 160 gold (+10% attack, +20% health per rank). Rank III
-  asks for a focus: attack +10% or health +25%. Rank IV picks one of three class paths that
-  change how the hero fights (for example Mage wildfire / frost / arc).
-- Awakening (past rank IV, 220 gold): +15% attack, +25% health and a stronger ultimate.
-- Training (after Awakening): repeatable +8% attack or +12% health, price x1.3 per buy. The
-  picker shows each option's real relative gain ("+6.9% this time").
-- Everything bought in battle is lost when the hero falls or the run ends. A fallen hero
-  re-enters at rank I.
+- Battle gold buys two things (R4, October 2, 2026; the gold income is not retuned yet, R12):
+  - **Deploy** a hero for its deployment cost (`sim.deployCost()`): the hero's cost minus the
+    global Master Smith discount (3% per level) and the class Swift Muster discount (10%),
+    added together and capped at 50%. A fallen hero is redeployed the same way.
+  - **Relocate** a deployed hero between waves (`sim.relocationInfo()` / `relocate()`): 25% of
+    its deployment cost (`run.relocationCost`), rounded, minus the class Divine Rite discount
+    (30%). It must end on an empty tile of the hero's slot type. The hero keeps its entity id,
+    health, ultimate charge and cooldowns; the fee is not refunded on sale. `game.relocations`
+    counts moves for the Hold Position challenge.
+- **Sell** works anytime and refunds 50% of the deployment gold paid.
+- No battle ranks, focus, class paths, Awakening or training. A placed hero uses its
+  collection stats (`collectionHeroes()`), times run modifiers (virtues, Favor hero health,
+  class Apotheosis +15% attack and health, Expedition veterans +10%).
 - Run boons (rare / epic) and virtue blessings are offered between waves; virtue pairs grant
   extra effects; shards give a next-run boost.
-
-The owner's direction is to move hero upgrades out of battle; until the gold economy is
-redesigned, these in-battle upgrades stay. Range is the only stat already removed from them.
 
 ## 10. Battlefields (`tdMaps.json`)
 
@@ -585,8 +589,8 @@ geometry. No game mode uses classic maps.
 | Free Play | Any Free Play map, 10 / 20 waves or Endless, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (10 Gold + 5 Hero XP per cleared wave, up to 30 waves) | `sim.js`, `waves.js` |
 | Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply. **Heroic:** once a chapter is cleared, each of its stages can be played on the Heroic tier (2x enemy health, 1.3x attack); the first Heroic clear pays the stage's first-clear Divine Seals again (`heroic.sealShare` 1, at least `minSeals` 50), with no laurels, milestones or replay pay (`heroicUnlocked`, `heroicRewards`, save version 9 `heroic`) | `campaign.js`, `tdCampaign.json` |
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts; +15 Divine Seals for the goal | `daily.js` |
-| Expedition | Chain of 10-wave stages on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
-| Challenges | Optional per-map goals on won 10 / 20-wave runs; one-time Favor | `challenges.js` |
+| Expedition | Chain of 10-wave stages on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
+| Challenges | Optional per-map goals on won 10 / 20-wave runs; one-time Favor. The legacy `unrefined` id is Hold Position since R4: win without relocating a hero | `challenges.js` |
 
 Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 
@@ -713,7 +717,10 @@ stage the footer offers Retry, Next stage or Change squad, and Campaign.
   longer raise range; they keep their ids and bought levels but give Iron Hide (Tank guard
   +2% per level), Keen Edge (Warrior crit +2%), Killer Instinct (Assassin crit +3%), Focused
   Mind (Mage ultimate charge +3%), Steady Aim (Archer crit +2%) and Swift Grace (Support
-  ultimate charge +3%), so saves need no refund.
+  ultimate charge +3%), so saves need no refund. Since R4 the class Divine I / IV / V nodes
+  keep their ids too: `*_ascension` is Swift Muster (deploy 10% cheaper), `*_rite` Divine
+  Rite (relocation 30% cheaper), `*_apotheosis` Apotheosis (+15% attack and health, always
+  on); trunk `odin_dominion` Master Smith lowers deployment costs 3% per level.
 - **Virtues and run boons** between waves; **shards** for a next-run boost.
 - **Hero collection:** see section 11.
 
@@ -805,8 +812,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 The order and dependencies of the open work live in
 [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) (steps R1-R11); this list names the gaps.
 
-- **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
-  economy needs a redesign first.
 - **Balance pass pending** for global stats in Free Play, Expedition and the Daily Trial,
   pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.

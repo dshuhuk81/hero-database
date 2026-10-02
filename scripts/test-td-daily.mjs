@@ -136,12 +136,6 @@ export function playDaily(setup, maxWave = 60) {
       const base = heroById.get(id);
       for (const i of rankedTiles(map, base.slot, g.rangeFor(base))) if (g.place(id, base.slot, i)) break;
     }
-    for (let guard = 0; guard < 20; guard += 1) {
-      const options = g.heroes.map((h) => g.upgradeInfo(h.entityId)).filter((info) => info.ok).sort((a, b) => a.cost - b.cost);
-      if (!options.length) break;
-      const info = options[0];
-      g.upgrade(info.hero.entityId, info.needsPath ? info.pathOptions?.[0] : info.hero.slotType === "road" ? "health" : "attack");
-    }
     if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
     if (g.mutatorOffer) g.skipMutators();
     if (!g.startWave()) break;

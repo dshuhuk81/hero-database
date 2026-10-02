@@ -32,8 +32,7 @@ function ledgerRun(ids, seed, mode, tier) {
   const ledger = {
     start: g.gold,
     kills: 0, quests: 0, clearAndBoons: 0, sellRefunds: 0,
-    deploys: 0, levels: 0, awakening: 0, training: 0,
-    upgradesBought: 0, heroesDeployed: 0,
+    deploys: 0, relocations: 0, heroesDeployed: 0,
   };
   // Income: kill rewards pass through killReward (difficulty/favor already applied).
   const origKillReward = g.killReward.bind(g);
@@ -45,18 +44,6 @@ function ledgerRun(ids, seed, mode, tier) {
   // Sink: deploys.
   const origPlace = g.place.bind(g);
   g.place = (...a) => { const before = g.gold; const ok = origPlace(...a); if (ok) { ledger.deploys += before - g.gold; ledger.heroesDeployed += 1; } return ok; };
-  // Sink: upgrades, split into levels / awakening / training.
-  const origUpgrade = g.upgrade.bind(g);
-  g.upgrade = (...a) => {
-    const info = origUpgrade(...a);
-    if (info?.ok) {
-      if (info.awaken) ledger.awakening += info.cost;
-      else if (info.train) ledger.training += info.cost;
-      else ledger.levels += info.cost;
-      ledger.upgradesBought += 1;
-    }
-    return info;
-  };
   // Income: sell refunds.
   const origSell = g.sell.bind(g);
   g.sell = (...a) => { const result = origSell(...a); if (result?.ok) ledger.sellRefunds += result.refund; return result; };
@@ -71,14 +58,6 @@ function ledgerRun(ids, seed, mode, tier) {
         for (const i of rankedTiles(MAP, base.slot, g.rangeFor(base))) {
           if (g.place(id, base.slot, i)) break;
         }
-      }
-      for (let guard = 0; guard < 20; guard += 1) {
-        const options = g.heroes.map((h) => g.upgradeInfo(h.entityId)).filter((i) => i.ok);
-        if (!options.length) break;
-        if (POLICY === "carry") options.sort((a, b) => b.hero.atk - a.hero.atk || a.cost - b.cost);
-        else options.sort((a, b) => a.cost - b.cost);
-        const pick = options[0];
-        g.upgrade(pick.hero.entityId, pick.needsPath ? pick.pathOptions?.[0] : (pick.hero.slotType === "road" ? "health" : "attack"));
       }
       if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
       if (g.mutatorOffer) g.skipMutators();
@@ -96,7 +75,7 @@ function ledgerRun(ids, seed, mode, tier) {
   }
   // Remainder of tracked income: wave-clear bonuses plus boon/fortune trickle.
   ledger.clearAndBoons = g.totalGoldEarned - ledger.kills - ledger.quests;
-  ledger.spentTotal = ledger.deploys + ledger.levels + ledger.awakening + ledger.training;
+  ledger.spentTotal = ledger.deploys + ledger.relocations;
   ledger.leftover = g.gold;
   return { won: g.won, wave: g.wave, seconds: Math.round(g.time), ...ledger };
 }
@@ -123,12 +102,9 @@ for (const tier of TIERS) {
     console.log("SPEND".padEnd(28), "avg gold", "share");
     const sline = (label, value) => console.log(label.padEnd(28), String(value).padStart(8), `${Math.round((value / Math.max(1, avg(rows, "spentTotal"))) * 100)}%`);
     sline("deploys", avg(rows, "deploys"));
-    sline("levels 2-4", avg(rows, "levels"));
-    sline("awakening", avg(rows, "awakening"));
-    sline("training", avg(rows, "training"));
+    sline("relocations", avg(rows, "relocations"));
     console.log("total spent".padEnd(28), String(avg(rows, "spentTotal")).padStart(8));
     console.log("leftover at run end".padEnd(28), String(avg(rows, "leftover")).padStart(8));
-    console.log("upgrades bought / run".padEnd(28), String(avg(rows, "upgradesBought")).padStart(8));
     console.log("heroes deployed / run".padEnd(28), String(avg(rows, "heroesDeployed")).padStart(8));
     console.log("avg wave reached".padEnd(28), String(avg(rows, "wave")).padStart(8));
   }
