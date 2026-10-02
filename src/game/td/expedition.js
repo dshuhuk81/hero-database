@@ -12,7 +12,7 @@ export const EXPEDITION = {
   // battlefields, so a new map adds variety, not duration. One stageHp entry per stage.
   stages: 3,
   stageHp: [0.35, 0.5, 0.65], // enemy health per stage, on top of the Normal difficulty
-  veteranLevel: 2, // veterans enter every stage at this level (below the level 3 focus)
+  veteranBonus: 0.1, // veterans gain this much attack and max HP for the rest of the expedition
   completeFavor: 300, // once per finished expedition, on top of each stage's normal Favor
   recruitLives: 5, // a new hero costs this many of the carried-over lives (one shown life, never below 1)
 };
@@ -52,7 +52,7 @@ export function stageGameOptions(state) {
     seed: mix(state.seed, state.stage, 0x51ed27),
     allowedHeroes: state.roster,
     boons: state.relics,
-    startLevels: Object.fromEntries(state.veterans.map((id) => [id, EXPEDITION.veteranLevel])),
+    heroBonuses: Object.fromEntries(state.veterans.map((id) => [id, { atk: EXPEDITION.veteranBonus, hp: EXPEDITION.veteranBonus }])),
     lives: state.lives,
     hpScale: EXPEDITION.stageHp[Math.min(state.stage, EXPEDITION.stageHp.length - 1)],
   };

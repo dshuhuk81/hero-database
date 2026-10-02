@@ -143,10 +143,10 @@
       "cost": 415,
       "requiresPoints": 16,
       "effect": {
-        "type": "upgradeDiscount",
+        "type": "deployDiscount",
         "value": 0.03
       },
-      "text": "Upgrade costs -{p}."
+      "text": "Deployment costs -{p}."
     },
     {
       "tree": "trunk",
@@ -286,7 +286,7 @@
     {
       "tree": "Tank",
       "id": "tank_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -294,10 +294,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Tanks enter the field at level 2."
+      "text": "Tanks deploy for {p} less gold."
     },
     {
       "tree": "Tank",
@@ -374,10 +374,10 @@
         "tank_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Tanks awaken for {p} less gold."
+      "text": "Relocating tanks costs {p} less gold."
     },
     {
       "tree": "Tank",
@@ -393,10 +393,10 @@
         "tank_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened tanks gain +{p} attack and max HP."
+      "text": "Tanks gain +{p} attack and max HP."
     },
     {
       "tree": "Warrior",
@@ -461,7 +461,7 @@
     {
       "tree": "Warrior",
       "id": "warrior_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -469,10 +469,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Warriors enter the field at level 2."
+      "text": "Warriors deploy for {p} less gold."
     },
     {
       "tree": "Warrior",
@@ -549,10 +549,10 @@
         "warrior_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Warriors awaken for {p} less gold."
+      "text": "Relocating warriors costs {p} less gold."
     },
     {
       "tree": "Warrior",
@@ -568,10 +568,10 @@
         "warrior_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened warriors gain +{p} attack and max HP."
+      "text": "Warriors gain +{p} attack and max HP."
     },
     {
       "tree": "Assassin",
@@ -636,7 +636,7 @@
     {
       "tree": "Assassin",
       "id": "assassin_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -644,10 +644,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Assassins enter the field at level 2."
+      "text": "Assassins deploy for {p} less gold."
     },
     {
       "tree": "Assassin",
@@ -724,10 +724,10 @@
         "assassin_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Assassins awaken for {p} less gold."
+      "text": "Relocating assassins costs {p} less gold."
     },
     {
       "tree": "Assassin",
@@ -743,10 +743,10 @@
         "assassin_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened assassins gain +{p} attack and max HP."
+      "text": "Assassins gain +{p} attack and max HP."
     },
     {
       "tree": "Mage",
@@ -811,7 +811,7 @@
     {
       "tree": "Mage",
       "id": "mage_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -819,10 +819,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Mages enter the field at level 2."
+      "text": "Mages deploy for {p} less gold."
     },
     {
       "tree": "Mage",
@@ -899,10 +899,10 @@
         "mage_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Mages awaken for {p} less gold."
+      "text": "Relocating mages costs {p} less gold."
     },
     {
       "tree": "Mage",
@@ -918,10 +918,10 @@
         "mage_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened mages gain +{p} attack and max HP."
+      "text": "Mages gain +{p} attack and max HP."
     },
     {
       "tree": "Archer",
@@ -986,7 +986,7 @@
     {
       "tree": "Archer",
       "id": "archer_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -994,10 +994,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Archers enter the field at level 2."
+      "text": "Archers deploy for {p} less gold."
     },
     {
       "tree": "Archer",
@@ -1074,10 +1074,10 @@
         "archer_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Archers awaken for {p} less gold."
+      "text": "Relocating archers costs {p} less gold."
     },
     {
       "tree": "Archer",
@@ -1093,10 +1093,10 @@
         "archer_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened archers gain +{p} attack and max HP."
+      "text": "Archers gain +{p} attack and max HP."
     },
     {
       "tree": "Support",
@@ -1161,7 +1161,7 @@
     {
       "tree": "Support",
       "id": "support_ascension",
-      "name": "Early Ascension",
+      "name": "Swift Muster",
       "stage": "Divine I",
       "row": 2,
       "col": 0.5,
@@ -1169,10 +1169,10 @@
       "cost": 120,
       "requiresPoints": 8,
       "effect": {
-        "type": "startLevel",
-        "value": 1
+        "type": "deployDiscount",
+        "value": 0.1
       },
-      "text": "Supports enter the field at level 2."
+      "text": "Supports deploy for {p} less gold."
     },
     {
       "tree": "Support",
@@ -1248,10 +1248,10 @@
         "support_wrath"
       ],
       "effect": {
-        "type": "awakenDiscount",
+        "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Supports awaken for {p} less gold."
+      "text": "Relocating supports costs {p} less gold."
     },
     {
       "tree": "Support",
@@ -1267,10 +1267,10 @@
         "support_rite"
       ],
       "effect": {
-        "type": "awakenBonus",
+        "type": "power",
         "value": 0.15
       },
-      "text": "Awakened supports gain +{p} attack and max HP."
+      "text": "Supports gain +{p} attack and max HP."
     }
   ]
 }

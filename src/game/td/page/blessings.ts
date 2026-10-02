@@ -20,11 +20,11 @@ const PAD = 0.6; // grid units around the world
 
 const GLYPHS: Record<string, string> = {
   startingGold: "Gold", lives: "Life", showHp: "Scout", heroHp: "HP", killGold: "Loot", ultCharge: "Ult",
-  synergyTag: "Bond", wave1Speed: "Slow", upgradeDiscount: "Cost", clearBonus: "Clear", contactRange: "Wall",
+  synergyTag: "Bond", wave1Speed: "Slow", deployDiscount: "Cost", clearBonus: "Clear", contactRange: "Wall",
   extraOffer: "+1", bossDamage: "Boss", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
-  startLevel: "Lv2", blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
+  blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
   cleave: "Cleave", dash: "Dash", guard: "Guard", splash: "AoE", pierce: "Pierce",
-  ultPower: "Pow", awakenDiscount: "Rite", awakenBonus: "Apex", infuse: "Elem", purify: "Pure",
+  ultPower: "Pow", relocateDiscount: "Move", power: "Apex", infuse: "Elem", purify: "Pure",
 };
 
 const branchIndex = (tree: string) => CLASSES.indexOf(tree);

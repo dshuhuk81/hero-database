@@ -105,7 +105,7 @@ export function createExpedition(ctx: PageContext) {
     }
     const names = card.ids.map((id: string) => heroById.get(id)?.name ?? id).join(", ");
     return `<button type="button" class="td-exp-choice td-exp-choice--drill" data-exp-card="${index}"><span class="td-exp-choice-icon">${icon(DRILL_ICON)}</span>` +
-      `<span class="td-label">Drill</span><strong>Veteran training</strong><small>${names} enter every stage at level ${EXPEDITION.veteranLevel}.</small></button>`;
+      `<span class="td-label">Drill</span><strong>Veteran training</strong><small>${names} gain +${Math.round(EXPEDITION.veteranBonus * 100)}% ATK & HP for the rest of the expedition.</small></button>`;
   }
 
   function render() {
@@ -147,7 +147,7 @@ export function createExpedition(ctx: PageContext) {
     routeNoteEl.textContent = `${state.stage} of ${state.stages.length} cleared`;
     routeEl.innerHTML = state.stages.map((id, i) => stopHtml(id, i, i < state.stage ? "done" : i === state.stage ? "current" : "ahead")).join("");
     rosterCountEl.textContent = `${state.roster.length} ${state.roster.length === 1 ? "hero" : "heroes"}`;
-    rosterEl.innerHTML = state.roster.map((id, i) => trialCardHtml(heroById.get(id), i, state.veterans.includes(id) ? `Lv ${EXPEDITION.veteranLevel}` : `${heroById.get(id).cost}g`)).join("");
+    rosterEl.innerHTML = state.roster.map((id, i) => trialCardHtml(heroById.get(id), i, state.veterans.includes(id) ? `+${Math.round(EXPEDITION.veteranBonus * 100)}% ATK & HP` : `${heroById.get(id).cost}g`)).join("");
     relicsEl.innerHTML = state.relics.map((id) => `<li title="${relicInfo[id]?.text ?? ""}"><strong>${relicInfo[id]?.name ?? id}</strong>${relicInfo[id]?.text ?? ""}</li>`).join("");
     campEl.hidden = !state.camp;
     cardsEl.innerHTML = state.camp ? state.camp.map((card, i) => cardHtml(card, i, state)).join("") : "";
@@ -192,7 +192,7 @@ export function createExpedition(ctx: PageContext) {
     store.data.expedition = chooseCamp(state, Number(button.dataset.expCard)) as ExpeditionState;
     store.persist();
     render();
-    ctx.notice(card?.type === "hero" ? `${heroById.get(card.id)?.name} joins the expedition.` : card?.type === "relic" ? "Relics packed for the next stage." : "Your squad drilled: veterans enter at level 2.");
+    ctx.notice(card?.type === "hero" ? `${heroById.get(card.id)?.name} joins the expedition.` : card?.type === "relic" ? "Relics packed for the next stage." : `Your squad drilled: veterans gain +${Math.round(EXPEDITION.veteranBonus * 100)}% ATK & HP.`);
     startButton.focus({ preventScroll: true });
   });
 

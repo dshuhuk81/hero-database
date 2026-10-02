@@ -34,7 +34,7 @@ export const CHALLENGES = [
   { id: "perfect", name: "Perfect Defense", icon: "M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z", text: "Win without losing a single life." },
   { id: "trio", name: "Trio", icon: "M7 9a2.5 2.5 0 1 0 0-.01zM17 9a2.5 2.5 0 1 0 0-.01zM12 17a2.5 2.5 0 1 0 0-.01z", text: `Win with at most ${TRIO_MAX} different heroes deployed over the whole run.` },
   { id: "oneClass", name: "One Class", icon: "M12 4l7 8-7 8-7-8z", text: "Win with every deployed hero from the same class." },
-  { id: "unrefined", name: "Unrefined", icon: "M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM6.5 6.5l11 11", text: "Win without buying a level, Awakening or training." },
+  { id: "unrefined", name: "Hold Position", icon: "M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM6.5 6.5l11 11", text: "Win without relocating a hero." },
   { id: "swift", name: "Swift", icon: "M13 3L5 14h6l-1 7 8-11h-6z", text: `Win within ${minutes(SWIFT_SECONDS.classic)} of battle time (${minutes(SWIFT_SECONDS.long)} on 20 waves). Time between waves does not count.` },
   { id: "hoarder", name: "Hoarder", icon: "M12 5a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z", text: `Win with at least ${HOARDER_GOLD.classic} gold left (${HOARDER_GOLD.long} on 20 waves).` },
 ];
@@ -53,7 +53,7 @@ export function runFacts(game) {
     perfect: !!game.perfect,
     fielded,
     classes: [...new Set(fielded.map((id) => game.heroesById?.get(id)?.class).filter(Boolean))],
-    upgrades: game.upgradesBought ?? 0,
+    relocations: game.relocations ?? 0,
     seconds: game.runDuration ?? 0,
     gold: game.gold ?? 0,
   };
@@ -63,7 +63,7 @@ const CHECKS = {
   perfect: (f) => f.perfect,
   trio: (f) => f.fielded.length > 0 && f.fielded.length <= TRIO_MAX,
   oneClass: (f) => f.classes.length === 1,
-  unrefined: (f) => f.upgrades === 0,
+  unrefined: (f) => f.relocations === 0,
   swift: (f) => f.seconds <= (SWIFT_SECONDS[f.mode] ?? 0),
   hoarder: (f) => f.gold >= (HOARDER_GOLD[f.mode] ?? Infinity),
 };

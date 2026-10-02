@@ -96,8 +96,14 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, onChange = () => {} }) {
-    this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
+  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+    // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
+    // folded into the base stats so every placement and redeploy uses them.
+    const boosted = (hero) => {
+      const bonus = heroBonuses?.[hero.id];
+      return bonus ? { ...hero, atk: hero.atk * (1 + (bonus.atk || 0)), hp: hero.hp * (1 + (bonus.hp || 0)) } : hero;
+    };
+    this.heroesById = new Map(heroes.map((hero) => [hero.id, boosted(hero)]));
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
     this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);

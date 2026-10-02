@@ -146,7 +146,7 @@ export function applyBlessings(levels, tree = TREE) {
       case "ultCharge": add(bonuses, "ultChargeBonus", value); break;
       case "synergyTag": add(bonuses, "synergyTagBonus", value); break;
       case "wave1Speed": add(bonuses, "wave1SpeedDebuff", value); break;
-      case "upgradeDiscount": add(bonuses, "upgradeDiscount", value); break;
+      case "deployDiscount": add(bonuses, "deployDiscount", value); break;
       case "clearBonus": add(bonuses, "clearBonus", value); break;
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
       case "extraOffer": add(bonuses, "extraOffer", value); break;
