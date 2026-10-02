@@ -800,6 +800,14 @@
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent-gold) 70%, transparent);
 }
 
+/* Early-build hint under the Next-stage card: the game is in active development. */
+.td-camp-home-wip {
+  margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--text-secondary) 75%, transparent);
+  font-size: var(--td-fs-label);
+  font-style: italic;
+}
+
 /* Mode rail: medallions on the right edge; the selected one (and a hovered or focused one)
    slides out its name and status to the left. */
 .td-camp-home-rail {
