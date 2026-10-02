@@ -1,5 +1,13 @@
 # Tower Defense - Completed Work Archive
 
+## R13 numbers overview page, October 2, 2026
+
+- `/games/tower-defense/overview` (local only, `LOCAL_ONLY_ROUTES`): compact 11px tables for
+  battle economy and tiers, collection upgrade costs (stars, levels, Evolution, skills),
+  Divine Interventions and bonds, enemies, bosses (rules on hover), the 33 heroes with base
+  stats and reach patterns, and all 82 campaign stages (lives, health scale, seals, hero).
+  Read from the data files at build time, so it never drifts from the game.
+
 ## R6b debug mode in production, October 2, 2026
 
 - Debug tools (battle DBG panel, campaign DBG panel) ship in every build marked

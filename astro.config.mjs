@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
-const LOCAL_ONLY_ROUTES = ['/status', '/games/tower-defense/anim-lab'];
+const LOCAL_ONLY_ROUTES = ['/status', '/games/tower-defense/anim-lab', '/games/tower-defense/overview'];
 const SITE = 'https://motto-immortal-db.com';
 
 function localOnlyRoutes() {

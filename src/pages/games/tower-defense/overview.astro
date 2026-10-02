@@ -1,0 +1,217 @@
+---
+// Owner tool (R13, local only): the game's decision-relevant numbers on one compact page.
+// Everything is read from the data files at build time, so it always matches the game.
+export const prerender = true;
+import GameLayout from "../../../layouts/GameLayout.astro";
+import heroes from "../../../data/gameBalance.json";
+import tuning from "../../../data/gameBalance.tuning.json";
+import maps from "../../../data/tdMaps.json";
+import campaign from "../../../data/tdCampaign.json";
+import bosses from "../../../data/bosses.json";
+import tdBosses from "../../../data/tdBosses.json";
+import { skinHeroes } from "../../../game/td/skin.js";
+import { patternSvg, patternLabel } from "../../../game/td/board.js";
+import { BOSS_RULES } from "../../../game/td/skills.js";
+
+const t = tuning as any;
+const c = campaign as any;
+const pct = (v: number) => `${Math.round(v * 1000) / 10}%`;
+const num = (v: number) => (v >= 10000 ? `${Math.round(v / 100) / 10}k` : String(Math.round(v * 100) / 100));
+
+// --- Run economy ---
+const run = t.run;
+const economy: [string, string][] = [
+  ["Start gold", String(run.startingGold)],
+  ["Lives (shown)", `${run.lives} (${run.lives / (t.board?.lifeUnit ?? 1)})`],
+  ["Deploy cap", String(run.deployCap)],
+  ["Sell refund", pct(run.sellRefund)],
+  ["Relocation", `${pct(run.relocationCost)} of deploy`],
+  ["Wave clear", `${run.waveClearBonus.base} + ${run.waveClearBonus.perWave}/wave`],
+  ["Interest", `${pct(run.waveInterest.share)}, max ${run.waveInterest.cap}`],
+  ["Deploy discount cap", "50%"],
+];
+const tiers = Object.entries(t.tiers).map(([id, tier]: [string, any]) => ({ id, ...tier }));
+
+// --- Collection upgrade costs ---
+const lv = c.heroLevels;
+const levelRows = lv.capByStars.map((cap: number, stars: number) => [`${stars}★`, cap]);
+const stars = c.heroStars;
+const evo = c.heroEvolution;
+const skills = c.heroSkillLevels;
+
+// --- Heroes (game names, attack patterns) ---
+const rosterOrder = new Map((t.roster as string[]).map((id, i) => [id, i]));
+const bondOf = new Map<string, string>();
+for (const set of Object.values(t.bonds?.sets ?? {}) as any[]) for (const id of set.heroes) bondOf.set(id, set.name);
+const heroRows = (skinHeroes(heroes, "") as any[])
+  .filter((hero) => rosterOrder.has(hero.id))
+  .sort((a, b) => (a.id.startsWith("recruit-") ? 1 : 0) - (b.id.startsWith("recruit-") ? 1 : 0) || a.class.localeCompare(b.class) || b.cost - a.cost)
+  .map((hero) => {
+    const pattern = t.board?.heroPatterns?.[hero.id] ?? t.board?.patterns?.[hero.class];
+    return { ...hero, pattern, patternText: patternLabel(pattern), bond: hero.id.startsWith("recruit-") ? "wild" : bondOf.get(hero.id) ?? "" };
+  });
+
+// --- Enemies and bosses ---
+const enemyRows = Object.entries(t.enemies).filter(([id]) => id !== "boss").map(([id, e]: [string, any]) => ({ id, ...e }));
+const bossInfo = new Map<string, any>([...(bosses as any).bosses, ...(tdBosses as any).bosses].map((boss: any) => [boss.id, boss]));
+const bossMaps = new Map<string, string[]>();
+for (const map of maps as any[]) {
+  const id = map.boss ?? "baphomet";
+  if (!bossMaps.has(id)) bossMaps.set(id, []);
+  bossMaps.get(id)!.push(map.name);
+}
+const bossRows = [...bossMaps.entries()].map(([id, mapNames]) => {
+  const stats = { ...t.enemies.boss, ...(t.bosses?.[id]?.stats ?? {}) };
+  return { id, name: bossInfo.get(id)?.name ?? id, stats, maps: mapNames.length, rule: (BOSS_RULES as Record<string, string>)[id] ?? "No rules yet" };
+});
+
+// --- Campaign stages ---
+const mapById = new Map((maps as any[]).map((map) => [map.id, map]));
+const chapters = c.chapters.map((chapter: any) => ({
+  ...chapter,
+  stages: chapter.stages.map((stage: any) => {
+    const map = mapById.get(stage.mapId);
+    const hero = stage.rewards?.find((r: any) => r.type === "hero")?.id;
+    const seals = stage.rewards?.find((r: any) => r.id === "divineSeals")?.amount ?? 0;
+    return { ...stage, mapName: map?.name ?? stage.mapId, boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
+  }),
+}));
+const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
+---
+
+<GameLayout title="TD Overview | The Last Crossing" description="Tower defense numbers at a glance: economy, upgrades, heroes, enemies, bosses and stages.">
+  <main class="ov">
+    <header class="ov-head">
+      <h1>TD Overview</h1>
+      <p>Read from the data files at build time. Local only.</p>
+    </header>
+
+    <div class="ov-grid">
+      <section class="ov-card">
+        <h2>Battle economy</h2>
+        <dl class="ov-kv">{economy.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}</dl>
+        <table>
+          <thead><tr><th>Tier</th><th>Enemy HP</th><th>Enemy ATK</th><th>Favor</th></tr></thead>
+          <tbody>{tiers.map((tier) => <tr><td>{tier.label}</td><td>x{tier.enemyHp}</td><td>x{tier.enemyAttack}</td><td>x{tier.favor}</td></tr>)}</tbody>
+        </table>
+      </section>
+
+      <section class="ov-card">
+        <h2>Hero upgrades (collection)</h2>
+        <table>
+          <thead><tr><th>Stars</th>{stars.copies.map((_: number, i: number) => <th>{i + 1}★</th>)}</tr></thead>
+          <tbody>
+            <tr><td>Copies</td>{stars.copies.map((v: number) => <td>{v}</td>)}</tr>
+            <tr><td>Gold</td>{stars.gold.map((v: number) => <td>{v}</td>)}</tr>
+            <tr><td>Level cap</td>{stars.copies.map((_: number, i: number) => <td>{lv.capByStars[i + 1]}</td>)}</tr>
+          </tbody>
+        </table>
+        <p class="ov-note">+{pct(stars.statPerStar)} stats per star · reach +1 at 3★, +2 at 5★ · level cap 0★: {levelRows[0][1]}</p>
+        <p class="ov-note">Level: {lv.cost.gold.base} + {lv.cost.gold.perLevel}/lvl gold, {lv.cost.heroXp.base} + {lv.cost.heroXp.perLevel}/lvl XP, max {lv.max}</p>
+        <table>
+          <thead><tr><th>Evolution</th><th>Copies</th><th>Effect</th></tr></thead>
+          <tbody>{evo.tiers.map((tier: any) => <tr><td>{tier.name}</td><td>{tier.copies}</td><td>{tier.text}</td></tr>)}</tbody>
+        </table>
+        <p class="ov-note">Or {evo.dustPrice} Seal Dust per tier · Skills max {skills.max}: gold {skills.cost.gold.join(" / ")}, dust {skills.cost.sealDust.join(" / ")}</p>
+      </section>
+
+      <section class="ov-card">
+        <h2>Powers and bonds</h2>
+        <table>
+          <thead><tr><th>Intervention</th><th>Charge</th><th>Unlock</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>Thunderfall</td><td>{t.interventions.thunderfall.charge}</td><td>{t.interventions.thunderfall.unlockAfter}</td><td>{pct(t.interventions.thunderfall.share)} HP ({pct(t.interventions.thunderfall.bossShare)} boss)</td></tr>
+            <tr><td>Shield</td><td>{t.interventions.shield.charge}</td><td>{t.interventions.shield.unlockAfter}</td><td>{t.interventions.shield.seconds}s no leak loss</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>Bond</th><th>Heroes</th><th>Tiers</th></tr></thead>
+          <tbody>{Object.values(t.bonds.sets).map((set: any) => (
+            <tr><td>{set.name}</td><td>{set.heroes.length}</td><td>{set.tiers.map((tier: any) => `${tier.count}: ${Object.entries(tier).filter(([k]) => k !== "count").map(([k, v]) => `${k} ${pct(v as number)}`).join(", ")}`).join(" · ")}</td></tr>
+          ))}</tbody>
+        </table>
+        <p class="ov-note">Tag synergy: +{pct(t.synergy.bonusPerTag)} per shared tag (R8 retires it)</p>
+      </section>
+
+      <section class="ov-card">
+        <h2>Enemies</h2>
+        <table>
+          <thead><tr><th>Kind</th><th>HP</th><th>Speed</th><th>Armor</th><th>ATK</th><th>Gold</th><th>Leak</th></tr></thead>
+          <tbody>{enemyRows.map((e) => <tr><td>{e.id}</td><td>{num(e.hp)}</td><td>{e.speed}</td><td>{e.armor}</td><td>{e.attack}</td><td>{e.reward}</td><td>{e.damage}</td></tr>)}</tbody>
+        </table>
+        <table>
+          <thead><tr><th>Boss</th><th>HP</th><th>Armor</th><th>ATK</th><th>Maps</th></tr></thead>
+          <tbody>{bossRows.map((b) => <tr title={b.rule}><td>{b.name}</td><td>{num(b.stats.hp)}</td><td>{b.stats.armor}</td><td>{b.stats.attack}</td><td>{b.maps}</td></tr>)}</tbody>
+        </table>
+        <p class="ov-note">Hover a boss for its rules. Leak = lives lost.</p>
+      </section>
+    </div>
+
+    <section class="ov-card ov-wide">
+      <h2>Heroes ({heroRows.length})</h2>
+      <table class="ov-heroes">
+        <thead><tr><th>Hero</th><th>Class</th><th>Slot</th><th>Cost</th><th>ATK</th><th>HP</th><th>APS</th><th>Crit</th><th>Ult cd</th><th>Ult pow</th><th>Bond</th><th>Reach</th></tr></thead>
+        <tbody>{heroRows.map((h) => (
+          <tr>
+            <td>{h.name}</td><td>{h.class}</td><td>{h.slot === "road" ? "Road" : "Plat"}</td><td>{h.cost}</td><td>{h.atk}</td><td>{h.hp}</td><td>{h.aps}</td><td>{pct(h.critChance)}</td><td>{h.ultCooldown}s</td><td>{h.ultPower}</td><td>{h.bond}</td>
+            <td class="ov-reach"><Fragment set:html={patternSvg(h.pattern, 4)} /><span>{h.patternText}</span></td>
+          </tr>
+        ))}</tbody>
+      </table>
+      <p class="ov-note">Base values before collection upgrades. Recruits count for either bond.</p>
+    </section>
+
+    <section class="ov-card ov-wide">
+      <h2>Campaign stages ({chapters.reduce((n: number, ch: any) => n + ch.stages.length, 0)})</h2>
+      <div class="ov-chapters">
+        {chapters.map((chapter: any) => (
+          <table>
+            <thead><tr><th colspan="6">{chapter.id}. {chapter.name}</th></tr><tr><th>Stage</th><th>Map</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th></tr></thead>
+            <tbody>{chapter.stages.map((s: any) => (
+              <tr title={`${s.name} - boss ${s.boss}`}><td>{s.id}</td><td>{s.mapName}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td></tr>
+            ))}</tbody>
+          </table>
+        ))}
+      </div>
+      <p class="ov-note">HP = stage enemy health scale. Hover a stage for its name and boss.</p>
+    </section>
+  </main>
+</GameLayout>
+
+<style>
+  .ov {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: var(--space-3, 12px) 16px;
+    color: var(--text-primary);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .ov-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .ov-head h1 { margin: 0; font-size: 18px; }
+  .ov-head p { margin: 0; color: var(--text-muted); }
+  .ov-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px; margin-bottom: 8px; }
+  .ov-card {
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md, 8px);
+    background: var(--bg-elevated, var(--bg-base));
+    overflow-x: auto;
+  }
+  .ov-wide { margin-bottom: 8px; }
+  .ov h2 { margin: 0 0 6px; font-size: 12px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: .04em; }
+  .ov table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .ov th, .ov td { padding: 1px 4px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border-subtle); }
+  .ov th { color: var(--text-muted); font-weight: 600; }
+  .ov tbody tr:hover td { background: color-mix(in srgb, var(--accent-gold) 10%, transparent); }
+  .ov-kv { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 1px 8px; margin: 0 0 6px; }
+  .ov-kv dt { color: var(--text-muted); }
+  .ov-kv dd { margin: 0; }
+  .ov-note { margin: 0 0 4px; color: var(--text-muted); }
+  .ov-reach { display: flex; align-items: center; gap: 4px; }
+  .ov-reach :global(svg) { flex: none; }
+  .ov-chapters { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px; }
+  .ov-chapters table { margin: 0; }
+  .ov-chapters thead tr:first-child th { color: var(--text-primary); }
+</style>

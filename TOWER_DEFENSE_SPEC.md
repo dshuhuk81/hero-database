@@ -102,6 +102,9 @@ Hard rules:
   `td/sfx/mythic-*`. UI code must go through `skin.js`. Sound files are
   `mythic-{id}-{version}_{attack|ultimate}.ogg` (`v4` by default; a replaced sound gets a new
   version in the hero's skin entry). Owner review page: `/games/tower-defense/sound-review`.
+  Numbers overview (local only, R13): `/games/tower-defense/overview` shows battle economy,
+  collection upgrade costs, powers and bonds, enemies, bosses, heroes with reach patterns and
+  all campaign stages, read from the data files at build time.
 - **Hero ids are the mythic names** (`odin`, `atlas`, `surtr`, ...) in code, data, tests,
   file names and blessing node ids. Database ids appear only in `tuning.statSource` (which
   database hero seeds a row's stats) and in `LEGACY_HERO_IDS` (`page/save.ts`, for old saves).
