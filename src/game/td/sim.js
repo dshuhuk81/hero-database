@@ -692,6 +692,7 @@ export class TowerDefenseGame {
           enemy.dead = true;
           const previousLives = this.lives;
           if (!this.difficulty.invincible && !this.shielded()) this.lives = Math.max(0, this.lives - enemy.damage);
+          else if (this.shielded() && this.map.base) this.emit({ type: "shieldBlock", x: this.map.base.x, y: this.map.base.y, life: 0.8 });
           if (this.map.base) {
             enemy.exitReason = "base";
             // Emit before finish: the final breach must still reach the renderer/audio.
@@ -808,7 +809,8 @@ export class TowerDefenseGame {
     const cfg = this.tuning.interventions.thunderfall;
     this.interventions.thunderfall.charge = 0;
     this.strikes.push({ x, y, at: this.time + cfg.delay });
-    this.emit({ type: "splash", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: cfg.delay, color: "white" });
+    // R5: the target tiles pulse until the bolt lands (render.js thunderWarn).
+    this.emit({ type: "thunderWarn", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: cfg.delay });
     this.onChange("intervention", this);
     return true;
   }
@@ -824,7 +826,7 @@ export class TowerDefenseGame {
       if (dealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind, x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt, life: 0.75 });
       if (enemy.hp <= 0) this.killEnemy(enemy, null);
     }
-    this.emit({ type: "hold", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: 0.6, color: "white" });
+    this.emit({ type: "thunderStrike", x, y, radius: cfg.radius, rect: this.areaRect(x, y, cfg.radius), life: 0.7 });
   }
 
   // The board cells nearPoint covers around a point as a drawable square ({ x, y, w, h },
@@ -843,7 +845,8 @@ export class TowerDefenseGame {
     this.interventions.shield.charge = 0;
     this.shieldUntil = this.time + cfg.seconds;
     this.shieldWave = this.wave;
-    if (this.map.base) this.emit({ type: "hold", x: this.map.base.x, y: this.map.base.y, radius: 70, life: cfg.seconds, color: "green" });
+    // R5: a dome over the base for as long as the Shield holds (render.js shieldUp).
+    if (this.map.base) this.emit({ type: "shieldUp", x: this.map.base.x, y: this.map.base.y, radius: 70, life: cfg.seconds });
     this.onChange("intervention", this);
     return true;
   }

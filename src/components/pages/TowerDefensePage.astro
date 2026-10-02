@@ -127,6 +127,10 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     else if (effect.type === "boss") hud.bossIntro();
     else if (effect.type === "awaken") audio.play("upgrade");
     else if (effect.type === "baseHit" && effect.damage > 0) audio.play("heavy");
+    // Divine Interventions (R5): Odin's lightning ultimate doubles as the thunder.
+    else if (effect.type === "thunderStrike") { audio.play("ultimate", "odin"); audio.play("heavy"); }
+    else if (effect.type === "shieldUp") audio.play("upgrade");
+    else if (effect.type === "shieldBlock") audio.play("blocked");
   }
   function syncAudioUi() {
     muteButtons.forEach((button) => {
@@ -320,6 +324,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     beginRelocation: recruit.beginRelocation,
     aimPower: powers.aimAt,
     resetPowers: powers.reset,
+    hoverPower: powers.hover,
     openPanel: panels.open,
     closePanel: panels.close,
     activePanel: panels.active,

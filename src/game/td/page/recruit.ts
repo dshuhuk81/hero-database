@@ -245,6 +245,7 @@ export function createRecruit(ctx: PageContext) {
       activateSlot({ type: slot.type, index: slot.index });
     });
     canvas.addEventListener("pointermove", (event) => {
+      if (event.pointerType === "mouse") { const point = canvasPoint(canvas, event); ctx.actions.hoverPower(point.x, point.y); }
       const moving = state.relocateEntityId !== null ? game.heroes.find((unit: any) => unit.entityId === state.relocateEntityId) : null;
       if ((!state.deployHeroId && !moving) || event.pointerType !== "mouse") return;
       const hero = moving ?? heroById.get(state.deployHeroId);
@@ -252,7 +253,7 @@ export function createRecruit(ctx: PageContext) {
       const point = slot && (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
       game.uiPlacement = slot && slot.type === hero.slot ? { x: point[0], y: point[1], range: hero.range, type: slot.type, index: slot.index, heroClass: hero.class, heroId: hero.id } : null;
     });
-    canvas.addEventListener("pointerleave", () => { if (state.deployHeroId || state.relocateEntityId !== null) game.uiPlacement = null; });
+    canvas.addEventListener("pointerleave", () => { game.uiAim = null; if (state.deployHeroId || state.relocateEntityId !== null) game.uiPlacement = null; });
     canvas.addEventListener("focus", () => { if (!state.pendingSlot) game.focusedSlot = keyboardSlots[keyboardIndex]; });
     canvas.addEventListener("blur", () => { if (!state.pendingSlot) game.focusedSlot = null; });
     const tileAt = (slot: Slot) => (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];

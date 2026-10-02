@@ -2462,17 +2462,21 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const enemy = g.spawnEnemy("brute");
   enemy.hp = enemy.maxHp = 1000;
   assert.ok(g.castThunderfall(enemy.x, enemy.y), "a charged Thunderfall casts");
+  assert.ok(g.effects.some((e) => e.type === "thunderWarn" && e.life === cfg.thunderfall.delay), "R5: the target tiles warn until the bolt lands");
   assert.equal(g.interventions.thunderfall.charge, 0, "casting spends the charge");
   for (let i = 0; i < Math.ceil(cfg.thunderfall.delay * 60) + 1; i += 1) g.step(1 / 60);
   assert.ok(enemy.hp <= 1000 * (1 - cfg.thunderfall.share) + 1e-6, "the bolt takes its share of health after the delay");
+  assert.ok(g.effects.some((e) => e.type === "thunderStrike"), "R5: the strike has its own effect");
   g.interventions.shield.charge = cfg.shield.charge;
   assert.ok(g.castShield(), "a charged Shield casts");
+  assert.ok(g.effects.some((e) => e.type === "shieldUp" && e.life === cfg.shield.seconds), "R5: the Shield dome lasts as long as the Shield");
   g.interventions.shield.charge = cfg.shield.charge;
   assert.ok(!g.interventionState("shield").ready, "Shield works once per wave");
   const lives = g.lives;
   enemy.distance = g.laneOf(enemy).total;
   g.step(1 / 60);
   assert.equal(g.lives, lives, "a leak under the Shield costs no lives");
+  assert.ok(g.effects.some((e) => e.type === "shieldBlock"), "R5: a blocked leak shows at the base");
 }
 
 console.log("Tower defense checks passed");

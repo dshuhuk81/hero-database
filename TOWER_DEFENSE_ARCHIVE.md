@@ -1,5 +1,15 @@
 # Tower Defense - Completed Work Archive
 
+## R5 part 1: Divine Intervention visuals, October 2, 2026
+
+- Thunderfall: blue aim preview of the target tiles under the mouse, pulsing warning tiles
+  during the 0.8 s delay, a jagged bolt from the top edge with cell flash, sparks, a short
+  board shake and a thunder sound (Odin's ultimate plus the heavy hit).
+- Shield of the Crossing: blue-gold dome over the base for its 6 s, fading out at the end;
+  every leak it stops shows a "Blocked" pop with the blocked sound.
+- New sim effects `thunderWarn`, `thunderStrike`, `shieldUp`, `shieldBlock` replace the generic
+  splash and hold effects. The blessing-tree upgrades stay open in the roadmap.
+
 ## R13 numbers overview page, October 2, 2026
 
 - `/games/tower-defense/overview` (local only, `LOCAL_ONLY_ROUTES`): compact 11px tables for

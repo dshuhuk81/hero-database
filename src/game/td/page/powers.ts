@@ -21,6 +21,7 @@ export function createPowers(ctx: PageContext) {
     if (!ids.length) { host.innerHTML = ""; key = ""; return; }
     const states = ids.map((id) => ({ id, ...game.interventionState(id) }));
     if (aimingId && !states.find((s) => s.id === aimingId)?.ready) aimingId = null;
+    if (!aimingId && game?.uiAim) game.uiAim = null;
     const next = states.map((s) => `${s.id}:${s.ready}:${Math.floor((s.charge / s.max) * 20)}:${aimingId === s.id}`).join("|");
     if (next === key) return;
     key = next;
@@ -52,12 +53,20 @@ export function createPowers(ctx: PageContext) {
     if (!aimingId || !game) return false;
     const cast = aimingId === "thunderfall" && game.castThunderfall(x, y);
     aimingId = null;
+    game.uiAim = null;
     render();
     return cast;
   }
 
   const aiming = () => !!aimingId;
-  const reset = () => { aimingId = null; key = ""; render(); };
+  // Aim preview (R5): the renderer draws the tiles Thunderfall would hit under the cursor.
+  function hover(x: number, y: number) {
+    const game = state.session?.game;
+    if (!game) return;
+    const radius = game.tuning.interventions?.thunderfall?.radius ?? 0;
+    game.uiAim = aimingId === "thunderfall" ? { x, y, radius, rect: game.areaRect(x, y, radius) } : null;
+  }
+  const reset = () => { aimingId = null; key = ""; if (state.session) state.session.game.uiAim = null; render(); };
 
-  return { render, aimAt, aiming, reset };
+  return { render, aimAt, aiming, hover, reset };
 }

@@ -52,6 +52,7 @@ export type PageActions = {
   // powers.ts: a map tap while a Divine Intervention is armed casts it (true when cast or armed).
   aimPower(x: number, y: number): boolean;
   resetPowers(): void;
+  hoverPower(x: number, y: number): void; // Thunderfall aim preview under the cursor (R5)
   syncMainAction(): void;
   renderPreview(): void;
   playSound(kind: string): void;

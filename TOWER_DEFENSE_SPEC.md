@@ -356,6 +356,12 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), once per wave.
   Available in Free Play, Campaign and Expedition, not in the Daily Trial (`session.ts`
   passes the unlocked list as `interventions`). Upgrades on the blessing tree are not built.
+  Visuals (R5, `render.js drawPowerEffect`): while Thunderfall is armed, the tiles under the
+  mouse light up blue (`game.uiAim`); after the tap they pulse during the delay
+  (`thunderWarn`); the strike draws a jagged bolt from the top edge, flashes the cells, throws
+  sparks and shakes the board briefly (`thunderStrike`, sound: Odin's ultimate plus the heavy
+  hit). The Shield raises a blue-gold dome over the base for its duration (`shieldUp`), and
+  each leak it stops shows a "Blocked" pop (`shieldBlock`).
 - **Pantheon bonds** (`bonds.js`, `tuning.bonds`): heroes of one pantheon standing on the
   field together unlock a tier. Norse (Odin, Ymir, Heimdall, Aegir, Surtr, Fenrir, Nott,
   Vidar, Skadi) 2: +6% attack, 4: +12% attack and ultimates charge 10% faster. Greek (Atlas,

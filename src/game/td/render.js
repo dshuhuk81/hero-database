@@ -48,7 +48,7 @@ const THEMES = {
   verdant: { glow: 0x82e898, trail: 0x82e898 },
 };
 
-const TINTS = { gold: 0xfacc15, purple: 0xa855f7, green: 0x82e89a, red: 0xff6b6b, white: 0xffffff };
+const TINTS = { gold: 0xfacc15, purple: 0xa855f7, green: 0x82e89a, red: 0xff6b6b, white: 0xffffff, blue: 0x9de7ff };
 
 // Effect hierarchy (P5): every effect maps to one of three tiers so the big
 // moments read above the constant combat noise. ring scales hit/ult rings,
@@ -1674,6 +1674,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
   function spawnParticles(effect) {
     if (effect.type === "damageNumber") return spawnDamageNumber(effect);
+    if (effect.type === "thunderStrike" || effect.type === "shieldUp" || effect.type === "shieldBlock") return spawnPowerParticles(effect);
     if (hasHeroFx(effect)) return;
     if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) return;
     // Travelling replacements for the old tracer lines; the kit tones them down for reduced motion.
@@ -1763,6 +1764,114 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
+  // Divine Interventions (R5): a bolt that shakes the board, a dome going up, a blocked leak.
+  function spawnPowerParticles(effect) {
+    const rand = (s) => (Math.random() - 0.5) * s;
+    if (effect.type === "thunderStrike") {
+      startImpact({ shake: 6, vignette: 0 });
+      if (reducedMotion) return;
+      spawnParticle("flare_01", effect.x, effect.y, { size: 150, life: 0.35, tint: "white" });
+      for (let i = 0; i < 10; i++) {
+        const angle = (i / 10) * Math.PI * 2 + Math.random() * 0.4;
+        spawnParticle("spark_04", effect.x, effect.y, { size: 18, life: 0.5, vx: Math.cos(angle) * 240, vy: Math.sin(angle) * 240, tint: i % 2 ? "blue" : "white" });
+      }
+    } else if (effect.type === "shieldUp") {
+      if (reducedMotion) return;
+      spawnParticle("flare_01", effect.x, effect.y, { size: 170, life: 0.5, tint: "blue" });
+      for (let i = 0; i < 6; i++) spawnParticle("star_03", effect.x + rand(120), effect.y + rand(60), { size: 22, life: 0.7, vy: -40, tint: "gold" });
+    } else if (effect.type === "shieldBlock") {
+      if (reducedMotion) return;
+      spawnParticle("star_03", effect.x, effect.y - 30, { size: 46, life: 0.5, vr: 4, tint: "blue" });
+      const text = new PIXI.Text({ text: "Blocked", style: { fill: 0x9de7ff, fontSize: 15, fontWeight: "800", stroke: { color: 0x07060c, width: 4 } } });
+      text.anchor.set(0.5);
+      text.position.set(effect.x, effect.y - 48);
+      layerParts.addChild(text);
+      particles.push({ sp: text, vx: 0, vy: -36, vr: 0, life: 0.9, maxLife: 0.9 });
+    }
+  }
+
+  // A jagged bolt from above the board down to the strike point, built once per strike.
+  function boltPoints(effect) {
+    if (effect._bolt) return effect._bolt;
+    const points = [];
+    const top = { x: effect.x + (Math.random() - 0.5) * 80, y: -20 };
+    const steps = 9;
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const jitter = i === 0 || i === steps ? 0 : (Math.random() - 0.5) * 34;
+      points.push([top.x + (effect.x - top.x) * t + jitter, top.y + (effect.y - top.y) * t]);
+    }
+    effect._bolt = points;
+    return points;
+  }
+
+  // R5 power visuals drawn every frame on layerFx; true when the effect was handled.
+  function drawPowerEffect(effect, g, now) {
+    if (effect.type === "thunderWarn") {
+      // Target tiles pulse blue-white until the bolt lands.
+      const pulse = 0.5 + 0.5 * Math.sin(now / 70);
+      const area = effect.rect;
+      if (area) {
+        g.rect(area.x, area.y, area.w, area.h).fill({ color: TINTS.blue, alpha: 0.12 + pulse * 0.18 });
+        g.rect(area.x, area.y, area.w, area.h).stroke({ width: 3, color: TINTS.white, alpha: 0.5 + pulse * 0.5 });
+      } else {
+        g.circle(effect.x, effect.y, effect.radius).fill({ color: TINTS.blue, alpha: 0.12 + pulse * 0.18 });
+        g.circle(effect.x, effect.y, effect.radius).stroke({ width: 3, color: TINTS.white, alpha: 0.5 + pulse * 0.5 });
+      }
+      return true;
+    }
+    if (effect.type === "thunderStrike") {
+      const fade = Math.min(1, effect.life / 0.7);
+      const area = effect.rect;
+      if (area) g.rect(area.x, area.y, area.w, area.h).fill({ color: TINTS.white, alpha: fade * 0.45 });
+      else g.circle(effect.x, effect.y, effect.radius).fill({ color: TINTS.white, alpha: fade * 0.4 });
+      // The bolt itself is only visible for the first moments of the strike.
+      if (effect.life > 0.4) {
+        const points = boltPoints(effect);
+        const alpha = Math.min(1, (effect.life - 0.4) / 0.15);
+        for (const [width, color, a] of [[12, TINTS.blue, 0.35], [6, TINTS.blue, 0.8], [2.5, TINTS.white, 1]]) {
+          g.moveTo(points[0][0], points[0][1]);
+          for (const [px, py] of points.slice(1)) g.lineTo(px, py);
+          g.stroke({ width, color, alpha: alpha * a, cap: "round", join: "round" });
+        }
+        if (GlowFilter && !reducedMotion) g.filters = [new GlowFilter({ distance: 16, outerStrength: 2, color: TINTS.blue })];
+      }
+      return true;
+    }
+    if (effect.type === "shieldUp") {
+      // Dome over the base, breathing while it holds and fading in its last second.
+      const fade = Math.min(1, effect.life);
+      const pulse = 0.5 + 0.5 * Math.sin(now / 260);
+      const r = effect.radius + pulse * 4;
+      g.ellipse(effect.x, effect.y, r * 1.25, r).fill({ color: TINTS.blue, alpha: fade * (0.1 + pulse * 0.06) });
+      g.ellipse(effect.x, effect.y, r * 1.25, r).stroke({ width: 3, color: TINTS.blue, alpha: fade * 0.9 });
+      g.ellipse(effect.x, effect.y, r * 1.25 + 5, r + 5).stroke({ width: 1.5, color: TINTS.gold, alpha: fade * 0.7 });
+      return true;
+    }
+    if (effect.type === "shieldBlock") {
+      const t = 1 - effect.life / 0.8;
+      g.ellipse(effect.x, effect.y, 70 + t * 40, 56 + t * 32).stroke({ width: 4, color: TINTS.white, alpha: (1 - t) * 0.9 });
+      return true;
+    }
+    return false;
+  }
+
+  // Thunderfall aim preview (game.uiAim, set while the power is armed): the tiles the bolt would hit.
+  function drawAimPreview(now) {
+    const aim = game.uiAim;
+    if (!aim) return;
+    const g = new PIXI.Graphics();
+    const pulse = 0.5 + 0.5 * Math.sin(now / 160);
+    if (aim.rect) {
+      g.rect(aim.rect.x, aim.rect.y, aim.rect.w, aim.rect.h).fill({ color: TINTS.blue, alpha: 0.1 + pulse * 0.08 });
+      g.rect(aim.rect.x, aim.rect.y, aim.rect.w, aim.rect.h).stroke({ width: 2, color: TINTS.blue, alpha: 0.9 });
+    } else {
+      g.circle(aim.x, aim.y, aim.radius).fill({ color: TINTS.blue, alpha: 0.1 + pulse * 0.08 });
+      g.circle(aim.x, aim.y, aim.radius).stroke({ width: 2, color: TINTS.blue, alpha: 0.9 });
+    }
+    layerFx.addChild(g);
+  }
+
   // Epic-tier impact: short screen shake and a red edge vignette that fade out together.
   const IMPACT_SECONDS = 0.5;
   let impact = null;
@@ -1815,6 +1924,12 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const effect of game.effects) {
       if (effect.type === "damageNumber") continue;
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
+      if (["thunderWarn", "thunderStrike", "shieldUp", "shieldBlock"].includes(effect.type)) {
+        const pg = new PIXI.Graphics();
+        drawPowerEffect(effect, pg, now);
+        layerFx.addChild(pg);
+        continue;
+      }
       if (effect.type === "veil") continue; // the hero token turns translucent instead (particles mark the start)
       if (hasHeroFx(effect)) continue;
       if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
@@ -1856,6 +1971,7 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       layerFx.addChild(g);
     }
+    drawAimPreview(now);
   }
 
   // ------------------------------------------------------------------
