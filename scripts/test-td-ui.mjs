@@ -1,9 +1,19 @@
 import assert from "node:assert/strict";
 import { createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
 import { buildRunTuning, TREE } from "../src/game/td/favor.js";
-import { canvasPoint, nearestSlot } from "../src/game/td/render.js";
+import * as render from "../src/game/td/render.js";
+const { canvasPoint, nearestSlot } = render;
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
+
+// Board unit scale: bosses already have larger source art, so they can be tuned separately
+// without shrinking the regular enemies the owner sized by eye.
+assert.equal(typeof render.enemyRenderScale, "function", "renderer exposes enemy scale selection");
+assert.equal(render.enemyRenderScale("grunt", tuning.board), tuning.board.enemyScale, "regular enemies use enemyScale");
+assert.equal(render.enemyRenderScale("boss", tuning.board), tuning.board.bossScale, "bosses use bossScale");
+assert.equal(render.enemyRenderScale("boss", { enemyScale: 1.4 }), 1.4, "legacy board rules use enemyScale for bosses");
+assert.equal(render.enemyRenderScale("grunt", null), 1, "classic enemies keep their original scale");
+assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep their original scale");
 
 // --- fitRect: world fits width AND height, aspect preserved ---
 {

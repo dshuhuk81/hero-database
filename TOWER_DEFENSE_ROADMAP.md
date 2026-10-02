@@ -51,25 +51,31 @@ start any time and run in parallel.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R1 | Unit sizes by eye (`tuning.board.heroScale`, `enemyScale`) | Owner | - | S |
 | R2 | Fix the two known failing tests: `test-td-summon` (evolution spends copies), `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound) | Agent | - | S |
-| R3 | Road class variety: Warriors and Assassins need a payoff on boards (the Tank is the best blocker on most wave types in the board class matrix of `test-td-balance.mjs`) | Agent, owner approves | - | M |
-| R4 | In-battle economy redesign: hero upgrades leave the battle (owner direction October 1); decide what battle gold buys, then cut levels, focus, paths, Awakening and training from the battle or move them to the collection | Owner decides, agent builds | R3 | L |
-| R5 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | R1, R3, R4 | L |
-| R6 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes | Agent | R5 | M |
-| R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R5 | S each |
-| R8 | Decide whether tag synergy retires now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Owner | R5 | S |
+| R4 | In-battle economy redesign: hero upgrades leave the battle (owner direction October 1); decide what battle gold buys, then cut levels, focus, paths, Awakening and training from the battle or move them to the collection | Owner decides, agent builds | - | L |
+| R5 | Divine Intervention upgrades on the Favor trunk of the blessing tree (cooldown, area); needs a save migration for new nodes. Add visible in-game effects that reflect each action. | Agent | - | M |
+| R6 | Fix stale SFX on localhost; R2 and production play the correct audio | Agent | - | S |
+| R6b | Allow debug mode in production behind an explicit URL query parameter | Agent | - | S |
+| R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
+| R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
 | R9 | Bosses: rules for Lerna, Kraghorn and Vorruk, a test pass for Ochenta | Agent | - | M |
 | R10 | Daily quests (M26 Sprint 11, below); can count Interventions, bonds and Heroic clears | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
+| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | R4 | L |
 
-Open questions for the owner, each blocking the step named:
+Owner directions recorded October 2:
+
+- R4: Remove Awakening and training from battle. Players earn resources through Campaign 1,
+  then level and awaken heroes in the main lobby; those permanent upgrades apply in every mode.
+  Remove the battle upgrade UI and show each hero's current level, evolution and skill levels
+  passively. The owner will handle testing and simulation.
+- R12: Scale Free Play and Expedition enemy health with squad Might, but by less than 100%.
+- R8: Retire tag synergy.
+
+Open owner question blocking the named step:
 
 - R4: what does battle gold buy once upgrades leave the battle (deploys only, a shorter rank
-  ladder, or relocation)? Does training stay as the late gold sink?
-- R5: should Free Play and Expedition scale enemy health with squad Might now that upgrades
-  carry over, or should upgraded heroes simply make those modes easier?
-- R8: keep tag synergy as a hidden layer under pantheon bonds, or retire it?
+  ladder, or relocation)? The owner will decide with the feature; every upgrade already costs gold.
 
 Backlog from the ideas document, not scheduled: A1 stage goals, B3 hero relocation, A2 stage
 rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route

@@ -2608,10 +2608,13 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.reaches(mage, at([2, 3])), "diamond2 reaches a diagonal neighbour");
   assert.ok(!g.reaches(mage, at([3, 3])), "diamond2 does not reach three steps away");
   assert.ok(!g.reaches(mage, at([4, 2])), "no reach three cells away in a line");
-  // Shaped waves: wave 1 is 7 grunts, shaped to one per gate with the strength split.
+  // Shaped waves: swarms and runners keep enough bodies for Warrior cleave and Assassin
+  // interception; small groups still send one enemy per gate with the strength split.
+  assert.deepEqual(g.waveShape("grunt"), { count: 0.4, gap: 2.5, hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "grunt waves preserve bodies for Warrior cleave");
+  assert.deepEqual(g.waveShape("runner"), { count: 0.4, gap: 2.5, hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "runner waves preserve loose targets for Assassin interception");
   const { count, split } = g.shapedGroup("grunt", 7);
-  assert.equal(count, g.lanes.length, "a small group still sends one enemy per gate");
-  assert.ok(Math.abs(count * split - Math.round(7 * tuning.board.waveShape.count)) < 1e-9, "the split keeps the shaped strength");
+  assert.equal(count, Math.max(g.lanes.length, Math.round(7 * tuning.board.waveShape.kinds.grunt.count)), "a shaped group sends its intended count and covers every gate");
+  assert.ok(Math.abs(count * split - Math.round(7 * tuning.board.waveShape.kinds.grunt.count)) < 1e-9, "the split keeps the shaped strength");
   assert.deepEqual(g.shapedGroup("boss", 1), { count: 1, split: 1 }, "bosses are not shaped");
   // Reach steps: high ground +1, Stormpeak's headwinds -1 for platform heroes elsewhere.
   const withRing = (m, kind) => Object.entries(m.rings).find(([, k]) => k === kind)?.[0].split(":");
@@ -2644,7 +2647,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const lg = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
   lg.wave = 1;
   assert.equal(lg.lifeUnit, tuning.board.lifeUnit, "boards count lives in units");
-  for (const kind of ["grunt", "flyer"]) assert.equal(lg.spawnEnemy(kind).damage, lg.lifeUnit, `a ${kind} leak costs one shown life`);
+  for (const kind of ["grunt", "runner", "flyer"]) assert.equal(lg.spawnEnemy(kind).damage, lg.lifeUnit, `a ${kind} leak costs one shown life`);
   assert.equal(lg.spawnEnemy("brute").damage, 2 * lg.lifeUnit, "a brute leak costs two");
   assert.deepEqual([shownLives(25, 5), shownLives(21, 5), shownLives(20, 5), shownLives(1, 5), shownLives(0, 5)], [5, 5, 4, 1, 0], "shown lives round up and hit 0 only at 0");
   // Maps without a board keep circles and today's waves.

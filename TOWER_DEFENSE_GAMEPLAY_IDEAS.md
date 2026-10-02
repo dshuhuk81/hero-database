@@ -485,10 +485,18 @@ Current best prototype settings:
 
 ```json
 "waveShape": { "enabled": true, "count": 0.2, "gap": 2.5, "hp": 5, "attack": 2.5,
-  "kinds": { "flyer": { "count": 0.4, "hp": 1.75, "attack": 1, "power": 2.5 } } }
+  "kinds": {
+    "grunt": { "count": 0.4, "hp": 2.5, "attack": 1.25, "power": 2.5, "leak": 5 },
+    "runner": { "count": 0.4, "hp": 2.5, "attack": 1.25, "power": 2.5, "leak": 5 },
+    "flyer": { "count": 0.4, "hp": 1.75, "attack": 1, "power": 2.5, "leak": 5 }
+  } }
 ```
 
 plus `"focus": { "slots": 2, "share": 1 }` in `classes.Mage`.
+
+*Status October 2, 2026: grunt and runner overrides built for roadmap R3. The measured board
+matrix moves swarm leadership to Warrior (58% vs Tank 30%) and runner leadership to Assassin
+(61% vs Tank 50%).*
 
 #### Step 2 built: compact board with tile patterns (October 1, 2026)
 

@@ -238,9 +238,9 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 |---|---|---|
 | `patterns` | Tank `plus`, Warrior `block`, Assassin `plus`, Mage `diamond2`, Archer `cross3`, Support `block` | Class attack patterns |
 | `heroPatterns` | `aegir` `cross2`, `stheno` `lance`, `skadi` `star3`, `boreas` `blockPlus` | Signature patterns by hero id (section 5) |
-| `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; flyers count 0.4, hp 1.75, attack 1, power 2.5 | Fewer, stronger enemies (section 8) |
+| `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; grunts/runners count 0.4, hp 2.5, attack 1.25; flyers count 0.4, hp 1.75, attack 1 | Fewer, stronger enemies and road class variety (section 8) |
 | `focus` | slots 2, share 1 | Mage focus rule (section 7) |
-| `heroScale`, `enemyScale` | 1, 1 | Unit size on boards; hero and enemy containers scale as a whole, enemy health bars follow. Tuned by eye by the owner |
+| `heroScale`, `enemyScale`, `bossScale` | 1.3, 1.8, 1 | Unit size on boards; health bars follow. Bosses use their own scale because their source art is already larger and must fit on upper lanes |
 
 ### Patterns and reach steps
 
@@ -396,8 +396,11 @@ Kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`, `shield
 On boards every authored wave is converted when it starts (`game.waveShape(kind)`,
 `game.shapedGroup(kind, count)`):
 
-- A non-boss group sends `round(count x 0.2)` enemies (at least one), each with 5x health,
-  5x gold, 2.5x attack and 5 lives lost on a leak; spawn gaps are 2.5x longer.
+- A non-boss group normally sends `round(count x 0.2)` enemies (at least one), each with 5x
+  health, 5x gold, 2.5x attack and 5 lives lost on a leak; spawn gaps are 2.5x longer.
+- Grunt and runner groups send `round(count x 0.4)` enemies with 2.5x health and gold and
+  1.25x attack. The extra bodies give Warrior cleave and Assassin interception enough targets;
+  each leak still costs 5 lives.
 - Flyers use their own values: `round(count x 0.4)`, 1.75x health, normal attack, 2.5x gold,
   5 lives lost on a leak (leak damage is rounded to whole lives).
 - **Shown lives:** the battle keeps its internal lives; the UI shows them in units of
@@ -802,7 +805,6 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 The order and dependencies of the open work live in
 [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) (steps R1-R11); this list names the gaps.
 
-- **Sizes:** `heroScale` and `enemyScale` are 1; the owner refines unit sizes by eye.
 - **In-battle upgrades:** the direction is to move hero upgrades out of battle; the gold
   economy needs a redesign first.
 - **Balance pass pending** for global stats in Free Play, Expedition and the Daily Trial,
@@ -812,6 +814,3 @@ The order and dependencies of the open work live in
 - **Known failing tests** (also on `main`): `test-td-summon` (evolution spends copies),
   `test-td-skin` (missing `mythic-recruit-tilda-v5_ultimate` sound).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
-- **Road class variety on boards:** the board class matrix (`test-td-balance.mjs`, printed for
-  information) has the Tank as the best blocker on 8 of 9 wave types; Warriors and Assassins
-  need a clearer payoff. Mage leads Archer on most ground wave types; Archer owns flyers.

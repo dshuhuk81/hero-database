@@ -65,6 +65,12 @@ export function effectTier(effect) {
   return "minor";
 }
 
+// Boss art is already more than twice the base enemy size. Keeping its board scale separate
+// prevents a large enemyScale from pushing top-lane bosses outside the canvas.
+export function enemyRenderScale(kind, rules) {
+  return kind === "boss" ? rules?.bossScale ?? rules?.enemyScale ?? 1 : rules?.enemyScale ?? 1;
+}
+
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
   const sceneArt = mapSceneFor(game.map);
@@ -1283,7 +1289,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c._iceOverlay = ice;
     c.addChild(ice);
 
-    c.scale.set(game.boardRules?.enemyScale ?? 1); // board maps: tuning.board.enemyScale
+    c.scale.set(enemyRenderScale(kind, game.boardRules));
     return c;
   }
 
@@ -1491,8 +1497,8 @@ export async function createRenderer(canvas, game, options = {}) {
   function drawBars() {
     layerBars.removeChildren();
     const g = new PIXI.Graphics();
-    const enemyScale = game.boardRules?.enemyScale ?? 1; // bars follow the scaled sprites
     for (const unit of game.enemies) {
+      const enemyScale = enemyRenderScale(unit.kind, game.boardRules); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);

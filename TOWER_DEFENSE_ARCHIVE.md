@@ -1,5 +1,13 @@
 # Tower Defense - Completed Work Archive
 
+## R1 and R3 board follow-ups, October 2, 2026
+
+- Unit sizes set by owner playtest: heroes 1.3x and regular enemies 1.8x. Bosses use a separate
+  1x scale because their 96-108 px art is already larger and a 1.8x boss is clipped on upper lanes.
+- Road class variety: board grunt and runner groups use 0.4x bodies, 2.5x health and gold, and
+  1.25x attack. One-seed matrix: Warrior leads swarms at 58% (Tank 30%), Assassin leads runners
+  at 61% (Tank 50%). Both keep five internal leak damage, one shown life.
+
 ## Baseline (shipped September 23, 2026)
 One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave run, boss wave. User completed first full run and beat Baphomet.
 

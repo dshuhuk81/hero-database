@@ -202,15 +202,16 @@ Status (October 1, 2026): done. `test-td-balance.mjs` passes: on the 10 Free Pla
 map has winners, 20-wave runs have winners and losers, Endless gets past wave 20, and starters
 win on 8 of 10 maps. Its per-map checks now cover Free Play maps only (campaign boards are
 checked by `test-td-campaign.mjs`), and the class kit check runs on the classic fixture map.
-The board class matrix it prints shows the Tank as the best blocker on 8 of 9 wave types
-(Warrior on summoners) and Mage ahead of Archer on most ground types, with Archer best on
-flyers, summoners and hexers: road class variety is the next balance topic. `scripts/td-board-tune.mjs` searched every
+The first board class matrix showed the Tank as the best blocker on 8 of 9 wave types.
+The October 2 follow-up gives grunts and runners a 0.4 count shape so Warrior cleave leads
+swarms and Assassin interception leads runners. Mage remains ahead of Archer on most ground
+types, with Archer best on flyers, summoners and hexers. `scripts/td-board-tune.mjs` searched every
 stage's `hpScale` against the campaign viability setup (35 sampled squads at the levels the
 chapter's first clears buy) with targets 90% (1-1), 65% (Chapter 1), 50% (regular), 35%
 (finales); every stage landed within 0.11 of its target, none under the 20% floor, and
 `test-td-campaign.mjs` passes (including 3-6, which failed before the boards). 1-1 wins every
 run even at 3.9x health, so it is set to 2.0. Free Play maps got their own `enemyHp` (bots win
-7-9 of 12 runs). Leak damage is rounded to whole lives (shaped flyers cost 3).
+7-9 of 12 runs). Regular shaped enemies explicitly cost 5 internal lives per leak, one shown life.
 
 - Campaign waves stay as authored; the wave shape converts them. Each stage's `hpScale` and
   lives get retuned with `test-td-campaign.mjs` (the viability floor) and the campaign sweep,

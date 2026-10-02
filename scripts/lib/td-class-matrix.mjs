@@ -93,7 +93,8 @@ export function heroScore(heroId, waveType, opts = {}) {
 // { waveType: { Class: mean score } }
 export function classMatrix(opts = {}) {
   const out = {};
-  for (const waveType of Object.keys(WAVE_TYPES)) {
+  for (const waveType of opts.waveTypes ?? Object.keys(WAVE_TYPES)) {
+    if (!WAVE_TYPES[waveType]) throw new Error(`Unknown class-matrix wave type: ${waveType}`);
     out[waveType] = {};
     for (const cls of CLASSES) {
       const members = heroes.filter((h) => h.class === cls);

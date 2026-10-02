@@ -82,6 +82,8 @@ which is the pressure valve for misplacement.
   enemies, execute below 35%), Mage (slow, splash/chain, magical), Archer
   (long range, pierce, crit, +100% vs air, targets strongest), Support
   (heals, +35% passive attack aura on allies in range).
+- **Board class waves:** grunts and runners keep twice the normal shaped body count, at half
+  the normal shaped health, so Warrior cleave owns swarms and Assassin interception owns runners.
 - **Hero ultimates:** 21 unique variants (`heroSkills`), each ~250% × tier
   ult power, plus class add-ons; awakened versions are ~30–50% stronger.
 - **Statuses & reactions:** Aegir→wet, Hephaestus→burn, Stheno/Fenrir→
