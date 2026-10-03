@@ -36,6 +36,26 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // --- 1A combat rules ---
 
+// Melee enemies must move well inside a road hero's tile before they stop. The old 42 px
+// contact radius left them only 6 px inside a 96 px tile, which disappeared after tilt.
+{
+  for (const mapId of ["proto-slabs", "moonlit-pass", "sunscar-basin"]) {
+    const map = realMaps.find((entry) => entry.id === mapId);
+    assert.ok(map, `${mapId}: contact test map exists`);
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves: [{ wave: 1, spawns: [] }], seed: 10 });
+    g.gold = 10000;
+    assert.equal(g.place("atlas", "road", 0), true, `${mapId}: blocker placed`);
+    const atlas = g.heroes[0];
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const grunt = g.spawnEnemy("grunt");
+    grunt.hp = grunt.maxHp = 1e9;
+    for (let i = 0; i < 60 * 30 && !grunt.held; i += 1) g.step(1 / 60);
+    const contact = Math.hypot(grunt.x - atlas.x, grunt.y - atlas.y);
+    assert.equal(grunt.held, true, `${mapId}: blocker engages the grunt`);
+    assert.ok(contact <= 24 + grunt.speed / 60, `${mapId}: grunt reaches deep contact (${contact.toFixed(2)} px)`);
+  }
+}
+
 // Hero armor mitigates incoming enemy damage.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 11 });
@@ -91,13 +111,13 @@ assert.equal(game.wave, 1, "wave advances once");
   for (let i = 0; i < 60 * 30 && atlas.hpLeft === atlas.hp; i += 1) g.step(1 / 60);
   assert.ok(atlas.hpLeft < atlas.hp, "archer damages blocker");
   const distance = Math.hypot(archer.x - atlas.x, archer.y - atlas.y);
-  assert.ok(distance > 42 && distance <= archer.attackRange, `archer fires from range (${Math.round(distance)}px)`);
+  assert.ok(distance > tuning.blocking.contactRange && distance <= archer.attackRange, `archer fires from range (${Math.round(distance)}px)`);
   for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
-  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) > 42, "archer holds position at range");
+  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) > tuning.blocking.contactRange, "archer holds position at range");
   // After holdSeconds it closes in and is blocked in contact like a melee enemy (no standoff).
   archer.hp = archer.maxHp = 1e9;
   for (let i = 0; i < 60 * (tuning.enemies.archer.holdSeconds + 5); i += 1) g.step(1 / 60);
-  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) <= 42 + 1e-6, "archer closes in after holdSeconds");
+  assert.ok(Math.hypot(archer.x - atlas.x, archer.y - atlas.y) <= tuning.blocking.contactRange + archer.speed / 60, "archer closes in after holdSeconds");
   assert.equal(archer.held, true, "and the blocker holds it");
 }
 
@@ -148,7 +168,7 @@ assert.equal(game.wave, 1, "wave advances once");
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("boss");
   const boss = g.enemies[0];
-  boss.x = atlas.x - 30; boss.y = atlas.y;
+  boss.x = atlas.x - 20; boss.y = atlas.y;
   atlas.hpLeft = 50;
   const distanceBefore = boss.distance;
   for (let i = 0; i < 60 * 10 && g.heroes.length; i += 1) g.step(1 / 60);

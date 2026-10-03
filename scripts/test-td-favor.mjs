@@ -159,7 +159,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
   const wall = make({ [trunkNode("contactRange").id]: 4 });
   const tank = place(wall, heroOf("Tank"));
-  const reach = 42 + trunkNode("contactRange").effect.value * 4;
+  const reach = tuning.blocking.contactRange + trunkNode("contactRange").effect.value * 4;
   assert.ok(wall.findEnemyTarget({ x: tank.x + reach - 1, y: tank.y }), "contact range grows");
 }
 

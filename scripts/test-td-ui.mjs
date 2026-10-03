@@ -51,6 +51,11 @@ assert.equal(render.slotVisualMode?.("road", "platform"), "dim", "non-matching p
 assert.equal(render.slotVisualMode?.("platform", "platform"), "eligible", "matching platform tiles light up during placement");
 assert.equal(render.slotVisualMode?.("platform", "road"), "dim", "non-matching road tiles recede during platform placement");
 
+// Ground units share one depth plane: the lower foot point draws in front. Flyers remain above it.
+assert.ok(render.unitDepth?.(280, "enemy") < render.unitDepth?.(300, "hero"), "approaching enemy stays behind the lower hero");
+assert.ok(render.unitDepth?.(320, "enemy") > render.unitDepth?.(300, "hero"), "enemy below the hero draws in front");
+assert.ok(render.unitDepth?.(200, "flyer") > render.unitDepth?.(500, "hero"), "flyer stays above ground units");
+
 // --- fitRect: world fits width AND height, aspect preserved ---
 {
   const cases = [

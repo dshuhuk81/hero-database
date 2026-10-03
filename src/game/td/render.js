@@ -83,6 +83,13 @@ export function slotVisualMode(deployingType, tileType) {
   return deployingType === tileType ? "eligible" : "dim";
 }
 
+// Ground heroes and enemies share the same depth plane. A tiny hero tie-break keeps a blocker
+// readable at identical foot positions; flyers always render above the ground battle.
+export function unitDepth(y, kind = "enemy") {
+  if (kind === "flyer") return 3000 + y;
+  return y + (kind === "hero" ? 0.5 : 0);
+}
+
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
   const sceneArt = mapSceneFor(game.map);
@@ -158,10 +165,8 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerParts  = new PIXI.Container(); // particles
   const layerNumbers = new PIXI.Container(); // floating damage numbers
   const layerHud    = new PIXI.Container(); // portals, labels
-  // Unit depth (zIndex): ground enemies, then heroes sorted top to bottom, then flyers. A road
-  // hero must stay visible while the enemies it blocks stand on its tile.
+  // Unit depth (zIndex): ground heroes and enemies share the tilted plane; flyers stay above it.
   layerUnits.sortableChildren = true;
-  const Z_HERO = 1000, Z_FLYER = 3000;
   // R18 prototype: depth scaling on tilt maps. Units on the far row of the board are drawn up to 8%
   // smaller and on the near row up to 8% larger, like the camera looking down at an angle.
   const depthScale = (y) => {
@@ -956,7 +961,8 @@ export async function createRenderer(canvas, game, options = {}) {
       const container = heroSprites.get(unit.entityId);
       updateHeroSprite(unit, container);
       // Lower heroes in front: standing figures reach into the slot above.
-      if (container.zIndex !== Z_HERO + unit.y) container.zIndex = Z_HERO + unit.y;
+      const depth = unitDepth(unit.y, "hero");
+      if (container.zIndex !== depth) container.zIndex = depth;
     }
     for (const [id, container] of heroSprites) {
       if (!seen.has(id)) { layerUnits.removeChild(container); container.destroy({ children: true }); heroSprites.delete(id); }
@@ -1161,7 +1167,7 @@ export async function createRenderer(canvas, game, options = {}) {
       if (!existing || stale) {
         const c = buildEnemyContainer(unit);
         c.tdEnemy = unit;
-        c.zIndex = unit.flying ? Z_FLYER : 0;
+        c.zIndex = unitDepth(unit.y, unit.flying ? "flyer" : "enemy");
         enemyContainers.set(unit.entityId, c);
         if (stale) {
           layerUnits.addChildAt(c, layerUnits.getChildIndex(existing));
@@ -1402,6 +1408,8 @@ export async function createRenderer(canvas, game, options = {}) {
   let dyingClock = null;
 
   function updateEnemyContainer(unit, c) {
+    const depth = unitDepth(unit.y, unit.flying ? "flyer" : "enemy");
+    if (c.zIndex !== depth) c.zIndex = depth;
     // Full-body sprites face their direction of travel (art faces right).
     if (c._anim) {
       // Only turn around on clearly sideways steps, so a vertical stretch keeps the facing.

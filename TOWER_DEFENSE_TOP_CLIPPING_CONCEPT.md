@@ -173,6 +173,13 @@ outlined. Tapping or keyboard-focusing a tile still gives it the full selected t
 a fallen hero from the deck brightens every legal tile of that hero's type and further dims the
 wrong type; occupied and special-ring states remain distinct.
 
+Melee contact now happens 24 world px from a road hero instead of 42. On the 96 px prototype tile,
+the old value put an enemy only 6 px past the tile boundary (about 3 visible phone pixels after tilt
+and scaling); the new value moves its foot point 24 px into the hero's tile. Ground heroes and
+enemies also share one y-based depth plane, so whichever has the lower foot point draws in front;
+heroes win only an exact-position tie, and flyers remain above the ground battle. Bars stay in the
+separate top layer.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

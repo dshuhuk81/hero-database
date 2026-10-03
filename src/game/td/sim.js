@@ -1038,7 +1038,7 @@ export class TowerDefenseGame {
   findEnemyTarget(enemy) {
     // Ranged enemies stop and shoot from distance; melee (and ranged past their hold) needs contact.
     const melee = !this.shootsFromRange(enemy);
-    const reach = melee ? 42 + (this.favor.contactRangeBonus || 0) : enemy.attackRange;
+    const reach = melee ? (this.tuning.blocking?.contactRange ?? 42) + (this.favor.contactRangeBonus || 0) : enemy.attackRange;
     const limits = this.tuning.blocking?.blockLimit;
     let best = null;
     enemy.brushed = false;
