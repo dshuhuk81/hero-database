@@ -13535,3 +13535,82 @@ button .td-cur {
 .td-quest.is-claimed {
   opacity: 0.62;
 }
+
+/* R18 prototype (D): floating landscape HUD. On short landscape screens a tilted map drops the side
+   rails: a thin row of stats and buttons on top, the deck and wave button along the bottom, both on
+   a gradient over the scenery, like the reference. Stage overlays move below the top row. */
+@media (orientation: landscape) and (max-height: 540px) {
+  .td-play[data-bleed] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "stage";
+  }
+
+  .td-play[data-bleed] .td-stage {
+    grid-area: stage;
+    --td-bleed-top: 40px;
+  }
+
+  .td-play[data-bleed] :is(.td-topbar, .td-bottombar) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 4px 10px;
+    border: 0;
+  }
+
+  .td-play[data-bleed] .td-topbar {
+    top: 0;
+    background: linear-gradient(to bottom, rgb(10 9 16 / 0.82), rgb(10 9 16 / 0));
+  }
+
+  .td-play[data-bleed] .td-bottombar {
+    bottom: 0;
+    background: linear-gradient(to top, rgb(10 9 16 / 0.82), rgb(10 9 16 / 0));
+  }
+
+  .td-play[data-bleed] .td-stats {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+
+  .td-play[data-bleed] .td-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .td-play[data-bleed] .td-top-actions,
+  .td-play[data-bleed] .td-topbar .td-top-actions {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 auto;
+  }
+
+  .td-play[data-bleed] .td-deck {
+    flex: 1 1 auto;
+    flex-direction: row;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .td-play[data-bleed] .td-deck-slot {
+    width: 46px;
+    height: 46px;
+  }
+
+  .td-play[data-bleed] :is(.td-blessings-button, .td-main-action) {
+    width: auto;
+    min-height: 0;
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
+
+  .td-play[data-bleed] :is(.td-stage-name, .td-wave-preview, .td-buffs) {
+    top: calc(var(--td-bleed-top) + var(--space-1));
+  }
+}
