@@ -113,6 +113,17 @@ Findings:
    22% of the width. The reference has no rails: a 130 x 30 pill at the top, buttons top right, ultimates
    bottom left, deck bottom right, all floating over the scene.
 
+### Prototype round 3 (October 3, 2026): matched to the 797 x 360 reference
+
+Owner confirmed 62 x 68 is **one** slab (top face plus stone thickness). `proto-slabs` was rebuilt:
+cell **96** (generator size `6x3` now has `maxCell: 96`), a 576 x 288 board centred in the world with
+scenery all round, tilt **k 0.85 / offsetY 40 for this map** (`tuning.board.tilt.perMap`), and slabs
+with a front face 0.3 cell tall drawn below the top face, tiles drawn top to bottom so the face
+overlaps the tile beneath. At 797 x 360 that is a slab of **62 px wide** (reference 62) and about
+62 x 53 top face plus ~18 px of stone front, i.e. ~68 px tall (reference 68); hero 67 px (reference 66).
+Because the board is small, the top row has about 120 world px of headroom, so the clipping is gone
+without needing a strong squash. Screenshots: `artifacts/td-tilt-prototype/slabs-v2-*.png`.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

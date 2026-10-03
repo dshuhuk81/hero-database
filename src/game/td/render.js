@@ -123,8 +123,9 @@ export async function createRenderer(canvas, game, options = {}) {
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
   const tiltOn = Boolean(tiltCfg) && tiltParam !== "off" && (tiltCfg.maps ?? []).includes(game.map?.id);
-  const tiltK = tiltOn ? Math.min(1, Math.max(0.5, Number(tiltParam) || tiltCfg.k)) : 1;
-  const tiltOffsetY = tiltOn ? tiltCfg.offsetY : 0;
+  const tiltMine = tiltOn ? { ...tiltCfg, ...(tiltCfg.perMap?.[game.map?.id] ?? {}) } : null; // a map may carry its own k and offsetY
+  const tiltK = tiltOn ? Math.min(1, Math.max(0.5, Number(tiltParam) || tiltMine.k)) : 1;
+  const tiltOffsetY = tiltOn ? tiltMine.offsetY : 0;
   tiltView.k = tiltK;
   tiltView.offsetY = tiltOffsetY;
   const tiltRoot = new PIXI.Container();
@@ -478,7 +479,10 @@ export async function createRenderer(canvas, game, options = {}) {
     } else layerSlots.removeChildren();
     for (const type of ["road", "platform"]) {
       const mode = slotMode(type);
-      (type === "road" ? game.map.roadSlots : game.map.platformSlots).forEach(([x, y], i) => {
+      const slots = (type === "road" ? game.map.roadSlots : game.map.platformSlots).map((xy, i) => [xy, i]);
+      // R18: raised slabs overlap the tile below with their front face, so draw top to bottom.
+      if (tiltOn && type === "platform") slots.sort((a, b) => a[0][1] - b[0][1]);
+      slots.forEach(([[x, y], i]) => {
         const occupied = game.heroes.some((h) => h.slotType === type && h.slotIndex === i);
         const focused  = game.focusedSlot?.type === type && game.focusedSlot.index === i;
         drawSlot(layerSlots, x, y, type, occupied, focused, mode);

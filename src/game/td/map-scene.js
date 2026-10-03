@@ -505,24 +505,26 @@ export function createMapScene(PIXI, game, {
       container.addChild(slabRoot);
       const slab = new PIXI.Graphics();
       slabRoot.addChild(slab);
-      const lip = 13 / tiltK;
+      // The slab is a stone block: a top face the size of the cell and a front face (the lip)
+      // below it, about 0.3 cell tall, which overlaps the tile underneath like the reference.
+      const lip = Math.round(TILE * 0.3);
       for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
-      slab.rect(-h + 2, -h + 2 + lip, TILE - 4, TILE - 4 - lip + 4).fill({ color: 0x1a2118, alpha: 0.95 }); // front face
-      const topH = TILE - 4 - lip + 2;
+      slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
       const rawStone = STONE[2] ?? STONE[0];
       const mix = (a, b, t) => Math.round(a + (b - a) * t);
       const stone = (mix((rawStone >> 16) & 255, 0xb4, 0.4) << 16) | (mix((rawStone >> 8) & 255, 0xb0, 0.4) << 8) | mix(rawStone & 255, 0x98, 0.4); // lighter, warmer stone
       const variant = Math.abs(Math.round(x * 7 + y * 13)) % 3;
       const top = new PIXI.Sprite(slabTexture(PIXI, variant, stone, theme.name === "Jungle" ? [60, 110, 55] : null)); // textured top face
       top.position.set(-h + 2, -h + 2);
-      top.width = TILE - 4; top.height = topH;
+      top.width = TILE - 4; top.height = TILE - 4;
       if (variant === 1) { top.scale.x *= -1; top.x += TILE - 4; } // mirror one variant so neighbours differ
       slabRoot.addChild(top);
       const edges = new PIXI.Graphics();
       edges.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
-      edges.moveTo(-h + 2, h - 2 - lip + 2).lineTo(h - 2, h - 2 - lip + 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.45 });
-      // Front face: vertical streaks of darker stone.
-      for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h - 2 - lip + 4).lineTo(sx + 2, h + 2).stroke({ color: 0x000000, width: 1, alpha: 0.18 });
+      edges.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.5 });
+      // Front face: vertical streaks of darker stone and a lighter top edge.
+      for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h).lineTo(sx + 2, h - 2 + lip).stroke({ color: 0x000000, width: 1, alpha: 0.18 });
+      edges.moveTo(-h + 2, h - 1).lineTo(h - 2, h - 1).stroke({ color: 0xffffff, width: 1, alpha: 0.12 });
       slabRoot.addChild(edges);
     }
     const g = new PIXI.Graphics();
