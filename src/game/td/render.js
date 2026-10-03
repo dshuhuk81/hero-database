@@ -3,7 +3,7 @@
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
 import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, tdAsset } from "./assets.js";
-import { fitRect, shortNumber, tiltView } from "./ui.js";
+import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
@@ -346,9 +346,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // the side rails clear. The canvas is then centred on the play screen, not the stage.
       // World height ~ screen height (a hero is ~18% of the screen height, as in the reference); the
       // full world width must fit too. No rails: the HUD floats over the scene.
-      const scale = Math.min(playHost.clientWidth / 960, playHost.clientHeight / 556);
-      w = Math.floor(960 * scale);
-      h = Math.floor(540 * scale);
+      ({ width: w, height: h } = bleedCanvasSize(playHost.clientWidth, playHost.clientHeight));
       const play = playHost.getBoundingClientRect(), stageBox = box.getBoundingClientRect();
       canvas.style.translate = `${(play.left + play.width / 2) - (stageBox.left + stageBox.width / 2)}px ${(play.top + play.height / 2) - (stageBox.top + stageBox.height / 2)}px`;
     }
@@ -2102,7 +2100,7 @@ export async function createRenderer(canvas, game, options = {}) {
       load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK, units: layerUnits, zHero: Z_HERO } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();

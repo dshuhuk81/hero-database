@@ -40,7 +40,7 @@ changes; remove `tuning.board.tilt` to switch it off everywhere.
 - **Screenshots** (same map, six heroes, boss and flyer at the top spawn, tilt off vs on) in
   `artifacts/td-tilt-prototype/`: `tilt-off-*.png` / `tilt-on-*.png`, at 1280 × 640 and 844 × 390.
   Result: the top-row hero that touches the canvas edge with tilt off stands fully inside with tilt on.
-- **Portal overlap fix (owner feedback):** the squashed ground flattened the painted spawn gates and drew them over everything, so heroes next to a gate were covered. Gates and labels are now counter-scaled (upright, full size) and the spawn gates are depth-sorted with the heroes (a hero below a gate stands in front of it, enemies still emerge through it). Before/after crops: `artifacts/td-tilt-prototype/portal-overlap-*.png`. The Heart Temple (base) stays behind units as before but is also counter-scaled.
+- **Portal overlap fix (owner feedback):** the squashed ground flattened the painted spawn gates and drew them over everything, so heroes next to a gate were covered. Gates and labels are now counter-scaled (upright, full size). The complete painted gate stays in the structure layer behind all combatants; placing the opaque image in the sortable unit layer hid enemies on their first spawn frame. Before/after crops from the first correction: `artifacts/td-tilt-prototype/portal-overlap-*.png`. The Heart Temple (base) stays behind units as before and is also counter-scaled.
 - **Not in the prototype:** buff pills and the boss health bar are not moved yet; the bands are
   the first-cut blurred copy of the map art; HP bars, rings and status icons are squashed with the
   ground (bars ~25% thinner); portal labels are squashed; no depth scaling and no lower hero feet.
@@ -139,6 +139,19 @@ Owner feedback: the look works, heroes missing in the preview were R2 CORS (fixe
 - Screenshots: `artifacts/td-tilt-prototype/slabs-v4-*.png`.
 - **Known:** the blurred terrain backdrop at the sides is dark and has a hard edge against the
   battlefield; portrait phones untouched; no real device test of the tap mapping yet.
+
+### Prototype round 5 (October 3, 2026): ultrawide landscape phone polish
+
+The owner's real-phone screenshot confirmed the height-led world and unit scale, but exposed the
+fixed 16:9 canvas as a dark, hard-edged rectangle on a wider display. Landscape tilt maps now use a
+brighter, slightly enlarged terrain backdrop and feather the canvas's outer 28 px into it. This is a
+render-only blend: the canvas rectangle, world coordinates and tap mapping do not change.
+
+The bottom deck now targets a 52 px card with a 50 px inner portrait at the 360 px reference height,
+using a height-based clamp on shorter screens. HUD gaps and padding contract with width, and the deck
+may scroll horizontally instead of shrinking the portraits. Portrait orientation remains unchanged.
+The phone check also showed enemies hidden behind the opaque spawn-gate painting. Full painted gates
+now remain behind all units; a future doorway-front occluder would need its own transparent asset.
 
 ## 1. Why it clips today
 

@@ -37,6 +37,17 @@ export function fitRect(containerWidth, containerHeight, aspect = WORLD_WIDTH / 
   return { width: Math.floor(fitted.width), height: Math.floor(fitted.height) };
 }
 
+// Tilted landscape boards keep their visual scale tied to viewport height, while still fitting
+// the complete 16:9 world on narrower phones. The extra 16 px accounts for the small vertical
+// breathing room used by the floating HUD composition.
+export function bleedCanvasSize(containerWidth, containerHeight, referenceHeight = 556) {
+  const width = Math.max(0, containerWidth || 0);
+  const height = Math.max(0, containerHeight || 0);
+  if (!width || !height) return fitRect(width, height);
+  const scale = Math.min(width / WORLD_WIDTH, height / referenceHeight);
+  return { width: Math.floor(WORLD_WIDTH * scale), height: Math.floor(WORLD_HEIGHT * scale) };
+}
+
 // Converts a world point into coordinates local to a container element,
 // given both elements' bounding rects.
 export function worldToLocal(canvasRect, containerRect, point) {

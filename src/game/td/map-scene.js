@@ -105,10 +105,15 @@ export function mapSceneFor(map) {
   return MAP_SCENES[map?.art] ?? null;
 }
 
-// Spawn portals sit in front of entering units so they emerge through the doorway.
-// The sanctuary remains behind units; its small vector face handles exit occlusion.
-export function paintedStructureLayer(layers, role) {
-  return role === "spawn" ? layers.foreground : layers.structures;
+// Painted architecture is opaque scenery and stays behind combatants. Keeping the full spawn-gate
+// sprite in the foreground hid an enemy on its first visible frame; doorway-front occlusion belongs
+// in a separate transparent foreground asset, not in the complete painted structure.
+export function paintedStructureLayer(layers, _role) {
+  return layers.structures;
+}
+
+export function paintedStructurePlacement(layers, role, _tilt = null) {
+  return { parent: paintedStructureLayer(layers, role), zIndex: null };
 }
 
 
@@ -175,10 +180,8 @@ function slabTexture(PIXI, variant, base, moss) {
 export function createMapScene(PIXI, game, {
   ground, structures, foreground, overlay, reducedMotion = false, textures = {}, tilt = null,
 }) {
-  // R18 tilt prototype: `tilt` = { k, units, zHero }. The ground layers are squashed to k, so
-  // upright sprites (gates, sanctuary, labels) are counter-scaled by 1/k, and the painted
-  // spawn gates join the unit layer, depth-sorted with the heroes (a hero below the gate
-  // stands in front of it, one above it behind it; enemies still emerge through it).
+  // R18 tilt prototype: the ground layers are squashed to k, so upright sprites (gates,
+  // sanctuary and labels) are counter-scaled by 1/k. Painted structures stay behind units.
   const tiltK = tilt?.k ?? 1;
   const theme = mapSceneFor(game.map);
   const STONE = theme.stone, GOLD = theme.gold, LIGHT = theme.light;
@@ -392,9 +395,9 @@ export function createMapScene(PIXI, game, {
     back.ellipse(3, 16, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
     back.ellipse(2, 14, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
-    const sorted = tilt?.units && role === "spawn";
-    const sprite = add(sorted ? tilt.units : paintedStructureLayer({ structures, foreground }, role), new PIXI.Sprite(texture));
-    if (sorted) sprite.zIndex = tilt.zHero + point.y + 40; // feet of the gate, like a hero's
+    const placement = paintedStructurePlacement({ structures, foreground }, role, tilt);
+    const sprite = add(placement.parent, new PIXI.Sprite(texture));
+    if (placement.zIndex !== null) sprite.zIndex = placement.zIndex;
     if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
     sprite.position.set(point.x, point.y);
