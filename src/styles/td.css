@@ -13583,7 +13583,8 @@ button .td-cur {
   }
 
   .td-play[data-bleed] .td-bottombar {
-    bottom: 0;
+    bottom: max(4px, env(safe-area-inset-bottom));
+    padding-right: max(14px, calc(env(safe-area-inset-right) + 10px));
     background: linear-gradient(to top, rgb(10 9 16 / 0.78), rgb(10 9 16 / 0.38) 58%, transparent);
   }
 
@@ -13615,6 +13616,7 @@ button .td-cur {
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
+    transform: translateY(-3px);
   }
 
   .td-play[data-bleed] .td-deck::-webkit-scrollbar {
@@ -13640,5 +13642,22 @@ button .td-cur {
 
   .td-play[data-bleed] :is(.td-stage-name, .td-wave-preview, .td-buffs) {
     top: calc(var(--td-bleed-top) + var(--space-1));
+  }
+
+  /* Notices belong to the battlefield, not the action dock. Keep them below the top HUD and
+     wave chips so deployment feedback cannot cover powers or the Start wave button. */
+  .td-play[data-bleed] .td-stage .td-notice,
+  .td-play[data-bleed] .td-stage:is([data-hero-panel="push"], [data-hero-panel="right"], [data-hero-panel="left"]) .td-notice {
+    top: calc(var(--td-bleed-top) + 36px);
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    max-width: min(520px, calc(100% - var(--space-6)));
+    transform: translate(-50%, -6px);
+  }
+
+  .td-play[data-bleed] .td-stage .td-notice.is-visible,
+  .td-play[data-bleed] .td-stage:is([data-hero-panel="push"], [data-hero-panel="right"], [data-hero-panel="left"]) .td-notice.is-visible {
+    transform: translate(-50%, 0);
   }
 }

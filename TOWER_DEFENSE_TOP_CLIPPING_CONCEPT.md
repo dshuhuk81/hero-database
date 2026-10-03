@@ -152,6 +152,9 @@ using a height-based clamp on shorter screens. HUD gaps and padding contract wit
 may scroll horizontally instead of shrinking the portraits. Portrait orientation remains unchanged.
 The phone check also showed enemies hidden behind the opaque spawn-gate painting. Full painted gates
 now remain behind all units; a future doorway-front occluder would need its own transparent asset.
+Deployment notices on short landscape screens now appear below the top HUD instead of over the
+bottom action dock. The dock gets a small bottom/right safe inset and the portrait deck sits 3 px
+higher; portrait orientation is still unchanged.
 
 ## 1. Why it clips today
 
