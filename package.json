@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "dev:api": "node api-server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
-    "build": "astro build",
+    "build": "node scripts/build-with-supported-node.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "tag-manager": "node scripts/tag-manager-server.js",
