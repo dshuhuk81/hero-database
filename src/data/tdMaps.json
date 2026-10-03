@@ -1463,5 +1463,24 @@
     "rings": {"platform:6":"highground","platform:5":"cursed","road:6":"shrine"},
     "recipe": {"generator":"board-v1","ruleset":1,"seed":1259,"size":"10x5","gates":2,"entry":["left","top","bottom"]},
     "geometryHash": "0edec72cc91367e2"
+  },
+  {
+    "id": "proto-slabs",
+    "boss": "ochenta",
+    "name": "Prototype Slabs",
+    "theme": "jungle",
+    "art": "jungle-heart-v1",
+    "music": "cc0_knights_challenge",
+    "campaignOnly": true,
+    "prototype": true,
+    "base": {"x":873,"y":271},
+    "spawn": {"x":245,"y":67},
+    "path": [[245,67],[245,428],[559,428],[559,271],[873,271]],
+    "grid": {"board":{"cell":157,"cols":6,"rows":3,"origin":[9,35],"road":[[1,1],[1,2],[2,2],[3,2],[3,1],[4,1]],"platforms":[[2,0],[3,0],[2,1],[0,0],[0,1],[0,2],[4,2],[5,2]],"rings":[{"type":"platform","cell":[2,0],"kind":"highground"},{"type":"platform","cell":[0,2],"kind":"cursed"},{"type":"road","cell":[1,2],"kind":"shrine"}]}},
+    "roadSlots": [[245,271],[245,428],[402,428],[559,428],[559,271],[716,271]],
+    "platformSlots": [[402,114],[559,114],[402,271],[88,114],[88,271],[88,428],[716,428],[873,428]],
+    "rings": {"platform:0":"highground","platform:5":"cursed","road:1":"shrine"},
+    "recipe": {"generator":"board-v1","ruleset":1,"seed":1,"size":"6x3","gates":1,"entry":["left","top","bottom"]},
+    "geometryHash": "bbe60be860026362"
   }
 ]

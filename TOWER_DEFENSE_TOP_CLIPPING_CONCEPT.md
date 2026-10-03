@@ -47,6 +47,30 @@ changes; remove `tuning.board.tilt` to switch it off everywhere.
 - **Known to check on review:** the seam where ground meets band, how the 25% squash reads on the
   painted art, tap accuracy near the top and bottom edges on a real phone.
 
+## Prototype round 2 (October 3, 2026): slabs (A), depth cues (B), full-bleed (D)
+
+Owner direction: A first on one prototype level only, then B, D yes, C no (keep our gates), E skipped.
+One new dev-only map, **`proto-slabs`** ("Prototype Slabs"), listed in Free Play on the dev server
+only (`prototype` + `campaignOnly`). Campaign maps are untouched. Tilt is on for it
+(`tuning.board.tilt.maps`). Screenshots in `artifacts/td-tilt-prototype/slabs-*.png`.
+
+- **A, bigger slabs, fewer tiles:** new generator size `6x3` (`BOARD_SIZES` in
+  `map-generator-board.js`): cell **157 px** (was 104), 6 road + 8 platform tiles (was 19 to 40
+  cells). Generated with the normal board-v1 generator (seed 1, 1 gate), `generate-td-board --check`,
+  `build-td-grid --check` and the sim/board tests pass. A hero is now about half a slab wide, the
+  open field feels bigger. Heroes' pattern reach is measured in cells, so it now covers more ground;
+  not balanced (prototype).
+- **B, depth cues (tilt maps only):** platform tiles are drawn as raised stone slabs (top face,
+  darker front face, drop shadow) instead of outlines; heroes and enemies get an extra long soft
+  shadow to the lower right.
+- **D, full-bleed (tilt maps only):** `render.js` sets `data-bleed` on the play screen; the canvas is
+  sized against the whole play screen and centred on it, the top and bottom bars float over it with a
+  gradient, and a blurred copy of the terrain fills the space around the board (`td.css`, "R18
+  prototype (D)"). Landscape phones keep the side rails clear, so the gain there is vertical only.
+- **Open / next:** the side bands are still the blurred terrain copy; slab stone colour is the theme's
+  stone grey-green and needs a texture; no depth scaling yet; free enemy paths (E) are a separate
+  concept; phone portrait not checked.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

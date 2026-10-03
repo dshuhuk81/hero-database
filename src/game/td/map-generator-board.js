@@ -22,6 +22,7 @@ const WORLD = [960, 540];
 export const BOARD_SIZES = {
   "8x4": { cols: 8, rows: 4, length: [8, 13], platforms: [8, 12], blocks: [3, 4] },
   "9x5": { cols: 9, rows: 5, length: [10, 17], platforms: [10, 15], blocks: [3, 5] },
+  "6x3": { cols: 6, rows: 3, length: [6, 9], platforms: [5, 8], blocks: [2, 3] }, // R18 prototype: big slabs, few tiles
   "10x5": { cols: 10, rows: 5, length: [11, 19], platforms: [12, 17], blocks: [4, 5] },
 };
 const ATTEMPTS = 600;

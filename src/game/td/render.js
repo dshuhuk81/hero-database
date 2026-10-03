@@ -130,6 +130,8 @@ export async function createRenderer(canvas, game, options = {}) {
   const tiltRoot = new PIXI.Container();
   tiltRoot.scale.y = tiltK;
   tiltRoot.y = tiltOffsetY;
+  const playHost = canvas.closest("[data-td-play]");
+  if (tiltOn) playHost?.setAttribute("data-bleed", "1");
   const layerBand = new PIXI.Container(); // scenery bands above and below the squashed ground
 
   // Layer order (added in order = drawn back to front)
@@ -326,7 +328,20 @@ export async function createRenderer(canvas, game, options = {}) {
     const style = box ? getComputedStyle(box) : null;
     const padX = style ? parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) : 0;
     const padY = style ? parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) : 0;
-    const { width: w, height: h } = fitRect((box?.clientWidth || 960) - padX, (box?.clientHeight || 0) - padY);
+    let { width: w, height: h } = fitRect((box?.clientWidth || 960) - padX, (box?.clientHeight || 0) - padY);
+    if (tiltOn && playHost?.clientHeight) {
+      // R18 prototype (D): full-bleed. The canvas is sized against the whole play screen (the
+      // bars float over it): the full world width and the board (world y offsetY .. offsetY +
+      // 540k, plus a margin) must fit; the scenery bands may be cropped. Landscape phones keep
+      // the side rails clear. The canvas is then centred on the play screen, not the stage.
+      const rails = matchMedia("(orientation: landscape) and (max-height: 540px)").matches
+        ? (document.querySelector(".td-topbar")?.offsetWidth ?? 0) + (document.querySelector(".td-bottombar")?.offsetWidth ?? 0) : 0;
+      const scale = Math.min((playHost.clientWidth - rails) / 960, playHost.clientHeight / (540 * tiltK + 24));
+      w = Math.floor(960 * scale);
+      h = Math.floor(540 * scale);
+      const play = playHost.getBoundingClientRect(), stageBox = box.getBoundingClientRect();
+      canvas.style.translate = `${(play.left + play.width / 2) - (stageBox.left + stageBox.width / 2)}px ${(play.top + play.height / 2) - (stageBox.top + stageBox.height / 2)}px`;
+    }
     if (!w || !h) return;
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
@@ -412,6 +427,7 @@ export async function createRenderer(canvas, game, options = {}) {
         layerBgTex.addChild(spr);
         layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
         if (tiltOn) {
+          canvas.parentElement?.style.setProperty("--td-bleed-art", `url("${sceneArt.assets.terrain}")`);
           // First-cut scenery bands: the same terrain, stretched over the full canvas, blurred
           // and darkened. Final version: one authored band per theme.
           const band = new PIXI.Sprite(tex);
@@ -1057,6 +1073,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // A figure stands on the slot: shadow only, no token disc or level ring behind it. The
       // number badge still shows the level; health and ultimate charge remain below it.
       container._base.clear().ellipse(0, HERO_ANIM.feetY, 22, 6).fill({ color: 0x000000, alpha: 0.45 });
+      if (tiltOn) container._base.ellipse(16, HERO_ANIM.feetY + 3, 38, 8).fill({ color: 0x000000, alpha: 0.2 }); // R18 B: long soft shadow, light from the upper left
       container._border.visible = false;
       container._animState = { clip: "idle", start: now, atk: unit.attackClock, ult: unit.ultClock };
     }
@@ -1203,6 +1220,7 @@ export async function createRenderer(canvas, game, options = {}) {
       const size = fullSpriteSize(kind);
       const shadow = new PIXI.Graphics();
       shadow.ellipse(0, FULL_SPRITE_FEET, size * (unit.flying ? 0.22 : 0.3), size * (unit.flying ? 0.06 : 0.08)).fill({ color: 0x000000, alpha: unit.flying ? 0.25 : 0.45 });
+      if (tiltOn) shadow.ellipse(size * 0.2, FULL_SPRITE_FEET + 2, size * 0.5, size * 0.1).fill({ color: 0x000000, alpha: unit.flying ? 0.12 : 0.2 }); // R18 B
       c.addChild(shadow);
       const sp = new PIXI.Sprite(sheet ? sheet.anims.idle[0] : fullTex);
       if (sheet) {
@@ -2058,6 +2076,7 @@ export async function createRenderer(canvas, game, options = {}) {
   function destroy() {
     if (destroyed) return;
     destroyed = true;
+    playHost?.removeAttribute("data-bleed");
     mapScene?.destroy?.();
     // Removes the canvas from the DOM; shared textures stay in the Assets cache for the next run.
     app.destroy({ removeView: true }, { children: true });

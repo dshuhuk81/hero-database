@@ -437,11 +437,23 @@ export function createMapScene(PIXI, game, {
   const TILE = board ? board.cell - 6 : 56;
   const DARK = 0x04070c;
   function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
+    const h = TILE / 2;
+    if (tilt && type === "platform") {
+      const slab = new PIXI.Graphics(); // R18 prototype (B): full strength, independent of the tile's idle fade
+      slab.position.set(x, y);
+      container.addChild(slab);
+      const lip = 13 / tiltK;
+      for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
+      slab.rect(-h + 2, -h + 2 + lip, TILE - 4, TILE - 4 - lip + 4).fill({ color: 0x1a2118, alpha: 0.95 }); // front face
+      slab.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 - lip + 2).fill({ color: STONE[2] ?? STONE[0], alpha: 0.92 }); // top face
+      slab.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 - lip + 2).fill({ color: 0xffffff, alpha: 0.06 });
+      slab.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
+      slab.moveTo(-h + 2, h - 2 - lip + 2).lineTo(h - 2, h - 2 - lip + 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.45 });
+    }
     const g = new PIXI.Graphics();
     g.position.set(x, y);
     container.addChild(g);
     const accent = type === "road" ? theme.pad.road : theme.pad.platform;
-    const h = TILE / 2;
     const brackets = (inset, arm, color, width, alpha) => {
       for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
         const cx = sx * (h - inset), cy = sy * (h - inset);

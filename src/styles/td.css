@@ -2915,6 +2915,49 @@
   background: var(--td-stage-bg);
 }
 
+/* R18 prototype (D): full-bleed battlefield. With a tilted map the canvas grows past the stage
+   to the whole play screen and the top/bottom bars float over it; a blurred copy of the
+   terrain fills the space the board does not use. render.js sets data-bleed, --td-bleed-art
+   and sizes/centres the canvas. Stage overlays (notice, bonds, wave preview) keep their place. */
+.td-play[data-bleed] {
+  position: relative;
+  overflow: hidden;
+}
+
+.td-play[data-bleed]::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: var(--td-bleed-art, none) center / cover;
+  filter: blur(18px) brightness(0.5) saturate(1.1);
+}
+
+.td-play[data-bleed] .td-stage {
+  overflow: visible;
+  background: transparent;
+}
+
+.td-play[data-bleed] :is(.td-topbar, .td-bottombar) {
+  position: relative;
+  z-index: 3;
+  border: 0;
+  background: linear-gradient(to bottom, rgb(10 9 16 / 0.8), rgb(10 9 16 / 0));
+}
+
+.td-play[data-bleed] .td-bottombar {
+  background: linear-gradient(to top, rgb(10 9 16 / 0.8), rgb(10 9 16 / 0));
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .td-play[data-bleed] .td-topbar {
+    background: linear-gradient(to right, rgb(10 9 16 / 0.8), rgb(10 9 16 / 0));
+  }
+
+  .td-play[data-bleed] .td-bottombar {
+    background: linear-gradient(to left, rgb(10 9 16 / 0.8), rgb(10 9 16 / 0));
+  }
+}
+
 .td-canvas {
   display: block;
   flex: 0 0 auto;
