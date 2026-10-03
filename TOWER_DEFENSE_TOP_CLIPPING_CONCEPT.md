@@ -85,6 +85,34 @@ only (`prototype` + `campaignOnly`). Campaign maps are untouched. Tilt is on for
 - **Same Wi-Fi, no push at all:** `npm run dev -- --host`, then on the phone
   `http://<laptop-ip>:4321/games/tower-defense/?proto=1` (`ipconfig getifaddr en0` on macOS).
 
+### Scale audit on a 797 × 360 phone (owner annotation, October 3, 2026)
+
+Reference screen annotated by the owner (797 × 360): hero 50 × 66, slab block 62 × 68 (the left stack
+of two slabs; one slab is about 62 × 34 to 44), top counter pill 130 × 30, round buttons 30 × 30,
+portrait circles 50 × 50, deck cards 60 × 60. Ours measured at the same size on `proto-slabs`
+(dev server, Playwright, `worldScale` 0.647):
+
+| | Reference | Ours now | Ours with the old 104 cell |
+|---|---|---|---|
+| Hero height | 66 (18% of screen height) | **67** (19%) | 67 |
+| One slab (width × height) | ~62 × 34 to 44 | **102 × 76** (cell 157, tilt 0.75) | 67 × 50 |
+| Slab height ÷ hero height | ~0.5 to 0.67 | 1.13 | 0.75 |
+| Playfield width | whole screen, HUD floats | 621 of 797 (78%); rails 88 px each side | same |
+| Stats | one pill 130 × 30 on top | stacked in left rail, 72 × 41 each | same |
+| Round buttons | 30 × 30 | 34 × 34 | same |
+| Deck | cards 60 × 60, portrait circles 50 × 50 | 40 × 40 in the right rail | same |
+
+Findings:
+1. **Hero scale already matches** (67 vs 66 px on this phone). No hero resizing needed.
+2. **The slab prototype overshot.** The 157 px cell is about 1.7 × the reference slab. The old 104 px cell
+   (67 × 50 on screen) is much closer. Correction to the video analysis above: the "190 px slabs" were
+   groups of slabs, so the lever is **fewer tiles in a smaller board on a larger scene**, not bigger tiles.
+   Proposed values for the next round: cell about 96 to 100, tilt k 0.7, a board of 6 x 3 cells (about
+   600 x 300 world px) centred in the 960 x 540 world with scenery around it.
+3. **Deck and HUD are smaller than the reference** (40 vs 60 px cards) and sit in 88 px rails that take
+   22% of the width. The reference has no rails: a 130 x 30 pill at the top, buttons top right, ultimates
+   bottom left, deck bottom right, all floating over the scene.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are
