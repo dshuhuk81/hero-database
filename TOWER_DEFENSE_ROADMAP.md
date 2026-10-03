@@ -33,80 +33,22 @@ Only open work. Use subagents for more than one milestone; coordinate file chang
 
 ### Open work after the board rewrite (October 2, 2026)
 
-Branch `tower-defense-planning` finished the board rewrite and the first round of ideas: all
-maps on compact boards with unique layouts, attack patterns and reach steps, fewer and
-stronger enemies, one shown life per leak, three-gate boards, signature patterns and
-pattern-shaped ultimates, global hero stats, wave interest, pantheon bonds, Heroic campaign
-and Divine Interventions (archive: "Board rewrite and ideas round, October 2, 2026"). The
-owner asked to build these without balancing; numbers are first guesses. Manual ultimates
-were dropped.
+Branch `tower-defense-planning` finished the board rewrite and the first round of ideas (archive:
+"Board rewrite and ideas round, October 2, 2026"). The owner asked to build these without
+balancing; numbers are first guesses. Manual ultimates were dropped. Done this round and
+archived: R9 and R17 (bosses and chapter assignments), R10 (daily quests), R16 (Ymir attack).
 
-Steps grouped by type of work, in the owner's order: development, concept, simulation. "Needs" names the steps that must be done first; steps without
-needs can start any time and run in parallel.
+Steps are grouped by type of work, in the owner's order: development, concept, simulation.
+"Needs" names the steps that must be done first; steps without needs can start any time and
+run in parallel.
 
 #### DEVELOPMENT
 
-Build work with a clear scope.
-
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R10 | Daily quests: fixed activities + activity-bar chests; concept approved October 2 (`TOWER_DEFENSE_DAILY_QUESTS.md`) — build per its section 6 | Agent | - | M |
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
-| R9 | Lerna, Kraghorn, Vorruk: art and chapter assignments live with standard boss behavior; bespoke mechanics descoped October 2 | Done | - | - |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
-
-**R9 — Bosses Lerna, Kraghorn, Vorruk.** The original design is preserved in
-[TOWER_DEFENSE_BOSS_CONCEPTS.md](TOWER_DEFENSE_BOSS_CONCEPTS.md) (September 29, 2026):
-rules, numbers (multipliers of the ordinary boss H/A/S), warnings, counterplay, tooltips,
-rollout order and the required-checks list. **Superseded owner decision, October 2:** all
-three ship with standard boss combat behavior; their bespoke specials and ultimates are
-descoped. Sprites and animation sheets are live (`boss-lerna-v1`, `boss-kraghorn-v1`,
-`boss-vorruk-v1`). The historical concepts were:
-
-1. **Lerna** : threshold ultimate at 70%/35%
-   health (one-shot queue, never re-arms), interruptible 2 s wind-up + 4 s healing channel
-   (1.5% max hp/s, 6% budget per cast, canceled by 4% max hp accumulated damage, stun or
-   petrify; burn suppresses healing ticks), Tender Growth exposure window (+20% damage
-   taken, 5 s) after each cast, and the Bitter Seep ground pool (10 s cooldown, 1.5 s
-   warning, 48 px radius, 4 s, 20% A magic per second, one pool max).
-2. **Kraghorn** : path-distance charge every 18 s (2.5 s hoof-scrape
-   warning marking 140 px of its own path, 3× speed, stops at and hits the first living road
-   hero for 180% A, canceled by stun/petrify/knockback), Cracked Hide recovery (4 s, armor
-   halved), Stones from the Hide fragment attack (12 s, 3 fragments, 45% A each), high
-   armor / low magic resistance profile.
-3. **Vorruk** : burrow ultimate every 20 s (2 s jagged-ring warning on a fixed
-   platform or road slot, 2 s untargetable underground — road progress paused, block
-   released, damage-over-time keeps ticking, health bar stays visible — then eruption: 90% A
-   in 60 px at the marked spot, Open Throat exposure 5 s), Grit Lance platform poke (9 s,
-   1.5 s lock-on line, 65% A single target, no retarget).
-
-No `sim.js` or tuning skill blocks are required for these bosses. The existing ordinary
-boss stats, attacks, rewards and leak behavior apply.
-
-**R9 campaign placement (OWNER DECISION, October 2, 2026).** The concept doc's free-map
-suggestions stay untouched. The owner fixed one finale boss per chapter; every chapter
-finale wave names its boss (spawn kind `lilith` / `lerna` / `kraghorn` / `vorruk` /
-`ochenta` / `baphomet` / a new id) instead of the generic `boss`:
-
-| Chapter | Finale boss | Status |
-|---|---|---|
-| 1 The Road to the Crossing | Lilith | change: drop Baphomet, only Lilith |
-| 2 The Sunscar March | Vorruk | new (R9) |
-| 3 The Emerald Deep | Lerna | new (R9) |
-| 4 The Frozen Covenant | new boss, topic **Ice** | concept needed (R17) |
-| 5 The Cinder Oath | Ochenta | existing |
-| 6 The Thunder Stair | new boss, topic **Thunder/Lightning** | concept needed (R17) |
-| 7 The Drowned Crown | new boss, topic **Water** | concept needed (R17) |
-| 8 The Spore Lanterns | new boss, topic **Poison** | concept needed (R17) |
-| 9 The Shattered Prism | new boss, topic **Aetheral** | concept needed (R17) |
-| 10 The Silent Procession | new boss, topic **Death** | concept needed (R17) |
-| 11 The Last Harvest | Kraghorn | new (R9) |
-| 12 The Astral Meridian | new boss, topic **Star/Galaxy** | concept needed (R17) |
-| 13 The Brass Reckoning | new boss, topic **Steampunk/Mechanical** | concept needed (R17) |
-
-Implemented October 2: every campaign map, not only its finale stage, carries its chapter's
-named boss in `tdMaps.json`; the generic `boss` spawn kind remains the wave fallback. This
-also keeps replay and any boss wave on the same battlefield visually consistent.
+| R18 | Top-of-board clipping: tilt the ground (k ~0.75, board down ~70 px) behind `tuning.board.tilt`, prototype on one map per theme, scenery bands top and bottom, boss health bar and buff pills into the top band; then depth scaling and heroes' feet lower. Approved October 2; see [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent (renderer), Owner (band art) | - | L |
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
@@ -133,24 +75,6 @@ fjord map replaces, no mixing). New sim surface: slick-trail aura and the draugr
 burst; everything else reuses existing systems. Tests: extend `test-td-sim.mjs` with slick
 trail speed-up and draugr burst; skin test picks up the six new kinds.
 
-Boss Rework for all Campaign Stages:
-
-**R17 - Campaign Stage Changes.** 1. The Road to the Crossing needs a change cause its Mixing themes. Every Campaign Chapter should only have 1 theme.
-Every Campaign Chapter should also have only 1 boss. Bosses should not be duplicate. Therefore we here is an audit for existing bosses at the moment:
-1. The Road to the Crossing (Baphomet, Lilith) -> change to only Lilith
-2. The Sunscar March (Vorruk)
-3. The Emerald Deep (Lerna)
-4. The Frozen Covenant (Baphomet) -> new Boss Skeld, the Oathfrost
-5. The Cinder Oath (Baphomet) -> new Boss Ochenta
-6. The Thunder Stair (Ochenta) -> new Boss Thyrak, the Storm Antler
-7. The Drowned Crown (Lilith) -> new Boss Neressa, the Undertow Queen
-8. The Spore Lanterns (Lilith) -> new Boss Morthul, the Bitter Bloom
-9. The Shattered Prism (Baphomet) -> new Boss Ilyr, the Broken Reflection
-10. The Silent Procession (Lilith) -> new Boss Eidros, the Last Bell
-11. The Last Harvest (Ochenta) -> new Boss Kraghorn
-12. The Astral Meridian (Lilith) -> new Boss Astreon, the Hollow Star
-13. The Brass Reckoning (Ochenta) -> new Boss Brontax, the Brass Adjudicator
-
 #### CONCEPT
 
 Design first: rules, story or art are not defined yet.
@@ -158,34 +82,6 @@ Design first: rules, story or art are not defined yet.
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
 | R14 | Lords concept: a new hero layer on top of the faction bonds (Norse, Greek) | Owner concept, agent builds | - | L |
-| R17 | Eight new theme bosses for chapters 4, 6, 7, 8, 9, 10, 12, 13 (owner assignment, October 2, 2026): write one concept doc in the shape of TOWER_DEFENSE_BOSS_CONCEPTS.md — name, story, silhouette + art brief, stat profile as H/A/S multipliers, basic attack, one special, one ultimate with warning + counterplay + recovery window, boss tooltip, required-checks list per boss. Topics: Ice (4), Thunder/Lightning (6), Water (7), Poison (8), Aetheral (9), Death (10), Star/Galaxy (12), Steampunk/Mechanical (13). Each fight must test a different defensive habit than Lerna (sustain), Kraghorn (blocking) and Vorruk (spacing) and reuse existing statuses/systems where possible. Moves to DEVELOPMENT per boss after owner review; art via the PixelLab pipeline like the first three | Agent concept, owner reviews | - | L |
-
-**R17 live with standard boss behavior (October 2, 2026).** Eight bosses are defined in
-[TOWER_DEFENSE_CAMPAIGN_BOSS_CONCEPTS.md](TOWER_DEFENSE_CAMPAIGN_BOSS_CONCEPTS.md):
-Skeld (Ice), Thyrak (Lightning), Neressa (Water), Morthul (Poison), Ilyr (Aetheral),
-Eidros (Death), Astreon (Star/Galaxy), and Brontax (Mechanical). Includes stories,
-silhouettes, stat multipliers, basic/special/ultimate rules, warnings, counterplay,
-tooltips and historical required checks. **The owner descoped all proposed specials and
-ultimates; standard boss combat behavior is intentional for this and future bosses.**
-Eight full-body still artworks, larger sources, transparent 256 × 256 PNG/lossless WebP exports,
-and exact prompts are saved in [artifacts/td-campaign-bosses-v1/README.md](artifacts/td-campaign-bosses-v1/README.md).
-Built-in image generation: eight initial images and two framing corrections; all final exports inspected.
-The original concept/still-art scope is complete. The owner subsequently authorized five
-PixelLab clips for all eight bosses: **40/40 first-pass clips downloaded and visually reviewed**.
-[Animation viewer](artifacts/td-campaign-bosses-v1/animation-review/index.html) and
-[inspection notes](artifacts/td-campaign-bosses-v1/animation-review/REVIEW.md) document the first-pass findings.
-**Owner approved all 40 clips as-is on October 2, 2026; no correction reruns requested.**
-The approved stills and sheets are published under `public/td/enemies/`, uploaded to R2,
-registered by the runtime, and all campaign maps use the chapter assignments above. No bespoke tuning is
-required. R9 is complete under the same standard-behavior decision.
-
-**R10 — Daily quests: concept approved October 2, 2026.** Owner approved
-[TOWER_DEFENSE_DAILY_QUESTS.md](TOWER_DEFENSE_DAILY_QUESTS.md) as written: the 10-task list
-as proposed, the default chest numbers (260 Favor + 25 seals/day), UTC-midnight reset.
-Build per the doc's section 6 (`quests.js` + save fields + screen/home entry + event hooks +
-`test-td-quests.mjs`); see the DEVELOPMENT table.
-
-**R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
 
 **R14 — Lords (rules framework defined October 2, 2026; waiting on owner picks + art).**
 Mechanical frame, ready to build once the owner names the Lords:
@@ -211,7 +107,6 @@ Mechanical frame, ready to build once the owner names the Lords:
   deploy slots like any hero (proposed: yes — the bonus is the payoff for the slot), or sit
   in a separate command slot (bigger rules change, not recommended)?
 
-
 #### SIMULATION / TESTING
 
 Balance runs, tuning and checks with the simulation scripts.
@@ -234,18 +129,11 @@ rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expe
 map, boss rush, hero mastery. Early call stays out (it needs overlapping waves; wave interest
 covers the economy lever).
 
-### 4. Doc drift (audit)
+### Doc drift (audit)
 
 - `src/game/td/bugs.md`: "Inspector stats too thin" still TODO although inspector stats exist; blessing graph note.
 - `docs/tower-defense-ui-plan.md`: ring-era requirements (rings, touch rotation).
 - White-label audit (`docs/audits/`): label historical sections.
-
-
-### 6. M26 Sprint 11 - Quests
-
-- We already have some "achievements" but not quests. Quests or lets say daily quests should be part of the home screen. list of 10 daily "tasks" that players can achieve due to playing. they ll get rewards when doing so.
-- need: new quest entry point on the home screen. Quest screen. Rewards. Reset daily.
-- concept approved October 2 (`TOWER_DEFENSE_DAILY_QUESTS.md`, fixed activities + activity-bar milestones); see R10 in DEVELOPMENT.
 
 ### Skipped / deferred
 

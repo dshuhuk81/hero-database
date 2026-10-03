@@ -3,7 +3,7 @@
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
 import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, tdAsset } from "./assets.js";
-import { fitRect, shortNumber } from "./ui.js";
+import { fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
@@ -115,6 +115,23 @@ export async function createRenderer(canvas, game, options = {}) {
   // Stop PixiJS's own ticker; we drive frames from the page's rAF loop.
   app.ticker.stop();
 
+  // R18 prototype (TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md): tilt the ground, not the figures.
+  // Every layer lives in `tiltRoot`, squashed to k and moved down by offsetY; unit containers
+  // are counter-scaled by 1/k so heroes and enemies keep their size. Sim coordinates are
+  // unchanged. Active only for maps listed in tuning.board.tilt.maps; ?tilt=off disables it,
+  // ?tilt=0.7 (or any number 0.5 to 1) overrides k.
+  const tiltCfg = game.boardRules?.tilt;
+  const tiltParam = new URLSearchParams(location.search).get("tilt");
+  const tiltOn = Boolean(tiltCfg) && tiltParam !== "off" && (tiltCfg.maps ?? []).includes(game.map?.id);
+  const tiltK = tiltOn ? Math.min(1, Math.max(0.5, Number(tiltParam) || tiltCfg.k)) : 1;
+  const tiltOffsetY = tiltOn ? tiltCfg.offsetY : 0;
+  tiltView.k = tiltK;
+  tiltView.offsetY = tiltOffsetY;
+  const tiltRoot = new PIXI.Container();
+  tiltRoot.scale.y = tiltK;
+  tiltRoot.y = tiltOffsetY;
+  const layerBand = new PIXI.Container(); // scenery bands above and below the squashed ground
+
   // Layer order (added in order = drawn back to front)
   const layerBgTex  = new PIXI.Container(); // game-art background panels
   const layerBg     = new PIXI.Container(); // path, grid
@@ -136,8 +153,9 @@ export async function createRenderer(canvas, game, options = {}) {
   layerUnits.sortableChildren = true;
   const Z_HERO = 1000, Z_FLYER = 3000;
   for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
-    stage.addChild(l);
+    tiltRoot.addChild(l);
   }
+  stage.addChild(layerBand, tiltRoot);
 
   // ------------------------------------------------------------------
   // Sprite cache: hero thumbnails + boss + FX textures
@@ -393,6 +411,25 @@ export async function createRenderer(canvas, game, options = {}) {
         spr.height = 540;
         layerBgTex.addChild(spr);
         layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
+        if (tiltOn) {
+          // First-cut scenery bands: the same terrain, stretched over the full canvas, blurred
+          // and darkened. Final version: one authored band per theme.
+          const band = new PIXI.Sprite(tex);
+          band.width = 960;
+          band.height = 540;
+          band.filters = [new PIXI.BlurFilter({ strength: 7, quality: 3 })];
+          layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.ground));
+          layerBand.addChild(band);
+          layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.3 }));
+          // Soft seams where the ground meets the bands.
+          const seam = new PIXI.Graphics();
+          for (let i = 0; i < 24; i++) { // local ground space (the root squashes it)
+            const a = 0.5 * (1 - i / 24) ** 2;
+            seam.rect(0, i * 2, 960, 2).fill({ color: 0x000000, alpha: a });
+            seam.rect(0, 540 - (i + 1) * 2, 960, 2).fill({ color: 0x000000, alpha: a });
+          }
+          layerBgTex.addChild(seam);
+        }
       } catch (error) {
         console.warn(`${sceneArt.name} terrain could not load; using the stone ground fallback.`, error);
       }
@@ -946,6 +983,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Board maps: unit sizes from tuning.board (heroScale), tuned by eye.
     container.scale.set(game.boardRules?.heroScale ?? 1);
+    container.scale.y /= tiltK; // R18: stays upright under the squashed ground layers
     return container;
   }
 
@@ -1272,6 +1310,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c.addChild(ice);
 
     c.scale.set(enemyRenderScale(kind, game.boardRules));
+    c.scale.y /= tiltK; // R18
     return c;
   }
 
@@ -1603,6 +1642,7 @@ export async function createRenderer(canvas, game, options = {}) {
       },
     });
     text.anchor.set(0.5, 1);
+    text.scale.y = 1 / tiltK; // R18: numbers stay upright
     const offsetX = ((stack % 3) - 1) * 8;
     text.position.set(effect.x + offsetX, body.top - 3 - Math.min(stack, 3) * 4);
     layerNumbers.addChild(text);
@@ -2008,7 +2048,7 @@ export async function createRenderer(canvas, game, options = {}) {
       load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK, units: layerUnits, zHero: Z_HERO } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();
@@ -2032,7 +2072,7 @@ export async function createRenderer(canvas, game, options = {}) {
 // ------------------------------------------------------------------
 export function canvasPoint(canvas, event) {
   const rect = canvas.getBoundingClientRect();
-  return { x: (event.clientX - rect.left) * 960 / rect.width, y: (event.clientY - rect.top) * 540 / rect.height };
+  return { x: (event.clientX - rect.left) * 960 / rect.width, y: ((event.clientY - rect.top) * 540 / rect.height - tiltView.offsetY) / tiltView.k };
 }
 
 // A point inside a drawn tile (56 px square, a board cell on a prototype board) always picks

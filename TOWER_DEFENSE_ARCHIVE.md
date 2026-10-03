@@ -1,5 +1,120 @@
 # Tower Defense - Completed Work Archive
 
+## R9, R10, R17: bosses, campaign boss assignment and daily quests, October 2, 2026
+
+- **R9 / R17 (bosses):** all three monster bosses (Lerna, Kraghorn, Vorruk) and the eight theme
+  bosses (Skeld, Thyrak, Neressa, Morthul, Ilyr, Eidros, Astreon, Brontax) ship with standard
+  boss combat behavior; bespoke specials and ultimates were descoped by the owner. Every
+  campaign map in `tdMaps.json` carries its chapter's boss (one boss and one theme per
+  chapter; Lilith ch. 1, Vorruk ch. 2, Lerna ch. 3, Skeld ch. 4, Ochenta ch. 5, Thyrak ch. 6,
+  Neressa ch. 7, Morthul ch. 8, Ilyr ch. 9, Eidros ch. 10, Kraghorn ch. 11, Astreon ch. 12,
+  Brontax ch. 13). The generic `boss` spawn kind stays as the wave fallback; `proto-board`
+  keeps Baphomet as a test board. Old roadmap text preserved below.
+- **R10 (daily quests):** built per `TOWER_DEFENSE_DAILY_QUESTS.md` section 6: `src/game/td/quests.js`,
+  save fields, "Daily" entry on the home screen, `notifyQuest` event hooks in the campaign,
+  blessings and challenges pages, `scripts/test-td-quests.mjs` (part of `test:tower-defense`,
+  passing). Replaces the old "M26 Sprint 11 - Quests" entry.
+
+<details><summary>Original roadmap text (R9, R17, R10)</summary>
+
+**R9 — Bosses Lerna, Kraghorn, Vorruk.** The original design is preserved in
+[TOWER_DEFENSE_BOSS_CONCEPTS.md](TOWER_DEFENSE_BOSS_CONCEPTS.md) (September 29, 2026):
+rules, numbers (multipliers of the ordinary boss H/A/S), warnings, counterplay, tooltips,
+rollout order and the required-checks list. **Superseded owner decision, October 2:** all
+three ship with standard boss combat behavior; their bespoke specials and ultimates are
+descoped. Sprites and animation sheets are live (`boss-lerna-v1`, `boss-kraghorn-v1`,
+`boss-vorruk-v1`). The historical concepts were:
+
+1. **Lerna** : threshold ultimate at 70%/35%
+   health (one-shot queue, never re-arms), interruptible 2 s wind-up + 4 s healing channel
+   (1.5% max hp/s, 6% budget per cast, canceled by 4% max hp accumulated damage, stun or
+   petrify; burn suppresses healing ticks), Tender Growth exposure window (+20% damage
+   taken, 5 s) after each cast, and the Bitter Seep ground pool (10 s cooldown, 1.5 s
+   warning, 48 px radius, 4 s, 20% A magic per second, one pool max).
+2. **Kraghorn** : path-distance charge every 18 s (2.5 s hoof-scrape
+   warning marking 140 px of its own path, 3× speed, stops at and hits the first living road
+   hero for 180% A, canceled by stun/petrify/knockback), Cracked Hide recovery (4 s, armor
+   halved), Stones from the Hide fragment attack (12 s, 3 fragments, 45% A each), high
+   armor / low magic resistance profile.
+3. **Vorruk** : burrow ultimate every 20 s (2 s jagged-ring warning on a fixed
+   platform or road slot, 2 s untargetable underground — road progress paused, block
+   released, damage-over-time keeps ticking, health bar stays visible — then eruption: 90% A
+   in 60 px at the marked spot, Open Throat exposure 5 s), Grit Lance platform poke (9 s,
+   1.5 s lock-on line, 65% A single target, no retarget).
+
+No `sim.js` or tuning skill blocks are required for these bosses. The existing ordinary
+boss stats, attacks, rewards and leak behavior apply.
+
+**R9 campaign placement (OWNER DECISION, October 2, 2026).** The concept doc's free-map
+suggestions stay untouched. The owner fixed one finale boss per chapter; every chapter
+finale wave names its boss (spawn kind `lilith` / `lerna` / `kraghorn` / `vorruk` /
+`ochenta` / `baphomet` / a new id) instead of the generic `boss`:
+
+| Chapter | Finale boss | Status |
+|---|---|---|
+| 1 The Road to the Crossing | Lilith | change: drop Baphomet, only Lilith |
+| 2 The Sunscar March | Vorruk | new (R9) |
+| 3 The Emerald Deep | Lerna | new (R9) |
+| 4 The Frozen Covenant | new boss, topic **Ice** | concept needed (R17) |
+| 5 The Cinder Oath | Ochenta | existing |
+| 6 The Thunder Stair | new boss, topic **Thunder/Lightning** | concept needed (R17) |
+| 7 The Drowned Crown | new boss, topic **Water** | concept needed (R17) |
+| 8 The Spore Lanterns | new boss, topic **Poison** | concept needed (R17) |
+| 9 The Shattered Prism | new boss, topic **Aetheral** | concept needed (R17) |
+| 10 The Silent Procession | new boss, topic **Death** | concept needed (R17) |
+| 11 The Last Harvest | Kraghorn | new (R9) |
+| 12 The Astral Meridian | new boss, topic **Star/Galaxy** | concept needed (R17) |
+| 13 The Brass Reckoning | new boss, topic **Steampunk/Mechanical** | concept needed (R17) |
+
+Implemented October 2: every campaign map, not only its finale stage, carries its chapter's
+named boss in `tdMaps.json`; the generic `boss` spawn kind remains the wave fallback. This
+also keeps replay and any boss wave on the same battlefield visually consistent.
+
+**R17 - Campaign Stage Changes.** 1. The Road to the Crossing needs a change cause its Mixing themes. Every Campaign Chapter should only have 1 theme.
+Every Campaign Chapter should also have only 1 boss. Bosses should not be duplicate. Therefore we here is an audit for existing bosses at the moment:
+1. The Road to the Crossing (Baphomet, Lilith) -> change to only Lilith
+2. The Sunscar March (Vorruk)
+3. The Emerald Deep (Lerna)
+4. The Frozen Covenant (Baphomet) -> new Boss Skeld, the Oathfrost
+5. The Cinder Oath (Baphomet) -> new Boss Ochenta
+6. The Thunder Stair (Ochenta) -> new Boss Thyrak, the Storm Antler
+7. The Drowned Crown (Lilith) -> new Boss Neressa, the Undertow Queen
+8. The Spore Lanterns (Lilith) -> new Boss Morthul, the Bitter Bloom
+9. The Shattered Prism (Baphomet) -> new Boss Ilyr, the Broken Reflection
+10. The Silent Procession (Lilith) -> new Boss Eidros, the Last Bell
+11. The Last Harvest (Ochenta) -> new Boss Kraghorn
+12. The Astral Meridian (Lilith) -> new Boss Astreon, the Hollow Star
+13. The Brass Reckoning (Ochenta) -> new Boss Brontax, the Brass Adjudicator
+
+**R17 live with standard boss behavior (October 2, 2026).** Eight bosses are defined in
+[TOWER_DEFENSE_CAMPAIGN_BOSS_CONCEPTS.md](TOWER_DEFENSE_CAMPAIGN_BOSS_CONCEPTS.md):
+Skeld (Ice), Thyrak (Lightning), Neressa (Water), Morthul (Poison), Ilyr (Aetheral),
+Eidros (Death), Astreon (Star/Galaxy), and Brontax (Mechanical). Includes stories,
+silhouettes, stat multipliers, basic/special/ultimate rules, warnings, counterplay,
+tooltips and historical required checks. **The owner descoped all proposed specials and
+ultimates; standard boss combat behavior is intentional for this and future bosses.**
+Eight full-body still artworks, larger sources, transparent 256 × 256 PNG/lossless WebP exports,
+and exact prompts are saved in [artifacts/td-campaign-bosses-v1/README.md](artifacts/td-campaign-bosses-v1/README.md).
+Built-in image generation: eight initial images and two framing corrections; all final exports inspected.
+The original concept/still-art scope is complete. The owner subsequently authorized five
+PixelLab clips for all eight bosses: **40/40 first-pass clips downloaded and visually reviewed**.
+[Animation viewer](artifacts/td-campaign-bosses-v1/animation-review/index.html) and
+[inspection notes](artifacts/td-campaign-bosses-v1/animation-review/REVIEW.md) document the first-pass findings.
+**Owner approved all 40 clips as-is on October 2, 2026; no correction reruns requested.**
+The approved stills and sheets are published under `public/td/enemies/`, uploaded to R2,
+registered by the runtime, and all campaign maps use the chapter assignments above. No bespoke tuning is
+required. R9 is complete under the same standard-behavior decision.
+
+
+**R10 — Daily quests: concept approved October 2, 2026.** Owner approved
+[TOWER_DEFENSE_DAILY_QUESTS.md](TOWER_DEFENSE_DAILY_QUESTS.md) as written: the 10-task list
+as proposed, the default chest numbers (260 Favor + 25 seals/day), UTC-midnight reset.
+Build per the doc's section 6 (`quests.js` + save fields + screen/home entry + event hooks +
+`test-td-quests.mjs`); see the DEVELOPMENT table.
+
+
+</details>
+
 ## R16: Ymir hammer-swing attack, October 2, 2026
 
 - His default attack used a generic strike. New attack clip via the PixelLab pipeline (8 frames:

@@ -6,6 +6,10 @@ import { CLASS_PASSIVE_SKILLS } from "./skills.js";
 export const WORLD_WIDTH = 960;
 export const WORLD_HEIGHT = 540;
 
+// R18 prototype: the renderer squashes the ground to `k` of its height and moves it down by
+// `offsetY` world px (sim coordinates stay untouched). 1 / 0 = no tilt. Set by render.js.
+export const tiltView = { k: 1, offsetY: 0 };
+
 // One-line battlefield role per class (M6 class kits in tuning.classes).
 export const CLASS_ROLES = {
   Tank: "Holds up to 3 enemies and shrugs off part of every hit. Its ultimate pins every ground enemy nearby in place.",
@@ -38,7 +42,7 @@ export function fitRect(containerWidth, containerHeight, aspect = WORLD_WIDTH / 
 export function worldToLocal(canvasRect, containerRect, point) {
   return {
     x: canvasRect.left - containerRect.left + point.x * canvasRect.width / WORLD_WIDTH,
-    y: canvasRect.top - containerRect.top + point.y * canvasRect.height / WORLD_HEIGHT,
+    y: canvasRect.top - containerRect.top + (point.y * tiltView.k + tiltView.offsetY) * canvasRect.height / WORLD_HEIGHT,
   };
 }
 
