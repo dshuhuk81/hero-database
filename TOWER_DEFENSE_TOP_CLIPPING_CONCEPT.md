@@ -161,6 +161,18 @@ behind the unchanged 16:9 gameplay canvas. The wide art supplies real ruins, veg
 at the sides instead of the blurred terrain copy; other themes continue to fall back to their
 ordinary terrain image until they receive their own panoramic backdrop.
 
+Touch selection now measures slot distance in the visibly tilted plane instead of the unsquashed
+world. This keeps the intended 28 px touch halo above and below a tile, where it was previously
+reduced by the tilt factor. The UI regression check covers the four board edges on representative
+6x3, 8x4 and 9x5 boards, both 0.7 and 0.85 tilt settings, and the 797x360, 844x390 and 915x412
+landscape-phone sizes. Theme art does not affect the coordinate mapping.
+
+The placement hierarchy is quieter across authored and fallback maps: empty tiles use the subdued
+idle treatment even while deployment capacity remains, instead of keeping the whole board brightly
+outlined. Tapping or keyboard-focusing a tile still gives it the full selected treatment. Choosing
+a fallen hero from the deck brightens every legal tile of that hero's type and further dims the
+wrong type; occupied and special-ring states remain distinct.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

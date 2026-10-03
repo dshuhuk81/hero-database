@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { bleedCanvasSize, createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
+import { bleedCanvasSize, createPauseController, fitRect, placePopover, slotHitRadius, tiltView, worldToLocal } from "../src/game/td/ui.js";
 import { buildRunTuning, TREE } from "../src/game/td/favor.js";
 import * as render from "../src/game/td/render.js";
 import { enemySheetUrl } from "../src/game/td/assets.js";
@@ -43,6 +43,14 @@ assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep thei
 assert.equal(enemySheetUrl("boss-lilith", "v4"), null, "Lilith does not use the low-resolution animation sheet");
 assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1, "untargetable Lilith remains fully opaque");
 
+// Placement hierarchy: empty tiles stay quiet until a hero is actively being placed.
+assert.equal(render.slotVisualMode?.(null, "road"), "idle", "road tiles are quiet without an active placement");
+assert.equal(render.slotVisualMode?.(null, "platform"), "idle", "platform tiles are quiet without an active placement");
+assert.equal(render.slotVisualMode?.("road", "road"), "eligible", "matching road tiles light up during placement");
+assert.equal(render.slotVisualMode?.("road", "platform"), "dim", "non-matching platform tiles recede during road placement");
+assert.equal(render.slotVisualMode?.("platform", "platform"), "eligible", "matching platform tiles light up during placement");
+assert.equal(render.slotVisualMode?.("platform", "road"), "dim", "non-matching road tiles recede during platform placement");
+
 // --- fitRect: world fits width AND height, aspect preserved ---
 {
   const cases = [
@@ -65,21 +73,52 @@ assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1,
   assert.deepEqual(bleedCanvasSize(667, 375), { width: 647, height: 364 }, "narrow landscape still fits the full world");
 }
 
-// --- Coordinates: canvasPoint and worldToLocal round-trip on a letterboxed canvas ---
+// --- Coordinates: tilted canvas input stays aligned across representative board geometries ---
 {
-  const container = { left: 88, top: 0, width: 676, height: 390 };
-  const fit = fitRect(container.width, container.height);
-  const canvasRect = { left: container.left + (container.width - fit.width) / 2, top: container.top + (container.height - fit.height) / 2, width: fit.width, height: fit.height };
-  const canvas = { getBoundingClientRect: () => canvasRect };
-  for (const map of maps) {
-    for (const [x, y] of [...map.roadSlots, ...map.platformSlots]) {
-      const local = worldToLocal(canvasRect, container, { x, y });
-      const back = canvasPoint(canvas, { clientX: local.x + container.left, clientY: local.y + container.top });
-      assert.ok(Math.abs(back.x - x) < 1e-6 && Math.abs(back.y - y) < 1e-6, `round-trip ${map.id} ${x},${y}`);
-      const slot = nearestSlot(map, back, slotHitRadius(fit.width / 960, "touch"));
-      assert.ok(slot, `ring reachable ${map.id} ${x},${y}`);
+  const previous = { ...tiltView };
+  const representatives = ["proto-slabs", "moonlit-pass", "sunscar-basin"].map((id) => maps.find((map) => map.id === id));
+  for (const view of [{ k: 0.7, offsetY: 70 }, { k: 0.85, offsetY: 40 }]) {
+    Object.assign(tiltView, view);
+    for (const [width, height] of [[797, 360], [844, 390], [915, 412]]) {
+      const container = { left: 0, top: 0, width, height };
+      const fit = bleedCanvasSize(container.width, container.height);
+      const canvasRect = { left: (container.width - fit.width) / 2, top: (container.height - fit.height) / 2, width: fit.width, height: fit.height };
+      const canvas = { getBoundingClientRect: () => canvasRect };
+      for (const map of representatives) {
+        assert.ok(map, "representative board exists");
+        const slots = [...map.roadSlots, ...map.platformSlots];
+        const edgeSlots = [
+          slots.reduce((a, b) => b[0] < a[0] ? b : a),
+          slots.reduce((a, b) => b[0] > a[0] ? b : a),
+          slots.reduce((a, b) => b[1] < a[1] ? b : a),
+          slots.reduce((a, b) => b[1] > a[1] ? b : a),
+        ];
+        for (const [x, y] of edgeSlots) {
+          const local = worldToLocal(canvasRect, container, { x, y });
+          const back = canvasPoint(canvas, { clientX: local.x, clientY: local.y });
+          assert.ok(Math.abs(back.x - x) < 1e-6 && Math.abs(back.y - y) < 1e-6, `tilted edge round-trip ${map.id} k${view.k} ${width}x${height} ${x},${y}`);
+          assert.ok(nearestSlot(map, back, slotHitRadius(fit.width / 960, "touch")), `tilted edge tile reachable ${map.id} k${view.k} ${width}x${height} ${x},${y}`);
+        }
+      }
     }
   }
+
+  // The 6x3 prototype's 96 px tile is only 26.4 CSS px tall after tilt on the reference
+  // phone. A touch 27 px from its centre is therefore just outside the painted tile, but must
+  // remain inside the promised 28 px touch halo. This catches distance checks that ignore tilt.
+  const container = { left: 0, top: 0, width: 797, height: 360 };
+  const fit = bleedCanvasSize(container.width, container.height);
+  const canvasRect = { left: (container.width - fit.width) / 2, top: (container.height - fit.height) / 2, width: fit.width, height: fit.height };
+  const canvas = { getBoundingClientRect: () => canvasRect };
+  Object.assign(tiltView, { k: 0.85, offsetY: 40 });
+  const prototype = representatives[0];
+  const platformIndex = 5; // bottom-left tile has no neighbour below it
+  const [x, y] = prototype.platformSlots[platformIndex];
+  const local = worldToLocal(canvasRect, container, { x, y });
+  const below = canvasPoint(canvas, { clientX: local.x, clientY: local.y + 27 });
+  const hit = nearestSlot(prototype, below, slotHitRadius(fit.width / 960, "touch"));
+  assert.deepEqual(hit && { type: hit.type, index: hit.index }, { type: "platform", index: platformIndex }, "tilt preserves the 28px vertical touch halo");
+  Object.assign(tiltView, previous);
 }
 
 // --- slotHitRadius: screen-space target, bounded ---

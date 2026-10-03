@@ -562,7 +562,7 @@ export function createMapScene(PIXI, game, {
       return g;
     }
     const eligible = mode === "eligible" || highlighted;
-    const strength = eligible ? 1 : mode === "dim" ? 0.28 : mode === "idle" ? 0.45 : 0.78;
+    const strength = eligible ? 1 : mode === "dim" ? 0.2 : mode === "idle" ? 0.32 : 0.78;
     g.alpha = strength;
     // Surface: road sockets sink into the stone, platforms sit on it as a plate.
     const surface = type === "road" ? 0.3 : 0.38;

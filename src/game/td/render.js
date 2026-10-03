@@ -76,6 +76,13 @@ export function enemyRenderAlpha() {
   return 1;
 }
 
+// Empty placement tiles are environmental affordances, not a permanent editor grid. They remain
+// quiet until a hero type is actively being placed; then valid tiles lead and the other type fades.
+export function slotVisualMode(deployingType, tileType) {
+  if (!deployingType) return "idle";
+  return deployingType === tileType ? "eligible" : "dim";
+}
+
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
   const sceneArt = mapSceneFor(game.map);
@@ -469,13 +476,11 @@ export async function createRenderer(canvas, game, options = {}) {
   // Slots (semi-static: rebuild when hero placement changes)
   // ------------------------------------------------------------------
   let slotState = "";
-  // Empty-tile mode: while a fallen hero is being redeployed (`game.uiDeploySlot`, set by
-  // the deck) its tile type is "eligible" and the other type "dim"; with a full team
-  // empty tiles go "idle" so they stay out of the way during combat.
+  // Empty-tile mode: without an active placement the board stays quiet. While a fallen hero is
+  // being redeployed (`game.uiDeploySlot`, set by the deck), its tile type becomes "eligible"
+  // and the other type "dim". A tapped/focused tile is highlighted independently.
   function slotMode(type) {
-    const deploying = game.uiDeploySlot;
-    if (deploying) return deploying === type ? "eligible" : "dim";
-    return game.heroes.length >= game.deployCap() ? "idle" : "";
+    return slotVisualMode(game.uiDeploySlot, type);
   }
   function buildSlots() {
     if (mapScene) {
@@ -757,7 +762,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const before = container.children.length;
     drawFallbackSlot(container, x, y, type, occupied, highlighted);
     // Same placement states as the map-scene tiles, as a fade on the fallback art.
-    const fade = highlighted || occupied ? 1 : mode === "dim" ? 0.3 : mode === "idle" ? 0.55 : 1;
+    const fade = highlighted || occupied ? 1 : mode === "dim" ? 0.22 : mode === "idle" ? 0.36 : 1;
     for (const child of container.children.slice(before)) child.alpha *= fade;
   }
 
@@ -2135,11 +2140,15 @@ const TILE_HALF = 28;
 export function nearestSlot(map, point, maxDistance = 38) {
   const board = boardOf(map);
   const half = board ? board.cell / 2 : TILE_HALF;
+  // Compare in displayed-world units: tilt compresses vertical distances on screen, so a
+  // circular touch target must counter that compression after canvasPoint() restores world y.
+  // Without this, the promised touch halo becomes `tiltView.k` times smaller above/below tiles.
+  const viewK = Math.max(0.01, tiltView.k || 1);
   let best = null, bestInside = false;
   for (const type of ["road", "platform"]) {
     const slots = type === "road" ? map.roadSlots : map.platformSlots;
     slots.forEach(([x, y], index) => {
-      const distance = Math.hypot(point.x - x, point.y - y);
+      const distance = Math.hypot(point.x - x, (point.y - y) * viewK);
       const inside = Math.abs(point.x - x) <= half && Math.abs(point.y - y) <= half;
       if (!inside && distance > maxDistance) return;
       if (!best || (inside && !bestInside) || (inside === bestInside && distance < best.distance)) {
