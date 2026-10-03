@@ -116,6 +116,33 @@ What this means for us:
    colossus the reference deliberately crops the body; decide whether that is acceptable or
    whether a colossus must be shown whole (then it needs a bigger band and a smaller board).
 
+### 2c. Reference gameplay video (owner recording, October 3, 2026; frames read every 6 s)
+
+One desert map, a 47 s run in the reference game, measured by eye on a 1200 × 540 frame:
+
+| Aspect | Reference video | Ours (tilt prototype) |
+|---|---|---|
+| Placement tiles | **3 slabs in total**, in an L shape, each ~190 × 70 px, i.e. ~4 hero widths wide | 30+ cells, each about as wide as a hero is tall |
+| Hero height | ~65 px = **~12% of the screen height**; a hero stands on a slab with room to spare | 104 px = ~19%; fills its cell |
+| Enemies | Same size as heroes (~60–70 px), 5–8 on screen, **walk freely** across a wide open field in loose groups | Snap to the road cells in a column, much larger (`enemyScale` 1.8) |
+| Spawn / exit | Spawn is a red rune decal on the ground (two of them), the exit is a blue portal. No tall gate prop | Tall painted gates and a temple prop |
+| Field | The whole screen is ground and scenery; the card bar overlays the bottom ~17%, the HUD pills sit over rocks | Framed rectangle with panels around it |
+| Look | Real 3D render: rocks with visible side faces, long soft shadows under every unit, warm directional light | Flat painting, squashed; flat tile outlines; no unit shadows beyond a small ellipse |
+| Telegraphs | Thin glowing red path line along the enemies' lane | Tile outlines and rings |
+
+What the video adds to the earlier analysis:
+1. **Scale is the quiet difference.** Their heroes are ~12% of the screen height, ours ~19%. The tilt
+   gave us room, but a tile that is four heroes wide is a different feeling than a cell exactly one
+   hero big. The owner does not want smaller figures, so the lever is the tile/board, not the units:
+   **bigger slabs and fewer of them.**
+2. **Enemies move through open ground, not along cells.** Free paths with loose groups look alive;
+   a column on a cell road looks like a grid. (Gameplay change; out of scope for the rendering fix.)
+3. **Depth cues do the 3D work:** long shadows, visible stone thickness, rocks with side faces. These
+   are cheap to approximate: a directional drop shadow per unit and per slab, a darker bottom edge
+   on tiles, and a slight vertical gradient over the ground.
+4. **No gate props.** A red ground decal for the spawn removes the portal overlap problem and the
+   upright-vs-ground depth conflict entirely.
+
 ## 3. Options (no figure shrinking)
 
 | # | Idea | Headroom gain | Cost / risk |
