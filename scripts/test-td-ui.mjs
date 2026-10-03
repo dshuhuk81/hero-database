@@ -8,6 +8,11 @@ const { canvasPoint, nearestSlot } = render;
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 
+// R18 wide scenery: Jungle uses its authored panoramic backdrop while themes without one retain
+// their ordinary terrain image as the bleed fallback.
+assert.equal(mapScene.mapBackdropFor?.({ art: "jungle-heart-v1" }), "/td/maps/jungle-terrain-wide-v1.png", "Jungle selects the panoramic backdrop");
+assert.equal(mapScene.mapBackdropFor?.({ art: "moonlit-sanctuary-v1" }), "/td/maps/moonlit-terrain-v1.png", "other themes fall back to their terrain");
+
 // Board unit scale: bosses already have larger source art, so they can be tuned separately
 // without shrinking the regular enemies the owner sized by eye.
 assert.equal(typeof render.enemyRenderScale, "function", "renderer exposes enemy scale selection");

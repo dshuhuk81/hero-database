@@ -67,6 +67,7 @@ export const MAP_SCENES = {
     name: "Jungle", baseName: "Heart Temple",
     assets: {
       terrain: "/td/maps/jungle-terrain-v1.png",
+      bleed: "/td/maps/jungle-terrain-wide-v1.png",
       spawn: "/td/maps/jungle-spawn-v1.png",
       base: "/td/maps/jungle-base-v1.png",
       road: "/td/maps/jungle-road-v1.png",
@@ -103,6 +104,11 @@ for (const environment of Object.values(ENVIRONMENTS)) {
 
 export function mapSceneFor(map) {
   return MAP_SCENES[map?.art] ?? null;
+}
+
+export function mapBackdropFor(map) {
+  const scene = mapSceneFor(map);
+  return scene?.assets?.bleed ?? scene?.assets?.terrain ?? null;
 }
 
 // Painted architecture is opaque scenery and stays behind combatants. Keeping the full spawn-gate

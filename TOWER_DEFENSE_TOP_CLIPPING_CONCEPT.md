@@ -156,6 +156,11 @@ Deployment notices on short landscape screens now appear below the top HUD inste
 bottom action dock. The dock gets a small bottom/right safe inset and the portrait deck sits 3 px
 higher; portrait orientation is still unchanged.
 
+The Jungle theme now uses `jungle-terrain-wide-v1.png`, an authored 2.44:1 panoramic backdrop,
+behind the unchanged 16:9 gameplay canvas. The wide art supplies real ruins, vegetation and water
+at the sides instead of the blurred terrain copy; other themes continue to fall back to their
+ordinary terrain image until they receive their own panoramic backdrop.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

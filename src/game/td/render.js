@@ -8,7 +8,7 @@ import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
-import { createMapScene, mapSceneFor } from "./map-scene.js";
+import { createMapScene, mapBackdropFor, mapSceneFor } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellCenter, patternCells } from "./board.js";
 
@@ -435,7 +435,7 @@ export async function createRenderer(canvas, game, options = {}) {
         layerBgTex.addChild(spr);
         layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
         if (tiltOn) {
-          playHost?.style.setProperty("--td-bleed-art", `url("${sceneArt.assets.terrain}")`);
+          playHost?.style.setProperty("--td-bleed-art", `url("${mapBackdropFor(game.map)}")`);
           // First-cut scenery bands: the same terrain, stretched over the full canvas, blurred
           // and darkened. Final version: one authored band per theme.
           const band = new PIXI.Sprite(tex);

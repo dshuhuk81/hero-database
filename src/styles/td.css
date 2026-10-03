@@ -13548,10 +13548,10 @@ button .td-cur {
   }
 
   .td-play[data-bleed]::before {
-    inset: -32px;
+    inset: 0;
     background-position: center;
-    filter: blur(22px) brightness(0.78) saturate(1.06);
-    transform: scale(1.06);
+    filter: brightness(0.82) saturate(1.02);
+    transform: none;
   }
 
   .td-play[data-bleed] .td-stage {
