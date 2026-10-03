@@ -527,6 +527,15 @@ export function createMapScene(PIXI, game, {
       edges.moveTo(-h + 2, h - 1).lineTo(h - 2, h - 1).stroke({ color: 0xffffff, width: 1, alpha: 0.12 });
       slabRoot.addChild(edges);
     }
+    if (tilt && type === "road") { // R18 prototype (B): road sockets are recessed into the ground
+      const recess = new PIXI.Graphics();
+      recess.position.set(x, y);
+      container.addChild(recess);
+      recess.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: 0x000000, alpha: 0.26 });
+      recess.rect(-h + 2, -h + 2, TILE - 4, Math.round(TILE * 0.14)).fill({ color: 0x000000, alpha: 0.2 }); // shadow under the back wall
+      recess.rect(-h + 2, -h + 2, Math.round(TILE * 0.07), TILE - 4).fill({ color: 0x000000, alpha: 0.14 });
+      recess.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0xffffff, width: 1.2, alpha: 0.14 });
+    }
     const g = new PIXI.Graphics();
     g.position.set(x, y);
     container.addChild(g);

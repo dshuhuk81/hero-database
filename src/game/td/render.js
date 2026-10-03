@@ -155,6 +155,15 @@ export async function createRenderer(canvas, game, options = {}) {
   // hero must stay visible while the enemies it blocks stand on its tile.
   layerUnits.sortableChildren = true;
   const Z_HERO = 1000, Z_FLYER = 3000;
+  // R18 prototype: depth scaling on tilt maps. Units on the far row of the board are drawn up to 8%
+  // smaller and on the near row up to 8% larger, like the camera looking down at an angle.
+  const depthScale = (y) => {
+    if (!tiltOn) return 1;
+    const board = boardOf(game.map);
+    if (!board) return 1;
+    const t = Math.min(1, Math.max(0, (y - board.origin[1]) / (board.rows * board.cell)));
+    return 0.92 + 0.16 * t;
+  };
   for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
     tiltRoot.addChild(l);
   }
@@ -335,9 +344,9 @@ export async function createRenderer(canvas, game, options = {}) {
       // bars float over it): the full world width and the board (world y offsetY .. offsetY +
       // 540k, plus a margin) must fit; the scenery bands may be cropped. Landscape phones keep
       // the side rails clear. The canvas is then centred on the play screen, not the stage.
-      const rails = matchMedia("(orientation: landscape) and (max-height: 540px)").matches
-        ? (document.querySelector(".td-topbar")?.offsetWidth ?? 0) + (document.querySelector(".td-bottombar")?.offsetWidth ?? 0) : 0;
-      const scale = Math.min((playHost.clientWidth - rails) / 960, playHost.clientHeight / (540 * tiltK + 24));
+      // World height ~ screen height (a hero is ~18% of the screen height, as in the reference); the
+      // full world width must fit too. No rails: the HUD floats over the scene.
+      const scale = Math.min(playHost.clientWidth / 960, playHost.clientHeight / 556);
       w = Math.floor(960 * scale);
       h = Math.floor(540 * scale);
       const play = playHost.getBoundingClientRect(), stageBox = box.getBoundingClientRect();
@@ -428,7 +437,7 @@ export async function createRenderer(canvas, game, options = {}) {
         layerBgTex.addChild(spr);
         layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
         if (tiltOn) {
-          canvas.parentElement?.style.setProperty("--td-bleed-art", `url("${sceneArt.assets.terrain}")`);
+          playHost?.style.setProperty("--td-bleed-art", `url("${sceneArt.assets.terrain}")`);
           // First-cut scenery bands: the same terrain, stretched over the full canvas, blurred
           // and darkened. Final version: one authored band per theme.
           const band = new PIXI.Sprite(tex);
@@ -1015,13 +1024,17 @@ export async function createRenderer(canvas, game, options = {}) {
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
     updateHeroAnim(unit, container);
-    drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
+    if (tiltOn) { // R18: scaled with depth, and the bars are drawn above everything by drawBars()
+      const hs = game.boardRules?.heroScale ?? 1, f = depthScale(unit.y);
+      container.scale.set(hs * f, hs * f / tiltK);
+      container._hpBar.clear();
+    } else drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
 
     // Ultimate charge bar, directly below health.
     const ultBar = container._ultBar.clear();
     if (unit.ultClock !== undefined && unit.ultCooldown) {
       const pct = Math.min(1, unit.ultClock / unit.ultCooldown);
-      drawBar(ultBar, -24, 36, 48, pct, palette.purple);
+      if (!tiltOn) drawBar(ultBar, -24, 36, 48, pct, palette.purple);
     }
 
     // Permanent collection level (R4): number disc plus a plain ring, redrawn only on change.
@@ -1402,6 +1415,7 @@ export async function createRenderer(canvas, game, options = {}) {
       c._lastX = unit.x;
       c.position.set(unit.x, unit.y);
     }
+    if (tiltOn) { const es = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); c.scale.set(es, es / tiltK); } // R18 depth scaling
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = enemyRenderAlpha(unit);
     if (c._anim) animateEnemy(unit, c);
@@ -1540,8 +1554,20 @@ export async function createRenderer(canvas, game, options = {}) {
   function drawBars() {
     layerBars.removeChildren();
     const g = new PIXI.Graphics();
+    // R18: under the tilt the bar layer is squashed with the ground. Each unit gets its own
+    // graphics, un-squashed about the unit's own y, so bars and rings keep their thickness and
+    // sit in the topmost layer above every hero and enemy; coordinates stay world coordinates.
+    const gFor = (y) => {
+      if (!tiltOn) return g;
+      const own = new PIXI.Graphics();
+      own.position.y = y * (1 - 1 / tiltK);
+      own.scale.y = 1 / tiltK;
+      layerBars.addChild(own);
+      return own;
+    };
     for (const unit of game.enemies) {
-      const enemyScale = enemyRenderScale(unit.kind, game.boardRules); // bars follow each sprite's scale
+      const g = gFor(unit.y);
+      const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
       drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
@@ -1574,6 +1600,12 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
     for (const unit of game.heroes) {
+      const g = gFor(unit.y);
+      if (tiltOn) { // hero bars above the head, in the top layer (R18)
+        const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 66 * hs;
+        drawBar(g, left, top, 48 * hs, unit.hpLeft / unit.hp, 0x82e89a);
+        if (unit.ultClock !== undefined && unit.ultCooldown) drawBar(g, left, top + 5, 48 * hs, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple);
+      }
       // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
       if ((unit.markedByBossUntil ?? 0) > game.time) {
         const r = 34;

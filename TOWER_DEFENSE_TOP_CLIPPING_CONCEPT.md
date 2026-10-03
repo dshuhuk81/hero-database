@@ -124,6 +124,22 @@ overlaps the tile beneath. At 797 x 360 that is a slab of **62 px wide** (refere
 Because the board is small, the top row has about 120 world px of headroom, so the clipping is gone
 without needing a strong squash. Screenshots: `artifacts/td-tilt-prototype/slabs-v2-*.png`.
 
+### Prototype round 4 (October 3, 2026): HUD, bars, depth (tilt maps only)
+
+Owner feedback: the look works, heroes missing in the preview were R2 CORS (fixed in Cloudflare).
+- **Bars:** hero health and ultimate bars now sit **above the head** like the enemy bars and are
+  drawn in the topmost layer above every hero and enemy; bars, rings and status icons are
+  un-squashed (own graphics per unit, `gFor` in `drawBars`).
+- **Depth scaling:** units on the far row are drawn up to 8% smaller, on the near row up to 8%
+  larger (`depthScale`, 0.92 to 1.08 across the board).
+- **Floating landscape HUD:** no side rails; stats and buttons in a thin row on top, deck and wave
+  button along the bottom, both on a gradient over the scenery; the world is scaled so its height
+  is about the screen height (`playH / 556`), which keeps a hero at ~18% of the screen height.
+- **Road sockets** are recessed (inner shadow) next to the raised slabs.
+- Screenshots: `artifacts/td-tilt-prototype/slabs-v4-*.png`.
+- **Known:** the blurred terrain backdrop at the sides is dark and has a hard edge against the
+  battlefield; portrait phones untouched; no real device test of the tap mapping yet.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are
