@@ -8,7 +8,7 @@ import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
-import { createMapScene, mapBackdropFor, mapSceneFor } from "./map-scene.js";
+import { createMapScene, mapBackdropFor, mapSceneFor, spawnLabelVisible } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellCenter, patternCells } from "./board.js";
 
@@ -89,6 +89,23 @@ export function unitDepth(y, kind = "enemy") {
   if (kind === "flyer") return 3000 + y;
   return y + (kind === "hero" ? 0.5 : 0);
 }
+
+export function combatBarStyle(role) {
+  if (role === "hero") return { healthColor: 0x67df8a, healthHeight: 4, secondaryWidth: 0.72, secondaryHeight: 3, overhead: true };
+  if (role === "boss") return { healthColor: 0xe5484d, healthHeight: 4, secondaryWidth: 0, secondaryHeight: 0, overhead: false };
+  return { healthColor: 0xe85d68, healthHeight: 3, secondaryWidth: 0, secondaryHeight: 0, overhead: true };
+}
+
+const DAMAGE_NUMBER_OFFSETS = [-14, 14, 0, -24, 24];
+export const damageNumberOffset = (stack) => DAMAGE_NUMBER_OFFSETS[stack % DAMAGE_NUMBER_OFFSETS.length];
+
+export function shouldMergeDamageNumber(existing, effect) {
+  if (!existing || existing.enemyId !== effect.enemyId) return false;
+  if (!!existing.dot !== !!effect.dot || !!existing.crit !== !!effect.crit || !!existing.shielded !== !!effect.shielded) return false;
+  return existing.dot || existing.maxLife - existing.life <= 0.18;
+}
+
+export const visibleStatusPips = (statuses) => statuses.slice(0, 3);
 
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
@@ -921,10 +938,11 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   // Portals (entrance / exit)
   // ------------------------------------------------------------------
+  const entrancePortalLabels = [];
   function buildPortals() {
     if (isAuthored) return;
     const exit = mapLanes(game.map)[0].path.at(-1); // every lane ends at the base
-    for (const { path: [entrance] } of mapLanes(game.map)) drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE");
+    for (const { path: [entrance] } of mapLanes(game.map)) entrancePortalLabels.push(drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE"));
     drawPortal(layerHud, exit[0],     exit[1],     0xff4d4d, "EXIT");
   }
 
@@ -939,6 +957,7 @@ export async function createRenderer(canvas, game, options = {}) {
     t.anchor.set(0.5, 0);
     t.position.set(x, y + 34);
     container.addChild(t);
+    return t;
   }
 
   // ------------------------------------------------------------------
@@ -1033,17 +1052,21 @@ export async function createRenderer(canvas, game, options = {}) {
     // Swap texture in once it loads (token takes priority over the CDN portrait)
     if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
     updateHeroAnim(unit, container);
+    const barStyle = combatBarStyle("hero");
     if (tiltOn) { // R18: scaled with depth, and the bars are drawn above everything by drawBars()
       const hs = game.boardRules?.heroScale ?? 1, f = depthScale(unit.y);
       container.scale.set(hs * f, hs * f / tiltK);
       container._hpBar.clear();
-    } else drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, 0x82e89a);
+    } else drawBar(container._hpBar.clear(), -24, 31, 48, unit.hpLeft / unit.hp, barStyle.healthColor, barStyle.healthHeight);
 
     // Ultimate charge bar, directly below health.
     const ultBar = container._ultBar.clear();
     if (unit.ultClock !== undefined && unit.ultCooldown) {
       const pct = Math.min(1, unit.ultClock / unit.ultCooldown);
-      if (!tiltOn) drawBar(ultBar, -24, 36, 48, pct, palette.purple);
+      if (!tiltOn) {
+        const width = 48 * barStyle.secondaryWidth;
+        drawBar(ultBar, -width / 2, 37, width, pct, palette.purple, barStyle.secondaryHeight);
+      }
     }
 
     // Permanent collection level (R4): number disc plus a plain ring, redrawn only on change.
@@ -1578,22 +1601,23 @@ export async function createRenderer(canvas, game, options = {}) {
     };
     for (const unit of game.enemies) {
       const g = gFor(unit.y);
+      const barStyle = combatBarStyle(unit.kind === "boss" ? "boss" : "enemy");
       const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
-      drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
+      if (barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
       // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red
       // ring while The Final Eight keeps him standing.
       const valor = unit.kind === "boss" ? game.bossTuning?.valor : null;
-      if (valor) drawBar(g, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24);
+      if (valor && barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24, 3);
       if ((unit.rallyUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 38).stroke({ width: 3, color: 0xfbbf24, alpha: 0.8 });
       if ((unit.finalEightUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 44).stroke({ width: 3, color: 0xef4444, alpha: 0.85 });
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
-      for (const [on, color] of [[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]]) {
-        if (!on) continue;
+      const statuses = visibleStatusPips([[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]].filter(([on]) => on));
+      for (const [, color] of statuses) {
         g.circle(unit.x - radius + 3 + pip * 7, Math.max(2, unit.y + top) - 5 - (unit.shieldMax ? 5 : 0), 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
         pip += 1;
       }
@@ -1606,7 +1630,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // Shieldbearer: shield bar above health and a bubble while the shield holds.
       if (unit.shieldMax) {
         const ratio = unit.shield / unit.shieldMax;
-        drawBar(g, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc);
+        if (barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
         if (ratio > 0) g.circle(unit.x, unit.y - fullSpriteSize(unit.kind) * 0.35, fullSpriteSize(unit.kind) * 0.45).stroke({ width: 2, color: 0x7dd3fc, alpha: 0.25 + 0.45 * ratio });
       }
     }
@@ -1614,8 +1638,13 @@ export async function createRenderer(canvas, game, options = {}) {
       const g = gFor(unit.y);
       if (tiltOn) { // hero bars above the head, in the top layer (R18)
         const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 66 * hs;
-        drawBar(g, left, top, 48 * hs, unit.hpLeft / unit.hp, 0x82e89a);
-        if (unit.ultClock !== undefined && unit.ultCooldown) drawBar(g, left, top + 5, 48 * hs, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple);
+        const style = combatBarStyle("hero");
+        const width = 48 * hs;
+        drawBar(g, left, top, width, unit.hpLeft / unit.hp, style.healthColor, style.healthHeight);
+        if (unit.ultClock !== undefined && unit.ultCooldown) {
+          const secondary = width * style.secondaryWidth;
+          drawBar(g, unit.x - secondary / 2, top + style.healthHeight + 2, secondary, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple, style.secondaryHeight);
+        }
       }
       // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
       if ((unit.markedByBossUntil ?? 0) > game.time) {
@@ -1651,10 +1680,10 @@ export async function createRenderer(canvas, game, options = {}) {
     else g.circle(unit.x, unit.y, 33).stroke({ width: 3, color, alpha });
   }
 
-  function drawBar(g, x, y, width, ratio, color) {
-    g.rect(x, y, width, 4).fill({ color: 0x000000, alpha: 0.65 });
+  function drawBar(g, x, y, width, ratio, color, height = 4) {
+    g.rect(x, y, width, height).fill({ color: 0x000000, alpha: 0.72 });
     const filled = width * Math.max(0, ratio);
-    if (filled > 0) g.rect(x, y, filled, 4).fill({ color });
+    if (filled > 0) g.rect(x, y, filled, height).fill({ color });
   }
 
   // ------------------------------------------------------------------
@@ -1685,13 +1714,13 @@ export async function createRenderer(canvas, game, options = {}) {
 
   function spawnDamageNumber(effect) {
     const amount = Math.max(1, effect.amount);
-    // Damage-over-time ticks arrive faster than the popup fades. Reuse one popup per
-    // enemy so a moving target does not leave a dotted line of numbers behind it.
-    const existingDot = effect.dot && damageNumbers.find((popup) => popup.dot && popup.enemyId === effect.enemyId);
-    if (existingDot) {
-      existingDot.amount += amount;
-      existingDot.text.text = shortNumber(existingDot.amount);
-      existingDot.life = existingDot.maxLife;
+    // Damage-over-time ticks and rapid matching hits reuse a popup. Crits and shield damage
+    // stay separate so their distinct visual meaning is not lost in the combined number.
+    const merge = damageNumbers.find((popup) => shouldMergeDamageNumber(popup, effect));
+    if (merge) {
+      merge.amount += amount;
+      merge.text.text = shortNumber(merge.amount);
+      merge.life = merge.maxLife;
       return;
     }
     const stack = damageNumbers.reduce((count, popup) => count + (popup.enemyId === effect.enemyId ? 1 : 0), 0);
@@ -1708,10 +1737,10 @@ export async function createRenderer(canvas, game, options = {}) {
     });
     text.anchor.set(0.5, 1);
     text.scale.y = 1 / tiltK; // R18: numbers stay upright
-    const offsetX = ((stack % 3) - 1) * 8;
+    const offsetX = damageNumberOffset(stack);
     text.position.set(effect.x + offsetX, body.top - 3 - Math.min(stack, 3) * 4);
     layerNumbers.addChild(text);
-    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, offsetX, amount, dot: !!effect.dot, life: effect.life, maxLife: 0.75 });
+    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, offsetX, amount, dot: !!effect.dot, crit: !!effect.crit, shielded: !!effect.shielded, life: effect.life, maxLife: 0.75 });
   }
 
   function advanceDamageNumbers(dt) {
@@ -2096,6 +2125,7 @@ export async function createRenderer(canvas, game, options = {}) {
     updateSpecialTileFx(now);
     updateAuraFx(now);
     applyImpact(now);
+    for (const entranceLabel of entrancePortalLabels) entranceLabel.visible = spawnLabelVisible(game);
     mapScene?.draw(now);
     app.renderer.render(stage);
   }

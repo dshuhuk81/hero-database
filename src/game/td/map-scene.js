@@ -111,6 +111,8 @@ export function mapBackdropFor(map) {
   return scene?.assets?.bleed ?? scene?.assets?.terrain ?? null;
 }
 
+export const spawnLabelVisible = (game) => !game?.running;
+
 // Painted architecture is opaque scenery and stays behind combatants. Keeping the full spawn-gate
 // sprite in the foreground hid an enemy on its first visible frame; doorway-front occlusion belongs
 // in a separate transparent foreground asset, not in the complete painted structure.
@@ -420,7 +422,7 @@ export function createMapScene(PIXI, game, {
     } }));
     t.anchor.set(0.5); t.scale.y = 1 / tiltK; t.position.set(x, y); return t;
   }
-  for (const spawn of spawns) label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]);
+  const spawnLabels = spawns.map((spawn) => label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]));
   label(theme.labels.base[0], base.x + 1, base.y + 55, 10, theme.labels.base[1]);
   const integrityLabel = label("", base.x + 1, base.y + 69, 9, theme.labels.integrity);
   const cracks = localGraphic(foreground, base);
@@ -434,6 +436,7 @@ export function createMapScene(PIXI, game, {
 
   function draw(now = 0) {
     const seconds = now / 1000;
+    for (const spawnLabel of spawnLabels) spawnLabel.visible = spawnLabelVisible(game);
     if (game.wave !== lastWave) { lastWave = game.wave; waveAt = now; }
     for (const effect of game.effects ?? []) {
       if (effect.type === "baseHit" && !seen.has(effect)) {
@@ -515,8 +518,9 @@ export function createMapScene(PIXI, game, {
       const slab = new PIXI.Graphics();
       slabRoot.addChild(slab);
       // The slab is a stone block: a top face the size of the cell and a front face (the lip)
-      // below it, about 0.3 cell tall, which overlaps the tile underneath like the reference.
-      const lip = Math.round(TILE * 0.3);
+      // below it, about 0.15 cell tall. This is half the original height so ranged units sit
+      // on clearly raised ground without the slab dominating the battlefield.
+      const lip = Math.round(TILE * 0.15);
       for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
       slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
       const rawStone = STONE[2] ?? STONE[0];

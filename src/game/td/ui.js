@@ -151,6 +151,17 @@ export function shortNumber(value) {
   return String(n);
 }
 
+export function bossHudState(game) {
+  const boss = game?.enemies?.find((enemy) => enemy.kind === "boss" && !enemy.dead);
+  if (!boss?.maxHp) return null;
+  /** @type {{ ratio: number, hp: number, maxHp: number, shieldRatio?: number, valorRatio?: number }} */
+  const state = { ratio: Math.max(0, Math.min(1, boss.hp / boss.maxHp)), hp: Math.max(0, boss.hp), maxHp: boss.maxHp };
+  if (boss.shieldMax) state.shieldRatio = Math.max(0, Math.min(1, (boss.shield || 0) / boss.shieldMax));
+  const valorMax = game?.bossTuning?.valor?.max;
+  if (valorMax) state.valorRatio = Math.max(0, Math.min(1, (boss.valor || 0) / valorMax));
+  return state;
+}
+
 const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps" };
 const LEAK_HINTS = {
   grunt: "Crowds overran the line: Warrior cleave and Mage splash thin them out.",

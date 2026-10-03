@@ -185,6 +185,14 @@ width follows the map's cell size and is capped just inside melee contact range,
 remain blockable. Each spawn gate advances its own symmetric formation; two-gate maps therefore no
 longer bias one lane to the left and the other to the right. Summoned enemies reuse the same spacing.
 
+Combat readability now distinguishes units without adding more decoration: enemies use thin red
+health bars, heroes use green health plus a shorter purple ultimate bar, and only three static
+status pips can occupy a unit's bar. Rapid matching hits merge briefly while critical and shield
+hits remain separate; remaining numbers alternate around the target. Boss health has moved from the
+unit into a centred HUD bar (including shield or Valor when present), and spawn text hides while a
+wave is running. The raised platform lip is 0.15 cell instead of 0.3 cell, cutting its visible height
+in half without changing tile positions, hit areas or gameplay.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

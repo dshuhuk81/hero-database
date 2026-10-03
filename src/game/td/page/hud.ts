@@ -3,6 +3,7 @@
 import type { PageContext } from "./context";
 import { shownLives } from "../board.js";
 import { isBossWave } from "../waves.js";
+import { bossHudState } from "../ui.js";
 import { clearedWaves } from "../daily.js";
 import { bossSprite } from "../assets.js";
 
@@ -34,6 +35,10 @@ export function createHud(ctx: PageContext) {
   const autoButton = q<HTMLButtonElement>("[data-td-auto]");
   const goldEl = q("[data-td-gold]");
   const goldFloatEl = q("[data-td-gold-float]");
+  const bossHealthEl = q("[data-td-boss-health]");
+  const bossHealthFill = q<HTMLElement>("[data-td-boss-health-fill]");
+  const bossShieldFill = q<HTMLElement>("[data-td-boss-shield-fill]");
+  const bossValorFill = q<HTMLElement>("[data-td-boss-valor-fill]");
   let speed = 1;
   let autoNext = false;
   try { autoNext = localStorage.getItem(AUTO_NEXT_KEY) === "1"; } catch {}
@@ -65,6 +70,22 @@ export function createHud(ctx: PageContext) {
     }
     q("[data-td-score]").textContent = game.score.toLocaleString();
     q("[data-td-synergy-count]").textContent = String(game.activeSynergyCount());
+    syncBossHealth(game);
+  }
+
+  function syncBossHealth(game: any) {
+    const info = bossHudState(game);
+    bossHealthEl.hidden = !info;
+    if (!info) return;
+    const percent = Math.round(info.ratio * 100);
+    q("[data-td-boss-health-name]").textContent = bossName();
+    q("[data-td-boss-health-value]").textContent = `${percent}%`;
+    bossHealthEl.setAttribute("aria-valuenow", String(percent));
+    bossHealthFill.style.width = `${percent}%`;
+    bossShieldFill.hidden = info.shieldRatio === undefined || info.shieldRatio <= 0;
+    bossShieldFill.style.width = `${Math.round((info.shieldRatio ?? 0) * 100)}%`;
+    bossValorFill.hidden = info.valorRatio === undefined;
+    bossValorFill.style.width = `${Math.round((info.valorRatio ?? 0) * 100)}%`;
   }
 
   function syncMainAction() {
@@ -325,6 +346,7 @@ export function createHud(ctx: PageContext) {
     lastFrame = now;
     const game = state.session?.game;
     if (!game) return;
+    syncBossHealth(game);
     if (goldTween) {
       const t = Math.min(1, (now - goldTween.start) / GOLD_TWEEN_MS);
       shownGold = Math.round(goldTween.from + (goldTween.to - goldTween.from) * (1 - (1 - t) ** 3));

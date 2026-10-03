@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { bleedCanvasSize, createPauseController, fitRect, placePopover, slotHitRadius, tiltView, worldToLocal } from "../src/game/td/ui.js";
+import * as ui from "../src/game/td/ui.js";
 import { buildRunTuning, TREE } from "../src/game/td/favor.js";
 import * as render from "../src/game/td/render.js";
 import { enemySheetUrl } from "../src/game/td/assets.js";
@@ -7,6 +8,21 @@ import * as mapScene from "../src/game/td/map-scene.js";
 const { canvasPoint, nearestSlot } = render;
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
+
+// Combat readability: bars identify allegiance at a glance, rapid numbers merge instead of
+// stacking, status pips stay bounded, spawn labels step aside during combat, and bosses use HUD.
+assert.equal(typeof render.combatBarStyle, "function", "combat bar styling is exposed");
+assert.notEqual(render.combatBarStyle("enemy").healthColor, render.combatBarStyle("hero").healthColor, "enemy and hero health colors are distinct");
+assert.ok(render.combatBarStyle("hero").secondaryWidth < 1, "hero ultimate bar is narrower than health");
+assert.equal(render.combatBarStyle("boss").overhead, false, "boss health leaves the crowded battlefield");
+assert.deepEqual([0, 1, 2, 3, 4].map(render.damageNumberOffset), [-14, 14, 0, -24, 24], "damage numbers fan out around their target");
+assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.65, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), true, "rapid normal hits merge");
+assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.4, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), false, "older hits remain separate");
+assert.deepEqual(render.visibleStatusPips(["wet", "burn", "poison", "chill"]), ["wet", "burn", "poison"], "at most three status pips are shown");
+assert.equal(mapScene.spawnLabelVisible({ running: false }), true, "spawn label is visible between waves");
+assert.equal(mapScene.spawnLabelVisible({ running: true }), false, "spawn label hides during combat");
+assert.equal(ui.bossHudState({ enemies: [] }), null, "boss HUD stays hidden without a living boss");
+assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 250, maxHp: 1000 }] }), { ratio: 0.25, hp: 250, maxHp: 1000 }, "boss HUD reports the living boss health");
 
 // R18 wide scenery: Jungle uses its authored panoramic backdrop while themes without one retain
 // their ordinary terrain image as the bleed fallback.
