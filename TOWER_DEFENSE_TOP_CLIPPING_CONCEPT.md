@@ -180,6 +180,11 @@ enemies also share one y-based depth plane, so whichever has the lower foot poin
 heroes win only an exact-position tie, and flyers remain above the ground battle. Bars stay in the
 separate top layer.
 
+Enemy groups now use a wider seven-position formation instead of the narrow centre-line sway. Its
+width follows the map's cell size and is capped just inside melee contact range, so the outer units
+remain blockable. Each spawn gate advances its own symmetric formation; two-gate maps therefore no
+longer bias one lane to the left and the other to the right. Summoned enemies reuse the same spacing.
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

@@ -5,8 +5,8 @@ import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRa
 import { environmentMultiplier } from "./environments.js";
 
 const K = 260;
-// Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
-const SWAY = [0, 10, -10, 5, -14, 14, -5];
+// Symmetric positions across a lane. The actual width follows the board and melee reach.
+const FORMATION = [0, 0.75, -0.75, 0.38, -1, 1, -0.38];
 const STEP = 1 / 60;
 const NO_BOOST = { attack: 0, attackSpeed: 0, speed: 0 };
 const REACTION_COLORS = { conduct: "purple", steam: "white", blight: "green", freeze: "white", harvest: "purple" };
@@ -576,6 +576,14 @@ export class TowerDefenseGame {
     return { count: cfg.count ?? 1, gap: cfg.gap ?? 1, hp: cfg.hp ?? power, reward: cfg.reward ?? power, attack: cfg.attack ?? power, leak: cfg.leak ?? power };
   }
 
+  formationSway(index) {
+    const cell = boardOf(this.map)?.cell ?? 96;
+    const spread = this.tuning.waveGen?.laneSpread ?? 0.23;
+    const contact = this.tuning.blocking?.contactRange ?? 42;
+    const max = Math.min(cell * spread, contact * 0.9);
+    return FORMATION[index % FORMATION.length] * max;
+  }
+
   startWave() {
     // Endless: generate this wave and the next, so previews and quests always see it.
     if (this.mode === "endless") {
@@ -596,6 +604,7 @@ export class TowerDefenseGame {
     // stacks slow walkers into one blob) and spread sideways in a fixed pattern.
     let lane = 0;
     const laneFree = this.lanes.map(() => 0);
+    const laneSpawned = this.lanes.map(() => 0);
     const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
       const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed * this.environment("enemySpeed", null, group.kind);
@@ -606,7 +615,7 @@ export class TowerDefenseGame {
       for (let i = 0; i < count; i += 1) {
         const gate = lane++ % this.lanes.length;
         at = Math.max(at, laneFree[gate]);
-        this.spawnQueue.push({ at, kind: group.kind, scale: (group.scale ?? 1) * split, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
+        this.spawnQueue.push({ at, kind: group.kind, scale: (group.scale ?? 1) * split, lane: gate, sway: this.formationSway(laneSpawned[gate]++) });
         laneFree[gate] = at + spacing / speed;
         at += gapMs / 1000;
       }
@@ -1750,7 +1759,7 @@ export class TowerDefenseGame {
         const room = Math.max(0, Math.min(cfg.summon.count, cfg.summon.max - alive, cfg.summon.total - (enemy.summoned ?? 0)));
         enemy.summoned = (enemy.summoned ?? 0) + room;
         for (let i = 0; i < room; i += 1) {
-          this.spawnEnemy(cfg.summon.kind, { distance: enemy.distance + 12 * (i + 1), statScale: enemy.statScale ?? 1, lane: enemy.lane ?? 0, sway: SWAY[(enemy.entityId + i) % SWAY.length], extra: { summonerId: enemy.entityId } });
+          this.spawnEnemy(cfg.summon.kind, { distance: enemy.distance + 12 * (i + 1), statScale: enemy.statScale ?? 1, lane: enemy.lane ?? 0, sway: this.formationSway(enemy.entityId + i), extra: { summonerId: enemy.entityId } });
         }
         if (room > 0) this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "red" });
       }

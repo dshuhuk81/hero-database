@@ -2364,6 +2364,30 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(a.distance - b.distance >= tuning.waveGen.minSpacing - tuning.enemies.grunt.speed / 60 - 1e-6, "neighbours stay apart along the path");
 }
 {
+  // A formation is wide enough to separate large phone sprites, stays symmetric at every
+  // entrance, and never spreads farther than a road hero can engage.
+  const map = realMaps.find((entry) => entry.id === "sunscar-ruins");
+  const formation = new TowerDefenseGame({ heroes, tuning, map, waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 35, gapMs: 50 }] }], seed: 160 });
+  formation.startWave();
+  for (let lane = 0; lane < formation.lanes.length; lane += 1) {
+    const sway = formation.spawnQueue.filter((entry) => entry.lane === lane).map((entry) => entry.sway);
+    assert.equal(sway.length, 7, `lane ${lane + 1} gets a complete formation`);
+    assert.ok(Math.max(...sway) - Math.min(...sway) >= 40, `lane ${lane + 1} formation is visibly wide`);
+    assert.ok(Math.max(...sway.map(Math.abs)) < tuning.blocking.contactRange, `lane ${lane + 1} stays within melee contact`);
+    close(sway.reduce((sum, value) => sum + value, 0), 0, `lane ${lane + 1} formation is centred`);
+  }
+
+  const blockerMap = realMaps.find((entry) => entry.id === "proto-slabs");
+  const blocker = new TowerDefenseGame({ heroes, tuning, map: blockerMap, waves: [{ wave: 1, spawns: [] }], seed: 161 });
+  blocker.gold = 10000;
+  assert.equal(blocker.place("atlas", "road", 0), true, "wide formation blocker placed");
+  blocker.startWave(); blocker.spawnQueue = []; blocker.enemies = [];
+  const outer = blocker.spawnEnemy("grunt", { sway: Math.max(...formation.spawnQueue.map((entry) => Math.abs(entry.sway))) });
+  outer.hp = outer.maxHp = 1e9;
+  for (let i = 0; i < 60 * 30 && !outer.held; i += 1) blocker.step(1 / 60);
+  assert.equal(outer.held, true, "the outer formation position can still be blocked");
+}
+{
   const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "endless", seed: 161 });
   assert.equal(endless.endlessRamp(20), 1, "no ramp up to wave 20");
   close(endless.endlessRamp(25), (1 + tuning.waveGen.endlessRamp) ** 5, "compounding past wave 20");
