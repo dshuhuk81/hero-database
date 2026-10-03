@@ -71,6 +71,17 @@ only (`prototype` + `campaignOnly`). Campaign maps are untouched. Tilt is on for
   stone grey-green and needs a texture; no depth scaling yet; free enemy paths (E) are a separate
   concept; phone portrait not checked.
 
+### Testing prototypes on a phone (no merge to main)
+
+- **Prototype maps on any build:** open `/games/tower-defense/?proto=1`; Free Play then also lists the
+  hidden prototype maps (`prototype: true` in `tdMaps.json`), e.g. "Prototype Slabs". Without the flag
+  they stay hidden on non-dev builds, so players never see them.
+- **Cloudflare preview deployment:** every push to a non-main branch can build a preview (Pages →
+  *Deployments* → *Preview*; the branch alias is `<branch>.<project>.pages.dev`, slashes become dashes).
+  The agent pushes the branch; open the preview URL with `?proto=1` on the phone.
+- **Same Wi-Fi, no push at all:** `npm run dev -- --host`, then on the phone
+  `http://<laptop-ip>:4321/games/tower-defense/?proto=1` (`ipconfig getifaddr en0` on macOS).
+
 ## 1. Why it clips today
 
 The world is a fixed 960 × 540 canvas (`resize()` in `render.js`), clipped at y = 0. Sprites are

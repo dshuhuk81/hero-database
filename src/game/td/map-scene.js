@@ -111,6 +111,67 @@ export function paintedStructureLayer(layers, role) {
   return role === "spawn" ? layers.foreground : layers.structures;
 }
 
+
+// R18 prototype (B): procedural stone for the raised slabs. A few variants are painted once on a
+// canvas (grain, mottling, cracks, chipped edges, moss in the corners) and shared; each tile picks
+// one by position and may mirror it. `base` is a 0xRRGGBB colour from the map theme.
+const slabCache = new Map();
+function slabTexture(PIXI, variant, base, moss) {
+  const key = `${variant}:${base}:${moss}`;
+  if (slabCache.has(key)) return slabCache.get(key);
+  const size = 192;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  let seed = 1234 + variant * 7919;
+  const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const [r, g, b] = [(base >> 16) & 255, (base >> 8) & 255, base & 255];
+  ctx.fillStyle = `rgb(${r},${g},${b})`;
+  ctx.fillRect(0, 0, size, size);
+  // Mottling: large soft light/dark patches.
+  for (let i = 0; i < 26; i++) {
+    const x = rand() * size, y = rand() * size, rad = 20 + rand() * 46, light = rand() > 0.5;
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, rad);
+    grad.addColorStop(0, light ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.12)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+  }
+  // Grain.
+  for (let i = 0; i < 2600; i++) {
+    ctx.fillStyle = rand() > 0.5 ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.1)";
+    ctx.fillRect(rand() * size, rand() * size, 1 + rand() * 2, 1 + rand() * 2);
+  }
+  // Cracks: jittery dark polylines with a light edge beside them.
+  for (let i = 0; i < 3 + variant; i++) {
+    let x = rand() * size, y = rand() * size, angle = rand() * Math.PI * 2;
+    const points = [[x, y]];
+    for (let k = 0; k < 9; k++) { angle += (rand() - 0.5) * 1.1; x += Math.cos(angle) * (6 + rand() * 9); y += Math.sin(angle) * (6 + rand() * 9); points.push([x, y]); }
+    for (const [colour, dx, width] of [["rgba(255,255,255,0.12)", 1, 1.2], ["rgba(0,0,0,0.5)", 0, 1.3]]) {
+      ctx.strokeStyle = colour; ctx.lineWidth = width; ctx.beginPath();
+      points.forEach(([px, py], n) => (n ? ctx.lineTo(px + dx, py + dx) : ctx.moveTo(px + dx, py + dx)));
+      ctx.stroke();
+    }
+  }
+  // Moss creeping in from the corners.
+  if (moss) {
+    for (let i = 0; i < 70; i++) {
+      const corner = Math.floor(rand() * 4), cx = corner % 2 ? size : 0, cy = corner > 1 ? size : 0;
+      const x = cx + (corner % 2 ? -1 : 1) * rand() * rand() * 70, y = cy + (corner > 1 ? -1 : 1) * rand() * rand() * 70;
+      ctx.fillStyle = `rgba(${moss[0]},${moss[1]},${moss[2]},${0.1 + rand() * 0.18})`;
+      ctx.beginPath(); ctx.arc(x, y, 4 + rand() * 10, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  // Worn rim: darker chipped edge all round.
+  const rim = ctx.createLinearGradient(0, 0, 0, size);
+  rim.addColorStop(0, "rgba(255,255,255,0.1)"); rim.addColorStop(0.15, "rgba(0,0,0,0)"); rim.addColorStop(0.85, "rgba(0,0,0,0)"); rim.addColorStop(1, "rgba(0,0,0,0.18)");
+  ctx.fillStyle = rim; ctx.fillRect(0, 0, size, size);
+  ctx.strokeStyle = "rgba(0,0,0,0.45)"; ctx.lineWidth = 4; ctx.strokeRect(0, 0, size, size);
+  const texture = PIXI.Texture.from(canvas);
+  slabCache.set(key, texture);
+  return texture;
+}
+
 export function createMapScene(PIXI, game, {
   ground, structures, foreground, overlay, reducedMotion = false, textures = {}, tilt = null,
 }) {
@@ -439,16 +500,30 @@ export function createMapScene(PIXI, game, {
   function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
     const h = TILE / 2;
     if (tilt && type === "platform") {
-      const slab = new PIXI.Graphics(); // R18 prototype (B): full strength, independent of the tile's idle fade
-      slab.position.set(x, y);
-      container.addChild(slab);
+      const slabRoot = new PIXI.Container(); // R18 prototype (B): full strength, independent of the tile's idle fade
+      slabRoot.position.set(x, y);
+      container.addChild(slabRoot);
+      const slab = new PIXI.Graphics();
+      slabRoot.addChild(slab);
       const lip = 13 / tiltK;
       for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
       slab.rect(-h + 2, -h + 2 + lip, TILE - 4, TILE - 4 - lip + 4).fill({ color: 0x1a2118, alpha: 0.95 }); // front face
-      slab.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 - lip + 2).fill({ color: STONE[2] ?? STONE[0], alpha: 0.92 }); // top face
-      slab.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 - lip + 2).fill({ color: 0xffffff, alpha: 0.06 });
-      slab.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
-      slab.moveTo(-h + 2, h - 2 - lip + 2).lineTo(h - 2, h - 2 - lip + 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.45 });
+      const topH = TILE - 4 - lip + 2;
+      const rawStone = STONE[2] ?? STONE[0];
+      const mix = (a, b, t) => Math.round(a + (b - a) * t);
+      const stone = (mix((rawStone >> 16) & 255, 0xb4, 0.4) << 16) | (mix((rawStone >> 8) & 255, 0xb0, 0.4) << 8) | mix(rawStone & 255, 0x98, 0.4); // lighter, warmer stone
+      const variant = Math.abs(Math.round(x * 7 + y * 13)) % 3;
+      const top = new PIXI.Sprite(slabTexture(PIXI, variant, stone, theme.name === "Jungle" ? [60, 110, 55] : null)); // textured top face
+      top.position.set(-h + 2, -h + 2);
+      top.width = TILE - 4; top.height = topH;
+      if (variant === 1) { top.scale.x *= -1; top.x += TILE - 4; } // mirror one variant so neighbours differ
+      slabRoot.addChild(top);
+      const edges = new PIXI.Graphics();
+      edges.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
+      edges.moveTo(-h + 2, h - 2 - lip + 2).lineTo(h - 2, h - 2 - lip + 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.45 });
+      // Front face: vertical streaks of darker stone.
+      for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h - 2 - lip + 4).lineTo(sx + 2, h + 2).stroke({ color: 0x000000, width: 1, alpha: 0.18 });
+      slabRoot.addChild(edges);
     }
     const g = new PIXI.Graphics();
     g.position.set(x, y);

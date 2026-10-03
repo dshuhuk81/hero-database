@@ -162,6 +162,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   // Menu screens (map select, difficulty and run length; the home screen is page/home.ts)
   // ------------------------------------------------------------------
   function renderLobby() {
+    if (new URLSearchParams(location.search).get("proto") === "1") root!.querySelectorAll<HTMLElement>("[data-td-proto]").forEach((card) => { card.hidden = false; });
     root!.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
       const active = button.dataset.mapId === state.selectedMap.id;
       button.classList.toggle("is-selected", active);

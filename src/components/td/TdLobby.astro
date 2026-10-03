@@ -11,8 +11,9 @@ import TdHome from "./TdHome.astro";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
 const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
 // Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
-// Dev builds also list prototype maps (`prototype: true`, e.g. the compact board, board.js).
-const previews = maps.filter((entry: any) => !entry.campaignOnly || (isDev && entry.prototype)).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
+// Prototype maps (`prototype: true`, e.g. the compact board, board.js) are listed on dev builds and,
+// hidden, on every other build: open the page with ?proto=1 to reveal them (testing on a phone).
+const previews = maps.filter((entry: any) => !entry.campaignOnly || entry.prototype).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
 // Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
 const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
@@ -196,7 +197,7 @@ const modes = [
       <div class="td-screen-body td-screen-body--center td-maps-screen">
         <div class="td-map-cards" role="group" aria-label="Battlefields" data-td-maps>
           {previews.map((preview: any) => (
-            <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
+            <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false" data-td-proto={preview.prototype ? "" : undefined} hidden={preview.prototype && !isDev ? true : undefined}>
               <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
                 {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.9" preserveAspectRatio="none" />}
                 {preview.routes.map((points: number[][]) => <Fragment><polyline class="td-map-preview-path-edge" points={routePreviewPoints(points)} /><polyline class="td-map-preview-path" points={routePreviewPoints(points)} /></Fragment>)}
