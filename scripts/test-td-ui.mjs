@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
+import { bleedCanvasSize, createPauseController, fitRect, placePopover, slotHitRadius, worldToLocal } from "../src/game/td/ui.js";
 import { buildRunTuning, TREE } from "../src/game/td/favor.js";
 import * as render from "../src/game/td/render.js";
 import { enemySheetUrl } from "../src/game/td/assets.js";
@@ -20,8 +20,17 @@ assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep thei
 // Painted gates occlude newly spawned enemies until they emerge onto the road.
 {
   const structures = {}, foreground = {};
-  assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "spawn"), foreground, "painted spawn gates render in front of units");
+  assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "spawn"), structures, "painted spawn gates stay behind units");
   assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "base"), structures, "painted sanctuary stays behind units");
+}
+
+// Tilted painted spawn gates remain upright, but the opaque art stays in the structure layer so a
+// ground enemy is visible in front of it from its first spawn frame.
+{
+  const structures = {}, foreground = {}, units = {};
+  const placement = mapScene.paintedStructurePlacement?.({ structures, foreground }, "spawn", { units });
+  assert.equal(placement?.parent, structures, "tilted spawn gate uses the structure layer behind units");
+  assert.equal(placement?.zIndex, null, "tilted spawn gate needs no unit-layer depth override");
 }
 
 // Lilith keeps the sharp 256 px still and stays opaque while her children make her
@@ -42,6 +51,13 @@ assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1,
   }
   assert.deepEqual(fitRect(960, 0), { width: 960, height: 540 }, "missing height falls back to width");
   assert.deepEqual(fitRect(0, 0), { width: 960, height: 540 }, "missing width falls back to world size");
+}
+
+// --- R18 landscape bleed: world scale follows height on wide phones ---
+{
+  assert.deepEqual(bleedCanvasSize(797, 360), { width: 621, height: 349 }, "797x360 keeps the reference hero scale");
+  assert.deepEqual(bleedCanvasSize(2392, 1080), { width: 1864, height: 1048 }, "ultrawide phones stay height-led");
+  assert.deepEqual(bleedCanvasSize(667, 375), { width: 647, height: 364 }, "narrow landscape still fits the full world");
 }
 
 // --- Coordinates: canvasPoint and worldToLocal round-trip on a letterboxed canvas ---
