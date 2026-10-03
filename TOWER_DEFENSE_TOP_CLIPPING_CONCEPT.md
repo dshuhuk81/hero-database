@@ -79,6 +79,9 @@ only (`prototype` + `campaignOnly`). Campaign maps are untouched. Tilt is on for
 - **Cloudflare preview deployment:** every push to a non-main branch can build a preview (Pages →
   *Deployments* → *Preview*; the branch alias is `<branch>.<project>.pages.dev`, slashes become dashes).
   The agent pushes the branch; open the preview URL with `?proto=1` on the phone.
+- **Cloudflare needs Node 22.12 or newer for previews** (Astro 7). Set `NODE_VERSION` = `24` for the
+  *Preview* environment too (Pages → Settings → Variables and secrets); the repo's `.node-version`
+  and `.nvmrc` already say 24. A preview build that installs Node 20.20.0 fails in under a minute.
 - **Same Wi-Fi, no push at all:** `npm run dev -- --host`, then on the phone
   `http://<laptop-ip>:4321/games/tower-defense/?proto=1` (`ipconfig getifaddr en0` on macOS).
 
