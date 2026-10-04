@@ -753,7 +753,14 @@
       "campaign": true,
       "k": 0.75,
       "offsetY": 70,
-      "maps": ["jungle-heart-temple", "proto-slabs"],
+      "maps": [
+        "jungle-heart-temple",
+        "proto-slabs",
+        "moonlit-pass",
+        "sunscar-ruins",
+        "sunscar-basin",
+        "jungle-flooded-court"
+      ],
       "perMap": { "proto-slabs": { "k": 0.85, "offsetY": 40 } }
     }
   },
