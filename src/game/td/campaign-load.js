@@ -9,6 +9,7 @@ const gateCount = (map) => Math.max(1, map?.lanes?.length ?? 1);
 function emptyRow(stage, map, diagnostics = []) {
   return {
     stageId: stage?.id ?? "",
+    stageName: stage?.name ?? "",
     chapter: chapterOf(stage ?? {}),
     mapId: stage?.mapId ?? map?.id ?? "",
     theme: map?.theme ?? "",

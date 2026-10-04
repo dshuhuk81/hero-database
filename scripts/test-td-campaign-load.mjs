@@ -3,6 +3,7 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { campaignLoadRows, stageLoad } from "../src/game/td/campaign-load.js";
+import { CSV_COLUMNS, formatCampaignLoadCsv, formatCampaignLoadMarkdown, parseCampaignLoadArgs, reviewCampaignRows } from "./td-campaign-load.mjs";
 
 // Break caught: an audit that reimplements wave math can drift from the simulator's shaping,
 // gate alternation, minimum spacing, stage HP scaling or boss overrides.
@@ -65,6 +66,37 @@ import { campaignLoadRows, stageLoad } from "../src/game/td/campaign-load.js";
   assert.ok(first.every((row) => [row.enemyCount, row.lastSpawnMs, row.spawnWindowMs, row.enemiesPerSecond, row.totalHp, row.totalAtk, row.avgArmor, row.avgMres, row.maxHp, row.maxAtk, row.hpLoad, row.atkLoad, row.compositeLoad].every((value) => Number.isFinite(value) && value >= 0)), "all numeric load metrics are finite and non-negative");
   const layouts = new Set(first.map((row) => `${row.board}/${row.gates}`));
   for (const expected of ["8x4/1", "8x4/2", "9x5/1", "9x5/2", "10x5/2"]) assert.ok(layouts.has(expected), `${expected} Campaign layout is represented`);
+
+  const reviewed = reviewCampaignRows(first);
+  const csv = formatCampaignLoadCsv([{ ...reviewed[0], stageName: 'Temple, "Heart"', diagnostics: ["missing map, retry"], summonedKinds: ["brood"] }]);
+  assert.equal(CSV_COLUMNS.join(","), "stageId,stageName,chapter,mapId,theme,board,gates,spawnGroups,enemyCount,enemyTypes,firstSpawnMs,lastSpawnMs,spawnWindowMs,enemiesPerSecond,totalHp,totalAtk,avgArmor,avgMres,maxHp,maxAtk,hpLoad,atkLoad,compositeLoad,hpScale,lives,hasBoss,summonedKinds,diagnostics,reviewFlags,reviewLever,botWinRate,botClearSeconds", "CSV header order is stable");
+  assert.equal(csv.split("\n")[0], CSV_COLUMNS.join(","), "CSV emits the fixed header");
+  assert.ok(csv.includes('"Temple, ""Heart"""') && csv.includes('"missing map, retry"'), "CSV quotes names and diagnostics safely");
+  assert.equal(formatCampaignLoadCsv(reviewed), formatCampaignLoadCsv(reviewCampaignRows(second)), "CSV output is deterministic");
+
+  const markdown = formatCampaignLoadMarkdown(reviewed);
+  for (const label of ["Introduction", "Early progression", "Mid progression", "Endgame"]) assert.ok(markdown.includes(label), `${label} band is summarized`);
+  assert.ok(markdown.includes("| Stage |") && markdown.includes("1-1"), "Markdown contains a concise stage table");
+}
+
+// Break caught: the report must identify why an adjacent stage deserves review rather than
+// merely declaring it an outlier.
+{
+  const base = { stageId: "1-1", chapter: "1", enemyCount: 10, enemiesPerSecond: 1, avgArmor: 20, avgMres: 20, hpLoad: 1, atkLoad: 1, compositeLoad: 1, lives: 20, diagnostics: [] };
+  const rows = reviewCampaignRows([
+    base,
+    { ...base, stageId: "1-2", hpLoad: 4, compositeLoad: 2 },
+    { ...base, stageId: "1-3", hpLoad: 4, compositeLoad: 2, enemyCount: 25 },
+    { ...base, stageId: "1-4", hpLoad: 4, compositeLoad: 2, enemyCount: 25, enemiesPerSecond: 3 },
+    { ...base, stageId: "1-5", hpLoad: 4, compositeLoad: 2, enemyCount: 25, enemiesPerSecond: 3, avgArmor: 120 },
+  ]);
+  assert.deepEqual(rows[1].reviewFlags, ["composite load"], "large composite jump is flagged");
+  assert.equal(rows[1].reviewLever, "hpScale", "health-led load jump points to hpScale");
+  assert.ok(rows[2].reviewFlags.includes("enemy count") && rows[2].reviewLever === "count", "density jump points to count");
+  assert.ok(rows[3].reviewFlags.includes("spawn pressure") && rows[3].reviewLever === "gapMs/group order", "pressure jump points to timing");
+  assert.ok(rows[4].reviewFlags.includes("resistance mix") && rows[4].reviewLever === "resistance mix", "resistance jump points to composition defenses");
+  assert.deepEqual(parseCampaignLoadArgs(["--chapter=3", "--csv=/tmp/load.csv"]), { chapter: 3, csv: "/tmp/load.csv" }, "CLI accepts chapter and CSV output");
+  assert.throws(() => parseCampaignLoadArgs(["--chapter=zero"]), /Invalid chapter/, "CLI rejects invalid chapters");
 }
 
 console.log("Tower defense Campaign load checks passed.");
