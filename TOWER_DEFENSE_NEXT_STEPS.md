@@ -1,5 +1,12 @@
 # Tower Defense Campaign --- Implementation Roadmap & Save System
 
+> **Document role (updated October 4, 2026):** this file is the original Campaign/save
+> architecture plan. It is useful design input, but it is not the active task queue. Use the
+> **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)** for current priorities and the
+> [Tower Defense Specification](TOWER_DEFENSE_SPEC.md) for implemented behavior. The current
+> visual rollout is documented by name in
+> **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**.
+
 ## 1. Implementation Roadmap
 
 The roadmap should be **risk-oriented**: build the smallest vertical

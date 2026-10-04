@@ -1,7 +1,13 @@
-# Tower Defense — Top-of-board clipping (R18 concept)
+# Tower Defense — Tilted Board and Landscape HUD (R18)
 
-Drafted October 2, 2026, updated the same day after the owner's reference screenshot (another
-mobile tower-defense game, "Watcher of Realms" style). Concept only; nothing is built.
+Drafted October 2, 2026; implementation record updated October 4, 2026 after the owner's
+real-device reviews and comparison material from another mobile tower-defense game ("Watcher of
+Realms" style).
+
+**Status:** the core prototype is implemented and approved on `jungle-heart-temple`; the hidden
+`proto-slabs` map remains available with `?proto=1`. Rollout to representative layouts and other
+themes is still pending. The canonical priority list is **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)**;
+the current game rules are in [Tower Defense Specification](TOWER_DEFENSE_SPEC.md).
 
 **Owner constraints (October 2):** heroes and bosses must always be fully visible, **no
 shrinking of figures** (they are already small), the board itself may change. Compare against
@@ -25,7 +31,7 @@ tile-to-hero ratio.
   reference, so nothing covers a lane, and the left rail stays free for gold, lives, wave, goal
   and the speed buttons.
 
-## Prototype status (October 2, 2026)
+## Initial prototype status (October 2, 2026)
 
 Built for **one map only**, `jungle-heart-temple` (campaign 3-6), for owner review. Nothing else
 changes; remove `tuning.board.tilt` to switch it off everywhere.
@@ -192,6 +198,25 @@ hits remain separate; remaining numbers alternate around the target. Boss health
 unit into a centred HUD bar (including shield or Valor when present), and spawn text hides while a
 wave is running. The raised platform lip is 0.15 cell instead of 0.3 cell, cutting its visible height
 in half without changing tile positions, hit areas or gameplay.
+
+### Current acceptance boundary (October 4, 2026)
+
+The following is the approved visual baseline, not a one-map experiment to be redesigned again:
+
+- heroes remain approximately 18% of landscape-phone height; deck portraits target 50 px;
+- the landscape HUD floats over scenery, with no permanent side rails;
+- ground and tiles may tilt, while unit bars, rings, icons and actors retain readable thickness;
+- far units may be up to 8% smaller and near units up to 8% larger;
+- enemies stop in front of blocking heroes, share the ground depth plane and use a cell-aware
+  seven-position formation;
+- platforms are raised but use the reduced 0.15-cell front lip; road tiles read as recessed;
+- boss health belongs in the centred HUD; ordinary enemies and heroes keep compact overhead bars;
+- tall spawn art stays behind units and its label is hidden during an active wave.
+
+The next implementation work is rollout rather than more one-off polish: validate representative
+6x3, 8x4 and 9x5 layouts, then share the behavior across suitable maps and new themes using
+per-map overrides only where geometry or art requires them. See the prioritized checklist in the
+[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md#to-do--next-sensible-steps).
 
 ## 1. Why it clips today
 

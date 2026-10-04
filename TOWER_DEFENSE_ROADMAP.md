@@ -1,6 +1,6 @@
 # Tower Defense Roadmap
 
-Last updated: October 2, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
+Last updated: October 4, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
 
 Maps come from generators: `board-v1` for compact boards (`npm run td:board`, spec section 10)
 and the owner's map workflow ([docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)).
@@ -22,16 +22,62 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
    parallel agents; do not overwrite or "clean up" files you did not touch.
 4. Move finished milestones to the archive promptly so this file only shows
    open work.
+5. If work is implemented from another Markdown document, name and link that
+   document here. The detail document must link back to this roadmap so the
+   decision history and the current priority list cannot drift apart.
 
 ## What's next (priority order)
 
 Planning input: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) (ideas and
 their status), [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md) (the board
-rewrite, finished). The game as it is now: [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
+rewrite, finished), and **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**
+(R18 design decisions, prototype rounds and implementation record). The game as it is now:
+[TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
 
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
-### Open work after the board rewrite (October 2, 2026)
+### Current focus: finish R18 and make it reusable (October 4, 2026)
+
+R18 is no longer a concept-only task. The approved presentation is live on
+`jungle-heart-temple`; `proto-slabs` remains hidden unless the URL contains `?proto=1`.
+Implemented work includes the tilted board, full-bleed landscape HUD, depth-scaled units,
+top-layer unit bars, recessed road sockets, raised platforms, tilt-aware touch selection,
+wider enemy formations, shared hero/enemy depth sorting, spawn-gate layering, the centred boss
+HUD, quieter empty tiles and the authored Jungle panorama. The platform front lip is now 0.15
+cell, half its former visible height.
+
+The named source and implementation log is **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**.
+Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
+
+#### To do — next sensible steps
+
+- [ ] **P0 — Real-device acceptance pass:** verify the current build on a landscape phone with
+  several simultaneous enemies and a boss. Check bar ownership, damage-number readability,
+  platform height, the hidden in-wave spawn label and the centred boss HUD.
+- [ ] **P0 — Edge interaction pass:** test taps on all four board edges and around the top and
+  bottom safe areas on a real device. Automated coverage exists for 6x3, 8x4 and 9x5 boards,
+  but physical tap accuracy is still the acceptance criterion.
+- [ ] **P1 — Representative rollout matrix:** apply and tune the approved R18 presentation on
+  representative 8x4 and 9x5 maps, including one- and two-gate layouts. Do not enable every map
+  blindly; approve one representative map per layout/theme combination first.
+- [ ] **P1 — Theme panoramas:** create an authored wide backdrop for each approved theme and
+  replace the ordinary-terrain fallback. Jungle already uses `jungle-terrain-wide-v1.png`.
+- [ ] **P1 — HUD collision matrix:** capture 797x360, 844x390 and 915x412 landscape states for
+  placement, dense combat and bosses; confirm notices, buffs, wave preview and boss health never
+  cover one another.
+- [ ] **P1 — Generalize after approval:** once the representative matrix passes, make the layout
+  rules the shared default for all suitable maps while retaining per-map tilt/art overrides for
+  unusual geometry. New themes and tile arrangements must inherit the behavior rather than copy
+  map-specific CSS or renderer branches.
+- [ ] **P2 — Portrait decision:** portrait phones are unchanged. Decide whether to keep the
+  current portrait presentation or define a separate portrait layout; do not derive it implicitly
+  from the landscape treatment.
+- [ ] **P2 — Regression and balance:** run the focused TD checks after rollout, then resolve the
+  known Campaign 1-1 balance failure as part of R12 before treating the full suite as green.
+- [ ] **P3 — Continue the broader roadmap:** after R18 rollout, resume R12 balance, R15 Fjord
+  enemies, R11 three-gate content and the owner decisions needed for R14 Lords.
+
+### Open work after the board rewrite (October 4, 2026)
 
 Branch `tower-defense-planning` finished the board rewrite and the first round of ideas (archive:
 "Board rewrite and ideas round, October 2, 2026"). The owner asked to build these without
@@ -48,7 +94,7 @@ run in parallel.
 |---|---|---|---|---|
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
-| R18 | Top-of-board clipping: tilt the ground (k ~0.75, board down ~70 px) behind `tuning.board.tilt`, prototype on one map per theme, scenery bands top and bottom, boss health bar and buff pills into the top band; then depth scaling and heroes' feet lower. Approved October 2; see [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md) | Agent (renderer), Owner (band art) | - | L |
+| R18 | Tilted board and landscape HUD: core prototype and Jungle presentation implemented; representative layout/theme rollout, authored panoramas and real-device acceptance remain. See **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)** | Agent (shared renderer/HUD), Owner (device approval and theme art) | - | L |
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder

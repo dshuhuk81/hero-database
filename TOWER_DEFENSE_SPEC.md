@@ -1,6 +1,7 @@
 # Tower Defense - Current Design Reference
 
-Last rewritten: October 1, 2026, after every battlefield moved to compact boards.
+Last updated: October 4, 2026, after every battlefield moved to compact boards and the first
+tilted-board landscape presentation was approved on a real device.
 
 This file describes what the game **is** today, so that new work can start from it. It is
 the current-state reference: when code and this file disagree, the code wins, and the change
@@ -16,6 +17,8 @@ tests and the open items.
 Related documents:
 - Open work and priorities: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md)
 - Board adoption plan, decisions and status: [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md)
+- Tilted board, landscape HUD and phone-review implementation record:
+  [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)
 - Why the game moved to boards (analysis and bot measurements): [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md), section F
 - Currencies, upgrade layers and balance levers: [TOWER_DEFENSE_MECHANICS_OVERVIEW.md](TOWER_DEFENSE_MECHANICS_OVERVIEW.md)
 - Hero ultimates and kits: [TOWER_DEFENSE_HERO_SKILLS.md](TOWER_DEFENSE_HERO_SKILLS.md)
@@ -241,7 +244,29 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 | `heroPatterns` | `aegir` `cross2`, `stheno` `lance`, `skadi` `star3`, `boreas` `blockPlus` | Signature patterns by hero id (section 5) |
 | `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; grunts/runners count 0.4, hp 2.5, attack 1.25; flyers count 0.4, hp 1.75, attack 1 | Fewer, stronger enemies and road class variety (section 8) |
 | `focus` | slots 2, share 1 | Mage focus rule (section 7) |
-| `heroScale`, `enemyScale`, `bossScale` | 1.3, 1.8, 1 | Unit size on boards; health bars follow. Bosses use their own scale because their source art is already larger and must fit on upper lanes |
+| `heroScale`, `enemyScale`, `bossScale` | 1.3, 1.8, 1.3 | Unit size on boards. Bars render in their own top layer. Boss source art and scale are handled separately from ordinary enemies |
+
+### Tilted-board landscape presentation
+
+`tuning.board.tilt` enables the R18 presentation per map without changing simulation geometry or
+the generated `geometryHash`. It currently targets `jungle-heart-temple` and the hidden
+`proto-slabs`; the latter has its own 0.85 / 40 override while the shared values are 0.75 / 70.
+The full decision history and rollout boundary are in
+[TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md).
+
+- the ground, tiles and board-aligned art are vertically tilted; actors and readability graphics
+  keep their normal thickness;
+- unit scale changes by depth from about 0.92 on the far row to 1.08 on the near row;
+- landscape HUD rows float over the scenery and the deck targets a 50 px inner portrait at the
+  360 px reference height; portrait orientation is unchanged;
+- unit bars, rings and status icons occupy a top graphics layer; heroes use green health plus a
+  shorter purple ultimate bar, enemies use thin red health bars and bosses use a centred HUD bar;
+- ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
+  behind units; spawn labels hide during active waves;
+- taps are inverse-mapped through the visible tilt and checked in that plane, including the edge
+  halo on 6x3, 8x4 and 9x5 boards;
+- Jungle uses the authored `jungle-terrain-wide-v1.png` panorama. Other themes use their ordinary
+  terrain as a fallback until an authored wide backdrop is approved.
 
 ### Patterns and reach steps
 
@@ -318,7 +343,8 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
 - **Placement:** road tiles take Tank / Warrior / Assassin, platform tiles take Mage / Archer /
   Support. Flyers can only be hit by platform heroes. Tile look (`map-scene.js` `drawSlot`):
   road tiles are recessed sockets with corner brackets and a shield glyph, platform tiles
-  raised bevelled plates with a double chevron; on boards they are drawn at the cell size.
+  raised bevelled plates with a double chevron; on boards they are drawn at the cell size. On
+  tilted boards the platform front lip is 0.15 cell high (half the original prototype height).
   Placement states (`render.js` `slotMode`): while a fallen hero is picked, tiles of its
   type glow and the others fade; with a full team empty tiles go quiet.
 - **Recruiting** (`page/recruit.ts`): tapping an empty tile opens the sheet. Choosing a card
@@ -326,7 +352,7 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   ultimate text and collapsed details (attack, health, speed, crit, class rule, tile bonus,
   campaign level). Numbers come from `sim.deployPreview()`, the same maths as `place()`. Only
   "Deploy <hero> · <cost> gold" places.
-- **Blocking:** `blockLimit` Tank 3, Warrior 2, Assassin 1, contact 42 px. Held enemies take
+- **Blocking:** `blockLimit` Tank 3, Warrior 2, Assassin 1, contact 24 px. Held enemies take
   +20% damage; enemies passing a full blocker are slowed.
 - **Class archetypes** (`tuning.classes`): Tank `taunt` (guard: shrugs off part of each hit),
   Warrior `cleave`, Assassin `execute` (dash to loose enemies, veil), Mage `nuke` (splash,
