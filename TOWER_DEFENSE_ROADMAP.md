@@ -31,20 +31,24 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 Planning input: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) (ideas and
 their status), [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md) (the board
 rewrite, finished), and **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**
-(R18 design decisions, prototype rounds and implementation record). The game as it is now:
+(R18 design decisions, prototype rounds and implementation record). The Campaign-wide rollout and
+load-audit implementation follow **[Campaign R18 Rollout and Stage-Load Audit Design](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)**. The game as it is now:
 [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
 
 Only open work. Use subagents for more than one milestone; coordinate file changes.
 
 ### Current focus: finish R18 and make it reusable (October 4, 2026)
 
-R18 is no longer a concept-only task. The approved presentation is live on
-`jungle-heart-temple`; `proto-slabs` remains hidden unless the URL contains `?proto=1`.
+R18 is no longer a concept-only task. The approved presentation is the default for all 82 current
+Campaign stages and future Campaign stages, independent of layout, gate count or theme. Free Play
+remains explicit: only maps listed in `tuning.board.tilt.maps` use R18 there. `proto-slabs` remains
+hidden unless the URL contains `?proto=1`, and `?tilt=off` remains the development escape hatch.
 Implemented work includes the tilted board, full-bleed landscape HUD, depth-scaled units,
 top-layer unit bars, recessed road sockets, raised platforms, tilt-aware touch selection,
 wider enemy formations, shared hero/enemy depth sorting, spawn-gate layering, the centred boss
-HUD, quieter empty tiles and the authored Jungle panorama. The platform front lip is now 0.15
-cell, half its former visible height.
+HUD, quieter empty tiles and the authored Jungle panorama. Map/rule labels are compact single-line
+chips and transient notices use a small two-line toast at the upper right instead of covering the
+top centre. The platform front lip is now 0.15 cell, half its former visible height.
 
 The named source and implementation log is **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**.
 Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
@@ -57,25 +61,29 @@ Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPE
 - [ ] **P0 — Edge interaction pass:** test taps on all four board edges and around the top and
   bottom safe areas on a real device. Automated coverage exists for 6x3, 8x4 and 9x5 boards,
   but physical tap accuracy is still the acceptance criterion.
-- [ ] **P1 — Representative rollout matrix:** apply and tune the approved R18 presentation on
-  representative 8x4 and 9x5 maps, including one- and two-gate layouts. Do not enable every map
-  blindly; approve one representative map per layout/theme combination first.
+- [x] **P1 — Representative rollout matrix:** the shared R18 presentation is enabled on public
+  8x4 and 9x5 maps with both one and two gates. These four maps are the approval set before any
+  broader rollout.
 - [ ] **P1 — Theme panoramas:** create an authored wide backdrop for each approved theme and
   replace the ordinary-terrain fallback. Jungle already uses `jungle-terrain-wide-v1.png`.
 - [ ] **P1 — HUD collision matrix:** capture 797x360, 844x390 and 915x412 landscape states for
   placement, dense combat and bosses; confirm notices, buffs, wave preview and boss health never
   cover one another.
-- [ ] **P1 — Generalize after approval:** once the representative matrix passes, make the layout
-  rules the shared default for all suitable maps while retaining per-map tilt/art overrides for
-  unusual geometry. New themes and tile arrangements must inherit the behavior rather than copy
-  map-specific CSS or renderer branches.
-- [ ] **P2 — Portrait decision:** portrait phones are unchanged. Decide whether to keep the
-  current portrait presentation or define a separate portrait layout; do not derive it implicitly
-  from the landscape treatment.
-- [ ] **P2 — Regression and balance:** run the focused TD checks after rollout, then resolve the
-  known Campaign 1-1 balance failure as part of R12 before treating the full suite as green.
-- [ ] **P3 — Continue the broader roadmap:** after R18 rollout, resume R12 balance, R15 Fjord
-  enemies, R11 three-gate content and the owner decisions needed for R14 Lords.
+- [x] **P1 — Campaign-wide rollout:** all Campaign stages use the shared R18 renderer by run
+  context, including 10x5 finales. Free Play stays map-explicit, while per-map tilt/art overrides
+  remain available for unusual geometry.
+- [x] **P2 — Orientation policy:** phones do not have a portrait game layout. Portrait is blocked
+  by the existing full-screen modal, pauses the run and asks the player to rotate to landscape.
+- [ ] **P3 — Continue the design roadmap:** after R18 approval, continue theme panoramas, tile and
+  environment readability, R15 Fjord presentation, three-gate visual language and the owner
+  decisions needed for R14 Lords.
+
+The WoR-inspired balance evidence pass is implemented as `npm run td:campaign-load`. It measures
+effective HP, attack, composition, count and spawn pressure through the real simulator and flags
+adjacent-stage changes. It never edits `tdCampaign.json` or proposes replacement numbers. Actual
+tuning remains a reviewed decision using `td-board-tune.mjs`, `test-td-campaign.mjs`, bot pacing
+results and owner playtests. Source and boundary: **[Campaign R18 Rollout and Stage-Load Audit
+Design](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)**.
 
 ### Open work after the board rewrite (October 4, 2026)
 
@@ -94,7 +102,7 @@ run in parallel.
 |---|---|---|---|---|
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
-| R18 | Tilted board and landscape HUD: core prototype and Jungle presentation implemented; representative layout/theme rollout, authored panoramas and real-device acceptance remain. See **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)** | Agent (shared renderer/HUD), Owner (device approval and theme art) | - | L |
+| R18 | Tilted board and landscape HUD: the shared presentation is live across all Campaign stages and remains explicit per map in Free Play; authored panoramas and real-device acceptance remain. See **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)** | Agent (shared renderer/HUD), Owner (device approval and theme art) | - | L |
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder
@@ -195,6 +203,7 @@ npm run test:td-balance         # 5-squad balance harness
 npm run td:sweep                # difficulty sweep (enemy HP steps x squads x maps)
 npm run td:classes              # class identity report (M6 criteria: matrix, class removal, one-class squads)
 npm run td:pacing               # audit step 3: class removal, maps, campaign minutes, seals (2 bot policies)
+npm run td:campaign-load        # deterministic Campaign HP/ATK/count/spawn-pressure evidence; optional --chapter / --csv
 npm run td:layout -- --map=<id> # tile layout A/B: committed vs working tdMaps.json (Free Play + campaign stages)
 node scripts/td-audio-levels.mjs                                   # hero sound gains -> src/data/tdAudioLevels.json (needs ffmpeg)
 npm run build:game-balance      # regenerate hero balance (re-ranks all heroes)

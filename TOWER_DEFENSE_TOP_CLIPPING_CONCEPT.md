@@ -4,10 +4,13 @@ Drafted October 2, 2026; implementation record updated October 4, 2026 after the
 real-device reviews and comparison material from another mobile tower-defense game ("Watcher of
 Realms" style).
 
-**Status:** the core prototype is implemented and approved on `jungle-heart-temple`; the hidden
-`proto-slabs` map remains available with `?proto=1`. Rollout to representative layouts and other
-themes is still pending. The canonical priority list is **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)**;
-the current game rules are in [Tower Defense Specification](TOWER_DEFENSE_SPEC.md).
+**Status:** the approved presentation is implemented across all 82 current Campaign stages and is
+inherited by future Campaign stages. Free Play remains explicit through `tuning.board.tilt.maps`;
+the hidden `proto-slabs` map remains available with `?proto=1`. Authored panoramas for themes other
+than Jungle are still pending. The canonical priority list is **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)**;
+the current game rules are in [Tower Defense Specification](TOWER_DEFENSE_SPEC.md). The rollout
+boundary is specified in **[Campaign R18 Rollout and Stage-Load Audit
+Design](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)**.
 
 **Owner constraints (October 2):** heroes and bosses must always be fully visible, **no
 shrinking of figures** (they are already small), the board itself may change. Compare against
@@ -212,10 +215,16 @@ The following is the approved visual baseline, not a one-map experiment to be re
 - platforms are raised but use the reduced 0.15-cell front lip; road tiles read as recessed;
 - boss health belongs in the centred HUD; ordinary enemies and heroes keep compact overhead bars;
 - tall spawn art stays behind units and its label is hidden during an active wave.
+- map/rule labels use a compact single line; transient battle notices use at most two compact
+  lines at the upper right and do not occupy the top centre;
+- phones in portrait are blocked by the orientation gate and asked to rotate; there is no portrait
+  gameplay layout.
 
-The next implementation work is rollout rather than more one-off polish: validate representative
-6x3, 8x4 and 9x5 layouts, then share the behavior across suitable maps and new themes using
-per-map overrides only where geometry or art requires them. See the prioritized checklist in the
+The approval matrix was `proto-slabs` (6x3), `moonlit-pass` (8x4, one gate), `sunscar-ruins`
+(8x4, two gates), `sunscar-basin` (9x5, one gate) and `jungle-flooded-court` (9x5, two gates).
+That renderer path now applies to every Campaign stage by run context, including 10x5 finales;
+Free Play still requires explicit map membership. New Campaign layouts inherit the behavior and
+use per-map overrides only where geometry or art requires them. See the prioritized checklist in the
 [Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md#to-do--next-sensible-steps).
 
 ## 1. Why it clips today

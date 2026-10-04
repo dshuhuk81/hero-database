@@ -19,6 +19,8 @@ Related documents:
 - Board adoption plan, decisions and status: [docs/tower-defense-board-plan.md](docs/tower-defense-board-plan.md)
 - Tilted board, landscape HUD and phone-review implementation record:
   [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)
+- Campaign-wide R18 rollout and WoR-inspired load-audit design:
+  [docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)
 - Why the game moved to boards (analysis and bot measurements): [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md), section F
 - Currencies, upgrade layers and balance levers: [TOWER_DEFENSE_MECHANICS_OVERVIEW.md](TOWER_DEFENSE_MECHANICS_OVERVIEW.md)
 - Hero ultimates and kits: [TOWER_DEFENSE_HERO_SKILLS.md](TOWER_DEFENSE_HERO_SKILLS.md)
@@ -248,9 +250,13 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 
 ### Tilted-board landscape presentation
 
-`tuning.board.tilt` enables the R18 presentation per map without changing simulation geometry or
-the generated `geometryHash`. It currently targets `jungle-heart-temple` and the hidden
-`proto-slabs`; the latter has its own 0.85 / 40 override while the shared values are 0.75 / 70.
+`tuning.board.tilt` enables the R18 presentation without changing simulation geometry or the
+generated `geometryHash`. `tilt.campaign: true` makes it the default for every Campaign run,
+including future stages and current 8x4, 9x5 and 10x5 layouts. Free Play remains explicit and only
+uses R18 for maps in `tilt.maps`: `jungle-heart-temple`, `proto-slabs`, `moonlit-pass`,
+`sunscar-ruins`, `sunscar-basin` and `jungle-flooded-court`. `proto-slabs` has its own 0.85 / 40
+override while the shared values are 0.75 / 70. `?tilt=off` disables it for development and a
+numeric `?tilt=` overrides the vertical factor.
 The full decision history and rollout boundary are in
 [TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md).
 
@@ -258,7 +264,10 @@ The full decision history and rollout boundary are in
   keep their normal thickness;
 - unit scale changes by depth from about 0.92 on the far row to 1.08 on the near row;
 - landscape HUD rows float over the scenery and the deck targets a 50 px inner portrait at the
-  360 px reference height; portrait orientation is unchanged;
+  360 px reference height; portrait phones are blocked by a modal orientation gate, pause and
+  continue after the player rotates to landscape;
+- map/environment labels are single-line chips and transient battle notices are compact two-line
+  toasts at the upper right, leaving the upper centre available for combat and boss health;
 - unit bars, rings and status icons occupy a top graphics layer; heroes use green health plus a
   shorter purple ultimate bar, enemies use thin red health bars and bosses use a centred HUD bar;
 - ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
@@ -654,6 +663,15 @@ levelled with the chapter's first-clear currencies, up to 35 sampled squads): ta
 rate 90% on 1-1, 65% on other Chapter 1 stages, 50% on regular stages, 35% on finales.
 `test-td-campaign.mjs` keeps every stage above a 20% floor.
 
+`npm run td:campaign-load` adds a deterministic evidence layer inspired by the external Watcher of
+Realms campaign analysis. It runs authored waves through the simulator's own shaping, gates,
+minimum spacing, environment modifiers, stage scaling and boss overrides, then reports effective
+count, spawn pressure, HP, attack and resistance mix. `--chapter=<n>` filters the Markdown output;
+`--csv=<path>` writes the stable full table. Summoned children are named separately because their
+count depends on combat state. Review flags are not failures and the command never edits Campaign
+data. `td-board-tune.mjs`, Campaign simulation and owner review remain responsible for actual
+changes to `hpScale`, composition, counts, timing, resistances or lives.
+
 ## 12. Campaign and collection screens
 
 ### Navigation
@@ -835,6 +853,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:board -- --size --gates --theme --count` | Unique board candidates as an HTML atlas |
 | `npm run td:board -- --current` / `--check` | Every board on one page / recipes regenerate and layouts are unique |
 | `node scripts/td-board-tune.mjs --chapters=1,2` | Campaign `hpScale` search against bot win-rate targets (JSON to stdout) |
+| `npm run td:campaign-load -- [--chapter=<n>] [--csv=<path>]` | Effective Campaign stage load from simulator wave shaping, gates, stats and spawn pressure; evidence only, no data writes |
 | `node scripts/migrate-td-boards.mjs [--dry]` | The one-time migration of every map to boards (reference for publishing) |
 | `npm run td:wave-shape -- [--hp --attack --flyer --focus --kit]` | Wave shape experiments against unconverted waves |
 | `npm run td:sweep`, `td:classes`, `td:pacing`, `td:economy`, `td:upgrade-sweep`, `td:progression` | Difficulty, class, pacing, gold and summon reports |
