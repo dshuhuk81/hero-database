@@ -750,6 +750,7 @@
     "enemyScale": 1.5,
     "bossScale": 1.5,
     "tilt": {
+      "campaign": true,
       "k": 0.75,
       "offsetY": 70,
       "maps": ["jungle-heart-temple", "proto-slabs"],

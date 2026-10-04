@@ -8,6 +8,7 @@ import * as mapScene from "../src/game/td/map-scene.js";
 const { canvasPoint, nearestSlot } = render;
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
+import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 
 // Combat readability: bars identify allegiance at a glance, rapid numbers merge instead of
 // stacking, status pips stay bounded, spawn labels step aside during combat, and bosses use HUD.
@@ -23,6 +24,38 @@ assert.equal(mapScene.spawnLabelVisible({ running: false }), true, "spawn label 
 assert.equal(mapScene.spawnLabelVisible({ running: true }), false, "spawn label hides during combat");
 assert.equal(ui.bossHudState({ enemies: [] }), null, "boss HUD stays hidden without a living boss");
 assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 250, maxHp: 1000 }] }), { ratio: 0.25, hp: 250, maxHp: 1000 }, "boss HUD reports the living boss health");
+
+// R18 activation is a run-context decision: Free Play stays opt-in by map, while every current
+// and future Campaign stage inherits the shared tilted presentation unless the developer disables
+// it through the URL escape hatch.
+{
+  assert.equal(typeof render.resolveTilt, "function", "renderer exposes a pure tilt resolver");
+  const mapById = (id) => maps.find((entry) => entry.id === id);
+  const explicit = render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt);
+  assert.deepEqual(explicit, { enabled: true, k: 0.75, offsetY: 70 }, "explicit Free Play map enables R18");
+
+  const freeControl = mapById("moonlit-terraces");
+  assert.deepEqual(render.resolveTilt(freeControl, tuning.board.tilt), { enabled: false, k: 1, offsetY: 0 }, "unlisted Free Play map stays flat");
+  assert.deepEqual(render.resolveTilt(freeControl, tuning.board.tilt, { campaign: true }), { enabled: true, k: 0.75, offsetY: 70 }, "the same map tilts in Campaign");
+
+  for (const id of ["moonlit-terraces", "sunscar-basin", "sunscar-throne"]) {
+    const map = mapById(id);
+    assert.ok(map, `${id} exists`);
+    assert.equal(render.resolveTilt(map, tuning.board.tilt, { campaign: true }).enabled, true, `${map.grid.board.cols}x${map.grid.board.rows} Campaign map tilts`);
+  }
+
+  assert.deepEqual(render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt, { campaign: true, param: "off" }), { enabled: false, k: 1, offsetY: 0 }, "tilt=off disables R18");
+  assert.deepEqual(render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt, { param: "0.6" }), { enabled: true, k: 0.6, offsetY: 70 }, "numeric URL override wins");
+  assert.deepEqual(render.resolveTilt(mapById("proto-slabs"), tuning.board.tilt), { enabled: true, k: 0.85, offsetY: 40 }, "per-map geometry override wins");
+
+  const stages = campaign.chapters.flatMap((chapter) => chapter.stages);
+  assert.equal(stages.length, 82, "Campaign fixture covers all current stages");
+  for (const stage of stages) {
+    const map = mapById(stage.mapId);
+    assert.ok(map, `${stage.id} references an existing map`);
+    assert.equal(render.resolveTilt(map, tuning.board.tilt, { campaign: true }).enabled, true, `${stage.id} enables R18`);
+  }
+}
 
 // R18 wide scenery: Jungle uses its authored panoramic backdrop while themes without one retain
 // their ordinary terrain image as the bleed fallback.

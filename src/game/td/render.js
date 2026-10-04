@@ -96,6 +96,20 @@ export function combatBarStyle(role) {
   return { healthColor: 0xe85d68, healthHeight: 3, secondaryWidth: 0, secondaryHeight: 0, overhead: true };
 }
 
+export function resolveTilt(map, tiltConfig, { campaign = false, param = null } = {}) {
+  const explicit = Boolean(map?.id && tiltConfig?.maps?.includes(map.id));
+  const enabled = Boolean(tiltConfig) && param !== "off" && (explicit || (campaign && tiltConfig.campaign === true));
+  if (!enabled) return { enabled: false, k: 1, offsetY: 0 };
+  const resolved = { ...tiltConfig, ...(tiltConfig.perMap?.[map?.id] ?? {}) };
+  const numericParam = Number(param);
+  const requestedK = param !== null && param !== "" && Number.isFinite(numericParam) ? numericParam : Number(resolved.k);
+  return {
+    enabled: true,
+    k: Math.min(1, Math.max(0.5, Number.isFinite(requestedK) ? requestedK : 1)),
+    offsetY: Number.isFinite(Number(resolved.offsetY)) ? Number(resolved.offsetY) : 0,
+  };
+}
+
 const DAMAGE_NUMBER_OFFSETS = [-14, 14, 0, -24, 24];
 export const damageNumberOffset = (stack) => DAMAGE_NUMBER_OFFSETS[stack % DAMAGE_NUMBER_OFFSETS.length];
 
@@ -149,14 +163,14 @@ export async function createRenderer(canvas, game, options = {}) {
   // R18 prototype (TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md): tilt the ground, not the figures.
   // Every layer lives in `tiltRoot`, squashed to k and moved down by offsetY; unit containers
   // are counter-scaled by 1/k so heroes and enemies keep their size. Sim coordinates are
-  // unchanged. Active only for maps listed in tuning.board.tilt.maps; ?tilt=off disables it,
-  // ?tilt=0.7 (or any number 0.5 to 1) overrides k.
+  // unchanged. Active for Campaign runs and maps listed in tuning.board.tilt.maps;
+  // ?tilt=off disables it, ?tilt=0.7 (or any number 0.5 to 1) overrides k.
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
-  const tiltOn = Boolean(tiltCfg) && tiltParam !== "off" && (tiltCfg.maps ?? []).includes(game.map?.id);
-  const tiltMine = tiltOn ? { ...tiltCfg, ...(tiltCfg.perMap?.[game.map?.id] ?? {}) } : null; // a map may carry its own k and offsetY
-  const tiltK = tiltOn ? Math.min(1, Math.max(0.5, Number(tiltParam) || tiltMine.k)) : 1;
-  const tiltOffsetY = tiltOn ? tiltMine.offsetY : 0;
+  const resolvedTilt = resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign), param: tiltParam });
+  const tiltOn = resolvedTilt.enabled;
+  const tiltK = resolvedTilt.k;
+  const tiltOffsetY = resolvedTilt.offsetY;
   tiltView.k = tiltK;
   tiltView.offsetY = tiltOffsetY;
   const tiltRoot = new PIXI.Container();
