@@ -2,6 +2,10 @@
 
 Generated with the built-in image generation tool on September 25, 2026. Original output copied into `public/td/maps/`; the game serves these assets locally without an R2 upload.
 
+October 5 landscape extension: [Moonlit Landscape Panorama](moonlit-panorama.md) records
+`moonlit-terrain-wide-v1.png`, the final edit prompt and theme-wide integration. The original
+terrain and structure assets below remain unchanged.
+
 ## Terrain — moonlit-terrain-v1.png
 
 Use case: stylized-concept.
@@ -18,4 +22,3 @@ Use case: stylized-concept. Asset type: finished transparent 2D sprite, ONE enem
 ## Base — moonlit-base-v1.png
 
 Use case: stylized-concept. Asset type: finished transparent 2D game sprite of a celestial sanctuary BASE TILE for a dark mythic tower defense game. One isolated complete small building on a genuinely transparent background, square image, generous 15% transparent margins. Slightly elevated orthographic three-quarter TOP DOWN perspective for a top-down game board. Monumental but compact circular blue-grey stone stepped foundation, chipped thick layered slate masonry, ornate tarnished gold celestial astrolabe ring arching above a luminous warm ivory-gold sacred core in the CENTER of the footprint. Dark small temple columns left and right, two tiny warm braziers, beautiful carved sacred stone, several delicate concentric orbital rings. The core is a magical entrance/enemy absorption point in the center of the tile, glowing softly with an open clear threshold receiving creatures approaching from the LEFT. Light source upper left. Cohesive premium hand-painted fantasy mobile-game sprite, detailed but strong clear silhouette at 120px size, real material depth, dark indigo shadows, subdued antique gold, luminous core. Entire foundation visible; no ground outside the stone foundation, no cast shadow beyond it, no people, no letters, no UI, no frame, no checkerboard, no solid background. Not a full scene, just ONE standalone building sprite with real alpha transparency.
-

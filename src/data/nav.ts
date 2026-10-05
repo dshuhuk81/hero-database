@@ -288,7 +288,7 @@ const allNavEntries: NavEntry[] = [
   },
   {
     label: "Wishlist",
-    href: "/wishlisht",
+    href: "/wishlist",
     group: "tools",
     teaser: true,
     description: {

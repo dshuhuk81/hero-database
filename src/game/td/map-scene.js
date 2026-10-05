@@ -12,6 +12,7 @@ export const MAP_SCENES = {
     name: "Moonlit", baseName: "Sanctuary",
     assets: {
       terrain: "/td/maps/moonlit-terrain-v1.png",
+      bleed: "/td/maps/moonlit-terrain-wide-v1.png",
       spawn: "/td/maps/moonlit-spawn-v1.png",
       base: "/td/maps/moonlit-base-v1.png",
       road: "/td/maps/moonlit-road-v1.png",
@@ -30,6 +31,7 @@ export const MAP_SCENES = {
     name: "Verdant", baseName: "Shrine",
     assets: {
       terrain: "/td/maps/verdant-terrain-v2.png",
+      bleed: "/td/maps/verdant-terrain-wide-v1.png",
       spawn: "/td/maps/verdant-spawn-v2.png",
       base: "/td/maps/verdant-base-v2.png",
       road: "/td/maps/verdant-road-v2.png",
@@ -49,6 +51,7 @@ export const MAP_SCENES = {
     name: "Sunscar", baseName: "Sanctuary",
     assets: {
       terrain: "/td/maps/sunscar-terrain-v1.png",
+      bleed: "/td/maps/sunscar-terrain-wide-v1.png",
       spawn: "/td/maps/sunscar-spawn-v1.png",
       base: "/td/maps/sunscar-base-v1.png",
       road: "/td/maps/sunscar-road-v1.png",
@@ -87,11 +90,22 @@ export const MAP_SCENES = {
 
 // New environments share proven transparent architecture and road textures, with
 // their own terrain, grading, highlights and gameplay rules.
+// Register only delivered panoramas: future environments retain their terrain fallback.
+const panoramicEnvironments = new Set([
+  "frostbound", "ashen", "stormpeak", "tidal", "mycelium", "crystal",
+  "necropolis", "autumn", "celestial", "clockwork",
+]);
 for (const environment of Object.values(ENVIRONMENTS)) {
   const source = MAP_SCENES[environment.reuse === "verdant" ? "verdant-shrine-v1" : `${environment.reuse}-sanctuary-v1`];
+  // Architecture may be shared, but a panorama belongs only to its own theme.
+  const { bleed: _sourcePanorama, ...sharedAssets } = source.assets;
   MAP_SCENES[`${environment.id}-sanctuary-v1`] = {
     ...source, name: environment.name, baseName: "Sanctuary",
-    assets: { ...source.assets, terrain: `/td/maps/${environment.id}-terrain-v1.png` },
+    assets: {
+      ...sharedAssets,
+      terrain: `/td/maps/${environment.id}-terrain-v1.png`,
+      ...(panoramicEnvironments.has(environment.id) ? { bleed: `/td/maps/${environment.id}-terrain-wide-v1.png` } : {}),
+    },
     grade: { color: 0x080d16, alpha: 0.1 },
     seed: environment.id.split("").reduce((seed, character) => (Math.imul(seed, 31) + character.charCodeAt(0)) >>> 0, 7),
     structureTint: environment.color,
@@ -518,9 +532,9 @@ export function createMapScene(PIXI, game, {
       const slab = new PIXI.Graphics();
       slabRoot.addChild(slab);
       // The slab is a stone block: a top face the size of the cell and a front face (the lip)
-      // below it, about 0.15 cell tall. This is half the original height so ranged units sit
-      // on clearly raised ground without the slab dominating the battlefield.
-      const lip = Math.round(TILE * 0.15);
+      // below it, about 0.1125 cell tall (0.15 reduced by 25%, Oct 5: slab and its shadow read too
+      // tall against the Watcher of Realms reference). Ranged units still sit on clearly raised ground.
+      const lip = Math.round(TILE * 0.1125);
       for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
       slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
       const rawStone = STONE[2] ?? STONE[0];

@@ -92,10 +92,32 @@ assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 25
   assert.equal(attributes.has("data-bleed"), false, "an untilted Free Play run clears stale Campaign bleed");
 }
 
-// R18 wide scenery: Jungle uses its authored panoramic backdrop while themes without one retain
+// R18 wide scenery: approved themes use authored panoramic backdrops while themes without one retain
 // their ordinary terrain image as the bleed fallback.
 assert.equal(mapScene.mapBackdropFor?.({ art: "jungle-heart-v1" }), "/td/maps/jungle-terrain-wide-v1.png", "Jungle selects the panoramic backdrop");
-assert.equal(mapScene.mapBackdropFor?.({ art: "moonlit-sanctuary-v1" }), "/td/maps/moonlit-terrain-v1.png", "other themes fall back to their terrain");
+for (const map of maps.filter((map) => map.art === "moonlit-sanctuary-v1")) {
+  assert.equal(mapScene.mapBackdropFor(map), "/td/maps/moonlit-terrain-wide-v1.png", `${map.id} shares Moonlit's panoramic backdrop`);
+  assert.equal(mapScene.mapSceneFor(map).assets.terrain, "/td/maps/moonlit-terrain-v1.png", `${map.id} retains the original playable terrain`);
+}
+for (const [art, id, version] of [["verdant-shrine-v1", "verdant", "v2"], ["sunscar-sanctuary-v1", "sunscar", "v1"]]) {
+  assert.equal(mapScene.mapBackdropFor({ art }), `/td/maps/${id}-terrain-wide-v1.png`, `${id} selects its own panorama`);
+  assert.equal(mapScene.mapSceneFor({ art }).assets.terrain, `/td/maps/${id}-terrain-${version}.png`, `${id} keeps its selected playable terrain`);
+}
+{
+  const { ENVIRONMENTS } = await import("../src/game/td/environments.js");
+  for (const environment of Object.values(ENVIRONMENTS)) {
+    const map = { art: `${environment.id}-sanctuary-v1` };
+    assert.equal(mapScene.mapBackdropFor(map), `/td/maps/${environment.id}-terrain-wide-v1.png`, `${environment.id} selects its own panorama, not shared architecture's theme`);
+    assert.equal(mapScene.mapSceneFor(map).assets.terrain, `/td/maps/${environment.id}-terrain-v1.png`, `${environment.id} keeps the original playable terrain`);
+  }
+}
+{
+  const { existsSync } = await import("node:fs");
+  for (const scene of Object.values(mapScene.MAP_SCENES)) {
+    assert.ok(existsSync(new URL(`../public${scene.assets.bleed}`, import.meta.url)), `${scene.name} panorama exists in public assets`);
+  }
+  assert.equal(mapScene.mapBackdropFor({ art: "unknown-future-theme" }), null, "unknown art is not replaced with another theme");
+}
 
 // R18 rollout: the first public review matrix covers both established board sizes and both
 // gate counts. All four maps use the shared renderer path; theme art may still use its fallback.

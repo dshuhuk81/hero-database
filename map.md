@@ -1,6 +1,6 @@
 # Tower defense maps and required art assets
 
-Last updated: September 25, 2026.
+Last updated: October 5, 2026.
 
 ## Instructions for agents creating or updating maps
 
@@ -13,6 +13,7 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 | Purpose / asset key | Map 1: Moonlit Pass | Map 2: Verdant Crossing | Map 3: Sunscar Ruins |
 | --- | --- | --- | --- |
 | Ground painting / `terrain` | [moonlit-terrain-v1.png](public/td/maps/moonlit-terrain-v1.png) | [verdant-terrain-v2.png](public/td/maps/verdant-terrain-v2.png) | [sunscar-terrain-v1.png](public/td/maps/sunscar-terrain-v1.png) |
+| Wide landscape backdrop / `bleed` | [moonlit-terrain-wide-v1.png](public/td/maps/moonlit-terrain-wide-v1.png) | [verdant-terrain-wide-v1.png](public/td/maps/verdant-terrain-wide-v1.png) | [sunscar-terrain-wide-v1.png](public/td/maps/sunscar-terrain-wide-v1.png) |
 | Enemy entrance / `spawn` | [moonlit-spawn-v1.png](public/td/maps/moonlit-spawn-v1.png) | [verdant-spawn-v2.png](public/td/maps/verdant-spawn-v2.png) | [sunscar-spawn-v1.png](public/td/maps/sunscar-spawn-v1.png) |
 | Defended sanctuary / `base` | [moonlit-base-v1.png](public/td/maps/moonlit-base-v1.png) | [verdant-base-v2.png](public/td/maps/verdant-base-v2.png) | [sunscar-base-v1.png](public/td/maps/sunscar-base-v1.png) |
 | Repeating road surface / `road` | [moonlit-road-v1.png](public/td/maps/moonlit-road-v1.png) | [verdant-road-v2.png](public/td/maps/verdant-road-v2.png) | [sunscar-road-v1.png](public/td/maps/sunscar-road-v1.png) |
@@ -20,7 +21,16 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 
 ## Current map status
 
+- **All-theme panoramas (October 5):** owner requested the remaining twelve extensions after
+  Moonlit. All 14 current themes now have an opaque wide backdrop; each additional environment
+  uses `public/td/maps/<environment-id>-terrain-wide-v1.png`, never the panorama of its shared
+  architecture. The playable terrain remains unchanged (Verdant still uses v2). Complete asset
+  list, source images, prompts and pending phone review: [Theme Landscape Panoramas](docs/theme-panoramas.md).
 - **Map 1 — Moonlit Pass:** implemented, map id `moonlit-pass`, art key `moonlit-sanctuary-v1`. Cool moonlit stone and celestial ruins. Keep its v1 art assignment.
+- **Moonlit panorama (October 5):** owner-approved horizontal scenery extension, shared by all
+  maps using `moonlit-sanctuary-v1`. Original playable terrain and structures stay unchanged.
+  Do not inherit this backdrop into other themes that reuse Moonlit buildings. Source, exact
+  prompt and acceptance: [Moonlit Landscape Panorama](docs/moonlit-panorama.md).
 - **Map 2 — Verdant Crossing:** implemented, map id `verdant-crossing`, art key still `verdant-shrine-v1`, but its active images are **v2**. The art key is not the asset version. The `verdant-*-v1.png` files are historical procedural adaptations; do not reconnect them. The painted guardian is already in the v2 background, and roots are in the building sprites. Do not add the old vector guardian/root overlays on top.
 - **Map 3 - Sunscar Ruins:** implemented, map id `sunscar-ruins`, art key `sunscar-sanctuary-v1`. Desert solar ruins, sandstone, windblown sand and aged gold; the solar astrolabe is painted into the upper-right background corner. First map with **two entrances**: gates at (80, 140) and (80, 320) on the west edge, between the painted pillars. Both lanes run east and meet head-on at the junction (470, 230), then share one trunk that zigzags to the sanctuary at (860, 340). Spawns alternate between the gates. A central island between the lanes holds two platforms that reach both lanes with average range (~90). Boss reuses Map 1 (Baphomet). Music: CC0 tracks per map, see `public/td/music/CREDITS.txt`.
 

@@ -46,9 +46,10 @@ hidden unless the URL contains `?proto=1`, and `?tilt=off` remains the developme
 Implemented work includes the tilted board, full-bleed landscape HUD, depth-scaled units,
 top-layer unit bars, recessed road sockets, raised platforms, tilt-aware touch selection,
 wider enemy formations, shared hero/enemy depth sorting, spawn-gate layering, the centred boss
-HUD, quieter empty tiles and the authored Jungle panorama. Map/rule labels are compact single-line
+HUD, quieter empty tiles and authored panoramas for all 14 current themes. Map/rule labels are compact single-line
 chips and transient notices use a small two-line toast at the upper right instead of covering the
-top centre. The platform front lip is now 0.15 cell, half its former visible height.
+top centre. The platform front lip is now 0.1125 cell (0.3 -> 0.15 -> a further 25% cut on October 5, because
+platform and shadow still read too tall against the Watcher of Realms reference).
 
 The named source and implementation log is **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)**.
 Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
@@ -71,8 +72,13 @@ is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**,
 - [x] **P1 — Representative rollout matrix:** the shared R18 presentation is enabled on public
   8x4 and 9x5 maps with both one and two gates. These four maps are the approval set before any
   broader rollout.
-- [ ] **P1 — Theme panoramas:** create an authored wide backdrop for each approved theme and
-  replace the ordinary-terrain fallback. Jungle already uses `jungle-terrain-wide-v1.png`.
+- [x] **P1 — Theme panoramas, assets and integration:** all 14 current themes have their own
+  authored wide backdrop. Original playable terrain, geometry and balance remain unchanged.
+  Implemented from **[Theme Landscape Panoramas](docs/theme-panoramas.md)**, which names all
+  assets, source images, generation prompts and checks; the initial Moonlit record remains
+  **[Moonlit Landscape Panorama](docs/moonlit-panorama.md)**.
+- [ ] **P1 — Panorama phone acceptance:** review each theme's left/right transition, perimeter
+  scale, brightness and HUD contrast on a landscape phone; creation is not device acceptance.
 - [ ] **P1 — HUD collision matrix:** capture 797x360, 844x390 and 915x412 landscape states for
   placement, dense combat and bosses; confirm notices, buffs, wave preview and boss health never
   cover one another.
@@ -81,7 +87,7 @@ is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**,
   remain available for unusual geometry.
 - [x] **P2 — Orientation policy:** phones do not have a portrait game layout. Portrait is blocked
   by the existing full-screen modal, pauses the run and asks the player to rotate to landscape.
-- [ ] **P3 — Continue the design roadmap:** after R18 approval, continue theme panoramas, tile and
+- [ ] **P3 — Continue the design roadmap:** after R18 approval, continue tile and
   environment readability, R15 Fjord presentation, three-gate visual language and the owner
   decisions needed for R14 Lords.
 
@@ -91,6 +97,39 @@ adjacent-stage changes. It never edits `tdCampaign.json` or proposes replacement
 tuning remains a reviewed decision using `td-board-tune.mjs`, `test-td-campaign.mjs`, bot pacing
 results and owner playtests. Source and boundary: **[Campaign R18 Rollout and Stage-Load Audit
 Design](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)**.
+
+### Reference: Watcher of Realms (WoR) analyses (October 5, 2026)
+
+WoR is the owner's reference for feel (tilt without a 3D engine) and for campaign pacing. Three
+external documents (outside the repo, `~/Documents/Codex/2026-10-04/referenced-chatgpt-conversation-this-is-an/outputs/`):
+
+- `watcher_of_realms_campaign_analysis.md` + `wor_campaign_scaling.csv`: 287 main-campaign stages.
+  Chain `Stage.StageLv` -> `StageWave` -> `EnemyGrowing` (piecewise-linear stat anchors per enemy).
+  Difficulty = stat level x composition load (count, type mix, spawn timing); big tier gates
+  (N8 -> N9) add new defensive mechanics. Used for `npm run td:campaign-load`.
+- `wor_3d_files_technical_possibilities.md` (+ N1-1 OBJ/mesh files): the logical grid (`MAP_1001001`,
+  8x6) and the rendered scenery are separate layers. Only proportions transfer to us: tilt, platform
+  edge height, hero-to-tile ratio, drop shadow. Camera, light and shader are not recoverable from
+  the meshes; calibrate against real WoR screenshots. We use no Unity.
+
+Owner decisions (October 5): enemy counts and pacing *may* be taken from WoR, but the goal is
+gameplay: too many simultaneous enemies cheapen tactical play, and a hero's placement must visibly
+matter. Counts are therefore compared as a normalised *shape* (see
+`npm run td:wor-compare`), never copied as raw numbers. Platform height reduced by 25%.
+
+**First `td:wor-compare` result (October 5):** our Campaign median is 38 to 65 enemies per stage
+against WoR's 17 to 43 (peak 65 vs 43), and our spawn pressure is about 0.7 to 0.9 enemies/s against
+WoR's 0.1 to 0.26, three to four times denser, flat from the first decile on. WoR ramps count up
+slowly and keeps pressure low; our load curve is also flat where WoR's grows ~350x. Direction for
+a tactical feel: fewer, tougher enemies with slower spawn pressure. This is a reviewed tuning task
+(R12), not an automatic change.
+
+**Owner screenshot comparison (October 5, Rime Causeway vs WoR):** the soft top and bottom bands
+come from the 2.45:1 panorama behind a sharp canvas with hard top/bottom edges (the canvas now
+feathers 14 px vertically in the landscape HUD, unverified on device); the divine-action buttons and
+the main action now share one landscape height (`--td-landscape-action-h`). Still open: our grid
+draws every road and platform cell as a heavy opaque tile, WoR shows sparse pads on open ground with
+visible thickness; the board also fills less of the screen than in WoR.
 
 ### Open work after the board rewrite (October 4, 2026)
 

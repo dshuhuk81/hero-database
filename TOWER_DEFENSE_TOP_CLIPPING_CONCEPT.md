@@ -6,8 +6,10 @@ Realms" style).
 
 **Status:** the approved presentation is implemented across all 82 current Campaign stages and is
 inherited by future Campaign stages. Free Play remains explicit through `tuning.board.tilt.maps`;
-the hidden `proto-slabs` map remains available with `?proto=1`. Authored panoramas for themes other
-than Jungle are still pending. The canonical priority list is **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)**;
+the hidden `proto-slabs` map remains available with `?proto=1`. All 14 current themes now have
+authored panoramas; phone acceptance of their transitions remains pending. Asset assignments,
+integration and generation prompts: **[Theme Landscape Panoramas](docs/theme-panoramas.md)**.
+The canonical priority list is **[Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md)**;
 the current game rules are in [Tower Defense Specification](TOWER_DEFENSE_SPEC.md). The rollout
 boundary is specified in **[Campaign R18 Rollout and Stage-Load Audit
 Design](docs/superpowers/specs/2026-10-04-campaign-r18-stage-load-design.md)**.
@@ -200,7 +202,8 @@ status pips can occupy a unit's bar. Rapid matching hits merge briefly while cri
 hits remain separate; remaining numbers alternate around the target. Boss health has moved from the
 unit into a centred HUD bar (including shield or Valor when present), and spawn text hides while a
 wave is running. The raised platform lip is 0.15 cell instead of 0.3 cell, cutting its visible height
-in half without changing tile positions, hit areas or gameplay.
+in half without changing tile positions, hit areas or gameplay. On October 5 it was cut a further
+25% to 0.1125 cell (owner: platform and its shadow still looked too tall; the art style may add to it).
 
 ### Current acceptance boundary (October 4, 2026)
 
@@ -212,7 +215,7 @@ The following is the approved visual baseline, not a one-map experiment to be re
 - far units may be up to 8% smaller and near units up to 8% larger;
 - enemies stop in front of blocking heroes, share the ground depth plane and use a cell-aware
   seven-position formation;
-- platforms are raised but use the reduced 0.15-cell front lip; road tiles read as recessed;
+- platforms are raised but use the reduced 0.1125-cell front lip; road tiles read as recessed;
 - boss health belongs in the centred HUD; ordinary enemies and heroes keep compact overhead bars;
 - tall spawn art stays behind units and its label is hidden during an active wave.
 - map/rule labels use a compact single line; transient battle notices use at most two compact

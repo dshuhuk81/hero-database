@@ -279,8 +279,10 @@ The full decision history and rollout boundary are in
   behind units; spawn labels hide during active waves;
 - taps are inverse-mapped through the visible tilt and checked in that plane, including the edge
   halo on 6x3, 8x4 and 9x5 boards;
-- Jungle uses the authored `jungle-terrain-wide-v1.png` panorama. Other themes use their ordinary
-  terrain as a fallback until an authored wide backdrop is approved.
+- All 14 current themes use their own authored `*-terrain-wide-v1.png` panoramas behind the
+  unchanged gameplay terrain. Shared architecture never supplies another theme's panorama;
+  future environments without a registered panorama retain their own terrain fallback.
+  Sources, prompts and checks: [Theme Landscape Panoramas](docs/theme-panoramas.md).
 
 ### Patterns and reach steps
 
@@ -358,7 +360,7 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   Support. Flyers can only be hit by platform heroes. Tile look (`map-scene.js` `drawSlot`):
   road tiles are recessed sockets with corner brackets and a shield glyph, platform tiles
   raised bevelled plates with a double chevron; on boards they are drawn at the cell size. On
-  tilted boards the platform front lip is 0.15 cell high (half the original prototype height).
+  tilted boards the platform front lip is 0.1125 cell high (the prototype's 0.3 cell, halved, then reduced by 25%).
   Placement states (`render.js` `slotMode`): while a fallen hero is picked, tiles of its
   type glow and the others fade; with a full team empty tiles go quiet.
 - **Recruiting** (`page/recruit.ts`): tapping an empty tile opens the sheet. Choosing a card
