@@ -42,7 +42,7 @@ assert.equal(game.complete, true, "and is complete");
   for (const mapId of ["proto-slabs", "moonlit-pass", "sunscar-basin"]) {
     const map = realMaps.find((entry) => entry.id === mapId);
     assert.ok(map, `${mapId}: contact test map exists`);
-    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: [{ wave: 1, spawns: [] }], seed: 10 });
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 10 });
     g.placement = 10000;
     assert.equal(g.place("atlas", "road", 0), true, `${mapId}: blocker placed`);
     const atlas = g.heroes[0];
@@ -429,7 +429,7 @@ function runToOffer(g) {
 
 // --- 2A upgrades ---
 
-// R4 battle economy: Favor discounts deployment, while relocation is an atomic between-wave
+// R4 battle economy: Favor discounts deployment, while relocation is an atomic
 // purchase that moves the existing unit without resetting its combat state.
 {
   const discounted = structuredClone(tuning);
@@ -673,7 +673,7 @@ function runToOffer(g) {
   assert.equal(g.totalPlacementSpent, nuwaHero.cost + relocationCost, "relocation cost accumulates");
 }
 
-// placement_regrowth: 30 at the start, +1 per second of battle time, only while a wave runs.
+// placement_regrowth: 30 at the start, +1 per second of battle time, only while the stage runs.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 58 });
   assert.equal(g.placement, tuning.run.startingPlacement, "run starts with the starting placement");
@@ -682,9 +682,9 @@ function runToOffer(g) {
   g.place("atlas", "road", 0);
   const afterPlace = g.placement;
   for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
-  assert.equal(g.placement, afterPlace, "no regrowth while no wave runs");
+  assert.equal(g.placement, afterPlace, "no regrowth while no stage runs");
   g.start();
-  g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; // wave stays open
+  g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; // the stage stays open
   for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
   assert.equal(g.placement - afterPlace, 10, "one placement point per second of battle");
   assert.equal(g.totalPlacementEarned, 10, "regrowth is tracked as earned");
@@ -1490,7 +1490,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   // Lilith: tougher stat block, summons her children around her, cannot be hit.
   g = setup(lilithMap);
   boss = g.spawnEnemy("boss");
-  const scale = g.difficulty.enemyHp * g.tierHp; // wave 1, with the map's enemy health
+  const scale = g.difficulty.enemyHp * g.tierHp; // the map's enemy health
   assert.equal(boss.bossId, "lilith");
   assert.equal(boss.maxHp, cfg.stats.hp * scale, "lilith uses her own hp");
   assert.ok(cfg.stats.hp > tuning.enemies.boss.hp, "lilith is tougher than baphomet");
@@ -1862,7 +1862,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     const leaker = g.spawnEnemy("flyer");
     leaker.distance = g.laneOf(leaker).total - 0.1;
     g.step(1 / 60);
-    assert.equal(g.stageStats.leakKinds.flyer, 1, "leak kind per wave");
+    assert.equal(g.stageStats.leakKinds.flyer, 1, "leak kind per stage");
     assert.equal(g.leakKinds.flyer, 1, "leak kind per run");
   }
 

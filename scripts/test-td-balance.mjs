@@ -38,7 +38,7 @@ if (!starterRuns.some(({ runs }) => runs.some((run) => run.won))) throw new Erro
 
 // Class identity (M6): each group type calls for its class (design intent in EXPECTED).
 // Owner-approved tolerance (September 28, 2026): with automatic aiming (M24) Warrior cleaves
-// reliably and edges past Tank on shield waves; the Tank only has to stay within 3 points.
+// reliably and edges past Tank on shield groups; the Tank only has to stay within 3 points.
 // healer/platform: Atalanta's Burning Volley clears the small healer pack on her own
 // (roadmap: archers must handle swarms), which lifts the Archer mean just past Mage.
 const TOLERANCE = { shield: { road: 0.03 }, healer: { platform: 0.03 } };

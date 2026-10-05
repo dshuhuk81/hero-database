@@ -2684,7 +2684,7 @@
   color: var(--accent-gold);
 }
 
-/* Challenge badges (M20): dim until cleared on 10 or 20 waves, filled when cleared on both */
+/* Challenge badges (M20): dim until cleared on the map */
 .td-map-challenges {
   display: flex;
   flex-wrap: wrap;
@@ -2918,7 +2918,7 @@
 /* R18 prototype (D): full-bleed battlefield. With a tilted map the canvas grows past the stage
    to the whole play screen and the top/bottom bars float over it; a blurred copy of the
    terrain fills the space the board does not use. render.js sets data-bleed, --td-bleed-art
-   and sizes/centres the canvas. Stage overlays (notice, bonds, wave preview) keep their place. */
+   and sizes/centres the canvas. Stage overlays (notice, bonds, stage summary) keep their place. */
 .td-play[data-bleed] {
   position: relative;
   overflow: hidden;
@@ -3235,7 +3235,7 @@
 /* Hero panel (M22): full height inside the stage. popover.ts sets data-hero-panel on the stage
    (and the panel's data-side): "push" narrows the stage (padding) so the whole map shrinks beside
    the panel, "left" / "right" overlay the map on the side away from the hero (short screens),
-   "sheet" docks below the map (portrait). Notices, buffs and the wave preview move to the free side. */
+   "sheet" docks below the map (portrait). Notices, buffs and the stage summary move to the free side. */
 .td-stage[data-hero-panel="push"] {
   padding-right: var(--td-hero-panel-w, 0px);
 }
@@ -7379,7 +7379,7 @@ svg.td-class-icon {
   }
 
   /* Top bar on phones: stats shrink to their numbers and the buttons get a bit smaller so
-     both fit on one row next to each other (M22 bug: the Wave stat ran under the buttons). */
+     both fit on one row next to each other (M22 bug: a stat ran under the buttons). */
   .td-topbar {
     gap: var(--space-2);
     padding: var(--space-2);
@@ -7443,7 +7443,7 @@ svg.td-class-icon {
   }
 }
 
-/* Portrait: map near the top (below the wave preview) leaves room for sheets underneath. */
+/* Portrait: map near the top (below the stage summary) leaves room for sheets underneath. */
 @media (max-width: 600px) and (orientation: portrait) {
   .td-stage {
     align-items: flex-start;
@@ -7910,7 +7910,7 @@ svg.td-class-icon {
   justify-content: center;
 }
 
-/* Short landscape: one compact row (icon + value); wave preview moves to the bottom-left. */
+/* Short landscape: one compact row (icon + value); stage summary moves to the bottom-left. */
 @media (orientation: landscape) and (max-height: 540px) {
   .td-buffs {
     max-width: calc(100% - var(--space-4));
@@ -8068,22 +8068,6 @@ svg.td-class-icon {
 
 .td-debug-actions button:hover {
   border-color: var(--td-warn);
-}
-
-.td-debug-wave {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.td-debug-wave input {
-  width: 48px;
-  min-height: 30px;
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font: inherit;
 }
 
 .td-debug-copy {
@@ -8301,7 +8285,7 @@ svg.td-class-icon {
   }
 }
 
-/* Between-wave pacing (5E): gold count-up float and the auto-next toggle */
+/* Placement count-up float (5E) */
 .td-stat--gold {
   position: relative;
 }
@@ -13567,7 +13551,7 @@ button .td-cur {
 }
 
 /* R18 prototype (D): floating landscape HUD. On short landscape screens a tilted map drops the side
-   rails: a thin row of stats and buttons on top, the deck and wave button along the bottom, both on
+   rails: a thin row of stats and buttons on top, the deck and Start button along the bottom, both on
    a gradient over the scenery, like the reference. Stage overlays move below the top row. */
 @media (orientation: landscape) and (max-height: 540px) {
   .td-play[data-bleed] {
@@ -13710,7 +13694,7 @@ button .td-cur {
     left: var(--space-2);
   }
 
-  /* Landscape HUD: icons instead of Gold / Lives / Wave labels (the text stays for screen readers),
+  /* Landscape HUD: icons instead of Placement / Lives / Defeated labels (the text stays for screen readers),
      and Campaign stages show just "Stage 4-3"; name and rule live in the chip's tooltip. */
   .td-play[data-bleed] .td-stat { align-items: center; }
 
