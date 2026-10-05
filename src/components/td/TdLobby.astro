@@ -2,27 +2,11 @@
 // Menu screens (M22 app shell): app bar plus one visible screen at a time. Screen ids
 // match data-td-screen; src/game/td/page/nav.ts switches them and keeps browser history
 // in step. Blessings, help and save data are hosts: panels.ts moves those panels in.
-import { mapPreviewModel, routePreviewPoints } from "../../game/td/map-preview.js";
-import { CHALLENGES } from "../../game/td/challenges.js"; // M20 badges, filled by renderChallengeBadges
-import tuning from "../../data/gameBalance.tuning.json";
 import TdSoundControls from "./TdSoundControls.astro";
 import TdGlossaryContent from "./TdGlossaryContent.astro";
 import TdHome from "./TdHome.astro";
-interface Props { maps: any[]; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
-const { maps, bossNames, assetBase, isDev = false } = Astro.props;
-// Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
-// Prototype maps (`prototype: true`, e.g. the compact board, board.js) are listed on dev builds and,
-// hidden, on every other build: open the page with ?proto=1 to reveal them (testing on a phone).
-const previews = maps.filter((entry: any) => !entry.campaignOnly || entry.prototype).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
-// Difficulty tiers (M3); numbers from tuning.tiers.
-const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
-const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
-  id,
-  rank,
-  label: t.label,
-  copy: t.enemyHp === 1 && t.enemyAttack === 1 ? "The standard run." : `Enemies +${pct(t.enemyHp)} health, +${pct(t.enemyAttack)} attack.`,
-  favor: t.favor,
-}));
+interface Props { assetBase: string; }
+const { assetBase } = Astro.props;
 ---
 
 <section class="td-app" data-td-lobby aria-label="Tower defense menu">
@@ -196,81 +180,6 @@ const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string,
             <button class="action-button action-button--primary" type="button" data-td-squad-start data-td-autofocus>Start</button>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 2. Map select -->
-    <section class="td-screen" data-td-screen="maps" data-title="Choose battlefield" aria-label="Choose battlefield" hidden>
-      <div class="td-screen-body td-screen-body--center td-maps-screen">
-        <div class="td-map-cards" role="group" aria-label="Battlefields" data-td-maps>
-          {previews.map((preview: any) => (
-            <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false" data-td-proto={preview.prototype ? "" : undefined} hidden={preview.prototype && !isDev ? true : undefined}>
-              <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-                {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.9" preserveAspectRatio="none" />}
-                {preview.routes.map((points: number[][]) => <Fragment><polyline class="td-map-preview-path-edge" points={routePreviewPoints(points)} /><polyline class="td-map-preview-path" points={routePreviewPoints(points)} /></Fragment>)}
-                {preview.art && <>
-                  {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
-                  {preview.base && <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />}
-                </>}
-              </svg>
-              <span class="td-map-card-copy">
-                <strong>{preview.name}</strong>
-                <small class="td-map-card-boss">Boss: {preview.bossName}</small>
-                <small data-map-best={preview.id}>No runs yet</small>
-                <span class="td-map-challenges" data-map-challenges={preview.id}>
-                  {CHALLENGES.map((challenge: any) => (
-                    <span class="td-map-challenge" data-challenge={challenge.id}>
-                      <svg class="td-challenge-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={challenge.icon} /></svg>
-                    </span>
-                  ))}
-                  <span class="sr-only" data-challenge-summary></span>
-                </span>
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <div class="td-screen-footer">
-        <p class="td-screen-footer-note" data-td-map-pick></p>
-        <button class="action-button action-button--primary" type="button" data-td-go="mode">Next</button>
-      </div>
-    </section>
-
-    <!-- 3. Difficulty: Play starts the run -->
-    <section class="td-screen" data-td-screen="mode" data-title="Difficulty" aria-label="Difficulty" hidden>
-      <div class="td-screen-body td-mode-screen">
-        <header class="td-mode-banner">
-          <img class="td-mode-banner-art" data-td-mode-art alt="" decoding="async">
-          <img class="td-mode-banner-boss" data-td-mode-boss-art alt="" decoding="async">
-          <div class="td-mode-banner-copy">
-            <span class="td-label">Battlefield</span>
-            <h2 data-td-mode-map></h2>
-            <p class="td-trial-boss">Boss <strong data-td-mode-boss></strong></p>
-          </div>
-          <button class="action-button action-button--quiet td-mode-change" type="button" data-td-go="maps">Change</button>
-        </header>
-        <div class="td-mode-group">
-          <span class="td-label" id="td-tier-label">Difficulty</span>
-          <div class="td-tiers" role="radiogroup" aria-labelledby="td-tier-label" data-td-tiers>
-            {tiers.map((tier) => (
-              <button type="button" class={`td-tier-option td-tier-option--${tier.id}`} role="radio" aria-checked="false" data-tier-id={tier.id}>
-                <span class="td-tier-pips" aria-hidden="true">{Array.from({ length: tiers.length }, (_, i) => <i class={i <= tier.rank ? "is-on" : ""}></i>)}</span>
-                <strong>{tier.label}</strong>
-                <small>{tier.copy}</small>
-                <span class="td-tier-favor">{tier.favor}x Favor</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        <div class="td-mode-group">
-          <button type="button" class="action-button action-button--primary td-mode-play-button" data-td-mode-play data-td-autofocus>Play</button>
-          <span class="td-mode-best" data-td-mode-best></span>
-        </div>
-        <details class="td-challenges" data-td-challenges>
-          <summary><span>Challenges on this battlefield</span> <span class="td-challenge-count" data-td-challenge-count></span></summary>
-          <p class="td-favor-note" data-td-challenge-reward></p>
-          <ul class="td-challenge-list" data-td-challenge-list></ul>
-        </details>
       </div>
     </section>
 

@@ -1,5 +1,5 @@
 // Daily Quests (R10) on the page: the quest screen with the activity bar (five milestone
-// chests), the ten task rows (progress, Go deep-link, Claim) and the UTC-reset countdown
+// chests), the eight task rows (progress, Go deep-link, Claim) and the UTC-reset countdown
 // footer. Rules, task table and chest table live in ../quests.js; the save record in
 // page/save.ts. Daily only - no Weekly/Achievements tabs (spec section 5).
 import { dailyDate } from "../daily.js";
@@ -13,8 +13,6 @@ const TASK_ICONS: Record<string, string> = {
   "heroic-clear": "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z", // star
   "trial-goal": "M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9", // hourglass
   expedition: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M15.5 8.5l-2 5-5 2 2-5z", // compass
-  challenge: "M8 21h8M12 17v4M7 4h10v6a5 5 0 01-10 0zM7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3", // trophy
-  "free-wave10": "M4 4l10 10M14 14l-2 2M14 14l2-2M16.5 16.5l3 3M20 4L10 14M10 14l2 2M10 14l-2-2M7.5 16.5l-3 3", // crossed swords
   summon: "M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18", // sparkle rays
   blessing: "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z", // same star glyph as Heroic
   intervention: "M13 2L5 13h6l-1 9 8-11h-6z", // bolt

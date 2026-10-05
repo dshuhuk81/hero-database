@@ -115,7 +115,7 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
     bestScore: 5000, bestWave: 12,
     mapTop: { "moonlit-pass": { score: 3000, wave: 8 }, "moonlit-pass@long": { score: 4200, wave: 15 }, "sunscar-ruins@endless": { score: 900, wave: 20 }, "moonlit-pass@long#heroic": { score: 800, wave: 4 } },
     daily: [{ date: "2026-10-01", bestWave: 4, bestScore: 700, goalReached: false }],
-    quests: { date: "2026-10-01", activity: 0, tasks: { "free-wave10": { done: true, claimed: false } }, milestones: [] },
+    quests: { date: "2026-10-01", activity: 0, tasks: { "free-wave10": { done: true, claimed: false }, "free-defeat40": { done: true, claimed: false }, summon: { done: true, claimed: false } }, milestones: [] },
   }, rules);
   assert.equal(clean.bestScore, 5000, "score record survives");
   assert.deepEqual(clean.mapTop["moonlit-pass"], { score: 4200, defeated: 0 }, "mode suffix merged, higher score kept");
@@ -124,7 +124,7 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.equal(Object.keys(clean.mapTop).some((key) => key.includes("@")), false, "no mode suffix left");
   assert.equal(clean.daily[0].bestDefeated, 0, "old daily record keeps its score and starts at 0 defeated");
   assert.equal(clean.daily[0].bestScore, 700);
-  assert.ok(clean.quests.tasks["free-defeat40"]?.done, "the renamed daily quest keeps its progress");
+  assert.deepEqual(Object.keys(clean.quests.tasks), ["summon"], "tasks of removed quests (Free Play, Challenge) are dropped, the rest keeps its progress");
   assert.equal(tierBest(clean), 5000, "Normal best is the plain bestScore or the best Normal map record");
   assert.equal(tierBest(clean, "heroic"), 800);
   assert.equal(tierBest(emptySave()), 0, "no runs yet");

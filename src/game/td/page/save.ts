@@ -1,7 +1,6 @@
 // Saved progress (localStorage td:v1) and the save code / save file export and import.
 import type { PageContext } from "./context";
 import { legacyRefund, repriceCredit, spentByCurrency, TREE } from "../favor.js";
-import { sanitizeChallenges } from "../challenges.js";
 import { dailyDate, sanitizeDaily } from "../daily.js";
 import { newQuestRecord, sanitizeQuests } from "../quests.js";
 import { sanitizeExpedition } from "../expedition.js";
@@ -14,7 +13,7 @@ export type ExpeditionState = { seed: number; stages: string[]; stage: number; r
 
 // Campaign progress (M26, campaign.js): owned heroes, cleared stages with their best
 // lives, the last squad, currencies, hero levels and the summon count; versioned on its own so it can
-// migrate without touching Free Play.
+// migrate on its own.
 export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>>; milestones?: Record<string, number[]>; heroic?: Record<string, { clears: number; bestLives: number }> };
 
 // Daily Trial (M19) record per UTC day; bestDefeated counts enemies defeated.
@@ -29,8 +28,8 @@ export type MapRun = { score: number; defeated: number; duration: number; lives:
 
 // Mode picked on the home screen's mode rail; Play launches it. A finished run sets it to
 // that run's mode, so Play means "again" or "next".
-export type HomeMode = "campaign" | "daily" | "expedition" | "free";
-export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition", "free"];
+export type HomeMode = "campaign" | "daily" | "expedition"; // Free Play was removed; a save that still names it opens on the Campaign
+export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition"];
 export const isHomeMode = (value: unknown): value is HomeMode => HOME_MODES.includes(value as HomeMode);
 
 // Pending run-end shard (6C) for the next run; cleared when that run starts.
@@ -38,7 +37,7 @@ export type RunBoost = { type: "placement"; placement: number };
 
 export type SaveData = {
   bestScore: number;
-  bestDefeated: number; // most enemies defeated in one Free Play run (the legacy bestWave field is dropped on load)
+  bestDefeated: number; // legacy Free Play record, kept so old saves load (the bestWave field is dropped on load)
   lastTeam: string[];
   perfectDefense: boolean;
   favor: number; // Favor earned in total; available = favor - spent on blessings - resetSpent
@@ -48,9 +47,10 @@ export type SaveData = {
   refundNotice: number; // Favor refunded from the first tree, shown once in the Blessings panel
   treeVersion: number; // blessingTree.json version the prices were last settled with
   repriceNotice: boolean; // tree v3 price change and Surge -> Infusion, shown once
+  // Legacy Free Play records (mapBests, mapTop, nextRunBoost, bestScore): Free Play was removed, nothing
+  // writes them any more; they stay in the save so old save codes keep loading.
   mapBests: Record<string, MapRun>;
   mapTop: Record<string, { score: number; defeated: number; mutators?: string[] }>;
-  challenges: Record<string, Record<string, RunTier>>; // M20: challengeKey -> challenge id -> highest tier cleared (challenges.js)
   nextRunBoost: RunBoost | null;
   daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
   quests: QuestRecord; // Daily Quests record for the UTC day (quests.js)
@@ -123,7 +123,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestDefeated: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
+  return { bestScore: 0, bestDefeated: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -186,7 +186,6 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
     repriceNotice: !!candidate.repriceNotice,
     mapBests: mergeLegacyRunKeys(pickRuns(candidate.mapBests)),
     mapTop: mergeLegacyRunKeys(pickRuns(candidate.mapTop)),
-    challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
     daily: sanitizeDaily(candidate.daily),
     quests: sanitizeQuests(candidate.quests, dailyDate()) as QuestRecord,

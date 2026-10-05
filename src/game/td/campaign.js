@@ -4,7 +4,7 @@
 // currencies. Currencies level heroes (`heroLevels`), which raises their attack and health
 // in every mode (global stats). Static stage data lives in
 // src/data/tdCampaign.json; the player's campaign progress is its own versioned section
-// of the td:v1 save (`campaign`), separate from Free Play records. Divine Seals (first
+// of the td:v1 save (`campaign`), separate from the legacy score records. Divine Seals (first
 // clears, replays at a quarter, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
@@ -205,7 +205,7 @@ export function heroMight(campaign, progress, hero) {
   return Math.round((hero.atk * attackSkill + hero.hp * healthSkill) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
 }
 
-// R12 (owner, October 2): Free Play and Expedition enemies grow with the collection's upgrades, but by less
+// R12 (owner, October 2): Expedition enemies grow with the collection's upgrades, but by less
 // than 100%. The ratio compares the strongest `count` pool heroes' Might now with the same heroes at level 1,
 // no stars, no evolution (the Might they would have un-upgraded); the enemy health multiplier is
 // ratio ^ heroMight.enemyHpExponent, capped at heroMight.enemyHpCap. 1 = no change.
@@ -332,11 +332,11 @@ export function buyCopiesWithDust(summonCfg, progress, heroId, count = 1) {
 
 // --- One collection for every mode (Phase 2, docs/tower-defense-home-camp-plan.md) ---
 // Heroes are unlocked and upgraded through the campaign (the save key stays `campaign`).
-// Free Play and Expedition use the owned heroes at base stats for now (decision 1c);
+// Expedition uses the owned heroes at base stats for now (decision 1c);
 // the Daily Trial keeps the full roster so every player gets the same setup.
 export const ownedHeroes = (progress, heroes) => heroes.filter((hero) => progress.owned.includes(hero.id));
 
-// Gold and Hero XP a Free Play run or an Expedition stage pays into the collection:
+// Gold and Hero XP a Daily Trial run or an Expedition stage pays into the collection:
 // `collectionRewards.perDefeated` for each enemy defeated, up to `maxDefeated` per run. Never Divine
 // Seals, so new heroes come no faster than before.
 export function collectionReward(campaign, defeated) {

@@ -1,4 +1,4 @@
-// Daily Quests (R10, TOWER_DEFENSE_DAILY_QUESTS.md): a fixed list of ten "do X once"
+// Daily Quests (R10, TOWER_DEFENSE_DAILY_QUESTS.md): a fixed list of eight "do X once"
 // activities per UTC day. Completing an activity makes its task claimable; claiming pays
 // activity points, and an activity bar pays milestone chests (Favor, Divine Seals at the
 // two top milestones) at 20/40/60/80/100. Reset at UTC midnight, the same clock as the
@@ -7,18 +7,16 @@
 import { dailyDate, isDailyDate } from "./daily.js";
 import { addSeals } from "./campaign.js";
 
-// The ten daily tasks (spec section 2, owner-approved list). `go` is the nav screen the
+// The eight daily tasks (spec section 2; the Challenge and Free Play tasks went with Free Play). `go` is the nav screen the
 // quest screen's Go button deep-links to (page/nav.ts ScreenId).
 export const QUEST_TASKS = [
   { id: "campaign-clear", text: "Clear a campaign stage", points: 10, go: "stages" },
   { id: "heroic-clear", text: "Clear a Heroic campaign stage", points: 20, go: "stages" },
   { id: "trial-goal", text: "Reach the Daily Trial goal", points: 20, go: "daily" },
   { id: "expedition", text: "Finish an Expedition", points: 20, go: "expedition" },
-  { id: "challenge", text: "Clear a Challenge", points: 15, go: "mode" },
-  { id: "free-defeat40", text: "Defeat 40 enemies in Free Play", points: 10, go: "maps" },
   { id: "summon", text: "Perform a summon", points: 10, go: "summon" },
   { id: "blessing", text: "Buy a blessing-tree node", points: 10, go: "blessings" },
-  { id: "intervention", text: "Use a Divine Intervention in a run", points: 10, go: "maps" },
+  { id: "intervention", text: "Use a Divine Intervention in a run", points: 10, go: "stages" },
   { id: "hero-upgrade", text: "Promote a hero or buy a hero level", points: 10, go: "heroes" },
 ];
 
@@ -31,11 +29,8 @@ export const QUEST_MILESTONES = [
   { at: 100, favor: 80, seals: 15 },
 ];
 
-export const QUEST_MAX_ACTIVITY = QUEST_TASKS.reduce((sum, task) => sum + task.points, 0); // 135
+export const QUEST_MAX_ACTIVITY = QUEST_TASKS.reduce((sum, task) => sum + task.points, 0); // 110
 export const QUEST_BAR_GOAL = QUEST_MILESTONES.at(-1).at; // the bar fills at 100 activity
-export const QUEST_DEFEATED = 40; // Free Play task: a run ends with at least this many enemies defeated
-// Task ids from before October 5, 2026 (the wave system) and the ids that replaced them.
-const LEGACY_TASK_IDS = { "free-wave10": "free-defeat40" };
 
 export const QUEST_TASK_IDS = new Set(QUEST_TASKS.map((task) => task.id));
 const QUEST_MILESTONE_ATS = new Set(QUEST_MILESTONES.map((milestone) => milestone.at));
@@ -55,8 +50,7 @@ export function sanitizeQuests(value, today = dailyDate()) {
   const date = isDailyDate(value.date) ? value.date : today;
   const tasks = {};
   if (value.tasks && typeof value.tasks === "object") {
-    for (const [legacyId, state] of Object.entries(value.tasks)) {
-      const id = LEGACY_TASK_IDS[legacyId] ?? legacyId;
+    for (const [id, state] of Object.entries(value.tasks)) {
       if (!QUEST_TASK_IDS.has(id) || !state || typeof state !== "object") continue;
       const entry = {};
       if (state.done) entry.done = true;

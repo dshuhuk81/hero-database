@@ -36,7 +36,7 @@ function insightStat(earned: Record<string, number>) {
 import type { PageContext } from "./context";
 import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
-import { availableFavor, runKey, type CampaignProgress, type RunBoost } from "./save";
+import { type CampaignProgress } from "./save";
 import { finishDaily } from "./daily";
 import { defeatedCount } from "../daily.js";
 import { collectionReward, grantRewards, laurelLives } from "../campaign.js";
@@ -44,11 +44,8 @@ import { currencyList } from "../currency-icons.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import { finishExpeditionStage } from "./expedition";
 import { finishCampaignRun } from "./campaign";
-import { notifyQuest, QUEST_DEFEATED } from "../quests.js";
-import { challengeResultHtml, recordChallengeRun } from "./challenges";
+import { notifyQuest } from "../quests.js";
 import { createStageClear } from "./stage-clear";
-
-type ShardChoice = "favor" | "placement";
 
 export function fmtDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -59,7 +56,6 @@ export function fmtDuration(seconds: number) {
 export function createResults(ctx: PageContext) {
   const { q, data, store } = ctx;
   const resultEl = q("[data-td-result]");
-  const shardsEl = q("[data-td-result-shards]");
   const playEl = q("[data-td-play]");
   const statsButton = q<HTMLButtonElement>("[data-td-result-stats-toggle]");
   const lossStatsButton = q<HTMLButtonElement>("[data-td-loss-stats-toggle]");
@@ -70,12 +66,11 @@ export function createResults(ctx: PageContext) {
   // Button the final Stage Clear scene focuses (Continue or Retry).
   let primaryAction: HTMLButtonElement | null = null;
   const stageClear = createStageClear(ctx, () => primaryAction?.focus({ preventScroll: true }));
-  // Run-end shard (6C). The Favor shard is granted with the run's Favor so nothing
-  // is lost if the page closes; picking a boost converts it back.
-  let shard: { favor: number; earned: number; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
+  // Run-end Favor shard (6C), granted with the run's Favor so nothing is lost if the page closes.
+  let shard: { favor: number } | null = null;
   // Favor this run paid, by source, so the summary adds up to what the save gained.
   let rewards: { label: string; favor: number }[] = [];
-  // Gold and Hero XP this run paid into the hero collection (Free Play, Expedition).
+  // Gold and Hero XP this run paid into the hero collection (Daily Trial, Expedition).
   let collectionHtml = "";
 
   // Summary / Battle tabs (narrow screens; wide screens show both columns).
@@ -142,10 +137,8 @@ export function createResults(ctx: PageContext) {
     rewards = [];
     collectionHtml = "";
     showTab("summary");
-    for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
+    for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-favor]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
   }
-
-  const boostText = (boost: RunBoost) => `+${boost.placement} starting placement`;
 
   function renderAnalysis(game: any) {
     const el = q("[data-td-result-analysis]");
@@ -162,65 +155,18 @@ export function createResults(ctx: PageContext) {
     el.hidden = !el.innerHTML;
   }
 
-  // Favor summary: headline total, one chip per source (run, challenges, Daily or Expedition
-  // bonus, Favor shard) and the new balance.
+  // Favor summary: headline total, one chip per source (run, Daily or Expedition bonus, Favor
+  // shard) and the new balance.
   function renderFavorLine(note = "") {
     const favorEl = q("[data-td-result-favor]");
     const parts = [...rewards];
-    if (shard?.choice === "favor") parts.push({ label: "Favor shard", favor: shard.favor });
+    if (shard) parts.push({ label: "Favor shard", favor: shard.favor });
     const earned = parts.reduce((sum, part) => sum + part.favor, 0);
     const chips = parts.filter((part) => part.favor > 0 || part === parts[0])
       .map((part) => `<li><span>${part.label}</span><strong>+${part.favor}</strong></li>`).join("");
     favorEl.innerHTML = `<div class="td-result-favor-head"><span class="td-label">Divine Favor</span><strong>+${earned}</strong><small>Total ${store.data.favor}</small></div>` +
       `<ul class="td-result-favor-parts">${chips}</ul>` + collectionHtml + (note ? `<p class="td-result-favor-note">${note}</p>` : "");
   }
-
-  function renderShards() {
-    if (!shard) return;
-    const cfg = data.tuning.shards;
-    // Taking a boost gives the Favor shard back; blocked if it was already spent.
-    const canRevoke = shard.choice !== "favor" || availableFavor(store.data) >= shard.favor;
-    const options: { id: ShardChoice; name: string; value: string; detail: string }[] = [
-      { id: "favor", name: "Favor shard", value: `+${shard.favor} Favor`, detail: "Permanent. Spend it on Divine Blessings." },
-      { id: "placement", name: "Placement shard", value: `+${cfg.placement} placement`, detail: "Your next run starts with extra placement points." },
-    ];
-    const replaces = shard.previousBoost ? `<p class="td-shard-note">A Placement shard replaces your pending boost (${boostText(shard.previousBoost)}).</p>` : "";
-    shardsEl.innerHTML = `<span class="td-label">Pick a shard</span><div class="td-shard-row">` + options.map((option) => {
-      const chosen = shard!.choice === option.id;
-      const disabled = !chosen && option.id !== "favor" && !canRevoke;
-      return `<button class="td-shard${chosen ? " is-chosen" : ""}" type="button" data-shard="${option.id}" aria-pressed="${chosen}"${disabled ? " disabled" : ""}>` +
-        `<span class="td-shard-name">${option.name}</span><strong>${option.value}</strong><small>${option.detail}</small></button>`;
-    }).join("") + `</div>` + replaces +
-      (canRevoke ? "" : `<p class="td-shard-note">The Favor shard is already spent, so it stays your pick.</p>`);
-    shardsEl.hidden = false;
-  }
-
-  function choose(choice: ShardChoice) {
-    if (!shard || choice === shard.choice) return;
-    const saved = store.data;
-    if (shard.choice === "favor") {
-      if (availableFavor(saved) < shard.favor) return;
-      saved.favor -= shard.favor;
-    }
-    if (choice === "favor") {
-      saved.favor += shard.favor;
-      saved.nextRunBoost = shard.previousBoost;
-    } else {
-      saved.nextRunBoost = { type: "placement", placement: data.tuning.shards.placement };
-    }
-    shard.choice = choice;
-    store.persist();
-    renderShards();
-    renderFavorLine();
-    ctx.actions.syncSpendButton();
-    ctx.actions.renderLobby();
-    q<HTMLButtonElement>(`[data-shard="${choice}"]`).focus({ preventScroll: true });
-  }
-
-  shardsEl.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-shard]");
-    if (button && !button.disabled) choose(button.dataset.shard as ShardChoice);
-  });
 
   function finishRun() {
     const session = ctx.getSession();
@@ -235,52 +181,33 @@ export function createResults(ctx: PageContext) {
     const stageShare = game.won ? 1 : forecast ? forecast.down / forecast.total : 0; // part of the stage's enemies defeated
     const mutatorShare = (game.mutators ?? []).reduce((sum: number, id: string) => sum + (data.tuning.mutators?.pool?.[id]?.favor ?? 0), 0);
     const mutatorFavor = Math.round(stageShare * data.tuning.favorEarn.perStage * mutatorShare);
-    // Campaign stages (M26) have their own progression: no Favor, Insight, bests, challenges or shard.
+    // Campaign stages (M26) have their own progression: no Favor, Insight or shard.
     const campaign = session.campaign;
     const earnedFavor = campaign ? 0 : Math.round((computeFavor({ share: stageShare, perfect: !!game.perfect, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
     const earnedInsight = (session.debug || campaign ? {} : computeInsight(game.insightLog)) as Record<string, number>;
-    const key = runKey(map.id, game.tier);
-    // Daily Trial (M19) runs keep their own per-day record instead of the map's bests.
+    // Daily Trial (M19) runs keep their own per-day record.
     const daily = session.daily;
     const expedition = session.expedition;
-    const prevRun = daily || expedition || campaign ? null : saved.mapBests[key] || null;
-    const prevTop = daily || expedition || campaign ? null : saved.mapTop[key] || null;
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
       : campaign ? (({ text, won, followUp, paid }) => ({ text, reached: won, reward: 0, followUp, paid }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
-    // Free Play, Daily Trial and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
+    // The Daily Trial and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
     const collection = campaign || session.debug ? [] : collectionReward(campaignData, defeatedCount(game));
     if (collection.length) {
       saved.campaign = grantRewards(saved.campaign, collection) as CampaignProgress;
       collectionHtml = `<p class="td-result-collection"><span class="td-label">For your heroes</span>${currencyList(Object.fromEntries(collection.map((reward: any) => [reward.id, reward.amount])), { plus: true })}</p>`;
     }
-    // Challenges (M20): stored and paid only for non-debug, non-campaign runs; persisted with the run below.
-    const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
-      // R10 daily quests: Free Play runs defeating QUEST_DEFEATED enemies (#6) and runs that cast a
-      // Divine Intervention (#9). The campaign clears (#1, #2) report in finishCampaignRun.
-      if (!daily && !expedition && !campaign) {
-        if (defeatedCount(game) >= QUEST_DEFEATED) notifyQuest(saved, "free-defeat40");
-        if ((game.interventionsUsed ?? 0) > 0) notifyQuest(saved, "intervention");
-      }
+      // R10 daily quest #9: a run that cast a Divine Intervention. The campaign clears (#1, #2)
+      // report in finishCampaignRun.
+      if ((game.interventionsUsed ?? 0) > 0) notifyQuest(saved, "intervention");
       if (game.perfect) saved.perfectDefense = true;
-      // bestScore/bestDefeated stay the Normal record; Heroic and Mythic keep theirs in mapTop.
-      if (game.tier === "normal" && !campaign) {
-        saved.bestScore = Math.max(saved.bestScore, game.score);
-        saved.bestDefeated = Math.max(saved.bestDefeated, defeatedCount(game));
-      }
       saved.favor = (saved.favor || 0) + earnedFavor;
       for (const [cls, points] of Object.entries(earnedInsight)) saved.insight[cls] = (saved.insight[cls] || 0) + points;
       if (shardEligible(stageShare, data.tuning) && !campaign) {
-        shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, choice: "favor", previousBoost: saved.nextRunBoost };
+        shard = { favor: shardFavor(earnedFavor, data.tuning) };
         saved.favor += shard.favor;
-      }
-      const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
-      if (!daily && !expedition && !campaign) {
-        saved.mapBests[key] = { score: game.score ?? 0, defeated: defeatedCount(game), duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
-        const top = saved.mapTop[key];
-        if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, defeated: defeatedCount(game), ...mutators };
       }
       store.persist();
     }
@@ -288,7 +215,7 @@ export function createResults(ctx: PageContext) {
     ctx.actions.closePopover(false);
     ctx.actions.closeSheet(false);
     ctx.actions.cancelDeploy();
-    // Header: outcome, then where and how (map, mode or Daily / Expedition stage, tier), then score.
+    // Header: outcome, then where and how (Daily / Expedition / Campaign stage, tier), then score.
     // An Expedition stage is final (M21): no Retry; Continue leads back to the camp or the menu.
     retryButton.hidden = !!expedition;
     lossRetryButton.hidden = !!expedition;
@@ -315,8 +242,8 @@ export function createResults(ctx: PageContext) {
     const context = daily ? `Daily Trial ${daily.date}`
       : expedition ? `Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}`
       : campaign ? `Campaign stage ${campaign.stageId}`
-      : "Free Play";
-    q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" || (!daily && !expedition && !campaign) ? tierName : ""].filter(Boolean).join(" - ");
+      : "";
+    q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" ? tierName : ""].filter(Boolean).join(" - ");
     const dailyEl = q("[data-td-result-daily]");
     dailyEl.hidden = !dailyRun;
     dailyEl.textContent = dailyRun?.text ?? "";
@@ -353,28 +280,13 @@ export function createResults(ctx: PageContext) {
     }
     q("[data-td-result-battle-empty]").hidden = !q("[data-td-result-damage]").hidden || !q("[data-td-result-analysis]").hidden;
 
-    const compareEl = q("[data-td-result-compare]");
-    if (prevRun) {
-      const improvements: string[] = [];
-      if (game.score > prevRun.score) improvements.push(`higher score (+${(game.score - prevRun.score).toLocaleString()})`);
-      if (shownLives(game.lives, game.lifeUnit) > shownLives(prevRun.lives, game.lifeUnit)) improvements.push(`more lives left (+${shownLives(game.lives, game.lifeUnit) - shownLives(prevRun.lives, game.lifeUnit)})`);
-      if (game.totalLeaks < prevRun.leaks) improvements.push(`fewer leaks (-${prevRun.leaks - game.totalLeaks})`);
-      if (game.won && (prevRun.duration ?? 0) > 0 && game.runDuration < prevRun.duration) improvements.push(`faster run (-${fmtDuration(prevRun.duration - game.runDuration)})`);
-      if (improvements.length) { compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`; compareEl.hidden = false; }
-    }
-
-    // Achievements are the map's challenges (M20) this run completed; new clears are highlighted.
-    const achieveEl = q("[data-td-result-achievements]");
-    achieveEl.innerHTML = challengeResultHtml(challengeRun);
-    achieveEl.hidden = !achieveEl.innerHTML || !!campaign;
-
     const favorEl = q("[data-td-result-favor]");
-    rewards = [{ label: "Run", favor: earnedFavor }, { label: "Challenges", favor: challengeRun.favor }];
+    rewards = [{ label: "Run", favor: earnedFavor }];
     if (daily) rewards.push({ label: "Daily first clear", favor: dailyRun?.reward ?? 0 });
     if (expedition) rewards.push({ label: "Expedition complete", favor: dailyRun?.reward ?? 0 });
     if (session.debug) favorEl.innerHTML = `<p class="td-result-favor-note">Debug run: score, bests and Favor were not recorded.</p>`;
     else if (campaign) favorEl.innerHTML = `<p class="td-result-favor-note">Campaign stages build campaign progress (heroes, unlocked stages) instead of Favor.</p>`;
-    else if (shard) { renderFavorLine(); renderShards(); }
+    else if (shard) renderFavorLine();
     else renderFavorLine(data.tuning.shards ? `Defeat ${Math.round(data.tuning.shards.minDefeatedShare * 100)}% of the enemies to earn a shard.` : "");
     favorEl.hidden = false;
     ctx.actions.syncSpendButton();
@@ -399,7 +311,7 @@ export function createResults(ctx: PageContext) {
 
     // Stage Clear sequence: rewards are what the save gained this run.
     const favorGained = session.debug || campaign ? 0
-      : rewards.reduce((sum, part) => sum + part.favor, 0) + (shard?.choice === "favor" ? shard.favor : 0);
+      : rewards.reduce((sum, part) => sum + part.favor, 0) + (shard?.favor ?? 0);
     const paid: Record<string, number> = { gold: 0, heroXp: 0 };
     for (const reward of [...collection, ...(((dailyRun as any)?.paid ?? []) as any[])]) paid[reward.id] = (paid[reward.id] ?? 0) + reward.amount;
     const expeditionSeals = (dailyRun as any)?.seals ?? 0;
@@ -408,7 +320,6 @@ export function createResults(ctx: PageContext) {
       mapName: map.name,
       context: [daily || expedition || campaign ? context : "", `${forecast?.total ?? 0} enemies`, tierName].filter(Boolean).join(" · "),
       score: game.score,
-      personalBest: !session.debug && !daily && !expedition && !campaign && (!prevTop || game.score > prevTop.score),
       lives: shownLives(game.lives, game.lifeUnit), // shown lives (stage clear screen)
       leaks: game.totalLeaks ?? 0,
       duration: fmtDuration(game.runDuration ?? 0),

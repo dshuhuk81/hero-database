@@ -53,12 +53,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const campaign = options.campaign ?? null;
     const campaignStage = campaign ? stageById(campaignData, campaign.stageId) : null;
     end();
-    if (!daily && !expedition && !campaign) { // the Daily Trial, Expedition and Campaign leave the lobby's map pick alone
-      state.selectedMap = map;
-      try { localStorage.setItem("td:map", map.id); } catch {}
-    }
     // The home screen's Play picks this mode next time ("again" or "next").
-    const homeMode = daily ? "daily" : expedition ? "expedition" : campaign ? "campaign" : "free";
+    const homeMode = daily ? "daily" : expedition ? "expedition" : "campaign";
     if (store.data.ui.homeMode !== homeMode) {
       store.data.ui = { ...store.data.ui, homeMode };
       store.persist();
@@ -94,31 +90,29 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     loadingCanvas = canvas;
 
     // Daily Trial (M19): the same map, squad and mutators for everyone, so no Divine Blessings
-    // and no shard boost (collection upgrades still apply).
-    // Campaign stages (M26) are balanced as authored: no Divine Blessings either.
+    // (collection upgrades still apply). Campaign stages (M26) are balanced as authored: no
+    // Divine Blessings either. Expedition stages (M21) keep them.
     const runLevels = daily || campaign ? {} : { ...store.data.favLevels };
-    // Expedition stages (M21) keep Divine Blessings but skip the shard boost (it waits for a normal run).
-    const boost = daily || expedition || campaign ? null : store.data.nextRunBoost;
     // Hero levels, stars, Evolution and skills apply in every mode (global stats).
-    // Free Play deploys only owned heroes; an Expedition roster is drawn from them when it
-    // starts. The Daily Trial keeps its own squad.
+    // An Expedition roster is drawn from the owned heroes when it starts. The Daily Trial keeps
+    // its own squad.
     const heroes = collectionHeroes(campaignData, store.data.campaign, data.heroes);
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
-    // R12: Free Play and Expedition enemies grow with the collection's upgrades (by less than 100%).
+    // R12: Expedition enemies grow with the collection's upgrades (by less than 100%).
     if (!daily && !campaignStage) {
       const pool: string[] = (special as any).allowedHeroes ?? [...store.data.campaign.owned];
       const might = mightEnemyScale(campaignData, store.data.campaign, data.heroes, pool, data.tuning.run?.deployCap ?? 7);
       if (might !== 1) (special as any).hpScale = ((special as any).hpScale ?? map?.enemyHp ?? 1) * might;
     }
-    const tuning = buildRunTuning(data.tuning, runLevels, boost);
+    const tuning = buildRunTuning(data.tuning, runLevels);
     // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
     // the Daily Trial stays the same for everyone without them.
     const interventions = daily ? [] : Object.entries(data.tuning.interventions ?? {})
       .filter(([, cfg]: [string, any]) => !cfg.unlockAfter || store.data.campaign.cleared?.[cfg.unlockAfter]).map(([id]) => id);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
-    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, timeline: timelineForMap(map, campaignData), tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
+    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, timeline: timelineForMap(map, campaignData), tier: "normal", tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map), campaign: Boolean(campaignStage || daily || expedition) }); // R18 by run context: Campaign, Daily Trial and Expedition
@@ -137,7 +131,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition, campaign };
+    state.session = { game, renderer, canvas, map, started: false, keyboardSlots, favLevels: runLevels, debug: false, daily, expedition, campaign };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -148,11 +142,10 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.renderPreview();
     deps.buffBar.render();
     ctx.actions.resetPowers();
-    const boostText = boost?.type === "placement" ? ` Placement shard: +${boost.placement} starting placement.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
       : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
-    ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${boostText}${dailyText}`);
+    ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${dailyText}`);
   }
 
   function end() {
@@ -253,7 +246,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (target.closest("[data-td-restart]") || target.closest("[data-td-retry]")) {
       // An Expedition stage cannot be replayed; its outcome is final (M21).
       if (state.session?.expedition) { toLobby(); return; }
-      const map = state.session?.map ?? state.selectedMap;
+      const map = state.session?.map;
+      if (!map) return;
       const daily = state.session?.daily ?? null; // a trial retries the same day's setup
       const campaign = state.session?.campaign ?? null; // a campaign stage retries with the same squad
       ctx.actions.closePanel(false);

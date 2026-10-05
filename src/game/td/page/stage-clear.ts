@@ -13,15 +13,14 @@ export type ClearScene = (typeof SCENES)[number];
 
 export type StageClearReport = {
   mapName: string;
-  context: string; // "Free Play · Normal"
+  context: string; // "Daily Trial 2026-10-05 · 40 enemies · Normal"
   score: number;
-  personalBest: boolean;
   lives: number;
   leaks: number;
   duration: string;
   rating: number; // stage rating 0-3 (laurels, by lives kept)
   rewards: { id: string; amount: number }[]; // what the save gained: favor, gold, heroXp, ...
-  note: string; // mode outcome (Daily, Expedition, Campaign, debug), empty for Free Play
+  note: string; // mode outcome (Daily, Expedition, Campaign, debug)
   rows: any[]; // damageRows(), highest damage first
 };
 
@@ -86,7 +85,6 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
     q("[data-clear-title]").textContent = `${report.mapName} secured`;
     q("[data-clear-context]").textContent = report.context;
     q("[data-clear-score]").textContent = scoreText;
-    q("[data-clear-best]").hidden = !report.personalBest;
     q("[data-clear-lives]").textContent = String(report.lives);
     q("[data-clear-leaks]").textContent = String(report.leaks);
     q("[data-clear-duration]").textContent = report.duration;

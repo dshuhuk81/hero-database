@@ -147,7 +147,7 @@ export function createRecruit(ctx: PageContext) {
     sheetNote.textContent = ring ? `${ring.name}: ${ring.text}` : "";
     sheetNote.hidden = !ring;
     // Restricted rosters list only their heroes: the day's (Daily Trial), the squad
-    // (Campaign, Expedition) or the owned collection (Free Play).
+    // (Campaign, Expedition).
     const listed = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id)));
     sheetList.innerHTML = listed.length ? listed.map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" aria-pressed="false">` +

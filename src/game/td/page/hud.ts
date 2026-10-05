@@ -184,7 +184,6 @@ export function createHud(ctx: PageContext) {
     if (game.running || game.complete || !game.heroes.length) return;
     if (!session.started) {
       session.started = true;
-      if (session.boost) store.data.nextRunBoost = null; // shard used up by this run
       store.data.lastTeam = [...game.team];
       store.persist();
       speed = 1;

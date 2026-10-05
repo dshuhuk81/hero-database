@@ -7,7 +7,6 @@ import {
   QUEST_MILESTONES,
   QUEST_MAX_ACTIVITY,
   QUEST_TASKS,
-  QUEST_DEFEATED,
   claimQuestMilestone,
   claimQuestTask,
   milestoneState,
@@ -28,13 +27,12 @@ const rules = { heroIds: new Set(heroes.map((hero) => hero.id)) };
 const freshSave = () => emptySave();
 const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
 
-// The owner-approved tables (spec sections 2 and 3): ten tasks, 135 total, default chests.
+// The owner-approved tables (spec sections 2 and 3): eight tasks, 110 total, default chests (the Challenge and Free Play tasks went with Free Play).
 {
-  assert.equal(QUEST_TASKS.length, 10, "ten daily tasks");
-  assert.deepEqual(QUEST_TASKS.map((t) => t.points), [10, 20, 20, 20, 15, 10, 10, 10, 10, 10]);
-  assert.equal(QUEST_MAX_ACTIVITY, 135, "total available activity");
+  assert.equal(QUEST_TASKS.length, 8, "eight daily tasks");
+  assert.deepEqual(QUEST_TASKS.map((t) => t.points), [10, 20, 20, 20, 10, 10, 10, 10]);
+  assert.equal(QUEST_MAX_ACTIVITY, 110, "total available activity");
   assert.equal(QUEST_BAR_GOAL, 100, "the bar pays up to 100 activity");
-  assert.equal(QUEST_DEFEATED, 40, "Free Play task counts a run defeating 40 enemies");
   assert.deepEqual(QUEST_MILESTONES, [
     { at: 20, favor: 30, seals: 0 }, { at: 40, favor: 40, seals: 0 }, { at: 60, favor: 50, seals: 10 },
     { at: 80, favor: 60, seals: 0 }, { at: 100, favor: 80, seals: 15 },
@@ -52,7 +50,7 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
   assert.deepEqual(record.tasks, {});
   assert.deepEqual(record.milestones, []);
   const progress = questProgress(save, DAY);
-  assert.equal(progress.tasks.length, 10);
+  assert.equal(progress.tasks.length, 8);
   assert.ok(progress.tasks.every((task) => task.state === "open"), "every task open");
   assert.ok(progress.milestones.every((chest) => chest.state === "locked"), "every chest locked");
 }
@@ -66,7 +64,7 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
     assert.equal(claimQuestTask(save, task.id, DAY), task.points, `${task.id}: pays its points`);
     assert.equal(claimQuestTask(save, task.id, DAY), 0, `${task.id}: no double pay`);
   }
-  assert.equal(questRecord(save, DAY).activity, QUEST_MAX_ACTIVITY, "all ten tasks pay once: 135");
+  assert.equal(questRecord(save, DAY).activity, QUEST_MAX_ACTIVITY, "all eight tasks pay once: 110");
 }
 
 // Check 3: claiming pays points; claiming again (or before completion) pays nothing.
@@ -101,15 +99,15 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
   const favor0 = save.favor;
   const seals0 = sealsOf(save);
   const done = (...ids) => { for (const id of ids) { notifyQuest(save, id, DAY); claimQuestTask(save, id, DAY); } };
-  done("heroic-clear", "expedition", "trial-goal", "challenge", "summon", "free-defeat40"); // 95
-  assert.equal(questRecord(save, DAY).activity, 95);
+  done("heroic-clear", "expedition", "trial-goal", "summon"); // 70
+  assert.equal(questRecord(save, DAY).activity, 70);
   assert.equal(milestoneState(questRecord(save, DAY), 100), "locked", "100 needs 100 activity");
   assert.equal(save.favor, favor0, "no Favor before a chest is claimed");
   assert.equal(claimQuestMilestone(save, 60, DAY).seals, 10, "60 chest pays 10 seals");
   assert.equal(save.favor, favor0 + 50);
   assert.equal(sealsOf(save), seals0 + 10);
   assert.equal(claimQuestMilestone(save, 100, DAY), null, "claimed-once rule: 100 still locked");
-  done("campaign-clear", "intervention", "blessing", "hero-upgrade"); // 135
+  done("campaign-clear", "intervention", "blessing", "hero-upgrade"); // 110
   const chest = claimQuestMilestone(save, 100, DAY);
   assert.deepEqual(chest, { at: 100, favor: 80, seals: 15 }, "100 chest pays 80 Favor + 15 seals");
   assert.equal(save.favor, favor0 + 130);
@@ -166,7 +164,7 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
   assert.equal(claimQuestMilestone(save, 60, DAY), null, "60 not reached");
   assert.equal(save.favor, favor0 + 70, "exact Favor delta: 30 + 40");
   assert.equal(sealsOf(save), seals0, "no seals below the 60 chest");
-  assert.equal(questBadgeText(save, DAY), "50 of 135 activity", "claimed: badge falls back to today's activity");
+  assert.equal(questBadgeText(save, DAY), "50 of 110 activity", "claimed: badge falls back to today's activity");
 }
 
 // Check 9: a save without a quests record (old saves) loads as a fresh day, no migration.

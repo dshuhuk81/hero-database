@@ -5,7 +5,7 @@ import { buildRunTuning } from "../favor.js";
 import { createBlessingsGraph } from "./blessings";
 import { mechanicBoonCard } from "./boons";
 import type { PageContext } from "./context";
-import { availableFavor, tierBest } from "./save";
+import { availableFavor } from "./save";
 
 export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }) {
   const { root, q, state, store, data, pause } = ctx;
@@ -78,7 +78,6 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
 
   function renderMenu() {
     ctx.actions.updateHud();
-    q("[data-td-menu-best]").textContent = tierBest(store.data, state.session?.game.tier ?? state.selectedTier).toLocaleString();
     q<HTMLButtonElement>("[data-td-restart]").hidden = !state.session;
     ctx.actions.syncAudioUi();
   }
@@ -131,7 +130,7 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     const session = state.session;
     if (!session || !favorAppliesNow()) return;
     // Nothing is deployed yet, so the run can be rebuilt from the new snapshot.
-    session.game.tuning = buildRunTuning(data.tuning, store.data.favLevels, session.boost);
+    session.game.tuning = buildRunTuning(data.tuning, store.data.favLevels);
     session.favLevels = { ...store.data.favLevels };
     session.game.reset();
     pause.sync();

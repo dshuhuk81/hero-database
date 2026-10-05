@@ -12,8 +12,8 @@ import { classIconImg } from "../assets.js";
 const CHIPS = ["favor", ...CURRENCIES];
 const SOURCES: Record<string, string> = {
   favor: "Every run outside the campaign. Spent on Divine Blessings.",
-  gold: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
-  heroXp: "Campaign stages, and a share from Free Play and Expedition. Spent on hero levels.",
+  gold: "Campaign stages, and a share from the Daily Trial and Expedition. Spent on hero levels.",
+  heroXp: "Campaign stages, and a share from the Daily Trial and Expedition. Spent on hero levels.",
   divineSeals: "Campaign first clears, Daily Trial and Expedition. Spent on summons.",
   sealDust: "Spare hero copies. Spent on Evolution, copies and Divine Seals.",
 };

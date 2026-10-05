@@ -114,7 +114,7 @@ export class TowerDefenseGame {
     this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
     this.startLives = lives;
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
-    // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play and Daily).
+    // (`enemyHp` in tdMaps.json, evens out map difficulty in the Daily Trial and Expedition).
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     // Enemy attack scale: a campaign stage's own `atkScale` (tdCampaign.json), 1 everywhere else.
     this.atkScale = atkScale ?? 1;

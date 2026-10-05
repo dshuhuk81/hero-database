@@ -3,7 +3,7 @@
 // ctx.actions, which the page fills once all modules exist; modules only call
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
-import type { RunBoost, RunTier, SaveStore } from "./save";
+import type { SaveStore } from "./save";
 import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
@@ -21,7 +21,6 @@ export type Session = {
   archerHint?: boolean; // the "archers shoot platform heroes" notice was shown this run
   keyboardSlots: Slot[];
   favLevels: Record<string, number>; // blessing levels this run was built with
-  boost: RunBoost | null; // shard boost this run was built with
   debug: boolean;
   daily: DailySetup | null; // Daily Trial setup (M19) when this run is the trial
   expedition: ExpeditionState | null; // Expedition state (M21) this stage was started from
@@ -31,8 +30,6 @@ export type Session = {
 // Mutable UI state shared between modules.
 export type PageState = {
   session: Session | null;
-  selectedMap: any;
-  selectedTier: RunTier; // difficulty tier (M3)
   selectedEntityId: number | null; // hero with the open popover
   deployHeroId: string; // hero picked from the deck by tap (fallen or not yet fielded)
   relocateEntityId: number | null; // placed hero being moved to another tile (R4)

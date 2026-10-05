@@ -56,8 +56,6 @@ export function createHome(ctx: PageContext, deps: Deps) {
   }
 
   function views(camp: CampaignSummary, daily: DailySummary, exp: ExpeditionSummary): Record<HomeMode, ModeView> {
-    const best = store.data.bestScore;
-    const boost = store.data.nextRunBoost;
     return {
       campaign: camp.next
         ? { note: `${camp.started ? "Continue" : "Begin"} ${camp.next.id}`, badge: "" }
@@ -68,10 +66,6 @@ export function createHome(ctx: PageContext, deps: Deps) {
       expedition: exp
         ? { note: exp.camp ? "Camp reward waiting" : `Stage ${roman(exp.stage + 1)} of ${roman(exp.stages)}`, badge: "" }
         : { note: "Not started", badge: "" },
-      free: {
-        note: boost ? "Next run boosted" : best ? `Best ${best.toLocaleString()}` : "No runs yet",
-        badge: "",
-      },
     };
   }
 
@@ -133,7 +127,7 @@ export function createHome(ctx: PageContext, deps: Deps) {
     if (mode === "campaign") {
       deps.campaign.focusNextStage();
       ctx.actions.showScreen("stages");
-    } else ctx.actions.showScreen(mode === "free" ? "maps" : mode);
+    } else ctx.actions.showScreen(mode);
   }
 
   railEl.addEventListener("click", (event) => {
