@@ -281,6 +281,11 @@ The full decision history and rollout boundary are in
   slabs a dark outline, enemy spawns a pulsing red portal glow, the ground a side vignette
   (32 strips, up to 0.34 black), level badges shrink to 0.72 on tilted boards and hero ground
   shadows are larger and darker (`heroScale` 1.15 to 1.3);
+- second pass (Oct 5): slabs cast one thin contact shadow under the front face instead of a halo;
+  hero figures stand near the tile centre (`HERO_ANIM.feetY` 22 to 6, hero bars moved up to match);
+  ground enemies grow from 55 % and fade in over their first 70 road px (`EMERGE_DISTANCE`) so they
+  step out of the portal; the incoming-wave chips ("in 9s 2x Grunts") are removed, only the
+  pre-start summary chip stays;
 - ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
   behind units; spawn labels hide while a stage runs;
 - taps are inverse-mapped through the visible tilt and checked in that plane, including the edge
@@ -366,7 +371,7 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   Support. Flyers can only be hit by platform heroes. Tile look (`map-scene.js` `drawSlot`):
   road tiles are recessed sockets with corner brackets and a shield glyph, platform tiles
   raised bevelled plates with a double chevron; on boards they are drawn at the cell size. On
-  tilted boards the platform front lip is 0.1125 cell high (the prototype's 0.3 cell, halved, then reduced by 25%).
+  tilted boards the platform front lip is 0.0788 cell high (the prototype's 0.3 cell, halved, reduced by 25%, then by another 30% on Oct 5).
   Placement states (`render.js` `slotMode`): while a fallen hero is picked, tiles of its
   type glow and the others fade; with a full team empty tiles go quiet.
 - **Placing heroes** (`page/recruit.ts`, `page/hud.ts`): the bottom deck lists the whole roster

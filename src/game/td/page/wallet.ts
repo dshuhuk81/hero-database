@@ -48,15 +48,22 @@ export function createWallet(ctx: PageContext) {
       `<div class="td-wallet-links"><button class="td-link-button" type="button" data-td-go="heroes">Heroes</button><button class="td-link-button" type="button" data-td-go="summon">Summon</button></div></section>`;
   }
 
+  // Rewriting identical markup re-creates the currency <img> elements, and each one asks the
+  // network again (every run save calls render). Only touch the DOM when the markup changed.
+  let chipsHtml = "", panelShown = "";
   function render() {
     const have = amounts();
-    chipsEl.innerHTML = `<span class="sr-only">Inventory:</span>` +
+    const chips = `<span class="sr-only">Inventory:</span>` +
       CHIPS.map((id) => `<span class="td-wallet-chip" data-chip="${id}">${currencyAmount(id, have[id])}</span>`).join("");
-    if (!panel.hidden) panel.innerHTML = panelHtml(have);
+    if (chips !== chipsHtml) { chipsHtml = chips; chipsEl.innerHTML = chips; }
+    if (!panel.hidden) {
+      const html = panelHtml(have);
+      if (html !== panelShown) { panelShown = html; panel.innerHTML = html; }
+    }
   }
 
   function setOpen(open: boolean, restoreFocus = false) {
-    if (open) panel.innerHTML = panelHtml(amounts());
+    if (open) { panelShown = panelHtml(amounts()); panel.innerHTML = panelShown; }
     panel.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
     if (!open && restoreFocus) button.focus();

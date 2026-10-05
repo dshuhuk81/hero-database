@@ -557,8 +557,9 @@ export function createMapScene(PIXI, game, {
       // The slab is a stone block: a top face the size of the cell and a front face (the lip)
       // below it, about 0.1125 cell tall (0.15 reduced by 25%, Oct 5: slab and its shadow read too
       // tall against the Watcher of Realms reference). Ranged units still sit on clearly raised ground.
-      const lip = Math.round(TILE * 0.1125);
-      for (let i = 3; i >= 1; i--) slab.rect(-h + 2 - i * 2 + 5, -h + 4 - i * 2 + lip, TILE - 4 + i * 4, TILE - 4 + i * 4 - 4).fill({ color: 0x000000, alpha: 0.1 });
+      const lip = Math.round(TILE * 0.0788); // Oct 5: cut another 30% (was 0.1125)
+      // Contact shadow: one soft band under the front face, not a halo around the block.
+      for (let i = 0; i < 3; i++) slab.rect(-h + 4 - i, h - 2 + lip, TILE - 4 + i * 2, 1.4 + i * 1.4).fill({ color: 0x000000, alpha: 0.14 });
       slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
       const rawStone = STONE[2] ?? STONE[0];
       const mix = (a, b, t) => Math.round(a + (b - a) * t);

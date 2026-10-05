@@ -1185,7 +1185,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Hero figure (see animHeroes). A basic attack resets attackClock upwards; casting the
   // ultimate drops ultClock, so both clips trigger without touching the sim. The attack clip
   // starts at startFrame so the hand thrust lines up with the shot. The art faces right.
-  const HERO_ANIM = { height: 80, feetY: 22, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
+  const HERO_ANIM = { height: 80, feetY: 6, fps: { idle: 8, attack: 16, ultimate: 12 }, startFrame: { attack: 2 } };
   // A figure point (frame px) relative to the slot centre, before mirroring.
   const figurePoint = (fig, [fx, fy]) => {
     const s = HERO_ANIM.height / fig.bodyHeight;
@@ -1533,6 +1533,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const dyingPool = new Map(); // entityId -> { c, timer }
   let dyingClock = null;
 
+  const EMERGE_DISTANCE = 70; // road px over which a spawning enemy grows from 55% and fades in
   function updateEnemyContainer(unit, c) {
     const depth = unitDepth(unit.y, unit.flying ? "flyer" : "enemy");
     if (c.zIndex !== depth) c.zIndex = depth;
@@ -1552,9 +1553,12 @@ export async function createRenderer(canvas, game, options = {}) {
       c._lastX = unit.x;
       c.position.set(unit.x, unit.y);
     }
-    if (tiltOn) { const es = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); c.scale.set(es, es / tiltK); } // R18 depth scaling
+    // Emerging: ground enemies grow and fade in over their first stretch of road, so they step out
+    // of the portal instead of popping in on top of it.
+    const emerge = unit.flying || !(unit.distance < EMERGE_DISTANCE) ? 1 : 0.55 + 0.45 * Math.max(0, unit.distance) / EMERGE_DISTANCE;
+    if (tiltOn) { const es = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y) * emerge; c.scale.set(es, es / tiltK); } // R18 depth scaling
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
-    c.alpha = enemyRenderAlpha(unit);
+    c.alpha = enemyRenderAlpha(unit) * (emerge < 1 ? (emerge - 0.55) / 0.45 : 1);
     if (c._anim) animateEnemy(unit, c);
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
 
@@ -1740,7 +1744,7 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const unit of game.heroes) {
       const g = gFor(unit.y);
       if (tiltOn) { // hero bars above the head, in the top layer (R18)
-        const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 66 * hs;
+        const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 82 * hs;
         const style = combatBarStyle("hero");
         const width = 48 * hs;
         drawBar(g, left, top, width, unit.hpLeft / unit.hp, style.healthColor, style.healthHeight);
