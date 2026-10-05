@@ -108,6 +108,13 @@ function buildRow(h, group) {
   row.dps = Math.round(dps);
   if (damageType) row.damageType = damageType;
   if (crit) row.critChance = Math.round((row.critChance + crit) * 100) / 100;
+  // Display scale (tuning.heroStatScale): applied after pricing and class kits, so ranks, costs and
+  // DPS ratios stay as they were. Armor and magic resistance are not scaled: the damage formula
+  // (sim.js K) works on their absolute size.
+  const scale = tuning.heroStatScale ?? 1;
+  row.atk = Math.round(row.atk * scale);
+  row.dps = Math.round(row.dps * scale);
+  row.hp = Math.round(row.hp * scale);
   row.rarity = currentById.get(row.id)?.rarity ?? TIER_RARITY[String(row.tier)[0]] ?? "epic";
   return row;
 }

@@ -15,6 +15,7 @@ const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}
 const chapters = new Set(arg("chapters", "").split(",").filter(Boolean).map(Number));
 const SAMPLE = Number(arg("sample", "35"));
 const STEPS = Number(arg("steps", "7"));
+const MAX_HP = Number(arg("max", "4"));
 
 const cost = Object.fromEntries(heroes.map((hero) => [hero.id, hero.cost]));
 const combos = (list, k) => (k === 0 ? [[]] : list.flatMap((x, i) => combos(list.slice(i + 1), k - 1).map((c) => [x, ...c])));
@@ -38,10 +39,10 @@ for (const stage of stages) {
     const leveled = spendEvenly(progress);
     const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const map = maps.find((entry) => entry.id === stage.mapId);
-    const squads = sample(combos(leveled.owned, campaign.squadSize), SAMPLE);
+    const squads = sample(combos(leveled.owned, Math.min(campaign.squadSize, leveled.owned.length)), SAMPLE);
     const rateAt = (hpScale) => squads.filter((squad, i) => playRun([...squad].sort((a, b) => cost[a] - cost[b]), i + 1, map, { game: { ...stageGameOptions({ ...stage, hpScale }, squad, i + 1, runHeroes) } }).won).length / squads.length;
-    // Search on a log scale between 0.1x and 4x; the rate falls as health rises.
-    let lo = Math.log(0.1), hi = Math.log(4);
+    // Search on a log scale between 0.1x and --max (default 4x); the rate falls as health rises.
+    let lo = Math.log(0.1), hi = Math.log(MAX_HP);
     let best = { hpScale: stage.hpScale, rate: rateAt(stage.hpScale) };
     const goal = target(stage);
     for (let i = 0; i < STEPS; i++) {
