@@ -149,7 +149,7 @@ export function createRecruit(ctx: PageContext) {
     const listed = data.heroes.filter((hero: any) => hero.slot === slot.type && (!game.allowedHeroes || game.allowedHeroes.has(hero.id)));
     sheetList.innerHTML = listed.length ? listed.map((hero: any) =>
       `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" aria-pressed="false">` +
-      `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
+      `<img data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
       `<span class="td-card-copy"><strong>${classIconImg(hero.class, 16)}${hero.name}</strong><small data-place-reason></small></span></button>`).join("")
       : `<p class="td-sheet-empty">No ${road ? "road" : "platform"} heroes ${state.session?.daily || state.session?.campaign || state.session?.expedition ? "in this squad" : "in your collection yet. Unlock heroes in the Campaign or summon them with Divine Seals"}.</p>`;
     update();
@@ -296,7 +296,7 @@ export function createRecruit(ctx: PageContext) {
       deckEl.querySelector(`[data-deck-ready="${hero.id}"], [data-deck-fallen="${hero.id}"]`)?.classList.add("is-dragging");
       const ghost = document.createElement("div");
       ghost.className = "td-drag-ghost";
-      ghost.innerHTML = `<img src="${hero.image}" alt="" width="56" height="56">`;
+      ghost.innerHTML = `<img data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" width="56" height="56">`;
       document.body.append(ghost);
       drag.ghost = ghost;
     }

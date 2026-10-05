@@ -342,7 +342,7 @@ export function createCampaign(ctx: PageContext) {
       const hero = selected[i];
       if (!hero) return `<span class="td-squad-slot is-empty" data-squad-slot="${i}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></span>`;
       return `<button type="button" class="td-squad-slot" data-class="${hero.class.toLowerCase()}" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from squad">
-        <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
+        <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
         <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
     }).join("");
     // Roster: 50 x 75 art cards, class icon on the art, level and stars over its foot; name and (for
@@ -360,7 +360,7 @@ export function createCampaign(ctx: PageContext) {
       const tip = owned ? `${hero.name} · ${heroMight.toLocaleString()} Might · ${hero.class} · ${slotLabel(hero)}. ${ROLE_HINTS[hero.class] ?? ""}${skill ? ` Skill: ${skill.skillName}.` : ""}`
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
       return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} of ${campaign.heroStars?.max ?? 5} stars` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
-        <img class="td-squad-tile-portrait" src="${hero.image}" alt="" loading="lazy">
+        <img class="td-squad-tile-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" loading="lazy">
         <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
         ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
@@ -398,7 +398,7 @@ export function createCampaign(ctx: PageContext) {
         ? `${hero.name}, ${hero.class}, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} stars${tier ? `, Evolved ${roman(tier)}` : ""}, ${(mightOf.get(hero.id) ?? 0).toLocaleString()} Might${ready ? ", upgrade available" : ""}`
         : `${hero.name}, ${hero.class}, unlocks from ${source}`;
       return `<button type="button" class="td-hero-tile${isRecruit ? " is-recruit" : ""}${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}" aria-label="${label}" title="${hero.name}"${isOwned ? "" : " disabled"}>
-        <img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"${FACE_FOCUS[hero.id] ? ` style="--td-face-y: ${FACE_FOCUS[hero.id]}"` : ""}>
+        <img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy"${FACE_FOCUS[hero.id] ? ` style="--td-face-y: ${FACE_FOCUS[hero.id]}"` : ""}>
         <span class="td-hero-tile-class" aria-hidden="true">${classIconImg(hero.class, 16)}</span>
         ${tier ? `<span class="td-hero-tile-evo" aria-hidden="true">${roman(tier)}</span>` : ""}
         ${ready ? `<i class="td-hero-tile-dot" aria-hidden="true"></i>` : ""}
@@ -428,7 +428,7 @@ export function createCampaign(ctx: PageContext) {
     const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
     heroDetailKey = detailKey;
     const pickerOpen = heroTab === "evolution" && evoPicker && evoTarget !== null;
-    const art = pickerOpen ? evolutionPicker(p, hero) : `<img src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}`;
+    const art = pickerOpen ? evolutionPicker(p, hero) : `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}`;
     detailEl.innerHTML = `<article class="td-hero-profile${hero.id.startsWith("recruit-") ? " is-recruit" : ""}">
       <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${art}</div>
       <div class="td-hero-profile-copy">
@@ -509,12 +509,12 @@ export function createCampaign(ctx: PageContext) {
     const slotHtml = Array.from({ length: cost.copies }, (_, i) => {
       const id = slots[i];
       const h = id ? heroById.get(id) : null;
-      return h ? `<button type="button" class="td-fodder-slot is-filled" data-camp-fodder-remove="${id}" aria-label="Remove ${h.name} copy"><img src="${h.portrait ?? h.image}" alt=""><small>${h.name}</small></button>` : `<span class="td-fodder-slot" aria-hidden="true">+</span>`;
+      return h ? `<button type="button" class="td-fodder-slot is-filled" data-camp-fodder-remove="${id}" aria-label="Remove ${h.name} copy"><img data-rarity="${h.rarity ?? ''}" src="${h.portrait ?? h.image}" alt=""><small>${h.name}</small></button>` : `<span class="td-fodder-slot" aria-hidden="true">+</span>`;
     }).join("");
     const copies = p.copies?.[hero.id] ?? 0;
     const free = copies - (fodder[hero.id] ?? 0);
     const pickHtml = copies > 0
-      ? `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${hero.id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img src="${hero.portrait ?? hero.image}" alt=""><span><strong>${hero.name}</strong><small>${free} ${free === 1 ? "copy" : "copies"} available</small></span><b>${free > 0 && fodderCount() < cost.copies ? "Add" : "Selected"}</b></button>`
+      ? `<button type="button" class="td-fodder-pick" data-camp-fodder-add="${hero.id}"${free > 0 && fodderCount() < cost.copies ? "" : " disabled"}><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt=""><span><strong>${hero.name}</strong><small>${free} ${free === 1 ? "copy" : "copies"} available</small></span><b>${free > 0 && fodderCount() < cost.copies ? "Add" : "Selected"}</b></button>`
       : `<p class="td-hero-tab-copy">No duplicate of ${hero.name} yet. Summon another copy to raise this hero's stars.</p>`;
     const selectedCopies = fodderCount();
     const full = selectedCopies === cost.copies;
@@ -543,7 +543,7 @@ export function createCampaign(ctx: PageContext) {
       const selected = evoCopies.includes(i);
       const disabled = !selected && evoCopies.length >= need;
       return `<button type="button" class="td-evo-picker-card${selected ? " is-selected" : ""}" data-camp-evo-material-index="${i}" aria-pressed="${selected}"${disabled ? " disabled" : ""}>
-        <img src="${hero.portrait ?? hero.image}" alt=""><strong>${hero.name}</strong><small>Copy ${i + 1}</small><span aria-hidden="true">${selected ? "✓" : "+"}</span>
+        <img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt=""><strong>${hero.name}</strong><small>Copy ${i + 1}</small><span aria-hidden="true">${selected ? "✓" : "+"}</span>
       </button>`;
     }).join("");
     return `<section class="td-evo-picker" aria-label="Select evolution materials">
@@ -579,7 +579,7 @@ export function createCampaign(ctx: PageContext) {
     const dustPer = summonCfg.dust?.perCopy ?? 0;
     evoCopies = evoCopies.filter((index) => index < copies).slice(0, need);
     const slots = Array.from({ length: need }, (_, i) => i < evoCopies.length
-      ? `<button type="button" class="td-evo-copy-slot is-filled" data-camp-evo-slot="${i}" aria-label="Remove selected copy"><img src="${hero.portrait ?? hero.image}" alt=""><span aria-hidden="true">×</span></button>`
+      ? `<button type="button" class="td-evo-copy-slot is-filled" data-camp-evo-slot="${i}" aria-label="Remove selected copy"><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt=""><span aria-hidden="true">×</span></button>`
       : `<button type="button" class="td-evo-copy-slot" data-camp-evo-slot="${i}" aria-label="Choose a copy"><span aria-hidden="true">+</span>${i < copies ? `<i class="td-evo-copy-dot" aria-hidden="true"></i>` : ""}</button>`).join("");
     const ready = evoCopies.length === need || evoPick === "dust";
     return `<div class="td-evo-detail">
@@ -643,7 +643,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
       const copies = p.copies?.[hero.id] ?? 0;
-      return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
+      return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
     }).join("");
     q("[data-td-summon-source]").textContent = nextStage(campaign, p)
       ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. All Legendary heroes are in the pool."

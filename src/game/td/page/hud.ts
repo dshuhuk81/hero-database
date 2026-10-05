@@ -130,7 +130,7 @@ export function createHud(ctx: PageContext) {
     const key = entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
     if (key !== deckKey) {
       deckKey = key;
-      const portrait = (hero: any) => `<img src="${hero.image}" alt="" width="40" height="40">`;
+      const portrait = (hero: any) => `<img data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" width="40" height="40">`;
       fieldedEl.innerHTML = entries.filter((entry) => entry.kind === "unit").map((entry) =>
         `<button type="button" class="td-fielded-slot" data-deck-unit="${entry.unit.entityId}">${portrait(heroById.get(entry.id))}<span class="td-deck-badge" data-deck-badge></span></button>`).join("");
       deckEl.innerHTML = entries.filter((entry) => entry.kind !== "unit").map((entry) => {

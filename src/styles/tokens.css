@@ -63,6 +63,11 @@
   --rarity-legendary-border: rgba(250, 204, 21, 0.75);
   --rarity-legendary-glow:   rgba(250, 204, 21, 0.18);
 
+  /* Rarity portrait backgrounds (behind hero portrait images) */
+  --rarity-common-bg:    radial-gradient(circle at 50% 35%, #3f9e5f 0%, #1f5c37 70%, #153d27 100%);
+  --rarity-epic-bg:      radial-gradient(circle at 50% 35%, #8b4fd6 0%, #5a2d99 70%, #3b1d66 100%);
+  --rarity-legendary-bg: radial-gradient(circle at 50% 35%, #f2c14e 0%, #b8801f 70%, #7a5214 100%);
+
 
   /* ============================================================
      RATING TIER COLORS

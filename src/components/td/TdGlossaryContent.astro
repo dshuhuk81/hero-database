@@ -303,7 +303,7 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
         {heroCards.map((hero) => (
           <article class="td-glossary-card" id={`${pid}hero-${hero.id}`}>
             <header class="td-glossary-card-head">
-              <img class="td-glossary-portrait" src={hero.image} alt="" width="80" height="80" loading="lazy" decoding="async" />
+              <img class="td-glossary-portrait" data-rarity={hero.rarity} src={hero.image} alt="" width="80" height="80" loading="lazy" decoding="async" />
               <div>
                 <Title class="td-glossary-title">{hero.name}</Title>
                 <p class="td-glossary-meta">

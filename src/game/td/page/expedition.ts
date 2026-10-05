@@ -95,7 +95,7 @@ export function createExpedition(ctx: PageContext) {
   function cardHtml(card: any, index: number, state: ExpeditionState) {
     if (card.type === "hero") {
       const hero = heroById.get(card.id);
-      return `<button type="button" class="td-exp-choice td-exp-choice--hero" data-exp-card="${index}"><img class="td-exp-choice-art" src="${hero.portrait ?? hero.image}" alt="" loading="lazy">` +
+      return `<button type="button" class="td-exp-choice td-exp-choice--hero" data-exp-card="${index}"><img class="td-exp-choice-art" data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy">` +
         `<span class="td-label">Recruit</span><strong>${hero.name}</strong><small>${hero.class} · ${hero.slot === "road" ? "Road" : "Platform"}. Joins the roster for the rest of the expedition.</small>` +
         `<span class="td-exp-cost">Costs ${livesShown(Math.min(EXPEDITION.recruitLives, state.lives - 1))} ${livesShown(Math.min(EXPEDITION.recruitLives, state.lives - 1)) === 1 ? "life" : "lives"}</span></button>`;
     }

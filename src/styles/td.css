@@ -12236,13 +12236,27 @@ button .td-cur {
 }
 
 .td-app .td-squad-bonds {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 10px;
+  align-self: start;
+  justify-self: stretch;
+  min-width: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
   margin: 0;
   color: var(--text-muted);
   font-size: 11px;
   line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.td-app .td-squad-bonds[hidden] {
+  display: none;
+}
+
+.td-app .td-squad-feedback {
+  align-self: start;
 }
 
 .td-app .td-bond.is-active {
@@ -13916,3 +13930,8 @@ button .td-cur {
   object-fit: cover;
   border-radius: inherit;
 }
+
+/* Rarity backdrop behind hero portrait images: common green, epic purple, legendary gold. */
+img[data-rarity="common"] { background: var(--rarity-common-bg); }
+img[data-rarity="epic"] { background: var(--rarity-epic-bg); }
+img[data-rarity="legendary"] { background: var(--rarity-legendary-bg); }

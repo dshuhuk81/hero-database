@@ -127,7 +127,7 @@ export function createPopover(ctx: PageContext) {
     const game = state.session!.game;
     popName.textContent = unit.name;
     const image = heroById.get(unit.id)?.image ?? "";
-    if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
+    if (popPortrait.dataset.hero !== unit.id) { popPortrait.dataset.hero = unit.id; popPortrait.dataset.rarity = heroById.get(unit.id)?.rarity ?? ""; popPortrait.hidden = !image; if (image) popPortrait.src = image; }
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.innerHTML = classGlyph(unit.class, 14); popClassIcon.dataset.cls = unit.class; popClassIcon.dataset.class = String(unit.class || "").toLowerCase(); }
     // Collection stars, Evolution and skill levels (every mode; they are already in the stats).
     const progress = heroProgress(unit);

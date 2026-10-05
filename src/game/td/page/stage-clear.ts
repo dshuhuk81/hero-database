@@ -63,7 +63,7 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
     const hero = heroById.get(row.id);
     const share = Math.round(row.share * 100);
     const support = row.heal + row.buff;
-    const avatar = hero?.image ? `<img src="${hero.image}" alt="" width="36" height="40" loading="lazy" decoding="async">` : "";
+    const avatar = hero?.image ? `<img data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" width="36" height="40" loading="lazy" decoding="async">` : "";
     return `<li class="td-clear-ranking${index === 0 ? " is-mvp" : ""}">` +
       `<span class="td-clear-rank">${index + 1}</span>` +
       `<span class="td-clear-avatar">${avatar}</span>` +

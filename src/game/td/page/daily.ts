@@ -22,7 +22,7 @@ const mutatorInfo = MUTATOR_INFO as Record<string, { name: string; text: string 
 export function trialCardHtml(hero: any, index: number, badge = `${hero.cost}`) {
   const heroClass = String(hero.class || "").toLowerCase();
   return `<li class="td-trial-card td-trial-card--${heroClass}" style="--i:${index}">` +
-    `<div class="td-trial-card-art"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +
+    `<div class="td-trial-card-art"><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +
     `<span class="td-trial-card-class" title="${hero.class}">${classIconImg(hero.class, 20)}</span>` +
     `<span class="td-trial-card-cost">${badge}</span>` +
     `<div class="td-trial-card-plate"><strong>${hero.name}</strong>${hero.title ? `<small>${hero.title}</small>` : ""}` +

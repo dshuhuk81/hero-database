@@ -53,7 +53,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
       `<span class="td-summon-flip-inner">` +
       `<span class="td-summon-face td-summon-face--back" aria-hidden="true"></span>` +
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +
-      `<img src="${hero.portrait ?? hero.image ?? ""}" alt="" decoding="async">` +
+      `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image ?? ""}" alt="" decoding="async">` +
       (isNew[index] ? `<span class="td-summon-face-tag">New</span>` : "") +
       `</span></span></button>`;
   }
