@@ -132,7 +132,10 @@ for (const id of tuning.roster) {
   else throw new Error(`Roster id ${id} has no database entry and no authored row in gameBalance.json`);
 }
 generated.sort((a, b) => b.cost - a.cost || a.name.localeCompare(b.name));
-const output = [...generated, ...authored];
+// Identity metadata comes from the TD persona, never from the database hero that only lends
+// this row its balance stats. Ordinary recruits intentionally receive an empty list.
+const withMythologyGroups = (row) => ({ ...row, mythologyGroups: [...(mythic.heroes[row.id]?.mythologyGroups ?? [])] });
+const output = [...generated, ...authored].map(withMythologyGroups);
 const json = `${JSON.stringify(output, null, 2)}\n`;
 if (process.argv.includes("--check")) {
   if (fs.readFileSync(outputPath, "utf8") !== json) throw new Error("gameBalance.json is stale; run npm run build:game-balance");
