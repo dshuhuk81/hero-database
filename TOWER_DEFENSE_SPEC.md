@@ -407,8 +407,8 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   first Lord is Isis, faction "Egyptian": Helios, Hecate, Vidar, Thanatos (the heroes seeded from
   Egyptian gods; the white-label pantheon column of the mythic doc is unrelated).
 - **Isis, Light of the Hidden Sun** (variant `sun_beam`, basic `beam`, Mage / platform,
-  pattern `row4`). Reach is her own row only. The basic attack hits its target fully and the next
-  two enemies on the line for the Mage splash share; the ultimate fires a beam to the left or
+  pattern `row4`). Reach is her own row only. The basic attack hits its target fully and every other
+  enemy on the line (nearest first, up to 8, also those in front of the target) for the Mage splash share; the ultimate fires a beam to the left or
   right (side with more enemies on the row, the target's side on a tie) and hits up to 8 enemies
   on it once for 100% (12 awakened). Off boards the row is a +/-24 px band. Ultimate skill levels
   already add +5% damage each (`heroSkillLevels.ultimatePowerPerLevel`). Effect event `ult`

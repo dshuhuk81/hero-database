@@ -1378,10 +1378,11 @@ export class TowerDefenseGame {
     const beam = hero.basic === "beam";
     strike(target, (kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others)), beam ? { showShot: false } : {});
     if (beam) {
-      // Isis: the shot is a horizontal beam; it also strikes the next enemies on the row, away from her.
+      // Isis: the shot is a horizontal beam that strikes every enemy on her row on that side
+      // (nearest first, up to `targets`), the target in full and the rest for the splash share.
       const dir = target.x < hero.x ? -1 : 1;
       const skill = this.tuning.heroSkills?.[hero.id];
-      const line = [target, ...this.beamLine(hero, this.enemies, dir).filter((e) => e !== target && (e.x - hero.x) * dir >= (target.x - hero.x) * dir)].slice(0, skill?.basicTargets ?? 3);
+      const line = [target, ...this.beamLine(hero, this.enemies, dir).filter((e) => e !== target)].slice(0, skill?.targets ?? 8);
       for (const e of line.slice(1)) strike(e, kit.splash?.share ?? 0.35, { showShot: false });
       this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: hero.x + dir * this.beamLength(hero), y2: hero.y, life: 0.25, color: "gold", beam: true, beamDir: dir, beamLength: this.beamLength(hero) });
       this.lordMark(hero, target);

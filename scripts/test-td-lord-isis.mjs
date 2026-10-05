@@ -136,11 +136,11 @@ const cell = board.cell;
   const { g, caster } = setup();
   const a = enemyAt(g, caster.x + cell, caster.y), b = enemyAt(g, caster.x + 2 * cell, caster.y), c = enemyAt(g, caster.x + 3 * cell, caster.y);
   const d = enemyAt(g, caster.x + 4 * cell, caster.y);
-  g.basicAttack(caster, a);
-  assert.ok(a.hp < a.maxHp && b.hp < b.maxHp && c.hp < c.maxHp, "basic attack runs along the line");
-  assert.equal(d.hp, d.maxHp, "basic attack hits at most 3");
-  assert.ok(a.lordMarkUntil > g.time && !b.lordMarkUntil && !c.lordMarkUntil, "one marked enemy per Lord attack");
-  assert.ok(a.maxHp - a.hp > b.maxHp - b.hp, "the target takes the full hit, the rest a share");
+  const near = enemyAt(g, caster.x + cell / 2, caster.y); // in front of the target, between her and it
+  g.basicAttack(caster, c);
+  assert.ok([a, b, c, d, near].every((e) => e.hp < e.maxHp), "basic attack hits everything on the line, also in front of the target");
+  assert.ok(c.lordMarkUntil > g.time && !a.lordMarkUntil && !b.lordMarkUntil && !near.lordMarkUntil, "one marked enemy per Lord attack");
+  assert.ok(c.maxHp - c.hp > a.maxHp - a.hp, "the target takes the full hit, the rest a share");
 }
 
 console.log("Isis Lord checks passed");

@@ -650,7 +650,7 @@ No additional mechanics are proposed in this pack. A spell's name or fictional d
 
 **Look:** Warm bronze skin, braided black hair, a tall golden crown of two horns around a dark solar disc, gold collar with lapis inlays, ivory gown, midnight-blue mantle, golden wings of light. Black-and-gold ankh staff in her right hand (the beam leaves the staff). Art: `public/td/heroes-alt/review-set-v1/` (source), `isis-*` (game files).
 
-**Basic — Line of Light:** The staff points along her row; the shot hits the target and the next two enemies on that line.
+**Basic — Line of Light:** The staff points along her row; the shot hits the target in full and every other enemy on that line for a share.
 
 **Trait — Lord of the Hidden Sun:** +15% attributes for her faction, a periodic +50% damage and healing for 20 s (sooner with more faction heroes), and a 20% mark on the enemy she strikes (3 s, one enemy per attack). Faction: Helios, Hecate, Vidar, Thanatos.
 
