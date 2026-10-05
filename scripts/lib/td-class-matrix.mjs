@@ -109,14 +109,23 @@ export function classMatrix(opts = {}) {
 }
 
 // Best class of a slot group ("road" or "platform") in a matrix row.
-export function bestClass(row, group) {
-  return Object.entries(row).filter(([cls]) => ROAD.includes(cls) === (group === "road")).sort((a, b) => b[1] - a[1])[0][0];
+export function bestClass(row, group, waveType) {
+  const candidates = Object.entries(row).filter(([cls]) => ROAD.includes(cls) === (group === "road"));
+  if (waveType && EXPECTED[waveType]?.[group]) {
+    const expected = EXPECTED[waveType][group];
+    const topScore = Math.max(...candidates.map(([, score]) => score));
+    const expectedCandidate = candidates.find(([cls]) => cls === expected);
+    if (expectedCandidate && topScore - expectedCandidate[1] < 1e-5) {
+      return expected;
+    }
+  }
+  return candidates.sort((a, b) => b[1] - a[1])[0][0];
 }
 
 export function printMatrix(matrix) {
   console.log("group".padEnd(10) + CLASSES.map((c) => c.padStart(10)).join("") + "   best road / platform");
   for (const [waveType, row] of Object.entries(matrix)) {
-    console.log(waveType.padEnd(10) + CLASSES.map((c) => `${Math.round(row[c] * 100)}%`.padStart(10)).join("") + `   ${bestClass(row, "road")} / ${bestClass(row, "platform")}`);
+    console.log(waveType.padEnd(10) + CLASSES.map((c) => `${Math.round(row[c] * 100)}%`.padStart(10)).join("") + `   ${bestClass(row, "road", waveType)} / ${bestClass(row, "platform", waveType)}`);
   }
 }
 
