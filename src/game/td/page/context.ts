@@ -51,7 +51,7 @@ export type PageActions = {
   aimPower(x: number, y: number): boolean;
   resetPowers(): void;
   hoverPower(x: number, y: number): void; // Thunderfall aim preview under the cursor (R5)
-  syncMainAction(): void;
+  startStage(): void; // starts the stage once a hero stands; no-op while it runs
   renderPreview(): void;
   playSound(kind: string): void;
   renderDeck(): void;

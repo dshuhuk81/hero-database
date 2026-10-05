@@ -164,7 +164,7 @@ export function createRunOffer(ctx: PageContext) {
 
   q("[data-td-blessing-skip]").addEventListener("click", () => {
     ctx.getSession()?.game.skipVirtues();
-    q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+    ctx.getSession()?.canvas.focus({ preventScroll: true });
   });
 
   gridEl.addEventListener("click", (event) => {
@@ -176,13 +176,13 @@ export function createRunOffer(ctx: PageContext) {
     if (name.startsWith("boon:")) {
       const info = (RUN_BOON_INFO as Record<string, { name: string; text: string }>)[name.slice(5)];
       ctx.notice(`${info?.name ?? "Blessing"}: ${info?.text ?? ""}`);
-      q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+      ctx.getSession()?.canvas.focus({ preventScroll: true });
       return;
     }
     const triggered = (session.game.activePairs ?? []).find((pair: any) => pair.virtues.includes(name));
     const blessingName = blessingNames[name] ?? name;
     ctx.notice(triggered ? `${blessingName} activates ${triggered.name}: ${triggered.label}` : `${blessingName} blesses your squad for the rest of this run.`);
-    q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
+    ctx.getSession()?.canvas.focus({ preventScroll: true });
   });
 
   return { render, reset };

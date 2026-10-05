@@ -146,7 +146,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     pause.sync();
     ctx.actions.updateHud();
     ctx.actions.renderDeck();
-    ctx.actions.syncMainAction();
     ctx.actions.renderPreview();
     deps.buffBar.render();
     ctx.actions.resetPowers();
@@ -235,7 +234,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (type === "offer") ctx.actions.playSound("clear"); // a blessing offer opened at a defeat milestone
     if (type === "finish") deps.results.finishRun();
     ctx.actions.renderDeck();
-    ctx.actions.syncMainAction();
+    if (type === "place") ctx.actions.startStage();
     ctx.actions.renderPreview();
     deps.runOffer.render();
     if (type === "virtue" || type === "reset" || type === "mutator" || type === "place" || type === "sell" || type === "death" || type === "revive") deps.buffBar.render();

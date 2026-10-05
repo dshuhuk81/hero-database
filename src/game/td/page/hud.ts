@@ -1,5 +1,5 @@
-// HUD (placement, lives, enemies defeated, score), the stage forecast strip, the Start button, deck of deployed
-// and fallen heroes, pause and speed buttons.
+// HUD (placement, lives, enemies defeated, score), the stage forecast strip, the deck of heroes still to place (never fielded or fallen) and the circles of fielded
+// heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 import { shownLives } from "../board.js";
 import { bossHudState } from "../ui.js";
@@ -18,7 +18,7 @@ export function createHud(ctx: PageContext) {
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
   const deckCountEl = q("[data-td-deck-count]");
-  const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
+  const fieldedEl = q("[data-td-fielded]");
   const pauseButton = q<HTMLButtonElement>("[data-td-pause]");
   const speedButton = q<HTMLButtonElement>("[data-td-speed]");
   const goldEl = q("[data-td-gold]");
@@ -77,16 +77,6 @@ export function createHud(ctx: PageContext) {
     bossValorFill.style.width = `${Math.round((info.valorRatio ?? 0) * 100)}%`;
   }
 
-  function syncMainAction() {
-    const session = state.session;
-    const game = session?.game;
-    if (!session || !game) { mainAction.disabled = true; mainAction.textContent = "Deploy a hero"; return; }
-    if (game.complete) { mainAction.disabled = true; mainAction.textContent = "Run complete"; return; }
-    if (game.running) { mainAction.disabled = true; mainAction.textContent = "Stage underway"; return; }
-    mainAction.disabled = game.heroes.length === 0;
-    mainAction.textContent = game.heroes.length === 0 ? "Deploy a hero" : "Start";
-  }
-
   function updateGold(gold: number) {
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const gain = gold - (goldTween?.to ?? shownGold);
@@ -131,24 +121,27 @@ export function createHud(ctx: PageContext) {
     });
   }
 
-  // Rebuilds buttons only when the deck composition changes, so focus survives kills.
+  // Rebuilds buttons only when the composition changes, so focus survives kills. Fielded heroes
+  // are round portraits next to the powers (bottom left); the rest wait in the deck (bottom right)
+  // and return there when they fall.
   function renderDeck() {
     const game = state.session?.game;
     const entries = deckEntries();
     const key = entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
     if (key !== deckKey) {
       deckKey = key;
-      deckEl.innerHTML = entries.map((entry) => {
-        const hero = heroById.get(entry.id);
-        const attr = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : entry.kind === "fallen" ? `data-deck-fallen="${entry.id}"` : `data-deck-ready="${entry.id}"`;
-        return `<button type="button" class="td-deck-slot${entry.kind === "fallen" ? " is-fallen" : ""}${entry.kind === "unit" ? "" : " is-draggable"}" ${attr}>` +
-          `<img src="${hero.image}" alt="" width="40" height="40"><span class="td-deck-badge" data-deck-badge></span></button>`;
+      const portrait = (hero: any) => `<img src="${hero.image}" alt="" width="40" height="40">`;
+      fieldedEl.innerHTML = entries.filter((entry) => entry.kind === "unit").map((entry) =>
+        `<button type="button" class="td-fielded-slot" data-deck-unit="${entry.unit.entityId}">${portrait(heroById.get(entry.id))}<span class="td-deck-badge" data-deck-badge></span></button>`).join("");
+      deckEl.innerHTML = entries.filter((entry) => entry.kind !== "unit").map((entry) => {
+        const attr = entry.kind === "fallen" ? `data-deck-fallen="${entry.id}"` : `data-deck-ready="${entry.id}"`;
+        return `<button type="button" class="td-deck-slot is-draggable${entry.kind === "fallen" ? " is-fallen" : ""}" ${attr}>${portrait(heroById.get(entry.id))}<span class="td-deck-badge" data-deck-badge></span></button>`;
       }).join("");
     }
     if (!game) return;
     deckCountEl.textContent = `${game.heroes.length}/${game.deployCap()}`;
     deckCountEl.classList.toggle("is-full", game.heroes.length >= game.deployCap());
-    deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-unit]").forEach((button) => {
+    fieldedEl.querySelectorAll<HTMLButtonElement>("[data-deck-unit]").forEach((button) => {
       const unit = game.heroes.find((entry: any) => entry.entityId === Number(button.dataset.deckUnit));
       if (!unit) return;
       button.classList.toggle("is-selected", unit.entityId === state.selectedEntityId);
@@ -183,30 +176,32 @@ export function createHud(ctx: PageContext) {
     pauseButton.setAttribute("aria-label", manual ? "Resume game" : "Pause game");
   }
 
-  mainAction.addEventListener("click", () => {
+  // The stage waits, paused in effect, until the first hero is placed; that placement starts it at 1x.
+  function startStage() {
     const session = state.session;
     if (!session) return;
     const game = session.game;
-    if (game.running || game.complete) return;
+    if (game.running || game.complete || !game.heroes.length) return;
     if (!session.started) {
-      if (!game.heroes.length) return;
       session.started = true;
       if (session.boost) store.data.nextRunBoost = null; // shard used up by this run
       store.data.lastTeam = [...game.team];
       store.persist();
+      speed = 1;
+      speedButton.textContent = "1x";
+      speedButton.setAttribute("aria-label", "Game speed 1x");
     }
     ctx.actions.closeSheet(false);
     cancelDeploy();
     if (game.start()) {
-      pause.remove("manual"); // starting the stage is an explicit resume
+      pause.remove("manual");
       syncPauseButton();
       ctx.notice("The stage has started. Heroes attack automatically.");
     }
-    syncMainAction();
     renderPreview();
-  });
+  }
 
-  deckEl.addEventListener("click", (event) => {
+  const onDeckClick = (event: Event) => {
     const session = state.session;
     if (!session) return;
     const target = event.target as HTMLElement;
@@ -231,7 +226,9 @@ export function createHud(ctx: PageContext) {
       else session.game.uiPlacement = null;
       renderDeck();
     }
-  });
+  };
+  deckEl.addEventListener("click", onDeckClick);
+  fieldedEl.addEventListener("click", onDeckClick);
 
   pauseButton.addEventListener("click", () => { pause.toggle("manual"); syncPauseButton(); });
 
@@ -329,5 +326,5 @@ export function createHud(ctx: PageContext) {
     bossPlateTimer = window.setTimeout(() => { plate.hidden = true; plate.classList.remove("is-playing"); }, 2500);
   }
 
-  return { update, syncMainAction, renderPreview, tick, bossIntro, renderDeck, cancelDeploy, syncPauseButton, speed: () => speed };
+  return { update, startStage, renderPreview, tick, bossIntro, renderDeck, cancelDeploy, syncPauseButton, speed: () => speed };
 }

@@ -374,18 +374,21 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   tilted boards the platform front lip is 0.0788 cell high (the prototype's 0.3 cell, halved, reduced by 25%, then by another 30% on Oct 5).
   Placement states (`render.js` `slotMode`): while a fallen hero is picked, tiles of its
   type glow and the others fade; with a full team empty tiles go quiet.
-- **Placing heroes** (`page/recruit.ts`, `page/hud.ts`): the bottom deck lists the whole roster
-  from the first frame (`allowedHeroes`): placed heroes (tap = hero panel), fallen heroes and
-  heroes not yet fielded (draggable, gold border when ready, price badge, dimmed when too
-  expensive). Press a hero and pull it more than 6 px: a ghost follows the pointer (lifted
-  56 px above a finger), the battle pauses (`pause` reason `drag`), tiles of the hero's type
-  glow and the tile under the pointer shows the range preview (`game.uiPlacement`). Releasing
-  over a free tile of the right type calls `game.place()`; releasing elsewhere, Escape or a
-  cancelled pointer drops it. Failures name the reason (wrong tile type, taken, team full, not
-  enough placement). A tap on a deck hero then a tap on an empty tile still places it
-  (keyboard/fallback, `state.deployHeroId`). Tapping an empty tile with nothing picked only
-  hints at the drag. The old recruit sheet (inspect + Deploy button) is still in the code but
-  no tile opens it any more.
+- **Placing heroes** (`page/recruit.ts`, `page/hud.ts`, `page/powers.ts`): the bottom bar has no
+  Start, Deploy or Blessings button. Bottom left: the two Divine Interventions as round buttons
+  (gold ring = charge, percentage in the middle, a bolt/shield glyph once ready), then one round
+  portrait per fielded hero (tap = hero panel). Bottom right: the deck with every hero still to
+  place (never fielded, or fallen; gold border, price badge, dimmed when too expensive). A hero
+  leaves the deck when placed and returns to it when it dies or is sold. Press a deck hero and
+  pull it more than 6 px: a ghost follows the pointer (lifted 56 px above a finger), the battle
+  pauses (`pause` reason `drag`), tiles of the hero's type glow and the tile under the pointer
+  shows the range preview (`game.uiPlacement`). Releasing over a free tile of the right type
+  calls `game.place()`; releasing elsewhere, Escape or a cancelled pointer drops it. Failures
+  name the reason. A tap on a deck hero then a tap on an empty tile also places it (keyboard
+  fallback, `state.deployHeroId`). The stage waits (nothing spawns) until the first hero is
+  placed; that placement calls `startStage()` (`hud.ts`), resets speed to 1x and starts the
+  timeline. Tapping an empty tile with nothing picked only hints at the drag. The old recruit
+  sheet is still in the code but no tile opens it.
 - **Blocking:** `blockLimit` Tank 3, Warrior 2, Assassin 1, contact 24 px. Held enemies take
   +20% damage; enemies passing a full blocker are slowed.
 - **Class archetypes** (`tuning.classes`): Tank `taunt` (guard: shrugs off part of each hit),
@@ -930,8 +933,8 @@ The order and dependencies of the open work live in
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
 - **Stage counter and forecast:** the stats row shows `Defeated x/total` (`stageForecast()` in `sim.js`: the timeline's total,
   enemies killed or through the gates, the next groups with their ETA); a summary chip before the start gives the total (the
-  HUD no longer shows the incoming chips). There is no auto-start countdown and no Start-wave button: one Start
-  button begins the stage.
+  HUD no longer shows the incoming chips). There is no auto-start countdown and no Start button: placing the first
+  hero begins the stage.
 - **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
