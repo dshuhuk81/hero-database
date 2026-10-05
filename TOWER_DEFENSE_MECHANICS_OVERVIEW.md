@@ -1,7 +1,7 @@
 # Tower Defense: mechanics and economy overview
 
 Compiled September 28, 2026, from `gameBalance.tuning.json`, `sim.js`, `favor.js`,
-`campaign.js`, `waves.js`, `skills.js`, `tdSummon.json`, and `tdCampaign.json`.
+`campaign.js`, `timeline.js`, `skills.js`, `tdSummon.json`, and `tdCampaign.json`.
 Purpose: one reference for what each system is for, how the currencies flow, and
 where the balance levers live — plus recommendations at the end.
 
@@ -12,6 +12,11 @@ mode; wave interest (5% of unspent gold, up to 50, per wave clear); pantheon bon
 Greek); Divine Interventions (Thunderfall, Shield of the Crossing); Heroic campaign stages
 paying Divine Seals. None of these were balanced yet (roadmap R5). Where this overview
 disagrees, the spec wins.
+
+**October 5, 2026:** waves, run lengths (10 / 20 / Endless), quests, mutator offers and the in-run gold
+ledger are gone. Stages are one **timeline** of spawn groups (section 5); battle currency is placement points
+(spec section 9). The numbers in sections 3 and 8 describe the retired gold and wave economy and are kept
+as history; `td:economy` and `td:sweep` were removed with it.
 
 ---
 
@@ -108,18 +113,19 @@ which is the pressure valve for misplacement.
 - **Bosses:** Baphomet (marks the highest recent damage dealer — silence +
   10% HP; defensive stance) and Lilith (summons brood, enrages below 50%).
 
-## 5. Run modes and difficulty
+## 5. The stage timeline and difficulty
 
-| Mode | Waves | Notes |
-| --- | --- | --- |
-| Classic | 10 | authored `tdWaves.json`, boss on 10 |
-| Long | 20 | base waves + generated, mid-boss at 40% on wave 5/15 |
-| Endless | ∞ | boss every 5 waves, counts +2%/wave, gaps −2%/wave (floor 55%) |
+There are no waves and no run modes. Every stage, map and Expedition stage carries one **timeline** of spawn groups
+(`{ startMs, kind, count, repeat, everyMs }`, `src/game/td/timeline.js`), shaped like Watcher of Realms stages:
+about 11 enemies over 53 s in chapter 1, up to 38 enemies, 29 groups and 234 s in later chapters
+(`tuning.timeline.chapterTargets`). Free Play plays a map's timeline once; the Daily Trial and Expedition use the
+same timelines. Run blessings open at five defeat milestones. Levers: `timeline.*` in tuning, `hpScale` per stage,
+`board.enemyShape` per enemy kind. Check with `npm run td:stage-lint` and `npm run td:wor-compare`.
 
 **Difficulty tiers:** Normal ×1 / Heroic ×2 HP, ×1.3 atk / Mythic ×3.2 HP,
 ×1.6 atk — with ×1/×1.3/×1.6 Favor payout. On top sits a global
-`difficulty.enemyHp: 3.75` multiplier and per-mode HP scalars (expedition
-stages +35/50/65%). **Mutators** (endless/daily, pick 1 of 3 every 10 waves):
+`difficulty.enemyHp` multiplier and per-mode HP scalars (expedition
+stages +35/50/65%). **Mutators** (Daily Trial presets, active from the start):
 Fortified, Haste, Warded, Horde, Ironclad, Elites — each pays bonus Favor.
 
 **Side modes:** Daily Trial (seeded fixed setup, no blessings, comparable
