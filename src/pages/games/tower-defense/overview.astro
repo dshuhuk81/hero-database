@@ -43,7 +43,7 @@ const skills = c.heroSkillLevels;
 const rosterOrder = new Map((t.roster as string[]).map((id, i) => [id, i]));
 const bondOf = new Map<string, string>();
 for (const set of Object.values(t.bonds?.sets ?? {}) as any[]) for (const id of set.heroes) bondOf.set(id, set.name);
-const heroRows = (skinHeroes(heroes, "") as any[])
+const heroRows = (skinHeroes(heroes, "", tuning) as any[])
   .filter((hero) => rosterOrder.has(hero.id))
   .sort((a, b) => (a.id.startsWith("recruit-") ? 1 : 0) - (b.id.startsWith("recruit-") ? 1 : 0) || a.class.localeCompare(b.class) || b.cost - a.cost)
   .map((hero) => {

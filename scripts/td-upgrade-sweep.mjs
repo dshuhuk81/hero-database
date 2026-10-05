@@ -4,9 +4,12 @@
 // campaign's Divine Seals buy in copies. Run: node scripts/td-upgrade-sweep.mjs
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
-import heroes from "../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions, stageRewardHeroes, summonMany } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
+import heroTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, heroTuning);
 
 const SAMPLE = 20;
 const stages = allStages(campaign);

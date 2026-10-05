@@ -15,7 +15,7 @@ const isDev = import.meta.env.DEV;
 // In dev, proxy R2 images through Vite to avoid CORS blocks on PixiJS WebGL texture upload
 const assetBase = isDev ? "/r2" : R2_BASE;
 // Hero skin (M24 white label): the game's own names, art, sounds and ultimate names.
-const heroesForGame = skinHeroes(heroes, assetBase);
+const heroesForGame = skinHeroes(heroes, assetBase, tuning);
 const tuningForGame = skinTuning(tuning);
 // Final boss per map (tdMaps.json "boss", default Baphomet), keyed by boss id.
 // Campaign stages may name their own boss (stage.boss), replacing their map's.

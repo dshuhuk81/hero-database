@@ -8,7 +8,7 @@
 // A class scores the mean of its heroes; each slot group has its own best class.
 import { rankedTiles } from "../../src/game/td/grid.js";
 import { TowerDefenseGame } from "../../src/game/td/sim.js";
-import heroes from "../../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import campaign from "../../src/data/tdCampaign.json" with { type: "json" };
@@ -16,6 +16,8 @@ import { timelineForMap } from "../../src/game/td/stage-for-map.js";
 import { timelineTotals } from "../../src/game/td/timeline.js";
 import { legacyTimeline } from "./td-legacy-timeline.mjs";
 import { playRun, SQUADS } from "./td-runner.mjs";
+import { applyHeroMultipliers } from "../../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, baseTuning);
 
 // Group types as they play on boards: counts and gaps are the old authored hordes with the enemy shape baked in
 // (about 0.4x the bodies for swarms, runners and flyers, 0.2x for the rest, gaps x2.5).

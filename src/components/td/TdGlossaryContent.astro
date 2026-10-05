@@ -31,7 +31,7 @@ import EnemyCard from "./TdEnemyCard.astro";
 interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
 const { assetBase, embedded = false, headingLevel = 2 } = Astro.props;
 // Hero skin (M24): the game's own names, portraits and ultimate names.
-const heroes = skinHeroes(rawHeroes as any[], assetBase);
+const heroes = skinHeroes(rawHeroes as any[], assetBase, rawTuning);
 const tuning = skinTuning(rawTuning);
 
 // Ids: the standalone page keeps its public anchors (#heroes, #enemies, #hero-<id>);

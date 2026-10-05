@@ -25,7 +25,14 @@
   "classOverrides": {
     "gaia": "Support"
   },
-  "heroStatScale": 2.5,
+  "heroMultipliers": {
+    "atk": 1.5,
+    "hp": 1.5,
+    "armor": 1,
+    "magicRes": 1,
+    "byClass": {},
+    "byHero": {}
+  },
   "roster": [
     "atlas",
     "ymir",

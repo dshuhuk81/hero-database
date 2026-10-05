@@ -4,6 +4,7 @@
 // sounds (td/sfx/mythic-{id}-{SOUND_VERSION}_{attack|ultimate}.ogg). The game never shows
 // the database's hero art, names or sounds. Ids, stats and rules never change.
 import mythic from "../../data/tdSkinMythic.json" with { type: "json" };
+import { applyHeroMultipliers } from "./hero-multipliers.js";
 
 // Sound set: v4 = per-hero picks from the owner's packs (Hove Audio sword combat, Mixkit,
 // Tactical Interface SFX); archers and a few ultimates keep the generated v3 sounds.
@@ -12,9 +13,10 @@ import mythic from "../../data/tdSkinMythic.json" with { type: "json" };
 // Sources per file: public/td/sfx/CREDITS-mythic.txt.
 export const SOUND_VERSION = "v4";
 
-// heroes: gameBalance.json rows; base: the asset base (R2 URL or the /r2 dev proxy).
-export function skinHeroes(heroes, base) {
-  return heroes.map((hero) => {
+// heroes: gameBalance.json rows; base: the asset base (R2 URL or the /r2 dev proxy); tuning (optional):
+// gameBalance.tuning.json, whose heroMultipliers scale the hero stats (hero-multipliers.js).
+export function skinHeroes(heroes, base, tuning = null) {
+  return applyHeroMultipliers(heroes, tuning).map((hero) => {
     const entry = mythic.heroes[hero.id];
     if (!entry) throw new Error(`Mythic skin has no entry for ${hero.id}`);
     // entry.art: art version for redrawn heroes (R2 files are cached immutable, so new art

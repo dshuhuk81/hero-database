@@ -7,9 +7,12 @@
 // separate processes. Prints JSON { stageId: { hpScale, rate } }.
 //   node scripts/td-board-tune.mjs --chapters=1,2,3 [--sample=35] [--steps=7] > out.json
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
-import heroes from "../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
+import heroTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, heroTuning);
 
 const arg = (name, fallback) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1] ?? fallback;
 const chapters = new Set(arg("chapters", "").split(",").filter(Boolean).map(Number));

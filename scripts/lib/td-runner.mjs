@@ -3,13 +3,15 @@
 // Used by test-td-balance.mjs and td-balance-sweep.mjs.
 import { TowerDefenseGame } from "../../src/game/td/sim.js";
 import { buildRunTuning, TREE } from "../../src/game/td/favor.js";
-import heroes from "../../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
 import { rankedTiles } from "../../src/game/td/grid.js";
 import { patternFor } from "../../src/game/td/board.js";
 import campaign from "../../src/data/tdCampaign.json" with { type: "json" };
 import { timelineForMap } from "../../src/game/td/stage-for-map.js";
+import { applyHeroMultipliers } from "../../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, baseTuning);
 
 export { maps };
 // Free Play battlefields (campaign-only maps excluded), and a new player's Free Play deck:

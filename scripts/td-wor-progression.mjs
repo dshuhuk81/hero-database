@@ -4,7 +4,10 @@
 // Usage: npm run td:wor-progression
 import { readFileSync } from "node:fs";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
-import heroes from "../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
+import heroTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
+import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, heroTuning);
 
 const DIR = new URL("../src/game/td/data-sammlung/", import.meta.url);
 const STATS = ["hp", "atk", "def", "mres"];

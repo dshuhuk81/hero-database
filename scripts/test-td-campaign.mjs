@@ -2,7 +2,7 @@
 // the save section migrates, and every stage is winnable with heroes the player can own.
 import assert from "node:assert/strict";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
-import heroes from "../src/data/gameBalance.json" with { type: "json" };
+import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale, starScale } from "../src/game/td/campaign.js";
 import { validateTimeline } from "../src/game/td/timeline.js";
@@ -10,6 +10,8 @@ import { starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurel
 import { playRun, maps } from "./lib/td-runner.mjs";
 import dbBosses from "../src/data/bosses.json" with { type: "json" };
 import tdBosses from "../src/data/tdBosses.json" with { type: "json" };
+import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
+const heroes = applyHeroMultipliers(rawHeroes, tuning);
 const knownBosses = new Set([...dbBosses.bosses, ...tdBosses.bosses].map((boss) => boss.id));
 
 // Chapter-aware progress (audit step 4): a second chapter unlocks after the first one's last
