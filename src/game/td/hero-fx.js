@@ -23,6 +23,7 @@ export const PROFILES = {
   hecate:      { name: "Hecate", color: 0xb36bff, accent: 0xffb86b, mote: "twinkle", kind: "assassin" },
   vidar:       { name: "Vidar", color: 0xa9b8cc, accent: 0xeef5ff, mote: "twinkle", kind: "assassin" },
   thanatos:      { name: "Thanatos", color: 0xb9c3d6, accent: 0xf2f5fb, mote: "glow", kind: "assassin" },
+  isis:        { name: "Isis", color: 0xffc94a, accent: 0xfff6d2, mote: "twinkle", ranged: true, speed: 1600 },
   odin:        { name: "Odin", color: 0x8fb4ff, accent: 0xffffff, mote: "twinkle", ranged: true },
   hephaestus:     { name: "Hephaestus", color: 0xff7a2e, accent: 0xffd27a, mote: "ember", ranged: true, speed: 520 },
   boreas:      { name: "Boreas", color: 0x9be7ff, accent: 0xffffff, mote: "flake", ranged: true, speed: 560 },
@@ -258,7 +259,42 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
   };
 
   // ------------------------------------------------------------ ranged shots per hero
+  // Isis: a horizontal beam of the hidden sun from (sx, sy) toward `dir` (-1 left, 1 right) for
+  // `length` px. Layered strokes (halo, gold body, white core) swell and thin out over `life`.
+  function sunBeam(sx, sy, dir, length, p, { width = 7, life = 0.3, delay = 0 } = {}) {
+    const x0 = sx + dir * 14;
+    kit.shape((g, t) => {
+      const reach = reducedMotion ? 1 : Math.min(1, t * 6);
+      const x1 = x0 + dir * (length - 14) * reach; // `length` counts from the hero, the beam starts 14 px out
+      const swell = t < 0.25 ? t / 0.25 : 1 - (t - 0.25) / 0.75;
+      for (const [w, color, alpha] of [[width * 3.2, p.color, 0.16], [width * 1.5, p.color, 0.55], [Math.max(1.5, width * 0.5), 0xffffff, 0.95]]) {
+        if (swell <= 0.02) return;
+        g.moveTo(x0, sy).lineTo(x1, sy).stroke({ width: w * (0.4 + 0.6 * swell), color, alpha: alpha * swell, cap: "round" });
+      }
+    }, life, { delay });
+  }
+  // Rays of a small sun: a disc flare with thin spokes (the Lord's sign, and the muzzle of the beam).
+  function sunFlare(x, y, p, { size = 40, life = 0.4, delay = 0 } = {}) {
+    flash(x, y, p.accent, size, { life, delay, alpha: 0.85 });
+    kit.spawn("twinkle", x, y, { tint: 0xffffff, size: size * 0.9, sizeEnd: size * 0.2, life, delay, spin: 2.5 });
+    kit.shape((g, t) => {
+      const alpha = (1 - t) * 0.8, r0 = size * 0.25, r1 = size * (0.6 + 0.5 * t);
+      for (let i = 0; i < 8; i++) {
+        const a = i * TAU / 8 + t;
+        g.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0 * 0.8).lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1 * 0.8).stroke({ width: 2, color: p.accent, alpha });
+      }
+    }, life, { delay });
+  }
+
   const SHOTS = {
+    isis(e, sx, sy, x, y, p) { // Light of the Hidden Sun: a thin horizontal beam along her row
+      const dir = e.beamDir ?? (x < sx ? -1 : 1);
+      const length = e.beamLength ?? Math.abs(x - sx); // always the full reach of her line
+      sunBeam(sx, sy - 6, dir, length, p, { width: 8, life: 0.22 });
+      flash(sx + dir * 14, sy - 6, p.accent, 24, { life: 0.2 });
+      for (let i = 0; i < kit.n(4); i++) kit.spawn("twinkle", sx + dir * (20 + Math.random() * length), sy - 6 + rand(-4, 4), { tint: p.accent, size: 8, sizeEnd: 2, life: 0.3, delay: 0.03 * i });
+      return 0.1;
+    },
     hephaestus(e, sx, sy, x, y, p) { // Scale from the Anvil: lobbed molten fragment
       return projectile("fragment", sx, sy, x, y, p.color, { speed: p.speed, arc: 26, size: 11, spin: 10,
         trail: (tx, ty) => { kit.spawn("ember", tx, ty, { tint: p.accent, size: 8, vx: rand(-20, 20), vy: rand(-10, 20), ay: 160, life: 0.3, align: true, optional: true });
@@ -306,6 +342,11 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
   };
 
   const IMPACTS = {
+    isis(x, y, p, big) { // a small sunburst where the beam lands
+      flash(x, y, p.accent, 28 * big);
+      kit.spawn("twinkle", x, y, { tint: 0xffffff, size: 18 * big, sizeEnd: 4, life: 0.25, spin: 3 });
+      sparks(x, y, 3, p.color, { tex: "twinkle", size: 7, speed: 90, gravity: -40, life: 0.4, add: true });
+    },
     hephaestus(x, y, p, big) { // anvil sparks spray up and fall
       flash(x, y, p.accent, 30 * big);
       sparks(x, y, 7, p.accent, { speed: 170, up: 120, gravity: 520, size: 10, spread: 2.4, dir: -Math.PI / 2 });
@@ -347,6 +388,33 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
 
   // ------------------------------------------------------------ ultimates per hero
   const ULTS = {
+    isis(e, p, sx, sy) { // Light of the Hidden Sun: the crown's disc blazes, a wide beam crosses her row, feathers of light follow
+      const dir = e.beamDir ?? (e.x < sx ? -1 : 1);
+      const length = e.beamLength ?? Math.abs(e.x - sx) + 40;
+      const y = sy - 6;
+      // charge: the solar disc over her head and a ring of rays at the staff
+      sunFlare(sx, sy - 52, p, { size: 46, life: 0.45 });
+      sunFlare(sx + dir * 14, y, p, { size: 38, life: 0.4, delay: 0.1 });
+      groundRing(sx, sy + 12, 8, 46, p.color, { life: 0.5, width: 3 });
+      // the beam itself: wide, with a slim white second pass
+      sunBeam(sx, y, dir, length, p, { width: 30, life: 0.55, delay: 0.14 });
+      sunBeam(sx, y, dir, length, { ...p, color: p.accent }, { width: 12, life: 0.4, delay: 0.2 });
+      // motes and golden feathers streaming along the line
+      for (let i = 0; i < kit.n(16); i++) {
+        const d = 24 + Math.random() * (length - 24);
+        kit.spawn(i % 3 ? "twinkle" : "feather", sx + dir * d, y + rand(-12, 12), { tint: i % 2 ? p.accent : p.color, size: i % 3 ? 11 : 9, sizeEnd: 3,
+          vx: dir * rand(60, 140), vy: rand(-26, 10), life: 0.7, delay: 0.16 + (d / length) * 0.12, rot: rand(-1, 1), spin: rand(-3, 3), wobble: 4, wobbleFreq: 2, add: i % 3 !== 0, hold: 0.5 });
+      }
+      for (let i = 0; i < kit.n(10); i++) kit.spawn("dot", sx + dir * rand(20, length), y, { tint: p.accent, size: 5, vx: dir * rand(20, 70), vy: rand(-90, -30), ay: 120, life: 0.6, delay: 0.2 + i * 0.03 });
+      // every enemy the beam strikes: a sunburst, rising light and a ground ring
+      for (const [i, hit] of (e.beamHits ?? [{ x: e.x, y: e.y }]).entries()) {
+        const delay = 0.16 + Math.min(0.14, Math.abs(hit.x - sx) / length * 0.14);
+        sunFlare(hit.x, hit.y - 6, p, { size: 34, life: 0.35, delay });
+        groundRing(hit.x, hit.y + 6, 6, 32, p.color, { delay, life: 0.45, width: 3 });
+        rise("twinkle", hit.x, hit.y, 3, p.accent, { spread: 14, size: 9, delay: delay + 0.05 + (i % 3) * 0.02, life: 0.6 });
+      }
+      if (e.awakened) for (const side of [-1, 1]) sunBeam(sx, y + side * 14, dir, length * 0.9, p, { width: 6, life: 0.35, delay: 0.2 });
+    },
     atlas(e, p, sx, sy) { // A Place to Stand: the sky vault is lifted, the ground steadies
       kit.shape((g, t) => {
         const lift = reducedMotion ? 1 : Math.min(1, t * 3);

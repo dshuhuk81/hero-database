@@ -24,7 +24,7 @@ import tdBosses from "../../data/tdBosses.json";
 import campaign from "../../data/tdCampaign.json";
 import { CLASS_ROLES } from "../../game/td/ui.js";
 import { patternLabel } from "../../game/td/board.js";
-import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, ENEMY_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
+import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, lordText, ENEMY_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
 
@@ -97,6 +97,7 @@ const heroCards = [...(heroes as any[])]
       skillText: SKILL_TEXT[skill.variant] ?? "",
       awakenText: AWAKEN_TEXT[skill.variant] ?? "",
       classUltText: CLASS_ULT_TEXT[hero.class] ?? "",
+      lordText: lordText((rawTuning as any).lords?.[hero.id]),
       status: t.statuses?.sources?.[hero.id] ? STATUS_INFO[t.statuses.sources[hero.id]]?.name : null,
       stats: [
         ["Health", hero.hp],
@@ -322,6 +323,7 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
               <SkillTitle class="td-glossary-skill-name">{hero.skillName}</SkillTitle>
               {hero.skillText && <p>{hero.skillText}</p>}
               {hero.classUltText && <p class="td-glossary-note">{hero.classUltText}</p>}
+              {hero.lordText && <p class="td-glossary-note">{hero.lordText}</p>}
               {hero.awakenText && <p class="td-glossary-note td-glossary-note--awaken"><span class="td-msym" aria-hidden="true">{UI_ICON.awakened}</span><span>Awakened: {hero.awakenText}.</span></p>}
             </div>
             {hero.status && <p class="td-glossary-note"><span class="td-msym" aria-hidden="true">{UI_ICON.note}</span><span>Basic attacks apply {hero.status} (see Status effects).</span></p>}

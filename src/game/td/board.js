@@ -12,6 +12,9 @@ const square = (n) => {
 const diamond = (n) => square(n).filter(([dc, dr]) => Math.abs(dc) + Math.abs(dr) <= n);
 const cross = (n) => square(n).filter(([dc, dr]) => dc === 0 || dr === 0);
 
+// Horizontal line: the own cell and n cells to the left and to the right.
+const row = (n) => square(n).filter(([, dr]) => dr === 0);
+
 const union = (...lists) => [...new Map(lists.flat().map((o) => [o.join(","), o])).values()];
 
 export const PATTERNS = {
@@ -28,13 +31,18 @@ export const PATTERNS = {
   cross2: cross(2), // 9 tiles, two cells in each straight line
   longPlus: cross(3), // 13 tiles, three cells in each straight line
   lance: cross(4), // 17 tiles, four cells in each straight line
+  // Straight horizontal lines (Isis, the Lord's beam): only left and right, never up or down.
+  row2: row(2), // 5 tiles
+  row3: row(3), // 7 tiles
+  row4: row(4), // 9 tiles
+  row5: row(5), // 11 tiles
 };
 
 // Reach steps (board plan decision 1): a step up or down the ladder from a pattern. High
 // ground gives +1 while the hero stands there, a hostile environment -1, and permanent hero
 // upgrades outside battle add steps.
-const UP = { plus: "block", block: "blockPlus", blockPlus: "diamond3", diamond2: "star3", star3: "diamond3", cross3: "cross4", cross4: "cross4", diamond3: "diamond3", block2: "block2", cross2: "longPlus", longPlus: "lance", lance: "cross4" };
-const DOWN = { plus: "plus", block: "plus", blockPlus: "block", diamond2: "block", star3: "diamond2", cross3: "blockPlus", cross4: "cross3", diamond3: "star3", block2: "blockPlus", cross2: "plus", longPlus: "cross2", lance: "longPlus" };
+const UP = { plus: "block", block: "blockPlus", blockPlus: "diamond3", diamond2: "star3", star3: "diamond3", cross3: "cross4", cross4: "cross4", diamond3: "diamond3", block2: "block2", cross2: "longPlus", longPlus: "lance", lance: "cross4", row2: "row3", row3: "row4", row4: "row5", row5: "row5" };
+const DOWN = { plus: "plus", block: "plus", blockPlus: "block", diamond2: "block", star3: "diamond2", cross3: "blockPlus", cross4: "cross3", diamond3: "star3", block2: "blockPlus", cross2: "plus", longPlus: "cross2", lance: "longPlus", row2: "row2", row3: "row2", row4: "row3", row5: "row4" };
 export function steppedPattern(name, steps = 0) {
   let out = name;
   for (let i = 0; i < Math.abs(steps); i++) out = (steps > 0 ? UP : DOWN)[out] ?? out;
@@ -87,7 +95,7 @@ export function inPattern(board, name, hx, hy, x, y) {
 }
 
 // Plain names for the UI (glossary, help).
-const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square", cross2: "Cross", longPlus: "Long plus", lance: "Lance" };
+const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square", cross2: "Cross", longPlus: "Long plus", lance: "Lance", row2: "Short line", row3: "Line", row4: "Long line", row5: "Longest line" };
 export const patternLabel = (name) => (PATTERNS[name] ? `${LABELS[name] ?? name}, ${PATTERNS[name].length} tiles` : "");
 
 // Radius of the circle with the same area as a pattern, in px: on boards a hero's `range`

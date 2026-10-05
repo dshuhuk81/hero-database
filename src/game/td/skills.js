@@ -29,6 +29,7 @@ export const SKILL_TEXT = {
   fate_link: "Heals allies in range for 18% of their max health and fills 30% of their ultimate charge.",
   valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",
   rooted_sanctuary: "Heals allies in range for 30% of her own max health. For 8s they take 30% less damage.",
+  sun_beam: "Fires a bright beam along her row, to the left or right (never up or down), toward the side with more enemies. Hits up to 8 enemies on that line once for 100% each.",
 };
 
 // Campaign skill progression uses the same two passive slots for every hero so saves stay
@@ -86,8 +87,20 @@ export const AWAKEN_TEXT = {
   fate_link: "allies gain 60% ultimate charge instead of 30%",
   valkyrie_call: "revived heroes return at full health",
   rooted_sanctuary: "heals for 50% of her max health, allies take 40% less damage",
+  sun_beam: "hits up to 12 enemies instead of 8",
   soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
 };
+
+// Lord skill (tuning.lords): what a Lord gives her faction while she stands on the field.
+// Built from the tuned numbers so the text never drifts from the sim (stepLord, lordFx, lordMark).
+/** @param {{ faction: string, members: string[], attrBonus: number, buff: { dmg: number, heal: number, seconds: number, baseInterval: number, perMember: number, minInterval: number }, mark: { bonus: number, seconds: number } } | undefined} cfg */
+export function lordText(cfg) {
+  if (!cfg) return "";
+  const pct = (v) => `${Math.round(v * 100)}%`;
+  return `Lord (${cfg.faction}): raises the basic attributes of ${cfg.faction} team members by ${pct(cfg.attrBonus)}. `
+    + `Periodically raises their damage and healing by ${pct(cfg.buff.dmg)} for ${cfg.buff.seconds}s; the more ${cfg.faction} heroes on the team, the more often (every ${cfg.buff.baseInterval}s alone, down to ${cfg.buff.minInterval}s). `
+    + `After the Lord damages an enemy directly, ${cfg.faction} team members deal ${pct(cfg.mark.bonus)} extra damage to it for ${cfg.mark.seconds}s (one enemy per Lord attack).`;
+}
 
 // Class part added on top of every hero ultimate (classUltimate in sim.js).
 /** @type {Record<string, string>} */

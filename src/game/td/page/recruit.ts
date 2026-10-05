@@ -6,7 +6,7 @@ import { classIconImg } from "../assets.js";
 import { patternSvg } from "../board.js";
 import { canvasPoint, nearestSlot } from "../render.js";
 import { CLASS_ROLES, ROLE_HINTS, slotHitRadius } from "../ui.js";
-import { CLASS_ULT_TEXT, RING_INFO, SKILL_TEXT } from "../skills.js";
+import { CLASS_ULT_TEXT, RING_INFO, SKILL_TEXT, lordText } from "../skills.js";
 import type { PageContext, Session, Slot } from "./context";
 
 export function createRecruit(ctx: PageContext) {
@@ -105,6 +105,8 @@ export function createRecruit(ctx: PageContext) {
     if (role) lines.push(`<p>${hero.class}: ${role}</p>`);
     const classUlt = (CLASS_ULT_TEXT as Record<string, string>)[hero.class];
     if (classUlt) lines.push(`<p>${classUlt}</p>`);
+    const lord = lordText(data.tuning.lords?.[heroId]);
+    if (lord) lines.push(`<p>${lord}</p>`);
     if (ring) lines.push(`<p>On this tile: ${ring.name}: ${ring.text}</p>`);
     if (session.campaign && base?.campaignLevel) lines.push(`<p>Campaign level ${base.campaignLevel} is included in attack and health.</p>`);
     detailsBody.innerHTML = lines.join("");

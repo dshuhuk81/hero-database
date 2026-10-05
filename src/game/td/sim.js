@@ -627,6 +627,7 @@ export class TowerDefenseGame {
       if (this.isHexed(hero) || this.isSilenced(hero)) continue; // Hexer or Baphomet: no attacks, ultimate charge paused
       hero.attackClock -= dt;
       hero.ultClock += dt;
+      if (this.tuning.lords?.[hero.id]) this.stepLord(hero, dt);
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
@@ -984,7 +985,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
+    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -995,6 +996,7 @@ export class TowerDefenseGame {
   damageHero(hero, amount, source) {
     if (amount <= 0 || this.isVeiled(hero)) return;
     if (this.time < (hero.wardUntil || 0)) amount *= 1 - hero.wardCut; // Gaia's Rooted Sanctuary
+    amount /= 1 + (this.lordFx(hero).hp || 0); // a Lord's faction: +% basic attributes
     hero.hpLeft -= amount;
     hero._hitFlash = true;
     if (hero.hpLeft <= 0) {
@@ -1096,7 +1098,9 @@ export class TowerDefenseGame {
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
     const pattern = this.patternOf(hero);
     const board = pattern && boardOf(this.map);
-    return board ? inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y) : distance <= hero.range;
+    if (board) return inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y);
+    // Beam heroes only see their own row, to either side.
+    return hero.variant === "sun_beam" ? this.onBeam(hero, enemy, enemy.x < hero.x ? -1 : 1) : distance <= hero.range;
   }
 
   findTarget(hero) {
@@ -1218,6 +1222,96 @@ export class TowerDefenseGame {
     return bond?.tier ?? {};
   }
 
+  // Lords (tuning.lords, first: Isis): a Lord on the field boosts her faction (her own `members`
+  // plus herself). Returns { atk, hp, dmg, heal, mark, lord } for a hero of that faction, {} for
+  // anyone else. `atk` and `hp` are the standing +% basic attributes (hp as damage taken
+  // divided by 1 + hp), `dmg` and `heal` the periodic bonus while it is active, `lord` the
+  // Lord's id (enemy marks only count for their own Lord's faction).
+  lordFx(hero) {
+    if (!hero || !this.tuning.lords) return {};
+    let out = {};
+    for (const lord of this.heroes) {
+      const cfg = this.tuning.lords[lord.id];
+      if (!cfg || lord.hpLeft <= 0 || (lord !== hero && !cfg.members.includes(hero.id))) continue;
+      const live = this.time < (lord.lordBuffUntil || 0);
+      out = { atk: Math.max(out.atk || 0, cfg.attrBonus || 0), hp: Math.max(out.hp || 0, cfg.attrBonus || 0),
+        dmg: live ? Math.max(out.dmg || 0, cfg.buff?.dmg || 0) : (out.dmg || 0), heal: live ? Math.max(out.heal || 0, cfg.buff?.heal || 0) : (out.heal || 0),
+        lord: lord.id };
+    }
+    return out;
+  }
+
+  // Lord faction members on the field besides the Lord (more of them: the periodic bonus comes sooner).
+  lordFactionCount(lord) {
+    const cfg = this.tuning.lords?.[lord.id];
+    return cfg ? this.heroes.filter((h) => h !== lord && h.hpLeft > 0 && cfg.members.includes(h.id)).length : 0;
+  }
+
+  // Seconds between the Lord's periodic bonuses; the clock runs while no bonus is active.
+  lordInterval(lord) {
+    const buff = this.tuning.lords?.[lord.id]?.buff;
+    if (!buff) return Infinity;
+    return Math.max(buff.minInterval ?? 0, buff.baseInterval - buff.perMember * this.lordFactionCount(lord));
+  }
+
+  stepLord(lord, dt) {
+    const cfg = this.tuning.lords?.[lord.id];
+    if (!cfg || this.time < (lord.lordBuffUntil || 0)) return;
+    lord.lordClock = (lord.lordClock || 0) + dt;
+    if (lord.lordClock < this.lordInterval(lord)) return;
+    lord.lordClock = 0;
+    lord.lordBuffUntil = this.time + cfg.buff.seconds;
+    for (const ally of this.heroes) {
+      if (ally === lord || cfg.members.includes(ally.id)) this.emitHeroEffect(lord, { type: "buff", x: ally.x, y: ally.y, life: 0.6, color: "gold" });
+    }
+  }
+
+  // After the Lord's direct damage: one struck enemy takes extra damage from her faction for a while.
+  lordMark(lord, enemy) {
+    const mark = this.tuning.lords?.[lord.id]?.mark;
+    if (!mark || !enemy || enemy.dead) return;
+    enemy.lordMarkUntil = this.time + mark.seconds;
+    enemy.lordMarkBonus = mark.bonus;
+    enemy.lordMarkBy = lord.id;
+  }
+
+  // Beam heroes (Isis): shots travel along the hero's row only, to the left or the right.
+  // A unit is on the beam when it stands on that row (a board cell row, elsewhere a band of
+  // `rowTolerance` px) on the chosen side (dir -1 or 1; the hero's own cell counts for both).
+  onBeam(hero, enemy, dir) {
+    const board = boardOf(this.map);
+    const pattern = this.patternOf(hero);
+    if (board && pattern) {
+      const [hc, hr] = cellAt(board, hero.x, hero.y);
+      const [c, r] = cellAt(board, enemy.x, enemy.y);
+      return r === hr && (c - hc) * dir >= 0 && inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y);
+    }
+    const tolerance = this.tuning.heroSkills?.[hero.id]?.rowTolerance ?? 24;
+    const dx = (enemy.x - hero.x) * dir;
+    return Math.abs(enemy.y - hero.y) <= tolerance && dx >= -tolerance && dx <= hero.range;
+  }
+
+  // Enemies on the beam, nearest to the hero first.
+  beamLine(hero, enemies, dir) {
+    return enemies.filter((e) => this.canHit(hero, e) && this.onBeam(hero, e, dir)).sort((a, b) => Math.abs(a.x - hero.x) - Math.abs(b.x - hero.x));
+  }
+
+  // Which way the beam goes: toward the side with more enemies on the row, the target's side on a tie.
+  beamDirection(hero, enemies, target) {
+    const side = (dir) => this.beamLine(hero, enemies, dir).filter((e) => (e.x - hero.x) * dir > 1).length;
+    const left = side(-1), right = side(1);
+    if (left !== right) return left > right ? -1 : 1;
+    return target && target.x < hero.x ? -1 : 1;
+  }
+
+  // How far the beam reaches in px: the pattern's cells on a board, the range elsewhere.
+  beamLength(hero) {
+    const board = boardOf(this.map);
+    const pattern = this.patternOf(hero);
+    if (board && pattern) return Math.max(...PATTERNS[pattern].map(([dc]) => Math.abs(dc))) * board.cell + board.cell / 2;
+    return hero.range;
+  }
+
   isStopped(enemy) {
     return (enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time;
   }
@@ -1281,7 +1375,17 @@ export class TowerDefenseGame {
     const others = (radius) => this.enemies
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
-    strike(target, (kit.damageShare ?? 1) + this.focusShare(hero, kit, others));
+    const beam = hero.basic === "beam";
+    strike(target, (kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others)), beam ? { showShot: false } : {});
+    if (beam) {
+      // Isis: the shot is a horizontal beam; it also strikes the next enemies on the row, away from her.
+      const dir = target.x < hero.x ? -1 : 1;
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const line = [target, ...this.beamLine(hero, this.enemies, dir).filter((e) => e !== target && (e.x - hero.x) * dir >= (target.x - hero.x) * dir)].slice(0, skill?.basicTargets ?? 3);
+      for (const e of line.slice(1)) strike(e, kit.splash?.share ?? 0.35, { showShot: false });
+      this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: hero.x + dir * this.beamLength(hero), y2: hero.y, life: 0.25, color: "gold", beam: true, beamDir: dir, beamLength: this.beamLength(hero) });
+      this.lordMark(hero, target);
+    }
     let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff] } : null;
     // Conduct (M13): a chain that starts on a Wet enemy bounces further.
     const conduct = this.statusCfg()?.reactions?.conduct;
@@ -1304,7 +1408,7 @@ export class TowerDefenseGame {
         from = next;
       }
     }
-    if (kit.splash && !(hero.basic === "chain" && kit.chain)) {
+    if (kit.splash && !beam && !(hero.basic === "chain" && kit.chain)) {
       const radius = this.splashRadius(hero);
       this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
       for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
@@ -1500,11 +1604,12 @@ export class TowerDefenseGame {
     // Run blessings (M17): Venom Rot on poisoned enemies, Shattering Cold on frozen ones.
     const rot = this.boons.length && this.isPoisoned(enemy) ? 1 + (this.hasBoon("venom_rot")?.bonus || 0) : 1;
     const shatter = this.boons.length && (enemy.frozenUntil ?? 0) > this.time ? 1 + (this.hasBoon("shattering_cold")?.bonus || 0) : 1;
+    const marked = hero?.entityId && (enemy.lordMarkUntil ?? 0) > this.time && this.lordFx(hero).lord === enemy.lordMarkBy ? 1 + (enemy.lordMarkBonus || 0) : 1;
     const before = enemy.hp;
     const shieldBefore = enemy.shield || 0;
     const stance = (enemy.stanceUntil ?? 0) > this.time ? 1 - (this.bossTuning?.stance?.reduction || 0) : 1;
     const resolve = enemy.resolveSteps ? 1 - enemy.resolveSteps * (this.bossTuning?.resolve?.reduction || 0) : 1;
-    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * rot * shatter * stance * resolve);
+    enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * rot * shatter * stance * resolve * marked);
     if (enemy.kind === "boss" && this.bossTuning) this.bossOnHit(enemy, dot);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
@@ -1540,7 +1645,7 @@ export class TowerDefenseGame {
 
   // Heals a hero up to its maximum and credits the healer (M14). Returns the amount healed.
   healHero(target, amount, by) {
-    amount *= this.environment("heal", target) * (1 + (by?.entityId ? this.bondFx(by).heal || 0 : 0));
+    amount *= this.environment("heal", target) * (1 + (by?.entityId ? this.bondFx(by).heal || 0 : 0)) * (1 + (by?.entityId ? this.lordFx(by).heal || 0 : 0));
     const healed = Math.max(0, Math.min(target.hp, target.hpLeft + amount) - target.hpLeft);
     target.hpLeft += healed;
     if (by?.id && healed > 0) this.statFor(by).heal += healed;
@@ -1815,6 +1920,7 @@ export class TowerDefenseGame {
     const foes = this.enemies.filter((e) => !e.untargetable && !(e.flying && hero.slotType === "road"));
     // Campaign Evolution V (campaign.js collectionHeroes) unlocks the upgraded ultimate.
     const aw = !!hero.awakenedUlt;
+    const beam = {}; // sun_beam: direction, length and struck spots for the effect
 
     if (variant === "shadow_step") {
       // Nott: phase to lowest-HP enemy, execute it, slow nearby
@@ -2010,6 +2116,16 @@ export class TowerDefenseGame {
         if (proj < 0 || proj > hero.range * (aw ? 2 : 1.5)) return;
         if (Math.abs(ex * uy - ey * ux) <= 18) this.hit(e, power * (aw ? 0.9 : 0.55), hero);
       });
+    } else if (variant === "sun_beam") {
+      // Isis: a bright beam along her row, left or right only; one hit of 100% on up to 8
+      // enemies on that line (12 awakened). Her Lord mark lands on the first enemy it strikes.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      beam.dir = this.beamDirection(hero, foes, target);
+      beam.length = this.beamLength(hero);
+      const struck = this.beamLine(hero, foes, beam.dir).slice(0, aw ? skill?.awakenTargets ?? 12 : skill?.targets ?? 8);
+      beam.hits = struck.map((e) => ({ x: e.x, y: e.y }));
+      for (const e of struck) this.hit(e, power * (skill?.damage ?? 1), hero, { showShot: false });
+      this.lordMark(hero, struck.includes(target) ? target : struck[0]);
     } else if (variant === "fortune_shower") {
       // Plutus: heal all allies + grant atk buff together
       const fraction = this.healFraction(hero);
@@ -2058,7 +2174,7 @@ export class TowerDefenseGame {
       }
     }
     this.classUltimate(hero, foes);
-    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null, awakened: aw, ultimateEffectPower: utilityPower });
+    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null, awakened: aw, ultimateEffectPower: utilityPower, ...(beam.dir && { beamDir: beam.dir, beamLength: beam.length, beamHits: beam.hits }) });
   }
 
   // Class part of every ultimate (M6), on top of the hero's own skill.

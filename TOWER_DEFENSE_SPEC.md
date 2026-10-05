@@ -161,8 +161,9 @@ Hard rules:
 
 ## 5. Roster and hero stats
 
-33 heroes, literal array `roster` in the tuning file: 21 database heroes plus 12
-hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
+34 heroes, literal array `roster` in the tuning file: 21 database heroes, 12
+hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`) and Isis, the
+first Lord (hand-authored row, no database entry, so the generator keeps it as written).
 
 | Class | Tile | Pattern | Heroes (internal ids) |
 |---|---|---|---|
@@ -176,7 +177,7 @@ hand-authored common recruits (`recruit-*`, `TOWER_DEFENSE_FILLER_HEROES.md`).
 Signature patterns (`tuning.board.heroPatterns`) replace the class pattern for one hero and
 keep its tile count: Aegir `cross2` (pushes along the road), Stheno `lance` (a sniper's long
 lines), Skadi `star3` (her barrage spreads), Boreas `blockPlus` (his shockwave fills it).
-Every other hero, recruits included, uses the class pattern. Line shapes on platform heroes
+Isis uses `row4`, a straight horizontal line (see Lords below). Every other hero, recruits included, uses the class pattern. Line shapes on platform heroes
 cover less road than diamonds: a trial with Boreas on `longPlus` and Plutus on `cross2` cut
 the 1-10 bot win rate from 0.29 to 0.17, so both were dropped (October 2, 2026).
 
@@ -345,6 +346,7 @@ turn (`PATTERNS` in `board.js`):
 | `cross2` | 9 | two tiles in each straight line (signature) |
 | `longPlus` | 13 | three tiles in each straight line (ladder step of `cross2`) |
 | `lance` | 17 | four tiles in each straight line (signature) |
+| `row2` .. `row5` | 5 / 7 / 9 / 11 | the own tile and 2 .. 5 tiles to the left and right only, never up or down (Isis uses `row4`; ladder `row2 <-> row3 <-> row4 <-> row5`) |
 
 A **reach step** moves a pattern along a fixed ladder (`steppedPattern`): up is
 `plus -> block -> blockPlus -> diamond3`, `diamond2 -> star3 -> diamond3`,
@@ -393,6 +395,25 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   (`nearestSlot`).
 
 ## 7. Combat rules (`sim.js`)
+
+- **Lords** (`tuning.lords`, `lordFx`, `stepLord`, `lordMark` in `sim.js`; text from `lordText` in
+  `skills.js`). A Lord is a hero row with `"lord": true` whose tuning entry names a faction
+  (`members`: hero ids; the Lord belongs to it herself). While she stands on the field:
+  members get +15% attack and +15% effective health (damage taken / 1.15); every
+  `baseInterval - perMember * members on the field` seconds (50 s alone, 6 s less per member,
+  never below 30 s; the clock only runs while no bonus is active) they deal +50% damage and
+  their heals are +50% for 20 s; after the Lord's direct damage (basic attack or ultimate) one
+  enemy is marked and takes +20% from her faction for 3 s. Damage over time does not mark. The
+  first Lord is Isis, faction "Egyptian": Helios, Hecate, Vidar, Thanatos (the heroes seeded from
+  Egyptian gods; the white-label pantheon column of the mythic doc is unrelated).
+- **Isis, Light of the Hidden Sun** (variant `sun_beam`, basic `beam`, Mage / platform,
+  pattern `row4`). Reach is her own row only. The basic attack hits its target fully and the next
+  two enemies on the line for the Mage splash share; the ultimate fires a beam to the left or
+  right (side with more enemies on the row, the target's side on a tie) and hits up to 8 enemies
+  on it once for 100% (12 awakened). Off boards the row is a +/-24 px band. Ultimate skill levels
+  already add +5% damage each (`heroSkillLevels.ultimatePowerPerLevel`). Effect event `ult`
+  carries `beamDir`, `beamLength`, `beamHits` for `hero-fx.js`. Plan for the generated particle
+  art: `docs/td-isis-ultimate-fx-plan.md`. Test: `scripts/test-td-lord-isis.mjs`.
 
 - Fixed step 60/s, accumulator loop, deterministic, seeded RNG. The speed toggle scales steps
   per frame, never step size. World space 960 x 540, canvas CSS-scaled.
@@ -933,6 +954,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | Command | Covers |
 |---|---|
 | `npm run test:tower-defense` | Balance file check, UI helpers, favor, difficulty, skin, save, sim (board rules included), daily, challenges, expedition, campaign, summon, map generators |
+| `node scripts/test-td-lord-isis.mjs` | Isis: line pattern, beam direction and cap, Lord bonuses (part of `test:tower-defense`) |
 | `npm run test:td-balance` | Bot squads on every map; class matrix |
 | `npm run td:board -- --size --gates --theme --count` | Unique board candidates as an HTML atlas |
 | `npm run td:board -- --current` / `--check` | Every board on one page / recipes regenerate and layouts are unique |

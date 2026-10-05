@@ -930,5 +930,32 @@
     "synergies": [],
     "cost": 12,
     "rarity": "common"
+  },
+  {
+    "id": "isis",
+    "name": "Isis",
+    "class": "Mage",
+    "tier": "S",
+    "slot": "platform",
+    "range": 160,
+    "ability": "nuke",
+    "damageType": "magical",
+    "image": "",
+    "atk": 66,
+    "aps": 0.46,
+    "dps": 30,
+    "hp": 680,
+    "armor": 50,
+    "magicRes": 120,
+    "critChance": 0.1,
+    "ultCooldown": 18,
+    "ultPower": 1.15,
+    "synergies": [
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP"
+    ],
+    "cost": 26,
+    "rarity": "legendary",
+    "lord": true
   }
 ]

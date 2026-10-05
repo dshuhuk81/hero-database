@@ -33,6 +33,7 @@ Two changes from the earlier plan: **Asclepius replaces Sif** for `asclepius`, s
 | `nott` | Nott | Rider Between Watchfires | Norse | Assassin / road | Where the Lantern Ends |
 | `hecate` | Hecate | Keeper of the Third Turning | Greek | Assassin / road | Every Exit Is Mine |
 | `vidar` | Vidar | Answer Without a Word | Norse | Assassin / road | The Debt Comes Due |
+| `isis` | Isis | Sovereign of the Hidden Sun | Egyptian | Mage / platform (Lord) | Light of the Hidden Sun |
 | `thanatos` | Thanatos | Witness of the Final Breath | Greek | Assassin / road | One Breath Remaining |
 | `odin` | Odin | Reader of Unfinished Roads | Norse | Mage / platform | The Answer Travels |
 | `hephaestus` | Hephaestus | Smith of the Refuge Gate | Greek | Mage / platform | Work the Living Furnace |
@@ -638,3 +639,24 @@ No additional mechanics are proposed in this pack. A spell's name or fictional d
 - Source links support mythological foundations only. The combat abilities, alliance, motivations, and titles are original adaptations.
 - Current mechanics are the basis for skill text, including class effects; the obsolete proposal kits are not treated as implemented.
 - Images deferred. No game code, hero JSON, balance data, or original plan is changed by this document.
+
+### 22. Isis — Sovereign of the Hidden Sun (Lord)
+
+**Binding:** `isis` · `sun_beam` · Mage · platform · she/her · first Lord
+
+**Myth anchor:** Isis is the Egyptian goddess of magic and protection. Rank (Lord) and epithet are game design, not myth.
+
+**Card:** Fires a bright beam along her row, left or right only. As a Lord she strengthens her Egyptian faction.
+
+**Look:** Warm bronze skin, braided black hair, a tall golden crown of two horns around a dark solar disc, gold collar with lapis inlays, ivory gown, midnight-blue mantle, golden wings of light. Black-and-gold ankh staff in her right hand (the beam leaves the staff). Art: `public/td/heroes-alt/review-set-v1/` (source), `isis-*` (game files).
+
+**Basic — Line of Light:** The staff points along her row; the shot hits the target and the next two enemies on that line.
+
+**Trait — Lord of the Hidden Sun:** +15% attributes for her faction, a periodic +50% damage and healing for 20 s (sooner with more faction heroes), and a 20% mark on the enemy she strikes (3 s, one enemy per attack). Faction: Helios, Hecate, Vidar, Thanatos.
+
+**Ultimate — Light of the Hidden Sun:** One beam to the left or right, 100% to up to 8 enemies on the line.
+
+**Awakening:** Up to 12 enemies. Skill levels add +5% damage each.
+
+**Status:** Sounds are placeholders (copies of Odin's). Persona text is a draft for the owner's review.
+

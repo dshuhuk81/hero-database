@@ -990,6 +990,8 @@ export function createCampaign(ctx: PageContext) {
 
   // Debug panel (dev builds only): adds campaign currencies to the save for testing.
   const DEBUG_GRANTS: Record<string, number> = { gold: 10000, heroXp: 10000, divineSeals: 600, sealDust: 1000 };
+  // Test heroes the debug panel can add to the roster without summoning (button data-camp-debug="hero:<id>").
+  const DEBUG_HERO_GRANTS = ["isis"];
   const debugEl = root.querySelector<HTMLElement>("[data-td-camp-debug]");
   const debugToggle = root.querySelector<HTMLButtonElement>("[data-td-camp-debug-toggle]");
   if (debugEl && debugToggle) {
@@ -1010,6 +1012,22 @@ export function createCampaign(ctx: PageContext) {
         if (!window.confirm("Reset all Tower Defense progress and settings stored in this browser?")) return;
         resetTdAccount(localStorage);
         window.location.reload();
+        return;
+      }
+      if (id.startsWith("hero:")) {
+        const heroId = id.slice(5);
+        if (!DEBUG_HERO_GRANTS.includes(heroId) || !heroById.has(heroId)) return;
+        const owned = progress().owned;
+        if (!owned.includes(heroId)) {
+          store.data.campaign = { ...progress(), owned: [...owned, heroId] };
+          store.persist();
+        }
+        const screen = root.dataset.screen;
+        render();
+        if (screen === "heroes") renderHeroes();
+        if (screen === "summon") renderSummon();
+        if (screen === "squad") renderSquad();
+        ctx.notice(`Debug: ${heroName(heroId)} is in your roster.`);
         return;
       }
       const grants = id === "all" ? DEBUG_GRANTS : { [id]: DEBUG_GRANTS[id] ?? 0 };
