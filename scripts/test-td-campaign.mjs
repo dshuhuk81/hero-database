@@ -266,12 +266,17 @@ if (process.argv.includes("--viability")) {
   const first = chapter.stages[0];
   assert.ok(!heroicUnlocked(campaign, newCampaignProgress(campaign), first), "Heroic stays closed before the chapter is cleared");
   assert.ok(heroicUnlocked(campaign, progress, first), "a cleared chapter opens Heroic");
-  const seals = heroicRewards(campaign, first, progress)[0]?.amount ?? 0;
+  const seals = heroicRewards(campaign, first, progress).find((reward) => reward.id === "divineSeals")?.amount ?? 0;
   assert.ok(seals > 0, "a Heroic first clear pays seals");
   const heroicWin = finishCampaignStage(campaign, progress, first.id, { won: true, lives: 5, heroic: true });
   assert.equal(heroicWin.progress.currencies.divineSeals - progress.currencies.divineSeals, seals, "Heroic seals paid");
   assert.deepEqual([heroicWin.progress.cleared, heroicWin.milestones], [progress.cleared, []], "Heroic clears leave laurels and milestones alone");
-  assert.deepEqual(finishCampaignStage(campaign, heroicWin.progress, first.id, { won: true, lives: 5, heroic: true }).granted, [], "a Heroic replay pays nothing");
+  const heroicGold = (granted) => granted.filter((reward) => reward.id === "gold").reduce((sum, reward) => sum + reward.amount, 0);
+  const stageGold = first.rewards.filter((reward) => reward.id === "gold").reduce((sum, reward) => sum + reward.amount, 0);
+  assert.equal(heroicGold(heroicWin.granted), Math.round(stageGold * campaign.heroic.currencyShare), "a Heroic clear pays a share of the stage's Gold");
+  const heroicAgain = finishCampaignStage(campaign, heroicWin.progress, first.id, { won: true, lives: 5, heroic: true }).granted;
+  assert.equal(heroicGold(heroicAgain), heroicGold(heroicWin.granted), "a Heroic replay pays the Gold again");
+  assert.ok(!heroicAgain.some((reward) => reward.id === "divineSeals"), "Heroic seals only on the first Heroic clear");
   assert.deepEqual(sanitizeCampaign(heroicWin.progress, campaign, heroIds).heroic, heroicWin.progress.heroic, "Heroic clears survive the save");
   assert.equal(stageGameOptions(first, [], 1, null, true).tier, "heroic", "Heroic plays on the Heroic tier");
   // A loss changes nothing and reports no laurels.

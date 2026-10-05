@@ -248,8 +248,8 @@ export function createResults(ctx: PageContext) {
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
       : campaign ? (({ text, won, followUp, paid }) => ({ text, reached: won, reward: 0, followUp, paid }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
-    // Free Play and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
-    const collection = daily || campaign || session.debug ? [] : collectionReward(campaignData, defeatedCount(game));
+    // Free Play, Daily Trial and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
+    const collection = campaign || session.debug ? [] : collectionReward(campaignData, defeatedCount(game));
     if (collection.length) {
       saved.campaign = grantRewards(saved.campaign, collection) as CampaignProgress;
       collectionHtml = `<p class="td-result-collection"><span class="td-label">For your heroes</span>${currencyList(Object.fromEntries(collection.map((reward: any) => [reward.id, reward.amount])), { plus: true })}</p>`;

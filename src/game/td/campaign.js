@@ -611,8 +611,9 @@ export function payMilestones(campaign, progress) {
 
 // Heroic campaign (TOWER_DEFENSE_GAMEPLAY_IDEAS.md D2): once every stage of a chapter is
 // cleared, each of its stages has a Heroic version on the Heroic tier (tuning.tiers.heroic).
-// Its first clear pays Divine Seals only (`heroic.sealShare` of the stage's own first-clear
-// seals, at least `heroic.minSeals`); Heroic clears give no laurels and no replay rewards.
+// Its first clear pays Divine Seals (`heroic.sealShare` of the stage's own first-clear seals, at
+// least `heroic.minSeals`); every Heroic clear also pays `heroic.currencyShare` of the stage's Gold
+// and Hero XP. Heroic clears give no laurels.
 export function heroicUnlocked(campaign, progress, stage) {
   const chapter = campaign.chapters.find((entry) => entry.stages.some((s) => s.id === stage.id));
   return !!campaign.heroic && !!chapter && chapter.stages.every((s) => isCleared(progress, s.id));
@@ -620,11 +621,18 @@ export function heroicUnlocked(campaign, progress, stage) {
 
 export const isHeroicCleared = (progress, stageId) => !!progress.heroic?.[stageId];
 
+// Every Heroic clear pays `heroic.currencyShare` of the stage's Gold and Hero XP (also on repeats,
+// like the 25% of a normal replay but higher for the harder tier); Divine Seals only the first time.
 export function heroicRewards(campaign, stage, progress) {
-  if (!campaign.heroic || isHeroicCleared(progress, stage.id)) return [];
+  if (!campaign.heroic) return [];
+  const share = campaign.heroic.currencyShare ?? 0;
+  const currencies = share > 0 ? (stage.rewards ?? [])
+    .filter((reward) => reward.type === "currency" && CURRENCIES.includes(reward.id) && reward.id !== "divineSeals")
+    .map((reward) => ({ ...reward, amount: Math.max(1, Math.round(reward.amount * share)) })) : [];
+  if (isHeroicCleared(progress, stage.id)) return currencies;
   const seals = (stage.rewards ?? []).filter((reward) => reward.type === "currency" && reward.id === "divineSeals").reduce((sum, reward) => sum + reward.amount, 0);
   const amount = Math.max(campaign.heroic.minSeals ?? 0, Math.round(seals * (campaign.heroic.sealShare ?? 1)));
-  return amount > 0 ? [{ type: "currency", id: "divineSeals", amount }] : [];
+  return [...currencies, ...(amount > 0 ? [{ type: "currency", id: "divineSeals", amount }] : [])];
 }
 
 // After a stage: a win records the clear (best lives kept) and pays the first-clear or the
