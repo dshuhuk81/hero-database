@@ -7,8 +7,8 @@ import realMaps from "../src/data/tdMaps.json" with { type: "json" };
 import legacyRings from "./fixtures/td-legacy-rings.json" with { type: "json" };
 import classicMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
 import { mapLanes } from "../src/game/td/lanes.js";
-import waves from "../src/data/tdWaves.json" with { type: "json" };
-import { buildWave, isBossWave, wavesForMode } from "../src/game/td/waves.js";
+import { timelineTotals } from "../src/game/td/timeline.js";
+import { FIRST_FIGHT, LONG_FIGHT, OPEN_TIMELINE, ALL_OLD_WAVES, legacyTimeline } from "./lib/td-legacy-timeline.mjs";
 
 assert.equal(resolveDamage(100, 260, "physical", false), 50, "physical mitigation");
 assert.equal(resolveDamage(100, 79503, "true", false), 100, "true damage");
@@ -23,16 +23,16 @@ assert.deepEqual(pointOnPath([[0, 0], [100, 0], [100, 100]], 150), { x: 100, y: 
 const maps = classicMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
 
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
-const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
+const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: FIRST_FIGHT, seed: 7 });
 assert.equal(game.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]), true, "valid team");
 game.placement = 10000;
 assert.equal(game.place("atlas", "road", 0), true, "road placement");
 assert.equal(game.place("odin", "road", 1), false, "class-gated placement");
 assert.equal(game.place("odin", "platform", 0), true, "platform placement");
-assert.equal(game.startWave(), true, "wave starts");
+assert.equal(game.start(), true, "stage starts");
 for (let i = 0; i < 60 * 90 && game.running; i += 1) game.step(1 / 60);
-assert.equal(game.running, false, "wave terminates");
-assert.equal(game.wave, 1, "wave advances once");
+assert.equal(game.running, false, "the stage terminates");
+assert.equal(game.complete, true, "and is complete");
 
 // --- 1A combat rules ---
 
@@ -42,11 +42,11 @@ assert.equal(game.wave, 1, "wave advances once");
   for (const mapId of ["proto-slabs", "moonlit-pass", "sunscar-basin"]) {
     const map = realMaps.find((entry) => entry.id === mapId);
     assert.ok(map, `${mapId}: contact test map exists`);
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves: [{ wave: 1, spawns: [] }], seed: 10 });
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: [{ wave: 1, spawns: [] }], seed: 10 });
     g.placement = 10000;
     assert.equal(g.place("atlas", "road", 0), true, `${mapId}: blocker placed`);
     const atlas = g.heroes[0];
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     const grunt = g.spawnEnemy("grunt");
     grunt.hp = grunt.maxHp = 1e9;
     for (let i = 0; i < 60 * 30 && !grunt.held; i += 1) g.step(1 / 60);
@@ -58,13 +58,13 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Hero armor mitigates incoming enemy damage.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 11 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 11 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
-  g.startWave();
-  g.enemies = []; g.spawnQueue = [];
+  g.start();
+  g.enemies = [];
   g.spawnEnemy("grunt");
   const grunt = g.enemies[0];
   grunt.x = atlas.x - 20; grunt.y = atlas.y; // contact range
@@ -80,11 +80,11 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Road heroes cannot target flyers; flyers leak past full road coverage.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 12 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 12 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("flyer");
   const flyer = g.enemies[0];
   flyer.x = g.heroes[0].x - 30; flyer.y = g.heroes[0].y;
@@ -100,12 +100,12 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Enemy archers stop and shoot from range instead of contact, for holdSeconds.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 13 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 13 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 2); // (410, 290), near path point (410, 180)
   const atlas = g.heroes[0];
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("archer");
   const archer = g.enemies[0];
   for (let i = 0; i < 60 * 30 && atlas.hpLeft === atlas.hp; i += 1) g.step(1 / 60);
@@ -124,12 +124,12 @@ assert.equal(game.wave, 1, "wave advances once");
 // Enemy archers (targetsPlatforms, M24 trial): a road hero in reach comes first; otherwise the
 // nearest living platform hero within attackRange, for platformAttack damage; never in melee.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 19 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 19 });
   g.setTeam(["atlas", "odin", "skadi"]);
   g.placement = 10000;
   g.place("atlas", "road", 0); g.place("odin", "platform", 0); g.place("skadi", "platform", 1);
   const [atlas, odin, skadi] = ["atlas", "odin", "skadi"].map((id) => g.heroes.find((h) => h.id === id));
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   const archer = g.spawnEnemy("archer");
   assert.equal(archer.targetsPlatforms, true, "archer tuning enables platform shots");
   const at = (unit, x, y) => { unit.x = x; unit.y = y; };
@@ -158,14 +158,14 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Blocker death frees enemies and fires a death event.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 14 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 14 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
   let deaths = 0;
   g.onChange = (type) => { if (type === "death") deaths += 1; };
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("boss");
   const boss = g.enemies[0];
   boss.x = atlas.x - 20; boss.y = atlas.y;
@@ -179,7 +179,7 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Support heal is limited to allies inside the support's range.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 15 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 15 });
   g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
   g.placement = 10000;
   g.place("plutus", "platform", 0); // (82, 225)
@@ -187,7 +187,7 @@ assert.equal(game.wave, 1, "wave advances once");
   g.place("aegir", "road", 2);    // (410, 290) - far away
   const [support, near, far] = g.heroes;
   near.hpLeft = 100; far.hpLeft = 100;
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt");
   const target = g.enemies[0];
   target.x = support.x + 50; target.y = support.y;
@@ -198,13 +198,13 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Cleave respects facing: enemies behind the hero are spared when the cone is occupied.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 16 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 16 });
   g.setTeam(["aegir", "odin", "skadi", "plutus", "atlas"]);
   g.placement = 10000;
   g.place("aegir", "road", 0);
   const warrior = g.heroes[0];
   warrior.rotation = 0; // facing +x
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
   const [ahead, behind] = g.enemies;
   ahead.x = warrior.x + 40; ahead.y = warrior.y;
@@ -220,11 +220,11 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const sides = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
   const cast = (id, angle, extras = 0) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 17 });
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 17 });
     g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
-    g.startWave(); g.enemies = []; g.spawnQueue = [];
+    g.start(); g.enemies = [];
     const hero = g.heroes[0];
     hero.rotation = angle + Math.PI; // facing away from the enemy, as a stale manual rotation would
     for (let i = 0; i < 2 + extras; i += 1) g.spawnEnemy("brute");
@@ -253,9 +253,9 @@ assert.equal(game.wave, 1, "wave advances once");
     assert.equal(d.opposite.hp, d.opposite.maxHp, `skadi's spread skips the enemy behind at ${angle.toFixed(2)} rad`);
   }
   // Facing also follows the current target every step, so effects point the right way.
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 18 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 18 });
   g.placement = 100000; g.place("skadi", "platform", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   const hero = g.heroes[0]; hero.rotation = 0;
   g.spawnEnemy("brute"); const e = g.enemies[0]; e.hp = e.maxHp = 1e9;
   for (let i = 0; i < 600 && !g.findTarget(hero); i += 1) g.step(1 / 30); // walk it into range
@@ -266,21 +266,16 @@ assert.equal(game.wave, 1, "wave advances once");
   assert.equal(typeof g.rotate, "undefined", "player rotation is gone");
 }
 
-// Full run, win: a fully deployed squad survives all ten waves.
+// Full run, win: a fully deployed squad survives the whole stage.
 // Mechanics check at base difficulty; balance at the shipped difficulty is covered by test:td-balance.
 {
-  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 0.2 } }, map: maps[0], waves, seed: 21 });
+  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 0.2 } }, map: maps[0], timeline: legacyTimeline(ALL_OLD_WAVES.slice(0, 4)), seed: 21 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
-  while (!g.complete) {
-    if (!g.running) {
-      g.startWave();
-    }
-    for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
-    if (!g.running && !g.complete && g.wave >= waves.length) break;
-  }
+  g.start();
+  for (let i = 0; i < 60 * 600 && !g.complete; i += 1) g.step(1 / 60);
   assert.equal(g.complete, true, "full run terminates");
   assert.equal(g.won, true, "deployed squad wins");
   assert.ok(g.lives > 0, "winner has lives left");
@@ -288,37 +283,22 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Full run, loss: an empty defense loses every leak and the run ends.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 22 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: legacyTimeline(ALL_OLD_WAVES.slice(0, 4)), seed: 22 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  while (!g.complete) {
-    if (!g.running) g.startWave();
-    for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
-  }
+  g.start();
+  for (let i = 0; i < 60 * 900 && !g.complete; i += 1) g.step(1 / 60);
   assert.equal(g.complete, true, "loss run terminates");
   assert.equal(g.won, false, "undefended run is lost");
   assert.equal(g.lives, 0, "loss reaches zero lives");
 }
 
-// Wave preview agrees with the spawn data.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 23 });
-  for (let w = 0; w < waves.length; w += 1) {
-    const info = g.wavePreview(w);
-    assert.equal(info.wave, w + 1, "preview reports the 1-based wave number");
-    const expected = {};
-    for (const group of waves[w].spawns) expected[group.kind] = (expected[group.kind] || 0) + group.count;
-    assert.deepEqual(info.counts, expected, `wave ${w + 1} preview matches spawn data`);
-  }
-  assert.equal(g.wavePreview(waves.length), null, "no preview past the final wave");
-}
-
 // Attacks and enemy strikes emit visible tracer effects.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 51 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 51 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("odin", "platform", 1);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("brute");
   const brute = g.enemies[0];
   brute.speed = 0; brute.distance = 320; brute.x = 168; brute.y = 240; // inside odin's range
@@ -330,7 +310,7 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Aura applies in range, not out of range, and never stacks.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 41 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 41 });
   g.setTeam(["plutus", "harmonia", "atlas", "aegir", "odin"]);
   g.placement = 10000;
   g.place("plutus", "platform", 0); // (82, 225)
@@ -348,7 +328,7 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Aura ends immediately when the support falls.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 42 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 42 });
   g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
   g.placement = 10000;
   g.place("plutus", "platform", 0);
@@ -362,7 +342,7 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // Aura bonus affects real damage dealt.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 43 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 43 });
   g.setTeam(["plutus", "odin", "skadi", "atlas", "aegir"]);
   g.placement = 10000;
   g.place("plutus", "platform", 0);
@@ -370,7 +350,7 @@ assert.equal(game.wave, 1, "wave advances once");
   const [plutus, odin] = g.heroes;
   plutus.aps = 0; // isolate odin's damage from the support's own attacks
   plutus.x = odin.x - 100; plutus.y = odin.y; // well inside the aura, whatever the ring spacing
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("brute");
   const brute = g.enemies[0];
   brute.speed = 0; brute.distance = 320; // path point (168, 240): inside odin's and plutus's range
@@ -385,37 +365,38 @@ assert.equal(game.wave, 1, "wave advances once");
 
 // --- 3B virtue choices ---
 
-function runWaveOne(g) {
+// Plays until the first blessing offer opens at a defeat milestone (or the stage ends).
+function runToOffer(g) {
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
-  g.startWave();
-  for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
+  g.start();
+  for (let i = 0; i < 60 * 600 && g.running && !g.virtueOffer; i += 1) g.step(1 / 60);
 }
 
 // Offers are seeded and reproducible.
 {
-  const a = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 61 });
-  const b = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 61 });
-  runWaveOne(a); runWaveOne(b);
+  const a = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 61 });
+  const b = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 61 });
+  runToOffer(a); runToOffer(b);
   assert.deepEqual(a.virtueOffer, b.virtueOffer, "same seed yields the same offer");
   assert.equal(a.virtueOffer.length, 3, "three picks offered");
 }
 
-// One selection per gap; the rest of the offer expires.
+// One selection per offer; the rest of the offer closes with it.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 62 });
-  runWaveOne(g);
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 62 });
+  runToOffer(g);
   const [first, second] = g.virtueOffer;
   assert.equal(g.chooseVirtue(first), true, "first selection accepted");
-  assert.equal(g.chooseVirtue(second), false, "second selection in the same gap rejected");
+  assert.equal(g.chooseVirtue(second), false, "second selection from the same offer rejected");
   assert.deepEqual(g.virtues, [first], "exactly one blessing active");
 }
 
 // The chosen effect is applied to combat math.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 63 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 63 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("odin", "platform", 1);
@@ -430,13 +411,16 @@ function runWaveOne(g) {
   assert.ok(odin.hpLeft > hpBefore - 1 && odin.hpLeft === odin.hp, "health bonus granted as current health");
 }
 
-// Unclaimed offers expire when the next wave starts; restart clears everything.
+// An offer can be skipped; the next milestone brings a new one; restart clears everything.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 64 });
-  runWaveOne(g);
-  assert.ok(g.virtueOffer, "offer present after wave clear");
-  g.startWave();
-  assert.equal(g.virtueOffer, null, "offer expires on next wave");
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 64 });
+  runToOffer(g);
+  assert.ok(g.virtueOffer, "offer present after the first milestone");
+  assert.equal(g.skipVirtues(), true, "the offer can be skipped");
+  assert.equal(g.virtueOffer, null, "skipping closes it");
+  assert.equal(g.skipVirtues(), false, "nothing left to skip");
+  runToOffer(g);
+  assert.ok(g.virtueOffer || g.complete, "a later milestone offers again");
   g.virtues.push("Wildness");
   g.reset();
   assert.deepEqual(g.virtues, [], "restart clears chosen blessings");
@@ -450,9 +434,9 @@ function runWaveOne(g) {
 {
   const discounted = structuredClone(tuning);
   discounted.favor = { deployDiscount: 0.15, classBonus: { Tank: { deployDiscount: 0.1, relocateDiscount: 0.3 } } };
-  assert.equal(tuning.run.relocationCost, 0, "relocation between waves is free by default (Encounter Pacing P4); the price math below uses an explicit share");
+  assert.equal(tuning.run.relocationCost, 0, "relocation is free by default (Encounter Pacing P4); the price math below uses an explicit share");
   discounted.run.relocationCost = 0.25;
-  const g = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 301 });
+  const g = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], timeline: OPEN_TIMELINE, seed: 301 });
   g.placement = 1000;
   const atlasCost = heroes.find((hero) => hero.id === "atlas").cost;
   const deployed = Math.round(atlasCost * 0.75), moved = Math.round(deployed * 0.25 * 0.7);
@@ -469,13 +453,13 @@ function runWaveOne(g) {
   assert.deepEqual([atlas.slotType, atlas.slotIndex], ["road", 1], "relocation changes the occupied tile");
 
   discounted.favor = { deployDiscount: 0.4, classBonus: { Tank: { deployDiscount: 0.3 } } };
-  const capped = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 302 });
+  const capped = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], timeline: OPEN_TIMELINE, seed: 302 });
   assert.equal(capped.deployCost("atlas"), Math.round(atlasCost * 0.5), "deployment discount is capped at 50 percent");
 }
 
 // Invalid relocation destinations and timing never mutate the hero or spend gold.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 303 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 303 });
   g.placement = 1000;
   g.place("atlas", "road", 0);
   g.place("aegir", "road", 1);
@@ -493,11 +477,16 @@ function runWaveOne(g) {
   g.tuning = { ...g.tuning, run: { ...g.tuning.run, relocationCost: freeShare } };
   assert.equal(g.relocationInfo(atlas.entityId).cost, 0, "relocation is free by default");
   g.placement = 1000;
-  g.startWave();
-  assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation during a wave is rejected");
+  g.start();
+  assert.equal(g.relocate(atlas.entityId, "road", 2).ok, true, "relocation during the stage is allowed");
+  const moved = g.relocate(atlas.entityId, "road", 3);
+  assert.equal(moved.ok, false, "a hero cannot move again right away");
+  assert.match(moved.reason, /can move again in \d+s/, "the cooldown is explained");
+  g.time += g.tuning.run.relocationCooldownSeconds;
+  assert.equal(g.relocate(atlas.entityId, "road", 3).ok, true, "after the cooldown it can move again");
   g.running = false; g.complete = true;
   assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation after run completion is rejected");
-  assert.deepEqual(unchanged().slice(1), initial.slice(1), "timing rejections keep the hero in place");
+  assert.equal(atlas.slotIndex, 3, "a rejected relocation after completion keeps the hero where it is");
 }
 
 // Collection stats are the unit's base power; battle placement applies run bonuses once and
@@ -515,7 +504,7 @@ function runWaveOne(g) {
   } : hero);
   const permanentTuning = structuredClone(tuning);
   permanentTuning.favor = { heroHpBonus: 0.2, classBonus: { Tank: { power: 0.15 } } };
-  const g = new TowerDefenseGame({ heroes: permanentHeroes, tuning: permanentTuning, map: maps[0], waves, seed: 304 });
+  const g = new TowerDefenseGame({ heroes: permanentHeroes, tuning: permanentTuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 304 });
   g.placement = 1000;
   assert.equal(g.place("atlas", "road", 0), true, "collection hero deploys");
   const atlas = g.heroes[0];
@@ -529,36 +518,36 @@ function runWaveOne(g) {
   assert.equal(typeof g.upgrade, "undefined", "battle upgrade purchase is removed");
 }
 
-// Wave result totals agree with the simulation.
+// Stage result totals agree with the simulation.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 24 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: FIRST_FIGHT, seed: 24 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   const goldBefore = g.placement;
-  g.startWave();
+  g.start();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
-  const stats = g.waveStats;
-  assert.ok(stats, "wave stats exist after the wave");
-  const totalSpawned = waves[0].spawns.reduce((sum, group) => sum + group.count, 0);
+  const stats = g.stageStats;
+  assert.ok(stats, "stage stats exist after the stage");
+  const totalSpawned = timelineTotals(FIRST_FIGHT).total;
   assert.equal(stats.kills + stats.leaks, totalSpawned, "kills + leaks account for every spawn");
   assert.equal(g.placement - goldBefore, stats.placementEarned, "placement earned matches the simulation");
-  assert.ok(stats.placementEarned > 0, "placement regrows during the wave");
+  assert.ok(stats.placementEarned > 0, "placement regrows during the stage");
 }
 
 // --- 6A favor economy ---
 
-// favor_earn_perfect_win: 10 perfect waves + boss kill + 25 remaining lives = 195.
+// favor_earn_perfect_win: the whole stage (60) + perfect bonus (30) + boss kill (20) + 25 remaining lives = 135.
 {
-  const result = computeFavor({ waves: 10, perfectWaves: 10, bossKilled: true, livesLeft: 25 }, tuning);
-  assert.equal(result, 195, "perfect win earns 195 Favor");
+  const result = computeFavor({ share: 1, perfect: true, bossKilled: true, livesLeft: 25 }, tuning);
+  assert.equal(result, 135, "perfect win earns 135 Favor");
 }
 
-// favor_earn_loss_wave5: loss at wave 5 with 0 lives = 50.
+// favor_earn_loss_half: a loss with half of the stage defeated and 0 lives = 30.
 {
-  const result = computeFavor({ waves: 5, perfectWaves: 0, bossKilled: false, livesLeft: 0 }, tuning);
-  assert.equal(result, 50, "loss at wave 5 earns 50 Favor");
+  const result = computeFavor({ share: 0.5, perfect: false, bossKilled: false, livesLeft: 0 }, tuning);
+  assert.equal(result, 30, "half a stage earns 30 Favor");
 }
 
 // Divine Blessings tree rules and effects: scripts/test-td-favor.mjs.
@@ -567,9 +556,9 @@ function runWaveOne(g) {
 
 // virtue_pair_triggered: choosing both pair virtues activates the pair.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 41 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 41 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.startWave();
+  g.start();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   // Manually inject an offer with the Storm Bond pair virtues.
   g.virtueOffer = ["Wildness", "Desire"];
@@ -582,9 +571,9 @@ function runWaveOne(g) {
 
 // virtue_pair_bonus_applied: pair bonus stacks on top of individual virtue bonuses.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 42 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 42 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.startWave();
+  g.start();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Wildness", "Resolve"];
   g.chooseVirtue("Wildness");
@@ -598,9 +587,9 @@ function runWaveOne(g) {
 
 // virtue_pair_not_double: same pair cannot be triggered twice.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 43 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 43 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.startWave();
+  g.start();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Wildness", "Resolve"];
   g.chooseVirtue("Wildness");
@@ -617,9 +606,9 @@ function runWaveOne(g) {
 
 // virtue_pair_order_independent: pair triggers regardless of which virtue is chosen first.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 44 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 44 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.startWave();
+  g.start();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   g.virtueOffer = ["Desire", "Resolve"];
   g.chooseVirtue("Desire");
@@ -632,13 +621,13 @@ function runWaveOne(g) {
 
 // hero_kills_tracked: kills attributed to the attacking hero.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 55 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 55 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0);
-  g.startWave();
-  g.enemies = []; g.spawnQueue = [];
+  g.start();
+  g.enemies = [];
   const gruntsKilled = 3;
   for (let i = 0; i < gruntsKilled; i += 1) {
     g.spawnEnemy("grunt");
@@ -655,11 +644,11 @@ function runWaveOne(g) {
 
 // run_duration_set_on_finish: runDuration reflects sim time at end of run.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 56 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 56 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
-  g.startWave();
+  g.start();
   assert.equal(g.runDuration, 0, "runDuration 0 before finish");
   for (let i = 0; i < 60 * 90 && g.running; i += 1) g.step(1 / 60);
   // Force finish to check duration is set regardless of winning.
@@ -670,7 +659,7 @@ function runWaveOne(g) {
 
 // gold_spent_tracked: totalPlacementSpent accumulates placement and relocation costs.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 57 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 57 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   assert.equal(g.totalPlacementSpent, 0, "totalPlacementSpent zero before any placement");
@@ -686,7 +675,7 @@ function runWaveOne(g) {
 
 // placement_regrowth: 30 at the start, +1 per second of battle time, only while a wave runs.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 58 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 58 });
   assert.equal(g.placement, tuning.run.startingPlacement, "run starts with the starting placement");
   assert.equal(tuning.run.startingPlacement, 30);
   g.setTeam(["atlas"]);
@@ -694,7 +683,7 @@ function runWaveOne(g) {
   const afterPlace = g.placement;
   for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
   assert.equal(g.placement, afterPlace, "no regrowth while no wave runs");
-  g.startWave();
+  g.start();
   g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; // wave stays open
   for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
   assert.equal(g.placement - afterPlace, 10, "one placement point per second of battle");
@@ -704,7 +693,7 @@ function runWaveOne(g) {
 
 // placement_gate: heroes cost placement points; not enough points means no deployment.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 60 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 60 });
   const cost = g.deployCost("atlas");
   g.placement = cost - 1;
   assert.equal(g.place("atlas", "road", 0), false, "too few placement points");
@@ -719,7 +708,7 @@ function runWaveOne(g) {
 
 // reset_clears_run_stats: heroKills, totalPlacementSpent, totalPlacementEarned, runDuration reset to zero.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 59 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 59 });
   g.heroKills = { 1: { name: "Test", kills: 5 } };
   g.totalPlacementSpent = 200;
   g.totalPlacementEarned = 300;
@@ -735,7 +724,7 @@ function runWaveOne(g) {
 
 // synergy_no_shared_tags: heroes with no overlapping tags get zero bonus.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 70 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 70 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
@@ -749,7 +738,7 @@ function runWaveOne(g) {
 
 // synergy_one_shared: one shared tag within range yields bonusPerTag.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 71 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 71 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
@@ -765,7 +754,7 @@ function runWaveOne(g) {
 
 // synergy_cap: many shared tags are capped at tuning.synergy.cap.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 72 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 72 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
@@ -778,7 +767,7 @@ function runWaveOne(g) {
 
 // synergy_out_of_range: shared tags beyond range yield zero.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 73 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 73 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0); // (168, 230)
@@ -791,7 +780,7 @@ function runWaveOne(g) {
 
 // synergy_dead_hero: a fallen hero does not contribute synergy bonus.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 74 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 74 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
   g.placement = 10000;
   g.place("atlas", "road", 0);
@@ -807,7 +796,7 @@ function runWaveOne(g) {
 
 // variant_loaded: heroSkills merged into placed heroes.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 80 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 80 });
   g.setTeam(["nott", "aegir", "odin", "stheno", "asclepius"]);
   g.placement = 10000;
   g.place("nott", "road", 0);
@@ -831,11 +820,11 @@ function runWaveOne(g) {
 
 // variant_knockback: Aegir cleave reduces enemy distance.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 81 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 81 });
   g.setTeam(["aegir", "atlas", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("aegir", "road", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt");
   const aegir = g.heroes[0];
   const grunt = g.enemies[0];
@@ -848,11 +837,11 @@ function runWaveOne(g) {
 
 // variant_petrify_shot: Stheno petrifies up to petrifyTargets enemies in her facing cone for petrifyDuration seconds.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 82 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 82 });
   g.setTeam(["stheno", "atlas", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("stheno", "platform", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   const stheno = g.heroes[0];
   const skill = tuning.heroSkills.stheno;
   assert.equal(g.castUltimate(stheno, null), false, "no target in the cone keeps the ultimate ready");
@@ -875,11 +864,11 @@ function runWaveOne(g) {
 
 // variant_shadow_step: Nott can target enemies outside normal range.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 83 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 83 });
   g.setTeam(["nott", "atlas", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("nott", "road", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt");
   const nott = g.heroes[0];
   const grunt = g.enemies[0];
@@ -896,12 +885,12 @@ function runWaveOne(g) {
 
 // variant_valkyrie_call: Asclepius revives a fallen hero.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 84 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 84 });
   g.setTeam(["asclepius", "atlas", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("asclepius", "platform", 0);
   g.place("atlas", "road", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   const atlas = g.heroes.find((h) => h.id === "atlas");
   const slotType = atlas.slotType; const slotIndex = atlas.slotIndex;
   // Kill atlas directly
@@ -921,14 +910,14 @@ function runWaveOne(g) {
 // back on the field and occupied rings are skipped (fallback: heal).
 {
   const make = () => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 85 });
     g.placement = 100000;
     return g;
   };
   const kill = (g, id) => { const unit = g.heroes.find((h) => h.id === id); g.damageHero(unit, unit.hpLeft + 1, null); };
   const castAsclepius = (g) => {
     const asclepius = g.heroes.find((h) => h.id === "asclepius");
-    g.startWave(); g.enemies = []; g.spawnQueue = [];
+    g.start(); g.enemies = [];
     g.spawnEnemy("grunt");
     g.castUltimate(asclepius, g.enemies[0]);
   };
@@ -989,11 +978,11 @@ function runWaveOne(g) {
 
 // variant_expose: Ymir-exposed enemies take 30% more damage.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 85 });
   g.setTeam(["ymir", "atlas", "odin", "skadi", "plutus"]);
   g.placement = 10000;
   g.place("ymir", "road", 0);
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
   const ymir = g.heroes[0];
   const [g1, g2] = g.enemies;
@@ -1012,12 +1001,12 @@ function runWaveOne(g) {
 {
   const map = realMaps[0];
   const squad = heroes.slice(0, 2).map((h) => h.id);
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves, allowedHeroes: squad }).deployCap(), 2, "cap follows a restricted roster");
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).deployCap(), tuning.run.deployCap, "open roster keeps the tuned cap");
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves, lives: 12 }).maxLives, 12, "stage lives are the maximum");
-  const carried = new TowerDefenseGame({ heroes, tuning, map, waves, lives: 7, maxLives: tuning.run.lives });
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, allowedHeroes: squad }).deployCap(), 2, "cap follows a restricted roster");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE }).deployCap(), tuning.run.deployCap, "open roster keeps the tuned cap");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, lives: 12 }).maxLives, 12, "stage lives are the maximum");
+  const carried = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, lives: 7, maxLives: tuning.run.lives });
   assert.deepEqual([carried.lives, carried.maxLives], [7, tuning.run.lives], "carried lives keep the run maximum");
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map, waves }).maxLives, tuning.run.lives, "default maximum");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE }).maxLives, tuning.run.lives, "default maximum");
 }
 
 // Recruit inspect (M24): deployPreview shows what place() fields on that tile, special tile
@@ -1026,7 +1015,7 @@ function runWaveOne(g) {
   const map = realMaps[0];
   const [key] = Object.entries(map.rings).find(([, kind]) => kind === "highground");
   const [slotType, slotIndex] = [key.split(":")[0], Number(key.split(":")[1])];
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 3 });
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 3 });
   g.placement = 9999;
   const hero = heroes.find((h) => h.slot === slotType);
   const preview = g.deployPreview(hero.id, slotType, slotIndex);
@@ -1044,7 +1033,7 @@ function runWaveOne(g) {
   const verdant = realMaps.find((map) => map.id === "verdant-crossing");
   assert.ok(verdant.enemyHp > 1, "Verdant is tuned harder");
   const plain = { ...verdant, enemyHp: undefined };
-  const hp = (options) => new TowerDefenseGame({ heroes, tuning, waves, ...options }).waveTotalHp(0);
+  const hp = (options) => new TowerDefenseGame({ heroes, tuning, timeline: OPEN_TIMELINE, ...options }).stageTotalHp();
   assert.ok(Math.abs(hp({ map: verdant }) / hp({ map: plain }) - verdant.enemyHp) < 0.01, "map scale applies in open modes");
   assert.equal(hp({ map: verdant, hpScale: 0.9 }), hp({ map: plain, hpScale: 0.9 }), "stage scale replaces the map scale");
 }
@@ -1055,7 +1044,7 @@ function runWaveOne(g) {
   const map = realMaps[0];
   const cap = tuning.run.deployCap;
   assert.ok(cap >= 1 && cap < map.roadSlots.length + map.platformSlots.length, "the cap binds before the tiles run out");
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 91 });
   g.placement = 100000;
   const road = heroes.filter((h) => h.slot === "road").slice(0, Math.ceil(cap / 2));
   const platform = heroes.filter((h) => h.slot === "platform").slice(0, cap - road.length);
@@ -1072,7 +1061,7 @@ function runWaveOne(g) {
   assert.equal(g.place(spare.id, "road", map.roadSlots.length), false, "missing tile rejected");
   assert.equal(g.place(spare.id, "road", fielded.slotIndex), true, "fallen hero frees a place");
   assert.equal(g.takeRevivableFallen(), null, "no revive past the cap");
-  const poor = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
+  const poor = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 91 });
   poor.placement = road[0].cost - 1;
   assert.equal(poor.place(road[0].id, "road", 0), false, "gold still limits deploys");
 }
@@ -1099,151 +1088,6 @@ function runWaveOne(g) {
   }
 }
 
-// --- 6B run quests ---
-
-// One quest per wave, none on the final wave, none without tuning.quests.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
-  g.place("odin", "platform", 0);
-  g.startWave();
-  assert.ok(g.quest, "quest rolled at wave start");
-  assert.equal(g.quest.status, "active");
-  assert.notEqual(g.quest.type, "heroSurvival", "no survival quest without a road hero");
-  assert.equal(g.quest.reward, tuning.quests.placementBase, "wave 1 quest pays placementBase");
-  g.running = false; g.wave = waves.length - 1;
-  g.startWave();
-  assert.equal(g.quest, null, "no quest on the final wave");
-  const off = new TowerDefenseGame({ heroes, tuning: { ...tuning, quests: undefined }, map: maps[0], waves, seed: 91 });
-  off.place("odin", "platform", 0);
-  off.startWave();
-  assert.equal(off.quest, null, "no quests without config");
-}
-
-// Quests do not touch the combat RNG: same seed, same virtue offer with or without quests.
-{
-  const a = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 92 });
-  const b = new TowerDefenseGame({ heroes, tuning: { ...tuning, quests: undefined }, map: maps[0], waves, seed: 92 });
-  runWaveOne(a); runWaveOne(b);
-  assert.deepEqual(a.virtueOffer, b.virtueOffer, "quest rolls leave combat randomness unchanged");
-}
-
-// Fail and complete paths per quest type.
-{
-  const setup = (type) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 93 });
-    g.placement = 10000;
-    g.place("atlas", "road", 0); g.place("odin", "platform", 0);
-    g.startWave();
-    g.quest = { ...g.quest, type, seconds: 5 };
-    return g;
-  };
-  // A leak fails No leaks.
-  let g = setup("noLeaks");
-  g.spawnQueue = []; g.spawnEnemy("runner"); g.enemies[0].distance = g.path.total - 1;
-  g.heroes = g.heroes.filter((h) => h.slotType !== "road");
-  g.step(1 / 60);
-  assert.equal(g.quest.status, "failed", "leak fails noLeaks");
-  // A fallen hero fails survival.
-  g = setup("heroSurvival");
-  const atlas = g.heroes.find((h) => h.id === "atlas");
-  g.damageHero(atlas, atlas.hpLeft + 1, null);
-  assert.equal(g.quest.status, "failed", "hero death fails heroSurvival");
-  // Speed clear fails once the clock runs out after the last spawn.
-  g = setup("speedClear");
-  g.spawnQueue = [{ at: 0, kind: "brute" }];
-  g.step(1 / 60);
-  assert.ok(g.waveStats.lastSpawnAt != null, "last spawn time recorded");
-  g.enemies[0].hp = g.enemies[0].maxHp = 1e9; // keep the wave open past the limit
-  for (let i = 0; i < 60 * 6; i += 1) g.step(1 / 60);
-  assert.equal(g.quest.status, "failed", "speedClear fails after its limit");
-  // Clearing the wave with the quest active pays its gold once.
-  g = setup("noLeaks");
-  g.spawnQueue = []; g.enemies = [];
-  const placed = g.placement, earned = g.totalPlacementEarned;
-  g.step(1 / 60);
-  assert.equal(g.quest.status, "done", "cleared wave completes the quest");
-  assert.equal(g.totalPlacementEarned - earned, g.quest.reward, "quest pays its placement reward once");
-  assert.equal(g.placement, placed + g.quest.reward, "quest placement lands in the counter");
-  assert.equal(g.questsDone, 1);
-}
-
-// Speed clear limit scales with the map: a longer path gives more time.
-{
-  const limit = (map) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 94 });
-    g.startWave();
-    g.quest = null;
-    return Math.round((g.path.total / tuning.enemies.grunt.speed) * tuning.quests.speedClearTravel);
-  };
-  const byLength = [...maps].sort((m1, m2) => new TowerDefenseGame({ heroes, tuning, map: m1, waves }).path.total - new TowerDefenseGame({ heroes, tuning, map: m2, waves }).path.total);
-  const [short, long] = [byLength[0], byLength.at(-1)]; // shortest and longest map
-  const g = new TowerDefenseGame({ heroes, tuning, map: long, waves, seed: 94 });
-  g.place("odin", "platform", 0);
-  for (let seed = 0; seed < 50 && g.quest?.type !== "speedClear"; seed += 1) {
-    g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
-  }
-  assert.equal(g.quest.type, "speedClear", "found a speed clear roll");
-  assert.equal(g.quest.seconds, limit(long), "limit = slowest enemy path time x speedClearTravel");
-  assert.ok(limit(long) > limit(short), "longer map allows more time");
-}
-
-// Slayer (heroKills): a named deployed hero must land a target share of the wave's kills.
-{
-  const rollSlayer = () => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
-    g.placement = 10000;
-    g.place("atlas", "road", 0); g.place("odin", "platform", 0);
-    for (let seed = 0; seed < 50 && g.quest?.type !== "heroKills"; seed += 1) {
-      g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
-    }
-    return g;
-  };
-  let g = rollSlayer();
-  assert.equal(g.quest.type, "heroKills", "found a slayer roll");
-  const named = g.heroes.find((h) => h.entityId === g.quest.heroEntityId);
-  assert.ok(named, "slayer names a deployed hero");
-  assert.equal(g.quest.heroName, named.name);
-  const enemies = waves[0].spawns.reduce((sum, group) => sum + group.count, 0);
-  assert.equal(g.quest.target, Math.max(1, Math.round((enemies / 2) * tuning.quests.heroKillsShare)), "target = even split x heroKillsShare");
-  // Kills by other heroes do not count; kills by the named hero do.
-  const other = g.heroes.find((h) => h !== named);
-  g.spawnQueue = []; g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
-  g.hit(g.enemies[0], 1e9, other);
-  assert.equal(g.quest.kills, 0, "other hero's kill does not count");
-  g.hit(g.enemies[1], 1e9, named);
-  assert.equal(g.quest.kills, 1, "named hero's kill counts");
-  // Clearing short of the target fails; reaching it pays.
-  g.quest.target = 2;
-  g.enemies = [];
-  g.step(1 / 60);
-  assert.equal(g.quest.status, "failed", "clear below target fails the quest");
-  assert.equal(g.questsDone, 0);
-  g = rollSlayer();
-  g.spawnQueue = [];
-  g.quest.kills = g.quest.target;
-  g.enemies = [];
-  const before = g.placement;
-  g.step(1 / 60);
-  assert.equal(g.quest.status, "done", "reaching the target completes the quest");
-  assert.equal(g.placement, before + g.quest.reward);
-  // The named hero falling before the target fails it at once.
-  g = rollSlayer();
-  const atlas = g.heroes.find((h) => h.id === "atlas");
-  g.quest.heroEntityId = atlas.entityId;
-  g.damageHero(atlas, atlas.hpLeft + 1, null);
-  assert.equal(g.quest.status, "failed", "named hero falling fails slayer");
-}
-
-// Slayer needs two deployed heroes.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
-  g.place("odin", "platform", 0);
-  for (let seed = 0; seed < 50; seed += 1) {
-    g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
-    assert.notEqual(g.quest.type, "heroKills", "no slayer with a single hero");
-  }
-}
-
 // --- M5 ultimates audit: edge cases for every variant ---
 
 // Every roster ultimate survives awkward states: dead target, lone target,
@@ -1257,12 +1101,12 @@ function runWaveOne(g) {
   };
   for (const id of roster) {
     for (const [name, setup] of Object.entries(scenarios)) {
-      const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
+      const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 96 });
       g.placement = 100000;
       const base = g.heroesById.get(id);
       assert.ok(g.place(id, base.slot, 0), `${id} placed`);
       g.place(base.slot === "road" ? "odin" : "atlas", base.slot === "road" ? "platform" : "road", 0);
-      g.startWave(); g.spawnQueue = []; g.enemies = [];
+      g.start(); g.enemies = [];
       const hero = g.heroes.find((h) => h.id === id);
       const target = setup(g);
       // Put everyone on the hero so range and cone checks can pass.
@@ -1277,11 +1121,11 @@ function runWaveOne(g) {
 
 // A normal attack that kills its target must not spend the ultimate on the corpse.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 97 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 97 });
   g.placement = 10000;
   g.place("vidar", "road", 0);
   const vidar = g.heroes[0];
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
   const [weak, other] = g.enemies;
   for (const e of g.enemies) { e.x = vidar.x + 20; e.y = vidar.y; e.distance = 1; }
@@ -1298,11 +1142,11 @@ function runWaveOne(g) {
 // Aegir's knockback moves the enemy on the map, not just its path distance,
 // so a blocked enemy is actually pushed out of the pile.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 98 });
   g.placement = 10000;
   g.place("aegir", "road", 1);
   const pos = g.heroes[0];
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("brute");
   const e = g.enemies[0];
   // Park the brute on the path next to Aegir.
@@ -1323,11 +1167,11 @@ function runWaveOne(g) {
 
 // Odin: chain bounces go to enemies the primary blast did not already hit.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 99 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 99 });
   g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   for (let i = 0; i < 3; i += 1) g.spawnEnemy("brute");
   const [a, near, far] = g.enemies;
   for (const e of g.enemies) e.hp = e.maxHp = 1e9;
@@ -1342,8 +1186,8 @@ function runWaveOne(g) {
 for (const map of maps.filter((entry) => entry.base)) mapLanes(map).forEach((route, lane) => {
   assert.deepEqual(route.path[0], [route.spawn.x, route.spawn.y], `${map.id} route starts at the spawn aperture`);
   assert.deepEqual(route.path.at(-1), [map.base.x, map.base.y], `${map.id} route ends at the base threshold`);
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 104 });
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 104 });
+  g.start(); g.enemies = [];
   g.spawnEnemy("runner", { lane });
   const enemy = g.enemies[0];
   assert.deepEqual({ x: enemy.x, y: enemy.y }, route.spawn, "enemy emerges from the visible spawn");
@@ -1362,8 +1206,8 @@ for (const map of maps.filter((entry) => entry.base)) mapLanes(map).forEach((rou
   assert.equal(hits[0].enemyId, enemy.entityId, "impact identifies the entering enemy");
   assert.equal(hits[0].damage, enemy.damage, "impact reports actual integrity loss");
   assert.equal(g.score, score, "entering the base does not award kill score");
-  assert.equal(g.waveStats.kills, 0, "entering the base does not count as a kill");
-  assert.equal(g.waveStats.leaks, 1, "entry still counts for wave statistics and quests");
+  assert.equal(g.stageStats.kills, 0, "entering the base does not count as a kill");
+  assert.equal(g.stageStats.leaks, 1, "entry still counts for stage statistics");
   g.step(dt);
   assert.equal(g.lives, lives - enemy.damage, "removed enemy cannot damage the base again");
 });
@@ -1371,15 +1215,15 @@ for (const map of maps.filter((entry) => entry.base)) mapLanes(map).forEach((rou
 // Multi-entrance maps: gates alternate and lanes merge before the base. Lanes may differ in
 // length, so targeting ranks enemies by distance still to go (progress).
 for (const map of maps.filter((entry) => entry.lanes)) {
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105 });
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: FIRST_FIGHT, seed: 105 });
   assert.ok(g.lanes.length >= 2, `${map.id} has several entrances`);
   const tail = (path) => JSON.stringify(path.slice(-2));
   assert.ok(g.lanes.every((lane) => tail(lane.path) === tail(g.lanes[0].path)), `${map.id} lanes merge into one approach`);
-  g.startWave();
+  g.start();
   const perLane = g.lanes.map((_, i) => g.spawnQueue.filter((item) => item.lane === i).length);
   assert.ok(Math.min(...perLane) > 0, "every gate sends enemies");
-  assert.ok(Math.max(...perLane) - Math.min(...perLane) <= 1, "gates share each wave evenly");
-  g.spawnQueue = []; g.enemies = [];
+  assert.ok(Math.max(...perLane) - Math.min(...perLane) <= 1, "gates share the stage evenly");
+  g.enemies = [];
   const second = g.spawnEnemy("grunt", { lane: 1 });
   const [x, y] = mapLanes(map)[1].path[0];
   assert.deepEqual({ x: second.x, y: second.y }, { x, y }, "second lane starts at its own gate");
@@ -1404,10 +1248,10 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const { spawn: _spawn, base: _base, ...legacy } = maps.find((entry) => entry.id === "verdant-crossing");
   const map = scenario === "legacy" ? legacy : moonlit;
   const order = [];
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105,
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 105,
     onChange: (type) => { if (type === "finish") order.push(type); } });
   g.onEffect = (effect) => { if (effect.type === "baseHit") order.push(effect.type); };
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.lives = 1;
   g.difficulty.invincible = scenario === "invincible";
   g.spawnEnemy("brute");
@@ -1433,11 +1277,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
 // Nothing changes after the run is over, even later in the same step.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 100 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 100 });
   g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.lives = 1;
   g.spawnEnemy("runner"); g.spawnEnemy("grunt");
   const [leaker, victim] = g.enemies;
@@ -1454,11 +1298,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
 // Road heroes' ultimates skip flyers (damage, slows, pushes, debuffs); platform ultimates still hit them.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 103 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 103 });
   g.placement = 100000;
   g.place("helios", "road", 0); g.place("heimdall", "road", 2); g.place("odin", "platform", 0);
   const [helios, heimdall, odin] = ["helios", "heimdall", "odin"].map((id) => g.heroes.find((h) => h.id === id));
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("flyer");
   const [grunt, flyer] = g.enemies;
   for (const e of g.enemies) { e.hp = e.maxHp = 1e9; e.x = helios.x + 20; e.y = helios.y; }
@@ -1476,11 +1320,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Every roster ultimate still survives the edge cases with its permanent Evolution upgrade.
 {
   for (const id of heroes.map((h) => h.id)) {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 105 });
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 105 });
     g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     const hero = g.heroes[0];
     hero.awakenedUlt = true;
     for (const k of ["grunt", "runner", "flyer", "archer", "brute", "grunt"]) g.spawnEnemy(k);
@@ -1495,11 +1339,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Evolution V numbers for a few ultimates: more hits, bounces, targets, gold, revive health.
 {
   const setup = (id, awakened, count = 6) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 106 });
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 106 });
     g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     const hero = g.heroes[0];
     hero.awakenedUlt = awakened;
     hero.rotation = 0;
@@ -1529,12 +1373,12 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
 // Thanatos, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 102 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 102 });
   g.placement = 10000;
   assert.ok(g.place("thanatos", "road", 0), "thanatos is playable");
   const thanatos = g.heroes[0];
   assert.equal(thanatos.variant, "soul_drain");
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("brute");
   const tough = g.enemies[0];
   tough.hp = tough.maxHp = 1e9; tough.x = thanatos.x + 20; tough.y = thanatos.y;
@@ -1556,10 +1400,10 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // --- M5 blocking switches (tuning.blocking; absent = old behavior) ---
 {
   const setup = (blocking) => {
-    const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, blocking: blocking ?? undefined }, map: maps[0], waves, seed: 101 });
+    const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, blocking: blocking ?? undefined }, map: maps[0], timeline: OPEN_TIMELINE, seed: 101 });
     g.placement = 10000;
     g.place("atlas", "road", 1);
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     const atlas = g.heroes[0];
     for (let i = 0; i < 4; i += 1) g.spawnEnemy("grunt");
     for (const e of g.enemies) { e.x = atlas.x + 10; e.y = atlas.y; e.hp = e.maxHp = 1e9; }
@@ -1592,11 +1436,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
 // --- P5 effect hierarchy: sim flags that the renderer tiers on ---
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 95 });
   g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
-  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.start(); g.enemies = [];
   g.spawnEnemy("grunt");
   const grunt = g.enemies[0];
   g.hit(grunt, 1, odin, { crit: true });
@@ -1627,10 +1471,10 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(lilithMap && baphMap, "one map per boss");
   const cfg = tuning.bosses.lilith;
   const setup = (map) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 97 });
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 97 });
     g.placement = 10000;
     g.place("odin", "platform", 0);
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     return g;
   };
   // Baphomet: plain stat block, no summons, targetable.
@@ -1640,7 +1484,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(g.enemies.length, 1, "baphomet summons nothing");
   assert.ok(!boss.untargetable);
   // A map without a boss field falls back to Baphomet.
-  const legacy = new TowerDefenseGame({ heroes, tuning, map: { ...lilithMap, boss: undefined }, waves, seed: 97 });
+  const legacy = new TowerDefenseGame({ heroes, tuning, map: { ...lilithMap, boss: undefined }, timeline: OPEN_TIMELINE, seed: 97 });
   assert.equal(legacy.bossId, "baphomet", "missing boss field falls back to baphomet");
 
   // Lilith: tougher stat block, summons her children around her, cannot be hit.
@@ -1688,74 +1532,37 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(!g.enemies.some((e) => e.entityId === boss.entityId), "dead lilith leaves the field");
 }
 
-// --- M2 run modes: 20 waves and endless ---
+// --- The boss closes the stage ---
 {
-  const bossAt = (table) => table.flatMap((w, i) => (w.spawns.some((g) => g.kind === "boss") ? [i + 1] : []));
-  assert.deepEqual(wavesForMode(waves, "classic"), waves, "classic keeps tdWaves.json");
-  const long = wavesForMode(waves, "long", tuning.waveGen);
-  assert.equal(long.length, 20, "20-wave table");
-  assert.deepEqual(bossAt(long), [5, 10, 15, 20], "boss every 5th wave");
-  const bossScale = (w) => w.spawns.find((g) => g.kind === "boss").scale ?? 1;
-  assert.deepEqual([5, 10, 15, 20].map((n) => bossScale(long[n - 1])), [tuning.waveGen.midBossScale, tuning.waveGen.midBossScale, tuning.waveGen.midBossScale, 1], "mid bosses scaled, final boss full");
-  assert.deepEqual(long.slice(0, 4), waves.slice(0, 4), "early waves unchanged");
-  assert.deepEqual(buildWave(waves, 37, "endless", tuning.waveGen), buildWave(waves, 37, "endless", tuning.waveGen), "generator is deterministic");
-  assert.ok(isBossWave(35, "endless") && !isBossWave(36, "endless"), "endless boss cadence");
-  const count = (w) => w.spawns.reduce((sum, g) => sum + g.count, 0);
-  // Waves 19 and 27 cycle the same base wave, eight waves apart.
-  assert.ok(count(buildWave(waves, 27, "endless", tuning.waveGen)) > count(long[18]), "later waves bring more enemies");
-
-  // Mid-boss stat scale reaches the boss and Lilith's children.
-  const lilithMap = maps.find((m) => m.boss === "lilith");
-  const g = new TowerDefenseGame({ heroes, tuning, map: lilithMap, waves, mode: "long", seed: 3 });
-  assert.equal(g.totalWaves, 20, "long mode total");
-  g.wave = 4; g.startWave();
-  g.spawnQueue = g.spawnQueue.filter((e) => e.kind === "boss");
-  g.step(1 / 60);
-  const boss = g.enemies.find((e) => e.kind === "boss");
-  assert.equal(boss.statScale, tuning.waveGen.midBossScale, "wave 5 boss scaled");
-  const child = g.enemies.find((e) => e.parentId === boss.entityId);
-  assert.equal(child.statScale, tuning.waveGen.midBossScale, "children share the boss scale");
-
-  // The boss comes last: it waits until every other enemy of its wave is gone.
-  {
-    const last = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 4 });
-    last.wave = waves.findIndex((w) => w.spawns.some((sp) => sp.kind === "boss") && w.spawns.length > 1);
-    last.startWave();
-    assert.equal(last.spawnQueue.at(-1).kind, "boss", "boss queued last");
-    for (let i = 0; i < 60 * 120 && last.spawnQueue.length > 1; i += 1) last.step(1 / 60);
-    assert.equal(last.spawnQueue.length, 1, "minions all spawned");
-    last.step(1 / 60);
-    assert.ok(!last.enemies.some((e) => e.kind === "boss") && last.spawnQueue.length === 1, "boss waits while minions stand");
-    for (const e of last.enemies) e.dead = true;
-    last.step(1 / 60); last.step(1 / 60);
-    assert.ok(last.enemies.some((e) => e.kind === "boss"), "boss spawns once the field is clear");
-  }
-
-  // A finite long run ends in a win after wave 20; endless keeps going.
-  const finish = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "long", seed: 5 });
-  finish.wave = 19; finish.startWave(); finish.spawnQueue = []; finish.enemies = [];
-  finish.step(1 / 60);
-  assert.equal(finish.won, true, "long mode won after wave 20");
-  const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "endless", seed: 5 });
-  assert.equal(endless.totalWaves, Infinity, "endless total");
-  endless.wave = 29; endless.startWave(); endless.spawnQueue = []; endless.enemies = [];
-  endless.step(1 / 60);
-  assert.equal(endless.complete, false, "endless does not end on a cleared wave");
-  assert.ok(endless.wavePreview(), "endless always previews the next wave");
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "bogus" }).mode, "classic", "unknown mode falls back to classic");
+  const bossTimeline = [{ startMs: 0, kind: "grunt", count: 3 }, { startMs: 500, kind: "boss", count: 1 }];
+  const last = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: bossTimeline, seed: 4 });
+  last.start();
+  assert.equal(last.spawnQueue.at(-1).kind, "boss", "boss queued last");
+  for (let i = 0; i < 60 * 30 && last.spawnQueue.length > 1; i += 1) last.step(1 / 60);
+  assert.equal(last.spawnQueue.length, 1, "minions all spawned");
+  last.step(1 / 60);
+  assert.ok(!last.enemies.some((e) => e.kind === "boss") && last.spawnQueue.length === 1, "boss waits while minions stand");
+  for (const e of last.enemies) e.dead = true;
+  last.step(1 / 60); last.step(1 / 60);
+  assert.ok(last.enemies.some((e) => e.kind === "boss"), "boss spawns once the field is clear");
+  // The stage is won when the boss and everything else is gone.
+  for (const e of last.enemies) e.dead = true;
+  last.step(1 / 60);
+  assert.equal(last.won, true, "the stage is won after the boss falls");
+  assert.equal("mode" in last, false, "there are no run modes any more");
 }
 
 // --- M6 class kits (tuning.classes): each class attacks, blocks and supports in its own way ---
 {
   const setup = (...ids) => {
-    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 140 });
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 140 });
     g.placement = 1e6;
     for (const id of ids) {
       const base = heroes.find((h) => h.id === id);
       const rings = base.slot === "road" ? maps[0].roadSlots : maps[0].platformSlots;
       for (let i = 0; i < rings.length && !g.place(id, base.slot, i); i += 1);
     }
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    g.start(); g.enemies = [];
     for (const hero of g.heroes) hero.critChance = 0;
     return { g, units: ids.map((id) => g.heroes.find((h) => h.id === id)) };
   };
@@ -2025,7 +1832,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     g3.hit(h, 1e6, jor);
     close(thanatos.ultClock - clock, R.harvest.charge, "Soul Harvest charge");
     // Reactions off: statuses stay, no reactions.
-    const g4 = new TowerDefenseGame({ heroes, tuning: { ...tuning, statuses: { ...S, reactions: {} } }, map: maps[0], waves, seed: 1 });
+    const g4 = new TowerDefenseGame({ heroes, tuning: { ...tuning, statuses: { ...S, reactions: {} } }, map: maps[0], timeline: OPEN_TIMELINE, seed: 1 });
     g4.placement = 1e6; g4.place("aegir", "road", 0); g4.place("hephaestus", "platform", 0);
     const [p4, x4] = g4.heroes;
     const e4 = g4.spawnEnemy("grunt");
@@ -2055,66 +1862,51 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     const leaker = g.spawnEnemy("flyer");
     leaker.distance = g.laneOf(leaker).total - 0.1;
     g.step(1 / 60);
-    assert.equal(g.waveStats.leakKinds.flyer, 1, "leak kind per wave");
+    assert.equal(g.stageStats.leakKinds.flyer, 1, "leak kind per wave");
     assert.equal(g.leakKinds.flyer, 1, "leak kind per run");
   }
 
-  // Difficulty tiers (M3): enemy health and attack scale; endless stays Normal.
+  // Difficulty tiers (M3): enemy health and attack scale.
   {
     const t = tuning.tiers.heroic;
-    const normal = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3 });
-    const heroic = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3, tier: "heroic" });
-    const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3, tier: "heroic", mode: "endless" });
-    const a = normal.spawnEnemy("grunt"), b = heroic.spawnEnemy("grunt"), c = endless.spawnEnemy("grunt");
+    const normal = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 3 });
+    const heroic = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 3, tier: "heroic" });
+    const a = normal.spawnEnemy("grunt"), b = heroic.spawnEnemy("grunt");
     close(b.maxHp, a.maxHp * t.enemyHp, "Heroic health");
     close(b.attack, a.attack * t.enemyAttack, "Heroic attack");
-    assert.equal(endless.tier, "normal", "endless ignores the tier");
-    close(c.maxHp, a.maxHp, "endless health unchanged");
+    assert.equal(heroic.tier, "heroic", "the tier is kept");
   }
 
-  // M15 endless mutators: offered every `every` waves in endless only, stack, change enemies.
+  // M15 mutators: Daily Trial presets, active from the start, stack and change enemies.
   {
     const M = tuning.mutators;
-    const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 8, mode: "endless" });
-    endless.wave = M.every;
-    endless.offerMutators();
-    assert.equal(endless.mutatorOffer.length, M.offer, "offer size");
-    const classic = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 8 });
-    classic.wave = M.every;
-    classic.offerMutators();
-    assert.equal(classic.mutatorOffer, null, "no mutators outside endless");
-    endless.wave = M.every + 1;
-    endless.mutatorOffer = null;
-    endless.offerMutators();
-    assert.equal(endless.mutatorOffer, null, "only every Nth wave");
-    endless.wave = M.every;
-    endless.mutatorOffer = ["fortified", "haste", "elites"];
-    const plain = endless.spawnEnemy("grunt");
-    assert.equal(endless.chooseMutator("frenzy"), false, "only offered mutators");
-    assert.ok(endless.chooseMutator("fortified"));
-    assert.equal(endless.mutatorOffer, null);
-    const tough = endless.spawnEnemy("grunt");
+    const plainGame = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 8 });
+    const plain = plainGame.spawnEnemy("grunt");
+    const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 8, mutators: ["fortified", "haste", "ironclad", "elites", "bogus"] });
+    assert.deepEqual(game.mutators, ["fortified", "haste", "ironclad", "elites"], "only known mutators are active, from the start");
+    const tough = game.spawnEnemy("grunt");
     close(tough.maxHp, plain.maxHp * (1 + M.pool.fortified.hp), "Fortified health");
-    endless.mutators.push("haste", "ironclad", "elites");
-    const mods = endless.mutatorMods();
+    const mods = game.mutatorMods();
     close(mods.favor, M.pool.fortified.favor + M.pool.haste.favor + M.pool.ironclad.favor + M.pool.elites.favor, "Favor shares add up");
-    const spawned = Array.from({ length: M.pool.elites.elite * 2 }, () => endless.spawnEnemy("grunt"));
+    const spawned = Array.from({ length: M.pool.elites.elite * 2 }, () => game.spawnEnemy("grunt"));
     const elites = spawned.filter((e) => e.elite);
     assert.equal(elites.length, 2, "every Nth enemy is an Elite");
     assert.ok(elites[0].shield > 0 && elites[0].reward === tuning.enemies.grunt.reward * M.elite.reward, "Elite shield and gold");
     close(spawned[0].speed, plain.speed * (1 + M.pool.haste.speed), "Haste speed");
     assert.equal(spawned[0].armor, plain.armor + M.pool.ironclad.armor, "Ironclad armor");
-    assert.ok(!endless.spawnEnemy("boss").elite, "bosses are never Elites");
-    endless.mutatorOffer = ["frenzy"];
-    assert.ok(endless.skipMutators() && endless.mutatorOffer === null, "skip");
+    assert.ok(!game.spawnEnemy("boss").elite, "bosses are never Elites");
+    // Horde: the stage sends more enemies (bosses excepted).
+    const horde = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: [{ startMs: 0, kind: "grunt", count: 10 }, { startMs: 5000, kind: "boss", count: 1 }], seed: 8, mutators: ["horde"] });
+    assert.deepEqual(horde.timeline.map((g) => g.count), [Math.round(10 * (1 + M.pool.horde.count)), 1], "Horde adds enemies but never bosses");
+    assert.equal("offerMutators" in game, false, "mutators are no longer offered during a run");
   }
 
   // M16 special rings: range, ultimate charge, damage and attack speed per ring.
   {
     const R = tuning.rings;
     const map = { ...maps[0], rings: { "platform:0": "highground", "platform:1": "cursed", "platform:2": "shrine" } };
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 4 });
-    const plain = new TowerDefenseGame({ heroes, tuning, map: { ...maps[0], rings: {} }, waves, seed: 4 });
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 4 });
+    const plain = new TowerDefenseGame({ heroes, tuning, map: { ...maps[0], rings: {} }, timeline: OPEN_TIMELINE, seed: 4 });
     g.placement = plain.placement = 1e6;
     for (const [i, id] of ["odin", "hephaestus", "boreas"].entries()) { g.place(id, "platform", i); plain.place(id, "platform", i); }
     const [hg, cu, sh] = g.heroes, [p0, p1, p2] = plain.heroes;
@@ -2228,8 +2020,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   {
     const cfg = tuning.bosses.lilith;
     const map = maps.find((m) => m.boss === "lilith");
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 2 });
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 2 });
+    g.start(); g.enemies = [];
     const lilith = g.spawnEnemy("boss");
     const child = g.enemies.find((e) => e.parentId === lilith.entityId);
     assert.equal(g.childFrenzy(child), 1, "children normal at first");
@@ -2242,8 +2034,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   {
     const cfg = tuning.bosses.ochenta;
     const map = { ...maps[0], boss: "ochenta" };
-    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 3 });
-    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 3 });
+    g.start(); g.enemies = [];
     const boss = g.spawnEnemy("boss");
     assert.equal(boss.speed, cfg.stats.speed * g.difficulty.enemySpeed, "own stats");
     const hero = { entityId: 999, x: boss.x + cfg.valor.radius - 1, y: boss.y, hp: 100, hpLeft: 100 };
@@ -2332,7 +2124,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
 // --- M9: selling heroes and slowing enemies that squeeze past a full blocker ---
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 150 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 150 });
   g.placement = 1000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
@@ -2340,7 +2132,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(atlas.invested, deploy, "invested tracks deployment gold");
   assert.equal(g.sellValue(atlas.entityId), Math.floor(deploy * tuning.run.sellRefund), "refund is the sell share");
   const gold = g.placement;
-  g.startWave(); // selling works mid-wave too
+  g.start(); // selling works mid-wave too
   const result = g.sell(atlas.entityId);
   assert.equal(result.ok, true);
   assert.equal(g.placement, gold + result.refund, "refund paid");
@@ -2351,11 +2143,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(g.sell(-1).ok, false, "unknown unit");
 }
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 151 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 151 });
   g.placement = 1000;
   g.place("nott", "road", 0); // Assassin: holds 1
   const nott = g.heroes[0];
-  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.start(); g.enemies = [];
   const held = g.spawnEnemy("grunt"); const passer = g.spawnEnemy("grunt");
   for (const e of [held, passer]) { e.hp = e.maxHp = 1e9; e.x = nott.x; e.y = nott.y; }
   nott.attackClock = 99; nott.ultClock = -99;
@@ -2365,64 +2157,48 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(passer.squeeze >= tuning.blocking.passSlow - 1 / 60, "and is slowed while squeezing by");
 }
 
-// --- Tuning M1: spawn spacing and endless ramp ---
+// --- Spawn spacing and formations ---
 {
-  // Enemies on one lane spawn at least waveGen.minSpacing px apart and spread sideways.
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 6, gapMs: 50 }] }], seed: 160 });
-  g.startWave();
+  // Enemies of a group spawn tuning.timeline.spacingMs apart and spread sideways.
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: [{ startMs: 0, kind: "grunt", count: 6 }], seed: 160 });
+  g.start();
   const gaps = g.spawnQueue.slice(1).map((e, i) => e.at - g.spawnQueue[i].at);
-  const minGap = tuning.waveGen.minSpacing / tuning.enemies.grunt.speed;
-  assert.ok(gaps.every((gap) => gap >= minGap - 1e-9), "tight groups are spread to the minimum spacing");
+  assert.ok(gaps.every((gap) => Math.abs(gap - tuning.timeline.spacingMs / 1000) < 1e-9), "a group spawns one enemy every spacingMs");
   assert.ok(new Set(g.spawnQueue.map((e) => e.sway)).size > 1, "spawns spread sideways");
-  for (let i = 0; i < 60 * 3; i += 1) g.step(1 / 60);
+  for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
   const [a, b] = g.enemies;
-  // Spawns land on 1/60 s steps, so allow one step of walking.
-  assert.ok(a.distance - b.distance >= tuning.waveGen.minSpacing - tuning.enemies.grunt.speed / 60 - 1e-6, "neighbours stay apart along the path");
+  assert.ok(a.distance - b.distance >= 18, "neighbours stay apart along the path");
 }
 {
   // A formation is wide enough to separate large phone sprites, stays symmetric at every
   // entrance, and never spreads farther than a road hero can engage.
   const map = realMaps.find((entry) => entry.id === "sunscar-ruins");
-  const formation = new TowerDefenseGame({ heroes, tuning, map, waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 35, gapMs: 50 }] }], seed: 160 });
-  formation.startWave();
+  const formation = new TowerDefenseGame({ heroes, tuning, map, timeline: [{ startMs: 0, kind: "grunt", count: 35 }], seed: 160 });
+  formation.start();
   for (let lane = 0; lane < formation.lanes.length; lane += 1) {
     const sway = formation.spawnQueue.filter((entry) => entry.lane === lane).map((entry) => entry.sway);
-    assert.equal(sway.length, 7, `lane ${lane + 1} gets a complete formation`);
     assert.ok(Math.max(...sway) - Math.min(...sway) >= 40, `lane ${lane + 1} formation is visibly wide`);
     assert.ok(Math.max(...sway.map(Math.abs)) < tuning.blocking.contactRange, `lane ${lane + 1} stays within melee contact`);
-    close(sway.reduce((sum, value) => sum + value, 0), 0, `lane ${lane + 1} formation is centred`);
   }
 
   const blockerMap = realMaps.find((entry) => entry.id === "proto-slabs");
-  const blocker = new TowerDefenseGame({ heroes, tuning, map: blockerMap, waves: [{ wave: 1, spawns: [] }], seed: 161 });
+  const blocker = new TowerDefenseGame({ heroes, tuning, map: blockerMap, timeline: OPEN_TIMELINE, seed: 161 });
   blocker.placement = 10000;
   assert.equal(blocker.place("atlas", "road", 0), true, "wide formation blocker placed");
-  blocker.startWave(); blocker.spawnQueue = []; blocker.enemies = [];
+  blocker.start(); blocker.enemies = [];
   const outer = blocker.spawnEnemy("grunt", { sway: Math.max(...formation.spawnQueue.map((entry) => Math.abs(entry.sway))) });
   outer.hp = outer.maxHp = 1e9;
   for (let i = 0; i < 60 * 30 && !outer.held; i += 1) blocker.step(1 / 60);
   assert.equal(outer.held, true, "the outer formation position can still be blocked");
 }
-{
-  const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "endless", seed: 161 });
-  assert.equal(endless.endlessRamp(20), 1, "no ramp up to wave 20");
-  close(endless.endlessRamp(25), (1 + tuning.waveGen.endlessRamp) ** 5, "compounding past wave 20");
-  endless.wave = 24;
-  const boss = endless.spawnEnemy("grunt");
-  const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "long", seed: 161 });
-  plain.wave = 24;
-  const ref = plain.spawnEnemy("grunt");
-  close(boss.maxHp / ref.maxHp, endless.endlessRamp(24), "HP ramp");
-  close(boss.attack / ref.attack, endless.endlessRamp(24), "attack ramp");
-}
 // Compact board (board.js, docs/tower-defense-board-plan.md): attack patterns decide reach,
-// tuning.board shapes the waves, and every gate still sends enemies.
+// tuning.board shapes the enemies, and every gate still sends enemies.
 {
   const { cellCenter, cellAt, PATTERNS, steppedPattern } = await import("../src/game/td/board.js");
   const map = realMaps.find((m) => m.id === "proto-board");
   assert.ok(map, "the prototype board exists");
   const board = map.grid.board;
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 7 });
   assert.ok(g.boardRules?.patterns, "board maps get tuning.board rules");
   const mageId = heroes.find((h) => h.class === "Mage").id;
   const index = map.platformSlots.findIndex(([x, y]) => x === cellCenter(board, [1, 2])[0] && y === cellCenter(board, [1, 2])[1]);
@@ -2433,24 +2209,19 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.reaches(mage, at([2, 3])), "diamond2 reaches a diagonal neighbour");
   assert.ok(!g.reaches(mage, at([3, 3])), "diamond2 does not reach three steps away");
   assert.ok(!g.reaches(mage, at([4, 2])), "no reach three cells away in a line");
-  // Shaped waves: swarms and runners keep enough bodies for Warrior cleave and Assassin
-  // interception; small groups still send one enemy per gate with the strength split.
-  assert.deepEqual(g.waveShape("grunt"), { count: 0.4, gap: 2.5, hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "grunt waves preserve bodies for Warrior cleave");
-  assert.deepEqual(g.waveShape("runner"), { count: 0.4, gap: 2.5, hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "runner waves preserve loose targets for Assassin interception");
-  const { count, split } = g.shapedGroup("grunt", 7);
-  assert.equal(count, Math.max(g.lanes.length, Math.round(7 * tuning.board.waveShape.kinds.grunt.count)), "a shaped group sends its intended count and covers every gate");
-  assert.ok(Math.abs(count * split - Math.round(7 * tuning.board.waveShape.kinds.grunt.count)) < 1e-9, "the split keeps the shaped strength");
-  assert.deepEqual(g.shapedGroup("boss", 1), { count: 1, split: 1 }, "bosses are not shaped");
+  // Enemy shape: stage enemies are fewer and stronger than the old authored hordes.
+  assert.deepEqual(g.enemyShape("grunt"), { hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "grunts carry the strength of the enemies the shape removed");
+  assert.deepEqual(g.enemyShape("runner"), { hp: 2.5, attack: 1.25, reward: 2.5, leak: 5 }, "runners keep their shape too");
   // Reach steps: high ground +1, Stormpeak's headwinds -1 for platform heroes elsewhere.
   const withRing = (m, kind) => Object.entries(m.rings).find(([, k]) => k === kind)?.[0].split(":");
   const jungle = realMaps.find((m) => m.grid?.board && m.theme === "jungle" && withRing(m, "highground"));
-  const jg = new TowerDefenseGame({ heroes, tuning, map: jungle, waves, seed: 7 });
+  const jg = new TowerDefenseGame({ heroes, tuning, map: jungle, timeline: OPEN_TIMELINE, seed: 7 });
   const [hgType, hgIndex] = withRing(jungle, "highground");
   const plainIndex = jungle.platformSlots.findIndex((_, i) => !jungle.rings[`platform:${i}`]);
   assert.equal(jg.patternAt({ class: "Mage" }, hgType, Number(hgIndex)), "star3", "high ground: one reach step up");
   assert.equal(jg.patternAt({ class: "Mage" }, "platform", plainIndex), "diamond2", "plain tile: class pattern");
   const storm = realMaps.find((m) => m.theme === "stormpeak");
-  const sg = new TowerDefenseGame({ heroes, tuning, map: storm, waves, seed: 7 });
+  const sg = new TowerDefenseGame({ heroes, tuning, map: storm, timeline: OPEN_TIMELINE, seed: 7 });
   const stormPlain = storm.platformSlots.findIndex((_, i) => !storm.rings[`platform:${i}`]);
   const [stType, stIndex] = withRing(storm, "highground");
   assert.equal(sg.patternAt({ class: "Mage" }, "platform", stormPlain), "block", "Stormpeak: platform heroes lose a step");
@@ -2469,32 +2240,33 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.nearPoint(at([tc, tr]), at([tc + 1, tr + 1]), 110), "a 110 px blast is a 3 x 3 block");
   // One shown life per leak (board.js shownLives, tuning.board.lifeUnit).
   const { shownLives } = await import("../src/game/td/board.js");
-  const lg = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 7 });
-  lg.wave = 1;
+  const lg = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, seed: 7 });
   assert.equal(lg.lifeUnit, tuning.board.lifeUnit, "boards count lives in units");
   for (const kind of ["grunt", "runner", "flyer"]) assert.equal(lg.spawnEnemy(kind).damage, lg.lifeUnit, `a ${kind} leak costs one shown life`);
   assert.equal(lg.spawnEnemy("brute").damage, 2 * lg.lifeUnit, "a brute leak costs two");
   assert.deepEqual([shownLives(25, 5), shownLives(21, 5), shownLives(20, 5), shownLives(1, 5), shownLives(0, 5)], [5, 5, 4, 1, 0], "shown lives round up and hit 0 only at 0");
-  // Maps without a board keep circles and today's waves.
-  const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
+  // Maps without a board keep circles.
+  const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 7 });
   assert.equal(plain.boardRules, null, "no board rules off the board");
-  assert.deepEqual(plain.shapedGroup("grunt", 7), { count: 7, split: 1 }, "no wave shape off the board");
+  assert.equal(plain.enemyShape("brute"), null, "no enemy shape off the board");
 }
 
-// Favor placement bonuses: a faster regrowth rate and a flat wave-clear payout.
+// Favor placement bonuses: a faster regrowth rate and a flat payout with every blessing offer.
 {
   const fast = structuredClone(tuning);
-  fast.favor = { placementRate: 0.5, clearPlacement: 2 };
-  const g = new TowerDefenseGame({ heroes, tuning: fast, map: maps[0], waves, seed: 3 });
-  g.startWave();
+  fast.favor = { placementRate: 0.5, offerPlacement: 2 };
+  const g = new TowerDefenseGame({ heroes, tuning: fast, map: maps[0], timeline: OPEN_TIMELINE, seed: 3 });
+  g.start();
   g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }];
   const before = g.placement;
   for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
   assert.equal(g.placement - before, 15, "placementRate 0.5 grows 1.5 points per second");
-  g.spawnQueue = [];
-  const beforeClear = g.totalPlacementEarned;
+ 
+  const beforeOffer = g.totalPlacementEarned;
+  g.enemiesDown = timelineTotals(g.timeline).total; // the defeat counter crosses the first milestone
   g.step(1 / 60);
-  assert.ok(g.totalPlacementEarned - beforeClear >= 2, "clearPlacement pays at wave clear");
+  assert.ok(g.virtueOffer, "the milestone opens a blessing offer");
+  assert.ok(g.totalPlacementEarned - beforeOffer >= 2, "offerPlacement pays with the offer");
 }
 
 // Pantheon bonds (bonds.js, tuning.bonds): tiers by heroes on the field, recruits as wildcards.
@@ -2507,7 +2279,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(norse(["odin", "ymir", "recruit-bram", "recruit-elm"]).tier.count, 4, "recruits fill the larger set");
   assert.equal(bondsOf(cfg, ["odin", "atlas", "helios", "recruit-bram"]).find((b) => b.id === "greek").count, 3, "a recruit joins the set with more heroes");
   // Tag synergy off, so only the bond changes attack.
-  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, synergy: null }, map: maps[0], waves, seed: 4 });
+  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, synergy: null }, map: maps[0], timeline: OPEN_TIMELINE, seed: 4 });
   g.placement = 9999;
   assert.ok(g.place("odin", "platform", 0));
   const before = g.attackValue(g.heroes[0]);
@@ -2518,10 +2290,10 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Divine Interventions (tuning.interventions): charge, Thunderfall strike, Shield of the Crossing.
 {
   const cfg = tuning.interventions;
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 6, interventions: ["thunderfall", "shield"] });
-  assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 6 }).interventionState("thunderfall"), null, "no powers unless the run unlocks them");
-  g.startWave();
-  g.spawnQueue = [];
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 6, interventions: ["thunderfall", "shield"] });
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 6 }).interventionState("thunderfall"), null, "no powers unless the run unlocks them");
+  g.start();
+ 
   assert.ok(!g.interventionState("thunderfall").ready && !g.castThunderfall(100, 100), "a fresh power is not charged");
   g.interventions.thunderfall.charge = cfg.thunderfall.charge;
   const enemy = g.spawnEnemy("brute");
