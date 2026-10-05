@@ -30,6 +30,8 @@ export function skinHeroes(heroes, base, tuning = null) {
       image: art("thumb-96"),
       portrait: art("card-240"),
       token: art("token-192"),
+      // Large splash portrait (720 px wide, scripts/td-hero-splash.mjs) for the Summon screen; absent without a master.
+      ...(entry.splash && { splash: art("splash-720") }),
       // Idle loop for the recruit preview (scripts/td-idle-anim.py): 24 square frames, 2.4 s.
       anim: { url: `${base}/td/heroes-alt/anims/${hero.id}-idle-${entry.art ?? "v1"}.webp`, frames: 24, duration: 2.4 },
       // One file per hero and sound (td/sfx/mythic-{id}-{version}_{kind}.ogg). R2 files are

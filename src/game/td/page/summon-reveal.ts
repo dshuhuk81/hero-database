@@ -42,14 +42,14 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
 
   const glowOf = (id: string) => {
     const rarity = heroById.get(id)?.rarity;
-    return rarity === "legendary" ? "gold" : rarity === "epic" ? "purple" : "none";
+    return rarity === "legendary" || rarity === "lord" ? "gold" : rarity === "epic" ? "purple" : "none";
   };
   const glowName: Record<string, string> = { gold: "legendary hero", purple: "epic hero", none: "common hero" };
 
   function cardHtml(id: string, index: number) {
     const hero = heroById.get(id) ?? { name: id, class: "" };
     const glow = glowOf(id);
-    return `<button type="button" class="td-summon-flip td-summon-flip--${glow}${id === featured ? " is-featured" : ""}" data-td-summon-card="${index}" style="--i:${index}" aria-label="Unrevealed card ${index + 1}, ${id === featured ? "featured " : ""}${glowName[glow]}">` +
+    return `<button type="button" class="td-summon-flip td-summon-flip--${glow}${id === featured ? " is-featured" : ""}" data-td-summon-card="${index}" style="--i:${index}" aria-label="Unrevealed card ${index + 1}, ${id === featured ? "featured " : ""}${heroById.get(id)?.rarity === "lord" ? "lord hero" : glowName[glow]}">` +
       `<span class="td-summon-flip-inner">` +
       `<span class="td-summon-face td-summon-face--back" aria-hidden="true"></span>` +
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +

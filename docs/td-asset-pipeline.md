@@ -55,6 +55,7 @@ the rest. Work files go to `.td-work/` (gitignored).
 | Its animation sheet | `public/td/enemies/clips/{file}-{version}.webp` + `.json` | `ENEMY_SHEETS` in `src/game/td/assets.js` |
 | Enemy/boss source art | `~/hero-database-assets/td/enemy-sprites-src/` on the owner's Mac; in a cloud job, the path the owner gives you | build map `FILES` in `scripts/build-td-enemy-sprites.mjs` |
 | Hero art | `public/td/heroes-alt/{file}-card-240.webp`, `-thumb-96.webp`, `-token-192.webp` | `src/data/tdSkinMythic.json` (`"art"` for redrawn heroes) |
+| Hero splash (Summon screen) | `public/td/heroes-alt/{file}-splash-720.webp` (720 px wide, from the 2514 x 6144 master) | `"splash": true` in `src/data/tdSkinMythic.json`, both set by `node scripts/td-hero-splash.mjs --id <id> --source <master>` (`--all` for the review set) |
 | Hero idle loop | `public/td/heroes-alt/anims/{id}-idle-{art or v1}.webp` (24 frames, 5376x224) | same |
 | Hero board figure | `public/td/heroes-alt/figures/{figure}-{version}.webp` + `.json` (idle, attack, ultimate) | `HERO_FIGURES` in `src/game/td/assets.js` |
 | Hero sounds | `public/td/sfx/mythic-{id}-v4_attack.ogg`, `..._ultimate.ogg` | `SOUND_VERSION` in `src/game/td/skin.js`, per-sound override `"sounds": { "attack": "v5" }` in `tdSkinMythic.json`, credits in `public/td/sfx/CREDITS-mythic.txt` |

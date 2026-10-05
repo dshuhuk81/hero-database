@@ -10,7 +10,7 @@ import { skinHeroes, skinTuning } from "../src/game/td/skin.js";
 const base = "https://r2.example";
 const skinned = skinHeroes(heroes, base);
 skinned.forEach((hero, i) => {
-  const { name, title, image, portrait, token, anim, sounds, ...rest } = hero;
+  const { name, title, image, portrait, token, splash, anim, sounds, ...rest } = hero;
   const { name: _n, image: _i, ...original } = heroes[i];
   assert.deepEqual(rest, original, `${hero.id}: only display fields change`);
   assert.ok(name && title && name === mythic.heroes[hero.id].name, `${hero.id}: mythic name ${name}`);
@@ -20,6 +20,7 @@ skinned.forEach((hero, i) => {
     assert.ok(url.startsWith(`${base}/td/heroes-alt/`) && url.includes(`/${hero.id}-`), `${hero.id}: TD-owned art ${url}`);
     assert.ok(fs.existsSync(`public${url.slice(base.length)}`), `${hero.id}: file exists ${url}`);
   }
+  if (splash) assert.ok(fs.existsSync(`public${splash.slice(base.length)}`) && splash.includes(`/${hero.id}-`), `${hero.id}: splash file exists ${splash}`);
   for (const key of Object.values(sounds)) assert.ok(fs.existsSync(`public/td/sfx/${key}.ogg`), `${hero.id}: sound ${key}`);
 });
 assert.equal(new Set(skinned.map((hero) => hero.name)).size, heroes.length, "names are unique");

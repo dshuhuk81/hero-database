@@ -9,11 +9,11 @@ import { mapSceneFor } from "../map-scene.js";
 import { shownLives } from "../board.js";
 import { environmentFor } from "../environments.js";
 import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
-import { CLASS_PASSIVE_SKILLS, SKILL_TEXT } from "../skills.js";
+import { CLASS_PASSIVE_SKILLS, SKILL_TEXT, lordText } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
-import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
+import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { notifyQuest } from "../quests.js";
@@ -33,7 +33,7 @@ export type CampaignRun = { stageId: string; squad: string[]; heroic?: boolean }
 
 const campaign: any = campaignData;
 const summonCfg: any = summonData;
-const banner: any = summonCfg.banners[0]; // one banner for now
+let banner: any = summonCfg.banners[0]; // the banner picked in the Summon tabs
 // Heroes screen tiles crop the full-body portrait to the face; heads sit lower on these.
 const FACE_FOCUS: Record<string, string> = { fenrir: "18%", atlas: "5%", odin: "4%", nott: "3%", aegir: "3%" }; // Fenrir, Atlas, Odin, Nott, Aegir
 const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming soon"
@@ -87,7 +87,6 @@ export function createCampaign(ctx: PageContext) {
   const heroListEl = q("[data-td-camp-heroes]");
   const summonBannerEl = q("[data-td-summon-banner]");
   const summonCopyEl = q("[data-td-summon-copy]");
-  const summonWalletEl = q("[data-td-summon-wallet]");
   const summonButton = q<HTMLButtonElement>("[data-td-summon-button]");
   const summonMultiButton = q<HTMLButtonElement>("[data-td-summon-multi]");
   const summonSkipInput = q<HTMLInputElement>("[data-td-summon-skip]");
@@ -135,6 +134,7 @@ export function createCampaign(ctx: PageContext) {
   const drawerEl = q<HTMLDialogElement>("[data-td-camp-drawer]");
   const drawerBody = q("[data-td-camp-drawer-body]");
   const lineupEl = q("[data-td-squad-lineup]");
+  const lordEl = q("[data-td-squad-lord]");
   const feedbackEl = q("[data-td-squad-feedback]");
   const hasEnemy = (stage: any, kind: string) => stage.timeline.some((group: any) => group.kind === kind);
   const enemyCount = (stage: any) => timelineTotals(stage.timeline).total;
@@ -310,6 +310,9 @@ export function createCampaign(ctx: PageContext) {
     const stage = stageId ? stageById(campaign, stageId) : null;
     if (!stage) return false;
     const p = progress();
+    // A Lord always takes the leftmost slot (tuning.lords); everyone else keeps their order.
+    const isLord = (id: string) => !!data.tuning.lords?.[id];
+    squad = [...squad.filter(isLord), ...squad.filter((id) => !isLord(id))];
     const selected = squad.map((id) => heroById.get(id));
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
     const powerEl = q("[data-td-squad-power]");
@@ -318,7 +321,7 @@ export function createCampaign(ctx: PageContext) {
       const squadPower = selected.reduce((sum, hero) => sum + might(hero), 0);
       const recommended = recommendedPower(stage);
       // Crossed swords + squad Might, then the enemy battle power it is measured against.
-      powerEl.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 4l11 11M20 4L9 15M13 17l4 4M7 21l4-4M17 13l4 4M3 17l4-4"/></svg><span>${squadPower.toLocaleString()}</span><span class="td-squad-power-enemy">Enemy ${recommended.toLocaleString()}</span>`;
+      powerEl.innerHTML = `<span class="td-squad-power-own"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 4l11 11M20 4L9 15M13 17l4 4M7 21l4-4M17 13l4 4M3 17l4-4"/></svg><span>${squadPower.toLocaleString()}</span></span><span class="td-squad-power-enemy">Enemy ${recommended.toLocaleString()}</span>`;
       powerEl.title = `Squad Might ${squadPower.toLocaleString()} / enemy battle power ${recommended.toLocaleString()}`;
       powerEl.setAttribute("aria-label", powerEl.title);
       powerEl.classList.toggle("is-strong", squadPower >= recommended);
@@ -337,6 +340,15 @@ export function createCampaign(ctx: PageContext) {
       const text = bond.tier ? bondText(bond.tier) : `${bond.next!.count} for ${bondText(bond.next)}`;
       return `<span class="td-bond${bond.tier ? " is-active" : ""}" title="${bond.name} bond: ${text}"><b>${bond.name} ${goal}</b> ${text}</span>`;
     }).join("");
+    // Lord icon left of the lineup: tap shows the Lord bonus; it disappears with the Lord.
+    const lordId = squad.find(isLord);
+    lordEl.hidden = !lordId;
+    if (lordId) {
+      const cfg = data.tuning.lords[lordId];
+      const members = cfg.members.map((id: string) => `<li${squad.includes(id) ? ' class="is-in"' : ""}>${heroName(id)}</li>`).join("");
+      lordEl.innerHTML = `<button type="button" class="td-squad-lord-btn" aria-expanded="false" aria-label="Lord bonus: ${heroName(lordId)}"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></button>
+        <div class="td-squad-lord-tip" role="tooltip" hidden><strong>${heroName(lordId)}, Lord of the ${cfg.faction} faction</strong><p>${lordText(cfg)}</p><ul>${members}</ul></div>`;
+    } else lordEl.innerHTML = "";
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
     // Slots: portrait card only, class icon on the art, placement cost above. Tap or drag out to remove.
     lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => {
@@ -599,56 +611,91 @@ export function createCampaign(ctx: PageContext) {
   // Summonable roster (campaign.js summonableHeroes): every campaign hero is available.
   const allHeroIds = (): string[] => summonableHeroes(campaign, progress(), data.heroes);
   const stars = (n: number, max = campaign.heroStars?.max ?? 5) => `<span class="td-stars" aria-label="${n} of ${max} stars">${"★".repeat(n)}<span aria-hidden="true">${"★".repeat(Math.max(0, max - n))}</span></span>`;
+  // "2d 5h" / "5h 12m" / "9m": time left until `at`.
+  const timeLeft = (at: number) => {
+    const mins = Math.max(0, Math.floor((at - Date.now()) / 60000));
+    const d = Math.floor(mins / 1440), h = Math.floor((mins % 1440) / 60);
+    return d ? `${d}d ${h}h` : h ? `${h}h ${mins % 60}m` : `${mins}m`;
+  };
+
   function renderSummon(fresh = false) {
     const p = progress();
     const ids = allHeroIds();
-    const left = summonPool(p, ids).length;
-    const seals = p.currencies.divineSeals || 0;
+    const now = Date.now();
+    const poolIds = bannerPool(banner, p, ids, now);
+    const left = poolIds.filter((id: string) => !p.owned.includes(id)).length;
     const dust = p.currencies.sealDust || 0;
-    const featuredId = featuredHeroId(banner);
+    const featuredId = featuredHeroId(banner, now);
     const featured = heroById.get(featuredId);
     const featuredOwned = !!featuredId && p.owned.includes(featuredId);
-    const chance = featuredChance(banner, p, ids);
-    const epoch = Date.parse(banner.rotationEpoch ?? "");
-    const duration = Math.max(1, Number(banner.rotationDays) || 14) * 86400000;
-    const elapsed = Number.isFinite(epoch) ? Math.max(0, Date.now() - epoch) : 0;
-    const rotationEnd = Number.isFinite(epoch) ? epoch + (Math.floor(elapsed / duration) + 1) * duration : Date.now() + duration;
-    const daysLeft = Math.max(1, Math.ceil((rotationEnd - Date.now()) / 86400000));
+    const chance = featuredChance(banner, p, ids, now);
+    const rotationEnd = rotationEndsAt(banner, now);
     summonBannerEl.textContent = banner.name;
+    q("[data-td-summon-banner-name]").textContent = banner.name;
     summonCopyEl.textContent = featuredOwned
       ? "You own the featured hero. More copies raise its Stars and Evolution on the Heroes screen."
       : "The featured hero has boosted odds. Heroes you already own come back as spare copies.";
-    q<HTMLImageElement>("[data-td-summon-feature-art]").src = featured?.portrait ?? featured?.image ?? "";
-    q<HTMLImageElement>("[data-td-summon-feature-art]").alt = featured?.name ?? "Featured hero";
+
+    // Left: one tab per banner with the time until its featured hero changes.
+    q("[data-td-summon-tabs]").innerHTML = summonCfg.banners.map((entry: any) => {
+      const end = rotationEndsAt(entry, now);
+      return `<button type="button" role="tab" class="td-sm-tab${entry.id === banner.id ? " is-active" : ""}" aria-selected="${entry.id === banner.id}" data-summon-banner="${entry.id}">${end ? `<small>${timeLeft(end)}</small>` : ""}<strong>${entry.name}</strong></button>`;
+    }).join("");
+
+    // Centre: the featured hero.
+    const art = q<HTMLImageElement>("[data-td-summon-feature-art]");
+    // The splash may not be on R2 yet (npm run upload-assets): fall back to the card.
+    art.onerror = () => { art.onerror = null; art.src = featured?.portrait ?? featured?.image ?? ""; };
+    art.src = featured?.splash ?? featured?.portrait ?? featured?.image ?? "";
+    art.alt = featured?.name ?? "Featured hero";
     q("[data-td-summon-feature-name]").textContent = featured?.name ?? "Featured hero";
     q("[data-td-summon-feature-title]").textContent = featured ? `${featured.title ?? ROLE_HINTS[featured.class] ?? ""} · ${featured.class}` : "";
-    q("[data-td-summon-feature-rate]").textContent = `${Math.round(chance * 100)}%`;
-    q("[data-td-summon-rotation]").textContent = `Rotates in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`;
-    summonWalletEl.innerHTML = currencyAmount("divineSeals", seals);
-    const ok = canSummon(summonCfg, banner.id, p, ids);
+    q("[data-td-summon-feature-class]").innerHTML = featured ? classGlyph(featured.class, 22) : "";
+    const ok = canSummon(summonCfg, banner.id, p, ids, now);
     summonButton.disabled = !ok;
     summonButton.toggleAttribute("data-td-autofocus", ok);
-    summonButton.innerHTML = `Summon x1 ${currencyAmount("divineSeals", banner.cost.divineSeals)}`;
+    summonButton.innerHTML = `<span>Summon x1</span>${currencyAmount("divineSeals", banner.cost.divineSeals)}`;
     const multi = Number(banner.multiCount) || 10;
-    summonMultiButton.disabled = !multiSummonCount(summonCfg, banner.id, p, ids);
-    summonMultiButton.innerHTML = `Summon x${multi} ${currencyAmount("divineSeals", banner.cost.divineSeals * multi)}`;
+    summonMultiButton.disabled = !multiSummonCount(summonCfg, banner.id, p, ids, now);
+    summonMultiButton.innerHTML = `<span>Summon x${multi}</span>${currencyAmount("divineSeals", banner.cost.divineSeals * multi)}`;
     q("[data-td-summon-price]").innerHTML = `${currencyList(banner.cost)} per summon`;
-    q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
-    const rates = summonRates(banner, p, ids);
+
+    // Right: the featured rotation (current and coming heroes); chances live in the info popover.
+    q("[data-td-summon-rotation]").textContent = rotationEnd ? `Changes in ${timeLeft(rotationEnd)}` : "";
+    q("[data-td-summon-feature-rate]").textContent = `${(chance * 100).toFixed(1)}%`;
+    const rotation: string[] = banner.featuredRotation ?? [];
+    const dayMs = Math.max(1, Number(banner.rotationDays) || 14) * 86400000;
+    const current = Math.max(0, rotation.indexOf(featuredId));
+    q("[data-td-summon-rotation-list]").innerHTML = rotation.map((id, i) => {
+      const hero = heroById.get(id);
+      if (!hero) return "";
+      const steps = (i - current + rotation.length) % rotation.length;
+      const when = steps === 0 ? "Now" : rotationEnd ? `in ${timeLeft(rotationEnd + (steps - 1) * dayMs)}` : "";
+      return `<div class="td-sm-feat${steps === 0 ? " is-current" : ""}${p.owned.includes(id) ? " is-owned" : ""}" title="${hero.name}"><img data-rarity="${hero.rarity ?? ""}" src="${hero.image ?? hero.portrait}" alt="${hero.name}" loading="lazy"><small>${when}</small></div>`;
+    }).join("");
+    const rates = summonRates(banner, p, ids, now);
     const pct = (x: number) => `${(x * 100).toFixed(1)}%`;
-    q("[data-td-summon-rates]").textContent = `Legendary ${pct(rates.legendary)} · Epic ${pct(rates.epic)} · Common ${pct(rates.common)}`;
+    q("[data-td-summon-rates]").innerHTML = (["lord", "legendary", "epic", "common"] as const)
+      .filter((rarity) => rates[rarity] > 0)
+      .map((rarity) => `<span class="td-sm-chip td-sm-chip--${rarity}"><b>${rarity === "lord" ? "Lord" : rarity[0].toUpperCase() + rarity.slice(1)}</b>${pct(rates[rarity])}</span>`).join("");
+
+    // Details popover: pool, pity, where the Seals come from.
+    q("[data-td-summon-pool-count]").textContent = left ? `${left} not owned yet` : "All owned";
     q("[data-td-summon-pity]").textContent = banner.pityNewInMulti && left
       ? `Summon x${multi} guarantees at least one hero you don't own yet.`
       : "";
-    const pool = data.heroes.filter((hero: any) => ids.includes(hero.id) && hero.id !== featuredId);
+    const pool = data.heroes.filter((hero: any) => poolIds.includes(hero.id));
     q("[data-td-summon-pool]").innerHTML = pool.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
       const copies = p.copies?.[hero.id] ?? 0;
-      return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}</span></div>`;
+      const window = heroAvailability(banner, hero.id, now);
+      const until = window.until ? ` · until ${new Date(window.until).toLocaleDateString()}` : "";
+      return `<div class="td-summon-pool-hero${isOwned ? " is-owned" : ""}"><img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy"><strong>${hero.name}</strong><small>${hero.class}</small><span>${isOwned ? `${stars(heroStars(p, hero.id))}${copies ? ` · ${copies} spare` : ""}` : "New"}${until}</span></div>`;
     }).join("");
     q("[data-td-summon-source]").textContent = nextStage(campaign, p)
-      ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate every two weeks. All Legendary heroes are in the pool."
+      ? "Divine Seals come from Campaign stages (first clears pay full, replays a quarter), the Daily Trial goal and finished Expeditions. Featured heroes rotate on a schedule."
       : "All current campaign stages are cleared. Divine Seals still come from replays (a quarter of first-clear), the Daily Trial goal, finished Expeditions and Seal Dust.";
+
     // Seal Dust: spare copies turned to dust on the Heroes screen buy Divine Seals.
     const d = summonCfg.dust ?? {};
     q("[data-td-dust-wallet]").innerHTML = currencyList({ sealDust: dust });
@@ -742,6 +789,19 @@ export function createCampaign(ctx: PageContext) {
     else { feedbackEl.textContent = `Squad full. Remove a selected hero before adding ${heroName(id)}.`; return; }
     renderSquad();
     squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
+  });
+  lordEl.addEventListener("click", (event) => {
+    const btn = lordEl.querySelector<HTMLButtonElement>(".td-squad-lord-btn");
+    const tip = lordEl.querySelector<HTMLElement>(".td-squad-lord-tip");
+    if (!btn || !tip || !(event.target as HTMLElement).closest(".td-squad-lord-btn")) return;
+    tip.hidden = !tip.hidden;
+    btn.setAttribute("aria-expanded", String(!tip.hidden));
+  });
+  document.addEventListener("click", (event) => {
+    const tip = lordEl.querySelector<HTMLElement>(".td-squad-lord-tip");
+    if (!tip || tip.hidden || lordEl.contains(event.target as Node)) return;
+    tip.hidden = true;
+    lordEl.querySelector(".td-squad-lord-btn")?.setAttribute("aria-expanded", "false");
   });
   lineupEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-remove]");
@@ -982,6 +1042,13 @@ export function createCampaign(ctx: PageContext) {
     });
   }
 
+  q("[data-td-summon-tabs]").addEventListener("click", (event) => {
+    const tab = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-summon-banner]");
+    const next = tab && summonCfg.banners.find((entry: any) => entry.id === tab.dataset.summonBanner);
+    if (!next || next.id === banner.id) return;
+    banner = next;
+    renderSummon();
+  });
   summonButton.addEventListener("click", () => doSummon(1));
   summonMultiButton.addEventListener("click", () => doSummon(multiSummonCount(summonCfg, banner.id, progress(), allHeroIds())));
   summonSkipInput.addEventListener("change", () => {

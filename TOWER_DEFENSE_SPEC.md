@@ -839,11 +839,30 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 
 `tdSummon.json`: banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600),
 one featured hero for 14 days (rotation `surtr`, `nott`, `hephaestus`, `hecate`; weight x2),
-rarity weights legendary 6 / epic 4 / common 10 (legendary = tiers S/A, epic = B/C,
+rarity weights lord 1.8 / legendary 6 / epic 4 / common 10 (lord = Lords such as Isis, set so one Lord is
+about 0.8% per summon with the current pool; the weight is per hero, so a second Lord adds another 0.8%; legendary = tiers S/A, epic = B/C,
 common = D and all recruits), new-hero pity on x10 (a full x10 without a new hero replaces the
 last duplicate with an unowned hero). Pool: every hero the player owns or can summon; owned
 heroes return as spare copies. The banner shows per-rarity rates computed by `summonRates()`
 from the same weights `summonMany()` uses.
+
+**Availability (hand-authored).** `banner.availability` in `tdSummon.json` is a list of
+`{ hero, from, until }` (ISO dates, `null` = open on that side). A listed hero is in the banner's
+pool only inside its window; a hero that is not listed is always in the pool. `bannerPool`,
+`summonRates`, `featuredChance`, `canSummon`, `multiSummonCount` and `summonMany` all take an
+optional `now`, so the shown rates and the real draw agree. Today only Isis is listed, with an
+open window, as the template to extend.
+
+**Summon screen** (`.td-sm`, markup in `TdLobby.astro`, logic `renderSummon` in `page/campaign.ts`):
+left, a tab per banner (`summonCfg.banners`, the tab shows the time until the featured hero changes)
+and the Seal Dust exchange; centre, the featured hero with name plate, class, and the Summon x1 and
+x10 buttons with their price; right, the featured rotation (the current hero and the
+coming ones with "in Nd", from `featuredRotation`) and an info button whose popover holds the chances
+(featured rate, rarity chips Lord / Legendary / Epic / Common), pool, pity and where Seals come from.
+Currencies are not repeated here (the header shows them). The centre uses the hero's splash art
+(`{file}-splash-720.webp`, `scripts/td-hero-splash.mjs`), falling back to the 240 px card for heroes
+without a master (the 12 recruits). A second banner in
+`banners` appears as a new tab with no code change.
 
 Divine Seal sources: campaign first clears and a quarter on replays, chapter milestones, the
 Daily Trial goal (+15) and a finished Expedition (+60). Seal Dust: 1 spare copy -> 30 dust;

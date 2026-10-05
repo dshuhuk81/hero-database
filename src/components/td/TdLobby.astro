@@ -88,49 +88,57 @@ const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string,
          banner in src/data/tdSummon.json, screen in src/game/td/page/campaign.ts,
          reveal stage (dialog below) in src/game/td/page/summon-reveal.ts -->
     <section class="td-screen" data-td-screen="summon" data-title="Summon" aria-label="Summon" hidden>
-      <div class="td-screen-body td-camp-screen td-summon-screen">
-        <article class="td-summon-banner">
-          <div class="td-summon-feature-art"><img data-td-summon-feature-art alt="" /></div>
-          <div class="td-summon-feature-copy">
-            <div class="td-summon-feature-top"><span class="td-label">Featured hero</span><span data-td-summon-rotation></span></div>
-            <div class="td-summon-name-row">
-              <h2 data-td-summon-feature-name></h2>
-              <button class="td-summon-info" type="button" popovertarget="td-summon-odds" aria-label="Summon odds and rules" title="Summon odds and rules"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></svg></button>
+      <div class="td-screen-body td-camp-screen td-summon-screen td-sm">
+        <nav class="td-sm-tabs" aria-label="Summon banners">
+          <h2 class="td-sm-tabs-title">Hero Summon</h2>
+          <div class="td-sm-tablist" role="tablist" aria-orientation="vertical" data-td-summon-tabs></div>
+          <div class="td-dust">
+            <div><span class="td-label">Seal Dust</span><strong data-td-dust-wallet></strong></div>
+            <div class="td-dust-actions">
+              <button class="action-button action-button--quiet" type="button" data-td-dust-seals></button>
+              <select class="td-dust-copy-select" data-td-dust-copy-hero aria-label="Hero for dust copies"></select>
+              <button class="action-button action-button--quiet" type="button" data-td-dust-copy></button>
             </div>
-            <p class="td-summon-feature-title" data-td-summon-feature-title></p>
-            <p class="td-camp-progress" data-td-summon-copy></p>
-            <div class="td-summon-odds" id="td-summon-odds" popover>
-              <div class="td-summon-rate"><strong data-td-summon-feature-rate></strong><span>Featured chance</span></div>
-              <div class="td-summon-terms"><span>Owned heroes return as copies</span><span data-td-summon-pool-count></span><span data-td-summon-rates></span><span data-td-summon-pity></span></div>
-            </div>
-            <div class="td-summon-action">
-              <div><span data-td-summon-wallet></span></div>
-              <div class="td-summon-buttons">
-                <button class="action-button action-button--quiet" type="button" data-td-summon-button data-td-autofocus>Summon x1</button>
-                <button class="action-button action-button--primary" type="button" data-td-summon-multi>Summon x10</button>
-                <label class="td-summon-skip"><input type="checkbox" data-td-summon-skip /> Skip animation</label>
-              </div>
+            <small>Turn spare copies into Seal Dust on the Heroes screen (Evolution tab).</small>
+          </div>
+        </nav>
+        <article class="td-sm-stage">
+          <div class="td-sm-art"><img data-td-summon-feature-art alt="" /></div>
+          <div class="td-sm-nameplate">
+            <span class="td-sm-class" data-td-summon-feature-class></span>
+            <div>
+              <h3 data-td-summon-feature-name></h3>
+              <p data-td-summon-feature-title></p>
             </div>
           </div>
-          <span class="sr-only" data-td-summon-banner></span>
-          <span class="sr-only" data-td-summon-price></span>
+          <div class="td-sm-actions">
+            <div class="td-sm-buttons">
+              <button class="td-sm-buy td-sm-buy--one" type="button" data-td-summon-button data-td-autofocus>Summon x1</button>
+              <button class="td-sm-buy td-sm-buy--multi" type="button" data-td-summon-multi>Summon x10</button>
+            </div>
+            <label class="td-summon-skip"><input type="checkbox" data-td-summon-skip /> Skip animation</label>
+          </div>
         </article>
-        <details class="td-summon-arrivals">
-          <summary>Possible arrivals<svg class="td-summon-arrivals-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
-          <div class="td-summon-arrivals-content">
-            <div class="td-summon-pool-head"><h3>Other heroes in this call</h3><p>Every non-featured hero has the same chance.</p></div>
-            <div class="td-summon-pool" data-td-summon-pool></div>
-          </div>
-        </details>
-        <div class="td-dust">
-          <div><span class="td-label">Seal Dust</span><strong data-td-dust-wallet></strong><small>Turn spare copies into Seal Dust on the Heroes screen (Evolution tab).</small></div>
-          <div class="td-dust-actions">
-            <button class="action-button action-button--quiet" type="button" data-td-dust-seals></button>
-            <select class="td-dust-copy-select" data-td-dust-copy-hero aria-label="Hero for dust copies"></select>
-            <button class="action-button action-button--quiet" type="button" data-td-dust-copy></button>
-          </div>
+        <aside class="td-sm-side">
+          <section class="td-sm-featured" aria-label="Featured heroes">
+            <header><h3>Featured hero</h3><span data-td-summon-rotation></span></header>
+            <div class="td-sm-feat-list" data-td-summon-rotation-list></div>
+          </section>
+          <button class="td-sm-info" type="button" popovertarget="td-summon-odds" aria-label="Summon chances and details" title="Summon chances and details"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></svg></button>
+        </aside>
+        <div class="td-summon-odds" id="td-summon-odds" popover>
+          <h3 data-td-summon-banner-name></h3>
+          <p class="td-camp-progress" data-td-summon-copy></p>
+          <h4>Chances</h4>
+          <p class="td-sm-rate"><strong data-td-summon-feature-rate></strong><span>for the featured hero per summon</span></p>
+          <div class="td-sm-rate-chips" data-td-summon-rates></div>
+          <div class="td-summon-terms"><span data-td-summon-pool-count></span><span data-td-summon-pity></span><span>Owned heroes return as spare copies.</span></div>
+          <h4>Heroes in this call</h4>
+          <div class="td-summon-pool" data-td-summon-pool></div>
+          <p class="td-camp-progress" data-td-summon-source></p>
         </div>
-        <p class="td-camp-progress" data-td-summon-source></p>
+        <span class="sr-only" data-td-summon-banner></span>
+        <span class="sr-only" data-td-summon-price></span>
       </div>
       <dialog class="td-summon-stage" data-td-summon-stage aria-labelledby="td-summon-stage-title">
         <div class="td-summon-stage-inner">
@@ -177,7 +185,10 @@ const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string,
       <div class="td-screen-body td-squad-screen">
         <div class="td-squad-roster" role="group" aria-label="Heroes" data-td-squad-list></div>
         <div class="td-squad-prep">
-          <div class="td-squad-lineup" aria-label="Selected squad" data-td-squad-lineup></div>
+          <div class="td-squad-lineup-row">
+            <div class="td-squad-lord" data-td-squad-lord hidden></div>
+            <div class="td-squad-lineup" aria-label="Selected squad" data-td-squad-lineup></div>
+          </div>
           <p class="td-squad-feedback" role="status" data-td-squad-feedback></p>
           <p class="td-squad-bonds" data-td-squad-bonds hidden></p>
           <div class="td-squad-go">

@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, collectionHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { bannerPool, heroAvailability, rotationEndsAt, allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, collectionHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -75,7 +75,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.ok(validSquad(campaign, first.progress, squad), "summoned hero fits a valid squad");
   assert.ok(!validSquad(campaign, rich, squad), "not before the summon");
   // Weighted pool: every hero remains reachable. Weights follow the banner's
-  // rarityWeights (legendary/epic/common), the featured hero multiplied by featuredWeight.
+  // rarityWeights (lord/legendary/epic/common), the featured hero multiplied by featuredWeight.
   const rarityOf = (id) => heroes.find((hero) => hero.id === id)?.rarity ?? "common";
   const weightOf = (id) => Math.max(1, banner.rarityWeights?.[rarityOf(id)] ?? 1) * (id === featured ? banner.featuredWeight : 1);
   const totalWeight = pool.reduce((sum, id) => sum + weightOf(id), 0);
@@ -83,7 +83,9 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.equal(seen.size, pool.length, "every pool hero reachable");
   // Rarity rates: commons individually outweigh legendaries; rates sum to 1.
   const rates = summonRates(banner, rich, ids);
-  assert.ok(Math.abs(rates.legendary + rates.epic + rates.common - 1) < 1e-9, "rarity rates sum to 1");
+  assert.ok(Math.abs(rates.lord + rates.legendary + rates.epic + rates.common - 1) < 1e-9, "rarity rates sum to 1");
+  const fresh = summonRates(banner, { owned: [] }, ids);
+  assert.ok(Math.abs(fresh.lord - 0.008) < 0.0005, `Lords are summoned at about 0.8% on a fresh account (${(fresh.lord * 100).toFixed(2)}%)`);
   const aCommon = pool.find((id) => rarityOf(id) === "common" && id !== featured);
   const aLegendary = pool.find((id) => rarityOf(id) === "legendary" && id !== featured);
   assert.ok(weightOf(aCommon) > weightOf(aLegendary), "common outweighs legendary per hero");
@@ -307,6 +309,29 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const offCfg = { ...summonData, banners: [{ ...authored, pityNewInMulti: false }] };
   const unpitied = summonMany(offCfg, authored.id, pAllButOne, ids, authored.multiCount, () => 0.999999);
   assert.equal(unpitied.isNew.filter(Boolean).length, 0, "pityNewInMulti: false disables the replacement");
+}
+
+// Availability windows (banner.availability): a listed hero is only in the pool inside its window.
+{
+  const ids = heroes.map((hero) => hero.id);
+  const now = Date.parse("2026-10-10T12:00:00Z");
+  const windowed = (entry) => ({ ...summonData.banners[0], availability: [{ hero: "isis", ...entry }] });
+  const fresh = newCampaignProgress(campaignData);
+  const inPool = (banner) => bannerPool(banner, fresh, ids, now).includes("isis");
+  assert.ok(inPool(windowed({ from: null, until: null })), "an open window keeps the hero in the pool");
+  assert.ok(inPool(windowed({ from: "2026-10-01T00:00:00Z", until: "2026-10-20T00:00:00Z" })), "inside the window");
+  assert.ok(!inPool(windowed({ from: "2026-10-11T00:00:00Z", until: null })), "before from: not in the pool");
+  assert.ok(!inPool(windowed({ from: null, until: "2026-10-10T00:00:00Z" })), "after until: not in the pool");
+  assert.equal(heroAvailability(windowed({ from: null, until: null }), "odin", now).listed, false, "unlisted heroes are always available");
+  const closed = windowed({ from: "2027-01-01T00:00:00Z", until: null });
+  const cfg = { ...summonData, banners: [{ ...closed, pityNewInMulti: false }] };
+  const rich = { ...fresh, currencies: { ...fresh.currencies, divineSeals: 100000 } };
+  for (let i = 0; i < 40; i += 1) {
+    const drawn = summonMany(cfg, closed.id, rich, ids, 10, () => (i * 0.0251 + 0.003) % 1, now);
+    assert.ok(!drawn.heroIds.includes("isis"), "a hero outside its window is never drawn");
+  }
+  assert.equal(summonRates(closed, fresh, ids, now).lord, 0, "no Lord rate while the Lord is out of the pool");
+  assert.ok(rotationEndsAt(summonData.banners[0], now) > now, "the rotation has a next change");
 }
 
 console.log("Tower defense summon checks passed.");

@@ -27,7 +27,12 @@
       "pityNewInMulti": true,
       "rotationDays": 14,
       "rotationEpoch": "2026-09-28T00:00:00Z",
+      "availabilityNote": "Heroes listed here are only in this banner's pool between from and until (ISO dates, null = open on that side). Heroes not listed are always in the pool. Add one entry per hero and time window.",
+      "availability": [
+        { "hero": "isis", "from": null, "until": null }
+      ],
       "rarityWeights": {
+        "lord": 1.8,
         "legendary": 6,
         "epic": 4,
         "common": 10

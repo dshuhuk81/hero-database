@@ -424,7 +424,7 @@ export function featuredHeroId(banner, now = Date.now()) {
   return rotation[Math.floor(elapsed / (days * 86400000)) % rotation.length];
 }
 
-// Rarity (legendary/epic/common, from each hero's `rarity` in gameBalance.json) drives
+// Rarity (lord/legendary/epic/common, from each hero's `rarity` in gameBalance.json) drives
 // the summon odds: the banner's `rarityWeights` give every hero of a rarity its base
 // weight; the featured hero's weight is its rarity weight x `featuredWeight`.
 const RARITY_BY_ID = Object.fromEntries(heroBalance.map((hero) => [hero.id, hero.rarity ?? "common"]));
@@ -433,7 +433,7 @@ const rarityWeight = (banner, id) => Math.max(0, Number(banner?.rarityWeights?.[
 const drawWeight = (banner, id, featured, featuredWeight) => rarityWeight(banner, id) * (id === featured ? featuredWeight : 1);
 
 export function featuredChance(banner, progress, heroes, now = Date.now()) {
-  const pool = bannerPool(banner, progress, heroes);
+  const pool = bannerPool(banner, progress, heroes, now);
   const featured = featuredHeroId(banner, now);
   if (!featured || !pool.includes(featured)) return 0;
   const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);
@@ -444,11 +444,11 @@ export function featuredChance(banner, progress, heroes, now = Date.now()) {
 // Summon odds per rarity plus the featured hero, for the banner's rate display. Shares
 // the weighting rules with summonMany() so the shown rates cannot drift from the draw.
 export function summonRates(banner, progress, heroes, now = Date.now()) {
-  const pool = bannerPool(banner, progress, heroes);
+  const pool = bannerPool(banner, progress, heroes, now);
   const featured = featuredHeroId(banner, now);
   const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);
   const total = pool.reduce((sum, id) => sum + drawWeight(banner, id, featured, featuredWeight), 0);
-  const rates = { featured: 0, legendary: 0, epic: 0, common: 0 };
+  const rates = { featured: 0, lord: 0, legendary: 0, epic: 0, common: 0 };
   if (!total) return rates;
   for (const id of pool) {
     const share = drawWeight(banner, id, featured, featuredWeight) / total;
@@ -465,25 +465,45 @@ export function summonPool(progress, heroes) {
 
 // A banner's pool. "locked": heroes not owned yet (no duplicates). "all": every hero passed
 // in, owned or not; an owned hero drawn again becomes a spare copy (M26 sprint 9).
-function bannerPool(banner, progress, heroes) {
-  if (banner?.pool === "all") return heroes.map(heroIdOf);
-  return banner?.pool === "locked" ? summonPool(progress, heroes) : [];
+// Availability (banner.availability, authored by hand in tdSummon.json): a hero listed there is
+// only in this banner's pool between `from` and `until` (ISO dates, null = open on that side);
+// a hero not listed is always in the pool.
+export function heroAvailability(banner, id, now = Date.now()) {
+  const entry = (banner?.availability ?? []).find((item) => item.hero === id);
+  if (!entry) return { listed: false, available: true, from: null, until: null };
+  const from = entry.from ? Date.parse(entry.from) : null;
+  const until = entry.until ? Date.parse(entry.until) : null;
+  return { listed: true, available: (from === null || now >= from) && (until === null || now < until), from, until };
+}
+
+export function bannerPool(banner, progress, heroes, now = Date.now()) {
+  const pool = banner?.pool === "all" ? heroes.map(heroIdOf) : banner?.pool === "locked" ? summonPool(progress, heroes) : [];
+  return pool.filter((id) => heroAvailability(banner, id, now).available);
+}
+
+// When the banner's featured hero changes next (ms timestamp), or null without a rotation.
+export function rotationEndsAt(banner, now = Date.now()) {
+  const epoch = Date.parse(banner?.rotationEpoch ?? "");
+  const duration = Math.max(1, Number(banner?.rotationDays) || 14) * 86400000;
+  if (!banner?.featuredRotation?.length) return null;
+  const elapsed = Number.isFinite(epoch) ? Math.max(0, now - epoch) : 0;
+  return (Number.isFinite(epoch) ? epoch : now) + (Math.floor(elapsed / duration) + 1) * duration;
 }
 const withReplacement = (banner) => banner?.pool === "all";
 
 export const canAfford = (progress, cost) => Object.entries(cost ?? {}).every(([id, amount]) => (progress.currencies[id] || 0) >= amount);
 
-export function canSummon(summonCfg, bannerId, progress, heroes) {
+export function canSummon(summonCfg, bannerId, progress, heroes, now = Date.now()) {
   const banner = bannerById(summonCfg, bannerId);
-  return !!banner && bannerPool(banner, progress, heroes).length > 0 && canAfford(progress, banner.cost);
+  return !!banner && bannerPool(banner, progress, heroes, now).length > 0 && canAfford(progress, banner.cost);
 }
 
 // How many heroes the banner's multi summon gives right now: `multiCount`, or (on a
 // "locked" banner) fewer when fewer new heroes are left. 0 when the wallet is short.
-export function multiSummonCount(summonCfg, bannerId, progress, heroes) {
+export function multiSummonCount(summonCfg, bannerId, progress, heroes, now = Date.now()) {
   const banner = bannerById(summonCfg, bannerId);
   if (!banner) return 0;
-  const pool = bannerPool(banner, progress, heroes).length;
+  const pool = bannerPool(banner, progress, heroes, now).length;
   const count = Math.min(Math.max(1, Number(banner.multiCount) || 10), withReplacement(banner) && pool ? Infinity : pool);
   return count > 0 && canAfford(progress, scaleCost(banner.cost, count)) ? count : 0;
 }
@@ -491,20 +511,20 @@ export function multiSummonCount(summonCfg, bannerId, progress, heroes) {
 const scaleCost = (cost, count) => Object.fromEntries(Object.entries(cost ?? {}).map(([id, amount]) => [id, amount * count]));
 
 // Pays `count` times the banner's cost and draws `count` heroes one after another. Each
-// hero's weight is its rarity weight (`rarityWeights`: legendary/epic/common); the
+// hero's weight is its rarity weight (`rarityWeights`: lord/legendary/epic/common); the
 // current featured hero's rarity weight is multiplied by `featuredWeight`. A "locked"
 // banner draws without replacement (new heroes only); an "all" banner with replacement:
 // a hero not owned yet joins, an owned one adds a spare copy. Returns
 // { progress, heroIds, isNew }, or null when the banner is unknown, a "locked" pool has
 // fewer than `count` heroes or the wallet is short. `rng` returns [0, 1) (injectable).
-export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng = Math.random) {
+export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng = Math.random, now = Date.now()) {
   const banner = bannerById(summonCfg, bannerId);
   const n = Math.floor(Number(count) || 0);
   if (!banner || n < 1) return null;
-  let pool = bannerPool(banner, progress, heroes);
+  let pool = bannerPool(banner, progress, heroes, now);
   const cost = scaleCost(banner.cost, n);
   if (!pool.length || (!withReplacement(banner) && pool.length < n) || !canAfford(progress, cost)) return null;
-  const featured = featuredHeroId(banner);
+  const featured = featuredHeroId(banner, now);
   const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);
   const heroIds = [];
   const owned = [...progress.owned];
