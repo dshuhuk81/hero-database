@@ -699,6 +699,7 @@
   "timeline": {
     "spacingMs": 700,
     "bossWaitMs": 30000,
+    "openingSeconds": 30,
     "chapterTargets": [
       { "chapter": 1, "enemies": 11, "groups": 9, "lastSpawnS": 53 },
       { "chapter": 2, "enemies": 25, "groups": 15, "lastSpawnS": 97 },
@@ -786,6 +787,8 @@
     "placementPerSecond": 1,
     "sellRefund": 1,
     "relocationCost": 0,
+    "relocationCooldownSeconds": 8,
+    "offerCount": 5,
     "lives": 25,
     "deployCap": 7,
     "stepsPerSecond": 60

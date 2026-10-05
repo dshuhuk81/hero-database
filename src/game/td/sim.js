@@ -1,4 +1,4 @@
-import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
+import { expandTimeline, timelineTotals } from "./timeline.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern } from "./board.js";
@@ -96,7 +96,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, waves, mode = "classic", tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -104,17 +104,17 @@ export class TowerDefenseGame {
       return bonus ? { ...hero, atk: hero.atk * (1 + (bonus.atk || 0)), hp: hero.hp * (1 + (bonus.hp || 0)) } : hero;
     };
     this.heroesById = new Map(heroes.map((hero) => [hero.id, boosted(hero)]));
-    // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from wave 1.
+    // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from the start.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
     this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);
-    // Expedition (M21): relics (run blessings active from wave 1), lives carried over from
+    // Expedition (M21): relics (run blessings active from the start), lives carried over from
     // the previous stage and a stage health scale.
     this.presetBoons = (boons ?? []).filter((id) => tuning.runBoons?.list?.[id]);
     // Divine Interventions unlocked for this run (the page passes them; none in the Daily Trial).
     this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
     this.startLives = lives;
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
-    // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play, Daily and Endless).
+    // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play and Daily).
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     this.tuning = tuning;
     // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
@@ -122,35 +122,31 @@ export class TowerDefenseGame {
     this.maxLives = Math.max(1, maxLives ?? lives ?? tuning.run.lives);
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
-    // Board maps (board.js): tuning.board plus the map's own rules (wave shape, Mage focus,
+    // Board maps (board.js): tuning.board plus the map's own rules (enemy shape, Mage focus,
     // attack patterns, unit sizes); null on maps that still use range circles.
     this.boardRules = boardRules(map, tuning);
     if (this.boardRules?.focus && this.classes.Mage) this.classes = { ...this.classes, Mage: { ...this.classes.Mage, focus: this.boardRules.focus } };
     this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
-    this.difficulty = { enemyHp: 1, enemySpeed: 1, waveHpScale: 0.15, invincible: false, ...(tuning.difficulty || {}) };
-    // Difficulty tier (M3) for the finite modes; endless has its own ramp and stays Normal.
+    this.difficulty = { enemyHp: 1, enemySpeed: 1, invincible: false, ...(tuning.difficulty || {}) };
+    // Difficulty tier (M3).
     // Kept apart from `difficulty`, which the dev debug panel overwrites.
-    this.tier = mode !== "endless" && tuning.tiers?.[tier] ? tier : "normal";
+    this.tier = tuning.tiers?.[tier] ? tier : "normal";
     const tierCfg = tuning.tiers?.[this.tier] ?? {};
     this.tierHp = (tierCfg.enemyHp ?? 1) * (this.hpScale || 1);
     this.tierAttack = tierCfg.enemyAttack ?? 1;
     this.map = map;
-    // Run mode (waves.js): classic = tdWaves.json, long = 20 waves, endless = until the last life.
-    this.mode = isRunMode(mode) ? mode : "classic";
-    this.baseWaves = waves;
-    this.waves = wavesForMode(waves, this.mode, tuning.waveGen);
-    this.totalWaves = this.mode === "classic" ? this.waves.length : MODE_WAVES[this.mode];
+    // The stage as one timeline of spawn groups (timeline.js). Daily Trial mutators that add enemies (Horde)
+    // scale each regular group once, here, so the forecast and the spawn queue agree.
+    const hordeShare = this.presetMutators.reduce((sum, id) => sum + (tuning.mutators.pool[id].count || 0), 0);
+    this.timeline = (timeline ?? []).map((group) => (group.kind === "boss" || !hordeShare ? { ...group } : { ...group, count: Math.max(1, Math.round(group.count * (1 + hordeShare))) }));
     this.rng = createRng(seed);
-    // Quests draw from their own stream so combat randomness is unchanged by them.
-    this.questRng = createRng((seed ^ 0x7a3d9c1) >>> 0);
-    this.mutatorRng = createRng((seed ^ 0x3c6ef372) >>> 0);
-    this.boonRng = createRng((seed ^ 0x5be0cd19) >>> 0); // rare / epic run blessing rolls (M17) // endless mutator offers (M15), apart from combat
+    this.boonRng = createRng((seed ^ 0x5be0cd19) >>> 0); // rare / epic run blessing rolls (M17), apart from combat
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
     this.lanes = mapLanes(map).map((lane) => ({ ...lane, ...pathMetrics(lane.path) }));
-    // Longest route: speed quests and tests size their limits by it.
+    // Longest route: tests size their limits by it.
     this.path = this.lanes.reduce((longest, lane) => (lane.total > longest.total ? lane : longest));
     // Final boss per map (tdMaps.json "boss"); tuning.bosses holds its stat overrides and skills.
     this.bossId = map.boss ?? "baphomet";
@@ -160,16 +156,16 @@ export class TowerDefenseGame {
 
   reset() {
     this.interventions = Object.fromEntries(this.interventionIds.map((id) => [id, { charge: 0 }]));
-    this.interventionsUsed = 0; // Divine Interventions cast this run (R10 daily quest #9)
+    this.interventionsUsed = 0; // Divine Interventions cast this run (R10 daily quest)
     this.strikes = []; // pending Thunderfall bolts { x, y, at }
     this.shieldUntil = 0;
-    this.shieldWave = 0;
+    this.shieldReadyAt = 0; // Shield of the Crossing cooldown (tuning.interventions.shield.cooldownSeconds)
     // Placement points replace gold: heroes cost points, the counter regrows with battle time.
     this.placement = this.tuning.run.startingPlacement;
     this.placementClock = 0;
     this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;
-    this.wave = 0;
+    this.started = false;
     this.team = [];
     this.heroes = [];
     this.enemies = [];
@@ -183,19 +179,16 @@ export class TowerDefenseGame {
     this.accumulator = 0;
     this.entityId = 1;
     this.time = 0;
-    this.waveStats = null;
+    this.stageStats = null;
     this.virtues = [];
     this.activePairs = [];
     this.virtueOffer = null;
     this.boons = [...(this.presetBoons ?? [])]; // rare and epic run blessings chosen this run (M17), Expedition relics first
     this.rallyUntil = 0;
     this.reaperKills = 0;
-    this.mutators = [...(this.presetMutators ?? [])]; // endless mutators chosen this run (M15), Daily Trial ones first
-    this.mutatorWaves = 0; // sum of the mutators' Favor shares over the waves cleared with them
-    this.mutatorOffer = null;
+    this.mutators = [...(this.presetMutators ?? [])]; // Daily Trial mutators, active from the start
     this.spawnCount = 0;
-    this.quest = null;
-    this.questsDone = 0;
+    this.milestones = [];
     this.totalLeaks = 0;
     this.enemiesDown = 0; // authored enemies killed or leaked, for the stage counter (stageForecast)
     this.perfect = false;
@@ -206,7 +199,7 @@ export class TowerDefenseGame {
     this.reactionsSeen = new Set(); // reactions triggered this run (first one of each gets a notice)
     this.reactionCounts = {};
     this.lastReaction = null;
-    this.insightLog = {}; // per class { waves, kills } for Insight at run end (favor.js computeInsight)
+    this.insightLog = {}; // per class { stages, kills } for Insight at run end (favor.js computeInsight)
     this.totalPlacementEarned = 0;
     this.totalPlacementSpent = 0;
     this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
@@ -260,7 +253,6 @@ export class TowerDefenseGame {
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, atk, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
     this.heroes.at(-1).invested = cost;
-    if (this.running) this.waveHeroes?.set(this.heroes.at(-1).entityId, base.class);
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
     return true;
@@ -276,7 +268,7 @@ export class TowerDefenseGame {
   }
 
   environment(stat, hero = null, kind = null) {
-    return environmentMultiplier(this.map, stat, { wave: this.wave, hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
+    return environmentMultiplier(this.map, stat, { progress: this.stageProgress(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
   }
 
   // What place() would field on this tile, without spending anything (recruit preview).
@@ -299,7 +291,10 @@ export class TowerDefenseGame {
     const hero = this.heroes.find((item) => item.entityId === entityId);
     if (!hero) return { ok: false, reason: "No hero selected." };
     if (this.complete) return { ok: false, reason: "Run is over.", hero };
-    if (this.running) return { ok: false, reason: "Relocate between waves.", hero };
+    // The stage never pauses between waves, so a hero may move at any time, but not again right away.
+    const cooldown = this.tuning.run.relocationCooldownSeconds ?? 8;
+    const wait = hero.relocatedAt != null ? Math.ceil(hero.relocatedAt + cooldown - this.time) : 0;
+    if (wait > 0) return { ok: false, reason: `${hero.name} can move again in ${wait}s.`, hero };
     const share = this.tuning.run.relocationCost ?? 0.25;
     const discount = Math.min(1, this.classBonus(hero).relocateDiscount || 0);
     const cost = Math.round(this.deployCost(hero.id) * share * (1 - discount));
@@ -317,6 +312,7 @@ export class TowerDefenseGame {
     if (this.heroes.some((item) => item.slotType === slotType && item.slotIndex === slotIndex)) return { ...info, ok: false, reason: "That tile is occupied." };
     this.placement -= info.cost;
     this.totalPlacementSpent += info.cost;
+    hero.relocatedAt = this.time;
     hero.slotType = slotType;
     hero.slotIndex = slotIndex;
     hero.x = slot[0];
@@ -370,12 +366,12 @@ export class TowerDefenseGame {
     return Math.round(base.range * (1 + (cb.range || 0)) + (cb.rangeFlat || 0));
   }
 
-  // Pays placement points (quests, boons, ultimates, wave clear); tracked for the run stats.
+  // Pays placement points (boons, ultimates); tracked for the run stats.
   addPlacement(amount) {
     if (!(amount > 0)) return 0;
     this.placement += amount;
     this.totalPlacementEarned += amount;
-    if (this.waveStats) this.waveStats.placementEarned += amount;
+    if (this.stageStats) this.stageStats.placementEarned += amount;
     return amount;
   }
 
@@ -406,7 +402,7 @@ export class TowerDefenseGame {
     return (this.tuning.synergy?.bonusPerTag || 0) + (this.favor.synergyTagBonus || 0);
   }
 
-  // Between-wave offer: each card may roll Epic or Rare (tuning.runBoons.chance, own RNG)
+  // Milestone offer (checkMilestones): each card may roll Epic or Rare (tuning.runBoons.chance, own RNG)
   // and then shows a mechanic blessing the deployed team can use ("boon:<id>"); otherwise
   // a common stat blessing (virtue).
   offerVirtues() {
@@ -428,6 +424,22 @@ export class TowerDefenseGame {
       }
     }
     this.virtueOffer = picks.length ? picks : null;
+  }
+
+  milestoneFractions() {
+    const n = this.tuning.run.offerCount ?? 5;
+    return Array.from({ length: n }, (_, i) => (i + 1) / (n + 1));
+  }
+
+  // Run blessings are offered as the stage's defeat counter crosses each milestone (one open offer at a time).
+  checkMilestones() {
+    if (!this.running || !this.milestones?.length || this.virtueOffer) return;
+    const { total } = timelineTotals(this.timeline);
+    if (total && this.enemiesDown / total >= this.milestones[0]) {
+      this.milestones.shift();
+      this.offerVirtues();
+      this.onChange("offer", this);
+    }
   }
 
   chooseVirtue(name) {
@@ -509,8 +521,6 @@ export class TowerDefenseGame {
     this.team = this.team.filter((id) => id !== hero.id);
     this.placement += refund;
     this.totalPlacementSpent -= refund;
-    // A named hero that leaves before its kill quest is done fails it, like a fall.
-    if (this.quest?.type === "heroKills" && this.quest.heroEntityId === hero.entityId && this.quest.kills < this.quest.target) this.failQuest();
     this.emit({ type: "sell", heroId: hero.id, x: hero.x, y: hero.y, life: 0.6, color: "gold" });
     this.onChange("sell", this);
     return { ok: true, hero, refund };
@@ -531,141 +541,65 @@ export class TowerDefenseGame {
     if (target) hero.rotation = Math.atan2(target.y - hero.y, target.x - hero.x);
   }
 
-  // Enemies a group really sends under the wave shape prototype. A shaped group still sends
-  // at least one enemy through every gate; when that adds enemies, each carries a matching
-  // share of the group's strength (`split`, a stat scale).
-  shapedGroup(kind, count) {
-    const shape = this.waveShape(kind);
-    if (!shape || kind === "boss") return { count, split: 1 };
-    const shaped = Math.max(1, Math.round(count * shape.count));
-    const sent = Math.max(this.lanes.length, shaped);
-    return { count: sent, split: shaped / sent };
-  }
-
-  wavePreview(waveIndex = this.wave) {
-    const wave = this.waves[waveIndex];
-    if (!wave) return null;
-    const counts = {};
-    for (const group of wave.spawns) counts[group.kind] = (counts[group.kind] || 0) + this.shapedGroup(group.kind, group.count).count;
-    if (!this.favor.showEnemyHp) return { wave: waveIndex + 1, counts };
-    return { wave: waveIndex + 1, counts, totalHp: this.waveTotalHp(waveIndex) };
-  }
-
-  // Campaign Encounter Pacing (P1): the whole stage at a glance. `total` and `counts` are what the waves
-  // will spawn (after board.waveShape); `down` counts killed or leaked authored enemies; `ahead` lists the
-  // next groups with their arrival time in seconds from the next spawn (the running wave's remaining queue,
-  // or the next wave's groups). Endless has no end, so it returns null.
-  stageForecast(maxGroups = 3) {
-    if (this.mode === "endless" || !this.waves?.length) return null;
-    const counts = {};
-    let total = 0;
-    for (const wave of this.waves) {
-      for (const group of wave.spawns) {
-        const n = this.shapedGroup(group.kind, group.count).count;
-        counts[group.kind] = (counts[group.kind] || 0) + n;
-        total += n;
-      }
-    }
-    const ahead = [];
-    const push = (kind, count, eta, wave) => {
-      const last = ahead.at(-1);
-      if (last && last.kind === kind && last.wave === wave) last.count += count;
-      else ahead.push({ wave, kind, count, eta: Math.max(0, Math.round(eta)) });
-    };
-    if (this.running) {
-      for (const entry of this.spawnQueue) push(entry.kind, 1, Math.max(0, entry.at - this.spawnClock), this.wave);
-    } else if (this.waves[this.wave]) {
-      let at = 0;
-      for (const group of this.waves[this.wave].spawns) {
-        const shape = this.waveShape(group.kind);
-        const { count } = this.shapedGroup(group.kind, group.count);
-        push(group.kind, count, at, this.wave + 1);
-        at += (count * group.gapMs * (shape && group.kind !== "boss" ? shape.gap : 1)) / 1000 + 0.8;
-      }
-    }
-    return { total, counts, down: Math.min(total, this.enemiesDown), waves: this.waves.length, ahead: ahead.slice(0, maxGroups) };
-  }
-
-  // Endless past the 20-wave length: enemy HP and attack compound by waveGen.endlessRamp
-  // per wave, so every endless run ends and going deeper needs Divine Blessings.
-  endlessRamp(waveNumber = this.wave) {
-    const over = this.mode === "endless" ? waveNumber - MODE_WAVES.long : 0;
-    return over > 0 ? (1 + (this.tuning.waveGen?.endlessRamp || 0)) ** over : 1;
-  }
-
-  // Total enemy HP of a wave, with the same scaling as spawnEnemy.
-  waveTotalHp(waveIndex = this.wave) {
-    const wave = this.waves[waveIndex];
-    if (!wave) return 0;
-    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * this.endlessRamp(waveIndex + 1);
-    return Math.round(wave.spawns.reduce((sum, group) => sum + group.count * (group.scale ?? 1) * (this.tuning.enemies[group.kind]?.hp || 0), 0) * scale);
-  }
-
-  // Wave shape prototype (tuning.waveShape, off unless `enabled`): fewer, stronger enemies.
-  // `count` multiplies every non-boss group's count; `hp`, `reward`, `attack` and `leak`
-  // multiply each remaining enemy; `gap` multiplies the spawn gap. With count 0.2 and the
-  // rest at 5, a wave keeps its total health, gold, pressure and lives at stake.
+  // Enemy shape (tuning.board.waveShape): enemies are fewer and stronger than the old authored hordes. The timeline
+  // carries the final counts; `hp`, `reward`, `attack` and `leak` multiply each enemy, `power` is their default.
   // `kinds` overrides any of these per enemy kind (e.g. flyers, which skip blockers).
   waveShape(kind = null) {
     const base = this.boardRules?.waveShape ?? this.tuning.waveShape;
     if (!base?.enabled) return null;
     const cfg = { ...base, ...(kind ? base.kinds?.[kind] : null) };
-    const power = cfg.power ?? 1 / (cfg.count || 1);
-    return { count: cfg.count ?? 1, gap: cfg.gap ?? 1, hp: cfg.hp ?? power, reward: cfg.reward ?? power, attack: cfg.attack ?? power, leak: cfg.leak ?? power };
+    const power = cfg.power ?? 1;
+    return { hp: cfg.hp ?? power, reward: cfg.reward ?? power, attack: cfg.attack ?? power, leak: cfg.leak ?? power };
   }
 
   formationSway(index) {
     const cell = boardOf(this.map)?.cell ?? 96;
-    const spread = this.tuning.waveGen?.laneSpread ?? 0.23;
+    const spread = this.tuning.timeline?.laneSpread ?? this.tuning.waveGen?.laneSpread ?? 0.23;
     const contact = this.tuning.blocking?.contactRange ?? 42;
     const max = Math.min(cell * spread, contact * 0.9);
     return FORMATION[index % FORMATION.length] * max;
   }
 
-  startWave() {
-    // Endless: generate this wave and the next, so previews and quests always see it.
-    if (this.mode === "endless") {
-      while (this.waves.length <= this.wave + 1) this.waves.push(buildWave(this.baseWaves, this.waves.length + 1, this.mode, this.tuning.waveGen));
+  // 0 at the start of the stage, 1 once the last group has spawned: environment rules that used to ramp by wave
+  // number scale by this.
+  stageProgress() {
+    const last = timelineTotals(this.timeline).lastAt;
+    return last > 0 ? Math.min(1, this.time / last) : 0;
+  }
+
+  // The whole stage at a glance. `total` and `counts` are what the timeline will spawn; `down` counts killed
+  // or leaked authored enemies; `ahead` lists the next groups with the seconds until their next spawn.
+  stageForecast(maxGroups = 3) {
+    if (!this.timeline.length) return null;
+    const { total, counts } = timelineTotals(this.timeline);
+    const queue = this.started ? this.spawnQueue : expandTimeline(this.timeline, { gates: this.lanes.length, spacingMs: this.tuning.timeline?.spacingMs ?? 700 });
+    const ahead = [];
+    for (const entry of queue) {
+      const eta = Math.max(0, Math.round(entry.at - (this.started ? this.spawnClock : 0)));
+      const last = ahead.at(-1);
+      if (last && last.kind === entry.kind && eta - last.eta <= 3) last.count += 1;
+      else ahead.push({ kind: entry.kind, count: 1, eta });
     }
-    if (this.running || this.complete || this.wave >= this.waves.length) return false;
-    const wave = this.waves[this.wave];
-    this.wave += 1;
-    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, lastSpawnAt: null, leakKinds: {} };
-    this.virtueOffer = null; // unclaimed offers expire when the next wave starts
-    this.mutatorOffer = null;
-    this.waveHeroes = new Map(this.heroes.map((hero) => [hero.entityId, hero.class])); // Insight credit per wave
-    this.quest = this.rollQuest();
-    this.spawnQueue = [];
-    let at = 0;
-    // Several entrances take turns, so each gate sends an even share of every group.
-    // Enemies on one lane keep at least waveGen.minSpacing px apart (a time gap alone
-    // stacks slow walkers into one blob) and spread sideways in a fixed pattern.
-    let lane = 0;
-    const laneFree = this.lanes.map(() => 0);
+    return { total, counts, down: Math.min(total, this.enemiesDown), ahead: ahead.slice(0, maxGroups) };
+  }
+
+  // Starts the stage clock: the whole timeline becomes one spawn queue (no waves, no pauses).
+  start() {
+    if (this.running || this.complete || !this.timeline.length) return false;
+    const spacingMs = this.tuning.timeline?.spacingMs ?? 700;
+    const queue = expandTimeline(this.timeline, { gates: this.lanes.length, spacingMs });
+    // Enemies on one lane keep a formation sway so they do not stack into one blob.
     const laneSpawned = this.lanes.map(() => 0);
-    const spacing = this.tuning.waveGen?.minSpacing ?? 0;
-    for (const group of wave.spawns) {
-      const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed * this.environment("enemySpeed", null, group.kind);
-      const shape = this.waveShape(group.kind);
-      const mutated = group.kind === "boss" ? group.count : Math.round(group.count * (1 + this.mutatorMods().count));
-      const { count, split } = this.shapedGroup(group.kind, mutated);
-      const gapMs = shape && group.kind !== "boss" ? group.gapMs * shape.gap : group.gapMs;
-      for (let i = 0; i < count; i += 1) {
-        const gate = lane++ % this.lanes.length;
-        at = Math.max(at, laneFree[gate]);
-        this.spawnQueue.push({ at, kind: group.kind, scale: (group.scale ?? 1) * split, lane: gate, sway: this.formationSway(laneSpawned[gate]++) });
-        laneFree[gate] = at + spacing / speed;
-        at += gapMs / 1000;
-      }
-      at += 0.8;
-    }
-    // The boss comes last: its entries move to the end of the queue and wait until every
-    // other enemy of the wave has spawned and is gone (killed or leaked), see step().
-    this.spawnQueue = [...this.spawnQueue.filter((entry) => entry.kind !== "boss"), ...this.spawnQueue.filter((entry) => entry.kind === "boss")];
+    for (const entry of queue) entry.sway = this.formationSway(laneSpawned[entry.lane]++);
+    // The boss closes the stage: it waits for the field to clear, at most tuning.timeline.bossWaitMs.
+    this.spawnQueue = [...queue.filter((e) => e.kind !== "boss"), ...queue.filter((e) => e.kind === "boss")];
+    this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
+    this.milestones = this.milestoneFractions();
     this.spawnClock = 0;
+    this.started = true;
     this.running = true;
     this.paused = false;
-    this.onChange("wave", this);
+    this.onChange("start", this);
     return true;
   }
 
@@ -690,12 +624,14 @@ export class TowerDefenseGame {
       this.addPlacement(1);
     }
     this.spawnClock += dt;
-    while (this.spawnQueue.length && (this.spawnQueue[0].kind === "boss" ? !this.fieldHasMinions() : this.spawnQueue[0].at <= this.spawnClock)) {
-      const next = this.spawnQueue.shift();
+    while (this.spawnQueue.length) {
+      const next = this.spawnQueue[0];
+      // A boss waits for the field to clear, but never longer than tuning.timeline.bossWaitMs after its time.
+      const bossHeld = next.kind === "boss" && this.fieldHasMinions() && this.spawnClock < next.at + (this.tuning.timeline?.bossWaitMs ?? 30000) / 1000;
+      if (next.at > this.spawnClock || bossHeld) break;
+      this.spawnQueue.shift();
       this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0, sway: next.sway ?? 0 });
-      if (!this.spawnQueue.length && this.waveStats) this.waveStats.lastSpawnAt = this.time;
     }
-    this.checkQuestClock();
 
     this.engaged = new Map(); // road hero -> melee enemies it holds this step (block limit)
     for (const enemy of this.enemies) {
@@ -754,14 +690,13 @@ export class TowerDefenseGame {
             this.emit({ type: "baseHit", enemyId: enemy.entityId, damage: previousLives - this.lives,
               x: this.map.base.x, y: this.map.base.y, life: 0.65, color: "red" });
           }
-          if (this.waveStats) {
-            this.waveStats.leaks += 1;
-            this.waveStats.leakKinds[enemy.kind] = (this.waveStats.leakKinds[enemy.kind] || 0) + (previousLives - this.lives || enemy.damage || 1);
+          if (this.stageStats) {
+            this.stageStats.leaks += 1;
+            this.stageStats.leakKinds[enemy.kind] = (this.stageStats.leakKinds[enemy.kind] || 0) + (previousLives - this.lives || enemy.damage || 1);
           }
           this.leakKinds[enemy.kind] = (this.leakKinds[enemy.kind] || 0) + (enemy.damage || 1);
           this.totalLeaks += 1;
           if (!enemy.parentId) this.enemiesDown += 1;
-          if (this.quest?.type === "noLeaks") this.failQuest();
           this.onChange("leak", this);
           if (this.lives === 0) this.finish(false);
         }
@@ -794,33 +729,25 @@ export class TowerDefenseGame {
     this.effects = this.effects.filter((effect) => (effect.life -= dt) > 0);
     if (this.running && !this.spawnQueue.length && !this.enemies.length) {
       this.running = false;
-      // Insight: every unit that stood on the field during the wave counts, fallen ones included.
-      this.waveHeroes ||= new Map();
-      for (const hero of this.heroes) this.waveHeroes.set(hero.entityId, hero.class);
-      for (const cls of this.waveHeroes.values()) (this.insightLog[cls] ||= { waves: 0, kills: 0 }).waves += 1;
-      if (this.wave >= this.waves.length) this.finish(true);
-      else {
-        // Wave-clear placement: a flat Favor bonus (tuning.favor clearPlacement), none by default.
-        this.addPlacement(this.favor.clearPlacement || 0);
-        this.completeQuest();
-        this.mutatorWaves += this.mutatorMods().favor;
-        this.offerVirtues(); this.offerMutators(); this.onChange("clear", this);
-      }
+      // Insight: every class that stood on the field at the end counts once, fallen heroes included.
+      for (const hero of this.heroes) (this.insightLog[hero.class] ||= { stages: 0, kills: 0 }).stages = 1;
+      this.finish(true);
     }
+    this.checkMilestones();
   }
 
   // Divine Interventions (tuning.interventions, TOWER_DEFENSE_GAMEPLAY_IDEAS.md B2): player
-  // powers that charge during waves (one point per second plus `killCharge` per kill) and
+  // powers that charge during the stage (one point per second plus `killCharge` per kill) and
   // are ready at `charge` points. Thunderfall strikes a spot after `delay` seconds for a share
   // of every enemy's health there; Shield of the Crossing makes leaks cost no lives for
-  // `seconds`, once per wave.
+  // `seconds`, then a `cooldownSeconds` pause.
   interventionState(id) {
     const cfg = this.tuning.interventions?.[id];
     const state = this.interventions?.[id];
     if (!cfg || !state) return null;
-    const usedThisWave = !!cfg.oncePerWave && this.shieldWave === this.wave;
+    const cooling = id === "shield" && this.time < this.shieldReadyAt;
     const max = this.interventionMax(id);
-    return { charge: state.charge, max, ready: this.running && !this.complete && state.charge >= max && !usedThisWave, usedThisWave };
+    return { charge: state.charge, max, ready: this.running && !this.complete && state.charge >= max && !cooling, cooling };
   }
 
   // Charge a power needs: its tuned `charge`, lowered by the blessing tree (R5: Storm Caller,
@@ -913,7 +840,7 @@ export class TowerDefenseGame {
     this.interventionsUsed += 1;
     const seconds = cfg.seconds + (this.favor.shieldSeconds || 0); // Long Vigil (R5)
     this.shieldUntil = this.time + seconds;
-    this.shieldWave = this.wave;
+    this.shieldReadyAt = this.time + seconds + (cfg.cooldownSeconds ?? 60);
     // R5: a dome over the base for as long as the Shield holds (render.js shieldUp).
     if (this.map.base) this.emit({ type: "shieldUp", x: this.map.base.x, y: this.map.base.y, radius: 70, life: seconds });
     this.onChange("intervention", this);
@@ -932,13 +859,12 @@ export class TowerDefenseGame {
   spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, sway = 0, extra = null } = {}) {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
-    const ramp = this.endlessRamp();
-    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.tierHp * statScale * ramp * this.environment("enemyHp");
+    const scale = this.difficulty.enemyHp * this.tierHp * statScale * this.environment("enemyHp");
     const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
-    const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
+    const favorSpeed = this.time < (this.tuning.timeline?.openingSeconds ?? 30) && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1; // the opening of the stage
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed * this.environment("enemySpeed", null, kind);
-    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
-    // Wave shape prototype: wave enemies (not bosses, not summoned children) carry the
+    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    // Enemy shape: timeline enemies (not bosses, not summoned children) carry the
     // health, gold, attack and leak damage of the enemies the shape removed.
     const shape = this.waveShape(kind);
     if (shape && kind !== "boss" && !extra) {
@@ -956,34 +882,6 @@ export class TowerDefenseGame {
       if (this.bossTuning?.summon) this.summonChildren(enemy, statScale);
     }
     return enemy;
-  }
-
-  // Endless mutators (M15, tuning.mutators): after every `every`-th endless wave the player
-  // may pick one of `offer` mutators (or skip). Each makes enemies harder; every wave
-  // cleared afterwards pays its `favor` share on top of the normal per-wave Favor
-  // (tracked in mutatorWaves). They stack and last for the rest of the run.
-  offerMutators() {
-    const cfg = this.tuning.mutators;
-    if (!cfg || this.mode !== "endless" || this.wave % cfg.every !== 0) return;
-    const available = Object.keys(cfg.pool).filter((id) => !this.mutators.includes(id));
-    const picks = [];
-    while (picks.length < cfg.offer && available.length) picks.push(available.splice(Math.floor(this.mutatorRng() * available.length), 1)[0]);
-    this.mutatorOffer = picks.length ? picks : null;
-  }
-
-  chooseMutator(id) {
-    if (!this.mutatorOffer?.includes(id)) return false;
-    this.mutatorOffer = null;
-    this.mutators = [...this.mutators, id];
-    this.onChange("mutator", this);
-    return true;
-  }
-
-  skipMutators() {
-    if (!this.mutatorOffer) return false;
-    this.mutatorOffer = null;
-    this.onChange("mutator", this);
-    return true;
   }
 
   // Summed effects of the chosen mutators.
@@ -1187,9 +1085,7 @@ export class TowerDefenseGame {
       this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex, targeting: hero.targeting });
       this.heroes = this.heroes.filter((entry) => entry !== hero);
       this.team = this.team.filter((id) => id !== hero.id);
-      if (this.waveStats) this.waveStats.heroDeaths += 1;
-      if (this.quest?.type === "heroSurvival") this.failQuest();
-      if (this.quest?.type === "heroKills" && this.quest.heroEntityId === hero.entityId && this.quest.kills < this.quest.target) this.failQuest();
+      if (this.stageStats) this.stageStats.heroDeaths += 1;
       this.onChange("death", this);
     }
   }
@@ -1969,15 +1865,14 @@ export class TowerDefenseGame {
     }
     if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
     this.score += Math.round(enemy.maxHp + enemy.reward * 4);
-    if (this.waveStats) this.waveStats.kills += 1;
+    if (this.stageStats) this.stageStats.kills += 1;
     this.chargeInterventionsOnKill();
     if (hero) {
       if (hero.id) this.statFor(hero).kills += 1;
       const slot = this.heroKills[hero.entityId];
       if (slot) slot.kills += 1;
       else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
-      if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
-      (this.insightLog[hero.class] ||= { waves: 0, kills: 0 }).kills += 1;
+      (this.insightLog[hero.class] ||= { stages: 0, kills: 0 }).kills += 1;
     }
     this.onChange("kill", this);
   }
@@ -2265,60 +2160,6 @@ export class TowerDefenseGame {
       hero.veilUntil = this.time + kit.veil.seconds;
       this.emitHeroEffect(hero, { type: "veil", x: hero.x, y: hero.y, life: 0.6, color: "purple" });
     }
-  }
-
-  // Run quests (6B): one objective per wave, except the final wave where placement
-  // has no use. Pays tuning.quests placement points at wave clear; no config means no quests.
-  rollQuest() {
-    const cfg = this.tuning.quests;
-    if (!cfg || this.wave >= this.waves.length) return null;
-    const types = ["noLeaks", "speedClear"];
-    // Only road heroes take hits; without one, survival would be free gold.
-    if (this.heroes.some((hero) => hero.slotType === "road")) types.push("heroSurvival");
-    // Needs two heroes, or the named hero would simply be the whole team.
-    if (this.heroes.length >= 2) types.push("heroKills");
-    const type = types[Math.floor(this.questRng() * types.length)];
-    const quest = { type, wave: this.wave, status: "active", reward: cfg.placementBase + cfg.placementPerWave * (this.wave - 1) };
-    if (type === "speedClear") {
-      // Scaled to the slowest enemy's time to walk the whole path, so the limit
-      // fits the map length and wave mix instead of one fixed number.
-      const spawns = this.waves[this.wave - 1].spawns;
-      const slowest = Math.min(...spawns.map((group) => (this.tuning.enemies[group.kind]?.speed ?? Infinity) * this.environment("enemySpeed", null, group.kind))) * this.difficulty.enemySpeed;
-      quest.seconds = Math.round((this.path.total / slowest) * cfg.speedClearTravel);
-    }
-    if (type === "heroKills") {
-      // A random deployed hero must land a share of an even split of the wave's kills.
-      const hero = this.heroes[Math.floor(this.questRng() * this.heroes.length)];
-      const enemies = this.waves[this.wave - 1].spawns.reduce((sum, group) => sum + group.count, 0);
-      quest.heroEntityId = hero.entityId;
-      quest.heroId = hero.id;
-      quest.heroName = hero.name;
-      quest.target = Math.max(1, Math.round((enemies / this.heroes.length) * cfg.heroKillsShare));
-      quest.kills = 0;
-    }
-    return quest;
-  }
-
-  failQuest() {
-    if (this.quest?.status !== "active") return;
-    this.quest.status = "failed";
-    this.onChange("quest", this);
-  }
-
-  checkQuestClock() {
-    const quest = this.quest;
-    const lastSpawnAt = this.waveStats?.lastSpawnAt;
-    if (quest?.type !== "speedClear" || quest.status !== "active" || lastSpawnAt == null) return;
-    if (this.time - lastSpawnAt > quest.seconds) this.failQuest();
-  }
-
-  completeQuest() {
-    const quest = this.quest;
-    if (quest?.status !== "active") return;
-    if (quest.type === "heroKills" && quest.kills < quest.target) { this.failQuest(); return; }
-    quest.status = "done";
-    this.questsDone += 1;
-    this.addPlacement(quest.reward);
   }
 
   finish(won) {

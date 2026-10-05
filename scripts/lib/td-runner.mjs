@@ -6,10 +6,10 @@ import { buildRunTuning, TREE } from "../../src/game/td/favor.js";
 import heroes from "../../src/data/gameBalance.json" with { type: "json" };
 import baseTuning from "../../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../../src/data/tdMaps.json" with { type: "json" };
-import waves from "../../src/data/tdWaves.json" with { type: "json" };
 import { rankedTiles } from "../../src/game/td/grid.js";
 import { patternFor } from "../../src/game/td/board.js";
 import campaign from "../../src/data/tdCampaign.json" with { type: "json" };
+import { timelineForMap } from "../../src/game/td/stage-for-map.js";
 
 export { maps };
 // Free Play battlefields (campaign-only maps excluded), and a new player's Free Play deck:
@@ -45,62 +45,57 @@ export const SQUADS = {
 };
 
 // `tuning` overrides the base tuning (balance experiments).
-// `mode` is the run mode (waves.js); endless runs stop at `maxWave` as a runaway guard.
-// `game` adds constructor options (campaign stages: waves, allowedHeroes, lives, hpScale).
-// `policy` remains in the result label for historical balance comparisons; heroes now spend
-// battle gold only on deployment, and automated relocation is deferred to the balance pass.
+// `game` adds constructor options (campaign stages: timeline, allowedHeroes, lives, hpScale); without a timeline the
+// map plays its own (stage-for-map.js). `maxSeconds` is a runaway guard.
+// `policy` remains in the result label for historical balance comparisons; heroes spend placement only on deployment,
+// and automated relocation is deferred to the balance pass.
 export const POLICIES = ["cheapest", "carry"];
-export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, mutators = null, blessings = null, mode = "classic", tier = "normal", maxWave = 150, game: gameOptions = {} } = {}) {
+export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, blessings = null, tier = "normal", maxSeconds = 1800, game: gameOptions = {} } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, tier, seed, ...gameOptions });
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: gameOptions.timeline ?? timelineForMap(map, campaign), tier, seed, ...gameOptions });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   let spent = 0;
   let stalled = false;
-  let perfectWaves = 0;
-  while (!g.complete && g.wave < maxWave) {
-    if (!g.running) {
-      // deploy every affordable, not-yet-deployed squad member that has a free ring;
-      // Supports take the free ring whose aura covers the most allies no other Support
-      // covers yet (auras don't stack)
-      for (const id of ids) {
-        if (g.heroes.some((h) => h.id === id)) continue;
-        const base = g.heroesById.get(id);
-        if (g.placement < g.deployCost(id)) continue;
-        const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class, base.id));
-        if (base.class === "Support") {
-          const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
-          const rank = new Map(rings.map((i, n) => [i, n]));
-          rings.sort((a, b) => covered(b) - covered(a) || rank.get(a) - rank.get(b));
-        }
-        for (const i of rings) {
-          const before = g.placement;
-          if (g.place(id, base.slot, i)) { spent += before - g.placement; break; }
-        }
+  // Deploy every affordable, not-yet-deployed squad member that has a free ring; Supports take the free ring whose
+  // aura covers the most allies no other Support covers yet (auras don't stack).
+  const deployAll = () => {
+    for (const id of ids) {
+      if (g.heroes.some((h) => h.id === id)) continue;
+      const base = g.heroesById.get(id);
+      if (g.placement < g.deployCost(id)) continue;
+      const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class, base.id));
+      if (base.class === "Support") {
+        const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
+        const rank = new Map(rings.map((i, n) => [i, n]));
+        rings.sort((a, b) => covered(b) - covered(a) || rank.get(a) - rank.get(b));
       }
-      // `blessings`: preference list of offer entries ("boon:<id>" or virtue names), else the first card.
+      for (const i of rings) {
+        const before = g.placement;
+        if (g.place(id, base.slot, i)) { spent += before - g.placement; break; }
+      }
+    }
+  };
+  deployAll();
+  if (!g.start()) throw new Error("The stage could not start");
+  // Standoff guard: blockers and heals can outlast enemies nobody can kill. A stage with no kill and no leak
+  // for STALL_SECONDS is a standoff; a player would recruit damage mid-stage, the bot counts it as a lost run.
+  let quietSteps = 0;
+  let progress = -1;
+  let step = 0;
+  while (g.running && !g.complete && g.time < maxSeconds) {
+    g.step(1 / 60);
+    step += 1;
+    if (step % 60 === 0) { // once a second: spend regrown placement, take an offered blessing
+      deployAll();
       if (g.virtueOffer) g.chooseVirtue((blessings ?? []).find((name) => g.virtueOffer.includes(name)) ?? g.virtueOffer[0]);
-      // Endless mutators (M15): take the first offered one from `mutators` (a preference list), else skip.
-      if (g.mutatorOffer) { const pick = (mutators ?? []).find((id) => g.mutatorOffer.includes(id)); if (pick) g.chooseMutator(pick); else g.skipMutators(); }
-      if (!g.startWave()) break;
     }
-    // Standoff guard: blockers and heals can outlast enemies nobody can kill. A wave with
-    // no kill and no leak for STALL_SECONDS is a standoff; a player would recruit damage
-    // mid-wave, the bot counts it as a lost run. (Long boss fights keep making progress.)
-    const leaksBefore = g.totalLeaks;
-    let quietSteps = 0;
-    let progress = -1;
-    while (g.running && !g.complete) {
-      g.step(1 / 60);
-      const now = g.totalLeaks + Object.values(g.heroKills).reduce((sum, h) => sum + h.kills, 0);
-      quietSteps = now === progress ? quietSteps + 1 : 0;
-      progress = now;
-      if (quietSteps >= 60 * STALL_SECONDS) { stalled = true; break; }
-    }
-    if (stalled) break;
-    if (!g.running && g.totalLeaks === leaksBefore) perfectWaves += 1;
+    const now = g.totalLeaks + Object.values(g.heroKills).reduce((sum, h) => sum + h.kills, 0);
+    quietSteps = now === progress ? quietSteps + 1 : 0;
+    progress = now;
+    if (quietSteps >= 60 * STALL_SECONDS) { stalled = true; break; }
   }
   const won = g.won && !stalled;
-  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, perfectWaves, insightLog: g.insightLog, mutators: [...(g.mutators ?? [])], mutatorWaves: g.mutatorWaves ?? 0, boons: [...(g.boons ?? [])] };
+  return { won, stalled, complete: g.complete || stalled, defeated: g.enemiesDown, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, insightLog: g.insightLog, mutators: [...(g.mutators ?? [])], boons: [...(g.boons ?? [])] };
 }
