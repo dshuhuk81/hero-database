@@ -2,7 +2,7 @@
 // stage's hpScale so the bot win rate of the campaign viability check (test-td-campaign.mjs:
 // heroes owned by then, levelled with the chapter's first-clear currencies, up to 35 sampled
 // squads, fixed seeds) lands near a target:
-//   1-1 0.9 (first stage), other Chapter 1 stages 0.65, regular stages 0.5, finales 0.35.
+//   1-1 0.95 (first stage), other Chapter 1 stages 0.85 (finale 0.7), Chapter 2 0.6 (finale 0.45), regular stages 0.5, finales 0.35.
 // A stage's hero levels do not depend on earlier stages' difficulty, so chapters can run in
 // separate processes. Prints JSON { stageId: { hpScale, rate } }.
 //   node scripts/td-board-tune.mjs --chapters=1,2,3 [--sample=35] [--steps=7] > out.json
@@ -33,7 +33,13 @@ const spendEvenly = (progress) => {
 };
 const stages = allStages(campaign);
 const lastOf = new Set(campaign.chapters.map((chapter) => chapter.stages.at(-1).id));
-const target = (stage) => (stage.id === "1-1" ? 0.9 : lastOf.has(stage.id) ? 0.35 : stage.chapter === 1 ? 0.65 : 0.5);
+// Chapter 1 is easy with the starters; from chapter 2 on levelling and new heroes have to carry the player.
+const target = (stage) => {
+  if (stage.id === "1-1") return 0.95;
+  if (Number(stage.chapter) === 1) return lastOf.has(stage.id) ? 0.7 : 0.85;
+  if (Number(stage.chapter) === 2) return lastOf.has(stage.id) ? 0.45 : 0.6;
+  return lastOf.has(stage.id) ? 0.35 : 0.5;
+};
 
 const out = {};
 let progress = newCampaignProgress(campaign);
