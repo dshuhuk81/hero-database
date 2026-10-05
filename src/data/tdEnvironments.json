@@ -100,9 +100,9 @@
     "reuse": "moonlit",
     "color": 10210223,
     "rule": "Grave Tribute",
-    "text": "Kills pay 20% more gold. Heroes receive 15% less healing.",
+    "text": "Placement points regrow 20% faster. Heroes receive 15% less healing.",
     "mods": {
-      "killGold": 1.2,
+      "placementRate": 1.2,
       "heroHeal": 0.85
     }
   },
@@ -115,9 +115,9 @@
     "reuse": "verdant",
     "color": 15317623,
     "rule": "Harvest Blessing",
-    "text": "Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
+    "text": "Placement points regrow 15% faster. Road heroes charge their ultimates 15% faster.",
     "mods": {
-      "killGold": 1.15,
+      "placementRate": 1.15,
       "roadCharge": 1.15
     }
   },

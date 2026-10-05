@@ -18,8 +18,8 @@ const DAILY_SEALS: number = (summonData as any).sealSources?.dailyGoal ?? 0;
 const mutatorInfo = MUTATOR_INFO as Record<string, { name: string; text: string }>;
 
 // Portrait card of a locked-in hero (Daily Trial squad, Expedition roster). `badge`
-// replaces the gold cost in the top corner (for example an Expedition veteran's level).
-export function trialCardHtml(hero: any, index: number, badge = `${hero.cost}g`) {
+// replaces the placement cost in the top corner (for example an Expedition veteran's level).
+export function trialCardHtml(hero: any, index: number, badge = `${hero.cost}`) {
   const heroClass = String(hero.class || "").toLowerCase();
   return `<li class="td-trial-card td-trial-card--${heroClass}" style="--i:${index}">` +
     `<div class="td-trial-card-art"><img src="${hero.portrait ?? hero.image}" alt="" loading="lazy" decoding="async"></div>` +

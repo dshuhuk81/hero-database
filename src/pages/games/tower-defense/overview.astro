@@ -22,13 +22,12 @@ const num = (v: number) => (v >= 10000 ? `${Math.round(v / 100) / 10}k` : String
 // --- Run economy ---
 const run = t.run;
 const economy: [string, string][] = [
-  ["Start gold", String(run.startingGold)],
+  ["Start placement", String(run.startingPlacement)],
+  ["Placement regrowth", `${run.placementPerSecond} per second`],
   ["Lives (shown)", `${run.lives} (${run.lives / (t.board?.lifeUnit ?? 1)})`],
   ["Deploy cap", String(run.deployCap)],
   ["Sell refund", pct(run.sellRefund)],
   ["Relocation", `${pct(run.relocationCost)} of deploy`],
-  ["Wave clear", `${run.waveClearBonus.base} + ${run.waveClearBonus.perWave}/wave`],
-  ["Interest", `${pct(run.waveInterest.share)}, max ${run.waveInterest.cap}`],
   ["Deploy discount cap", "50%"],
 ];
 const tiers = Object.entries(t.tiers).map(([id, tier]: [string, any]) => ({ id, ...tier }));
@@ -142,8 +141,8 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
       <section class="ov-card">
         <h2>Enemies</h2>
         <table>
-          <thead><tr><th>Kind</th><th>HP</th><th>Speed</th><th>Armor</th><th>ATK</th><th>Gold</th><th>Leak</th></tr></thead>
-          <tbody>{enemyRows.map((e) => <tr><td>{e.id}</td><td>{num(e.hp)}</td><td>{e.speed}</td><td>{e.armor}</td><td>{e.attack}</td><td>{e.reward}</td><td>{e.damage}</td></tr>)}</tbody>
+          <thead><tr><th>Kind</th><th>HP</th><th>Speed</th><th>Armor</th><th>ATK</th><th>Leak</th></tr></thead>
+          <tbody>{enemyRows.map((e) => <tr><td>{e.id}</td><td>{num(e.hp)}</td><td>{e.speed}</td><td>{e.armor}</td><td>{e.attack}</td><td>{e.damage}</td></tr>)}</tbody>
         </table>
         <table>
           <thead><tr><th>Boss</th><th>HP</th><th>Armor</th><th>ATK</th><th>Maps</th></tr></thead>
@@ -156,7 +155,7 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
     <section class="ov-card ov-wide">
       <h2>Heroes ({heroRows.length})</h2>
       <table class="ov-heroes">
-        <thead><tr><th>Hero</th><th>Class</th><th>Slot</th><th>Cost</th><th>ATK</th><th>HP</th><th>APS</th><th>Crit</th><th>Ult cd</th><th>Ult pow</th><th>Bond</th><th>Reach</th></tr></thead>
+        <thead><tr><th>Hero</th><th>Class</th><th>Slot</th><th>Placement</th><th>ATK</th><th>HP</th><th>APS</th><th>Crit</th><th>Ult cd</th><th>Ult pow</th><th>Bond</th><th>Reach</th></tr></thead>
         <tbody>{heroRows.map((h) => (
           <tr>
             <td>{h.name}</td><td>{h.class}</td><td>{h.slot === "road" ? "Road" : "Plat"}</td><td>{h.cost}</td><td>{h.atk}</td><td>{h.hp}</td><td>{h.aps}</td><td>{pct(h.critChance)}</td><td>{h.ultCooldown}s</td><td>{h.ultPower}</td><td>{h.bond}</td>

@@ -15,7 +15,6 @@ const list = (value, fallback) => (value ? value.split(",").map(Number).filter(N
 const hpSteps = list(args.hp, [0.8, 1, 1.25, 1.5, 1.75, 2, 2.5, 3]);
 const scales = list(args.scale, [0.15]);
 const speed = Number(args.speed || 1);
-const gold = Number(args.gold || 1);
 const seeds = Math.max(1, Number(args.seeds || 1));
 const favLevels = args.favor === "all" || args.favor === "trunk" ? maxBlessings(args.favor) : null;
 const squads = args.owned === "starters" ? { ...SQUADS, "starters (owned only)": STARTERS } : SQUADS;
@@ -36,7 +35,7 @@ for (const waveHpScale of scales) {
     const wins = new Map(hpSteps.map((hp) => [hp, { wins: 0, perfect: 0 }]));
     for (const name of squadNames) {
       const cells = hpSteps.map((hp) => {
-        const difficulty = { enemyHp: hp, enemySpeed: speed, killGold: gold, waveHpScale };
+        const difficulty = { enemyHp: hp, enemySpeed: speed, waveHpScale };
         const runs = Array.from({ length: seeds }, (_, i) => playRun(squads[name], 99 + i, map, { difficulty, favLevels, mode, game: gameFor(name) }));
         const won = runs.filter((run) => run.won).length;
         const tally = wins.get(hp);
@@ -66,4 +65,4 @@ for (const waveHpScale of scales) {
 if (endless) process.exit(0);
 console.log("\nCandidates (on every map: at least one squad wins, at least one loses, at most one perfect):");
 if (!candidates.length) console.log("  none - widen --hp or try another --scale");
-for (const candidate of candidates) console.log(`  "difficulty": ${JSON.stringify({ ...candidate, enemySpeed: speed, killGold: gold })}`);
+for (const candidate of candidates) console.log(`  "difficulty": ${JSON.stringify({ ...candidate, enemySpeed: speed })}`);

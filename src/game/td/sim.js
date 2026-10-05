@@ -129,7 +129,7 @@ export class TowerDefenseGame {
     this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
-    this.difficulty = { enemyHp: 1, enemySpeed: 1, killGold: 1, waveHpScale: 0.15, invincible: false, ...(tuning.difficulty || {}) };
+    this.difficulty = { enemyHp: 1, enemySpeed: 1, waveHpScale: 0.15, invincible: false, ...(tuning.difficulty || {}) };
     // Difficulty tier (M3) for the finite modes; endless has its own ramp and stays Normal.
     // Kept apart from `difficulty`, which the dev debug panel overwrites.
     this.tier = mode !== "endless" && tuning.tiers?.[tier] ? tier : "normal";
@@ -164,7 +164,9 @@ export class TowerDefenseGame {
     this.strikes = []; // pending Thunderfall bolts { x, y, at }
     this.shieldUntil = 0;
     this.shieldWave = 0;
-    this.gold = this.tuning.run.startingGold;
+    // Placement points replace gold: heroes cost points, the counter regrows with battle time.
+    this.placement = this.tuning.run.startingPlacement;
+    this.placementClock = 0;
     this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;
     this.wave = 0;
@@ -195,6 +197,7 @@ export class TowerDefenseGame {
     this.quest = null;
     this.questsDone = 0;
     this.totalLeaks = 0;
+    this.enemiesDown = 0; // authored enemies killed or leaked, for the stage counter (stageForecast)
     this.perfect = false;
     this.fallenHeroes = [];
     this.heroKills = {};
@@ -204,11 +207,10 @@ export class TowerDefenseGame {
     this.reactionCounts = {};
     this.lastReaction = null;
     this.insightLog = {}; // per class { waves, kills } for Insight at run end (favor.js computeInsight)
-    this.totalGoldEarned = 0;
-    this.totalGoldSpent = 0;
+    this.totalPlacementEarned = 0;
+    this.totalPlacementSpent = 0;
     this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
     this.relocations = 0;
-    this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
     // Virtue shard (6C): the run starts with this virtue already chosen.
     const startVirtue = this.tuning.run.startVirtue;
@@ -231,13 +233,13 @@ export class TowerDefenseGame {
     if (!base) return Infinity;
     const raw = factor && this.fallenHeroes.some((entry) => entry.id === heroId) ? base.cost * factor : base.cost;
     const discount = Math.min(0.5, (this.favor.deployDiscount || 0) + (this.classBonus(base).deployDiscount || 0));
-    return Math.round(raw * (1 - discount));
+    return Math.max(1, Math.round(raw * (1 - discount)));
   }
 
   place(heroId, slotType, slotIndex) {
     const base = this.heroesById.get(heroId);
     const cost = this.deployCost(heroId);
-    if (!base || base.slot !== slotType || this.gold < cost) return false;
+    if (!base || base.slot !== slotType || this.placement < cost) return false;
     if (this.allowedHeroes && !this.allowedHeroes.has(heroId)) return false;
     if (this.heroes.some((hero) => hero.id === heroId)) return false;
     if (this.heroes.some((hero) => hero.slotType === slotType && hero.slotIndex === slotIndex)) return false;
@@ -250,8 +252,8 @@ export class TowerDefenseGame {
       this.team = [...this.team, heroId];
       this.onChange("team", this);
     }
-    this.gold -= cost;
-    this.totalGoldSpent += cost;
+    this.placement -= cost;
+    this.totalPlacementSpent += cost;
     if (!this.fieldedIds.includes(heroId)) this.fieldedIds.push(heroId);
     const hp = this.maxHpFor(base.hp, base.class);
     const atk = this.atkFor({ ...base, baseAtk: base.atk });
@@ -301,7 +303,7 @@ export class TowerDefenseGame {
     const share = this.tuning.run.relocationCost ?? 0.25;
     const discount = Math.min(1, this.classBonus(hero).relocateDiscount || 0);
     const cost = Math.round(this.deployCost(hero.id) * share * (1 - discount));
-    if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost };
+    if (this.placement < cost) return { ok: false, reason: `Needs ${cost} placement — you have ${this.placement}.`, hero, cost };
     return { ok: true, hero, cost };
   }
 
@@ -313,8 +315,8 @@ export class TowerDefenseGame {
     const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
     if (!slot) return { ...info, ok: false, reason: "That tile does not exist." };
     if (this.heroes.some((item) => item.slotType === slotType && item.slotIndex === slotIndex)) return { ...info, ok: false, reason: "That tile is occupied." };
-    this.gold -= info.cost;
-    this.totalGoldSpent += info.cost;
+    this.placement -= info.cost;
+    this.totalPlacementSpent += info.cost;
     hero.slotType = slotType;
     hero.slotIndex = slotIndex;
     hero.x = slot[0];
@@ -368,12 +370,13 @@ export class TowerDefenseGame {
     return Math.round(base.range * (1 + (cb.range || 0)) + (cb.rangeFlat || 0));
   }
 
-  // Kill gold with difficulty and Favor bonus; fractions carry over so small rewards still gain.
-  killReward(reward) {
-    this.goldCarry += reward * this.difficulty.killGold * (1 + (this.favor.killGoldBonus || 0)) * this.environment("killGold");
-    const paid = Math.floor(this.goldCarry + 1e-9);
-    this.goldCarry -= paid;
-    return paid;
+  // Pays placement points (quests, boons, ultimates, wave clear); tracked for the run stats.
+  addPlacement(amount) {
+    if (!(amount > 0)) return 0;
+    this.placement += amount;
+    this.totalPlacementEarned += amount;
+    if (this.waveStats) this.waveStats.placementEarned += amount;
+    return amount;
   }
 
   executeThreshold(hero) {
@@ -504,8 +507,8 @@ export class TowerDefenseGame {
     const refund = this.sellValue(entityId);
     this.heroes = this.heroes.filter((item) => item !== hero);
     this.team = this.team.filter((id) => id !== hero.id);
-    this.gold += refund;
-    this.totalGoldSpent -= refund;
+    this.placement += refund;
+    this.totalPlacementSpent -= refund;
     // A named hero that leaves before its kill quest is done fails it, like a fall.
     if (this.quest?.type === "heroKills" && this.quest.heroEntityId === hero.entityId && this.quest.kills < this.quest.target) this.failQuest();
     this.emit({ type: "sell", heroId: hero.id, x: hero.x, y: hero.y, life: 0.6, color: "gold" });
@@ -546,6 +549,41 @@ export class TowerDefenseGame {
     for (const group of wave.spawns) counts[group.kind] = (counts[group.kind] || 0) + this.shapedGroup(group.kind, group.count).count;
     if (!this.favor.showEnemyHp) return { wave: waveIndex + 1, counts };
     return { wave: waveIndex + 1, counts, totalHp: this.waveTotalHp(waveIndex) };
+  }
+
+  // Campaign Encounter Pacing (P1): the whole stage at a glance. `total` and `counts` are what the waves
+  // will spawn (after board.waveShape); `down` counts killed or leaked authored enemies; `ahead` lists the
+  // next groups with their arrival time in seconds from the next spawn (the running wave's remaining queue,
+  // or the next wave's groups). Endless has no end, so it returns null.
+  stageForecast(maxGroups = 3) {
+    if (this.mode === "endless" || !this.waves?.length) return null;
+    const counts = {};
+    let total = 0;
+    for (const wave of this.waves) {
+      for (const group of wave.spawns) {
+        const n = this.shapedGroup(group.kind, group.count).count;
+        counts[group.kind] = (counts[group.kind] || 0) + n;
+        total += n;
+      }
+    }
+    const ahead = [];
+    const push = (kind, count, eta, wave) => {
+      const last = ahead.at(-1);
+      if (last && last.kind === kind && last.wave === wave) last.count += count;
+      else ahead.push({ wave, kind, count, eta: Math.max(0, Math.round(eta)) });
+    };
+    if (this.running) {
+      for (const entry of this.spawnQueue) push(entry.kind, 1, Math.max(0, entry.at - this.spawnClock), this.wave);
+    } else if (this.waves[this.wave]) {
+      let at = 0;
+      for (const group of this.waves[this.wave].spawns) {
+        const shape = this.waveShape(group.kind);
+        const { count } = this.shapedGroup(group.kind, group.count);
+        push(group.kind, count, at, this.wave + 1);
+        at += (count * group.gapMs * (shape && group.kind !== "boss" ? shape.gap : 1)) / 1000 + 0.8;
+      }
+    }
+    return { total, counts, down: Math.min(total, this.enemiesDown), waves: this.waves.length, ahead: ahead.slice(0, maxGroups) };
   }
 
   // Endless past the 20-wave length: enemy HP and attack compound by waveGen.endlessRamp
@@ -592,7 +630,7 @@ export class TowerDefenseGame {
     if (this.running || this.complete || this.wave >= this.waves.length) return false;
     const wave = this.waves[this.wave];
     this.wave += 1;
-    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0, heroDeaths: 0, lastSpawnAt: null, leakKinds: {} };
+    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, lastSpawnAt: null, leakKinds: {} };
     this.virtueOffer = null; // unclaimed offers expire when the next wave starts
     this.mutatorOffer = null;
     this.waveHeroes = new Map(this.heroes.map((hero) => [hero.entityId, hero.class])); // Insight credit per wave
@@ -644,6 +682,13 @@ export class TowerDefenseGame {
     if (!this.running) return;
     this.time += dt;
     this.stepInterventions(dt);
+    // Placement regrows by tuning.run.placementPerSecond (x Favor rate) per second of battle time.
+    this.placementClock += dt * (1 + (this.favor.placementRate || 0)) * this.environment("placementRate");
+    const perSecond = this.tuning.run.placementPerSecond ?? 1;
+    while (this.placementClock >= 1 / perSecond - 1e-9) {
+      this.placementClock -= 1 / perSecond;
+      this.addPlacement(1);
+    }
     this.spawnClock += dt;
     while (this.spawnQueue.length && (this.spawnQueue[0].kind === "boss" ? !this.fieldHasMinions() : this.spawnQueue[0].at <= this.spawnClock)) {
       const next = this.spawnQueue.shift();
@@ -715,6 +760,7 @@ export class TowerDefenseGame {
           }
           this.leakKinds[enemy.kind] = (this.leakKinds[enemy.kind] || 0) + (enemy.damage || 1);
           this.totalLeaks += 1;
+          if (!enemy.parentId) this.enemiesDown += 1;
           if (this.quest?.type === "noLeaks") this.failQuest();
           this.onChange("leak", this);
           if (this.lives === 0) this.finish(false);
@@ -754,26 +800,8 @@ export class TowerDefenseGame {
       for (const cls of this.waveHeroes.values()) (this.insightLog[cls] ||= { waves: 0, kills: 0 }).waves += 1;
       if (this.wave >= this.waves.length) this.finish(true);
       else {
-        // Wave-clear bonus: flat, predictable income so early waves fund the
-        // next recruit while kill rewards stay scarce (economy milestone 5A).
-        // Wave interest: a share of the gold left unspent, before this wave's bonus lands,
-        // so saving gold pays a little and spending it stays the stronger default.
-        const interest = this.tuning.run.waveInterest;
-        if (interest) {
-          const amount = Math.min(interest.cap, Math.floor(Math.max(0, this.gold) * interest.share));
-          this.lastInterest = amount;
-          this.gold += amount;
-          if (this.waveStats) this.waveStats.interest = amount;
-          if (this.waveStats) this.waveStats.goldEarned += amount;
-          this.totalGoldEarned += amount;
-        }
-        const bonus = this.tuning.run.waveClearBonus;
-        if (bonus) {
-          const amount = Math.round((bonus.base + bonus.perWave * (this.wave - 1)) * (1 + (this.favor.clearBonus || 0)));
-          this.gold += amount;
-          if (this.waveStats) this.waveStats.goldEarned += amount;
-          this.totalGoldEarned += amount;
-        }
+        // Wave-clear placement: a flat Favor bonus (tuning.favor clearPlacement), none by default.
+        this.addPlacement(this.favor.clearPlacement || 0);
         this.completeQuest();
         this.mutatorWaves += this.mutatorMods().favor;
         this.offerVirtues(); this.offerMutators(); this.onChange("clear", this);
@@ -1621,8 +1649,7 @@ export class TowerDefenseGame {
     }
     const reaper = this.hasBoon("soul_reaper");
     if (reaper && ++this.reaperKills % reaper.every === 0) {
-      this.gold += reaper.gold;
-      this.totalGoldEarned += reaper.gold;
+      this.addPlacement(reaper.placement);
       for (const h of this.heroes) h.ultClock += reaper.charge;
     }
   }
@@ -1931,6 +1958,7 @@ export class TowerDefenseGame {
 
   killEnemy(enemy, hero) {
     enemy.dead = true;
+    if (!enemy.parentId) this.enemiesDown += 1;
     if (this.boons.length) this.boonsOnKill(enemy, hero);
     const harvest = this.statusCfg()?.reactions?.harvest;
     if (harvest && this.isPoisoned(enemy)) {
@@ -1940,11 +1968,8 @@ export class TowerDefenseGame {
       }
     }
     if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
-    const reward = this.killReward(enemy.reward);
-    this.gold += reward;
     this.score += Math.round(enemy.maxHp + enemy.reward * 4);
-    if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
-    this.totalGoldEarned += reward;
+    if (this.waveStats) this.waveStats.kills += 1;
     this.chargeInterventionsOnKill();
     if (hero) {
       if (hero.id) this.statFor(hero).kills += 1;
@@ -2181,9 +2206,7 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
       });
       if (aw) {
-        this.gold += 15; // awakened Fortune Shower pays out
-        this.totalGoldEarned += 15;
-        if (this.waveStats) this.waveStats.goldEarned += 15;
+        this.addPlacement(this.tuning.heroSkills?.[hero.id]?.awakenPlacement ?? 3); // awakened Fortune Shower pays out
       }
     } else if (variant === "fate_link") {
       // Harmonia: heal allies + accelerate their ult charge by 30%
@@ -2244,8 +2267,8 @@ export class TowerDefenseGame {
     }
   }
 
-  // Run quests (6B): one objective per wave, except the final wave where gold
-  // has no use. Pays tuning.quests gold at wave clear; no config means no quests.
+  // Run quests (6B): one objective per wave, except the final wave where placement
+  // has no use. Pays tuning.quests placement points at wave clear; no config means no quests.
   rollQuest() {
     const cfg = this.tuning.quests;
     if (!cfg || this.wave >= this.waves.length) return null;
@@ -2255,7 +2278,7 @@ export class TowerDefenseGame {
     // Needs two heroes, or the named hero would simply be the whole team.
     if (this.heroes.length >= 2) types.push("heroKills");
     const type = types[Math.floor(this.questRng() * types.length)];
-    const quest = { type, wave: this.wave, status: "active", gold: cfg.goldBase + cfg.goldPerWave * (this.wave - 1) };
+    const quest = { type, wave: this.wave, status: "active", reward: cfg.placementBase + cfg.placementPerWave * (this.wave - 1) };
     if (type === "speedClear") {
       // Scaled to the slowest enemy's time to walk the whole path, so the limit
       // fits the map length and wave mix instead of one fixed number.
@@ -2295,9 +2318,7 @@ export class TowerDefenseGame {
     if (quest.type === "heroKills" && quest.kills < quest.target) { this.failQuest(); return; }
     quest.status = "done";
     this.questsDone += 1;
-    this.gold += quest.gold;
-    if (this.waveStats) this.waveStats.goldEarned += quest.gold;
-    this.totalGoldEarned += quest.gold;
+    this.addPlacement(quest.reward);
   }
 
   finish(won) {

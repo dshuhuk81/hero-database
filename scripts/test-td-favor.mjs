@@ -14,7 +14,7 @@ const trunkNode = (type) => TREE.nodes.find((entry) => entry.tree === "trunk" &&
 const classNode = (cls, type) => TREE.nodes.find((entry) => entry.tree === cls && entry.effect.type === type);
 const make = (levels = {}) => {
   const game = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: maps[0], waves, seed: 5 });
-  game.gold = 100000;
+  game.placement = 100000;
   return game;
 };
 const heroOf = (cls) => heroes.find((hero) => hero.class === cls);
@@ -43,7 +43,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
 // --- Costs: level prices grow by costGrowth; spent is summed per currency ---
 {
-  const gold = trunkNode("startingGold");
+  const gold = trunkNode("startingPlacement");
   assert.equal(levelCost(gold, 1), gold.cost);
   assert.equal(levelCost(gold, 3), Math.round(gold.cost * TREE.costGrowth ** 2));
   assert.equal(nodeSpent(gold, 2), levelCost(gold, 1) + levelCost(gold, 2));
@@ -99,12 +99,12 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
 // --- Trunk effects in the simulator ---
 {
-  const gold = trunkNode("startingGold");
+  const gold = trunkNode("startingPlacement");
   const lives = trunkNode("lives");
   const run = buildRunTuning(tuning, { [gold.id]: 2, [lives.id]: 1 });
-  assert.equal(run.run.startingGold, tuning.run.startingGold + gold.effect.value * 2, "starting gold");
+  assert.equal(run.run.startingPlacement, tuning.run.startingPlacement + gold.effect.value * 2, "starting gold");
   assert.equal(run.run.lives, tuning.run.lives + lives.effect.value, "lives");
-  assert.equal(tuning.run.startingGold, buildRunTuning(tuning, {}).run.startingGold, "base tuning not mutated");
+  assert.equal(tuning.run.startingPlacement, buildRunTuning(tuning, {}).run.startingPlacement, "base tuning not mutated");
 
   assert.equal(make().wavePreview(2).totalHp, undefined, "no HP without Vidar");
   assert.ok(make({ [trunkNode("showHp").id]: 1 }).wavePreview(2).totalHp > 0, "Vidar shows wave HP");
@@ -113,11 +113,11 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const plain = place(make(), mage).hp;
   assert.equal(place(make({ [trunkNode("heroHp").id]: 5 }), mage).hp, Math.round(plain * (1 + trunkNode("heroHp").effect.value * 5)), "hero HP");
 
-  const reward = tuning.enemies.grunt.reward;
-  let total = 0;
-  const loot = make({ [trunkNode("killGold").id]: 5 });
-  for (let i = 0; i < 100; i += 1) total += loot.killReward(reward);
-  assert.equal(total, Math.round(100 * reward * (1 + trunkNode("killGold").effect.value * 5)), "kill gold");
+  const rate = make({ [trunkNode("placementRate").id]: 5 });
+  rate.startWave(); rate.spawnQueue = [{ at: 999, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; rate.enemies = [];
+  const rateBefore = rate.placement;
+  for (let i = 0; i < 60 * 20; i += 1) rate.step(1 / 60);
+  assert.equal(rate.placement - rateBefore, Math.floor(20 * (1 + trunkNode("placementRate").effect.value * 5)), "placement rate");
 
   close(make({ [trunkNode("ultCharge").id]: 5 }).ultChargeRate(), 1 + trunkNode("ultCharge").effect.value * 5, "ult charge");
   close(make({ [trunkNode("synergyTag").id]: 2 }).synergyPerTag(), tuning.synergy.bonusPerTag + trunkNode("synergyTag").effect.value * 2, "synergy");
@@ -130,13 +130,12 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const cheap = make({ odin_dominion: 5 });
   assert.equal(cheap.deployCost(mage.id), Math.round(mage.cost * (1 - findNode("odin_dominion").effect.value * 5)), "deployment discount");
 
-  const clear = make({ [trunkNode("clearBonus").id]: 5 });
+  const clear = make({ [trunkNode("clearPlacement").id]: 5 });
   place(clear, mage);
   clear.startWave(); clear.spawnQueue = []; clear.enemies = [];
-  const before = clear.gold;
+  const before = clear.placement;
   clear.step(1 / 60);
-  const base = tuning.run.waveClearBonus.base;
-  assert.equal(clear.gold - before, Math.round(base * (1 + trunkNode("clearBonus").effect.value * 5)) + clear.waveStats.interest + (clear.quest?.status === "done" ? clear.quest.gold : 0), "wave-clear bonus");
+  assert.equal(clear.placement - before, trunkNode("clearPlacement").effect.value * 5 + (clear.quest?.status === "done" ? clear.quest.reward : 0), "wave-clear placement");
 
   const offers = make({ [trunkNode("extraOffer").id]: 1 });
   offers.offerVirtues();
@@ -154,7 +153,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
   // Set's Command (former team slot, now starting gold) keeps its id so bought levels carry over.
   const command = buildRunTuning(tuning, { surtr_command: 1 });
-  assert.equal(command.run.startingGold, tuning.run.startingGold + findNode("surtr_command").effect.value, "War Chest adds starting gold");
+  assert.equal(command.run.startingPlacement, tuning.run.startingPlacement + findNode("surtr_command").effect.value, "War Chest adds starting gold");
   assert.equal(command.run.maxTeam, undefined, "no team cap");
 
   const wall = make({ [trunkNode("contactRange").id]: 4 });
@@ -276,7 +275,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
 // --- 6C run-end shards: eligibility, Favor size, and boosts folded into run tuning ---
 {
-  const { minWave, favorMin, gold } = tuning.shards;
+  const { minWave, favorMin, placement: shardPlacement } = tuning.shards;
   assert.equal(shardEligible(minWave - 1, tuning), false, "early loss earns no shard");
   assert.equal(shardEligible(minWave, tuning), true, "reaching minWave earns a shard");
   assert.equal(shardEligible(10, { ...tuning, shards: undefined }), false, "no config, no shards");
@@ -284,8 +283,8 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(shardFavor(20, tuning), favorMin, "minimum Favor shard");
 
   const base = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}), map: maps[0], waves, seed: 5 });
-  const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "gold", gold }), map: maps[0], waves, seed: 5 });
-  assert.equal(goldRun.gold, base.gold + gold, "gold shard adds starting gold");
+  const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "placement", placement: shardPlacement }), map: maps[0], waves, seed: 5 });
+  assert.equal(goldRun.placement, base.placement + shardPlacement, "placement shard adds starting placement");
   const virtue = Object.keys(tuning.virtueEffects)[0];
   const virtueRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue }), map: maps[0], waves, seed: 5 });
   assert.deepEqual(virtueRun.virtues, [virtue], "virtue shard starts the run with the virtue");

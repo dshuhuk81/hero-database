@@ -26,10 +26,10 @@
       "maxLevel": 5,
       "cost": 65,
       "effect": {
-        "type": "startingGold",
-        "value": 10
+        "type": "startingPlacement",
+        "value": 1
       },
-      "text": "Starting gold +{v}."
+      "text": "Starting placement +{v}."
     },
     {
       "tree": "trunk",
@@ -83,10 +83,10 @@
       "cost": 170,
       "requiresPoints": 6,
       "effect": {
-        "type": "killGold",
+        "type": "placementRate",
         "value": 0.03
       },
-      "text": "Kill gold +{p}."
+      "text": "Placement regrows {p} faster."
     },
     {
       "tree": "trunk",
@@ -146,7 +146,7 @@
         "type": "deployDiscount",
         "value": 0.03
       },
-      "text": "Deployment costs -{p}."
+      "text": "Placement costs -{p}."
     },
     {
       "tree": "trunk",
@@ -158,10 +158,10 @@
       "cost": 375,
       "requiresPoints": 16,
       "effect": {
-        "type": "clearBonus",
-        "value": 0.06
+        "type": "clearPlacement",
+        "value": 1
       },
-      "text": "Wave-clear gold +{p}."
+      "text": "Wave clear grants +{v} placement."
     },
     {
       "tree": "trunk",
@@ -218,10 +218,10 @@
       "cost": 6240,
       "requiresPoints": 28,
       "effect": {
-        "type": "startingGold",
-        "value": 150
+        "type": "startingPlacement",
+        "value": 8
       },
-      "text": "Starting gold +{v}."
+      "text": "Starting placement +{v}."
     },
     {
       "tree": "trunk",
@@ -357,7 +357,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Tanks deploy for {p} less gold."
+      "text": "Tanks deploy for {p} less placement cost."
     },
     {
       "tree": "Tank",
@@ -437,7 +437,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating tanks costs {p} less gold."
+      "text": "Relocating tanks costs {p} less placement."
     },
     {
       "tree": "Tank",
@@ -532,7 +532,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Warriors deploy for {p} less gold."
+      "text": "Warriors deploy for {p} less placement cost."
     },
     {
       "tree": "Warrior",
@@ -612,7 +612,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating warriors costs {p} less gold."
+      "text": "Relocating warriors costs {p} less placement."
     },
     {
       "tree": "Warrior",
@@ -707,7 +707,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Assassins deploy for {p} less gold."
+      "text": "Assassins deploy for {p} less placement cost."
     },
     {
       "tree": "Assassin",
@@ -787,7 +787,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating assassins costs {p} less gold."
+      "text": "Relocating assassins costs {p} less placement."
     },
     {
       "tree": "Assassin",
@@ -882,7 +882,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Mages deploy for {p} less gold."
+      "text": "Mages deploy for {p} less placement cost."
     },
     {
       "tree": "Mage",
@@ -962,7 +962,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating mages costs {p} less gold."
+      "text": "Relocating mages costs {p} less placement."
     },
     {
       "tree": "Mage",
@@ -1057,7 +1057,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Archers deploy for {p} less gold."
+      "text": "Archers deploy for {p} less placement cost."
     },
     {
       "tree": "Archer",
@@ -1137,7 +1137,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating archers costs {p} less gold."
+      "text": "Relocating archers costs {p} less placement."
     },
     {
       "tree": "Archer",
@@ -1232,7 +1232,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Supports deploy for {p} less gold."
+      "text": "Supports deploy for {p} less placement cost."
     },
     {
       "tree": "Support",
@@ -1311,7 +1311,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating supports costs {p} less gold."
+      "text": "Relocating supports costs {p} less placement."
     },
     {
       "tree": "Support",

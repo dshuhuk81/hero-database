@@ -67,7 +67,7 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
       for (const id of ids) {
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
-        if (g.gold < g.deployCost(id)) continue;
+        if (g.placement < g.deployCost(id)) continue;
         const rings = rankedTiles(map, base.slot, g.rangeFor(base), patternFor(g.boardRules, base.class, base.id));
         if (base.class === "Support") {
           const covered = (i) => g.heroes.filter((h) => !g.supportAuraFor(h) && Math.hypot(h.x - map.platformSlots[i][0], h.y - map.platformSlots[i][1]) <= base.range).length;
@@ -75,8 +75,8 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
           rings.sort((a, b) => covered(b) - covered(a) || rank.get(a) - rank.get(b));
         }
         for (const i of rings) {
-          const before = g.gold;
-          if (g.place(id, base.slot, i)) { spent += before - g.gold; break; }
+          const before = g.placement;
+          if (g.place(id, base.slot, i)) { spent += before - g.placement; break; }
         }
       }
       // `blessings`: preference list of offer entries ("boon:<id>" or virtue names), else the first card.

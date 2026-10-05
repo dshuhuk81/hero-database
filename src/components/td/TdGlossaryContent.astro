@@ -157,7 +157,6 @@ function enemyCard(kind: string, overrides: any = {}) {
       // Shown lives (board.js shownLives): wave enemies are converted so a leak costs their
       // damage in shown lives; bosses and summoned enemies are not, so they cost a fraction.
       ["Lives lost", unshaped ? +(base.damage / ((rawTuning as any).board?.lifeUnit ?? 1)).toFixed(1) : base.damage],
-      ["Gold", base.reward],
     ],
   };
 }
@@ -191,7 +190,7 @@ const bossCardsView = bossCards.map(withIcons);
 
 const heroAttrs: [string, string, string][] = [
   ["add_road", "Road / Platform", "Where the hero stands. Road heroes (tiles on the road) block ground enemies and can fall. Platform heroes (tiles beside the road) are never attacked and are the only ones that reach flyers."],
-  ["paid", "Cost", "Gold to deploy the hero. Selling returns half of it; relocating between waves costs a quarter of it."],
+  ["paid", "Placement cost", "Placement points needed to put the hero on the field. Selling returns all of it, so you can swap heroes freely."],
   ["favorite", "Health", "Damage a hero takes before it falls. A fallen hero can be recruited again."],
   ["swords", "Attack", "Damage per basic hit before the enemy's armor or magic resistance. Auras, synergy and blessings raise it."],
   ["speed", "Attacks / s", "Basic attacks per second."],
@@ -207,7 +206,7 @@ const heroAttrs: [string, string, string][] = [
   ["star", "Divine Blessings", "Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial."],
   ["bolt", "Divine Interventions", `Two powers in the bottom bar that charge during waves (one point per second, one per kill). Thunderfall (after stage ${t.interventions?.thunderfall?.unlockAfter}): tap the map, a bolt strikes those tiles for ${pct(t.interventions?.thunderfall?.share ?? 0)} of every enemy's health (${pct(t.interventions?.thunderfall?.bossShare ?? 0)} for bosses). Shield (after stage ${t.interventions?.shield?.unlockAfter}): for ${t.interventions?.shield?.seconds}s leaks cost no lives, once per wave. Not in the Daily Trial.`],
   ["diversity_3", "Pantheon bonds", "Norse heroes on the field together: 2 give +6% attack, 4 give +12% attack and 10% faster ultimates. Greek heroes: 2 take 7% less damage, 4 take 13% less and heal 15% more. Each recruit counts for the pantheon with more heroes on the field."],
-  ["savings", "Wave interest", `Each cleared wave pays ${pct(t.run?.waveInterest?.share ?? 0)} of the gold you have not spent, up to ${t.run?.waveInterest?.cap ?? 0} gold, before the wave-clear bonus.`],
+  ["savings", "Placement points", `Every battle starts with ${t.run?.startingPlacement ?? 0} placement points and gains ${t.run?.placementPerSecond ?? 1} per second of battle. Heroes cost placement points to deploy; gold is only used to level heroes.`],
 ];
 const enemyAttrs: [string, string, string][] = [
   ["favorite", "Health", `At wave 1. Enemies gain ${pct(waveGrowth)} health every wave; in Endless they also grow stronger past wave 20.`],
@@ -216,7 +215,6 @@ const enemyAttrs: [string, string, string][] = [
   ["swords", "Attack", "Damage per hit to the road hero holding it, and the time between hits."],
   ["flight", "Ground / Flying", "Ground enemies are stopped by road heroes. Flyers pass over them and can only be hit from platforms."],
   ["heart_broken", "Lives lost", "Lives you lose when it reaches your base."],
-  ["paid", "Gold", "Gold you earn for the kill."],
 ];
 const iconNames = [...new Set([
   ...Object.values(STAT_ICON), ...Object.values(STATUS_ICON), ...Object.values(REACTION_ICON), ...Object.values(UI_ICON),
@@ -314,7 +312,7 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
                   <Fragment set:html={classGlyph(hero.class, 14)} />
                   {hero.class} - {hero.slotLabel} - {hero.damageLabel}
                 </p>
-                <p class="td-glossary-cost"><span class="td-msym" aria-hidden="true">{UI_ICON.cost}</span>{hero.cost} gold</p>
+                <p class="td-glossary-cost"><span class="td-msym" aria-hidden="true">{UI_ICON.cost}</span>{hero.cost} placement</p>
               </div>
             </header>
             <dl class="td-glossary-stats">

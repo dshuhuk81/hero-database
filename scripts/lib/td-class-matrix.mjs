@@ -53,7 +53,7 @@ export function defend(heroId, ringIndex, waveType, { map = maps[0], tuning = ba
   const hero = heroes.find((h) => h.id === heroId);
   const waves = [{ wave: 1, spawns: WAVE_TYPES[waveType] }];
   const g = new TowerDefenseGame({ heroes, tuning, map: { ...map, boss: "baphomet" }, waves, seed: 5 });
-  g.gold = 1e6;
+  g.placement = 1e6;
   g.difficulty.invincible = true; // a leak must not end the run before the wave is scored
   if (!g.place(heroId, hero.slot, ringIndex)) return null;
   const unit = g.heroes[0];

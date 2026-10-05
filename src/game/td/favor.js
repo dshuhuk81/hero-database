@@ -138,16 +138,16 @@ export function applyBlessings(levels, tree = TREE) {
       continue;
     }
     switch (node.effect.type) {
-      case "startingGold": add(bonuses, "startingGoldBonus", value); break;
+      case "startingPlacement": add(bonuses, "startingPlacementBonus", value); break;
       case "lives": add(bonuses, "livesBonus", value); break;
       case "showHp": bonuses.showEnemyHp = true; break;
       case "heroHp": add(bonuses, "heroHpBonus", value); break;
-      case "killGold": add(bonuses, "killGoldBonus", value); break;
+      case "placementRate": add(bonuses, "placementRate", value); break;
       case "ultCharge": add(bonuses, "ultChargeBonus", value); break;
       case "synergyTag": add(bonuses, "synergyTagBonus", value); break;
       case "wave1Speed": add(bonuses, "wave1SpeedDebuff", value); break;
       case "deployDiscount": add(bonuses, "deployDiscount", value); break;
-      case "clearBonus": add(bonuses, "clearBonus", value); break;
+      case "clearPlacement": add(bonuses, "clearPlacement", value); break;
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
       case "extraOffer": add(bonuses, "extraOffer", value); break;
       case "bossDamage": add(bonuses, "bossDamage", value); break;
@@ -162,13 +162,13 @@ export function applyBlessings(levels, tree = TREE) {
 // Snapshot of tuning for one run with the bought blessings applied. Start
 // resources are folded into run; everything else is read by the
 // simulator from tuning.favor. `boost` is a pending run-end shard (6C):
-// { type: "gold", gold } or { type: "virtue", virtue }.
-/** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, gold?: number, virtue?: string } | null} [boost] */
+// { type: "placement", placement } or { type: "virtue", virtue }.
+/** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, placement?: number, virtue?: string } | null} [boost] */
 export function buildRunTuning(tuning, levels, boost = null) {
   const bonuses = applyBlessings(levels);
   const run = {
     ...tuning.run,
-    startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0) + (boost?.type === "gold" ? boost.gold : 0),
+    startingPlacement: tuning.run.startingPlacement + (bonuses.startingPlacementBonus || 0) + (boost?.type === "placement" ? boost.placement : 0),
     lives: tuning.run.lives + (bonuses.livesBonus || 0),
   };
   if (boost?.type === "virtue") run.startVirtue = boost.virtue;

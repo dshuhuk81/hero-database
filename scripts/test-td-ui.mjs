@@ -344,13 +344,13 @@ assert.ok(render.unitDepth?.(200, "flyer") > render.unitDepth?.(500, "hero"), "f
 // --- Favor: run snapshot ---
 {
   const base = buildRunTuning(tuning, {});
-  assert.equal(base.run.startingGold, tuning.run.startingGold, "no nodes, no bonus");
-  const gold = TREE.nodes.find((node) => node.effect.type === "startingGold");
+  assert.equal(base.run.startingPlacement, tuning.run.startingPlacement, "no nodes, no bonus");
+  const gold = TREE.nodes.find((node) => node.effect.type === "startingPlacement");
   const lives = TREE.nodes.find((node) => node.effect.type === "lives");
   const boosted = buildRunTuning(tuning, { [gold.id]: 1, [lives.id]: 1 });
-  assert.equal(boosted.run.startingGold, tuning.run.startingGold + gold.effect.value, "starting gold applied");
+  assert.equal(boosted.run.startingPlacement, tuning.run.startingPlacement + gold.effect.value, "starting gold applied");
   assert.equal(boosted.run.lives, tuning.run.lives + lives.effect.value, "lives applied");
-  assert.equal(tuning.run.startingGold, base.run.startingGold, "base tuning not mutated");
+  assert.equal(tuning.run.startingPlacement, base.run.startingPlacement, "base tuning not mutated");
 }
 
 console.log("Tower defense UI helper checks passed.");
@@ -432,7 +432,7 @@ console.log("Tower defense UI helper checks passed.");
   const hud = read("hud.ts"), recruit = read("recruit.ts"), session = read("session.ts");
   const fallen = hud.slice(hud.indexOf("[data-deck-fallen]"), hud.indexOf("function cancelDeploy"));
   assert.ok(fallen.includes("game.deployCost(hero.id)") && !/hero\.cost\b/.test(fallen), "fallen deck buttons price with deployCost");
-  const redeploy = recruit.slice(recruit.indexOf("if (state.deployHeroId) {"), recruit.indexOf("open(slot);"));
+  const redeploy = recruit.slice(recruit.indexOf("if (state.deployHeroId) {"), recruit.indexOf("// Drag a hero from the bar"));
   assert.ok(!/hero\.cost\b/.test(redeploy), "redeploy notice prices with deployCost");
   assert.match(hud, /countdownHeld = [^\n]*state\.relocateEntityId !== null/, "Auto countdown waits during relocation");
   assert.ok(!session.includes("(level 1, half health)"), "revive notice drops the battle level");

@@ -152,7 +152,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.renderPreview();
     deps.buffBar.render();
     ctx.actions.resetPowers();
-    const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
+    const boostText = boost?.type === "placement" ? ` Placement shard: +${boost.placement} starting placement.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
       : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
@@ -224,10 +224,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const stats = game.waveStats;
       if (stats.leaks === 0) session.perfectWaves += 1;
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
-      const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
+      const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.reward} placement.` : "";
       const dailyText = session.daily && stats.wave === session.daily.goal ? " Daily Trial goal reached." : "";
-      const interestText = stats.interest ? ` Interest: +${stats.interest} gold.` : "";
-      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${interestText}${questText}${dailyText}`);
+      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${questText}${dailyText}`);
     }
     // Boss rules (M18).
     if (type === "bossMark") {

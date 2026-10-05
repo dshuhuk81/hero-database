@@ -71,7 +71,7 @@ grows in steps: a high ground tile gives one step up the class's pattern ladder 
 hero stands there, a hostile environment (Stormpeak) can take one step away, and stars
 bought outside battle give permanent steps (3 and 5 stars).
 
-Around the battle: battle gold buys deploys and relocations only (section 9). Hero power
+Around the battle: battle placement points buy deploys only (section 9); Gold is only for levelling heroes outside the battle. Hero power
 comes from the persistent collection (levels, stars, Evolution, skills), summons and Divine
 Blessings, all outside the battle (R4, October 2, 2026).
 
@@ -363,11 +363,18 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   tilted boards the platform front lip is 0.1125 cell high (the prototype's 0.3 cell, halved, then reduced by 25%).
   Placement states (`render.js` `slotMode`): while a fallen hero is picked, tiles of its
   type glow and the others fade; with a full team empty tiles go quiet.
-- **Recruiting** (`page/recruit.ts`): tapping an empty tile opens the sheet. Choosing a card
-  only inspects the hero: role line, ground/flying reach, the pattern grid on this tile,
-  ultimate text and collapsed details (attack, health, speed, crit, class rule, tile bonus,
-  campaign level). Numbers come from `sim.deployPreview()`, the same maths as `place()`. Only
-  "Deploy <hero> · <cost> gold" places.
+- **Placing heroes** (`page/recruit.ts`, `page/hud.ts`): the bottom deck lists the whole roster
+  from the first frame (`allowedHeroes`): placed heroes (tap = hero panel), fallen heroes and
+  heroes not yet fielded (draggable, gold border when ready, price badge, dimmed when too
+  expensive). Press a hero and pull it more than 6 px: a ghost follows the pointer (lifted
+  56 px above a finger), the battle pauses (`pause` reason `drag`), tiles of the hero's type
+  glow and the tile under the pointer shows the range preview (`game.uiPlacement`). Releasing
+  over a free tile of the right type calls `game.place()`; releasing elsewhere, Escape or a
+  cancelled pointer drops it. Failures name the reason (wrong tile type, taken, team full, not
+  enough placement). A tap on a deck hero then a tap on an empty tile still places it
+  (keyboard/fallback, `state.deployHeroId`). Tapping an empty tile with nothing picked only
+  hints at the drag. The old recruit sheet (inspect + Deploy button) is still in the code but
+  no tile opens it any more.
 - **Blocking:** `blockLimit` Tank 3, Warrior 2, Assassin 1, contact 24 px. Held enemies take
   +20% damage; enemies passing a full blocker are slowed.
 - **Class archetypes** (`tuning.classes`): Tank `taunt` (guard: shrugs off part of each hit),
@@ -518,21 +525,31 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 
 ## 9. Battle economy
 
-- Free Play run: 340 starting gold, 25 lives (5 shown), deploy cap 7, sell refund 50%. Kill rewards
-  (5x per enemy under the wave shape, so the total per wave stays about the same), wave-clear
-  bonus 50 + 10 per wave, a quest per wave (gold 40 + 10 per wave). **Wave interest**
-  (`run.waveInterest`): each wave clear first pays 5% of the unspent gold, at most 50, so
-  saving gold is a choice; it shows in the wave-clear notice.
-- Battle gold buys two things (R4, October 2, 2026; the gold income is not retuned yet, R12):
-  - **Deploy** a hero for its deployment cost (`sim.deployCost()`): the hero's cost minus the
+- **Placement points replace in-battle gold (October 5, 2026).** There is no gold in a run:
+  no kill rewards, wave-clear bonus or interest. A run starts with `run.startingPlacement` (30)
+  points and gains `run.placementPerSecond` (1) per second of battle time (waves running; the
+  counter is paused between waves). Gold only exists outside the battle, for hero levels and stars.
+  `sim.placement` is the counter; `addPlacement()` pays extra points and tracks
+  `totalPlacementEarned` / `waveStats.placementEarned`; `totalPlacementSpent` tracks spending.
+- Free Play run: 25 lives (5 shown), deploy cap 7. Each hero has a placement cost (`cost` in
+  `gameBalance.json`, 11 for the cheapest recruits up to 25 for the strongest; tuned by hand,
+  `build-game-balance.mjs` keeps an existing cost). Other sources of placement: a quest per
+  wave (`quests.placementBase` 4 + `placementPerWave`), the Soul Reaper boon (`placement` 3 per
+  10 kills), awakened Plutus Fortune Shower (+3), the Placement shard (`shards.placement` 6
+  starting points), Favor nodes (`startingPlacement`, `placementRate`, `clearPlacement`) and the
+  Necropolis / Autumn environments (`placementRate` x1.2 / x1.15).
+- Placement points buy two things:
+  - **Deploy** a hero for its placement cost (`sim.deployCost()`): the hero's cost minus the
     global Master Smith discount (3% per level) and the class Swift Muster discount (10%),
-    added together and capped at 50%. A fallen hero is redeployed the same way.
-  - **Relocate** a deployed hero between waves (`sim.relocationInfo()` / `relocate()`): 25% of
-    its deployment cost (`run.relocationCost`), rounded, minus the class Divine Rite discount
-    (30%). It must end on an empty tile of the hero's slot type. The hero keeps its entity id,
-    health, ultimate charge and cooldowns; the fee is not refunded on sale. `game.relocations`
-    counts moves for the Hold Position challenge.
-- **Sell** works anytime and refunds 50% of the deployment gold paid.
+    added together, capped at 50%, minimum 1. A fallen hero is redeployed the same way
+    (`blocking.redeployCostFactor`).
+  - **Relocate** a deployed hero between waves (`sim.relocationInfo()` / `relocate()`): free by
+    default (`run.relocationCost` 0; a share of the deploy cost if set), minus the class Divine
+    Rite discount. It must end on an empty tile of the hero's slot type. The hero keeps its entity
+    id, health, ultimate charge and cooldowns. `game.relocations` counts moves for the Hold
+    Position challenge.
+- **Sell** works anytime and refunds the full placement cost paid (`run.sellRefund` 1).
+- Hoarder challenge now means placement points left at the win (`HOARDER_PLACEMENT`, first guess).
 - No battle ranks, focus, class paths, Awakening or training. A placed hero uses its
   collection stats (`collectionHeroes()`), times run modifiers (virtues, Favor hero health,
   class Apotheosis +15% attack and health, Expedition veterans +10%).
@@ -628,8 +645,8 @@ cell width, so any theme takes any board. Chapters 4-13 each have an environment
 | Tidal Ruins | Enemies 15% slower on odd waves, 10% faster on even waves |
 | Mycelium Hollow | Heroes +25% healing received; enemies +10% health |
 | Crystal Vault | Magical heroes +15% damage; physical heroes +10% attack speed |
-| Haunted Necropolis | Kills +20% gold; heroes -15% healing received |
-| Autumn Sanctuary | Kills +15% gold; road heroes charge ultimates 15% faster |
+| Haunted Necropolis | Placement regrows 20% faster; heroes -15% healing received |
+| Autumn Sanctuary | Placement regrows 15% faster; road heroes charge ultimates 15% faster |
 | Celestial Observatory | Ultimates charge 20% faster on odd waves; heroes attack 10% faster on even waves |
 | Clockwork Citadel | Heroes attack 15% faster; enemies move 10% faster |
 
@@ -875,8 +892,8 @@ Content is not JSON-only. Before shipping, walk the matching list.
 Test fixtures: `scripts/fixtures/td-classic-maps.json` (pre-board maps for rule tests),
 `scripts/fixtures/td-legacy-rings.json` (ring positions for those tests).
 
-Invariants worth keeping under test: determinism (same seed, same result), gold awarded once
-per kill, no deadlock with every road tile filled, flyers reach the base past blockers, the
+Invariants worth keeping under test: determinism (same seed, same result), placement paid once
+per source, no deadlock with every road tile filled, flyers reach the base past blockers, the
 accumulator clamps long tab-away gaps, a loss wins a same-tick tie, every board map is unique
 and regenerates from its recipe, a hero's pattern decides its basic-attack reach.
 
@@ -889,6 +906,9 @@ The order and dependencies of the open work live in
   pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
+- **Stage counter and forecast:** the stats row shows `Defeated x/total` for finite modes (`stageForecast()` in `sim.js`: the stage's
+  total after wave shaping, enemies killed or leaked, the next groups); a chip before the first wave gives the total and wave count, and
+  while a wave runs "incoming" chips list its next groups. Relocation between waves is free (`run.relocationCost` 0).
 - **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.

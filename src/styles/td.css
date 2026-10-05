@@ -13888,3 +13888,57 @@ button .td-cur {
     transform: none;
   }
 }
+
+/* Deck drag: heroes are pulled from the bar onto the battlefield and placed on release */
+.td-deck-slot.is-draggable {
+  touch-action: none;
+  cursor: grab;
+}
+
+.td-deck-slot.is-draggable img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.td-deck-slot.is-draggable:not(.is-fallen):not(.is-unaffordable) {
+  border-color: var(--accent-gold);
+}
+
+.td-deck-slot.is-unaffordable img {
+  opacity: .45;
+}
+
+.td-deck-slot.is-unaffordable .td-deck-badge {
+  color: var(--text-muted);
+}
+
+.td-deck-slot.is-dragging {
+  opacity: .4;
+}
+
+.td-drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  box-shadow: 0 6px 18px rgb(0 0 0 / .45);
+  pointer-events: none;
+  opacity: .9;
+}
+
+.td-drag-ghost.is-valid {
+  border-color: var(--accent-gold);
+}
+
+.td-drag-ghost img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}

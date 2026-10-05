@@ -48,7 +48,7 @@ import { notifyQuest, QUEST_WAVE } from "../quests.js";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 import { createStageClear } from "./stage-clear";
 
-type ShardChoice = "favor" | "gold" | "virtue";
+type ShardChoice = "favor" | "placement" | "virtue";
 
 export function fmtDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -145,8 +145,8 @@ export function createResults(ctx: PageContext) {
     for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
   }
 
-  const boostText = (boost: RunBoost) => boost.type === "gold"
-    ? `+${boost.gold} starting gold` : `start with ${blessingNames[boost.virtue] ?? boost.virtue}`;
+  const boostText = (boost: RunBoost) => boost.type === "placement"
+    ? `+${boost.placement} starting placement` : `start with ${blessingNames[boost.virtue] ?? boost.virtue}`;
 
   function renderAnalysis(game: any) {
     const el = q("[data-td-result-analysis]");
@@ -185,10 +185,10 @@ export function createResults(ctx: PageContext) {
     const canRevoke = shard.choice !== "favor" || availableFavor(store.data) >= shard.favor;
     const options: { id: ShardChoice; name: string; value: string; detail: string }[] = [
       { id: "favor", name: "Favor shard", value: `+${shard.favor} Favor`, detail: "Permanent. Spend it on Divine Blessings." },
-      { id: "gold", name: "Gold shard", value: `+${cfg.gold} gold`, detail: "Your next run starts with extra gold." },
+      { id: "placement", name: "Placement shard", value: `+${cfg.placement} placement`, detail: "Your next run starts with extra placement points." },
       { id: "virtue", name: "Virtue shard", value: virtueName, detail: `Your next run starts with this blessing${virtueLabel ? `: ${virtueLabel}` : "."}` },
     ];
-    const replaces = shard.previousBoost ? `<p class="td-shard-note">A Gold or Virtue shard replaces your pending boost (${boostText(shard.previousBoost)}).</p>` : "";
+    const replaces = shard.previousBoost ? `<p class="td-shard-note">A Placement or Virtue shard replaces your pending boost (${boostText(shard.previousBoost)}).</p>` : "";
     shardsEl.innerHTML = `<span class="td-label">Pick a shard</span><div class="td-shard-row">` + options.map((option) => {
       const chosen = shard!.choice === option.id;
       const disabled = !chosen && option.id !== "favor" && !canRevoke;
@@ -210,7 +210,7 @@ export function createResults(ctx: PageContext) {
       saved.favor += shard.favor;
       saved.nextRunBoost = shard.previousBoost;
     } else {
-      saved.nextRunBoost = choice === "gold" ? { type: "gold", gold: data.tuning.shards.gold } : { type: "virtue", virtue: shard.virtue };
+      saved.nextRunBoost = choice === "placement" ? { type: "placement", placement: data.tuning.shards.placement } : { type: "virtue", virtue: shard.virtue };
     }
     shard.choice = choice;
     store.persist();
@@ -340,8 +340,8 @@ export function createResults(ctx: PageContext) {
     const statsHtml = [
       mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
       `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? 0)}</strong></div>`,
-      `<div class="td-result-stat"><span>Gold left</span><strong>${game.gold}</strong><small>of ~${Math.round((game.totalGoldEarned ?? 0) + game.tuning.run.startingGold)} earned</small></div>`,
-      `<div class="td-result-stat"><span>Spent</span><strong>${game.totalGoldSpent ?? 0}</strong></div>`,
+      `<div class="td-result-stat"><span>Placement left</span><strong>${Math.floor(game.placement)}</strong><small>of ~${Math.round((game.totalPlacementEarned ?? 0) + game.tuning.run.startingPlacement)} earned</small></div>`,
+      `<div class="td-result-stat"><span>Spent</span><strong>${game.totalPlacementSpent ?? 0}</strong></div>`,
       game.tuning.quests ? `<div class="td-result-stat"><span>Quests</span><strong>${game.questsDone ?? 0}</strong><small>completed</small></div>` : "",
       insightStat(earnedInsight),
       reactionStat(game.reactionCounts),

@@ -1,6 +1,7 @@
-// Recruitment sheet (opens from an empty tile) and battlefield input. Pointer,
-// touch and keyboard all go through activateSlot. Choosing a card only inspects that hero
-// (touch has no hover); the Deploy button in the sheet footer is the one action that places.
+// Hero placement and battlefield input. Heroes wait in the bottom deck; dragging one onto the
+// battlefield and letting go places it on the tile under the pointer. A tap on a deck hero then
+// a tap on a tile does the same for keyboards. Pointer, touch and keyboard share activateSlot.
+// The recruit sheet (inspect + Deploy button) is the older flow and is no longer opened by tiles.
 import { classIconImg } from "../assets.js";
 import { patternSvg } from "../board.js";
 import { canvasPoint, nearestSlot } from "../render.js";
@@ -21,8 +22,10 @@ export function createRecruit(ctx: PageContext) {
   const detailsBody = q("[data-td-preview-details-body]");
   const deployButton = q<HTMLButtonElement>("[data-td-deploy-selected]");
   const reasonEl = q("[data-td-preview-reason]");
+  const deckEl = q("[data-td-deck]");
   let lastPointerType = "mouse";
   let previewId = "";
+  let suppressClick = false;
 
   const ringOf = (game: any, slot: Slot) => (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(slot.type, slot.index)];
 
@@ -32,7 +35,7 @@ export function createRecruit(ctx: PageContext) {
     if (game.complete) return "The battle is over";
     if (game.heroes.some((unit: any) => unit.id === heroId)) return "Already deployed";
     if (game.heroes.length >= game.deployCap()) return `Team full (${game.deployCap()})`;
-    if (game.gold < cost) return `Needs ${cost} gold, you have ${Math.floor(game.gold)}`;
+    if (game.placement < cost) return `Needs ${cost} placement, you have ${Math.floor(game.placement)}`;
     return "";
   }
 
@@ -42,7 +45,7 @@ export function createRecruit(ctx: PageContext) {
     if (!game || !hero) { deployButton.disabled = true; reasonEl.textContent = ""; return; }
     const reason = blockReason(game, hero.id);
     deployButton.disabled = !!reason;
-    deployButton.textContent = `Deploy ${hero.name} · ${game.deployCost(hero.id)} gold`;
+    deployButton.textContent = `Deploy ${hero.name} · ${game.deployCost(hero.id)} placement`;
     reasonEl.textContent = reason;
     reasonEl.hidden = !reason;
   }
@@ -176,9 +179,9 @@ export function createRecruit(ctx: PageContext) {
       const cost = game.deployCost(hero.id);
       const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
       const full = game.heroes.length >= game.deployCap();
-      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : game.gold < cost ? `Needs ${cost} gold` : "";
+      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : game.placement < cost ? `Needs ${cost} placement` : "";
       button.classList.toggle("is-unavailable", !!reason);
-      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason || `${hero.class} - ${cost} gold`;
+      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason || `${hero.class} - ${cost} placement`;
     });
     syncDeploy();
   }
@@ -202,7 +205,7 @@ export function createRecruit(ctx: PageContext) {
       // Relocation (R4): an invalid tile keeps the mode; tapping the hero itself cancels it.
       if (occupant?.entityId === state.relocateEntityId) { ctx.actions.cancelDeploy(); return; }
       const result = game.relocate(state.relocateEntityId, slot.type, slot.index);
-      if (result.ok) { ctx.notice(`${result.hero.name} relocated for ${result.cost} gold.`); ctx.actions.cancelDeploy(); }
+      if (result.ok) { ctx.notice(`${result.hero.name} relocated for ${result.cost} placement.`); ctx.actions.cancelDeploy(); }
       else ctx.notice(result.reason || "Relocation unavailable.");
       return;
     }
@@ -210,12 +213,12 @@ export function createRecruit(ctx: PageContext) {
     if (state.deployHeroId) {
       const hero = heroById.get(state.deployHeroId);
       if (hero.slot !== slot.type) { ctx.notice(`${hero.name} needs a ${hero.slot} tile.`); return; }
-      if (game.place(hero.id, slot.type, slot.index)) { ctx.notice(`${hero.name} redeployed.`); ctx.actions.cancelDeploy(); }
-      else ctx.notice(game.gold < game.deployCost(hero.id) ? `Needs ${game.deployCost(hero.id)} gold to redeploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
+      if (game.place(hero.id, slot.type, slot.index)) { ctx.notice(`${hero.name} deployed.`); ctx.actions.cancelDeploy(); }
+      else ctx.notice(game.placement < game.deployCost(hero.id) ? `Needs ${game.deployCost(hero.id)} placement to deploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
       return;
     }
-    if (game.heroes.length >= game.deployCap()) { ctx.notice(`Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`); return; }
-    open(slot);
+    // Drag a hero from the bar onto a tile to place it.
+    ctx.notice("Drag a hero from the bar onto a tile to place it.");
   }
 
   // Relocate (R4) from the hero panel: close it and highlight the empty tiles of the hero's type.
@@ -229,6 +232,104 @@ export function createRecruit(ctx: PageContext) {
     session.game.uiDeploySlot = unit.slotType;
     ctx.notice(`Tap an empty ${unit.slotType} tile to move ${unit.name}. Tap ${unit.name} again or press Escape to cancel.`);
   }
+
+  // Deck drag: press a hero in the bar, pull it onto the battlefield, release to place it.
+  // The tile under the pointer lights up (game.uiPlacement) while the hero fits it.
+  const DRAG_START = 6;
+  let drag: { heroId: string; pointerId: number; x: number; y: number; active: boolean; ghost: HTMLElement | null } | null = null;
+
+  type Pointer = { clientX: number; clientY: number; pointerType: string };
+  const heroSlotAt = (session: Session, hero: any, event: Pointer) => {
+    const rect = session.canvas.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return null;
+    const scale = rect.width / 960;
+    const slot: any = nearestSlot(session.map, canvasPoint(session.canvas, event), slotHitRadius(scale, event.pointerType));
+    if (!slot) return null;
+    const taken = session.game.heroes.some((unit: any) => unit.slotType === slot.type && unit.slotIndex === slot.index);
+    return { type: slot.type as string, index: slot.index as number, valid: slot.type === hero.slot && !taken };
+  };
+
+  function endDrag() {
+    if (!drag) return;
+    const session = state.session;
+    drag.ghost?.remove();
+    deckEl.querySelectorAll(".is-dragging").forEach((el) => el.classList.remove("is-dragging"));
+    if (drag.active) {
+      pause.remove("drag");
+      if (session) { session.game.uiPlacement = null; session.game.uiDeploySlot = null; }
+    }
+    drag = null;
+  }
+
+  function dropHero(session: Session, hero: any, event: Pointer) {
+    const game = session.game;
+    const target = heroSlotAt(session, hero, event);
+    if (!target) return; // released off the battlefield: cancelled
+    if (target.type !== hero.slot) { ctx.notice(`${hero.name} needs a ${hero.slot} tile.`); return; }
+    if (!target.valid) { ctx.notice("That tile is taken."); return; }
+    const reason = blockReason(game, hero.id);
+    if (reason) { ctx.notice(`${hero.name}: ${reason}.`); return; }
+    if (game.place(hero.id, target.type, target.index)) {
+      ctx.notice(session.started || game.heroes.length > 1 ? `${hero.name} deployed.` : `${hero.name} deployed. Add more heroes, then start wave 1.`);
+    }
+  }
+
+  deckEl.addEventListener("pointerdown", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLElement>("[data-deck-ready], [data-deck-fallen]");
+    const session = state.session;
+    if (!button || !session || session.game.complete || event.button > 0 || drag) return;
+    drag = { heroId: (button.dataset.deckReady ?? button.dataset.deckFallen)!, pointerId: event.pointerId, x: event.clientX, y: event.clientY, active: false, ghost: null };
+  });
+
+  window.addEventListener("pointermove", (event) => {
+    const session = state.session;
+    if (!drag || event.pointerId !== drag.pointerId || !session) return;
+    const hero = heroById.get(drag.heroId);
+    if (!drag.active) {
+      if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < DRAG_START) return;
+      drag.active = true;
+      ctx.actions.closePopover(false);
+      ctx.actions.closeSheet(false);
+      ctx.actions.cancelDeploy();
+      pause.add("drag");
+      session.game.uiDeploySlot = hero.slot;
+      deckEl.querySelector(`[data-deck-ready="${hero.id}"], [data-deck-fallen="${hero.id}"]`)?.classList.add("is-dragging");
+      const ghost = document.createElement("div");
+      ghost.className = "td-drag-ghost";
+      ghost.innerHTML = `<img src="${hero.image}" alt="" width="56" height="56">`;
+      document.body.append(ghost);
+      drag.ghost = ghost;
+    }
+    event.preventDefault();
+    // A finger covers the hero, so on touch the ghost rides above it.
+    const lift = event.pointerType === "touch" ? 56 : 0;
+    drag.ghost!.style.transform = `translate(${event.clientX}px, ${event.clientY - lift}px) translate(-50%, -50%)`;
+    const target = heroSlotAt(session, hero, { clientX: event.clientX, clientY: event.clientY - lift, pointerType: event.pointerType });
+    const game = session.game;
+    if (target?.valid) {
+      const point = (target.type === "road" ? session.map.roadSlots : session.map.platformSlots)[target.index];
+      const stats = game.deployPreview(hero.id, target.type, target.index);
+      game.uiPlacement = point && stats ? { x: point[0], y: point[1], range: stats.range, type: target.type, index: target.index, heroClass: hero.class, heroId: hero.id } : null;
+    } else game.uiPlacement = null;
+    drag.ghost!.classList.toggle("is-valid", !!game.uiPlacement);
+  }, { passive: false });
+
+  window.addEventListener("pointerup", (event) => {
+    if (!drag || event.pointerId !== drag.pointerId) return;
+    const session = state.session;
+    const hero = heroById.get(drag.heroId);
+    const wasActive = drag.active;
+    const lift = event.pointerType === "touch" ? 56 : 0;
+    if (wasActive && session) {
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 0);
+      endDrag(); // lifts the pause first so place() sees a running game
+      dropHero(session, hero, { clientX: event.clientX, clientY: event.clientY - lift, pointerType: event.pointerType });
+      ctx.actions.renderDeck();
+    } else endDrag();
+  });
+  window.addEventListener("pointercancel", () => { endDrag(); });
+  window.addEventListener("keydown", (event) => { if (event.key === "Escape" && drag?.active) endDrag(); });
 
   // Listeners live on the run's own canvas, so they disappear with it.
   function bindCanvas(current: Session) {
@@ -306,5 +407,7 @@ export function createRecruit(ctx: PageContext) {
     ctx.actions.cancelDeploy();
   });
 
-  return { open, update, close, bindCanvas, beginRelocation, isOpen: () => !sheetEl.hidden };
+  const consumeDragClick = () => { const was = suppressClick; suppressClick = false; return was; };
+
+  return { open, update, close, bindCanvas, beginRelocation, consumeDragClick, endDrag, isOpen: () => !sheetEl.hidden };
 }

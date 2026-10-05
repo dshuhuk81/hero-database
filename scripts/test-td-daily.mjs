@@ -58,7 +58,7 @@ const dates = (start, count) => Array.from({ length: count }, (_, i) => dailyDat
   const g = new TowerDefenseGame({ heroes, waves, map, tuning: buildRunTuning(tuning, {}, null), ...dailyGameOptions(setup) });
   assert.equal(g.mode, "endless");
   assert.deepEqual(g.mutators, setup.mutators, "mutators preset");
-  g.gold = 100000;
+  g.placement = 100000;
   const outsider = heroes.find((hero) => !setup.heroIds.includes(hero.id));
   assert.equal(g.place(outsider.id, outsider.slot, 0), false, "hero outside the trial rejected");
   const allowed = heroById.get(setup.heroIds[0]);
@@ -78,13 +78,13 @@ const dates = (start, count) => Array.from({ length: count }, (_, i) => dailyDat
   assert.ok(again.mutatorOffer.every((id) => !setup.mutators.includes(id)), "preset mutators not offered");
   // No blessings: buildRunTuning with no levels leaves the run at base values.
   const run = buildRunTuning(tuning, {}, null);
-  assert.equal(run.run.startingGold, tuning.run.startingGold);
+  assert.equal(run.run.startingPlacement, tuning.run.startingPlacement);
   assert.equal(run.run.lives, tuning.run.lives);
   assert.equal(run.run.startVirtue, undefined);
   assert.deepEqual(run.favor, { classBonus: {} }, "no Divine Blessing bonus");
   // Normal runs are unrestricted.
   const free = new TowerDefenseGame({ heroes, waves, map, tuning });
-  free.gold = 100000;
+  free.placement = 100000;
   assert.ok(free.place(outsider.id, outsider.slot, 0), "normal runs allow every hero");
   assert.deepEqual(free.mutators, [], "normal runs start without mutators");
 }

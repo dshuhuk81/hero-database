@@ -19,7 +19,7 @@ export function environmentMultiplier(map, stat, { wave = 0, hero = null, kind =
     case "range": return (platform ? mods.platformRange ?? 1 : 1) * (platform && ring === "highground" ? mods.highgroundRange ?? 1 : 1);
     case "heal": return (mods.heroHeal ?? 1) * (road ? mods.roadHeal ?? 1 : 1);
     case "charge": return (road ? mods.roadCharge ?? 1 : 1) * (wave > 0 && odd ? mods.oddCharge ?? 1 : 1);
-    case "killGold": return mods.killGold ?? 1;
+    case "placementRate": return mods.placementRate ?? 1;
     default: return 1;
   }
 }

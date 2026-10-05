@@ -1,4 +1,4 @@
-// HUD (gold, lives, wave, score), wave preview, main wave button, deck of deployed
+// HUD (placement, lives, wave, score), wave preview, main wave button, deck of deployed
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 import { shownLives } from "../board.js";
@@ -11,20 +11,20 @@ const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival:
 
 const AUTO_NEXT_KEY = "td:autonext";
 const AUTO_NEXT_MS = 10000;
-// Gold jumps at least this big (wave clear, quest) count up with a "+N" float; kill gold updates instantly.
+// Gold jumps at least this big (wave clear, quest) count up with a "+N" float; the one-per-second regrowth updates instantly.
 const GOLD_TWEEN_MIN = 25;
 const GOLD_TWEEN_MS = 600;
 
 const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children", mender: "Menders", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps" };
 
 export function createHud(ctx: PageContext) {
-  const { q, state, store, pause, heroById } = ctx;
+  const { q, state, store, pause, heroById, data } = ctx;
   const bossName = () => ctx.bossFor(state.session?.map).name;
   // The wave table is the truth (campaign stages put the boss on their own last wave, e.g. 8 or 11);
   // the mode rule only covers endless waves not generated yet.
   const bossWave = (game: any, n: number) => {
     const wave = game.waves?.[n - 1];
-    return wave ? wave.spawns.some((group: any) => group.kind === "boss") : isBossWave(n, game.mode, ctx.data.tuning.waveGen);
+    return wave ? wave.spawns.some((group: any) => group.kind === "boss") : isBossWave(n, game.mode, data.tuning.waveGen);
   };
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
@@ -55,10 +55,17 @@ export function createHud(ctx: PageContext) {
   function update() {
     const game = state.session?.game;
     if (!game) return;
-    updateGold(game.gold);
+    updateGold(game.placement);
     q("[data-td-lives]").textContent = String(shownLives(game.lives, game.lifeUnit));
     q("[data-td-wave]").textContent = String(game.wave);
     q("[data-td-wave-total]").textContent = Number.isFinite(game.totalWaves) ? String(game.totalWaves) : "∞";
+    // Campaign Encounter Pacing: how many of the stage's enemies are down, like the reference's kill counter.
+    const forecast = game.stageForecast?.();
+    q("[data-td-down-stat]").hidden = !forecast;
+    if (forecast) {
+      q("[data-td-down]").textContent = String(forecast.down);
+      q("[data-td-down-total]").textContent = String(forecast.total);
+    }
     // Daily Trial goal (M19): waves cleared out of the goal.
     const daily = state.session?.daily;
     const dailyHud = q("[data-td-daily-hud]");
@@ -118,7 +125,7 @@ export function createHud(ctx: PageContext) {
       goldFloatEl.classList.add("is-playing");
       if (!reduced) { goldTween = { from: shownGold, to: gold, start: performance.now() }; return; }
     }
-    if (goldTween && gold > goldTween.to) { goldTween.to = gold; return; } // kill gold during a count-up
+    if (goldTween && gold > goldTween.to) { goldTween.to = gold; return; } // regrowth during a count-up
     goldTween = null;
     shownGold = gold;
     goldEl.textContent = String(gold);
@@ -157,32 +164,51 @@ export function createHud(ctx: PageContext) {
     const status = quest.status === "failed" ? " is-failed" : "";
     const lastSpawnAt = game.waveStats?.lastSpawnAt;
     const progress = quest.type === "heroKills" ? `${Math.min(quest.kills, quest.target)}/${quest.target} ` : quest.type === "speedClear" && lastSpawnAt != null ? `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s ` : "";
-    const detail = quest.status === "failed" ? "failed" : `${progress}+${quest.gold}g`;
-    return `<span class="td-wave-chip td-quest-chip${status}" data-td-quest title="${questGoal(quest, game)} - +${quest.gold} gold">Quest <b>${questName(quest)}</b> ${detail}</span>`;
+    const detail = quest.status === "failed" ? "failed" : `${progress}+${quest.reward}`;
+    return `<span class="td-wave-chip td-quest-chip${status}" data-td-quest title="${questGoal(quest, game)} - +${quest.reward} placement">Quest <b>${questName(quest)}</b> ${detail}</span>`;
+  }
+
+  // What the stage holds and what arrives next (Campaign Encounter Pacing P1).
+  function summaryChip(game: any) {
+    const forecast = game.stageForecast?.();
+    if (!forecast || game.wave > 0) return "";
+    const detail = Object.entries(forecast.counts).map(([kind, count]) => `${count} ${kind === "boss" ? bossName() : KIND_NAMES[kind] ?? kind}`).join(", ");
+    return `<span class="td-wave-chip td-wave-chip--summary" title="${detail}"><b>${forecast.total}</b> enemies in ${forecast.waves} waves</span>`;
+  }
+
+  function incomingChips(game: any) {
+    const forecast = game.stageForecast?.(3);
+    if (!forecast?.ahead.length) return "";
+    return forecast.ahead.slice(0, 2).map((group: any) => `<span class="td-wave-chip td-wave-chip--incoming">${group.count}x <b>${group.kind === "boss" ? bossName() : KIND_NAMES[group.kind] ?? group.kind}</b></span>`).join("");
   }
 
   function renderPreview() {
     const game = state.session?.game;
-    if (game?.running && game.quest) {
-      previewEl.hidden = false;
-      previewEl.innerHTML = questChip(game);
+    if (game?.running) { // the wave's remaining queue: counts only, since the chips are not redrawn every tick
+      const html = (game.quest ? questChip(game) : "") + incomingChips(game);
+      previewEl.hidden = !html;
+      previewEl.innerHTML = html;
       return;
     }
     const info = game && !game.running && !game.complete ? game.wavePreview() : null;
     if (!info) { previewEl.hidden = true; return; }
     previewEl.hidden = false;
-    previewEl.innerHTML = `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
+    previewEl.innerHTML = summaryChip(game) + `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
       .map(([kind, count]) => `<span class="td-wave-chip">${count}x <b>${kind === "boss" ? bossName() : KIND_NAMES[kind] ?? kind}</b></span>`).join("") +
       (info.totalHp ? `<span class="td-wave-chip td-wave-chip--hp"><b>${info.totalHp.toLocaleString()}</b> enemy HP</span>` : "");
   }
 
-  function deckEntries() {
+  // The whole roster sits in the deck from the first frame: placed heroes (select), fallen
+  // heroes and heroes not yet fielded (both dragged onto the battlefield, see recruit.ts).
+  function deckEntries(): any[] {
     const game = state.session?.game;
     if (!game) return [];
-    const units = game.heroes.map((unit: any) => ({ kind: "unit", id: unit.id, unit }));
-    const fallenIds = [...new Set<string>(game.fallenHeroes.map((entry: any) => entry.id))]
-      .filter((id) => !game.heroes.some((unit: any) => unit.id === id));
-    return [...units, ...fallenIds.map((id) => ({ kind: "fallen", id, unit: null as any }))];
+    const roster = data.heroes.filter((hero: any) => game.heroesById.has(hero.id) && (!game.allowedHeroes || game.allowedHeroes.has(hero.id)));
+    return roster.map((hero: any) => {
+      const unit = game.heroes.find((entry: any) => entry.id === hero.id);
+      if (unit) return { kind: "unit", id: hero.id, unit };
+      return { kind: game.fallenHeroes.some((entry: any) => entry.id === hero.id) ? "fallen" : "ready", id: hero.id, unit: null as any };
+    });
   }
 
   // Rebuilds buttons only when the deck composition changes, so focus survives kills.
@@ -194,8 +220,8 @@ export function createHud(ctx: PageContext) {
       deckKey = key;
       deckEl.innerHTML = entries.map((entry) => {
         const hero = heroById.get(entry.id);
-        const attr = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : `data-deck-fallen="${entry.id}"`;
-        return `<button type="button" class="td-deck-slot${entry.kind === "fallen" ? " is-fallen" : ""}" ${attr}>` +
+        const attr = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : entry.kind === "fallen" ? `data-deck-fallen="${entry.id}"` : `data-deck-ready="${entry.id}"`;
+        return `<button type="button" class="td-deck-slot${entry.kind === "fallen" ? " is-fallen" : ""}${entry.kind === "unit" ? "" : " is-draggable"}" ${attr}>` +
           `<img src="${hero.image}" alt="" width="40" height="40"><span class="td-deck-badge" data-deck-badge></span></button>`;
       }).join("");
     }
@@ -209,13 +235,15 @@ export function createHud(ctx: PageContext) {
       button.setAttribute("aria-label", `${unit.name}${unit.campaignLevel ? `, level ${unit.campaignLevel}` : ""}. Show actions.`);
       button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = unit.campaignLevel ? String(unit.campaignLevel) : "";
     });
-    deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
-      const hero = heroById.get(button.dataset.deckFallen!);
+    deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen], [data-deck-ready]").forEach((button) => {
+      const fallen = button.dataset.deckFallen !== undefined;
+      const hero = heroById.get((fallen ? button.dataset.deckFallen : button.dataset.deckReady)!);
       const cost = game.deployCost(hero.id); // blessing discounts included (R4)
-      button.disabled = game.complete || game.gold < cost;
+      const short = game.complete || game.placement < cost;
+      button.classList.toggle("is-unaffordable", short);
       button.classList.toggle("is-selected", state.deployHeroId === hero.id);
-      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${cost} gold.`);
-      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${cost}g`;
+      button.setAttribute("aria-label", `${hero.name}${fallen ? " has fallen" : ""}. ${fallen ? "Redeploy" : "Deploy"} for ${cost} placement: drag onto the battlefield or tap, then tap a tile.`);
+      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${cost}`;
     });
   }
 
@@ -278,14 +306,18 @@ export function createHud(ctx: PageContext) {
       if (unit) ctx.actions.selectUnit(unit);
       return;
     }
-    const fallenButton = target.closest<HTMLButtonElement>("[data-deck-fallen]");
-    if (fallenButton && !fallenButton.disabled) {
-      const hero = heroById.get(fallenButton.dataset.deckFallen!);
+    // Tap fallback for keyboards and short taps: pick the hero, then tap an empty tile.
+    const readyButton = target.closest<HTMLButtonElement>("[data-deck-fallen], [data-deck-ready]");
+    if (readyButton) {
+      if (ctx.actions.consumeDragClick()) return;
+      const hero = heroById.get((readyButton.dataset.deckFallen ?? readyButton.dataset.deckReady)!);
+      const cost = session.game.deployCost(hero.id);
+      if (session.game.placement < cost) { ctx.notice(`${hero.name} needs ${cost} placement, you have ${Math.floor(session.game.placement)}.`); return; }
       ctx.actions.closePopover(false);
       ctx.actions.closeSheet(false);
       state.deployHeroId = state.deployHeroId === hero.id ? "" : hero.id;
       session.game.uiDeploySlot = state.deployHeroId ? hero.slot : null;
-      if (state.deployHeroId) ctx.notice(`Tap an empty ${hero.slot} tile to redeploy ${hero.name}.`);
+      if (state.deployHeroId) ctx.notice(`Tap an empty ${hero.slot} tile to deploy ${hero.name}.`);
       else session.game.uiPlacement = null;
       renderDeck();
     }

@@ -2,7 +2,7 @@
 // damage readout. Runs touched by debug changes are not recorded (session.debug).
 import type { PageContext } from "./context";
 
-const DEBUG_DEFAULTS = { enemyHp: 1, waveHpScale: 0.15, enemySpeed: 1, killGold: 1 };
+const DEBUG_DEFAULTS = { enemyHp: 1, waveHpScale: 0.15, enemySpeed: 1 };
 
 function formatKnob(key: string, value: number) {
   return key === "waveHpScale" ? `${Math.round(value * 100)}%` : `x${value.toFixed(2)}`;
@@ -112,7 +112,7 @@ export function createDebugPanel(ctx: PageContext) {
     if (!session) { ctx.notice("Start a run first."); return; }
     const game = session.game;
     session.debug = true;
-    if (action === "gold") { game.gold += 500; ctx.actions.handleChange("debug"); }
+    if (action === "gold") { game.placement += 50; ctx.actions.handleChange("debug"); }
     if (action === "win" && !game.complete) { game.running = false; game.finish(true); }
     if (action === "lose" && !game.complete) { game.running = false; game.lives = 0; game.finish(false); }
     if (action === "jump") {

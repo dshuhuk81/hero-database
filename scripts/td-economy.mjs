@@ -30,20 +30,18 @@ function ledgerRun(ids, seed, mode, tier) {
   const g = new TowerDefenseGame({ heroes, tuning, map: MAP, waves, mode, tier, seed });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   const ledger = {
-    start: g.gold,
+    start: g.placement,
     kills: 0, quests: 0, clearAndBoons: 0, sellRefunds: 0,
     deploys: 0, relocations: 0, heroesDeployed: 0,
   };
-  // Income: kill rewards pass through killReward (difficulty/favor already applied).
-  const origKillReward = g.killReward.bind(g);
-  g.killReward = (reward) => { const paid = origKillReward(reward); ledger.kills += paid; return paid; };
+  // Kills no longer pay anything: the counter is placement points (regrowth, quests, boons).
   // Income: quest payouts; clear bonus and boon/fortune gold are the remainder of
-  // totalGoldEarned (tracked at the end) — boon gold is small and flagged in output.
+  // totalPlacementEarned (tracked at the end) — boon gold is small and flagged in output.
   const origCompleteQuest = g.completeQuest.bind(g);
-  g.completeQuest = () => { const before = g.gold; origCompleteQuest(); ledger.quests += g.gold - before; };
+  g.completeQuest = () => { const before = g.placement; origCompleteQuest(); ledger.quests += g.placement - before; };
   // Sink: deploys.
   const origPlace = g.place.bind(g);
-  g.place = (...a) => { const before = g.gold; const ok = origPlace(...a); if (ok) { ledger.deploys += before - g.gold; ledger.heroesDeployed += 1; } return ok; };
+  g.place = (...a) => { const before = g.placement; const ok = origPlace(...a); if (ok) { ledger.deploys += before - g.placement; ledger.heroesDeployed += 1; } return ok; };
   // Income: sell refunds.
   const origSell = g.sell.bind(g);
   g.sell = (...a) => { const result = origSell(...a); if (result?.ok) ledger.sellRefunds += result.refund; return result; };
@@ -54,7 +52,7 @@ function ledgerRun(ids, seed, mode, tier) {
       for (const id of ids) {
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
-        if (g.gold < g.deployCost(id)) continue;
+        if (g.placement < g.deployCost(id)) continue;
         for (const i of rankedTiles(MAP, base.slot, g.rangeFor(base))) {
           if (g.place(id, base.slot, i)) break;
         }
@@ -74,9 +72,9 @@ function ledgerRun(ids, seed, mode, tier) {
     if (stalled) break;
   }
   // Remainder of tracked income: wave-clear bonuses plus boon/fortune trickle.
-  ledger.clearAndBoons = g.totalGoldEarned - ledger.kills - ledger.quests;
+  ledger.clearAndBoons = g.totalPlacementEarned - ledger.kills - ledger.quests;
   ledger.spentTotal = ledger.deploys + ledger.relocations;
-  ledger.leftover = g.gold;
+  ledger.leftover = g.placement;
   return { won: g.won, wave: g.wave, seconds: Math.round(g.time), ...ledger };
 }
 

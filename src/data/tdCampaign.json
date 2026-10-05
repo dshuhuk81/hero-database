@@ -527,7 +527,7 @@
                 {
                   "kind": "grunt",
                   "count": 8,
-                  "gapMs": 600
+                  "gapMs": 800
                 }
               ]
             },
@@ -547,37 +547,27 @@
               ]
             },
             {
-              "wave": 5,
+              "wave": 4,
               "spawns": [
                 {
-                  "kind": "shieldbearer",
-                  "count": 5,
-                  "gapMs": 800
-                },
-                {
                   "kind": "archer",
-                  "count": 6,
+                  "count": 5,
                   "gapMs": 900
                 },
                 {
                   "kind": "grunt",
                   "count": 10,
-                  "gapMs": 400
+                  "gapMs": 800
                 }
               ]
             },
             {
-              "wave": 7,
+              "wave": 5,
               "spawns": [
-                {
-                  "kind": "shieldbearer",
-                  "count": 6,
-                  "gapMs": 700
-                },
                 {
                   "kind": "archer",
                   "count": 8,
-                  "gapMs": 700
+                  "gapMs": 900
                 },
                 {
                   "kind": "flyer",
@@ -854,7 +844,7 @@
           "mapId": "sunscar-ruins",
           "text": "The ruins have two gates and every wave splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
-          "hpScale": 2,
+          "hpScale": 2.6,
           "unlockAfter": "1-6",
           "rewards": [
             {
@@ -879,8 +869,8 @@
               "spawns": [
                 {
                   "kind": "grunt",
-                  "count": 10,
-                  "gapMs": 600
+                  "count": 8,
+                  "gapMs": 1200
                 }
               ]
             },
@@ -889,13 +879,8 @@
               "spawns": [
                 {
                   "kind": "runner",
-                  "count": 12,
-                  "gapMs": 440
-                },
-                {
-                  "kind": "grunt",
                   "count": 8,
-                  "gapMs": 550
+                  "gapMs": 880
                 }
               ]
             },
@@ -904,13 +889,13 @@
               "spawns": [
                 {
                   "kind": "flyer",
-                  "count": 9,
-                  "gapMs": 550
+                  "count": 8,
+                  "gapMs": 1100
                 },
                 {
                   "kind": "grunt",
-                  "count": 10,
-                  "gapMs": 520
+                  "count": 5,
+                  "gapMs": 1200
                 }
               ]
             },
@@ -920,17 +905,27 @@
                 {
                   "kind": "brute",
                   "count": 4,
-                  "gapMs": 1200
+                  "gapMs": 2400
                 },
                 {
                   "kind": "mender",
                   "count": 2,
-                  "gapMs": 900
+                  "gapMs": 1800
+                }
+              ]
+            },
+            {
+              "wave": 5,
+              "spawns": [
+                {
+                  "kind": "grunt",
+                  "count": 6,
+                  "gapMs": 1200
                 },
                 {
-                  "kind": "runner",
-                  "count": 10,
-                  "gapMs": 450
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 1800
                 }
               ]
             },
@@ -938,14 +933,9 @@
               "wave": 6,
               "spawns": [
                 {
-                  "kind": "hexer",
-                  "count": 4,
-                  "gapMs": 900
-                },
-                {
-                  "kind": "grunt",
-                  "count": 16,
-                  "gapMs": 380
+                  "kind": "runner",
+                  "count": 8,
+                  "gapMs": 880
                 }
               ]
             },
@@ -954,38 +944,13 @@
               "spawns": [
                 {
                   "kind": "flyer",
-                  "count": 10,
-                  "gapMs": 450
-                },
-                {
-                  "kind": "archer",
                   "count": 6,
-                  "gapMs": 800
+                  "gapMs": 1100
                 },
                 {
                   "kind": "runner",
-                  "count": 10,
-                  "gapMs": 400
-                }
-              ]
-            },
-            {
-              "wave": 9,
-              "spawns": [
-                {
-                  "kind": "runner",
-                  "count": 20,
-                  "gapMs": 300
-                },
-                {
-                  "kind": "hexer",
-                  "count": 4,
-                  "gapMs": 900
-                },
-                {
-                  "kind": "flyer",
                   "count": 6,
-                  "gapMs": 500
+                  "gapMs": 880
                 }
               ]
             }
@@ -1135,7 +1100,7 @@
           "mapId": "sunscar-eve",
           "text": "Every enemy you have met comes at once, through both gates. Ten long waves test your whole squad; level your heroes if you fall short.",
           "lives": 18,
-          "hpScale": 2.7,
+          "hpScale": 2.9,
           "unlockAfter": "1-8",
           "rewards": [
             {
@@ -1160,8 +1125,8 @@
               "spawns": [
                 {
                   "kind": "grunt",
-                  "count": 14,
-                  "gapMs": 560
+                  "count": 8,
+                  "gapMs": 1120
                 }
               ]
             },
@@ -1170,13 +1135,8 @@
               "spawns": [
                 {
                   "kind": "runner",
-                  "count": 12,
-                  "gapMs": 420
-                },
-                {
-                  "kind": "flyer",
-                  "count": 6,
-                  "gapMs": 600
+                  "count": 8,
+                  "gapMs": 840
                 }
               ]
             },
@@ -1184,19 +1144,29 @@
               "wave": 3,
               "spawns": [
                 {
-                  "kind": "brute",
-                  "count": 4,
+                  "kind": "flyer",
+                  "count": 8,
                   "gapMs": 1200
                 },
                 {
-                  "kind": "mender",
-                  "count": 3,
-                  "gapMs": 850
+                  "kind": "grunt",
+                  "count": 5,
+                  "gapMs": 1120
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 2400
                 },
                 {
-                  "kind": "grunt",
-                  "count": 10,
-                  "gapMs": 480
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 1700
                 }
               ]
             },
@@ -1204,19 +1174,14 @@
               "wave": 5,
               "spawns": [
                 {
-                  "kind": "hexer",
-                  "count": 4,
-                  "gapMs": 900
-                },
-                {
-                  "kind": "broodcaller",
-                  "count": 2,
-                  "gapMs": 1500
-                },
-                {
                   "kind": "grunt",
-                  "count": 12,
-                  "gapMs": 420
+                  "count": 8,
+                  "gapMs": 1120
+                },
+                {
+                  "kind": "hexer",
+                  "count": 3,
+                  "gapMs": 1800
                 }
               ]
             },
@@ -1225,63 +1190,28 @@
               "spawns": [
                 {
                   "kind": "brute",
-                  "count": 6,
-                  "gapMs": 950
-                },
-                {
-                  "kind": "shieldbearer",
-                  "count": 6,
-                  "gapMs": 700
-                },
-                {
-                  "kind": "mender",
-                  "count": 3,
-                  "gapMs": 800
-                }
-              ]
-            },
-            {
-              "wave": 8,
-              "spawns": [
-                {
-                  "kind": "broodcaller",
-                  "count": 3,
-                  "gapMs": 1300
-                },
-                {
-                  "kind": "brute",
-                  "count": 5,
-                  "gapMs": 1000
+                  "count": 4,
+                  "gapMs": 2400
                 },
                 {
                   "kind": "runner",
-                  "count": 16,
-                  "gapMs": 320
+                  "count": 6,
+                  "gapMs": 840
                 }
               ]
             },
             {
-              "wave": 10,
+              "wave": 7,
               "spawns": [
-                {
-                  "kind": "brute",
-                  "count": 8,
-                  "gapMs": 800
-                },
-                {
-                  "kind": "hexer",
-                  "count": 5,
-                  "gapMs": 800
-                },
                 {
                   "kind": "broodcaller",
                   "count": 2,
-                  "gapMs": 1400
+                  "gapMs": 3000
                 },
                 {
                   "kind": "runner",
-                  "count": 10,
-                  "gapMs": 280
+                  "count": 6,
+                  "gapMs": 840
                 }
               ]
             }
@@ -1293,7 +1223,7 @@
           "mapId": "verdant-last-crossing",
           "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. Eleven waves and the chapter's final battle.",
           "lives": 15,
-          "hpScale": 2.89,
+          "hpScale": 3,
           "unlockAfter": "1-9",
           "rewards": [
             {
@@ -1322,8 +1252,8 @@
               "spawns": [
                 {
                   "kind": "grunt",
-                  "count": 14,
-                  "gapMs": 560
+                  "count": 8,
+                  "gapMs": 1120
                 }
               ]
             },
@@ -1332,13 +1262,8 @@
               "spawns": [
                 {
                   "kind": "runner",
-                  "count": 12,
-                  "gapMs": 420
-                },
-                {
-                  "kind": "flyer",
-                  "count": 6,
-                  "gapMs": 600
+                  "count": 8,
+                  "gapMs": 840
                 }
               ]
             },
@@ -1346,19 +1271,29 @@
               "wave": 3,
               "spawns": [
                 {
-                  "kind": "brute",
-                  "count": 5,
-                  "gapMs": 1100
-                },
-                {
-                  "kind": "mender",
-                  "count": 3,
-                  "gapMs": 850
+                  "kind": "flyer",
+                  "count": 8,
+                  "gapMs": 1200
                 },
                 {
                   "kind": "grunt",
-                  "count": 10,
-                  "gapMs": 480
+                  "count": 5,
+                  "gapMs": 1120
+                }
+              ]
+            },
+            {
+              "wave": 4,
+              "spawns": [
+                {
+                  "kind": "brute",
+                  "count": 4,
+                  "gapMs": 2200
+                },
+                {
+                  "kind": "mender",
+                  "count": 2,
+                  "gapMs": 1700
                 }
               ]
             },
@@ -1366,19 +1301,14 @@
               "wave": 5,
               "spawns": [
                 {
+                  "kind": "grunt",
+                  "count": 6,
+                  "gapMs": 1120
+                },
+                {
                   "kind": "hexer",
-                  "count": 4,
-                  "gapMs": 900
-                },
-                {
-                  "kind": "broodcaller",
-                  "count": 2,
-                  "gapMs": 1500
-                },
-                {
-                  "kind": "runner",
-                  "count": 12,
-                  "gapMs": 400
+                  "count": 3,
+                  "gapMs": 1800
                 }
               ]
             },
@@ -1386,19 +1316,29 @@
               "wave": 6,
               "spawns": [
                 {
-                  "kind": "brute",
-                  "count": 6,
-                  "gapMs": 950
+                  "kind": "broodcaller",
+                  "count": 2,
+                  "gapMs": 3000
                 },
                 {
-                  "kind": "shieldbearer",
+                  "kind": "runner",
                   "count": 6,
-                  "gapMs": 700
+                  "gapMs": 840
+                }
+              ]
+            },
+            {
+              "wave": 7,
+              "spawns": [
+                {
+                  "kind": "flyer",
+                  "count": 6,
+                  "gapMs": 1200
                 },
                 {
-                  "kind": "mender",
-                  "count": 3,
-                  "gapMs": 800
+                  "kind": "grunt",
+                  "count": 6,
+                  "gapMs": 1120
                 }
               ]
             },
@@ -1406,64 +1346,14 @@
               "wave": 8,
               "spawns": [
                 {
-                  "kind": "broodcaller",
-                  "count": 3,
-                  "gapMs": 1300
-                },
-                {
-                  "kind": "brute",
-                  "count": 5,
-                  "gapMs": 1000
-                },
-                {
-                  "kind": "runner",
-                  "count": 16,
-                  "gapMs": 320
-                }
-              ]
-            },
-            {
-              "wave": 9,
-              "spawns": [
-                {
-                  "kind": "shieldbearer",
-                  "count": 8,
-                  "gapMs": 650
-                },
-                {
-                  "kind": "mender",
-                  "count": 4,
-                  "gapMs": 750
-                },
-                {
-                  "kind": "flyer",
-                  "count": 12,
-                  "gapMs": 420
-                },
-                {
-                  "kind": "grunt",
-                  "count": 14,
-                  "gapMs": 300
-                }
-              ]
-            },
-            {
-              "wave": 11,
-              "spawns": [
-                {
                   "kind": "boss",
                   "count": 1,
-                  "gapMs": 1000
+                  "gapMs": 2000
                 },
                 {
                   "kind": "grunt",
-                  "count": 14,
-                  "gapMs": 420
-                },
-                {
-                  "kind": "flyer",
-                  "count": 10,
-                  "gapMs": 500
+                  "count": 6,
+                  "gapMs": 1120
                 }
               ]
             }

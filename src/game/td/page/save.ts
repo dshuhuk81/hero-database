@@ -34,7 +34,7 @@ export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition", "free"
 export const isHomeMode = (value: unknown): value is HomeMode => HOME_MODES.includes(value as HomeMode);
 
 // Pending run-end shard (6C) for the next run; cleared when that run's first wave starts.
-export type RunBoost = { type: "gold"; gold: number } | { type: "virtue"; virtue: string };
+export type RunBoost = { type: "placement"; placement: number } | { type: "virtue"; virtue: string };
 
 export type SaveData = {
   bestScore: number;
@@ -123,7 +123,7 @@ export function emptySave(): SaveData {
 
 function sanitizeBoost(value: unknown): RunBoost | null {
   if (!isRecord(value)) return null;
-  if (value.type === "gold" && Number.isFinite(value.gold) && value.gold > 0) return { type: "gold", gold: value.gold };
+  if (value.type === "placement" && Number.isFinite(value.placement) && value.placement > 0) return { type: "placement", placement: value.placement };
   if (value.type === "virtue" && typeof value.virtue === "string") return { type: "virtue", virtue: value.virtue };
   return null;
 }

@@ -55,9 +55,9 @@ close(spores.spawnEnemy("grunt").maxHp / baseline.spawnEnemy("grunt").maxHp, 1.1
 assert.equal(spores.healHero({ ...road, hp: 100, hpLeft: 0 }, 40, null), 50);
 close(game("crystal").environment("attack", { ...platform, damageType: "magical" }), 1.15);
 close(game("crystal").environment("aps", { ...road, damageType: "physical" }), 1.1);
-assert.equal(game("necropolis").killReward(100), 120);
+close(game("necropolis").environment("placementRate"), 1.2);
 close(game("necropolis").healHero({ ...road, hp: 100, hpLeft: 0 }, 40, null), 34);
-assert.equal(game("autumn").killReward(100), 115);
+close(game("autumn").environment("placementRate"), 1.15);
 close(game("autumn").ultChargeRate(road) / baseline.ultChargeRate(road), 1.15);
 const astral = game("celestial");
 astral.wave = 1;

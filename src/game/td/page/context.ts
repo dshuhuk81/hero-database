@@ -36,7 +36,7 @@ export type PageState = {
   selectedMode: RunMode; // run mode picked in the lobby (waves.js)
   selectedTier: RunTier; // difficulty tier for 10 and 20 waves (M3)
   selectedEntityId: number | null; // hero with the open popover
-  deployHeroId: string; // fallen hero picked from the deck for redeploy
+  deployHeroId: string; // hero picked from the deck by tap (fallen or not yet fielded)
   relocateEntityId: number | null; // placed hero being moved to another tile (R4)
   pendingSlot: Slot | null; // ring the recruit sheet is open for
 };
@@ -70,6 +70,7 @@ export type PageActions = {
   updateSheet(): void;
   bindCanvas(session: Session): void;
   beginRelocation(entityId: number): void; // next compatible empty tile receives the hero
+  consumeDragClick(): boolean; // true once after a deck drag, so its trailing click is ignored
   // panels.ts
   openPanel(name: string, opener?: HTMLElement | null): void;
   closePanel(restoreFocus?: boolean): void;

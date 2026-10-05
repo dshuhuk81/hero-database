@@ -31,7 +31,7 @@
       "SELF_SUSTAIN",
       "SELF_HEAL_EFFECT_UP"
     ],
-    "cost": 150,
+    "cost": 25,
     "rarity": "epic"
   },
   {
@@ -62,7 +62,7 @@
       "PLAYSTYLE_AREA_DAMAGE",
       "SELF_DODGE"
     ],
-    "cost": 150,
+    "cost": 25,
     "rarity": "legendary"
   },
   {
@@ -94,7 +94,7 @@
       "SELF_ENERGY_RESTORE",
       "SELF_HEAL"
     ],
-    "cost": 145,
+    "cost": 24,
     "rarity": "epic"
   },
   {
@@ -123,7 +123,7 @@
       "SUMMON",
       "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
-    "cost": 145,
+    "cost": 24,
     "rarity": "legendary"
   },
   {
@@ -153,7 +153,7 @@
       "SELF_SHIELD",
       "PLAYSTYLE_AREA_DAMAGE"
     ],
-    "cost": 130,
+    "cost": 22,
     "rarity": "legendary"
   },
   {
@@ -166,9 +166,9 @@
     "ability": "volley",
     "damageType": "physical",
     "image": "",
-    "atk": 88,
-    "aps": 1.0,
-    "dps": 88,
+    "atk": 66,
+    "aps": 0.7,
+    "dps": 46,
     "hp": 448,
     "armor": 50,
     "magicRes": 30,
@@ -181,7 +181,7 @@
       "SELF_CC_RESISTANCE",
       "SELF_DODGE"
     ],
-    "cost": 130,
+    "cost": 22,
     "rarity": "common"
   },
   {
@@ -209,7 +209,7 @@
       "SELF_ATK_UP",
       "SELF_ENERGY_RESTORE"
     ],
-    "cost": 130,
+    "cost": 22,
     "rarity": "epic"
   },
   {
@@ -240,7 +240,7 @@
       "SELF_HIT_AVOID",
       "SELF_SUSTAIN"
     ],
-    "cost": 130,
+    "cost": 22,
     "rarity": "epic"
   },
   {
@@ -268,7 +268,7 @@
       "SELF_DODGE",
       "SELF_HIT_AVOID"
     ],
-    "cost": 125,
+    "cost": 21,
     "rarity": "legendary"
   },
   {
@@ -304,7 +304,7 @@
       "SELF_DAMAGE_REDUCTION",
       "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
-    "cost": 120,
+    "cost": 20,
     "rarity": "epic"
   },
   {
@@ -332,7 +332,7 @@
       "PLAYSTYLE_AREA_DAMAGE",
       "SELF_ATK_SPEED"
     ],
-    "cost": 120,
+    "cost": 20,
     "rarity": "common"
   },
   {
@@ -364,7 +364,7 @@
       "SELF_SUSTAIN",
       "SUMMON"
     ],
-    "cost": 115,
+    "cost": 19,
     "rarity": "legendary"
   },
   {
@@ -396,7 +396,7 @@
       "SELF_SHIELD",
       "PLAYSTYLE_AREA_DAMAGE"
     ],
-    "cost": 110,
+    "cost": 18,
     "rarity": "epic"
   },
   {
@@ -427,7 +427,7 @@
       "PLAYSTYLE_AREA_DAMAGE",
       "SELF_ENERGY_RESTORE"
     ],
-    "cost": 105,
+    "cost": 17,
     "rarity": "epic"
   },
   {
@@ -463,7 +463,7 @@
       "SELF_ATK_SPEED",
       "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
-    "cost": 105,
+    "cost": 17,
     "rarity": "epic"
   },
   {
@@ -494,7 +494,7 @@
       "SELF_DAMAGE_REDUCTION",
       "SELF_SHIELD"
     ],
-    "cost": 100,
+    "cost": 16,
     "rarity": "epic"
   },
   {
@@ -529,7 +529,38 @@
       "SELF_CC_RESISTANCE",
       "SUMMON"
     ],
-    "cost": 100,
+    "cost": 16,
+    "rarity": "epic"
+  },
+  {
+    "id": "asclepius",
+    "name": "Asclepius",
+    "class": "Support",
+    "tier": "C",
+    "slot": "platform",
+    "range": 170,
+    "ability": "aura",
+    "damageType": "physical",
+    "image": "",
+    "atk": 36,
+    "aps": 0.5,
+    "dps": 18,
+    "hp": 394,
+    "armor": 120,
+    "magicRes": 150,
+    "critChance": 0.04,
+    "ultCooldown": 30,
+    "ultPower": 1,
+    "synergies": [
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_CC_RESISTANCE",
+      "SELF_ENERGY_RESTORE",
+      "ENEMY_VULNERABILITY"
+    ],
+    "cost": 14,
     "rarity": "epic"
   },
   {
@@ -556,7 +587,7 @@
       "TEAM_ENERGY_RESTORE",
       "TEAM_HEAL"
     ],
-    "cost": 90,
+    "cost": 14,
     "rarity": "epic"
   },
   {
@@ -589,38 +620,7 @@
       "SELF_LIFESTEAL_UP",
       "SELF_SUSTAIN"
     ],
-    "cost": 90,
-    "rarity": "epic"
-  },
-  {
-    "id": "asclepius",
-    "name": "Asclepius",
-    "class": "Support",
-    "tier": "C",
-    "slot": "platform",
-    "range": 170,
-    "ability": "aura",
-    "damageType": "physical",
-    "image": "",
-    "atk": 36,
-    "aps": 0.5,
-    "dps": 18,
-    "hp": 394,
-    "armor": 120,
-    "magicRes": 150,
-    "critChance": 0.04,
-    "ultCooldown": 30,
-    "ultPower": 1,
-    "synergies": [
-      "TEAM_DAMAGE_REDUCTION",
-      "TEAM_ENERGY_RESTORE",
-      "TEAM_HEAL",
-      "ENEMY_CROWD_CONTROL",
-      "SELF_CC_RESISTANCE",
-      "SELF_ENERGY_RESTORE",
-      "ENEMY_VULNERABILITY"
-    ],
-    "cost": 85,
+    "cost": 14,
     "rarity": "epic"
   },
   {
@@ -652,7 +652,7 @@
       "SELF_SUSTAIN",
       "ENEMY_ATTRIBUTE_REDUCTION"
     ],
-    "cost": 85,
+    "cost": 14,
     "rarity": "common"
   },
   {
@@ -675,7 +675,7 @@
     "ultCooldown": 22.5,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 85,
+    "cost": 14,
     "rarity": "common"
   },
   {
@@ -698,7 +698,7 @@
     "ultCooldown": 22.5,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 90,
+    "cost": 14,
     "rarity": "common"
   },
   {
@@ -721,7 +721,7 @@
     "ultCooldown": 22.5,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 90,
+    "cost": 14,
     "rarity": "common"
   },
   {
@@ -744,7 +744,7 @@
     "ultCooldown": 22.5,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 95,
+    "cost": 15,
     "rarity": "common"
   },
   {
@@ -767,7 +767,7 @@
     "ultCooldown": 15,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 70,
+    "cost": 11,
     "rarity": "common"
   },
   {
@@ -790,7 +790,7 @@
     "ultCooldown": 15,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 75,
+    "cost": 12,
     "rarity": "common"
   },
   {
@@ -813,7 +813,7 @@
     "ultCooldown": 18,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 95,
+    "cost": 15,
     "rarity": "common"
   },
   {
@@ -836,7 +836,7 @@
     "ultCooldown": 18,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 100,
+    "cost": 16,
     "rarity": "common"
   },
   {
@@ -859,7 +859,7 @@
     "ultCooldown": 18,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 90,
+    "cost": 14,
     "rarity": "common"
   },
   {
@@ -882,7 +882,7 @@
     "ultCooldown": 18,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 95,
+    "cost": 15,
     "rarity": "common"
   },
   {
@@ -905,7 +905,7 @@
     "ultCooldown": 25,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 70,
+    "cost": 11,
     "rarity": "common"
   },
   {
@@ -928,7 +928,7 @@
     "ultCooldown": 25,
     "ultPower": 0.9,
     "synergies": [],
-    "cost": 75,
+    "cost": 12,
     "rarity": "common"
   }
 ]

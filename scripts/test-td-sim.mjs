@@ -25,7 +25,7 @@ const maps = classicMaps.map((map) => ({ ...map, ...legacyRings[map.id] }));
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < 1e-6, `${message}: ${actual} vs ${expected}`);
 const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 7 });
 assert.equal(game.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]), true, "valid team");
-game.gold = 10000;
+game.placement = 10000;
 assert.equal(game.place("atlas", "road", 0), true, "road placement");
 assert.equal(game.place("odin", "road", 1), false, "class-gated placement");
 assert.equal(game.place("odin", "platform", 0), true, "platform placement");
@@ -43,7 +43,7 @@ assert.equal(game.wave, 1, "wave advances once");
     const map = realMaps.find((entry) => entry.id === mapId);
     assert.ok(map, `${mapId}: contact test map exists`);
     const g = new TowerDefenseGame({ heroes, tuning, map, waves: [{ wave: 1, spawns: [] }], seed: 10 });
-    g.gold = 10000;
+    g.placement = 10000;
     assert.equal(g.place("atlas", "road", 0), true, `${mapId}: blocker placed`);
     const atlas = g.heroes[0];
     g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -60,7 +60,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 11 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
   g.startWave();
@@ -82,7 +82,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 12 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("flyer");
@@ -102,7 +102,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 13 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 2); // (410, 290), near path point (410, 180)
   const atlas = g.heroes[0];
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -126,7 +126,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 19 });
   g.setTeam(["atlas", "odin", "skadi"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0); g.place("odin", "platform", 0); g.place("skadi", "platform", 1);
   const [atlas, odin, skadi] = ["atlas", "odin", "skadi"].map((id) => g.heroes.find((h) => h.id === id));
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -160,7 +160,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 14 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
   let deaths = 0;
@@ -181,7 +181,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 15 });
   g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("plutus", "platform", 0); // (82, 225)
   g.place("atlas", "road", 0);        // (168, 230) - 86px away, inside 150 range
   g.place("aegir", "road", 2);    // (410, 290) - far away
@@ -200,7 +200,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 16 });
   g.setTeam(["aegir", "odin", "skadi", "plutus", "atlas"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("aegir", "road", 0);
   const warrior = g.heroes[0];
   warrior.rotation = 0; // facing +x
@@ -221,7 +221,7 @@ assert.equal(game.wave, 1, "wave advances once");
   const sides = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
   const cast = (id, angle, extras = 0) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 17 });
-    g.gold = 100000;
+    g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
     g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -254,7 +254,7 @@ assert.equal(game.wave, 1, "wave advances once");
   }
   // Facing also follows the current target every step, so effects point the right way.
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 18 });
-  g.gold = 100000; g.place("skadi", "platform", 0);
+  g.placement = 100000; g.place("skadi", "platform", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   const hero = g.heroes[0]; hero.rotation = 0;
   g.spawnEnemy("brute"); const e = g.enemies[0]; e.hp = e.maxHp = 1e9;
@@ -271,7 +271,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 0.2 } }, map: maps[0], waves, seed: 21 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   while (!g.complete) {
@@ -316,7 +316,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 51 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("odin", "platform", 1);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("brute");
@@ -332,7 +332,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 41 });
   g.setTeam(["plutus", "harmonia", "atlas", "aegir", "odin"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("plutus", "platform", 0); // (82, 225)
   g.place("harmonia", "platform", 1);  // (274, 292) - also in range of atlas
   g.place("atlas", "road", 0);        // (168, 230) - inside both support ranges
@@ -350,7 +350,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 42 });
   g.setTeam(["plutus", "atlas", "aegir", "odin", "skadi"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("plutus", "platform", 0);
   g.place("atlas", "road", 0);
   const [plutus, atlas] = g.heroes;
@@ -364,7 +364,7 @@ assert.equal(game.wave, 1, "wave advances once");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 43 });
   g.setTeam(["plutus", "odin", "skadi", "atlas", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("plutus", "platform", 0);
   g.place("odin", "platform", 1);
   const [plutus, odin] = g.heroes;
@@ -387,7 +387,7 @@ assert.equal(game.wave, 1, "wave advances once");
 
 function runWaveOne(g) {
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
   g.startWave();
@@ -417,7 +417,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 63 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("odin", "platform", 1);
   g.virtueOffer = ["Wildness", "Mercy", "Gnosis"];
   g.chooseVirtue("Wildness");
@@ -450,41 +450,49 @@ function runWaveOne(g) {
 {
   const discounted = structuredClone(tuning);
   discounted.favor = { deployDiscount: 0.15, classBonus: { Tank: { deployDiscount: 0.1, relocateDiscount: 0.3 } } };
+  assert.equal(tuning.run.relocationCost, 0, "relocation between waves is free by default (Encounter Pacing P4); the price math below uses an explicit share");
+  discounted.run.relocationCost = 0.25;
   const g = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 301 });
-  g.gold = 1000;
-  assert.equal(g.deployCost("atlas"), 90, "global and class deployment discounts add together");
+  g.placement = 1000;
+  const atlasCost = heroes.find((hero) => hero.id === "atlas").cost;
+  const deployed = Math.round(atlasCost * 0.75), moved = Math.round(deployed * 0.25 * 0.7);
+  assert.equal(g.deployCost("atlas"), deployed, "global and class deployment discounts add together");
   assert.equal(g.place("atlas", "road", 0), true, "discounted hero deploys");
   const atlas = g.heroes[0];
   Object.assign(atlas, { hpLeft: 321, ultClock: 7, attackClock: 0.4, stunCooldown: 2 });
   const before = { entityId: atlas.entityId, hpLeft: atlas.hpLeft, ultClock: atlas.ultClock, attackClock: atlas.attackClock, stunCooldown: atlas.stunCooldown, invested: atlas.invested };
-  assert.deepEqual(g.relocationInfo(atlas.entityId), { ok: true, hero: atlas, cost: 16 }, "relocation price uses discounted deployment cost and class Rite");
+  assert.deepEqual(g.relocationInfo(atlas.entityId), { ok: true, hero: atlas, cost: moved }, "relocation price uses discounted deployment cost and class Rite");
   assert.equal(g.relocate(atlas.entityId, "road", 1).ok, true, "valid relocation succeeds");
-  assert.equal(g.gold, 894, "deployment and relocation spend their exact costs");
+  assert.equal(g.placement, 1000 - deployed - moved, "deployment and relocation spend their exact costs");
   assert.equal(g.relocations, 1, "relocation is recorded for challenges");
   assert.deepEqual({ entityId: atlas.entityId, hpLeft: atlas.hpLeft, ultClock: atlas.ultClock, attackClock: atlas.attackClock, stunCooldown: atlas.stunCooldown, invested: atlas.invested }, before, "relocation preserves identity, combat state and refundable investment");
   assert.deepEqual([atlas.slotType, atlas.slotIndex], ["road", 1], "relocation changes the occupied tile");
 
   discounted.favor = { deployDiscount: 0.4, classBonus: { Tank: { deployDiscount: 0.3 } } };
   const capped = new TowerDefenseGame({ heroes, tuning: discounted, map: maps[0], waves, seed: 302 });
-  assert.equal(capped.deployCost("atlas"), 60, "deployment discount is capped at 50 percent");
+  assert.equal(capped.deployCost("atlas"), Math.round(atlasCost * 0.5), "deployment discount is capped at 50 percent");
 }
 
 // Invalid relocation destinations and timing never mutate the hero or spend gold.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 303 });
-  g.gold = 1000;
+  g.placement = 1000;
   g.place("atlas", "road", 0);
   g.place("aegir", "road", 1);
   const atlas = g.heroes.find((hero) => hero.id === "atlas");
-  const unchanged = () => [g.gold, atlas.slotType, atlas.slotIndex, g.relocations];
+  const unchanged = () => [g.placement, atlas.slotType, atlas.slotIndex, g.relocations];
   const initial = unchanged();
   assert.equal(g.relocate(atlas.entityId, "road", 1).ok, false, "occupied relocation destination is rejected");
   assert.equal(g.relocate(atlas.entityId, "road", 999).ok, false, "missing relocation destination is rejected");
   assert.equal(g.relocate(atlas.entityId, "platform", 0).ok, false, "wrong tile type is rejected");
   assert.deepEqual(unchanged(), initial, "invalid destinations spend nothing and keep the hero in place");
-  g.gold = 0;
+  g.placement = 0;
+  const freeShare = g.tuning.run.relocationCost; // free by default (Encounter Pacing P4); a priced relocation needs gold
+  g.tuning = { ...g.tuning, run: { ...g.tuning.run, relocationCost: 0.25 } };
   assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation without enough gold is rejected");
-  g.gold = 1000;
+  g.tuning = { ...g.tuning, run: { ...g.tuning.run, relocationCost: freeShare } };
+  assert.equal(g.relocationInfo(atlas.entityId).cost, 0, "relocation is free by default");
+  g.placement = 1000;
   g.startWave();
   assert.equal(g.relocate(atlas.entityId, "road", 2).ok, false, "relocation during a wave is rejected");
   g.running = false; g.complete = true;
@@ -508,7 +516,7 @@ function runWaveOne(g) {
   const permanentTuning = structuredClone(tuning);
   permanentTuning.favor = { heroHpBonus: 0.2, classBonus: { Tank: { power: 0.15 } } };
   const g = new TowerDefenseGame({ heroes: permanentHeroes, tuning: permanentTuning, map: maps[0], waves, seed: 304 });
-  g.gold = 1000;
+  g.placement = 1000;
   assert.equal(g.place("atlas", "road", 0), true, "collection hero deploys");
   const atlas = g.heroes[0];
   assert.equal(atlas.baseAtk, 777, "collection attack is the permanent base attack");
@@ -525,17 +533,18 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 24 });
   g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0); g.place("aegir", "road", 3);
   g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
-  const goldBefore = g.gold;
+  const goldBefore = g.placement;
   g.startWave();
   for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
   const stats = g.waveStats;
   assert.ok(stats, "wave stats exist after the wave");
   const totalSpawned = waves[0].spawns.reduce((sum, group) => sum + group.count, 0);
   assert.equal(stats.kills + stats.leaks, totalSpawned, "kills + leaks account for every spawn");
-  assert.equal(g.gold - goldBefore, stats.goldEarned, "gold earned matches the simulation");
+  assert.equal(g.placement - goldBefore, stats.placementEarned, "placement earned matches the simulation");
+  assert.ok(stats.placementEarned > 0, "placement regrows during the wave");
 }
 
 // --- 6A favor economy ---
@@ -625,7 +634,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 55 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0);
   g.startWave();
@@ -648,7 +657,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 56 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.startWave();
   assert.equal(g.runDuration, 0, "runDuration 0 before finish");
@@ -659,59 +668,66 @@ function runWaveOne(g) {
   assert.ok(Math.abs(g.runDuration - g.time) < 1e-9, "runDuration equals g.time at finish");
 }
 
-// gold_spent_tracked: totalGoldSpent accumulates placement and relocation costs.
+// gold_spent_tracked: totalPlacementSpent accumulates placement and relocation costs.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 57 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
-  assert.equal(g.totalGoldSpent, 0, "totalGoldSpent zero before any placement");
+  g.placement = 10000;
+  assert.equal(g.totalPlacementSpent, 0, "totalPlacementSpent zero before any placement");
   const nuwaHero = heroes.find((h) => h.id === "atlas");
   g.place("atlas", "road", 0);
-  assert.equal(g.totalGoldSpent, nuwaHero.cost, "placement cost tracked");
+  assert.equal(g.totalPlacementSpent, nuwaHero.cost, "placement cost tracked");
   const eid = g.heroes[0].entityId;
-  g.gold = 10000;
+  g.placement = 10000;
   const relocationCost = Math.round(nuwaHero.cost * tuning.run.relocationCost);
   g.relocate(eid, "road", 1);
-  assert.equal(g.totalGoldSpent, nuwaHero.cost + relocationCost, "relocation cost accumulates");
+  assert.equal(g.totalPlacementSpent, nuwaHero.cost + relocationCost, "relocation cost accumulates");
 }
 
-// gold_earned_tracked: totalGoldEarned accumulates kill rewards and wave clear bonuses.
+// placement_regrowth: 30 at the start, +1 per second of battle time, only while a wave runs.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 58 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  assert.equal(g.placement, tuning.run.startingPlacement, "run starts with the starting placement");
+  assert.equal(tuning.run.startingPlacement, 30);
+  g.setTeam(["atlas"]);
   g.place("atlas", "road", 0);
-  // Manually kill one grunt to verify kill reward is tracked.
+  const afterPlace = g.placement;
+  for (let i = 0; i < 60 * 5; i += 1) g.step(1 / 60);
+  assert.equal(g.placement, afterPlace, "no regrowth while no wave runs");
   g.startWave();
-  g.enemies = []; g.spawnQueue = [];
-  g.spawnEnemy("grunt");
-  const grunt = g.enemies[0];
-  const gruntReward = grunt.reward;
-  grunt.hp = 1; grunt.x = g.heroes[0].x; grunt.y = g.heroes[0].y;
-  // Step until grunt dies (not until wave ends).
-  for (let i = 0; i < 60 * 5 && grunt.hp > 0 && !grunt.dead; i += 1) g.step(1 / 60);
-  // kill reward should be in totalGoldEarned now.
-  assert.ok(g.totalGoldEarned >= gruntReward, `kill reward (${gruntReward}) in totalGoldEarned (${g.totalGoldEarned})`);
-  // The wave also ended when enemies ran out; clear bonus was included.
-  // Run a second wave to see another clear bonus stack.
-  const beforeSecond = g.totalGoldEarned;
-  g.startWave();
-  g.enemies = []; g.spawnQueue = [];
-  for (let i = 0; i < 10; i += 1) g.step(1 / 60); // no enemies => wave clears next tick
-  assert.ok(g.totalGoldEarned > beforeSecond, "second wave clear bonus adds to totalGoldEarned");
+  g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; // wave stays open
+  for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
+  assert.equal(g.placement - afterPlace, 10, "one placement point per second of battle");
+  assert.equal(g.totalPlacementEarned, 10, "regrowth is tracked as earned");
+  assert.equal(g.place("atlas", "road", 1), false, "a hero already on the field is not placed twice");
 }
 
-// reset_clears_run_stats: heroKills, totalGoldSpent, totalGoldEarned, runDuration reset to zero.
+// placement_gate: heroes cost placement points; not enough points means no deployment.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 60 });
+  const cost = g.deployCost("atlas");
+  g.placement = cost - 1;
+  assert.equal(g.place("atlas", "road", 0), false, "too few placement points");
+  assert.equal(g.placement, cost - 1, "a refused placement spends nothing");
+  g.placement = cost;
+  assert.equal(g.place("atlas", "road", 0), true, "exactly enough placement points");
+  assert.equal(g.placement, 0, "the cost is spent");
+  assert.equal(g.sell(g.heroes[0].entityId).ok, true);
+  assert.equal(g.placement, cost, "selling refunds the full placement cost");
+  assert.equal(g.gold, undefined, "the run has no gold");
+}
+
+// reset_clears_run_stats: heroKills, totalPlacementSpent, totalPlacementEarned, runDuration reset to zero.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 59 });
   g.heroKills = { 1: { name: "Test", kills: 5 } };
-  g.totalGoldSpent = 200;
-  g.totalGoldEarned = 300;
+  g.totalPlacementSpent = 200;
+  g.totalPlacementEarned = 300;
   g.runDuration = 123;
   g.reset();
   assert.deepEqual(g.heroKills, {}, "heroKills cleared on reset");
-  assert.equal(g.totalGoldSpent, 0, "totalGoldSpent cleared on reset");
-  assert.equal(g.totalGoldEarned, 0, "totalGoldEarned cleared on reset");
+  assert.equal(g.totalPlacementSpent, 0, "totalPlacementSpent cleared on reset");
+  assert.equal(g.totalPlacementEarned, 0, "totalPlacementEarned cleared on reset");
   assert.equal(g.runDuration, 0, "runDuration cleared on reset");
 }
 
@@ -721,7 +737,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 70 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0); // (82, 225) — close to atlas (168, 230), dist ~86
   // Force no shared tags between atlas and odin for this test.
@@ -735,7 +751,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 71 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0);
   g.heroes[0].synergies = ["TAG_X", "TAG_Y"];
@@ -751,7 +767,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 72 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0);
   const manyTags = ["T1", "T2", "T3", "T4", "T5", "T6"];
@@ -764,7 +780,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 73 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0); // (168, 230)
   g.place("odin", "platform", 4); // (850, 292) — dist ~686 >> 250
   g.heroes[0].synergies = ["SHARED_TAG"];
@@ -777,7 +793,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 74 });
   g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("atlas", "road", 0);
   g.place("odin", "platform", 0);
   g.heroes[0].synergies = ["SHARED_TAG"];
@@ -793,7 +809,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 80 });
   g.setTeam(["nott", "aegir", "odin", "stheno", "asclepius"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("nott", "road", 0);
   g.place("aegir", "road", 1);
   g.place("stheno", "platform", 0);
@@ -817,7 +833,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 81 });
   g.setTeam(["aegir", "atlas", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("aegir", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt");
@@ -834,7 +850,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 82 });
   g.setTeam(["stheno", "atlas", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("stheno", "platform", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   const stheno = g.heroes[0];
@@ -861,7 +877,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 83 });
   g.setTeam(["nott", "atlas", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("nott", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt");
@@ -882,7 +898,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 84 });
   g.setTeam(["asclepius", "atlas", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("asclepius", "platform", 0);
   g.place("atlas", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -906,7 +922,7 @@ function runWaveOne(g) {
 {
   const make = () => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
-    g.gold = 100000;
+    g.placement = 100000;
     return g;
   };
   const kill = (g, id) => { const unit = g.heroes.find((h) => h.id === id); g.damageHero(unit, unit.hpLeft + 1, null); };
@@ -975,7 +991,7 @@ function runWaveOne(g) {
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
   g.setTeam(["ymir", "atlas", "odin", "skadi", "plutus"]);
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("ymir", "road", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
@@ -1011,13 +1027,13 @@ function runWaveOne(g) {
   const [key] = Object.entries(map.rings).find(([, kind]) => kind === "highground");
   const [slotType, slotIndex] = [key.split(":")[0], Number(key.split(":")[1])];
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 3 });
-  g.gold = 9999;
+  g.placement = 9999;
   const hero = heroes.find((h) => h.slot === slotType);
   const preview = g.deployPreview(hero.id, slotType, slotIndex);
-  assert.equal(g.gold, 9999, "preview spends nothing");
+  assert.equal(g.placement, 9999, "preview spends nothing");
   assert.ok(g.place(hero.id, slotType, slotIndex), "placed after preview");
   const unit = g.heroes.at(-1);
-  assert.deepEqual([preview.atk, preview.hp, preview.range, preview.aps, preview.cost], [unit.atk, unit.hp, unit.range, unit.aps, 9999 - g.gold], "preview matches the placed unit");
+  assert.deepEqual([preview.atk, preview.hp, preview.range, preview.aps, preview.cost], [unit.atk, unit.hp, unit.range, unit.aps, 9999 - g.placement], "preview matches the placed unit");
   assert.ok(preview.range > g.rangeFor(hero), "high ground range is in the preview");
   assert.equal(g.deployPreview(heroes.find((h) => h.slot === "road").id, "road", 0).hitsFlyers, false, "road heroes cannot hit flyers");
 }
@@ -1040,7 +1056,7 @@ function runWaveOne(g) {
   const cap = tuning.run.deployCap;
   assert.ok(cap >= 1 && cap < map.roadSlots.length + map.platformSlots.length, "the cap binds before the tiles run out");
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
-  g.gold = 100000;
+  g.placement = 100000;
   const road = heroes.filter((h) => h.slot === "road").slice(0, Math.ceil(cap / 2));
   const platform = heroes.filter((h) => h.slot === "platform").slice(0, cap - road.length);
   road.forEach((h, i) => assert.equal(g.place(h.id, "road", i), true, `road tile ${i} filled`));
@@ -1057,7 +1073,7 @@ function runWaveOne(g) {
   assert.equal(g.place(spare.id, "road", fielded.slotIndex), true, "fallen hero frees a place");
   assert.equal(g.takeRevivableFallen(), null, "no revive past the cap");
   const poor = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 91 });
-  poor.gold = road[0].cost - 1;
+  poor.placement = road[0].cost - 1;
   assert.equal(poor.place(road[0].id, "road", 0), false, "gold still limits deploys");
 }
 
@@ -1093,7 +1109,7 @@ function runWaveOne(g) {
   assert.ok(g.quest, "quest rolled at wave start");
   assert.equal(g.quest.status, "active");
   assert.notEqual(g.quest.type, "heroSurvival", "no survival quest without a road hero");
-  assert.equal(g.quest.gold, tuning.quests.goldBase, "wave 1 quest pays goldBase");
+  assert.equal(g.quest.reward, tuning.quests.placementBase, "wave 1 quest pays placementBase");
   g.running = false; g.wave = waves.length - 1;
   g.startWave();
   assert.equal(g.quest, null, "no quest on the final wave");
@@ -1115,7 +1131,7 @@ function runWaveOne(g) {
 {
   const setup = (type) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 93 });
-    g.gold = 10000;
+    g.placement = 10000;
     g.place("atlas", "road", 0); g.place("odin", "platform", 0);
     g.startWave();
     g.quest = { ...g.quest, type, seconds: 5 };
@@ -1143,11 +1159,11 @@ function runWaveOne(g) {
   // Clearing the wave with the quest active pays its gold once.
   g = setup("noLeaks");
   g.spawnQueue = []; g.enemies = [];
-  const gold = g.gold;
-  const clearBonus = tuning.run.waveClearBonus.base;
+  const placed = g.placement, earned = g.totalPlacementEarned;
   g.step(1 / 60);
   assert.equal(g.quest.status, "done", "cleared wave completes the quest");
-  assert.equal(g.gold, gold + clearBonus + g.waveStats.interest + g.quest.gold, "quest gold paid on top of the clear bonus");
+  assert.equal(g.totalPlacementEarned - earned, g.quest.reward, "quest pays its placement reward once");
+  assert.equal(g.placement, placed + g.quest.reward, "quest placement lands in the counter");
   assert.equal(g.questsDone, 1);
 }
 
@@ -1175,7 +1191,7 @@ function runWaveOne(g) {
 {
   const rollSlayer = () => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
-    g.gold = 10000;
+    g.placement = 10000;
     g.place("atlas", "road", 0); g.place("odin", "platform", 0);
     for (let seed = 0; seed < 50 && g.quest?.type !== "heroKills"; seed += 1) {
       g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
@@ -1206,10 +1222,10 @@ function runWaveOne(g) {
   g.spawnQueue = [];
   g.quest.kills = g.quest.target;
   g.enemies = [];
-  const before = g.gold;
+  const before = g.placement;
   g.step(1 / 60);
   assert.equal(g.quest.status, "done", "reaching the target completes the quest");
-  assert.equal(g.gold, before + tuning.run.waveClearBonus.base + g.waveStats.interest + g.quest.gold);
+  assert.equal(g.placement, before + g.quest.reward);
   // The named hero falling before the target fails it at once.
   g = rollSlayer();
   const atlas = g.heroes.find((h) => h.id === "atlas");
@@ -1242,7 +1258,7 @@ function runWaveOne(g) {
   for (const id of roster) {
     for (const [name, setup] of Object.entries(scenarios)) {
       const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
-      g.gold = 100000;
+      g.placement = 100000;
       const base = g.heroesById.get(id);
       assert.ok(g.place(id, base.slot, 0), `${id} placed`);
       g.place(base.slot === "road" ? "odin" : "atlas", base.slot === "road" ? "platform" : "road", 0);
@@ -1262,7 +1278,7 @@ function runWaveOne(g) {
 // A normal attack that kills its target must not spend the ultimate on the corpse.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 97 });
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("vidar", "road", 0);
   const vidar = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1283,7 +1299,7 @@ function runWaveOne(g) {
 // so a blocked enemy is actually pushed out of the pile.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("aegir", "road", 1);
   const pos = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1308,7 +1324,7 @@ function runWaveOne(g) {
 // Odin: chain bounces go to enemies the primary blast did not already hit.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 99 });
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1418,7 +1434,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Nothing changes after the run is over, even later in the same step.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 100 });
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1439,7 +1455,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Road heroes' ultimates skip flyers (damage, slows, pushes, debuffs); platform ultimates still hit them.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 103 });
-  g.gold = 100000;
+  g.placement = 100000;
   g.place("helios", "road", 0); g.place("heimdall", "road", 2); g.place("odin", "platform", 0);
   const [helios, heimdall, odin] = ["helios", "heimdall", "odin"].map((id) => g.heroes.find((h) => h.id === id));
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1461,7 +1477,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   for (const id of heroes.map((h) => h.id)) {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 105 });
-    g.gold = 100000;
+    g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1480,7 +1496,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const setup = (id, awakened, count = 6) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 106 });
-    g.gold = 100000;
+    g.placement = 100000;
     const base = g.heroesById.get(id);
     g.place(id, base.slot, 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1502,8 +1518,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.equal(hitCount(r.g), awake, `${id} awakened targets`);
   }
   r = setup("plutus", true, 1);
-  const gold = r.g.gold; r.g.castUltimate(r.hero, r.g.enemies[0]);
-  assert.equal(r.g.gold, gold + 15, "awakened Plutus pays 15 gold");
+  const gold = r.g.placement; r.g.castUltimate(r.hero, r.g.enemies[0]);
+  assert.equal(r.g.placement, gold + 3, "awakened Plutus pays 3 placement");
   r = setup("vidar", true, 1);
   const vidar = r.hero; const e = r.g.enemies[0];
   const single = r.g.attackValue(vidar) * 2.5 * vidar.ultPower * 0.5;
@@ -1514,7 +1530,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // Thanatos, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 102 });
-  g.gold = 10000;
+  g.placement = 10000;
   assert.ok(g.place("thanatos", "road", 0), "thanatos is playable");
   const thanatos = g.heroes[0];
   assert.equal(thanatos.variant, "soul_drain");
@@ -1541,7 +1557,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const setup = (blocking) => {
     const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, blocking: blocking ?? undefined }, map: maps[0], waves, seed: 101 });
-    g.gold = 10000;
+    g.placement = 10000;
     g.place("atlas", "road", 1);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
     const atlas = g.heroes[0];
@@ -1569,15 +1585,15 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const full = g.deployCost("atlas");
   g.damageHero(atlas, atlas.hpLeft + 1, null);
   assert.equal(g.deployCost("atlas"), Math.round(full * 0.5), "redeploy at half price");
-  const gold = g.gold;
+  const gold = g.placement;
   assert.ok(g.place("atlas", "road", 1));
-  assert.equal(gold - g.gold, Math.round(full * 0.5), "discounted price charged");
+  assert.equal(gold - g.placement, Math.round(full * 0.5), "discounted price charged");
 }
 
 // --- P5 effect hierarchy: sim flags that the renderer tiers on ---
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
-  g.gold = 10000;
+  g.placement = 10000;
   g.place("odin", "platform", 0);
   const odin = g.heroes[0];
   g.startWave(); g.spawnQueue = []; g.enemies = [];
@@ -1612,7 +1628,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const cfg = tuning.bosses.lilith;
   const setup = (map) => {
     const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 97 });
-    g.gold = 10000;
+    g.placement = 10000;
     g.place("odin", "platform", 0);
     g.startWave(); g.spawnQueue = []; g.enemies = [];
     return g;
@@ -1733,7 +1749,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const setup = (...ids) => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 140 });
-    g.gold = 1e6;
+    g.placement = 1e6;
     for (const id of ids) {
       const base = heroes.find((h) => h.id === id);
       const rings = base.slot === "road" ? maps[0].roadSlots : maps[0].platformSlots;
@@ -2010,7 +2026,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     close(thanatos.ultClock - clock, R.harvest.charge, "Soul Harvest charge");
     // Reactions off: statuses stay, no reactions.
     const g4 = new TowerDefenseGame({ heroes, tuning: { ...tuning, statuses: { ...S, reactions: {} } }, map: maps[0], waves, seed: 1 });
-    g4.gold = 1e6; g4.place("aegir", "road", 0); g4.place("hephaestus", "platform", 0);
+    g4.placement = 1e6; g4.place("aegir", "road", 0); g4.place("hephaestus", "platform", 0);
     const [p4, x4] = g4.heroes;
     const e4 = g4.spawnEnemy("grunt");
     g4.applyHeroStatus(p4, e4, 100); g4.applyHeroStatus(x4, e4, 100);
@@ -2099,7 +2115,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     const map = { ...maps[0], rings: { "platform:0": "highground", "platform:1": "cursed", "platform:2": "shrine" } };
     const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 4 });
     const plain = new TowerDefenseGame({ heroes, tuning, map: { ...maps[0], rings: {} }, waves, seed: 4 });
-    g.gold = plain.gold = 1e6;
+    g.placement = plain.placement = 1e6;
     for (const [i, id] of ["odin", "hephaestus", "boreas"].entries()) { g.place(id, "platform", i); plain.place(id, "platform", i); }
     const [hg, cu, sh] = g.heroes, [p0, p1, p2] = plain.heroes;
     close(hg.range, p0.range * (1 + R.highground.range), "High ground range");
@@ -2159,9 +2175,9 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(g.isBurning(b2) && b2.burnDps === 7, "Wildfire Spread");
     // Soul Reaper: every Nth kill pays gold and charges ultimates.
     g.reaperKills = B.soul_reaper.every - 1;
-    const gold = g.gold, clock = odin.ultClock;
+    const gold = g.placement, clock = odin.ultClock;
     g.hit(enemyAt(g, "grunt", 700, 100, 1), 10, odin);
-    assert.ok(g.gold >= gold + B.soul_reaper.gold && odin.ultClock - clock >= B.soul_reaper.charge, "Soul Reaper");
+    assert.ok(g.placement >= gold + B.soul_reaper.placement && odin.ultClock - clock >= B.soul_reaper.charge, "Soul Reaper");
     // Storm Surge: bounces stun.
     g.enemies = [];
     const line = Array.from({ length: 3 }, (_, i) => enemyAt(g, "grunt", odin.x + 30 + i * 25, odin.y));
@@ -2317,17 +2333,17 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 // --- M9: selling heroes and slowing enemies that squeeze past a full blocker ---
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 150 });
-  g.gold = 1000;
+  g.placement = 1000;
   g.place("atlas", "road", 0);
   const atlas = g.heroes[0];
   const deploy = heroes.find((h) => h.id === "atlas").cost;
   assert.equal(atlas.invested, deploy, "invested tracks deployment gold");
   assert.equal(g.sellValue(atlas.entityId), Math.floor(deploy * tuning.run.sellRefund), "refund is the sell share");
-  const gold = g.gold;
+  const gold = g.placement;
   g.startWave(); // selling works mid-wave too
   const result = g.sell(atlas.entityId);
   assert.equal(result.ok, true);
-  assert.equal(g.gold, gold + result.refund, "refund paid");
+  assert.equal(g.placement, gold + result.refund, "refund paid");
   assert.equal(g.heroes.length, 0, "unit leaves the field");
   assert.equal(g.fallenHeroes.length, 0, "a sold hero did not fall (no revive, no redeploy discount)");
   assert.equal(g.deployCost("atlas"), deploy, "redeploy at full price");
@@ -2336,7 +2352,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 }
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 151 });
-  g.gold = 1000;
+  g.placement = 1000;
   g.place("nott", "road", 0); // Assassin: holds 1
   const nott = g.heroes[0];
   g.startWave(); g.enemies = []; g.spawnQueue = [];
@@ -2379,7 +2395,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 
   const blockerMap = realMaps.find((entry) => entry.id === "proto-slabs");
   const blocker = new TowerDefenseGame({ heroes, tuning, map: blockerMap, waves: [{ wave: 1, spawns: [] }], seed: 161 });
-  blocker.gold = 10000;
+  blocker.placement = 10000;
   assert.equal(blocker.place("atlas", "road", 0), true, "wide formation blocker placed");
   blocker.startWave(); blocker.spawnQueue = []; blocker.enemies = [];
   const outer = blocker.spawnEnemy("grunt", { sway: Math.max(...formation.spawnQueue.map((entry) => Math.abs(entry.sway))) });
@@ -2465,15 +2481,20 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.deepEqual(plain.shapedGroup("grunt", 7), { count: 7, split: 1 }, "no wave shape off the board");
 }
 
-// Wave interest (tuning.run.waveInterest): a share of unspent gold at wave clear, capped.
+// Favor placement bonuses: a faster regrowth rate and a flat wave-clear payout.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3 });
-  const { share, cap } = tuning.run.waveInterest;
+  const fast = structuredClone(tuning);
+  fast.favor = { placementRate: 0.5, clearPlacement: 2 };
+  const g = new TowerDefenseGame({ heroes, tuning: fast, map: maps[0], waves, seed: 3 });
   g.startWave();
-  g.spawnQueue = []; g.enemies = [];
-  g.gold = 400;
+  g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }];
+  const before = g.placement;
+  for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
+  assert.equal(g.placement - before, 15, "placementRate 0.5 grows 1.5 points per second");
+  g.spawnQueue = [];
+  const beforeClear = g.totalPlacementEarned;
   g.step(1 / 60);
-  assert.equal(g.waveStats.interest, Math.min(cap, Math.floor(400 * share)), "interest pays a share of unspent gold, up to the cap");
+  assert.ok(g.totalPlacementEarned - beforeClear >= 2, "clearPlacement pays at wave clear");
 }
 
 // Pantheon bonds (bonds.js, tuning.bonds): tiers by heroes on the field, recruits as wildcards.
@@ -2487,7 +2508,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(bondsOf(cfg, ["odin", "atlas", "helios", "recruit-bram"]).find((b) => b.id === "greek").count, 3, "a recruit joins the set with more heroes");
   // Tag synergy off, so only the bond changes attack.
   const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, synergy: null }, map: maps[0], waves, seed: 4 });
-  g.gold = 9999;
+  g.placement = 9999;
   assert.ok(g.place("odin", "platform", 0));
   const before = g.attackValue(g.heroes[0]);
   assert.ok(g.place("ymir", "road", 0));

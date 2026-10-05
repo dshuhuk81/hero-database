@@ -94,7 +94,8 @@ function buildRow(h, group) {
   };
   // Cost is ranked within the slot type.
   const slotValues = all.filter((r) => r.slot === row.slot).map(value);
-  row.cost = round5(lerp(85, 150, rankIn(slotValues, value(row))));
+  // Placement points (11-25). A cost already in gameBalance.json wins: those are tuned by hand.
+  row.cost = currentById.get(row.id)?.cost ?? Math.round(lerp(11, 25, rankIn(slotValues, value(row))));
   // Class kits apply after pricing, so they shift a whole class without re-ranking costs:
   // durability (hpMult/armorMult), attack rhythm (apsMult keeps DPS, so fewer but heavier
   // hits; maxAps caps it), class damage (dpsMult), damage type and crit.
@@ -118,7 +119,7 @@ const proposed = arg("propose");
 if (proposed) {
   const row = rowFor(proposed, proposed);
   console.log(JSON.stringify(row, null, 2));
-  const peers = current.filter((r) => r.class === row.class && r.slot === row.slot).map((r) => `${r.id} ${r.cost}g atk ${r.atk} hp ${r.hp}`);
+  const peers = current.filter((r) => r.class === row.class && r.slot === row.slot).map((r) => `${r.id} ${r.cost}p atk ${r.atk} hp ${r.hp}`);
   console.log(`\n${row.class} peers today: ${peers.join(", ")}\nNo existing row changes. To ship it, pick a TD id, add it to tuning.roster and tuning.statSource ("<id>": "${proposed}"), give it a tdSkinMythic.json entry and run npm run build:game-balance.`);
   process.exit(0);
 }
@@ -138,4 +139,4 @@ if (process.argv.includes("--check")) {
 } else {
   fs.writeFileSync(outputPath, json);
 }
-console.log(`Tower defense balance: ${output.length} heroes (${generated.length} generated against ${reference.length} reference heroes, ${authored.length} authored), ${Math.min(...output.map((h) => h.cost))}-${Math.max(...output.map((h) => h.cost))} gold`);
+console.log(`Tower defense balance: ${output.length} heroes (${generated.length} generated against ${reference.length} reference heroes, ${authored.length} authored), ${Math.min(...output.map((h) => h.cost))}-${Math.max(...output.map((h) => h.cost))} placement`);

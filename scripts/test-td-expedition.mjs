@@ -48,7 +48,7 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   assert.equal(g.lives, 9, "lives carried over");
   assert.deepEqual(g.boons, ["soul_reaper"], "relics active from wave 1");
   assert.ok(Math.abs(g.spawnEnemy("grunt").maxHp / plain.spawnEnemy("grunt").maxHp - EXPEDITION.stageHp[1]) < 1e-9, "stage health scale");
-  g.gold = 1e6;
+  g.placement = 1e6;
   const outsider = heroes.find((hero) => !e.roster.includes(hero.id));
   assert.equal(g.place(outsider.id, outsider.slot, 0), false, "only the roster can be recruited");
   const vet = heroes.find((hero) => hero.id === e.roster[0]);

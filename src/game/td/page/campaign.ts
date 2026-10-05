@@ -335,11 +335,11 @@ export function createCampaign(ctx: PageContext) {
       return `<span class="td-bond${bond.tier ? " is-active" : ""}" title="${bond.name} bond: ${text}"><b>${bond.name} ${goal}</b> ${text}</span>`;
     }).join("");
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
-    // Slots: portrait card only, class icon on the art, battle gold cost above. Tap or drag out to remove.
+    // Slots: portrait card only, class icon on the art, placement cost above. Tap or drag out to remove.
     lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => {
       const hero = selected[i];
       if (!hero) return `<span class="td-squad-slot is-empty" data-squad-slot="${i}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></span>`;
-      return `<button type="button" class="td-squad-slot" data-class="${hero.class.toLowerCase()}" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} battle gold. Remove from squad">
+      return `<button type="button" class="td-squad-slot" data-class="${hero.class.toLowerCase()}" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from squad">
         <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
         <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
     }).join("");
@@ -467,7 +467,7 @@ export function createCampaign(ctx: PageContext) {
 
   const statRows = (hero: any, now: number, next: number | null) => {
     const row = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${next ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
-    return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Deploy cost</dt><dd>${hero.cost} Gold</dd></div></dl>`;
+    return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Placement cost</dt><dd>${hero.cost}</dd></div></dl>`;
   };
 
   // Level: capped by stars (10 per star band). Pips show the current band of 10 levels.
