@@ -190,7 +190,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
     challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
     daily: sanitizeDaily(candidate.daily),
-    quests: sanitizeQuests(candidate.quests, dailyDate()),
+    quests: sanitizeQuests(candidate.quests, dailyDate()) as QuestRecord,
     expedition: sanitizeExpedition(candidate.expedition, { heroIds: rules.heroIds, mapIds: rules.mapIds ?? new Set(candidate.expedition?.stages ?? []), relicIds: rules.relicIds ?? new Set(candidate.expedition?.relics ?? []) }) as ExpeditionState | null,
     expeditionBest: {
       stages: Math.max(0, Math.floor(Number(candidate.expeditionBest?.stages) || 0)),

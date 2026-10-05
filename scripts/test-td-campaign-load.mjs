@@ -5,15 +5,14 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { campaignLoadRows, stageLoad } from "../src/game/td/campaign-load.js";
 import { CSV_COLUMNS, formatCampaignLoadCsv, formatCampaignLoadMarkdown, parseCampaignLoadArgs, reviewCampaignRows } from "./td-campaign-load.mjs";
 
-// Break caught: an audit that reimplements wave math can drift from the simulator's shaping,
-// gate alternation, minimum spacing, stage HP scaling or boss overrides.
+// Break caught: an audit that reimplements spawn math can drift from the simulator's shaping,
+// gate alternation, spacing, stage HP scaling or boss overrides.
 {
   const fixtureTuning = structuredClone(tuning);
   fixtureTuning.enemies.grunt = { hp: 10, attack: 4, armor: 2, speed: 10, reward: 1, damage: 1, attackPeriod: 1 };
   fixtureTuning.enemies.boss = { hp: 50, attack: 10, armor: 5, magicRes: 3, speed: 10, reward: 1, damage: 1, attackPeriod: 1 };
   fixtureTuning.enemies.brood = { hp: 5, attack: 2, armor: 1, speed: 10, reward: 0, damage: 1, attackPeriod: 1 };
-  fixtureTuning.board.waveShape = { enabled: true, count: 0.5, gap: 2, hp: 2, attack: 3 };
-  fixtureTuning.waveGen.minSpacing = 100;
+  fixtureTuning.board.enemyShape = { enabled: true, hp: 2, attack: 3 };
   fixtureTuning.bosses["audit-boss"] = {
     stats: { hp: 100, attack: 20, armor: 8, magicRes: 4, speed: 10, reward: 1, damage: 1, attackPeriod: 1 },
     summon: { kind: "brood", count: 2, spacing: 20 },
@@ -26,24 +25,24 @@ import { CSV_COLUMNS, formatCampaignLoadCsv, formatCampaignLoadMarkdown, parseCa
     mapId: map.id,
     lives: 15,
     hpScale: 2,
-    waves: [
-      { wave: 1, spawns: [{ kind: "grunt", count: 8, gapMs: 1000 }] },
-      { wave: 2, spawns: [{ kind: "boss", count: 1, gapMs: 500 }] },
+    timeline: [
+      { startMs: 0, kind: "grunt", count: 4 },
+      { startMs: 6000, kind: "boss", count: 1 },
     ],
   };
   const row = stageLoad({ stage, map, tuning: fixtureTuning });
-  assert.equal(row.enemyCount, 5, "wave shaping reduces eight grunts to four plus one boss");
+  assert.equal(row.enemyCount, 5, "four grunts plus one boss");
   assert.equal(row.spawnGroups, 2, "authored groups are counted once");
   assert.equal(row.enemyTypes, 2, "effective enemy kinds are distinct");
   assert.equal(row.firstSpawnMs, 0, "the first queue entry starts immediately");
-  assert.equal(row.lastSpawnMs, 12000, "two gates and minimum lane spacing determine the final queue entry");
-  assert.equal(row.spawnWindowMs, 12000, "stage pressure sums the active spawn windows");
-  assert.equal(+row.enemiesPerSecond.toFixed(4), 0.4167, "spawn pressure uses effective enemies and queue timing");
-  assert.equal(row.totalHp, 390, "health includes stage scale, wave growth, shaping and boss override");
-  assert.equal(row.totalAtk, 68, "attack includes shaping and boss override without HP-only wave growth");
+  assert.equal(row.lastSpawnMs, 6000, "the boss group sets the final queue entry");
+  assert.equal(row.spawnWindowMs, 6000, "the spawn window runs from the first to the last spawn");
+  assert.equal(+row.enemiesPerSecond.toFixed(4), 0.8333, "spawn pressure uses effective enemies and queue timing");
+  assert.equal(row.totalHp, 360, "health includes stage scale, shaping and boss override");
+  assert.equal(row.totalAtk, 68, "attack includes shaping and the boss override");
   assert.equal(row.avgArmor, 3.2, "armor is count weighted");
   assert.equal(+row.avgMres.toFixed(2), 2.08, "missing magic resistance falls back to armor");
-  assert.equal(row.maxHp, 230, "wave-two boss is the maximum-health enemy");
+  assert.equal(row.maxHp, 200, "the boss is the maximum-health enemy");
   assert.equal(row.maxAtk, 20, "boss override supplies the maximum attack");
   assert.equal(row.hasBoss, true, "boss presence is reported");
   assert.deepEqual(row.summonedKinds, ["brood"], "summoned children are named separately");

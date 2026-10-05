@@ -7,7 +7,7 @@ import { emptySave, sanitizeSave } from "../src/game/td/page/save.ts";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
-import waves from "../src/data/tdWaves.json" with { type: "json" };
+import { OPEN_TIMELINE } from "./lib/td-legacy-timeline.mjs";
 
 const data = { heroes, maps, tuning };
 const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
@@ -40,13 +40,13 @@ const slotOf = new Map(heroes.map((hero) => [hero.id, hero.slot]));
   const e = { ...newExpedition(7, data), stage: 1, relics: ["soul_reaper"], veterans: [], lives: 9 };
   e.veterans = [e.roster[0]];
   const opts = stageGameOptions(e);
-  assert.equal(opts.mode, "classic");
+  assert.equal("mode" in opts, false, "no run modes");
   assert.equal(opts.hpScale, EXPEDITION.stageHp[1]);
   const map = maps.find((m) => m.id === e.stages[1]);
-  const g = new TowerDefenseGame({ heroes, tuning, map, waves, ...opts });
-  const plain = new TowerDefenseGame({ heroes, tuning, map: { ...map, enemyHp: undefined }, waves }); // stage scale replaces the map's
+  const g = new TowerDefenseGame({ heroes, tuning, map, timeline: OPEN_TIMELINE, ...opts });
+  const plain = new TowerDefenseGame({ heroes, tuning, map: { ...map, enemyHp: undefined }, timeline: OPEN_TIMELINE }); // stage scale replaces the map's
   assert.equal(g.lives, 9, "lives carried over");
-  assert.deepEqual(g.boons, ["soul_reaper"], "relics active from wave 1");
+  assert.deepEqual(g.boons, ["soul_reaper"], "relics active from the start");
   assert.ok(Math.abs(g.spawnEnemy("grunt").maxHp / plain.spawnEnemy("grunt").maxHp - EXPEDITION.stageHp[1]) < 1e-9, "stage health scale");
   g.placement = 1e6;
   const outsider = heroes.find((hero) => !e.roster.includes(hero.id));

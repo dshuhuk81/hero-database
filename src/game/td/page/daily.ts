@@ -62,7 +62,7 @@ export function finishDaily(save: SaveData, game: any, setup: DailySetup, record
   }
   const goal = reached
     ? `Goal reached: ${dailyGoalText(setup).toLowerCase()}.${reward ? ` +${reward} Favor${DAILY_SEALS ? ` and +${DAILY_SEALS} Divine Seals` : ""} for today's first clear.` : ""}`
-    : `Goal missed: ${dailyGoalText(setup).toLowerCase()} (${cleared} cleared).`;
+    : `Goal missed: ${dailyGoalText(setup).toLowerCase()} (${defeated} defeated).`;
   // A trial started before midnight UTC keeps its own day.
   const best = setup.date === dailyDate() ? ` ${dailyBestText(save, setup.date)}` : ` Trial of ${setup.date}.`;
   return { reached, reward, text: goal + best };

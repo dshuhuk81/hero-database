@@ -25,7 +25,7 @@ export function recordChallengeRun(save: SaveData, mapId: string, game: any, tie
   if (debug) return { ids, results: ids.map((id) => ({ id, isNew: false, tierUp: false, favor: 0 })), favor: 0 };
   const { favor, results } = recordChallenges(save.challenges, challengeKey(mapId), ids, game.tier, tiers);
   save.favor = (save.favor || 0) + favor;
-  if (results.some((result) => result.isNew || result.tierUp)) notifyQuest(save, "challenge"); // R10 daily quest #5: a challenge tier clear
+  if (results.some((result: ChallengeResult) => result.isNew || result.tierUp)) notifyQuest(save, "challenge"); // R10 daily quest #5: a challenge tier clear
   return { ids, results, favor };
 }
 

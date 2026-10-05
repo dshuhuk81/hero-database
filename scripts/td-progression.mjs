@@ -1,12 +1,15 @@
 // Progression sweep (roadmap M3): one bot account plays classic runs from a fresh save,
 // earns Favor and Insight with the real formulas (favor.js), and after every run buys the
 // cheapest blessing it can afford (trunk with Favor, branches with Insight). At each
-// checkpoint it plays every map in 10 waves and in endless, so the table shows how
+// checkpoint it plays every map at each tier, so the table shows how
 // progression changes difficulty. Also compares Favor per minute of classic and endless.
 //
 //   npm run td:progression              # 160 runs, checkpoint every 20
 //   npm run td:progression -- --runs=80 --every=10
 import { playRun, SQUADS, maps } from "./lib/td-runner.mjs";
+import campaign from "../src/data/tdCampaign.json" with { type: "json" };
+import { timelineForMap } from "../src/game/td/stage-for-map.js";
+import { timelineTotals } from "../src/game/td/timeline.js";
 import { TREE, canBuy, computeFavor, computeInsight, levelCost, nodeCurrency, spentByCurrency } from "../src/game/td/favor.js";
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 
@@ -49,7 +52,7 @@ function buyAll() {
   }
 }
 
-const favorOf = (run, tier = "normal") => Math.round(computeFavor({ waves: run.wave, perfectWaves: run.perfectWaves, bossKilled: run.won, livesLeft: run.won ? run.lives : 0 }, tuning) * (tuning.tiers?.[tier]?.favor ?? 1));
+const favorOf = (run, tier = "normal") => Math.round(computeFavor({ share: run.won ? 1 : run.share ?? 0, perfect: run.perfect, bossKilled: run.won, livesLeft: run.won ? run.lives : 0 }, tuning) * (tuning.tiers?.[tier]?.favor ?? 1));
 
 function checkpoint(runNo) {
   const spent = spentByCurrency(account.levels);
@@ -62,10 +65,10 @@ function checkpoint(runNo) {
       const classic = playRun(SQUAD, seed, map, { favLevels: account.levels, tier });
       if (classic.won) { tiers[tier].wins += 1; tiers[tier].lives += classic.lives; }
     }
-    const endless = playRun(SQUAD, seed, map, { favLevels: account.levels, mode: "endless" });
-    depth += endless.wave;
-    endlessFavor += favorOf(endless);
-    endlessSeconds += endless.seconds;
+    const normal = playRun(SQUAD, seed, map, { favLevels: account.levels });
+    depth += normal.defeated;
+    endlessFavor += favorOf({ ...normal, share: normal.defeated / timelineTotals(timelineForMap(map, campaign)).total });
+    endlessSeconds += normal.seconds;
     n += 1;
   }
   console.log(
@@ -77,7 +80,7 @@ function checkpoint(runNo) {
   );
 }
 
-console.log(`runs  trunk  branches ${TIERS.map((t) => t.padStart(9)).join("")}   endless  endless F/min   (10 waves: wins/6 and lives per win)`);
+console.log(`runs  trunk  branches ${TIERS.map((t) => t.padStart(9)).join("")}   defeated  Favor/min   (wins/6 and lives per win)`);
 let classicFavor = 0, classicSeconds = 0;
 let tierIndex = 0;
 const tierRuns = {};

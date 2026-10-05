@@ -111,15 +111,9 @@ export function createHud(ctx: PageContext) {
     return `<span class="td-forecast-chip td-forecast-chip--summary" title="${detail}"><b>${forecast.total}</b> enemies${forecast.totalHp ? ` · <b>${forecast.totalHp.toLocaleString()}</b> HP` : ""}</span>`;
   }
 
-  function incomingChips(game: any) {
-    const forecast = game.stageForecast?.(3);
-    if (!forecast?.ahead.length) return "";
-    return forecast.ahead.slice(0, 2).map((group: any) => `<span class="td-forecast-chip td-forecast-chip--incoming">${group.eta > 0 ? `in ${group.eta}s ` : ""}${group.count}x <b>${group.kind === "boss" ? bossName() : KIND_NAMES[group.kind] ?? group.kind}</b></span>`).join("");
-  }
-
   function renderPreview() {
     const game = state.session?.game;
-    const html = !game || game.complete ? "" : summaryChip(game) + incomingChips(game);
+    const html = !game || game.complete ? "" : summaryChip(game);
     previewEl.hidden = !html;
     previewEl.innerHTML = html;
   }

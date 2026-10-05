@@ -1,9 +1,9 @@
 // Balance and pacing report (audit step 3). Measures before any tuning, with several seeds
 // and both bot policies (td-runner.mjs POLICIES), so a finding that only one play style
 // shows is visible as such:
-//   1. Endless depth of the mixed squad without each class, refilled to full size
+//   1. Stage depth (share of the stage defeated) of the mixed squad without each class, refilled to full size
 //      (removal alone measured "playing short-handed", not the class contribution)
-//   2. Win rate per map and per run length (Verdant, 10 vs 20 waves)
+//   2. Win rate per map (the map's own timeline)
 //   3. Campaign: winning squads and play time per stage
 //   4. Divine Seal income (arithmetic from tdSummon.json)
 // Run with: npm run td:pacing -- --seeds=3 --sample=35 --only=classes,maps,campaign,seals
@@ -11,6 +11,8 @@ import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
 import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { timelineForMap } from "../src/game/td/stage-for-map.js";
+import { timelineTotals } from "../src/game/td/timeline.js";
 import { CLASSES } from "./lib/td-class-matrix.mjs";
 import { maps, playRun, POLICIES, SQUADS } from "./lib/td-runner.mjs";
 
@@ -25,9 +27,9 @@ const pad = (s, n) => String(s).padStart(n);
 console.log(`Seeds ${SEEDS.join(", ")} - policies ${POLICIES.join(", ")}`);
 
 if (only.has("classes")) {
-  console.log("\n1. Endless waves reached, mixed squad without each class (mean over maps x seeds)");
+  console.log("\n1. Share of the stage defeated, mixed squad without each class (mean over maps x seeds)");
   const squad = SQUADS["balanced (S-tier core)"];
-  const depth = (ids, policy) => mean(maps.flatMap((map) => SEEDS.map((seed) => playRun(ids, seed, map, { mode: "endless", policy }).wave)));
+  const depth = (ids, policy) => mean(maps.flatMap((map) => SEEDS.map((seed) => playRun(ids, seed, map, { policy }).defeated / timelineTotals(timelineForMap(map, campaign)).total)));
   console.log("variant".padEnd(28) + POLICIES.map((p) => pad(p, 10)).join(""));
   // Class removal must keep the squad full, or it measures "playing short-handed"
   // instead of the class's contribution (the old "without Mages -17" was mostly that
@@ -61,15 +63,15 @@ if (only.has("classes")) {
 }
 
 if (only.has("maps")) {
-  console.log("\n2. Win rate per map and run length (5 balance squads x seeds)");
-  console.log("map".padEnd(20) + POLICIES.flatMap((p) => ["classic", "long"].map((m) => pad(`${p}/${m === "classic" ? 10 : 20}`, 14))).join(""));
+  console.log("\n2. Win rate per map (5 balance squads x seeds)");
+  console.log("map".padEnd(20) + POLICIES.map((p) => pad(p, 14)).join(""));
   const totals = {};
   for (const map of maps) {
     const cells = [];
-    for (const policy of POLICIES) for (const mode of ["classic", "long"]) {
-      const runs = Object.values(SQUADS).flatMap((ids) => SEEDS.map((seed) => playRun(ids, seed, map, { mode, policy })));
+    for (const policy of POLICIES) {
+      const runs = Object.values(SQUADS).flatMap((ids) => SEEDS.map((seed) => playRun(ids, seed, map, { policy })));
       const rate = runs.filter((r) => r.won).length / runs.length;
-      const key = `${policy}/${mode}`;
+      const key = policy;
       (totals[key] ??= []).push(rate);
       cells.push(`${pct(rate)} ${Math.round(mean(runs.filter((r) => r.won).map((r) => r.seconds)) / 60)}m`);
     }
