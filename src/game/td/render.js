@@ -110,6 +110,12 @@ export function resolveTilt(map, tiltConfig, { campaign = false, param = null } 
   };
 }
 
+export function syncTiltBleed(playHost, enabled) {
+  if (!playHost) return;
+  if (enabled) playHost.setAttribute("data-bleed", "1");
+  else playHost.removeAttribute("data-bleed");
+}
+
 const DAMAGE_NUMBER_OFFSETS = [-14, 14, 0, -24, 24];
 export const damageNumberOffset = (stack) => DAMAGE_NUMBER_OFFSETS[stack % DAMAGE_NUMBER_OFFSETS.length];
 
@@ -177,7 +183,7 @@ export async function createRenderer(canvas, game, options = {}) {
   tiltRoot.scale.y = tiltK;
   tiltRoot.y = tiltOffsetY;
   const playHost = canvas.closest("[data-td-play]");
-  if (tiltOn) playHost?.setAttribute("data-bleed", "1");
+  syncTiltBleed(playHost, tiltOn);
   const layerBand = new PIXI.Container(); // scenery bands above and below the squashed ground
 
   // Layer order (added in order = drawn back to front)

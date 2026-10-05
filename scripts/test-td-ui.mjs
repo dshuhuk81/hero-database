@@ -55,6 +55,17 @@ assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 25
     assert.ok(map, `${stage.id} references an existing map`);
     assert.equal(render.resolveTilt(map, tuning.board.tilt, { campaign: true }).enabled, true, `${stage.id} enables R18`);
   }
+
+  const attributes = new Set();
+  const playHost = {
+    setAttribute: (name) => attributes.add(name),
+    removeAttribute: (name) => attributes.delete(name),
+  };
+  assert.equal(typeof render.syncTiltBleed, "function", "renderer exposes bleed-state synchronization");
+  render.syncTiltBleed(playHost, true);
+  assert.equal(attributes.has("data-bleed"), true, "tilted runs enable full bleed");
+  render.syncTiltBleed(playHost, false);
+  assert.equal(attributes.has("data-bleed"), false, "an untilted Free Play run clears stale Campaign bleed");
 }
 
 // R18 wide scenery: Jungle uses its authored panoramic backdrop while themes without one retain
