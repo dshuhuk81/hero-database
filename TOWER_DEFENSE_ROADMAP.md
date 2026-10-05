@@ -188,6 +188,14 @@ to one headline kind per wave and at most 2 kinds, spawn gaps doubled on the two
 Bot check (hpScale for a 50% bot win rate, 14 squads): 1-7 0.36 -> 0.89, 1-9 0.27 -> 0.67, 1-10 0.30 -> 0.42, 1-4 0.59 -> 0.65, i.e. the
 walls are 1.4x to 2.5x easier at equal `hpScale`; the raised `hpScale` takes part of that back. The owner playtest decides.
 
+### Timeline Stages: no more waves (design and plan awaiting owner review, October 5, 2026)
+
+Owner request: remove waves; each map defines a number of enemies that fill the stage one after another, with WoR-like counts and
+timings; the enemy count replaces the wave counter in the UI; clean the waves out of the files. Design and decision per wave-bound
+feature: **[Timeline Stages: no more waves](docs/superpowers/specs/2026-10-05-timeline-stages-design.md)**; 13 tasks:
+**[Timeline Stages Implementation Plan](docs/superpowers/plans/2026-10-05-timeline-stages-plan.md)**. This replaces phases 3 to 5 of Campaign
+Encounter Pacing. It must start after the economy and hero-upgrade removal of the parallel agent has been committed (plan Task 0).
+
 ### Open work after the board rewrite (October 4, 2026)
 
 Branch `tower-defense-planning` finished the board rewrite and the first round of ideas (archive:

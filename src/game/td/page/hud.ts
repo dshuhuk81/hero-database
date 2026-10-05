@@ -47,6 +47,7 @@ export function createHud(ctx: PageContext) {
   let autoLeft = AUTO_NEXT_MS;
   let lastFrame = 0;
   let shownGold = 0;
+  let lastPlacement = -1;
   let goldTween: { from: number; to: number; start: number } | null = null;
   let deckKey = "";
   let lastQuestTick = 0;
@@ -382,6 +383,13 @@ export function createHud(ctx: PageContext) {
     const game = state.session?.game;
     if (!game) return;
     syncBossHealth(game);
+    // Placement regrows every battle second without a change event: keep the counter and the
+    // deck's affordable/dimmed state current so heroes can be dragged out mid-wave.
+    if (Math.floor(game.placement) !== lastPlacement) {
+      lastPlacement = Math.floor(game.placement);
+      updateGold(game.placement);
+      renderDeck();
+    }
     if (goldTween) {
       const t = Math.min(1, (now - goldTween.start) / GOLD_TWEEN_MS);
       shownGold = Math.round(goldTween.from + (goldTween.to - goldTween.from) * (1 - (1 - t) ** 3));
