@@ -11,15 +11,17 @@ import classicMaps from "./fixtures/td-classic-maps.json" with { type: "json" };
 
 // Multiplier checks on a classic map; boards turn the range rule into reach steps (test-td-sim).
 const plain = classicMaps[0];
-const game = (theme) => new TowerDefenseGame({ heroes, tuning, map: { ...plain, theme }, waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 1, gapMs: 1000 }] }] });
+const game = (theme) => new TowerDefenseGame({ heroes, tuning, map: { ...plain, theme }, timeline: [{ startMs: 0, kind: "grunt", count: 1 }] });
+// Environment phases alternate every tuning.timeline.phaseSeconds of battle time: phase 1 is the first one.
+const inPhase = (g, n) => { g.started = true; g.time = (n - 1) * tuning.timeline.phaseSeconds + 1; };
 const road = { ...heroes.find(h => h.slot === "road"), slotType: "road", slotIndex: 0 };
 const platform = { ...heroes.find(h => h.slot === "platform"), slotType: "platform", slotIndex: 0 };
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} ≠ ${expected}`);
 const baseline = game("plain");
-baseline.wave = 1;
+inPhase(baseline, 1);
 const baseSpeed = baseline.spawnEnemy("grunt").speed;
 const frost = game("frostbound");
-frost.wave = 1;
+inPhase(frost, 1);
 close(frost.spawnEnemy("grunt").speed / baseSpeed, 0.88);
 close(frost.environment("aps", road), 0.92);
 frost.map = { ...frost.map, rings: { "road:0": "shrine" } };
@@ -42,15 +44,15 @@ sheltered.map = { ...sheltered.map, theme: "plain" };
 close(storm.deployRange(platform, "platform", 0), sheltered.deployRange(platform, "platform", 0));
 
 const tide = game("tidal");
-tide.wave = 1;
+inPhase(tide, 1);
 close(tide.spawnEnemy("grunt").speed / baseSpeed, 0.85);
-tide.wave = 2;
+inPhase(tide, 2);
 close(tide.spawnEnemy("grunt").speed / baseSpeed, 1.1);
 tide.reset();
-assert.equal(tide.wave, 0);
+assert.equal(tide.environmentPhase(), 0, "before the stage starts there is no phase");
 close(tide.environment("enemySpeed"), 1);
 const spores = game("mycelium");
-spores.wave = 1;
+inPhase(spores, 1);
 close(spores.spawnEnemy("grunt").maxHp / baseline.spawnEnemy("grunt").maxHp, 1.1);
 assert.equal(spores.healHero({ ...road, hp: 100, hpLeft: 0 }, 40, null), 50);
 close(game("crystal").environment("attack", { ...platform, damageType: "magical" }), 1.15);
@@ -60,9 +62,9 @@ close(game("necropolis").healHero({ ...road, hp: 100, hpLeft: 0 }, 40, null), 34
 close(game("autumn").environment("placementRate"), 1.15);
 close(game("autumn").ultChargeRate(road) / baseline.ultChargeRate(road), 1.15);
 const astral = game("celestial");
-astral.wave = 1;
+inPhase(astral, 1);
 close(astral.ultChargeRate(platform) / baseline.ultChargeRate(platform), 1.2);
-astral.wave = 2;
+inPhase(astral, 2);
 close(astral.environment("aps", platform), 1.1);
 close(astral.ultChargeRate(platform) / baseline.ultChargeRate(platform), 1);
 close(game("clockwork").environment("aps", platform), 1.15);

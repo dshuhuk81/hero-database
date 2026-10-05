@@ -8,12 +8,12 @@ import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 // Blessing math on the classic (pre-board) maps; on boards range follows the attack pattern.
 import maps from "./fixtures/td-classic-maps.json" with { type: "json" };
-import waves from "../src/data/tdWaves.json" with { type: "json" };
+import { OPEN_TIMELINE } from "./lib/td-legacy-timeline.mjs";
 
 const trunkNode = (type) => TREE.nodes.find((entry) => entry.tree === "trunk" && entry.effect.type === type);
 const classNode = (cls, type) => TREE.nodes.find((entry) => entry.tree === cls && entry.effect.type === type);
 const make = (levels = {}) => {
-  const game = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: maps[0], waves, seed: 5 });
+  const game = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   game.placement = 100000;
   return game;
 };
@@ -106,15 +106,15 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(run.run.lives, tuning.run.lives + lives.effect.value, "lives");
   assert.equal(tuning.run.startingPlacement, buildRunTuning(tuning, {}).run.startingPlacement, "base tuning not mutated");
 
-  assert.equal(make().wavePreview(2).totalHp, undefined, "no HP without Vidar");
-  assert.ok(make({ [trunkNode("showHp").id]: 1 }).wavePreview(2).totalHp > 0, "Vidar shows wave HP");
+  assert.equal(make().stageForecast().totalHp, undefined, "no HP without Vidar");
+  assert.ok(make({ [trunkNode("showHp").id]: 1 }).stageForecast().totalHp > 0, "Vidar shows the stage's total HP");
 
   const mage = heroOf("Mage");
   const plain = place(make(), mage).hp;
   assert.equal(place(make({ [trunkNode("heroHp").id]: 5 }), mage).hp, Math.round(plain * (1 + trunkNode("heroHp").effect.value * 5)), "hero HP");
 
   const rate = make({ [trunkNode("placementRate").id]: 5 });
-  rate.startWave(); rate.spawnQueue = [{ at: 999, kind: "grunt", scale: 1, lane: 0, sway: 0 }]; rate.enemies = [];
+  rate.start(); rate.enemies = [];
   const rateBefore = rate.placement;
   for (let i = 0; i < 60 * 20; i += 1) rate.step(1 / 60);
   assert.equal(rate.placement - rateBefore, Math.floor(20 * (1 + trunkNode("placementRate").effect.value * 5)), "placement rate");
@@ -122,20 +122,22 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   close(make({ [trunkNode("ultCharge").id]: 5 }).ultChargeRate(), 1 + trunkNode("ultCharge").effect.value * 5, "ult charge");
   close(make({ [trunkNode("synergyTag").id]: 2 }).synergyPerTag(), tuning.synergy.bonusPerTag + trunkNode("synergyTag").effect.value * 2, "synergy");
 
-  const slow = make({ [trunkNode("wave1Speed").id]: 3 });
-  slow.startWave();
+  const slow = make({ [trunkNode("openingSpeed").id]: 3 });
+  slow.start();
   slow.spawnEnemy("grunt");
-  close(slow.enemies.at(-1).speed, tuning.enemies.grunt.speed * (1 - trunkNode("wave1Speed").effect.value * 3), "wave 1 slowed");
+  close(slow.enemies.at(-1).speed, tuning.enemies.grunt.speed * (1 - trunkNode("openingSpeed").effect.value * 3), "the opening of the stage is slowed");
 
   const cheap = make({ odin_dominion: 5 });
   assert.equal(cheap.deployCost(mage.id), Math.round(mage.cost * (1 - findNode("odin_dominion").effect.value * 5)), "deployment discount");
 
-  const clear = make({ [trunkNode("clearPlacement").id]: 5 });
-  place(clear, mage);
-  clear.startWave(); clear.spawnQueue = []; clear.enemies = [];
-  const before = clear.placement;
-  clear.step(1 / 60);
-  assert.equal(clear.placement - before, trunkNode("clearPlacement").effect.value * 5 + (clear.quest?.status === "done" ? clear.quest.reward : 0), "wave-clear placement");
+  const offer = make({ [trunkNode("offerPlacement").id]: 5 });
+  place(offer, mage);
+  offer.start(); offer.enemies = [];
+  const before = offer.placement;
+  offer.enemiesDown = 1; // the one authored enemy counts as defeated: the first milestone opens
+  offer.step(1 / 60);
+  assert.ok(offer.virtueOffer, "a milestone opens an offer");
+  assert.ok(Math.abs(offer.placement - before - trunkNode("offerPlacement").effect.value * 5) < 0.2, "every offer pays placement");
 
   const offers = make({ [trunkNode("extraOffer").id]: 1 });
   offers.offerVirtues();
@@ -143,7 +145,7 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
   const boss = make({ [trunkNode("bossDamage").id]: 4 });
   const odin = place(boss, heroOf("Mage"));
-  boss.startWave(); boss.spawnQueue = []; boss.enemies = [];
+  boss.start(); boss.enemies = [];
   const b = boss.spawnEnemy("boss");
   const g = boss.spawnEnemy("grunt");
   const bHp = b.hp, gHp = g.hp;
@@ -245,25 +247,22 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   assert.equal(ta.hp, Math.round(ta.baseHp * (1 + bonus)), "Apotheosis health");
 }
 
-// --- Insight: waves on the field and kills per class, credited at wave clear ---
+// --- Insight: classes on the field at the end of the stage and kills per class ---
 {
-  const game = make();
+  const game = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}), map: maps[0], timeline: [{ startMs: 0, kind: "grunt", count: 1 }], seed: 5 });
+  game.placement = 1e6;
   const odin = place(game, heroOf("Mage"));
   const tank = place(game, heroOf("Tank"));
-  game.startWave(); game.spawnQueue = []; game.enemies = [];
+  game.start();
   for (let i = 0; i < TREE.insight.killsPerPoint; i += 1) game.hit(game.spawnEnemy("grunt"), 1e9, odin);
+  game.damageHero(tank, tank.hpLeft + 1, null); // a unit that falls still earns its class
   game.enemies = [];
-  game.step(1 / 60);
-  assert.deepEqual(game.insightLog.Mage, { waves: 1, kills: TREE.insight.killsPerPoint });
-  assert.deepEqual(game.insightLog.Tank, { waves: 1, kills: 0 });
-  const { perWave } = TREE.insight;
-  assert.deepEqual(computeInsight(game.insightLog), { Mage: perWave + 1, Tank: perWave }, "perWave per wave + 1 per killsPerPoint kills");
+  for (let i = 0; i < 60 * 60 && !game.complete; i += 1) game.step(1 / 60);
+  assert.deepEqual(game.insightLog.Mage, { stages: 1, kills: TREE.insight.killsPerPoint });
+  assert.deepEqual(game.insightLog.Tank, { stages: 1, kills: 0 }, "fallen tank still credited");
+  const { perStage } = TREE.insight;
+  assert.deepEqual(computeInsight(game.insightLog), { Mage: perStage + 1, Tank: perStage }, "perStage per class + 1 per killsPerPoint kills");
   assert.deepEqual(computeInsight({}), {}, "nothing played, nothing earned");
-  // A unit that falls during the wave still earns its class the wave.
-  game.startWave(); game.spawnQueue = []; game.enemies = [];
-  game.damageHero(tank, tank.hpLeft + 1, null);
-  game.step(1 / 60);
-  assert.equal(game.insightLog.Tank.waves, 2, "fallen tank still credited");
 }
 
 // --- Old tree refund ---
@@ -275,22 +274,22 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 
 // --- 6C run-end shards: eligibility, Favor size, and boosts folded into run tuning ---
 {
-  const { minWave, favorMin, placement: shardPlacement } = tuning.shards;
-  assert.equal(shardEligible(minWave - 1, tuning), false, "early loss earns no shard");
-  assert.equal(shardEligible(minWave, tuning), true, "reaching minWave earns a shard");
-  assert.equal(shardEligible(10, { ...tuning, shards: undefined }), false, "no config, no shards");
+  const { minDefeatedShare, favorMin, placement: shardPlacement } = tuning.shards;
+  assert.equal(shardEligible(minDefeatedShare - 0.01, tuning), false, "an early loss earns no shard");
+  assert.equal(shardEligible(minDefeatedShare, tuning), true, "defeating enough of the stage earns a shard");
+  assert.equal(shardEligible(1, { ...tuning, shards: undefined }), false, "no config, no shards");
   assert.equal(shardFavor(150, tuning), 15, "10% of run Favor");
   assert.equal(shardFavor(20, tuning), favorMin, "minimum Favor shard");
 
-  const base = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}), map: maps[0], waves, seed: 5 });
-  const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "placement", placement: shardPlacement }), map: maps[0], waves, seed: 5 });
+  const base = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
+  const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "placement", placement: shardPlacement }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   assert.equal(goldRun.placement, base.placement + shardPlacement, "placement shard adds starting placement");
   const virtue = Object.keys(tuning.virtueEffects)[0];
-  const virtueRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue }), map: maps[0], waves, seed: 5 });
+  const virtueRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   assert.deepEqual(virtueRun.virtues, [virtue], "virtue shard starts the run with the virtue");
   virtueRun.reset();
-  assert.deepEqual(virtueRun.virtues, [virtue], "virtue survives a reset (Favor rebuild before wave 1)");
-  const bogus = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue: "Nope" }), map: maps[0], waves, seed: 5 });
+  assert.deepEqual(virtueRun.virtues, [virtue], "virtue survives a reset (Favor rebuild before the stage)");
+  const bogus = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue: "Nope" }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   assert.deepEqual(bogus.virtues, [], "unknown virtue ignored");
 }
 
@@ -298,14 +297,14 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
 {
   const boardMaps = (await import("../src/data/tdMaps.json", { with: { type: "json" } })).default;
   const cfg = tuning.interventions;
-  const power = (levels) => new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: boardMaps[0], waves, seed: 5, interventions: ["thunderfall", "shield"] });
+  const power = (levels) => new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, levels), map: boardMaps[0], timeline: OPEN_TIMELINE, seed: 5, interventions: ["thunderfall", "shield"] });
   const storm = trunkNode("thunderCharge"), wrath = trunkNode("thunderArea"), vigil = trunkNode("shieldCharge"), long = trunkNode("shieldSeconds");
   assert.ok(storm && wrath && vigil && long, "four power nodes on the trunk");
   for (const node of [storm, wrath, vigil, long]) assert.equal(node.row, 4, `${node.name} sits on the power row`);
   close(power({ [storm.id]: 5 }).interventionState("thunderfall").max, cfg.thunderfall.charge * (1 - storm.effect.value * 5), "Thunderfall charges faster");
   close(power({ [vigil.id]: 5 }).interventionState("shield").max, cfg.shield.charge * (1 - vigil.effect.value * 5), "Shield charges faster");
   const lasting = power({ [long.id]: 3 });
-  lasting.startWave();
+  lasting.start();
   lasting.interventions.shield.charge = lasting.interventionState("shield").max;
   assert.ok(lasting.castShield(), "upgraded Shield casts");
   close(lasting.shieldUntil - lasting.time, cfg.shield.seconds + long.effect.value * 3, "Shield lasts longer");

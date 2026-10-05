@@ -108,7 +108,7 @@ export function createHud(ctx: PageContext) {
     const forecast = game.stageForecast?.();
     if (!forecast || game.started) return "";
     const detail = Object.entries(forecast.counts).map(([kind, count]) => `${count} ${kind === "boss" ? bossName() : KIND_NAMES[kind] ?? kind}`).join(", ");
-    return `<span class="td-forecast-chip td-forecast-chip--summary" title="${detail}"><b>${forecast.total}</b> enemies</span>`;
+    return `<span class="td-forecast-chip td-forecast-chip--summary" title="${detail}"><b>${forecast.total}</b> enemies${forecast.totalHp ? ` · <b>${forecast.totalHp.toLocaleString()}</b> HP` : ""}</span>`;
   }
 
   function incomingChips(game: any) {

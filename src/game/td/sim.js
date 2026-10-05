@@ -598,7 +598,7 @@ export class TowerDefenseGame {
       if (last && last.kind === entry.kind && eta - last.eta <= 3) last.count += 1;
       else ahead.push({ kind: entry.kind, count: 1, eta });
     }
-    return { total, counts, down: Math.min(total, this.enemiesDown), ahead: ahead.slice(0, maxGroups) };
+    return { total, counts, down: Math.min(total, this.enemiesDown), ahead: ahead.slice(0, maxGroups), ...(this.favor.showEnemyHp && { totalHp: this.stageTotalHp() }) };
   }
 
   // Starts the stage clock: the whole timeline becomes one spawn queue (no waves, no pauses).
@@ -748,7 +748,8 @@ export class TowerDefenseGame {
     if (this.running && !this.spawnQueue.length && !this.enemies.length) {
       this.running = false;
       // Insight: every class that stood on the field at the end counts once, fallen heroes included.
-      for (const hero of this.heroes) (this.insightLog[hero.class] ||= { stages: 0, kills: 0 }).stages = 1;
+      const classes = [...this.heroes.map((hero) => hero.class), ...this.fallenHeroes.map((entry) => this.heroesById.get(entry.id)?.class)].filter(Boolean);
+      for (const cls of classes) (this.insightLog[cls] ||= { stages: 0, kills: 0 }).stages = 1;
       this.finish(true);
     }
     this.checkMilestones();

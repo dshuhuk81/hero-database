@@ -7,7 +7,7 @@ import {
   QUEST_MILESTONES,
   QUEST_MAX_ACTIVITY,
   QUEST_TASKS,
-  QUEST_WAVE,
+  QUEST_DEFEATED,
   claimQuestMilestone,
   claimQuestTask,
   milestoneState,
@@ -34,7 +34,7 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
   assert.deepEqual(QUEST_TASKS.map((t) => t.points), [10, 20, 20, 20, 15, 10, 10, 10, 10, 10]);
   assert.equal(QUEST_MAX_ACTIVITY, 135, "total available activity");
   assert.equal(QUEST_BAR_GOAL, 100, "the bar pays up to 100 activity");
-  assert.equal(QUEST_WAVE, 10, "Free Play task counts a run ending at wave 10+");
+  assert.equal(QUEST_DEFEATED, 40, "Free Play task counts a run defeating 40 enemies");
   assert.deepEqual(QUEST_MILESTONES, [
     { at: 20, favor: 30, seals: 0 }, { at: 40, favor: 40, seals: 0 }, { at: 60, favor: 50, seals: 10 },
     { at: 80, favor: 60, seals: 0 }, { at: 100, favor: 80, seals: 15 },
@@ -101,7 +101,7 @@ const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
   const favor0 = save.favor;
   const seals0 = sealsOf(save);
   const done = (...ids) => { for (const id of ids) { notifyQuest(save, id, DAY); claimQuestTask(save, id, DAY); } };
-  done("heroic-clear", "expedition", "trial-goal", "challenge", "summon", "free-wave10"); // 95
+  done("heroic-clear", "expedition", "trial-goal", "challenge", "summon", "free-defeat40"); // 95
   assert.equal(questRecord(save, DAY).activity, 95);
   assert.equal(milestoneState(questRecord(save, DAY), 100), "locked", "100 needs 100 activity");
   assert.equal(save.favor, favor0, "no Favor before a chest is claimed");

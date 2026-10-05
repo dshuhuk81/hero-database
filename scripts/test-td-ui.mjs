@@ -44,7 +44,7 @@ assert.deepEqual([0, 1, 2, 3, 4].map(render.damageNumberOffset), [-14, 14, 0, -2
 assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.65, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), true, "rapid normal hits merge");
 assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.4, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), false, "older hits remain separate");
 assert.deepEqual(render.visibleStatusPips(["wet", "burn", "poison", "chill"]), ["wet", "burn", "poison"], "at most three status pips are shown");
-assert.equal(mapScene.spawnLabelVisible({ running: false }), true, "spawn label is visible between waves");
+assert.equal(mapScene.spawnLabelVisible({ running: false }), true, "spawn label is visible before the stage starts");
 assert.equal(mapScene.spawnLabelVisible({ running: true }), false, "spawn label hides during combat");
 assert.equal(ui.bossHudState({ enemies: [] }), null, "boss HUD stays hidden without a living boss");
 assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 250, maxHp: 1000 }] }), { ratio: 0.25, hp: 250, maxHp: 1000 }, "boss HUD reports the living boss health");
@@ -374,8 +374,7 @@ console.log("Tower defense UI helper checks passed.");
   const { buffChips } = await import("../src/game/td/ui.js");
   const { TowerDefenseGame } = await import("../src/game/td/sim.js");
   const heroes = (await import("../src/data/gameBalance.json", { with: { type: "json" } })).default;
-  const waves = (await import("../src/data/tdWaves.json", { with: { type: "json" } })).default;
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 3 });
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: [{ startMs: 10_000_000, kind: "grunt", count: 1 }], seed: 3 });
   for (const name of ["Wildness", "Desire", "Insight"]) { g.virtueOffer = [name]; g.chooseVirtue(name); }
   const chips = buffChips(g.modifiers());
   const atk = chips.find((chip) => chip.type === "atk");
@@ -394,12 +393,13 @@ console.log("Tower defense UI helper checks passed.");
   assert.deepEqual(rows.map((r) => r.id), ["a", "b", "c"], "sorted by damage, then support");
   assert.equal(rows[0].share, 0.75, "damage share");
   assert.deepEqual([shortNumber(950), shortNumber(1234), shortNumber(12400), shortNumber(1.25e6)], ["950", "1.2k", "12k", "1.3M"]);
-  assert.equal(lossReport({ wave: 3, leakKinds: {} }), null, "no leaks, no report");
-  const report = lossReport({ wave: 8, leakKinds: { flyer: 6, runner: 2 } });
+  assert.equal(lossReport({ leakKinds: {} }), null, "no leaks, no report");
+  const report = lossReport({ leakKinds: { flyer: 6, runner: 2 } });
   assert.equal(report.kind, "flyer");
+  assert.equal("wave" in report, false, "the loss report has no wave number");
   assert.equal(report.share, 0.75);
   assert.ok(report.hint.includes("platform"), "flyer hint");
-  assert.equal(lossReport({ wave: 8, leakKinds: { broodcaller: 2, imp: 3, runner: 4 } }).kind, "broodcaller", "imps count with their Broodcaller");
+  assert.equal(lossReport({ leakKinds: { broodcaller: 2, imp: 3, runner: 4 } }).kind, "broodcaller", "imps count with their Broodcaller");
   console.log("Run statistics checks passed.");
 }
 
@@ -424,8 +424,8 @@ console.log("Tower defense UI helper checks passed.");
   console.log("Hero panel checks passed.");
 }
 
-// R4 review fixes: redeploy prices use the discounted deployment cost, Auto waits while a
-// relocation is picked, and the revive notice no longer names a battle level.
+// R4 review fixes: redeploy prices use the discounted deployment cost, there is no auto-start
+// countdown, and the revive notice no longer names a battle level.
 {
   const { readFileSync } = await import("node:fs");
   const read = (path) => readFileSync(new URL(`../src/game/td/page/${path}`, import.meta.url), "utf8");
@@ -434,22 +434,8 @@ console.log("Tower defense UI helper checks passed.");
   assert.ok(fallen.includes("game.deployCost(hero.id)") && !/hero\.cost\b/.test(fallen), "fallen deck buttons price with deployCost");
   const redeploy = recruit.slice(recruit.indexOf("if (state.deployHeroId) {"), recruit.indexOf("// Drag a hero from the bar"));
   assert.ok(!/hero\.cost\b/.test(redeploy), "redeploy notice prices with deployCost");
-  assert.match(hud, /countdownHeld = [^\n]*state\.relocateEntityId !== null/, "Auto countdown waits during relocation");
+  assert.ok(!hud.includes("autoNext") && !hud.includes("countdownHeld"), "there is no auto-start countdown any more");
   assert.ok(!session.includes("(level 1, half health)"), "revive notice drops the battle level");
   console.log("R4 review fix checks passed.");
 }
 
-// Lean wave shape (dev experiment): fewer enemies, same total health, only via ?lean=.
-{
-  const { leanWaveTuning, leanParam } = await import("../src/game/td/wave-variants.js");
-  const lean = leanWaveTuning(tuning, 0.6);
-  const base = tuning.board.waveShape;
-  assert.ok(Math.abs(lean.board.waveShape.kinds.grunt.count * lean.board.waveShape.kinds.grunt.hp - base.kinds.grunt.count * base.kinds.grunt.hp) < 1e-9, "lean keeps total health per kind");
-  assert.equal(base.kinds.grunt.count, 0.4, "the source tuning is not mutated");
-  assert.ok(lean.board.waveShape.gap > base.gap, "lean lengthens the spawn gap");
-  assert.equal(leanParam("?lean=0.5"), 0.5);
-  assert.equal(leanParam("?lean"), 0.6);
-  assert.equal(leanParam(""), null);
-  assert.equal(leanParam("?lean=2"), null);
-  console.log("Lean wave variant checks passed.");
-}
