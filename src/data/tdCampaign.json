@@ -330,7 +330,7 @@
           "mapId": "moonlit-terraces",
           "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
           "lives": 15,
-          "hpScale": 0.66,
+          "hpScale": 1.04,
           "unlockAfter": "1-2",
           "rewards": [
             {
@@ -403,7 +403,7 @@
           "mapId": "verdant-thicket",
           "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
           "lives": 15,
-          "hpScale": 2.27,
+          "hpScale": 5.47,
           "unlockAfter": "1-3",
           "rewards": [
             {
@@ -478,7 +478,7 @@
           "mapId": "moonlit-horned-gate",
           "text": "Baphomet guards the end of the pass. It silences the hero that hit it last and hardens its hide from time to time; spread your damage over several heroes.",
           "lives": 14,
-          "hpScale": 1.14,
+          "hpScale": 2.45,
           "unlockAfter": "1-4",
           "rewards": [
             {
@@ -565,7 +565,7 @@
           "mapId": "verdant-glade",
           "text": "Hexers resist magic and hex the nearest hero so it briefly cannot attack. Archers outrange the hex and physical damage cuts them down fastest.",
           "lives": 15,
-          "hpScale": 1.4,
+          "hpScale": 3.36,
           "unlockAfter": "1-5",
           "rewards": [
             {
@@ -638,7 +638,7 @@
           "mapId": "sunscar-ruins",
           "text": "The ruins have two gates and every group of enemies splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
-          "hpScale": 1.96,
+          "hpScale": 3.98,
           "unlockAfter": "1-6",
           "rewards": [
             {
@@ -716,7 +716,7 @@
           "mapId": "verdant-hollow",
           "text": "Broodcallers resist magic and keep calling imps while they walk. Snipe the callers with archers before the swarm grows.",
           "lives": 15,
-          "hpScale": 0.75,
+          "hpScale": 1.48,
           "unlockAfter": "1-7",
           "rewards": [
             {
@@ -794,7 +794,7 @@
           "mapId": "sunscar-eve",
           "text": "Every enemy you have met comes at once, through both gates. A long stage tests your whole squad; level your heroes if you fall short.",
           "lives": 18,
-          "hpScale": 0.51,
+          "hpScale": 1.08,
           "unlockAfter": "1-8",
           "rewards": [
             {
@@ -882,7 +882,7 @@
           "mapId": "verdant-last-crossing",
           "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. The chapter's final battle.",
           "lives": 15,
-          "hpScale": 0.88,
+          "hpScale": 1.85,
           "unlockAfter": "1-9",
           "rewards": [
             {
@@ -1018,7 +1018,7 @@
           "mapId": "sunscar-basin",
           "text": "A new road winds through the basin and doubles back on itself. The platforms in its heart see three stretches of road at once; claim them early.",
           "lives": 16,
-          "hpScale": 4.54,
+          "hpScale": 7.11,
           "unlockAfter": "1-10",
           "rewards": [
             {
@@ -1091,7 +1091,7 @@
           "mapId": "sunscar-glass",
           "text": "Archers dig in on the dunes and shoot at your platforms; shieldbearers cover their advance. Blockers on the road draw their fire.",
           "lives": 15,
-          "hpScale": 3.18,
+          "hpScale": 5.68,
           "unlockAfter": "2-1",
           "rewards": [
             {
@@ -1242,7 +1242,7 @@
           "mapId": "sunscar-noon",
           "text": "Broodcallers hatch swarms in the heat. Kill them before they reach the long bends, or the brood floods the basin.",
           "lives": 16,
-          "hpScale": 1.23,
+          "hpScale": 1.99,
           "unlockAfter": "2-3",
           "rewards": [
             {
@@ -1330,7 +1330,7 @@
           "mapId": "sunscar-mirage",
           "text": "Everything the desert has, and the sky full of wings. Keep platform heroes spread along the whole road.",
           "lives": 16,
-          "hpScale": 0.56,
+          "hpScale": 1.1,
           "unlockAfter": "2-4",
           "rewards": [
             {
@@ -1423,7 +1423,7 @@
           "mapId": "sunscar-throne",
           "text": "The Horned Warden returns to the basin with the whole desert at his back. Hold the Sanctuary and Helios will stand with you.",
           "lives": 18,
-          "hpScale": 1.85,
+          "hpScale": 3.63,
           "unlockAfter": "2-5",
           "rewards": [
             {
@@ -1579,7 +1579,7 @@
           "mapId": "jungle-canopy-pass",
           "text": "The Sunscar road vanishes beneath the canopy. Secure the tight switchbacks before runners and shieldbearers take the inner court.",
           "lives": 16,
-          "hpScale": 2.19,
+          "hpScale": 4.71,
           "unlockAfter": "2-6",
           "rewards": [
             {
@@ -1667,7 +1667,7 @@
           "mapId": "jungle-root-maze",
           "text": "Ancient roots split the road into overlapping kill zones. Hold the central turns while archers and hexers attack from behind the advance.",
           "lives": 15,
-          "hpScale": 2.19,
+          "hpScale": 3.12,
           "unlockAfter": "3-1",
           "rewards": [
             {
@@ -1750,7 +1750,7 @@
           "mapId": "jungle-flooded-court",
           "text": "The temple court channels every assault through a shallow basin. Break the menders before the brutes climb back out. Hecate guards the far stair.",
           "lives": 15,
-          "hpScale": 1.23,
+          "hpScale": 2.36,
           "unlockAfter": "3-2",
           "rewards": [
             {
@@ -1848,7 +1848,7 @@
           "mapId": "jungle-jaguar-steps",
           "text": "The short climb to the jaguar shrine leaves little time to recover. Spread damage across the bends and stop each brood before it multiplies.",
           "lives": 15,
-          "hpScale": 1.08,
+          "hpScale": 2.64,
           "unlockAfter": "3-3",
           "rewards": [
             {
@@ -1931,7 +1931,7 @@
           "mapId": "jungle-emerald-coil",
           "text": "The longest road coils around the inner ruins. Layer your defenses: every enemy in the jungle joins the march to the Heart Temple.",
           "lives": 16,
-          "hpScale": 0.77,
+          "hpScale": 1.12,
           "unlockAfter": "3-4",
           "rewards": [
             {
@@ -2034,7 +2034,7 @@
           "mapId": "jungle-heart-temple",
           "text": "Ochenta, the Proud Commander, marches on the Heart Temple with the whole jungle host behind him. Every blow you land feeds his Valor: hit hard, not often, and keep the jade heart alive.",
           "lives": 18,
-          "hpScale": 1.45,
+          "hpScale": 2.31,
           "unlockAfter": "3-5",
           "rewards": [
             {
@@ -2200,7 +2200,7 @@
           "mapId": "frostbound-1",
           "text": "Enter Frostbound and establish your first defense. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 16,
-          "hpScale": 1.99,
+          "hpScale": 5.47,
           "unlockAfter": "3-6",
           "rewards": [
             {
@@ -2293,7 +2293,7 @@
           "mapId": "frostbound-2",
           "text": "Advance through Rime Causeway; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 16,
-          "hpScale": 2.11,
+          "hpScale": 4.21,
           "unlockAfter": "4-1",
           "rewards": [
             {
@@ -2371,7 +2371,7 @@
           "mapId": "frostbound-3",
           "text": "Advance through Glacier Court; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 16,
-          "hpScale": 1.27,
+          "hpScale": 2.69,
           "unlockAfter": "4-2",
           "rewards": [
             {
@@ -2479,7 +2479,7 @@
           "mapId": "frostbound-4",
           "text": "Advance through Frozen Sigils; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 16,
-          "hpScale": 1.96,
+          "hpScale": 2.84,
           "unlockAfter": "4-3",
           "rewards": [
             {
@@ -2587,7 +2587,7 @@
           "mapId": "frostbound-5",
           "text": "Advance through Winter Coil; cover the returning road with overlapping defenses. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 16,
-          "hpScale": 1.99,
+          "hpScale": 4.21,
           "unlockAfter": "4-4",
           "rewards": [
             {
@@ -2700,7 +2700,7 @@
           "mapId": "frostbound-6",
           "text": "Defend the sanctuary against the final assault. Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
           "lives": 18,
-          "hpScale": 2.9,
+          "hpScale": 6.6,
           "unlockAfter": "4-5",
           "rewards": [
             {
@@ -2856,7 +2856,7 @@
           "mapId": "ashen-1",
           "text": "Enter Ashen Forge and establish your first defense. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 16,
-          "hpScale": 2.49,
+          "hpScale": 4.54,
           "unlockAfter": "4-6",
           "rewards": [
             {
@@ -2949,7 +2949,7 @@
           "mapId": "ashen-2",
           "text": "Advance through Copper Descent; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 16,
-          "hpScale": 2.4,
+          "hpScale": 4.8,
           "unlockAfter": "5-1",
           "rewards": [
             {
@@ -3032,7 +3032,7 @@
           "mapId": "ashen-3",
           "text": "Advance through Furnace Court; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 16,
-          "hpScale": 1.23,
+          "hpScale": 3.63,
           "unlockAfter": "5-2",
           "rewards": [
             {
@@ -3140,7 +3140,7 @@
           "mapId": "ashen-4",
           "text": "Advance through Ember Locks; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 16,
-          "hpScale": 2.31,
+          "hpScale": 4.13,
           "unlockAfter": "5-3",
           "rewards": [
             {
@@ -3248,7 +3248,7 @@
           "mapId": "ashen-5",
           "text": "Advance through Cinder Circuit; cover the returning road with overlapping defenses. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 16,
-          "hpScale": 1.68,
+          "hpScale": 2.64,
           "unlockAfter": "5-4",
           "rewards": [
             {
@@ -3371,7 +3371,7 @@
           "mapId": "ashen-6",
           "text": "Defend the sanctuary against the final assault. Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
           "lives": 18,
-          "hpScale": 1.4,
+          "hpScale": 2.07,
           "unlockAfter": "5-5",
           "rewards": [
             {
@@ -3547,7 +3547,7 @@
           "mapId": "stormpeak-1",
           "text": "Enter Stormpeak and establish your first defense. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 16,
-          "hpScale": 1.23,
+          "hpScale": 1.75,
           "unlockAfter": "5-6",
           "rewards": [
             {
@@ -3645,7 +3645,7 @@
           "mapId": "stormpeak-2",
           "text": "Advance through Thunder Steps; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 16,
-          "hpScale": 1.56,
+          "hpScale": 1.96,
           "unlockAfter": "6-1",
           "rewards": [
             {
@@ -3738,7 +3738,7 @@
           "mapId": "stormpeak-3",
           "text": "Advance through Rain Court; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 16,
-          "hpScale": 1.02,
+          "hpScale": 1.96,
           "unlockAfter": "6-2",
           "rewards": [
             {
@@ -3851,7 +3851,7 @@
           "mapId": "stormpeak-4",
           "text": "Advance through Windbreak; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 16,
-          "hpScale": 1.04,
+          "hpScale": 1.53,
           "unlockAfter": "6-3",
           "rewards": [
             {
@@ -3969,7 +3969,7 @@
           "mapId": "stormpeak-5",
           "text": "Advance through Lightning Coil; cover the returning road with overlapping defenses. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 16,
-          "hpScale": 0.98,
+          "hpScale": 1.62,
           "unlockAfter": "6-4",
           "rewards": [
             {
@@ -4097,7 +4097,7 @@
           "mapId": "stormpeak-6",
           "text": "Defend the sanctuary against the final assault. Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
           "lives": 18,
-          "hpScale": 1.35,
+          "hpScale": 1.96,
           "unlockAfter": "6-5",
           "rewards": [
             {
@@ -4273,7 +4273,7 @@
           "mapId": "tidal-1",
           "text": "Enter Tidal Ruins and establish your first defense. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
-          "hpScale": 2.31,
+          "hpScale": 3.91,
           "unlockAfter": "6-6",
           "rewards": [
             {
@@ -4366,7 +4366,7 @@
           "mapId": "tidal-2",
           "text": "Advance through Tideway; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
-          "hpScale": 2.4,
+          "hpScale": 4.8,
           "unlockAfter": "7-1",
           "rewards": [
             {
@@ -4459,7 +4459,7 @@
           "mapId": "tidal-3",
           "text": "Advance through Pearl Court; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
-          "hpScale": 1.62,
+          "hpScale": 3.3,
           "unlockAfter": "7-2",
           "rewards": [
             {
@@ -4572,7 +4572,7 @@
           "mapId": "tidal-4",
           "text": "Advance through Sunken Bells; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
-          "hpScale": 1.75,
+          "hpScale": 3.83,
           "unlockAfter": "7-3",
           "rewards": [
             {
@@ -4660,7 +4660,7 @@
           "mapId": "tidal-5",
           "text": "Advance through Undertow; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
-          "hpScale": 2.95,
+          "hpScale": 5.17,
           "unlockAfter": "7-4",
           "rewards": [
             {
@@ -4778,7 +4778,7 @@
           "mapId": "tidal-6",
           "text": "Defend the sanctuary against the final assault. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 18,
-          "hpScale": 1.53,
+          "hpScale": 3.12,
           "unlockAfter": "7-5",
           "rewards": [
             {
@@ -4959,7 +4959,7 @@
           "mapId": "mycelium-1",
           "text": "Enter Mycelium Hollow and establish your first defense. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 16,
-          "hpScale": 2.15,
+          "hpScale": 4.45,
           "unlockAfter": "7-6",
           "rewards": [
             {
@@ -5052,7 +5052,7 @@
           "mapId": "mycelium-2",
           "text": "Advance through Lantern Roots; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 16,
-          "hpScale": 1.35,
+          "hpScale": 3.76,
           "unlockAfter": "8-1",
           "rewards": [
             {
@@ -5140,7 +5140,7 @@
           "mapId": "mycelium-3",
           "text": "Advance through Fungal Court; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 16,
-          "hpScale": 1.1,
+          "hpScale": 2.31,
           "unlockAfter": "8-2",
           "rewards": [
             {
@@ -5243,7 +5243,7 @@
           "mapId": "mycelium-4",
           "text": "Advance through Bloom Chambers; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 16,
-          "hpScale": 1.42,
+          "hpScale": 1.59,
           "unlockAfter": "8-3",
           "rewards": [
             {
@@ -5361,7 +5361,7 @@
           "mapId": "mycelium-5",
           "text": "Advance through Mycelial Coil; cover the returning road with overlapping defenses. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 16,
-          "hpScale": 1.48,
+          "hpScale": 3.3,
           "unlockAfter": "8-4",
           "rewards": [
             {
@@ -5474,7 +5474,7 @@
           "mapId": "mycelium-6",
           "text": "Defend the sanctuary against the final assault. Heroes receive 25% more healing. Enemies gain 10% maximum health.",
           "lives": 18,
-          "hpScale": 1.2,
+          "hpScale": 2.49,
           "unlockAfter": "8-5",
           "rewards": [
             {
@@ -5675,7 +5675,7 @@
           "mapId": "crystal-1",
           "text": "Enter Crystal Vault and establish your first defense. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
           "lives": 16,
-          "hpScale": 1.78,
+          "hpScale": 3.91,
           "unlockAfter": "8-6",
           "rewards": [
             {
@@ -5778,7 +5778,7 @@
           "mapId": "crystal-2",
           "text": "Advance through Prism Steps; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
           "lives": 16,
-          "hpScale": 1.37,
+          "hpScale": 4.13,
           "unlockAfter": "9-1",
           "rewards": [
             {
@@ -5871,7 +5871,7 @@
           "mapId": "crystal-3",
           "text": "Advance through Facet Court; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
           "lives": 16,
-          "hpScale": 1.72,
+          "hpScale": 2.64,
           "unlockAfter": "9-2",
           "rewards": [
             {
@@ -5984,7 +5984,7 @@
           "mapId": "crystal-4",
           "text": "Advance through Resonance Hall; cover the returning road with overlapping defenses. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
           "lives": 16,
-          "hpScale": 1.18,
+          "hpScale": 1.08,
           "unlockAfter": "9-3",
           "rewards": [
             {
@@ -6230,7 +6230,7 @@
           "mapId": "crystal-6",
           "text": "Defend the sanctuary against the final assault. Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
           "lives": 18,
-          "hpScale": 1.1,
+          "hpScale": 1.48,
           "unlockAfter": "9-5",
           "rewards": [
             {
@@ -6421,7 +6421,7 @@
           "mapId": "necropolis-1",
           "text": "Enter Haunted Necropolis and establish your first defense. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 16,
-          "hpScale": 3.24,
+          "hpScale": 6.72,
           "unlockAfter": "9-6",
           "rewards": [
             {
@@ -6519,7 +6519,7 @@
           "mapId": "necropolis-2",
           "text": "Advance through Bone Road; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 16,
-          "hpScale": 4.62,
+          "hpScale": 4.37,
           "unlockAfter": "10-1",
           "rewards": [
             {
@@ -6607,7 +6607,7 @@
           "mapId": "necropolis-3",
           "text": "Advance through Silent Court; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 16,
-          "hpScale": 1.12,
+          "hpScale": 3.24,
           "unlockAfter": "10-2",
           "rewards": [
             {
@@ -6725,7 +6725,7 @@
           "mapId": "necropolis-4",
           "text": "Advance through Wraith Watch; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 16,
-          "hpScale": 1.82,
+          "hpScale": 2.59,
           "unlockAfter": "10-3",
           "rewards": [
             {
@@ -6843,7 +6843,7 @@
           "mapId": "necropolis-5",
           "text": "Advance through Funeral Coil; cover the returning road with overlapping defenses. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 16,
-          "hpScale": 1.92,
+          "hpScale": 3.56,
           "unlockAfter": "10-4",
           "rewards": [
             {
@@ -6961,7 +6961,7 @@
           "mapId": "necropolis-6",
           "text": "Defend the sanctuary against the final assault. Kills pay 20% more gold. Heroes receive 15% less healing.",
           "lives": 18,
-          "hpScale": 1.62,
+          "hpScale": 1.99,
           "unlockAfter": "10-5",
           "rewards": [
             {
@@ -7137,7 +7137,7 @@
           "mapId": "autumn-1",
           "text": "Enter Autumn Sanctuary and establish your first defense. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 16,
-          "hpScale": 2.36,
+          "hpScale": 6.72,
           "unlockAfter": "10-6",
           "rewards": [
             {
@@ -7225,7 +7225,7 @@
           "mapId": "autumn-2",
           "text": "Advance through Maple Road; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 16,
-          "hpScale": 1.99,
+          "hpScale": 3.63,
           "unlockAfter": "11-1",
           "rewards": [
             {
@@ -7318,7 +7318,7 @@
           "mapId": "autumn-3",
           "text": "Advance through Harvest Court; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 16,
-          "hpScale": 1.14,
+          "hpScale": 3.01,
           "unlockAfter": "11-2",
           "rewards": [
             {
@@ -7431,7 +7431,7 @@
           "mapId": "autumn-4",
           "text": "Advance through Falling Leaves; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 16,
-          "hpScale": 1.59,
+          "hpScale": 6.01,
           "unlockAfter": "11-3",
           "rewards": [
             {
@@ -7529,7 +7529,7 @@
           "mapId": "autumn-5",
           "text": "Advance through Golden Coil; cover the returning road with overlapping defenses. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 16,
-          "hpScale": 1.96,
+          "hpScale": 3.49,
           "unlockAfter": "11-4",
           "rewards": [
             {
@@ -7647,7 +7647,7 @@
           "mapId": "autumn-6",
           "text": "Defend the sanctuary against the final assault. Kills pay 15% more gold. Road heroes charge their ultimates 15% faster.",
           "lives": 18,
-          "hpScale": 2.64,
+          "hpScale": 3.98,
           "unlockAfter": "11-5",
           "rewards": [
             {
@@ -7828,7 +7828,7 @@
           "mapId": "celestial-1",
           "text": "Enter Celestial Observatory and establish your first defense. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
-          "hpScale": 1.48,
+          "hpScale": 4.8,
           "unlockAfter": "11-6",
           "rewards": [
             {
@@ -7916,7 +7916,7 @@
           "mapId": "celestial-2",
           "text": "Advance through Moon Meridian; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
-          "hpScale": 2.11,
+          "hpScale": 3.76,
           "unlockAfter": "12-1",
           "rewards": [
             {
@@ -8009,7 +8009,7 @@
           "mapId": "celestial-3",
           "text": "Advance through Astral Court; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
-          "hpScale": 1.16,
+          "hpScale": 2.95,
           "unlockAfter": "12-2",
           "rewards": [
             {
@@ -8122,7 +8122,7 @@
           "mapId": "celestial-4",
           "text": "Advance through Orbit Hall; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
-          "hpScale": 1.82,
+          "hpScale": 5.27,
           "unlockAfter": "12-3",
           "rewards": [
             {
@@ -8220,7 +8220,7 @@
           "mapId": "celestial-5",
           "text": "Advance through Comet Coil; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
-          "hpScale": 1.99,
+          "hpScale": 4.06,
           "unlockAfter": "12-4",
           "rewards": [
             {
@@ -8338,7 +8338,7 @@
           "mapId": "celestial-6",
           "text": "Defend the sanctuary against the final assault. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 18,
-          "hpScale": 0.93,
+          "hpScale": 2.59,
           "unlockAfter": "12-5",
           "rewards": [
             {
@@ -8519,7 +8519,7 @@
           "mapId": "clockwork-1",
           "text": "Enter Clockwork Citadel and establish your first defense. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 16,
-          "hpScale": 1.82,
+          "hpScale": 3.36,
           "unlockAfter": "12-6",
           "rewards": [
             {
@@ -8617,7 +8617,7 @@
           "mapId": "clockwork-2",
           "text": "Advance through Gearway; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 16,
-          "hpScale": 2.07,
+          "hpScale": 5.47,
           "unlockAfter": "13-1",
           "rewards": [
             {
@@ -8715,7 +8715,7 @@
           "mapId": "clockwork-3",
           "text": "Advance through Piston Court; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 16,
-          "hpScale": 1,
+          "hpScale": 3.36,
           "unlockAfter": "13-2",
           "rewards": [
             {
@@ -8803,7 +8803,7 @@
           "mapId": "clockwork-4",
           "text": "Advance through Steam Locks; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 16,
-          "hpScale": 2.15,
+          "hpScale": 2.11,
           "unlockAfter": "13-3",
           "rewards": [
             {
@@ -8911,7 +8911,7 @@
           "mapId": "clockwork-5",
           "text": "Advance through Escapement; cover the returning road with overlapping defenses. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 16,
-          "hpScale": 2.15,
+          "hpScale": 3.3,
           "unlockAfter": "13-4",
           "rewards": [
             {
@@ -9014,7 +9014,7 @@
           "mapId": "clockwork-6",
           "text": "Defend the sanctuary against the final assault. Heroes attack 15% faster. Enemies move 10% faster.",
           "lives": 18,
-          "hpScale": 2.11,
+          "hpScale": 4.8,
           "unlockAfter": "13-5",
           "rewards": [
             {
