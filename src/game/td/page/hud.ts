@@ -150,12 +150,15 @@ export function createHud(ctx: PageContext) {
     return `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s left to clear`;
   }
 
-  // Shown during a wave in place of the next-wave preview.
+  // Shown during a wave in place of the next-wave preview. Kept to a short chip (the full goal sits in
+  // its tooltip) so it never spreads over the first combat row.
   function questChip(game: any) {
     const quest = game.quest;
     const status = quest.status === "failed" ? " is-failed" : "";
-    const detail = quest.status === "failed" ? "failed" : `${questGoal(quest, game)} - +${quest.gold} gold`;
-    return `<span class="td-wave-chip td-quest-chip${status}" data-td-quest>Quest <b>${questName(quest)}</b> ${detail}</span>`;
+    const lastSpawnAt = game.waveStats?.lastSpawnAt;
+    const progress = quest.type === "heroKills" ? `${Math.min(quest.kills, quest.target)}/${quest.target} ` : quest.type === "speedClear" && lastSpawnAt != null ? `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s ` : "";
+    const detail = quest.status === "failed" ? "failed" : `${progress}+${quest.gold}g`;
+    return `<span class="td-wave-chip td-quest-chip${status}" data-td-quest title="${questGoal(quest, game)} - +${quest.gold} gold">Quest <b>${questName(quest)}</b> ${detail}</span>`;
   }
 
   function renderPreview() {

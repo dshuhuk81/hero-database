@@ -1298,7 +1298,9 @@ export class TowerDefenseGame {
       case "ground": return prefer((e) => (e.flying ? 0 : 1));
       case "flying": return prefer((e) => (e.flying ? 1 : 0));
       case "boss": return prefer((e) => (e.kind === "boss" ? 1 : 0));
-      default: return classOrder;
+      // Flyers skip blockers, so only platform heroes can stop them: by default those shoot a flyer
+      // in reach first (owner playtest, Oct 5: platform heroes ignored them while brutes soaked fire).
+      default: return hero.slotType === "platform" ? prefer((e) => (e.flying ? 1 : 0)) : classOrder;
     }
   }
 

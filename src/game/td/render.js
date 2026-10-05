@@ -2211,6 +2211,27 @@ export async function createRenderer(canvas, game, options = {}) {
   // each frame because they depend on game.heroes / game.uiPlacement which
   // can change any tick.
   // ------------------------------------------------------------------
+  // A melee enemy stops deep inside its blocker's tile (blocking.contactRange), where its sprite
+  // hides behind or under the hero. Visual only: while drawing, held enemies are pushed out to a
+  // stand-off distance along the line from the hero, and the simulation positions are restored
+  // right after, so hit tests, targeting and balance are untouched.
+  function standOffHeldEnemies() {
+    const board = boardOf(game.map);
+    const standOff = (board?.cell ?? 96) * 0.42;
+    const moved = [];
+    for (const enemy of game.enemies) {
+      const hero = enemy.held ? enemy.heldBy : null;
+      if (!hero || enemy.dead) continue;
+      const dx = enemy.x - hero.x, dy = enemy.y - hero.y, d = Math.hypot(dx, dy);
+      if (d >= standOff) continue;
+      moved.push([enemy, enemy.x, enemy.y]);
+      const ux = d > 0.5 ? dx / d : -1, uy = d > 0.5 ? dy / d : 0;
+      enemy.x = hero.x + ux * standOff;
+      enemy.y = hero.y + uy * standOff;
+    }
+    return moved;
+  }
+
   function draw(now = performance.now()) {
     const dyingDt = dyingClock === null ? 0 : Math.min((now - dyingClock) / 1000, 0.1);
     dyingClock = now;
@@ -2218,11 +2239,16 @@ export async function createRenderer(canvas, game, options = {}) {
     buildSlots();
     buildRanges();
     buildLinks();
-    syncEnemies();
-    advanceDying(dyingDt);
-    syncHeroes();
-    drawBars();
-    drawEffects(now);
+    const standOff = standOffHeldEnemies();
+    try {
+      syncEnemies();
+      advanceDying(dyingDt);
+      syncHeroes();
+      drawBars();
+      drawEffects(now);
+    } finally {
+      for (const [enemy, x, y] of standOff) { enemy.x = x; enemy.y = y; }
+    }
     updateSpecialTileFx(now);
     updateAuraFx(now);
     applyImpact(now);

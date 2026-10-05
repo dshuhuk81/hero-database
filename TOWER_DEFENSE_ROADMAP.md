@@ -145,6 +145,25 @@ value (x0.6 plus gap x1.5), more at x0.4. So a count change is an R12 retune, no
 `?lean=0.6` (count x0.6, gap x1.5, Campaign hpScale x0.7; `src/game/td/wave-variants.js`, off by default);
 reproduce the numbers with `npm run td:wave-variants`.
 
+**Owner playtest, Campaign 1-1 to 1-5 (October 5):** Daily Trial and Expedition now use R18 like the Campaign
+(they had old flat layouts); the in-wave quest is a short chip (full goal in its tooltip); held melee enemies
+are drawn at a stand-off distance from their blocker (render only, `standOffHeldEnemies` in `render.js`, sim
+positions and `blocking.contactRange` 24 untouched, because the contact-depth test exists for a reason);
+the result screen's Retry button says "Retry" (stage name in the tooltip); platform heroes on the default "auto"
+targeting now shoot flyers in reach first (only they can hit them; "ground" or any chosen mode overrides).
+Balance feedback: 1-3 hard but doable, 1-4 hard because of flyers (addressed by the targeting default),
+Brutes stay as they are (owner: challenging is fine). Flyers still escaped two or three platform heroes, so their base speed
+dropped from 62 to 44 (grunt speed 42; runner 76). Bot check, flyer-only wave on the 1-4 map, 14 squads: speed 62 -> 1 win and
+41 leaks, 50 -> 4 / 36, 42 -> 4 / 34, 36 -> 8 / 29. The whole 1-4 stage is not a flyer test: the bot dies in wave 2 there.
+
+**Stage 1-7 "Two Gates" eased (October 5, owner: very hard; the first wave always leaks one enemy, three ground
+heroes cannot also cover the later flyers):** `hpScale` 2.5 -> 2.0, wave 1 grunts 14 -> 10, flyers 12 -> 9 (wave 3),
+14 -> 10, 8 -> 6 (last two flyer groups). Bot, 14 squads, hpScale 1.0: 6/14 wins before, 10/14 with the trimmed
+waves; at the old 2.5 the bot wins 0/14 either way, so the bot cannot rate the human experience here. Note for R12:
+`td-board-tune.mjs` now suggests far lower `hpScale` for the whole of chapter 1 (1-7: 0.63, 1-6: 0.45, 1-9: 0.2)
+than the authored 1.8 to 2.9, but the owner clears these stages with focus targeting and relocation, which the
+bot does not use, so those suggestions are a lower bound, not a target.
+
 ### Open work after the board rewrite (October 4, 2026)
 
 Branch `tower-defense-planning` finished the board rewrite and the first round of ideas (archive:

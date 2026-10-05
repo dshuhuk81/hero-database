@@ -393,7 +393,8 @@ export function createResults(ctx: PageContext) {
     primaryAction = game.won
       ? q<HTMLButtonElement>(expedition || campaign ? "[data-td-result-continue]" : "[data-td-result-retry]")
       : lossRetryButton.hidden ? lossCloseButton : lossRetryButton;
-    retryButton.textContent = game.won && !endless ? `Retry ${map.name}` : "Retry";
+    retryButton.textContent = "Retry"; // the stage name overflowed the button; it stays in the tooltip
+    retryButton.title = game.won && !endless ? `Retry ${map.name}` : "Retry";
     statsButton.hidden = !game.won || endless;
     if (!game.won) {
       stageClear.playDefeat();

@@ -852,7 +852,7 @@
           "mapId": "sunscar-ruins",
           "text": "The ruins have two gates and every wave splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
-          "hpScale": 2.5,
+          "hpScale": 2,
           "unlockAfter": "1-6",
           "rewards": [
             {
@@ -877,7 +877,7 @@
               "spawns": [
                 {
                   "kind": "grunt",
-                  "count": 14,
+                  "count": 10,
                   "gapMs": 600
                 }
               ]
@@ -902,7 +902,7 @@
               "spawns": [
                 {
                   "kind": "flyer",
-                  "count": 12,
+                  "count": 9,
                   "gapMs": 550
                 },
                 {
@@ -952,7 +952,7 @@
               "spawns": [
                 {
                   "kind": "flyer",
-                  "count": 14,
+                  "count": 10,
                   "gapMs": 450
                 },
                 {
@@ -982,7 +982,7 @@
                 },
                 {
                   "kind": "flyer",
-                  "count": 8,
+                  "count": 6,
                   "gapMs": 500
                 }
               ]

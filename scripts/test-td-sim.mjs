@@ -1850,7 +1850,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     const runner = near("runner", odin.x, odin.y - 20, 150, 50);
     const flyer = near("flyer", odin.x + 10, odin.y + 10, 50, 60);
     assert.equal(odin.targeting, "auto", "placed heroes start on the class rule");
-    assert.equal(g.findTarget(odin), front, "auto: Mage takes the enemy furthest along");
+    assert.equal(g.findTarget(odin), flyer, "auto: a platform Mage shoots a flyer in reach first (only platform heroes can), then the class rule");
     const expect = { first: front, last: flyer, strongest: tank, weakest: runner, fastest: runner, flying: flyer, ground: front };
     for (const [mode, target] of Object.entries(expect)) {
       assert.equal(g.setTargeting(odin.entityId, mode), true, `${mode} accepted`);
