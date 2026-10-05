@@ -3168,7 +3168,7 @@
 }
 
 /* Stage overlays --------------------------------------------------------- */
-.td-wave-preview {
+.td-forecast {
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
@@ -3182,11 +3182,11 @@
   pointer-events: none;
 }
 
-.td-stage-name:not([hidden])~.td-wave-preview {
+.td-stage-name:not([hidden])~.td-forecast {
   top: 64px;
 }
 
-.td-wave-chip {
+.td-forecast-chip {
   padding: 3px 8px;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
@@ -3195,12 +3195,12 @@
   font-size: var(--td-fs-label);
 }
 
-.td-wave-chip b {
+.td-forecast-chip b {
   color: var(--accent-gold);
   font-weight: var(--weight-bold);
 }
 
-.td-wave-chip--muted {
+.td-forecast-chip--muted {
   color: var(--text-muted);
   border-style: dashed;
 }
@@ -3254,7 +3254,7 @@
   max-width: min(520px, calc(100% - var(--td-hero-panel-w, 0px) - var(--space-6)));
 }
 
-.td-stage[data-hero-panel="left"] :is(.td-stage-name, .td-wave-preview) {
+.td-stage[data-hero-panel="left"] :is(.td-stage-name, .td-forecast) {
   left: calc(var(--td-hero-panel-w, 0px) + var(--space-2));
 }
 
@@ -7413,11 +7413,6 @@ svg.td-class-icon {
     width: 32px;
     height: 32px;
   }
-
-  .td-topbar .td-auto-button {
-    font-size: var(--text-xs);
-  }
-
   .td-bottombar {
     flex-wrap: wrap;
     gap: var(--space-2);
@@ -7563,13 +7558,6 @@ svg.td-class-icon {
     width: 34px;
     height: 34px;
   }
-
-  .td-topbar .td-auto-button {
-    min-width: 0;
-    padding: 0;
-    font-size: var(--td-fs-label);
-  }
-
   .td-deck {
     order: 0;
     flex: 1 1 auto;
@@ -7670,13 +7658,13 @@ svg.td-class-icon {
   opacity: 0;
 }
 
-.td-wave-chip--pending {
+.td-forecast-chip--pending {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
 
 /* Buff bar: summed run blessings, top-right of the battlefield. */
-.td-wave-preview {
+.td-forecast {
   max-width: calc(50% - var(--space-3));
 }
 
@@ -7948,8 +7936,8 @@ svg.td-class-icon {
   }
 
   /* Match the stage-name rule's specificity, or its top: 64px wins and stretches the chips. */
-  .td-wave-preview,
-  .td-stage-name:not([hidden])~.td-wave-preview {
+  .td-forecast,
+  .td-stage-name:not([hidden])~.td-forecast {
     top: auto;
     bottom: var(--space-2);
     max-width: 45%;
@@ -7969,7 +7957,7 @@ svg.td-class-icon {
   }
 }
 
-.td-wave-chip--hp b {
+.td-forecast-chip--hp b {
   color: var(--td-hp);
 }
 
@@ -8107,21 +8095,6 @@ svg.td-class-icon {
 
 .td-debug-copy:empty {
   display: none;
-}
-
-.td-quest-chip {
-  border-color: color-mix(in srgb, var(--accent-gold) 50%, var(--border-subtle));
-  color: var(--text-secondary);
-}
-
-.td-quest-chip.is-failed {
-  border-style: dashed;
-  color: var(--text-muted);
-  text-decoration: line-through;
-}
-
-.td-quest-chip.is-failed b {
-  color: var(--text-muted);
 }
 
 /* Run-end shard pick (6C) */
@@ -8390,19 +8363,6 @@ svg.td-class-icon {
       opacity: 1;
     }
   }
-}
-
-.td-auto-button {
-  width: auto;
-  min-width: 44px;
-  padding: 0 var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-bold);
-}
-
-.td-auto-button.is-on {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
 }
 
 /* Recruit sheet preview: in-game Spine idle loop as a sprite sheet (scripts/td-spine/) */
@@ -8716,7 +8676,7 @@ svg.td-class-icon {
     line-height: var(--leading-tight);
   }
 
-  .td-stage:has(.td-sheet:not([hidden])) .td-wave-preview {
+  .td-stage:has(.td-sheet:not([hidden])) .td-forecast {
     bottom: calc(118px + var(--space-2));
   }
 }
@@ -13826,8 +13786,8 @@ button .td-cur {
 
   /* Row two: preview/quest left, buffs right. Keep both inside their own half and
      allow horizontal scrolling instead of wrapping over the first combat row. */
-  .td-play[data-bleed] .td-wave-preview,
-  .td-play[data-bleed] .td-stage-name:not([hidden]) ~ .td-wave-preview,
+  .td-play[data-bleed] .td-forecast,
+  .td-play[data-bleed] .td-stage-name:not([hidden]) ~ .td-forecast,
   .td-play[data-bleed] .td-buffs {
     top: calc(var(--td-bleed-top) + 44px);
     bottom: auto;
@@ -13840,7 +13800,7 @@ button .td-cur {
     touch-action: pan-x;
   }
 
-  .td-play[data-bleed] .td-wave-preview {
+  .td-play[data-bleed] .td-forecast {
     left: var(--space-2);
   }
 
@@ -13849,12 +13809,12 @@ button .td-cur {
     justify-content: flex-start;
   }
 
-  .td-play[data-bleed] :is(.td-wave-chip, .td-buff) {
+  .td-play[data-bleed] :is(.td-forecast-chip, .td-buff) {
     flex: 0 0 auto;
     white-space: nowrap;
   }
 
-  .td-play[data-bleed] :is(.td-wave-preview, .td-buffs)::-webkit-scrollbar {
+  .td-play[data-bleed] :is(.td-forecast, .td-buffs)::-webkit-scrollbar {
     display: none;
   }
 

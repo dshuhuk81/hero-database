@@ -47,7 +47,7 @@ export function convertStage({ stage, chapter, index, count }) {
       // The last repeat may be short: emit a remainder group so the total is exact.
       const full = Math.floor(total / perRepeat);
       const rest = total - full * perRepeat;
-      const startMs = clusterStart + s * 1500;
+      const startMs = clusterStart + Math.round((span * 0.6 * s) / cluster.length); // the kinds of a cluster follow each other
       timeline.push({ startMs, kind: spawn.kind, count: perRepeat, ...(full > 1 && { repeat: full, everyMs }) });
       if (rest) timeline.push({ startMs: startMs + full * everyMs, kind: spawn.kind, count: rest });
     });

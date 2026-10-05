@@ -59,16 +59,15 @@ export function validSquad(campaign, progress, squad) {
 }
 
 // Options for new TowerDefenseGame(...) on top of heroes, tuning and map. The stage's own
-// waves replace tdWaves.json; classic mode plays exactly that list.
+// timeline is the whole encounter.
 // `heroes`: the run's hero list with campaign levels applied (collectionHeroes), if any.
 // `heroic`: the stage's Heroic version (the Heroic tier: tuning.tiers.heroic).
 export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null, heroic = false) {
   return {
     ...(heroes && { heroes }),
-    mode: "classic",
     tier: heroic ? "heroic" : "normal",
     seed: seed >>> 0,
-    waves: stage.waves,
+    timeline: stage.timeline,
     allowedHeroes: squad,
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
@@ -337,15 +336,15 @@ export function buyCopiesWithDust(summonCfg, progress, heroId, count = 1) {
 export const ownedHeroes = (progress, heroes) => heroes.filter((hero) => progress.owned.includes(hero.id));
 
 // Gold and Hero XP a Free Play run or an Expedition stage pays into the collection:
-// `collectionRewards.perWave` for each cleared wave, up to `maxWaves` per run. Never Divine
+// `collectionRewards.perDefeated` for each enemy defeated, up to `maxDefeated` per run. Never Divine
 // Seals, so new heroes come no faster than before.
-export function collectionReward(campaign, wavesCleared) {
+export function collectionReward(campaign, defeated) {
   const cfg = campaign.collectionRewards;
-  const waves = Math.max(0, Math.min(Math.floor(Number(wavesCleared) || 0), cfg?.maxWaves ?? Infinity));
-  if (!cfg || !waves) return [];
-  return Object.entries(cfg.perWave ?? {})
+  const count = Math.max(0, Math.min(Math.floor(Number(defeated) || 0), cfg?.maxDefeated ?? Infinity));
+  if (!cfg || !count) return [];
+  return Object.entries(cfg.perDefeated ?? {})
     .filter(([id, amount]) => CURRENCIES.includes(id) && id !== "divineSeals" && amount > 0)
-    .map(([id, amount]) => ({ type: "currency", id, amount: Math.round(amount * waves) }));
+    .map(([id, amount]) => ({ type: "currency", id, amount: Math.round(amount * count) }));
 }
 
 // The run's hero list with campaign levels and stars applied to attack and health and

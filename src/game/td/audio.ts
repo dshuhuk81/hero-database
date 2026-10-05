@@ -1,7 +1,7 @@
 // Minimal WebAudio player for the tower defense minigame, plus background music.
 // Combat and interface sounds from td/sfx on R2 (Tactical Interface SFX, commercial license;
 // public/td/sfx/CREDITS-mythic.txt). Volume and mute persist in localStorage; hit sounds are
-// capped so a full wave stays pleasant.
+// capped so a crowded stage stays pleasant.
 import { devAssets, tdAsset } from "./assets.js";
 import levels from "../../data/tdAudioLevels.json";
 

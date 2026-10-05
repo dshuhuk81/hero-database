@@ -2,7 +2,7 @@
 // summary for the home screen, starting the trial run, and recording a finished trial for the
 // result screen. Setup, seed and the save record live in ../daily.js.
 import { bossSprite, classIconImg } from "../assets.js";
-import { clearedWaves, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
+import { defeatedCount, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { addSeals } from "../campaign.js";
 import { notifyQuest } from "../quests.js";
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
@@ -38,22 +38,22 @@ export function resetText(now = Date.now()) {
 }
 
 // Goal line shared by the Daily Trial screen and the result screen.
-export const dailyGoalText = (setup: DailySetup) => `Clear wave ${setup.goal}`;
+export const dailyGoalText = (setup: DailySetup) => `Defeat ${setup.goal} enemies`;
 
 export function dailyBestText(save: SaveData, date: string) {
   const record = dailyRecord(save.daily, date);
   if (!record) return "No trial run today yet.";
-  return `Today's best: ${record.bestScore.toLocaleString()} points, ${record.bestWave} ${record.bestWave === 1 ? "wave" : "waves"} cleared${record.goalReached ? " - goal reached" : ""}.`;
+  return `Today's best: ${record.bestScore.toLocaleString()} points, ${record.bestDefeated} ${record.bestDefeated === 1 ? "enemy" : "enemies"} defeated${record.goalReached ? " - goal reached" : ""}.`;
 }
 
 // Records a finished trial run in the save (skipped for debug runs), pays the one-time
 // goal Favor and Divine Seals and returns the result screen line. The caller persists the save.
 export function finishDaily(save: SaveData, game: any, setup: DailySetup, record: boolean) {
-  const cleared = clearedWaves(game);
-  const reached = cleared >= setup.goal;
+  const defeated = defeatedCount(game);
+  const reached = defeated >= setup.goal;
   let reward = 0;
   if (record) {
-    const result = recordDaily(save.daily, setup, { cleared, score: game.score ?? 0 });
+    const result = recordDaily(save.daily, setup, { defeated, score: game.score ?? 0 });
     save.daily = result.records;
     reward = result.reward;
     save.favor = (save.favor || 0) + reward;
@@ -101,7 +101,7 @@ export function createDaily(ctx: PageContext) {
     bossEl.textContent = boss.name;
     const bossArt = bossSprite(boss.id);
     if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
-    goalEl.innerHTML = `Survive the assault and clear <strong>wave ${current.goal}</strong>.`;
+    goalEl.innerHTML = `Hold the line and defeat <strong>${current.goal} enemies</strong>.`;
     rewardAmountEl.textContent = `+${DAILY.rewardFavor}`;
     q("[data-td-daily-reward-seals]").textContent = DAILY_SEALS ? `+${DAILY_SEALS} Divine Seals` : "";
     rewardEl.classList.toggle("is-claimed", !!record?.goalReached);

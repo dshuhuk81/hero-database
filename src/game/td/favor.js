@@ -6,22 +6,24 @@ import blessingTree from "../../data/blessingTree.json" with { type: "json" };
 export const TREE = blessingTree;
 export const CLASSES = blessingTree.classes;
 
+// Favor of a finished run: `share` is the part of the stage's enemies defeated (0..1), a perfect run (no
+// leaks) adds a flat bonus.
 export function computeFavor(runStats, tuning) {
   const earn = tuning.favorEarn;
-  let total = runStats.waves * earn.perWave;
-  total += (runStats.perfectWaves || 0) * earn.perPerfectWave;
+  let total = Math.round((runStats.share || 0) * earn.perStage);
+  if (runStats.perfect) total += earn.perfectBonus;
   if (runStats.bossKilled) total += earn.bossKill;
   total += Math.min(runStats.livesLeft || 0, earn.remainingLifeCap) * earn.perRemainingLife;
   return total;
 }
 
-// Insight per class from the sim's run log ({ Tank: { waves, kills } }): one per
-// wave a hero of that class was on the field at wave clear, one per killsPerPoint kills.
+// Insight per class from the sim's run log ({ Tank: { stages, kills } }): `perStage` for each class a hero of
+// which stood on the field when the stage ended, one per killsPerPoint kills.
 export function computeInsight(log, tree = TREE) {
   const cfg = tree.insight;
   const out = {};
   for (const [cls, entry] of Object.entries(log || {})) {
-    const points = (entry.waves || 0) * cfg.perWave + Math.floor((entry.kills || 0) / cfg.killsPerPoint);
+    const points = (entry.stages || 0) * cfg.perStage + Math.floor((entry.kills || 0) / cfg.killsPerPoint);
     if (points > 0) out[cls] = points;
   }
   return out;
@@ -145,9 +147,9 @@ export function applyBlessings(levels, tree = TREE) {
       case "placementRate": add(bonuses, "placementRate", value); break;
       case "ultCharge": add(bonuses, "ultChargeBonus", value); break;
       case "synergyTag": add(bonuses, "synergyTagBonus", value); break;
-      case "wave1Speed": add(bonuses, "wave1SpeedDebuff", value); break;
+      case "openingSpeed": add(bonuses, "openingSpeedDebuff", value); break;
       case "deployDiscount": add(bonuses, "deployDiscount", value); break;
-      case "clearPlacement": add(bonuses, "clearPlacement", value); break;
+      case "offerPlacement": add(bonuses, "offerPlacement", value); break;
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
       case "extraOffer": add(bonuses, "extraOffer", value); break;
       case "bossDamage": add(bonuses, "bossDamage", value); break;
@@ -175,10 +177,10 @@ export function buildRunTuning(tuning, levels, boost = null) {
   return { ...tuning, favor: bonuses, run };
 }
 
-// Run-end shards (6C). Runs that reach tuning.shards.minWave earn a pick; the
+// Run-end shards (6C). Runs that defeat tuning.shards.minDefeatedShare of the stage earn a pick; the
 // Favor shard is worth favorPct of the run's Favor, at least favorMin.
-export function shardEligible(wave, tuning) {
-  return !!tuning.shards && wave >= tuning.shards.minWave;
+export function shardEligible(share, tuning) {
+  return !!tuning.shards && share >= tuning.shards.minDefeatedShare;
 }
 
 export function shardFavor(earnedFavor, tuning) {

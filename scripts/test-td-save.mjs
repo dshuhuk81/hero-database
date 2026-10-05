@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { findNode, nodeSpent } from "../src/game/td/favor.js";
-import { availableFavor, availableInsight, emptySave, encodeSaveCode, modeBest, parseSaveText, resetTdAccount, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX } from "../src/game/td/page/save.ts";
+import { availableFavor, availableInsight, emptySave, encodeSaveCode, parseSaveText, resetTdAccount, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX, tierBest } from "../src/game/td/page/save.ts";
 
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 
@@ -41,11 +41,12 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.deepEqual(clean.favLevels, { gaia_bounty: 2, frac: 2 }, "blessing levels cleaned");
   assert.deepEqual(clean.insight, { Mage: 12 }, "insight cleaned");
   assert.equal(clean.refundNotice, 0, "new saves have nothing to refund");
-  assert.equal(clean.bestWave, 7, "numeric bestWave");
+  assert.equal("bestWave" in clean, false, "the legacy bestWave field is dropped");
+  assert.equal(clean.bestDefeated, 0, "bestDefeated starts at 0");
   assert.equal(clean.favor, 25, "numeric favor");
   assert.equal(clean.perfectDefense, true, "boolean perfect");
   assert.deepEqual(Object.keys(clean.mapBests), ["moonlit-pass"], "run without score dropped");
-  assert.deepEqual(clean.mapTop["moonlit-pass"], { score: 500, wave: 6 }, "old saves seed mapTop from last run");
+  assert.deepEqual(clean.mapTop["moonlit-pass"], { score: 500, defeated: 0 }, "old saves seed mapTop from last run");
 }
 
 // Saves from before October 1, 2026 used the database ids (zeus, nuwa, ...): they load
@@ -106,20 +107,29 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.equal(sanitizeSave({ bestScore: 0 }, rules).nextRunBoost, null, "old saves have no boost");
 }
 
-// Run modes (M2): per-mode records share mapTop under "map@mode" keys.
+// Legacy run modes are gone: records of "map@long" and "map@endless" merge into the plain map key, keeping the higher score.
 {
-  assert.equal(runKey("moonlit-pass", "classic"), "moonlit-pass", "classic keeps the plain map id");
-  assert.equal(runKey("moonlit-pass", "endless"), "moonlit-pass@endless", "other modes get a suffix");
+  assert.equal(runKey("moonlit-pass"), "moonlit-pass", "Normal keeps the plain map id");
+  assert.equal(runKey("moonlit-pass", "heroic"), "moonlit-pass#heroic");
   const clean = sanitizeSave({
-    bestScore: 700,
-    mapTop: { "moonlit-pass": { score: 600, wave: 10 }, "moonlit-pass@long": { score: 1500, wave: 18 }, "verdant-crossing@long": { score: 1900, wave: 20 }, "moonlit-pass@endless": { score: 3200, wave: 27 } },
+    bestScore: 5000, bestWave: 12,
+    mapTop: { "moonlit-pass": { score: 3000, wave: 8 }, "moonlit-pass@long": { score: 4200, wave: 15 }, "sunscar-ruins@endless": { score: 900, wave: 20 }, "moonlit-pass@long#heroic": { score: 800, wave: 4 } },
+    daily: [{ date: "2026-10-01", bestWave: 4, bestScore: 700, goalReached: false }],
+    quests: { date: "2026-10-01", activity: 0, tasks: { "free-wave10": { done: true, claimed: false } }, milestones: [] },
   }, rules);
-  assert.equal(modeBest(clean, "classic"), 700, "classic best ignores other modes");
-  assert.equal(modeBest(clean, "long"), 1900, "20-wave best across maps");
-  assert.equal(modeBest(clean, "endless"), 3200, "endless best");
-  assert.equal(modeBest(emptySave(), "endless"), 0, "no runs yet");
+  assert.equal(clean.bestScore, 5000, "score record survives");
+  assert.deepEqual(clean.mapTop["moonlit-pass"], { score: 4200, defeated: 0 }, "mode suffix merged, higher score kept");
+  assert.deepEqual(clean.mapTop["sunscar-ruins"], { score: 900, defeated: 0 });
+  assert.deepEqual(clean.mapTop["moonlit-pass#heroic"], { score: 800, defeated: 0 }, "tier suffix kept");
+  assert.equal(Object.keys(clean.mapTop).some((key) => key.includes("@")), false, "no mode suffix left");
+  assert.equal(clean.daily[0].bestDefeated, 0, "old daily record keeps its score and starts at 0 defeated");
+  assert.equal(clean.daily[0].bestScore, 700);
+  assert.ok(clean.quests.tasks["free-defeat40"]?.done, "the renamed daily quest keeps its progress");
+  assert.equal(tierBest(clean), 5000, "Normal best is the plain bestScore or the best Normal map record");
+  assert.equal(tierBest(clean, "heroic"), 800);
+  assert.equal(tierBest(emptySave()), 0, "no runs yet");
   const roundTrip = parseSaveText(encodeSaveCode(clean), rules);
-  assert.deepEqual(roundTrip.mapTop, clean.mapTop, "mode records survive the save code");
+  assert.deepEqual(roundTrip.mapTop, clean.mapTop, "records survive the save code");
 }
 
 // Tree v3 (M3): a v2 save keeps its levels and its available Favor and Insight; Surge
@@ -143,17 +153,13 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.equal(fresh.repriceNotice, false, "new saves get no notice");
 }
 
-// Difficulty tiers (M3): own record keys, Normal keys unchanged, endless always Normal.
+// Difficulty tiers (M3): own record keys, Normal keys unchanged.
 {
-  assert.equal(runKey("moonlit-pass", "classic"), "moonlit-pass");
-  assert.equal(runKey("moonlit-pass", "classic", "heroic"), "moonlit-pass#heroic");
-  assert.equal(runKey("moonlit-pass", "long", "mythic"), "moonlit-pass@long#mythic");
-  assert.equal(runKey("moonlit-pass", "endless", "mythic"), "moonlit-pass@endless", "endless ignores the tier");
-  const save = { ...emptySave(), bestScore: 100, mapTop: { "moonlit-pass": { score: 100, wave: 10 }, "moonlit-pass#heroic": { score: 500, wave: 10 }, "moonlit-pass@long#heroic": { score: 900, wave: 20 } } };
-  assert.equal(modeBest(save, "classic"), 100, "Normal record ignores Heroic");
-  assert.equal(modeBest(save, "classic", "heroic"), 500);
-  assert.equal(modeBest(save, "long", "heroic"), 900);
-  assert.equal(modeBest(save, "long"), 0, "20 waves Normal has no run");
+  assert.equal(runKey("moonlit-pass", "mythic"), "moonlit-pass#mythic");
+  const save = { ...emptySave(), bestScore: 100, mapTop: { "moonlit-pass": { score: 100, defeated: 10 }, "moonlit-pass#heroic": { score: 500, defeated: 10 } } };
+  assert.equal(tierBest(save), 100, "Normal record ignores Heroic");
+  assert.equal(tierBest(save, "heroic"), 500);
+  assert.equal(tierBest(save, "mythic"), 0, "Mythic has no run");
 }
 
 console.log("Tower defense save checks passed.");

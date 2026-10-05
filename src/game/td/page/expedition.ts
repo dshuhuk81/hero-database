@@ -103,7 +103,7 @@ export function createExpedition(ctx: PageContext) {
       const names = card.ids.map((id: string) => relicInfo[id]?.name ?? id).join(" + ");
       const texts = card.ids.map((id: string) => relicInfo[id]?.text ?? "").join(" ");
       return `<button type="button" class="td-exp-choice td-exp-choice--relic" data-exp-card="${index}"><span class="td-exp-choice-icon">${icon(RELIC_ICON)}</span>` +
-        `<span class="td-label">Relics</span><strong>${names}</strong><small>${texts} Active from wave 1 of every stage.</small></button>`;
+        `<span class="td-label">Relics</span><strong>${names}</strong><small>${texts} Active from the start of every stage.</small></button>`;
     }
     const names = card.ids.map((id: string) => heroById.get(id)?.name ?? id).join(", ");
     return `<button type="button" class="td-exp-choice td-exp-choice--drill" data-exp-card="${index}"><span class="td-exp-choice-icon">${icon(DRILL_ICON)}</span>` +

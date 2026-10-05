@@ -5,7 +5,7 @@ import { buildRunTuning } from "../favor.js";
 import { createBlessingsGraph } from "./blessings";
 import { boonCard, mechanicBoonCard } from "./boons";
 import type { PageContext } from "./context";
-import { availableFavor, modeBest } from "./save";
+import { availableFavor, tierBest } from "./save";
 
 export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }) {
   const { root, q, state, store, data, pause, blessingNames } = ctx;
@@ -78,7 +78,7 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
 
   function renderMenu() {
     ctx.actions.updateHud();
-    q("[data-td-menu-best]").textContent = modeBest(store.data, state.session?.game.mode ?? state.selectedMode, state.session?.game.tier ?? state.selectedTier).toLocaleString();
+    q("[data-td-menu-best]").textContent = tierBest(store.data, state.session?.game.tier ?? state.selectedTier).toLocaleString();
     q<HTMLButtonElement>("[data-td-restart]").hidden = !state.session;
     ctx.actions.syncAudioUi();
   }
@@ -146,7 +146,7 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     const boons: string[] = game?.boons ?? [];
     const synergies = game ? game.activeSynergyCount() : 0;
     if (!game || (!virtues.length && !pairs.length && !boons.length && !synergies)) {
-      panel.innerHTML = `<p class="td-favor-note">No run blessings yet. Clearing a wave can offer a blessing that lasts for the rest of the run.</p>`;
+      panel.innerHTML = `<p class="td-favor-note">No run blessings yet. Defeating enemies opens blessing offers that last for the rest of the run.</p>`;
       return;
     }
     const cards = virtues.map((name) => boonCard({ tag: "div", name: blessingNames[name] ?? name, effect: data.tuning.virtueEffects[name], compact: true })).join("");

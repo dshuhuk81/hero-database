@@ -3,7 +3,7 @@
 // class, status effect and boss. No page title, back link or disclaimer; those
 // belong to the wrapper (TdGlossary.astro for the standalone page, a Glossary
 // screen in the game shell). Static; numbers come from the same data the game
-// runs on (gameBalance + tuning, tdWaves, tdMaps, bosses, skills.js).
+// runs on (gameBalance + tuning, tdCampaign timelines, tdMaps, bosses, skills.js).
 //
 // Props:
 //   assetBase     R2 base URL, no trailing slash (class icons, enemy sprites).
@@ -18,7 +18,6 @@
 import rawHeroes from "../../data/gameBalance.json";
 import rawTuning from "../../data/gameBalance.tuning.json";
 import { skinHeroes, skinTuning } from "../../game/td/skin.js";
-import waves from "../../data/tdWaves.json";
 import maps from "../../data/tdMaps.json";
 import bosses from "../../data/bosses.json";
 import tdBosses from "../../data/tdBosses.json";
@@ -113,10 +112,9 @@ const heroCards = [...(heroes as any[])]
     };
   });
 
-// Enemies: wave-1 health (difficulty and per-wave growth applied in sim.js spawnEnemy).
+// Enemies: base health (difficulty applied in sim.js spawnEnemy).
 const hpScale = t.difficulty?.enemyHp ?? 1;
-const waveGrowth = 0.15; // sim.js difficulty.waveHpScale default
-const firstWave = (kind: string) => (waves as any[]).find((wave) => wave.spawns.some((group: any) => group.kind === kind))?.wave;
+const firstStage = (kind: string) => (campaign as any).chapters.flatMap((chapter: any) => chapter.stages).find((stage: any) => stage.timeline.some((group: any) => group.kind === kind))?.id;
 const bossById = new Map([...(bosses as any).bosses, ...tdBosses.bosses].map((boss: any) => [boss.id, boss]));
 const stageBossIds = (campaign as any).chapters.flatMap((chapter: any) => chapter.stages.map((stage: any) => stage.boss).filter(Boolean));
 const bossMaps = (id: string) => [...new Set([
@@ -124,12 +122,12 @@ const bossMaps = (id: string) => [...new Set([
   ...(campaign as any).chapters.flatMap((chapter: any) => chapter.stages.filter((stage: any) => stage.boss === id).map((stage: any) => stage.name)),
 ])];
 
-// Wave enemies on boards are converted (tuning.board.waveShape: fewer, stronger enemies);
+// Stage enemies on boards are converted (tuning.board.enemyShape: fewer, stronger enemies);
 // bosses and summoned enemies are not. Cards show the converted values.
-const SHAPE = (rawTuning as any).board?.waveShape ?? {};
+const SHAPE = (rawTuning as any).board?.enemyShape ?? {};
 const shapeFor = (kind: string) => {
   const cfg = { ...SHAPE, ...(SHAPE.kinds?.[kind] ?? {}) };
-  const power = cfg.power ?? 1 / (cfg.count || 1);
+  const power = cfg.power ?? 1;
   return { hp: cfg.hp ?? power, attack: cfg.attack ?? power, reward: cfg.reward ?? power };
 };
 function enemyCard(kind: string, overrides: any = {}) {
@@ -138,13 +136,13 @@ function enemyCard(kind: string, overrides: any = {}) {
   const raw = { ...t.enemies[kind], ...(overrides.stats ?? {}) };
   const base = { ...raw, hp: raw.hp * shape.hp, attack: raw.attack ? Math.round(raw.attack * shape.attack) : raw.attack, reward: Math.round(raw.reward * shape.reward) };
   const magicRes = base.magicRes ?? base.armor * 0.8;
-  const wave = overrides.wave ?? firstWave(kind);
+  const stageId = overrides.stage ?? firstStage(kind);
   return {
     kind,
     name: overrides.name ?? ENEMY_INFO[kind].name,
     text: overrides.text ?? ENEMY_INFO[kind].text,
     image: overrides.image ?? (ENEMY_ART[kind] ? enemySprite(ENEMY_ART[kind].file, ENEMY_ART[kind].version) : enemySprite(kind)),
-    meta: overrides.meta ?? (wave ? `First seen on wave ${wave}` : ""),
+    meta: overrides.meta ?? (stageId ? `First seen in stage ${stageId}` : ""),
     tags: [base.flying ? "Flying" : "Ground", base.attackRange ? "Ranged" : base.attack ? "Melee" : "Does not attack"],
     stats: [
       ["Health", Math.round(base.hp * hpScale)],
@@ -154,7 +152,7 @@ function enemyCard(kind: string, overrides: any = {}) {
       ["Attack", base.attack ? `${base.attack} / ${base.attackPeriod}s` : "-"],
       ...(base.attackRange ? [["Attack range", base.attackRange]] : []),
       ...(base.shield ? [["Shield", Math.round(base.hp * hpScale * base.shield.hp)]] : []),
-      // Shown lives (board.js shownLives): wave enemies are converted so a leak costs their
+      // Shown lives (board.js shownLives): stage enemies are converted so a leak costs their
       // damage in shown lives; bosses and summoned enemies are not, so they cost a fraction.
       ["Lives lost", unshaped ? +(base.damage / ((rawTuning as any).board?.lifeUnit ?? 1)).toFixed(1) : base.damage],
     ],
@@ -204,12 +202,12 @@ const heroAttrs: [string, string, string][] = [
   ["auto_awesome", "Awakened ultimate", "Evolution V on the Heroes screen unlocks a stronger ultimate. Each hero card lists what changes."],
   ["military_tech", "Hero collection", "Heroes are unlocked in the Campaign and summoned with Divine Seals. Campaign stages, Free Play and Expeditions use only the heroes you own; the Daily Trial gives everyone the same squad. Level, Stars, Evolution and Skills from the Heroes screen apply in every mode; Free Play and Expeditions add Divine Blessings on top."],
   ["star", "Divine Blessings", "Apply in Free Play and Expeditions, not in Campaign stages or the Daily Trial."],
-  ["bolt", "Divine Interventions", `Two powers in the bottom bar that charge during waves (one point per second, one per kill). Thunderfall (after stage ${t.interventions?.thunderfall?.unlockAfter}): tap the map, a bolt strikes those tiles for ${pct(t.interventions?.thunderfall?.share ?? 0)} of every enemy's health (${pct(t.interventions?.thunderfall?.bossShare ?? 0)} for bosses). Shield (after stage ${t.interventions?.shield?.unlockAfter}): for ${t.interventions?.shield?.seconds}s leaks cost no lives, once per wave. Not in the Daily Trial.`],
+  ["bolt", "Divine Interventions", `Two powers in the bottom bar that charge during the stage (one point per second, one per kill). Thunderfall (after stage ${t.interventions?.thunderfall?.unlockAfter}): tap the map, a bolt strikes those tiles for ${pct(t.interventions?.thunderfall?.share ?? 0)} of every enemy's health (${pct(t.interventions?.thunderfall?.bossShare ?? 0)} for bosses). Shield (after stage ${t.interventions?.shield?.unlockAfter}): for ${t.interventions?.shield?.seconds}s leaks cost no lives, once per wave. Not in the Daily Trial.`],
   ["diversity_3", "Pantheon bonds", "Norse heroes on the field together: 2 give +6% attack, 4 give +12% attack and 10% faster ultimates. Greek heroes: 2 take 7% less damage, 4 take 13% less and heal 15% more. Each recruit counts for the pantheon with more heroes on the field."],
   ["savings", "Placement points", `Every battle starts with ${t.run?.startingPlacement ?? 0} placement points and gains ${t.run?.placementPerSecond ?? 1} per second of battle. Heroes cost placement points to deploy; gold is only used to level heroes.`],
 ];
 const enemyAttrs: [string, string, string][] = [
-  ["favorite", "Health", `At wave 1. Enemies gain ${pct(waveGrowth)} health every wave; in Endless they also grow stronger past wave 20.`],
+  ["favorite", "Health", "Base health. Each stage scales it with its own health scale, and harder difficulties add more."],
   ["directions_run", "Speed", "Map pixels per second. Slows and blockers hold it back."],
   ["shield", "Armor / Magic res", "Reduce physical and magic damage taken; the percentage is how much. Archers pierce part of the armor."],
   ["swords", "Attack", "Damage per hit to the road hero holding it, and the time between hits."],
@@ -357,7 +355,7 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
 
     <section aria-labelledby={id("bosses")}>
       <Section class="td-glossary-heading" id={id("bosses")}><span class="td-msym" aria-hidden="true">{UI_ICON.bosses}</span>Bosses</Section>
-      <p class="td-glossary-lead">A boss ends every 10-wave run. 20-wave and Endless runs bring one every 5th wave; the earlier ones are weaker. Health is shown at wave 1 strength.</p>
+      <p class="td-glossary-lead">A boss closes a stage: it steps onto the road once the other enemies are down, or after a short wait. Health is shown at base strength.</p>
       <div class="td-glossary-grid">
         {bossCardsView.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
       </div>

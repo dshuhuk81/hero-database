@@ -149,7 +149,7 @@ export function createPopover(ctx: PageContext) {
     updateHealth(unit);
     updateStats(unit);
     updateTargeting(unit);
-    // Relocation (R4): between waves, to an empty tile of the same type, for a share of the deployment cost.
+    // Relocation (R4): any time (a short cooldown per hero), to an empty tile of the same type, for a share of the deployment cost.
     const move = game.relocationInfo(unit.entityId);
     popRelocate.disabled = !move.ok || game.placement < (move.cost ?? Infinity);
     popRelocateCost.textContent = Number.isFinite(move.cost) ? (move.cost === 0 ? "Free" : `${move.cost} placement`) : "";

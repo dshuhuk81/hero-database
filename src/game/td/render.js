@@ -576,6 +576,14 @@ export async function createRenderer(canvas, game, options = {}) {
             seam.rect(0, 540 - (i + 1) * 2, 960, 2).fill({ color: 0x000000, alpha: a });
           }
           layerBgTex.addChild(seam);
+          // Focus: the board edges fall off into shadow so the eye stays on the lanes and units.
+          const vignette = new PIXI.Graphics();
+          for (let i = 0; i < 32; i++) {
+            const a = 0.34 * (1 - i / 32) ** 2;
+            vignette.rect(i * 3, 0, 3, 540).fill({ color: 0x000000, alpha: a });
+            vignette.rect(960 - (i + 1) * 3, 0, 3, 540).fill({ color: 0x000000, alpha: a });
+          }
+          layerBgTex.addChild(vignette);
         }
       } catch (error) {
         console.warn(`${sceneArt.name} terrain could not load; using the stone ground fallback.`, error);
@@ -1128,6 +1136,7 @@ export async function createRenderer(canvas, game, options = {}) {
     lvlText.anchor.set(0.5);
     lvlText.position.set(0, 0.5);
     badge.addChild(disc, lvlText);
+    if (tiltOn) { badge.scale.set(0.72); badge.position.set(17, 15); badge.alpha = 0.9; } // quieter on the tilted board
     container._lvlText = lvlText;
     container._badgeDisc = disc;
     container.addChild(badge);
@@ -1215,7 +1224,7 @@ export async function createRenderer(canvas, game, options = {}) {
       container._anim = sp;
       // A figure stands on the slot: shadow only, no token disc or level ring behind it. The
       // number badge still shows the level; health and ultimate charge remain below it.
-      container._base.clear().ellipse(0, HERO_ANIM.feetY, 22, 6).fill({ color: 0x000000, alpha: 0.45 });
+      container._base.clear().ellipse(0, HERO_ANIM.feetY, tiltOn ? 26 : 22, tiltOn ? 8 : 6).fill({ color: 0x000000, alpha: tiltOn ? 0.6 : 0.45 });
       if (tiltOn) container._base.ellipse(16, HERO_ANIM.feetY + 3, 38, 8).fill({ color: 0x000000, alpha: 0.2 }); // R18 B: long soft shadow, light from the upper left
       container._border.visible = false;
       container._animState = { clip: "idle", start: now, atk: unit.attackClock, ult: unit.ultClock };
@@ -2144,7 +2153,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     advanceParticles(dt);
     // Kit effects run on game time: frozen while paused, faster at higher game speed,
-    // wall time between waves so tails finish. A restarted run clears them.
+    // wall time after a stage so tails finish. A restarted run clears them.
     if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); heroFx.reset(); }
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;

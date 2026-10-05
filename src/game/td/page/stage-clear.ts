@@ -13,7 +13,7 @@ export type ClearScene = (typeof SCENES)[number];
 
 export type StageClearReport = {
   mapName: string;
-  context: string; // "10 waves · Normal"
+  context: string; // "Free Play · Normal"
   score: number;
   personalBest: boolean;
   lives: number;

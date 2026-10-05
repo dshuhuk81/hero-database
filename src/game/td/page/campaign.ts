@@ -4,6 +4,7 @@
 // buy one or ten heroes not owned yet; the reveal stage is ./summon-reveal.ts) and recording a finished stage for the result screen. Rules
 // live in ../campaign.js, stage data in src/data/tdCampaign.json, the banner in
 // src/data/tdSummon.json.
+import { timelineTotals } from "../timeline.js";
 import { mapSceneFor } from "../map-scene.js";
 import { shownLives } from "../board.js";
 import { environmentFor } from "../environments.js";
@@ -134,7 +135,8 @@ export function createCampaign(ctx: PageContext) {
   const drawerBody = q("[data-td-camp-drawer-body]");
   const lineupEl = q("[data-td-squad-lineup]");
   const feedbackEl = q("[data-td-squad-feedback]");
-  const hasEnemy = (stage: any, kind: string) => stage.waves.some((wave: any) => wave.spawns.some((spawn: any) => spawn.kind === kind));
+  const hasEnemy = (stage: any, kind: string) => stage.timeline.some((group: any) => group.kind === kind);
+  const enemyCount = (stage: any) => timelineTotals(stage.timeline).total;
   const terrain = (stage: any) => mapSceneFor(mapOf(stage.mapId))?.assets.terrain ?? "";
   // Corner badge on a stage card: check when cleared, lock when locked, a play mark on the next one.
   const BADGE_PATHS: Record<string, string> = {
@@ -211,7 +213,7 @@ export function createCampaign(ctx: PageContext) {
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
-        <small>${stage.waves.length} waves${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(stageLaurels(campaign, p, stage)) : ""}</span></button>`;
+        <small>${enemyCount(stage)} enemies${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(stageLaurels(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
     // The stage row scrolls sideways: bring the next stage into view.
     const nextCard = stagesEl.querySelector<HTMLElement>(".is-next");
@@ -260,7 +262,7 @@ export function createCampaign(ctx: PageContext) {
           ${environmentFor(mapOf(stage.mapId)) ? `<p class="td-camp-drawer-about"><strong>${environmentFor(mapOf(stage.mapId))!.rule}:</strong> ${environmentFor(mapOf(stage.mapId))!.text}</p>` : ""}
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
-            <div><dt>Waves</dt><dd>${stage.waves.length}</dd></div>
+            <div><dt>Enemies</dt><dd>${enemyCount(stage)}</dd></div>
             <div><dt>Lives</dt><dd>${livesShown(stage.lives)}</dd></div>
             ${boss ? `<div><dt>Boss</dt><dd>${boss}</dd></div>` : ""}
             ${done ? `<div><dt>Best</dt><dd>${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives</dd></div>` : ""}

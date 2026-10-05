@@ -21,7 +21,7 @@ const PAD = 0.6; // grid units around the world
 
 const GLYPHS: Record<string, string> = {
   startingPlacement: "Place", lives: "Life", showHp: "Scout", heroHp: "HP", placementRate: "Rate", ultCharge: "Ult",
-  synergyTag: "Bond", wave1Speed: "Slow", deployDiscount: "Cost", clearPlacement: "Clear", contactRange: "Wall",
+  synergyTag: "Bond", openingSpeed: "Slow", deployDiscount: "Cost", offerPlacement: "Offer", contactRange: "Wall",
   extraOffer: "+1", bossDamage: "Boss", thunderCharge: "Bolt", thunderArea: "Area", shieldCharge: "Ward", shieldSeconds: "Time", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
   cleave: "Cleave", dash: "Dash", guard: "Guard", splash: "AoE", pierce: "Pierce",
@@ -153,7 +153,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       : "";
     const actions = primary || reset ? `<div class="td-bdetail-actions">${primary}${reset}</div>` : "";
     return `<div class="td-bdetail-content"><p class="td-label td-bdetail-where">${where}</p><h3>${node.name}</h3>` +
-      `<p class="td-bdetail-level">Level ${level} of ${node.maxLevel}${pending ? ` <span class="td-wave-chip td-wave-chip--pending">From next run</span>` : ""}</p>` +
+      `<p class="td-bdetail-level">Level ${level} of ${node.maxLevel}${pending ? ` <span class="td-forecast-chip td-forecast-chip--pending">From next run</span>` : ""}</p>` +
       (level ? row("Now", effectText(node, level)) : "") +
       (level < node.maxLevel ? row(level ? "Next" : "Gives", effectText(node, level + 1)) : "") +
       exclusive + stateText + `</div>${actions}`;
@@ -164,7 +164,7 @@ export function createBlessingsGraph(ctx: PageContext, deps: { onChange(): void;
       ? `<p class="td-favor-note td-bnotice">The Divine Blessings were rebuilt: ${store.data.refundNotice} Favor from your earlier purchases was refunded. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
     const reprice = store.data.repriceNotice
       ? `<p class="td-favor-note td-bnotice">Blessing prices changed. Everything you already own stays, and the price difference was credited back. Each class's Surge became an Infusion (its attacks apply a status); Insight spent on Surge was returned. <button type="button" class="td-link-button" data-bdismiss>OK</button></p>` : "";
-    return `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perWave} per wave it stands on the field, 1 per ${TREE.insight.killsPerPoint} kills.</p>` +
+    return `<p class="td-favor-note td-bexplain">Favor comes from every run. Insight goes to the class of each hero you deploy: ${TREE.insight.perStage} for each stage it stands on the field at the end, 1 per ${TREE.insight.killsPerPoint} kills.</p>` +
       `<p class="td-favor-note td-bexplain">Divine Blessings apply in Free Play and Expeditions. Campaign stages and the Daily Trial use hero levels, stars and evolution without Blessings.</p>` + refund + reprice;
   }
 

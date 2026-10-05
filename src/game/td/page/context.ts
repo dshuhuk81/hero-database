@@ -3,7 +3,7 @@
 // ctx.actions, which the page fills once all modules exist; modules only call
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
-import type { RunBoost, RunMode, RunTier, SaveStore } from "./save";
+import type { RunBoost, RunTier, SaveStore } from "./save";
 import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
@@ -17,7 +17,6 @@ export type Session = {
   canvas: HTMLCanvasElement;
   map: any;
   started: boolean;
-  perfectWaves: number;
   flyerHint?: boolean; // the "flyers pass over blockers" notice was shown this run
   archerHint?: boolean; // the "archers shoot platform heroes" notice was shown this run
   keyboardSlots: Slot[];
@@ -33,8 +32,7 @@ export type Session = {
 export type PageState = {
   session: Session | null;
   selectedMap: any;
-  selectedMode: RunMode; // run mode picked in the lobby (waves.js)
-  selectedTier: RunTier; // difficulty tier for 10 and 20 waves (M3)
+  selectedTier: RunTier; // difficulty tier (M3)
   selectedEntityId: number | null; // hero with the open popover
   deployHeroId: string; // hero picked from the deck by tap (fallen or not yet fielded)
   relocateEntityId: number | null; // placed hero being moved to another tile (R4)
@@ -56,7 +54,6 @@ export type PageActions = {
   syncMainAction(): void;
   renderPreview(): void;
   playSound(kind: string): void;
-  questName(quest: any): string;
   renderDeck(): void;
   cancelDeploy(): void;
   syncPauseButton(): void;

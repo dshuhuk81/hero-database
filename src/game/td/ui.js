@@ -178,10 +178,10 @@ const LEAK_HINTS = {
   imp: "Imps swarmed the line: kill Broodcallers early and bring splash damage.",
 };
 
-// Loss analysis (M14): which enemy kind cost the most lives on the wave the run ended,
-// with a one-line hint. Null when nothing leaked.
-export function lossReport(waveStats) {
-  const kinds = Object.entries(waveStats?.leakKinds ?? {});
+// Loss analysis (M14): which enemy kind cost the most lives over the stage, with a one-line hint. Null when
+// nothing leaked.
+export function lossReport(stageStats) {
+  const kinds = Object.entries(stageStats?.leakKinds ?? {});
   const total = kinds.reduce((sum, [, lives]) => sum + lives, 0);
   if (!total) return null;
   // Imps count with their Broodcaller: the answer is the same.
@@ -191,7 +191,7 @@ export function lossReport(waveStats) {
     merged[key] = (merged[key] || 0) + lives;
   }
   const [kind, lives] = Object.entries(merged).sort((a, b) => b[1] - a[1])[0];
-  return { wave: waveStats.wave, kind, lives, total, share: lives / total, name: LEAK_NAMES[kind] ?? kind, hint: LEAK_HINTS[kind] ?? "" };
+  return { kind, lives, total, share: lives / total, name: LEAK_NAMES[kind] ?? kind, hint: LEAK_HINTS[kind] ?? "" };
 }
 
 // Permanent collection progress of a placed hero (R4): level, stars, Evolution and skill

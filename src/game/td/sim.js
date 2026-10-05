@@ -268,7 +268,7 @@ export class TowerDefenseGame {
   }
 
   environment(stat, hero = null, kind = null) {
-    return environmentMultiplier(this.map, stat, { progress: this.stageProgress(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
+    return environmentMultiplier(this.map, stat, { phase: this.environmentPhase(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
   }
 
   // What place() would field on this tile, without spending anything (recruit preview).
@@ -291,7 +291,7 @@ export class TowerDefenseGame {
     const hero = this.heroes.find((item) => item.entityId === entityId);
     if (!hero) return { ok: false, reason: "No hero selected." };
     if (this.complete) return { ok: false, reason: "Run is over.", hero };
-    // The stage never pauses between waves, so a hero may move at any time, but not again right away.
+    // The stage never pauses, so a hero may move at any time, but not again right away.
     const cooldown = this.tuning.run.relocationCooldownSeconds ?? 8;
     const wait = hero.relocatedAt != null ? Math.ceil(hero.relocatedAt + cooldown - this.time) : 0;
     if (wait > 0) return { ok: false, reason: `${hero.name} can move again in ${wait}s.`, hero };
@@ -437,6 +437,7 @@ export class TowerDefenseGame {
     const { total } = timelineTotals(this.timeline);
     if (total && this.enemiesDown / total >= this.milestones[0]) {
       this.milestones.shift();
+      this.addPlacement(this.favor.offerPlacement || 0); // blessing: every offer pays placement
       this.offerVirtues();
       this.onChange("offer", this);
     }
@@ -447,6 +448,14 @@ export class TowerDefenseGame {
     this.virtueOffer = null;
     if (name.startsWith("boon:")) this.boons = [...this.boons, name.slice(5)];
     else this.addVirtue(name);
+    this.onChange("virtue", this);
+    return true;
+  }
+
+  // Declining an open offer; the next milestone brings a new one.
+  skipVirtues() {
+    if (!this.virtueOffer) return false;
+    this.virtueOffer = null;
     this.onChange("virtue", this);
     return true;
   }
@@ -541,11 +550,11 @@ export class TowerDefenseGame {
     if (target) hero.rotation = Math.atan2(target.y - hero.y, target.x - hero.x);
   }
 
-  // Enemy shape (tuning.board.waveShape): enemies are fewer and stronger than the old authored hordes. The timeline
+  // Enemy shape (tuning.board.enemyShape): enemies are fewer and stronger than the old authored hordes. The timeline
   // carries the final counts; `hp`, `reward`, `attack` and `leak` multiply each enemy, `power` is their default.
   // `kinds` overrides any of these per enemy kind (e.g. flyers, which skip blockers).
-  waveShape(kind = null) {
-    const base = this.boardRules?.waveShape ?? this.tuning.waveShape;
+  enemyShape(kind = null) {
+    const base = this.boardRules?.enemyShape ?? this.tuning.enemyShape;
     if (!base?.enabled) return null;
     const cfg = { ...base, ...(kind ? base.kinds?.[kind] : null) };
     const power = cfg.power ?? 1;
@@ -554,17 +563,26 @@ export class TowerDefenseGame {
 
   formationSway(index) {
     const cell = boardOf(this.map)?.cell ?? 96;
-    const spread = this.tuning.timeline?.laneSpread ?? this.tuning.waveGen?.laneSpread ?? 0.23;
+    const spread = this.tuning.timeline?.laneSpread ?? 0.23;
     const contact = this.tuning.blocking?.contactRange ?? 42;
     const max = Math.min(cell * spread, contact * 0.9);
     return FORMATION[index % FORMATION.length] * max;
   }
 
-  // 0 at the start of the stage, 1 once the last group has spawned: environment rules that used to ramp by wave
-  // number scale by this.
-  stageProgress() {
-    const last = timelineTotals(this.timeline).lastAt;
-    return last > 0 ? Math.min(1, this.time / last) : 0;
+  // Total health of the whole timeline with the same scaling as spawnEnemy (debug panel readout).
+  stageTotalHp() {
+    const { counts } = timelineTotals(this.timeline);
+    let sum = 0;
+    for (const [kind, n] of Object.entries(counts)) {
+      const shape = kind === "boss" ? null : this.enemyShape(kind);
+      sum += n * (this.tuning.enemies[kind]?.hp || 0) * (shape?.hp ?? 1);
+    }
+    return Math.round(sum * this.difficulty.enemyHp * this.tierHp);
+  }
+
+  // Environment phase rules alternate every tuning.timeline.phaseSeconds of battle time (environments.js).
+  environmentPhase() {
+    return this.started ? Math.floor(this.time / (this.tuning.timeline?.phaseSeconds ?? 20)) + 1 : 0;
   }
 
   // The whole stage at a glance. `total` and `counts` are what the timeline will spawn; `down` counts killed
@@ -861,12 +879,12 @@ export class TowerDefenseGame {
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
     const scale = this.difficulty.enemyHp * this.tierHp * statScale * this.environment("enemyHp");
     const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
-    const favorSpeed = this.time < (this.tuning.timeline?.openingSeconds ?? 30) && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1; // the opening of the stage
+    const favorSpeed = this.time < (this.tuning.timeline?.openingSeconds ?? 30) && this.favor.openingSpeedDebuff ? 1 - this.favor.openingSpeedDebuff : 1; // the opening of the stage
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed * this.environment("enemySpeed", null, kind);
     const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     // Enemy shape: timeline enemies (not bosses, not summoned children) carry the
     // health, gold, attack and leak damage of the enemies the shape removed.
-    const shape = this.waveShape(kind);
+    const shape = this.enemyShape(kind);
     if (shape && kind !== "boss" && !extra) {
       enemy.maxHp *= shape.hp; enemy.hp *= shape.hp;
       enemy.reward = (enemy.reward || 0) * shape.reward;
@@ -1308,7 +1326,7 @@ export class TowerDefenseGame {
     return (hero?.veilUntil ?? 0) > this.time;
   }
 
-  // Focus (Mage kit `focus`, wave shape prototype): splash or chain shares that find no
+  // Focus (Mage kit `focus`, enemy shape prototype): splash or chain shares that find no
   // other enemy fold into the main target, so a Mage facing a lone strong enemy keeps most
   // of its damage. `slots` splash neighbours are expected; each missing one adds
   // `splash.share * share`. A chaining Mage adds its unused bounce shares the same way.
@@ -1649,7 +1667,7 @@ export class TowerDefenseGame {
   //     `budget` of its max health in total, so a held group cannot outheal a weak line forever.
   //   shield (Shieldbearer): refills at regenRate per second after regenDelay seconds without a hit.
   //   summon (Broodcaller): calls `count` imps every `every` seconds, at most `max` alive
-  //     and `total` over its life (a held Broodcaller must not feed a wave forever).
+  //     and `total` over its life (a held Broodcaller must not feed a stage forever).
   //   hex (Hexer): stuns the nearest hero in range for `seconds`, every `every` seconds.
   enemyTraits(enemy, dt) {
     if (enemy.kind === "boss" && this.bossTuning) this.bossRules(enemy, dt);

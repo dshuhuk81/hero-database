@@ -1,7 +1,7 @@
 // Shared particle and shape toolkit for tower defense effects (M24c).
 // One pooled sprite system plus two shared Graphics (normal and additive) that are
 // cleared and redrawn every frame. Hero, lightning and status effects all draw through
-// here, so a crowded endless wave costs a bounded number of sprites and two Graphics.
+// here, so a crowded stage costs a bounded number of sprites and two Graphics.
 // Browser only: textures are painted on canvases when the kit is created.
 
 const TAU = Math.PI * 2;

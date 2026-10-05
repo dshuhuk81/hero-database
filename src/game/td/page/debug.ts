@@ -2,10 +2,10 @@
 // damage readout. Runs touched by debug changes are not recorded (session.debug).
 import type { PageContext } from "./context";
 
-const DEBUG_DEFAULTS = { enemyHp: 1, waveHpScale: 0.15, enemySpeed: 1 };
+const DEBUG_DEFAULTS = { enemyHp: 1, enemySpeed: 1 };
 
 function formatKnob(key: string, value: number) {
-  return key === "waveHpScale" ? `${Math.round(value * 100)}%` : `x${value.toFixed(2)}`;
+  return `x${value.toFixed(2)}`;
 }
 
 // Returns null when the page has no debug panel (production build).
@@ -43,15 +43,14 @@ export function createDebugPanel(ctx: PageContext) {
     const mods = game.modifiers();
     // Rough sustained damage: attack x attacks per second x crit, before enemy armor and ultimates.
     const dps = game.heroes.reduce((sum: number, unit: any) => sum + game.attackValue(unit) * unit.aps * (1 + Math.min(1, unit.critChance + mods.crit) * 0.5), 0);
-    const waveIndex = game.running ? game.wave - 1 : game.wave;
-    const waveHp = game.waveTotalHp(waveIndex);
+    const stageHp = game.stageTotalHp();
     const alive = game.enemies.filter((enemy: any) => !enemy.dead);
     const rows = [
       ["Team DPS (rough)", Math.round(dps).toLocaleString()],
-      [`Wave ${waveIndex + 1} total HP`, waveHp.toLocaleString()],
-      ["HP / DPS", dps > 0 ? `${Math.round(waveHp / dps)}s` : "-"],
+      ["Stage total HP", stageHp.toLocaleString()],
+      ["HP / DPS", dps > 0 ? `${Math.round(stageHp / dps)}s` : "-"],
       ["Enemies alive", String(alive.length)],
-      ["Leaks this wave / run", `${game.waveStats?.leaks ?? 0} / ${game.totalLeaks}`],
+      ["Leaks this stage", String(game.totalLeaks)],
     ];
     debugEl!.querySelector<HTMLElement>("[data-debug-stats]")!.innerHTML = rows.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
   }
@@ -115,15 +114,6 @@ export function createDebugPanel(ctx: PageContext) {
     if (action === "gold") { game.placement += 50; ctx.actions.handleChange("debug"); }
     if (action === "win" && !game.complete) { game.running = false; game.finish(true); }
     if (action === "lose" && !game.complete) { game.running = false; game.lives = 0; game.finish(false); }
-    if (action === "jump") {
-      if (game.running || game.complete) { ctx.notice("Jump works between waves."); return; }
-      const target = Math.min(game.totalWaves, Math.max(1, Number(debugEl.querySelector<HTMLInputElement>("[data-debug-wave]")!.value) || 1));
-      game.wave = target - 1;
-      game.virtueOffer = null;
-      session.started = true;
-      ctx.actions.handleChange("debug");
-      ctx.notice(`Next wave set to ${target}. Press Start when ready.`);
-    }
   });
   syncUi();
 

@@ -2,17 +2,17 @@
 import TdLobby from "../td/TdLobby.astro";
 import TdPlayScreen from "../td/TdPlayScreen.astro";
 import TdPanels from "../td/TdPanels.astro";
-interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; bosses: Record<string, any>; }
-const { assetBase, heroes, tuning, maps, waves, bosses } = Astro.props;
+interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; bosses: Record<string, any>; }
+const { assetBase, heroes, tuning, maps, bosses } = Astro.props;
 const isDev = import.meta.env.DEV; // prototype maps exist only in local dev builds
 // Debug tools ship in every build; the page removes them unless isDev or ?debug=1 (R6b).
-const payload = { assetBase, heroes, tuning, maps, waves, bosses, isDev };
+const payload = { assetBase, heroes, tuning, maps, bosses, isDev };
 const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.boss ?? "baphomet"]?.name ?? "Baphomet"]));
 ---
 
 <div class="td-shell" data-td-root data-screen="home">
-  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} assetBase={assetBase} isDev={isDev} />
-  <TdPlayScreen waveCount={waves.length} />
+  <TdLobby maps={maps} bossNames={bossNames} assetBase={assetBase} isDev={isDev} />
+  <TdPlayScreen />
   <TdPanels maps={maps} bossNames={bossNames} heroes={heroes} />
   <dialog class="td-orient-gate" data-td-orient-gate aria-labelledby="td-orient-title" aria-describedby="td-orient-text">
     <div class="td-orient-body">
@@ -35,9 +35,8 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   import { mapSceneFor } from "../../game/td/map-scene.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
-  import { createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS, type RunMode } from "../../game/td/page/save";
+  import { createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS } from "../../game/td/page/save";
   import { MUTATOR_INFO } from "../../game/td/skills.js";
-  import { isRunMode } from "../../game/td/waves.js";
   import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
   import { createDaily } from "../../game/td/page/daily";
@@ -73,12 +72,10 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
   const store = createSaveStore({ heroIds: new Set(heroById.keys()), mapIds: new Set(maps.map((map) => map.id)), relicIds: new Set(Object.keys(data.tuning.runBoons?.list ?? {})) });
-  const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedTier: "normal", selectedEntityId: null, deployHeroId: "", relocateEntityId: null, pendingSlot: null };
+  const state: PageState = { session: null, selectedMap: maps[0], selectedTier: "normal", selectedEntityId: null, deployHeroId: "", relocateEntityId: null, pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
     state.selectedMap = maps.find((entry) => entry.id === savedMapId) ?? maps[0];
-    const savedMode = localStorage.getItem("td:mode");
-    if (isRunMode(savedMode)) state.selectedMode = savedMode as RunMode;
     const savedTier = localStorage.getItem("td:tier");
     if (isRunTier(savedTier)) state.selectedTier = savedTier;
   } catch {}
@@ -159,7 +156,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   syncMusicUi();
 
   // ------------------------------------------------------------------
-  // Menu screens (map select, difficulty and run length; the home screen is page/home.ts)
+  // Menu screens (map select, difficulty; the home screen is page/home.ts)
   // ------------------------------------------------------------------
   function renderLobby() {
     if (new URLSearchParams(location.search).get("proto") === "1") root!.querySelectorAll<HTMLElement>("[data-td-proto]").forEach((card) => { card.hidden = false; });
@@ -171,7 +168,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     });
     root!.querySelectorAll<HTMLElement>("[data-map-best]").forEach((el) => {
       const top = store.data.mapTop[el.dataset.mapBest!];
-      el.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
+      el.textContent = top ? `Best ${top.score.toLocaleString()} - ${top.defeated} defeated` : "No runs yet";
     });
     wallet.render();
     q("[data-td-map-pick]").textContent = `${state.selectedMap.name} - Boss: ${ctx.bossFor(state.selectedMap).name}`;
@@ -201,12 +198,9 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   }
   function renderModeBests() {
     const map = state.selectedMap;
-    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
-      const mode = button.dataset.modeId as RunMode;
-      const top = store.data.mapTop[runKey(map.id, mode, state.selectedTier)];
-      const muts = top?.mutators?.length ? ` - ${top.mutators.map((id) => (MUTATOR_INFO as Record<string, { name: string }>)[id]?.name ?? id).join(", ")}` : "";
-      button.querySelector<HTMLElement>("[data-mode-best]")!.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}${muts}` : "No runs yet";
-    });
+    const top = store.data.mapTop[runKey(map.id, state.selectedTier)];
+    const muts = top?.mutators?.length ? ` - ${top.mutators.map((id) => (MUTATOR_INFO as Record<string, { name: string }>)[id]?.name ?? id).join(", ")}` : "";
+    q("[data-td-mode-best]").textContent = top ? `Best ${top.score.toLocaleString()} - ${top.defeated} defeated${muts}` : "No runs yet";
   }
   q("[data-td-tiers]").addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-tier-id]");
@@ -241,24 +235,9 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     if (modeBoss.getAttribute("src") !== bossArt) modeBoss.src = bossArt;
     renderChallengeList(q("[data-td-challenges]"), store.data, map.id, data.tuning.tiers);
     renderTiers();
-    let last: HTMLButtonElement | null = null;
-    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => {
-      const mode = button.dataset.modeId as RunMode;
-      const isLast = mode === state.selectedMode;
-      button.classList.toggle("is-selected", isLast);
-      if (isLast) last = button;
-    });
     renderModeBests();
-    // Focus lands on the last run length played (nav focuses [data-td-autofocus]).
-    root!.querySelectorAll<HTMLButtonElement>("[data-mode-id]").forEach((button) => { button.toggleAttribute("data-td-autofocus", button === last); });
   }
-  q("[data-td-modes]").addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-mode-id]");
-    if (!button || !isRunMode(button.dataset.modeId)) return;
-    state.selectedMode = button.dataset.modeId as RunMode;
-    try { localStorage.setItem("td:mode", state.selectedMode); } catch {}
-    actions.startSession(state.selectedMap);
-  });
+  q("[data-td-mode-play]").addEventListener("click", () => actions.startSession(state.selectedMap));
 
   // ------------------------------------------------------------------
   // Page modules
@@ -315,7 +294,6 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
     syncMainAction: hud.syncMainAction,
     renderPreview: hud.renderPreview,
     playSound: (kind: string) => audio.play(kind),
-    questName: hud.questName,
     renderDeck: hud.renderDeck,
     cancelDeploy: hud.cancelDeploy,
     syncPauseButton: hud.syncPauseButton,

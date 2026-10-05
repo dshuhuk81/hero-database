@@ -1,10 +1,8 @@
 ---
 // Play screen: top bar (stats, speed, pause, menu), stage with the canvas and
-// overlays, bottom bar (Blessings, deck, wave button).
+// overlays, bottom bar (Blessings, deck, Start button).
 import TdOverlays from "./TdOverlays.astro";
 import TdDebugPanel from "./TdDebugPanel.astro";
-interface Props { waveCount: number; }
-const { waveCount } = Astro.props;
 ---
 
 <section class="td-play" data-td-play aria-label="Tower defense game" hidden>
@@ -12,12 +10,10 @@ const { waveCount } = Astro.props;
     <div class="td-stats">
       <div class="td-stat td-stat--gold"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" /><path d="M9 12h6" fill="none" /></svg>Placement</span><strong data-td-gold>0</strong><em class="td-gold-float" data-td-gold-float aria-hidden="true"></em></div>
       <div class="td-stat"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-9.5A4.3 4.3 0 0112 7a4.3 4.3 0 017 3.5C19 15.6 12 20 12 20z" fill="none" /></svg>Lives</span><strong data-td-lives>0</strong></div>
-      <div class="td-stat"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 21V4h13l-3 4 3 4H4" fill="none" /></svg>Wave</span><strong><span data-td-wave>0</span>/<span data-td-wave-total>{waveCount}</span></strong></div>
-      <div class="td-stat td-stat--down" data-td-down-stat hidden title="Enemies defeated or through, out of the stage total"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7l10 10M17 7L7 17" fill="none" /></svg>Defeated</span><strong><span data-td-down>0</span>/<span data-td-down-total>0</span></strong></div>
+      <div class="td-stat td-stat--down" data-td-down-stat title="Enemies defeated or through, out of the stage total"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7l10 10M17 7L7 17" fill="none" /></svg>Defeated</span><strong><span data-td-down>0</span>/<span data-td-down-total>0</span></strong></div>
       <div class="td-stat td-stat--goal" data-td-daily-hud hidden><span>Goal</span><strong data-td-daily-progress>0/0</strong></div>
     </div>
     <div class="td-top-actions">
-      <button class="td-icon-button td-auto-button" type="button" data-td-auto aria-pressed="false" aria-label="Auto-start next wave">Auto</button>
       <button class="td-icon-button" type="button" data-td-speed aria-label="Game speed 1x">1x</button>
       <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game" aria-pressed="false">
         <svg class="td-icon td-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
@@ -37,7 +33,7 @@ const { waveCount } = Astro.props;
   <div class="td-stage" data-td-stage>
     <p class="td-stage-loading" data-td-loading hidden>Preparing battlefield</p>
     <p class="td-stage-name" data-td-stage-name hidden><small data-td-stage-number></small><strong data-td-stage-title></strong><small data-td-environment-rule hidden></small></p>
-    <div class="td-wave-preview" data-td-preview hidden></div>
+    <div class="td-forecast" data-td-preview hidden></div>
     <div class="td-buffs" data-td-buffs role="group" aria-label="Active run blessings" hidden></div>
     <div class="td-boss-health" data-td-boss-health role="progressbar" aria-label="Boss health" aria-valuemin="0" aria-valuemax="100" hidden>
       <span data-td-boss-health-name>Boss</span>
@@ -52,7 +48,7 @@ const { waveCount } = Astro.props;
     <div class="td-boss-plate" data-td-boss-plate aria-hidden="true" hidden>
       <img class="td-boss-plate-art" data-td-boss-art alt="" decoding="async" />
       <div class="td-boss-plate-text">
-        <span data-td-boss-kicker>Final wave</span>
+        <span data-td-boss-kicker>Boss</span>
         <strong data-td-boss-name></strong>
         <small data-td-boss-sub></small>
       </div>

@@ -5,7 +5,7 @@
     "favorCost": 150
   },
   "insight": {
-    "perWave": 2,
+    "perStage": 5,
     "killsPerPoint": 5
   },
   "classes": [
@@ -57,7 +57,7 @@
         "type": "showHp",
         "value": 1
       },
-      "text": "Wave preview shows enemy total HP."
+      "text": "The stage forecast shows enemy total HP."
     },
     {
       "tree": "trunk",
@@ -128,10 +128,10 @@
       "cost": 125,
       "requiresPoints": 6,
       "effect": {
-        "type": "wave1Speed",
+        "type": "openingSpeed",
         "value": 0.08
       },
-      "text": "Wave 1 enemies move {p} slower."
+      "text": "Enemies move {p} slower in the opening seconds of a stage."
     },
     {
       "tree": "trunk",
@@ -158,10 +158,10 @@
       "cost": 375,
       "requiresPoints": 16,
       "effect": {
-        "type": "clearPlacement",
+        "type": "offerPlacement",
         "value": 1
       },
-      "text": "Wave clear grants +{v} placement."
+      "text": "Each blessing offer grants +{v} placement."
     },
     {
       "tree": "trunk",

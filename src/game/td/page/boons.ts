@@ -1,5 +1,5 @@
 // Blessing presentation: cards (large bonus value, stat word, stat icon), the
-// on-map buff bar with summed run blessings, and the between-wave offer modal.
+// on-map buff bar with summed run blessings, and the milestone offer modal.
 import { blessingDisplay, buffChips } from "../ui.js";
 import { MUTATOR_INFO, RUN_BOON_INFO } from "../skills.js";
 import { bondText } from "../bonds.js";
@@ -113,39 +113,18 @@ export function createBuffBar(ctx: PageContext) {
   return { render, position, reset };
 }
 
-// Run blessing offer between waves. Optional: starting the next wave forfeits it.
-// The endless mutator offer (M15) follows once the blessing is chosen.
+// Run blessing offer: opens as the stage's defeat counter crosses a milestone and pauses the stage until a card is
+// chosen or skipped.
 export function createRunOffer(ctx: PageContext) {
-  const { q, data, blessingNames } = ctx;
+  const { q, data, blessingNames, pause } = ctx;
   const modalEl = q("[data-td-blessing-modal]");
   const gridEl = q("[data-td-blessing-grid]");
-  const mutatorEl = q("[data-td-mutator-modal]");
-  const mutatorGrid = q("[data-td-mutator-grid]");
   let offerKey = "";
-  let mutatorKey = "";
-
-  function renderMutators(game: any) {
-    const offer: string[] | null = game && !game.running && !game.complete && !game.virtueOffer ? game.mutatorOffer : null;
-    if (!offer) { mutatorEl.hidden = true; mutatorKey = ""; return; }
-    const key = offer.join("|");
-    if (key === mutatorKey) return;
-    mutatorKey = key;
-    const pool = data.tuning.mutators?.pool ?? {};
-    mutatorGrid.innerHTML = offer.map((id) => {
-      const info = (MUTATOR_INFO as Record<string, { name: string; text: string }>)[id];
-      return `<button type="button" class="td-mutator" data-mutator="${id}"><strong>${info?.name ?? id}</strong><small>${info?.text ?? ""}</small><span class="td-mutator-favor">+${Math.round((pool[id]?.favor ?? 0) * 100)}% Favor per wave</span></button>`;
-    }).join("");
-    ctx.actions.closePopover(false);
-    ctx.actions.closeSheet(false);
-    mutatorEl.hidden = false;
-    mutatorGrid.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
-  }
 
   function render() {
     const game = ctx.getSession()?.game;
-    renderMutators(game);
-    const offer: string[] | null = game && !game.running && !game.complete ? game.virtueOffer : null;
-    if (!offer) { modalEl.hidden = true; offerKey = ""; return; }
+    const offer: string[] | null = game && !game.complete ? game.virtueOffer : null;
+    if (!offer) { close(); return; }
     const key = offer.join("|");
     if (key === offerKey) return;
     offerKey = key;
@@ -169,26 +148,22 @@ export function createRunOffer(ctx: PageContext) {
     ctx.actions.closePopover(false);
     ctx.actions.closeSheet(false);
     modalEl.hidden = false;
+    pause.add("offer");
     gridEl.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   }
 
-  function reset() {
+  function close() {
     modalEl.hidden = true;
     offerKey = "";
-    mutatorEl.hidden = true;
-    mutatorKey = "";
+    if (pause.has("offer")) pause.remove("offer");
   }
 
-  mutatorGrid.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-mutator]");
-    const session = ctx.getSession();
-    if (!button || !session || !session.game.chooseMutator(button.dataset.mutator)) return;
-    const info = (MUTATOR_INFO as Record<string, { name: string }>)[button.dataset.mutator!];
-    ctx.notice(`${info?.name ?? "Mutator"} is active for the rest of this run.`);
-    q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
-  });
-  q("[data-td-mutator-skip]").addEventListener("click", () => {
-    ctx.getSession()?.game.skipMutators();
+  function reset() {
+    close();
+  }
+
+  q("[data-td-blessing-skip]").addEventListener("click", () => {
+    ctx.getSession()?.game.skipVirtues();
     q<HTMLButtonElement>("[data-td-main-action]").focus({ preventScroll: true });
   });
 

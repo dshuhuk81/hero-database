@@ -469,8 +469,6 @@
     }
   },
   "mutators": {
-    "every": 10,
-    "offer": 3,
     "pool": {
       "fortified": {
         "hp": 0.3,
@@ -699,7 +697,9 @@
   "timeline": {
     "spacingMs": 700,
     "bossWaitMs": 30000,
+    "laneSpread": 0.23,
     "openingSeconds": 30,
+    "phaseSeconds": 20,
     "chapterTargets": [
       { "chapter": 1, "enemies": 11, "groups": 9, "lastSpawnS": 53 },
       { "chapter": 2, "enemies": 25, "groups": 15, "lastSpawnS": 97 },
@@ -715,29 +715,24 @@
     ]
   },
   "board": {
-    "waveShape": {
+    "enemyShape": {
       "enabled": true,
-      "count": 0.2,
-      "gap": 2.5,
       "hp": 5,
       "attack": 2.5,
       "kinds": {
         "grunt": {
-          "count": 0.4,
           "hp": 2.5,
           "attack": 1.25,
           "power": 2.5,
           "leak": 5
         },
         "runner": {
-          "count": 0.4,
           "hp": 2.5,
           "attack": 1.25,
           "power": 2.5,
           "leak": 5
         },
         "flyer": {
-          "count": 0.4,
           "hp": 1.3,
           "attack": 1,
           "power": 2.5,
@@ -764,7 +759,7 @@
       "skadi": "star3",
       "boreas": "blockPlus"
     },
-    "heroScale": 1.15,
+    "heroScale": 1.3,
     "enemyScale": 1.5,
     "bossScale": 1.5,
     "tilt": {
@@ -807,7 +802,7 @@
       "charge": 90,
       "killCharge": 1,
       "seconds": 6,
-      "oncePerWave": true,
+      "cooldownSeconds": 60,
       "unlockAfter": "1-6"
     }
   },
@@ -832,16 +827,6 @@
       }
     }
   },
-  "waveGen": {
-    "minSpacing": 18,
-    "laneSpread": 0.23,
-    "endlessRamp": 0.08,
-    "bossEvery": 5,
-    "midBossScale": 0.4,
-    "countGrowth": 0.02,
-    "gapShrink": 0.02,
-    "gapFloor": 0.55
-  },
   "blocking": {
     "contactRange": 24,
     "blockLimit": {
@@ -853,21 +838,15 @@
     "passSlow": 1.5,
     "passSlowFactor": 0.8
   },
-  "quests": {
-    "placementBase": 4,
-    "placementPerWave": 0,
-    "speedClearTravel": 0.5,
-    "heroKillsShare": 0.6
-  },
   "shards": {
-    "minWave": 3,
+    "minDefeatedShare": 0.5,
     "favorPct": 0.1,
     "favorMin": 5,
     "placement": 6
   },
   "favorEarn": {
-    "perWave": 10,
-    "perPerfectWave": 5,
+    "perStage": 60,
+    "perfectBonus": 30,
     "bossKill": 20,
     "perRemainingLife": 1,
     "remainingLifeCap": 25

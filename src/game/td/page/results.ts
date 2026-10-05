@@ -38,13 +38,13 @@ import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { availableFavor, runKey, type CampaignProgress, type RunBoost } from "./save";
 import { finishDaily } from "./daily";
-import { clearedWaves } from "../daily.js";
+import { defeatedCount } from "../daily.js";
 import { collectionReward, grantRewards, laurelLives } from "../campaign.js";
 import { currencyList } from "../currency-icons.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import { finishExpeditionStage } from "./expedition";
 import { finishCampaignRun } from "./campaign";
-import { notifyQuest, QUEST_WAVE } from "../quests.js";
+import { notifyQuest, QUEST_DEFEATED } from "../quests.js";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 import { createStageClear } from "./stage-clear";
 
@@ -150,10 +150,10 @@ export function createResults(ctx: PageContext) {
 
   function renderAnalysis(game: any) {
     const el = q("[data-td-result-analysis]");
-    const report = !game.won ? lossReport(game.waveStats) : null;
+    const report = !game.won ? lossReport(game.stageStats) : null;
     el.hidden = !report;
     if (!report) return;
-    el.innerHTML = `<strong>What went wrong</strong><p>Wave ${report.wave}: ${Math.round(report.share * 100)}% of the lives lost (${shownLives(report.lives, game.lifeUnit)} of ${shownLives(report.total, game.lifeUnit)}) went to ${report.name}.</p><p>${report.hint}</p>`;
+    el.innerHTML = `<strong>What went wrong</strong><p>${Math.round(report.share * 100)}% of the lives lost (${shownLives(report.lives, game.lifeUnit)} of ${shownLives(report.total, game.lifeUnit)}) went to ${report.name}.</p><p>${report.hint}</p>`;
   }
 
   function renderDamage(game: any) {
@@ -233,15 +233,18 @@ export function createResults(ctx: PageContext) {
     const map = session.map;
     const saved = store.data;
     // Heroic and Mythic pay more Favor (tuning.tiers, M3).
-    // Endless mutators (M15): each wave cleared with them pays their Favor share extra.
+    // Daily Trial mutators (M15) pay their Favor share of the stage extra.
     const tierFavor = data.tuning.tiers?.[game.tier]?.favor ?? 1;
-    const mutatorFavor = (game.mutatorWaves ?? 0) * data.tuning.favorEarn.perWave;
+    const forecast = game.stageForecast();
+    const stageShare = game.won ? 1 : forecast ? forecast.down / forecast.total : 0; // part of the stage's enemies defeated
+    const mutatorShare = (game.mutators ?? []).reduce((sum: number, id: string) => sum + (data.tuning.mutators?.pool?.[id]?.favor ?? 0), 0);
+    const mutatorFavor = Math.round(stageShare * data.tuning.favorEarn.perStage * mutatorShare);
     // Campaign stages (M26) have their own progression: no Favor, Insight, bests, challenges or shard.
     const campaign = session.campaign;
-    const earnedFavor = campaign ? 0 : Math.round((computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
+    const earnedFavor = campaign ? 0 : Math.round((computeFavor({ share: stageShare, perfect: !!game.perfect, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning) + mutatorFavor) * tierFavor);
     const earnedInsight = (session.debug || campaign ? {} : computeInsight(game.insightLog)) as Record<string, number>;
-    const key = runKey(map.id, game.mode, game.tier);
-    // Daily Trial (M19) runs keep their own per-day record instead of the map's endless bests.
+    const key = runKey(map.id, game.tier);
+    // Daily Trial (M19) runs keep their own per-day record instead of the map's bests.
     const daily = session.daily;
     const expedition = session.expedition;
     const prevRun = daily || expedition || campaign ? null : saved.mapBests[key] || null;
@@ -250,7 +253,7 @@ export function createResults(ctx: PageContext) {
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
       : campaign ? (({ text, won, followUp, paid }) => ({ text, reached: won, reward: 0, followUp, paid }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
     // Free Play and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
-    const collection = daily || campaign || session.debug ? [] : collectionReward(campaignData, clearedWaves(game));
+    const collection = daily || campaign || session.debug ? [] : collectionReward(campaignData, defeatedCount(game));
     if (collection.length) {
       saved.campaign = grantRewards(saved.campaign, collection) as CampaignProgress;
       collectionHtml = `<p class="td-result-collection"><span class="td-label">For your heroes</span>${currencyList(Object.fromEntries(collection.map((reward: any) => [reward.id, reward.amount])), { plus: true })}</p>`;
@@ -259,30 +262,30 @@ export function createResults(ctx: PageContext) {
     const challengeRun = recordChallengeRun(saved, map.id, game, data.tuning.tiers, session.debug || !!campaign);
     // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
     if (!session.debug) {
-      // R10 daily quests: Free Play runs ending at wave 10+ (#6) and runs that cast a
+      // R10 daily quests: Free Play runs defeating QUEST_DEFEATED enemies (#6) and runs that cast a
       // Divine Intervention (#9). The campaign clears (#1, #2) report in finishCampaignRun.
       if (!daily && !expedition && !campaign) {
-        if ((game.wave ?? 0) >= QUEST_WAVE) notifyQuest(saved, "free-wave10");
+        if (defeatedCount(game) >= QUEST_DEFEATED) notifyQuest(saved, "free-defeat40");
         if ((game.interventionsUsed ?? 0) > 0) notifyQuest(saved, "intervention");
       }
       if (game.perfect) saved.perfectDefense = true;
-      // bestScore/bestWave stay the classic record; other modes keep theirs in mapTop.
-      if (game.mode === "classic" && game.tier === "normal" && !campaign) {
+      // bestScore/bestDefeated stay the Normal record; Heroic and Mythic keep theirs in mapTop.
+      if (game.tier === "normal" && !campaign) {
         saved.bestScore = Math.max(saved.bestScore, game.score);
-        saved.bestWave = Math.max(saved.bestWave, game.wave);
+        saved.bestDefeated = Math.max(saved.bestDefeated, defeatedCount(game));
       }
       saved.favor = (saved.favor || 0) + earnedFavor;
       for (const [cls, points] of Object.entries(earnedInsight)) saved.insight[cls] = (saved.insight[cls] || 0) + points;
-      if (shardEligible(game.wave, data.tuning) && !campaign) {
+      if (shardEligible(stageShare, data.tuning) && !campaign) {
         const virtues = Object.keys(data.tuning.virtueEffects || {});
         shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, virtue: virtues[Math.floor(Math.random() * virtues.length)], choice: "favor", previousBoost: saved.nextRunBoost };
         saved.favor += shard.favor;
       }
       const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
       if (!daily && !expedition && !campaign) {
-        saved.mapBests[key] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
+        saved.mapBests[key] = { score: game.score ?? 0, defeated: defeatedCount(game), duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0, ...mutators };
         const top = saved.mapTop[key];
-        if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, wave: game.wave, ...mutators };
+        if (!top || game.score > top.score) saved.mapTop[key] = { score: game.score, defeated: defeatedCount(game), ...mutators };
       }
       store.persist();
     }
@@ -290,7 +293,6 @@ export function createResults(ctx: PageContext) {
     ctx.actions.closePopover(false);
     ctx.actions.closeSheet(false);
     ctx.actions.cancelDeploy();
-    const endless = game.mode === "endless";
     // Header: outcome, then where and how (map, mode or Daily / Expedition stage, tier), then score.
     // An Expedition stage is final (M21): no Retry; Continue leads back to the camp or the menu.
     retryButton.hidden = !!expedition;
@@ -313,24 +315,24 @@ export function createResults(ctx: PageContext) {
     menuButton.textContent = campaign ? "Campaign" : "Back to Camp";
     const outcome = game.won ? "won" : "lost";
     resultEl.dataset.outcome = outcome;
-    q("[data-td-result-kicker]").textContent = endless ? "Endless run over" : game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
+    q("[data-td-result-kicker]").textContent = game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
     const tierName = data.tuning.tiers?.[game.tier]?.label ?? game.tier;
     const context = daily ? `Daily Trial ${daily.date}`
       : expedition ? `Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}`
       : campaign ? `Campaign stage ${campaign.stageId}`
-      : ({ classic: "10 waves", long: "20 waves", endless: "Endless" } as Record<string, string>)[game.mode] ?? game.mode;
+      : "Free Play";
     q("[data-td-result-meta]").textContent = [context, game.tier !== "normal" || (!daily && !expedition && !campaign) ? tierName : ""].filter(Boolean).join(" - ");
     const dailyEl = q("[data-td-result-daily]");
     dailyEl.hidden = !dailyRun;
     dailyEl.textContent = dailyRun?.text ?? "";
     dailyEl.classList.toggle("is-reached", !!dailyRun?.reached);
-    q("[data-td-result-title]").textContent = endless ? `${map.name} held until wave ${game.wave}` : game.won ? `${map.name} secured` : `${map.name} fell`;
+    q("[data-td-result-title]").textContent = game.won ? `${map.name} secured` : `${map.name} fell`;
     q("[data-td-defeat-map]").textContent = `${map.name} fell`;
     q("[data-td-defeat-context]").textContent = context;
     q("[data-td-result-score]").textContent = `${game.score.toLocaleString()} points`;
     q("[data-td-result-copy]").textContent = game.perfect
-      ? `All ${game.totalWaves} waves, ${shownLives(game.lives, game.lifeUnit)} lives left, not a single enemy broke through`
-      : `${endless ? `Wave ${game.wave}` : `Wave ${game.wave} of ${game.totalWaves}`}, ${shownLives(game.lives, game.lifeUnit)} ${shownLives(game.lives, game.lifeUnit) === 1 ? "life" : "lives"} left, ${game.totalLeaks} ${game.totalLeaks === 1 ? "leak" : "leaks"}`;
+      ? `All ${forecast?.total ?? 0} enemies defeated, ${shownLives(game.lives, game.lifeUnit)} lives left, not a single enemy broke through`
+      : `${forecast?.down ?? 0} of ${forecast?.total ?? 0} enemies defeated, ${shownLives(game.lives, game.lifeUnit)} ${shownLives(game.lives, game.lifeUnit) === 1 ? "life" : "lives"} left, ${game.totalLeaks} ${game.totalLeaks === 1 ? "leak" : "leaks"}`;
 
     const kills = Object.values(game.heroKills ?? {}) as { name: string; kills: number }[];
     kills.sort((a, b) => b.kills - a.kills);
@@ -342,7 +344,6 @@ export function createResults(ctx: PageContext) {
       `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? 0)}</strong></div>`,
       `<div class="td-result-stat"><span>Placement left</span><strong>${Math.floor(game.placement)}</strong><small>of ~${Math.round((game.totalPlacementEarned ?? 0) + game.tuning.run.startingPlacement)} earned</small></div>`,
       `<div class="td-result-stat"><span>Spent</span><strong>${game.totalPlacementSpent ?? 0}</strong></div>`,
-      game.tuning.quests ? `<div class="td-result-stat"><span>Quests</span><strong>${game.questsDone ?? 0}</strong><small>completed</small></div>` : "",
       insightStat(earnedInsight),
       reactionStat(game.reactionCounts),
       bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
@@ -381,7 +382,7 @@ export function createResults(ctx: PageContext) {
     if (session.debug) favorEl.innerHTML = `<p class="td-result-favor-note">Debug run: score, bests and Favor were not recorded.</p>`;
     else if (campaign) favorEl.innerHTML = `<p class="td-result-favor-note">Campaign stages build campaign progress (heroes, unlocked stages) instead of Favor.</p>`;
     else if (shard) { renderFavorLine(); renderShards(); }
-    else renderFavorLine(data.tuning.shards ? `Reach wave ${data.tuning.shards.minWave} to earn a shard.` : "");
+    else renderFavorLine(data.tuning.shards ? `Defeat ${Math.round(data.tuning.shards.minDefeatedShare * 100)}% of the enemies to earn a shard.` : "");
     favorEl.hidden = false;
     ctx.actions.syncSpendButton();
     showTab("summary");
@@ -394,8 +395,8 @@ export function createResults(ctx: PageContext) {
       ? q<HTMLButtonElement>(expedition || campaign ? "[data-td-result-continue]" : "[data-td-result-retry]")
       : lossRetryButton.hidden ? lossCloseButton : lossRetryButton;
     retryButton.textContent = "Retry"; // the stage name overflowed the button; it stays in the tooltip
-    retryButton.title = game.won && !endless ? `Retry ${map.name}` : "Retry";
-    statsButton.hidden = !game.won || endless;
+    retryButton.title = game.won ? `Retry ${map.name}` : "Retry";
+    statsButton.hidden = !game.won;
     if (!game.won) {
       stageClear.playDefeat();
       resultEl.focus({ preventScroll: true });
@@ -412,7 +413,7 @@ export function createResults(ctx: PageContext) {
     if (expeditionSeals) paid.divineSeals = (paid.divineSeals ?? 0) + expeditionSeals;
     stageClear.play({
       mapName: map.name,
-      context: [daily || expedition || campaign ? context : "", `${game.totalWaves} waves`, tierName].filter(Boolean).join(" · "),
+      context: [daily || expedition || campaign ? context : "", `${forecast?.total ?? 0} enemies`, tierName].filter(Boolean).join(" · "),
       score: game.score,
       personalBest: !session.debug && !daily && !expedition && !campaign && (!prevTop || game.score > prevTop.score),
       lives: shownLives(game.lives, game.lifeUnit), // shown lives (stage clear screen)

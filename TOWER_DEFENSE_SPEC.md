@@ -246,7 +246,7 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 | `heroPatterns` | `aegir` `cross2`, `stheno` `lance`, `skadi` `star3`, `boreas` `blockPlus` | Signature patterns by hero id (section 5) |
 | `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; grunts/runners count 0.4, hp 2.5, attack 1.25; flyers count 0.4, hp 1.3, attack 1 | Fewer, stronger enemies and road class variety (section 8) |
 | `focus` | slots 2, share 1 | Mage focus rule (section 7) |
-| `heroScale`, `enemyScale`, `bossScale` | 1.15, 1.5, 1.5 | Unit size on boards. Bars render in their own top layer. Boss source art and scale are handled separately from ordinary enemies |
+| `heroScale`, `enemyScale`, `bossScale` | 1.3, 1.5, 1.5 | Unit size on boards. Bars render in their own top layer. Boss source art and scale are handled separately from ordinary enemies |
 
 ### Tilted-board landscape presentation
 
@@ -275,6 +275,10 @@ The full decision history and rollout boundary are in
   lanes; very dense saturation may still overlap rather than detach a number from its owner;
 - unit bars, rings and status icons occupy a top graphics layer; heroes use green health plus a
   shorter purple ultimate bar, enemies use thin red health bars and bosses use a centred HUD bar;
+- readability pass (Oct 5): lanes get a darker open-ground layer with soft white flow chevrons,
+  slabs a dark outline, enemy spawns a pulsing red portal glow, the ground a side vignette
+  (32 strips, up to 0.34 black), level badges shrink to 0.72 on tilted boards and hero ground
+  shadows are larger and darker (`heroScale` 1.15 to 1.3);
 - ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
   behind units; spawn labels hide during active waves;
 - taps are inverse-mapped through the visible tilt and checked in that plane, including the edge

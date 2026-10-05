@@ -5,7 +5,6 @@ import TowerDefensePage from "../../components/pages/TowerDefensePage.astro";
 import heroes from "../../data/gameBalance.json";
 import tuning from "../../data/gameBalance.tuning.json";
 import maps from "../../data/tdMaps.json";
-import waves from "../../data/tdWaves.json";
 import bosses from "../../data/bosses.json";
 import tdBosses from "../../data/tdBosses.json";
 import campaign from "../../data/tdCampaign.json";
@@ -32,7 +31,7 @@ const bossesForGame = Object.fromEntries(bosses.bosses
 
 <GameLayout
   title="The Last Crossing | Tower Defense"
-  description="Hold the last crossing with gods and heroes of Greek and Norse myth: a free browser tower defense game with 10 waves, 20 waves or endless."
+  description="Hold the last crossing with gods and heroes of Greek and Norse myth: a free browser tower defense game: hold the road while enemy groups arrive one after another."
 >
   <Fragment slot="head">
     <script type="importmap" is:inline>{
@@ -42,5 +41,5 @@ const bossesForGame = Object.fromEntries(bosses.bosses
       }
     }</script>
   </Fragment>
-  <TowerDefensePage assetBase={assetBase} heroes={heroesForGame} tuning={tuningForGame} maps={maps} waves={waves} bosses={bossesForGame} />
+  <TowerDefensePage assetBase={assetBase} heroes={heroesForGame} tuning={tuningForGame} maps={maps} bosses={bossesForGame} />
 </GameLayout>

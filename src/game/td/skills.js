@@ -131,7 +131,7 @@ export const MUTATOR_INFO = {
   fortified: { name: "Fortified", text: "Enemies have 30% more health." },
   haste: { name: "Haste", text: "Enemies move 25% faster." },
   warded: { name: "Warded", text: "Every enemy carries a shield worth 40% of its health." },
-  horde: { name: "Horde", text: "Waves bring 40% more enemies." },
+  horde: { name: "Horde", text: "The stage sends 40% more enemies." },
   ironclad: { name: "Ironclad", text: "Enemies gain 120 armor and 120 magic resistance." },
   elites: { name: "Elites", text: "Every 3rd enemy is an Elite: 2.5x health, a shield, 3x gold." },
 };

@@ -5,7 +5,7 @@ import type { PageContext } from "./context";
 
 export const POWER_INFO: Record<string, { name: string; text: string }> = {
   thunderfall: { name: "Thunderfall", text: "Tap the map: a bolt strikes the tiles there a moment later for a share of every enemy's health." },
-  shield: { name: "Shield", text: "For a few seconds, enemies reaching the base cost no lives. Once per wave." },
+  shield: { name: "Shield", text: "For a few seconds, enemies reaching the base cost no lives. Then it needs a minute to recover." },
 };
 
 export function createPowers(ctx: PageContext) {
@@ -28,7 +28,7 @@ export function createPowers(ctx: PageContext) {
     host.innerHTML = states.map((s) => {
       const info = POWER_INFO[s.id];
       const fill = Math.round(Math.min(1, s.charge / s.max) * 100);
-      const status = s.ready ? "ready" : s.usedThisWave ? "used this wave" : `${fill}% charged`;
+      const status = s.ready ? "ready" : s.cooling ? "recovering" : `${fill}% charged`;
       return `<button type="button" class="td-power${s.ready ? " is-ready" : ""}${aimingId === s.id ? " is-aiming" : ""}" data-td-power="${s.id}" style="--fill:${fill}%" aria-label="${info.name}, ${status}. ${info.text}" title="${info.name}: ${info.text}"${s.ready ? "" : " disabled"}>${info.name}</button>`;
     }).join("");
   }

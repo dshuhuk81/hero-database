@@ -223,8 +223,8 @@ export function createMapScene(PIXI, game, {
   const seen = new WeakSet();
   let hitAt = -Infinity;
   let lastLives = game.lives;
-  let lastWave = game.wave;
-  let waveAt = -Infinity;
+  let wasStarted = game.started;
+  let startAt = -Infinity;
   let lastIntegrity = -1;
   const placements = [];
 
@@ -262,6 +262,22 @@ export function createMapScene(PIXI, game, {
     strokePath(road, 84, 0x141c23, 0.32);
     strokePath(road, 76, 0x333c40, 0.65);
     strokePath(road, 68, 0x1b252e);
+  }
+  if (tilt) {
+    // Readability: the lane reads as dark, open ground (distinct from the raised slabs), with soft
+    // flow chevrons showing the walking direction.
+    const flow = graphic(ground);
+    strokePath(flow, 74, 0x000000, 0.2);
+    for (const [[ax, ay], [bx, by]] of segments) {
+      const length = Math.hypot(bx - ax, by - ay);
+      if (length < 48) continue;
+      const ux = (bx - ax) / length, uy = (by - ay) / length;
+      for (let d = 40; d < length - 20; d += 72) {
+        const cx = ax + ux * d, cy = ay + uy * d;
+        flow.moveTo(cx - ux * 6 - uy * 7, cy - uy * 6 + ux * 7).lineTo(cx + ux * 5, cy + uy * 5).lineTo(cx - ux * 6 + uy * 7, cy - uy * 6 - ux * 7)
+          .stroke({ width: 2.2, color: 0xffffff, alpha: 0.2, cap: "round", join: "round" });
+      }
+    }
   }
   for (const [[ax, ay], [bx, by]] of segments) {
     const length = Math.hypot(bx - ax, by - ay);
@@ -452,7 +468,7 @@ export function createMapScene(PIXI, game, {
   function draw(now = 0) {
     const seconds = now / 1000;
     for (const spawnLabel of spawnLabels) spawnLabel.visible = spawnLabelVisible(game);
-    if (game.wave !== lastWave) { lastWave = game.wave; waveAt = now; }
+    if (game.started !== wasStarted) { wasStarted = game.started; startAt = now; } // the gates flare when the stage starts
     for (const effect of game.effects ?? []) {
       if (effect.type === "baseHit" && !seen.has(effect)) {
         seen.add(effect);
@@ -479,8 +495,14 @@ export function createMapScene(PIXI, game, {
     ambient.clear();
     const breath = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.4) * 0.5;
     const hit = Math.max(0, 1 - (now - hitAt) / 650);
-    const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - waveAt) / 1100);
-    for (const spawn of spawns) ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
+    const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - startAt) / 1100);
+    for (const spawn of spawns) {
+      ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
+      if (tilt) { // red portal: enemies come from here
+        ambient.ellipse(spawn.x - 2, spawn.y - 4, 20, 34).fill({ color: 0xff3b30, alpha: 0.1 + breath * 0.08 + wave * 0.18 });
+        ambient.ellipse(spawn.x - 2, spawn.y - 4, 13, 26).stroke({ width: 2.5, color: 0xff7a6e, alpha: 0.55 + breath * 0.3 });
+      }
+    }
     ambient.ellipse(base.x - 5, base.y, 15, 24).fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.035 + breath * 0.025 + hit * 0.2 });
     if (hit > 0) {
       ambient.ellipse(base.x - 7, base.y, 24 + (reducedMotion ? 0 : (1 - hit) * 9), 33)
@@ -549,6 +571,7 @@ export function createMapScene(PIXI, game, {
       slabRoot.addChild(top);
       const edges = new PIXI.Graphics();
       edges.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
+      edges.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 + lip).stroke({ color: 0x000000, width: 1.5, alpha: 0.55 }); // dark outline separates slab from ground
       edges.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.5 });
       // Front face: vertical streaks of darker stone and a lighter top edge.
       for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h).lineTo(sx + 2, h - 2 + lip).stroke({ color: 0x000000, width: 1, alpha: 0.18 });

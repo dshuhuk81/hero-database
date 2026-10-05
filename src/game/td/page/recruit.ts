@@ -123,7 +123,7 @@ export function createRecruit(ctx: PageContext) {
       if (hadFocus) session.canvas.focus({ preventScroll: true });
       ctx.notice(session.started || session.game.heroes.length > 1
         ? `${hero.name} deployed.`
-        : `${hero.name} deployed. Add more heroes, then start wave 1.`);
+        : `${hero.name} deployed. Add more heroes, then start the stage.`);
     } else {
       update();
     }
@@ -270,7 +270,7 @@ export function createRecruit(ctx: PageContext) {
     const reason = blockReason(game, hero.id);
     if (reason) { ctx.notice(`${hero.name}: ${reason}.`); return; }
     if (game.place(hero.id, target.type, target.index)) {
-      ctx.notice(session.started || game.heroes.length > 1 ? `${hero.name} deployed.` : `${hero.name} deployed. Add more heroes, then start wave 1.`);
+      ctx.notice(session.started || game.heroes.length > 1 ? `${hero.name} deployed.` : `${hero.name} deployed. Add more heroes, then start the stage.`);
     }
   }
 

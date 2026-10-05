@@ -17,15 +17,15 @@ export type ExpeditionState = { seed: number; stages: string[]; stage: number; r
 // migrate without touching Free Play.
 export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>>; milestones?: Record<string, number[]>; heroic?: Record<string, { clears: number; bestLives: number }> };
 
-// Daily Trial (M19) record per UTC day; bestWave counts waves cleared.
-export type DailyRecord = { date: string; bestWave: number; bestScore: number; goalReached: boolean };
+// Daily Trial (M19) record per UTC day; bestDefeated counts enemies defeated.
+export type DailyRecord = { date: string; bestDefeated: number; bestScore: number; goalReached: boolean };
 
 // Daily Quests (R10) record per UTC day; tasks map task id to { done, claimed } and
 // milestones lists the claimed chest thresholds (quests.js).
 export type QuestRecord = { date: string; activity: number; tasks: Record<string, { done?: boolean; claimed?: boolean }>; milestones: number[] };
 
-// `mutators`: endless mutators (M15) chosen in that run, kept with the record.
-export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number; mutators?: string[] };
+// `mutators`: Daily Trial mutators active in that run, kept with the record.
+export type MapRun = { score: number; defeated: number; duration: number; lives: number; leaks: number; mutators?: string[] };
 
 // Mode picked on the home screen's mode rail; Play launches it. A finished run sets it to
 // that run's mode, so Play means "again" or "next".
@@ -33,12 +33,12 @@ export type HomeMode = "campaign" | "daily" | "expedition" | "free";
 export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition", "free"];
 export const isHomeMode = (value: unknown): value is HomeMode => HOME_MODES.includes(value as HomeMode);
 
-// Pending run-end shard (6C) for the next run; cleared when that run's first wave starts.
+// Pending run-end shard (6C) for the next run; cleared when that run starts.
 export type RunBoost = { type: "placement"; placement: number } | { type: "virtue"; virtue: string };
 
 export type SaveData = {
   bestScore: number;
-  bestWave: number;
+  bestDefeated: number; // most enemies defeated in one Free Play run (the legacy bestWave field is dropped on load)
   lastTeam: string[];
   perfectDefense: boolean;
   favor: number; // Favor earned in total; available = favor - spent on blessings - resetSpent
@@ -49,7 +49,7 @@ export type SaveData = {
   treeVersion: number; // blessingTree.json version the prices were last settled with
   repriceNotice: boolean; // tree v3 price change and Surge -> Infusion, shown once
   mapBests: Record<string, MapRun>;
-  mapTop: Record<string, { score: number; wave: number; mutators?: string[] }>;
+  mapTop: Record<string, { score: number; defeated: number; mutators?: string[] }>;
   challenges: Record<string, Record<string, RunTier>>; // M20: challengeKey -> challenge id -> highest tier cleared (challenges.js)
   nextRunBoost: RunBoost | null;
   daily: DailyRecord[]; // Daily Trial records, newest first, last 7 days (daily.js)
@@ -64,33 +64,38 @@ export type SaveData = {
 // onPersistError, set by the page, tells the player once so they can export their progress.
 export type SaveStore = { data: SaveData; persist(): boolean; onPersistError?: () => void; onPersist?: () => void };
 
-export type RunMode = "classic" | "long" | "endless";
 export type RunTier = "normal" | "heroic" | "mythic";
 export const RUN_TIERS: RunTier[] = ["normal", "heroic", "mythic"];
 export const isRunTier = (value: unknown): value is RunTier => RUN_TIERS.includes(value as RunTier);
-// Endless has its own ramp and always runs at Normal (sim.js).
-export const tierFor = (mode: RunMode, tier: RunTier): RunTier => (mode === "endless" ? "normal" : tier);
 
-// mapBests/mapTop key: classic runs keep the plain map id (older saves), other modes
-// append the mode ("moonlit-pass@long"), and Heroic or Mythic append the tier
-// ("moonlit-pass#heroic", "moonlit-pass@long#mythic"), so td:v1 stays readable by older builds.
-export const runKey = (mapId: string, mode: RunMode, tier: RunTier = "normal") => {
-  const base = mode === "classic" ? mapId : `${mapId}@${mode}`;
-  const t = tierFor(mode, tier);
-  return t === "normal" ? base : `${base}#${t}`;
-};
+// mapBests/mapTop key: Normal runs keep the plain map id (older saves), Heroic or Mythic append the tier
+// ("moonlit-pass#heroic"). Keys of the removed run lengths ("moonlit-pass@long", "...@endless") are merged into
+// these when a save loads (mergeLegacyRunKeys).
+export const runKey = (mapId: string, tier: RunTier = "normal") => (tier === "normal" ? mapId : `${mapId}#${tier}`);
 
-function parseKey(key: string) {
-  const [base, tier = "normal"] = key.split("#");
-  const [, mode = "classic"] = base.split("@");
-  return { mode, tier };
+function parseTier(key: string): RunTier {
+  const tier = key.split("#")[1];
+  return isRunTier(tier) ? tier : "normal";
 }
 
-// Best score in a mode (and tier) across all maps. bestScore stays the classic Normal record.
-export function modeBest(save: SaveData, mode: RunMode, tier: RunTier = "normal"): number {
-  const t = tierFor(mode, tier);
-  const scores = Object.entries(save.mapTop).filter(([key]) => { const k = parseKey(key); return k.mode === mode && k.tier === t; }).map(([, top]) => top.score);
-  return Math.max(mode === "classic" && t === "normal" ? save.bestScore : 0, 0, ...scores);
+// Best score of a tier across all maps. bestScore stays the Normal record.
+export function tierBest(save: SaveData, tier: RunTier = "normal"): number {
+  const scores = Object.entries(save.mapTop).filter(([key]) => parseTier(key) === tier).map(([, top]) => top.score);
+  return Math.max(tier === "normal" ? save.bestScore : 0, 0, ...scores);
+}
+
+// Saves from before October 5, 2026 keyed records by run length ("map@long#heroic"). The run lengths are gone: such
+// records fold into the plain key, keeping the higher score, and `wave` (not comparable) becomes `defeated: 0`.
+function mergeLegacyRunKeys<T extends { score: number }>(runs: Record<string, any>): Record<string, any> {
+  const out: Record<string, any> = {};
+  for (const [key, run] of Object.entries(runs)) {
+    const [base, tier] = key.split("#");
+    const plain = tier ? `${base.split("@")[0]}#${tier}` : base.split("@")[0];
+    const next = { ...run, defeated: Number(run.defeated) || 0 };
+    delete next.wave;
+    if (!out[plain] || next.score > out[plain].score) out[plain] = next;
+  }
+  return out;
 }
 
 // mapIds and relicIds check the Expedition state; without them it is not validated as strictly.
@@ -118,7 +123,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
+  return { bestScore: 0, bestDefeated: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, challenges: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -167,7 +172,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
   const candidate = renameLegacyHeroes(raw);
   const clean: SaveData = {
     bestScore: candidate.bestScore,
-    bestWave: Number(candidate.bestWave) || 0,
+    bestDefeated: Math.max(0, Math.floor(Number(candidate.bestDefeated) || 0)),
     lastTeam: Array.isArray(candidate.lastTeam) ? [...new Set<string>(candidate.lastTeam)].filter((id) => rules.heroIds.has(id)) : [],
     perfectDefense: !!candidate.perfectDefense,
     favor: Number(candidate.favor) || 0,
@@ -180,8 +185,8 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
       : Math.max(0, Number(candidate.refundNotice) || 0),
     treeVersion: Number(candidate.treeVersion) || 2,
     repriceNotice: !!candidate.repriceNotice,
-    mapBests: pickRuns(candidate.mapBests),
-    mapTop: pickRuns(candidate.mapTop),
+    mapBests: mergeLegacyRunKeys(pickRuns(candidate.mapBests)),
+    mapTop: mergeLegacyRunKeys(pickRuns(candidate.mapTop)),
     challenges: sanitizeChallenges(candidate.challenges),
     nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
     daily: sanitizeDaily(candidate.daily),
@@ -205,7 +210,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
   }
   // Older saves only kept the last run per map; it is a lower bound for the record.
   for (const [id, run] of Object.entries(clean.mapBests)) {
-    if (!clean.mapTop[id]) clean.mapTop[id] = { score: run.score, wave: Number(run.wave) || 0 };
+    if (!clean.mapTop[id]) clean.mapTop[id] = { score: run.score, defeated: Number(run.defeated) || 0 };
   }
   return clean;
 }

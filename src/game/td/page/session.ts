@@ -6,7 +6,7 @@ import { shownLives } from "../board.js";
 import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { environmentFor } from "../environments.js";
-import { LEAN_HP_FACTOR, leanParam, leanWaveTuning } from "../wave-variants.js";
+import { timelineForMap } from "../stage-for-map.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
@@ -113,15 +113,13 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const might = mightEnemyScale(campaignData, store.data.campaign, data.heroes, pool, data.tuning.run?.deployCap ?? 7);
       if (might !== 1) (special as any).hpScale = ((special as any).hpScale ?? map?.enemyHp ?? 1) * might;
     }
-    const lean = leanParam(location.search); // dev experiment: ?lean=0.6, see wave-variants.js
-    const tuning = lean ? leanWaveTuning(buildRunTuning(data.tuning, runLevels, boost), lean) : buildRunTuning(data.tuning, runLevels, boost);
-    if (lean && (special as any).hpScale != null) (special as any).hpScale *= LEAN_HP_FACTOR;
+    const tuning = buildRunTuning(data.tuning, runLevels, boost);
     // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
     // the Daily Trial stays the same for everyone without them.
     const interventions = daily ? [] : Object.entries(data.tuning.interventions ?? {})
       .filter(([, cfg]: [string, any]) => !cfg.unlockAfter || store.data.campaign.cleared?.[cfg.unlockAfter]).map(([id]) => id);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
-    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, mode: state.selectedMode, tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
+    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, timeline: timelineForMap(map, campaignData), tier: state.selectedTier, tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map), campaign: Boolean(campaignStage || daily || expedition) }); // R18 by run context: Campaign, Daily Trial and Expedition
@@ -140,7 +138,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition, campaign };
+    state.session = { game, renderer, canvas, map, started: false, keyboardSlots, favLevels: runLevels, boost, debug: false, daily, expedition, campaign };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -154,7 +152,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.resetPowers();
     const boostText = boost?.type === "placement" ? ` Placement shard: +${boost.placement} starting placement.`
       : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
-    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: clear wave ${daily.goal}.`
+    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
       : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
     ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${boostText}${dailyText}`);
@@ -197,7 +195,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const session = state.session;
     if (!session) return;
     const game = session.game;
-    if (!settled && (type === "clear" || type === "finish")) {
+    if (!settled && type === "finish") {
       const token = sessionToken;
       window.clearTimeout(battleSettleTimer);
       battleSettleTimer = window.setTimeout(() => {
@@ -219,15 +217,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const full = game.heroes.find((unit: any) => unit.id === game.lastRevive.by)?.awakenedUlt;
       if (revived) ctx.notice(`${reviver?.name ?? "A hero"} revived ${revived.name} with ${full ? "full" : "half"} health.`);
     }
-    if (type === "clear" && game.waveStats) {
-      ctx.actions.playSound("clear");
-      const stats = game.waveStats;
-      if (stats.leaks === 0) session.perfectWaves += 1;
-      const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
-      const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.reward} placement.` : "";
-      const dailyText = session.daily && stats.wave === session.daily.goal ? " Daily Trial goal reached." : "";
-      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${questText}${dailyText}`);
-    }
     // Boss rules (M18).
     if (type === "bossMark") {
       const marked = game.heroes.find((h: any) => (h.markedByBossUntil ?? 0) > game.time);
@@ -243,7 +232,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       // The glossary owns requirements and explanations; combat only announces the discovery.
       if (info) ctx.notice(`Reaction discovered: ${info.name}.`);
     }
-    if (type === "quest" && game.quest?.status === "failed" && game.lives > 0) ctx.notice(`Quest failed: ${ctx.actions.questName(game.quest)}.`);
+    if (type === "offer") ctx.actions.playSound("clear"); // a blessing offer opened at a defeat milestone
     if (type === "finish") deps.results.finishRun();
     ctx.actions.renderDeck();
     ctx.actions.syncMainAction();

@@ -1,14 +1,17 @@
 // Daily Trial (M19): one fixed setup per UTC day, the same for every player. The date
-// seeds the map, the allowed heroes, two mutators active from wave 1 and the goal wave.
-// Runs are endless at Normal without Divine Blessings or shard boosts, so scores are
+// seeds the map, the allowed heroes, two mutators active from the start and the goal.
+// Runs play the map's timeline at Normal without Divine Blessings or shard boosts, so scores are
 // comparable. Pure logic; the page module is page/daily.ts, the save record lives in td:v1.
 import { createRng } from "./sim.js";
+import { timelineForMap } from "./stage-for-map.js";
+import { timelineTotals } from "./timeline.js";
+import campaignData from "../../data/tdCampaign.json" with { type: "json" };
 
 export const DAILY = {
   heroes: 5, // allowed heroes: at least `perSlot` road and `perSlot` platform, the rest from either
   perSlot: 2,
   mutators: 2,
-  goalWave: 5, // the first boss; the simple bot in scripts/test-td-daily.mjs --measure reaches it on ~40% of days
+  goalShare: 0.6, // the goal: defeat this share of the stage's enemies (first guess, tune with the owner's playtest)
   rewardFavor: 100, // first goal reached on a day
   history: 7, // days kept in the save
 };
@@ -34,7 +37,7 @@ function pickFrom(list, rng) {
   return list.splice(Math.floor(rng() * list.length), 1)[0];
 }
 
-// { date, seed, mapId, heroIds, mutators, goal }. heroIds lists road heroes first.
+// { date, seed, mapId, heroIds, mutators, goal, timeline }. heroIds lists road heroes first; goal is enemies to defeat.
 export function dailySetup(date, { heroes, maps, tuning }) {
   const seed = dateSeed(date);
   const rng = createRng(seed);
@@ -52,17 +55,17 @@ export function dailySetup(date, { heroes, maps, tuning }) {
   const pool = Object.keys(tuning.mutators?.pool ?? {});
   const mutators = [];
   while (mutators.length < DAILY.mutators && pool.length) mutators.push(pickFrom(pool, rng));
-  return { date, seed, mapId: map.id, heroIds, mutators, goal: DAILY.goalWave };
+  const timeline = timelineForMap(map, campaignData);
+  return { date, seed, mapId: map.id, heroIds, mutators, goal: Math.max(5, Math.round(timelineTotals(timeline).total * DAILY.goalShare)), timeline };
 }
 
-// Options for new TowerDefenseGame(...) on top of heroes, tuning, map and waves.
-export const dailyGameOptions = (setup) => ({ mode: "endless", tier: "normal", seed: setup.seed, allowedHeroes: setup.heroIds, mutators: setup.mutators });
+// Options for new TowerDefenseGame(...) on top of heroes, tuning and map.
+export const dailyGameOptions = (setup) => ({ timeline: setup.timeline, tier: "normal", seed: setup.seed, allowedHeroes: setup.heroIds, mutators: setup.mutators });
 
-// Waves fully cleared so far: the current wave counts once it is over, and an endless
-// run ends inside the wave that broke it.
-export const clearedWaves = (game) => (game.won || (!game.running && !game.complete) ? game.wave : Math.max(0, game.wave - 1));
+// Enemies defeated so far (killed or through the gates), summons excluded.
+export const defeatedCount = (game) => game.enemiesDown;
 
-// Save record per day: { date, bestWave (waves cleared), bestScore, goalReached }, newest first.
+// Save record per day: { date, bestDefeated, bestScore, goalReached }, newest first. Older records had bestWave, now ignored.
 export function sanitizeDaily(value) {
   if (!Array.isArray(value)) return [];
   const seen = new Set();
@@ -70,21 +73,21 @@ export function sanitizeDaily(value) {
   for (const entry of value) {
     if (!entry || typeof entry !== "object" || !isDailyDate(entry.date) || seen.has(entry.date)) continue;
     seen.add(entry.date);
-    out.push({ date: entry.date, bestWave: Math.max(0, Math.floor(Number(entry.bestWave) || 0)), bestScore: Math.max(0, Math.floor(Number(entry.bestScore) || 0)), goalReached: !!entry.goalReached });
+    out.push({ date: entry.date, bestDefeated: Math.max(0, Math.floor(Number(entry.bestDefeated) || 0)), bestScore: Math.max(0, Math.floor(Number(entry.bestScore) || 0)), goalReached: !!entry.goalReached });
   }
   return out.sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, DAILY.history);
 }
 
 export const dailyRecord = (records, date) => (records ?? []).find((entry) => entry.date === date) ?? null;
 
-// Records a finished trial run ({ cleared, score }). Returns the updated list, the day's record, whether the
+// Records a finished trial run ({ defeated, score }). Returns the updated list, the day's record, whether the
 // run set a new best and the one-time goal Favor (0 once the goal was already reached that day).
 export function recordDaily(records, setup, run) {
   const prev = dailyRecord(records, setup.date);
-  const reached = run.cleared >= setup.goal;
+  const reached = run.defeated >= setup.goal;
   const record = {
     date: setup.date,
-    bestWave: Math.max(prev?.bestWave ?? 0, run.cleared),
+    bestDefeated: Math.max(prev?.bestDefeated ?? 0, run.defeated),
     bestScore: Math.max(prev?.bestScore ?? 0, run.score),
     goalReached: !!prev?.goalReached || reached,
   };

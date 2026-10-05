@@ -73,11 +73,11 @@ const chapters = c.chapters.map((chapter: any) => ({
     const map = mapById.get(stage.mapId);
     const hero = stage.rewards?.find((r: any) => r.type === "hero")?.id;
     const seals = stage.rewards?.find((r: any) => r.id === "divineSeals")?.amount ?? 0;
-    // A boss appears only in stages whose waves spawn "boss": the stage's own or its map's boss.
-    const bossWave = (stage.waves ?? []).find((wave: any) => wave.spawns?.some((group: any) => group.kind === "boss"))?.wave ?? null;
+    // A boss appears only in stages whose timeline spawns "boss": the stage's own or its map's boss.
+    const hasBoss = (stage.timeline ?? []).some((group: any) => group.kind === "boss");
     // Map background: the terrain image the game and lobby use (public/td/maps).
     const bg = (mapSceneFor(map) as any)?.assets?.terrain ?? "";
-    return { ...stage, bossWave, bg, mapName: map?.name ?? stage.mapId, theme: map?.theme ?? "", boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
+    return { ...stage, hasBoss, bg, mapName: map?.name ?? stage.mapId, theme: map?.theme ?? "", boss: bossInfo.get(stage.boss ?? map?.boss ?? "baphomet")?.name ?? "", hero, seals };
   }),
 }));
 const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
@@ -176,13 +176,13 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
               <colgroup><col style="width:12%" /><col style="width:9%" /><col style="width:19%" /><col style="width:12%" /><col style="width:6%" /><col style="width:7%" /><col style="width:7%" /><col style="width:13%" /><col style="width:15%" /></colgroup>
               <thead><tr><th>BG</th><th>Stage</th><th>Map</th><th>Theme</th><th>Lives</th><th>HP</th><th>Seals</th><th>Hero</th><th>Boss</th></tr></thead>
               <tbody>{chapter.stages.map((s: any) => (
-                <tr class={s.bossWave ? "ov-boss" : undefined} title={s.bossWave ? `${s.name} - boss ${s.boss} in wave ${s.bossWave}` : s.name}><td class="ov-bg">{s.bg && <a href={s.bg} target="_blank" rel="noopener" title={`${s.mapName} background`}><img src={s.bg} alt="" width="40" height="22" loading="lazy" decoding="async" /></a>}</td><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td><td>{s.bossWave ? `${s.boss} w${s.bossWave}` : ""}</td></tr>
+                <tr class={s.hasBoss ? "ov-boss" : undefined} title={s.hasBoss ? `${s.name} - boss ${s.boss}` : s.name}><td class="ov-bg">{s.bg && <a href={s.bg} target="_blank" rel="noopener" title={`${s.mapName} background`}><img src={s.bg} alt="" width="40" height="22" loading="lazy" decoding="async" /></a>}</td><td>{s.id}</td><td title={s.mapName}>{s.mapName}</td><td>{s.theme}</td><td>{s.lives}</td><td>x{s.hpScale}</td><td>{s.seals || ""}</td><td>{s.hero ? heroName.get(s.hero) ?? s.hero : ""}</td><td>{s.bossWave ? `${s.boss} w${s.bossWave}` : ""}</td></tr>
               ))}</tbody>
             </table>
           </div>
         ))}
       </div>
-      <p class="ov-note">HP = stage enemy health scale. Boss = which boss appears and in which wave (highlighted rows). BG = map background, click to open it. Hover a stage for its name.</p>
+      <p class="ov-note">HP = stage enemy health scale. Boss = which boss closes the stage (highlighted rows). BG = map background, click to open it. Hover a stage for its name.</p>
     </section>
   </main>
   </div>

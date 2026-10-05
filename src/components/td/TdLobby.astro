@@ -8,13 +8,13 @@ import tuning from "../../data/gameBalance.tuning.json";
 import TdSoundControls from "./TdSoundControls.astro";
 import TdGlossaryContent from "./TdGlossaryContent.astro";
 import TdHome from "./TdHome.astro";
-interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
-const { maps, waveCount, bossNames, assetBase, isDev = false } = Astro.props;
+interface Props { maps: any[]; bossNames: Record<string, string>; assetBase: string; isDev?: boolean; }
+const { maps, bossNames, assetBase, isDev = false } = Astro.props;
 // Free Play lists every battlefield except campaign-only ones (tdMaps.json campaignOnly).
 // Prototype maps (`prototype: true`, e.g. the compact board, board.js) are listed on dev builds and,
 // hidden, on every other build: open the page with ?proto=1 to reveal them (testing on a phone).
 const previews = maps.filter((entry: any) => !entry.campaignOnly || entry.prototype).map((entry: any) => ({ ...mapPreviewModel(entry), bossName: bossNames[entry.id] }));
-// Difficulty tiers (M3) for 10 and 20 waves; numbers from tuning.tiers.
+// Difficulty tiers (M3); numbers from tuning.tiers.
 const pct = (mult: number) => `${Math.round((mult - 1) * 100)}%`;
 const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string, any], rank) => ({
   id,
@@ -23,11 +23,6 @@ const tiers = Object.entries((tuning as any).tiers ?? {}).map(([id, t]: [string,
   copy: t.enemyHp === 1 && t.enemyAttack === 1 ? "The standard run." : `Enemies +${pct(t.enemyHp)} health, +${pct(t.enemyAttack)} attack.`,
   favor: t.favor,
 }));
-const modes = [
-  { id: "classic", glyph: String(waveCount), label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
-  { id: "long", glyph: "20", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
-  { id: "endless", glyph: "∞", label: "Endless", copy: "A boss every 5th wave. Waves keep growing until the last life is lost. Always Normal difficulty." },
-];
 ---
 
 <section class="td-app" data-td-lobby aria-label="Tower defense menu">
@@ -229,8 +224,8 @@ const modes = [
       </div>
     </section>
 
-    <!-- 3. Difficulty and run length: picking a length starts the run -->
-    <section class="td-screen" data-td-screen="mode" data-title="Difficulty and run length" aria-label="Difficulty and run length" hidden>
+    <!-- 3. Difficulty: Play starts the run -->
+    <section class="td-screen" data-td-screen="mode" data-title="Difficulty" aria-label="Difficulty" hidden>
       <div class="td-screen-body td-mode-screen">
         <header class="td-mode-banner">
           <img class="td-mode-banner-art" data-td-mode-art alt="" decoding="async">
@@ -256,19 +251,8 @@ const modes = [
           </div>
         </div>
         <div class="td-mode-group">
-          <span class="td-label">Run length - tap to start</span>
-          <div class="td-modes" data-td-modes>
-            {modes.map((mode) => (
-              <button type="button" class={`td-mode td-mode--${mode.id}`} data-mode-id={mode.id} title={mode.copy}>
-                <span class="td-mode-glyph" aria-hidden="true">{mode.glyph}</span>
-                <span class="td-mode-copy">
-                  <strong>{mode.label}</strong>
-                </span>
-                <span class="td-mode-best" data-mode-best={mode.id}></span>
-                <span class="td-mode-play" aria-hidden="true">Play <svg class="td-icon" viewBox="0 0 24 24" focusable="false"><path d="M9 6l6 6-6 6" fill="none" /></svg></span>
-              </button>
-            ))}
-          </div>
+          <button type="button" class="action-button action-button--primary td-mode-play-button" data-td-mode-play data-td-autofocus>Play</button>
+          <span class="td-mode-best" data-td-mode-best></span>
         </div>
         <details class="td-challenges" data-td-challenges>
           <summary><span>Challenges on this battlefield</span> <span class="td-challenge-count" data-td-challenge-count></span></summary>
@@ -290,7 +274,6 @@ const modes = [
               <p class="td-trial-boss">Boss <strong data-td-daily-boss></strong></p>
               <p class="td-trial-goal" data-td-daily-goal></p>
               <ul class="td-trial-rules" aria-label="Trial rules">
-                <li>Endless</li>
                 <li>Normal</li>
                 <li>No Divine Blessings</li>
                 <li>No shard boosts</li>
@@ -304,7 +287,7 @@ const modes = [
             </div>
           </header>
           <div class="td-trial-section">
-            <div class="td-trial-section-head"><span class="td-label">Mutators</span><small>Active from wave 1</small></div>
+            <div class="td-trial-section-head"><span class="td-label">Mutators</span><small>Active from the start</small></div>
             <ul class="td-trial-mutators" data-td-daily-mutators></ul>
           </div>
           <div class="td-trial-section">
@@ -366,7 +349,7 @@ const modes = [
             <ul class="td-trial-squad td-exp-squad" data-td-exp-roster></ul>
           </div>
           <div class="td-trial-section" data-td-exp-relics-box hidden>
-            <div class="td-trial-section-head"><span class="td-label">Relics</span><small>Active from wave 1 of every stage</small></div>
+            <div class="td-trial-section-head"><span class="td-label">Relics</span><small>Active from the start of every stage</small></div>
             <ul class="td-trial-mutators td-exp-relics" data-td-exp-relics></ul>
           </div>
           <div class="td-trial-section" data-td-exp-steps>

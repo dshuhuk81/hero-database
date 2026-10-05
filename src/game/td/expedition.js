@@ -1,8 +1,8 @@
-// Expedition (M21): a roguelite chain of 10-wave stages on EXPEDITION.stages battlefields. It starts
+// Expedition (M21): a roguelite chain of stages on EXPEDITION.stages battlefields (each plays the map's own timeline). It starts
 // with three random heroes; after each won stage the camp offers three cards (a new hero,
 // a relic or a veteran) and the player takes one. Lives carry over between stages, gold
 // does not, and every stage is tougher than the last. Relics are the rare and epic run
-// blessings of M17, active from wave 1. Pure logic; the page module is page/expedition.ts
+// blessings of M17, active from the start. Pure logic; the page module is page/expedition.ts
 // and the in-progress state lives in the td:v1 save.
 import { createRng } from "./sim.js";
 
@@ -44,10 +44,9 @@ export function newExpedition(seed, { heroes, maps, tuning }) {
 export const stageCount = (state) => state.stages.length;
 export const isFinished = (state) => state.stage >= state.stages.length;
 
-// Options for new TowerDefenseGame(...) on top of heroes, tuning, map and waves.
+// Options for new TowerDefenseGame(...) on top of heroes, tuning and map; the page adds the map's timeline.
 export function stageGameOptions(state) {
   return {
-    mode: "classic",
     tier: "normal",
     seed: mix(state.seed, state.stage, 0x51ed27),
     allowedHeroes: state.roster,

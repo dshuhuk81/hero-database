@@ -55,7 +55,7 @@
     "reuse": "verdant",
     "color": 7985355,
     "rule": "Tidal Rhythm",
-    "text": "Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+    "text": "Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
     "mods": {
       "oddSpeed": 0.85,
       "evenSpeed": 1.1
@@ -130,7 +130,7 @@
     "reuse": "moonlit",
     "color": 15785381,
     "rule": "Astral Convergence",
-    "text": "Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+    "text": "Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
     "mods": {
       "oddCharge": 1.2,
       "evenAps": 1.1

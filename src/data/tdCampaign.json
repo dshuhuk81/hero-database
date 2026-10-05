@@ -41,11 +41,11 @@
   },
   "repeatShare": 0.25,
   "collectionRewards": {
-    "perWave": {
-      "gold": 10,
-      "heroXp": 5
+    "perDefeated": {
+      "gold": 2,
+      "heroXp": 1
     },
-    "maxWaves": 30
+    "maxDefeated": 120
   },
   "laurels": {
     "lifeUnit": 5,
@@ -235,7 +235,7 @@
               "count": 1
             },
             {
-              "startMs": 24000,
+              "startMs": 25425,
               "kind": "runner",
               "count": 1
             },
@@ -247,7 +247,7 @@
               "everyMs": 2600
             },
             {
-              "startMs": 33750,
+              "startMs": 35175,
               "kind": "runner",
               "count": 1
             }
@@ -294,7 +294,7 @@
               "count": 1
             },
             {
-              "startMs": 12900,
+              "startMs": 13920,
               "kind": "grunt",
               "count": 1
             },
@@ -304,7 +304,7 @@
               "count": 1
             },
             {
-              "startMs": 21300,
+              "startMs": 22320,
               "kind": "grunt",
               "count": 1
             },
@@ -314,7 +314,7 @@
               "count": 1
             },
             {
-              "startMs": 29700,
+              "startMs": 30720,
               "kind": "grunt",
               "count": 1
             },
@@ -324,7 +324,7 @@
               "count": 1
             },
             {
-              "startMs": 38100,
+              "startMs": 39120,
               "kind": "runner",
               "count": 1
             }
@@ -371,7 +371,7 @@
               "count": 1
             },
             {
-              "startMs": 13300,
+              "startMs": 14440,
               "kind": "grunt",
               "count": 1
             },
@@ -381,7 +381,7 @@
               "count": 1
             },
             {
-              "startMs": 22100,
+              "startMs": 23240,
               "kind": "grunt",
               "count": 1
             },
@@ -391,12 +391,12 @@
               "count": 1
             },
             {
-              "startMs": 30900,
+              "startMs": 31160,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 32400,
+              "startMs": 32920,
               "kind": "runner",
               "count": 1
             },
@@ -406,12 +406,12 @@
               "count": 1
             },
             {
-              "startMs": 39700,
+              "startMs": 39960,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 41200,
+              "startMs": 41720,
               "kind": "grunt",
               "count": 1
             }
@@ -454,7 +454,7 @@
               "count": 1
             },
             {
-              "startMs": 13700,
+              "startMs": 14960,
               "kind": "grunt",
               "count": 1
             },
@@ -464,7 +464,7 @@
               "count": 1
             },
             {
-              "startMs": 22900,
+              "startMs": 24160,
               "kind": "runner",
               "count": 1
             },
@@ -474,7 +474,7 @@
               "count": 1
             },
             {
-              "startMs": 32100,
+              "startMs": 33360,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -486,7 +486,7 @@
               "count": 1
             },
             {
-              "startMs": 41300,
+              "startMs": 42560,
               "kind": "flyer",
               "count": 1
             }
@@ -533,7 +533,7 @@
               "count": 1
             },
             {
-              "startMs": 12667,
+              "startMs": 13617,
               "kind": "flyer",
               "count": 1
             },
@@ -543,12 +543,12 @@
               "count": 1
             },
             {
-              "startMs": 20833,
+              "startMs": 20966,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 22333,
+              "startMs": 22600,
               "kind": "grunt",
               "count": 1
             },
@@ -558,7 +558,7 @@
               "count": 1
             },
             {
-              "startMs": 29000,
+              "startMs": 29950,
               "kind": "runner",
               "count": 1
             },
@@ -568,12 +568,12 @@
               "count": 1
             },
             {
-              "startMs": 37167,
+              "startMs": 37300,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 38667,
+              "startMs": 38934,
               "kind": "grunt",
               "count": 1
             },
@@ -583,7 +583,7 @@
               "count": 1
             },
             {
-              "startMs": 45333,
+              "startMs": 46283,
               "kind": "flyer",
               "count": 1
             },
@@ -631,7 +631,7 @@
               "count": 1
             },
             {
-              "startMs": 13000,
+              "startMs": 14050,
               "kind": "grunt",
               "count": 1
             },
@@ -641,7 +641,7 @@
               "count": 1
             },
             {
-              "startMs": 21500,
+              "startMs": 22550,
               "kind": "flyer",
               "count": 1
             },
@@ -651,12 +651,12 @@
               "count": 1
             },
             {
-              "startMs": 30000,
+              "startMs": 30200,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 31500,
+              "startMs": 31900,
               "kind": "archer",
               "count": 1
             },
@@ -666,12 +666,12 @@
               "count": 1
             },
             {
-              "startMs": 38500,
+              "startMs": 38700,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 40000,
+              "startMs": 40400,
               "kind": "runner",
               "count": 1
             },
@@ -681,12 +681,12 @@
               "count": 1
             },
             {
-              "startMs": 47000,
+              "startMs": 47200,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 48500,
+              "startMs": 48900,
               "kind": "runner",
               "count": 1
             }
@@ -696,7 +696,7 @@
           "id": "1-7",
           "name": "Two Gates",
           "mapId": "sunscar-ruins",
-          "text": "The ruins have two gates and every wave splits between them. Spread your squad so neither lane is left open.",
+          "text": "The ruins have two gates and every group of enemies splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
           "hpScale": 2.99,
           "unlockAfter": "1-6",
@@ -734,7 +734,7 @@
               "count": 1
             },
             {
-              "startMs": 19929,
+              "startMs": 20743,
               "kind": "grunt",
               "count": 1
             },
@@ -744,7 +744,7 @@
               "count": 1
             },
             {
-              "startMs": 27643,
+              "startMs": 28457,
               "kind": "mender",
               "count": 1
             },
@@ -754,7 +754,7 @@
               "count": 1
             },
             {
-              "startMs": 35357,
+              "startMs": 36171,
               "kind": "hexer",
               "count": 1
             },
@@ -771,7 +771,7 @@
               "count": 1
             },
             {
-              "startMs": 50786,
+              "startMs": 51600,
               "kind": "runner",
               "count": 1
             }
@@ -814,7 +814,7 @@
               "count": 1
             },
             {
-              "startMs": 13833,
+              "startMs": 15133,
               "kind": "grunt",
               "count": 1
             },
@@ -824,12 +824,12 @@
               "count": 1
             },
             {
-              "startMs": 23167,
+              "startMs": 23534,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 24667,
+              "startMs": 25400,
               "kind": "grunt",
               "count": 1
             },
@@ -839,12 +839,12 @@
               "count": 1
             },
             {
-              "startMs": 32500,
+              "startMs": 32867,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 34000,
+              "startMs": 34733,
               "kind": "runner",
               "count": 1
             },
@@ -854,12 +854,12 @@
               "count": 1
             },
             {
-              "startMs": 41833,
+              "startMs": 42200,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 43333,
+              "startMs": 44066,
               "kind": "grunt",
               "count": 1
             },
@@ -869,17 +869,17 @@
               "count": 1
             },
             {
-              "startMs": 51167,
+              "startMs": 51067,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 52667,
+              "startMs": 52467,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 54167,
+              "startMs": 53867,
               "kind": "grunt",
               "count": 1
             }
@@ -889,7 +889,7 @@
           "id": "1-9",
           "name": "Eve of the Crossing",
           "mapId": "sunscar-eve",
-          "text": "Every enemy you have met comes at once, through both gates. Ten long waves test your whole squad; level your heroes if you fall short.",
+          "text": "Every enemy you have met comes at once, through both gates. A long stage tests your whole squad; level your heroes if you fall short.",
           "lives": 18,
           "hpScale": 3.08,
           "unlockAfter": "1-8",
@@ -927,7 +927,7 @@
               "count": 1
             },
             {
-              "startMs": 21071,
+              "startMs": 22057,
               "kind": "grunt",
               "count": 1
             },
@@ -937,7 +937,7 @@
               "count": 1
             },
             {
-              "startMs": 29357,
+              "startMs": 30343,
               "kind": "mender",
               "count": 1
             },
@@ -949,7 +949,7 @@
               "everyMs": 3314
             },
             {
-              "startMs": 37643,
+              "startMs": 38629,
               "kind": "hexer",
               "count": 1
             },
@@ -959,7 +959,7 @@
               "count": 1
             },
             {
-              "startMs": 45929,
+              "startMs": 46915,
               "kind": "runner",
               "count": 1
             },
@@ -969,7 +969,7 @@
               "count": 1
             },
             {
-              "startMs": 54214,
+              "startMs": 55200,
               "kind": "runner",
               "count": 1
             }
@@ -979,7 +979,7 @@
           "id": "1-10",
           "name": "The Crossing",
           "mapId": "verdant-last-crossing",
-          "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. Eleven waves and the chapter's final battle.",
+          "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. The chapter's final battle.",
           "lives": 15,
           "hpScale": 3.34,
           "unlockAfter": "1-9",
@@ -1021,7 +1021,7 @@
               "count": 1
             },
             {
-              "startMs": 19750,
+              "startMs": 20538,
               "kind": "grunt",
               "count": 1
             },
@@ -1031,7 +1031,7 @@
               "count": 1
             },
             {
-              "startMs": 27375,
+              "startMs": 28163,
               "kind": "mender",
               "count": 1
             },
@@ -1041,7 +1041,7 @@
               "count": 1
             },
             {
-              "startMs": 35000,
+              "startMs": 35788,
               "kind": "hexer",
               "count": 1
             },
@@ -1051,7 +1051,7 @@
               "count": 1
             },
             {
-              "startMs": 42625,
+              "startMs": 43413,
               "kind": "runner",
               "count": 1
             },
@@ -1061,7 +1061,7 @@
               "count": 1
             },
             {
-              "startMs": 50250,
+              "startMs": 51038,
               "kind": "grunt",
               "count": 1
             },
@@ -1166,7 +1166,7 @@
               "everyMs": 6000
             },
             {
-              "startMs": 19500,
+              "startMs": 22500,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -1180,7 +1180,7 @@
               "everyMs": 6000
             },
             {
-              "startMs": 34500,
+              "startMs": 37500,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -1192,7 +1192,7 @@
               "count": 1
             },
             {
-              "startMs": 49500,
+              "startMs": 52500,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1204,14 +1204,14 @@
               "count": 1
             },
             {
-              "startMs": 64500,
+              "startMs": 66000,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 6000
             },
             {
-              "startMs": 66000,
+              "startMs": 69000,
               "kind": "grunt",
               "count": 1,
               "repeat": 3,
@@ -1253,7 +1253,7 @@
               "everyMs": 5467
             },
             {
-              "startMs": 4500,
+              "startMs": 7100,
               "kind": "archer",
               "count": 1
             },
@@ -1263,7 +1263,7 @@
               "count": 1
             },
             {
-              "startMs": 18167,
+              "startMs": 20767,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -1275,7 +1275,7 @@
               "count": 1
             },
             {
-              "startMs": 31833,
+              "startMs": 34433,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -1287,12 +1287,12 @@
               "count": 1
             },
             {
-              "startMs": 45500,
+              "startMs": 46733,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 47000,
+              "startMs": 49467,
               "kind": "flyer",
               "count": 1
             },
@@ -1302,12 +1302,12 @@
               "count": 1
             },
             {
-              "startMs": 59167,
+              "startMs": 60400,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 60667,
+              "startMs": 63134,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1319,12 +1319,12 @@
               "count": 1
             },
             {
-              "startMs": 72833,
+              "startMs": 74066,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 74333,
+              "startMs": 76800,
               "kind": "grunt",
               "count": 1,
               "repeat": 3,
@@ -1370,7 +1370,7 @@
               "everyMs": 6000
             },
             {
-              "startMs": 4500,
+              "startMs": 7500,
               "kind": "mender",
               "count": 1
             },
@@ -1380,7 +1380,7 @@
               "count": 1
             },
             {
-              "startMs": 19500,
+              "startMs": 22500,
               "kind": "mender",
               "count": 1
             },
@@ -1390,7 +1390,7 @@
               "count": 1
             },
             {
-              "startMs": 34500,
+              "startMs": 37500,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1402,12 +1402,12 @@
               "count": 1
             },
             {
-              "startMs": 49500,
+              "startMs": 51000,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 51000,
+              "startMs": 54000,
               "kind": "grunt",
               "count": 1,
               "repeat": 3,
@@ -1419,12 +1419,12 @@
               "count": 1
             },
             {
-              "startMs": 64500,
+              "startMs": 66000,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 66000,
+              "startMs": 69000,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1436,17 +1436,17 @@
               "count": 1
             },
             {
-              "startMs": 79500,
+              "startMs": 80250,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 81000,
+              "startMs": 82500,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 82500,
+              "startMs": 84750,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1488,7 +1488,7 @@
               "everyMs": 3733
             },
             {
-              "startMs": 4500,
+              "startMs": 7200,
               "kind": "broodcaller",
               "count": 1
             },
@@ -1500,7 +1500,7 @@
               "everyMs": 3733
             },
             {
-              "startMs": 18500,
+              "startMs": 21200,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1512,7 +1512,7 @@
               "count": 1
             },
             {
-              "startMs": 32500,
+              "startMs": 35200,
               "kind": "brute",
               "count": 1
             },
@@ -1524,7 +1524,7 @@
               "everyMs": 3733
             },
             {
-              "startMs": 46500,
+              "startMs": 49200,
               "kind": "hexer",
               "count": 1
             },
@@ -1534,7 +1534,7 @@
               "count": 1
             },
             {
-              "startMs": 60500,
+              "startMs": 63200,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -1544,12 +1544,12 @@
               "count": 1
             },
             {
-              "startMs": 74500,
+              "startMs": 75800,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 76000,
+              "startMs": 78600,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1561,12 +1561,12 @@
               "count": 1
             },
             {
-              "startMs": 88500,
+              "startMs": 89800,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 90000,
+              "startMs": 92600,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1608,7 +1608,7 @@
               "everyMs": 6057
             },
             {
-              "startMs": 4500,
+              "startMs": 7543,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1620,7 +1620,7 @@
               "count": 1
             },
             {
-              "startMs": 19643,
+              "startMs": 22686,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -1630,12 +1630,12 @@
               "count": 1
             },
             {
-              "startMs": 34786,
+              "startMs": 36315,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 36286,
+              "startMs": 39343,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1647,14 +1647,14 @@
               "count": 1
             },
             {
-              "startMs": 49929,
+              "startMs": 51458,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
               "everyMs": 6057
             },
             {
-              "startMs": 51429,
+              "startMs": 54486,
               "kind": "archer",
               "count": 1
             },
@@ -1664,12 +1664,12 @@
               "count": 1
             },
             {
-              "startMs": 65071,
+              "startMs": 66600,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 66571,
+              "startMs": 69628,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1681,12 +1681,12 @@
               "count": 1
             },
             {
-              "startMs": 80214,
+              "startMs": 81743,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 81714,
+              "startMs": 84771,
               "kind": "hexer",
               "count": 1
             },
@@ -1696,19 +1696,19 @@
               "count": 1
             },
             {
-              "startMs": 95357,
+              "startMs": 96128,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 96857,
+              "startMs": 98400,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 6057
             },
             {
-              "startMs": 98357,
+              "startMs": 100671,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1752,7 +1752,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 7238,
               "kind": "runner",
               "count": 1
             },
@@ -1762,12 +1762,12 @@
               "count": 1
             },
             {
-              "startMs": 18625,
+              "startMs": 19950,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 20125,
+              "startMs": 22775,
               "kind": "flyer",
               "count": 1
             },
@@ -1777,12 +1777,12 @@
               "count": 1
             },
             {
-              "startMs": 32750,
+              "startMs": 34075,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 34250,
+              "startMs": 36900,
               "kind": "hexer",
               "count": 1
             },
@@ -1792,7 +1792,7 @@
               "count": 1
             },
             {
-              "startMs": 46875,
+              "startMs": 49613,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -1804,12 +1804,12 @@
               "count": 1
             },
             {
-              "startMs": 61000,
+              "startMs": 62325,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 62500,
+              "startMs": 65150,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1821,17 +1821,17 @@
               "count": 1
             },
             {
-              "startMs": 75125,
+              "startMs": 75744,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 76625,
+              "startMs": 77863,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 78125,
+              "startMs": 79981,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -1843,12 +1843,12 @@
               "count": 1
             },
             {
-              "startMs": 89250,
+              "startMs": 90575,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 90750,
+              "startMs": 93400,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -1862,14 +1862,14 @@
               "everyMs": 5650
             },
             {
-              "startMs": 103375,
+              "startMs": 104700,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 5650
             },
             {
-              "startMs": 104875,
+              "startMs": 107525,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -1962,7 +1962,7 @@
               "everyMs": 7133
             },
             {
-              "startMs": 4500,
+              "startMs": 8350,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -1974,7 +1974,7 @@
               "count": 1
             },
             {
-              "startMs": 22333,
+              "startMs": 26183,
               "kind": "archer",
               "count": 1
             },
@@ -1984,7 +1984,7 @@
               "count": 1
             },
             {
-              "startMs": 40167,
+              "startMs": 44017,
               "kind": "mender",
               "count": 1
             },
@@ -1996,7 +1996,7 @@
               "everyMs": 4756
             },
             {
-              "startMs": 58000,
+              "startMs": 61850,
               "kind": "hexer",
               "count": 1
             },
@@ -2006,7 +2006,7 @@
               "count": 1
             },
             {
-              "startMs": 75833,
+              "startMs": 79683,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -2018,12 +2018,12 @@
               "count": 1
             },
             {
-              "startMs": 93667,
+              "startMs": 95734,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 95167,
+              "startMs": 99300,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2063,7 +2063,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 8900,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -2075,7 +2075,7 @@
               "count": 1
             },
             {
-              "startMs": 24167,
+              "startMs": 28567,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -2087,7 +2087,7 @@
               "count": 1
             },
             {
-              "startMs": 43833,
+              "startMs": 48233,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2099,7 +2099,7 @@
               "count": 1
             },
             {
-              "startMs": 63500,
+              "startMs": 67900,
               "kind": "mender",
               "count": 1
             },
@@ -2109,7 +2109,7 @@
               "count": 1
             },
             {
-              "startMs": 83167,
+              "startMs": 87567,
               "kind": "archer",
               "count": 1
             },
@@ -2119,12 +2119,12 @@
               "count": 1
             },
             {
-              "startMs": 102833,
+              "startMs": 105266,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 104333,
+              "startMs": 109200,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -2170,7 +2170,7 @@
               "everyMs": 4914
             },
             {
-              "startMs": 4500,
+              "startMs": 8529,
               "kind": "mender",
               "count": 1
             },
@@ -2180,7 +2180,7 @@
               "count": 1
             },
             {
-              "startMs": 22929,
+              "startMs": 26958,
               "kind": "mender",
               "count": 1
             },
@@ -2192,7 +2192,7 @@
               "everyMs": 4914
             },
             {
-              "startMs": 41357,
+              "startMs": 45386,
               "kind": "archer",
               "count": 1
             },
@@ -2202,7 +2202,7 @@
               "count": 1
             },
             {
-              "startMs": 59786,
+              "startMs": 63815,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -2212,7 +2212,7 @@
               "count": 1
             },
             {
-              "startMs": 78214,
+              "startMs": 82243,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -2224,12 +2224,12 @@
               "count": 1
             },
             {
-              "startMs": 96643,
+              "startMs": 98829,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 98143,
+              "startMs": 102514,
               "kind": "grunt",
               "count": 1,
               "repeat": 3,
@@ -2241,14 +2241,14 @@
               "count": 1
             },
             {
-              "startMs": 115071,
+              "startMs": 117257,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 4914
             },
             {
-              "startMs": 116571,
+              "startMs": 120942,
               "kind": "hexer",
               "count": 1
             }
@@ -2288,7 +2288,7 @@
               "everyMs": 5371
             },
             {
-              "startMs": 4500,
+              "startMs": 9043,
               "kind": "broodcaller",
               "count": 1
             },
@@ -2298,7 +2298,7 @@
               "count": 1
             },
             {
-              "startMs": 24643,
+              "startMs": 29186,
               "kind": "archer",
               "count": 1
             },
@@ -2308,7 +2308,7 @@
               "count": 1
             },
             {
-              "startMs": 44786,
+              "startMs": 49329,
               "kind": "hexer",
               "count": 1
             },
@@ -2320,7 +2320,7 @@
               "everyMs": 5371
             },
             {
-              "startMs": 64929,
+              "startMs": 69472,
               "kind": "mender",
               "count": 1
             },
@@ -2330,7 +2330,7 @@
               "count": 1
             },
             {
-              "startMs": 85071,
+              "startMs": 89614,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -2342,12 +2342,12 @@
               "count": 1
             },
             {
-              "startMs": 105214,
+              "startMs": 107743,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 106714,
+              "startMs": 111771,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -2359,12 +2359,12 @@
               "count": 1
             },
             {
-              "startMs": 125357,
+              "startMs": 127886,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 126857,
+              "startMs": 131914,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2406,7 +2406,7 @@
               "everyMs": 7600
             },
             {
-              "startMs": 4500,
+              "startMs": 8700,
               "kind": "archer",
               "count": 1
             },
@@ -2416,7 +2416,7 @@
               "count": 1
             },
             {
-              "startMs": 23500,
+              "startMs": 27700,
               "kind": "mender",
               "count": 1
             },
@@ -2428,7 +2428,7 @@
               "everyMs": 5067
             },
             {
-              "startMs": 42500,
+              "startMs": 46700,
               "kind": "hexer",
               "count": 1
             },
@@ -2438,7 +2438,7 @@
               "count": 1
             },
             {
-              "startMs": 61500,
+              "startMs": 65700,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2450,7 +2450,7 @@
               "count": 1
             },
             {
-              "startMs": 80500,
+              "startMs": 84700,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -2460,12 +2460,12 @@
               "count": 1
             },
             {
-              "startMs": 99500,
+              "startMs": 101800,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 101000,
+              "startMs": 105600,
               "kind": "grunt",
               "count": 1,
               "repeat": 3,
@@ -2477,12 +2477,12 @@
               "count": 1
             },
             {
-              "startMs": 118500,
+              "startMs": 120800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 120000,
+              "startMs": 124600,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -2494,14 +2494,14 @@
               "count": 1
             },
             {
-              "startMs": 137500,
+              "startMs": 139800,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 5067
             },
             {
-              "startMs": 139000,
+              "startMs": 143600,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -2543,7 +2543,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 8433,
               "kind": "runner",
               "count": 1
             },
@@ -2553,12 +2553,12 @@
               "count": 1
             },
             {
-              "startMs": 22611,
+              "startMs": 24733,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 24111,
+              "startMs": 28355,
               "kind": "flyer",
               "count": 1
             },
@@ -2568,12 +2568,12 @@
               "count": 1
             },
             {
-              "startMs": 40722,
+              "startMs": 42844,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 42222,
+              "startMs": 46466,
               "kind": "hexer",
               "count": 1
             },
@@ -2583,7 +2583,7 @@
               "count": 1
             },
             {
-              "startMs": 58833,
+              "startMs": 62766,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -2595,12 +2595,12 @@
               "count": 1
             },
             {
-              "startMs": 76944,
+              "startMs": 79066,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 78444,
+              "startMs": 82688,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -2612,12 +2612,12 @@
               "count": 1
             },
             {
-              "startMs": 95056,
+              "startMs": 97178,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 96556,
+              "startMs": 100800,
               "kind": "archer",
               "count": 1
             },
@@ -2627,12 +2627,12 @@
               "count": 1
             },
             {
-              "startMs": 113167,
+              "startMs": 115289,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 114667,
+              "startMs": 118911,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -2644,14 +2644,14 @@
               "count": 1
             },
             {
-              "startMs": 131278,
+              "startMs": 133400,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 7244
             },
             {
-              "startMs": 132778,
+              "startMs": 137022,
               "kind": "hexer",
               "count": 1
             },
@@ -2663,12 +2663,12 @@
               "everyMs": 7244
             },
             {
-              "startMs": 149389,
+              "startMs": 151511,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 150889,
+              "startMs": 155133,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -2763,7 +2763,7 @@
               "everyMs": 8067
             },
             {
-              "startMs": 4500,
+              "startMs": 9050,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -2775,7 +2775,7 @@
               "count": 1
             },
             {
-              "startMs": 24667,
+              "startMs": 29217,
               "kind": "archer",
               "count": 1
             },
@@ -2785,7 +2785,7 @@
               "count": 1
             },
             {
-              "startMs": 44833,
+              "startMs": 49383,
               "kind": "mender",
               "count": 1
             },
@@ -2797,7 +2797,7 @@
               "everyMs": 8067
             },
             {
-              "startMs": 65000,
+              "startMs": 69550,
               "kind": "hexer",
               "count": 1
             },
@@ -2807,7 +2807,7 @@
               "count": 1
             },
             {
-              "startMs": 85167,
+              "startMs": 89717,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -2819,12 +2819,12 @@
               "count": 1
             },
             {
-              "startMs": 105333,
+              "startMs": 107866,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 106833,
+              "startMs": 111900,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2864,14 +2864,14 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 9650,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 5911
             },
             {
-              "startMs": 16322,
+              "startMs": 21472,
               "kind": "grunt",
               "count": 1
             },
@@ -2881,14 +2881,14 @@
               "count": 1
             },
             {
-              "startMs": 26667,
+              "startMs": 31817,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 5911
             },
             {
-              "startMs": 38489,
+              "startMs": 43639,
               "kind": "runner",
               "count": 1
             },
@@ -2898,7 +2898,7 @@
               "count": 1
             },
             {
-              "startMs": 48833,
+              "startMs": 53983,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -2910,7 +2910,7 @@
               "count": 1
             },
             {
-              "startMs": 71000,
+              "startMs": 76150,
               "kind": "mender",
               "count": 1
             },
@@ -2920,7 +2920,7 @@
               "count": 1
             },
             {
-              "startMs": 93167,
+              "startMs": 98317,
               "kind": "archer",
               "count": 1
             },
@@ -2932,19 +2932,19 @@
               "everyMs": 8867
             },
             {
-              "startMs": 115333,
+              "startMs": 118266,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 116833,
+              "startMs": 122700,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 5911
             },
             {
-              "startMs": 128655,
+              "startMs": 134522,
               "kind": "runner",
               "count": 1
             }
@@ -2988,7 +2988,7 @@
               "everyMs": 8343
             },
             {
-              "startMs": 4500,
+              "startMs": 9257,
               "kind": "mender",
               "count": 1
             },
@@ -2998,7 +2998,7 @@
               "count": 1
             },
             {
-              "startMs": 25357,
+              "startMs": 30114,
               "kind": "mender",
               "count": 1
             },
@@ -3010,7 +3010,7 @@
               "everyMs": 8343
             },
             {
-              "startMs": 46214,
+              "startMs": 50971,
               "kind": "archer",
               "count": 1
             },
@@ -3020,7 +3020,7 @@
               "count": 1
             },
             {
-              "startMs": 67071,
+              "startMs": 71828,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -3030,7 +3030,7 @@
               "count": 1
             },
             {
-              "startMs": 87929,
+              "startMs": 92686,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -3042,12 +3042,12 @@
               "count": 1
             },
             {
-              "startMs": 108786,
+              "startMs": 111457,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 110286,
+              "startMs": 115629,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -3059,14 +3059,14 @@
               "count": 1
             },
             {
-              "startMs": 129643,
+              "startMs": 132314,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8343
             },
             {
-              "startMs": 131143,
+              "startMs": 136486,
               "kind": "hexer",
               "count": 1
             }
@@ -3106,7 +3106,7 @@
               "everyMs": 9029
             },
             {
-              "startMs": 4500,
+              "startMs": 9771,
               "kind": "broodcaller",
               "count": 1
             },
@@ -3116,7 +3116,7 @@
               "count": 1
             },
             {
-              "startMs": 27071,
+              "startMs": 32342,
               "kind": "archer",
               "count": 1
             },
@@ -3126,7 +3126,7 @@
               "count": 1
             },
             {
-              "startMs": 49643,
+              "startMs": 54914,
               "kind": "hexer",
               "count": 1
             },
@@ -3138,7 +3138,7 @@
               "everyMs": 9029
             },
             {
-              "startMs": 72214,
+              "startMs": 77485,
               "kind": "mender",
               "count": 1
             },
@@ -3148,14 +3148,14 @@
               "count": 1
             },
             {
-              "startMs": 94786,
+              "startMs": 97800,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 9029
             },
             {
-              "startMs": 96286,
+              "startMs": 102315,
               "kind": "brute",
               "count": 1
             },
@@ -3165,19 +3165,19 @@
               "count": 1
             },
             {
-              "startMs": 117357,
+              "startMs": 120371,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 118857,
+              "startMs": 124886,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 6019
             },
             {
-              "startMs": 130895,
+              "startMs": 136924,
               "kind": "runner",
               "count": 1
             },
@@ -3187,12 +3187,12 @@
               "count": 1
             },
             {
-              "startMs": 139929,
+              "startMs": 142943,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 141429,
+              "startMs": 147458,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -3234,7 +3234,7 @@
               "everyMs": 8550
             },
             {
-              "startMs": 4500,
+              "startMs": 9413,
               "kind": "archer",
               "count": 1
             },
@@ -3244,7 +3244,7 @@
               "count": 1
             },
             {
-              "startMs": 25875,
+              "startMs": 30788,
               "kind": "mender",
               "count": 1
             },
@@ -3256,7 +3256,7 @@
               "everyMs": 8550
             },
             {
-              "startMs": 47250,
+              "startMs": 52163,
               "kind": "hexer",
               "count": 1
             },
@@ -3266,7 +3266,7 @@
               "count": 1
             },
             {
-              "startMs": 68625,
+              "startMs": 73538,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -3278,7 +3278,7 @@
               "count": 1
             },
             {
-              "startMs": 90000,
+              "startMs": 94913,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -3288,12 +3288,12 @@
               "count": 1
             },
             {
-              "startMs": 111375,
+              "startMs": 114150,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 112875,
+              "startMs": 118425,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -3305,12 +3305,12 @@
               "count": 1
             },
             {
-              "startMs": 132750,
+              "startMs": 135525,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 134250,
+              "startMs": 139800,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -3322,14 +3322,14 @@
               "count": 1
             },
             {
-              "startMs": 154125,
+              "startMs": 156900,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8550
             },
             {
-              "startMs": 155625,
+              "startMs": 161175,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -3373,7 +3373,7 @@
               "everyMs": 8133
             },
             {
-              "startMs": 4500,
+              "startMs": 9100,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -3385,12 +3385,12 @@
               "count": 1
             },
             {
-              "startMs": 24833,
+              "startMs": 27400,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 26333,
+              "startMs": 31466,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -3402,12 +3402,12 @@
               "count": 1
             },
             {
-              "startMs": 45167,
+              "startMs": 47734,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 46667,
+              "startMs": 51800,
               "kind": "hexer",
               "count": 1
             },
@@ -3417,7 +3417,7 @@
               "count": 1
             },
             {
-              "startMs": 65500,
+              "startMs": 70100,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -3429,12 +3429,12 @@
               "count": 1
             },
             {
-              "startMs": 85833,
+              "startMs": 88400,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 87333,
+              "startMs": 92466,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -3446,12 +3446,12 @@
               "count": 1
             },
             {
-              "startMs": 106167,
+              "startMs": 108734,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 107667,
+              "startMs": 112800,
               "kind": "archer",
               "count": 1
             },
@@ -3461,12 +3461,12 @@
               "count": 1
             },
             {
-              "startMs": 126500,
+              "startMs": 129067,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 128000,
+              "startMs": 133133,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -3478,14 +3478,14 @@
               "count": 1
             },
             {
-              "startMs": 146833,
+              "startMs": 149400,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 5422
             },
             {
-              "startMs": 148333,
+              "startMs": 153466,
               "kind": "hexer",
               "count": 1
             },
@@ -3497,12 +3497,12 @@
               "everyMs": 5422
             },
             {
-              "startMs": 167167,
+              "startMs": 169734,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 168667,
+              "startMs": 173800,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -3597,7 +3597,7 @@
               "everyMs": 7800
             },
             {
-              "startMs": 4500,
+              "startMs": 8850,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -3609,7 +3609,7 @@
               "count": 1
             },
             {
-              "startMs": 24000,
+              "startMs": 28350,
               "kind": "archer",
               "count": 1
             },
@@ -3619,7 +3619,7 @@
               "count": 1
             },
             {
-              "startMs": 43500,
+              "startMs": 47850,
               "kind": "mender",
               "count": 1
             },
@@ -3631,7 +3631,7 @@
               "everyMs": 7800
             },
             {
-              "startMs": 63000,
+              "startMs": 67350,
               "kind": "hexer",
               "count": 1
             },
@@ -3641,7 +3641,7 @@
               "count": 1
             },
             {
-              "startMs": 82500,
+              "startMs": 86850,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -3653,12 +3653,12 @@
               "count": 1
             },
             {
-              "startMs": 102000,
+              "startMs": 104400,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 103500,
+              "startMs": 108300,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -3698,14 +3698,14 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 9450,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 5733
             },
             {
-              "startMs": 15966,
+              "startMs": 20916,
               "kind": "grunt",
               "count": 1
             },
@@ -3715,14 +3715,14 @@
               "count": 1
             },
             {
-              "startMs": 26000,
+              "startMs": 30950,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 5733
             },
             {
-              "startMs": 37466,
+              "startMs": 42416,
               "kind": "runner",
               "count": 1
             },
@@ -3732,7 +3732,7 @@
               "count": 1
             },
             {
-              "startMs": 47500,
+              "startMs": 52450,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -3744,7 +3744,7 @@
               "count": 1
             },
             {
-              "startMs": 69000,
+              "startMs": 73950,
               "kind": "mender",
               "count": 1
             },
@@ -3754,7 +3754,7 @@
               "count": 1
             },
             {
-              "startMs": 90500,
+              "startMs": 95450,
               "kind": "archer",
               "count": 1
             },
@@ -3766,19 +3766,19 @@
               "everyMs": 8600
             },
             {
-              "startMs": 112000,
+              "startMs": 114800,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 113500,
+              "startMs": 119100,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 5733
             },
             {
-              "startMs": 124966,
+              "startMs": 130566,
               "kind": "runner",
               "count": 1
             }
@@ -3822,7 +3822,7 @@
               "everyMs": 8057
             },
             {
-              "startMs": 4500,
+              "startMs": 9043,
               "kind": "mender",
               "count": 1
             },
@@ -3832,7 +3832,7 @@
               "count": 1
             },
             {
-              "startMs": 24643,
+              "startMs": 29186,
               "kind": "mender",
               "count": 1
             },
@@ -3844,7 +3844,7 @@
               "everyMs": 8057
             },
             {
-              "startMs": 44786,
+              "startMs": 49329,
               "kind": "archer",
               "count": 1
             },
@@ -3854,7 +3854,7 @@
               "count": 1
             },
             {
-              "startMs": 64929,
+              "startMs": 69472,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -3864,7 +3864,7 @@
               "count": 1
             },
             {
-              "startMs": 85071,
+              "startMs": 89614,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -3876,12 +3876,12 @@
               "count": 1
             },
             {
-              "startMs": 105214,
+              "startMs": 107743,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 106714,
+              "startMs": 111771,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -3893,14 +3893,14 @@
               "count": 1
             },
             {
-              "startMs": 125357,
+              "startMs": 127886,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8057
             },
             {
-              "startMs": 126857,
+              "startMs": 131914,
               "kind": "hexer",
               "count": 1
             }
@@ -3940,7 +3940,7 @@
               "everyMs": 8743
             },
             {
-              "startMs": 4500,
+              "startMs": 9557,
               "kind": "broodcaller",
               "count": 1
             },
@@ -3950,7 +3950,7 @@
               "count": 1
             },
             {
-              "startMs": 26357,
+              "startMs": 31414,
               "kind": "archer",
               "count": 1
             },
@@ -3960,7 +3960,7 @@
               "count": 1
             },
             {
-              "startMs": 48214,
+              "startMs": 53271,
               "kind": "hexer",
               "count": 1
             },
@@ -3972,7 +3972,7 @@
               "everyMs": 8743
             },
             {
-              "startMs": 70071,
+              "startMs": 75128,
               "kind": "mender",
               "count": 1
             },
@@ -3982,14 +3982,14 @@
               "count": 1
             },
             {
-              "startMs": 91929,
+              "startMs": 94800,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 8743
             },
             {
-              "startMs": 93429,
+              "startMs": 99172,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -3999,19 +3999,19 @@
               "count": 1
             },
             {
-              "startMs": 113786,
+              "startMs": 116657,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 115286,
+              "startMs": 121029,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 5829
             },
             {
-              "startMs": 126944,
+              "startMs": 132687,
               "kind": "runner",
               "count": 1
             },
@@ -4021,12 +4021,12 @@
               "count": 1
             },
             {
-              "startMs": 135643,
+              "startMs": 138514,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 137143,
+              "startMs": 142886,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -4068,7 +4068,7 @@
               "everyMs": 8250
             },
             {
-              "startMs": 4500,
+              "startMs": 9188,
               "kind": "archer",
               "count": 1
             },
@@ -4078,7 +4078,7 @@
               "count": 1
             },
             {
-              "startMs": 25125,
+              "startMs": 29813,
               "kind": "mender",
               "count": 1
             },
@@ -4090,7 +4090,7 @@
               "everyMs": 8250
             },
             {
-              "startMs": 45750,
+              "startMs": 50438,
               "kind": "hexer",
               "count": 1
             },
@@ -4100,7 +4100,7 @@
               "count": 1
             },
             {
-              "startMs": 66375,
+              "startMs": 71063,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -4112,7 +4112,7 @@
               "count": 1
             },
             {
-              "startMs": 87000,
+              "startMs": 91688,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -4122,12 +4122,12 @@
               "count": 1
             },
             {
-              "startMs": 107625,
+              "startMs": 110250,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 109125,
+              "startMs": 114375,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -4139,12 +4139,12 @@
               "count": 1
             },
             {
-              "startMs": 128250,
+              "startMs": 130875,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 129750,
+              "startMs": 135000,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -4156,14 +4156,14 @@
               "count": 1
             },
             {
-              "startMs": 148875,
+              "startMs": 151500,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8250
             },
             {
-              "startMs": 150375,
+              "startMs": 155625,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -4207,7 +4207,7 @@
               "everyMs": 7867
             },
             {
-              "startMs": 4500,
+              "startMs": 8900,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -4219,12 +4219,12 @@
               "count": 1
             },
             {
-              "startMs": 24167,
+              "startMs": 26600,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 25667,
+              "startMs": 30534,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -4236,12 +4236,12 @@
               "count": 1
             },
             {
-              "startMs": 43833,
+              "startMs": 46266,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 45333,
+              "startMs": 50200,
               "kind": "hexer",
               "count": 1
             },
@@ -4251,7 +4251,7 @@
               "count": 1
             },
             {
-              "startMs": 63500,
+              "startMs": 67900,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -4263,12 +4263,12 @@
               "count": 1
             },
             {
-              "startMs": 83167,
+              "startMs": 85600,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 84667,
+              "startMs": 89534,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -4280,12 +4280,12 @@
               "count": 1
             },
             {
-              "startMs": 102833,
+              "startMs": 105266,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 104333,
+              "startMs": 109200,
               "kind": "archer",
               "count": 1
             },
@@ -4295,12 +4295,12 @@
               "count": 1
             },
             {
-              "startMs": 122500,
+              "startMs": 124933,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 124000,
+              "startMs": 128867,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -4312,14 +4312,14 @@
               "count": 1
             },
             {
-              "startMs": 142167,
+              "startMs": 144600,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 5244
             },
             {
-              "startMs": 143667,
+              "startMs": 148534,
               "kind": "hexer",
               "count": 1
             },
@@ -4331,12 +4331,12 @@
               "everyMs": 5244
             },
             {
-              "startMs": 161833,
+              "startMs": 164266,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 163333,
+              "startMs": 168200,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -4431,7 +4431,7 @@
               "everyMs": 8733
             },
             {
-              "startMs": 4500,
+              "startMs": 9550,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -4443,7 +4443,7 @@
               "count": 1
             },
             {
-              "startMs": 26333,
+              "startMs": 31383,
               "kind": "archer",
               "count": 1
             },
@@ -4453,7 +4453,7 @@
               "count": 1
             },
             {
-              "startMs": 48167,
+              "startMs": 53217,
               "kind": "mender",
               "count": 1
             },
@@ -4465,7 +4465,7 @@
               "everyMs": 8733
             },
             {
-              "startMs": 70000,
+              "startMs": 75050,
               "kind": "hexer",
               "count": 1
             },
@@ -4475,7 +4475,7 @@
               "count": 1
             },
             {
-              "startMs": 91833,
+              "startMs": 96883,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -4487,12 +4487,12 @@
               "count": 1
             },
             {
-              "startMs": 113667,
+              "startMs": 116534,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 115167,
+              "startMs": 120900,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -4532,14 +4532,14 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 10200,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 6400
             },
             {
-              "startMs": 17300,
+              "startMs": 23000,
               "kind": "grunt",
               "count": 1
             },
@@ -4549,14 +4549,14 @@
               "count": 1
             },
             {
-              "startMs": 28500,
+              "startMs": 34200,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 6400
             },
             {
-              "startMs": 41300,
+              "startMs": 47000,
               "kind": "runner",
               "count": 1
             },
@@ -4566,7 +4566,7 @@
               "count": 1
             },
             {
-              "startMs": 52500,
+              "startMs": 58200,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -4578,7 +4578,7 @@
               "count": 1
             },
             {
-              "startMs": 76500,
+              "startMs": 82200,
               "kind": "mender",
               "count": 1
             },
@@ -4588,7 +4588,7 @@
               "count": 1
             },
             {
-              "startMs": 100500,
+              "startMs": 106200,
               "kind": "archer",
               "count": 1
             },
@@ -4600,19 +4600,19 @@
               "everyMs": 9600
             },
             {
-              "startMs": 124500,
+              "startMs": 127800,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 126000,
+              "startMs": 132600,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 6400
             },
             {
-              "startMs": 138800,
+              "startMs": 145400,
               "kind": "runner",
               "count": 1
             }
@@ -4656,7 +4656,7 @@
               "everyMs": 8971
             },
             {
-              "startMs": 4500,
+              "startMs": 9729,
               "kind": "mender",
               "count": 1
             },
@@ -4666,7 +4666,7 @@
               "count": 1
             },
             {
-              "startMs": 26929,
+              "startMs": 32158,
               "kind": "mender",
               "count": 1
             },
@@ -4678,7 +4678,7 @@
               "everyMs": 8971
             },
             {
-              "startMs": 49357,
+              "startMs": 54586,
               "kind": "archer",
               "count": 1
             },
@@ -4688,7 +4688,7 @@
               "count": 1
             },
             {
-              "startMs": 71786,
+              "startMs": 77015,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -4698,7 +4698,7 @@
               "count": 1
             },
             {
-              "startMs": 94214,
+              "startMs": 99443,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -4710,12 +4710,12 @@
               "count": 1
             },
             {
-              "startMs": 116643,
+              "startMs": 119629,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 118143,
+              "startMs": 124114,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -4727,14 +4727,14 @@
               "count": 1
             },
             {
-              "startMs": 139071,
+              "startMs": 142057,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8971
             },
             {
-              "startMs": 140571,
+              "startMs": 146542,
               "kind": "hexer",
               "count": 1
             }
@@ -4774,7 +4774,7 @@
               "everyMs": 9771
             },
             {
-              "startMs": 4500,
+              "startMs": 10329,
               "kind": "broodcaller",
               "count": 1
             },
@@ -4784,7 +4784,7 @@
               "count": 1
             },
             {
-              "startMs": 28929,
+              "startMs": 34758,
               "kind": "archer",
               "count": 1
             },
@@ -4794,7 +4794,7 @@
               "count": 1
             },
             {
-              "startMs": 53357,
+              "startMs": 59186,
               "kind": "hexer",
               "count": 1
             },
@@ -4806,7 +4806,7 @@
               "everyMs": 9771
             },
             {
-              "startMs": 77786,
+              "startMs": 83615,
               "kind": "mender",
               "count": 1
             },
@@ -4816,14 +4816,14 @@
               "count": 1
             },
             {
-              "startMs": 102214,
+              "startMs": 105600,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 9771
             },
             {
-              "startMs": 103714,
+              "startMs": 110485,
               "kind": "flyer",
               "count": 1
             },
@@ -4833,19 +4833,19 @@
               "count": 1
             },
             {
-              "startMs": 126643,
+              "startMs": 130029,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 128143,
+              "startMs": 134914,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 6514
             },
             {
-              "startMs": 141171,
+              "startMs": 147942,
               "kind": "runner",
               "count": 1
             },
@@ -4855,12 +4855,12 @@
               "count": 1
             },
             {
-              "startMs": 151071,
+              "startMs": 154457,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 152571,
+              "startMs": 159342,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -4902,7 +4902,7 @@
               "everyMs": 6133
             },
             {
-              "startMs": 4500,
+              "startMs": 9900,
               "kind": "archer",
               "count": 1
             },
@@ -4912,7 +4912,7 @@
               "count": 1
             },
             {
-              "startMs": 27500,
+              "startMs": 32900,
               "kind": "mender",
               "count": 1
             },
@@ -4924,7 +4924,7 @@
               "everyMs": 9200
             },
             {
-              "startMs": 50500,
+              "startMs": 55900,
               "kind": "hexer",
               "count": 1
             },
@@ -4934,7 +4934,7 @@
               "count": 1
             },
             {
-              "startMs": 73500,
+              "startMs": 78900,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -4946,7 +4946,7 @@
               "count": 1
             },
             {
-              "startMs": 96500,
+              "startMs": 101900,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -4956,12 +4956,12 @@
               "count": 1
             },
             {
-              "startMs": 119500,
+              "startMs": 122600,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 121000,
+              "startMs": 127200,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -4973,12 +4973,12 @@
               "count": 1
             },
             {
-              "startMs": 142500,
+              "startMs": 145600,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 144000,
+              "startMs": 150200,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -4990,14 +4990,14 @@
               "count": 1
             },
             {
-              "startMs": 165500,
+              "startMs": 168600,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 9200
             },
             {
-              "startMs": 167000,
+              "startMs": 173200,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -5041,7 +5041,7 @@
               "everyMs": 8756
             },
             {
-              "startMs": 4500,
+              "startMs": 9567,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -5053,12 +5053,12 @@
               "count": 1
             },
             {
-              "startMs": 26389,
+              "startMs": 29267,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 27889,
+              "startMs": 33645,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -5070,12 +5070,12 @@
               "count": 1
             },
             {
-              "startMs": 48278,
+              "startMs": 51156,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 49778,
+              "startMs": 55534,
               "kind": "hexer",
               "count": 1
             },
@@ -5085,7 +5085,7 @@
               "count": 1
             },
             {
-              "startMs": 70167,
+              "startMs": 75234,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -5097,12 +5097,12 @@
               "count": 1
             },
             {
-              "startMs": 92056,
+              "startMs": 94934,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 93556,
+              "startMs": 99312,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -5114,12 +5114,12 @@
               "count": 1
             },
             {
-              "startMs": 113944,
+              "startMs": 116822,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 115444,
+              "startMs": 121200,
               "kind": "archer",
               "count": 1
             },
@@ -5129,12 +5129,12 @@
               "count": 1
             },
             {
-              "startMs": 135833,
+              "startMs": 138711,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 137333,
+              "startMs": 143089,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -5146,14 +5146,14 @@
               "count": 1
             },
             {
-              "startMs": 157722,
+              "startMs": 160600,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 5837
             },
             {
-              "startMs": 159222,
+              "startMs": 164978,
               "kind": "hexer",
               "count": 1
             },
@@ -5165,12 +5165,12 @@
               "everyMs": 5837
             },
             {
-              "startMs": 179611,
+              "startMs": 182489,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 181111,
+              "startMs": 186867,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -5235,7 +5235,7 @@
           "id": "7-1",
           "name": "Coral Gate",
           "mapId": "tidal-1",
-          "text": "Enter Tidal Ruins and establish your first defense. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Enter Tidal Ruins and establish your first defense. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
           "hpScale": 1.19,
           "unlockAfter": "6-6",
@@ -5265,7 +5265,7 @@
               "everyMs": 6178
             },
             {
-              "startMs": 4500,
+              "startMs": 9950,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -5282,7 +5282,7 @@
               "count": 1
             },
             {
-              "startMs": 27667,
+              "startMs": 33117,
               "kind": "archer",
               "count": 1
             },
@@ -5292,7 +5292,7 @@
               "count": 1
             },
             {
-              "startMs": 50833,
+              "startMs": 56283,
               "kind": "mender",
               "count": 1
             },
@@ -5304,7 +5304,7 @@
               "everyMs": 9267
             },
             {
-              "startMs": 74000,
+              "startMs": 79450,
               "kind": "hexer",
               "count": 1
             },
@@ -5314,7 +5314,7 @@
               "count": 1
             },
             {
-              "startMs": 97167,
+              "startMs": 102617,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -5328,12 +5328,12 @@
               "everyMs": 9267
             },
             {
-              "startMs": 120333,
+              "startMs": 123466,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 121833,
+              "startMs": 128100,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -5345,7 +5345,7 @@
           "id": "7-2",
           "name": "Tideway",
           "mapId": "tidal-2",
-          "text": "Advance through Tideway; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Advance through Tideway; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
           "hpScale": 1.23,
           "unlockAfter": "7-1",
@@ -5373,7 +5373,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 10700,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -5387,7 +5387,7 @@
               "everyMs": 10267
             },
             {
-              "startMs": 30167,
+              "startMs": 36367,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -5399,7 +5399,7 @@
               "count": 1
             },
             {
-              "startMs": 55833,
+              "startMs": 62033,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -5411,7 +5411,7 @@
               "count": 1
             },
             {
-              "startMs": 81500,
+              "startMs": 87700,
               "kind": "mender",
               "count": 1
             },
@@ -5421,7 +5421,7 @@
               "count": 1
             },
             {
-              "startMs": 107167,
+              "startMs": 113367,
               "kind": "archer",
               "count": 1
             },
@@ -5433,19 +5433,19 @@
               "everyMs": 10267
             },
             {
-              "startMs": 132833,
+              "startMs": 136466,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 134333,
+              "startMs": 141600,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 6844
             },
             {
-              "startMs": 148021,
+              "startMs": 155288,
               "kind": "runner",
               "count": 1
             }
@@ -5455,7 +5455,7 @@
           "id": "7-3",
           "name": "Pearl Court",
           "mapId": "tidal-3",
-          "text": "Advance through Pearl Court; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Advance through Pearl Court; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
           "hpScale": 0.89,
           "unlockAfter": "7-2",
@@ -5489,7 +5489,7 @@
               "everyMs": 6400
             },
             {
-              "startMs": 4500,
+              "startMs": 10200,
               "kind": "mender",
               "count": 1
             },
@@ -5504,7 +5504,7 @@
               "count": 1
             },
             {
-              "startMs": 28500,
+              "startMs": 34200,
               "kind": "mender",
               "count": 1
             },
@@ -5516,7 +5516,7 @@
               "everyMs": 9600
             },
             {
-              "startMs": 52500,
+              "startMs": 58200,
               "kind": "archer",
               "count": 1
             },
@@ -5526,7 +5526,7 @@
               "count": 1
             },
             {
-              "startMs": 76500,
+              "startMs": 82200,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -5536,7 +5536,7 @@
               "count": 1
             },
             {
-              "startMs": 100500,
+              "startMs": 106200,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -5548,12 +5548,12 @@
               "count": 1
             },
             {
-              "startMs": 124500,
+              "startMs": 127800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 126000,
+              "startMs": 132600,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -5565,14 +5565,14 @@
               "count": 1
             },
             {
-              "startMs": 148500,
+              "startMs": 151800,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 9600
             },
             {
-              "startMs": 150000,
+              "startMs": 156600,
               "kind": "hexer",
               "count": 1
             }
@@ -5582,7 +5582,7 @@
           "id": "7-4",
           "name": "Sunken Bells",
           "mapId": "tidal-4",
-          "text": "Advance through Sunken Bells; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Advance through Sunken Bells; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
           "hpScale": 0.56,
           "unlockAfter": "7-3",
@@ -5612,7 +5612,7 @@
               "everyMs": 6933
             },
             {
-              "startMs": 4500,
+              "startMs": 10800,
               "kind": "broodcaller",
               "count": 1
             },
@@ -5622,7 +5622,7 @@
               "count": 1
             },
             {
-              "startMs": 30500,
+              "startMs": 36800,
               "kind": "archer",
               "count": 1
             },
@@ -5632,7 +5632,7 @@
               "count": 1
             },
             {
-              "startMs": 56500,
+              "startMs": 62800,
               "kind": "hexer",
               "count": 1
             },
@@ -5644,7 +5644,7 @@
               "everyMs": 6933
             },
             {
-              "startMs": 82500,
+              "startMs": 88800,
               "kind": "mender",
               "count": 1
             },
@@ -5659,19 +5659,19 @@
               "count": 1
             },
             {
-              "startMs": 108500,
+              "startMs": 112200,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 6933
             },
             {
-              "startMs": 110000,
+              "startMs": 117400,
               "kind": "runner",
               "count": 1
             },
             {
-              "startMs": 122366,
+              "startMs": 126066,
               "kind": "grunt",
               "count": 1
             },
@@ -5681,12 +5681,12 @@
               "count": 1
             },
             {
-              "startMs": 134500,
+              "startMs": 138200,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 136000,
+              "startMs": 143400,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -5698,12 +5698,12 @@
               "count": 1
             },
             {
-              "startMs": 160500,
+              "startMs": 164200,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 162000,
+              "startMs": 169400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -5715,7 +5715,7 @@
           "id": "7-5",
           "name": "Undertow",
           "mapId": "tidal-5",
-          "text": "Advance through Undertow; cover the returning road with overlapping defenses. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Advance through Undertow; cover the returning road with overlapping defenses. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 16,
           "hpScale": 0.89,
           "unlockAfter": "7-4",
@@ -5745,7 +5745,7 @@
               "everyMs": 9800
             },
             {
-              "startMs": 4500,
+              "startMs": 10350,
               "kind": "archer",
               "count": 1
             },
@@ -5755,7 +5755,7 @@
               "count": 1
             },
             {
-              "startMs": 29000,
+              "startMs": 34850,
               "kind": "mender",
               "count": 1
             },
@@ -5767,7 +5767,7 @@
               "everyMs": 6533
             },
             {
-              "startMs": 53500,
+              "startMs": 59350,
               "kind": "hexer",
               "count": 1
             },
@@ -5782,7 +5782,7 @@
               "count": 1
             },
             {
-              "startMs": 78000,
+              "startMs": 83850,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -5794,7 +5794,7 @@
               "count": 1
             },
             {
-              "startMs": 102500,
+              "startMs": 108350,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -5804,19 +5804,19 @@
               "count": 1
             },
             {
-              "startMs": 127000,
+              "startMs": 130400,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 128500,
+              "startMs": 135300,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 6533
             },
             {
-              "startMs": 141566,
+              "startMs": 148366,
               "kind": "grunt",
               "count": 1
             },
@@ -5826,19 +5826,19 @@
               "count": 1
             },
             {
-              "startMs": 151500,
+              "startMs": 154900,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 153000,
+              "startMs": 159800,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 6533
             },
             {
-              "startMs": 166066,
+              "startMs": 172866,
               "kind": "runner",
               "count": 1
             },
@@ -5848,19 +5848,19 @@
               "count": 1
             },
             {
-              "startMs": 176000,
+              "startMs": 179400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 6533
             },
             {
-              "startMs": 177500,
+              "startMs": 184300,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 189066,
+              "startMs": 192466,
               "kind": "flyer",
               "count": 1
             }
@@ -5870,7 +5870,7 @@
           "id": "7-6",
           "name": "Drowned Throne",
           "mapId": "tidal-6",
-          "text": "Defend the sanctuary against the final assault. Enemies move 15% slower on odd waves and 10% faster on even waves. Plan your blockers around the tide.",
+          "text": "Defend the sanctuary against the final assault. Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
           "lives": 18,
           "hpScale": 0.67,
           "unlockAfter": "7-5",
@@ -5904,7 +5904,7 @@
               "everyMs": 6252
             },
             {
-              "startMs": 4500,
+              "startMs": 10033,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -5916,12 +5916,12 @@
               "count": 1
             },
             {
-              "startMs": 27944,
+              "startMs": 31133,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 29444,
+              "startMs": 35822,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -5933,12 +5933,12 @@
               "count": 1
             },
             {
-              "startMs": 51389,
+              "startMs": 54578,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 52889,
+              "startMs": 59267,
               "kind": "hexer",
               "count": 1
             },
@@ -5948,7 +5948,7 @@
               "count": 1
             },
             {
-              "startMs": 74833,
+              "startMs": 80366,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -5960,12 +5960,12 @@
               "count": 1
             },
             {
-              "startMs": 98278,
+              "startMs": 101467,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 99778,
+              "startMs": 106156,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -5977,12 +5977,12 @@
               "count": 1
             },
             {
-              "startMs": 121722,
+              "startMs": 124911,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 123222,
+              "startMs": 129600,
               "kind": "archer",
               "count": 1
             },
@@ -5992,12 +5992,12 @@
               "count": 1
             },
             {
-              "startMs": 145167,
+              "startMs": 148356,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 146667,
+              "startMs": 153045,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -6009,14 +6009,14 @@
               "count": 1
             },
             {
-              "startMs": 168611,
+              "startMs": 171800,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 6252
             },
             {
-              "startMs": 170111,
+              "startMs": 176489,
               "kind": "hexer",
               "count": 1
             },
@@ -6028,12 +6028,12 @@
               "everyMs": 9378
             },
             {
-              "startMs": 192056,
+              "startMs": 195245,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 193556,
+              "startMs": 199934,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -6128,7 +6128,7 @@
               "everyMs": 6978
             },
             {
-              "startMs": 4500,
+              "startMs": 10850,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -6140,7 +6140,7 @@
               "count": 1
             },
             {
-              "startMs": 30667,
+              "startMs": 37017,
               "kind": "archer",
               "count": 1
             },
@@ -6150,7 +6150,7 @@
               "count": 1
             },
             {
-              "startMs": 56833,
+              "startMs": 63183,
               "kind": "mender",
               "count": 1
             },
@@ -6162,7 +6162,7 @@
               "everyMs": 10467
             },
             {
-              "startMs": 83000,
+              "startMs": 89350,
               "kind": "hexer",
               "count": 1
             },
@@ -6172,14 +6172,14 @@
               "count": 1
             },
             {
-              "startMs": 109167,
+              "startMs": 115517,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 6978
             },
             {
-              "startMs": 123123,
+              "startMs": 129473,
               "kind": "runner",
               "count": 1
             },
@@ -6191,12 +6191,12 @@
               "everyMs": 10467
             },
             {
-              "startMs": 135333,
+              "startMs": 139066,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 136833,
+              "startMs": 144300,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -6236,7 +6236,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 11650,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -6250,7 +6250,7 @@
               "everyMs": 11533
             },
             {
-              "startMs": 33333,
+              "startMs": 40483,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -6262,7 +6262,7 @@
               "count": 1
             },
             {
-              "startMs": 62167,
+              "startMs": 69317,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -6274,7 +6274,7 @@
               "count": 1
             },
             {
-              "startMs": 91000,
+              "startMs": 98150,
               "kind": "mender",
               "count": 1
             },
@@ -6284,7 +6284,7 @@
               "count": 1
             },
             {
-              "startMs": 119833,
+              "startMs": 126983,
               "kind": "archer",
               "count": 1
             },
@@ -6296,19 +6296,19 @@
               "everyMs": 11533
             },
             {
-              "startMs": 148667,
+              "startMs": 152934,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 150167,
+              "startMs": 158700,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 7689
             },
             {
-              "startMs": 165545,
+              "startMs": 174078,
               "kind": "runner",
               "count": 2
             }
@@ -6352,7 +6352,7 @@
               "everyMs": 7200
             },
             {
-              "startMs": 4500,
+              "startMs": 11100,
               "kind": "mender",
               "count": 1
             },
@@ -6362,7 +6362,7 @@
               "count": 1
             },
             {
-              "startMs": 31500,
+              "startMs": 38100,
               "kind": "mender",
               "count": 1
             },
@@ -6374,7 +6374,7 @@
               "everyMs": 10800
             },
             {
-              "startMs": 58500,
+              "startMs": 65100,
               "kind": "archer",
               "count": 1
             },
@@ -6384,7 +6384,7 @@
               "count": 1
             },
             {
-              "startMs": 85500,
+              "startMs": 92100,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -6394,14 +6394,14 @@
               "count": 1
             },
             {
-              "startMs": 112500,
+              "startMs": 119100,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 7200
             },
             {
-              "startMs": 126900,
+              "startMs": 133500,
               "kind": "runner",
               "count": 1
             },
@@ -6411,12 +6411,12 @@
               "count": 1
             },
             {
-              "startMs": 139500,
+              "startMs": 143400,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 141000,
+              "startMs": 148800,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -6428,14 +6428,14 @@
               "count": 1
             },
             {
-              "startMs": 166500,
+              "startMs": 170400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 10800
             },
             {
-              "startMs": 168000,
+              "startMs": 175800,
               "kind": "hexer",
               "count": 1
             }
@@ -6475,7 +6475,7 @@
               "everyMs": 7810
             },
             {
-              "startMs": 4500,
+              "startMs": 11786,
               "kind": "broodcaller",
               "count": 1
             },
@@ -6492,7 +6492,7 @@
               "everyMs": 11714
             },
             {
-              "startMs": 33786,
+              "startMs": 41072,
               "kind": "archer",
               "count": 1
             },
@@ -6504,7 +6504,7 @@
               "everyMs": 11714
             },
             {
-              "startMs": 63071,
+              "startMs": 70357,
               "kind": "hexer",
               "count": 1
             },
@@ -6516,7 +6516,7 @@
               "everyMs": 7810
             },
             {
-              "startMs": 92357,
+              "startMs": 99643,
               "kind": "mender",
               "count": 1
             },
@@ -6531,19 +6531,19 @@
               "count": 1
             },
             {
-              "startMs": 121643,
+              "startMs": 126000,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 7810
             },
             {
-              "startMs": 123143,
+              "startMs": 131857,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 137263,
+              "startMs": 141620,
               "kind": "grunt",
               "count": 1
             },
@@ -6555,21 +6555,21 @@
               "everyMs": 11714
             },
             {
-              "startMs": 150929,
+              "startMs": 155286,
               "kind": "archer",
               "count": 1,
               "repeat": 2,
               "everyMs": 11714
             },
             {
-              "startMs": 152429,
+              "startMs": 161143,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 7810
             },
             {
-              "startMs": 168049,
+              "startMs": 176763,
               "kind": "runner",
               "count": 1
             },
@@ -6581,19 +6581,19 @@
               "everyMs": 11714
             },
             {
-              "startMs": 180214,
+              "startMs": 184571,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 181714,
+              "startMs": 190428,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 7810
             },
             {
-              "startMs": 197334,
+              "startMs": 206048,
               "kind": "flyer",
               "count": 1
             }
@@ -6633,7 +6633,7 @@
               "everyMs": 7367
             },
             {
-              "startMs": 4500,
+              "startMs": 11288,
               "kind": "archer",
               "count": 1
             },
@@ -6648,7 +6648,7 @@
               "count": 1
             },
             {
-              "startMs": 32125,
+              "startMs": 38913,
               "kind": "mender",
               "count": 1
             },
@@ -6660,7 +6660,7 @@
               "everyMs": 7367
             },
             {
-              "startMs": 59750,
+              "startMs": 66538,
               "kind": "hexer",
               "count": 1
             },
@@ -6670,7 +6670,7 @@
               "count": 1
             },
             {
-              "startMs": 87375,
+              "startMs": 94163,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -6682,7 +6682,7 @@
               "count": 1
             },
             {
-              "startMs": 115000,
+              "startMs": 121788,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -6692,12 +6692,12 @@
               "count": 1
             },
             {
-              "startMs": 142625,
+              "startMs": 146650,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 144125,
+              "startMs": 152175,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -6709,12 +6709,12 @@
               "count": 1
             },
             {
-              "startMs": 170250,
+              "startMs": 174275,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 171750,
+              "startMs": 179800,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -6726,19 +6726,19 @@
               "count": 1
             },
             {
-              "startMs": 197875,
+              "startMs": 201900,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 7367
             },
             {
-              "startMs": 199375,
+              "startMs": 207425,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 212609,
+              "startMs": 216634,
               "kind": "flyer",
               "count": 1
             }
@@ -6782,7 +6782,7 @@
               "everyMs": 7022
             },
             {
-              "startMs": 4500,
+              "startMs": 10900,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -6794,12 +6794,12 @@
               "count": 1
             },
             {
-              "startMs": 30833,
+              "startMs": 34600,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 32333,
+              "startMs": 39866,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -6811,12 +6811,12 @@
               "count": 1
             },
             {
-              "startMs": 57167,
+              "startMs": 60934,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 58667,
+              "startMs": 66200,
               "kind": "hexer",
               "count": 1
             },
@@ -6826,7 +6826,7 @@
               "count": 1
             },
             {
-              "startMs": 83500,
+              "startMs": 89900,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -6838,12 +6838,12 @@
               "count": 1
             },
             {
-              "startMs": 109833,
+              "startMs": 113600,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 111333,
+              "startMs": 118866,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -6855,12 +6855,12 @@
               "count": 1
             },
             {
-              "startMs": 136167,
+              "startMs": 139934,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 137667,
+              "startMs": 145200,
               "kind": "archer",
               "count": 1
             },
@@ -6870,12 +6870,12 @@
               "count": 1
             },
             {
-              "startMs": 162500,
+              "startMs": 166267,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 164000,
+              "startMs": 171533,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -6887,14 +6887,14 @@
               "count": 1
             },
             {
-              "startMs": 188833,
+              "startMs": 192600,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 10533
             },
             {
-              "startMs": 190333,
+              "startMs": 197866,
               "kind": "hexer",
               "count": 1
             },
@@ -6906,12 +6906,12 @@
               "everyMs": 10533
             },
             {
-              "startMs": 215167,
+              "startMs": 218934,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 216667,
+              "startMs": 224200,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -7006,7 +7006,7 @@
               "everyMs": 11533
             },
             {
-              "startMs": 4500,
+              "startMs": 11650,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -7018,7 +7018,7 @@
               "count": 1
             },
             {
-              "startMs": 33333,
+              "startMs": 40483,
               "kind": "archer",
               "count": 1
             },
@@ -7028,7 +7028,7 @@
               "count": 1
             },
             {
-              "startMs": 62167,
+              "startMs": 69317,
               "kind": "mender",
               "count": 1
             },
@@ -7040,7 +7040,7 @@
               "everyMs": 11533
             },
             {
-              "startMs": 91000,
+              "startMs": 98150,
               "kind": "hexer",
               "count": 1
             },
@@ -7050,7 +7050,7 @@
               "count": 1
             },
             {
-              "startMs": 119833,
+              "startMs": 126983,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -7062,12 +7062,12 @@
               "count": 1
             },
             {
-              "startMs": 148667,
+              "startMs": 152934,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 150167,
+              "startMs": 158700,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -7107,7 +7107,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 12550,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -7119,7 +7119,7 @@
               "count": 1
             },
             {
-              "startMs": 36333,
+              "startMs": 44383,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -7131,7 +7131,7 @@
               "count": 1
             },
             {
-              "startMs": 68167,
+              "startMs": 76217,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -7143,7 +7143,7 @@
               "count": 1
             },
             {
-              "startMs": 100000,
+              "startMs": 108050,
               "kind": "mender",
               "count": 1
             },
@@ -7153,7 +7153,7 @@
               "count": 1
             },
             {
-              "startMs": 131833,
+              "startMs": 139883,
               "kind": "archer",
               "count": 1
             },
@@ -7163,12 +7163,12 @@
               "count": 1
             },
             {
-              "startMs": 163667,
+              "startMs": 168534,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 165167,
+              "startMs": 174900,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -7214,7 +7214,7 @@
               "everyMs": 11886
             },
             {
-              "startMs": 4500,
+              "startMs": 11914,
               "kind": "mender",
               "count": 1
             },
@@ -7224,7 +7224,7 @@
               "count": 1
             },
             {
-              "startMs": 34214,
+              "startMs": 41628,
               "kind": "mender",
               "count": 1
             },
@@ -7236,7 +7236,7 @@
               "everyMs": 11886
             },
             {
-              "startMs": 63929,
+              "startMs": 71343,
               "kind": "archer",
               "count": 1
             },
@@ -7246,7 +7246,7 @@
               "count": 1
             },
             {
-              "startMs": 93643,
+              "startMs": 101057,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -7256,7 +7256,7 @@
               "count": 1
             },
             {
-              "startMs": 123357,
+              "startMs": 130771,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -7268,12 +7268,12 @@
               "count": 1
             },
             {
-              "startMs": 153071,
+              "startMs": 157514,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 154571,
+              "startMs": 163457,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -7285,14 +7285,14 @@
               "count": 1
             },
             {
-              "startMs": 182786,
+              "startMs": 187229,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 11886
             },
             {
-              "startMs": 184286,
+              "startMs": 193172,
               "kind": "hexer",
               "count": 1
             }
@@ -7332,7 +7332,7 @@
               "everyMs": 12914
             },
             {
-              "startMs": 4500,
+              "startMs": 12686,
               "kind": "broodcaller",
               "count": 1
             },
@@ -7342,7 +7342,7 @@
               "count": 1
             },
             {
-              "startMs": 36786,
+              "startMs": 44972,
               "kind": "archer",
               "count": 1
             },
@@ -7352,7 +7352,7 @@
               "count": 1
             },
             {
-              "startMs": 69071,
+              "startMs": 77257,
               "kind": "hexer",
               "count": 1
             },
@@ -7364,7 +7364,7 @@
               "everyMs": 12914
             },
             {
-              "startMs": 101357,
+              "startMs": 109543,
               "kind": "mender",
               "count": 1
             },
@@ -7374,14 +7374,14 @@
               "count": 1
             },
             {
-              "startMs": 133643,
+              "startMs": 138600,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
               "everyMs": 12914
             },
             {
-              "startMs": 135143,
+              "startMs": 145057,
               "kind": "hexer",
               "count": 1
             },
@@ -7391,12 +7391,12 @@
               "count": 1
             },
             {
-              "startMs": 165929,
+              "startMs": 170886,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 167429,
+              "startMs": 177343,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -7408,12 +7408,12 @@
               "count": 1
             },
             {
-              "startMs": 198214,
+              "startMs": 203171,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 199714,
+              "startMs": 209628,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -7455,7 +7455,7 @@
               "everyMs": 12150
             },
             {
-              "startMs": 4500,
+              "startMs": 12113,
               "kind": "archer",
               "count": 1
             },
@@ -7465,7 +7465,7 @@
               "count": 1
             },
             {
-              "startMs": 34875,
+              "startMs": 42488,
               "kind": "mender",
               "count": 1
             },
@@ -7477,7 +7477,7 @@
               "everyMs": 12150
             },
             {
-              "startMs": 65250,
+              "startMs": 72863,
               "kind": "hexer",
               "count": 1
             },
@@ -7487,7 +7487,7 @@
               "count": 1
             },
             {
-              "startMs": 95625,
+              "startMs": 103238,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -7499,7 +7499,7 @@
               "count": 1
             },
             {
-              "startMs": 126000,
+              "startMs": 133613,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -7509,12 +7509,12 @@
               "count": 1
             },
             {
-              "startMs": 156375,
+              "startMs": 160950,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 157875,
+              "startMs": 167025,
               "kind": "grunt",
               "count": 1,
               "repeat": 2,
@@ -7526,12 +7526,12 @@
               "count": 1
             },
             {
-              "startMs": 186750,
+              "startMs": 191325,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 188250,
+              "startMs": 197400,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -7543,14 +7543,14 @@
               "count": 1
             },
             {
-              "startMs": 217125,
+              "startMs": 221700,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 12150
             },
             {
-              "startMs": 218625,
+              "startMs": 227775,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -7592,7 +7592,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 11700,
               "kind": "runner",
               "count": 1
             },
@@ -7602,12 +7602,12 @@
               "count": 1
             },
             {
-              "startMs": 33500,
+              "startMs": 37800,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 35000,
+              "startMs": 43600,
               "kind": "flyer",
               "count": 1
             },
@@ -7617,12 +7617,12 @@
               "count": 1
             },
             {
-              "startMs": 62500,
+              "startMs": 66800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 64000,
+              "startMs": 72600,
               "kind": "hexer",
               "count": 1
             },
@@ -7632,7 +7632,7 @@
               "count": 1
             },
             {
-              "startMs": 91500,
+              "startMs": 98700,
               "kind": "runner",
               "count": 1
             },
@@ -7642,12 +7642,12 @@
               "count": 1
             },
             {
-              "startMs": 120500,
+              "startMs": 124800,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 122000,
+              "startMs": 130600,
               "kind": "flyer",
               "count": 1
             },
@@ -7657,12 +7657,12 @@
               "count": 1
             },
             {
-              "startMs": 149500,
+              "startMs": 153800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 151000,
+              "startMs": 159600,
               "kind": "archer",
               "count": 1
             },
@@ -7672,12 +7672,12 @@
               "count": 1
             },
             {
-              "startMs": 178500,
+              "startMs": 182800,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 180000,
+              "startMs": 188600,
               "kind": "runner",
               "count": 1
             },
@@ -7687,12 +7687,12 @@
               "count": 1
             },
             {
-              "startMs": 207500,
+              "startMs": 211800,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 209000,
+              "startMs": 217600,
               "kind": "hexer",
               "count": 1
             },
@@ -7702,12 +7702,12 @@
               "count": 1
             },
             {
-              "startMs": 236500,
+              "startMs": 240800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 238000,
+              "startMs": 246600,
               "kind": "flyer",
               "count": 1
             },
@@ -7800,7 +7800,7 @@
               "everyMs": 7600
             },
             {
-              "startMs": 4500,
+              "startMs": 11550,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -7812,7 +7812,7 @@
               "count": 1
             },
             {
-              "startMs": 33000,
+              "startMs": 40050,
               "kind": "archer",
               "count": 1
             },
@@ -7822,7 +7822,7 @@
               "count": 1
             },
             {
-              "startMs": 61500,
+              "startMs": 68550,
               "kind": "mender",
               "count": 1
             },
@@ -7834,7 +7834,7 @@
               "everyMs": 7600
             },
             {
-              "startMs": 90000,
+              "startMs": 97050,
               "kind": "hexer",
               "count": 1
             },
@@ -7844,7 +7844,7 @@
               "count": 1
             },
             {
-              "startMs": 118500,
+              "startMs": 125550,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -7856,12 +7856,12 @@
               "count": 1
             },
             {
-              "startMs": 147000,
+              "startMs": 151200,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 148500,
+              "startMs": 156900,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -7901,7 +7901,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 12450,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -7913,14 +7913,14 @@
               "count": 1
             },
             {
-              "startMs": 36000,
+              "startMs": 43950,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 8400
             },
             {
-              "startMs": 52800,
+              "startMs": 60750,
               "kind": "runner",
               "count": 1
             },
@@ -7930,7 +7930,7 @@
               "count": 1
             },
             {
-              "startMs": 67500,
+              "startMs": 75450,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -7942,7 +7942,7 @@
               "count": 1
             },
             {
-              "startMs": 99000,
+              "startMs": 106950,
               "kind": "mender",
               "count": 1
             },
@@ -7952,7 +7952,7 @@
               "count": 1
             },
             {
-              "startMs": 130500,
+              "startMs": 138450,
               "kind": "archer",
               "count": 1
             },
@@ -7962,19 +7962,19 @@
               "count": 1
             },
             {
-              "startMs": 162000,
+              "startMs": 166800,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 163500,
+              "startMs": 173100,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 8400
             },
             {
-              "startMs": 180300,
+              "startMs": 189900,
               "kind": "runner",
               "count": 1
             }
@@ -8018,7 +8018,7 @@
               "everyMs": 11771
             },
             {
-              "startMs": 4500,
+              "startMs": 11829,
               "kind": "mender",
               "count": 1
             },
@@ -8028,7 +8028,7 @@
               "count": 1
             },
             {
-              "startMs": 33929,
+              "startMs": 41258,
               "kind": "mender",
               "count": 1
             },
@@ -8040,7 +8040,7 @@
               "everyMs": 7848
             },
             {
-              "startMs": 63357,
+              "startMs": 70686,
               "kind": "archer",
               "count": 1
             },
@@ -8050,7 +8050,7 @@
               "count": 1
             },
             {
-              "startMs": 92786,
+              "startMs": 100115,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -8060,7 +8060,7 @@
               "count": 1
             },
             {
-              "startMs": 122214,
+              "startMs": 129543,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -8072,12 +8072,12 @@
               "count": 1
             },
             {
-              "startMs": 151643,
+              "startMs": 156029,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 153143,
+              "startMs": 161914,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -8089,14 +8089,14 @@
               "count": 1
             },
             {
-              "startMs": 181071,
+              "startMs": 185457,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
               "everyMs": 7848
             },
             {
-              "startMs": 182571,
+              "startMs": 191342,
               "kind": "hexer",
               "count": 1
             }
@@ -8136,7 +8136,7 @@
               "everyMs": 12800
             },
             {
-              "startMs": 4500,
+              "startMs": 12600,
               "kind": "broodcaller",
               "count": 1
             },
@@ -8146,7 +8146,7 @@
               "count": 1
             },
             {
-              "startMs": 36500,
+              "startMs": 44600,
               "kind": "archer",
               "count": 1
             },
@@ -8156,7 +8156,7 @@
               "count": 1
             },
             {
-              "startMs": 68500,
+              "startMs": 76600,
               "kind": "hexer",
               "count": 1
             },
@@ -8168,7 +8168,7 @@
               "everyMs": 12800
             },
             {
-              "startMs": 100500,
+              "startMs": 108600,
               "kind": "mender",
               "count": 1
             },
@@ -8178,14 +8178,14 @@
               "count": 1
             },
             {
-              "startMs": 132500,
+              "startMs": 137400,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 12800
             },
             {
-              "startMs": 134000,
+              "startMs": 143800,
               "kind": "broodcaller",
               "count": 1
             },
@@ -8195,12 +8195,12 @@
               "count": 1
             },
             {
-              "startMs": 164500,
+              "startMs": 169400,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 166000,
+              "startMs": 175800,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -8212,12 +8212,12 @@
               "count": 1
             },
             {
-              "startMs": 196500,
+              "startMs": 201400,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 198000,
+              "startMs": 207800,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -8259,7 +8259,7 @@
               "everyMs": 8033
             },
             {
-              "startMs": 4500,
+              "startMs": 12038,
               "kind": "archer",
               "count": 1
             },
@@ -8269,7 +8269,7 @@
               "count": 1
             },
             {
-              "startMs": 34625,
+              "startMs": 42163,
               "kind": "mender",
               "count": 1
             },
@@ -8281,7 +8281,7 @@
               "everyMs": 8033
             },
             {
-              "startMs": 64750,
+              "startMs": 72288,
               "kind": "hexer",
               "count": 1
             },
@@ -8291,7 +8291,7 @@
               "count": 1
             },
             {
-              "startMs": 94875,
+              "startMs": 102413,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -8303,7 +8303,7 @@
               "count": 1
             },
             {
-              "startMs": 125000,
+              "startMs": 132538,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -8313,12 +8313,12 @@
               "count": 1
             },
             {
-              "startMs": 155125,
+              "startMs": 159650,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 156625,
+              "startMs": 165675,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
@@ -8330,12 +8330,12 @@
               "count": 1
             },
             {
-              "startMs": 185250,
+              "startMs": 189775,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 186750,
+              "startMs": 195800,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
@@ -8347,14 +8347,14 @@
               "count": 1
             },
             {
-              "startMs": 215375,
+              "startMs": 219900,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12050
             },
             {
-              "startMs": 216875,
+              "startMs": 225925,
               "kind": "shieldbearer",
               "count": 1
             }
@@ -8398,7 +8398,7 @@
               "everyMs": 11511
             },
             {
-              "startMs": 4500,
+              "startMs": 11633,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -8410,12 +8410,12 @@
               "count": 1
             },
             {
-              "startMs": 33278,
+              "startMs": 37534,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 34778,
+              "startMs": 43289,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -8427,12 +8427,12 @@
               "count": 1
             },
             {
-              "startMs": 62056,
+              "startMs": 66312,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 63556,
+              "startMs": 72067,
               "kind": "hexer",
               "count": 1
             },
@@ -8442,7 +8442,7 @@
               "count": 1
             },
             {
-              "startMs": 90833,
+              "startMs": 97966,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -8454,12 +8454,12 @@
               "count": 1
             },
             {
-              "startMs": 119611,
+              "startMs": 123867,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 121111,
+              "startMs": 129622,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -8471,12 +8471,12 @@
               "count": 1
             },
             {
-              "startMs": 148389,
+              "startMs": 152645,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 149889,
+              "startMs": 158400,
               "kind": "archer",
               "count": 1
             },
@@ -8486,12 +8486,12 @@
               "count": 1
             },
             {
-              "startMs": 177167,
+              "startMs": 181423,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 178667,
+              "startMs": 187178,
               "kind": "runner",
               "count": 1,
               "repeat": 2,
@@ -8503,14 +8503,14 @@
               "count": 1
             },
             {
-              "startMs": 205944,
+              "startMs": 210200,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
               "everyMs": 11511
             },
             {
-              "startMs": 207444,
+              "startMs": 215955,
               "kind": "hexer",
               "count": 1
             },
@@ -8522,12 +8522,12 @@
               "everyMs": 7674
             },
             {
-              "startMs": 234722,
+              "startMs": 238978,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 236222,
+              "startMs": 244733,
               "kind": "flyer",
               "count": 1,
               "repeat": 2,
@@ -8622,7 +8622,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 4500,
+              "startMs": 12200,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -8639,7 +8639,7 @@
               "count": 1
             },
             {
-              "startMs": 35167,
+              "startMs": 42867,
               "kind": "archer",
               "count": 1
             },
@@ -8649,7 +8649,7 @@
               "count": 1
             },
             {
-              "startMs": 65833,
+              "startMs": 73533,
               "kind": "mender",
               "count": 1
             },
@@ -8661,7 +8661,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 96500,
+              "startMs": 104200,
               "kind": "hexer",
               "count": 1
             },
@@ -8676,14 +8676,14 @@
               "count": 1
             },
             {
-              "startMs": 127167,
+              "startMs": 134867,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 8178
             },
             {
-              "startMs": 143523,
+              "startMs": 151223,
               "kind": "runner",
               "count": 1
             },
@@ -8695,12 +8695,12 @@
               "everyMs": 12267
             },
             {
-              "startMs": 157833,
+              "startMs": 162466,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 159333,
+              "startMs": 168600,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -8740,7 +8740,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 13150,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -8754,7 +8754,7 @@
               "everyMs": 13533
             },
             {
-              "startMs": 38333,
+              "startMs": 46983,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -8766,7 +8766,7 @@
               "count": 1
             },
             {
-              "startMs": 72167,
+              "startMs": 80817,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -8778,7 +8778,7 @@
               "count": 1
             },
             {
-              "startMs": 106000,
+              "startMs": 114650,
               "kind": "mender",
               "count": 1
             },
@@ -8788,7 +8788,7 @@
               "count": 1
             },
             {
-              "startMs": 139833,
+              "startMs": 148483,
               "kind": "archer",
               "count": 1
             },
@@ -8800,19 +8800,19 @@
               "everyMs": 13533
             },
             {
-              "startMs": 173667,
+              "startMs": 178934,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 175167,
+              "startMs": 185700,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 9022
             },
             {
-              "startMs": 193211,
+              "startMs": 203744,
               "kind": "runner",
               "count": 1
             }
@@ -8856,7 +8856,7 @@
               "everyMs": 8457
             },
             {
-              "startMs": 4500,
+              "startMs": 12514,
               "kind": "mender",
               "count": 1
             },
@@ -8871,7 +8871,7 @@
               "count": 1
             },
             {
-              "startMs": 36214,
+              "startMs": 44228,
               "kind": "mender",
               "count": 1
             },
@@ -8883,7 +8883,7 @@
               "everyMs": 12686
             },
             {
-              "startMs": 67929,
+              "startMs": 75943,
               "kind": "archer",
               "count": 1
             },
@@ -8893,7 +8893,7 @@
               "count": 1
             },
             {
-              "startMs": 99643,
+              "startMs": 107657,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -8903,7 +8903,7 @@
               "count": 1
             },
             {
-              "startMs": 131357,
+              "startMs": 139371,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -8915,12 +8915,12 @@
               "count": 1
             },
             {
-              "startMs": 163071,
+              "startMs": 167914,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 164571,
+              "startMs": 174257,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -8932,14 +8932,14 @@
               "count": 1
             },
             {
-              "startMs": 194786,
+              "startMs": 199629,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12686
             },
             {
-              "startMs": 196286,
+              "startMs": 205972,
               "kind": "hexer",
               "count": 1
             }
@@ -8979,7 +8979,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 4500,
+              "startMs": 13286,
               "kind": "broodcaller",
               "count": 1
             },
@@ -8994,7 +8994,7 @@
               "count": 1
             },
             {
-              "startMs": 38786,
+              "startMs": 47572,
               "kind": "archer",
               "count": 1
             },
@@ -9004,7 +9004,7 @@
               "count": 1
             },
             {
-              "startMs": 73071,
+              "startMs": 81857,
               "kind": "hexer",
               "count": 1
             },
@@ -9016,7 +9016,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 107357,
+              "startMs": 116143,
               "kind": "mender",
               "count": 1
             },
@@ -9031,14 +9031,14 @@
               "count": 1
             },
             {
-              "startMs": 141643,
+              "startMs": 147000,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
               "everyMs": 9143
             },
             {
-              "startMs": 143143,
+              "startMs": 153857,
               "kind": "archer",
               "count": 1
             },
@@ -9048,12 +9048,12 @@
               "count": 1
             },
             {
-              "startMs": 175929,
+              "startMs": 181286,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 177429,
+              "startMs": 188143,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -9065,12 +9065,12 @@
               "count": 1
             },
             {
-              "startMs": 210214,
+              "startMs": 215571,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 211714,
+              "startMs": 222428,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -9112,7 +9112,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 4500,
+              "startMs": 12713,
               "kind": "archer",
               "count": 1
             },
@@ -9127,7 +9127,7 @@
               "count": 1
             },
             {
-              "startMs": 36875,
+              "startMs": 45088,
               "kind": "mender",
               "count": 1
             },
@@ -9139,7 +9139,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 69250,
+              "startMs": 77463,
               "kind": "hexer",
               "count": 1
             },
@@ -9154,7 +9154,7 @@
               "count": 1
             },
             {
-              "startMs": 101625,
+              "startMs": 109838,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -9166,7 +9166,7 @@
               "count": 1
             },
             {
-              "startMs": 134000,
+              "startMs": 142213,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -9176,19 +9176,19 @@
               "count": 1
             },
             {
-              "startMs": 166375,
+              "startMs": 171350,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 167875,
+              "startMs": 177825,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 185141,
+              "startMs": 195091,
               "kind": "grunt",
               "count": 1
             },
@@ -9198,12 +9198,12 @@
               "count": 1
             },
             {
-              "startMs": 198750,
+              "startMs": 203725,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 200250,
+              "startMs": 210200,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -9215,19 +9215,19 @@
               "count": 1
             },
             {
-              "startMs": 231125,
+              "startMs": 236100,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 232625,
+              "startMs": 242575,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 248391,
+              "startMs": 253366,
               "kind": "flyer",
               "count": 1
             }
@@ -9271,7 +9271,7 @@
               "everyMs": 8237
             },
             {
-              "startMs": 4500,
+              "startMs": 12267,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -9283,12 +9283,12 @@
               "count": 1
             },
             {
-              "startMs": 35389,
+              "startMs": 40067,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 36889,
+              "startMs": 46245,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -9300,12 +9300,12 @@
               "count": 1
             },
             {
-              "startMs": 66278,
+              "startMs": 70956,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 67778,
+              "startMs": 77134,
               "kind": "hexer",
               "count": 1
             },
@@ -9315,7 +9315,7 @@
               "count": 1
             },
             {
-              "startMs": 97167,
+              "startMs": 104934,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -9327,12 +9327,12 @@
               "count": 1
             },
             {
-              "startMs": 128056,
+              "startMs": 132734,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 129556,
+              "startMs": 138912,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -9344,12 +9344,12 @@
               "count": 1
             },
             {
-              "startMs": 158944,
+              "startMs": 163622,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 160444,
+              "startMs": 169800,
               "kind": "archer",
               "count": 1
             },
@@ -9359,12 +9359,12 @@
               "count": 1
             },
             {
-              "startMs": 189833,
+              "startMs": 194511,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 191333,
+              "startMs": 200689,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -9376,14 +9376,14 @@
               "count": 1
             },
             {
-              "startMs": 220722,
+              "startMs": 225400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12356
             },
             {
-              "startMs": 222222,
+              "startMs": 231578,
               "kind": "hexer",
               "count": 1
             },
@@ -9395,12 +9395,12 @@
               "everyMs": 12356
             },
             {
-              "startMs": 251611,
+              "startMs": 256289,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 253111,
+              "startMs": 262467,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -9465,7 +9465,7 @@
           "id": "12-1",
           "name": "Star Gate",
           "mapId": "celestial-1",
-          "text": "Enter Celestial Observatory and establish your first defense. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Enter Celestial Observatory and establish your first defense. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
           "hpScale": 0.95,
           "unlockAfter": "11-6",
@@ -9495,7 +9495,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 4500,
+              "startMs": 12200,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -9512,7 +9512,7 @@
               "count": 1
             },
             {
-              "startMs": 35167,
+              "startMs": 42867,
               "kind": "archer",
               "count": 1
             },
@@ -9522,7 +9522,7 @@
               "count": 1
             },
             {
-              "startMs": 65833,
+              "startMs": 73533,
               "kind": "mender",
               "count": 1
             },
@@ -9534,7 +9534,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 96500,
+              "startMs": 104200,
               "kind": "hexer",
               "count": 1
             },
@@ -9549,14 +9549,14 @@
               "count": 1
             },
             {
-              "startMs": 127167,
+              "startMs": 134867,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 8178
             },
             {
-              "startMs": 143523,
+              "startMs": 151223,
               "kind": "runner",
               "count": 1
             },
@@ -9568,12 +9568,12 @@
               "everyMs": 12267
             },
             {
-              "startMs": 157833,
+              "startMs": 162466,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 159333,
+              "startMs": 168600,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -9585,7 +9585,7 @@
           "id": "12-2",
           "name": "Moon Meridian",
           "mapId": "celestial-2",
-          "text": "Advance through Moon Meridian; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Advance through Moon Meridian; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
           "hpScale": 1.46,
           "unlockAfter": "12-1",
@@ -9613,7 +9613,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 13150,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -9627,7 +9627,7 @@
               "everyMs": 13533
             },
             {
-              "startMs": 38333,
+              "startMs": 46983,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -9639,7 +9639,7 @@
               "count": 1
             },
             {
-              "startMs": 72167,
+              "startMs": 80817,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -9651,7 +9651,7 @@
               "count": 1
             },
             {
-              "startMs": 106000,
+              "startMs": 114650,
               "kind": "mender",
               "count": 1
             },
@@ -9661,7 +9661,7 @@
               "count": 1
             },
             {
-              "startMs": 139833,
+              "startMs": 148483,
               "kind": "archer",
               "count": 1
             },
@@ -9673,19 +9673,19 @@
               "everyMs": 13533
             },
             {
-              "startMs": 173667,
+              "startMs": 178934,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 175167,
+              "startMs": 185700,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 9022
             },
             {
-              "startMs": 193211,
+              "startMs": 203744,
               "kind": "runner",
               "count": 1
             }
@@ -9695,7 +9695,7 @@
           "id": "12-3",
           "name": "Astral Court",
           "mapId": "celestial-3",
-          "text": "Advance through Astral Court; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Advance through Astral Court; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
           "hpScale": 0.82,
           "unlockAfter": "12-2",
@@ -9729,7 +9729,7 @@
               "everyMs": 8457
             },
             {
-              "startMs": 4500,
+              "startMs": 12514,
               "kind": "mender",
               "count": 1
             },
@@ -9744,7 +9744,7 @@
               "count": 1
             },
             {
-              "startMs": 36214,
+              "startMs": 44228,
               "kind": "mender",
               "count": 1
             },
@@ -9756,7 +9756,7 @@
               "everyMs": 12686
             },
             {
-              "startMs": 67929,
+              "startMs": 75943,
               "kind": "archer",
               "count": 1
             },
@@ -9766,7 +9766,7 @@
               "count": 1
             },
             {
-              "startMs": 99643,
+              "startMs": 107657,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -9776,7 +9776,7 @@
               "count": 1
             },
             {
-              "startMs": 131357,
+              "startMs": 139371,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -9788,12 +9788,12 @@
               "count": 1
             },
             {
-              "startMs": 163071,
+              "startMs": 167914,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 164571,
+              "startMs": 174257,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -9805,14 +9805,14 @@
               "count": 1
             },
             {
-              "startMs": 194786,
+              "startMs": 199629,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12686
             },
             {
-              "startMs": 196286,
+              "startMs": 205972,
               "kind": "hexer",
               "count": 1
             }
@@ -9822,7 +9822,7 @@
           "id": "12-4",
           "name": "Orbit Hall",
           "mapId": "celestial-4",
-          "text": "Advance through Orbit Hall; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Advance through Orbit Hall; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
           "hpScale": 0.77,
           "unlockAfter": "12-3",
@@ -9852,7 +9852,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 4500,
+              "startMs": 13286,
               "kind": "broodcaller",
               "count": 1
             },
@@ -9867,7 +9867,7 @@
               "count": 1
             },
             {
-              "startMs": 38786,
+              "startMs": 47572,
               "kind": "archer",
               "count": 1
             },
@@ -9877,7 +9877,7 @@
               "count": 1
             },
             {
-              "startMs": 73071,
+              "startMs": 81857,
               "kind": "hexer",
               "count": 1
             },
@@ -9889,7 +9889,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 107357,
+              "startMs": 116143,
               "kind": "mender",
               "count": 1
             },
@@ -9904,14 +9904,14 @@
               "count": 1
             },
             {
-              "startMs": 141643,
+              "startMs": 147000,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
               "everyMs": 9143
             },
             {
-              "startMs": 143143,
+              "startMs": 153857,
               "kind": "flyer",
               "count": 1
             },
@@ -9921,12 +9921,12 @@
               "count": 1
             },
             {
-              "startMs": 175929,
+              "startMs": 181286,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 177429,
+              "startMs": 188143,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -9938,12 +9938,12 @@
               "count": 1
             },
             {
-              "startMs": 210214,
+              "startMs": 215571,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 211714,
+              "startMs": 222428,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -9955,7 +9955,7 @@
           "id": "12-5",
           "name": "Comet Coil",
           "mapId": "celestial-5",
-          "text": "Advance through Comet Coil; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Advance through Comet Coil; cover the returning road with overlapping defenses. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 16,
           "hpScale": 0.84,
           "unlockAfter": "12-4",
@@ -9985,7 +9985,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 4500,
+              "startMs": 12713,
               "kind": "archer",
               "count": 1
             },
@@ -10000,7 +10000,7 @@
               "count": 1
             },
             {
-              "startMs": 36875,
+              "startMs": 45088,
               "kind": "mender",
               "count": 1
             },
@@ -10012,7 +10012,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 69250,
+              "startMs": 77463,
               "kind": "hexer",
               "count": 1
             },
@@ -10027,7 +10027,7 @@
               "count": 1
             },
             {
-              "startMs": 101625,
+              "startMs": 109838,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -10039,7 +10039,7 @@
               "count": 1
             },
             {
-              "startMs": 134000,
+              "startMs": 142213,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -10049,19 +10049,19 @@
               "count": 1
             },
             {
-              "startMs": 166375,
+              "startMs": 171350,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 167875,
+              "startMs": 177825,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 185141,
+              "startMs": 195091,
               "kind": "grunt",
               "count": 1
             },
@@ -10071,12 +10071,12 @@
               "count": 1
             },
             {
-              "startMs": 198750,
+              "startMs": 203725,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 200250,
+              "startMs": 210200,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -10088,19 +10088,19 @@
               "count": 1
             },
             {
-              "startMs": 231125,
+              "startMs": 236100,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 232625,
+              "startMs": 242575,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 248391,
+              "startMs": 253366,
               "kind": "flyer",
               "count": 1
             }
@@ -10110,7 +10110,7 @@
           "id": "12-6",
           "name": "Zenith Crown",
           "mapId": "celestial-6",
-          "text": "Defend the sanctuary against the final assault. Heroes charge ultimates 20% faster on odd waves and attack 10% faster on even waves.",
+          "text": "Defend the sanctuary against the final assault. Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
           "lives": 18,
           "hpScale": 0.73,
           "unlockAfter": "12-5",
@@ -10144,7 +10144,7 @@
               "everyMs": 8237
             },
             {
-              "startMs": 4500,
+              "startMs": 12267,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -10156,12 +10156,12 @@
               "count": 1
             },
             {
-              "startMs": 35389,
+              "startMs": 40067,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 36889,
+              "startMs": 46245,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -10173,12 +10173,12 @@
               "count": 1
             },
             {
-              "startMs": 66278,
+              "startMs": 70956,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 67778,
+              "startMs": 77134,
               "kind": "hexer",
               "count": 1
             },
@@ -10188,7 +10188,7 @@
               "count": 1
             },
             {
-              "startMs": 97167,
+              "startMs": 104934,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -10200,12 +10200,12 @@
               "count": 1
             },
             {
-              "startMs": 128056,
+              "startMs": 132734,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 129556,
+              "startMs": 138912,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -10217,12 +10217,12 @@
               "count": 1
             },
             {
-              "startMs": 158944,
+              "startMs": 163622,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 160444,
+              "startMs": 169800,
               "kind": "archer",
               "count": 1
             },
@@ -10232,12 +10232,12 @@
               "count": 1
             },
             {
-              "startMs": 189833,
+              "startMs": 194511,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 191333,
+              "startMs": 200689,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -10249,14 +10249,14 @@
               "count": 1
             },
             {
-              "startMs": 220722,
+              "startMs": 225400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12356
             },
             {
-              "startMs": 222222,
+              "startMs": 231578,
               "kind": "hexer",
               "count": 1
             },
@@ -10268,12 +10268,12 @@
               "everyMs": 12356
             },
             {
-              "startMs": 251611,
+              "startMs": 256289,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 253111,
+              "startMs": 262467,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -10368,7 +10368,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 4500,
+              "startMs": 12200,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -10385,7 +10385,7 @@
               "count": 1
             },
             {
-              "startMs": 35167,
+              "startMs": 42867,
               "kind": "archer",
               "count": 1
             },
@@ -10395,7 +10395,7 @@
               "count": 1
             },
             {
-              "startMs": 65833,
+              "startMs": 73533,
               "kind": "mender",
               "count": 1
             },
@@ -10407,7 +10407,7 @@
               "everyMs": 8178
             },
             {
-              "startMs": 96500,
+              "startMs": 104200,
               "kind": "hexer",
               "count": 1
             },
@@ -10422,14 +10422,14 @@
               "count": 1
             },
             {
-              "startMs": 127167,
+              "startMs": 134867,
               "kind": "runner",
               "count": 2,
               "repeat": 2,
               "everyMs": 8178
             },
             {
-              "startMs": 143523,
+              "startMs": 151223,
               "kind": "runner",
               "count": 1
             },
@@ -10441,12 +10441,12 @@
               "everyMs": 12267
             },
             {
-              "startMs": 157833,
+              "startMs": 162466,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 159333,
+              "startMs": 168600,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -10486,7 +10486,7 @@
               "count": 1
             },
             {
-              "startMs": 4500,
+              "startMs": 13150,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -10500,7 +10500,7 @@
               "everyMs": 13533
             },
             {
-              "startMs": 38333,
+              "startMs": 46983,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -10512,7 +10512,7 @@
               "count": 1
             },
             {
-              "startMs": 72167,
+              "startMs": 80817,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -10524,7 +10524,7 @@
               "count": 1
             },
             {
-              "startMs": 106000,
+              "startMs": 114650,
               "kind": "mender",
               "count": 1
             },
@@ -10534,7 +10534,7 @@
               "count": 1
             },
             {
-              "startMs": 139833,
+              "startMs": 148483,
               "kind": "archer",
               "count": 1
             },
@@ -10546,19 +10546,19 @@
               "everyMs": 13533
             },
             {
-              "startMs": 173667,
+              "startMs": 178934,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 175167,
+              "startMs": 185700,
               "kind": "runner",
               "count": 3,
               "repeat": 2,
               "everyMs": 9022
             },
             {
-              "startMs": 193211,
+              "startMs": 203744,
               "kind": "runner",
               "count": 1
             }
@@ -10602,7 +10602,7 @@
               "everyMs": 8457
             },
             {
-              "startMs": 4500,
+              "startMs": 12514,
               "kind": "mender",
               "count": 1
             },
@@ -10617,7 +10617,7 @@
               "count": 1
             },
             {
-              "startMs": 36214,
+              "startMs": 44228,
               "kind": "mender",
               "count": 1
             },
@@ -10629,7 +10629,7 @@
               "everyMs": 12686
             },
             {
-              "startMs": 67929,
+              "startMs": 75943,
               "kind": "archer",
               "count": 1
             },
@@ -10639,7 +10639,7 @@
               "count": 1
             },
             {
-              "startMs": 99643,
+              "startMs": 107657,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -10649,7 +10649,7 @@
               "count": 1
             },
             {
-              "startMs": 131357,
+              "startMs": 139371,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -10661,12 +10661,12 @@
               "count": 1
             },
             {
-              "startMs": 163071,
+              "startMs": 167914,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 164571,
+              "startMs": 174257,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
@@ -10678,14 +10678,14 @@
               "count": 1
             },
             {
-              "startMs": 194786,
+              "startMs": 199629,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12686
             },
             {
-              "startMs": 196286,
+              "startMs": 205972,
               "kind": "hexer",
               "count": 1
             }
@@ -10725,7 +10725,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 4500,
+              "startMs": 13286,
               "kind": "broodcaller",
               "count": 1
             },
@@ -10740,7 +10740,7 @@
               "count": 1
             },
             {
-              "startMs": 38786,
+              "startMs": 47572,
               "kind": "archer",
               "count": 1
             },
@@ -10750,7 +10750,7 @@
               "count": 1
             },
             {
-              "startMs": 73071,
+              "startMs": 81857,
               "kind": "hexer",
               "count": 1
             },
@@ -10762,7 +10762,7 @@
               "everyMs": 9143
             },
             {
-              "startMs": 107357,
+              "startMs": 116143,
               "kind": "mender",
               "count": 1
             },
@@ -10777,14 +10777,14 @@
               "count": 1
             },
             {
-              "startMs": 141643,
+              "startMs": 147000,
               "kind": "grunt",
               "count": 2,
               "repeat": 3,
               "everyMs": 9143
             },
             {
-              "startMs": 143143,
+              "startMs": 153857,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -10794,12 +10794,12 @@
               "count": 1
             },
             {
-              "startMs": 175929,
+              "startMs": 181286,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 177429,
+              "startMs": 188143,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -10811,12 +10811,12 @@
               "count": 1
             },
             {
-              "startMs": 210214,
+              "startMs": 215571,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 211714,
+              "startMs": 222428,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -10858,7 +10858,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 4500,
+              "startMs": 12713,
               "kind": "archer",
               "count": 1
             },
@@ -10873,7 +10873,7 @@
               "count": 1
             },
             {
-              "startMs": 36875,
+              "startMs": 45088,
               "kind": "mender",
               "count": 1
             },
@@ -10885,7 +10885,7 @@
               "everyMs": 8633
             },
             {
-              "startMs": 69250,
+              "startMs": 77463,
               "kind": "hexer",
               "count": 1
             },
@@ -10900,7 +10900,7 @@
               "count": 1
             },
             {
-              "startMs": 101625,
+              "startMs": 109838,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
@@ -10912,7 +10912,7 @@
               "count": 1
             },
             {
-              "startMs": 134000,
+              "startMs": 142213,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -10922,19 +10922,19 @@
               "count": 1
             },
             {
-              "startMs": 166375,
+              "startMs": 171350,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 167875,
+              "startMs": 177825,
               "kind": "grunt",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 185141,
+              "startMs": 195091,
               "kind": "grunt",
               "count": 1
             },
@@ -10944,12 +10944,12 @@
               "count": 1
             },
             {
-              "startMs": 198750,
+              "startMs": 203725,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 200250,
+              "startMs": 210200,
               "kind": "runner",
               "count": 2,
               "repeat": 3,
@@ -10961,19 +10961,19 @@
               "count": 1
             },
             {
-              "startMs": 231125,
+              "startMs": 236100,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 8633
             },
             {
-              "startMs": 232625,
+              "startMs": 242575,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 248391,
+              "startMs": 253366,
               "kind": "flyer",
               "count": 1
             }
@@ -11017,7 +11017,7 @@
               "everyMs": 8237
             },
             {
-              "startMs": 4500,
+              "startMs": 12267,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -11029,12 +11029,12 @@
               "count": 1
             },
             {
-              "startMs": 35389,
+              "startMs": 40067,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 36889,
+              "startMs": 46245,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -11046,12 +11046,12 @@
               "count": 1
             },
             {
-              "startMs": 66278,
+              "startMs": 70956,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 67778,
+              "startMs": 77134,
               "kind": "hexer",
               "count": 1
             },
@@ -11061,7 +11061,7 @@
               "count": 1
             },
             {
-              "startMs": 97167,
+              "startMs": 104934,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -11073,12 +11073,12 @@
               "count": 1
             },
             {
-              "startMs": 128056,
+              "startMs": 132734,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 129556,
+              "startMs": 138912,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
@@ -11090,12 +11090,12 @@
               "count": 1
             },
             {
-              "startMs": 158944,
+              "startMs": 163622,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 160444,
+              "startMs": 169800,
               "kind": "archer",
               "count": 1
             },
@@ -11105,12 +11105,12 @@
               "count": 1
             },
             {
-              "startMs": 189833,
+              "startMs": 194511,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 191333,
+              "startMs": 200689,
               "kind": "runner",
               "count": 1,
               "repeat": 3,
@@ -11122,14 +11122,14 @@
               "count": 1
             },
             {
-              "startMs": 220722,
+              "startMs": 225400,
               "kind": "flyer",
               "count": 2,
               "repeat": 2,
               "everyMs": 12356
             },
             {
-              "startMs": 222222,
+              "startMs": 231578,
               "kind": "hexer",
               "count": 1
             },
@@ -11141,12 +11141,12 @@
               "everyMs": 12356
             },
             {
-              "startMs": 251611,
+              "startMs": 256289,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 253111,
+              "startMs": 262467,
               "kind": "flyer",
               "count": 1,
               "repeat": 3,
