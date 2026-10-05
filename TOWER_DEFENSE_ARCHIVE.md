@@ -2081,3 +2081,72 @@ Invariants worth keeping under test: determinism (same seed = same log), gold aw
 once per kill, no deadlock with every road tile filled, flyers reach the base past
 blockers, accumulator clamps long tab-away gaps, loss wins a same-tick tie, cost is not
 monotonic in tier.
+
+## Wave system, removed October 2026 (roadmap log of October 5, 2026)
+
+Waves, run lengths (10 / 20 / Endless), quests and the wave-based tuning experiments were replaced by stage
+timelines on October 5, 2026 (see [Timeline Stages](docs/superpowers/specs/2026-10-05-timeline-stages-design.md)).
+The roadmap notes written while the wave system was still tuned are kept here unchanged, as history; the numbers
+describe waves and `hpScale` values that no longer exist.
+
+**Wave-shape variants (October 5, bot experiment, stages 4-2 / 4-3 / 4-5, 14 squads, not applied):** fewer
+enemies with the same total health, attack and leak damage (`board.waveShape` count x0.6 or x0.4, hp /
+attack / leak / power divided by the same factor, optional gap x1.5). Enemies per stage drop from 34 / 56 /
+66 to 24 / 41 / 41 (x0.6) and 20 / 35 / 33 (x0.4), spawn pressure from about 0.8 to 0.5-0.64/s with the
+longer gap, which is the WoR range for counts but still about 2x its pressure. The bot wins clearly less
+against fewer, tougher enemies: to stay at 50% the stage `hpScale` must drop to about 0.55-0.8 of today's
+value (x0.6 plus gap x1.5), more at x0.4. So a count change is an R12 retune, not a free switch. Try it on dev with
+`?lean=0.6` (count x0.6, gap x1.5, Campaign hpScale x0.7; `src/game/td/wave-variants.js`, off by default);
+reproduce the numbers with `npm run td:wave-variants`.
+
+**Owner playtest, Campaign 1-1 to 1-5 (October 5):** Daily Trial and Expedition now use R18 like the Campaign
+(they had old flat layouts); the in-wave quest is a short chip (full goal in its tooltip); held melee enemies
+are drawn at a stand-off distance from their blocker (render only, `standOffHeldEnemies` in `render.js`, sim
+positions and `blocking.contactRange` 24 untouched, because the contact-depth test exists for a reason);
+the result screen's Retry button says "Retry" (stage name in the tooltip); platform heroes on the default "auto"
+targeting now shoot flyers in reach first (only they can hit them; "ground" or any chosen mode overrides).
+Balance feedback: 1-3 hard but doable, 1-4 hard because of flyers (addressed by the targeting default),
+Brutes stay as they are (owner: challenging is fine). Flyers still escaped two or three platform heroes, so their base speed
+dropped from 62 to 44 (grunt speed 42; runner 76). Bot check, flyer-only wave on the 1-4 map, 14 squads: speed 62 -> 1 win and
+41 leaks, 50 -> 4 / 36, 42 -> 4 / 34, 36 -> 8 / 29. The whole 1-4 stage is not a flyer test: the bot dies in wave 2 there.
+
+**Stage 1-7 "Two Gates" eased (October 5, owner: very hard; the first wave always leaks one enemy, three ground
+heroes cannot also cover the later flyers):** `hpScale` 2.5 -> 2.0, wave 1 grunts 14 -> 10, flyers 12 -> 9 (wave 3),
+14 -> 10, 8 -> 6 (last two flyer groups). Bot, 14 squads, hpScale 1.0: 6/14 wins before, 10/14 with the trimmed
+waves; at the old 2.5 the bot wins 0/14 either way, so the bot cannot rate the human experience here. Note for R12:
+`td-board-tune.mjs` now suggests far lower `hpScale` for the whole of chapter 1 (1-7: 0.63, 1-6: 0.45, 1-9: 0.2)
+than the authored 1.8 to 2.9, but the owner clears these stages with focus targeting and relocation, which the
+bot does not use, so those suggestions are a lower bound, not a target.
+
+**Flyers on 1-7 (October 5, owner: still the sticking point):** flyer-only wave on the 1-7 map, 14 squads, bot wins:
+speed 44 / shape hp 1.75 -> 3, hp 1.0 -> 7, speed 36 -> 5 (hp 1.75) or 7 (hp 1.0). Health matters more than speed, so
+`board.waveShape.kinds.flyer.hp` went 1.75 -> 1.3 (global: flyer waves are easier everywhere); flyer speed stays 44.
+
+### Campaign Encounter Pacing: approved, phases 0 to 2 built (October 5, 2026)
+
+Owner on 1-10: too many flyers and ground units at once, no squad (1 platform, 1 healer, 4 ground, or fewer ground) can
+hold it; WoR shows a fixed, known total per stage while our waves pour out hordes. Plan, data and five owner decisions:
+**[Campaign Encounter Pacing](docs/superpowers/specs/2026-10-05-campaign-encounter-pacing-design.md)**. Summary: WoR chapter 1
+stages have about 11 enemies over a 53 s timeline (0.1 to 0.26/s); ours have 21 to 72 in dense wave bursts (0.6 to 0.9/s)
+with mixed ground, flyer and support kinds. Phases: 0 measure (`td:stage-lint`), 1 forecast UI (kill counter, stage
+summary, timeline), 2 pilot on 1-4, 1-7, 1-9, 1-10, 3 roll-out, 4 player leverage, 5 time-model decision. R12 step 7
+(campaign `hpScale`) waits until after phase 3.
+
+Built October 5: **phase 0** `npm run td:stage-lint` (rules and chapter targets in `src/game/td/stage-lint.js`; baseline: all 82
+stages flagged, chapter 1 has 21 to 72 enemies against a target of 12 to 30, chapter 13 up to 108 against 36 to 42); **phase 1**
+the Defeated counter `x/total` in the stats row, a "N enemies in M waves" chip before the first wave (tooltip lists the kinds) and
+"incoming" chips for the running wave (`stageForecast()` in `sim.js`); **P4** relocation between waves is free
+(`run.relocationCost` 0; the squad cap stays off, the owner did not choose it); **phase 2 pilot** stages 1-4, 1-7, 1-9, 1-10 rewritten
+to one headline kind per wave and at most 2 kinds, spawn gaps doubled on the two-gate stages, counts now 22 / 26 / 28 / 30 (were
+24 / 32 / 56 / 72 shaped counts: 24, 58, 56, 72), `hpScale` 1-7 2.0 -> 2.6, 1-9 2.7 -> 2.9, 1-10 2.89 -> 3.0 (1-4 unchanged at 2.1).
+Bot check (hpScale for a 50% bot win rate, 14 squads): 1-7 0.36 -> 0.89, 1-9 0.27 -> 0.67, 1-10 0.30 -> 0.42, 1-4 0.59 -> 0.65, i.e. the
+walls are 1.4x to 2.5x easier at equal `hpScale`; the raised `hpScale` takes part of that back. The owner playtest decides.
+
+### Timeline Stages: no more waves (design and plan awaiting owner review, October 5, 2026)
+
+Owner request: remove waves; each map defines a number of enemies that fill the stage one after another, with WoR-like counts and
+timings; the enemy count replaces the wave counter in the UI; clean the waves out of the files. Design and decision per wave-bound
+feature: **[Timeline Stages: no more waves](docs/superpowers/specs/2026-10-05-timeline-stages-design.md)**; 13 tasks:
+**[Timeline Stages Implementation Plan](docs/superpowers/plans/2026-10-05-timeline-stages-plan.md)**. This replaces phases 3 to 5 of Campaign
+Encounter Pacing. It must start after the economy and hero-upgrade removal of the parallel agent has been committed (plan Task 0).
+

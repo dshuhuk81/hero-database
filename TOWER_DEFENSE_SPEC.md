@@ -924,7 +924,8 @@ The order and dependencies of the open work live in
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
 - **Stage counter and forecast:** the stats row shows `Defeated x/total` (`stageForecast()` in `sim.js`: the timeline's total,
-  enemies killed or through the gates, the next groups with a ticking ETA); a chip before the start gives the total. There is no auto-start countdown and no Start-wave button: one Start
+  enemies killed or through the gates, the next groups with their ETA); a summary chip before the start gives the total (the
+  HUD no longer shows the incoming chips). There is no auto-start countdown and no Start-wave button: one Start
   button begins the stage.
 - **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).

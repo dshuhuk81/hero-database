@@ -1,5 +1,9 @@
 # Campaign Encounter Pacing: readable stages instead of horde waves
 
+> **Superseded (October 5, 2026):** the owner chose the continuous timeline (Option B) and the waves were removed. See
+> [Timeline Stages](2026-10-05-timeline-stages-design.md). This document keeps the analysis and the wave-era decisions as history;
+> the pilot stages 1-4, 1-7, 1-9 and 1-10 it describes were converted to timelines with every other stage.
+
 Status: approved by the owner on October 5, 2026 ("Mache das"); decisions 1, 2, 4 and 5 taken as recommended, decision 3
 (squad cap) not taken. Implemented the same day: phase 0 (`npm run td:stage-lint`), phase 1 (kill counter, stage summary,
 incoming chips, `stageForecast` in `sim.js`), the pilot stages 1-4, 1-7, 1-9 and 1-10 (phase 2, awaiting the owner's

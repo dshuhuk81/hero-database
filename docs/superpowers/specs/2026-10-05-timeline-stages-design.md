@@ -1,6 +1,6 @@
 # Timeline Stages: no more waves
 
-Status: design for owner review, October 5, 2026. Nothing in this document is implemented yet.
+Status: implemented October 5, 2026 (branch `td-timeline`). Open: the owner's playtest and the per-stage `hpScale` retune; see the roadmap section "Timeline Stages".
 Priority list and decision history: [Tower Defense Roadmap](../../../TOWER_DEFENSE_ROADMAP.md).
 Implementation plan: [Timeline Stages Implementation Plan](../plans/2026-10-05-timeline-stages-plan.md).
 Supersedes phases 3 to 5 of [Campaign Encounter Pacing](2026-10-05-campaign-encounter-pacing-design.md): that plan's Option B

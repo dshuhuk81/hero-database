@@ -16,7 +16,7 @@ Several agents work in this repo in parallel. To avoid collisions and double wor
 2. Before starting economy/mechanics work, check
    [TOWER_DEFENSE_MECHANICS_OVERVIEW.md](TOWER_DEFENSE_MECHANICS_OVERVIEW.md) —
    it maps every currency, upgrade layer and balance lever, and lists the
-   existing analysis scripts (`td:sweep`, `td:pacing`, `td:progression`,
+   existing analysis scripts (`td:pacing`, `td:progression`,
    `td:classes`, `td:upgrade-sweep`) so nobody rebuilds them.
 3. Before editing a file, check `git status` for uncommitted changes from
    parallel agents; do not overwrite or "clean up" files you did not touch.
@@ -65,7 +65,7 @@ is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**,
 
 - [ ] **P0 — Real-device acceptance pass:** verify the current build on a landscape phone with
   several simultaneous enemies and a boss. Check bar ownership, damage-number readability,
-  platform height, the hidden in-wave spawn label and the centred boss HUD.
+  platform height, the hidden spawn label while a stage runs and the centred boss HUD.
 - [ ] **P0 — Edge interaction pass:** test taps on all four board edges and around the top and
   bottom safe areas on a real device. Automated coverage exists for 6x3, 8x4 and 9x5 boards,
   but physical tap accuracy is still the acceptance criterion.
@@ -80,7 +80,7 @@ is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**,
 - [ ] **P1 — Panorama phone acceptance:** review each theme's left/right transition, perimeter
   scale, brightness and HUD contrast on a landscape phone; creation is not device acceptance.
 - [ ] **P1 — HUD collision matrix:** capture 797x360, 844x390 and 915x412 landscape states for
-  placement, dense combat and bosses; confirm notices, buffs, wave preview and boss health never
+  placement, dense combat and bosses; confirm notices, buffs, the stage summary chip and boss health never
   cover one another.
 - [x] **P1 — Campaign-wide rollout:** all Campaign stages use the shared R18 renderer by run
   context, including 10x5 finales. Free Play stays map-explicit, while per-map tilt/art overrides
@@ -135,66 +135,31 @@ tiles tall; check top-row clipping on device. The tilt `offsetY` dropped from 70
 spawn label (cards stay their size by owner decision); check top-row hero clipping on device. Seams: the canvas is shorter than the screen (scale = min(width/960, height/556)), so the Pixi panorama band is scaled to match the CSS
 `cover` backdrop over the whole screen (redone on resize) and the terrain's top/bottom edge dissolves into panorama strips instead of a black gradient; the bottom bar gradient reaches the screen edge. Still open: the board fills less of the screen than in WoR.
 
-**Wave-shape variants (October 5, bot experiment, stages 4-2 / 4-3 / 4-5, 14 squads, not applied):** fewer
-enemies with the same total health, attack and leak damage (`board.waveShape` count x0.6 or x0.4, hp /
-attack / leak / power divided by the same factor, optional gap x1.5). Enemies per stage drop from 34 / 56 /
-66 to 24 / 41 / 41 (x0.6) and 20 / 35 / 33 (x0.4), spawn pressure from about 0.8 to 0.5-0.64/s with the
-longer gap, which is the WoR range for counts but still about 2x its pressure. The bot wins clearly less
-against fewer, tougher enemies: to stay at 50% the stage `hpScale` must drop to about 0.55-0.8 of today's
-value (x0.6 plus gap x1.5), more at x0.4. So a count change is an R12 retune, not a free switch. Try it on dev with
-`?lean=0.6` (count x0.6, gap x1.5, Campaign hpScale x0.7; `src/game/td/wave-variants.js`, off by default);
-reproduce the numbers with `npm run td:wave-variants`.
+### Timeline Stages: no more waves (built October 5, 2026)
 
-**Owner playtest, Campaign 1-1 to 1-5 (October 5):** Daily Trial and Expedition now use R18 like the Campaign
-(they had old flat layouts); the in-wave quest is a short chip (full goal in its tooltip); held melee enemies
-are drawn at a stand-off distance from their blocker (render only, `standOffHeldEnemies` in `render.js`, sim
-positions and `blocking.contactRange` 24 untouched, because the contact-depth test exists for a reason);
-the result screen's Retry button says "Retry" (stage name in the tooltip); platform heroes on the default "auto"
-targeting now shoot flyers in reach first (only they can hit them; "ground" or any chosen mode overrides).
-Balance feedback: 1-3 hard but doable, 1-4 hard because of flyers (addressed by the targeting default),
-Brutes stay as they are (owner: challenging is fine). Flyers still escaped two or three platform heroes, so their base speed
-dropped from 62 to 44 (grunt speed 42; runner 76). Bot check, flyer-only wave on the 1-4 map, 14 squads: speed 62 -> 1 win and
-41 leaks, 50 -> 4 / 36, 42 -> 4 / 34, 36 -> 8 / 29. The whole 1-4 stage is not a flyer test: the bot dies in wave 2 there.
+Waves are gone. Every stage, map and Expedition stage plays one **timeline** of spawn groups with WoR-like counts and
+timings; the HUD shows `Defeated x/total` instead of a wave counter. Design and decisions:
+**[Timeline Stages: no more waves](docs/superpowers/specs/2026-10-05-timeline-stages-design.md)**; implementation plan:
+**[Timeline Stages Implementation Plan](docs/superpowers/plans/2026-10-05-timeline-stages-plan.md)**; current rules in
+[TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md) (section 8). The wave-era playtest log (flyer speed, stage 1-7, wave-shape
+experiments, Encounter Pacing phases 0 to 2) moved to [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
 
-**Stage 1-7 "Two Gates" eased (October 5, owner: very hard; the first wave always leaks one enemy, three ground
-heroes cannot also cover the later flyers):** `hpScale` 2.5 -> 2.0, wave 1 grunts 14 -> 10, flyers 12 -> 9 (wave 3),
-14 -> 10, 8 -> 6 (last two flyer groups). Bot, 14 squads, hpScale 1.0: 6/14 wins before, 10/14 with the trimmed
-waves; at the old 2.5 the bot wins 0/14 either way, so the bot cannot rate the human experience here. Note for R12:
-`td-board-tune.mjs` now suggests far lower `hpScale` for the whole of chapter 1 (1-7: 0.63, 1-6: 0.45, 1-9: 0.2)
-than the authored 1.8 to 2.9, but the owner clears these stages with focus targeting and relocation, which the
-bot does not use, so those suggestions are a lower bound, not a target.
+What changed for players and tuning: run lengths and Endless removed; blessing offers at five defeat milestones (the stage
+waits while one is open); in-run quests removed; relocation free with an 8 s cooldown per hero; Shield recovers after 60 s;
+Daily Trial goal is 60% of the stage's enemies; Favor, shards, collection rewards and challenges are keyed to enemies
+defeated; saves migrate automatically (legacy `bestWave` dropped, `@mode` records merged); environment odd/even wave rules
+became 20 s phases. Tools: `npm run td:stage-lint`, `td:stage-convert` (one-off migration, kept for reference),
+`td:wor-compare`; `td:sweep`, `td:economy`, `td:wave-shape`, `td:wave-variants` and `td:chapter-length` were removed.
 
-**Flyers on 1-7 (October 5, owner: still the sticking point):** flyer-only wave on the 1-7 map, 14 squads, bot wins:
-speed 44 / shape hp 1.75 -> 3, hp 1.0 -> 7, speed 36 -> 5 (hp 1.75) or 7 (hp 1.0). Health matters more than speed, so
-`board.waveShape.kinds.flyer.hp` went 1.75 -> 1.3 (global: flyer waves are easier everywhere); flyer speed stays 44.
+**To do (owner playtest, no simulations were run for this change):**
 
-### Campaign Encounter Pacing: approved, phases 0 to 2 built (October 5, 2026)
+- [ ] Play 1-1 to 1-10 and one stage of chapters 2 to 4: does the Defeated counter plus the start summary give enough overview,
+  and does any stage spawn too fast or slow? Chapter 1 stages are now 9 to 16 enemies over 37 to 66 s; `hpScale` was raised
+  by the converter (`HEALTH_KEPT` 0.6 in `scripts/td-stage-convert.mjs`) to give back part of the removed enemy health.
+- [ ] 1-10 with a mixed squad (2 platform, 4 ground) and with 1 platform, 1 healer, 4 ground.
+- [ ] Retune `hpScale` per stage after the playtest (R12 step 7); `td-board-tune.mjs` only gives a bot lower bound.
+- [ ] Review the 14 stages `td:stage-lint` still flags (mostly "kinds within 20 s" and counts a little above the chapter target).
 
-Owner on 1-10: too many flyers and ground units at once, no squad (1 platform, 1 healer, 4 ground, or fewer ground) can
-hold it; WoR shows a fixed, known total per stage while our waves pour out hordes. Plan, data and five owner decisions:
-**[Campaign Encounter Pacing](docs/superpowers/specs/2026-10-05-campaign-encounter-pacing-design.md)**. Summary: WoR chapter 1
-stages have about 11 enemies over a 53 s timeline (0.1 to 0.26/s); ours have 21 to 72 in dense wave bursts (0.6 to 0.9/s)
-with mixed ground, flyer and support kinds. Phases: 0 measure (`td:stage-lint`), 1 forecast UI (kill counter, stage
-summary, timeline), 2 pilot on 1-4, 1-7, 1-9, 1-10, 3 roll-out, 4 player leverage, 5 time-model decision. R12 step 7
-(campaign `hpScale`) waits until after phase 3.
-
-Built October 5: **phase 0** `npm run td:stage-lint` (rules and chapter targets in `src/game/td/stage-lint.js`; baseline: all 82
-stages flagged, chapter 1 has 21 to 72 enemies against a target of 12 to 30, chapter 13 up to 108 against 36 to 42); **phase 1**
-the Defeated counter `x/total` in the stats row, a "N enemies in M waves" chip before the first wave (tooltip lists the kinds) and
-"incoming" chips for the running wave (`stageForecast()` in `sim.js`); **P4** relocation between waves is free
-(`run.relocationCost` 0; the squad cap stays off, the owner did not choose it); **phase 2 pilot** stages 1-4, 1-7, 1-9, 1-10 rewritten
-to one headline kind per wave and at most 2 kinds, spawn gaps doubled on the two-gate stages, counts now 22 / 26 / 28 / 30 (were
-24 / 32 / 56 / 72 shaped counts: 24, 58, 56, 72), `hpScale` 1-7 2.0 -> 2.6, 1-9 2.7 -> 2.9, 1-10 2.89 -> 3.0 (1-4 unchanged at 2.1).
-Bot check (hpScale for a 50% bot win rate, 14 squads): 1-7 0.36 -> 0.89, 1-9 0.27 -> 0.67, 1-10 0.30 -> 0.42, 1-4 0.59 -> 0.65, i.e. the
-walls are 1.4x to 2.5x easier at equal `hpScale`; the raised `hpScale` takes part of that back. The owner playtest decides.
-
-### Timeline Stages: no more waves (design and plan awaiting owner review, October 5, 2026)
-
-Owner request: remove waves; each map defines a number of enemies that fill the stage one after another, with WoR-like counts and
-timings; the enemy count replaces the wave counter in the UI; clean the waves out of the files. Design and decision per wave-bound
-feature: **[Timeline Stages: no more waves](docs/superpowers/specs/2026-10-05-timeline-stages-design.md)**; 13 tasks:
-**[Timeline Stages Implementation Plan](docs/superpowers/plans/2026-10-05-timeline-stages-plan.md)**. This replaces phases 3 to 5 of Campaign
-Encounter Pacing. It must start after the economy and hero-upgrade removal of the parallel agent has been committed (plan Task 0).
 
 ### Open work after the board rewrite (October 4, 2026)
 
@@ -220,7 +185,7 @@ owner's PixelLab pipeline needs; behavior and tuning data can be built against p
 sprites and swapped when the art lands. Theme: raiders and beasts of a frozen coast —
 visually pale hides, hoarfrost armor, breath clouds; mechanically they play with Chill,
 Freeze and slick speed (statuses already exist: Chill, Wet, Freeze via `tuning.statuses`).
-Six kinds, matched to the existing roster's roles so wave composition stays familiar:
+Six kinds, matched to the existing roster's roles so stage composition stays familiar:
 
 | ID | Role (existing analog) | Behavior spec | Stat direction |
 |---|---|---|---|
@@ -234,7 +199,7 @@ Six kinds, matched to the existing roster's roles so wave composition stays fami
 Art brief per kind: same conventions as the boss brief (square canvas, three-quarter
 top-down, facing right, readable at 96 px, silhouette first, pale-blue accents reserved for
 tells). Pipeline: owner approves text → PixelLab concept images → `build-td-enemy-sprites.mjs`
-runtime versions (`fjord-<kind>-v1.webp`) → tuning entries + wave generation allow per-map
+runtime versions (`fjord-<kind>-v1.webp`) → tuning entries + timelines allow per-map
 enemy pools (the map decides whether fjord kinds replace or mix with the base roster — first
 fjord map replaces, no mixing). New sim surface: slick-trail aura and the draugr chill
 burst; everything else reuses existing systems. Tests: extend `test-td-sim.mjs` with slick
@@ -278,7 +243,7 @@ Balance runs, tuning and checks with the simulation scripts.
 
 | # | Step | Owner or agent | Needs | Size |
 |---|---|---|---|---|
-| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, wave interest, Heroic difficulty and seals, battle gold income now that it buys only deploys and relocations; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
+| R12 | Balance pass: global stats in Free Play, Expedition and Daily Trial (maybe enemy health by squad Might, ideas D4), pantheon bond values, Divine Intervention charge and damage, Heroic difficulty and seals, placement income now that it buys only deploys and relocations; then retune campaign `hpScale` with `scripts/td-board-tune.mjs` (targets 0.9 / 0.65 / 0.5 / 0.35) | Agent, owner approves | - | L |
 | R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
 | R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
 
@@ -286,8 +251,8 @@ Balance runs, tuning and checks with the simulation scripts.
 (`mightEnemyScale` in `campaign.js`; strongest 7 pool heroes' Might vs the same heroes un-upgraded, raised to
 `heroMight.enemyHpExponent` 0.6, capped at `enemyHpCap` 4; Campaign and Daily Trial untouched). Example: starters at level
 30 are x2.04 Might and x1.53 enemy health. Owner knobs live in `tdCampaign.json` `heroMight`. Remaining R12 steps, in
-order: (2) check Free Play / Expedition win rates with `td:sweep` upgraded-roster cases, (3) Divine Intervention charge and
-damage, (4) wave interest and battle gold income, (5) Heroic difficulty and seals, (6) pantheon bond values, (7)
+order: (2) check Free Play / Expedition win rates with the bot (`td:pacing`, upgraded-roster cases), (3) Divine Intervention charge and
+damage, (4) placement income, (5) Heroic difficulty and seals, (6) pantheon bond values, (7)
 campaign `hpScale` with `td-board-tune.mjs` (bot-only; the bot underrates the owner, see above), then R7 and R8.
 
 Owner directions recorded October 2:
@@ -299,8 +264,7 @@ The "1-1: too hard" test failure is gone: `test-td-campaign` now only notes stag
 
 Backlog from the ideas document, not scheduled: A1 stage goals, A2 stage
 rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route
-map, boss rush, hero mastery. Early call stays out (it needs overlapping waves; wave interest
-covers the economy lever).
+map, boss rush, hero mastery. Early call is dropped (a timeline has no waves to call early).
 
 ### Doc drift (audit)
 
@@ -319,11 +283,10 @@ covers the economy lever).
 ```
 npm run test:tower-defense      # headless combat/upgrade/virtue checks
 npm run test:td-balance         # 5-squad balance harness
-npm run td:sweep                # difficulty sweep (enemy HP steps x squads x maps)
 npm run td:classes              # class identity report (M6 criteria: matrix, class removal, one-class squads)
 npm run td:pacing               # audit step 3: class removal, maps, campaign minutes, seals (2 bot policies)
 npm run td:wor-compare          # our enemy count / spawn pressure / load curve vs the WoR analysis CSV (shape only)
-npm run td:wave-variants        # fewer-enemies wave shapes: hpScale that keeps a 50% bot win rate
+npm run td:stage-lint           # pacing lint for every stage timeline (report only)
 npm run td:campaign-load        # deterministic Campaign HP/ATK/count/spawn-pressure evidence; optional --chapter / --csv
 npm run td:layout -- --map=<id> # tile layout A/B: committed vs working tdMaps.json (Free Play + campaign stages)
 node scripts/td-audio-levels.mjs                                   # hero sound gains -> src/data/tdAudioLevels.json (needs ffmpeg)
