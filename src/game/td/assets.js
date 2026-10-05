@@ -46,7 +46,7 @@ export const HERO_FIGURES = {
   heimdall: "heimdall-v1", gaia: "gaia-v1", aegir: "aegir-v1", nott: "nott-v1", vidar: "vidar-v1",
   plutus: "plutus-v1", harmonia: "harmonia-v1", skadi: "skadi-v1", atalanta: "atalanta-v1", stheno: "stheno-v1",
   odin: "odin-v1", helios: "helios-v1", hephaestus: "hephaestus-v1", hecate: "hecate-v1", thanatos: "thanatos-v1",
-  atlas: "atlas-v1",
+  atlas: "atlas-v1", isis: "isis-v1",
   "recruit-bram": "recruit-tank-v1", "recruit-tilda": "recruit-tank-v1",
   "recruit-kellan": "recruit-warrior-v1", "recruit-sable": "recruit-warrior-v1",
   "recruit-ash": "recruit-assassin-v1", "recruit-nyra": "recruit-assassin-v1",
