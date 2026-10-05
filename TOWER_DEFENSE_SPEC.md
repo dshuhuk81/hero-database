@@ -59,10 +59,10 @@ own with the same number of tiles. Placing or selecting a hero lights its patter
 up green. Where a hero stands therefore decides which part of the road it covers, and two
 neighbouring tiles can cover very different ground.
 
-Waves bring **fewer, stronger enemies**: the authored waves are converted at run time to a
-fifth of the enemies with five times the health and gold, two and a half times the attack,
-and one shown life lost per leak. Flyers, which ignore blockers, are converted more gently
-(two-fifths as many, 1.75 times the health, also one shown life per leak). Each enemy is
+A stage brings **fewer, stronger enemies**: timelines carry the final, small counts and each enemy
+is stronger than the old horde units (five times the health and gold, two and a half times the attack,
+and one shown life lost per leak). Flyers, which ignore blockers, are gentler (1.3 times the health,
+also one shown life per leak). Each enemy is
 readable and matters; area damage loses some of its value, which is why Mages carry a
 **focus** rule (splash that finds no neighbour hits the main target instead).
 
@@ -89,8 +89,7 @@ Invented tuning numbers are allowed and live only in TD files:
 | `src/data/gameBalance.tuning.json` | Hand-authored knobs: classes, enemies, bosses, run, modes, systems, and the `board` rules (section 6) |
 | `src/data/gameBalance.json` | Generated per-hero stats. `npm run build:game-balance` |
 | `src/data/tdMaps.json` | Battlefields (boards). Tiles written by `scripts/build-td-grid.mjs` |
-| `src/data/tdWaves.json` | 10 base waves (Free Play, Daily, Expedition) |
-| `src/data/tdCampaign.json` | Campaign chapters, stages (own waves), squad, hero levels, stars, evolution, rewards |
+| `src/data/tdCampaign.json` | Campaign chapters, stages (own timelines), squad, hero levels, stars, evolution, rewards |
 | `src/data/tdSummon.json` | Summon banner, rarity weights, dust |
 | `src/data/tdEnvironments.json` | Chapter environments: art direction and one gameplay rule each |
 | `src/data/blessingTree.json` | Divine Blessings tree (Favor trunk, Insight class branches) |
@@ -135,9 +134,12 @@ Hard rules:
 
 | Module | Responsibility |
 |---|---|
-| `sim.js` | The battle: fixed-step simulation, targeting, damage, blocking, ultimates, waves, board rules |
+| `sim.js` | The battle: fixed-step simulation, targeting, damage, blocking, ultimates, the stage timeline, board rules |
 | `board.js` | Board helpers: cells, named patterns, reach steps, pattern radius, pattern grid SVG |
-| `waves.js` | Run lengths, endless wave generation |
+| `timeline.js` | Stage timelines: expansion into a spawn queue, totals, validation |
+| `timeline-targets.js` | Per-chapter enemy, group and spawn-window targets from the WoR table |
+| `stage-for-map.js` | A map's own timeline or the one of its campaign stage (Free Play, Daily, Expedition) |
+| `stage-lint.js` | Pacing lint for timelines (`npm run td:stage-lint`) |
 | `lanes.js` | Lanes of a map (one path or several) |
 | `grid.js` | Tiles of a map (`buildGrid`), bot tile ranking (`rankedTiles`) |
 | `map-generator-board.js` | `board-v1` generator and layout uniqueness (section 7) |
@@ -280,7 +282,7 @@ The full decision history and rollout boundary are in
   (32 strips, up to 0.34 black), level badges shrink to 0.72 on tilted boards and hero ground
   shadows are larger and darker (`heroScale` 1.15 to 1.3);
 - ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
-  behind units; spawn labels hide during active waves;
+  behind units; spawn labels hide while a stage runs;
 - taps are inverse-mapped through the visible tilt and checked in that plane, including the edge
   halo on 6x3, 8x4 and 9x5 boards;
 - All 14 current themes use their own authored `*-terrain-wide-v1.png` panoramas behind the
@@ -401,12 +403,12 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
 - **Synergy:** each `synergies` tag shared by 2+ deployed heroes within 250 px gives +8%
   attack, capped at +24%.
 - **Divine Interventions** (`tuning.interventions`, `page/powers.ts`): two player powers in
-  the bottom bar. Each charges during waves (1 point per second plus 1 per kill) and is ready
+  the bottom bar. Each charges during the stage (1 point per second plus 1 per kill) and is ready
   at its `charge` (Thunderfall 45, Shield 90); casting spends it all. **Thunderfall**
   (unlocked by clearing 1-3): arm the button, tap the map; 0.8 s later a bolt hits the cells
   around the spot (`nearPoint`, 90 px: a 3 x 3 block on boards) for 35% of each enemy's max
   health as true damage (8% for bosses; shields absorb first). **Shield of the Crossing**
-  (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), once per wave.
+  (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), then a 60 s recovery (`cooldownSeconds`).
   Available in Free Play, Campaign and Expedition, not in the Daily Trial (`session.ts`
   passes the unlocked list as `interventions`). Upgrades sit on trunk row 4 of the blessing
   tree (needs 32 trunk points; R5): Storm Caller (`odin_tempest`, Thunderfall charges 8% faster
@@ -436,17 +438,17 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   campaign data show level 1), the relocation preview, Relocate with its cost (2/3 width) and
   Sell (1/3). Relocate closes the panel and highlights the empty tiles of the hero's type
   (`state.relocateEntityId`, `game.uiDeploySlot`); the next compatible tile moves the hero, an
-  invalid tile keeps the mode, and tapping the hero again, Escape, an empty map tap, the wave
+  invalid tile keeps the mode, and tapping the hero again, Escape, an empty map tap, the stage
   start or the run end cancel it. Deck and board badges show the collection level.
-- **Boss warnings** (`page/hud.ts`): "Face <boss>" and "<boss> has entered" follow the run's
-  wave table.
+- **Boss warnings** (`page/hud.ts`): "<boss> has entered <map>" and the boss nameplate appear when the boss
+  group spawns.
 
 Hero-specific rules worth knowing when touching their kits: Boreas `ice_shockwave` (140% per
 enemy around him, 10% freeze chance), Gaia `rooted_sanctuary` (heals allies in reach for 30% of
 her max health and wards them for 30% less damage over 8 s), Atalanta `burning_volley` (burning
 splash; awakened rapid fire). Details in `TOWER_DEFENSE_HERO_SKILLS.md` and the archived spec.
 
-## 8. Enemies, bosses and waves
+## 8. Enemies, bosses and the stage timeline
 
 ### Enemies
 
@@ -461,29 +463,24 @@ Kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`, `shield
   that many quick hits break; menders heal nearby enemies; broodcallers summon imps; hexers
   resist magic and hex the nearest hero.
 
-### Fewer, stronger enemies (`tuning.board.waveShape`)
+### Fewer, stronger enemies (`tuning.board.enemyShape`)
 
-On boards every authored wave is converted when it starts (`game.waveShape(kind)`,
-`game.shapedGroup(kind, count)`):
+Timelines carry the final counts; `game.enemyShape(kind)` gives each spawned enemy the strength of the horde
+units it replaces:
 
-- A non-boss group normally sends `round(count x 0.2)` enemies (at least one), each with 5x
-  health, 5x gold, 2.5x attack and 5 lives lost on a leak; spawn gaps are 2.5x longer.
-- Grunt and runner groups send `round(count x 0.4)` enemies with 2.5x health and gold and
-  1.25x attack. The extra bodies give Warrior cleave and Assassin interception enough targets;
-  each leak still costs 5 lives.
-- Flyers use their own values: `round(count x 0.4)`, 1.75x health, normal attack, 2.5x gold,
-  5 lives lost on a leak (leak damage is rounded to whole lives).
+- A normal group enemy has 5x health, 5x gold, 2.5x attack and loses 5 lives on a leak (`power` 5).
+- Grunts and runners carry 2.5x health and gold and 1.25x attack (5 lives per leak): more, smaller bodies give
+  Warrior cleave and Assassin interception enough targets.
+- Flyers use their own values: 1.3x health, normal attack, 2.5x gold, 5 lives lost on a leak (leak damage is
+  rounded to whole lives).
 - **Shown lives:** the battle keeps its internal lives; the UI shows them in units of
   `tuning.board.lifeUnit` (5) via `shownLives()` in `board.js`, so a regular leak costs one
   shown life and the run ends when the shown count reaches 0. Bosses and their children keep
   their own leak damage and can cost a fraction of a shown life.
-- A group still sends at least one enemy through every gate; when that adds enemies, each
-  carries a matching share of the group's strength (`split`, applied as a stat scale).
-- Bosses and summoned children (imps, Lilith's brood) are never converted.
-- The wave preview and the HUD show the converted counts.
+- Bosses and summoned children (imps, Lilith's brood) are never shaped.
+- The stage forecast and the HUD show the timeline's real counts.
 
-Values live in data, so a map can override them in its `rules`. The report
-`npm run td:wave-shape` compares any shape with unconverted waves on classic maps.
+Values live in data, so a map can override them in its `rules`.
 
 ### Bosses
 
@@ -495,24 +492,41 @@ Values live in data, so a map can override them in its `rules`. The report
   below 1 HP for 8 s at 8% health). Numbers in `tuning.bosses.ochenta`; first guesses.
 - TD-original bosses prepared without rules yet: `lerna`, `kraghorn`, `vorruk` (art and
   sheets exist; they fight as the plain boss). Concepts: `TOWER_DEFENSE_BOSS_CONCEPTS.md`.
-- The boss comes last: it spawns only when no regular enemy of the wave is left.
+- The boss closes the stage: its group waits until no regular enemy is left, or `timeline.bossWaitMs` (30 s) after its scheduled time.
 - Each map names its boss; a campaign stage can replace it with `"boss": "<id>"`.
 - Adding a boss: still and animation sheet on R2, name in `tdBosses.json`, placement on a
   stage or map, optional `tuning.bosses[id]` rules plus sim code and glossary text, then
-  `npm run test:tower-defense`, `npm run td:sweep` and a look in the browser.
+  `npm run test:tower-defense` and a look in the browser.
 
-### Waves and run lengths
+### The stage timeline (no waves)
 
-- Base waves (`tdWaves.json`, Free Play / Daily / Expedition): 1-2 grunt, 3 +runner, 4 flyer,
-  5 brute/mender/runner, 6 shieldbearer/archer, 7 runner/hexer/brute, 8 flyer/broodcaller/
-  archer, 9 brute/mender/shieldbearer/runner, 10 boss and escort.
-- Campaign stages author their own waves in `tdCampaign.json`.
-- Run lengths (`waves.js`): `classic` 10 waves, `long` 20, `endless` (a boss every 5 waves,
-  enemy health and attack compound past wave 20).
-- Difficulty tiers (finite modes): Normal, Heroic (enemy health x2, attack x1.3, Favor x1.3),
-  Mythic (x3.2, x1.6, x1.6). Endless stays Normal.
-- Endless mutators: every 10 waves pick 1 of 3 (fortified, haste, warded, horde, ironclad,
-  elites), each raising Favor.
+There are no waves. A stage, a map's default encounter (Free Play, Daily Trial) and an Expedition stage each carry one
+**timeline** of spawn groups, like Watcher of Realms' `StageWave` rows (`src/game/td/timeline.js`):
+
+```json
+"timeline": [
+  { "startMs": 3000,  "kind": "grunt", "count": 2, "repeat": 3, "everyMs": 4000 },
+  { "startMs": 21000, "kind": "flyer", "count": 2 },
+  { "startMs": 40000, "kind": "boss",  "count": 1 }
+]
+```
+
+- `count` enemies spawn at `startMs`, one every `timeline.spacingMs` (700 ms), alternating between the gates across
+  the whole timeline; `repeat` repeats the group every `everyMs`. The stage total is the sum of `count x repeat`.
+- The stage starts when the player presses Start (`sim.start()`), runs on simulation time (pause, speed and replays
+  stay exact), is won when everything has spawned and nothing is left, and lost when lives reach 0.
+- Campaign stages keep their timeline in `tdCampaign.json`; every other map in `tdMaps.json` (`timeline`) or through
+  its campaign stage (`timelineForMap`). Free Play plays that timeline once; there are no run lengths and no Endless.
+- Targets follow the WoR chapter table (`tuning.timeline.chapterTargets`: about 11 enemies and 53 s in chapter 1, up
+  to 38 enemies, 29 groups and 234 s later), ramping 0.8x to 1.2x inside a chapter. `npm run td:stage-lint` checks
+  every stage against them; `npm run td:wor-compare` compares the shape with the WoR analysis.
+- Run blessings (virtues and rare / epic boons) are offered at `run.offerCount` (5) evenly spaced defeat milestones
+  (enemies killed or through the gates); the stage waits while an offer is open and it can be skipped.
+- Environment phase rules alternate every `timeline.phaseSeconds` (20 s): odd phases, even phases.
+- Difficulty tiers: Normal, Heroic (enemy health x2, attack x1.3, Favor x1.3),
+  Mythic (x3.2, x1.6, x1.6).
+- Mutators (fortified, haste, warded, horde, ironclad, elites) are preset in the Daily Trial and active from the start;
+  each raises Favor in proportion to the share of the stage defeated.
 - Map and stage health: a map's optional `enemyHp` scales enemy health in open modes; a
   campaign stage's `hpScale` or an Expedition stage's scale replaces it.
 - Collection health (R12): in Free Play and Expedition, enemy health is also multiplied by `mightEnemyScale` (`campaign.js`):
@@ -530,25 +544,24 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 ## 9. Battle economy
 
 - **Placement points replace in-battle gold (October 5, 2026).** There is no gold in a run:
-  no kill rewards, wave-clear bonus or interest. A run starts with `run.startingPlacement` (30)
-  points and gains `run.placementPerSecond` (1) per second of battle time (waves running; the
-  counter is paused between waves). Gold only exists outside the battle, for hero levels and stars.
+  no kill rewards, clear bonus or interest. A run starts with `run.startingPlacement` (30)
+  points and gains `run.placementPerSecond` (1) per second of battle time (while the stage runs). Gold only exists outside the battle, for hero levels and stars.
   `sim.placement` is the counter; `addPlacement()` pays extra points and tracks
-  `totalPlacementEarned` / `waveStats.placementEarned`; `totalPlacementSpent` tracks spending.
+  `totalPlacementEarned` / `stageStats.placementEarned`; `totalPlacementSpent` tracks spending.
 - Free Play run: 25 lives (5 shown), deploy cap 7. Each hero has a placement cost (`cost` in
   `gameBalance.json`, 11 for the cheapest recruits up to 25 for the strongest; tuned by hand,
-  `build-game-balance.mjs` keeps an existing cost). Other sources of placement: a quest per
-  wave (`quests.placementBase` 4 + `placementPerWave`), the Soul Reaper boon (`placement` 3 per
+  `build-game-balance.mjs` keeps an existing cost). Other sources of placement: the Soul Reaper boon (`placement` 3 per
   10 kills), awakened Plutus Fortune Shower (+3), the Placement shard (`shards.placement` 6
-  starting points), Favor nodes (`startingPlacement`, `placementRate`, `clearPlacement`) and the
+  starting points), Favor nodes (`startingPlacement`, `placementRate`, `offerPlacement`: paid with every blessing offer) and the
   Necropolis / Autumn environments (`placementRate` x1.2 / x1.15).
 - Placement points buy two things:
   - **Deploy** a hero for its placement cost (`sim.deployCost()`): the hero's cost minus the
     global Master Smith discount (3% per level) and the class Swift Muster discount (10%),
     added together, capped at 50%, minimum 1. A fallen hero is redeployed the same way
     (`blocking.redeployCostFactor`).
-  - **Relocate** a deployed hero between waves (`sim.relocationInfo()` / `relocate()`): free by
-    default (`run.relocationCost` 0; a share of the deploy cost if set), minus the class Divine
+  - **Relocate** a deployed hero at any time (`sim.relocationInfo()` / `relocate()`): free by
+    default (`run.relocationCost` 0; a share of the deploy cost if set), then `run.relocationCooldownSeconds` (8) before
+    that hero can move again, minus the class Divine
     Rite discount. It must end on an empty tile of the hero's slot type. The hero keeps its entity
     id, health, ultimate charge and cooldowns. `game.relocations` counts moves for the Hold
     Position challenge.
@@ -557,7 +570,7 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 - No battle ranks, focus, class paths, Awakening or training. A placed hero uses its
   collection stats (`collectionHeroes()`), times run modifiers (virtues, Favor hero health,
   class Apotheosis +15% attack and health, Expedition veterans +10%).
-- Run boons (rare / epic) and virtue blessings are offered between waves; virtue pairs grant
+- Run boons (rare / epic) and virtue blessings are offered at defeat milestones; virtue pairs grant
   extra effects; shards give a next-run boost.
 
 ## 10. Battlefields (`tdMaps.json`)
@@ -646,12 +659,12 @@ cell width, so any theme takes any board. Chapters 4-13 each have an environment
 | Frostbound | Enemies 12% slower; heroes attack 8% slower except on shrine tiles |
 | Ashen Forge | Road heroes +15% damage, -20% healing received |
 | Stormpeak | Flyers 20% slower; platform heroes reach one step less unless on high ground |
-| Tidal Ruins | Enemies 15% slower on odd waves, 10% faster on even waves |
+| Tidal Ruins | Enemies 15% slower for 20 s, then 10% faster for 20 s, repeating |
 | Mycelium Hollow | Heroes +25% healing received; enemies +10% health |
 | Crystal Vault | Magical heroes +15% damage; physical heroes +10% attack speed |
 | Haunted Necropolis | Placement regrows 20% faster; heroes -15% healing received |
 | Autumn Sanctuary | Placement regrows 15% faster; road heroes charge ultimates 15% faster |
-| Celestial Observatory | Ultimates charge 20% faster on odd waves; heroes attack 10% faster on even waves |
+| Celestial Observatory | Ultimates charge 20% faster for 20 s, then heroes attack 10% faster for 20 s, repeating |
 | Clockwork Citadel | Heroes attack 15% faster; enemies move 10% faster |
 
 ### Classic maps and legacy generators
@@ -667,11 +680,11 @@ geometry. No game mode uses classic maps.
 
 | Mode | Rules | Source |
 |---|---|---|
-| Free Play | Any Free Play map, 10 / 20 waves or Endless, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (10 Gold + 5 Hero XP per cleared wave, up to 30 waves) | `sim.js`, `waves.js` |
+| Free Play | Any Free Play map plays its timeline once, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (2 Gold + 1 Hero XP per enemy defeated, up to 120) | `sim.js`, `timeline.js` |
 | Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply. **Heroic:** once a chapter is cleared, each of its stages can be played on the Heroic tier (2x enemy health, 1.3x attack); the first Heroic clear pays the stage's first-clear Divine Seals again (`heroic.sealShare` 1, at least `minSeals` 50), with no laurels, milestones or replay pay (`heroicUnlocked`, `heroicRewards`, save version 9 `heroic`) | `campaign.js`, `tdCampaign.json` |
-| Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal wave. Endless, Normal, no blessings or boosts; +15 Divine Seals for the goal | `daily.js` |
-| Expedition | Chain of 10-wave stages on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
-| Challenges | Optional per-map goals on won 10 / 20-wave runs; one-time Favor. The legacy `unrefined` id is Hold Position since R4: win without relocating a hero | `challenges.js` |
+| Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal: defeat 60% of the stage's enemies (`DAILY.goalShare`). One stage at Normal, no blessings or boosts; +15 Divine Seals for the goal | `daily.js` |
+| Expedition | Chain of stages (each plays its battlefield's timeline) on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
+| Challenges | Optional per-map goals on won Free Play runs; one-time Favor. Swift follows the map's own timeline (last spawn + 45 s). The legacy `unrefined` id is Hold Position since R4: win without relocating a hero | `challenges.js` |
 
 Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 
@@ -695,8 +708,8 @@ rate 90% on 1-1, 65% on other Chapter 1 stages, 50% on regular stages, 35% on fi
 `test-td-campaign.mjs` keeps every stage above a 20% floor.
 
 `npm run td:campaign-load` adds a deterministic evidence layer inspired by the external Watcher of
-Realms campaign analysis. It runs authored waves through the simulator's own shaping, gates,
-minimum spacing, environment modifiers, stage scaling and boss overrides, then reports effective
+Realms campaign analysis. It runs authored timelines through the simulator's own shaping, gates,
+spawn spacing, environment modifiers, stage scaling and boss overrides, then reports effective
 count, spawn pressure, HP, attack and resistance mix. `--chapter=<n>` filters the Markdown output;
 `--csv=<path>` writes the stable full table. Summoned children are named separately because their
 count depends on combat state. Review flags are not failures and the command never edits Campaign
@@ -714,7 +727,7 @@ home dock. Back returns home.
   sideways, scrolled to the next stage), the rating track on one line below, chapter tabs.
   Cleared cards fade with a green check, the next stage glows with a gold play badge, locked
   ones go grey. Tapping a stage opens a drawer: stage id and name, the board preview, about
-  text, facts (battlefield, waves, lives, boss, best), goals, first-clear and replay rewards,
+  text, facts (battlefield, enemies, lives, boss, best), goals, first-clear and replay rewards,
   recommended Might and the last squad's Might, and "Choose squad" / "Replay stage".
 - **Squad selection:** roster top (two rows of 50 x 75 art cards scrolling sideways, class
   icon, check when picked, "Lv N"), lineup bottom (6 slots of 84 x 84, gold cost under each;
@@ -804,8 +817,8 @@ stage the footer offers Retry, Next stage or Change squad, and Campaign.
 
 ### Meta progression
 
-- **Favor:** earned per wave, perfect wave, boss kill and lives left, scaled by tier and
-  mutators; spent on the Divine Blessings trunk. Allowed anytime; applies on the next run.
+- **Favor:** earned per stage (`favorEarn.perStage` x the share of enemies defeated), a perfect-run bonus, boss
+  kill and lives left, scaled by tier and mutators; spent on the Divine Blessings trunk. Allowed anytime; applies on the next run.
 - **Insight:** per-class currency for the class branches. The six Mythic `*_reach` nodes no
   longer raise range; they keep their ids and bought levels but give Iron Hide (Tank guard
   +2% per level), Keen Edge (Warrior crit +2%), Killer Instinct (Assassin crit +3%), Focused
@@ -814,7 +827,7 @@ stage the footer offers Retry, Next stage or Change squad, and Campaign.
   keep their ids too: `*_ascension` is Swift Muster (deploy 10% cheaper), `*_rite` Divine
   Rite (relocation 30% cheaper), `*_apotheosis` Apotheosis (+15% attack and health, always
   on); trunk `odin_dominion` Master Smith lowers deployment costs 3% per level.
-- **Virtues and run boons** between waves; **shards** for a next-run boost.
+- **Virtues and run boons** at defeat milestones; **shards** (a run that defeats half the stage) for a next-run boost.
 - **Hero collection:** see section 11.
 
 ### Persistence
@@ -854,7 +867,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 
 **New campaign stage or chapter**
 1. Generate the stage's own board (below); every stage has its own map.
-2. Stage in `tdCampaign.json`: `unlockAfter`, `mapId`, lives, `hpScale`, waves, rewards.
+2. Stage in `tdCampaign.json`: `unlockAfter`, `mapId`, lives, `hpScale`, `timeline`, rewards (check with `npm run td:stage-lint`).
 3. Tune `hpScale`: `node scripts/td-board-tune.mjs --chapters=<n>` and copy the values.
 4. `test-td-campaign.mjs` (floor 20%) and `npm run td:pacing -- --only=campaign`.
 
@@ -880,13 +893,13 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | Command | Covers |
 |---|---|
 | `npm run test:tower-defense` | Balance file check, UI helpers, favor, difficulty, skin, save, sim (board rules included), daily, challenges, expedition, campaign, summon, map generators |
-| `npm run test:td-balance` | Bot squads on every map; 20-wave and Endless checks; class matrix |
+| `npm run test:td-balance` | Bot squads on every map; class matrix |
 | `npm run td:board -- --size --gates --theme --count` | Unique board candidates as an HTML atlas |
 | `npm run td:board -- --current` / `--check` | Every board on one page / recipes regenerate and layouts are unique |
 | `node scripts/td-board-tune.mjs --chapters=1,2` | Campaign `hpScale` search against bot win-rate targets (JSON to stdout) |
-| `npm run td:campaign-load -- [--chapter=<n>] [--csv=<path>]` | Effective Campaign stage load from simulator wave shaping, gates, stats and spawn pressure; evidence only, no data writes |
+| `npm run td:campaign-load -- [--chapter=<n>] [--csv=<path>]` | Effective Campaign stage load from simulator enemy shaping, gates, stats and spawn pressure; evidence only, no data writes |
 | `node scripts/migrate-td-boards.mjs [--dry]` | The one-time migration of every map to boards (reference for publishing) |
-| `npm run td:wave-shape -- [--hp --attack --flyer --focus --kit]` | Wave shape experiments against unconverted waves |
+| `npm run td:stage-lint -- [--chapter=<n>] [--stage=<id>]` | Pacing lint: enemies, groups, spawn window and mix per stage against the WoR chapter table; report only |
 | `npm run td:sweep`, `td:classes`, `td:pacing`, `td:economy`, `td:upgrade-sweep`, `td:progression` | Difficulty, class, pacing, gold and summon reports |
 | `npm run td:maps` | Map geometry metrics and validation |
 | `npm run td:generate-map -- --check` | Legacy generators (classic maps) |
@@ -907,12 +920,12 @@ The order and dependencies of the open work live in
 [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) (steps R1-R11); this list names the gaps.
 
 - **Balance pass pending** for global stats in Free Play, Expedition and the Daily Trial,
-  pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
+  pantheon bonds, Divine Interventions and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
-- **Stage counter and forecast:** the stats row shows `Defeated x/total` for finite modes (`stageForecast()` in `sim.js`: the stage's
-  total after wave shaping, enemies killed or leaked, the next groups); a chip before the first wave gives the total and wave count, and
-  while a wave runs "incoming" chips list its next groups. Relocation between waves is free (`run.relocationCost` 0).
+- **Stage counter and forecast:** the stats row shows `Defeated x/total` (`stageForecast()` in `sim.js`: the timeline's total,
+  enemies killed or through the gates, the next groups with a ticking ETA); a chip before the start gives the total. There is no auto-start countdown and no Start-wave button: one Start
+  button begins the stage.
 - **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
