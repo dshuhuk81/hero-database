@@ -1397,6 +1397,78 @@
   },
   {
     "id": "proto-board",
+    "timeline": [
+      {
+        "startMs": 3000,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 11167,
+        "kind": "runner",
+        "count": 1
+      },
+      {
+        "startMs": 12667,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 19333,
+        "kind": "brute",
+        "count": 1
+      },
+      {
+        "startMs": 20833,
+        "kind": "mender",
+        "count": 1
+      },
+      {
+        "startMs": 22333,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 27500,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 29000,
+        "kind": "runner",
+        "count": 1
+      },
+      {
+        "startMs": 35667,
+        "kind": "brute",
+        "count": 1
+      },
+      {
+        "startMs": 37167,
+        "kind": "shieldbearer",
+        "count": 1
+      },
+      {
+        "startMs": 38667,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 43833,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 45333,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 54000,
+        "kind": "boss",
+        "count": 1
+      }
+    ],
     "name": "Prototype Board",
     "prototype": true,
     "campaignOnly": true,
@@ -1466,6 +1538,78 @@
   },
   {
     "id": "proto-slabs",
+    "timeline": [
+      {
+        "startMs": 3000,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 11167,
+        "kind": "runner",
+        "count": 1
+      },
+      {
+        "startMs": 12667,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 19333,
+        "kind": "brute",
+        "count": 1
+      },
+      {
+        "startMs": 20833,
+        "kind": "mender",
+        "count": 1
+      },
+      {
+        "startMs": 22333,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 27500,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 29000,
+        "kind": "runner",
+        "count": 1
+      },
+      {
+        "startMs": 35667,
+        "kind": "brute",
+        "count": 1
+      },
+      {
+        "startMs": 37167,
+        "kind": "shieldbearer",
+        "count": 1
+      },
+      {
+        "startMs": 38667,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 43833,
+        "kind": "grunt",
+        "count": 1
+      },
+      {
+        "startMs": 45333,
+        "kind": "flyer",
+        "count": 1
+      },
+      {
+        "startMs": 54000,
+        "kind": "boss",
+        "count": 1
+      }
+    ],
     "boss": "ochenta",
     "name": "Prototype Slabs",
     "theme": "jungle",

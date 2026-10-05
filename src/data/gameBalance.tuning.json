@@ -696,6 +696,23 @@
       }
     }
   ],
+  "timeline": {
+    "spacingMs": 700,
+    "bossWaitMs": 30000,
+    "chapterTargets": [
+      { "chapter": 1, "enemies": 11, "groups": 9, "lastSpawnS": 53 },
+      { "chapter": 2, "enemies": 25, "groups": 15, "lastSpawnS": 97 },
+      { "chapter": 3, "enemies": 27, "groups": 15, "lastSpawnS": 138 },
+      { "chapter": 4, "enemies": 32, "groups": 22, "lastSpawnS": 155 },
+      { "chapter": 5, "enemies": 32, "groups": 21, "lastSpawnS": 150 },
+      { "chapter": 6, "enemies": 32, "groups": 18, "lastSpawnS": 167 },
+      { "chapter": 7, "enemies": 37, "groups": 18, "lastSpawnS": 178 },
+      { "chapter": 8, "enemies": 40, "groups": 19, "lastSpawnS": 200 },
+      { "chapter": 9, "enemies": 22, "groups": 16, "lastSpawnS": 220 },
+      { "chapter": 10, "enemies": 30, "groups": 23, "lastSpawnS": 218 },
+      { "chapter": 11, "enemies": 38, "groups": 29, "lastSpawnS": 234 }
+    ]
+  },
   "board": {
     "waveShape": {
       "enabled": true,
