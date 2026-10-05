@@ -13714,26 +13714,55 @@ button .td-cur {
     top: calc(var(--td-bleed-top) + var(--space-1));
   }
 
+  /* Map identity and environment rules are supporting information, not a title card. Keep the
+     whole item on one restrained line so it cannot cover the upper combat rows. */
+  .td-play[data-bleed] .td-stage-name {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    max-width: min(360px, 42%);
+    padding: 3px 9px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .td-play[data-bleed] .td-stage-name :is(small, strong) {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--td-fs-label);
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .td-play[data-bleed] .td-boss-health {
     top: calc(var(--td-bleed-top) + var(--space-1));
     width: clamp(210px, 32vw, 320px);
     padding-block: 4px;
   }
 
-  /* Notices belong to the battlefield, not the action dock. Keep them below the top HUD and
-     wave chips so deployment feedback cannot cover powers or the Start wave button. */
+  /* Notices belong to the battlefield, not the action dock. They use the upper-right free area
+     as a compact two-line toast instead of covering the centre of the board. */
   .td-play[data-bleed] .td-stage .td-notice,
   .td-play[data-bleed] .td-stage:is([data-hero-panel="push"], [data-hero-panel="right"], [data-hero-panel="left"]) .td-notice {
     top: calc(var(--td-bleed-top) + 36px);
-    right: auto;
+    right: var(--space-2);
     bottom: auto;
-    left: 50%;
-    max-width: min(520px, calc(100% - var(--space-6)));
-    transform: translate(-50%, -6px);
+    left: auto;
+    max-width: min(360px, 42%);
+    padding: 4px 10px;
+    overflow: hidden;
+    font-size: var(--td-fs-label);
+    line-height: 1.2;
+    text-align: left;
+    transform: translateY(-6px);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .td-play[data-bleed] .td-stage .td-notice.is-visible,
   .td-play[data-bleed] .td-stage:is([data-hero-panel="push"], [data-hero-panel="right"], [data-hero-panel="left"]) .td-notice.is-visible {
-    transform: translate(-50%, 0);
+    transform: none;
   }
 }

@@ -73,6 +73,37 @@ assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 25
 assert.equal(mapScene.mapBackdropFor?.({ art: "jungle-heart-v1" }), "/td/maps/jungle-terrain-wide-v1.png", "Jungle selects the panoramic backdrop");
 assert.equal(mapScene.mapBackdropFor?.({ art: "moonlit-sanctuary-v1" }), "/td/maps/moonlit-terrain-v1.png", "other themes fall back to their terrain");
 
+// R18 rollout: the first public review matrix covers both established board sizes and both
+// gate counts. All four maps use the shared renderer path; theme art may still use its fallback.
+{
+  const matrix = [
+    ["moonlit-pass", 8, 4, 1],
+    ["sunscar-ruins", 8, 4, 2],
+    ["sunscar-basin", 9, 5, 1],
+    ["jungle-flooded-court", 9, 5, 2],
+  ];
+  for (const [id, cols, rows, gates] of matrix) {
+    const map = maps.find((entry) => entry.id === id);
+    assert.ok(map, `${id} exists`);
+    assert.deepEqual([map.grid.board.cols, map.grid.board.rows, map.lanes?.length ?? 1], [cols, rows, gates], `${id} represents ${cols}x${rows}, ${gates} gate(s)`);
+    assert.ok(tuning.board.tilt.maps.includes(id), `${id} uses the shared R18 presentation`);
+  }
+}
+
+// Phones have no portrait gameplay layout. The modal orientation gate pauses the whole game and
+// asks coarse-pointer phones below 768 px to rotate; short-landscape overlays stay compact.
+{
+  const { readFileSync } = await import("node:fs");
+  const orient = readFileSync(new URL("../src/game/td/page/orient.ts", import.meta.url), "utf8");
+  const page = readFileSync(new URL("../src/components/pages/TowerDefensePage.astro", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/styles/td.css", import.meta.url), "utf8");
+  assert.match(orient, /orientation: portrait[^\n]*pointer: coarse[^\n]*max-width: 767px/, "portrait phone gate owns the unsupported orientation");
+  assert.ok(orient.includes('pause.add("orient")') && page.includes("Rotate your phone"), "portrait gate pauses and tells the player to rotate");
+  const compact = css.slice(css.indexOf("/* R18 prototype (D)"));
+  assert.match(compact, /\.td-play\[data-bleed\][\s\S]*?\.td-stage-name[\s\S]*?white-space:\s*nowrap/, "map rule chip is a compact single line");
+  assert.match(compact, /\.td-play\[data-bleed\][\s\S]*?\.td-stage \.td-notice[\s\S]*?max-width:\s*min\(360px/, "battle notices have a compact width cap");
+}
+
 // Board unit scale: bosses already have larger source art, so they can be tuned separately
 // without shrinking the regular enemies the owner sized by eye.
 assert.equal(typeof render.enemyRenderScale, "function", "renderer exposes enemy scale selection");
