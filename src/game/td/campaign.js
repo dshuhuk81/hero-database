@@ -71,6 +71,7 @@ export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() *
     allowedHeroes: squad,
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
+    atkScale: stage.atkScale ?? 1,
   };
 }
 

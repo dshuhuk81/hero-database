@@ -124,11 +124,12 @@ export function createCampaign(ctx: PageContext) {
     ? currencyAmount(reward.id, reward.amount, { plus: true })
     : `<span class="td-cur td-cur--hero">${heroById.get(reward.id)?.portrait ? `<img src="${heroById.get(reward.id).portrait}" alt="">` : ""}<b>${heroName(reward.id)}</b></span>`).join("")}</span>`;
 
-  // Squad Might vs. a stage's recommendation: a legible readout of the same hpScale
-  // knob the simulator uses to scale enemy HP, not a separate invented difficulty axis.
+  // Squad Might vs. the stage's enemy battle power: `recommendedMight` is the median Might of the
+  // squads the stage was balanced for (scripts/td-stage-power.mjs, run after td-board-tune); stages
+  // without it fall back to a rough hpScale readout.
   const avgHeroBase = data.heroes.reduce((sum: number, hero: any) => sum + hero.atk + hero.hp, 0) / data.heroes.length;
   const might = (hero: any) => heroMight(campaign, progress(), hero);
-  const recommendedPower = (stage: any) => Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
+  const recommendedPower = (stage: any) => stage.recommendedMight ?? Math.round(avgHeroBase * campaign.squadSize * (stage.hpScale ?? 1));
 
   const chaptersEl = q("[data-td-camp-chapters]");
   const drawerEl = q<HTMLDialogElement>("[data-td-camp-drawer]");
@@ -278,7 +279,7 @@ export function createCampaign(ctx: PageContext) {
         ${heroicUnlocked(campaign, p, stage) ? `<section><h3 class="td-label">Heroic</h3>
           <p class="td-camp-drawer-about">Enemies have ${data.tuning.tiers.heroic.enemyHp}x health and ${data.tuning.tiers.heroic.enemyAttack}x attack. Heroic clears do not count for the chapter rating; the first one pays Divine Seals.</p>
           ${heroic.length ? `<div class="td-camp-drawer-reward"><span>Heroic first clear</span>${rewardHtml(heroic)}</div>` : `<p class="td-camp-drawer-about">Heroic cleared${p.heroic?.[stage.id] ? ` (best ${livesShown(p.heroic[stage.id].bestLives)}/${livesShown(stage.lives)} lives)` : ""}.</p>`}</section>` : ""}
-        <section><h3 class="td-label">Recommended Might</h3>
+        <section><h3 class="td-label">Enemy battle power</h3>
           <p class="td-camp-drawer-power">${recommended.toLocaleString()}</p>
           ${last.length ? `<p class="td-camp-drawer-power-note ${lastPower >= recommended ? "is-strong" : "is-weak"}">Your last squad: ${lastPower.toLocaleString()}</p>` : ""}</section>
       </div>
@@ -316,9 +317,9 @@ export function createCampaign(ctx: PageContext) {
     if (selected.length) {
       const squadPower = selected.reduce((sum, hero) => sum + might(hero), 0);
       const recommended = recommendedPower(stage);
-      // Crossed swords + value; the recommendation is in the label and tooltip only.
-      powerEl.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 4l11 11M20 4L9 15M13 17l4 4M7 21l4-4M17 13l4 4M3 17l4-4"/></svg><span>${squadPower.toLocaleString()}</span>`;
-      powerEl.title = `Squad Might ${squadPower.toLocaleString()} / recommended ${recommended.toLocaleString()}`;
+      // Crossed swords + squad Might, then the enemy battle power it is measured against.
+      powerEl.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 4l11 11M20 4L9 15M13 17l4 4M7 21l4-4M17 13l4 4M3 17l4-4"/></svg><span>${squadPower.toLocaleString()}</span><span class="td-squad-power-enemy">Enemy ${recommended.toLocaleString()}</span>`;
+      powerEl.title = `Squad Might ${squadPower.toLocaleString()} / enemy battle power ${recommended.toLocaleString()}`;
       powerEl.setAttribute("aria-label", powerEl.title);
       powerEl.classList.toggle("is-strong", squadPower >= recommended);
       powerEl.classList.toggle("is-weak", squadPower < recommended);

@@ -60,6 +60,7 @@ export function stageLoad({ stage, map, tuning }) {
     seed: 1,
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
+    atkScale: stage.atkScale ?? 1,
   });
   if (!game.start()) {
     diagnostics.push("could not build the spawn queue");

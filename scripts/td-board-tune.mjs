@@ -31,6 +31,9 @@ const spendEvenly = (progress) => {
     progress = next;
   }
 };
+// Balance assumption: by chapter N the owned heroes have campaign.expectedStars[N - 1] Stars (copies come from
+// summons, which this tool does not simulate), so levels are no longer stuck at the 0-star cap of 10.
+const withExpectedStars = (progress, stage) => ({ ...progress, stars: Object.fromEntries(progress.owned.map((id) => [id, campaign.expectedStars?.[Number(stage.chapter) - 1] ?? 0])) });
 const stages = allStages(campaign);
 const lastOf = new Set(campaign.chapters.map((chapter) => chapter.stages.at(-1).id));
 // Chapter 1 is easy with the starters; from chapter 2 on levelling and new heroes have to carry the player.
@@ -45,7 +48,7 @@ const out = {};
 let progress = newCampaignProgress(campaign);
 for (const stage of stages) {
   if (!chapters.size || chapters.has(Number(stage.chapter))) {
-    const leveled = spendEvenly(progress);
+    const leveled = spendEvenly(withExpectedStars(progress, stage));
     const runHeroes = collectionHeroes(campaign, leveled, heroes);
     const map = maps.find((entry) => entry.id === stage.mapId);
     const squads = sample(combos(leveled.owned, Math.min(campaign.squadSize, leveled.owned.length)), SAMPLE);

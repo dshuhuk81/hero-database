@@ -10449,6 +10449,12 @@ button.td-squad-slot:hover .td-squad-slot-card {
   color: var(--accent-gold);
 }
 
+.td-squad-power-enemy {
+  margin-left: 6px;
+  color: var(--text-muted);
+  font-weight: var(--weight-regular, 400);
+}
+
 .td-squad-tile:focus-visible,
 .td-squad-slot:focus-visible .td-squad-slot-card,
 .td-camp-stage:focus-visible {

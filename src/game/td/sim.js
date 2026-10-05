@@ -96,7 +96,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -116,6 +116,8 @@ export class TowerDefenseGame {
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
     // (`enemyHp` in tdMaps.json, evens out map difficulty in Free Play and Daily).
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
+    // Enemy attack scale: a campaign stage's own `atkScale` (tdCampaign.json), 1 everywhere else.
+    this.atkScale = atkScale ?? 1;
     this.tuning = tuning;
     // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
     // tuned lives for an Expedition (carried lives can be lower), otherwise tuning.run.lives.
@@ -779,7 +781,7 @@ export class TowerDefenseGame {
     const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
     const favorSpeed = this.time < (this.tuning.timeline?.openingSeconds ?? 30) && this.favor.openingSpeedDebuff ? 1 - this.favor.openingSpeedDebuff : 1; // the opening of the stage
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed * this.environment("enemySpeed", null, kind);
-    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * this.tierAttack, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * this.tierAttack * this.atkScale, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     // Enemy shape: timeline enemies (not bosses, not summoned children) carry the
     // health, gold, attack and leak damage of the enemies the shape removed.
     const shape = this.enemyShape(kind);
