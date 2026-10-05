@@ -76,6 +76,14 @@ export function enemyRenderAlpha() {
   return 1;
 }
 
+// A boss's large display size must not stretch its eight-frame gait into a near-still
+// four-second loop. Use a shorter visual stride, still driven by real travel (and slows).
+export function advanceEnemyWalkPhase(phase, moved, size, kind) {
+  if (moved >= size) return phase; // spawn jumps / teleports are not steps
+  const strideSize = kind === "boss" ? Math.min(size, 32) : size;
+  return phase + moved * Math.PI / (strideSize * 0.45);
+}
+
 // Empty placement tiles are environmental affordances, not a permanent editor grid. They remain
 // quiet until a hero type is actively being placed; then valid tiles lead and the other type fades.
 export function slotVisualMode(deployingType, tileType) {
@@ -118,6 +126,19 @@ export function syncTiltBleed(playHost, enabled) {
 
 const DAMAGE_NUMBER_OFFSETS = [-14, 14, 0, -24, 24];
 export const damageNumberOffset = (stack) => DAMAGE_NUMBER_OFFSETS[stack % DAMAGE_NUMBER_OFFSETS.length];
+
+// Text rectangles use a bottom-centre anchor. Prefer the owner's position, then at most
+// three nearby vertical lanes; never turn a dense pack into a tall column across the HUD.
+export function placeDamageNumber(anchor, occupied) {
+  for (let lane = 0; lane < 4; lane++) {
+    const y = anchor.y - lane * (anchor.height + 4);
+    const overlaps = occupied.some((other) =>
+      Math.abs(anchor.x - other.x) < (anchor.width + other.width) / 2 + 4 &&
+      y > other.y - other.height - 4 && y - anchor.height < other.y + 4);
+    if (!overlaps) return { x: anchor.x, y };
+  }
+  return { x: anchor.x, y: anchor.y }; // preserve ownership when every local lane is full
+}
 
 export function shouldMergeDamageNumber(existing, effect) {
   if (!existing || existing.enemyId !== effect.enemyId) return false;
@@ -1509,7 +1530,7 @@ export async function createRenderer(canvas, game, options = {}) {
     a.t = t;
     const moved = Math.hypot(unit.x - a.x, unit.y - a.y);
     a.x = unit.x; a.y = unit.y;
-    if (moved < size) a.phase += moved * Math.PI / (size * 0.45); // a step per ~half a body width
+    a.phase = advanceEnemyWalkPhase(a.phase, moved, size, unit.kind);
     a.moving = moved > 0.02 ? Math.min(1, a.moving + 0.2) : Math.max(0, a.moving - 0.1);
     const clock = unit.attackClock ?? 0;
     if (clock > a.clock + 0.01) { a.atkAt = t; a.target = unit.heldBy ?? null; }
@@ -1523,7 +1544,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const held = (unit.petrifiedUntil ?? 0) > t || (unit.frozenUntil ?? 0) > t;
     if (c._sheet) {
       // Sheet kinds: the clips carry the motion, so only pick the frame (game time; the walk
-      // follows distance moved, one cycle per ~0.9 body widths). Held enemies keep their frame.
+      // follows distance moved, with shorter strides for large bosses). Held enemies keep their frame.
       const { anims, td } = c._sheet;
       const at = t - a.atkAt, ht = t - a.hitAt;
       const play = (clip, since) => anims[clip][Math.min(anims[clip].length - 1, Math.floor(since * td.fps))];
@@ -1758,12 +1779,16 @@ export async function createRenderer(canvas, game, options = {}) {
     text.anchor.set(0.5, 1);
     text.scale.y = 1 / tiltK; // R18: numbers stay upright
     const offsetX = damageNumberOffset(stack);
-    text.position.set(effect.x + offsetX, body.top - 3 - Math.min(stack, 3) * 4);
+    const offsetY = -3 - Math.min(stack, 3) * 4;
+    const anchor = { x: effect.x + offsetX, y: body.top + offsetY, width: text.width, height: text.height };
+    const position = placeDamageNumber(anchor, damageNumbers.map(({ text }) => ({ x: text.x, y: text.y, width: text.width, height: text.height })));
+    text.position.set(position.x, position.y);
     layerNumbers.addChild(text);
-    damageNumbers.push({ text, enemyId: effect.enemyId, y: text.y, offsetX, amount, dot: !!effect.dot, crit: !!effect.crit, shielded: !!effect.shielded, life: effect.life, maxLife: 0.75 });
+    damageNumbers.push({ text, enemyId: effect.enemyId, x: anchor.x, y: anchor.y, offsetX, offsetY, amount, dot: !!effect.dot, crit: !!effect.crit, shielded: !!effect.shielded, life: effect.life, maxLife: 0.75 });
   }
 
   function advanceDamageNumbers(dt) {
+    const occupied = [];
     for (let i = damageNumbers.length - 1; i >= 0; i--) {
       const popup = damageNumbers[i];
       popup.life -= dt;
@@ -1773,16 +1798,19 @@ export async function createRenderer(canvas, game, options = {}) {
         damageNumbers.splice(i, 1);
         continue;
       }
-      if (popup.dot) {
-        const enemy = game.enemies.find((unit) => unit.entityId === popup.enemyId);
-        if (enemy) {
-          const body = enemyBody(enemy);
-          popup.text.x = enemy.x + popup.offsetX;
-          popup.y = body.top - 3;
-        }
+      // All numbers follow their owner while it lives, not just DoT ticks. A dead unit's
+      // final hit keeps its last anchor until fading out.
+      const enemy = game.enemies.find((unit) => unit.entityId === popup.enemyId);
+      if (enemy) {
+        const body = enemyBody(enemy);
+        popup.x = enemy.x + popup.offsetX;
+        popup.y = body.top + popup.offsetY;
       }
       const progress = 1 - popup.life / popup.maxLife;
-      popup.text.y = popup.y - (reducedMotion ? 8 : 24) * progress;
+      const anchor = { x: popup.x, y: popup.y - (reducedMotion ? 8 : 24) * progress, width: popup.text.width, height: popup.text.height };
+      const position = placeDamageNumber(anchor, occupied);
+      popup.text.position.set(position.x, position.y);
+      occupied.push({ ...anchor, ...position });
       popup.text.alpha = Math.min(1, popup.life * 5) * Math.min(1, progress * 8 + 0.35);
     }
   }

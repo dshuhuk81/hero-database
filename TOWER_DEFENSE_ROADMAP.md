@@ -1,6 +1,6 @@
 # Tower Defense Roadmap
 
-Last updated: October 4, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
+Last updated: October 5, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
 
 Maps come from generators: `board-v1` for compact boards (`npm run td:board`, spec section 10)
 and the owner's map workflow ([docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)).
@@ -54,6 +54,13 @@ The named source and implementation log is **[Tower Defense — Tilted Board and
 Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPEC.md).
 
 #### To do — next sensible steps
+
+Latest device evidence and Lerna cadence change: **[Campaign Landscape Phone Review — October 5, 2026](docs/audits/2026-10-05-campaign-phone-review.md)**.
+The submitted title/preview and boss/buff collisions, long reaction toast and nearby damage-label
+overlaps have received shared UI fixes. The three-size browser fixture matrix passes; dense
+live-game acceptance remains with the owner. Lerna's walk files load, but their original frames
+lack visibly articulated leg steps. The shorter cadence is not a gait-asset fix: a new walk clip
+is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**, without balance changes.
 
 - [ ] **P0 — Real-device acceptance pass:** verify the current build on a landscape phone with
   several simultaneous enemies and a boss. Check bar ownership, damage-number readability,

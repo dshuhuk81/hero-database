@@ -6,6 +6,17 @@ import * as render from "../src/game/td/render.js";
 import { enemySheetUrl } from "../src/game/td/assets.js";
 import * as mapScene from "../src/game/td/map-scene.js";
 const { canvasPoint, nearestSlot } = render;
+// Large, slow bosses must visibly cycle their walk poses instead of holding nearly the same
+// frame for a whole second. Walking 20 world pixels is Lerna's unimpeded one-second travel.
+{
+  const phase = render.advanceEnemyWalkPhase;
+  const frames = new Set(Array.from({ length: 61 }, (_, tick) =>
+    Math.floor(phase(0, tick * 20 / 60, 96, "boss") / (2 * Math.PI) * 8) % 8));
+  assert.ok(frames.size >= 5, "Lerna shows at least five walk poses during one second of travel");
+  assert.equal(phase(1, 0, 96, "boss"), 1, "stationary or paused enemies do not advance their walk");
+  assert.equal(phase(1, 100, 96, "boss"), 1, "teleports do not advance the walk cycle");
+  assert.equal(phase(0, 19.8, 44, "grunt"), Math.PI, "normal enemy stride is unchanged");
+}
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
@@ -17,6 +28,19 @@ assert.notEqual(render.combatBarStyle("enemy").healthColor, render.combatBarStyl
 assert.ok(render.combatBarStyle("hero").secondaryWidth < 1, "hero ultimate bar is narrower than health");
 assert.equal(render.combatBarStyle("boss").overhead, false, "boss health leaves the crowded battlefield");
 assert.deepEqual([0, 1, 2, 3, 4].map(render.damageNumberOffset), [-14, 14, 0, -24, 24], "damage numbers fan out around their target");
+// Adjacent enemies must not spawn identical overlapping damage labels. Placement is kept
+// close to the target, with limited vertical lanes instead of an unbounded tower of text.
+{
+  const place = render.placeDamageNumber;
+  const first = { x: 100, y: 150, width: 32, height: 16 };
+  const second = place({ x: 110, y: 150, width: 32, height: 16 }, [first]);
+  assert.ok(Math.abs(second.x - first.x) >= 36 || Math.abs(second.y - first.y) >= 20, "neighbouring damage labels have a readable gap");
+  const empty = place({ x: 110, y: 150, width: 32, height: 16 }, []);
+  assert.deepEqual(empty, { x: 110, y: 150 }, "an isolated number stays over its target");
+  const crowded = Array.from({ length: 30 }, (_, i) => ({ x: 110, y: 150 - i * 20, width: 500, height: 16 }));
+  const bounded = place({ x: 110, y: 150, width: 32, height: 16 }, crowded);
+  assert.ok(Math.abs(bounded.y - 150) <= 60 && Math.abs(bounded.x - 110) <= 16, "crowding cannot push a number far away from its owner");
+}
 assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.65, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), true, "rapid normal hits merge");
 assert.equal(render.shouldMergeDamageNumber({ enemyId: 7, dot: false, crit: false, shielded: false, life: 0.4, maxLife: 0.75 }, { enemyId: 7, dot: false, crit: false, shielded: false }), false, "older hits remain separate");
 assert.deepEqual(render.visibleStatusPips(["wet", "burn", "poison", "chill"]), ["wet", "burn", "poison"], "at most three status pips are shown");

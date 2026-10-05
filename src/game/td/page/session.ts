@@ -231,7 +231,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     // First time each reaction fires in a run: name it so players learn the combination.
     if (type === "reaction" && game.lastReaction) {
       const info = (REACTION_INFO as Record<string, { name: string; needs: string; text: string }>)[game.lastReaction.name];
-      if (info) ctx.notice(`Reaction discovered: ${info.name} (${info.needs}). ${info.text}`);
+      // The glossary owns requirements and explanations; combat only announces the discovery.
+      if (info) ctx.notice(`Reaction discovered: ${info.name}.`);
     }
     if (type === "quest" && game.quest?.status === "failed" && game.lives > 0) ctx.notice(`Quest failed: ${ctx.actions.questName(game.quest)}.`);
     if (type === "finish") deps.results.finishRun();

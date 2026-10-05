@@ -1,6 +1,6 @@
 # Tower Defense — Tilted Board and Landscape HUD (R18)
 
-Drafted October 2, 2026; implementation record updated October 4, 2026 after the owner's
+Drafted October 2, 2026; implementation record updated October 5, 2026 after the owner's
 real-device reviews and comparison material from another mobile tower-defense game ("Watcher of
 Realms" style).
 
@@ -226,6 +226,11 @@ That renderer path now applies to every Campaign stage by run context, including
 Free Play still requires explicit map membership. New Campaign layouts inherit the behavior and
 use per-map overrides only where geometry or art requires them. See the prioritized checklist in the
 [Tower Defense Roadmap](TOWER_DEFENSE_ROADMAP.md#to-do--next-sensible-steps).
+
+October 5 follow-up: shared landscape overlay collision fixes and target-following damage
+numbers are implemented. The original Lerna walk frames lack clear leg articulation; the cadence
+change alone does not solve that asset defect. Evidence, checks and remaining acceptance work:
+**[Campaign Landscape Phone Review — October 5, 2026](docs/audits/2026-10-05-campaign-phone-review.md)**.
 
 ## 1. Why it clips today
 

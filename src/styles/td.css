@@ -13710,8 +13710,9 @@ button .td-cur {
     white-space: nowrap;
   }
 
-  .td-play[data-bleed] :is(.td-stage-name, .td-wave-preview, .td-buffs) {
+  .td-play[data-bleed] .td-stage-name {
     top: calc(var(--td-bleed-top) + var(--space-1));
+    left: var(--space-2);
   }
 
   /* Map identity and environment rules are supporting information, not a title card. Keep the
@@ -13735,17 +13736,73 @@ button .td-cur {
     white-space: nowrap;
   }
 
+  .td-play[data-bleed] .td-stage-name small:first-child {
+    flex-shrink: 0; /* keep the stage number legible; truncate the title first */
+  }
+
+  .td-play[data-bleed] .td-stage-name[hidden] {
+    display: none;
+  }
+
+  /* Row one: title on the left, boss in the centre. Reserve the boss's actual width,
+     rather than letting long stage names grow underneath it. */
+  .td-play[data-bleed] .td-stage:has(.td-boss-health:not([hidden])) .td-stage-name {
+    box-sizing: border-box;
+    max-width: calc((100% - clamp(210px, 32vw, 320px)) / 2 - 16px);
+  }
+
   .td-play[data-bleed] .td-boss-health {
     top: calc(var(--td-bleed-top) + var(--space-1));
     width: clamp(210px, 32vw, 320px);
     padding-block: 4px;
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, auto) minmax(60px, 1fr) auto;
+  }
+
+  .td-play[data-bleed] .td-boss-health > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Row two: preview/quest left, buffs right. Keep both inside their own half and
+     allow horizontal scrolling instead of wrapping over the first combat row. */
+  .td-play[data-bleed] .td-wave-preview,
+  .td-play[data-bleed] .td-stage-name:not([hidden]) ~ .td-wave-preview,
+  .td-play[data-bleed] .td-buffs {
+    top: calc(var(--td-bleed-top) + 44px);
+    bottom: auto;
+    max-width: calc(50% - 12px);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    pointer-events: auto;
+    touch-action: pan-x;
+  }
+
+  .td-play[data-bleed] .td-wave-preview {
+    left: var(--space-2);
+  }
+
+  .td-play[data-bleed] .td-buffs {
+    right: var(--space-2);
+    justify-content: flex-start;
+  }
+
+  .td-play[data-bleed] :is(.td-wave-chip, .td-buff) {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .td-play[data-bleed] :is(.td-wave-preview, .td-buffs)::-webkit-scrollbar {
+    display: none;
   }
 
   /* Notices belong to the battlefield, not the action dock. They use the upper-right free area
      as a compact two-line toast instead of covering the centre of the board. */
   .td-play[data-bleed] .td-stage .td-notice,
   .td-play[data-bleed] .td-stage:is([data-hero-panel="push"], [data-hero-panel="right"], [data-hero-panel="left"]) .td-notice {
-    top: calc(var(--td-bleed-top) + 36px);
+    top: calc(var(--td-bleed-top) + var(--space-1));
     right: var(--space-2);
     bottom: auto;
     left: auto;
@@ -13759,6 +13816,11 @@ button .td-cur {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+
+  .td-play[data-bleed] .td-stage:has(.td-boss-health:not([hidden])) .td-notice {
+    box-sizing: border-box;
+    max-width: calc((100% - clamp(210px, 32vw, 320px)) / 2 - 16px);
   }
 
   .td-play[data-bleed] .td-stage .td-notice.is-visible,

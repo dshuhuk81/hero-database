@@ -268,6 +268,11 @@ The full decision history and rollout boundary are in
   continue after the player rotates to landscape;
 - map/environment labels are single-line chips and transient battle notices are compact two-line
   toasts at the upper right, leaving the upper centre available for combat and boss health;
+- landscape overlay row one reserves separate areas for stage identity, centred boss health
+  and notices; row two separates preview/quest chips from horizontally scrollable buffs;
+  reaction-discovery toasts name the reaction only, with full explanations in the glossary;
+- damage numbers follow their living target and avoid nearby labels using bounded vertical
+  lanes; very dense saturation may still overlap rather than detach a number from its owner;
 - unit bars, rings and status icons occupy a top graphics layer; heroes use green health plus a
   shorter purple ultimate bar, enemies use thin red health bars and bosses use a centred HUD bar;
 - ground heroes and enemies sort by foot position, flyers stay above them, and tall gate art stays
