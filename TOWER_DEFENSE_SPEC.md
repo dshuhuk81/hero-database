@@ -236,6 +236,9 @@ The road (`path` or `lanes`) runs through cell centres. A road cell is a tile un
 gate cell or the base cell. Enemies still walk the path in pixels; a hero's pattern is
 checked against the cell an enemy is in.
 
+### Watcher of Realms Reference Data
+`/Users/daschultheiss/hero-database/src/game/td/data-sammlung` contains all hero data gathered from Watch of Realms. This can be used to maybe add depth to our game system, or if we want to compare our hero data or enemy data with this game. There is a lot of information in there - so when we try to implmenent a new game mode or balance the game, we could look up data here first.
+
 ### Shared board rules
 
 `tuning.board` holds the rules every board uses; a map's own `rules` block can override single
