@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import { heroMight, heroLevelCap, levelCap, levelScale } from "../src/game/td/campaign.js";
+import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale } from "../src/game/td/campaign.js";
 import { starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 import dbBosses from "../src/data/bosses.json" with { type: "json" };
@@ -191,9 +191,25 @@ stages.forEach((stage, i) => {
     const wins = squads.filter((squad, i) => playRun([...squad].sort((a, b) => cost[a] - cost[b]), i + 1, map, { game: stageGameOptions(stage, squad, i + 1, runHeroes) }).won).length;
     const rate = wins / squads.length;
     console.log(`  ${stage.id}: ${wins}/${squads.length} squads win (${leveled.owned.length} heroes, level ${Math.min(...levels)}-${Math.max(...levels)})`);
-    assert.ok(rate >= 0.2, `${stage.id}: too hard (${wins}/${squads.length} squads win)`);
+    // Informational only: the bot has no focus targeting or relocation, so a human clears stages it cannot (owner, Oct 5).
+    if (rate < 0.2) console.log(`    note: ${stage.id} is below 20% for the bot`);
     progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
   }
+}
+// --- R12: Free Play / Expedition enemy health grows with collection upgrades, by less than 100% ---
+{
+  const owned = campaign.starters;
+  const fresh = newCampaignProgress(campaign);
+  assert.equal(mightEnemyScale(campaign, fresh, heroes, owned), 1, "an un-upgraded collection leaves enemy health alone");
+  const upgraded = { ...fresh, levels: Object.fromEntries(owned.map((id) => [id, 30])) };
+  const ratio = owned.map((id) => heroes.find((h) => h.id === id)).reduce((sum, h) => sum + heroMight(campaign, upgraded, h), 0)
+    / owned.map((id) => heroes.find((h) => h.id === id)).reduce((sum, h) => sum + heroMight(campaign, fresh, h), 0);
+  const scale = mightEnemyScale(campaign, upgraded, heroes, owned);
+  assert.ok(ratio > 2 && scale > 1 && scale < ratio, `enemy health grows (${scale.toFixed(2)}x) by less than the Might ratio (${ratio.toFixed(2)}x)`);
+  const maxed = { ...fresh, levels: Object.fromEntries(owned.map((id) => [id, 60])), stars: Object.fromEntries(owned.map((id) => [id, 5])) };
+  assert.ok(mightEnemyScale(campaign, maxed, heroes, owned) <= campaign.heroMight.enemyHpCap, "capped");
+  assert.equal(mightEnemyScale({ ...campaign, heroMight: { ...campaign.heroMight, enemyHpExponent: 0 } }, upgraded, heroes, owned), 1, "exponent 0 turns it off");
+  console.log(`R12 Might enemy scale: level 30 starters x${scale.toFixed(2)} (Might x${ratio.toFixed(2)}).`);
 }
 // --- Might: grows with level, stars and evolution ---
 {

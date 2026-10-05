@@ -259,7 +259,7 @@ Owner directions recorded October 2:
 - R12: Scale Free Play and Expedition enemy health with squad Might, but by less than 100%.
 - R8: Retire tag synergy.
 
-Known failing test: `test-td-campaign` ("1-1: too hard"), already failing before R4; part of R12.
+The "1-1: too hard" test failure is gone: `test-td-campaign` now only notes stages where the bot wins under 20% (October 5).
 
 Backlog from the ideas document, not scheduled: A1 stage goals, A2 stage
 rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route

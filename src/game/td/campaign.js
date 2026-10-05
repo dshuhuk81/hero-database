@@ -205,6 +205,23 @@ export function heroMight(campaign, progress, hero) {
   return Math.round((hero.atk * attackSkill + hero.hp * healthSkill) * levelScale(campaign, heroLevel(progress, hero.id)) * starScale(campaign, heroStars(progress, hero.id)) * evo);
 }
 
+// R12 (owner, October 2): Free Play and Expedition enemies grow with the collection's upgrades, but by less
+// than 100%. The ratio compares the strongest `count` pool heroes' Might now with the same heroes at level 1,
+// no stars, no evolution (the Might they would have un-upgraded); the enemy health multiplier is
+// ratio ^ heroMight.enemyHpExponent, capped at heroMight.enemyHpCap. 1 = no change.
+export function mightEnemyScale(campaign, progress, heroes, ids, count = 7) {
+  const exponent = campaign.heroMight?.enemyHpExponent ?? 0;
+  if (!(exponent > 0)) return 1;
+  const blank = newCampaignProgress(campaign);
+  const pool = heroes.filter((hero) => ids.includes(hero.id))
+    .map((hero) => ({ current: heroMight(campaign, progress, hero), base: heroMight(campaign, blank, hero) }))
+    .sort((a, b) => b.current - a.current).slice(0, count);
+  const base = pool.reduce((sum, entry) => sum + entry.base, 0);
+  if (!base) return 1;
+  const ratio = pool.reduce((sum, entry) => sum + entry.current, 0) / base;
+  return Math.min(campaign.heroMight?.enemyHpCap ?? 4, Math.max(1, ratio) ** exponent);
+}
+
 // What evolving would spend now: "copy" (the tier's required hero copies first), "dust"
 // (heroEvolution.dustPrice Seal Dust), or null.
 export function evolutionMaterial(campaign, progress, id) {

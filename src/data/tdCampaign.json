@@ -79,7 +79,9 @@
     "reachSteps": { "3": 1, "5": 2 }
   },
   "heroMight": {
-    "evolutionPerTier": 0.06
+    "evolutionPerTier": 0.06,
+    "enemyHpExponent": 0.6,
+    "enemyHpCap": 4
   },
   "heroEvolution": {
     "dustPrice": 150,
@@ -1278,7 +1280,7 @@
                 },
                 {
                   "kind": "runner",
-                  "count": 20,
+                  "count": 10,
                   "gapMs": 280
                 }
               ]

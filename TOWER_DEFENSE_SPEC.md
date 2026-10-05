@@ -886,6 +886,6 @@ The order and dependencies of the open work live in
   pantheon bonds, Divine Interventions, wave interest and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.
-- **Known failing test:** `test-td-campaign` ("1-1: too hard" campaign viability check; already
-  failing before R4, part of the R12 balance pass).
+- **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
+  no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.

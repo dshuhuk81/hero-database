@@ -12,7 +12,7 @@ import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 import { dailyGameOptions } from "../daily.js";
 import { stageGameOptions } from "../expedition.js";
-import { collectionHeroes, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
+import { collectionHeroes, mightEnemyScale, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
@@ -107,6 +107,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
+    // R12: Free Play and Expedition enemies grow with the collection's upgrades (by less than 100%).
+    if (!daily && !campaignStage) {
+      const pool: string[] = (special as any).allowedHeroes ?? [...store.data.campaign.owned];
+      const might = mightEnemyScale(campaignData, store.data.campaign, data.heroes, pool, data.tuning.run?.deployCap ?? 7);
+      if (might !== 1) (special as any).hpScale = ((special as any).hpScale ?? map?.enemyHp ?? 1) * might;
+    }
     const lean = leanParam(location.search); // dev experiment: ?lean=0.6, see wave-variants.js
     const tuning = lean ? leanWaveTuning(buildRunTuning(data.tuning, runLevels, boost), lean) : buildRunTuning(data.tuning, runLevels, boost);
     if (lean && (special as any).hpScale != null) (special as any).hpScale *= LEAN_HP_FACTOR;
