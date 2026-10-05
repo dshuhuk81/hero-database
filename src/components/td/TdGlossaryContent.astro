@@ -107,7 +107,8 @@ const heroCards = [...(heroes as any[])]
         ["Magic res", hero.magicRes],
         ["Crit", pct(hero.critChance)],
         ["Ult charge", `${hero.ultCooldown}s`],
-        ["Ult power", `x${hero.ultPower}`],
+        ...(["shield_wall", "expose", "mass_taunt", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"].includes(skill.variant)
+          ? [] : [["Ult power", `x${hero.ultPower}`]]),
       ].map(([label, value]) => [label, value, STAT_ICON[label as string]]) as [string, string | number, string][],
     };
   });
@@ -197,7 +198,7 @@ const heroAttrs: [string, string, string][] = [
   ["shield", "Armor / Magic res", "Reduce physical and magic damage the hero takes. Enemies only deal physical damage."],
   ["crisis_alert", "Crit", "Chance for a basic hit to deal 1.5x damage."],
   ["hourglass_top", "Ult charge", "Seconds until the ultimate is ready. It fires on its own at the current target."],
-  ["bolt", "Ult power", "Multiplier on ultimate damage. An ultimate hits for 250% of attack times this power, unless its text says otherwise."],
+  ["bolt", "Ult power", "Multiplier on damaging ultimates. Utility ultimates instead strengthen healing, control or revival through Skill levels and Evolution."],
   ["hub", "Synergy tags", `Each tag shared with a hero within ${t.synergy?.range}px adds ${pct(t.synergy?.bonusPerTag ?? 0)} attack, up to ${pct(t.synergy?.cap ?? 0)}.`],
   ["auto_awesome", "Awakened ultimate", "Evolution V on the Heroes screen unlocks a stronger ultimate. Each hero card lists what changes."],
   ["military_tech", "Hero collection", "Heroes are unlocked in the Campaign and summoned with Divine Seals. Campaign stages, Free Play and Expeditions use only the heroes you own; the Daily Trial gives everyone the same squad. Level, Stars, Evolution and Skills from the Heroes screen apply in every mode; Free Play and Expeditions add Divine Blessings on top."],

@@ -7,6 +7,7 @@
 
 const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash"]);
 const LIGHTNING = new Set(["shot", "hit", "ult"]);
+const UTILITY_ULTS = new Set(["shield_wall", "expose", "mass_taunt", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"]);
 
 // name/color/accent are also used by the docs table; ranged heroes launch projectiles.
 export const PROFILES = {
@@ -692,6 +693,12 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       }
       case "ult": {
         (ULTS[e.heroId] ?? CLASS_ULTS[p.kind] ?? (() => flash(e.x, e.y, p.color, 80)))(e, p, sx, sy);
+        // Skill/Evolution improves the utility, not its area. Add a short motif cue
+        // rather than enlarging the range ring and suggesting a false hit radius.
+        if (UTILITY_ULTS.has(e.heroVariant) && (e.ultimateEffectPower ?? 1) > 1.001) {
+          flash(sx, sy - 8, p.accent, 52, { life: 0.35, alpha: 0.4 });
+          kit.spawn(p.mote, sx, sy - 26, { tint: p.accent, size: 16, sizeEnd: 5, life: 0.55, alpha: 0.9, add: p.mote !== "leaf" && p.mote !== "coin" });
+        }
         return;
       }
     }

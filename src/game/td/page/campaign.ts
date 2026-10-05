@@ -446,7 +446,7 @@ export function createCampaign(ctx: PageContext) {
     const perPassive = Math.round((campaign.heroSkillLevels?.passiveStatPerLevel ?? 0) * 100);
     const passiveSkills = (CLASS_PASSIVE_SKILLS as Record<string, Array<{ id: string; name: string; text: string }>>)[hero.class] ?? [];
     const entries = [
-      ...(skill ? [{ id: "ultimate", kind: "Ultimate", glyph: "✦", name: skill.skillName, text: SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? "", gain: `+${perUltimate}% Ultimate power per level` }] : []),
+      ...(skill ? [{ id: "ultimate", kind: "Ultimate", glyph: "✦", name: skill.skillName, text: SKILL_TEXT[skill.variant] ?? ROLE_HINTS[hero.class] ?? "", gain: `+${perUltimate}% Ultimate damage or utility effect per level` }] : []),
       ...passiveSkills.map((entry, index) => ({ ...entry, kind: "Passive", glyph: index ? "◇" : "◆", gain: `+${perPassive}% ${entry.id === "passiveAttack" ? "attack" : "health"} per level` })),
     ];
     if (!entries.length) return `<div class="td-hero-skill td-hero-skill--empty"><span class="td-label">Skills</span><p>${hero.name} does not have any skills yet.</p></div>`;

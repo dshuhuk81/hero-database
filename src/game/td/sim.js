@@ -1808,6 +1808,8 @@ export class TowerDefenseGame {
   castUltimate(hero, target) {
     this.faceTarget(hero, target);
     const power = this.attackValue(hero) * 2.5 * hero.ultPower * (1 + (this.classBonus(hero).ultPower || 0));
+    const utilityPower = Math.min(1.75, Math.max(1, hero.ultimateEffectPower ?? 1));
+    const controlPower = Math.min(1.5, utilityPower);
     const variant = hero.variant;
     // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.
     const foes = this.enemies.filter((e) => !e.untargetable && !(e.flying && hero.slotType === "road"));
@@ -1840,7 +1842,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, atk: this.atkFor({ ...base, baseAtk: base.atk }), range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, atk: this.atkFor({ ...base, baseAtk: base.atk }), range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * Math.min(1, (aw ? 1 : 0.5) * utilityPower)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
@@ -1848,7 +1850,7 @@ export class TowerDefenseGame {
       } else {
         const fraction = this.healFraction(hero);
         this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
-          this.healHero(a, a.hp * fraction, hero);
+          this.healHero(a, a.hp * fraction * utilityPower, hero);
           this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         });
       }
@@ -1885,19 +1887,19 @@ export class TowerDefenseGame {
       // Atlas: taunt + heal nearby road allies
       foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = aw ? 4 : 3; });
       this.heroes.filter((a) => a.slotType === "road" && this.inReach(hero, a)).forEach((a) => {
-        this.healHero(a, a.hp * (aw ? 0.3 : 0.15), hero);
+        this.healHero(a, a.hp * (aw ? 0.3 : 0.15) * utilityPower, hero);
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
       // Ymir: taunt + expose enemies (take +20% damage for 4s, see hit())
-      foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4)); });
+      foes.filter((e) => this.inUltArea(hero, e, 1.8)).forEach((e) => { e.slow = 3; e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4) * controlPower); });
     } else if (variant === "mass_taunt") {
       // Heimdall: wide taunt (2.5x range)
-      foes.filter((e) => this.inUltArea(hero, e, aw ? 3.5 : 2.5)).forEach((e) => { e.slow = aw ? 5 : 3; });
+      foes.filter((e) => this.inUltArea(hero, e, aw ? 3.5 : 2.5)).forEach((e) => { e.slow = (aw ? 5 : 3) * controlPower; });
     } else if (variant === "rooted_sanctuary") {
       // Gaia (Support): heals allies in range from her own max health, then they take less damage.
       const skill = this.tuning.heroSkills?.[hero.id];
-      const heal = hero.hp * (aw ? skill?.awakenHeal ?? 0.5 : skill?.heal ?? 0.3) * (1 + (this.classBonus(hero).support || 0));
+      const heal = hero.hp * (aw ? skill?.awakenHeal ?? 0.5 : skill?.heal ?? 0.3) * (1 + (this.classBonus(hero).support || 0)) * utilityPower;
       const cut = aw ? skill?.awakenWard ?? 0.4 : skill?.ward ?? 0.3;
       const until = this.time + (skill?.wardSeconds ?? 8);
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
@@ -2012,7 +2014,7 @@ export class TowerDefenseGame {
       // Plutus: heal all allies + grant atk buff together
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
-        this.healHero(a, a.hp * fraction, hero);
+        this.healHero(a, a.hp * fraction * utilityPower, hero);
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
         this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.4, color: "gold" });
@@ -2024,8 +2026,8 @@ export class TowerDefenseGame {
       // Harmonia: heal allies + accelerate their ult charge by 30%
       const fraction = this.healFraction(hero);
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
-        this.healHero(a, a.hp * fraction, hero);
-        a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * (aw ? 0.6 : 0.3));
+        this.healHero(a, a.hp * fraction * utilityPower, hero);
+        a.ultClock = Math.min(a.ultCooldown, a.ultClock + a.ultCooldown * Math.min(1, (aw ? 0.6 : 0.3) * utilityPower));
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else {
@@ -2056,7 +2058,7 @@ export class TowerDefenseGame {
       }
     }
     this.classUltimate(hero, foes);
-    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null, awakened: aw });
+    this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null, awakened: aw, ultimateEffectPower: utilityPower });
   }
 
   // Class part of every ultimate (M6), on top of the hero's own skill.

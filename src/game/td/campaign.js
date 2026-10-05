@@ -377,6 +377,9 @@ export function collectionHeroes(campaign, progress, heroes) {
       atk: Math.round(hero.atk * scale * attackSkill),
       hp: Math.round(hero.hp * scale * healthSkill),
       ultPower: +(hero.ultPower * (1 + bonus.ultPower) * ultimateSkill).toFixed(4),
+      // Utility ultimates have no damage multiplier to consume ultPower. Keep their
+      // effect scaling separate so an unupgraded cast retains its authored values.
+      ultimateEffectPower: +(Math.min(1.75, (1 + bonus.ultPower) * ultimateSkill)).toFixed(4),
       critChance: +(hero.critChance + bonus.crit).toFixed(4),
       ultCooldown: +(hero.ultCooldown * (1 + bonus.ultCooldown)).toFixed(3),
       ...(bonus.awakenedUlt && { awakenedUlt: true }),
