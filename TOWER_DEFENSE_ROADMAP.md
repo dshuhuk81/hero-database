@@ -164,6 +164,10 @@ waves; at the old 2.5 the bot wins 0/14 either way, so the bot cannot rate the h
 than the authored 1.8 to 2.9, but the owner clears these stages with focus targeting and relocation, which the
 bot does not use, so those suggestions are a lower bound, not a target.
 
+**Flyers on 1-7 (October 5, owner: still the sticking point):** flyer-only wave on the 1-7 map, 14 squads, bot wins:
+speed 44 / shape hp 1.75 -> 3, hp 1.0 -> 7, speed 36 -> 5 (hp 1.75) or 7 (hp 1.0). Health matters more than speed, so
+`board.waveShape.kinds.flyer.hp` went 1.75 -> 1.3 (global: flyer waves are easier everywhere); flyer speed stays 44.
+
 ### Open work after the board rewrite (October 4, 2026)
 
 Branch `tower-defense-planning` finished the board rewrite and the first round of ideas (archive:
