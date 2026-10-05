@@ -254,6 +254,14 @@ Balance runs, tuning and checks with the simulation scripts.
 | R7 | More signature patterns (`tuning.board.heroPatterns`), one balance check each; line shapes on platform heroes cut road coverage | Agent | R12 | S each |
 | R8 | Retire tag synergy now that pantheon bonds exist (`synergy.bonusPerTag: 0`) | Agent | R12 | S |
 
+**R12 progress (October 5):** step 1 done: Free Play and Expedition enemy health now scales with collection upgrades
+(`mightEnemyScale` in `campaign.js`; strongest 7 pool heroes' Might vs the same heroes un-upgraded, raised to
+`heroMight.enemyHpExponent` 0.6, capped at `enemyHpCap` 4; Campaign and Daily Trial untouched). Example: starters at level
+30 are x2.04 Might and x1.53 enemy health. Owner knobs live in `tdCampaign.json` `heroMight`. Remaining R12 steps, in
+order: (2) check Free Play / Expedition win rates with `td:sweep` upgraded-roster cases, (3) Divine Intervention charge and
+damage, (4) wave interest and battle gold income, (5) Heroic difficulty and seals, (6) pantheon bond values, (7)
+campaign `hpScale` with `td-board-tune.mjs` (bot-only; the bot underrates the owner, see above), then R7 and R8.
+
 Owner directions recorded October 2:
 
 - R12: Scale Free Play and Expedition enemy health with squad Might, but by less than 100%.

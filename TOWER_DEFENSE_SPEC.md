@@ -504,6 +504,9 @@ Values live in data, so a map can override them in its `rules`. The report
   elites), each raising Favor.
 - Map and stage health: a map's optional `enemyHp` scales enemy health in open modes; a
   campaign stage's `hpScale` or an Expedition stage's scale replaces it.
+- Collection health (R12): in Free Play and Expedition, enemy health is also multiplied by `mightEnemyScale` (`campaign.js`):
+  the strongest 7 pool heroes' Might over the same heroes un-upgraded, to the power `heroMight.enemyHpExponent` (0.6), at most
+  `heroMight.enemyHpCap` (4). Campaign stages and the Daily Trial are unaffected.
 
 ### Enemy art and motion
 
