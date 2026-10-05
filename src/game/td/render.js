@@ -226,13 +226,13 @@ export async function createRenderer(canvas, game, options = {}) {
   // Unit depth (zIndex): ground heroes and enemies share the tilted plane; flyers stay above it.
   layerUnits.sortableChildren = true;
   // R18 prototype: depth scaling on tilt maps. Units on the far row of the board are drawn up to 8%
-  // smaller and on the near row up to 8% larger, like the camera looking down at an angle.
+  // smaller and on the near row up to 10% larger, like the camera looking down at an angle.
   const depthScale = (y) => {
     if (!tiltOn) return 1;
     const board = boardOf(game.map);
     if (!board) return 1;
     const t = Math.min(1, Math.max(0, (y - board.origin[1]) / (board.rows * board.cell)));
-    return 0.92 + 0.16 * t;
+    return 0.9 + 0.2 * t;
   };
   for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
     tiltRoot.addChild(l);
@@ -403,6 +403,9 @@ export async function createRenderer(canvas, game, options = {}) {
   // Resize: fit the 960x540 world into the parent's width AND height
   // (letterboxed), then scale the stage to the fitted canvas size.
   // ------------------------------------------------------------------
+  let bleedAspect = 0, canvasHeightPx = 0, panoramaLayout = null;
+  const syncBleedSize = () => panoramaLayout?.();
+
   function resize() {
     const box = canvas.parentElement;
     const style = box ? getComputedStyle(box) : null;
@@ -425,6 +428,8 @@ export async function createRenderer(canvas, game, options = {}) {
     canvas.style.height = `${h}px`;
     // PixiJS autoDensity handles the backing store; we just update the renderer size.
     app.renderer.resize(w, h);
+    canvasHeightPx = h;
+    syncBleedSize();
     const sx = w / 960;
     const sy = h / 540;
     stage.scale.set(sx, sy);
@@ -506,18 +511,66 @@ export async function createRenderer(canvas, game, options = {}) {
         layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
         if (tiltOn) {
           playHost?.style.setProperty("--td-bleed-art", `url("${mapBackdropFor(game.map)}")`);
-          // First-cut scenery bands: the same terrain, stretched over the full canvas, blurred
-          // and darkened. Final version: one authored band per theme.
-          const band = new PIXI.Sprite(tex);
-          band.width = 960;
-          band.height = 540;
-          band.filters = [new PIXI.BlurFilter({ strength: 7, quality: 3 })];
+          // Scenery bands above and below the squashed ground. Themes with an authored panorama show
+          // it sharp, scaled by height and centred exactly like the CSS backdrop behind the canvas
+          // (brightness 0.82 there, matched by the 0.18 black here), so no blurred strip remains.
+          // Other themes keep the first-cut band: the terrain stretched, blurred and darkened.
+          let panorama = null;
+          bleedAspect = 0;
+          const panoramaUrl = sceneArt.assets.bleed;
+          if (panoramaUrl) {
+            try { panorama = await PIXI.Assets.load(panoramaUrl); } catch { panorama = null; }
+          }
           layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.ground));
-          layerBand.addChild(band);
-          layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.3 }));
-          // Soft seams where the ground meets the bands.
+          if (panorama) {
+            const wide = new PIXI.Sprite(panorama);
+            layerBand.addChild(wide);
+            layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.18 }));
+            const edge = new PIXI.Container();
+            layerBgTex.addChild(edge);
+            bleedAspect = panorama.width / panorama.height;
+            // Same scale and centre as the CSS backdrop (`cover` over the whole play screen). The canvas
+            // is a little smaller than that screen, so the world scale differs from the screen scale;
+            // this is redone on every resize. A mismatch shows as a step or a repeated strip.
+            panoramaLayout = () => {
+              const sy = (canvasHeightPx || 540) / 540;
+              const screenW = playHost?.clientWidth || 960 * sy, screenH = playHost?.clientHeight || 540 * sy;
+              const fit = Math.max(screenH / panorama.height, screenW / panorama.width) / sy;
+              wide.scale.set(fit);
+              wide.position.set(480 - panorama.width * fit / 2, 270 - panorama.height * fit / 2);
+              // Dissolve the terrain's top and bottom edge into the panorama: thin panorama strips,
+              // opaque outside the ground and fading inward. Each strip samples the panorama row at the
+              // same world height (the ground root is squashed, so the strip is stretched back).
+              for (const old of edge.removeChildren()) old.destroy();
+              const strip = (localY, alpha) => {
+                const texY = (tiltOffsetY + tiltK * localY - wide.y) / fit;
+                const texH = (2 * tiltK) / fit;
+                if (texY < 0 || texY + texH > panorama.height) return;
+                const part = new PIXI.Sprite(new PIXI.Texture({ source: panorama.source, frame: new PIXI.Rectangle(0, texY, panorama.width, texH) }));
+                part.scale.set(fit, fit / tiltK);
+                part.position.set(wide.x, localY);
+                part.tint = 0xd1d1d1; // the 0.82 brightness the band and CSS backdrop carry
+                part.alpha = alpha;
+                edge.addChild(part);
+              };
+              for (let i = 0; i < 24; i++) {
+                const alpha = (1 - i / 24) ** 1.5;
+                strip(i * 2, alpha);
+                strip(540 - (i + 1) * 2, alpha);
+              }
+            };
+            panoramaLayout();
+          } else {
+            const band = new PIXI.Sprite(tex);
+            band.width = 960;
+            band.height = 540;
+            band.filters = [new PIXI.BlurFilter({ strength: 7, quality: 3 })];
+            layerBand.addChild(band);
+            layerBand.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.3 }));
+          }
+          // Soft seams where the ground meets the bands (themes without a panorama).
           const seam = new PIXI.Graphics();
-          for (let i = 0; i < 24; i++) { // local ground space (the root squashes it)
+          for (let i = 0; i < 24 && !bleedAspect; i++) { // local ground space (the root squashes it)
             const a = 0.5 * (1 - i / 24) ** 2;
             seam.rect(0, i * 2, 960, 2).fill({ color: 0x000000, alpha: a });
             seam.rect(0, 540 - (i + 1) * 2, 960, 2).fill({ color: 0x000000, alpha: a });

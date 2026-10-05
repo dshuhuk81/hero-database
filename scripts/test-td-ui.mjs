@@ -56,11 +56,11 @@ assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 25
   assert.equal(typeof render.resolveTilt, "function", "renderer exposes a pure tilt resolver");
   const mapById = (id) => maps.find((entry) => entry.id === id);
   const explicit = render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt);
-  assert.deepEqual(explicit, { enabled: true, k: 0.75, offsetY: 70 }, "explicit Free Play map enables R18");
+  assert.deepEqual(explicit, { enabled: true, k: 0.75, offsetY: 55 }, "explicit Free Play map enables R18");
 
   const freeControl = mapById("moonlit-terraces");
   assert.deepEqual(render.resolveTilt(freeControl, tuning.board.tilt), { enabled: false, k: 1, offsetY: 0 }, "unlisted Free Play map stays flat");
-  assert.deepEqual(render.resolveTilt(freeControl, tuning.board.tilt, { campaign: true }), { enabled: true, k: 0.75, offsetY: 70 }, "the same map tilts in Campaign");
+  assert.deepEqual(render.resolveTilt(freeControl, tuning.board.tilt, { campaign: true }), { enabled: true, k: 0.75, offsetY: 55 }, "the same map tilts in Campaign");
 
   for (const id of ["moonlit-terraces", "sunscar-basin", "sunscar-throne"]) {
     const map = mapById(id);
@@ -69,7 +69,7 @@ assert.deepEqual(ui.bossHudState({ enemies: [{ kind: "boss", dead: false, hp: 25
   }
 
   assert.deepEqual(render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt, { campaign: true, param: "off" }), { enabled: false, k: 1, offsetY: 0 }, "tilt=off disables R18");
-  assert.deepEqual(render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt, { param: "0.6" }), { enabled: true, k: 0.6, offsetY: 70 }, "numeric URL override wins");
+  assert.deepEqual(render.resolveTilt(mapById("moonlit-pass"), tuning.board.tilt, { param: "0.6" }), { enabled: true, k: 0.6, offsetY: 55 }, "numeric URL override wins");
   assert.deepEqual(render.resolveTilt(mapById("proto-slabs"), tuning.board.tilt), { enabled: true, k: 0.85, offsetY: 40 }, "per-map geometry override wins");
 
   const stages = campaign.chapters.flatMap((chapter) => chapter.stages);
@@ -437,4 +437,19 @@ console.log("Tower defense UI helper checks passed.");
   assert.match(hud, /countdownHeld = [^\n]*state\.relocateEntityId !== null/, "Auto countdown waits during relocation");
   assert.ok(!session.includes("(level 1, half health)"), "revive notice drops the battle level");
   console.log("R4 review fix checks passed.");
+}
+
+// Lean wave shape (dev experiment): fewer enemies, same total health, only via ?lean=.
+{
+  const { leanWaveTuning, leanParam } = await import("../src/game/td/wave-variants.js");
+  const lean = leanWaveTuning(tuning, 0.6);
+  const base = tuning.board.waveShape;
+  assert.ok(Math.abs(lean.board.waveShape.kinds.grunt.count * lean.board.waveShape.kinds.grunt.hp - base.kinds.grunt.count * base.kinds.grunt.hp) < 1e-9, "lean keeps total health per kind");
+  assert.equal(base.kinds.grunt.count, 0.4, "the source tuning is not mutated");
+  assert.ok(lean.board.waveShape.gap > base.gap, "lean lengthens the spawn gap");
+  assert.equal(leanParam("?lean=0.5"), 0.5);
+  assert.equal(leanParam("?lean"), 0.6);
+  assert.equal(leanParam(""), null);
+  assert.equal(leanParam("?lean=2"), null);
+  console.log("Lean wave variant checks passed.");
 }

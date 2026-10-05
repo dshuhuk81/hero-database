@@ -125,11 +125,25 @@ a tactical feel: fewer, tougher enemies with slower spawn pressure. This is a re
 (R12), not an automatic change.
 
 **Owner screenshot comparison (October 5, Rime Causeway vs WoR):** the soft top and bottom bands
-come from the 2.45:1 panorama behind a sharp canvas with hard top/bottom edges (the canvas now
-feathers 14 px vertically in the landscape HUD, unverified on device); the divine-action buttons and
-the main action now share one landscape height (`--td-landscape-action-h`). Still open: our grid
-draws every road and platform cell as a heavy opaque tile, WoR shows sparse pads on open ground with
-visible thickness; the board also fills less of the screen than in WoR.
+come from the 2.45:1 panorama behind a sharp canvas with hard top/bottom edges (the scenery bands
+in `render.js` now draw the sharp panorama, aligned with the CSS backdrop, instead of a blurred stretched
+terrain copy; themes without a panorama keep the blurred band); the divine-action buttons and
+the main action now share one landscape height (`--td-landscape-action-h`). Tilted boards now draw the road lane at 55% opacity with lighter sockets, so the painted ground
+shows through (WoR: open ground, sparse pads). Heroes grew from heroScale 1.0 to 1.15 (it was 1.3 before the
+October 4 clipping fix) and depth scaling widened to 0.90-1.10, because WoR heroes are about 1.2-1.4
+tiles tall; check top-row clipping on device. The tilt `offsetY` dropped from 70 to 55 world px so the deck covers less of the bottom row and the
+spawn label (cards stay their size by owner decision); check top-row hero clipping on device. Seams: the canvas is shorter than the screen (scale = min(width/960, height/556)), so the Pixi panorama band is scaled to match the CSS
+`cover` backdrop over the whole screen (redone on resize) and the terrain's top/bottom edge dissolves into panorama strips instead of a black gradient; the bottom bar gradient reaches the screen edge. Still open: the board fills less of the screen than in WoR.
+
+**Wave-shape variants (October 5, bot experiment, stages 4-2 / 4-3 / 4-5, 14 squads, not applied):** fewer
+enemies with the same total health, attack and leak damage (`board.waveShape` count x0.6 or x0.4, hp /
+attack / leak / power divided by the same factor, optional gap x1.5). Enemies per stage drop from 34 / 56 /
+66 to 24 / 41 / 41 (x0.6) and 20 / 35 / 33 (x0.4), spawn pressure from about 0.8 to 0.5-0.64/s with the
+longer gap, which is the WoR range for counts but still about 2x its pressure. The bot wins clearly less
+against fewer, tougher enemies: to stay at 50% the stage `hpScale` must drop to about 0.55-0.8 of today's
+value (x0.6 plus gap x1.5), more at x0.4. So a count change is an R12 retune, not a free switch. Try it on dev with
+`?lean=0.6` (count x0.6, gap x1.5, Campaign hpScale x0.7; `src/game/td/wave-variants.js`, off by default);
+reproduce the numbers with `npm run td:wave-variants`.
 
 ### Open work after the board rewrite (October 4, 2026)
 
@@ -249,6 +263,8 @@ npm run test:td-balance         # 5-squad balance harness
 npm run td:sweep                # difficulty sweep (enemy HP steps x squads x maps)
 npm run td:classes              # class identity report (M6 criteria: matrix, class removal, one-class squads)
 npm run td:pacing               # audit step 3: class removal, maps, campaign minutes, seals (2 bot policies)
+npm run td:wor-compare          # our enemy count / spawn pressure / load curve vs the WoR analysis CSV (shape only)
+npm run td:wave-variants        # fewer-enemies wave shapes: hpScale that keeps a 50% bot win rate
 npm run td:campaign-load        # deterministic Campaign HP/ATK/count/spawn-pressure evidence; optional --chapter / --csv
 npm run td:layout -- --map=<id> # tile layout A/B: committed vs working tdMaps.json (Free Play + campaign stages)
 node scripts/td-audio-levels.mjs                                   # hero sound gains -> src/data/tdAudioLevels.json (needs ffmpeg)

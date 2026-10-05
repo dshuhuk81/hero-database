@@ -256,6 +256,7 @@ export function createMapScene(PIXI, game, {
       surface.tileScale.set(0.12);
       surface.tint = theme.road.tint; // grading keeps pale stone within the terrain's value range
       surface.mask = mask;
+      if (tilt) surface.alpha = 0.55; // R18: the lane lets the painted ground show through, like open ground in the reference
     }
   } else {
     strokePath(road, 84, 0x141c23, 0.32);
@@ -558,8 +559,8 @@ export function createMapScene(PIXI, game, {
       const recess = new PIXI.Graphics();
       recess.position.set(x, y);
       container.addChild(recess);
-      recess.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: 0x000000, alpha: 0.26 });
-      recess.rect(-h + 2, -h + 2, TILE - 4, Math.round(TILE * 0.14)).fill({ color: 0x000000, alpha: 0.2 }); // shadow under the back wall
+      recess.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: 0x000000, alpha: 0.12 });
+      recess.rect(-h + 2, -h + 2, TILE - 4, Math.round(TILE * 0.14)).fill({ color: 0x000000, alpha: 0.14 }); // shadow under the back wall
       recess.rect(-h + 2, -h + 2, Math.round(TILE * 0.07), TILE - 4).fill({ color: 0x000000, alpha: 0.14 });
       recess.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0xffffff, width: 1.2, alpha: 0.14 });
     }
@@ -583,7 +584,7 @@ export function createMapScene(PIXI, game, {
     const strength = eligible ? 1 : mode === "dim" ? 0.2 : mode === "idle" ? 0.32 : 0.78;
     g.alpha = strength;
     // Surface: road sockets sink into the stone, platforms sit on it as a plate.
-    const surface = type === "road" ? 0.3 : 0.38;
+    const surface = type === "road" ? (tilt ? 0.1 : 0.3) : 0.38;
     g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: DARK, alpha: surface });
     g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: accent, alpha: eligible ? 0.16 : 0.07 });
     // Contrasting rim: dark outline first, accent line inside it.

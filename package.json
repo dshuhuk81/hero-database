@@ -51,6 +51,7 @@
     "td:maps": "node scripts/report-td-maps.mjs",
     "td:campaign-load": "node scripts/td-campaign-load.mjs",
     "td:wor-compare": "node scripts/td-wor-compare.mjs",
+    "td:wave-variants": "node scripts/td-wave-variants.mjs",
     "td:generate-map": "node scripts/generate-td-map.mjs",
     "td:board": "node scripts/generate-td-board.mjs",
     "r2:cors": "node scripts/r2-cors.mjs",

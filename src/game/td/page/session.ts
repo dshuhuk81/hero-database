@@ -6,6 +6,7 @@ import { shownLives } from "../board.js";
 import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { environmentFor } from "../environments.js";
+import { LEAN_HP_FACTOR, leanParam, leanWaveTuning } from "../wave-variants.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
@@ -69,7 +70,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const environmentLabel = q("[data-td-environment-rule]");
     environmentLabel.hidden = !environment;
     environmentLabel.textContent = environment?.rule ?? "";
-    stageNameEl.title = environment?.text ?? "";
+    stageNameEl.title = [campaignStage?.name, environment?.rule, environment?.text].filter(Boolean).join(" - "); // the compact landscape chip shows only the stage number
+    stageNameEl.dataset.kind = campaignStage ? "campaign" : "battlefield";
     stageNameEl.hidden = !campaignStage && !environment;
     if (campaignStage) {
       stageNumberEl.textContent = `${campaign!.heroic ? "Heroic stage" : "Stage"} ${campaignStage.id}`;
@@ -105,7 +107,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
-    const tuning = buildRunTuning(data.tuning, runLevels, boost);
+    const lean = leanParam(location.search); // dev experiment: ?lean=0.6, see wave-variants.js
+    const tuning = lean ? leanWaveTuning(buildRunTuning(data.tuning, runLevels, boost), lean) : buildRunTuning(data.tuning, runLevels, boost);
+    if (lean && (special as any).hpScale != null) (special as any).hpScale *= LEAN_HP_FACTOR;
     // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
     // the Daily Trial stays the same for everyone without them.
     const interventions = daily ? [] : Object.entries(data.tuning.interventions ?? {})

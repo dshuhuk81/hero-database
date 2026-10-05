@@ -246,7 +246,7 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 | `heroPatterns` | `aegir` `cross2`, `stheno` `lance`, `skadi` `star3`, `boreas` `blockPlus` | Signature patterns by hero id (section 5) |
 | `waveShape` | count 0.2, gap 2.5, hp 5, attack 2.5; grunts/runners count 0.4, hp 2.5, attack 1.25; flyers count 0.4, hp 1.75, attack 1 | Fewer, stronger enemies and road class variety (section 8) |
 | `focus` | slots 2, share 1 | Mage focus rule (section 7) |
-| `heroScale`, `enemyScale`, `bossScale` | 1.3, 1.8, 1.3 | Unit size on boards. Bars render in their own top layer. Boss source art and scale are handled separately from ordinary enemies |
+| `heroScale`, `enemyScale`, `bossScale` | 1.15, 1.5, 1.5 | Unit size on boards. Bars render in their own top layer. Boss source art and scale are handled separately from ordinary enemies |
 
 ### Tilted-board landscape presentation
 
@@ -262,7 +262,7 @@ The full decision history and rollout boundary are in
 
 - the ground, tiles and board-aligned art are vertically tilted; actors and readability graphics
   keep their normal thickness;
-- unit scale changes by depth from about 0.92 on the far row to 1.08 on the near row;
+- unit scale changes by depth from about 0.90 on the far row to 1.10 on the near row;
 - landscape HUD rows float over the scenery and the deck targets a 50 px inner portrait at the
   360 px reference height; portrait phones are blocked by a modal orientation gate, pause and
   continue after the player rotates to landscape;
