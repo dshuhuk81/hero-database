@@ -122,3 +122,19 @@ if (unmatched.length) {
     console.log([`-> ${name}`, `0/${o.length}`, ...STATS.map(() => "-"), ...STATS.map((stat) => fix(mean(o.map((h) => h[ourStat[stat]])) / ourMean[stat]))].map((c) => String(c).padEnd(10)).join(""));
   }
 }
+
+// --- 4. Hero level curve: measured WoR heroes (emulator, 2026-10-05) vs our levelScale ---
+// Lv 1 -> cap, without the flat green bonuses (+450 HP, +50..100 ATK). The Adv tier at the cap is
+// not visible in the screenshots, so each factor includes whatever Adv bonus the cap gives.
+const MEASURED = [
+  { name: "Rex (Defender, 3 stars, Lv 30)", level: 30, stats: { hp: [1702, 18404], atk: [164, 1775], def: [213, 2310], mres: [50, 543] } },
+  { name: "Kassandra (Fighter, 6 stars, Lv 60)", level: 60, stats: { hp: [2927, 29392], atk: [653, 6565], def: [217, 2187], mres: [46, 477] } },
+];
+const { levelScale, starScale } = await import("../src/game/td/campaign.js");
+console.log("\n4. Stat factor Lv 1 -> cap (all four stats grow alike)");
+for (const m of MEASURED) {
+  const factors = Object.values(m.stats).map(([from, to]) => to / from);
+  const ours = levelScale(campaign, m.level);
+  console.log(`  WoR ${m.name}: x${fix(mean(factors))} (${factors.map((f) => fix(f)).join(", ")}); ours at Lv ${m.level}: x${fix(ours)} (x${fix(ours * starScale(campaign, Math.min(maxStars, m.level / 10 - 1)))} with the stars for that cap)`);
+}
+console.log("  Both caps land near x10 although the level cap differs: WoR seems to size the whole climb to ~10x.");

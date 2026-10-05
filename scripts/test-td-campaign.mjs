@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale } from "../src/game/td/campaign.js";
+import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale, starScale } from "../src/game/td/campaign.js";
 import { validateTimeline } from "../src/game/td/timeline.js";
 import { starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
@@ -132,9 +132,10 @@ stages.forEach((stage, i) => {
   const starred = { ...p, stars: { [id]: 1 } };
   assert.ok(canLevelUp(campaign, starred, id), "a star lifts the cap");
   assert.equal(levelUpCost(campaign, campaign.heroLevels.max), null, "absolute max");
-  // Banded gains: levels 1-10 keep +6% each, later bands add less.
-  assert.equal(+levelScale(campaign, 10).toFixed(4), +(1 + 0.06 * 9).toFixed(4), "levels 2-10 unchanged at +6%");
-  assert.ok(levelScale(campaign, 20) - levelScale(campaign, 10) < levelScale(campaign, 10) - levelScale(campaign, 1), "later band adds less");
+  // Linear gain (WoR reference, td:wor-progression): +9.6% of base per level, about x6.7 at level 60 (x10 with 5 stars).
+  assert.equal(+levelScale(campaign, 10).toFixed(4), +(1 + 0.096 * 9).toFixed(4), "levels 2-10 add +9.6% each");
+  assert.equal(+(levelScale(campaign, 20) - levelScale(campaign, 10)).toFixed(4), +(levelScale(campaign, 10) - levelScale(campaign, 1) + 0.096).toFixed(4), "later bands add the same per level");
+  assert.ok(Math.abs(levelScale(campaign, 60) * starScale(campaign, 5) - 10) < 0.5, "level 60 with 5 stars is about x10 over level 1");
   const scaled = collectionHeroes(campaign, p, heroes).find((hero) => hero.id === id);
   const base = heroes.find((hero) => hero.id === id);
   assert.equal(scaled.atk, Math.round(base.atk * levelScale(campaign, cap0)), "level scales attack");

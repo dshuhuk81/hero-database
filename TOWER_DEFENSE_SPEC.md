@@ -239,6 +239,14 @@ checked against the cell an enemy is in.
 ### Watcher of Realms Reference Data
 `/Users/daschultheiss/hero-database/src/game/td/data-sammlung` contains all hero data gathered from Watch of Realms. This can be used to maybe add depth to our game system, or if we want to compare our hero data or enemy data with this game. There is a lot of information in there - so when we try to implmenent a new game mode or balance the game, we could look up data here first.
 
+#### Hero growth calibrated against WoR (2026-10-05)
+`npm run td:wor-progression` compares our curves with the WoR data (`scripts/td-wor-progression.mjs`). Findings and what changed:
+- Emulator measurements (flat green bonuses excluded): Rex Lv 1 -> 30 grows x10.84 in all four stats, Kassandra (6 stars) Lv 1 -> 60 grows x10.14. WoR sizes the whole climb to about x10; all stats share one curve.
+- We had `heroLevels.statPerLevel` banded 6/3/2/1.5/1.5/1 % per level (x2.44 at Lv 60, x3.66 with 5 stars). It is now a flat +9.6 % of base per level in every band (`tdCampaign.json`): x6.66 at Lv 60, x10 with 5 stars (`starScale` stays +10 % per star). `test-td-campaign.mjs` asserts this.
+- At the levels heroes have in chapter 1 the new curve barely moves the bot win rate (it matters from about Lv 15 on). The stage `hpScale` values were already off target (several chapter 1 stages at 0 % bot wins against a 65 % goal) and were re-tuned with `scripts/td-board-tune.mjs`.
+- WoR enemies barely grow in chapter 1 (Dune Zrak 479 HP at Lv 1, about x1.6 by StageLv 12); player power there comes almost entirely from hero levels.
+- Lv 1 reference stats (not the same scale as ours): Rex HP 1702 / ATK 164 / DEF 213 / M.RES 50, ATK interval 2.1 s; Voltus 597 / 264 / 42 / 138, 2.2 s; Kassandra (Fighter, quality 5) 2927 / 653 / 217 / 46, 2.6 s. Our Fighter, Mage and Support starters have about 1/5 to 1/8 of the WoR attack at the same level; not changed yet (open item).
+
 ### Shared board rules
 
 `tuning.board` holds the rules every board uses; a map's own `rules` block can override single
@@ -823,6 +831,8 @@ The result covers the play screen. A won stage plays three scenes (Victory with 
 MVP, Hero contribution, Rewards), 2 s each, then shows the footer (Back to Camp, Stats, Spend
 Favor, Continue, Retry). Losses and Endless runs open the detailed report. After a campaign
 stage the footer offers Retry, Next stage or Change squad, and Campaign.
+
+Hero portrait backdrops: every hero portrait `<img>` carries `data-rarity` (from the hero's `rarity`); `td.css` paints common green, epic purple, legendary gold via `--rarity-*-bg` tokens in `tokens.css`. New portrait templates must set the attribute.
 
 ## 13. Meta progression and persistence
 
