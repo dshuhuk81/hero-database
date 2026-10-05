@@ -1,5 +1,5 @@
 // Shared balance runner: plays a full run with a simple policy (deploy affordable
-// heroes, spend spare gold on the cheapest upgrade, take the first virtue offered).
+// heroes, spend spare gold on the cheapest upgrade).
 // Used by test-td-balance.mjs and td-balance-sweep.mjs.
 import { TowerDefenseGame } from "../../src/game/td/sim.js";
 import { buildRunTuning, TREE } from "../../src/game/td/favor.js";
@@ -50,7 +50,7 @@ export const SQUADS = {
 // `policy` remains in the result label for historical balance comparisons; heroes spend placement only on deployment,
 // and automated relocation is deferred to the balance pass.
 export const POLICIES = ["cheapest", "carry"];
-export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, blessings = null, tier = "normal", maxSeconds = 1800, game: gameOptions = {} } = {}) {
+export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, tier = "normal", maxSeconds = 1800, game: gameOptions = {} } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
@@ -87,9 +87,8 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
   while (g.running && !g.complete && g.time < maxSeconds) {
     g.step(1 / 60);
     step += 1;
-    if (step % 60 === 0) { // once a second: spend regrown placement, take an offered blessing
+    if (step % 60 === 0) { // once a second: spend regrown placement
       deployAll();
-      if (g.virtueOffer) g.chooseVirtue((blessings ?? []).find((name) => g.virtueOffer.includes(name)) ?? g.virtueOffer[0]);
     }
     const now = g.totalLeaks + Object.values(g.heroKills).reduce((sum, h) => sum + h.kills, 0);
     quietSteps = now === progress ? quietSteps + 1 : 0;

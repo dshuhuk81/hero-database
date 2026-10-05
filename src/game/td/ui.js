@@ -106,33 +106,6 @@ export function createPauseController(apply = () => {}) {
   };
 }
 
-// Short display form of a blessing effect ({ type, value }) for large-number cards.
-const BLESSING_STATS = {
-  atk: "Attack",
-  res: "Armor & Res",
-  hp: "Max Health",
-  heal: "Healing",
-  regen: "Ult Charge",
-  crit: "Crit Chance",
-  dodge: "Dodge",
-};
-
-export function blessingDisplay(effect) {
-  if (!effect || !BLESSING_STATS[effect.type]) return { value: "", stat: effect?.type ?? "", tone: "none" };
-  return { value: `+${Math.round((effect.value || 0) * 100)}%`, stat: BLESSING_STATS[effect.type], tone: effect.type };
-}
-
-// Short stat tags for the on-map buff bar, in a fixed display order.
-export const BUFF_ORDER = ["atk", "res", "hp", "crit", "dodge", "regen", "heal"];
-const BUFF_SHORT = { atk: "ATK", res: "RES", hp: "HP", crit: "CRIT", dodge: "DODGE", regen: "ULT", heal: "HEAL" };
-
-// Turns summed modifiers ({ atk: 0.3, ... }) into buff chips; zero entries are dropped.
-export function buffChips(modifiers) {
-  return BUFF_ORDER
-    .filter((type) => (modifiers?.[type] || 0) > 0)
-    .map((type) => ({ type, value: `+${Math.round(modifiers[type] * 100)}%`, short: BUFF_SHORT[type] }));
-}
-
 // Run statistics (M14). Rows for the result screen's damage table, highest damage first.
 export function damageRows(heroStats = {}) {
   const rows = Object.values(heroStats);

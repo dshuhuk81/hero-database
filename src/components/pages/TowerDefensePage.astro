@@ -37,7 +37,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
   import { createSavePanel, createSaveStore, isRunTier, runKey, RUN_TIERS } from "../../game/td/page/save";
   import { MUTATOR_INFO } from "../../game/td/skills.js";
-  import { createBuffBar, createRunOffer } from "../../game/td/page/boons";
+  import { createBuffBar } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
   import { createDaily } from "../../game/td/page/daily";
   import { createExpedition } from "../../game/td/page/expedition";
@@ -102,7 +102,6 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const ctx: PageContext = {
     root, q, data, heroById,
     bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
-    blessingNames: data.tuning.virtueBlessings || {},
     store, state, pause,
     getSession: () => state.session,
     notice,
@@ -246,7 +245,6 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   store.onPersist = wallet.render;
   const savePanel = createSavePanel(ctx);
   const buffBar = createBuffBar(ctx);
-  const runOffer = createRunOffer(ctx);
   const results = createResults(ctx);
   const dailyTrial = createDaily(ctx);
   const expedition = createExpedition(ctx);
@@ -259,7 +257,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const popover = createPopover(ctx);
   const recruit = createRecruit(ctx);
   const panels = createPanels(ctx, { renderSavePanel: savePanel.render });
-  const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: (now: number) => { hud.tick(now); powers.render(); }, buffBar, runOffer, results, debugPanel, popover, recruit });
+  const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: (now: number) => { hud.tick(now); powers.render(); }, buffBar, results, debugPanel, popover, recruit });
   const nav = createNav(ctx, {
     onShow(id) {
       wallet.close();

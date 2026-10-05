@@ -21,8 +21,8 @@ const PAD = 0.6; // grid units around the world
 
 const GLYPHS: Record<string, string> = {
   startingPlacement: "Place", lives: "Life", showHp: "Scout", heroHp: "HP", placementRate: "Rate", ultCharge: "Ult",
-  synergyTag: "Bond", openingSpeed: "Slow", deployDiscount: "Cost", offerPlacement: "Offer", contactRange: "Wall",
-  extraOffer: "+1", bossDamage: "Boss", thunderCharge: "Bolt", thunderArea: "Area", shieldCharge: "Ward", shieldSeconds: "Time", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
+  synergyTag: "Bond", openingSpeed: "Slow", deployDiscount: "Cost", contactRange: "Wall",
+  bossDamage: "Boss", thunderCharge: "Bolt", thunderArea: "Area", shieldCharge: "Ward", shieldSeconds: "Time", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
   cleave: "Cleave", dash: "Dash", guard: "Guard", splash: "AoE", pierce: "Pierce",
   ultPower: "Pow", relocateDiscount: "Move", power: "Apex", infuse: "Elem", purify: "Pure",

@@ -130,19 +130,6 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const cheap = make({ odin_dominion: 5 });
   assert.equal(cheap.deployCost(mage.id), Math.round(mage.cost * (1 - findNode("odin_dominion").effect.value * 5)), "deployment discount");
 
-  const offer = make({ [trunkNode("offerPlacement").id]: 5 });
-  place(offer, mage);
-  offer.start(); offer.enemies = [];
-  const before = offer.placement;
-  offer.enemiesDown = 1; // the one authored enemy counts as defeated: the first milestone opens
-  offer.step(1 / 60);
-  assert.ok(offer.virtueOffer, "a milestone opens an offer");
-  assert.ok(Math.abs(offer.placement - before - trunkNode("offerPlacement").effect.value * 5) < 0.2, "every offer pays placement");
-
-  const offers = make({ [trunkNode("extraOffer").id]: 1 });
-  offers.offerVirtues();
-  assert.equal(offers.virtueOffer.length, 4, "one more blessing offered");
-
   const boss = make({ [trunkNode("bossDamage").id]: 4 });
   const odin = place(boss, heroOf("Mage"));
   boss.start(); boss.enemies = [];
@@ -284,13 +271,6 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   const base = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "placement", placement: shardPlacement }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
   assert.equal(goldRun.placement, base.placement + shardPlacement, "placement shard adds starting placement");
-  const virtue = Object.keys(tuning.virtueEffects)[0];
-  const virtueRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
-  assert.deepEqual(virtueRun.virtues, [virtue], "virtue shard starts the run with the virtue");
-  virtueRun.reset();
-  assert.deepEqual(virtueRun.virtues, [virtue], "virtue survives a reset (Favor rebuild before the stage)");
-  const bogus = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, {}, { type: "virtue", virtue: "Nope" }), map: maps[0], timeline: OPEN_TIMELINE, seed: 5 });
-  assert.deepEqual(bogus.virtues, [], "unknown virtue ignored");
 }
 
 // --- R5: Divine Intervention upgrades on the trunk ---

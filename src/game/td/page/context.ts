@@ -92,7 +92,6 @@ export type PageContext = {
   data: any;
   heroById: Map<string, any>;
   bossFor(map: any): any; // bosses.json entry of the map's final boss
-  blessingNames: Record<string, string>;
   store: SaveStore;
   state: PageState;
   pause: ReturnType<typeof createPauseController>;

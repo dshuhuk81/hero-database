@@ -48,7 +48,7 @@ import { notifyQuest, QUEST_DEFEATED } from "../quests.js";
 import { challengeResultHtml, recordChallengeRun } from "./challenges";
 import { createStageClear } from "./stage-clear";
 
-type ShardChoice = "favor" | "placement" | "virtue";
+type ShardChoice = "favor" | "placement";
 
 export function fmtDuration(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -57,7 +57,7 @@ export function fmtDuration(seconds: number) {
 }
 
 export function createResults(ctx: PageContext) {
-  const { q, data, store, blessingNames } = ctx;
+  const { q, data, store } = ctx;
   const resultEl = q("[data-td-result]");
   const shardsEl = q("[data-td-result-shards]");
   const playEl = q("[data-td-play]");
@@ -72,7 +72,7 @@ export function createResults(ctx: PageContext) {
   const stageClear = createStageClear(ctx, () => primaryAction?.focus({ preventScroll: true }));
   // Run-end shard (6C). The Favor shard is granted with the run's Favor so nothing
   // is lost if the page closes; picking a boost converts it back.
-  let shard: { favor: number; earned: number; virtue: string; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
+  let shard: { favor: number; earned: number; choice: ShardChoice; previousBoost: RunBoost | null } | null = null;
   // Favor this run paid, by source, so the summary adds up to what the save gained.
   let rewards: { label: string; favor: number }[] = [];
   // Gold and Hero XP this run paid into the hero collection (Free Play, Expedition).
@@ -145,8 +145,7 @@ export function createResults(ctx: PageContext) {
     for (const selector of ["[data-td-result-stats]", "[data-td-result-analysis]", "[data-td-result-damage]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]", "[data-td-result-shards]", "[data-td-result-battle-empty]"]) q(selector).hidden = true;
   }
 
-  const boostText = (boost: RunBoost) => boost.type === "placement"
-    ? `+${boost.placement} starting placement` : `start with ${blessingNames[boost.virtue] ?? boost.virtue}`;
+  const boostText = (boost: RunBoost) => `+${boost.placement} starting placement`;
 
   function renderAnalysis(game: any) {
     const el = q("[data-td-result-analysis]");
@@ -179,16 +178,13 @@ export function createResults(ctx: PageContext) {
   function renderShards() {
     if (!shard) return;
     const cfg = data.tuning.shards;
-    const virtueName = blessingNames[shard.virtue] ?? shard.virtue;
-    const virtueLabel = data.tuning.virtueEffects[shard.virtue]?.label ?? "";
     // Taking a boost gives the Favor shard back; blocked if it was already spent.
     const canRevoke = shard.choice !== "favor" || availableFavor(store.data) >= shard.favor;
     const options: { id: ShardChoice; name: string; value: string; detail: string }[] = [
       { id: "favor", name: "Favor shard", value: `+${shard.favor} Favor`, detail: "Permanent. Spend it on Divine Blessings." },
       { id: "placement", name: "Placement shard", value: `+${cfg.placement} placement`, detail: "Your next run starts with extra placement points." },
-      { id: "virtue", name: "Virtue shard", value: virtueName, detail: `Your next run starts with this blessing${virtueLabel ? `: ${virtueLabel}` : "."}` },
     ];
-    const replaces = shard.previousBoost ? `<p class="td-shard-note">A Placement or Virtue shard replaces your pending boost (${boostText(shard.previousBoost)}).</p>` : "";
+    const replaces = shard.previousBoost ? `<p class="td-shard-note">A Placement shard replaces your pending boost (${boostText(shard.previousBoost)}).</p>` : "";
     shardsEl.innerHTML = `<span class="td-label">Pick a shard</span><div class="td-shard-row">` + options.map((option) => {
       const chosen = shard!.choice === option.id;
       const disabled = !chosen && option.id !== "favor" && !canRevoke;
@@ -210,7 +206,7 @@ export function createResults(ctx: PageContext) {
       saved.favor += shard.favor;
       saved.nextRunBoost = shard.previousBoost;
     } else {
-      saved.nextRunBoost = choice === "placement" ? { type: "placement", placement: data.tuning.shards.placement } : { type: "virtue", virtue: shard.virtue };
+      saved.nextRunBoost = { type: "placement", placement: data.tuning.shards.placement };
     }
     shard.choice = choice;
     store.persist();
@@ -277,8 +273,7 @@ export function createResults(ctx: PageContext) {
       saved.favor = (saved.favor || 0) + earnedFavor;
       for (const [cls, points] of Object.entries(earnedInsight)) saved.insight[cls] = (saved.insight[cls] || 0) + points;
       if (shardEligible(stageShare, data.tuning) && !campaign) {
-        const virtues = Object.keys(data.tuning.virtueEffects || {});
-        shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, virtue: virtues[Math.floor(Math.random() * virtues.length)], choice: "favor", previousBoost: saved.nextRunBoost };
+        shard = { favor: shardFavor(earnedFavor, data.tuning), earned: earnedFavor, choice: "favor", previousBoost: saved.nextRunBoost };
         saved.favor += shard.favor;
       }
       const mutators = game.mutators?.length ? { mutators: [...game.mutators] } : {};
@@ -337,7 +332,6 @@ export function createResults(ctx: PageContext) {
     const kills = Object.values(game.heroKills ?? {}) as { name: string; kills: number }[];
     kills.sort((a, b) => b.kills - a.kills);
     const mvp = kills[0] ?? null;
-    const bestVirtueName = game.activePairs?.length ? game.activePairs[0].name : (game.virtues.length ? (blessingNames[game.virtues[0]] ?? game.virtues[0]) : null);
     const statsEl = q("[data-td-result-stats]");
     const statsHtml = [
       mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
@@ -346,7 +340,6 @@ export function createResults(ctx: PageContext) {
       `<div class="td-result-stat"><span>Spent</span><strong>${game.totalPlacementSpent ?? 0}</strong></div>`,
       insightStat(earnedInsight),
       reactionStat(game.reactionCounts),
-      bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
     ].join("");
     statsEl.innerHTML = statsHtml;
     lossStatsEl.innerHTML = statsHtml;

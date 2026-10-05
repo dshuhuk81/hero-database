@@ -95,7 +95,7 @@ export function canBuy(nodeId, levels, tree = TREE) {
 // class's Surge with an Infusion. Saves from version 2 keep every level they own: the
 // price increase is credited back per currency, so nothing they own costs them more.
 // Surge levels simply drop out (their node is gone), which returns that Insight too.
-const V2_TRUNK_COSTS = { gaia_bounty: 30, asclepius_blessing: 40, vidar_sight: 30, fenrir_hide: 40, plutus_treasury: 80, helios_surge: 100, harmonia_bond: 90, nott_veil: 60, odin_dominion: 200, aegir_tide: 180, atlas_wall: 150, boreas_favor: 900, thanatos_judgment: 400, surtr_command: 3000 };
+const V2_TRUNK_COSTS = { gaia_bounty: 30, asclepius_blessing: 40, vidar_sight: 30, fenrir_hide: 40, plutus_treasury: 80, helios_surge: 100, harmonia_bond: 90, nott_veil: 60, odin_dominion: 200, atlas_wall: 150, thanatos_judgment: 400, surtr_command: 3000 };
 const V2_CLASS_COSTS = { might: 5, vigor: 5, swiftness: 5, reach: 5, ascension: 40, special: 60, wrath: 80, rite: 100, apotheosis: 140 };
 const v2Cost = (node) => (node.tree === "trunk" ? V2_TRUNK_COSTS[node.id] : V2_CLASS_COSTS[node.id.slice(node.tree.length + 1)]);
 
@@ -149,9 +149,7 @@ export function applyBlessings(levels, tree = TREE) {
       case "synergyTag": add(bonuses, "synergyTagBonus", value); break;
       case "openingSpeed": add(bonuses, "openingSpeedDebuff", value); break;
       case "deployDiscount": add(bonuses, "deployDiscount", value); break;
-      case "offerPlacement": add(bonuses, "offerPlacement", value); break;
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
-      case "extraOffer": add(bonuses, "extraOffer", value); break;
       case "bossDamage": add(bonuses, "bossDamage", value); break;
       // Divine Intervention upgrades (R5); sim.js interventionMax / thunderArea / castShield.
       case "thunderCharge": case "thunderArea": case "shieldCharge": case "shieldSeconds": add(bonuses, node.effect.type, value); break;
@@ -164,8 +162,8 @@ export function applyBlessings(levels, tree = TREE) {
 // Snapshot of tuning for one run with the bought blessings applied. Start
 // resources are folded into run; everything else is read by the
 // simulator from tuning.favor. `boost` is a pending run-end shard (6C):
-// { type: "placement", placement } or { type: "virtue", virtue }.
-/** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, placement?: number, virtue?: string } | null} [boost] */
+// { type: "placement", placement }.
+/** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, placement?: number } | null} [boost] */
 export function buildRunTuning(tuning, levels, boost = null) {
   const bonuses = applyBlessings(levels);
   const run = {
@@ -173,7 +171,6 @@ export function buildRunTuning(tuning, levels, boost = null) {
     startingPlacement: tuning.run.startingPlacement + (bonuses.startingPlacementBonus || 0) + (boost?.type === "placement" ? boost.placement : 0),
     lives: tuning.run.lives + (bonuses.livesBonus || 0),
   };
-  if (boost?.type === "virtue") run.startVirtue = boost.virtue;
   return { ...tuning, favor: bonuses, run };
 }
 

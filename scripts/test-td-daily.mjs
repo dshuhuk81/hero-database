@@ -77,7 +77,6 @@ const dates = (start, count) => Array.from({ length: count }, (_, i) => dailyDat
   const run = buildRunTuning(tuning, {}, null);
   assert.equal(run.run.startingPlacement, tuning.run.startingPlacement);
   assert.equal(run.run.lives, tuning.run.lives);
-  assert.equal(run.run.startVirtue, undefined);
   assert.deepEqual(run.favor, { classBonus: {} }, "no Divine Blessing bonus");
   // Normal runs are unrestricted.
   const free = new TowerDefenseGame({ heroes, map, tuning, timeline: setup.timeline });
@@ -138,7 +137,7 @@ export function playDaily(setup, maxSeconds = 1200) {
   g.start();
   for (let step = 0; g.running && !g.complete && g.time < maxSeconds; step += 1) {
     g.step(1 / 60);
-    if (step % 60 === 0) { deploy(); if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]); }
+    if (step % 60 === 0) { deploy(); }
   }
   return { defeated: defeatedCount(g), score: g.score, won: g.won };
 }

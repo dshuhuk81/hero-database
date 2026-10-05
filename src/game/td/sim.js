@@ -126,7 +126,6 @@ export class TowerDefenseGame {
     // attack patterns, unit sizes); null on maps that still use range circles.
     this.boardRules = boardRules(map, tuning);
     if (this.boardRules?.focus && this.classes.Mage) this.classes = { ...this.classes, Mage: { ...this.classes.Mage, focus: this.boardRules.focus } };
-    this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
     this.difficulty = { enemyHp: 1, enemySpeed: 1, invincible: false, ...(tuning.difficulty || {}) };
@@ -180,15 +179,11 @@ export class TowerDefenseGame {
     this.entityId = 1;
     this.time = 0;
     this.stageStats = null;
-    this.virtues = [];
-    this.activePairs = [];
-    this.virtueOffer = null;
     this.boons = [...(this.presetBoons ?? [])]; // rare and epic run blessings chosen this run (M17), Expedition relics first
     this.rallyUntil = 0;
     this.reaperKills = 0;
     this.mutators = [...(this.presetMutators ?? [])]; // Daily Trial mutators, active from the start
     this.spawnCount = 0;
-    this.milestones = [];
     this.totalLeaks = 0;
     this.enemiesDown = 0; // authored enemies killed or leaked, for the stage counter (stageForecast)
     this.perfect = false;
@@ -205,9 +200,6 @@ export class TowerDefenseGame {
     this.fieldedIds = []; // every hero id deployed this run, sold or fallen ones included (M20 challenges)
     this.relocations = 0;
     this.runDuration = 0;
-    // Virtue shard (6C): the run starts with this virtue already chosen.
-    const startVirtue = this.tuning.run.startVirtue;
-    if (startVirtue && this.virtueEffects[startVirtue]) this.addVirtue(startVirtue);
     this.onChange("reset", this);
   }
 
@@ -325,20 +317,6 @@ export class TowerDefenseGame {
     return info;
   }
 
-  // Aggregated modifiers from chosen virtues and any triggered pairs.
-  modifiers() {
-    const totals = { atk: 0, res: 0, hp: 0, heal: 0, regen: 0, crit: 0, dodge: 0 };
-    for (const name of this.virtues) {
-      const effect = this.virtueEffects[name];
-      if (effect && totals[effect.type] !== undefined) totals[effect.type] += effect.value;
-    }
-    for (const pair of this.activePairs) {
-      const effect = pair.effect;
-      if (effect && totals[effect.type] !== undefined) totals[effect.type] += effect.value;
-    }
-    return totals;
-  }
-
   // Divine Blessings class branch bonuses (favor.js applyBlessings) for a hero or class name.
   classBonus(heroOrClass) {
     const cls = typeof heroOrClass === "string" ? heroOrClass : heroOrClass?.class;
@@ -354,7 +332,7 @@ export class TowerDefenseGame {
   maxHpFor(baseHp, heroClass) {
     const cb = this.classBonus(heroClass);
     const favorHp = (this.favor.heroHpBonus || 0) + (cb.hp || 0);
-    return Math.round(baseHp * (1 + this.modifiers().hp) * (1 + favorHp) * (1 + (cb.power || 0)));
+    return Math.round(baseHp * (1 + favorHp) * (1 + (cb.power || 0)));
   }
 
   atkFor(hero) {
@@ -380,7 +358,7 @@ export class TowerDefenseGame {
   }
 
   ultChargeRate(hero = null) {
-    return (1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0) + (this.bondFx(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0)) * this.environment("charge", hero);
+    return (1 + (this.favor.ultChargeBonus || 0) + (this.classBonus(hero).ultCharge || 0) + (this.bondFx(hero).ultCharge || 0)) * (1 + (this.ringFx(hero)?.ultCharge || 0)) * this.environment("charge", hero);
   }
 
   // Special rings (M16): a map's `rings` names the kind per "road:0" / "platform:2"; the
@@ -402,64 +380,6 @@ export class TowerDefenseGame {
     return (this.tuning.synergy?.bonusPerTag || 0) + (this.favor.synergyTagBonus || 0);
   }
 
-  // Milestone offer (checkMilestones): each card may roll Epic or Rare (tuning.runBoons.chance, own RNG)
-  // and then shows a mechanic blessing the deployed team can use ("boon:<id>"); otherwise
-  // a common stat blessing (virtue).
-  offerVirtues() {
-    const available = Object.keys(this.virtueEffects).filter((name) => !this.virtues.includes(name));
-    const cfg = this.tuning.runBoons;
-    const boons = cfg ? Object.keys(cfg.list).filter((id) => !this.boons.includes(id) && this.boonEligible(id)) : [];
-    const picks = [];
-    const count = 3 + (this.favor.extraOffer || 0);
-    for (let i = 0; i < count; i += 1) {
-      const roll = cfg ? this.boonRng() : 1;
-      const rarity = roll < cfg?.chance.epic ? "epic" : roll < (cfg?.chance.epic ?? 0) + (cfg?.chance.rare ?? 0) ? "rare" : null;
-      const pool = rarity ? boons.filter((id) => cfg.list[id].rarity === rarity) : [];
-      if (pool.length) {
-        const id = pool[Math.floor(this.boonRng() * pool.length)];
-        boons.splice(boons.indexOf(id), 1);
-        picks.push(`boon:${id}`);
-      } else if (available.length) {
-        picks.push(available.splice(Math.floor(this.rng() * available.length), 1)[0]);
-      }
-    }
-    this.virtueOffer = picks.length ? picks : null;
-  }
-
-  milestoneFractions() {
-    const n = this.tuning.run.offerCount ?? 5;
-    return Array.from({ length: n }, (_, i) => (i + 1) / (n + 1));
-  }
-
-  // Run blessings are offered as the stage's defeat counter crosses each milestone (one open offer at a time).
-  checkMilestones() {
-    if (!this.running || !this.milestones?.length || this.virtueOffer) return;
-    const { total } = timelineTotals(this.timeline);
-    if (total && this.enemiesDown / total >= this.milestones[0]) {
-      this.milestones.shift();
-      this.addPlacement(this.favor.offerPlacement || 0); // blessing: every offer pays placement
-      this.offerVirtues();
-      this.onChange("offer", this);
-    }
-  }
-
-  chooseVirtue(name) {
-    if (!this.virtueOffer || !this.virtueOffer.includes(name) || this.virtues.includes(name)) return false;
-    this.virtueOffer = null;
-    if (name.startsWith("boon:")) this.boons = [...this.boons, name.slice(5)];
-    else this.addVirtue(name);
-    this.onChange("virtue", this);
-    return true;
-  }
-
-  // Declining an open offer; the next milestone brings a new one.
-  skipVirtues() {
-    if (!this.virtueOffer) return false;
-    this.virtueOffer = null;
-    this.onChange("virtue", this);
-    return true;
-  }
-
   hasBoon(id) {
     return this.boons?.includes(id) ? this.tuning.runBoons.list[id] : null;
   }
@@ -474,26 +394,6 @@ export class TowerDefenseGame {
       case "road": return this.heroes.some((h) => h.slotType === "road");
       case "freeze": return applies("wet") && applies("chill");
       default: return applies(need);
-    }
-  }
-
-  addVirtue(name) {
-    const before = this.modifiers().hp;
-    this.virtues.push(name);
-    const pairs = this.tuning.virtuePairs || [];
-    for (const pair of pairs) {
-      if (!this.activePairs.find((p) => p.name === pair.name) && pair.virtues.every((v) => this.virtues.includes(v))) {
-        this.activePairs.push(pair);
-      }
-    }
-    const hpGain = this.modifiers().hp - before;
-    if (hpGain > 0) {
-      // Apply the health bonus to already-deployed heroes, granted as current health.
-      for (const hero of this.heroes) {
-        const next = this.maxHpFor(hero.baseHp, hero.class);
-        hero.hpLeft += next - hero.hp;
-        hero.hp = next;
-      }
     }
   }
 
@@ -612,7 +512,6 @@ export class TowerDefenseGame {
     // The boss closes the stage: it waits for the field to clear, at most tuning.timeline.bossWaitMs.
     this.spawnQueue = [...queue.filter((e) => e.kind !== "boss"), ...queue.filter((e) => e.kind === "boss")];
     this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
-    this.milestones = this.milestoneFractions();
     this.spawnClock = 0;
     this.started = true;
     this.running = true;
@@ -676,11 +575,10 @@ export class TowerDefenseGame {
         if (target.slotType === "platform") target.aimedAt = this.time; // renderer: target warning
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
-          const mods = this.modifiers();
           // A veiled Assassin keeps holding its enemy, but nothing can hurt it.
-          if (!this.isVeiled(target) && this.rng() >= mods.dodge) {
+          if (!this.isVeiled(target)) {
             const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
-            const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target));
+            const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor, "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
@@ -752,7 +650,6 @@ export class TowerDefenseGame {
       for (const cls of classes) (this.insightLog[cls] ||= { stages: 0, kills: 0 }).stages = 1;
       this.finish(true);
     }
-    this.checkMilestones();
   }
 
   // Divine Interventions (tuning.interventions, TOWER_DEFENSE_GAMEPLAY_IDEAS.md B2): player
@@ -1024,7 +921,7 @@ export class TowerDefenseGame {
 
   // Heal share of an ultimate; Support class blessings raise it.
   healFraction(hero) {
-    return this.support.healFraction * (1 + this.modifiers().heal) * (1 + (this.classBonus(hero).support || 0));
+    return this.support.healFraction * (1 + (this.classBonus(hero).support || 0));
   }
 
   supportAuraFor(hero) {
@@ -1085,7 +982,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + this.modifiers().atk) * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
+    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero);
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -1359,8 +1256,7 @@ export class TowerDefenseGame {
     if (cb.purify) this.purify(hero);
     if (kit.heal && this.healPulse(hero, kit, cb)) return true;
     if (!target) return false;
-    const mods = this.modifiers();
-    const crit = this.rng() < hero.critChance + mods.crit + (cb.crit || 0);
+    const crit = this.rng() < hero.critChance + (cb.crit || 0);
     const pierce = this.pierceFor(hero);
     const value = this.attackValue(hero);
     // Archer anti-air (kit airBonus). Assassins hunt enemies nobody holds (kit looseBonus),
@@ -1588,7 +1484,7 @@ export class TowerDefenseGame {
       if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
     }
     if (!ally) return false;
-    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0));
+    const amount = this.attackValue(hero) * kit.heal * (1 + (cb.support || 0));
     this.healHero(ally, amount, hero);
     this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
     return true;

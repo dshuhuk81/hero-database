@@ -355,37 +355,6 @@ assert.ok(render.unitDepth?.(200, "flyer") > render.unitDepth?.(500, "hero"), "f
 
 console.log("Tower defense UI helper checks passed.");
 
-// --- Blessing cards: every tuned effect has a short stat label and a value ---
-{
-  const { blessingDisplay } = await import("../src/game/td/ui.js");
-  const effects = [...Object.values(tuning.virtueEffects), ...(tuning.virtuePairs || []).map((pair) => pair.effect)];
-  for (const effect of effects) {
-    const shown = blessingDisplay(effect);
-    assert.notEqual(shown.tone, "none", `known effect type ${effect.type}`);
-    assert.match(shown.value, /^\+\d+%$/, `value formatted ${effect.type}`);
-  }
-  assert.deepEqual(blessingDisplay({ type: "atk", value: 0.15 }), { value: "+15%", stat: "Attack", tone: "atk" }, "attack card");
-  assert.equal(blessingDisplay({ type: "mystery", value: 1 }).tone, "none", "unknown type falls back");
-  console.log("Blessing card checks passed.");
-}
-
-// --- Buff bar: stacked blessings add up exactly like the simulator ---
-{
-  const { buffChips } = await import("../src/game/td/ui.js");
-  const { TowerDefenseGame } = await import("../src/game/td/sim.js");
-  const heroes = (await import("../src/data/gameBalance.json", { with: { type: "json" } })).default;
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: [{ startMs: 10_000_000, kind: "grunt", count: 1 }], seed: 3 });
-  for (const name of ["Wildness", "Desire", "Insight"]) { g.virtueOffer = [name]; g.chooseVirtue(name); }
-  const chips = buffChips(g.modifiers());
-  const atk = chips.find((chip) => chip.type === "atk");
-  const pairBonus = (tuning.virtuePairs || []).find((pair) => pair.name === "Storm Bond")?.effect.value ?? 0;
-  const expected = Math.round((tuning.virtueEffects.Wildness.value + tuning.virtueEffects.Desire.value + pairBonus) * 100);
-  assert.equal(atk.value, `+${expected}%`, "attack blessings and pair bonus add up");
-  assert.deepEqual(chips.map((chip) => chip.type), ["atk", "crit"], "fixed order, zero stats hidden");
-  assert.deepEqual(buffChips({ atk: 0, hp: 0 }), [], "no chips without blessings");
-  console.log("Buff bar checks passed.");
-}
-
 // M14 run statistics: damage rows, short numbers, loss report.
 {
   const { damageRows, shortNumber, lossReport } = await import("../src/game/td/ui.js");

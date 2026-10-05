@@ -150,21 +150,6 @@
     },
     {
       "tree": "trunk",
-      "id": "aegir_tide",
-      "name": "Tide of Plenty",
-      "row": 2,
-      "col": 1,
-      "maxLevel": 5,
-      "cost": 375,
-      "requiresPoints": 16,
-      "effect": {
-        "type": "offerPlacement",
-        "value": 1
-      },
-      "text": "Each blessing offer grants +{v} placement."
-    },
-    {
-      "tree": "trunk",
       "id": "atlas_wall",
       "name": "Shield Wall",
       "row": 2,
@@ -177,21 +162,6 @@
         "value": 2
       },
       "text": "Road blockers +{v} px contact range."
-    },
-    {
-      "tree": "trunk",
-      "id": "boreas_favor",
-      "name": "Fortune's Wind",
-      "row": 2,
-      "col": 3,
-      "maxLevel": 1,
-      "cost": 1870,
-      "requiresPoints": 16,
-      "effect": {
-        "type": "extraOffer",
-        "value": 1
-      },
-      "text": "Blessing offers show {v} more option."
     },
     {
       "tree": "trunk",

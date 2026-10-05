@@ -101,7 +101,7 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
 {
   const withBoost = (nextRunBoost) => sanitizeSave({ ...emptySave(), nextRunBoost }, rules)?.nextRunBoost;
   assert.deepEqual(withBoost({ type: "placement", placement: 6 }), { type: "placement", placement: 6 }, "placement boost kept");
-  assert.deepEqual(withBoost({ type: "virtue", virtue: "Grace" }), { type: "virtue", virtue: "Grace" }, "virtue boost kept");
+  assert.equal(withBoost({ type: "virtue", virtue: "Grace" }), null, "old virtue boost dropped");
   assert.equal(withBoost({ type: "placement", placement: -5 }), null, "negative placement dropped");
   assert.equal(withBoost({ type: "other" }), null, "unknown type dropped");
   assert.equal(sanitizeSave({ bestScore: 0 }, rules).nextRunBoost, null, "old saves have no boost");

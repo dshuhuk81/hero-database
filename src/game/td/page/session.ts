@@ -28,7 +28,6 @@ type Deps = {
   speed(): number;
   hudTick(now: number): void;
   buffBar: { render(): void; reset(): void; position(): void };
-  runOffer: { render(): void; reset(): void };
   results: { finishRun(): void; reset(): void };
   debugPanel: { apply(): void; tick(now: number): void } | null;
   popover: { tick(now: number): void; isOpen(): boolean };
@@ -149,8 +148,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.renderPreview();
     deps.buffBar.render();
     ctx.actions.resetPowers();
-    const boostText = boost?.type === "placement" ? ` Placement shard: +${boost.placement} starting placement.`
-      : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
+    const boostText = boost?.type === "placement" ? ` Placement shard: +${boost.placement} starting placement.` : "";
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
       : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
@@ -165,7 +163,6 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.closePopover(false);
     ctx.actions.closeSheet(false);
     ctx.actions.cancelDeploy();
-    deps.runOffer.reset();
     deps.results.reset();
     if (loadingCanvas) { loadingCanvas.remove(); loadingCanvas = null; }
     const session = state.session;
@@ -231,13 +228,11 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       // The glossary owns requirements and explanations; combat only announces the discovery.
       if (info) ctx.notice(`Reaction discovered: ${info.name}.`);
     }
-    if (type === "offer") ctx.actions.playSound("clear"); // a blessing offer opened at a defeat milestone
     if (type === "finish") deps.results.finishRun();
     ctx.actions.renderDeck();
     if (type === "place") ctx.actions.startStage();
     ctx.actions.renderPreview();
-    deps.runOffer.render();
-    if (type === "virtue" || type === "reset" || type === "mutator" || type === "place" || type === "sell" || type === "death" || type === "revive") deps.buffBar.render();
+    if (type === "reset" || type === "mutator" || type === "place" || type === "sell" || type === "death" || type === "revive") deps.buffBar.render();
     ctx.actions.refreshSelection();
     if (deps.recruit.isOpen()) ctx.actions.updateSheet();
     if (ctx.actions.activePanel()?.dataset.tdPanel === "blessings") ctx.actions.renderRunTab();

@@ -1,5 +1,5 @@
 // Balance harness: plays full stages with representative squads using a simple policy (deploy affordable
-// heroes as placement regrows, take the first virtue offered) and reports duration, spending, leaks, and win rate.
+// heroes as placement regrows) and reports duration, spending, leaks, and win rate.
 // Run with: npm run test:td-balance
 import { freePlayMaps, playRun, SQUADS, STARTERS } from "./lib/td-runner.mjs";
 import { bestClass, classMatrix, EXPECTED, printMatrix } from "./lib/td-class-matrix.mjs";

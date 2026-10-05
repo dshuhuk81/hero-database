@@ -40,9 +40,8 @@ export function createDebugPanel(ctx: PageContext) {
     const session = ctx.getSession();
     if (debugEl!.hidden || !session) return;
     const game = session.game;
-    const mods = game.modifiers();
     // Rough sustained damage: attack x attacks per second x crit, before enemy armor and ultimates.
-    const dps = game.heroes.reduce((sum: number, unit: any) => sum + game.attackValue(unit) * unit.aps * (1 + Math.min(1, unit.critChance + mods.crit) * 0.5), 0);
+    const dps = game.heroes.reduce((sum: number, unit: any) => sum + game.attackValue(unit) * unit.aps * (1 + Math.min(1, unit.critChance) * 0.5), 0);
     const stageHp = game.stageTotalHp();
     const alive = game.enemies.filter((enemy: any) => !enemy.dead);
     const rows = [

@@ -151,7 +151,7 @@ assert.equal(game.complete, true, "and is complete");
   archer.attackClock = 0; archer.hp = archer.maxHp = 1e9;
   const before = odin.hpLeft;
   g.step(1 / 60);
-  const expected = resolveDamage(archer.attack * tuning.enemies.archer.platformAttack, odin.armor * (1 + g.modifiers().res), "physical") * (1 - g.guardFor(odin));
+  const expected = resolveDamage(archer.attack * tuning.enemies.archer.platformAttack, odin.armor, "physical") * (1 - g.guardFor(odin));
   assert.ok(Math.abs(before - odin.hpLeft - expected) < 1e-6, `platform hit uses platformAttack (${(before - odin.hpLeft).toFixed(2)} vs ${expected.toFixed(2)})`);
   assert.ok(odin.aimedAt > 0, "target warning timestamp set for the renderer");
 }
@@ -363,70 +363,6 @@ assert.equal(game.complete, true, "and is complete");
   assert.ok(before - brute.hp >= buffedHit - 1e-6, "buffed attack deals aura-increased damage");
 }
 
-// --- 3B virtue choices ---
-
-// Plays until the first blessing offer opens at a defeat milestone (or the stage ends).
-function runToOffer(g) {
-  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.placement = 10000;
-  g.place("atlas", "road", 0); g.place("aegir", "road", 3);
-  g.place("odin", "platform", 1); g.place("skadi", "platform", 2); g.place("plutus", "platform", 0);
-  g.start();
-  for (let i = 0; i < 60 * 600 && g.running && !g.virtueOffer; i += 1) g.step(1 / 60);
-}
-
-// Offers are seeded and reproducible.
-{
-  const a = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 61 });
-  const b = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 61 });
-  runToOffer(a); runToOffer(b);
-  assert.deepEqual(a.virtueOffer, b.virtueOffer, "same seed yields the same offer");
-  assert.equal(a.virtueOffer.length, 3, "three picks offered");
-}
-
-// One selection per offer; the rest of the offer closes with it.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 62 });
-  runToOffer(g);
-  const [first, second] = g.virtueOffer;
-  assert.equal(g.chooseVirtue(first), true, "first selection accepted");
-  assert.equal(g.chooseVirtue(second), false, "second selection from the same offer rejected");
-  assert.deepEqual(g.virtues, [first], "exactly one blessing active");
-}
-
-// The chosen effect is applied to combat math.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 63 });
-  g.setTeam(["atlas", "aegir", "odin", "skadi", "plutus"]);
-  g.placement = 10000;
-  g.place("odin", "platform", 1);
-  g.virtueOffer = ["Wildness", "Mercy", "Gnosis"];
-  g.chooseVirtue("Wildness");
-  const odin = g.heroes[0];
-  assert.ok(Math.abs(g.attackValue(odin) - odin.atk * 1.15) < 1e-9, "Wildness adds +15% attack");
-  const hpBefore = odin.hp;
-  g.virtueOffer = ["Defiance"];
-  g.chooseVirtue("Defiance");
-  assert.equal(odin.hp, Math.round(odin.baseHp * 1.15), "Defiance raises max health for deployed heroes");
-  assert.ok(odin.hpLeft > hpBefore - 1 && odin.hpLeft === odin.hp, "health bonus granted as current health");
-}
-
-// An offer can be skipped; the next milestone brings a new one; restart clears everything.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: LONG_FIGHT, seed: 64 });
-  runToOffer(g);
-  assert.ok(g.virtueOffer, "offer present after the first milestone");
-  assert.equal(g.skipVirtues(), true, "the offer can be skipped");
-  assert.equal(g.virtueOffer, null, "skipping closes it");
-  assert.equal(g.skipVirtues(), false, "nothing left to skip");
-  runToOffer(g);
-  assert.ok(g.virtueOffer || g.complete, "a later milestone offers again");
-  g.virtues.push("Wildness");
-  g.reset();
-  assert.deepEqual(g.virtues, [], "restart clears chosen blessings");
-  assert.equal(g.virtueOffer, null, "restart clears the offer");
-}
-
 // --- 2A upgrades ---
 
 // R4 battle economy: Favor discounts deployment, while relocation is an atomic
@@ -551,71 +487,6 @@ function runToOffer(g) {
 }
 
 // Divine Blessings tree rules and effects: scripts/test-td-favor.mjs.
-
-// --- 5B virtue pairs ---
-
-// virtue_pair_triggered: choosing both pair virtues activates the pair.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 41 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.start();
-  for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
-  // Manually inject an offer with the Storm Bond pair virtues.
-  g.virtueOffer = ["Wildness", "Desire"];
-  g.chooseVirtue("Wildness");
-  g.virtueOffer = ["Desire", "Resolve"];
-  g.chooseVirtue("Desire");
-  assert.equal(g.activePairs.length, 1, "Storm Bond pair triggered after both virtues chosen");
-  assert.equal(g.activePairs[0].name, "Storm Bond", "correct pair name");
-}
-
-// virtue_pair_bonus_applied: pair bonus stacks on top of individual virtue bonuses.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 42 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.start();
-  for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
-  g.virtueOffer = ["Wildness", "Resolve"];
-  g.chooseVirtue("Wildness");
-  const atkAfterFirst = g.modifiers().atk;
-  g.virtueOffer = ["Desire", "Resolve"];
-  g.chooseVirtue("Desire");
-  const atkAfterPair = g.modifiers().atk;
-  // Wildness +0.15, Desire +0.10, Storm Bond +0.05 = 0.30
-  assert.ok(Math.abs(atkAfterPair - (atkAfterFirst + 0.15)) < 1e-9, "pair atk bonus adds 0.05 on top of Desire 0.10");
-}
-
-// virtue_pair_not_double: same pair cannot be triggered twice.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 43 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.start();
-  for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
-  g.virtueOffer = ["Wildness", "Resolve"];
-  g.chooseVirtue("Wildness");
-  g.virtueOffer = ["Desire", "Resolve"];
-  g.chooseVirtue("Desire");
-  assert.equal(g.activePairs.length, 1, "pair triggered once");
-  // Simulate a second attempt to trigger (e.g. via manual manipulation).
-  g.activePairs.push(...g.activePairs); // would be 2 if the guard failed
-  // Verify the guard: direct call to chooseVirtue with an already-chosen virtue does nothing.
-  g.virtueOffer = ["Wildness", "Mercy"];
-  const result = g.chooseVirtue("Wildness");
-  assert.equal(result, false, "already-chosen virtue cannot be selected again");
-}
-
-// virtue_pair_order_independent: pair triggers regardless of which virtue is chosen first.
-{
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 44 });
-  g.setTeam(["atlas", "odin", "skadi", "plutus", "aegir"]);
-  g.start();
-  for (let i = 0; i < 60 * 120 && g.running; i += 1) g.step(1 / 60);
-  g.virtueOffer = ["Desire", "Resolve"];
-  g.chooseVirtue("Desire");
-  g.virtueOffer = ["Wildness", "Resolve"];
-  g.chooseVirtue("Wildness");
-  assert.equal(g.activePairs.length, 1, "Storm Bond triggers when Desire chosen before Wildness");
-}
 
 // --- 5D run stats: per-hero kills, duration, gold tracking ---
 
@@ -1931,13 +1802,8 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     assert.ok(g.boonEligible("storm_surge"), "Odin chains");
     assert.ok(!g.boonEligible("venom_rot"), "no poison source");
     assert.ok(!g.boonEligible("shattering_cold"), "no chill source, no freeze");
-    let rare = 0;
-    for (let i = 0; i < 40; i += 1) { g.offerVirtues(); rare += g.virtueOffer.filter((n) => n.startsWith("boon:")).length; }
-    assert.ok(rare > 0, "rare or epic cards show up");
-    for (let i = 0; i < 40; i += 1) { g.offerVirtues(); for (const n of g.virtueOffer) if (n.startsWith("boon:")) assert.ok(g.boonEligible(n.slice(5)), `${n} eligible`); }
-    g.virtueOffer = ["boon:tidal_pull"];
-    assert.ok(g.chooseVirtue("boon:tidal_pull") && g.boons.includes("tidal_pull"), "boon chosen");
-    assert.equal(g.virtues.length, 0, "boons are not stat blessings");
+    assert.equal("offerVirtues" in g, false, "blessings are no longer offered during a run");
+    g.boons = ["tidal_pull"];
     // Tidal Pull slows Wet enemies.
     const wet = enemyAt(g, "grunt", 0, 0); wet.distance = 10; wet.wetUntil = g.time + 5;
     const dry = enemyAt(g, "grunt", 0, 0); dry.distance = 10;
@@ -2251,23 +2117,17 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(plain.enemyShape("brute"), null, "no enemy shape off the board");
 }
 
-// Favor placement bonuses: a faster regrowth rate and a flat payout with every blessing offer.
+// Favor placement bonuses: a faster regrowth rate.
 {
   const fast = structuredClone(tuning);
-  fast.favor = { placementRate: 0.5, offerPlacement: 2 };
+  fast.favor = { placementRate: 0.5 };
   const g = new TowerDefenseGame({ heroes, tuning: fast, map: maps[0], timeline: OPEN_TIMELINE, seed: 3 });
   g.start();
   g.enemies = []; g.spawnQueue = [{ at: 99, kind: "grunt", scale: 1, lane: 0, sway: 0 }];
   const before = g.placement;
   for (let i = 0; i < 60 * 10; i += 1) g.step(1 / 60);
   assert.equal(g.placement - before, 15, "placementRate 0.5 grows 1.5 points per second");
- 
-  const beforeOffer = g.totalPlacementEarned;
-  g.enemiesDown = timelineTotals(g.timeline).total; // the defeat counter crosses the first milestone
-  g.step(1 / 60);
-  assert.ok(g.virtueOffer, "the milestone opens a blessing offer");
-  assert.ok(g.totalPlacementEarned - beforeOffer >= 2, "offerPlacement pays with the offer");
-}
+ }
 
 // Pantheon bonds (bonds.js, tuning.bonds): tiers by heroes on the field, recruits as wildcards.
 {

@@ -450,7 +450,7 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   Asclepius, Gaia) 2: 7% less damage taken, 4: 13% less and heals 15% stronger (the healer's
   bond counts). Recruits are wildcards: each joins the set with more of its own heroes on the
   field (Norse on a tie) and shares its bonus. The squad screen lists the bonds a squad
-  brings; in battle active bonds show as gold chips in the buff bar. Tag synergy stays
+  brings; in battle active bonds show as gold chips in the bar on the map. Tag synergy stays
   underneath as before; `synergy.bonusPerTag: 0` would retire it.
 - **Hero panel** (`page/popover.ts`): stars and Evolution badge, stats (attack, speed, reach
   grid, crit), target priority, collapsed details, and a pinned footer with the permanent
@@ -540,8 +540,8 @@ There are no waves. A stage, a map's default encounter (Free Play, Daily Trial) 
 - Targets follow the WoR chapter table (`tuning.timeline.chapterTargets`: about 11 enemies and 53 s in chapter 1, up
   to 38 enemies, 29 groups and 234 s later), ramping 0.8x to 1.2x inside a chapter. `npm run td:stage-lint` checks
   every stage against them; `npm run td:wor-compare` compares the shape with the WoR analysis.
-- Run blessings (virtues and rare / epic boons) are offered at `run.offerCount` (5) evenly spaced defeat milestones
-  (enemies killed or through the gates); the stage waits while an offer is open and it can be skipped.
+- Nothing is picked during a battle (Oct 5, 2026): no milestone blessing offers, virtues, virtue pairs or virtue shard.
+  Hero skill buffs (Skadi, Plutus, Support `aura` timed attack buff, Atalanta rapid fire) stay.
 - Environment phase rules alternate every `timeline.phaseSeconds` (20 s): odd phases, even phases.
 - Difficulty tiers: Normal, Heroic (enemy health x2, attack x1.3, Favor x1.3),
   Mythic (x3.2, x1.6, x1.6).
@@ -572,7 +572,7 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
   `gameBalance.json`, 11 for the cheapest recruits up to 25 for the strongest; tuned by hand,
   `build-game-balance.mjs` keeps an existing cost). Other sources of placement: the Soul Reaper boon (`placement` 3 per
   10 kills), awakened Plutus Fortune Shower (+3), the Placement shard (`shards.placement` 6
-  starting points), Favor nodes (`startingPlacement`, `placementRate`, `offerPlacement`: paid with every blessing offer) and the
+  starting points), Favor nodes (`startingPlacement`, `placementRate`) and the
   Necropolis / Autumn environments (`placementRate` x1.2 / x1.15).
 - Placement points buy two things:
   - **Deploy** a hero for its placement cost (`sim.deployCost()`): the hero's cost minus the
@@ -588,10 +588,9 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
 - **Sell** works anytime and refunds the full placement cost paid (`run.sellRefund` 1).
 - Hoarder challenge now means placement points left at the win (`HOARDER_PLACEMENT`, first guess).
 - No battle ranks, focus, class paths, Awakening or training. A placed hero uses its
-  collection stats (`collectionHeroes()`), times run modifiers (virtues, Favor hero health,
-  class Apotheosis +15% attack and health, Expedition veterans +10%).
-- Run boons (rare / epic) and virtue blessings are offered at defeat milestones; virtue pairs grant
-  extra effects; shards give a next-run boost.
+  collection stats (`collectionHeroes()`), times Favor hero health,
+  class Apotheosis +15% attack and health, Expedition veterans +10%.
+- Expedition relics (rare / epic boons) stay; shards (Favor or Placement) give a next-run boost. Virtue blessings are gone.
 
 ## 10. Battlefields (`tdMaps.json`)
 
@@ -849,7 +848,7 @@ Hero portrait backdrops: every hero portrait `<img>` carries `data-rarity` (from
   keep their ids too: `*_ascension` is Swift Muster (deploy 10% cheaper), `*_rite` Divine
   Rite (relocation 30% cheaper), `*_apotheosis` Apotheosis (+15% attack and health, always
   on); trunk `odin_dominion` Master Smith lowers deployment costs 3% per level.
-- **Virtues and run boons** at defeat milestones; **shards** (a run that defeats half the stage) for a next-run boost.
+- **Shards** (a run that defeats half the stage): Favor or Placement for the next run.
 - **Hero collection:** see section 11.
 
 ### Persistence
