@@ -5,9 +5,9 @@
 // coin, pulse), melee shows a weapon arc or impact, heals flow along curves.
 // Odin's lightning (heroVariant chain_lightning) lives in odin-fx.js.
 
-const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash"]);
+const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash", "extra", "wardhit"]);
 const LIGHTNING = new Set(["shot", "hit", "ult"]);
-const UTILITY_ULTS = new Set(["shield_wall", "expose", "mass_taunt", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"]);
+const UTILITY_ULTS = new Set(["shield_wall", "expose", "mass_taunt", "bifrost_ward", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"]);
 
 // name/color/accent are also used by the docs table; ranged heroes launch projectiles.
 export const PROFILES = {
@@ -54,8 +54,11 @@ export const hasHeroFx = (effect) => {
   return !(effect.heroVariant === "chain_lightning" && LIGHTNING.has(effect.type));
 };
 
-export function createHeroFx(kit, { reducedMotion = false } = {}) {
+export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {}) {
   const { TAU, rand } = kit;
+  // Flat ground effects (rings, lava, rims) draw on the ground kit, below the units, so they
+  // never cover an enemy standing in them. Particles and bursts stay on the main kit.
+  const ground = groundKit;
   let seen = new WeakSet();
 
   // ------------------------------------------------------------ building blocks
@@ -96,7 +99,7 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
     kit.spawn("shard", x - Math.cos(angle) * 6, y - Math.sin(angle) * 6, { tint: p.accent, size: 16, sizeEnd: 10, life: 0.16, delay, rot: angle, alpha: 1, hold: 0.4 });
   }
   function groundRing(x, y, r0, r1, color, { life = 0.45, width = 3, delay = 0, squash = 0.5, add = true, alpha = 0.85 } = {}) {
-    kit.shape((g, t) => {
+    ground.shape((g, t) => {
       const e = 1 - (1 - t) * (1 - t);
       kit.ring(g, x, y, reducedMotion ? (r0 + r1) / 2 : r0 + (r1 - r0) * e, { color, width: width * (1 - t * 0.6), alpha: alpha * (1 - t), squash });
     }, life, { delay, add });
@@ -450,14 +453,10 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       flash(sx, sy, p.color, 70, { life: 0.5, alpha: 0.5 });
       debris("flake", sx, sy, 10, p.accent, { add: true, up: 60, gravity: 40, speed: 120, life: 0.9, size: 8 });
     },
-    heimdall(e, p, sx, sy) { // The Gate Hears You: horn blast in waves of bridge colours
-      const facing = e.facing ?? 0;
+    heimdall(e, p, sx, sy) { // Bifrost Ward: bridge-coloured rings roll out over his allies
       const colors = [0xff7a7a, 0xffd66e, 0x7ee0a0, 0x7cc8ff, 0xc39bff];
-      colors.forEach((color, i) => kit.shape((g, t) => {
-        const r = 18 + t * 100;
-        kit.crescent(g, sx, sy, r, facing - 0.9, facing + 0.9, { thick: 7, color, alpha: (1 - t) * 0.75, squash: 0.65 });
-      }, 0.7, { delay: i * 0.07 }));
-      groundRing(sx, sy + 10, 20, (e.range ?? 70) * 2.5, p.color, { life: 0.9, width: 3, alpha: 0.5 });
+      const reach = (e.range ?? 70) * 1.6;
+      colors.forEach((color, i) => groundRing(sx, sy + 12, 14, reach, color, { delay: i * 0.07, life: 0.8, width: 4, alpha: 0.75 }));
       flash(sx, sy - 10, p.accent, 60, { life: 0.35 });
     },
     gaia(e, p, sx, sy) { // Where the Roots Hold: a green field spreads over her range, stone wards rise
@@ -587,20 +586,13 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
       groundRing(e.x, e.y + 6, 6, 40, p.color, { life: 0.6, delay: 0.1 });
       debris("flake", e.x, e.y, 6, p.accent, { add: true, up: 40, gravity: 50, speed: 80, life: 0.8, size: 8, delay: 0.1 });
     },
-    atalanta(e, p, sx, sy) { // Fire in the Brambles: a volley of burning arrows lands on the pack
-      const r = 80;
-      let land = 0;
-      for (let i = 0; i < kit.n(7); i++) {
-        const a = rand(0, TAU), d = rand(0, r * 0.8);
-        const x = e.x + Math.cos(a) * d, y = e.y + Math.sin(a) * d * 0.5;
-        land = Math.max(land, projectile("arrow", sx, sy, x, y, 0xffd27a, { speed: 900, arc: 40, size: 22, add: false, delay: i * 0.04,
-          trail: (tx, ty, ta) => { streakTrail(0xff8a3d, { size: 20 })(tx, ty, ta); if (Math.random() < 0.3) kit.spawn("ember", tx, ty, { tint: 0xffc26b, size: 6, vy: 20, life: 0.3, optional: true }); } }));
-        kit.spawn("flame", x, y, { tint: i % 2 ? 0xff7a2e : 0xffc26b, size: 10, sizeEnd: 18, vy: -40, life: 0.5, delay: land });
+    atalanta(e, p, sx, sy) { // Limitless Shots: wind gathers around her and the leaves lift
+      flash(sx, sy - 6, 0xffffff, 54, { life: 0.25 });
+      for (let i = 0; i < 3; i++) groundRing(sx, sy + 22, 10, 58, i ? p.accent : p.color, { delay: i * 0.1, life: 0.6, width: 4 - i });
+      for (let i = 0; i < kit.n(10); i++) {
+        const a = i / 10 * TAU;
+        kit.spawn("leaf", sx + Math.cos(a) * 14, sy + 20 + Math.sin(a) * 6, { tint: i % 2 ? p.color : p.accent, size: 9, life: 0.8, vy: -70, vx: Math.cos(a) * 60, ay: 40, spin: rand(-8, 8), delay: i * 0.025, add: false, hold: 0.6 });
       }
-      groundRing(e.x, e.y + 4, 10, r, 0xff8a3d, { delay: land, life: 0.5, width: 3 });
-      flash(e.x, e.y, 0xffc26b, 60, { delay: land, life: 0.35, alpha: 0.6 });
-      flash(sx, sy, p.accent, 40, { life: 0.25 });
-      if (e.awakened) orbit("twinkle", sx, sy, 5, p.accent, { r: 26, size: 9, life: 0.8, speed: 8, climb: 16 });
     },
     stheno(e, p, sx, sy) { // Hold That Last Step: serpent eyes flare, stone creeps along each gaze
       for (const side of [-1, 1]) flash(sx + side * 6, sy - 12, p.accent, 16, { life: 0.5, grow: 1.1 });
@@ -754,6 +746,28 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
         kit.spawn("ring", x, y + 10, { tint: 0x82e89a, size: 20, sizeEnd: 52, stretch: 0.5, life: 0.5, alpha: 0.7, hold: 0.2 });
         return;
       }
+      case "extra": { // Window strike (Limitless Shots, Flurry, Solar Rush): one more strike on the target
+        const i = e.index ?? 0, n = (e.count ?? 1) + 1;
+        const delay = 0.05 + i * 0.05;
+        if (e.heroId === "atalanta") { // the arrows fan out around the main shot, each with a spark of the burn
+          const off = ((i + 1) - (n - 1) / 2) * 11;
+          const tx = x + Math.cos(angle + Math.PI / 2) * off, ty = y + Math.sin(angle + Math.PI / 2) * off;
+          const end = projectile("arrow", sx, sy, tx, ty, 0xf1ffd6, { speed: 1100, size: 18, add: false, delay, trail: streakTrail(p.color, { size: 20 }) });
+          sparks(tx, ty, 3, 0xff8a3d, { size: 6, up: 30, gravity: 200, life: 0.3, delay: end });
+          flash(tx, ty, p.accent, 24, { delay: end, life: 0.15 });
+        } else if (e.heroId === "vidar") { // crossed thrusts, alternating sides
+          const side = i % 2 ? 0.8 : -0.8;
+          daggerGlint(x, y, angle + side, p, delay);
+          daggerGlint(x, y, angle - side * 0.4, p, delay + 0.03);
+        } else if (e.heroId === "helios") { // the second arc mirrors the first
+          slash(x, y, angle, p.color, { r: 20, thick: 8, dir: -1, core: p.accent, delay, life: 0.24 });
+        }
+        return;
+      }
+      case "wardhit": { // a blow glances off the bridge-coloured ward
+        kit.spawn("twinkle", x + rand(-8, 8), y + rand(-6, 6), { tint: [0xff7a7a, 0xffd66e, 0x7ee0a0, 0x7cc8ff, 0xc39bff][Math.floor(Math.random() * 5)], size: 14, sizeEnd: 4, life: 0.3, spin: 4, optional: true });
+        return;
+      }
       case "buff": {
         rise(p.mote === "coin" ? "coin" : "twinkle", x, y, 4, p.accent, { size: 9, speed: 55, add: p.mote !== "coin" });
         kit.spawn("glow", x, y, { tint: p.color, size: 40, sizeEnd: 60, life: 0.5, alpha: 0.35 });
@@ -773,9 +787,103 @@ export function createHeroFx(kit, { reducedMotion = false } = {}) {
   }
   const tmp = { x: 0, y: 0, angle: 0 };
 
+  // ---------------------------------------------------------------- ultimate windows and zones
+  // Running states read from the sim every frame: a window on the hero (`hero.win`), a lava
+  // zone (`game.zones`) and the Bifrost ward on an ally (`ally.wardFx`). Each gets one shape that
+  // lives as long as the state and blinks in its last 1.5 s, so the player sees when it ends.
+  const BRIDGE = [0xff7a7a, 0xffd66e, 0x7ee0a0, 0x7cc8ff, 0xc39bff];
+  let windowsSeen = new WeakMap(); // hero -> its last `win`
+  let zonesSeen = new WeakSet();
+  let wardsSeen = new WeakMap(); // ally -> its last `wardUntil`
+  const blink = (remaining, age) => (remaining > 1.5 || reducedMotion ? 1 : 0.55 + 0.45 * Math.sin(age * 18));
+  // A shape that also ticks `every` seconds of its life (particles) and draws each frame.
+  function running(life, every, tick, draw) {
+    let next = 0;
+    kit.shape((g, t, age) => {
+      if (tick && age >= next) { next = age + every; tick(age, life * (1 - t)); }
+    }, life, { add: false });
+    if (draw) ground.shape((g, t, age) => draw(g, t, age, life * (1 - t)), life);
+  }
+
+  function startWindow(hero, life) {
+    const p = PROFILES[hero.id];
+    if (!p) return;
+    const fy = () => hero.y + 22;
+    if (hero.id === "atalanta") {
+      running(life, 0.16, (age) => {
+        const a = age * 4 + Math.random() * 2;
+        kit.spawn("leaf", hero.x + Math.cos(a) * 24, fy() - 4 + Math.sin(a) * 8, { tint: p.color, size: 8, vy: -50, vx: Math.cos(a) * 20, life: 0.7, spin: rand(-6, 6), add: false, optional: true });
+      }, (g, t, age, left) => {
+        const k = blink(left, age);
+        kit.ring(g, hero.x, fy(), 30 + Math.sin(age * 5) * 2, { color: p.color, width: 2.5, alpha: 0.6 * k, squash: 0.32 });
+        kit.ring(g, hero.x, fy(), 40 + Math.sin(age * 5 + 1) * 3, { color: p.accent, width: 1.5, alpha: 0.35 * k, squash: 0.32 });
+      });
+    } else if (hero.id === "vidar") {
+      running(life, 0.22, () => {
+        kit.spawn("streak", hero.x + rand(-14, 14), hero.y + rand(-6, 14), { tint: p.accent, size: 26, sizeEnd: 8, life: 0.2, rot: rand(-0.4, 0.4), alpha: 0.5, optional: true });
+      }, (g, t, age, left) => {
+        const k = blink(left, age);
+        kit.ring(g, hero.x, fy(), 26, { color: p.accent, width: 2, alpha: 0.5 * k, squash: 0.32 });
+      });
+      // Two fading afterimages trail behind him, drawn dark and flat.
+      ground.shape((g, t, age) => {
+        const left = life * (1 - t), k = blink(left, age);
+        for (let i = 1; i <= 2; i++) g.ellipse(hero.x - i * 12 * Math.sin(age * 3 + i), hero.y + 2, 11, 24).fill({ color: 0x2a3347, alpha: 0.2 / i * k });
+      }, life, { add: false });
+    } else if (hero.id === "helios") {
+      running(life, 0.07, () => {
+        kit.spawn("ember", hero.x + rand(-18, 18), hero.y + rand(2, 22), { tint: Math.random() < 0.5 ? p.color : p.accent, size: 7, vy: -80, life: 0.5, optional: true });
+      }, (g, t, age, left) => {
+        const k = blink(left, age);
+        kit.ring(g, hero.x, fy(), 29 + Math.sin(age * 9) * 2, { color: p.color, width: 3, alpha: (0.5 + 0.2 * Math.sin(age * 9)) * k, squash: 0.32 });
+      });
+    }
+  }
+
+  function startLava(z, life) {
+    const veins = Array.from({ length: 7 }, (_, i) => {
+      const a = i / 7 * TAU + rand(-0.25, 0.25), len = z.radius * rand(0.55, 0.95);
+      return kit.boltPoints(0, 0, Math.cos(a) * len, Math.sin(a) * len * 0.5, { detail: 2, rough: 0.35 });
+    });
+    ground.shape((g, t, age) => {
+      const shrink = Math.min(1, life * (1 - t) / 1.2);
+      g.ellipse(z.x, z.y + 4, z.radius * (0.85 + 0.15 * shrink), z.radius * 0.5 * (0.85 + 0.15 * shrink)).fill({ color: 0x4a1408, alpha: 0.5 * shrink });
+    }, life, { add: false });
+    running(life, 0.11, (age, left) => {
+      const a = rand(0, TAU), d = Math.sqrt(Math.random()) * z.radius * 0.85;
+      kit.spawn("ember", z.x + Math.cos(a) * d, z.y + 4 + Math.sin(a) * d * 0.5, { tint: Math.random() < 0.5 ? 0xff7a2e : 0xffd27a, size: 8, vy: -55, life: 0.6, optional: true });
+      if (Math.random() < 0.3) kit.spawn("flame", z.x + Math.cos(a) * d, z.y + 4 + Math.sin(a) * d * 0.5, { tint: 0xff7a2e, size: 10, sizeEnd: 18, vy: -35, life: 0.5, optional: true });
+    }, (g, t, age, left) => {
+      const shrink = Math.min(1, left / 1.2), k = blink(left, age), pulse = 0.65 + 0.35 * Math.sin(age * 4);
+      for (const v of veins) {
+        const pts = v.map((c, i) => (i % 2 ? z.y + 4 + c * shrink : z.x + c * shrink));
+        kit.polyline(g, pts, { width: 2.5, color: 0xff8a3d, alpha: 0.75 * pulse * k * shrink, cap: "round", join: "round" });
+      }
+      kit.ring(g, z.x, z.y + 4, z.radius * (0.85 + 0.15 * shrink), { color: 0xff7a2e, width: 3, alpha: 0.7 * k * shrink, squash: 0.5 });
+    });
+  }
+
+  function startWard(ally, life) {
+    ground.shape((g, t, age) => {
+      if (ally.hpLeft <= 0) return;
+      const k = blink(life * (1 - t), age);
+      BRIDGE.forEach((color, i) => g.ellipse(ally.x, ally.y + 22, 24 + i * 1.7, 8 + i * 0.6).stroke({ width: 2, color, alpha: 0.55 * k }));
+    }, life);
+  }
+
   return {
-    reset() { seen = new WeakSet(); },
+    reset() { seen = new WeakSet(); windowsSeen = new WeakMap(); zonesSeen = new WeakSet(); wardsSeen = new WeakMap(); },
     update(game) {
+      for (const hero of game.heroes ?? []) {
+        const win = hero.win;
+        if (win && win.until > game.time && windowsSeen.get(hero) !== win) { windowsSeen.set(hero, win); startWindow(hero, win.until - game.time); }
+        if (hero.wardFx === "bifrost" && hero.wardUntil > game.time && wardsSeen.get(hero) !== hero.wardUntil) { wardsSeen.set(hero, hero.wardUntil); startWard(hero, hero.wardUntil - game.time); }
+      }
+      for (const z of game.zones ?? []) {
+        if (zonesSeen.has(z) || z.until <= game.time) continue;
+        zonesSeen.add(z);
+        startLava(z, z.until - game.time);
+      }
       for (const effect of game.effects) {
         if (seen.has(effect) || !hasHeroFx(effect)) continue;
         seen.add(effect);

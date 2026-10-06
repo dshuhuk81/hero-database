@@ -273,8 +273,7 @@ map, boss rush, hero mastery. Early call is dropped (a timeline has no waves to 
 
 ### Doc drift (audit)
 
-- `docs/tower-defense-ui-plan.md`: ring-era requirements (rings, touch rotation).
-- White-label audit (`docs/audits/`): label historical sections.
+Cleaned up October 6, 2026: `src/game/td/bugs.md` (done items marked), `docs/tower-defense-ui-plan.md` (ring-era sections labelled historical) and the white-label audit (inventory labelled historical). Nothing open.
 
 ### Skipped / deferred
 

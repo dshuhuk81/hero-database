@@ -4,6 +4,8 @@ Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (g
 
 ## Status
 
+> Wording about "rings" in this status table dates from the ring era; heroes stand on board tiles since October 2, 2026.
+
 | Milestone | State | Notes |
 | --- | --- | --- |
 | M1 Shell, sizing, on-map actions | Done | `GameLayout.astro` (no site nav/footer, safe areas), world fitted to width and height, recruit sheet from rings, anchored hero popover (sheet fallback, docks below the map in portrait), deck, notices, touch rotation, keyboard setup. |
@@ -86,9 +88,11 @@ Runbook for new clips, stills and hero art: `docs/td-asset-pipeline.md`. The sec
 
 `animateEnemy` in `render.js`, only with `?anim` in the URL (details in `TOWER_DEFENSE_SPEC.md`, section 6). Walk bounce and lean, attack wind-up and lunge, hit flash and shake, wingbeat, topple on death; no new assets. Open: tune the amounts in play, then decide whether it ships on by default. Switching it on is the `ENEMY_ANIM` line.
 
-### Next steps: real animation frames, free workflow
+### How the animation route was found (history, M7 is done)
 
-Each step is usable on its own; stop when the result is good enough at 44 to 108 px.
+> M7 is done and live. This list is the planning record of the free workflow options; the route that shipped is the PixelLab one described under "Shipped". Nothing here is open.
+
+Each step was usable on its own; the aim was a result good enough at 44 to 108 px.
 
 1. **Frame format and packer (done, shipped).** `scripts/build-td-enemy-anims.mjs` (sharp) turns one horizontal strip per clip into a WebP sheet plus a Pixi spritesheet JSON with a `td` block (feet anchor, idle body height, fps, pixel-art flag). Frames are cropped to one shared box per kind so the feet never jump. Output goes to `public/td-local/sheets/` (gitignored). Open: versioned file names and an R2 upload once real art exists.
 2. **Renderer support (done, shipped; the `?anim=sheets` test flag is gone).** With `?anim=sheets`, `grunt` and `archer` load their sheet and play `idle`, `walk`, `attack`, `hurt` and `death` from the signals `animateEnemy` already reads; other kinds keep the still sprite and the procedural motion. Frames are picked on game time rather than with `AnimatedSprite`'s own ticker, so pause and game speed apply. Test art: a free pixel-art pack in `~/hero-database-assets/td/newAssetTest` (Orc, Soldier); it proves the pipeline but does not match the painted style, and its license is not confirmed, so it is not deployed. Open: a real sheet for a painted enemy, checked the same way.
@@ -104,6 +108,16 @@ Each step is usable on its own; stop when the result is good enough at 44 to 108
 Also in place (September 29, 2026): a painted `flyer` from a generated 6-frame flight cycle (`STRIPS` mode of `scripts/td-warp-anim.py`). Generating a short frame series from text and keying it is a fifth free route for kinds where warping one still is not enough.
 
 Current route (September 29, 2026): PixelLab image-to-animation through the API with the kind's complete still as first frame and, for loops, as last frame (details in `TOWER_DEFENSE_SPEC.md` section 6). Archer, grunt, runner, brute and brood are built this way, the flyer from a generated strip; bosses wait for complete stills. Open: owner review in play, then ship the sheets (versioned names, R2 upload, `ENEMY_SHEETS` on by default) and delete superseded R2 files after the deploy.
+
+## Historical audit (September 2026, ring era)
+
+> **Historical.** The sections from here to the end ("Scope and evidence" to "Acceptance criteria") are the
+> original audit and rebuild plan written before the board rewrite (October 2, 2026) and the landscape R18 HUD.
+> They speak of rings, the R key for rotation, the 330 px command sidebar and portrait layouts. None of that is current:
+> heroes now stand on board tiles, there is no hero rotation, phones play in landscape only (portrait is blocked by a
+> rotate modal) and the recruit sheet, hero popover and squad rows replaced the sidebar. The milestones above (M1 to M7)
+> record what was built; the rest is kept for decision history. For what the game is now, read
+> [TOWER_DEFENSE_SPEC.md](../TOWER_DEFENSE_SPEC.md); open work lives in [TOWER_DEFENSE_ROADMAP.md](../TOWER_DEFENSE_ROADMAP.md).
 
 ## Scope and evidence
 

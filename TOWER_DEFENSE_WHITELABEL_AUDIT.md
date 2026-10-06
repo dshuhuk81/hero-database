@@ -20,6 +20,15 @@ Still open: deleting the unused local leftovers and the replaced sprite files (i
 
 Companion documents: [TOWER_DEFENSE_WHITELABEL_PLAN.md](TOWER_DEFENSE_WHITELABEL_PLAN.md) (asset isolation rules, hero art briefs) and [TOWER_DEFENSE_MYTHIC_HEROES.md](TOWER_DEFENSE_MYTHIC_HEROES.md) (replacement names and text for all 21 heroes). Nothing has been switched yet; this is the inventory and the switch plan.
 
+## Historical inventory (September 27, 2026)
+
+> **Historical.** The Status section above is current: the switch to the mythic roster is done (M24, M24b). Everything below
+> from "Summary" to the end is the pre-switch audit that drove it: the inventory, the "one switch" proposal, the work order and the
+> open owner decisions. Statements such as "heroes are about half done" or "audio does not exist" describe that moment.
+> Items 1 to 14 are all resolved (confirmed by the owner, October 6, 2026), including 10 to 12 and 14.
+> The live mapping is `src/game/td/skin.js` with `src/data/tdSkinMythic.json`; the per-hero brief is in
+> [TOWER_DEFENSE_WHITELABEL_PLAN.md](TOWER_DEFENSE_WHITELABEL_PLAN.md). Re-check a file against the code before acting on it.
+
 ## Summary
 
 | Area | Game content today | Replacement ready? |
@@ -81,15 +90,15 @@ Risk: **High** = copied game files (art, audio, animation rigs). **Medium** = th
 - Compared each sprite with its game portrait. Recognisably the game's design, replaced from text-only prompts: grunt (red-capped mushroom creature), runner (grey stones with a blue gem eye), flyer (rock sphere with a gold core and teal crystals), archer (purple crystal eye), brute (black and gold spider with amber eyes); Lilith v2 (the game's boss art with the background removed) and brood v2 (repaint of the game's model). Kept: Baphomet (generic horned demon), brood v1 and Lilith v1 (reused for broodcaller and hexer).
 - New: `td/enemies/sprites/{grunt,runner,flyer,archer,brute}-v2.webp`, `boss-lilith-v3.webp`, `brood-v3.webp`; prompts in `src/game/td/sprite-spec-for-ai.md`, which no longer tells anyone to use game portraits.
 
-### 10. Hero names and text (Medium)
+### 10. Hero names and text (Medium) - done
 - Source: `name` in `gameBalance.json` (Nuwa, Momus, Caishen, ...). The names are mythology, but the roster, pairing and portrayal are the game's.
 - Replacement: display names, titles, bios, trait and ultimate names in `TOWER_DEFENSE_MYTHIC_HEROES.md` (21/21).
 
-### 11. Skill names (Medium)
+### 11. Skill names (Medium) - done
 - Source: `heroSkills[id].skillName` in `gameBalance.tuning.json`. "Petrifying Gaze" (Medusa) and "Featherfall Judgment" appear verbatim in the game's skill text; the other 19 are TD-written but themed on the Motto hero (e.g. "Fate Link" for Yuelao, "Fortune Shower" for Caishen). Also shown: `AWAKEN_TEXT` (`popover.ts`), Glossary.
 - Replacement: ultimate and awakening names from the text pack.
 
-### 12. Blessing names (virtues) (Low / Medium)
+### 12. Blessing names (virtues) (Low / Medium) - done
 - Source: `virtueEffects` / `virtueBlessings` keys in `gameBalance.tuning.json`: Wildness, Desire, Resolve, Oblivion, Defiance, Sacrifice, Mercy, Grace, Fervor, Insight, Gnosis (11 of 12 match the game's virtue set). Shown in the blessing offer, buff bar, result screen and Glossary.
 - Replacement: none yet. Single words are generic, but the exact set is the game's; renaming is cheap if done as display labels (keep the keys, saves reference them).
 
@@ -97,7 +106,7 @@ Risk: **High** = copied game files (art, audio, animation rigs). **Medium** = th
 - Source: R2 `icons/classes/{class}.webp` (game hexagon icons), `assets.js` `classIcon()` and the Glossary.
 - Replacement: none. 6 simple icons (SVG inline would also remove the R2 dependency).
 
-### 14. Branding and site text (Low)
+### 14. Branding and site text (Low) - done
 - `src/pages/games/tower-defense.astro` title "Tower Defense | Motto Immortal" and description "Command Motto Immortal heroes..."; `TdLobby.astro` About text ("played with heroes from the game") and disclaimer; `TdGlossary.astro` disclaimer. Change when the swap ships.
 
 ### Not game content (no action)

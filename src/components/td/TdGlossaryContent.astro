@@ -108,7 +108,7 @@ const heroCards = [...(heroes as any[])]
         ["Magic res", hero.magicRes],
         ["Crit", pct(hero.critChance)],
         ["Ult charge", `${hero.ultCooldown}s`],
-        ...(["shield_wall", "expose", "mass_taunt", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"].includes(skill.variant)
+        ...(["shield_wall", "expose", "mass_taunt", "bifrost_ward", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"].includes(skill.variant)
           ? [] : [["Ult power", `x${hero.ultPower}`]]),
       ].map(([label, value]) => [label, value, STAT_ICON[label as string]]) as [string, string | number, string][],
     };

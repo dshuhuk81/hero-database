@@ -220,6 +220,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerSlots  = new PIXI.Container(); // slot rings
   const layerRanges = new PIXI.Container(); // range preview rings
   const layerLinks  = new PIXI.Container(); // aura + synergy links
+  const layerGroundFx = new PIXI.Container(); // flat ultimate effects (lava, rings, rims) under the units
   const layerUnits  = new PIXI.Container(); // enemies + heroes
   const layerSlotAurasTop = new PIXI.Container(); // special-tile motes/mist drifting over heroes
   const layerForeground = new PIXI.Container(); // doorway faces occlude entering units
@@ -239,7 +240,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const t = Math.min(1, Math.max(0, (y - board.origin[1]) / (board.rows * board.cell)));
     return 0.9 + 0.2 * t;
   };
-  for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
+  for (const l of [layerBgTex, layerBg, layerStructures, layerSlotAuras, layerSlots, layerRanges, layerLinks, layerGroundFx, layerUnits, layerSlotAurasTop, layerForeground, layerBars, layerFx, layerParts, layerNumbers, layerHud]) {
     tiltRoot.addChild(l);
   }
   stage.addChild(layerBand, tiltRoot);
@@ -253,7 +254,8 @@ export async function createRenderer(canvas, game, options = {}) {
   // M24c: one pooled particle/shape kit shared by hero, lightning and status effects.
   const fxKit = createFxKit(PIXI, layerParts, { reducedMotion });
   const zeusFx = createOdinFx(PIXI, layerParts, fxKit, { reducedMotion });
-  const heroFx = createHeroFx(fxKit, { reducedMotion });
+  const groundFxKit = createFxKit(PIXI, layerGroundFx, { reducedMotion, max: 200 });
+  const heroFx = createHeroFx(fxKit, { reducedMotion, groundKit: groundFxKit });
   const statusFx = createStatusFx(fxKit, { reducedMotion });
 
   // On-board tokens: transparent head-and-shoulders cutouts from the hero skin (skin.js).
@@ -1726,6 +1728,15 @@ export async function createRenderer(canvas, game, options = {}) {
       unitBarGfx.push(own);
       return own;
     };
+    // Flat ground marks (the Mender's ring) sit just behind their unit's sprite instead of on top of it.
+    const gGround = (unit) => {
+      const own = new PIXI.Graphics();
+      if (tiltOn) { own.position.y = unit.y * (1 - 1 / tiltK); own.scale.y = 1 / tiltK; }
+      own.zIndex = unitDepth(unit.y, unit.flying ? "flyer" : "enemy") - 0.25;
+      layerUnits.addChild(own);
+      unitBarGfx.push(own);
+      return own;
+    };
     for (const unit of game.enemies) {
       const g = gFor(unit.y);
       const gb = gBar(unit, "enemy");
@@ -1752,8 +1763,13 @@ export async function createRenderer(canvas, game, options = {}) {
       // Mender: green heal ring at its feet, showing the heal radius faintly.
       const heal = game.tuning.enemies[unit.kind]?.heal;
       if (heal) {
-        g.ellipse(unit.x, unit.y + FULL_SPRITE_FEET, 20, 7).fill({ color: 0x4ade80, alpha: 0.35 }).stroke({ width: 2, color: 0x86efac, alpha: 0.9 });
-        g.circle(unit.x, unit.y, heal.radius).stroke({ width: 1, color: 0x4ade80, alpha: 0.18 });
+        // A thin ring on the ground at the sprite's feet (scaled like the sprite), breathing slowly;
+        // no fill, so it does not read as a second shadow under the unit.
+        const breathe = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(performance.now() / 600 + unit.entityId);
+        const ground = gGround(unit);
+        ground.ellipse(unit.x, unit.y + FULL_SPRITE_FEET * enemyScale, (22 + breathe * 3) * enemyScale, (7 + breathe) * enemyScale)
+          .stroke({ width: 1.5, color: 0x86efac, alpha: 0.35 + breathe * 0.2 });
+        ground.circle(unit.x, unit.y, heal.radius).stroke({ width: 1, color: 0x4ade80, alpha: 0.12 });
       }
       // Shieldbearer: shield bar above health and a bubble while the shield holds.
       if (unit.shieldMax) {
@@ -2181,7 +2197,7 @@ export async function createRenderer(canvas, game, options = {}) {
     advanceParticles(dt);
     // Kit effects run on game time: frozen while paused, faster at higher game speed,
     // wall time after a stage so tails finish. A restarted run clears them.
-    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); heroFx.reset(); }
+    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); groundFxKit.clear(); heroFx.reset(); }
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;
     moveAnimShotOrigins();
@@ -2189,6 +2205,7 @@ export async function createRenderer(canvas, game, options = {}) {
     zeusFx.update(game.effects);
     statusFx.update(game.enemies, fxDt, enemyBody, enemyStatuses);
     fxKit.update(fxDt);
+    groundFxKit.update(fxDt);
     advanceDamageNumbers(fxDt);
 
     // Draw shot tracers and hit rings as transient Graphics on layerFx

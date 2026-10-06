@@ -1004,16 +1004,16 @@ assert.equal(game.complete, true, "and is complete");
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 97 });
   g.placement = 10000;
-  g.place("vidar", "road", 0);
-  const vidar = g.heroes[0];
+  g.place("hecate", "road", 0);
+  const hecate = g.heroes[0];
   g.start(); g.enemies = [];
   g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
   const [weak, other] = g.enemies;
-  for (const e of g.enemies) { e.x = vidar.x + 20; e.y = vidar.y; e.distance = 1; }
+  for (const e of g.enemies) { e.x = hecate.x + 20; e.y = hecate.y; e.distance = 1; }
   weak.hp = 1; weak.distance = 2; // furthest along: the attack target, dies to the basic hit
   other.petrifiedUntil = 1e9; // keep it in range (an Assassin blocks only one enemy)
-  vidar.attackClock = 0;
-  vidar.ultClock = vidar.ultCooldown + 1;
+  hecate.attackClock = 0;
+  hecate.ultClock = hecate.ultCooldown + 1;
   const hpBefore = other.hp;
   g.step(1 / 60);
   assert.ok(weak.dead, "basic attack killed the weak grunt");
@@ -1245,11 +1245,34 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   r = setup("plutus", true, 1);
   const gold = r.g.placement; r.g.castUltimate(r.hero, r.g.enemies[0]);
   assert.equal(r.g.placement, gold + 3, "awakened Plutus pays 3 placement");
-  r = setup("vidar", true, 1);
-  const vidar = r.hero; const e = r.g.enemies[0];
-  const single = r.g.attackValue(vidar) * 2.5 * vidar.ultPower * 0.5;
-  r.g.castUltimate(vidar, e);
-  assert.ok(Math.abs((1e9 - e.hp) - single * 5 * (e.exposed > r.g.time ? 1.2 : 1)) < 1, "awakened Vidar hits 5 times");
+  // Windows (Vidar, Atalanta, Helios): extra strikes per basic attack for a while, longer and more when awakened.
+  for (const [id, normal, awake] of [["vidar", 2, 4], ["atalanta", 2, 4], ["helios", 1, 1]]) {
+    r = setup(id, false, 1); r.g.castUltimate(r.hero, r.g.enemies[0]);
+    const base = { ...r.hero.win };
+    assert.equal(base.extra, normal, `${id} window strikes`);
+    assert.ok(base.until > r.g.time, `${id} window is open`);
+    r = setup(id, true, 1); r.g.castUltimate(r.hero, r.g.enemies[0]);
+    assert.equal(r.hero.win.extra, awake, `${id} awakened window strikes`);
+    assert.ok(r.hero.win.until > base.until, `${id} awakened window lasts longer`);
+  }
+  {
+    // The extra strikes land: a windowed basic attack hurts more than a plain one.
+    r = setup("vidar", false, 1);
+    const target = r.g.enemies[0];
+    r.g.basicAttack(r.hero, target); const plain = 1e9 - target.hp; target.hp = 1e9;
+    r.hero.win = { until: r.g.time + 5, extra: 2, share: 0.6 };
+    r.g.basicAttack(r.hero, target);
+    assert.ok(1e9 - target.hp > plain * 2.1, "Vidar's window triples the strikes");
+    // Hephaestus' lava burns and slows enemies standing in it, then runs out.
+    r = setup("hephaestus", false, 1);
+    const foe = r.g.enemies[0]; foe.flying = false; foe.speed = 0; r.g.step(1 / 60); // let the enemy settle on its path
+    r.g.castUltimate(r.hero, foe);
+    assert.equal(r.g.zones.length, 1, "Molten Ground opens a zone");
+    const hp0 = foe.hp; for (let i = 0; i < 30; i += 1) r.g.step(1 / 60);
+    assert.ok(foe.hp < hp0, "lava damages enemies on it");
+    for (let i = 0; i < 60 * 6; i += 1) r.g.step(1 / 60);
+    assert.equal(r.g.zones.length, 0, "lava runs out");
+  }
 }
 
 // Thanatos, soul_drain: stuns a survivor for 2s; a kill refunds 60% of the charge.

@@ -27,8 +27,8 @@ function cast(id, boosted, prepare = () => {}) {
   const hero = byId(roster, id);
   assert.equal(g.place(id, hero.slot, 0), true, `${id} placed`);
   const allyId = id === "atlas" ? "ymir" : "atlas";
-  if (id !== "heimdall" && id !== "ymir" && id !== "asclepius") {
-    assert.equal(g.place(allyId, "road", id === "atlas" ? 1 : 0), true, "ally placed");
+  if (id !== "ymir" && id !== "asclepius") {
+    assert.equal(g.place(allyId, "road", id === "atlas" || id === "heimdall" ? 1 : 0), true, "ally placed");
   }
   g.start();
   g.enemies = [];
@@ -50,10 +50,17 @@ for (const id of ["atlas", "gaia", "plutus"]) {
     `${id}: upgraded ultimate heals more`);
 }
 
-for (const [id, field] of [["ymir", "exposed"], ["heimdall", "slow"]]) {
+for (const [id, field] of [["ymir", "exposed"]]) {
   const base = cast(id, false);
   const boost = cast(id, true);
   assert.ok(boost.enemy[field] > base.enemy[field], `${id}: upgraded control lasts longer`);
+}
+
+{
+  const base = cast("heimdall", false);
+  const boost = cast("heimdall", true);
+  assert.ok(base.ally.wardCut > 0 && boost.ally.wardCut > base.ally.wardCut, "heimdall: upgraded ward cuts more damage");
+  assert.ok(boost.ally.wardUntil > base.ally.wardUntil, "heimdall: upgraded ward lasts longer");
 }
 
 {

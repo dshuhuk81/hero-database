@@ -513,8 +513,33 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
 
 Hero-specific rules worth knowing when touching their kits: Boreas `ice_shockwave` (140% per
 enemy around him, 10% freeze chance), Gaia `rooted_sanctuary` (heals allies in reach for 30% of
-her max health and wards them for 30% less damage over 8 s), Atalanta `burning_volley` (burning
-splash; awakened rapid fire). Details in `TOWER_DEFENSE_HERO_SKILLS.md` and the archived spec.
+her max health and wards them for 30% less damage over 8 s), Atalanta `limitless_shots`
+(Idril's Limitless Shots). Details in `TOWER_DEFENSE_HERO_SKILLS.md` and the archived spec.
+
+**Ultimate windows (2026-10-06, WoR comparison):** most Watcher of Realms ultimates are timed states,
+not one-off bursts. Five heroes now work that way, tuned in `tuning.heroSkills` (`seconds`,
+`awakenSeconds`, `share`, ...); texts in `skills.js`. The old variants stay for the recruits.
+- `limitless_shots` (Atalanta, replaces `burning_volley`): 6 s (8 awakened), every basic attack
+  looses 3 arrows (5 awakened) at its target, the extras for 50% each and burning; reach +1 step
+  (`hero.win.reach`, read in `patternAt`).
+- `flurry` (Vidar, replaces `rapid_strike`): 4 s (6), every basic attack strikes 3 times (5) at 60% per extra.
+- `solar_rush` (Helios, replaces `war_cry` for him): 60% cleave plus slow, then 5 s (8) of +30% attack speed,
+  +20% attack and a second strike (70%) per attack.
+- `bifrost_ward` (Heimdall, replaces `mass_taunt` for him): allies in reach take 25% (35%) less damage for 4 s
+  (6 s) via `wardCut`/`wardUntil`; scaled by control power. The Tank class hold still pins foes.
+- `molten_ground` (Hephaestus, replaces `rebirth_flame` for him): a ground zone (`game.zones`, stepped in
+  `step`) at the target for 4 s (5): 50% of power per second, 80 px (110), slows ground enemies.
+Extra strikes live in `basicAttack` (`hero.win = { until, extra, share, reach, burnShare }`); the
+per-second damage and zone pulses are presentation-light (a gold splash ring every 0.5 s).
+Flat ground effects (every `groundRing`, lava pool, window rings, ward rim) draw on a second fx kit (`groundFxKit`, `layerGroundFx` in `render.js`) below the units, so they never cover an enemy; particles and bursts stay on the main kit above.
+Effects (`hero-fx.js`, `update(game)` reads the state every frame): a ground ring plus drifting
+particles at the feet of a hero with a running `win` (Atalanta wind and leaves, Vidar afterimages and
+streaks, Helios heat ring and embers), a lava pool with magma veins, embers and flames for each zone,
+and a bridge-coloured rim on allies under `wardFx: "bifrost"`. Every running state blinks in its last
+1.5 s and shrinks (lava) so the end is readable. Extra window strikes emit an `extra` effect (fanned
+arrows, crossed dagger glints, a mirrored sun arc) and ward hits emit `wardhit` (a bridge-coloured
+twinkle). Heimdall's and Atalanta's cast effects were redrawn to match their new ultimates.
+Tests: `scripts/test-td-sim.mjs` (windows, lava), `scripts/test-td-ultimate-upgrades.mjs` (Heimdall ward).
 
 ## 8. Enemies, bosses and the stage timeline
 

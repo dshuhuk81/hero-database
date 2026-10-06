@@ -831,8 +831,12 @@
       "variant": "expose"
     },
     "heimdall": {
-      "skillName": "Grand Mockery",
-      "variant": "mass_taunt"
+      "skillName": "Bifrost Ward",
+      "variant": "bifrost_ward",
+      "ward": 0.25,
+      "awakenWard": 0.35,
+      "seconds": 4,
+      "awakenSeconds": 2
     },
     "gaia": {
       "skillName": "Rooted Sanctuary",
@@ -848,8 +852,13 @@
       "variant": "knockback"
     },
     "helios": {
-      "skillName": "Solar War Cry",
-      "variant": "war_cry"
+      "skillName": "Solar Rush",
+      "variant": "solar_rush",
+      "seconds": 5,
+      "awakenSeconds": 3,
+      "share": 0.7,
+      "rapidAps": 0.3,
+      "rapidAtk": 0.2
     },
     "surtr": {
       "skillName": "Crimson Cleave",
@@ -868,8 +877,11 @@
       "variant": "claw_sweep"
     },
     "vidar": {
-      "skillName": "Rapid Strike",
-      "variant": "rapid_strike"
+      "skillName": "Flurry",
+      "variant": "flurry",
+      "seconds": 4,
+      "awakenSeconds": 2,
+      "share": 0.6
     },
     "odin": {
       "skillName": "Chain Lightning",
@@ -877,8 +889,13 @@
       "basic": "chain"
     },
     "hephaestus": {
-      "skillName": "Rebirth Flame",
-      "variant": "rebirth_flame"
+      "skillName": "Molten Ground",
+      "variant": "molten_ground",
+      "seconds": 4,
+      "awakenSeconds": 1,
+      "radius": 80,
+      "awakenRadius": 110,
+      "dps": 0.5
     },
     "boreas": {
       "skillName": "Ice Shockwave",
@@ -894,15 +911,15 @@
       "variant": "moon_barrage"
     },
     "atalanta": {
-      "skillName": "Burning Volley",
-      "variant": "burning_volley",
-      "radius": 80,
-      "damage": 0.6,
-      "burnShare": 0.5,
-      "burnSeconds": 5,
-      "rapidSeconds": 10,
-      "rapidAps": 0.5,
-      "rapidAtk": 0.3
+      "skillName": "Limitless Shots",
+      "variant": "limitless_shots",
+      "seconds": 6,
+      "awakenSeconds": 2,
+      "shots": 3,
+      "awakenShots": 5,
+      "share": 0.5,
+      "burnShare": 0.4,
+      "burnSeconds": 4
     },
     "stheno": {
       "skillName": "Petrifying Gaze",

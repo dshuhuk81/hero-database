@@ -643,6 +643,16 @@ export class TowerDefenseGame {
 
     if (this.complete) return; // the last life was lost this step: heroes stand down
 
+    // Ground zones (Hephaestus' Molten Ground): damage per second and a slow while enemies stand in them.
+    this.zones = (this.zones ?? []).filter((z) => z.until > this.time);
+    for (const z of this.zones) {
+      for (const e of this.enemies) {
+        if (e.dead || e.untargetable || e.flying || !this.nearPoint(z, e, z.radius)) continue;
+        e.slow = Math.max(e.slow, 0.25);
+        this.hit(e, z.dps * dt, z.hero, { showShot: false, showHit: false, dot: true });
+      }
+    }
+
     for (const hero of this.heroes) {
       if (this.isHexed(hero) || this.isSilenced(hero)) continue; // Hexer or Baphomet: no attacks, ultimate charge paused
       if (this.isRooted(hero)) { hero.ultClock += dt; continue; } // Vinebinder: cannot attack, still blocks, charge keeps running
@@ -1015,7 +1025,10 @@ export class TowerDefenseGame {
 
   damageHero(hero, amount, source) {
     if (amount <= 0 || this.isVeiled(hero)) return;
-    if (this.time < (hero.wardUntil || 0)) amount *= 1 - hero.wardCut; // Gaia's Rooted Sanctuary
+    if (this.time < (hero.wardUntil || 0)) { // Gaia's Rooted Sanctuary, Heimdall's Bifrost Ward
+      amount *= 1 - hero.wardCut;
+      if (hero.wardFx === "bifrost") this.emit({ type: "wardhit", heroId: "heimdall", x: hero.x, y: hero.y - 8, life: 0.3 });
+    }
     amount /= 1 + (this.lordFx(hero).hp || 0); // a Lord's faction: +% basic attributes
     hero.hpLeft -= amount;
     hero._hitFlash = true;
@@ -1074,7 +1087,8 @@ export class TowerDefenseGame {
     if (!base) return null;
     const ring = this.ringKind(slotType, slotIndex);
     const env = this.environment("range", { slotType, slotIndex });
-    const steps = (ring === "highground" ? 1 : 0) + (env < 1 - 1e-9 ? -1 : 0) + reachSteps;
+    const windowReach = this.time < (hero.win?.until ?? 0) ? hero.win.reach ?? 0 : 0; // ult window (Limitless Shots)
+    const steps = (ring === "highground" ? 1 : 0) + (env < 1 - 1e-9 ? -1 : 0) + reachSteps + windowReach;
     return steppedPattern(base, steps);
   }
 
@@ -1417,6 +1431,15 @@ export class TowerDefenseGame {
       for (const e of line.slice(1)) strike(e, kit.splash?.share ?? 0.35, { showShot: false });
       this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: hero.x + dir * this.beamLength(hero), y2: hero.y, life: 0.25, color: "gold", beam: true, beamDir: dir, beamLength: this.beamLength(hero) });
       this.lordMark(hero, target);
+    }
+    // Ult window (Atalanta, Vidar, Helios): every basic attack lands extra strikes on its target.
+    const win = this.time < (hero.win?.until ?? 0) ? hero.win : null;
+    if (win?.extra) {
+      for (let i = 0; i < win.extra && !target.dead; i += 1) {
+        const dealt = strike(target, win.share, { showShot: false, showHit: false });
+        this.emitHeroEffect(hero, { type: "extra", x: target.x, y: target.y, index: i, count: win.extra, life: 0.3 });
+        if (win.burnShare && !target.dead) this.applyBurn(target, hero, dealt * win.burnShare, win.burnSeconds ?? 5);
+      }
     }
     let chain = hero.basic === "chain" && kit.chain ? { reach: kit.chain.reach, falloff: [...kit.chain.falloff] } : null;
     // Conduct (M13): a chain that starts on a Wet enemy bounces further.
@@ -1994,7 +2017,51 @@ export class TowerDefenseGame {
     const aw = !!hero.awakenedUlt;
     const beam = {}; // sun_beam: direction, length and struck spots for the effect
 
-    if (variant === "shadow_step") {
+    if (variant === "limitless_shots") {
+      // Atalanta (Idril's Limitless Shots): for a few seconds every basic attack looses extra
+      // arrows at its target, her reach grows one step, and the arrows burn.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      hero.win = {
+        until: this.time + (skill?.seconds ?? 6) + (aw ? skill?.awakenSeconds ?? 2 : 0),
+        extra: (aw ? skill?.awakenShots ?? 5 : skill?.shots ?? 3) - 1,
+        share: skill?.share ?? 0.5, reach: 1,
+        burnShare: skill?.burnShare ?? 0.4, burnSeconds: skill?.burnSeconds ?? 4,
+      };
+      this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.5, color: "gold" });
+    } else if (variant === "flurry") {
+      // Vidar: for a few seconds each basic attack strikes three times (five awakened).
+      const skill = this.tuning.heroSkills?.[hero.id];
+      hero.win = { until: this.time + (skill?.seconds ?? 4) + (aw ? skill?.awakenSeconds ?? 2 : 0), extra: (aw ? 4 : 2), share: skill?.share ?? 0.6 };
+      this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "purple" });
+    } else if (variant === "solar_rush") {
+      // Helios: cleave in front of him, then a rush: faster, harder attacks with a second strike each.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const around = foes.filter((e) => !e.dead && this.nearPoint(hero, e, 72));
+      const cone = around.filter((e) => this.inCone(hero, e));
+      (cone.length ? cone : around).forEach((e) => { this.hit(e, power * 0.6, hero); e.slow = 2; });
+      const seconds = (skill?.seconds ?? 5) + (aw ? skill?.awakenSeconds ?? 3 : 0);
+      hero.win = { until: this.time + seconds, extra: 1, share: skill?.share ?? 0.7 };
+      hero.rapid = { aps: skill?.rapidAps ?? 0.3, atk: skill?.rapidAtk ?? 0.2 };
+      hero.rapidUntil = this.time + seconds;
+      this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "gold" });
+    } else if (variant === "bifrost_ward") {
+      // Heimdall: the bridge shields his allies. They take less damage for a few seconds (his class hold still pins foes).
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const cut = Math.min(0.6, (aw ? skill?.awakenWard ?? 0.35 : skill?.ward ?? 0.25) * controlPower);
+      const until = this.time + ((skill?.seconds ?? 4) + (aw ? skill?.awakenSeconds ?? 2 : 0)) * controlPower;
+      this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
+        a.wardCut = Math.max(cut, this.time < (a.wardUntil || 0) ? a.wardCut : 0);
+        a.wardUntil = Math.max(until, a.wardUntil || 0);
+        a.wardFx = "bifrost"; // the renderer draws the bridge-coloured rim while this runs
+        this.emitHeroEffect(hero, { type: "buff", x: a.x, y: a.y, life: 0.5, color: "gold" });
+      });
+    } else if (variant === "molten_ground") {
+      // Hephaestus: the hammer turns the road around the target into lava for a few seconds.
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const seconds = (skill?.seconds ?? 4) + (aw ? skill?.awakenSeconds ?? 1 : 0);
+      (this.zones ??= []).push({ x: target.x, y: target.y, radius: aw ? skill?.awakenRadius ?? 110 : skill?.radius ?? 80,
+        until: this.time + seconds, dps: power * (skill?.dps ?? 0.5), hero });
+    } else if (variant === "shadow_step") {
       // Nott: phase to lowest-HP enemy, execute it, slow nearby
       // Awakened: also strikes the second weakest enemy.
       const struck = aw ? foes.filter((e) => !e.dead).sort((a, b) => a.hp - b.hp).slice(0, 2) : [target];
