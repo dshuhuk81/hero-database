@@ -8,8 +8,10 @@
 // clears, replays at a quarter, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
+import { emptySquadRows, flattenSquadRows, normalizeSquadRows, validateSquadRows } from "./squad-rows.js";
 
-export const CAMPAIGN_SAVE_VERSION = 9; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears
+export const CAMPAIGN_SAVE_VERSION = 10; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored)
+export const LORD_IDS = new Set(heroBalance.filter((hero) => hero.rarity === "lord").map((hero) => hero.id));
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
 // Save version that introduced each currency: stages cleared under an older save are paid
@@ -31,7 +33,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquad: [], currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquadRows: emptySquadRows(), currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -52,10 +54,14 @@ export function currentChapter(campaign, progress) {
   return campaign.chapters.find((chapter) => chapter.stages.some((stage) => stage.id === next?.id)) ?? campaign.chapters.at(-1);
 }
 
-// A squad is valid when it has 1..squadSize distinct owned heroes.
+const structuredRows = (squad) => Array.isArray(squad) && (Array.isArray(squad[0]) || Array.isArray(squad[1])) ? squad : [Array.isArray(squad) ? squad : [], []];
+
+// A lineup is valid when its two rows hold 1..squadSize distinct owned heroes and obey the Lord slots.
 export function validSquad(campaign, progress, squad) {
-  const ids = [...new Set(squad)];
-  return ids.length >= 1 && ids.length <= campaign.squadSize && ids.length === squad.length && ids.every((id) => progress.owned.includes(id));
+  const rows = structuredRows(squad);
+  const checked = validateSquadRows(rows, { allowedIds: new Set(progress.owned), lordIds: LORD_IDS });
+  const count = flattenSquadRows(rows).length;
+  return checked.valid && count >= 1 && count <= campaign.squadSize;
 }
 
 // Options for new TowerDefenseGame(...) on top of heroes, tuning and map. The stage's own
@@ -63,12 +69,14 @@ export function validSquad(campaign, progress, squad) {
 // `heroes`: the run's hero list with campaign levels applied (collectionHeroes), if any.
 // `heroic`: the stage's Heroic version (the Heroic tier: tuning.tiers.heroic).
 export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null, heroic = false) {
+  const squadRows = normalizeSquadRows(structuredRows(squad), { lordIds: LORD_IDS });
   return {
     ...(heroes && { heroes }),
     tier: heroic ? "heroic" : "normal",
     seed: seed >>> 0,
     timeline: stage.timeline,
-    allowedHeroes: squad,
+    allowedHeroes: flattenSquadRows(squadRows),
+    squadRows,
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
     atkScale: stage.atkScale ?? 1,
@@ -687,7 +695,7 @@ export function finishCampaignStage(campaign, progress, stageId, { won, lives, h
 
 // Save shape check and migration. Unknown heroes and stages are dropped, starters are
 // always owned, and a missing or older section becomes a valid current one.
-export function sanitizeCampaign(value, campaign, heroIds) {
+export function sanitizeCampaign(value, campaign, heroIds, lordIds = LORD_IDS) {
   const fresh = newCampaignProgress(campaign);
   if (!value || typeof value !== "object") return fresh;
   const stageIds = new Set(allStages(campaign).map((stage) => stage.id));
@@ -698,7 +706,7 @@ export function sanitizeCampaign(value, campaign, heroIds) {
     if (!stageIds.has(id) || !entry || typeof entry !== "object") continue;
     cleared[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)) };
   }
-  const lastSquad = (Array.isArray(value.lastSquad) ? [...new Set(value.lastSquad)] : []).filter((id) => owned.includes(id)).slice(0, campaign.squadSize);
+  const lastSquadRows = normalizeSquadRows(value.lastSquadRows, { allowedIds: new Set(owned), lordIds });
   // Version 1 had no currencies or levels: they start at zero and level 1.
   const currencies = Object.fromEntries(CURRENCIES.map((id) => [id, Math.max(0, Math.floor(Number(value.currencies?.[id]) || 0))]));
   const version = Number(value.version) || 1;
@@ -751,6 +759,6 @@ export function sanitizeCampaign(value, campaign, heroIds) {
     if (!stageIds.has(id) || !cleared[id] || !entry || typeof entry !== "object") continue;
     heroic[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)) };
   }
-  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquad, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic };
+  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquadRows, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic };
   return payMilestones(campaign, clean).progress;
 }

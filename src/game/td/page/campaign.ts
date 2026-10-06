@@ -25,13 +25,16 @@ import { bondsOf, bondText } from "../bonds.js";
 import { POWER_INFO } from "./powers";
 import { currencyAmount, currencyList } from "../currency-icons.js";
 import { createSummonReveal } from "./summon-reveal";
+import mythologyGroupsData from "../../../data/tdMythologyGroups.json" with { type: "json" };
+import { emptySquadRows, flattenSquadRows, normalizeSquadRows, placeInSquadRows } from "../squad-rows.js";
 
 // Lives as shown in battle (board.js shownLives, laurels.lifeUnit internal lives per shown life).
 const livesShown = (lives: number) => shownLives(lives, (campaignData as any).laurels?.lifeUnit ?? 1);
 
-export type CampaignRun = { stageId: string; squad: string[]; heroic?: boolean };
+export type CampaignRun = { stageId: string; squadRows: [string[], string[]]; heroic?: boolean };
 
 const campaign: any = campaignData;
+const mythologyGroups: Record<string, any> = mythologyGroupsData;
 const summonCfg: any = summonData;
 let banner: any = summonCfg.banners[0]; // the banner picked in the Summon tabs
 // Heroes screen tiles crop the full-body portrait to the face; heads sit lower on these.
@@ -95,7 +98,8 @@ export function createCampaign(ctx: PageContext) {
   let lastCount = 1; // the reveal stage's Summon again repeats the last summon size
   const summonReveal = createSummonReveal(ctx, () => doSummon(lastCount));
   let stageId: string | null = null; // stage picked on the Campaign screen
-  let squad: string[] = [];
+  let squadRows: [string[], string[]] = emptySquadRows() as [string[], string[]];
+  let activeRow = 0;
   let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
   let drawerId: string | null = null; // stage shown in the details drawer
   let heroicRun = false; // the picked stage is played in its Heroic version
@@ -133,8 +137,7 @@ export function createCampaign(ctx: PageContext) {
   const chaptersEl = q("[data-td-camp-chapters]");
   const drawerEl = q<HTMLDialogElement>("[data-td-camp-drawer]");
   const drawerBody = q("[data-td-camp-drawer-body]");
-  const lineupEl = q("[data-td-squad-lineup]");
-  const lordEl = q("[data-td-squad-lord]");
+  const rowsEl = q("[data-td-squad-rows]");
   const feedbackEl = q("[data-td-squad-feedback]");
   const hasEnemy = (stage: any, kind: string) => stage.timeline.some((group: any) => group.kind === kind);
   const enemyCount = (stage: any) => timelineTotals(stage.timeline).total;
@@ -249,7 +252,7 @@ export function createCampaign(ctx: PageContext) {
     const repeat = repeatRewards(campaign, stage);
     const heroic = heroicRewards(campaign, stage, p);
     const recommended = recommendedPower(stage);
-    const last = p.lastSquad.map((id) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
+    const last = flattenSquadRows(p.lastSquadRows).map((id: string) => heroById.get(id)).filter((hero: any) => hero && p.owned.includes(hero.id));
     const lastPower = last.reduce((sum: number, hero: any) => sum + might(hero), 0);
     const boss = hasEnemy(stage, "boss") ? ctx.bossFor(stageMap(stage)).name : "";
     drawerBody.innerHTML = `<header class="td-camp-drawer-head">
@@ -306,14 +309,20 @@ export function createCampaign(ctx: PageContext) {
     if (returnTo) stagesEl.querySelector<HTMLElement>(`[data-camp-stage="${returnTo}"]`)?.focus({ preventScroll: true });
   }
 
-  function renderSquad() {
+  const lordIds = new Set<string>(Object.keys(data.tuning.lords ?? {}));
+  const isLord = (id: string) => lordIds.has(id);
+  const mythologyIcons = (hero: any, extraClass = "") => (hero?.mythologyGroups ?? []).map((groupId: string) => {
+    const group = mythologyGroups[groupId];
+    return group ? `<img class="td-mythology-icon${extraClass ? ` ${extraClass}` : ""}" src="${group.icon}" alt="${group.name}" title="${group.name}">` : "";
+  }).join("");
+
+  function renderSquad(message = "") {
     const stage = stageId ? stageById(campaign, stageId) : null;
     if (!stage) return false;
     const p = progress();
-    // A Lord always takes the leftmost slot (tuning.lords); everyone else keeps their order.
-    const isLord = (id: string) => !!data.tuning.lords?.[id];
-    squad = [...squad.filter(isLord), ...squad.filter((id) => !isLord(id))];
-    const selected = squad.map((id) => heroById.get(id));
+    squadRows = normalizeSquadRows(squadRows, { allowedIds: new Set(p.owned), lordIds }) as [string[], string[]];
+    const selectedIds = flattenSquadRows(squadRows);
+    const selected = selectedIds.map((id) => heroById.get(id)).filter(Boolean);
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
     const powerEl = q("[data-td-squad-power]");
     powerEl.hidden = !selected.length;
@@ -328,35 +337,42 @@ export function createCampaign(ctx: PageContext) {
       powerEl.classList.toggle("is-weak", squadPower < recommended);
     }
     const noAir = hasEnemy(stage, "flyer") && !antiAir;
-    feedbackEl.textContent = noAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
-      : "Drag a hero onto a slot to swap, or tap a slot to free it.";
-    feedbackEl.classList.toggle("is-warning", noAir);
+    feedbackEl.textContent = message || (noAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
+      : "Drag a hero onto a slot to swap, or tap a slot to free it.");
+    feedbackEl.classList.toggle("is-warning", !!message || noAir);
     // Pantheon bonds the squad brings (they count once the heroes stand on the field).
     const bondsEl = q("[data-td-squad-bonds]");
-    const bonds = bondsOf(data.tuning.bonds, selected.map((hero) => hero.id)).filter((bond) => bond.count > 0);
+    const bonds = bondsOf(data.tuning.bonds, selected).filter((bond) => bond.count > 0);
     bondsEl.hidden = !bonds.length;
     bondsEl.innerHTML = bonds.map((bond) => {
       const goal = bond.next ? `${bond.count}/${bond.next.count}` : `${bond.count}`;
       const text = bond.tier ? bondText(bond.tier) : `${bond.next!.count} for ${bondText(bond.next)}`;
       return `<span class="td-bond${bond.tier ? " is-active" : ""}" title="${bond.name} bond: ${text}"><b>${bond.name} ${goal}</b> ${text}</span>`;
     }).join("");
-    // Lord icon left of the lineup: tap shows the Lord bonus; it disappears with the Lord.
-    const lordId = squad.find(isLord);
-    lordEl.hidden = !lordId;
-    if (lordId) {
-      const cfg = data.tuning.lords[lordId];
-      const members = cfg.members.map((id: string) => `<li${squad.includes(id) ? ' class="is-in"' : ""}>${heroName(id)}</li>`).join("");
-      lordEl.innerHTML = `<button type="button" class="td-squad-lord-btn" aria-expanded="false" aria-label="Lord bonus: ${heroName(lordId)}"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true" focusable="false"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></button>
-        <div class="td-squad-lord-tip" role="tooltip" hidden><strong>${heroName(lordId)}, Lord of the ${cfg.faction} faction</strong><p>${lordText(cfg)}</p><ul>${members}</ul></div>`;
-    } else lordEl.innerHTML = "";
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
-    // Slots: portrait card only, class icon on the art, placement cost above. Tap or drag out to remove.
-    lineupEl.innerHTML = Array.from({ length: campaign.squadSize }, (_, i) => {
-      const hero = selected[i];
-      if (!hero) return `<span class="td-squad-slot is-empty" data-squad-slot="${i}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></span>`;
-      return `<button type="button" class="td-squad-slot" data-class="${hero.class.toLowerCase()}" data-squad-slot="${i}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from squad">
-        <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
-        <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
+    rowsEl.innerHTML = squadRows.map((row, rowIndex) => {
+      const lordId = row.find(isLord);
+      const lordCfg = lordId ? data.tuning.lords[lordId] : null;
+      const group = lordCfg?.groupId ? mythologyGroups[lordCfg.groupId] : null;
+      const status = lordId
+        ? `<span class="td-squad-lord" data-td-squad-lord>
+            <button type="button" class="td-squad-lord-btn" aria-expanded="false" aria-label="Lord bonus: ${heroName(lordId)}">
+              <span class="td-squad-crown" aria-hidden="true">♛</span>${group ? `<img class="td-mythology-icon" src="${group.icon}" alt="">` : ""}
+            </button>
+            <span class="td-squad-lord-tip" role="tooltip"><strong>${heroName(lordId)}</strong><span>${lordText(lordCfg)}</span></span>
+          </span>`
+        : "";
+      const slots = Array.from({ length: campaign.squadRowSize }, (_, slotIndex) => {
+        const hero = heroById.get(row[slotIndex]);
+        if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></button>`;
+        const matches = group && hero.mythologyGroups?.includes(group.id);
+        return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
+          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span>${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span>
+          <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
+      }).join("");
+      return `<section class="td-squad-row${rowIndex === activeRow ? " is-active" : ""}${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
+        <div class="td-squad-row-head"><button type="button" class="td-squad-row-select" data-squad-activate-row="${rowIndex}" aria-pressed="${rowIndex === activeRow}">Row ${rowIndex + 1}</button>${status}</div>
+        <div class="td-squad-lineup" aria-label="Selected squad row ${rowIndex + 1}">${slots}</div></section>`;
     }).join("");
     // Roster: 50 x 75 art cards, class icon on the art, level and stars over its foot; name and (for
     // locked heroes) the unlock source are in the tooltip and label. Locked heroes trail the owned ones, dimmed.
@@ -366,7 +382,7 @@ export function createCampaign(ctx: PageContext) {
       (mightOf.get(b.id) ?? 0) - (mightOf.get(a.id) ?? 0) ||
       a.name.localeCompare(b.name));
     const tile = (hero: any) => {
-      const owned = p.owned.includes(hero.id), picked = squad.includes(hero.id);
+      const owned = p.owned.includes(hero.id), picked = selectedIds.includes(hero.id);
       const unlock = owned ? null : heroRewardStage(campaign, hero.id);
       const skill = data.tuning.heroSkills?.[hero.id];
       const heroMight = mightOf.get(hero.id) ?? 0;
@@ -374,13 +390,13 @@ export function createCampaign(ctx: PageContext) {
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
       return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} of ${campaign.heroStars?.max ?? 5} stars` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" loading="lazy">
-        <span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
+        <span class="td-squad-tile-groups">${mythologyIcons(hero)}</span><span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>${isLord(hero.id) ? '<span class="td-squad-tile-crown" aria-hidden="true">♛</span>' : ""}
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
         ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
     squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
-    squadStart.disabled = !isUnlocked(p, stage, allStagesPlayable) || !validSquad(campaign, p, squad);
+    squadStart.disabled = !isUnlocked(p, stage, allStagesPlayable) || !validSquad(campaign, p, squadRows);
     squadStart.textContent = heroicRun ? "Start Heroic" : "Start";
     return true;
   }
@@ -721,8 +737,9 @@ export function createCampaign(ctx: PageContext) {
     const stage = stageById(campaign, id);
     if (!stage || !isUnlocked(progress(), stage, allStagesPlayable)) return false;
     stageId = id;
-    // Start from the last squad, keeping only heroes still owned.
-    squad = progress().lastSquad.filter((heroId) => progress().owned.includes(heroId)).slice(0, campaign.squadSize);
+    // Start from the current row save; old flat lineups intentionally do not migrate.
+    squadRows = normalizeSquadRows(progress().lastSquadRows, { allowedIds: new Set(progress().owned), lordIds }) as [string[], string[]];
+    activeRow = squadRows[0].length < campaign.squadRowSize ? 0 : 1;
     return true;
   }
 
@@ -735,11 +752,11 @@ export function createCampaign(ctx: PageContext) {
 
   function start() {
     const stage = stageId ? stageById(campaign, stageId) : null;
-    if (!stage || !isUnlocked(progress(), stage, allStagesPlayable) || !validSquad(campaign, progress(), squad)) return;
-    store.data.campaign = { ...progress(), lastSquad: [...squad] };
+    if (!stage || !isUnlocked(progress(), stage, allStagesPlayable) || !validSquad(campaign, progress(), squadRows)) return;
+    store.data.campaign = { ...progress(), lastSquadRows: squadRows.map((row) => [...row]) as [string[], string[]] };
     store.persist();
     const map = stageMap(stage);
-    if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squad: [...squad], ...(heroicRun && { heroic: true }) } });
+    if (map) ctx.actions.startSession(map, { campaign: { stageId: stage.id, squadRows: squadRows.map((row) => [...row]) as [string[], string[]], ...(heroicRun && { heroic: true }) } });
   }
 
   // The stage rail hides its scrollbar to fit the landscape menu. A mouse wheel only
@@ -784,49 +801,57 @@ export function createCampaign(ctx: PageContext) {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-hero]");
     if (!button || button.disabled) return;
     const id = button.dataset.squadHero!;
-    if (squad.includes(id)) squad = squad.filter((entry) => entry !== id);
-    else if (squad.length < campaign.squadSize) squad = [...squad, id];
-    else { feedbackEl.textContent = `Squad full. Remove a selected hero before adding ${heroName(id)}.`; return; }
+    if (flattenSquadRows(squadRows).includes(id)) squadRows = squadRows.map((row) => row.filter((entry) => entry !== id)) as [string[], string[]];
+    else {
+      const placed = placeInSquadRows(squadRows, id, activeRow, squadRows[activeRow].length, { lordIds });
+      squadRows = placed.rows as [string[], string[]];
+      if (placed.error) { renderSquad(`${heroName(id)}: ${placed.error}`); return; }
+    }
     renderSquad();
     squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
   });
-  lordEl.addEventListener("click", (event) => {
-    const btn = lordEl.querySelector<HTMLButtonElement>(".td-squad-lord-btn");
-    const tip = lordEl.querySelector<HTMLElement>(".td-squad-lord-tip");
-    if (!btn || !tip || !(event.target as HTMLElement).closest(".td-squad-lord-btn")) return;
-    tip.hidden = !tip.hidden;
-    btn.setAttribute("aria-expanded", String(!tip.hidden));
+  rowsEl.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const lordButton = target.closest<HTMLButtonElement>(".td-squad-lord-btn");
+    if (lordButton) {
+      const expand = lordButton.getAttribute("aria-expanded") !== "true";
+      rowsEl.querySelectorAll<HTMLElement>(".td-squad-lord-btn[aria-expanded='true']").forEach((button) => button.setAttribute("aria-expanded", "false"));
+      lordButton.setAttribute("aria-expanded", String(expand));
+      return;
+    }
+    const activate = target.closest<HTMLElement>("[data-squad-activate-row]");
+    if (activate) activeRow = Number(activate.dataset.squadActivateRow) || 0;
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-remove]");
+    if (!button) { renderSquad(); return; }
+    const id = button.dataset.squadRemove!;
+    const rowIndex = Number(button.dataset.tdRow);
+    squadRows = squadRows.map((row, index) => index === rowIndex ? row.filter((entry) => entry !== id) : row) as [string[], string[]];
+    activeRow = rowIndex;
+    renderSquad();
+    squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
   });
   document.addEventListener("click", (event) => {
-    const tip = lordEl.querySelector<HTMLElement>(".td-squad-lord-tip");
-    if (!tip || tip.hidden || lordEl.contains(event.target as Node)) return;
-    tip.hidden = true;
-    lordEl.querySelector(".td-squad-lord-btn")?.setAttribute("aria-expanded", "false");
-  });
-  lineupEl.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-squad-remove]");
-    if (!button) return;
-    const id = button.dataset.squadRemove!;
-    squad = squad.filter((entry) => entry !== id);
-    renderSquad();
-    squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
+    if ((event.target as HTMLElement).closest("[data-td-squad-lord]")) return;
+    rowsEl.querySelectorAll<HTMLElement>(".td-squad-lord-btn[aria-expanded='true']").forEach((button) => button.setAttribute("aria-expanded", "false"));
   });
   // Drag and drop (pointer events, so touch works too): roster tile -> slot places or
   // replaces, slot -> slot swaps, slot -> anywhere outside the lineup removes. Taps keep
   // working; a drag swallows the click that follows it. Roster tiles only start a drag on
   // a mostly vertical move (touch-action: pan-x), so horizontal swipes still scroll.
-  let drag: { id: string; from: number; x: number; y: number; ghost?: HTMLElement; over?: HTMLElement | null; pointerId: number; source: HTMLElement } | null = null;
+  let drag: { id: string; from: { row: number; slot: number } | null; x: number; y: number; ghost?: HTMLElement; over?: HTMLElement | null; pointerId: number; source: HTMLElement } | null = null;
   let swallowClick = false;
   const slotAt = (x: number, y: number) => document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-squad-slot]") ?? null;
-  const dropOn = (id: string, from: number, slot: HTMLElement | null) => {
-    const next = [...squad];
-    if (!slot) { if (from >= 0) next.splice(from, 1); squad = next; return; }
-    const to = Math.min(Number(slot.dataset.squadSlot), from >= 0 ? next.length - 1 : next.length);
-    const at = next.indexOf(id);
-    if (at >= 0) { next[at] = next[to]; next[to] = id; }
-    else if (to < next.length) next[to] = id;
-    else if (next.length < campaign.squadSize) next.push(id);
-    squad = next.filter(Boolean);
+  const dropOn = (current: NonNullable<typeof drag>, slot: HTMLElement | null) => {
+    if (!slot) {
+      if (current.from) squadRows = squadRows.map((row, index) => index === current.from!.row ? row.filter((id) => id !== current.id) : row) as [string[], string[]];
+      return null;
+    }
+    const rowIndex = Number(slot.dataset.tdRow);
+    const slotIndex = Number(slot.dataset.squadSlot);
+    const placed = placeInSquadRows(squadRows, current.id, rowIndex, slotIndex, { lordIds });
+    squadRows = placed.rows as [string[], string[]];
+    activeRow = rowIndex;
+    return placed.error;
   };
   const beginDrag = (event: PointerEvent) => {
     const target = event.target as HTMLElement;
@@ -835,16 +860,16 @@ export function createCampaign(ctx: PageContext) {
     const source = tile ?? slot;
     if (!source || (tile && tile.disabled) || event.button !== 0) return;
     const id = tile ? tile.dataset.squadHero! : slot!.dataset.squadRemove!;
-    drag = { id, from: slot ? squad.indexOf(id) : -1, x: event.clientX, y: event.clientY, pointerId: event.pointerId, source };
+    drag = { id, from: slot ? { row: Number(slot.dataset.tdRow), slot: Number(slot.dataset.squadSlot) } : null, x: event.clientX, y: event.clientY, pointerId: event.pointerId, source };
   };
   squadListEl.addEventListener("pointerdown", beginDrag);
-  lineupEl.addEventListener("pointerdown", beginDrag);
+  rowsEl.addEventListener("pointerdown", beginDrag);
   window.addEventListener("pointermove", (event) => {
     if (!drag || event.pointerId !== drag.pointerId) return;
     const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
     if (!drag.ghost) {
       if (Math.hypot(dx, dy) < 8) return;
-      if (drag.from < 0 && event.pointerType !== "mouse" && Math.abs(dx) > Math.abs(dy)) { drag = null; return; }
+      if (!drag.from && event.pointerType !== "mouse" && Math.abs(dx) > Math.abs(dy)) { drag = null; return; }
       const img = drag.source.querySelector("img");
       const ghost = document.createElement("div");
       ghost.className = "td-squad-ghost";
@@ -852,7 +877,7 @@ export function createCampaign(ctx: PageContext) {
       document.body.append(ghost);
       drag.ghost = ghost;
       drag.source.classList.add("is-dragging");
-      lineupEl.classList.add("is-drop-target");
+      rowsEl.classList.add("is-drop-target");
       try { drag.source.setPointerCapture(event.pointerId); } catch {}
     }
     event.preventDefault();
@@ -868,15 +893,15 @@ export function createCampaign(ctx: PageContext) {
     current.ghost.remove();
     current.source.classList.remove("is-dragging");
     current.over?.classList.remove("is-drop-over");
-    lineupEl.classList.remove("is-drop-target");
+    rowsEl.classList.remove("is-drop-target");
     swallowClick = true;
     setTimeout(() => { swallowClick = false; }, 0);
     if (event.type === "pointercancel") return;
     const slot = slotAt(event.clientX, event.clientY);
     // A roster tile dropped outside the lineup changes nothing.
-    if (!slot && current.from < 0) return;
-    dropOn(current.id, current.from, slot);
-    renderSquad();
+    if (!slot && !current.from) return;
+    const error = dropOn(current, slot);
+    renderSquad(error ? `${heroName(current.id)}: ${error}` : "");
   };
   window.addEventListener("pointerup", endDrag);
   window.addEventListener("pointercancel", endDrag);

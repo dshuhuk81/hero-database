@@ -2133,11 +2133,15 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
 {
   const { bondsOf } = await import("../src/game/td/bonds.js");
   const cfg = tuning.bonds;
-  const norse = (ids) => bondsOf(cfg, ids).find((b) => b.id === "norse");
+  const hero = (id) => heroes.find((entry) => entry.id === id);
+  const norse = (ids) => bondsOf(cfg, ids.map(hero)).find((b) => b.id === "norse");
   assert.equal(norse(["odin"]).tier, null, "one hero opens no bond");
   assert.equal(norse(["odin", "ymir"]).tier.count, 2, "two heroes reach the first tier");
   assert.equal(norse(["odin", "ymir", "recruit-bram", "recruit-elm"]).tier.count, 4, "recruits fill the larger set");
-  assert.equal(bondsOf(cfg, ["odin", "atlas", "helios", "recruit-bram"]).find((b) => b.id === "greek").count, 3, "a recruit joins the set with more heroes");
+  assert.equal(bondsOf(cfg, ["odin", "atlas", "helios", "recruit-bram"].map(hero)).find((b) => b.id === "greek").count, 3, "a recruit joins the set with more heroes");
+  const dual = { id: "dual", mythologyGroups: ["norse", "greek"] };
+  const dualBonds = bondsOf(cfg, [dual]);
+  assert.deepEqual(dualBonds.map((bond) => [bond.id, bond.count]), [["norse", 1], ["greek", 1]], "a dual-group hero contributes once to each configured cultural bond");
   // Tag synergy off, so only the bond changes attack.
   const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, synergy: null }, map: maps[0], timeline: OPEN_TIMELINE, seed: 4 });
   g.placement = 9999;

@@ -705,7 +705,7 @@
     "sets": {
       "norse": {
         "name": "Norse",
-        "heroes": ["odin", "ymir", "heimdall", "aegir", "surtr", "fenrir", "nott", "vidar", "skadi"],
+        "groupId": "norse",
         "tiers": [
           { "count": 2, "atk": 0.06 },
           { "count": 4, "atk": 0.12, "ultCharge": 0.1 }
@@ -713,7 +713,7 @@
       },
       "greek": {
         "name": "Greek",
-        "heroes": ["atlas", "helios", "hecate", "thanatos", "hephaestus", "boreas", "atalanta", "stheno", "plutus", "harmonia", "asclepius", "gaia"],
+        "groupId": "greek",
         "tiers": [
           { "count": 2, "guard": 0.07 },
           { "count": 4, "guard": 0.13, "heal": 0.15 }
@@ -917,7 +917,6 @@
     "isis": {
       "faction": "Egyptian",
       "groupId": "egyptian",
-      "members": ["helios", "hecate", "vidar", "thanatos"],
       "attrBonus": 0.15,
       "buff": { "dmg": 0.5, "heal": 0.5, "seconds": 20, "baseInterval": 50, "perMember": 6, "minInterval": 30 },
       "mark": { "bonus": 0.2, "seconds": 3 }

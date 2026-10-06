@@ -24,7 +24,7 @@ const map = maps.find((m) => m.grid?.board && !m.campaignOnly && !m.prototype) ?
 const board = map.grid.board;
 
 function setup(extraIds = [], seed = 7) {
-  const g = new TowerDefenseGame({ heroes: rawHeroes, tuning, map, seed });
+  const g = new TowerDefenseGame({ heroes: rawHeroes, tuning, map, seed, squadRows: [["isis", ...extraIds], []] });
   g.placement = 100000;
   const slotIndex = 0;
   assert.equal(g.place("isis", "platform", slotIndex), true, "isis placed on a platform tile");
@@ -88,48 +88,64 @@ const cell = board.cell;
   assert.deepEqual(row.map((e) => e.hp < e.maxHp), [true, true, false], "targets cap counts the nearest enemies first");
 }
 
-// --- Lord bonuses
+// --- Lord bonuses: the selected row owns the permanent effect, not the deployed Lord entity.
 {
-  const { g, caster, placed } = setup(["helios", "nott"]);
-  const [helios, nott] = placed;
-  assert.equal(g.lordFx(helios).atk, 0.15, "faction member gets +15% attributes");
-  assert.equal(g.lordFx(caster).atk, 0.15, "the Lord is part of her faction");
-  assert.deepEqual(g.lordFx(nott), {}, "other heroes are not affected");
-  const plain = new TowerDefenseGame({ heroes: rawHeroes, tuning, map, seed: 7 });
-  plain.placement = 1e5; plain.place("helios", "road", 0);
-  assert.ok(g.attackValue(helios) > plain.attackValue(plain.heroes[0]) * 1.149, "attack value is raised by the Lord");
-  const hp = helios.hpLeft; g.damageHero(helios, 115, null);
-  assert.ok(Math.abs(hp - helios.hpLeft - 100) < 1e-6, "15% basic attributes act as 15% more health");
+  const base = rawHeroes.find((hero) => hero.id === "helios");
+  const dual = { ...base, id: "egyptian-ally", name: "Egyptian Ally", mythologyGroups: ["egyptian", "greek"] };
+  const heroes = [...rawHeroes, dual];
+  const rows = [["isis", dual.id, "helios"], ["nott"]];
+  const g = new TowerDefenseGame({ heroes, tuning, map, seed: 7, squadRows: rows });
+  g.placement = 1e5;
+  g.place(dual.id, dual.slot, 0);
+  g.place("helios", base.slot, 1);
+  g.place("nott", "road", 2);
+  const [ally, helios, nott] = g.heroes;
+  assert.equal(g.lordFx(ally).atk, 0.15, "a matching dual-group hero gets the row Lord bonus before Isis deploys");
+  assert.deepEqual(g.lordFx(helios), {}, "an unrelated hero in the Lord row gets no bonus");
+  assert.deepEqual(g.lordFx(nott), {}, "a hero in the other row gets no bonus");
 
-  // periodic bonus: +50% damage and healing for 20s; sooner with more faction members
-  const solo = setup().caster;
-  assert.equal(g.lordInterval(caster), 44, "one faction member: 50 - 6 seconds");
-  assert.equal(setup().g.lordInterval(solo), 50, "alone: 50 seconds");
-  const base = g.attackValue(helios);
-  caster.lordClock = 0;
-  g.stepLord(caster, 44);
-  assert.ok(g.time < caster.lordBuffUntil, "bonus starts after the interval");
-  assert.ok(Math.abs(g.attackValue(helios) / base - 1.5) < 1e-9, "+50% damage while active");
-  const wounded = helios.hpLeft = 100; helios.hp = 1000;
-  const healed = g.healHero(helios, 100, caster);
-  assert.ok(Math.abs(healed - 150) < 1e-6, "+50% healing from a faction healer while active");
-  g.time = caster.lordBuffUntil + 0.01;
-  assert.equal(g.lordFx(helios).dmg, 0, "bonus ends after 20 seconds");
-  void wounded;
+  g.place("isis", "platform", 3);
+  const caster = g.heroes.at(-1);
+  assert.equal(g.lordFx(caster).atk, 0.15, "the Lord matches her own group");
+  g.damageHero(caster, caster.hpLeft * 2, null);
+  assert.equal(g.lordFx(ally).atk, 0.15, "the row bonus remains after the Lord dies");
 
-  // mark: 20% extra damage from her faction for 3s, one enemy per Lord attack
-  const e1 = enemyAt(g, caster.x + cell, caster.y);
-  g.lordMark(caster, e1);
-  const before = e1.hp;
-  g.time = caster.lordBuffUntil + 0.02;
-  g.hit(e1, 100, helios);
-  const marked = before - e1.hp;
-  g.hit(e1, 100, nott);
-  const unmarked = before - marked - e1.hp;
-  assert.ok(Math.abs(marked / unmarked - 1.2) < 1e-9, "faction hits deal +20% on the marked enemy, others do not");
-  g.time = e1.lordMarkUntil + 0.1;
-  const b2 = e1.hp; g.hit(e1, 100, helios);
-  assert.ok(Math.abs(b2 - e1.hp - 100) < 1e-6, "mark expires after 3 seconds");
+  const sold = new TowerDefenseGame({ heroes, tuning, map, seed: 8, squadRows: rows });
+  sold.placement = 1e5; sold.place("isis", "platform", 0); sold.place(dual.id, dual.slot, 1);
+  sold.sell(sold.heroes.find((hero) => hero.id === "isis").entityId);
+  assert.equal(sold.lordFx(sold.heroes.find((hero) => hero.id === dual.id)).atk, 0.15, "the row bonus remains after the Lord is sold");
+
+  const isolated = new TowerDefenseGame({ heroes, tuning, map, squadRows: [["isis"], [dual.id]] });
+  isolated.placement = 1e5; isolated.place(dual.id, dual.slot, 0);
+  assert.deepEqual(isolated.lordFx(isolated.heroes[0]), {}, "matching mythology in the other row does not leak across rows");
+
+  const twoTuning = structuredClone(tuning);
+  twoTuning.lords.odin = { ...twoTuning.lords.isis, faction: "Greek", groupId: "greek" };
+  const two = new TowerDefenseGame({ heroes, tuning: twoTuning, map, squadRows: [["isis", dual.id], ["odin", "helios"]] });
+  two.placement = 1e5; two.place(dual.id, dual.slot, 0); two.place("helios", base.slot, 1);
+  assert.equal(two.lordFx(two.heroes[0]).lord, "isis", "a dual-group hero receives only its own row Lord effect");
+  assert.equal(two.lordFx(two.heroes[1]).lord, "odin", "the second row resolves its own Lord independently");
+
+  // Periodic state advances from the lineup even while Isis is absent and counts selected matching teammates.
+  assert.equal(g.lordInterval("isis"), 44, "one matching lineup teammate shortens the interval by six seconds");
+  assert.equal(new TowerDefenseGame({ heroes, tuning, map, squadRows: [["isis"], []] }).lordInterval("isis"), 50, "a solo Lord uses the base interval");
+  const attackBefore = g.attackValue(ally);
+  g.stepLords(44);
+  assert.ok(g.lordFx(ally).dmg === 0.5 && g.attackValue(ally) > attackBefore * 1.49, "periodic damage bonus activates without a Lord entity");
+  g.time = 20.01;
+  assert.equal(g.lordFx(ally).dmg, 0, "periodic bonus expires after its configured duration");
+
+  // Only Isis's own direct hit places her mark; matching row allies consume it.
+  const markGame = new TowerDefenseGame({ heroes, tuning, map, squadRows: [["isis", dual.id], ["nott"]] });
+  markGame.placement = 1e5; markGame.place("isis", "platform", 0); markGame.place(dual.id, dual.slot, 1); markGame.place("nott", "road", 2); markGame.start(); markGame.enemies = [];
+  const markIsis = markGame.heroes.find((hero) => hero.id === "isis"), markAlly = markGame.heroes.find((hero) => hero.id === dual.id), other = markGame.heroes.find((hero) => hero.id === "nott");
+  const e1 = enemyAt(markGame, markIsis.x + cell, markIsis.y);
+  markGame.lordMark(markAlly, e1);
+  assert.equal(e1.lordMarkUntil, undefined, "a matching ally cannot place the Lord mark");
+  markGame.lordMark(markIsis, e1);
+  const before = e1.hp; markGame.hit(e1, 100, markAlly); const marked = before - e1.hp;
+  const beforeOther = e1.hp; markGame.hit(e1, 100, other); const unmarked = beforeOther - e1.hp;
+  assert.ok(Math.abs(marked / unmarked - 1.2) < 1e-9, "only matching heroes in Isis's row consume her mark bonus");
 }
 {
   // a basic attack marks one enemy and hits the row; an ultimate marks too

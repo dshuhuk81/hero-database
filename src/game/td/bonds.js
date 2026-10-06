@@ -4,17 +4,15 @@
 // first listed set on a tie) and shares its bonus. Pure, shared by the sim (heroes on the
 // field) and the squad screen (the picked squad).
 
-// `ids`: hero ids. Returns [{ id, name, count, tier, next, members }] per set, where
-// `members` holds indexes into `ids`, `tier` the reached tier (null below the first) and
+// `heroes`: runtime hero records with mythologyGroups. Returns [{ id, name, count, tier, next, members }] per set, where
+// `members` holds indexes into `heroes`, `tier` the reached tier (null below the first) and
 // `next` the next tier still to reach.
-export function bondsOf(cfg, ids) {
+export function bondsOf(cfg, heroes) {
   if (!cfg?.sets) return [];
   const setIds = Object.keys(cfg.sets);
-  const setOf = new Map();
-  for (const id of setIds) for (const heroId of cfg.sets[id].heroes) setOf.set(heroId, id);
-  const native = Object.fromEntries(setIds.map((id) => [id, ids.flatMap((heroId, i) => (setOf.get(heroId) === id ? [i] : []))]));
+  const native = Object.fromEntries(setIds.map((id) => [id, heroes.flatMap((hero, i) => (hero?.mythologyGroups?.includes(cfg.sets[id].groupId) ? [i] : []))]));
   const wildSet = setIds.reduce((best, id) => (native[id].length > native[best].length ? id : best), setIds[0]);
-  const wild = ids.flatMap((heroId, i) => (!setOf.has(heroId) && cfg.wildcard && heroId.startsWith(cfg.wildcard) ? [i] : []));
+  const wild = heroes.flatMap((hero, i) => (cfg.wildcard && hero?.id?.startsWith(cfg.wildcard) ? [i] : []));
   return setIds.map((id) => {
     const members = id === wildSet ? [...native[id], ...wild] : native[id];
     const tiers = [...cfg.sets[id].tiers].sort((a, b) => a.count - b.count);

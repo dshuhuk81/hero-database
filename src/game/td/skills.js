@@ -91,15 +91,15 @@ export const AWAKEN_TEXT = {
   soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
 };
 
-// Lord skill (tuning.lords): what a Lord gives her faction while she stands on the field.
-// Built from the tuned numbers so the text never drifts from the sim (stepLord, lordFx, lordMark).
-/** @param {{ faction: string, members: string[], attrBonus: number, buff: { dmg: number, heal: number, seconds: number, baseInterval: number, perMember: number, minInterval: number }, mark: { bonus: number, seconds: number } } | undefined} cfg */
+// Lord skill (tuning.lords): what a selected Lord gives matching heroes in that squad row.
+// Built from the tuned numbers so the text never drifts from the sim (stepLords, lordFx, lordMark).
+/** @param {{ faction: string, groupId: string, attrBonus: number, buff: { dmg: number, heal: number, seconds: number, baseInterval: number, perMember: number, minInterval: number }, mark: { bonus: number, seconds: number } } | undefined} cfg */
 export function lordText(cfg) {
   if (!cfg) return "";
   const pct = (v) => `${Math.round(v * 100)}%`;
-  return `Lord (${cfg.faction}): raises the basic attributes of ${cfg.faction} team members by ${pct(cfg.attrBonus)}. `
-    + `Periodically raises their damage and healing by ${pct(cfg.buff.dmg)} for ${cfg.buff.seconds}s; the more ${cfg.faction} heroes on the team, the more often (every ${cfg.buff.baseInterval}s alone, down to ${cfg.buff.minInterval}s). `
-    + `After the Lord damages an enemy directly, ${cfg.faction} team members deal ${pct(cfg.mark.bonus)} extra damage to it for ${cfg.mark.seconds}s (one enemy per Lord attack).`;
+  return `Lord (${cfg.faction}): always raises the basic attributes of matching ${cfg.faction} heroes in this row by ${pct(cfg.attrBonus)}. `
+    + `Periodically raises their damage and healing by ${pct(cfg.buff.dmg)} for ${cfg.buff.seconds}s; more matching row heroes shorten the interval (from ${cfg.buff.baseInterval}s to ${cfg.buff.minInterval}s). `
+    + `After the Lord damages an enemy directly, matching heroes in this row deal ${pct(cfg.mark.bonus)} extra damage to it for ${cfg.mark.seconds}s (one enemy per Lord attack).`;
 }
 
 // Class part added on top of every hero ultimate (classUltimate in sim.js).

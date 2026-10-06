@@ -3,6 +3,7 @@ import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern } from "./board.js";
 import { environmentMultiplier } from "./environments.js";
+import { normalizeSquadRows } from "./squad-rows.js";
 
 const K = 260;
 // Symmetric positions across a lane. The actual width follows the board and melee reach.
@@ -96,7 +97,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -104,6 +105,9 @@ export class TowerDefenseGame {
       return bonus ? { ...hero, atk: hero.atk * (1 + (bonus.atk || 0)), hp: hero.hp * (1 + (bonus.hp || 0)) } : hero;
     };
     this.heroesById = new Map(heroes.map((hero) => [hero.id, boosted(hero)]));
+    const flatLineup = Array.from(allowedHeroes ?? []);
+    const rowInput = squadRows ?? [flatLineup.slice(0, 5), flatLineup.slice(5, 10)];
+    this.squadRows = normalizeSquadRows(rowInput, { allowedIds: new Set(this.heroesById.keys()), lordIds: new Set(Object.keys(tuning.lords ?? {})) });
     // Daily Trial (M19): only these heroes can be deployed, and these mutators are active from the start.
     this.allowedHeroes = allowedHeroes ? new Set(allowedHeroes) : null;
     this.presetMutators = (mutators ?? []).filter((id) => tuning.mutators?.pool?.[id]);
@@ -183,6 +187,7 @@ export class TowerDefenseGame {
     this.stageStats = null;
     this.boons = [...(this.presetBoons ?? [])]; // rare and epic run blessings chosen this run (M17), Expedition relics first
     this.rallyUntil = 0;
+    this.lordStates = Object.fromEntries(this.lordRows().map(({ lordId }) => [lordId, { clock: 0, buffUntil: 0 }]));
     this.reaperKills = 0;
     this.mutators = [...(this.presetMutators ?? [])]; // Daily Trial mutators, active from the start
     this.spawnCount = 0;
@@ -535,6 +540,7 @@ export class TowerDefenseGame {
     if (!this.running) return;
     this.time += dt;
     this.stepInterventions(dt);
+    this.stepLords(dt);
     // Placement regrows by tuning.run.placementPerSecond (x Favor rate) per second of battle time.
     this.placementClock += dt * (1 + (this.favor.placementRate || 0)) * this.environment("placementRate");
     const perSecond = this.tuning.run.placementPerSecond ?? 1;
@@ -627,7 +633,6 @@ export class TowerDefenseGame {
       if (this.isHexed(hero) || this.isSilenced(hero)) continue; // Hexer or Baphomet: no attacks, ultimate charge paused
       hero.attackClock -= dt;
       hero.ultClock += dt;
-      if (this.tuning.lords?.[hero.id]) this.stepLord(hero, dt);
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
@@ -1211,7 +1216,7 @@ export class TowerDefenseGame {
   // entity ids.
   bonds() {
     const alive = this.heroes.filter((hero) => hero.hpLeft > 0);
-    return bondsOf(this.tuning.bonds, alive.map((hero) => hero.id))
+    return bondsOf(this.tuning.bonds, alive)
       .map((bond) => ({ ...bond, members: new Set([...bond.members].map((i) => alive[i].entityId)) }));
   }
 
@@ -1222,54 +1227,65 @@ export class TowerDefenseGame {
     return bond?.tier ?? {};
   }
 
-  // Lords (tuning.lords, first: Isis): a Lord on the field boosts her faction (her own `members`
-  // plus herself). Returns { atk, hp, dmg, heal, mark, lord } for a hero of that faction, {} for
-  // anyone else. `atk` and `hp` are the standing +% basic attributes (hp as damage taken
-  // divided by 1 + hp), `dmg` and `heal` the periodic bonus while it is active, `lord` the
-  // Lord's id (enemy marks only count for their own Lord's faction).
+  // Lords belong to selected squad rows, not battlefield entities. Their row effect remains active
+  // before deployment and after sale or death. A hero must both occupy that row and match its group.
+  lordRows() {
+    return this.squadRows.flatMap((heroIds, rowIndex) => {
+      const lordId = heroIds.find((id) => this.tuning.lords?.[id]);
+      if (!lordId) return [];
+      const cfg = this.tuning.lords[lordId];
+      return [{ rowIndex, lordId, groupId: cfg.groupId, heroIds }];
+    });
+  }
+
+  lordRowFor(hero) {
+    if (!hero) return null;
+    return this.lordRows().find((row) => row.heroIds.includes(hero.id) && hero.mythologyGroups?.includes(row.groupId)) ?? null;
+  }
+
+  // Returns { atk, hp, dmg, heal, lord } for a matching hero in its selected Lord row.
   lordFx(hero) {
-    if (!hero || !this.tuning.lords) return {};
-    let out = {};
-    for (const lord of this.heroes) {
-      const cfg = this.tuning.lords[lord.id];
-      if (!cfg || lord.hpLeft <= 0 || (lord !== hero && !cfg.members.includes(hero.id))) continue;
-      const live = this.time < (lord.lordBuffUntil || 0);
-      out = { atk: Math.max(out.atk || 0, cfg.attrBonus || 0), hp: Math.max(out.hp || 0, cfg.attrBonus || 0),
-        dmg: live ? Math.max(out.dmg || 0, cfg.buff?.dmg || 0) : (out.dmg || 0), heal: live ? Math.max(out.heal || 0, cfg.buff?.heal || 0) : (out.heal || 0),
-        lord: lord.id };
-    }
-    return out;
+    const row = this.lordRowFor(hero);
+    if (!row) return {};
+    const cfg = this.tuning.lords[row.lordId];
+    const live = this.time < (this.lordStates[row.lordId]?.buffUntil ?? 0);
+    return { atk: cfg.attrBonus || 0, hp: cfg.attrBonus || 0,
+      dmg: live ? cfg.buff?.dmg || 0 : 0, heal: live ? cfg.buff?.heal || 0 : 0, lord: row.lordId };
   }
 
-  // Lord faction members on the field besides the Lord (more of them: the periodic bonus comes sooner).
-  lordFactionCount(lord) {
-    const cfg = this.tuning.lords?.[lord.id];
-    return cfg ? this.heroes.filter((h) => h !== lord && h.hpLeft > 0 && cfg.members.includes(h.id)).length : 0;
+  // Matching selected teammates besides the Lord shorten the periodic interval, deployed or not.
+  lordFactionCount(lordId) {
+    const row = this.lordRows().find((entry) => entry.lordId === lordId);
+    if (!row) return 0;
+    return row.heroIds.filter((id) => id !== lordId && this.heroesById.get(id)?.mythologyGroups?.includes(row.groupId)).length;
   }
 
-  // Seconds between the Lord's periodic bonuses; the clock runs while no bonus is active.
-  lordInterval(lord) {
-    const buff = this.tuning.lords?.[lord.id]?.buff;
+  lordInterval(lordId) {
+    const buff = this.tuning.lords?.[lordId]?.buff;
     if (!buff) return Infinity;
-    return Math.max(buff.minInterval ?? 0, buff.baseInterval - buff.perMember * this.lordFactionCount(lord));
+    return Math.max(buff.minInterval ?? 0, buff.baseInterval - buff.perMember * this.lordFactionCount(lordId));
   }
 
-  stepLord(lord, dt) {
-    const cfg = this.tuning.lords?.[lord.id];
-    if (!cfg || this.time < (lord.lordBuffUntil || 0)) return;
-    lord.lordClock = (lord.lordClock || 0) + dt;
-    if (lord.lordClock < this.lordInterval(lord)) return;
-    lord.lordClock = 0;
-    lord.lordBuffUntil = this.time + cfg.buff.seconds;
-    for (const ally of this.heroes) {
-      if (ally === lord || cfg.members.includes(ally.id)) this.emitHeroEffect(lord, { type: "buff", x: ally.x, y: ally.y, life: 0.6, color: "gold" });
+  stepLords(dt) {
+    for (const row of this.lordRows()) {
+      const cfg = this.tuning.lords[row.lordId];
+      const state = this.lordStates[row.lordId] ??= { clock: 0, buffUntil: 0 };
+      if (this.time < state.buffUntil) continue;
+      state.clock += dt;
+      if (state.clock < this.lordInterval(row.lordId)) continue;
+      state.clock = 0;
+      state.buffUntil = this.time + cfg.buff.seconds;
+      for (const ally of this.heroes) if (this.lordRowFor(ally)?.lordId === row.lordId) {
+        this.emitHeroEffect(ally, { type: "buff", x: ally.x, y: ally.y, life: 0.6, color: "gold" });
+      }
     }
   }
 
   // After the Lord's direct damage: one struck enemy takes extra damage from her faction for a while.
   lordMark(lord, enemy) {
     const mark = this.tuning.lords?.[lord.id]?.mark;
-    if (!mark || !enemy || enemy.dead) return;
+    const row = this.lordRows().find((entry) => entry.lordId === lord.id && entry.heroIds.includes(lord.id));
+    if (!mark || !row || !enemy || enemy.dead) return;
     enemy.lordMarkUntil = this.time + mark.seconds;
     enemy.lordMarkBonus = mark.bonus;
     enemy.lordMarkBy = lord.id;

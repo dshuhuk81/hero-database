@@ -98,7 +98,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     // its own squad.
     const heroes = collectionHeroes(campaignData, store.data.campaign, data.heroes);
     const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
-      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squad, undefined, heroes, !!campaign!.heroic)
+      : campaignStage ? campaignGameOptions(campaignStage, campaign!.squadRows, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
     // R12: Expedition enemies grow with the collection's upgrades (by less than 100%).
     if (!daily && !campaignStage) {
@@ -143,7 +143,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     deps.buffBar.render();
     ctx.actions.resetPowers();
     const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
-      : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squad.length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
+      : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squadRows.flat().length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
     ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${dailyText}`);
   }

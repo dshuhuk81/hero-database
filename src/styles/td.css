@@ -11425,13 +11425,13 @@ button .td-cur {
   letter-spacing: 0;
 }
 
-/* Bottom row: slots and hint centered, Might above Start on the right; no screen footer. */
+/* Bottom area: two independent five-slot rows; Might and Start stay on the right. */
 .td-app .td-squad-prep {
   position: static;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(124px, 1fr) auto minmax(124px, 1fr);
+  grid-template-rows: auto auto;
   align-items: center;
-  justify-items: center;
-  gap: 4px var(--space-3);
+  gap: 3px var(--space-3);
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -11439,22 +11439,151 @@ button .td-cur {
   box-shadow: none;
 }
 
-.td-app .td-squad-lineup-row,
+.td-app .td-squad-rows,
 .td-app .td-squad-feedback {
   grid-column: 2;
 }
 
-.td-app .td-squad-lineup-row {
+.td-app .td-squad-rows {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(54px, auto));
+  gap: 4px;
+  justify-self: center;
+  min-width: 0;
+}
+
+.td-app .td-squad-row {
+  display: grid;
+  grid-template-columns: 42px auto;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px 3px 3px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: var(--radius-sm);
+  background: rgba(11, 10, 18, .52);
+}
+
+.td-app .td-squad-row.is-active {
+  border-color: rgba(255, 204, 51, .72);
+  box-shadow: 0 0 0 1px rgba(255, 204, 51, .12), inset 0 0 18px rgba(255, 204, 51, .05);
+}
+
+.td-app .td-squad-row-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 24px;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: 3px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+}
+
+.td-app .td-squad-row-select {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent-gold-light);
+  font-size: 10px;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  cursor: pointer;
+}
+
+.td-app .td-squad-row:not(.is-active) .td-squad-row-select {
+  color: var(--text-muted);
 }
 
 .td-app .td-squad-lord {
-  align-self: flex-start;
+  position: relative;
   display: grid;
   place-items: center;
-  height: 72px; /* the slot card height, so the crown centers on the portraits */
+}
+
+.td-app .td-squad-lord-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(255, 204, 51, .72);
+  border-radius: 50%;
+  background: rgba(255, 204, 51, .1);
+  color: var(--accent-gold-light);
+  cursor: help;
+}
+
+.td-app .td-squad-lord-btn:hover,
+.td-app .td-squad-lord-btn:focus-visible,
+.td-app .td-squad-lord-btn[aria-expanded="true"] {
+  border-color: var(--accent-gold);
+  background: rgba(255, 204, 51, .22);
+}
+
+.td-app .td-squad-lord-btn .td-squad-crown {
+  position: absolute;
+  z-index: 1;
+  color: var(--accent-gold-light);
+  font-size: 13px;
+  line-height: 1;
+  text-shadow: 0 1px 2px #000;
+}
+
+.td-app .td-squad-lord-btn .td-mythology-icon {
+  width: 22px;
+  height: 22px;
+  opacity: .72;
+}
+
+.td-app .td-squad-lord-tip {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  gap: 4px;
+  width: min(280px, 70vw);
+  padding: 9px 11px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-overlay);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .55);
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3px);
+  transition: opacity .12s ease, transform .12s ease, visibility .12s;
+}
+
+.td-app .td-squad-lord-tip strong {
+  color: var(--accent-gold-light);
+}
+
+.td-app .td-squad-lord:hover .td-squad-lord-tip,
+.td-app .td-squad-lord-btn[aria-expanded="true"] + .td-squad-lord-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.td-app .td-mythology-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .td-app .td-squad-go {
@@ -11505,8 +11634,8 @@ button .td-cur {
   width: auto;
   grid-template-columns: none;
   grid-auto-flow: column;
-  grid-auto-columns: 64px;
-  gap: var(--space-2);
+  grid-auto-columns: 48px;
+  gap: 5px;
 }
 
 .td-app .td-squad-slot {
@@ -11514,8 +11643,8 @@ button .td-cur {
 }
 
 .td-app .td-squad-slot-card {
-  width: 64px;
-  height: 72px;
+  width: 48px;
+  height: 50px;
   aspect-ratio: auto;
 }
 
@@ -11534,6 +11663,38 @@ button .td-cur {
 
 .td-app .td-squad-slot.is-empty strong {
   font-size: var(--text-lg);
+}
+
+.td-app .td-squad-slot.is-group-match .td-squad-slot-card {
+  box-shadow: 0 0 0 1px var(--accent-gold), 0 0 10px rgba(255, 204, 51, .32);
+}
+
+.td-app .td-squad-slot-groups,
+.td-app .td-squad-tile-groups {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 2;
+  display: flex;
+  gap: 1px;
+}
+
+.td-app .td-squad-slot-groups .td-mythology-icon,
+.td-app .td-squad-tile-groups .td-mythology-icon {
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 1px 2px #000);
+}
+
+.td-app .td-squad-slot-crown,
+.td-app .td-squad-tile-crown {
+  position: absolute;
+  top: 18px;
+  left: 3px;
+  z-index: 2;
+  color: var(--accent-gold-light);
+  font-size: 13px;
+  text-shadow: 0 1px 2px #000;
 }
 
 .td-app .td-squad-feedback {
@@ -11577,6 +11738,17 @@ button .td-cur {
 
 .td-app .td-bond.is-active b {
   color: var(--accent-gold);
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  .td-app .td-squad-screen { gap: 8px; }
+  .td-app [data-td-screen="squad"] .td-screen-body { padding-top: 4px; padding-bottom: 5px; }
+  .td-app .td-squad-rows { grid-template-rows: repeat(2, 52px); gap: 3px; }
+  .td-app .td-squad-row { grid-template-columns: 42px auto; padding: 2px 4px 2px 2px; gap: 4px; }
+  .td-app .td-squad-lineup { grid-auto-columns: 44px; gap: 4px; }
+  .td-app .td-squad-slot-card { width: 44px; height: 44px; }
+  .td-app .td-squad-slot-cost { font-size: 9px; }
+  .td-app .td-squad-feedback { font-size: 9px; }
 }
 
 /* Summon: the banner takes the height; arrivals and Seal Dust are slim rows below. */

@@ -4,7 +4,7 @@ import { availableFavor, availableInsight, emptySave, encodeSaveCode, parseSaveT
 
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 
-const rules = { heroIds: new Set(heroes.map((hero) => hero.id)) };
+const rules = { heroIds: new Set(heroes.map((hero) => hero.id)), lordIds: new Set(heroes.filter((hero) => hero.rarity === "lord").map((hero) => hero.id)) };
 
 // Account reset removes all Tower Defense state and preferences, but leaves the rest of
 // the site's local storage alone. A small in-memory Storage exercises the real key scan.
@@ -60,9 +60,18 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.deepEqual(old.lastTeam, ["odin", "surtr"], "team renamed, duplicates dropped");
   assert.deepEqual(old.favLevels, { gaia_bounty: 2, surtr_command: 1, mage_might: 1 }, "blessing node ids renamed");
   assert.ok(old.campaign.owned.includes("odin") && old.campaign.owned.includes("atlas") && !old.campaign.owned.includes("zeus"), "owned renamed");
-  assert.deepEqual(old.campaign.lastSquad, ["odin"], "squad renamed");
+  assert.deepEqual(old.campaign.lastSquadRows, [[], []], "legacy flat squad is ignored");
   assert.equal(old.campaign.levels.odin, 4, "levels renamed");
   assert.equal(old.campaign.copies.atlas, 2, "copies renamed");
+}
+
+// Current row saves rename old hero ids inside both rows and preserve the row boundary.
+{
+  const old = sanitizeSave({
+    ...emptySave(), bestScore: 10,
+    campaign: { ...emptySave().campaign, owned: ["zeus", "nuwa"], lastSquadRows: [["zeus", "nuwa"], ["gaia"]] },
+  }, rules);
+  assert.deepEqual(old.campaign.lastSquadRows, [["odin", "atlas"], ["gaia"]], "hero ids are renamed inside current squad rows");
 }
 
 // Save code and save file round-trip; garbage is rejected.

@@ -21,6 +21,22 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 
+// Squad selection is row-aware: two rendered rows, shared placement rules and mythology chips.
+{
+  const { readFileSync } = await import("node:fs");
+  const lobby = readFileSync(new URL("../src/components/td/TdLobby.astro", import.meta.url), "utf8");
+  const controller = readFileSync(new URL("../src/game/td/page/campaign.ts", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/styles/td.css", import.meta.url), "utf8");
+  assert.ok(lobby.includes("data-td-squad-rows"), "Squad screen exposes a two-row host");
+  assert.match(controller, /import \{[^}]*placeInSquadRows[^}]*\} from "\.\.\/squad-rows\.js"/, "campaign UI imports the shared placement rule");
+  assert.ok(controller.includes("let squadRows") && !controller.includes("let squad: string[]"), "campaign UI stores structured rows instead of a flat local squad");
+  assert.ok(controller.includes('data-td-squad-row="${rowIndex}"') && controller.includes('data-squad-slot="${slotIndex}"'), "both row and slot indexes are rendered");
+  assert.ok(controller.includes("placeInSquadRows(squadRows, id, activeRow") && controller.includes("placeInSquadRows(squadRows, current.id, rowIndex, slotIndex"), "roster taps and pointer drops use the shared placement rule");
+  assert.ok(controller.includes("td-mythology-icon") && controller.includes("group.icon"), "roster and row UI render mythology icons");
+  assert.match(css, /\.td-squad-rows\s*\{[\s\S]*grid-template-rows:\s*repeat\(2,/, "lineup CSS reserves two compact rows");
+  assert.match(css, /@media \(orientation: landscape\) and \(max-height: 430px\)[\s\S]*\.td-squad-row/, "short landscape has an explicit two-row compaction rule");
+}
+
 // Combat readability: bars identify allegiance at a glance, rapid numbers merge instead of
 // stacking, status pips stay bounded, spawn labels step aside during combat, and bosses use HUD.
 assert.equal(typeof render.combatBarStyle, "function", "combat bar styling is exposed");
@@ -407,4 +423,3 @@ console.log("Tower defense UI helper checks passed.");
   assert.ok(!session.includes("(level 1, half health)"), "revive notice drops the battle level");
   console.log("R4 review fix checks passed.");
 }
-

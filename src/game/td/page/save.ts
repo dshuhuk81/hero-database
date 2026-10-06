@@ -14,7 +14,7 @@ export type ExpeditionState = { seed: number; stages: string[]; stage: number; r
 // Campaign progress (M26, campaign.js): owned heroes, cleared stages with their best
 // lives, the last squad, currencies, hero levels and the summon count; versioned on its own so it can
 // migrate on its own.
-export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquad: string[]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>>; milestones?: Record<string, number[]>; heroic?: Record<string, { clears: number; bestLives: number }> };
+export type CampaignProgress = { version: number; owned: string[]; cleared: Record<string, { clears: number; bestLives: number }>; lastSquadRows: [string[], string[]]; currencies: Record<string, number>; levels: Record<string, number>; summons: number; copies?: Record<string, number>; skillLevels?: Record<string, Record<string, number>>; milestones?: Record<string, number[]>; heroic?: Record<string, { clears: number; bestLives: number }> };
 
 // Daily Trial (M19) record per UTC day; bestDefeated counts enemies defeated.
 export type DailyRecord = { date: string; bestDefeated: number; bestScore: number; goalReached: boolean };
@@ -99,7 +99,7 @@ function mergeLegacyRunKeys<T extends { score: number }>(runs: Record<string, an
 }
 
 // mapIds and relicIds check the Expedition state; without them it is not validated as strictly.
-type SaveRules = { heroIds: Set<string>; mapIds?: Set<string>; relicIds?: Set<string> };
+type SaveRules = { heroIds: Set<string>; lordIds: Set<string>; mapIds?: Set<string>; relicIds?: Set<string> };
 
 export const SAVE_KEY = "td:v1";
 export const SAVE_CODE_PREFIX = "TD1:";
@@ -147,7 +147,8 @@ const heroKeys = (obj: unknown) => (isRecord(obj) ? Object.fromEntries(Object.en
 function renameLegacyHeroes(save: Record<string, any>): Record<string, any> {
   const campaign = isRecord(save.campaign) ? { ...save.campaign } : save.campaign;
   if (isRecord(campaign)) {
-    for (const key of ["owned", "lastSquad"]) campaign[key] = heroList(campaign[key]);
+    campaign.owned = heroList(campaign.owned);
+    if (Array.isArray(campaign.lastSquadRows)) campaign.lastSquadRows = campaign.lastSquadRows.map(heroList);
     for (const key of ["levels", "copies", "stars", "evolution", "skillLevels"]) campaign[key] = heroKeys(campaign[key]);
   }
   const expedition = isRecord(save.expedition) ? { ...save.expedition } : save.expedition;
@@ -194,7 +195,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
       stages: Math.max(0, Math.floor(Number(candidate.expeditionBest?.stages) || 0)),
       completed: Math.max(0, Math.floor(Number(candidate.expeditionBest?.completed) || 0)),
     },
-    campaign: sanitizeCampaign(candidate.campaign, campaignData, rules.heroIds) as CampaignProgress,
+    campaign: sanitizeCampaign(candidate.campaign, campaignData, rules.heroIds, rules.lordIds) as CampaignProgress,
     ui: { homeMode: isHomeMode(candidate.ui?.homeMode) ? candidate.ui.homeMode : "campaign" },
   };
   // Tree v3 (M3): owned levels stay, the price increase is credited back once.
@@ -268,7 +269,7 @@ export function createSaveStore(rules: SaveRules): SaveStore {
 // Save panel: export (code, file) and import (code, file). Import replaces td:v1.
 export function createSavePanel(ctx: PageContext) {
   const { q, store } = ctx;
-  const rules = { heroIds: new Set(ctx.heroById.keys()) };
+  const rules = { heroIds: new Set(ctx.heroById.keys()), lordIds: new Set([...ctx.heroById.values()].filter((hero: any) => hero.rarity === "lord").map((hero: any) => hero.id)) };
   const exportEl = q<HTMLTextAreaElement>("[data-td-save-export]");
   const importEl = q<HTMLTextAreaElement>("[data-td-save-import]");
   const fileInput = q<HTMLInputElement>("[data-td-save-file-input]");

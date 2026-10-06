@@ -34,8 +34,8 @@ const enemyKinds = new Set([...Object.keys(tuning.enemies), "boss"]);
 const stages = allStages(campaign);
 
 // --- Data ---
-assert.ok(campaign.squadSize >= 1, "squad size");
-assert.ok(campaign.starters.length >= campaign.squadSize && campaign.starters.every((id) => heroIds.has(id)), "starters exist and fill a squad");
+assert.deepEqual([campaign.squadRows, campaign.squadRowSize, campaign.squadSize], [2, 5, 10], "two five-slot rows provide ten total slots");
+assert.ok(campaign.starters.length >= 1 && campaign.starters.every((id) => heroIds.has(id)), "starters exist");
 assert.equal(new Set(stages.map((stage) => stage.id)).size, stages.length, "stage ids unique");
 stages.forEach((stage, i) => {
   assert.ok(maps.some((map) => map.id === stage.mapId), `${stage.id}: map exists`);
@@ -58,15 +58,17 @@ stages.forEach((stage, i) => {
   const beforeDebugAccess = structuredClone(p);
   assert.equal(isUnlocked(p, stages[1], true), true, "debug override makes a locked stage playable");
   assert.deepEqual(p, beforeDebugAccess, "debug stage access does not fabricate campaign progress");
-  assert.ok(validSquad(campaign, p, campaign.starters.slice(0, campaign.squadSize)), "owned squad valid");
+  const starterRows = [campaign.starters.slice(0, 5), campaign.starters.slice(5, 10)];
+  assert.ok(validSquad(campaign, p, starterRows), "owned rows valid");
+  assert.ok(validSquad(campaign, p, [[campaign.starters[0]], []]), "a partial one-hero lineup is valid");
   // Starters can all fit in the squad; add one more owned hero to exceed the cap.
   const rewardStage = stages.find((stage) => stage.rewards.some((reward) => reward.type === "hero"));
   const extra = rewardStage.rewards.find((reward) => reward.type === "hero").id;
   p = { ...p, owned: [...p.owned, extra] };
-  assert.ok(!validSquad(campaign, p, [...campaign.starters, extra].slice(0, campaign.squadSize + 1)), "too many heroes");
+  assert.ok(!validSquad(campaign, p, [[...campaign.starters, extra], []]), "more than five heroes in one row is invalid");
   p = newCampaignProgress(campaign);
-  assert.ok(!validSquad(campaign, p, [extra]), "locked hero not allowed");
-  assert.ok(!validSquad(campaign, p, []), "empty squad");
+  assert.ok(!validSquad(campaign, p, [[extra], []]), "locked hero not allowed");
+  assert.ok(!validSquad(campaign, p, [[], []]), "empty squad");
   const lost = finishCampaignStage(campaign, p, stages[0].id, { won: false, lives: 0 });
   assert.equal(lost.progress, p, "a loss changes nothing");
   const won = finishCampaignStage(campaign, p, stages[0].id, { won: true, lives: 12 });
@@ -83,8 +85,8 @@ stages.forEach((stage, i) => {
   assert.deepEqual(again.granted, repeatRewards(campaign, stages[0]), "replay pays the repeat share");
   assert.equal(again.progress.currencies.gold, gold + Math.round(gold * campaign.repeatShare), "replay gold added");
   assert.deepEqual(again.progress.cleared[stages[0].id], { clears: 2, bestLives: 18 }, "clears and best lives tracked");
-  const options = stageGameOptions(stages[0], ["gaia"], 7);
-  assert.deepEqual([options.allowedHeroes, options.lives, options.timeline], [["gaia"], stages[0].lives, stages[0].timeline], "game options");
+  const options = stageGameOptions(stages[0], [["gaia"], ["fenrir"]], 7);
+  assert.deepEqual([options.allowedHeroes, options.squadRows, options.lives, options.timeline], [["gaia", "fenrir"], [["gaia"], ["fenrir"]], stages[0].lives, stages[0].timeline], "game options preserve rows and flatten deployment access");
   assert.equal("waves" in options || "mode" in options, false, "no waves and no run modes");
 }
 
@@ -149,10 +151,15 @@ stages.forEach((stage, i) => {
 // --- Save section ---
 {
   assert.deepEqual(sanitizeCampaign(undefined, campaign, heroIds), newCampaignProgress(campaign), "missing section: fresh progress");
-  const clean = sanitizeCampaign({ owned: ["odin", "ghost"], cleared: { "1-1": { clears: "2", bestLives: 9 }, "9-9": { clears: 1 } }, lastSquad: ["odin", "ghost", "nott"] }, campaign, heroIds);
+  const clean = sanitizeCampaign({ owned: ["odin", "ghost"], cleared: { "1-1": { clears: "2", bestLives: 9 }, "9-9": { clears: 1 } }, lastSquadRows: [["gaia", "ghost", "gaia"], { broken: true }] }, campaign, heroIds);
   assert.deepEqual(clean.owned, [...campaign.starters, "odin"], "starters kept, unknown heroes dropped");
   assert.deepEqual(clean.cleared, { "1-1": { clears: 2, bestLives: 9 } }, "unknown stages dropped");
-  assert.deepEqual(clean.lastSquad, ["odin"], "last squad only owned heroes");
+  assert.deepEqual(clean.lastSquadRows, [["gaia"], []], "row data filters unowned heroes and malformed nested values");
+  const lordRows = sanitizeCampaign({ version: CAMPAIGN_SAVE_VERSION, owned: ["isis"], lastSquadRows: [["gaia", "isis"], []] }, campaign, heroIds);
+  assert.deepEqual(lordRows.lastSquadRows, [["isis", "gaia"], []], "a saved Lord is normalized to slot zero");
+  const legacy = sanitizeCampaign({ ...newCampaignProgress(campaign), currencies: { gold: 123 }, levels: { gaia: 2 }, lastSquad: ["gaia", "fenrir"] }, campaign, heroIds);
+  assert.deepEqual(legacy.lastSquadRows, [[], []], "a legacy flat squad is deliberately ignored");
+  assert.deepEqual([legacy.currencies.gold, legacy.levels], [123, { gaia: 2 }], "ignoring the old squad preserves unrelated progression");
   const v1 = sanitizeCampaign({ version: 1, owned: [...campaign.starters], cleared: {}, lastSquad: [] }, campaign, heroIds);
   const zero = Object.fromEntries(CURRENCIES.map((id) => [id, 0]));
   assert.deepEqual([v1.version, v1.currencies, v1.levels], [CAMPAIGN_SAVE_VERSION, zero, {}], "version 1 saves migrate: no currencies, level 1");

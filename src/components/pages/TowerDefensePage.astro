@@ -68,7 +68,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   // ------------------------------------------------------------------
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
-  const store = createSaveStore({ heroIds: new Set(heroById.keys()), mapIds: new Set(maps.map((map) => map.id)), relicIds: new Set(Object.keys(data.tuning.runBoons?.list ?? {})) });
+  const store = createSaveStore({ heroIds: new Set(heroById.keys()), lordIds: new Set(data.heroes.filter((hero: any) => hero.rarity === "lord").map((hero: any) => hero.id)), mapIds: new Set(maps.map((map) => map.id)), relicIds: new Set(Object.keys(data.tuning.runBoons?.list ?? {})) });
   const state: PageState = { session: null, selectedEntityId: null, deployHeroId: "", relocateEntityId: null, pendingSlot: null };
 
   const pause = createPauseController((paused: boolean) => {

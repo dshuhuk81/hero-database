@@ -71,9 +71,10 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   assert.notEqual(last.heroId, first.heroId, "never a duplicate");
   assert.equal(last.progress.summons, 2, "second summon counted");
   // The summoned hero is usable right away.
-  const squad = [first.heroId, ...campaign.starters.slice(0, campaign.squadSize - 1)];
-  assert.ok(validSquad(campaign, first.progress, squad), "summoned hero fits a valid squad");
-  assert.ok(!validSquad(campaign, rich, squad), "not before the summon");
+  const picked = [first.heroId, ...campaign.starters];
+  const squadRows = [picked.slice(0, campaign.squadRowSize), picked.slice(campaign.squadRowSize)];
+  assert.ok(validSquad(campaign, first.progress, squadRows), "summoned hero fits a valid two-row squad");
+  assert.ok(!validSquad(campaign, rich, squadRows), "not before the summon");
   // Weighted pool: every hero remains reachable. Weights follow the banner's
   // rarityWeights (lord/legendary/epic/common), the featured hero multiplied by featuredWeight.
   const rarityOf = (id) => heroes.find((hero) => hero.id === id)?.rarity ?? "common";
@@ -117,7 +118,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 9, "save version 9");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 10, "save version 10");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
   assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [CAMPAIGN_SAVE_VERSION, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
