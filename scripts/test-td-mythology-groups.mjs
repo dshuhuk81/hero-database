@@ -13,7 +13,7 @@ const EXPECTED = {
   norse: ["ymir", "heimdall", "aegir", "surtr", "fenrir", "nott", "vidar", "odin", "skadi"],
   egyptian: ["isis"],
   "elder-powers": ["atlas", "ymir", "gaia", "helios", "surtr", "nott"],
-  underworld: ["hecate", "thanatos", "isis"],
+  underworld: ["hecate", "thanatos"],
   wildborn: ["aegir", "fenrir", "boreas", "skadi", "atalanta", "stheno"],
   "divine-guardians": ["heimdall", "vidar", "harmonia", "asclepius"],
 };

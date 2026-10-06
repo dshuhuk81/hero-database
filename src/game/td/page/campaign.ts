@@ -311,9 +311,11 @@ export function createCampaign(ctx: PageContext) {
 
   const lordIds = new Set<string>(Object.keys(data.tuning.lords ?? {}));
   const isLord = (id: string) => lordIds.has(id);
-  const mythologyIcons = (hero: any, extraClass = "") => (hero?.mythologyGroups ?? []).map((groupId: string) => {
+  const mythologyIcons = (hero: any, extraClass = "") => (isLord(hero?.id) ? (hero?.mythologyGroups ?? []).slice(0, 1) : (hero?.mythologyGroups ?? [])).map((groupId: string) => {
     const group = mythologyGroups[groupId];
-    return group ? `<img class="td-mythology-icon${extraClass ? ` ${extraClass}` : ""}" src="${group.icon}" alt="${group.name}" title="${group.name}">` : "";
+    if (!group) return "";
+    const lord = isLord(hero?.id);
+    return `<span class="td-mythology-badge${lord ? " is-lord" : ""}" title="${lord ? `${group.name} Lord` : group.name}"><img class="td-mythology-icon${extraClass ? ` ${extraClass}` : ""}" src="${group.icon}" alt="${group.name}">${lord ? '<span class="td-mythology-lord-mark" aria-hidden="true">♛</span>' : ""}</span>`;
   }).join("");
 
   function renderSquad(message = "") {
@@ -357,7 +359,7 @@ export function createCampaign(ctx: PageContext) {
       const status = lordId
         ? `<span class="td-squad-lord" data-td-squad-lord>
             <button type="button" class="td-squad-lord-btn" aria-expanded="false" aria-label="Lord bonus: ${heroName(lordId)}">
-              <span class="td-squad-crown" aria-hidden="true">♛</span>${group ? `<img class="td-mythology-icon" src="${group.icon}" alt="">` : ""}
+              ${mythologyIcons(heroById.get(lordId), "td-mythology-icon--lord-status")}
             </button>
             <span class="td-squad-lord-tip" role="tooltip"><strong>${heroName(lordId)}</strong><span>${lordText(lordCfg)}</span></span>
           </span>`
@@ -372,7 +374,7 @@ export function createCampaign(ctx: PageContext) {
         if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span></button>`;
         const matches = group && hero.mythologyGroups?.includes(group.id);
         return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}${isLord(hero.id) ? " is-lord" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
-          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span></button>`;
+          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span></button>`;
       }).join("");
       return `<section class="td-squad-row${rowIndex === activeRow ? " is-active" : ""}${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
         <div class="td-squad-row-head" data-squad-activate-row="${rowIndex}">${status}</div>
@@ -395,7 +397,7 @@ export function createCampaign(ctx: PageContext) {
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
       return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} of ${campaign.heroStars?.max ?? 5} stars` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" loading="lazy">
-        <span class="td-squad-tile-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-tile-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
+        <span class="td-squad-tile-groups">${mythologyIcons(hero)}</span><span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
         ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
     };

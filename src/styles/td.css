@@ -13605,6 +13605,60 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
   filter: drop-shadow(0 1px 2px #000);
 }
 
+.td-app .td-mythology-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+}
+
+.td-app .td-mythology-badge.is-lord {
+  width: 17px;
+  height: 17px;
+  margin: 1px;
+  border: 1px solid #ffd75b;
+  border-radius: 3px;
+  background: linear-gradient(145deg, #7b4612, #d99a28 55%, #5b3109);
+  box-shadow: 0 0 0 1px rgb(46 24 3 / .9), 0 0 6px rgb(255 201 64 / .55);
+  transform: rotate(45deg) scale(.82);
+}
+
+.td-app .td-mythology-badge.is-lord .td-mythology-icon {
+  width: 15px;
+  height: 15px;
+  transform: rotate(-45deg) scale(.88);
+}
+
+.td-app .td-mythology-lord-mark {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 11px;
+  height: 11px;
+  border: 1px solid #fff0a0;
+  border-radius: 50%;
+  background: #b66f10;
+  color: #fff7bd;
+  font-size: 8px;
+  line-height: 1;
+  text-shadow: 0 1px 1px #5a2d00;
+  transform: rotate(-45deg);
+}
+
+.td-app .td-squad-lord-btn .td-mythology-badge.is-lord {
+  width: 24px;
+  height: 24px;
+}
+
+.td-app .td-squad-lord-btn .td-mythology-icon--lord-status {
+  width: 21px;
+  height: 21px;
+}
+
 .td-app .td-squad-slot-crown,
 .td-app .td-squad-tile-crown {
   position: static;

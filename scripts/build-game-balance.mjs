@@ -35,6 +35,15 @@ const round5 = (n) => Math.round(n / 5) * 5;
 const TIER_RARITY = { S: "legendary", A: "legendary", B: "epic", C: "epic", D: "common" };
 const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1];
 
+// A Lord represents exactly one mythology group. Keep this as an authored-data invariant so
+// future Lords cannot accidentally collect the regular one-or-two-group badge stack.
+for (const [lordId, cfg] of Object.entries(tuning.lords ?? {})) {
+  const memberships = mythic.heroes[lordId]?.mythologyGroups ?? [];
+  if (memberships.length !== 1 || memberships[0] !== cfg.groupId) {
+    throw new Error(`Tower-defense Lord ${lordId} must belong only to ${cfg.groupId}`);
+  }
+}
+
 // Database hero for TD id `id` (tuning.statSource), carrying the TD id and mythic name.
 const source = (id, dbId = tuning.statSource?.[id]) => {
   const hero = heroes[dbId];
