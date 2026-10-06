@@ -1692,8 +1692,15 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   // HP bars (full rebuild each frame, lightweight Graphics)
   // ------------------------------------------------------------------
+  // Health, shield, valor and ultimate bars sit at their unit's depth inside layerUnits, so a unit
+  // standing lower on the board draws in front of the bars of the unit behind it (hero bars above
+  // an enemy's, an enemy's bars never float over a hero in front of it). Rings and warnings stay
+  // in the top layer.
+  const unitBarGfx = [];
   function drawBars() {
     layerBars.removeChildren();
+    for (const old of unitBarGfx) { layerUnits.removeChild(old); old.destroy(); }
+    unitBarGfx.length = 0;
     const g = new PIXI.Graphics();
     // R18: under the tilt the bar layer is squashed with the ground. Each unit gets its own
     // graphics, un-squashed about the unit's own y, so bars and rings keep their thickness and
@@ -1706,26 +1713,35 @@ export async function createRenderer(canvas, game, options = {}) {
       layerBars.addChild(own);
       return own;
     };
+    const gBar = (unit, kind) => {
+      const own = new PIXI.Graphics();
+      if (tiltOn) { own.position.y = unit.y * (1 - 1 / tiltK); own.scale.y = 1 / tiltK; }
+      own.zIndex = unitDepth(unit.y, unit.flying ? "flyer" : kind) + 0.25;
+      layerUnits.addChild(own);
+      unitBarGfx.push(own);
+      return own;
+    };
     for (const unit of game.enemies) {
       const g = gFor(unit.y);
+      const gb = gBar(unit, "enemy");
       const barStyle = combatBarStyle(unit.kind === "boss" ? "boss" : "enemy");
       const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
-      if (barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
+      if (barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
       // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red
       // ring while The Final Eight keeps him standing.
       const valor = unit.kind === "boss" ? game.bossTuning?.valor : null;
-      if (valor && barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24, 3);
+      if (valor && barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24, 3);
       if ((unit.rallyUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 38).stroke({ width: 3, color: 0xfbbf24, alpha: 0.8 });
       if ((unit.finalEightUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 44).stroke({ width: 3, color: 0xef4444, alpha: 0.85 });
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
       const statuses = visibleStatusPips([[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]].filter(([on]) => on));
       for (const [, color] of statuses) {
-        g.circle(unit.x - radius + 3 + pip * 7, Math.max(2, unit.y + top) - 5 - (unit.shieldMax ? 5 : 0), 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
+        gb.circle(unit.x - radius + 3 + pip * 7, Math.max(2, unit.y + top) - 5 - (unit.shieldMax ? 5 : 0), 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
         pip += 1;
       }
       // Mender: green heal ring at its feet, showing the heal radius faintly.
@@ -1737,20 +1753,21 @@ export async function createRenderer(canvas, game, options = {}) {
       // Shieldbearer: shield bar above health and a bubble while the shield holds.
       if (unit.shieldMax) {
         const ratio = unit.shield / unit.shieldMax;
-        if (barStyle.overhead) drawBar(g, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
+        if (barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
         if (ratio > 0) g.circle(unit.x, unit.y - fullSpriteSize(unit.kind) * 0.35, fullSpriteSize(unit.kind) * 0.45).stroke({ width: 2, color: 0x7dd3fc, alpha: 0.25 + 0.45 * ratio });
       }
     }
     for (const unit of game.heroes) {
       const g = gFor(unit.y);
+      const gb = gBar(unit, "hero");
       if (tiltOn) { // hero bars above the head, in the top layer (R18)
         const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 82 * hs;
         const style = combatBarStyle("hero");
         const width = 48 * hs;
-        drawBar(g, left, top, width, unit.hpLeft / unit.hp, style.healthColor, style.healthHeight);
+        drawBar(gb, left, top, width, unit.hpLeft / unit.hp, style.healthColor, style.healthHeight);
         if (unit.ultClock !== undefined && unit.ultCooldown) {
           const secondary = width * style.secondaryWidth;
-          drawBar(g, unit.x - secondary / 2, top + style.healthHeight + 2, secondary, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple, style.secondaryHeight);
+          drawBar(gb, unit.x - secondary / 2, top + style.healthHeight + 2, secondary, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple, style.secondaryHeight);
         }
       }
       // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
@@ -1779,6 +1796,7 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
     layerBars.addChild(g);
+    layerUnits.sortDirty = true;
   }
 
   // Figures get a flat ring at the feet so it does not cross the body or the hero above.
@@ -2225,12 +2243,13 @@ export async function createRenderer(canvas, game, options = {}) {
   // can change any tick.
   // ------------------------------------------------------------------
   // A melee enemy stops deep inside its blocker's tile (blocking.contactRange), where its sprite
-  // hides behind or under the hero. Visual only: while drawing, held enemies are pushed out to a
-  // stand-off distance along the line from the hero, and the simulation positions are restored
-  // right after, so hit tests, targeting and balance are untouched.
+  // hides behind or under the hero. Visual only: while drawing, held enemies are pushed out past
+  // the tile edge (like Watcher of Realms: enemies never stand on a hero's tile), along the line
+  // from the hero, and the simulation positions are restored right after, so hit tests,
+  // targeting and balance are untouched.
   function standOffHeldEnemies() {
     const board = boardOf(game.map);
-    const standOff = (board?.cell ?? 96) * 0.42;
+    const standOff = (board?.cell ?? 96) * 0.62; // half a cell is the tile edge, the rest is the sprite's own width
     const moved = [];
     for (const enemy of game.enemies) {
       const hero = enemy.held ? enemy.heldBy : null;

@@ -307,7 +307,12 @@ The full decision history and rollout boundary are in
   reaction-discovery toasts name the reaction only, with full explanations in the glossary;
 - damage numbers follow their living target and avoid nearby labels using bounded vertical
   lanes; very dense saturation may still overlap rather than detach a number from its owner;
-- unit bars, rings and status icons occupy a top graphics layer; heroes use green health plus a
+- melee enemies held by a road hero are drawn just outside that hero's tile (0.62 cells from its
+  centre, presentation only; simulation positions and the block limit are unchanged), so they never
+  stand on a hero's tile;
+- health, shield, valor and ultimate bars sit at their unit's depth in the unit layer (a unit lower
+  on the board draws in front of the bars behind it, so hero bars beat an enemy's above them);
+  rings and warnings stay in a top graphics layer; heroes use green health plus a
   shorter purple ultimate bar, enemies use thin red health bars and bosses use a centred HUD bar;
 - readability pass (Oct 5): lanes get a darker open-ground layer with soft white flow chevrons,
   slabs a dark outline, enemy spawns a pulsing red portal glow, the ground a side vignette

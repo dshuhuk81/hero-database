@@ -11672,8 +11672,8 @@ button .td-cur {
 .td-app .td-squad-slot-groups,
 .td-app .td-squad-tile-groups {
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 1px;
+  left: 1px;
   z-index: 2;
   display: flex;
   gap: 1px;
@@ -13587,8 +13587,8 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-squad-slot-groups,
 .td-app .td-squad-tile-groups {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 1px;
+  left: 1px;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -13600,8 +13600,8 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-hero-tile-groups .td-mythology-icon,
 .td-app .td-squad-slot-groups .td-mythology-icon,
 .td-app .td-squad-tile-groups .td-mythology-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   filter: drop-shadow(0 1px 2px #000);
 }
 
@@ -13615,14 +13615,14 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-squad-tile-class,
 .td-app .td-squad-slot-class {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: 1px;
+  right: 1px;
   left: auto;
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: 0;
   border-radius: 50%;
   background: rgb(9 9 16 / .6);
@@ -13633,8 +13633,8 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-squad-tile-class .td-class-glyph,
 .td-app .td-squad-slot-class .td-class-glyph {
   display: block;
-  width: 62%;
-  height: 62%;
+  width: 60%;
+  height: 60%;
   filter: none;
 }
 
@@ -13754,3 +13754,24 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 /* Costs and the Lord hint share one line: hint until a Lord is placed, then the per-hero costs. */
 .td-app .td-squad-row-foot { gap: 0; min-height: 1.2em; }
 .td-app .td-squad-row-hint.is-hidden { visibility: visible; }
+
+/* Picked check sits mid-card (as in the original) instead of under the class badge. */
+.td-app .td-squad-tile-check {
+  top: 50%;
+  right: auto;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  transform: translate(-50%, -50%);
+}
+
+/* Picked: the portrait gets a light black wash and the check sits above every other badge. */
+.td-app .td-squad-tile.is-picked .td-squad-tile-portrait {
+  opacity: 1;
+  filter: brightness(.55);
+}
+
+.td-app .td-squad-tile-check {
+  z-index: 3;
+}
