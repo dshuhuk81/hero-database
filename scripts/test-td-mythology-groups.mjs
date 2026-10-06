@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import sharp from "sharp";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import groups from "../src/data/tdMythologyGroups.json" with { type: "json" };
 import skin from "../src/data/tdSkinMythic.json" with { type: "json" };
@@ -27,6 +30,18 @@ for (const [id, group] of Object.entries(groups)) {
 assert.equal(groups.egyptian.lordHeroId, "isis", "Isis leads the Egyptian group");
 for (const [id, group] of Object.entries(groups)) if (id !== "egyptian") {
   assert.equal(group.lordHeroId ?? null, null, `${id}: no Lord is invented`);
+}
+assert.equal(new Set(Object.values(groups).map((group) => group.icon)).size, 7, "every group has a distinct icon path");
+for (const [id, group] of Object.entries(groups)) {
+  const path = fileURLToPath(new URL(`../public${group.icon}`, import.meta.url));
+  assert.ok(existsSync(path), `${id}: icon file exists`);
+  const image = sharp(path).ensureAlpha();
+  const meta = await image.metadata();
+  assert.deepEqual([meta.width, meta.height, meta.format, meta.hasAlpha], [128, 128, "webp", true], `${id}: 128px transparent WebP`);
+  const stats = await image.stats();
+  assert.ok(stats.channels[3].min < 255, `${id}: icon preserves transparent pixels`);
+  const visible = await image.clone().trim({ threshold: 1 }).metadata();
+  assert.ok((visible.width ?? 0) > 1 && (visible.height ?? 0) > 1, `${id}: icon has visible content`);
 }
 
 for (const id of namedIds) {

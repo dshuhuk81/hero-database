@@ -138,7 +138,7 @@ Hard rules:
 | `board.js` | Board helpers: cells, named patterns, reach steps, pattern radius, pattern grid SVG |
 | `timeline.js` | Stage timelines: expansion into a spawn queue, totals, validation |
 | `timeline-targets.js` | Per-chapter enemy, group and spawn-window targets from the WoR table |
-| `stage-for-map.js` | A map's own timeline or the one of its campaign stage (Free Play, Daily, Expedition) |
+| `stage-for-map.js` | A map's own timeline or the one of its campaign stage (Daily Trial, Expedition) |
 | `stage-lint.js` | Pacing lint for timelines (`npm run td:stage-lint`) |
 | `lanes.js` | Lanes of a map (one path or several) |
 | `grid.js` | Tiles of a map (`buildGrid`), bot tile ranking (`rankedTiles`) |
@@ -146,7 +146,7 @@ Hard rules:
 | `map-generator.js`, `map-generator-v2.js` | Legacy route generators (`orthogonal-v1`, `lattice-v2`), kept for history and tests |
 | `map-validation.js`, `map-analysis.js`, `map-preview.js` | Map contract checks, geometry metrics, preview model |
 | `environments.js` | Chapter environment multipliers |
-| `campaign.js`, `expedition.js`, `daily.js`, `challenges.js`, `favor.js`, `skills.js` | Mode and progression rules, texts |
+| `campaign.js`, `expedition.js`, `daily.js`, `favor.js`, `skills.js` | Mode and progression rules, texts |
 
 - **Presentation:** `render.js` (PixiJS 8.21.0 and filter-glow 5.2.1 from jsDelivr, exact
   versions pinned; bump deliberately), `map-scene.js`, `fx-kit.js`, `hero-fx.js`,
@@ -286,8 +286,8 @@ Maps without `grid.board` get `null` and play the classic way (only the test fix
 
 `tuning.board.tilt` enables the R18 presentation without changing simulation geometry or the
 generated `geometryHash`. `tilt.campaign: true` makes it the default for every Campaign run,
-including future stages and current 8x4, 9x5 and 10x5 layouts. Free Play remains explicit and only
-uses R18 for maps in `tilt.maps`: `jungle-heart-temple`, `proto-slabs`, `moonlit-pass`,
+including future stages and current 8x4, 9x5 and 10x5 layouts. Daily Trial and Expedition stay explicit and only
+use R18 for maps in `tilt.maps`: `jungle-heart-temple`, `proto-slabs`, `moonlit-pass`,
 `sunscar-ruins`, `sunscar-basin` and `jungle-flooded-court`. `proto-slabs` has its own 0.85 / 40
 override while the shared values are 0.75 / 70. `?tilt=off` disables it for development and a
 numeric `?tilt=` overrides the vertical factor.
@@ -469,7 +469,7 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   around the spot (`nearPoint`, 90 px: a 3 x 3 block on boards) for 35% of each enemy's max
   health as true damage (8% for bosses; shields absorb first). **Shield of the Crossing**
   (unlocked by 1-6): for 6 s leaks cost no lives (they still count as leaks), then a 60 s recovery (`cooldownSeconds`).
-  Available in Free Play, Campaign and Expedition, not in the Daily Trial (`session.ts`
+  Available in Campaign and Expedition, not in the Daily Trial (`session.ts`
   passes the unlocked list as `interventions`). Upgrades sit on trunk row 4 of the blessing
   tree (needs 32 trunk points; R5): Storm Caller (`odin_tempest`, Thunderfall charges 8% faster
   per level, 5 levels), Wrath of the Sky (`helios_wrath`, Thunderfall area 3 x 3, then 13, then
@@ -546,7 +546,7 @@ Values live in data, so a map can override them in its `rules`.
 
 - `baphomet` (marks the highest recent damage dealer: silence plus 10% health; defensive
   stance) and `lilith` (summons brood, enrages below 50%).
-- `ochenta`, the Proud Commander (final boss of Heart Temple, stage 3-6 and Free Play): Valor
+- `ochenta`, the Proud Commander (final boss of Heart Temple and stage 3-6): Valor
   (every direct hit adds 1; at 80 a stun shockwave and 4 s of speed and crowd-control
   resistance), Resolve (permanent steps at 80/60/40/20% health), The Final Eight (cannot fall
   below 1 HP for 8 s at 8% health). Numbers in `tuning.bosses.ochenta`; first guesses.
@@ -560,7 +560,7 @@ Values live in data, so a map can override them in its `rules`.
 
 ### The stage timeline (no waves)
 
-There are no waves. A stage, a map's default encounter (Free Play, Daily Trial) and an Expedition stage each carry one
+There are no waves. A stage, a map's default encounter (Daily Trial) and an Expedition stage each carry one
 **timeline** of spawn groups, like Watcher of Realms' `StageWave` rows (`src/game/td/timeline.js`):
 
 ```json
@@ -576,7 +576,7 @@ There are no waves. A stage, a map's default encounter (Free Play, Daily Trial) 
 - The stage starts when the player presses Start (`sim.start()`), runs on simulation time (pause, speed and replays
   stay exact), is won when everything has spawned and nothing is left, and lost when lives reach 0.
 - Campaign stages keep their timeline in `tdCampaign.json`; every other map in `tdMaps.json` (`timeline`) or through
-  its campaign stage (`timelineForMap`). Free Play plays that timeline once; there are no run lengths and no Endless.
+  its campaign stage (`timelineForMap`). The Daily Trial and Expedition play that timeline once; there are no run lengths and no Endless.
 - Targets follow the WoR chapter table (`tuning.timeline.chapterTargets`: about 11 enemies and 53 s in chapter 1, up
   to 38 enemies, 29 groups and 234 s later), ramping 0.8x to 1.2x inside a chapter. `npm run td:stage-lint` checks
   every stage against them; `npm run td:wor-compare` compares the shape with the WoR analysis.
@@ -589,7 +589,7 @@ There are no waves. A stage, a map's default encounter (Free Play, Daily Trial) 
   each raises Favor in proportion to the share of the stage defeated.
 - Map and stage health: a map's optional `enemyHp` scales enemy health in open modes; a
   campaign stage's `hpScale` or an Expedition stage's scale replaces it.
-- Collection health (R12): in Free Play and Expedition, enemy health is also multiplied by `mightEnemyScale` (`campaign.js`):
+- Collection health (R12): in Expedition, enemy health is also multiplied by `mightEnemyScale` (`campaign.js`):
   the strongest 7 pool heroes' Might over the same heroes un-upgraded, to the power `heroMight.enemyHpExponent` (0.6), at most
   `heroMight.enemyHpCap` (4). Campaign stages and the Daily Trial are unaffected.
 
@@ -608,11 +608,10 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
   points and gains `run.placementPerSecond` (1) per second of battle time (while the stage runs). Gold only exists outside the battle, for hero levels and stars.
   `sim.placement` is the counter; `addPlacement()` pays extra points and tracks
   `totalPlacementEarned` / `stageStats.placementEarned`; `totalPlacementSpent` tracks spending.
-- Free Play run: 25 lives (5 shown), deploy cap 7. Each hero has a placement cost (`cost` in
+- Standard run (Daily Trial, Expedition stage): 25 lives (5 shown), deploy cap 7. Each hero has a placement cost (`cost` in
   `gameBalance.json`, 11 for the cheapest recruits up to 25 for the strongest; tuned by hand,
   `build-game-balance.mjs` keeps an existing cost). Other sources of placement: the Soul Reaper boon (`placement` 3 per
-  10 kills), awakened Plutus Fortune Shower (+3), the Placement shard (`shards.placement` 6
-  starting points), Favor nodes (`startingPlacement`, `placementRate`) and the
+  10 kills), awakened Plutus Fortune Shower (+3), Favor nodes (`startingPlacement`, `placementRate`) and the
   Necropolis / Autumn environments (`placementRate` x1.2 / x1.15).
 - Placement points buy two things:
   - **Deploy** a hero for its placement cost (`sim.deployCost()`): the hero's cost minus the
@@ -623,14 +622,12 @@ build scripts: `docs/td-asset-pipeline.md` and section 15.
     default (`run.relocationCost` 0; a share of the deploy cost if set), then `run.relocationCooldownSeconds` (8) before
     that hero can move again, minus the class Divine
     Rite discount. It must end on an empty tile of the hero's slot type. The hero keeps its entity
-    id, health, ultimate charge and cooldowns. `game.relocations` counts moves for the Hold
-    Position challenge.
+    id, health, ultimate charge and cooldowns. `game.relocations` counts moves.
 - **Sell** works anytime and refunds the full placement cost paid (`run.sellRefund` 1).
-- Hoarder challenge now means placement points left at the win (`HOARDER_PLACEMENT`, first guess).
 - No battle ranks, focus, class paths, Awakening or training. A placed hero uses its
   collection stats (`collectionHeroes()`), times Favor hero health,
   class Apotheosis +15% attack and health, Expedition veterans +10%.
-- Expedition relics (rare / epic boons) stay; shards (Favor or Placement) give a next-run boost. Virtue blessings are gone.
+- Expedition relics (rare / epic boons) stay; the run-end shard pays Favor only (the Placement shard went with Free Play). Virtue blessings are gone.
 
 ## 10. Battlefields (`tdMaps.json`)
 
@@ -645,12 +642,11 @@ Ids, names, themes, art, music and bosses are those of the maps they replaced.
 | Chapter finales (1-10, 2-6, ..., 13-6) | 10 x 5 | 2 |
 | Every other stage | 9 x 5 | 1; 2 on stage 3 of chapters 2-13 |
 
-Free Play battlefields (maps without `campaignOnly`): `moonlit-pass`, `verdant-crossing`,
+Open battlefields (maps without `campaignOnly`, used by the Daily Trial and Expedition): `moonlit-pass`, `verdant-crossing`,
 `sunscar-ruins`, `sunscar-basin` and six `jungle-*` maps. Each carries an `enemyHp` for open
 modes (0.5 Heart Temple to 1.25 Verdant Crossing), set so bot squads win about 7-9 of 12
-runs. `campaignOnly: true` keeps a map out of Free Play, the Daily Trial and Expedition
-pools. `prototype: true` maps (only `proto-board`) show in the Free Play map select in dev
-builds only. `npm run td:board -- --current` draws every map on one page for review.
+runs. `campaignOnly: true` keeps a map out of the Daily Trial and Expedition
+pools. `prototype: true` maps (only `proto-board`) are dev-only. `npm run td:board -- --current` draws every map on one page for review.
 
 ### The map record
 
@@ -702,8 +698,8 @@ to the next seed, so every map regenerates from its recipe alone.
 
 ### Map preview contract
 
-Every preview consumes the same map record as combat. Free Play map select and the Campaign
-stage drawer use `mapPreviewModel(map)` and draw terrain, route strokes, gates and base as
+Every preview consumes the same map record as combat. The Campaign
+stage drawer uses `mapPreviewModel(map)` and draw terrain, route strokes, gates and base as
 light SVG. Do not maintain separate thumbnails.
 
 ### Themes and environments
@@ -739,11 +735,9 @@ geometry. No game mode uses classic maps.
 
 | Mode | Rules | Source |
 |---|---|---|
-| Free Play | Any Free Play map plays its timeline once, Normal / Heroic / Mythic. Recruits only owned heroes, with their collection upgrades; Divine Blessings apply. Pays Favor plus Gold and Hero XP into the collection (2 Gold + 1 Hero XP per enemy defeated, up to 120) | `sim.js`, `timeline.js` |
 | Campaign | 13 chapters, 82 authored stages, squad of up to 6 owned heroes, stage lives and `hpScale`, first-clear rewards (replays pay 25%), campaign hero upgrades apply. **Heroic:** once a chapter is cleared, each of its stages can be played on the Heroic tier (2x enemy health, 1.3x attack); the first Heroic clear pays the stage's first-clear Divine Seals again (`heroic.sealShare` 1, at least `minSeals` 50), and every Heroic clear, repeats included, pays `heroic.currencyShare` (0.5) of the stage's Gold and Hero XP; no laurels or milestones (`heroicUnlocked`, `heroicRewards`, save version 9 `heroic`) | `campaign.js`, `tdCampaign.json` |
-| Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal: defeat 60% of the stage's enemies (`DAILY.goalShare`). One stage at Normal, no blessings or boosts; +15 Divine Seals for the goal, plus Gold and Hero XP per enemy defeated like Free Play (`collectionReward`, 2 Gold + 1 Hero XP, up to 120) | `daily.js` |
-| Expedition | Chain of stages (each plays its battlefield's timeline) on 3 random Free Play maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
-| Challenges | Optional per-map goals on won Free Play runs; one-time Favor. Swift follows the map's own timeline (last spawn + 45 s). The legacy `unrefined` id is Hold Position since R4: win without relocating a hero | `challenges.js` |
+| Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal: defeat 60% of the stage's enemies (`DAILY.goalShare`). One stage at Normal, no blessings or boosts; +15 Divine Seals for the goal, plus Gold and Hero XP per enemy defeated (`collectionReward`, 2 Gold + 1 Hero XP, up to 120) | `daily.js` |
+| Expedition | Chain of stages (each plays its battlefield's timeline) on 3 random open maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
 
 Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 
@@ -752,7 +746,14 @@ Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
 Collection upgrades (levels, stars, evolution, skills, reach steps; `collectionHeroes()`) are
 global stats: they apply in every mode, the Daily Trial included (unowned trial heroes play
 at base stats). `session.ts` builds the hero list once per battle. Divine Blessings apply in
-Free Play and Expedition only.
+Expedition only.
+
+**Free Play removed (October 2026).** The game has Campaign, Daily Trial and Expedition. The Free
+Play home entry, the battlefield and difficulty screens, the per-map Challenges, the Placement shard
+and the two daily quests tied to them (Clear a Challenge, Defeat 40 enemies in Free Play) are gone;
+the quest list has eight tasks (110 activity, the bar pays up to 100). Old saves still load: the
+legacy fields `bestScore`, `bestDefeated`, `mapBests`, `mapTop` and `nextRunBoost` are kept but never
+written, `challenges` and a `free` home mode are dropped on load.
 
 **Campaign chapters:** 1 The Road to the Crossing (10 stages), 2 The Sunscar March,
 3 The Emerald Deep, 4 The Frozen Covenant, 5 The Cinder Oath, 6 The Thunder Stair,
@@ -907,7 +908,7 @@ Hero portrait backdrops: every hero portrait `<img>` carries `data-rarity` (from
   keep their ids too: `*_ascension` is Swift Muster (deploy 10% cheaper), `*_rite` Divine
   Rite (relocation 30% cheaper), `*_apotheosis` Apotheosis (+15% attack and health, always
   on); trunk `odin_dominion` Master Smith lowers deployment costs 3% per level.
-- **Shards** (a run that defeats half the stage): Favor or Placement for the next run.
+- **Favor shard** (a run that defeats half the stage): extra Favor, granted with the run's Favor.
 - **Hero collection:** see section 11.
 
 ### Persistence
@@ -918,7 +919,7 @@ rename are renamed first (`LEGACY_HERO_IDS`).
 
 Fields: `bestScore`, `bestWave`, `lastTeam`, `perfectDefense`, `favor`, `favLevels`,
 `insight`, `resetSpent`, `refundNotice`, `treeVersion`, `repriceNotice`, `mapBests`,
-`mapTop`, `challenges`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`, `campaign`
+`mapTop`, `nextRunBoost`, `daily`, `expedition`, `expeditionBest`, `campaign`
 (the hero collection), `ui` (`homeMode`).
 
 The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 8): `owned`, `cleared`,
@@ -927,7 +928,7 @@ The `campaign` section is versioned (`CAMPAIGN_SAVE_VERSION` 8): `owned`, `clear
 The board migration changed no save field: map ids stayed, and the three new maps belong to
 stages whose progress is stored by stage id.
 
-Per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic`.
+Legacy per-map records key as `mapId`, `mapId@long`, `mapId#heroic`, `mapId@long#mythic` (read-only, see above).
 Export / import: save code (`TD1:` prefix) or file. Audio volume and mute have their own keys.
 
 ## 14. Content checklists
@@ -959,7 +960,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
    `scripts/migrate-td-boards.mjs` shows the pattern), then `node scripts/build-td-grid.mjs`.
 3. `npm run td:board -- --check` (recipes regenerate, layouts unique) and
    `npm run test:tower-defense`.
-4. Free Play maps: set `enemyHp` so bot squads win about two thirds of their runs.
+4. Open maps (Daily Trial, Expedition): set `enemyHp` so bot squads win about two thirds of their runs.
 5. Look at it in Chromium at phone and desktop size.
 
 **New theme or environment**
@@ -972,7 +973,7 @@ Content is not JSON-only. Before shipping, walk the matching list.
 
 | Command | Covers |
 |---|---|
-| `npm run test:tower-defense` | Balance file check, UI helpers, favor, difficulty, skin, save, sim (board rules included), daily, challenges, expedition, campaign, summon, map generators |
+| `npm run test:tower-defense` | Balance file check, UI helpers, favor, difficulty, skin, save, sim (board rules included), daily, expedition, campaign, summon, map generators |
 | `node scripts/test-td-lord-isis.mjs` | Isis: line pattern, beam direction and cap, Lord bonuses (part of `test:tower-defense`) |
 | `npm run test:td-balance` | Bot squads on every map; class matrix |
 | `npm run td:board -- --size --gates --theme --count` | Unique board candidates as an HTML atlas |
@@ -1000,7 +1001,7 @@ and regenerates from its recipe, a hero's pattern decides its basic-attack reach
 The order and dependencies of the open work live in
 [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md) (steps R1-R11); this list names the gaps.
 
-- **Balance pass pending** for global stats in Free Play, Expedition and the Daily Trial,
+- **Balance pass pending** for global stats in Expedition and the Daily Trial,
   pantheon bonds, Divine Interventions and Heroic stage difficulty: built with
   first-guess numbers; the owner balances later.
 - **Divine Intervention upgrades** (cooldown, area) on the blessing tree are not built.

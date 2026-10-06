@@ -7,6 +7,11 @@ refresh countdown). Mechanics inspiration only — no copied art, names or text
 proposed, (2) default chest numbers, (3) reset at UTC midnight.** Numbers are first
 guesses for R12.
 
+> **Update (October 2026):** Free Play was removed from the game, so the two tasks tied to it, "Clear a
+> Challenge" and "Defeat 40 enemies in Free Play", are gone. The list has **eight tasks, 110 activity**;
+> the bar still pays up to 100 (only 10 activity of slack). The Divine Intervention task now counts any
+> run that casts one and its Go button opens the Campaign stages. Source of truth: `src/game/td/quests.js`.
+
 ## 1. What it is
 
 A meta screen of **fixed daily activities** — the same list every day, each "do X once"

@@ -22,7 +22,6 @@ The feature covers:
 - two five-slot squad rows, for a maximum of ten selected units;
 - up to one Lord in each row;
 - row-scoped, permanently active Lord bonuses;
-- save migration from the existing flat six-hero squad;
 - reuse of group membership by the existing Greek and Norse Pantheon Bonds.
 
 The twelve `recruit-*` units stay group-less. They can occupy either row but never receive a
@@ -181,18 +180,11 @@ The layout must continue to work in the supported landscape phone viewport. It m
 lineup-card size to fit the second row, but must preserve readable tap targets and must not make
 the roster unusable.
 
-## Save migration
+## Save storage
 
-The campaign save version increments. New progress stores `lastSquadRows` as two arrays while a
-derived flat list may be retained only where needed for compatibility.
-
-When loading an older save:
-
-1. sanitize and deduplicate the existing `lastSquad` as today;
-2. place its first five valid heroes into row one;
-3. place its sixth valid hero into row two;
-4. normalize a Lord to the first slot of its row;
-5. persist the new row shape on the next save.
+New progress stores `lastSquadRows` as two arrays while a derived flat list may be retained only
+where needed by runtime interfaces. Existing flat `lastSquad` selections are not migrated; when
+that field is the only saved lineup, the new two-row selection starts empty.
 
 No owned heroes, levels, currencies, stage clears, or other progression are changed.
 
@@ -233,14 +225,14 @@ the displayed origins. Their current tier effects and recruit-wildcard behavior 
 unchanged. Lord bonuses are row-scoped; Pantheon Bonds continue to count eligible deployed
 heroes across the battlefield according to their existing rules.
 
-## Balance and derived displays
+## Derived displays
 
 The selected roster grows from six to at most ten heroes. Placement gold and other deployment
 rules remain unchanged. Recommended Might and squad summaries use the actually selected heroes,
 while generators and sampling scripts must avoid attempting exhaustive ten-hero combinations.
 
-The implementation records the observed balance impact from the existing sweep/tests. It does
-not silently retune enemies or stage rewards. Any broad combat rebalance is a separate decision.
+The implementation does not retune enemies or stage rewards. Any broad combat rebalance or
+balance report is a separate decision.
 
 ## Tests and verification
 
@@ -256,7 +248,7 @@ Targeted automated coverage includes:
 - Lord bonuses before deployment and after Lord death or sale;
 - Isis's lineup-driven periodic effect and attack-driven mark;
 - Greek/Norse Bonds deriving membership from the shared group data;
-- old-save migration and new-save sanitization;
+- new row-save sanitization; legacy flat lineup data is ignored;
 - click and pointer/drag squad interactions;
 - campaign session startup with structured rows and a compatible flat list.
 
@@ -270,4 +262,6 @@ policy reserves production builds for the owner.
 - Creating additional Lord portraits or heroes.
 - Implementing Lords for all seven groups in this release.
 - Reclassifying a hero merely to make Isis stronger.
+- Migrating the old flat six-hero lineup into the new row model.
 - A broad stage or enemy balance pass.
+- Producing a balance report.

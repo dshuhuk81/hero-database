@@ -4,7 +4,7 @@
 
 **Goal:** Add mythology identities and icons to the named Tower Defense roster, replace the six-unit campaign lineup with two five-slot rows, and make each row's Lord bonus permanent and group-aware.
 
-**Architecture:** Authored identity metadata stays in `tdSkinMythic.json`, a new catalog owns group presentation, and `build-game-balance.mjs` copies memberships into runtime hero rows. A pure squad-row module owns normalization and validation; campaign UI, save migration, session startup, Pantheon Bonds, and the simulation consume that shared representation instead of reconstructing membership or row rules.
+**Architecture:** Authored identity metadata stays in `tdSkinMythic.json`, a new catalog owns group presentation, and `build-game-balance.mjs` copies memberships into runtime hero rows. A pure squad-row module owns normalization and validation; campaign UI, new save storage, session startup, Pantheon Bonds, and the simulation consume that shared representation instead of reconstructing membership or row rules.
 
 **Tech Stack:** Astro 7, TypeScript/ES modules, plain JavaScript simulation modules, JSON data, `node:assert`, Sharp for asset export, built-in ImageGen for source art.
 
@@ -25,10 +25,10 @@
 
 ## Review Focus
 
-- An imported or corrupted save can contain nested non-arrays, duplicate IDs, unknown IDs, more than five entries, or Lords away from slot zero; Task 3 tests deterministic sanitization without losing unrelated progression.
+- New row-save data can contain nested non-arrays, duplicate IDs, unknown IDs, more than five entries, or Lords away from slot zero; Task 3 tests deterministic sanitization without losing unrelated progression.
 - A hero with two memberships can match either row, but must never receive the other row's Lord effect; Task 5 tests both positive matches and cross-row isolation.
 - A full five-regular-hero row cannot accept a Lord by silently ejecting a hero; Tasks 3 and 4 test the rejected placement and feedback.
-- An existing six-hero save may contain Isis in any position; Task 3 tests migration to five plus one and Lord normalization to the first slot of its row.
+- A legacy save may contain only flat `lastSquad`; Task 3 tests that it is ignored and the new rows start empty while unrelated progression survives.
 - Missing, opaque, or visually empty icon output must fail before release; Task 2 checks every catalog path, 128 x 128 dimensions, alpha, and non-empty visible bounds.
 
 ---
@@ -134,7 +134,7 @@ git add assets/td/mythology-groups public/td/icons/mythology scripts/build-td-my
 git commit -m "feat(td): add mythology group icons"
 ```
 
-### Task 3: Pure squad-row rules and save migration
+### Task 3: Pure squad-row rules and new save shape
 
 **Files:**
 - Create: `src/game/td/squad-rows.js`
@@ -152,7 +152,7 @@ git commit -m "feat(td): add mythology group icons"
 - Produces: `normalizeSquadRows(value, { allowedIds, lordIds }): [string[], string[]]`.
 - Produces: `validateSquadRows(rows, { allowedIds, lordIds }): { valid: boolean, reason: string | null }`.
 - Produces: `placeInSquadRows(rows, heroId, rowIndex, slotIndex, { lordIds }): { rows: [string[], string[]], error: string | null }`.
-- Produces: campaign progress field `lastSquadRows` and campaign save version 10.
+- Produces: campaign progress field `lastSquadRows` and campaign save version 10; legacy `lastSquad` is not converted.
 
 - [ ] **Step 1: Write failing row-rule tests**
 
@@ -168,19 +168,19 @@ Expected: FAIL because the module does not exist.
 
 Use compact row arrays with order preserved. Normalization removes unknown IDs and later duplicates, caps each row at five, caps rows at two, permits at most one Lord per row, and moves that Lord to index zero. Placement returns the original normalized rows plus an explanatory error when it cannot satisfy the request without silent data loss.
 
-- [ ] **Step 4: Write failing campaign/save migration tests**
+- [ ] **Step 4: Write failing campaign/save-shape tests**
 
-Assert `squadRows: 2`, `squadRowSize: 5`, and `squadSize: 10`; a one-hero partial squad is valid; an old six-hero `lastSquad` migrates to 5+1; Isis migrates to slot zero wherever she appeared; invalid nested data sanitizes safely; and all non-squad progression fields remain byte-for-byte equivalent.
+Assert `squadRows: 2`, `squadRowSize: 5`, and `squadSize: 10`; a one-hero partial squad is valid; valid `lastSquadRows` sanitizes with Lords at slot zero; invalid nested data sanitizes safely; legacy `lastSquad` alone produces two empty rows; and all non-squad progression fields remain byte-for-byte equivalent.
 
 - [ ] **Step 5: Implement save version 10 and campaign integration**
 
-Make new progress use `lastSquadRows`. Extend `SaveRules` with `lordIds`, pass it into campaign sanitization, migrate legacy `lastSquad`, and update `validSquad` to validate structured rows through the shared module. Keep legacy hero-ID renaming working inside both rows.
+Make new progress use `lastSquadRows`. Extend `SaveRules` with `lordIds`, pass it into campaign sanitization, ignore legacy `lastSquad`, and update `validSquad` to validate structured rows through the shared module. Keep legacy hero-ID renaming working inside new row arrays when those arrays exist.
 
 - [ ] **Step 6: Verify Task 3**
 
 Run: `node scripts/test-td-squad-rows.mjs && node scripts/test-td-campaign.mjs && node scripts/test-td-save.mjs`
 
-Expected: all commands pass, including old-save fixtures.
+Expected: all commands pass; legacy saves retain progression but begin with an empty two-row lineup.
 
 - [ ] **Step 7: Commit**
 
@@ -332,11 +332,10 @@ git add src/data/gameBalance.tuning.json src/game/td/bonds.js src/game/td/sim.js
 git commit -m "refactor(td): derive bonds from mythology groups"
 ```
 
-### Task 7: Sampling safety, documentation, and final verification
+### Task 7: Bounded campaign sampling and living documentation
 
 **Files:**
 - Create: `scripts/lib/td-squad-sample.mjs`
-- Create: `docs/td-two-row-lord-balance.md`
 - Modify: `scripts/test-td-campaign.mjs`
 - Modify: `scripts/td-stage-power.mjs`
 - Modify: `scripts/td-layout-compare.mjs`
@@ -347,7 +346,6 @@ git commit -m "refactor(td): derive bonds from mythology groups"
 
 **Interfaces:**
 - Produces: `sampleCombinations(list, size, limit): any[][]`, deterministic and bounded without materializing every combination.
-- Produces: a recorded before/after balance observation without automatic enemy retuning.
 
 - [ ] **Step 1: Add a failing bounded-sampling test**
 
@@ -367,27 +365,15 @@ Implement `sampleCombinations` without constructing the full combination set. Re
 
 Document the seven groups, icon directory, two-row squad contract, save version, permanent row-scoped Lord semantics, Isis's current one-member Egyptian group, and shared Bond membership in `TOWER_DEFENSE_SPEC.md`.
 
-- [ ] **Step 5: Run targeted and complete verification**
+- [ ] **Step 5: Verify Task 7**
 
-Run: `npm run test:td-mythology && node scripts/test-td-squad-rows.mjs && node scripts/test-td-save.mjs && node scripts/test-td-campaign.mjs && node scripts/test-td-ui.mjs && node scripts/test-td-lord-isis.mjs && npm run test:tower-defense`
+Run: `node scripts/test-td-campaign.mjs`
 
-Expected: all commands pass. Do not run `npm run build`.
+Expected: the bounded sampler and campaign tests pass. Do not run a balance report or production build.
 
-- [ ] **Step 6: Measure balance impact**
-
-Run: `npm run test:td-balance` and a bounded campaign pacing sample such as `npm run td:pacing -- --seeds=1 --sample=12 --only=campaign`.
-
-Expected: commands complete without combinatorial blow-up. Record observed win-rate/runtime changes in `docs/td-two-row-lord-balance.md`; do not retune enemies or rewards in this task.
-
-- [ ] **Step 7: Inspect repository scope**
-
-Run: `git diff --check && git status --short`
-
-Expected: no whitespace errors, no edits under `src/data/heroes/`, no `all_heroes_db.json` change, and only planned files plus pre-existing user work appear.
-
-- [ ] **Step 8: Commit**
+- [ ] **Step 6: Commit**
 
 ```bash
-git add scripts/lib/td-squad-sample.mjs scripts/test-td-campaign.mjs scripts/td-stage-power.mjs scripts/td-layout-compare.mjs scripts/td-upgrade-sweep.mjs scripts/td-pacing.mjs scripts/td-board-tune.mjs TOWER_DEFENSE_SPEC.md docs/td-two-row-lord-balance.md
-git commit -m "docs(td): finish two-row Lord rollout"
+git add scripts/lib/td-squad-sample.mjs scripts/test-td-campaign.mjs scripts/td-stage-power.mjs scripts/td-layout-compare.mjs scripts/td-upgrade-sweep.mjs scripts/td-pacing.mjs scripts/td-board-tune.mjs TOWER_DEFENSE_SPEC.md
+git commit -m "docs(td): document two-row Lord rollout"
 ```
