@@ -46,6 +46,7 @@
     "td:upgrade-sweep": "node scripts/td-upgrade-sweep.mjs",
     "td:classes": "node scripts/td-classes.mjs",
     "td:progression": "node scripts/td-progression.mjs",
+    "td:ch1-pacing": "node scripts/td-ch1-pacing.mjs",
     "td:pacing": "node scripts/td-pacing.mjs",
     "td:layout": "node scripts/td-layout-compare.mjs",
     "td:maps": "node scripts/report-td-maps.mjs",

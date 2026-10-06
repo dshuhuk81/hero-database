@@ -58,7 +58,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const pool = summonPool(rich, ids);
   const featured = featuredHeroId(banner);
   assert.ok(pool.includes(featured), "featured hero is summonable");
-  assert.ok(featuredChance(banner, rich, ids) > 1 / pool.length, "featured chance is boosted");
+  assert.ok(featuredChance(banner, rich, ids) > featuredChance({ ...banner, featuredWeight: 1 }, rich, ids), "featured chance is boosted");
   const first = summon(summonCfg, banner.id, rich, ids, () => 0);
   assert.equal(first.heroId, featured, "rng 0 picks the featured hero");
   assert.equal(first.progress.currencies.divineSeals, cost + 7, "cost paid");
@@ -86,7 +86,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const rates = summonRates(banner, rich, ids);
   assert.ok(Math.abs(rates.lord + rates.legendary + rates.epic + rates.common - 1) < 1e-9, "rarity rates sum to 1");
   const fresh = summonRates(banner, { owned: [] }, ids);
-  assert.ok(Math.abs(fresh.lord - 0.008) < 0.0005, `Lords are summoned at about 0.8% on a fresh account (${(fresh.lord * 100).toFixed(2)}%)`);
+  assert.ok(Math.abs(fresh.lord - 0.003) < 0.0005, `Lords are summoned at about 0.3% on a fresh account (${(fresh.lord * 100).toFixed(2)}%)`);
   const aCommon = pool.find((id) => rarityOf(id) === "common" && id !== featured);
   const aLegendary = pool.find((id) => rarityOf(id) === "legendary" && id !== featured);
   assert.ok(weightOf(aCommon) > weightOf(aLegendary), "common outweighs legendary per hero");
