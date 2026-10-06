@@ -13650,13 +13650,22 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 }
 
 .td-app .td-squad-lord-btn .td-mythology-badge.is-lord {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
 }
 
 .td-app .td-squad-lord-btn .td-mythology-icon--lord-status {
-  width: 21px;
-  height: 21px;
+  width: 14px;
+  height: 14px;
+}
+
+.td-app .td-squad-lord-btn .td-mythology-lord-mark {
+  top: -4px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  font-size: 6px;
 }
 
 .td-app .td-squad-slot-crown,
