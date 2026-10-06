@@ -49,6 +49,8 @@ const SETS = {
     "boss-lilith-v4b": { dir: "boss-lilith-v4", clips: clipFiles("boss-lilith-v4") },
     // TD-original bosses, ready for a map or stage (tdBosses.json).
     "boss-lerna-v1": { dir: "lerna", clips: clipFiles("lerna") },
+    // Remade walk (legs lift one after the other): same still, new sheet name (R2 caches a year).
+    "boss-lerna-v1b": { dir: "boss-lerna-v1", clips: clipFiles("boss-lerna-v1") },
     "boss-kraghorn-v1": { dir: "kraghorn", clips: clipFiles("kraghorn") },
     "boss-vorruk-v1": { dir: "vorruk", clips: clipFiles("vorruk") },
     "boss-ochenta-v1": { dir: "boss-ochenta-v1", clips: clipFiles("boss-ochenta-v1") },

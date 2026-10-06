@@ -29,13 +29,13 @@ export const enemySpriteVersion = (file) => ENEMY_SPRITE_VERSIONS[file] ?? "v1";
 // (brood-v4b), since R2 caches a year.
 export const ENEMY_SHEETS = new Set([
   "grunt-v2", "runner-v2", "flyer-v2", "archer-v3", "brute-v3", "brood-v4",
-  "boss-v2", "boss-lilith-v4b", "burrower-v1", "vinebinder-v1", "jaguar-v1", "sporeling-v1", "boss-lerna-v1", "boss-kraghorn-v1", "boss-vorruk-v1", "boss-ochenta-v1",
+  "boss-v2", "boss-lilith-v4b", "boss-lerna-v1b", "burrower-v1", "vinebinder-v1", "jaguar-v1", "sporeling-v1", "boss-lerna-v1", "boss-kraghorn-v1", "boss-vorruk-v1", "boss-ochenta-v1",
   "boss-skeld-v1", "boss-thyrak-v1", "boss-neressa-v1", "boss-morthul-v1",
   "boss-ilyr-v1", "boss-eidros-v1", "boss-astreon-v1", "boss-brontax-v1",
   "brood-v1", "boss-lilith-v1", // broodcaller and hexer keep the older stills on purpose
 ]);
 // Remade sheets for a still: still name -> sheet name with a suffix.
-export const ENEMY_SHEET_REMAKES = { "boss-lilith-v4": "boss-lilith-v4b" };
+export const ENEMY_SHEET_REMAKES = { "boss-lilith-v4": "boss-lilith-v4b", "boss-lerna-v1": "boss-lerna-v1b" };
 export const enemySheetUrl = (file, version = enemySpriteVersion(file)) => {
   const still = `${file}-${version}`, sheet = ENEMY_SHEET_REMAKES[still] ?? still;
   return ENEMY_SHEETS.has(sheet) ? tdAsset(`enemies/clips/${sheet}.json`) : null;

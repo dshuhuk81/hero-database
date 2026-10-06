@@ -59,9 +59,8 @@ Current gameplay rules are recorded in [TOWER_DEFENSE_SPEC.md](TOWER_DEFENSE_SPE
 Latest device evidence and Lerna cadence change: **[Campaign Landscape Phone Review — October 5, 2026](docs/audits/2026-10-05-campaign-phone-review.md)**.
 The submitted title/preview and boss/buff collisions, long reaction toast and nearby damage-label
 overlaps have received shared UI fixes. The three-size browser fixture matrix passes; dense
-live-game acceptance remains with the owner. Lerna's walk files load, but their original frames
-lack visibly articulated leg steps. The shorter cadence is not a gait-asset fix: a new walk clip
-is still required, following **[TD Asset Pipeline](docs/td-asset-pipeline.md)**, without balance changes.
+live-game acceptance remains with the owner. Lerna's original walk frames lacked visibly articulated leg steps; a new walk (sheet `boss-lerna-v1b`, October 6) is built and
+waits for the R2 upload and an owner check. The shorter cadence stays as it is.
 
 - [ ] **P0 — Real-device acceptance pass:** verify the current build on a landscape phone with
   several simultaneous enemies and a boss. Check bar ownership, damage-number readability,

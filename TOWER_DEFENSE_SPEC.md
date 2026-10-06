@@ -620,6 +620,9 @@ walk, swing, hurt and death motion when a kind has no sheet (`animateEnemy` in `
 Reduced motion or `?anim=off` turns motion off. Versioning, the PixelLab clip workflow and
 build scripts: `docs/td-asset-pipeline.md` and section 15.
 
+Lerna (`boss-lerna-v1`) plays the remade sheet `boss-lerna-v1b` (October 6, 2026): her four clawed legs lift one after the
+other (standard ~110 px frames; not on R2 yet).
+
 Lilith (`boss-lilith-v4`) plays the remade sheet `boss-lilith-v4b` (October 6, 2026; `ENEMY_SHEET_REMAKES`
 in `assets.js`): her taloned feet step one after the other. Unlike the other ~100 px sheets it is
 built sharp (`TD_CLIP_TARGET=160 python3 scripts/td-warp-anim.py ...`, frames ~196 px, ~340 KB),
