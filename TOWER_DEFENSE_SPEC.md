@@ -799,7 +799,9 @@ home dock. Back returns home.
 
 Four columns inside the menu frame: a narrow scrollable roster of portrait cards (face
 close-up, class icon, Evolution badge, level and stars; locked heroes greyed with their unlock
-source; sorted by Might), the selected hero's art with name, class, role, Might, stars and
+source; sorted by Might; badge layout shared with the squad slots and roster: mythology groups
+stacked down the left edge (Lord crown last), class top right as a white glyph on a translucent
+disc, Evolution badge below it), the selected hero's art with name, class, role, Might, stars and
 copies, a 250 px upgrade flyout with a pinned button, and a vertical tab rail:
 
 - **Level:** level / cap, the current 10-level band, attack and health now and next, deploy

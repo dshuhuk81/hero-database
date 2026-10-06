@@ -11656,7 +11656,7 @@ button .td-cur {
 }
 
 .td-app .td-squad-slot-cost {
-  min-height: 0;
+  min-height: 1.2em;
   font-size: 11px;
   line-height: 1.2;
 }
@@ -13578,4 +13578,66 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
     flex-direction: row;
     overflow-x: auto;
   }
+}
+
+/* Unified portrait-card badges (Heroes list, squad slots, squad roster): groups stack down the
+   left edge (lord crown last), class sits top right as a white glyph on a translucent disc,
+   evolution tier below it. */
+.td-app .td-hero-tile-groups,
+.td-app .td-squad-slot-groups,
+.td-app .td-squad-tile-groups {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.td-app .td-hero-tile-groups .td-mythology-icon,
+.td-app .td-squad-slot-groups .td-mythology-icon,
+.td-app .td-squad-tile-groups .td-mythology-icon {
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 1px 2px #000);
+}
+
+.td-app .td-squad-slot-crown,
+.td-app .td-squad-tile-crown {
+  position: static;
+  line-height: 1;
+}
+
+.td-app .td-hero-tile-class,
+.td-app .td-squad-tile-class,
+.td-app .td-squad-slot-class {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  left: auto;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(9 9 16 / .6);
+  color: #fff;
+}
+
+.td-app .td-hero-tile-class .td-class-glyph,
+.td-app .td-squad-tile-class .td-class-glyph,
+.td-app .td-squad-slot-class .td-class-glyph {
+  display: block;
+  width: 62%;
+  height: 62%;
+  filter: none;
+}
+
+.td-app .td-hero-tile-evo {
+  top: 24px;
 }

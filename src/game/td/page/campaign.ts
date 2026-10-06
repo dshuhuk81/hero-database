@@ -367,7 +367,7 @@ export function createCampaign(ctx: PageContext) {
         if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></button>`;
         const matches = group && hero.mythologyGroups?.includes(group.id);
         return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
-          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span>${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span>
+          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
           <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
       }).join("");
       return `<section class="td-squad-row${rowIndex === activeRow ? " is-active" : ""}${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
@@ -390,7 +390,7 @@ export function createCampaign(ctx: PageContext) {
         : `${hero.name}: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`;
       return `<button type="button" class="td-squad-tile${picked ? " is-picked" : ""}${owned ? "" : " is-locked"}" data-class="${hero.class.toLowerCase()}" data-squad-hero="${hero.id}" aria-pressed="${picked}" aria-label="${hero.name}, ${hero.class}${owned ? `, ${heroMight.toLocaleString()} Might, level ${heroLevel(p, hero.id)}, ${heroStars(p, hero.id)} of ${campaign.heroStars?.max ?? 5} stars` : `, locked: ${unlock ? `clear stage ${unlock.id}` : "obtain through Summon"}`}" title="${tip}"${owned ? "" : " disabled"}>
         <img class="td-squad-tile-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt="" loading="lazy">
-        <span class="td-squad-tile-groups">${mythologyIcons(hero)}</span><span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>${isLord(hero.id) ? '<span class="td-squad-tile-crown" aria-hidden="true">♛</span>' : ""}
+        <span class="td-squad-tile-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-tile-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-tile-class">${classGlyph(hero.class, 14)}</span>
         ${picked ? `<span class="td-squad-tile-check" aria-hidden="true">✓</span>` : ""}
         ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
     };
@@ -428,7 +428,8 @@ export function createCampaign(ctx: PageContext) {
         : `${hero.name}, ${hero.class}, unlocks from ${source}`;
       return `<button type="button" class="td-hero-tile${isRecruit ? " is-recruit" : ""}${hero.id === selectedHeroId ? " is-selected" : ""}${isOwned ? "" : " is-locked"}" data-camp-hero-select="${hero.id}" aria-pressed="${hero.id === selectedHeroId}" aria-label="${label}" title="${hero.name}"${isOwned ? "" : " disabled"}>
         <img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="" loading="lazy"${FACE_FOCUS[hero.id] ? ` style="--td-face-y: ${FACE_FOCUS[hero.id]}"` : ""}>
-        <span class="td-hero-tile-class" aria-hidden="true">${classIconImg(hero.class, 16)}</span>
+        <span class="td-hero-tile-groups" aria-hidden="true">${mythologyIcons(hero)}</span>
+        <span class="td-hero-tile-class" aria-hidden="true">${classGlyph(hero.class, 16)}</span>
         ${tier ? `<span class="td-hero-tile-evo" aria-hidden="true">${roman(tier)}</span>` : ""}
         ${ready ? `<i class="td-hero-tile-dot" aria-hidden="true"></i>` : ""}
         <span class="td-hero-tile-foot" aria-hidden="true">${isOwned
