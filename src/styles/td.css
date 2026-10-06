@@ -11700,7 +11700,7 @@ button .td-cur {
 .td-app .td-squad-feedback {
   margin: 0;
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: 9px;
   line-height: 1.2;
 }
 
@@ -13641,3 +13641,116 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-hero-tile-evo {
   top: 24px;
 }
+
+/* Squad rows follow the original's lord logic: no Lord = dim row, dim crown emblem and a hint
+   in a fixed footer strip; a Lord lights the row gold, lights the emblem with its group icon,
+   frames its card and swaps the hint for the row's placement total. The footer is always
+   there, so nothing moves when a hero is placed. */
+.td-app .td-squad-row-head { grid-row: 1 / span 2; }
+
+.td-app .td-squad-row-foot {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  min-height: 14px;
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.td-app .td-squad-row-hint { color: var(--text-muted); }
+
+.td-app .td-squad-lord.is-empty .td-squad-lord-btn {
+  border-color: rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .04);
+  cursor: default;
+}
+
+.td-app .td-squad-lord.is-empty .td-squad-crown {
+  position: static;
+  color: var(--text-muted);
+  opacity: .5;
+}
+
+.td-app .td-squad-row.has-lord {
+  border-color: rgba(255, 204, 51, .5);
+  background: linear-gradient(rgba(255, 204, 51, .16), rgba(255, 204, 51, .07));
+}
+
+.td-app .td-squad-row.has-lord.is-active {
+  border-color: rgba(255, 204, 51, .9);
+}
+
+.td-app .td-squad-row.has-lord .td-squad-lord-btn {
+  border-color: var(--accent-gold);
+  background: rgba(255, 204, 51, .24);
+  box-shadow: 0 0 8px rgba(255, 204, 51, .35);
+}
+
+.td-app .td-squad-row.has-lord .td-squad-lord-btn .td-mythology-icon { opacity: 1; }
+
+.td-app .td-squad-slot.is-lord .td-squad-slot-card {
+  border-color: var(--accent-gold);
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  .td-app .td-squad-rows { grid-template-rows: repeat(2, minmax(52px, auto)); }
+  .td-app .td-squad-row-foot { min-height: 11px; font-size: 9px; }
+}
+
+/* No "Row N" labels: the head is just the Lord emblem (and still activates its row). */
+.td-app .td-squad-row-head { grid-template-columns: 24px; }
+
+.td-app .td-squad-row-foot { justify-content: space-between; gap: 8px; }
+/* The footer shares the lineup's columns so a Lord's total sits right under the Lord's card. */
+.td-app .td-squad-row-foot {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 48px;
+  gap: 5px;
+}
+
+.td-app .td-squad-row-hint { grid-column: 1 / -1; }
+@media (orientation: landscape) and (max-height: 430px) {
+  .td-app .td-squad-row-foot { grid-auto-columns: 44px; gap: 4px; }
+}
+
+.td-app .td-squad-row-foot { grid-auto-flow: row; grid-template-columns: repeat(5, 48px); }
+.td-app .td-squad-row-hint { grid-column: 1 / 5; grid-row: 1; }
+@media (orientation: landscape) and (max-height: 430px) {
+  .td-app .td-squad-row-foot { grid-template-columns: repeat(5, 44px); }
+}
+
+/* Footer: one cost per hero in the lineup's columns, then the Lord hint line (kept in flow so
+   nothing moves when a Lord is placed). */
+.td-app .td-squad-row-foot {
+  display: grid;
+  grid-template-columns: none;
+  grid-auto-flow: row;
+  gap: 1px;
+}
+
+.td-app .td-squad-row-costs {
+  display: grid;
+  grid-template-columns: repeat(5, 48px);
+  gap: 5px;
+  min-height: 1.2em;
+}
+
+.td-app .td-squad-row-cost {
+  text-align: center;
+  color: var(--accent-gold);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.td-app .td-squad-row-hint { grid-column: auto; grid-row: auto; }
+.td-app .td-squad-row-hint.is-hidden { visibility: hidden; }
+
+@media (orientation: landscape) and (max-height: 430px) {
+  .td-app .td-squad-row-costs { grid-template-columns: repeat(5, 44px); gap: 4px; }
+}
+
+/* Costs and the Lord hint share one line: hint until a Lord is placed, then the per-hero costs. */
+.td-app .td-squad-row-foot { gap: 0; min-height: 1.2em; }
+.td-app .td-squad-row-hint.is-hidden { visibility: visible; }

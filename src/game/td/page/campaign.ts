@@ -361,18 +361,23 @@ export function createCampaign(ctx: PageContext) {
             </button>
             <span class="td-squad-lord-tip" role="tooltip"><strong>${heroName(lordId)}</strong><span>${lordText(lordCfg)}</span></span>
           </span>`
-        : "";
+        : `<span class="td-squad-lord is-empty" aria-hidden="true"><span class="td-squad-lord-btn"><span class="td-squad-crown">♛</span></span></span>`;
+      const costs = Array.from({ length: campaign.squadRowSize }, (_, slotIndex) => {
+        const hero = heroById.get(row[slotIndex]);
+        return `<span class="td-squad-row-cost" aria-hidden="true">${hero ? `◈ ${hero.cost}` : ""}</span>`;
+      }).join("");
+      const foot = lordId ? `<div class="td-squad-row-costs">${costs}</div>` : `<span class="td-squad-row-hint">Lord hero not deployed</span>`;
       const slots = Array.from({ length: campaign.squadRowSize }, (_, slotIndex) => {
         const hero = heroById.get(row[slotIndex]);
-        if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span><span class="td-squad-slot-cost" aria-hidden="true"></span></button>`;
+        if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span></button>`;
         const matches = group && hero.mythologyGroups?.includes(group.id);
-        return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
-          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span>
-          <span class="td-squad-slot-cost" aria-hidden="true">◈ ${hero.cost}</span></button>`;
+        return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}${isLord(hero.id) ? " is-lord" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
+          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}${isLord(hero.id) ? '<span class="td-squad-slot-crown" aria-hidden="true">♛</span>' : ""}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span></button>`;
       }).join("");
       return `<section class="td-squad-row${rowIndex === activeRow ? " is-active" : ""}${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
-        <div class="td-squad-row-head"><button type="button" class="td-squad-row-select" data-squad-activate-row="${rowIndex}" aria-pressed="${rowIndex === activeRow}">Row ${rowIndex + 1}</button>${status}</div>
-        <div class="td-squad-lineup" aria-label="Selected squad row ${rowIndex + 1}">${slots}</div></section>`;
+        <div class="td-squad-row-head" data-squad-activate-row="${rowIndex}">${status}</div>
+        <div class="td-squad-lineup" aria-label="Selected squad row ${rowIndex + 1}">${slots}</div>
+        <div class="td-squad-row-foot">${foot}</div></section>`;
     }).join("");
     // Roster: 50 x 75 art cards, class icon on the art, level and stars over its foot; name and (for
     // locked heroes) the unlock source are in the tooltip and label. Locked heroes trail the owned ones, dimmed.
