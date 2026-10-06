@@ -19,6 +19,7 @@ export type StageClearReport = {
   leaks: number;
   duration: string;
   rating: number; // stage rating 0-3 (laurels, by lives kept)
+  laurels?: boolean[]; // Campaign: which of the three laurels were earned (the goal laurel may be missing)
   rewards: { id: string; amount: number }[]; // what the save gained: favor, gold, heroXp, ...
   note: string; // mode outcome (Daily, Expedition, Campaign, debug)
   rows: any[]; // damageRows(), highest damage first
@@ -91,7 +92,7 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
     // Three hollow laurels; the earned ones fill one after another as the scene opens.
     const laurels = q("[data-clear-laurels]");
     laurels.setAttribute("aria-label", `Rating ${report.rating} of 3`);
-    laurels.innerHTML = [0, 1, 2].map((i) => laurelIcon(i < report.rating).replace("<svg ", `<svg style="--i:${i}" `)).join("");
+    laurels.innerHTML = [0, 1, 2].map((i) => laurelIcon(report.laurels ? !!report.laurels[i] : i < report.rating).replace("<svg ", `<svg style="--i:${i}" `)).join("");
     const mvp = report.rows[0];
     const mvpHero = mvp ? heroById.get(mvp.id) : null;
     const mvpEl = q("[data-clear-mvp]");

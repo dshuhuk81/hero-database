@@ -10,7 +10,7 @@ import { bossSprite } from "../assets.js";
 const GOLD_TWEEN_MIN = 25;
 const GOLD_TWEEN_MS = 600;
 
-const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children", mender: "Menders", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps" };
+const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children", mender: "Menders", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps", burrower: "Burrowers", vinebinder: "Vinebinders", jaguar: "Jaguars", sporeling: "Sporelings" };
 
 export function createHud(ctx: PageContext) {
   const { q, state, store, pause, heroById, data } = ctx;

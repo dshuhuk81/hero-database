@@ -180,6 +180,10 @@ export const ENEMY_INFO = {
   shieldbearer: { name: "Shieldbearer", text: "Carries a shield worth 160% of its health that takes damage first. Every hit strips at least 15% of the shield, so many quick hits (cleave, splash, fast attackers) break it faster than one big hit. The shield grows back after 4 seconds without a hit." },
   hexer: { name: "Hexer", text: "Every 6 seconds hexes the nearest hero within 140 range: for 2 seconds it cannot attack and its ultimate stops charging. Shoots road heroes from range like an Archer. Resists magic; Archers outrange the hex." },
   broodcaller: { name: "Broodcaller", text: "Calls 2 Imps every 4 seconds, up to 4 at a time and 8 in total. Resists magic; Archers snipe it from range. Costs 2 lives if it gets through." },
+  burrower: { name: "Burrower", text: "When it takes a hit it dives for 3 seconds: untargetable, and it walks under your blockers. It can only dive again 6 seconds after surfacing. Assassins catch it on the surface; a second blocker holds the next one." },
+  vinebinder: { name: "Vinebinder", text: "Roots the road hero it is fighting every 7 seconds: that hero cannot attack for 4 seconds but still blocks, and its ultimate keeps charging. Resists magic somewhat; a Support heals through it." },
+  jaguar: { name: "Jaguar", text: "Fast. Leaps over the first blocker it meets (once) and keeps running. A second blocker behind the first, or Archers, stop it." },
+  sporeling: { name: "Sporeling", text: "Weak and quick. When it dies it leaves spores: heroes within 70 range attack 25% slower for 4 seconds. Kill it before it reaches the line." },
   imp: { name: "Imp", text: "Small, fast and fragile. Only appears from a Broodcaller." },
   brood: { name: "Lilith's Children", text: "Summoned around Lilith. While any of them stand she cannot be hit, and all damage they take also hurts her. When all have fallen she summons them again, weaker." },
 };

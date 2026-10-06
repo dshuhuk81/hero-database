@@ -262,13 +262,18 @@ Owner directions recorded October 2:
 
 The "1-1: too hard" test failure is gone: `test-td-campaign` now only notes stages where the bot wins under 20% (October 5).
 
-Backlog from the ideas document, not scheduled: A1 stage goals, A2 stage
-rules, A3 Kraghorn finale, A4 chapter creatures, C2 reaction visibility, D3 Expedition route
+**Built October 6, 2026 (from [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md)):** A1 stage goals (laurel 3 is
+now a per-stage goal on all 82 stages, see spec "Stage rating"; **to do (owner playtest):** the goals are first guesses, check
+that each is winnable and interesting, especially the `noClass` and `maxHeroes` ones) C2 reaction visibility (squad screen) and A2 stage rules (53 stages, `tdStageRules.json`; **to do:** re-run `td:campaign-load` and `td-stage-power.mjs` and playtest, because rules like Hardened Hides and Lean Supplies move difficulty).
+
+A3 (Kraghorn as the 2-6 finale) is obsolete: every chapter already has its own final boss (2-6 Vorruk, 3-6 Lerna, 11-6 Kraghorn) and boss specials stay descoped (October 2).
+A4 chapter creatures, first slice (October 6): Burrower in Chapter 2, Vinebinder, Jaguar and Sporeling in Chapter 3 (spec section 8). The four have their own stills and PixelLab sheets (October 6; **upload `sprites/` and `clips/` `{burrower,vinebinder,jaguar,sporeling}-v1` to R2 before release**). **To do:** the Glass Warden from the idea document, creatures for Chapters 4 to 13, and an owner playtest of 2-1 to 3-6 (`td-board-tune.mjs` for `hpScale`).
+
+Backlog from the ideas document, not scheduled: D3 Expedition route
 map, boss rush, hero mastery. Early call is dropped (a timeline has no waves to call early).
 
 ### Doc drift (audit)
 
-- `src/game/td/bugs.md`: "Inspector stats too thin" still TODO although inspector stats exist; blessing graph note.
 - `docs/tower-defense-ui-plan.md`: ring-era requirements (rings, touch rotation).
 - White-label audit (`docs/audits/`): label historical sections.
 

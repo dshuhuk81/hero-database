@@ -20,7 +20,9 @@ const FILL = 0.8;
 // (render.js picks the map's boss). lilith_child is her summoned children ("brood").
 const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "archer", brute: "brute", boss_baphomet: "boss", boss_lilith: "boss-lilith", lilith_child: "brood",
   // TD-original bosses (artifacts/td-bosses-v1), ready for a map or stage to use.
-  boss_lerna: "boss-lerna", boss_kraghorn: "boss-kraghorn", boss_vorruk: "boss-vorruk", boss_ochenta: "boss-ochenta" };
+  boss_lerna: "boss-lerna", boss_kraghorn: "boss-kraghorn", boss_vorruk: "boss-vorruk", boss_ochenta: "boss-ochenta",
+  // Chapter creatures (A4 of the gameplay ideas).
+  burrower: "burrower", vinebinder: "vinebinder", jaguar: "jaguar", sporeling: "sporeling" };
 
 const inDir = process.argv[2];
 if (!inDir) { console.error("Usage: node scripts/build-td-enemy-sprites.mjs <input folder>"); process.exit(1); }

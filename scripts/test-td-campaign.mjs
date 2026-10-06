@@ -6,7 +6,7 @@ import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale, starScale } from "../src/game/td/campaign.js";
 import { validateTimeline } from "../src/game/td/timeline.js";
-import { starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelLives, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
+import { stageRuleFor, starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelFlags, laurelLives, goalMet, goalText, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 import dbBosses from "../src/data/bosses.json" with { type: "json" };
 import tdBosses from "../src/data/tdBosses.json" with { type: "json" };
@@ -84,7 +84,7 @@ stages.forEach((stage, i) => {
   assert.ok(!again.firstClear && again.granted.every((reward) => reward.type === "currency"), "replay pays currencies only");
   assert.deepEqual(again.granted, repeatRewards(campaign, stages[0]), "replay pays the repeat share");
   assert.equal(again.progress.currencies.gold, gold + Math.round(gold * campaign.repeatShare), "replay gold added");
-  assert.deepEqual(again.progress.cleared[stages[0].id], { clears: 2, bestLives: 18 }, "clears and best lives tracked");
+  assert.deepEqual(again.progress.cleared[stages[0].id], { clears: 2, bestLives: 18, goal: false }, "clears, best lives and the unmet stage goal tracked");
   const options = stageGameOptions(stages[0], [["gaia"], ["fenrir"]], 7);
   assert.deepEqual([options.allowedHeroes, options.squadRows, options.lives, options.timeline], [["gaia", "fenrir"], [["gaia"], ["fenrir"]], stages[0].lives, stages[0].timeline], "game options preserve rows and flatten deployment access");
   assert.equal("waves" in options || "mode" in options, false, "no waves and no run modes");
@@ -254,12 +254,12 @@ if (process.argv.includes("--viability")) {
   let paidTotal = [];
   let firstLaurels = null;
   for (const entry of chapter.stages) {
-    const result = finishCampaignStage(campaign, progress, entry.id, { won: true, lives: entry.lives });
+    const result = finishCampaignStage(campaign, progress, entry.id, { won: true, lives: entry.lives, facts: { classes: new Set(), heroes: 1, heroDeaths: 0, leakKinds: {} } }); // meets every stage goal
     firstLaurels ??= result.laurels;
     paidTotal = paidTotal.concat(result.milestones.map((m) => m.laurels));
     progress = result.progress;
   }
-  assert.deepEqual(firstLaurels, { before: 0, after: 3 }, "a flawless first clear earns 3");
+  assert.deepEqual([firstLaurels.before, firstLaurels.after, firstLaurels.flags], [0, 3, [true, true, true]], "a flawless first clear that meets the goal earns 3");
   assert.deepEqual(paidTotal, [10, 20, 30], "all three milestones paid on the way");
   const info = chapterLaurels(campaign, progress, chapter.id);
   assert.deepEqual([info.earned, info.max, info.milestones.every((m) => m.paid)], [30, 30, true], "chapter at 30 / 30, all paid");
@@ -300,6 +300,31 @@ if (process.argv.includes("--viability")) {
   assert.deepEqual(sanitizeCampaign({ ...migrated, milestones: { [chapter.id]: [10, 999, "x"] } }, campaign, heroIds).milestones[chapter.id], [10], "unknown milestones dropped");
 }
 
+// Stage goals (A1): laurel 3 is the stage's own goal; a goal once met stays met, and a laurel
+// earned by lives before goals existed is kept.
+{
+  const stage = allStages(campaign).find((entry) => entry.goal?.type === "noClass");
+  const facts = (over = {}) => ({ classes: new Set(["Tank"]), heroes: 3, heroDeaths: 0, leakKinds: {}, ...over });
+  assert.ok(allStages(campaign).every((entry) => entry.goal && goalText(entry.goal)), "every stage has a readable goal");
+  assert.ok(goalMet({ type: "noClass", class: "Mage" }, facts()) && !goalMet({ type: "noClass", class: "Mage" }, facts({ classes: new Set(["Mage"]) })), "noClass");
+  assert.ok(goalMet({ type: "maxHeroes", count: 3 }, facts()) && !goalMet({ type: "maxHeroes", count: 2 }, facts()), "maxHeroes");
+  assert.ok(goalMet({ type: "noFall" }, facts()) && !goalMet({ type: "noFall" }, facts({ heroDeaths: 1 })), "noFall");
+  assert.ok(goalMet({ type: "noLeakKind", kind: "flyer" }, facts()) && !goalMet({ type: "noLeakKind", kind: "flyer" }, facts({ leakKinds: { flyer: 1 } })), "noLeakKind");
+  const miss = finishCampaignStage(campaign, newCampaignProgress(campaign), stage.id, { won: true, lives: stage.lives, facts: facts({ classes: new Set([stage.goal.class]) }) });
+  assert.deepEqual(laurelFlags(campaign, miss.progress, stage), [true, true, false], "full lives without the goal: two laurels, not three");
+  const hit = finishCampaignStage(campaign, miss.progress, stage.id, { won: true, lives: 1, facts: facts() });
+  assert.deepEqual(laurelFlags(campaign, hit.progress, stage), [true, true, true], "meeting the goal on a later clear earns laurel 3");
+  assert.equal(stageLaurels(campaign, hit.progress, stage), 3);
+  const again = finishCampaignStage(campaign, hit.progress, stage.id, { won: true, lives: 1, facts: facts({ classes: new Set([stage.goal.class]) }) });
+  assert.equal(laurelFlags(campaign, again.progress, stage)[2], true, "a met goal is not lost on a worse run");
+  const old = { ...newCampaignProgress(campaign), cleared: { [stage.id]: { clears: 1, bestLives: stage.lives } } };
+  assert.equal(laurelFlags(campaign, old, stage)[2], true, "a laurel earned by lives before goals existed is kept");
+  const kept = finishCampaignStage(campaign, old, stage.id, { won: true, lives: 1, facts: facts({ classes: new Set([stage.goal.class]) }) });
+  assert.equal(laurelFlags(campaign, kept.progress, stage)[2], true, "...even after a later clear that misses the goal");
+  const saved = sanitizeCampaign(JSON.parse(JSON.stringify(hit.progress)), campaign, new Set(heroes.map((hero) => hero.id)));
+  assert.equal(saved.cleared[stage.id].goal, true, "the goal survives the save check");
+}
+
 // One collection (Phase 2): Free Play and Expedition pay Gold and Hero XP per enemy defeated,
 // capped per run, never Divine Seals; they deploy only owned heroes.
 {
@@ -311,5 +336,26 @@ if (process.argv.includes("--viability")) {
   assert.deepEqual(collectionReward({ ...campaign, collectionRewards: { perDefeated: { divineSeals: 5, gold: 1 } } }, 3), [{ type: "currency", id: "gold", amount: 3 }], "never Divine Seals");
   const fresh = newCampaignProgress(campaign);
   assert.deepEqual(ownedHeroes(fresh, heroes).map((hero) => hero.id).sort(), [...campaign.starters].sort(), "new save owns the starters");
+}
+// Stage rules (A2): every named rule exists and reaches the game options.
+{
+  const withRule = allStages(campaign).filter((entry) => entry.rule);
+  assert.ok(withRule.length > 20 && withRule.every((entry) => stageRuleFor(entry)?.mods), "every stage rule names a defined rule");
+  assert.equal(stageRuleFor(allStages(campaign)[0]), null, "the first stage is plain");
+  assert.deepEqual(stageGameOptions(withRule[0], [["gaia"], []], 1).stageRule, stageRuleFor(withRule[0]), "the rule goes into the game options");
+}
+
+// Reactions a squad can trigger (C2): both halves must be on the squad.
+{
+  const { squadReactions } = await import("../src/game/td/reactions.js");
+  const team = (...ids) => ids.map((id) => ({ id, name: id }));
+  const ids = (list) => squadReactions(list, tuning).map((reaction) => reaction.id).sort();
+  assert.deepEqual(ids(team("aegir")), [], "one half alone is no reaction");
+  assert.deepEqual(ids(team("aegir", "hephaestus")), ["steam"], "Wet + Burn");
+  assert.deepEqual(ids(team("aegir", "ymir", "hephaestus")), ["freeze", "steam"], "Wet + Chill and Wet + Burn");
+  assert.deepEqual(ids(team("stheno", "hephaestus")), ["blight"], "Poison + Burn");
+  assert.deepEqual(ids(team("aegir", "odin")), ["conduct"], "Wet + chain lightning");
+  assert.deepEqual(ids(team("thanatos", "fenrir")), ["harvest"], "Thanatos + poison");
+  assert.deepEqual(squadReactions(team("aegir", "hephaestus"), tuning)[0].names, ["aegir", "hephaestus"], "names the heroes behind it");
 }
 console.log("Tower defense campaign checks passed.");

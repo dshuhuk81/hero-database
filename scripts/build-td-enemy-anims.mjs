@@ -38,8 +38,15 @@ const SETS = {
     "brute-v3": { dir: "brute", clips: clipFiles("brute") },
     "brood-v4": { dir: "brood", clips: clipFiles("brood") },
     // Bosses: one sheet per boss file (render.js loads the map's boss, see bossSpriteFile).
+    // Chapter creatures (A4 of the gameplay ideas).
+    "burrower-v1": { dir: "burrower-v1", clips: clipFiles("burrower-v1") },
+    "vinebinder-v1": { dir: "vinebinder-v1", clips: clipFiles("vinebinder-v1") },
+    "jaguar-v1": { dir: "jaguar-v1", clips: clipFiles("jaguar-v1") },
+    "sporeling-v1": { dir: "sporeling-v1", clips: clipFiles("sporeling-v1") },
     "boss-v2": { dir: "boss", clips: clipFiles("boss") },
     "boss-lilith-v4": { dir: "lilith", clips: clipFiles("lilith") },
+    // Remade walk (feet step one after the other): same still, new sheet name (R2 caches a year).
+    "boss-lilith-v4b": { dir: "boss-lilith-v4", clips: clipFiles("boss-lilith-v4") },
     // TD-original bosses, ready for a map or stage (tdBosses.json).
     "boss-lerna-v1": { dir: "lerna", clips: clipFiles("lerna") },
     "boss-kraghorn-v1": { dir: "kraghorn", clips: clipFiles("kraghorn") },

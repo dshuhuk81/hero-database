@@ -30,6 +30,10 @@ const COLORS = {
   broodcaller: 0xf87171,
   imp:    0xfca5a5,
   hexer:  0xc4b5fd,
+  burrower: 0xe8c27a,
+  vinebinder: 0x86efac,
+  jaguar: 0xfbbf24,
+  sporeling: 0xbef264,
 };
 
 // Kenney Micro Roguelike packed sheet: 128x80, 8x8 tiles, no gaps.

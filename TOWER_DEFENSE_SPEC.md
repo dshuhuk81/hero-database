@@ -488,6 +488,9 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   sparks and shakes the board briefly (`thunderStrike`, sound: Odin's ultimate plus the heavy
   hit). The Shield raises a blue-gold dome over the base for its duration (`shieldUp`), and
   each leak it stops shows a "Blocked" pop (`shieldBlock`).
+- **Reactions on the squad screen** (`reactions.js`): a line under the hint names the element
+  reactions the lineup can trigger (Steam, Freeze, Blight, Conduct, Harvest) and the heroes behind
+  each; both halves must be in the squad. The line keeps its height when empty.
 - **Pantheon bonds** (`bonds.js`, `tuning.bonds`): heroes of one pantheon standing on the
   field together unlock a tier. Norse (Odin, Ymir, Heimdall, Aegir, Surtr, Fenrir, Nott,
   Vidar, Skadi) 2: +6% attack, 4: +12% attack and ultimates charge 10% faster. Greek (Atlas,
@@ -518,7 +521,7 @@ splash; awakened rapid fire). Details in `TOWER_DEFENSE_HERO_SKILLS.md` and the 
 ### Enemies
 
 Kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`, `shieldbearer`,
-`broodcaller`, `imp`, `hexer`, plus `boss`. Stats in `tuning.enemies` (real Normal values;
+`broodcaller`, `imp`, `hexer`, the chapter creatures, plus `boss`. Stats in `tuning.enemies` (real Normal values;
 `difficulty.enemyHp` is 1 and only a debug knob).
 
 - Enemy archers stop at 110 px and shoot for 8 s, then close in; with no road hero in reach
@@ -527,6 +530,17 @@ Kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`, `shield
 - Brutes and bosses are armoured but weak to magic; shieldbearers carry a regrowing shield
   that many quick hits break; menders heal nearby enemies; broodcallers summon imps; hexers
   resist magic and hex the nearest hero.
+- **Chapter creatures** (October 6, 2026, A4 of the gameplay ideas; `burrower`, `vinebinder`, `jaguar`,
+  `sporeling` in `tuning.enemies`; Chapter 2 and 3 timelines swap some grunts and runners for them,
+  introduced stage by stage; the totals per stage are unchanged):
+  **Burrower** dives for 3 s when hit (untargetable, walks under blockers), then waits 6 s;
+  **Vinebinder** roots the road hero it fights for 4 s every 7 s (the hero cannot attack, still blocks,
+  its ultimate keeps charging; veiled heroes are immune); **Jaguar** leaps 110 px over the first
+  blocker it meets, once; **Sporeling** leaves spores on death: heroes within 70 attack 25% slower
+  for 4 s. Burrower, jaguar and sporeling use the grunt/runner enemy shape. Each has its own still
+  (`enemies/sprites/{kind}-v1`, source `artifacts/td-chapter-enemies-v1/`) and animation sheet
+  (`enemies/clips/{kind}-v1`, PixelLab clips, 110 px frames); the files are local and **not on R2
+  yet**. Numbers are first guesses.
 
 ### Fewer, stronger enemies (`tuning.board.enemyShape`)
 
@@ -605,6 +619,12 @@ Full-body sprites from R2 `td/enemies/sprites/` and animation sheets from
 walk, swing, hurt and death motion when a kind has no sheet (`animateEnemy` in `render.js`).
 Reduced motion or `?anim=off` turns motion off. Versioning, the PixelLab clip workflow and
 build scripts: `docs/td-asset-pipeline.md` and section 15.
+
+Lilith (`boss-lilith-v4`) plays the remade sheet `boss-lilith-v4b` (October 6, 2026; `ENEMY_SHEET_REMAKES`
+in `assets.js`): her taloned feet step one after the other. Unlike the other ~100 px sheets it is
+built sharp (`TD_CLIP_TARGET=160 python3 scripts/td-warp-anim.py ...`, frames ~196 px, ~340 KB),
+because she used to keep the static 256 px still. The PixelLab frames came with a flat grey
+background (132,130,128 / 126,126,125) that had to be keyed out before packing. Not on R2 yet.
 
 ## 9. Battle economy
 
@@ -838,8 +858,24 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 ### Stage rating and chapter rewards
 
 - Every cleared stage has a rating of 0-3 laurels: a clear, keeping at least 50% of the
-  stage's shown lives, keeping at least 90% (rounded up; `campaign.laurels.lifeUnit` 5).
-  With one shown life per leak, three laurels mean no leak at all on most stages.
+  stage's shown lives (rounded up; `campaign.laurels.lifeUnit` 5), and the **stage goal**
+  (October 6, 2026, A1 of the gameplay ideas). Every stage carries a `goal` in `tdCampaign.json`
+  that asks a different question of the squad: `noClass` (win without a Mage, Archer, ...),
+  `maxHeroes` (at most 4 or 5 heroes fielded, sold and fallen ones included), `noFall` (no hero
+  falls) and `noLeakKind` (no flyer or runner reaches the base). The run reports `fieldedIds` and
+  `stageStats` (`runFacts` in `campaign.js`); a met goal is saved in the cleared entry (`goal`)
+  and is never lost. The goal laurel is independent of the lives kept; the goals are first
+  guesses (Chapter 1 hand-picked, later chapters rotated and flyer-heavy stages asking for no
+  leaking flyer), to be tuned from playtests. Saves from before goals keep a laurel they earned by
+  keeping 90% of the lives. The stage drawer lists all three goals; the Stage Clear screen fills
+  only the laurels that were earned.
+- **Stage rules** (October 6, 2026, A2 of the gameplay ideas): 53 of the 82 stages carry a `rule`
+  naming an entry of `tdStageRules.json` (Nightfall, Forced March, Hardened Hides, Lean Supplies,
+  Quickened, Blessed Ground, Rich Camp). A rule is a bundle of the same multipliers a chapter
+  environment uses (`mods`, `modsMultiplier` in `environments.js`) and stacks with it in
+  `sim.environment()`. The first three stages and every third stage stay plain. The rule shows in
+  the stage drawer and, after the environment rule, in the battle chip. Values are first guesses;
+  no recommended Might was re-measured.
 - Chapter milestones at 10 / 20 / 30 rating points pay Gold and Hero XP / Divine Seals /
   Divine Seals and Seal Dust, once (`payMilestones`).
 

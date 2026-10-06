@@ -8,6 +8,7 @@
 // clears, replays at a quarter, the Daily Trial goal and finished Expeditions) pay for summons: one banner that gives a hero the player does not own yet
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
+import stageRules from "../../data/tdStageRules.json" with { type: "json" };
 import { emptySquadRows, flattenSquadRows, normalizeSquadRows, validateSquadRows } from "./squad-rows.js";
 
 export const CAMPAIGN_SAVE_VERSION = 10; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored)
@@ -68,6 +69,9 @@ export function validSquad(campaign, progress, squad) {
 // timeline is the whole encounter.
 // `heroes`: the run's hero list with campaign levels applied (collectionHeroes), if any.
 // `heroic`: the stage's Heroic version (the Heroic tier: tuning.tiers.heroic).
+// The stage's own rule ({ id, name, text, mods }) or null (A2 of the gameplay ideas).
+export const stageRuleFor = (stage) => (stage?.rule && stageRules[stage.rule] ? { id: stage.rule, ...stageRules[stage.rule] } : null);
+
 export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null, heroic = false) {
   const squadRows = normalizeSquadRows(structuredRows(squad), { lordIds: LORD_IDS });
   return {
@@ -80,6 +84,7 @@ export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() *
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
     atkScale: stage.atkScale ?? 1,
+    stageRule: stageRuleFor(stage),
   };
 }
 
@@ -609,9 +614,51 @@ export function laurelLives(campaign, stage) {
   });
 }
 
-export function stageLaurels(campaign, progress, stage) {
+// Laurel 3 is the stage's own goal (`stage.goal`, A1 of the gameplay ideas) when it has one, else
+// keeping 90% of the lives. A goal clear is saved in the entry (`goal: true`); entries from before
+// goals existed (`goal` missing) keep a laurel they earned by lives, so nobody loses one.
+export function laurelFlags(campaign, progress, stage) {
   const entry = progress.cleared[stage.id];
-  return entry ? laurelLives(campaign, stage).filter((lives) => entry.bestLives >= lives).length : 0;
+  if (!entry) return [false, false, false];
+  const [, half, top] = laurelLives(campaign, stage);
+  const byLives = entry.bestLives >= top;
+  return [true, entry.bestLives >= half, stage.goal ? (entry.goal ?? byLives) : byLives];
+}
+
+export function stageLaurels(campaign, progress, stage) {
+  return laurelFlags(campaign, progress, stage).filter(Boolean).length;
+}
+
+const GOAL_TEXT = {
+  noClass: (goal) => `Win without a ${goal.class}`,
+  maxHeroes: (goal) => `Win with at most ${goal.count} heroes`,
+  noFall: () => "Win without losing a hero",
+  noLeakKind: (goal) => `Let no ${goal.kind} through`,
+};
+
+// One line the player reads in the stage drawer.
+export const goalText = (goal) => (goal && GOAL_TEXT[goal.type] ? GOAL_TEXT[goal.type](goal) : "Keep 90% of the lives");
+
+// What a finished run tells the goals: classes fielded, how many heroes, falls and what leaked.
+export function runFacts(game) {
+  const fielded = game.fieldedIds ?? [];
+  return {
+    classes: new Set(fielded.map((id) => game.heroesById?.get(id)?.class).filter(Boolean)),
+    heroes: fielded.length,
+    heroDeaths: game.stageStats?.heroDeaths ?? 0,
+    leakKinds: game.stageStats?.leakKinds ?? {},
+  };
+}
+
+export function goalMet(goal, facts) {
+  if (!goal || !facts) return false;
+  switch (goal.type) {
+    case "noClass": return !facts.classes.has(goal.class);
+    case "maxHeroes": return facts.heroes <= goal.count;
+    case "noFall": return facts.heroDeaths === 0;
+    case "noLeakKind": return !(facts.leakKinds[goal.kind] > 0);
+    default: return false;
+  }
 }
 
 // A chapter's laurels and its milestones (paid automatically when reached).
@@ -670,7 +717,7 @@ export function heroicRewards(campaign, stage, progress) {
 // After a stage: a win records the clear (best lives kept) and pays the first-clear or the
 // replay rewards. A Heroic win (`heroic`) records the Heroic clear and pays heroicRewards. A loss changes nothing. Returns the new progress, whether it was a first
 // clear, the rewards granted and the stage it unlocked.
-export function finishCampaignStage(campaign, progress, stageId, { won, lives, heroic = false }) {
+export function finishCampaignStage(campaign, progress, stageId, { won, lives, heroic = false, facts = /** @type {any} */ (null) }) {
   const stage = stageById(campaign, stageId);
   if (!stage || !won) return { progress, firstClear: false, granted: [], unlocked: null, laurels: null, milestones: [] };
   if (heroic) {
@@ -685,9 +732,9 @@ export function finishCampaignStage(campaign, progress, stageId, { won, lives, h
   const granted = firstClear ? pendingRewards(stage, progress) : repeatRewards(campaign, stage);
   const recorded = {
     ...grantRewards(progress, granted),
-    cleared: { ...progress.cleared, [stageId]: { clears: (before?.clears ?? 0) + 1, bestLives: Math.max(before?.bestLives ?? 0, lives) } },
+    cleared: { ...progress.cleared, [stageId]: { clears: (before?.clears ?? 0) + 1, bestLives: Math.max(before?.bestLives ?? 0, lives), ...(stage.goal ? { goal: laurelFlags(campaign, progress, stage)[2] || goalMet(stage.goal, facts) } : {}) } },
   };
-  const laurels = { before: stageLaurels(campaign, progress, stage), after: stageLaurels(campaign, recorded, stage) };
+  const laurels = { before: stageLaurels(campaign, progress, stage), after: stageLaurels(campaign, recorded, stage), flags: laurelFlags(campaign, recorded, stage) };
   const { progress: next, paid: milestones } = payMilestones(campaign, recorded);
   const unlocked = firstClear ? allStages(campaign).find((entry) => entry.unlockAfter === stageId) ?? null : null;
   return { progress: next, firstClear, granted, unlocked, laurels, milestones };
@@ -704,7 +751,7 @@ export function sanitizeCampaign(value, campaign, heroIds, lordIds = LORD_IDS) {
   const cleared = {};
   for (const [id, entry] of Object.entries(value.cleared ?? {})) {
     if (!stageIds.has(id) || !entry || typeof entry !== "object") continue;
-    cleared[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)) };
+    cleared[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)), ...(typeof entry.goal === "boolean" ? { goal: entry.goal } : {}) };
   }
   const lastSquadRows = normalizeSquadRows(value.lastSquadRows, { allowedIds: new Set(owned), lordIds });
   // Version 1 had no currencies or levels: they start at zero and level 1.

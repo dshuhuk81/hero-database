@@ -5,8 +5,12 @@ export const environmentFor = (map) => ENVIRONMENTS[map?.theme] ?? null;
 
 // Multipliers are evaluated at use time. Phase rules alternate every tuning.timeline.phaseSeconds of battle time:
 // `phase` is 0 before the stage starts, then 1 (odd), 2 (even), 3 (odd) and so on.
-export function environmentMultiplier(map, stat, { phase = 0, hero = null, kind = null, ring = null } = {}) {
-  const mods = environmentFor(map)?.mods;
+export function environmentMultiplier(map, stat, ctx = {}) {
+  return modsMultiplier(environmentFor(map)?.mods, stat, ctx);
+}
+
+// The same stat vocabulary for a stage rule (tdStageRules.json), which stacks on the environment.
+export function modsMultiplier(mods, stat, { phase = 0, hero = null, kind = null, ring = null } = {}) {
   if (!mods) return 1;
   const odd = phase % 2 === 1;
   const road = hero?.slotType === "road";

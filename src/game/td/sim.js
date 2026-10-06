@@ -2,7 +2,7 @@ import { expandTimeline, timelineTotals } from "./timeline.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern } from "./board.js";
-import { environmentMultiplier } from "./environments.js";
+import { environmentMultiplier, modsMultiplier } from "./environments.js";
 import { normalizeSquadRows } from "./squad-rows.js";
 
 const K = 260;
@@ -97,7 +97,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, stageRule = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -122,6 +122,7 @@ export class TowerDefenseGame {
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     // Enemy attack scale: a campaign stage's own `atkScale` (tdCampaign.json), 1 everywhere else.
     this.atkScale = atkScale ?? 1;
+    this.stageRule = stageRule; // a campaign stage's own rule ({ name, text, mods }, tdStageRules.json), null elsewhere
     this.tuning = tuning;
     // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
     // tuned lives for an Expedition (carried lives can be lower), otherwise tuning.run.lives.
@@ -267,7 +268,8 @@ export class TowerDefenseGame {
   }
 
   environment(stat, hero = null, kind = null) {
-    return environmentMultiplier(this.map, stat, { phase: this.environmentPhase(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null });
+    const ctx = { phase: this.environmentPhase(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null };
+    return environmentMultiplier(this.map, stat, ctx) * (this.stageRule ? modsMultiplier(this.stageRule.mods, stat, ctx) : 1); // chapter environment x stage rule
   }
 
   // What place() would field on this tile, without spending anything (recruit preview).
@@ -573,7 +575,19 @@ export class TowerDefenseGame {
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
       this.enemyTraits(enemy, dt);
       const boost = enemy.kind === "boss" ? this.bossBoost(enemy) : NO_BOOST;
-      const target = enemy.flying ? null : this.findEnemyTarget(enemy);
+      const target = enemy.flying || (enemy.burrowedUntil ?? 0) > this.time ? null : this.findEnemyTarget(enemy); // a burrowed enemy walks under its blockers
+      const leap = this.tuning.enemies[enemy.kind]?.leap;
+      if (target && leap && !enemy.leaped) {
+        // Jaguar: bounds over the first blocker it meets, once, and runs on.
+        enemy.leaped = true;
+        enemy.held = false;
+        enemy.distance += leap.distance;
+        const lane = this.laneOf(enemy);
+        const point = pointOnPath(lane.path, Math.min(enemy.distance, lane.total), enemy.sway);
+        this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 34, life: 0.35, color: "gold" });
+        enemy.x = point.x; enemy.y = point.y;
+        continue;
+      }
       if (target) {
         const ranged = this.shootsFromRange(enemy);
         enemy.held = !ranged; // stopped by a blocker (melee contact)
@@ -631,12 +645,13 @@ export class TowerDefenseGame {
 
     for (const hero of this.heroes) {
       if (this.isHexed(hero) || this.isSilenced(hero)) continue; // Hexer or Baphomet: no attacks, ultimate charge paused
+      if (this.isRooted(hero)) { hero.ultClock += dt; continue; } // Vinebinder: cannot attack, still blocks, charge keeps running
       hero.attackClock -= dt;
       hero.ultClock += dt;
       const target = this.findTarget(hero);
       this.faceTarget(hero, target);
       if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
-        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps) * this.environment("aps", hero));
+        hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0) + (this.ringFx(hero)?.aps || 0) + this.rapidFx(hero).aps) * this.environment("aps", hero) * this.sporeFactor(hero));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
       const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
@@ -1629,6 +1644,14 @@ export class TowerDefenseGame {
     enemy.hp -= this.absorbShield(enemy, amount * vuln * held * bossHit * rot * shatter * stance * resolve * marked);
     if (enemy.kind === "boss" && this.bossTuning) this.bossOnHit(enemy, dot);
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
+    const burrow = this.tuning.enemies[enemy.kind]?.burrow;
+    if (burrow && !dot && enemy.hp > 0 && this.time >= (enemy.burrowReadyAt ?? 0)) {
+      // Burrower: dives for `seconds` after taking a hit (untargetable, walks under blockers), then must wait `cooldown`.
+      enemy.untargetable = true;
+      enemy.burrowedUntil = this.time + burrow.seconds;
+      enemy.burrowReadyAt = enemy.burrowedUntil + burrow.cooldown;
+      this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 30, life: 0.4, color: "gold" });
+    }
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     const dealt = Math.max(0, before - Math.max(0, enemy.hp));
@@ -1694,6 +1717,20 @@ export class TowerDefenseGame {
     if (enemy.kind === "boss" && this.bossTuning) this.bossRules(enemy, dt);
     const cfg = this.tuning.enemies[enemy.kind];
     if (!cfg) return;
+    if (cfg.burrow && enemy.burrowedUntil && this.time >= enemy.burrowedUntil) {
+      enemy.untargetable = false;
+      enemy.burrowedUntil = 0;
+      this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 30, life: 0.4, color: "gold" });
+    }
+    if (cfg.root && enemy.held && enemy.heldBy) {
+      // Vinebinder: roots the road hero it is fighting every `every` seconds; the hero cannot attack for `seconds` but keeps blocking.
+      enemy.rootClock = (enemy.rootClock ?? cfg.root.every * 0.5) - dt;
+      if (enemy.rootClock <= 0 && !this.isVeiled(enemy.heldBy)) {
+        enemy.rootClock = cfg.root.every;
+        enemy.heldBy.rootedUntil = this.time + cfg.root.seconds;
+        this.emit({ type: "hex", x1: enemy.x, y1: enemy.y, x2: enemy.heldBy.x, y2: enemy.heldBy.y, x: enemy.heldBy.x, y: enemy.heldBy.y, life: 0.5, color: "green" });
+      }
+    }
     if (cfg.heal) {
       enemy.healClock = (enemy.healClock ?? cfg.heal.every) - dt;
       if (enemy.healClock <= 0) {
@@ -1748,6 +1785,15 @@ export class TowerDefenseGame {
 
   isHexed(hero) {
     return (hero?.hexedUntil ?? 0) > this.time;
+  }
+
+  isRooted(hero) {
+    return (hero?.rootedUntil ?? 0) > this.time;
+  }
+
+  // Sporeling clouds slow attack speed for a few seconds.
+  sporeFactor(hero) {
+    return (hero?.sporedUntil ?? 0) > this.time ? hero.sporeAps ?? 1 : 1;
   }
 
   // Boss rules (M18, tuning.bosses[id]):
@@ -1895,6 +1941,15 @@ export class TowerDefenseGame {
     enemy.dead = true;
     if (!enemy.parentId) this.enemiesDown += 1;
     if (this.boons.length) this.boonsOnKill(enemy, hero);
+    const spores = this.tuning.enemies[enemy.kind]?.spores;
+    if (spores) {
+      for (const hero of this.heroes) {
+        if (Math.hypot(hero.x - enemy.x, hero.y - enemy.y) > spores.radius) continue;
+        hero.sporedUntil = this.time + spores.seconds;
+        hero.sporeAps = spores.aps;
+      }
+      this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: spores.radius, life: 0.5, color: "green" });
+    }
     const harvest = this.statusCfg()?.reactions?.harvest;
     if (harvest && this.isPoisoned(enemy)) {
       for (const thanatos of this.heroes.filter((h) => h.id === "thanatos")) {

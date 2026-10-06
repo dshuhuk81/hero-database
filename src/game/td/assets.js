@@ -29,13 +29,17 @@ export const enemySpriteVersion = (file) => ENEMY_SPRITE_VERSIONS[file] ?? "v1";
 // (brood-v4b), since R2 caches a year.
 export const ENEMY_SHEETS = new Set([
   "grunt-v2", "runner-v2", "flyer-v2", "archer-v3", "brute-v3", "brood-v4",
-  "boss-v2", "boss-lerna-v1", "boss-kraghorn-v1", "boss-vorruk-v1", "boss-ochenta-v1",
+  "boss-v2", "boss-lilith-v4b", "burrower-v1", "vinebinder-v1", "jaguar-v1", "sporeling-v1", "boss-lerna-v1", "boss-kraghorn-v1", "boss-vorruk-v1", "boss-ochenta-v1",
   "boss-skeld-v1", "boss-thyrak-v1", "boss-neressa-v1", "boss-morthul-v1",
   "boss-ilyr-v1", "boss-eidros-v1", "boss-astreon-v1", "boss-brontax-v1",
   "brood-v1", "boss-lilith-v1", // broodcaller and hexer keep the older stills on purpose
 ]);
-export const enemySheetUrl = (file, version = enemySpriteVersion(file)) =>
-  (ENEMY_SHEETS.has(`${file}-${version}`) ? tdAsset(`enemies/clips/${file}-${version}.json`) : null);
+// Remade sheets for a still: still name -> sheet name with a suffix.
+export const ENEMY_SHEET_REMAKES = { "boss-lilith-v4": "boss-lilith-v4b" };
+export const enemySheetUrl = (file, version = enemySpriteVersion(file)) => {
+  const still = `${file}-${version}`, sheet = ENEMY_SHEET_REMAKES[still] ?? still;
+  return ENEMY_SHEETS.has(sheet) ? tdAsset(`enemies/clips/${sheet}.json`) : null;
+};
 
 // Hero board figures: heroes-alt/figures/{figure}-{version}.json (Pixi spritesheet with idle,
 // attack and ultimate) plus .webp, drawn instead of the token (render.js). Built from the anim
@@ -68,6 +72,11 @@ export const ENEMY_ART = {
   broodcaller: { file: "brood", version: "v1", tint: 0xffffff, size: 56 },
   imp: { file: "runner", version: enemySpriteVersion("runner"), tint: 0xff8a8a, size: 30 },
   hexer: { file: "boss-lilith", version: "v1", tint: 0xffffff, size: 52, glow: 0xe879f9 },
+  // Chapter creatures (A4 of the gameplay ideas): own stills and sheets (artifacts/td-chapter-enemies-v1).
+  burrower: { file: "burrower", version: "v1", tint: 0xffffff, size: 46 },
+  vinebinder: { file: "vinebinder", version: "v1", tint: 0xffffff, size: 54 },
+  jaguar: { file: "jaguar", version: "v1", tint: 0xffffff, size: 44 },
+  sporeling: { file: "sporeling", version: "v1", tint: 0xffffff, size: 34 },
 };
 
 // A map's final boss sprite: Baphomet is "boss", other bosses "boss-{id}".

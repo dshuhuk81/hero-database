@@ -13,7 +13,8 @@ import { CLASS_PASSIVE_SKILLS, SKILL_TEXT, lordText } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
-import { chapterLaurels, laurelLives, stageLaurels, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
+import { squadReactions } from "../reactions.js";
+import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { notifyQuest } from "../quests.js";
@@ -45,14 +46,14 @@ const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming s
 // The caller persists the save.
 export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, heroName: (id: string) => string, record: boolean) {
   const stage = stageById(campaign, run.stageId);
-  const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic });
+  const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic, facts: runFacts(game) });
   if (record) {
     save.campaign = result.progress as CampaignProgress;
     if (game.won) notifyQuest(save, run.heroic ? "heroic-clear" : "campaign-clear"); // R10 daily quests #1 and #2
   }
   const label = `${run.heroic ? "Heroic " : ""}Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
-  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[] };
+  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[], laurels: null as boolean[] | null };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
@@ -69,7 +70,7 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   if (!record) parts.push("Debug run: progress was not recorded.");
   // Currencies paid by the clear and its chapter milestones, for the Stage Clear reward cards.
   const paid = record ? [...currencies, ...(result.milestones ?? []).flatMap((milestone: any) => milestone.rewards.filter((reward: any) => reward.type === "currency"))] : [];
-  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null, paid };
+  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null, paid, laurels: result.laurels?.flags ?? null };
 }
 
 // Stage rating (M26 sprint 10, internally "laurels"): a laurel wreath per point, no
@@ -152,7 +153,7 @@ export function createCampaign(ctx: PageContext) {
     ? `<span class="td-camp-stage-badge is-${state}" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${BADGE_PATHS[state]}</svg></span>`
     : "";
 
-  const laurelRow = (n: number, label = true) => `<span class="td-laurels"${label ? ` role="img" aria-label="Rating ${n} of 3"` : ' aria-hidden="true"'}>${[0, 1, 2].map((i) => laurelIcon(i < n)).join("")}</span>`;
+  const laurelRow = (flags: boolean[], label = true) => `<span class="td-laurels"${label ? ` role="img" aria-label="Rating ${flags.filter(Boolean).length} of 3"` : ' aria-hidden="true"'}>${flags.map((on) => laurelIcon(on)).join("")}</span>`;
 
   // Battlefield preview (as on the map select): terrain, lane routes, spawn gates and base.
   function mapPreview(map: any) {
@@ -217,7 +218,7 @@ export function createCampaign(ctx: PageContext) {
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
-        <small>${enemyCount(stage)} enemies${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(stageLaurels(campaign, p, stage)) : ""}</span></button>`;
+        <small>${enemyCount(stage)} enemies${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(laurelFlags(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
     // The stage row scrolls sideways: bring the next stage into view.
     const nextCard = stagesEl.querySelector<HTMLElement>(".is-next");
@@ -264,6 +265,7 @@ export function createCampaign(ctx: PageContext) {
         ${mapPreview(mapOf(stage.mapId))}
         <section><p class="td-camp-drawer-about">${stage.text}</p>
           ${environmentFor(mapOf(stage.mapId)) ? `<p class="td-camp-drawer-about"><strong>${environmentFor(mapOf(stage.mapId))!.rule}:</strong> ${environmentFor(mapOf(stage.mapId))!.text}</p>` : ""}
+          ${stageRuleFor(stage) ? `<p class="td-camp-drawer-about"><strong>${stageRuleFor(stage)!.name}:</strong> ${stageRuleFor(stage)!.text}</p>` : ""}
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
             <div><dt>Enemies</dt><dd>${enemyCount(stage)}</dd></div>
@@ -272,10 +274,13 @@ export function createCampaign(ctx: PageContext) {
             ${done ? `<div><dt>Best</dt><dd>${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives</dd></div>` : ""}
           </dl></section>
         <section><h3 class="td-label">Goals</h3>
-          <ul class="td-camp-drawer-goals">${laurelLives(campaign, stage).map((lives: number, i: number) => {
-            const earned = i < stageLaurels(campaign, p, stage);
-            return `<li class="${earned ? "is-earned" : ""}">${laurelIcon(earned)}<span>${i === 0 ? "Clear the stage" : `Keep ${livesShown(lives)} of ${livesShown(stage.lives)} lives`}</span></li>`;
-          }).join("")}</ul></section>
+          <ul class="td-camp-drawer-goals">${(() => {
+            const flags = laurelFlags(campaign, p, stage), lives = laurelLives(campaign, stage);
+            return [0, 1, 2].map((i) => {
+              const text = i === 0 ? "Clear the stage" : i === 1 ? `Keep ${livesShown(lives[1])} of ${livesShown(stage.lives)} lives` : stage.goal ? goalText(stage.goal) : `Keep ${livesShown(lives[2])} of ${livesShown(stage.lives)} lives`;
+              return `<li class="${flags[i] ? "is-earned" : ""}">${laurelIcon(flags[i])}<span>${text}</span></li>`;
+            }).join("");
+          })()}</ul></section>
         <section><h3 class="td-label">Rewards</h3>
           ${first.length && !replay ? `<div class="td-camp-drawer-reward"><span>First clear</span>${rewardHtml(first)}</div>` : ""}
           ${repeat.length ? `<div class="td-camp-drawer-reward is-repeat"><span>Replay</span>${rewardHtml(repeat)}</div>` : ""}</section>
@@ -345,12 +350,15 @@ export function createCampaign(ctx: PageContext) {
     // Pantheon bonds the squad brings (they count once the heroes stand on the field).
     const bondsEl = q("[data-td-squad-bonds]");
     const bonds = bondsOf(data.tuning.bonds, selected).filter((bond) => bond.count > 0);
+    const reactions = squadReactions(selected, data.tuning);
     bondsEl.hidden = !bonds.length;
     bondsEl.innerHTML = bonds.map((bond) => {
       const goal = bond.next ? `${bond.count}/${bond.next.count}` : `${bond.count}`;
       const text = bond.tier ? bondText(bond.tier) : `${bond.next!.count} for ${bondText(bond.next)}`;
       return `<span class="td-bond${bond.tier ? " is-active" : ""}" title="${bond.name} bond: ${text}"><b>${bond.name} ${goal}</b> ${text}</span>`;
     }).join("");
+    // Reactions the lineup can trigger (C2): a fixed-height line, so nothing moves as heroes come and go.
+    q("[data-td-squad-reactions]").innerHTML = reactions.map((reaction) => `<span class="td-reaction" title="${reaction.name}: ${reaction.text}"><b>${reaction.name}</b> ${reaction.names.join(" + ")}</span>`).join("");
     const slotLabel = (hero: any) => hero.slot === "road" ? "Road" : "Platform";
     rowsEl.innerHTML = squadRows.map((row, rowIndex) => {
       const lordId = row.find(isLord);

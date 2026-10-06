@@ -135,7 +135,7 @@ export function bossHudState(game) {
   return state;
 }
 
-const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps" };
+const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps", burrower: "Burrowers", vinebinder: "Vinebinders", jaguar: "Jaguars", sporeling: "Sporelings" };
 const LEAK_HINTS = {
   grunt: "Crowds overran the line: Warrior cleave and Mage splash thin them out.",
   runner: "Runners slip past full blockers: Assassins catch loose enemies, Tanks hold 3, and Frost or Crippling slow them.",
@@ -149,6 +149,10 @@ const LEAK_HINTS = {
   hexer: "Hexers stopped your heroes: Archers outrange them, and a Support on the Purify path lifts hexes.",
   broodcaller: "Broodcallers keep calling Imps: snipe them early with Archers.",
   imp: "Imps swarmed the line: kill Broodcallers early and bring splash damage.",
+  burrower: "Burrowers dive under your blockers when hit: Assassins catch them on the surface, and a second Tank holds the next one.",
+  vinebinder: "Vinebinders root the hero they fight: a Support heals through it, and a Tank still blocks while rooted.",
+  jaguar: "Jaguars leap over the first blocker: keep a second blocker behind the first, and Archers focus them.",
+  sporeling: "Sporelings slow your heroes when they die: kill them with Archers and Mages before they reach the line.",
 };
 
 // Loss analysis (M14): which enemy kind cost the most lives over the stage, with a one-line hint. Null when

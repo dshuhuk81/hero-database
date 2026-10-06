@@ -1,0 +1,58 @@
+{
+  "nightfall": {
+    "name": "Nightfall",
+    "text": "Platform heroes reach 10% less; high-ground tiles shelter them.",
+    "mods": {
+      "platformRange": 0.9,
+      "highgroundRange": 1.1111111111111112
+    }
+  },
+  "forcedMarch": {
+    "name": "Forced March",
+    "text": "Enemies move 10% faster. Road heroes charge ultimates 20% faster.",
+    "mods": {
+      "enemySpeed": 1.1,
+      "roadCharge": 1.2
+    }
+  },
+  "hardenedHides": {
+    "name": "Hardened Hides",
+    "text": "Enemies have 15% more health. Road heroes deal 10% more damage.",
+    "mods": {
+      "enemyHp": 1.15,
+      "roadAttack": 1.1
+    }
+  },
+  "leanSupplies": {
+    "name": "Lean Supplies",
+    "text": "Placement points arrive 15% slower; enemies have 10% less health.",
+    "mods": {
+      "placementRate": 0.85,
+      "enemyHp": 0.9
+    }
+  },
+  "richCamp": {
+    "name": "Rich Camp",
+    "text": "Placement points arrive 20% faster; enemies move 5% faster.",
+    "mods": {
+      "placementRate": 1.2,
+      "enemySpeed": 1.05
+    }
+  },
+  "quickened": {
+    "name": "Quickened",
+    "text": "Everything is 8% faster: heroes attack faster and enemies move faster.",
+    "mods": {
+      "heroAps": 1.08,
+      "enemySpeed": 1.08
+    }
+  },
+  "blessedGround": {
+    "name": "Blessed Ground",
+    "text": "Healing is 25% stronger; flying enemies move 15% faster.",
+    "mods": {
+      "heroHeal": 1.25,
+      "flyerSpeed": 1.15
+    }
+  }
+}

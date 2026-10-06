@@ -246,7 +246,7 @@ def strip_clips(cfg):
     size = round(side * scale)
     return {name: [f.resize((size, size), Image.LANCZOS) for f in frames] for name, frames in out.items()}
 
-def pixellab_clips(kind, target=90, root=None):
+def pixellab_clips(kind, target=int(os.environ.get("TD_CLIP_TARGET", 90)), root=None):  # TD_CLIP_TARGET=160: a sharper sheet (Lilith)
     """Clips from PixelLab image-to-animation jobs saved as
     ~/hero-database-assets/td/enemy-sprites-src/pixellab-<kind>/<clip>/NN.png (index 00 is the
     unchanged input frame). Every clip drops frame 0: the generated frames are slightly redrawn

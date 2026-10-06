@@ -191,9 +191,10 @@ assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep thei
   assert.equal(placement?.zIndex, null, "tilted spawn gate needs no unit-layer depth override");
 }
 
-// Lilith keeps the sharp 256 px still and stays opaque while her children make her
-// untargetable; targetability is a simulation rule, not a transparency effect.
-assert.equal(enemySheetUrl("boss-lilith", "v4"), null, "Lilith does not use the low-resolution animation sheet");
+// Lilith's walk steps foot by foot in a sharp sheet (frames ~196 px, not the usual ~100 px) and
+// she stays opaque while her children make her untargetable; targetability is a simulation rule,
+// not a transparency effect.
+assert.match(enemySheetUrl("boss-lilith", "v4") ?? "", /clips\/boss-lilith-v4b\.json$/, "Lilith uses the remade sharp animation sheet");
 assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1, "untargetable Lilith remains fully opaque");
 
 // Placement hierarchy: empty tiles stay quiet until a hero is actively being placed.

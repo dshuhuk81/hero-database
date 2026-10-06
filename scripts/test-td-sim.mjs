@@ -34,6 +34,16 @@ for (let i = 0; i < 60 * 90 && game.running; i += 1) game.step(1 / 60);
 assert.equal(game.running, false, "the stage terminates");
 assert.equal(game.complete, true, "and is complete");
 
+// Stage rules (A2): a campaign stage's rule stacks on the chapter environment.
+{
+  const make = (stageRule) => new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 7, stageRule });
+  const plain = make(null), fast = make({ name: "Forced March", text: "", mods: { enemySpeed: 1.1, heroAps: 1.08, placementRate: 1.2 } });
+  close(fast.environment("enemySpeed", null, "grunt") / plain.environment("enemySpeed", null, "grunt"), 1.1, "a stage rule scales enemy speed");
+  close(fast.environment("aps", { damageType: "physical", slotType: "road" }) / plain.environment("aps", { damageType: "physical", slotType: "road" }), 1.08, "and hero attack speed");
+  close(fast.environment("placementRate") / plain.environment("placementRate"), 1.2, "and the placement rate");
+  close(plain.environment("heal", { slotType: "road" }), plain.environment("heal", { slotType: "road" }), "no rule changes nothing");
+}
+
 // --- 1A combat rules ---
 
 // Melee enemies must move well inside a road hero's tile before they stop. The old 42 px
@@ -2178,6 +2188,84 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.step(1 / 60);
   assert.equal(g.lives, lives, "a leak under the Shield costs no lives");
   assert.ok(g.effects.some((e) => e.type === "shieldBlock"), "R5: a blocked leak shows at the base");
+}
+
+// Chapter creatures (A4): burrow, root, leap and spores.
+{
+  const setup = (...kinds) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], timeline: OPEN_TIMELINE, seed: 321 });
+    g.placement = 100000;
+    g.place("atlas", "road", 1);
+    g.start(); g.enemies = [];
+    const atlas = g.heroes[0];
+    const foes = kinds.map((kind) => { const e = g.spawnEnemy(kind); e.x = atlas.x + 10; e.y = atlas.y; e.hp = e.maxHp = 1e9; return e; });
+    return { g, atlas, foes };
+  };
+  // Burrower: dives when hit, ignores hits and blockers underground, surfaces, then waits out a cooldown.
+  {
+    const cfg = tuning.enemies.burrower.burrow;
+    const { g, atlas, foes: [b] } = setup("burrower");
+    g.hit(b, 1, atlas);
+    assert.ok(b.untargetable && b.burrowedUntil > g.time, "a hit makes it dive");
+    const hp = b.hp;
+    g.hit(b, 500, atlas);
+    assert.equal(b.hp, hp, "underground it takes no damage");
+    const d0 = b.distance;
+    g.step(1 / 60);
+    assert.ok(!b.held && b.distance > d0, "underground it walks under its blocker");
+    g.time = b.burrowedUntil + 0.01;
+    g.enemyTraits(b, 1 / 60);
+    assert.ok(!b.untargetable, "it surfaces after the dive");
+    g.hit(b, 1, atlas);
+    assert.ok(!b.untargetable, "it cannot dive again during the cooldown");
+    g.time = b.burrowReadyAt + 0.01;
+    g.hit(b, 1, atlas);
+    assert.ok(b.untargetable, `it dives again after ${cfg.cooldown}s`);
+  }
+  // Vinebinder: roots the road hero it fights; the rooted hero stops attacking but its charge runs on.
+  {
+    const cfg = tuning.enemies.vinebinder.root;
+    const { g, atlas, foes: [vine, dummy] } = setup("vinebinder", "grunt");
+    vine.held = true; vine.heldBy = atlas;
+    g.enemyTraits(vine, cfg.every);
+    assert.ok(g.isRooted(atlas), "rooted");
+    assert.ok(atlas.rootedUntil - g.time <= cfg.seconds + 1e-9, "for its duration");
+    atlas.attackClock = 0;
+    const before = dummy.hp, ult = atlas.ultClock;
+    g.step(1 / 60);
+    assert.equal(dummy.hp, before, "a rooted hero does not attack");
+    assert.ok(atlas.ultClock > ult, "its ultimate keeps charging");
+    atlas.veilUntil = g.time + 10; atlas.rootedUntil = 0; vine.rootClock = 0;
+    g.enemyTraits(vine, 1 / 60);
+    assert.ok(!g.isRooted(atlas), "a veiled hero cannot be rooted");
+  }
+  // Jaguar: leaps the first blocker once.
+  {
+    const cfg = tuning.enemies.jaguar.leap;
+    const { g, foes: [jag] } = setup("jaguar");
+    jag.distance = 200;
+    const d0 = jag.distance;
+    g.step(1 / 60);
+    assert.ok(jag.leaped && jag.distance >= d0 + cfg.distance - 1, "it bounds over the first blocker");
+    assert.ok(!jag.held, "and is not held by it");
+    const atlas = g.heroes[0];
+    jag.x = atlas.x + 10; jag.y = atlas.y;
+    g.step(1 / 60);
+    assert.equal(jag.distance < d0 + 2 * cfg.distance, true, "no second leap");
+  }
+  // Sporeling: dying leaves spores that slow nearby heroes' attacks.
+  {
+    const cfg = tuning.enemies.sporeling.spores;
+    const { g, atlas, foes: [spore] } = setup("sporeling");
+    g.place("odin", "platform", 0);
+    const far = g.heroes.find((h) => h.id === "odin");
+    far.x = atlas.x + cfg.radius * 5; far.y = atlas.y;
+    g.killEnemy(spore, atlas);
+    assert.equal(g.sporeFactor(atlas), cfg.aps, "nearby heroes attack slower");
+    assert.equal(g.sporeFactor(far), 1, "far heroes are untouched");
+    g.time = atlas.sporedUntil + 0.01;
+    assert.equal(g.sporeFactor(atlas), 1, "spores wear off");
+  }
 }
 
 console.log("Tower defense checks passed");

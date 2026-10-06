@@ -1,0 +1,79 @@
+{
+  "generator": "built-in image_gen",
+  "animated": false,
+  "integrated": false,
+  "assets": [
+    {
+      "name": "burrower",
+      "file": "burrower.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true,
+      "bounds": [
+        26,
+        62,
+        229,
+        192
+      ],
+      "source": {
+        "file": "burrower-source.png",
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "name": "vinebinder",
+      "file": "vinebinder.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true,
+      "bounds": [
+        35,
+        26,
+        219,
+        229
+      ],
+      "source": {
+        "file": "vinebinder-source.png",
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "name": "jaguar",
+      "file": "jaguar.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true,
+      "bounds": [
+        26,
+        48,
+        229,
+        207
+      ],
+      "source": {
+        "file": "jaguar-source.png",
+        "width": 1254,
+        "height": 1254
+      }
+    },
+    {
+      "name": "sporeling",
+      "file": "sporeling.png",
+      "width": 256,
+      "height": 256,
+      "alpha": true,
+      "bounds": [
+        26,
+        37,
+        229,
+        218
+      ],
+      "source": {
+        "file": "sporeling-source.png",
+        "width": 1254,
+        "height": 1254
+      }
+    }
+  ]
+}

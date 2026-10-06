@@ -12,7 +12,7 @@ import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
 import { dailyGameOptions } from "../daily.js";
 import { stageGameOptions } from "../expedition.js";
-import { collectionHeroes, mightEnemyScale, stageById, stageGameOptions as campaignGameOptions } from "../campaign.js";
+import { collectionHeroes, mightEnemyScale, stageById, stageRuleFor, stageGameOptions as campaignGameOptions } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
@@ -63,11 +63,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.showScreen("play");
     const environment = environmentFor(map);
     const environmentLabel = q("[data-td-environment-rule]");
-    environmentLabel.hidden = !environment;
-    environmentLabel.textContent = environment?.rule ?? "";
-    stageNameEl.title = [campaignStage?.name, environment?.rule, environment?.text].filter(Boolean).join(" - "); // the compact landscape chip shows only the stage number
+    const stageRule = stageRuleFor(campaignStage);
+    environmentLabel.hidden = !environment && !stageRule;
+    environmentLabel.textContent = [environment?.rule, stageRule?.name].filter(Boolean).join(" · ");
+    stageNameEl.title = [campaignStage?.name, environment?.rule, environment?.text, stageRule && `${stageRule.name}: ${stageRule.text}`].filter(Boolean).join(" - "); // the compact landscape chip shows only the stage number
     stageNameEl.dataset.kind = campaignStage ? "campaign" : "battlefield";
-    stageNameEl.hidden = !campaignStage && !environment;
+    stageNameEl.hidden = !campaignStage && !environment && !stageRule;
     if (campaignStage) {
       stageNumberEl.textContent = `${campaign!.heroic ? "Heroic stage" : "Stage"} ${campaignStage.id}`;
       stageTitleEl.textContent = campaignStage.name;

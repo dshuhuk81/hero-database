@@ -164,7 +164,7 @@ function enemyCard(kind: string, overrides: any = {}) {
 // Enemy stat rows carry their icon too (TdEnemyCard renders it).
 const withIcons = (card: any) => ({ ...card, stats: card.stats.map(([label, value]: any[]) => [label, value, STAT_ICON[label]]) });
 
-const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "shieldbearer", "hexer", "broodcaller"].map((kind) => enemyCard(kind));
+const enemyCards = ["grunt", "runner", "flyer", "archer", "brute", "mender", "shieldbearer", "hexer", "broodcaller", "burrower", "vinebinder", "jaguar", "sporeling"].map((kind) => enemyCard(kind));
 {
   const caller = enemyCards.findIndex((card) => card.kind === "broodcaller");
   enemyCards.splice(caller + 1, 0, enemyCard("imp", { meta: "Summoned by the Broodcaller" }));

@@ -74,6 +74,11 @@ Write new prompts from the myth, in the table format above. The concepts below f
 - **Name**: Lilith's children (summoned by Garden of Flesh)
 - **Current art (v3)**: text-only prompt, see "Current prompts" (lilin night spirit: owl face, bat wings, serpent tail).
 
+| burrower (`burrower-v1`, Chapter 2) | dives under blockers | Full-body game sprite of a desert sand-burrower from folklore: a low, broad armored beetle-lizard with a flat shovel-shaped head, heavy digging claws on stubby front legs, sand-colored overlapping plates, pale yellow eyes, a ridge of dust clinging to its back, crouched forward-crawling stance. Colors: sand tan, ochre, dark brown plate edges, pale yellow eyes. |
+| vinebinder (`vinebinder-v1`, Chapter 3) | roots a hero | Full-body game sprite of a jungle vinebinder from folklore: a tall hunched humanoid made of twisted green vines and bark, long ropy arms ending in grasping tendrils, small orchid blossoms along the shoulders, hollow dark eyes glowing pale green, moss-covered legs, slow reaching stance. Colors: deep green, bark brown, moss, small pink-white blossoms, pale green eye glow. |
+| jaguar (`jaguar-v1`, Chapter 3) | leaps over a blocker | Full-body game sprite of a jungle jaguar mid-stride: a muscular golden-yellow big cat with black rosette spots, a broad head with bared fangs, powerful haunches coiled to leap, long tail, a worn bone-bead collar. Colors: golden yellow, black rosettes, cream belly, bone-white beads. |
+| sporeling (`sporeling-v1`, Chapter 3) | slows heroes on death | Full-body game sprite of a small spore-spirit: a knee-high creature with a round mushroom-cap head in dull olive, short thin pale legs, spindly arms, tiny dark eyes, gills under the cap and a faint puff of pale yellow-green spores at the cap's edge, scampering forward. Colors: olive cap, pale cream body, yellow-green spores. |
+
 ---
 
 ## Animation frames (M7, live)

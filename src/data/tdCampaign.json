@@ -267,7 +267,10 @@
               "count": 1
             }
           ],
-          "recommendedMight": 6740
+          "recommendedMight": 6740,
+          "goal": {
+            "type": "noFall"
+          }
         },
         {
           "id": "1-2",
@@ -342,7 +345,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 7020
+          "recommendedMight": 7020,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          }
         },
         {
           "id": "1-3",
@@ -417,7 +424,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 7230
+          "recommendedMight": 7230,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          }
         },
         {
           "id": "1-4",
@@ -494,7 +505,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 7660
+          "recommendedMight": 7660,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 4
+          },
+          "rule": "nightfall"
         },
         {
           "id": "1-5",
@@ -583,7 +599,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 7880
+          "recommendedMight": 7880,
+          "goal": {
+            "type": "noFall"
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "1-6",
@@ -658,7 +678,10 @@
               "count": 1
             }
           ],
-          "recommendedMight": 8170
+          "recommendedMight": 8170,
+          "goal": {
+            "type": "noFall"
+          }
         },
         {
           "id": "1-7",
@@ -738,7 +761,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 8470
+          "recommendedMight": 8470,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "1-8",
@@ -818,7 +846,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 8820
+          "recommendedMight": 8820,
+          "goal": {
+            "type": "noClass",
+            "class": "Mage"
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "1-9",
@@ -908,7 +941,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 9180
+          "recommendedMight": 9180,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "runner"
+          }
         },
         {
           "id": "1-10",
@@ -998,7 +1035,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 9460
+          "recommendedMight": 9460,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "quickened"
         }
       ]
     },
@@ -1077,7 +1119,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 1
             },
             {
@@ -1121,7 +1163,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 10110
+          "recommendedMight": 10110,
+          "goal": {
+            "type": "noClass",
+            "class": "Mage"
+          },
+          "rule": "blessedGround"
         },
         {
           "id": "2-2",
@@ -1152,7 +1199,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 2
             },
             {
@@ -1196,7 +1243,11 @@
               "count": 2
             }
           ],
-          "recommendedMight": 10410
+          "recommendedMight": 10410,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          }
         },
         {
           "id": "2-3",
@@ -1227,7 +1278,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 2
             },
             {
@@ -1276,7 +1327,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 10760
+          "recommendedMight": 10760,
+          "goal": {
+            "type": "noClass",
+            "class": "Mage"
+          },
+          "rule": "richCamp"
         },
         {
           "id": "2-4",
@@ -1317,7 +1373,7 @@
             },
             {
               "startMs": 4400,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 1
             },
             {
@@ -1366,7 +1422,11 @@
               "count": 2
             }
           ],
-          "recommendedMight": 11060
+          "recommendedMight": 11060,
+          "goal": {
+            "type": "noFall"
+          },
+          "rule": "nightfall"
         },
         {
           "id": "2-5",
@@ -1397,7 +1457,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 2
             },
             {
@@ -1461,7 +1521,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 11400
+          "recommendedMight": 11400,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          }
         },
         {
           "id": "2-6",
@@ -1492,7 +1556,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 1
             },
             {
@@ -1542,7 +1606,7 @@
             },
             {
               "startMs": 32600,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 1
             },
             {
@@ -1557,7 +1621,7 @@
             },
             {
               "startMs": 34700,
-              "kind": "grunt",
+              "kind": "burrower",
               "count": 2
             },
             {
@@ -1571,7 +1635,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 11760
+          "recommendedMight": 11760,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "hardenedHides"
         }
       ]
     },
@@ -1650,7 +1719,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "vinebinder",
               "count": 2
             },
             {
@@ -1709,7 +1778,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 12270
+          "recommendedMight": 12270,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "3-2",
@@ -1755,12 +1829,12 @@
             },
             {
               "startMs": 5800,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 1
             },
             {
               "startMs": 17800,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 1
             },
             {
@@ -1794,7 +1868,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 12570
+          "recommendedMight": 12570,
+          "goal": {
+            "type": "noClass",
+            "class": "Support"
+          }
         },
         {
           "id": "3-3",
@@ -1825,7 +1903,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "vinebinder",
               "count": 1
             },
             {
@@ -1865,7 +1943,7 @@
             },
             {
               "startMs": 19900,
-              "kind": "runner",
+              "kind": "sporeling",
               "count": 2
             },
             {
@@ -1894,7 +1972,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 12570
+          "recommendedMight": 12570,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "3-4",
@@ -1925,7 +2008,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 1
             },
             {
@@ -1955,7 +2038,7 @@
             },
             {
               "startMs": 19200,
-              "kind": "grunt",
+              "kind": "vinebinder",
               "count": 3
             },
             {
@@ -1979,7 +2062,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 12570
+          "recommendedMight": 12570,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "quickened"
         },
         {
           "id": "3-5",
@@ -2020,7 +2108,7 @@
             },
             {
               "startMs": 5100,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 1
             },
             {
@@ -2055,7 +2143,7 @@
             },
             {
               "startMs": 32600,
-              "kind": "grunt",
+              "kind": "vinebinder",
               "count": 1
             },
             {
@@ -2065,7 +2153,7 @@
             },
             {
               "startMs": 34000,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 2
             },
             {
@@ -2084,7 +2172,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 12570
+          "recommendedMight": 12570,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          }
         },
         {
           "id": "3-6",
@@ -2115,7 +2207,7 @@
           "timeline": [
             {
               "startMs": 3000,
-              "kind": "grunt",
+              "kind": "vinebinder",
               "count": 1
             },
             {
@@ -2140,7 +2232,7 @@
             },
             {
               "startMs": 17800,
-              "kind": "runner",
+              "kind": "jaguar",
               "count": 1
             },
             {
@@ -2175,7 +2267,7 @@
             },
             {
               "startMs": 34000,
-              "kind": "runner",
+              "kind": "sporeling",
               "count": 1
             },
             {
@@ -2204,7 +2296,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 12570
+          "recommendedMight": 12570,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "blessedGround"
         }
       ]
     },
@@ -2347,7 +2444,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 15790
+          "recommendedMight": 15790,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "richCamp"
         },
         {
           "id": "4-2",
@@ -2427,7 +2529,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 16260
+          "recommendedMight": 16260,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 4
+          }
         },
         {
           "id": "4-3",
@@ -2537,7 +2643,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 16680
+          "recommendedMight": 16680,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "nightfall"
         },
         {
           "id": "4-4",
@@ -2647,7 +2758,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 17060
+          "recommendedMight": 17060,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "4-5",
@@ -2762,7 +2878,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 17390
+          "recommendedMight": 17390,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          }
         },
         {
           "id": "4-6",
@@ -2872,7 +2992,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 17860
+          "recommendedMight": 17860,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "forcedMarch"
         }
       ]
     },
@@ -3015,7 +3140,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 18400
+          "recommendedMight": 18400,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "5-2",
@@ -3100,7 +3230,10 @@
               "count": 3
             }
           ],
-          "recommendedMight": 18640
+          "recommendedMight": 18640,
+          "goal": {
+            "type": "noFall"
+          }
         },
         {
           "id": "5-3",
@@ -3210,7 +3343,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 19110
+          "recommendedMight": 19110,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "quickened"
         },
         {
           "id": "5-4",
@@ -3320,7 +3458,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 19350
+          "recommendedMight": 19350,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "blessedGround"
         },
         {
           "id": "5-5",
@@ -3445,7 +3588,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 19820
+          "recommendedMight": 19820,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          }
         },
         {
           "id": "5-6",
@@ -3575,7 +3722,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 20060
+          "recommendedMight": 20060,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "richCamp"
         }
       ]
     },
@@ -3723,7 +3875,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 20620
+          "recommendedMight": 20620,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          },
+          "rule": "nightfall"
         },
         {
           "id": "6-2",
@@ -3818,7 +3975,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 20950
+          "recommendedMight": 20950,
+          "goal": {
+            "type": "noClass",
+            "class": "Mage"
+          }
         },
         {
           "id": "6-3",
@@ -3933,7 +4094,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 20950
+          "recommendedMight": 20950,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "6-4",
@@ -4053,7 +4219,12 @@
               "count": 3
             }
           ],
-          "recommendedMight": 20950
+          "recommendedMight": 20950,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "6-5",
@@ -4183,7 +4354,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 20950
+          "recommendedMight": 20950,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          }
         },
         {
           "id": "6-6",
@@ -4313,7 +4488,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 20950
+          "recommendedMight": 20950,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "leanSupplies"
         }
       ]
     },
@@ -4456,7 +4636,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 24830
+          "recommendedMight": 24830,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "quickened"
         },
         {
           "id": "7-2",
@@ -4551,7 +4736,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 25180
+          "recommendedMight": 25180,
+          "goal": {
+            "type": "noClass",
+            "class": "Support"
+          }
         },
         {
           "id": "7-3",
@@ -4666,7 +4855,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 25610
+          "recommendedMight": 25610,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          },
+          "rule": "blessedGround"
         },
         {
           "id": "7-4",
@@ -4756,7 +4950,12 @@
               "count": 3
             }
           ],
-          "recommendedMight": 25960
+          "recommendedMight": 25960,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "richCamp"
         },
         {
           "id": "7-5",
@@ -4876,7 +5075,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 26290
+          "recommendedMight": 26290,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          }
         },
         {
           "id": "7-6",
@@ -5011,7 +5214,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 26550
+          "recommendedMight": 26550,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "nightfall"
         }
       ]
     },
@@ -5154,7 +5362,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 27160
+          "recommendedMight": 27160,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "8-2",
@@ -5244,7 +5457,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 27520
+          "recommendedMight": 27520,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 4
+          }
         },
         {
           "id": "8-3",
@@ -5349,7 +5566,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 27840
+          "recommendedMight": 27840,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "8-4",
@@ -5469,7 +5691,12 @@
               "count": 3
             }
           ],
-          "recommendedMight": 28100
+          "recommendedMight": 28100,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "8-5",
@@ -5584,7 +5811,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 28450
+          "recommendedMight": 28450,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          }
         },
         {
           "id": "8-6",
@@ -5739,7 +5970,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 28810
+          "recommendedMight": 28810,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "quickened"
         }
       ]
     },
@@ -5892,7 +6128,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 29390
+          "recommendedMight": 29390,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "blessedGround"
         },
         {
           "id": "9-2",
@@ -5987,7 +6228,10 @@
               "count": 3
             }
           ],
-          "recommendedMight": 29660
+          "recommendedMight": 29660,
+          "goal": {
+            "type": "noFall"
+          }
         },
         {
           "id": "9-3",
@@ -6102,7 +6346,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 30000
+          "recommendedMight": 30000,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "richCamp"
         },
         {
           "id": "9-4",
@@ -6222,7 +6471,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 30360
+          "recommendedMight": 30360,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "nightfall"
         },
         {
           "id": "9-5",
@@ -6352,7 +6606,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 30620
+          "recommendedMight": 30620,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          }
         },
         {
           "id": "9-6",
@@ -6497,7 +6755,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 30620
+          "recommendedMight": 30620,
+          "goal": {
+            "type": "noClass",
+            "class": "Support"
+          },
+          "rule": "hardenedHides"
         }
       ]
     },
@@ -6645,7 +6908,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 34020
+          "recommendedMight": 34020,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "10-2",
@@ -6735,7 +7003,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 34470
+          "recommendedMight": 34470,
+          "goal": {
+            "type": "noClass",
+            "class": "Mage"
+          }
         },
         {
           "id": "10-3",
@@ -6855,7 +7127,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 34860
+          "recommendedMight": 34860,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "10-4",
@@ -6975,7 +7252,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 35210
+          "recommendedMight": 35210,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "quickened"
         },
         {
           "id": "10-5",
@@ -7095,7 +7377,11 @@
               "count": 1
             }
           ],
-          "recommendedMight": 35490
+          "recommendedMight": 35490,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          }
         },
         {
           "id": "10-6",
@@ -7225,7 +7511,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 35870
+          "recommendedMight": 35870,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "blessedGround"
         }
       ]
     },
@@ -7363,7 +7654,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 36340
+          "recommendedMight": 36340,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "richCamp"
         },
         {
           "id": "11-2",
@@ -7458,7 +7754,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 36710
+          "recommendedMight": 36710,
+          "goal": {
+            "type": "noClass",
+            "class": "Support"
+          }
         },
         {
           "id": "11-3",
@@ -7573,7 +7873,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 37100
+          "recommendedMight": 37100,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          },
+          "rule": "nightfall"
         },
         {
           "id": "11-4",
@@ -7673,7 +7978,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 37380
+          "recommendedMight": 37380,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "11-5",
@@ -7793,7 +8103,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 37840
+          "recommendedMight": 37840,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          }
         },
         {
           "id": "11-6",
@@ -7928,7 +8242,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 38230
+          "recommendedMight": 38230,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "forcedMarch"
         }
       ]
     },
@@ -8066,7 +8385,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 38680
+          "recommendedMight": 38680,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "leanSupplies"
         },
         {
           "id": "12-2",
@@ -8161,7 +8485,11 @@
               "count": 4
             }
           ],
-          "recommendedMight": 39070
+          "recommendedMight": 39070,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 4
+          }
         },
         {
           "id": "12-3",
@@ -8276,7 +8604,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 39420
+          "recommendedMight": 39420,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          },
+          "rule": "quickened"
         },
         {
           "id": "12-4",
@@ -8376,7 +8709,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 39700
+          "recommendedMight": 39700,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "blessedGround"
         },
         {
           "id": "12-5",
@@ -8496,7 +8834,11 @@
               "count": 3
             }
           ],
-          "recommendedMight": 40080
+          "recommendedMight": 40080,
+          "goal": {
+            "type": "noClass",
+            "class": "Warrior"
+          }
         },
         {
           "id": "12-6",
@@ -8631,7 +8973,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 40460
+          "recommendedMight": 40460,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "richCamp"
         }
       ]
     },
@@ -8779,7 +9126,12 @@
               "count": 2
             }
           ],
-          "recommendedMight": 40920
+          "recommendedMight": 40920,
+          "goal": {
+            "type": "maxHeroes",
+            "count": 5
+          },
+          "rule": "nightfall"
         },
         {
           "id": "13-2",
@@ -8879,7 +9231,10 @@
               "count": 3
             }
           ],
-          "recommendedMight": 41310
+          "recommendedMight": 41310,
+          "goal": {
+            "type": "noFall"
+          }
         },
         {
           "id": "13-3",
@@ -8969,7 +9324,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 41590
+          "recommendedMight": 41590,
+          "goal": {
+            "type": "noClass",
+            "class": "Archer"
+          },
+          "rule": "hardenedHides"
         },
         {
           "id": "13-4",
@@ -9079,7 +9439,12 @@
               "count": 3
             }
           ],
-          "recommendedMight": 41590
+          "recommendedMight": 41590,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "forcedMarch"
         },
         {
           "id": "13-5",
@@ -9184,7 +9549,11 @@
               "count": 2
             }
           ],
-          "recommendedMight": 41590
+          "recommendedMight": 41590,
+          "goal": {
+            "type": "noClass",
+            "class": "Assassin"
+          }
         },
         {
           "id": "13-6",
@@ -9329,7 +9698,12 @@
               "count": 1
             }
           ],
-          "recommendedMight": 41590
+          "recommendedMight": 41590,
+          "goal": {
+            "type": "noLeakKind",
+            "kind": "flyer"
+          },
+          "rule": "leanSupplies"
         }
       ]
     }

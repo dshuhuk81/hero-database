@@ -14,21 +14,25 @@ Root cause: command panel had no height constraint - hero list (6 classes) expan
 Fix (final): added `position: sticky; top: 0; max-height: 100svh` to `.td-command`. Panel now sticks to viewport top, caps at viewport height, hero list scrolls inside, note + CTA always visible at bottom without leaving the map.
 
 
-## UI Issue 03 [TODO] Inspector stats too thin
+## UI Issue 03 [DONE] Inspector stats too thin
+Done: the hero popover shows Attack (effective, marked when buffed), Speed, Range or the attack pattern on boards, and Crit (`page/popover.ts`, `updateStats`).
 Show exact numbers in the selected-hero inspector: attack damage, attacks/sec, range.
 Infinitode shows Range 4.5, Damage 61.8, Atk Speed 0.266, Crit 8.26% - all readable at a glance.
 We only show level, synergy %, and upgrade cost.
 
-## UI Issue 04 [TODO] Favor Tree is a flat list - needs visual node graph
+## UI Issue 04 [DONE] Favor Tree is a flat list - needs visual node graph
+Done: the Blessings screen draws a connected node graph (`page/blessings.ts`, `td-bgraph`).
 The Blessings panel (pre-run) shows nodes as plain buttons in a list.
 Should be a visual connected tree with 3 tiers, dependency lines, and clear unlock state.
 Reference: Infinitode research screen with gold-highlighted selected nodes and arrows between tiers.
 
-## UI Issue 05 [TODO] Range circle lacks presence
+## UI Issue 05 [OBSOLETE] Range circle lacks presence
+Board maps show the attack pattern as grid tiles instead of a range ring (`buildRanges` in `render.js`).
 Our range ring is a thin 2px stroke. Infinitode uses a glowing filled circle (low alpha fill + strong stroke).
 Make the selected-hero range ring more prominent: thicker stroke, slight glow fill, or pulsing opacity.
 
-## UI Issue 06 [TODO] Level badge too small / easy to miss
+## UI Issue 06 [DONE] Level badge too small / easy to miss
+Done: a level disc sits on the hero figure's border (`_lvlText`, `_badgeDisc` in `render.js`).
 Hero level shows as tiny "Lv2" floating text above the hero circle.
 Should be part of the hero visual itself - e.g. a small badge integrated into the circle border.
 Infinitode shows "L2" directly ON the tower tile.
