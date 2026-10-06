@@ -57,6 +57,7 @@
     }
   },
   "repeatShare": 0.25,
+  "battleXp": { "win": 0.2, "loss": 0.08 },
   "collectionRewards": {
     "perDefeated": {
       "gold": 2,
@@ -357,7 +358,7 @@
           "mapId": "moonlit-terraces",
           "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
           "lives": 15,
-          "hpScale": 2.05,
+          "hpScale": 2.26,
           "atkScale": 1.07,
           "unlockAfter": "1-2",
           "rewards": [
@@ -436,7 +437,7 @@
           "mapId": "verdant-thicket",
           "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
           "lives": 15,
-          "hpScale": 8.11,
+          "hpScale": 11.9,
           "atkScale": 1.1,
           "unlockAfter": "1-3",
           "rewards": [
@@ -518,7 +519,7 @@
           "mapId": "moonlit-horned-gate",
           "text": "Baphomet guards the end of the pass. It silences the hero that hit it last and hardens its hide from time to time; spread your damage over several heroes.",
           "lives": 14,
-          "hpScale": 3.14,
+          "hpScale": 3.78,
           "atkScale": 1.13,
           "unlockAfter": "1-4",
           "rewards": [
@@ -611,7 +612,7 @@
           "mapId": "verdant-glade",
           "text": "Hexers resist magic and hex the nearest hero so it briefly cannot attack. Archers outrange the hex and physical damage cuts them down fastest.",
           "lives": 15,
-          "hpScale": 8.26,
+          "hpScale": 10.02,
           "atkScale": 1.17,
           "unlockAfter": "1-5",
           "rewards": [
@@ -689,7 +690,7 @@
           "mapId": "sunscar-ruins",
           "text": "The ruins have two gates and every group of enemies splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
-          "hpScale": 7.26,
+          "hpScale": 9.67,
           "atkScale": 1.2,
           "unlockAfter": "1-6",
           "rewards": [
@@ -774,7 +775,7 @@
           "mapId": "verdant-hollow",
           "text": "Broodcallers resist magic and keep calling imps while they walk. Snipe the callers with archers before the swarm grows.",
           "lives": 15,
-          "hpScale": 10.24,
+          "hpScale": 8.47,
           "atkScale": 1.23,
           "unlockAfter": "1-7",
           "rewards": [
@@ -859,7 +860,7 @@
           "mapId": "sunscar-eve",
           "text": "Every enemy you have met comes at once, through both gates. A long stage tests your whole squad; level your heroes if you fall short.",
           "lives": 18,
-          "hpScale": 3.13,
+          "hpScale": 3.79,
           "atkScale": 1.27,
           "unlockAfter": "1-8",
           "rewards": [
@@ -953,7 +954,7 @@
           "mapId": "verdant-last-crossing",
           "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. The chapter's final battle.",
           "lives": 15,
-          "hpScale": 2.48,
+          "hpScale": 4.83,
           "atkScale": 1.3,
           "unlockAfter": "1-9",
           "rewards": [

@@ -909,6 +909,32 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-gold) 22%, transparent), 0 0 18px color-mix(in srgb, var(--accent-gold) 25%, transparent);
 }
 
+/* The selected mode is one panel: label, status and medal inside a single gold-edged
+   rectangle that is always open, so it stands out from the collapsed medallions. */
+.td-camp-home-mode.is-selected {
+  grid-template-columns: minmax(124px, auto) var(--td-home-medal);
+  gap: 0;
+  border: 1px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent-gold) 16%, var(--bg-raised)), var(--bg-base));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-gold) 22%, transparent), 0 0 18px color-mix(in srgb, var(--accent-gold) 25%, transparent), var(--shadow-md);
+}
+
+.td-camp-home-mode.is-selected .td-camp-home-mode-copy {
+  height: calc(var(--td-home-medal) - 2px);
+  padding-inline: var(--space-3) var(--space-1);
+  background: none;
+  opacity: 1;
+}
+
+.td-camp-home-mode.is-selected .td-camp-home-medal {
+  width: calc(var(--td-home-medal) - 2px);
+  height: calc(var(--td-home-medal) - 2px);
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
 .td-camp-home-mode:focus-visible .td-camp-home-medal {
   outline: 2px solid var(--accent-gold);
   outline-offset: 2px;
@@ -9783,6 +9809,13 @@ button.td-squad-slot {
   cursor: default;
 }
 
+/* Empty roster card: keeps the shelf full-width without showing heroes the player does not own yet. */
+.td-app .td-squad-tile.is-placeholder {
+  pointer-events: none;
+  border: 1px dashed var(--border-subtle, rgba(255, 255, 255, .12));
+  background: rgba(255, 255, 255, .02);
+}
+
 .td-squad-tile.is-locked .td-squad-tile-portrait {
   filter: grayscale(1);
   opacity: .4;
@@ -13855,4 +13888,66 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 
 .td-app .td-reaction b {
   color: var(--accent-gold);
+}
+
+/* Summon reveal: details of the last revealed hero, under the cards */
+.td-summon-detail {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  max-width: min(440px, 92%);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.td-summon-detail h3 {
+  margin: 0;
+  font-size: var(--td-fs-title, 1.25rem);
+  color: var(--text-primary);
+}
+
+.td-summon-detail p {
+  margin: 0;
+}
+
+.td-summon-detail-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+}
+
+.td-summon-detail-text {
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+}
+
+.td-summon-detail-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.td-summon-detail-status {
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2, rgb(255 255 255 / .08));
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+}
+
+.td-summon-detail-status.is-new {
+  background: var(--accent-gold);
+  color: #1a1405;
+  font-weight: var(--weight-bold);
+}
+
+.td-summon-flip.is-shown.is-flipped {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+.td-app .td-summon-cards.is-single {
+  --card-w: min(200px, 64cqw, calc((100cqh - 280px) / 1.5));
 }

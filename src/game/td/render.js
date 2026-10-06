@@ -1704,6 +1704,14 @@ export async function createRenderer(canvas, game, options = {}) {
   // an enemy's, an enemy's bars never float over a hero in front of it). Rings and warnings stay
   // in the top layer.
   const unitBarGfx = [];
+  // Enemy health bars stay hidden until the enemy first takes damage, then show for good
+  // (bosses keep their HUD bar and the brood bar either way).
+  const hurtEnemies = new Set();
+  const enemyHurt = (unit) => {
+    if (hurtEnemies.has(unit.entityId)) return true;
+    if (unit.hp < unit.maxHp - 1e-6 || (unit.shieldMax && unit.shield < unit.shieldMax - 1e-6)) { hurtEnemies.add(unit.entityId); return true; }
+    return false;
+  };
   function drawBars() {
     layerBars.removeChildren();
     for (const old of unitBarGfx) { layerUnits.removeChild(old); old.destroy(); }
@@ -1744,7 +1752,8 @@ export async function createRenderer(canvas, game, options = {}) {
       const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
-      if (barStyle.overhead && !(unit.burrowedUntil > 0)) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
+      const showBar = enemyHurt(unit);
+      if (barStyle.overhead && showBar && !(unit.burrowedUntil > 0)) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
       // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red
@@ -1774,7 +1783,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // Shieldbearer: shield bar above health and a bubble while the shield holds.
       if (unit.shieldMax) {
         const ratio = unit.shield / unit.shieldMax;
-        if (barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
+        if (barStyle.overhead && showBar) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
         if (ratio > 0) g.circle(unit.x, unit.y - fullSpriteSize(unit.kind) * 0.35, fullSpriteSize(unit.kind) * 0.45).stroke({ width: 2, color: 0x7dd3fc, alpha: 0.25 + 0.45 * ratio });
       }
     }
@@ -2197,7 +2206,7 @@ export async function createRenderer(canvas, game, options = {}) {
     advanceParticles(dt);
     // Kit effects run on game time: frozen while paused, faster at higher game speed,
     // wall time after a stage so tails finish. A restarted run clears them.
-    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); groundFxKit.clear(); heroFx.reset(); }
+    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); groundFxKit.clear(); heroFx.reset(); hurtEnemies.clear(); }
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;
     moveAnimShotOrigins();

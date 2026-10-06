@@ -6,7 +6,7 @@
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import heroTuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
+import { allStages, collectionHeroes, finishCampaignStage, grantBattleXp, heroLevel, levelUp, newCampaignProgress, stageGameOptions } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
 import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
 
@@ -73,6 +73,15 @@ const measure = process.argv.includes("--measure"); // bot 50% hpScale of both a
 const solveMode = process.argv.includes("--solve");
 const solved = {};
 
+// Both accounts clear the stage; every owned hero (up to the squad size) fields and earns battle XP.
+const advance = (plain, levelled, stage) => {
+  const done = (account) => {
+    const cleared = finishCampaignStage(campaign, account, stage.id, { won: true, lives: 1 }).progress;
+    return grantBattleXp(campaign, cleared, cleared.owned.slice(0, campaign.squadSize), stage.id, true).progress;
+  };
+  return { progress: done(plain), spent: done(levelled) };
+};
+
 let progress = newCampaignProgress(campaign);
 let spent = progress; // the account that levels everything it can afford
 console.log("stage  hpScale  owned  none  spent  | gold xp seals | levels");
@@ -88,15 +97,13 @@ for (const stage of allStages(campaign)) {
   if (measure) {
     const n = { hpScale: cliff(progress, stage) }, u = { hpScale: cliff(upgraded, stage) };
     console.log(JSON.stringify({ stage: stage.id, current: stage.hpScale, h50None: n.hpScale, h50Spent: u.hpScale, owned: progress.owned.length }));
-    progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
-    spent = finishCampaignStage(campaign, upgraded, stage.id, { won: true, lives: 1 }).progress;
+    ({ progress, spent } = advance(progress, upgraded, stage));
     continue;
   }
   const none = rate(progress, run);
   const all = rate(upgraded, run);
   const levels = upgraded.owned.map((id) => heroLevel(upgraded, id)).join("/");
   console.log(`${stage.id.padEnd(5)}  ${String(run.hpScale).padEnd(7)}  ${String(progress.owned.length).padEnd(5)}  ${none.toFixed(2)}  ${all.toFixed(2)}   | ${spent.currencies.gold} ${spent.currencies.heroXp} ${spent.currencies.divineSeals} | ${levels}`);
-  progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
-  spent = finishCampaignStage(campaign, upgraded, stage.id, { won: true, lives: 1 }).progress;
+  ({ progress, spent } = advance(progress, upgraded, stage));
 }
 if (solveMode) console.log(JSON.stringify(solved));

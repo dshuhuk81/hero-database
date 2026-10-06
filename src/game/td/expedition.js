@@ -17,6 +17,9 @@ export const EXPEDITION = {
   recruitLives: 5, // a new hero costs this many of the carried-over lives (one shown life, never below 1)
 };
 
+// Only platform heroes reach flyers, and a Support there barely hurts: air damage is a Mage or Archer.
+const isShooter = (hero) => hero?.slot === "platform" && (hero.class === "Mage" || hero.class === "Archer");
+
 function pickFrom(list, rng) {
   return list.splice(Math.floor(rng() * list.length), 1)[0];
 }
@@ -34,8 +37,12 @@ export function newExpedition(seed, { heroes, maps, tuning }) {
   while (order.length && stages.length < EXPEDITION.stages) stages.push(pickFrom(order, rng));
   const road = heroes.filter((hero) => hero.slot === "road").map((hero) => hero.id);
   const platform = heroes.filter((hero) => hero.slot === "platform").map((hero) => hero.id);
-  // One of each slot type when the pool has both (a small owned collection may not).
-  const roster = [pickFrom(road, rng), pickFrom(platform, rng)].filter(Boolean);
+  // One road hero and one platform hero when the pool has both (a small owned collection may not);
+  // the platform one is a Mage or Archer when owned, so flyers in any stage can be shot down.
+  const shooters = heroes.filter(isShooter).map((hero) => hero.id);
+  const air = shooters.length ? pickFrom(shooters, rng) : pickFrom(platform, rng);
+  if (platform.includes(air)) platform.splice(platform.indexOf(air), 1);
+  const roster = [pickFrom(road, rng), air].filter(Boolean);
   const rest = [...road, ...platform];
   while (roster.length < EXPEDITION.startHeroes && rest.length) roster.push(pickFrom(rest, rng));
   return { seed: seed >>> 0, stages, stage: 0, roster, relics: [], veterans: [], lives: tuning.run.lives, camp: null };
@@ -81,10 +88,12 @@ export function campOffer(state, { heroes, tuning }) {
   const cards = [];
   const road = state.roster.filter((id) => heroesById.get(id)?.slot === "road").length;
   const platform = state.roster.length - road;
-  // A new hero, from the slot type the roster has fewer of.
+  // A new hero, from the slot type the roster has fewer of; a roster without a Mage or Archer
+  // (older saves) is offered one first.
   const want = road <= platform ? "road" : "platform";
   const fresh = heroes.filter((hero) => !state.roster.includes(hero.id));
-  const preferred = fresh.filter((hero) => hero.slot === want);
+  const needAir = !state.roster.some((id) => isShooter(heroesById.get(id))) && fresh.some(isShooter);
+  const preferred = needAir ? fresh.filter(isShooter) : fresh.filter((hero) => hero.slot === want);
   const pool = (preferred.length ? preferred : fresh).map((hero) => hero.id);
   if (pool.length) cards.push({ type: "hero", id: pickFrom(pool, rng) });
   const relics = Object.keys(tuning.runBoons?.list ?? {}).filter((id) => !state.relics.includes(id) && relicFits(id, state, tuning, heroesById));

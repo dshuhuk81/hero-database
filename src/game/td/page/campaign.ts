@@ -14,7 +14,7 @@ import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
-import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
+import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { notifyQuest } from "../quests.js";
@@ -47,13 +47,17 @@ const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming s
 export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, heroName: (id: string) => string, record: boolean) {
   const stage = stageById(campaign, run.stageId);
   const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic, facts: runFacts(game) });
+  // Battle XP for every fielded hero, win or loss (raises levels for free, see grantBattleXp).
+  const battle = grantBattleXp(campaign, result.progress, flattenSquadRows(run.squadRows), run.stageId, !!game.won);
+  const levelled = battle.gains.filter((gain: any) => gain.levels > 0).map((gain: any) => `${heroName(gain.id)} reached level ${heroLevel(battle.progress, gain.id)}`);
+  const xpLine = record && battle.gains.length ? ` Heroes earned ${battle.gains[0].xp} XP${levelled.length ? `: ${levelled.join(", ")}` : ""}.` : "";
   if (record) {
-    save.campaign = result.progress as CampaignProgress;
+    save.campaign = battle.progress as CampaignProgress;
     if (game.won) notifyQuest(save, run.heroic ? "heroic-clear" : "campaign-clear"); // R10 daily quests #1 and #2
   }
   const label = `${run.heroic ? "Heroic " : ""}Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
-  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.`, won: false, followUp: run.stageId, paid: [] as any[], laurels: null as boolean[] | null };
+  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.${xpLine}`, won: false, followUp: run.stageId, paid: [] as any[], laurels: null as boolean[] | null };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
@@ -67,6 +71,7 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
       if (cfg.unlockAfter === run.stageId) parts.push(`Divine Intervention unlocked: ${POWER_INFO[id]?.name ?? id}. ${POWER_INFO[id]?.text ?? ""}`);
     }
   }
+  if (record) parts.push(xpLine.trim());
   if (!record) parts.push("Debug run: progress was not recorded.");
   // Currencies paid by the clear and its chapter milestones, for the Stage Clear reward cards.
   const paid = record ? [...currencies, ...(result.milestones ?? []).flatMap((milestone: any) => milestone.rewards.filter((reward: any) => reward.type === "currency"))] : [];
@@ -323,6 +328,20 @@ export function createCampaign(ctx: PageContext) {
     return `<span class="td-mythology-badge${lord ? " is-lord" : ""}" title="${lord ? `${group.name} Lord` : group.name}"><img class="td-mythology-icon${extraClass ? ` ${extraClass}` : ""}" src="${group.icon}" alt="${group.name}">${lord ? '<span class="td-mythology-lord-mark" aria-hidden="true">♛</span>' : ""}</span>`;
   }).join("");
 
+  // Empty cards after the owned heroes, as many as fit the visible width of the two roster rows,
+  // so the roster looks like a full shelf instead of a short list. Redone when the width changes.
+  function fillRosterPlaceholders() {
+    squadListEl.querySelectorAll(".is-placeholder").forEach((node) => node.remove());
+    const first = squadListEl.querySelector<HTMLElement>(".td-squad-tile");
+    const tileWidth = first?.offsetWidth ?? 0, width = squadListEl.clientWidth;
+    if (!tileWidth || !width) return;
+    const gap = parseFloat(getComputedStyle(squadListEl).columnGap) || 0;
+    const columns = Math.floor((width + gap) / (tileWidth + gap));
+    const missing = columns * 2 - squadListEl.querySelectorAll(".td-squad-tile").length;
+    if (missing > 0) squadListEl.insertAdjacentHTML("beforeend", `<span class="td-squad-tile is-placeholder" aria-hidden="true"></span>`.repeat(missing));
+  }
+  new ResizeObserver(() => fillRosterPlaceholders()).observe(squadListEl);
+
   function renderSquad(message = "") {
     const stage = stageId ? stageById(campaign, stageId) : null;
     if (!stage) return false;
@@ -410,7 +429,9 @@ export function createCampaign(ctx: PageContext) {
         ${owned ? `<span class="td-squad-tile-foot" aria-hidden="true"><small>Lv ${heroLevel(p, hero.id)}</small>${stars(heroStars(p, hero.id))}</span>` : ""}</button>`;
     };
     const ownedHeroes = heroes.filter((h: any) => p.owned.includes(h.id));
-    squadListEl.innerHTML = [...ownedHeroes, ...heroes.filter((h: any) => !p.owned.includes(h.id))].map(tile).join("");
+    // Only heroes the player owns; the rest of the width is filled with empty placeholders (see fillRosterPlaceholders).
+    squadListEl.innerHTML = ownedHeroes.map(tile).join("");
+    fillRosterPlaceholders();
     squadStart.disabled = !isUnlocked(p, stage, allStagesPlayable) || !validSquad(campaign, p, squadRows);
     squadStart.textContent = heroicRun ? "Start Heroic" : "Start";
     return true;
@@ -1080,6 +1101,16 @@ export function createCampaign(ctx: PageContext) {
       skip: summonSkipInput.checked,
       again: { label: `Summon x${count} ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
       wallet: currencyAmount("divineSeals", progress().currencies.divineSeals || 0),
+      describe: (id, fresh) => {
+        const hero = heroById.get(id);
+        if (!hero) return "";
+        const p = progress();
+        const spare = p.copies?.[id] ?? 0;
+        const status = fresh ? "New hero" : `Spare copy${spare ? ` (${spare} spare)` : ""}`;
+        return `<h3>${hero.name}</h3><p class="td-summon-detail-role">${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>` +
+          `<p class="td-summon-detail-text">${hero.title ?? ROLE_HINTS[hero.class] ?? ""}</p>` +
+          `<p class="td-summon-detail-meta">${stars(heroStars(p, id))}<span class="td-summon-detail-status${fresh ? " is-new" : ""}">${status}</span></p>`;
+      },
     });
   }
 

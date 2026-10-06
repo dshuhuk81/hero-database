@@ -58,7 +58,6 @@ export function createHud(ctx: PageContext) {
       dailyHud.classList.toggle("is-done", cleared >= daily.goal);
     }
     q("[data-td-score]").textContent = game.score.toLocaleString();
-    q("[data-td-synergy-count]").textContent = String(game.activeSynergyCount());
     syncBossHealth(game);
   }
 

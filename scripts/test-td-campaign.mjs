@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 import rawHeroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
-import { heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale, starScale } from "../src/game/td/campaign.js";
+import { grantBattleXp, heroMight, heroLevelCap, levelCap, levelScale, mightEnemyScale, starScale } from "../src/game/td/campaign.js";
 import { validateTimeline } from "../src/game/td/timeline.js";
 import { stageRuleFor, starReachSteps, collectionReward, ownedHeroes, allStages, chapterLaurels, currentChapter, laurelFlags, laurelLives, goalMet, goalText, payMilestones, stageLaurels, CAMPAIGN_SAVE_VERSION, CURRENCIES, collectionHeroes, canLevelUp, canSkillUp, finishCampaignStage, heroLevel, heroSkillLevel, isUnlocked, levelUp, levelUpCost, newCampaignProgress, nextStage, pendingRewards, repeatRewards, sanitizeCampaign, skillUp, skillUpCost, stageGameOptions, validSquad } from "../src/game/td/campaign.js";
 import { playRun, maps } from "./lib/td-runner.mjs";
@@ -358,4 +358,29 @@ if (process.argv.includes("--viability")) {
   assert.deepEqual(ids(team("thanatos", "fenrir")), ["harvest"], "Thanatos + poison");
   assert.deepEqual(squadReactions(team("aegir", "hephaestus"), tuning)[0].names, ["aegir", "hephaestus"], "names the heroes behind it");
 }
+// Battle XP: fielded heroes earn a share of the stage's Hero XP after every fight; a full bar levels them up.
+{
+  const first = allStages(campaign)[0];
+  const base = first.rewards.find((r) => r.id === "heroXp").amount;
+  let p = newCampaignProgress(campaign);
+  const fielded = [campaign.starters[0], campaign.starters[1]];
+  const won = grantBattleXp(campaign, p, fielded, first.id, true);
+  assert.equal(won.gains.length, 2, "both fielded heroes earn XP");
+  assert.equal(won.gains[0].xp, Math.round(base * campaign.battleXp.win), "a win pays the win share of the stage's Hero XP");
+  assert.equal(won.progress.xp[fielded[0]], won.gains[0].xp, "the bar holds the XP");
+  assert.equal(won.progress.xp[campaign.starters[2]], undefined, "heroes that sat out earn nothing");
+  assert.equal(p.xp[fielded[0]], undefined, "input progress is not mutated");
+  const lost = grantBattleXp(campaign, p, fielded, first.id, false);
+  assert.ok(lost.gains[0].xp > 0 && lost.gains[0].xp < won.gains[0].xp, "a loss pays less than a win");
+  // Enough fights fill the bar: the level rises for free and the surplus stays on the bar.
+  let q = p;
+  for (let i = 0; i < 12; i += 1) q = grantBattleXp(campaign, q, fielded, first.id, true).progress;
+  assert.ok(heroLevel(q, fielded[0]) > 1, "repeated fights raise the level");
+  assert.ok(heroLevel(q, fielded[0]) <= heroLevelCap(campaign, q, fielded[0]), "battle XP respects the star cap");
+  const capped = grantBattleXp(campaign, { ...p, levels: { [fielded[0]]: levelCap(campaign, 0) } }, fielded, first.id, true);
+  assert.equal(heroLevel(capped.progress, fielded[0]), levelCap(campaign, 0), "no levels past the cap");
+  assert.equal(capped.progress.xp[fielded[0]], undefined, "the bar stays empty at the cap");
+  assert.deepEqual(sanitizeCampaign({ ...p, xp: { [fielded[0]]: 12.7, nobody: 5 } }, campaign, new Set(rawHeroes.map((h) => h.id))).xp, { [fielded[0]]: 12 }, "the save keeps XP of owned heroes only");
+}
+
 console.log("Tower defense campaign checks passed.");

@@ -11,7 +11,7 @@ import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 import stageRules from "../../data/tdStageRules.json" with { type: "json" };
 import { emptySquadRows, flattenSquadRows, normalizeSquadRows, validateSquadRows } from "./squad-rows.js";
 
-export const CAMPAIGN_SAVE_VERSION = 10; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored)
+export const CAMPAIGN_SAVE_VERSION = 11; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored); 11: + battle XP per hero
 export const LORD_IDS = new Set(heroBalance.filter((hero) => hero.rarity === "lord").map((hero) => hero.id));
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
@@ -34,7 +34,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquadRows: emptySquadRows(), currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquadRows: emptySquadRows(), currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {}, xp: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -740,6 +740,37 @@ export function finishCampaignStage(campaign, progress, stageId, { won, lives, h
   return { progress: next, firstClear, granted, unlocked, laurels, milestones };
 }
 
+// Battle XP: every fielded hero earns a little experience after each campaign fight (won or lost), a
+// share of the stage's Hero XP reward (`campaign.battleXp.win` / `.loss`). A full bar (the Hero XP cost
+// of the hero's next level) raises the level for free, up to the level cap its Stars allow. Heroes that
+// sit out earn nothing. Returns { progress, gains: [{ id, xp, levels }] }.
+export function grantBattleXp(campaign, progress, heroIds, stageId, won) {
+  const cfg = campaign.battleXp;
+  const stage = stageById(campaign, stageId);
+  const base = stage?.rewards?.find((reward) => reward.type === "currency" && reward.id === "heroXp")?.amount ?? 0;
+  const share = cfg ? (won ? cfg.win : cfg.loss) ?? 0 : 0;
+  const amount = Math.round(base * share);
+  if (!(amount > 0)) return { progress, gains: [] };
+  const levels = { ...progress.levels };
+  const xp = { ...progress.xp };
+  const gains = [];
+  for (const id of [...new Set(heroIds)]) {
+    if (!progress.owned.includes(id)) continue;
+    const cap = heroLevelCap(campaign, progress, id);
+    let level = levels[id] ?? 1, bar = (xp[id] ?? 0) + amount, gained = 0;
+    for (;;) {
+      const cost = levelUpCost(campaign, level, cap);
+      if (!cost) { bar = 0; break; } // at the cap the bar stays empty
+      if (bar < cost.heroXp) break;
+      bar -= cost.heroXp; level += 1; gained += 1;
+    }
+    if (level > 1) levels[id] = level;
+    if (bar > 0) xp[id] = bar; else delete xp[id];
+    gains.push({ id, xp: amount, levels: gained });
+  }
+  return { progress: { ...progress, levels, xp }, gains };
+}
+
 // Save shape check and migration. Unknown heroes and stages are dropped, starters are
 // always owned, and a missing or older section becomes a valid current one.
 export function sanitizeCampaign(value, campaign, heroIds, lordIds = LORD_IDS) {
@@ -806,6 +837,13 @@ export function sanitizeCampaign(value, campaign, heroIds, lordIds = LORD_IDS) {
     if (!stageIds.has(id) || !cleared[id] || !entry || typeof entry !== "object") continue;
     heroic[id] = { clears: Math.max(1, Math.floor(Number(entry.clears) || 1)), bestLives: Math.max(0, Math.floor(Number(entry.bestLives) || 0)) };
   }
-  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquadRows, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic };
+  // Version 10 had no battle XP: it starts empty.
+  /** @type {Record<string, number>} */
+  const xp = {};
+  for (const [id, amount] of Object.entries(value.xp && typeof value.xp === "object" ? value.xp : {})) {
+    const n = Math.max(0, Math.floor(Number(amount) || 0));
+    if (owned.includes(id) && n > 0) xp[id] = n;
+  }
+  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquadRows, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic, xp };
   return payMilestones(campaign, clean).progress;
 }
