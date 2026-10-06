@@ -75,9 +75,10 @@ export function enemyRenderScale(kind, rules) {
   return kind === "boss" ? rules?.bossScale ?? rules?.enemyScale ?? 1 : rules?.enemyScale ?? 1;
 }
 
-// Targetability is communicated by combat behavior and boss mechanics, not by degrading art.
-export function enemyRenderAlpha() {
-  return 1;
+// Targetability is communicated by combat behavior and boss mechanics, not by degrading art
+// (Lilith stays opaque). The one exception is a diving Burrower: underground it is all but gone.
+export function enemyRenderAlpha(unit) {
+  return unit?.burrowedUntil > 0 && unit.untargetable ? 0.12 : 1;
 }
 
 // A boss's large display size must not stretch its eight-frame gait into a near-still
@@ -1732,7 +1733,7 @@ export async function createRenderer(canvas, game, options = {}) {
       const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
-      if (barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
+      if (barStyle.overhead && !(unit.burrowedUntil > 0)) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
       // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red

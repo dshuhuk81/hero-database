@@ -196,6 +196,8 @@ assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep thei
 // not a transparency effect.
 assert.match(enemySheetUrl("boss-lilith", "v4") ?? "", /clips\/boss-lilith-v4b\.json$/, "Lilith uses the remade sharp animation sheet");
 assert.equal(render.enemyRenderAlpha?.({ kind: "boss", untargetable: true }), 1, "untargetable Lilith remains fully opaque");
+assert.ok(render.enemyRenderAlpha?.({ kind: "burrower", untargetable: true, burrowedUntil: 5 }) < 0.3, "a diving Burrower is nearly invisible");
+assert.equal(render.enemyRenderAlpha?.({ kind: "burrower", untargetable: false, burrowedUntil: 0 }), 1, "a surfaced Burrower is opaque");
 
 // Placement hierarchy: empty tiles stay quiet until a hero is actively being placed.
 assert.equal(render.slotVisualMode?.(null, "road"), "idle", "road tiles are quiet without an active placement");
