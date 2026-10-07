@@ -201,7 +201,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // ?tilt=off disables it, ?tilt=0.7 (or any number 0.5 to 1) overrides k.
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
-  const resolvedTilt = game.god ? { enabled: false, k: 1, offsetY: 0 } : resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign), param: tiltParam }); // the God-Mode arena is drawn flat
+  const resolvedTilt = resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign) || Boolean(game.god), param: tiltParam }); // the God-Mode arena is tilted like the campaign boards
   const tiltOn = resolvedTilt.enabled;
   const tiltK = resolvedTilt.k;
   const tiltOffsetY = resolvedTilt.offsetY;
@@ -212,6 +212,7 @@ export async function createRenderer(canvas, game, options = {}) {
   tiltRoot.y = tiltOffsetY;
   const playHost = canvas.closest("[data-td-play]");
   syncTiltBleed(playHost, tiltOn);
+  if (game.god && tiltOn) playHost?.style.setProperty("--td-bleed-art", `url("/td/god-mode/${game.god.id}/${game.god.id}-select-bg-v1.webp")`);
   const layerBand = new PIXI.Container(); // scenery bands above and below the squashed ground
 
   // Layer order (added in order = drawn back to front)
@@ -2344,7 +2345,8 @@ export async function createRenderer(canvas, game, options = {}) {
   resize();
   if (game.god) {
     mapScene = await createGodScene(PIXI, game, {
-      layers: { bgTex: layerBgTex, bg: layerBg, groundFx: layerGroundFx, fore: layerForeground, parts: layerParts, hud: layerHud },
+      layers: { bgTex: layerBgTex, bg: layerBg, groundFx: layerGroundFx, fore: layerForeground, parts: layerParts, hud: layerHud, band: layerBand },
+      tilt: tiltOn ? { k: tiltK, offsetY: tiltOffsetY } : null,
       reducedMotion,
       onImpact: () => startImpact({ ...FX_TIERS.epic, shake: 8, vignette: 0.25 }),
     });

@@ -1106,3 +1106,5 @@ The order and dependencies of the open work live in
 ## God Challenge screen
 
 Layout (`TdLobby.astro` screen `god`, `page/god.ts`, `.td-god*` in `td.css`): god tabs on the left (one entry per challenge in `tdGodMode.json`), full-bleed backdrop `public/td/god-mode/{id}/{id}-select-bg-v1.webp` (gradient fallback if missing), right panel with the highscore, a score ladder (`milestones` damage thresholds per challenge; a tier fills and marks reached from the saved best damage) and the "Choose squad" button. Tiers carry no rewards yet; the thresholds are placeholder values.
+
+God Challenge arena (`god-scene.js`): the board is tilted like the campaign boards (`resolveTilt`, campaign k/offsetY). The backdrop (in `layerBand`), the god rig, the striking arm, ambient particles and the hit flash live in flat containers that undo the squash; the floor, telegraphs and tiles are squashed with the board. No wall between god and board. Tiles use `createSlotPainter` (map-scene.js) with the Ashen theme (raised stone slabs for platforms and the gallery, recessed sockets plus the theme road texture for the melee front).

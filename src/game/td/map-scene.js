@@ -209,6 +209,126 @@ function slabTexture(PIXI, variant, base, moss) {
   return texture;
 }
 
+// Placement tiles for one theme: the painted ranged platform (or a raised stone slab on tilted
+// boards), recessed road sockets, accent rims and the placement states. Shared by createMapScene
+// and the God-Mode scene so every board uses the same tile art.
+export function createSlotPainter(PIXI, { theme, board, tilt = null, textures = {} }) {
+  const tiltK = tilt?.k ?? 1;
+  const STONE = theme.stone;
+  const TILE = board ? board.cell - 6 : 56;
+  const DARK = 0x04070c;
+  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
+    const h = TILE / 2;
+    const paintedPlatform = type === "platform" && textures.platform;
+    const platformLayout = platformTileLayout(board?.cell ?? 62);
+    const visualWidth = paintedPlatform ? platformLayout.width : TILE;
+    const visualHeight = paintedPlatform ? platformLayout.height / tiltK : TILE;
+    const halfWidth = visualWidth / 2, halfHeight = visualHeight / 2;
+    if (paintedPlatform) {
+      const sprite = new PIXI.Sprite(textures.platform);
+      sprite.anchor.set(0.5);
+      sprite.position.set(x, y + platformLayout.y / tiltK);
+      sprite.width = visualWidth;
+      sprite.height = visualHeight;
+      container.addChild(sprite);
+    } else if (tilt && type === "platform") {
+      const slabRoot = new PIXI.Container(); // R18 prototype (B): full strength, independent of the tile's idle fade
+      slabRoot.position.set(x, y);
+      container.addChild(slabRoot);
+      const slab = new PIXI.Graphics();
+      slabRoot.addChild(slab);
+      // The slab is a stone block: a top face the size of the cell and a front face (the lip)
+      // below it, about 0.1125 cell tall (0.15 reduced by 25%, Oct 5: slab and its shadow read too
+      // tall against the Watcher of Realms reference). Ranged units still sit on clearly raised ground.
+      const lip = Math.round(TILE * 0.0788); // Oct 5: cut another 30% (was 0.1125)
+      // Contact shadow: one soft band under the front face, not a halo around the block.
+      for (let i = 0; i < 3; i++) slab.rect(-h + 4 - i, h - 2 + lip, TILE - 4 + i * 2, 1.4 + i * 1.4).fill({ color: 0x000000, alpha: 0.14 });
+      slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
+      const rawStone = STONE[2] ?? STONE[0];
+      const mix = (a, b, t) => Math.round(a + (b - a) * t);
+      const stone = (mix((rawStone >> 16) & 255, 0xb4, 0.4) << 16) | (mix((rawStone >> 8) & 255, 0xb0, 0.4) << 8) | mix(rawStone & 255, 0x98, 0.4); // lighter, warmer stone
+      const variant = Math.abs(Math.round(x * 7 + y * 13)) % 3;
+      const top = new PIXI.Sprite(slabTexture(PIXI, variant, stone, theme.name === "Jungle" ? [60, 110, 55] : null)); // textured top face
+      top.position.set(-h + 2, -h + 2);
+      top.width = TILE - 4; top.height = TILE - 4;
+      if (variant === 1) { top.scale.x *= -1; top.x += TILE - 4; } // mirror one variant so neighbours differ
+      slabRoot.addChild(top);
+      const edges = new PIXI.Graphics();
+      edges.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
+      edges.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 + lip).stroke({ color: 0x000000, width: 1.5, alpha: 0.55 }); // dark outline separates slab from ground
+      edges.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.5 });
+      // Front face: vertical streaks of darker stone and a lighter top edge.
+      for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h).lineTo(sx + 2, h - 2 + lip).stroke({ color: 0x000000, width: 1, alpha: 0.18 });
+      edges.moveTo(-h + 2, h - 1).lineTo(h - 2, h - 1).stroke({ color: 0xffffff, width: 1, alpha: 0.12 });
+      slabRoot.addChild(edges);
+    }
+    if (tilt && type === "road") { // R18 prototype (B): road sockets are recessed into the ground
+      const recess = new PIXI.Graphics();
+      recess.position.set(x, y);
+      container.addChild(recess);
+      recess.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: 0x000000, alpha: 0.12 });
+      recess.rect(-h + 2, -h + 2, TILE - 4, Math.round(TILE * 0.14)).fill({ color: 0x000000, alpha: 0.14 }); // shadow under the back wall
+      recess.rect(-h + 2, -h + 2, Math.round(TILE * 0.07), TILE - 4).fill({ color: 0x000000, alpha: 0.14 });
+      recess.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0xffffff, width: 1.2, alpha: 0.14 });
+    }
+    const g = new PIXI.Graphics();
+    g.position.set(x, y);
+    container.addChild(g);
+    const accent = type === "road" ? theme.pad.road : theme.pad.platform;
+    const brackets = (inset, arm, color, width, alpha) => {
+      for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+        const cx = sx * (halfWidth - inset), cy = sy * (halfHeight - inset);
+        g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
+      }
+      g.stroke({ color, width, alpha, cap: "round", join: "round" });
+    };
+    if (occupied && !highlighted) {
+      g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: 0.14 });
+      brackets(3, 7, accent, 1.2, 0.2);
+      return g;
+    }
+    const eligible = mode === "eligible" || highlighted;
+    const strength = eligible ? 1 : mode === "dim" ? 0.2 : mode === "idle" ? 0.32 : 0.78;
+    g.alpha = strength;
+    // Surface: road sockets sink into the stone, platforms sit on it as a plate.
+    const surface = type === "road" ? (tilt ? 0.1 : 0.3) : paintedPlatform ? 0.08 : 0.38;
+    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: surface });
+    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: accent, alpha: eligible ? 0.16 : paintedPlatform ? 0.025 : 0.07 });
+    // Contrasting rim: dark outline first, accent line inside it.
+    g.rect(-halfWidth + 1.5, -halfHeight + 1.5, visualWidth - 3, visualHeight - 3).stroke({ color: DARK, width: paintedPlatform ? 1.5 : 3, alpha: paintedPlatform ? 0.3 : 0.6 });
+    if (type === "platform") {
+      g.rect(-halfWidth + 3.5, -halfHeight + 3.5, visualWidth - 7, visualHeight - 7).stroke({ color: accent, width: eligible ? 2 : 1.5, alpha: paintedPlatform && !eligible ? 0.28 : 0.95 });
+      // Bevel: light top/left, dark bottom/right edge inside the rim.
+      const bx = halfWidth - 6, by = halfHeight - 6;
+      g.moveTo(-bx, by).lineTo(-bx, -by).lineTo(bx, -by).stroke({ color: 0xffffff, width: 1.2, alpha: paintedPlatform ? 0.08 : 0.28 });
+      g.moveTo(bx, -by).lineTo(bx, by).lineTo(-bx, by).stroke({ color: DARK, width: 1.2, alpha: paintedPlatform ? 0.16 : 0.5 });
+      // Double chevron: raised ground.
+      if (!paintedPlatform) {
+        for (const dy of [-2.5, 3.5]) g.moveTo(-5, dy + 3).lineTo(0, dy - 2).lineTo(5, dy + 3);
+        g.stroke({ color: accent, width: 1.8, alpha: 0.9, cap: "round", join: "round" });
+      }
+    } else {
+      // Recess: dark top/left, light bottom/right edge, then the corner brackets.
+      const b = h - 5;
+      g.moveTo(-b, b).lineTo(-b, -b).lineTo(b, -b).stroke({ color: DARK, width: 1.5, alpha: 0.55 });
+      g.moveTo(b, -b).lineTo(b, b).lineTo(-b, b).stroke({ color: 0xffffff, width: 1, alpha: 0.18 });
+      brackets(3.5, 11, accent, eligible ? 2.4 : 2, 0.95);
+      // Shield glyph: blockers stand here.
+      g.moveTo(0, -6).lineTo(5.5, -3.8).lineTo(4.6, 2.2).lineTo(0, 6.5).lineTo(-4.6, 2.2).lineTo(-5.5, -3.8).closePath()
+        .fill({ color: DARK, alpha: 0.35 }).stroke({ color: accent, width: 1.6, alpha: 0.9, join: "round" });
+    }
+    if (highlighted) {
+      g.rect(-halfWidth, -halfHeight, visualWidth, visualHeight).fill({ color: theme.pad.highlight, alpha: 0.14 });
+      g.rect(-halfWidth + 0.5, -halfHeight + 0.5, visualWidth - 1, visualHeight - 1).stroke({ color: theme.pad.highlight, width: 2.5, alpha: 1 });
+      g.rect(-halfWidth - 3, -halfHeight - 3, visualWidth + 6, visualHeight + 6).stroke({ color: theme.pad.highlight, width: 4, alpha: 0.3 });
+    } else if (mode === "eligible") {
+      g.rect(-halfWidth - 2, -halfHeight - 2, visualWidth + 4, visualHeight + 4).stroke({ color: accent, width: 3, alpha: 0.35 });
+    }
+    return g;
+  }
+  return drawSlot;
+}
+
 export function createMapScene(PIXI, game, {
   ground, structures, foreground, overlay, reducedMotion = false, textures = {}, tilt = null,
 }) {
@@ -553,117 +673,7 @@ export function createMapScene(PIXI, game, {
   // chevron (high ground for ranged heroes). mode: "eligible" brightens a valid target
   // while a hero is being placed, "dim" fades the wrong tile type, "idle" quiets empty
   // tiles when the team is full. Occupied tiles stay faint so the hero token reads first.
-  const TILE = board ? board.cell - 6 : 56;
-  const DARK = 0x04070c;
-  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
-    const h = TILE / 2;
-    const paintedPlatform = type === "platform" && textures.platform;
-    const platformLayout = platformTileLayout(board?.cell ?? 62);
-    const visualWidth = paintedPlatform ? platformLayout.width : TILE;
-    const visualHeight = paintedPlatform ? platformLayout.height / tiltK : TILE;
-    const halfWidth = visualWidth / 2, halfHeight = visualHeight / 2;
-    if (paintedPlatform) {
-      const sprite = new PIXI.Sprite(textures.platform);
-      sprite.anchor.set(0.5);
-      sprite.position.set(x, y + platformLayout.y / tiltK);
-      sprite.width = visualWidth;
-      sprite.height = visualHeight;
-      container.addChild(sprite);
-    } else if (tilt && type === "platform") {
-      const slabRoot = new PIXI.Container(); // R18 prototype (B): full strength, independent of the tile's idle fade
-      slabRoot.position.set(x, y);
-      container.addChild(slabRoot);
-      const slab = new PIXI.Graphics();
-      slabRoot.addChild(slab);
-      // The slab is a stone block: a top face the size of the cell and a front face (the lip)
-      // below it, about 0.1125 cell tall (0.15 reduced by 25%, Oct 5: slab and its shadow read too
-      // tall against the Watcher of Realms reference). Ranged units still sit on clearly raised ground.
-      const lip = Math.round(TILE * 0.0788); // Oct 5: cut another 30% (was 0.1125)
-      // Contact shadow: one soft band under the front face, not a halo around the block.
-      for (let i = 0; i < 3; i++) slab.rect(-h + 4 - i, h - 2 + lip, TILE - 4 + i * 2, 1.4 + i * 1.4).fill({ color: 0x000000, alpha: 0.14 });
-      slab.rect(-h + 2, h - 2, TILE - 4, lip).fill({ color: 0x1a2118, alpha: 0.97 }); // front face
-      const rawStone = STONE[2] ?? STONE[0];
-      const mix = (a, b, t) => Math.round(a + (b - a) * t);
-      const stone = (mix((rawStone >> 16) & 255, 0xb4, 0.4) << 16) | (mix((rawStone >> 8) & 255, 0xb0, 0.4) << 8) | mix(rawStone & 255, 0x98, 0.4); // lighter, warmer stone
-      const variant = Math.abs(Math.round(x * 7 + y * 13)) % 3;
-      const top = new PIXI.Sprite(slabTexture(PIXI, variant, stone, theme.name === "Jungle" ? [60, 110, 55] : null)); // textured top face
-      top.position.set(-h + 2, -h + 2);
-      top.width = TILE - 4; top.height = TILE - 4;
-      if (variant === 1) { top.scale.x *= -1; top.x += TILE - 4; } // mirror one variant so neighbours differ
-      slabRoot.addChild(top);
-      const edges = new PIXI.Graphics();
-      edges.moveTo(-h + 2, -h + 2).lineTo(h - 2, -h + 2).stroke({ color: 0xffffff, width: 1.5, alpha: 0.35 });
-      edges.rect(-h + 2, -h + 2, TILE - 4, TILE - 4 + lip).stroke({ color: 0x000000, width: 1.5, alpha: 0.55 }); // dark outline separates slab from ground
-      edges.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0x000000, width: 1.5, alpha: 0.5 });
-      // Front face: vertical streaks of darker stone and a lighter top edge.
-      for (let sx = -h + 8; sx < h - 8; sx += 11) edges.moveTo(sx, h).lineTo(sx + 2, h - 2 + lip).stroke({ color: 0x000000, width: 1, alpha: 0.18 });
-      edges.moveTo(-h + 2, h - 1).lineTo(h - 2, h - 1).stroke({ color: 0xffffff, width: 1, alpha: 0.12 });
-      slabRoot.addChild(edges);
-    }
-    if (tilt && type === "road") { // R18 prototype (B): road sockets are recessed into the ground
-      const recess = new PIXI.Graphics();
-      recess.position.set(x, y);
-      container.addChild(recess);
-      recess.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: 0x000000, alpha: 0.12 });
-      recess.rect(-h + 2, -h + 2, TILE - 4, Math.round(TILE * 0.14)).fill({ color: 0x000000, alpha: 0.14 }); // shadow under the back wall
-      recess.rect(-h + 2, -h + 2, Math.round(TILE * 0.07), TILE - 4).fill({ color: 0x000000, alpha: 0.14 });
-      recess.moveTo(-h + 2, h - 2).lineTo(h - 2, h - 2).stroke({ color: 0xffffff, width: 1.2, alpha: 0.14 });
-    }
-    const g = new PIXI.Graphics();
-    g.position.set(x, y);
-    container.addChild(g);
-    const accent = type === "road" ? theme.pad.road : theme.pad.platform;
-    const brackets = (inset, arm, color, width, alpha) => {
-      for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
-        const cx = sx * (halfWidth - inset), cy = sy * (halfHeight - inset);
-        g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
-      }
-      g.stroke({ color, width, alpha, cap: "round", join: "round" });
-    };
-    if (occupied && !highlighted) {
-      g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: 0.14 });
-      brackets(3, 7, accent, 1.2, 0.2);
-      return g;
-    }
-    const eligible = mode === "eligible" || highlighted;
-    const strength = eligible ? 1 : mode === "dim" ? 0.2 : mode === "idle" ? 0.32 : 0.78;
-    g.alpha = strength;
-    // Surface: road sockets sink into the stone, platforms sit on it as a plate.
-    const surface = type === "road" ? (tilt ? 0.1 : 0.3) : paintedPlatform ? 0.08 : 0.38;
-    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: surface });
-    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: accent, alpha: eligible ? 0.16 : paintedPlatform ? 0.025 : 0.07 });
-    // Contrasting rim: dark outline first, accent line inside it.
-    g.rect(-halfWidth + 1.5, -halfHeight + 1.5, visualWidth - 3, visualHeight - 3).stroke({ color: DARK, width: paintedPlatform ? 1.5 : 3, alpha: paintedPlatform ? 0.3 : 0.6 });
-    if (type === "platform") {
-      g.rect(-halfWidth + 3.5, -halfHeight + 3.5, visualWidth - 7, visualHeight - 7).stroke({ color: accent, width: eligible ? 2 : 1.5, alpha: paintedPlatform && !eligible ? 0.28 : 0.95 });
-      // Bevel: light top/left, dark bottom/right edge inside the rim.
-      const bx = halfWidth - 6, by = halfHeight - 6;
-      g.moveTo(-bx, by).lineTo(-bx, -by).lineTo(bx, -by).stroke({ color: 0xffffff, width: 1.2, alpha: paintedPlatform ? 0.08 : 0.28 });
-      g.moveTo(bx, -by).lineTo(bx, by).lineTo(-bx, by).stroke({ color: DARK, width: 1.2, alpha: paintedPlatform ? 0.16 : 0.5 });
-      // Double chevron: raised ground.
-      if (!paintedPlatform) {
-        for (const dy of [-2.5, 3.5]) g.moveTo(-5, dy + 3).lineTo(0, dy - 2).lineTo(5, dy + 3);
-        g.stroke({ color: accent, width: 1.8, alpha: 0.9, cap: "round", join: "round" });
-      }
-    } else {
-      // Recess: dark top/left, light bottom/right edge, then the corner brackets.
-      const b = h - 5;
-      g.moveTo(-b, b).lineTo(-b, -b).lineTo(b, -b).stroke({ color: DARK, width: 1.5, alpha: 0.55 });
-      g.moveTo(b, -b).lineTo(b, b).lineTo(-b, b).stroke({ color: 0xffffff, width: 1, alpha: 0.18 });
-      brackets(3.5, 11, accent, eligible ? 2.4 : 2, 0.95);
-      // Shield glyph: blockers stand here.
-      g.moveTo(0, -6).lineTo(5.5, -3.8).lineTo(4.6, 2.2).lineTo(0, 6.5).lineTo(-4.6, 2.2).lineTo(-5.5, -3.8).closePath()
-        .fill({ color: DARK, alpha: 0.35 }).stroke({ color: accent, width: 1.6, alpha: 0.9, join: "round" });
-    }
-    if (highlighted) {
-      g.rect(-halfWidth, -halfHeight, visualWidth, visualHeight).fill({ color: theme.pad.highlight, alpha: 0.14 });
-      g.rect(-halfWidth + 0.5, -halfHeight + 0.5, visualWidth - 1, visualHeight - 1).stroke({ color: theme.pad.highlight, width: 2.5, alpha: 1 });
-      g.rect(-halfWidth - 3, -halfHeight - 3, visualWidth + 6, visualHeight + 6).stroke({ color: theme.pad.highlight, width: 4, alpha: 0.3 });
-    } else if (mode === "eligible") {
-      g.rect(-halfWidth - 2, -halfHeight - 2, visualWidth + 4, visualHeight + 4).stroke({ color: accent, width: 3, alpha: 0.35 });
-    }
-    return g;
-  }
+  const drawSlot = createSlotPainter(PIXI, { theme, board, tilt, textures });
 
   draw(0);
   return {

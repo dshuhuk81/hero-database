@@ -1,9 +1,10 @@
 // God-Mode scene (the arena and the layered Cronus rig). It stands in for map-scene.js when the
-// run is a God-Mode challenge: lava canyon backdrop, the board floor, the parapet the god stands
-// behind, tile art per cell type, the god's idle life and attack poses, telegraphs and impacts.
+// run is a God-Mode challenge: lava canyon backdrop, the board floor, the campaign
+// tile art per cell type, the god's idle life and attack poses, telegraphs and impacts.
 // Everything is driven by the sim: `game.godAttack` (phase, clock, index) and the god effects
 // (godTelegraph, godStrike). Pure view code; nothing here touches combat state.
 import { boardOf, cellCenter } from "./board.js";
+import { createSlotPainter, mapSceneFor } from "./map-scene.js";
 
 const DIR = "/td/god-mode/cronus/";
 const TAU = Math.PI * 2;
@@ -15,42 +16,55 @@ const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const clamp01 = (t) => Math.max(0, Math.min(1, t));
 const easeOut = (t) => 1 - (1 - t) * (1 - t);
 
-// Tile art per cell type: melee front (road tiles), platforms, raised gallery (high ground).
-const TILES = {
-  road: { fill: 0x6d4826, alpha: 0.62, stroke: 0xffbd52 },
-  platform: { fill: 0x1d4c5f, alpha: 0.58, stroke: 0x62d5ef },
-  highground: { fill: 0x4a3b1c, alpha: 0.64, stroke: 0xe5bd68 },
-};
+// The arena borrows the Ashen theme for its tile art, so the placement tiles match the campaign boards.
+const TILE_THEME = "ashen-sanctuary-v1";
 
-export async function createGodScene(PIXI, game, { layers, reducedMotion = false, onImpact = () => {} }) {
+export async function createGodScene(PIXI, game, { layers, tilt = null, reducedMotion = false, onImpact = () => {} }) {
   const cfg = game.god;
   const board = boardOf(game.map);
   const rig = await fetch(`${DIR}rig.json`).then((response) => response.json());
   const names = [rig.torso.file, rig.headRoar.file, ...Object.values(rig.arms).map((arm) => arm.file)];
-  const [wideTex, floorTex, ...partTex] = await Promise.all([
+  const theme = mapSceneFor({ art: TILE_THEME });
+  const [wideTex, floorTex, roadTex, ...partTex] = await Promise.all([
     PIXI.Assets.load(`${DIR}${rig.arena.wide}`),
     PIXI.Assets.load(`${DIR}${rig.arena.floor}`),
+    PIXI.Assets.load(theme.assets.road).catch(() => null),
     ...names.map((name) => PIXI.Assets.load(`${DIR}${name}`)),
   ]);
   const tex = Object.fromEntries(names.map((name, index) => [name, partTex[index]]));
 
   const ks = cfg.rig.scale; // rig sprite scale: one texture pixel in world pixels
-  const baseY = cfg.rig.baseY; // where the torso's bottom edge sits (hidden behind the parapet and floor)
+  const baseY = cfg.rig.baseY; // where the torso's bottom edge sits (hidden behind the board floor)
   const half = rig.size / 2;
   const toWorld = (p) => [480 + (p[0] - half) * ks, baseY + (p[1] - rig.size) * ks];
   const boardLeft = board.origin[0], boardTop = board.origin[1];
   const boardRight = boardLeft + board.cols * board.cell;
-  const wallTop = boardTop - 26;
+  const wallTop = boardTop - 26; // smoke rises from the board's far edge
 
-  // ---- layers, back to front inside the ground background ----
+  // ---- layers ----
+  // With a tilted board (like the campaign) the board layers are squashed to k. The backdrop, the
+  // god and the flash stay undistorted: they live in flat containers that undo the squash and
+  // put the god's feet where the board's far edge lands on screen.
+  const k = tilt?.k ?? 1, offsetY = tilt?.offsetY ?? 0;
+  const shift = tilt ? offsetY + k * boardTop - boardTop : 0;
+  const flat = (parent, dy = shift) => {
+    const container = new PIXI.Container();
+    container.scale.y = 1 / k;
+    container.y = (dy - offsetY) / k;
+    parent.addChild(container);
+    return container;
+  };
   const make = (parent) => { const container = new PIXI.Container(); parent.addChild(container); return container; };
+  const bodyFlat = flat(layers.bgTex);
   const backdrop = new PIXI.Sprite(wideTex);
-  backdrop.width = 1260; backdrop.height = 540; backdrop.x = -150; backdrop.tint = 0xd8c8c0;
-  layers.bgTex.addChild(backdrop, new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x120706, alpha: 0.4 }));
-  const smokeBack = make(layers.bgTex);
-  const armRear = make(layers.bgTex); // both arms at rest and in the windup: behind the torso
-  const bossLayer = make(layers.bgTex);
-  const smokeFront = make(layers.bgTex);
+  backdrop.width = 1260; backdrop.height = 560; backdrop.x = -150; backdrop.y = -10; backdrop.tint = 0xd8c8c0;
+  const backdropShade = new PIXI.Graphics().rect(-150, -10, 1260, 560).fill({ color: 0x120706, alpha: 0.4 });
+  if (tilt && layers.band) layers.band.addChild(backdrop, backdropShade); // the bands above and below the squashed board show the arena
+  else bodyFlat.addChild(backdrop, backdropShade);
+  const smokeBack = make(bodyFlat);
+  const armRear = make(bodyFlat); // both arms at rest and in the windup: behind the torso
+  const bossLayer = make(bodyFlat);
+  const smokeFront = make(bodyFlat);
 
   const torso = new PIXI.Sprite(tex[rig.torso.file]);
   torso.anchor.set(0.5, 1); torso.scale.set(ks); torso.position.set(480, baseY);
@@ -61,25 +75,37 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
   head.visible = false;
   bossLayer.addChild(torso, head);
 
-  // The painted floor remains below the boss; only a quiet basalt parapet separates them.
+  // The painted floor lies below the board; no wall between it and the god.
   const floor = new PIXI.Sprite(floorTex);
   floor.width = 960; floor.height = 540;
   const floorMask = new PIXI.Graphics().roundRect(boardLeft - 14, boardTop - 6, boardRight - boardLeft + 28, 540 - boardTop + 6, 10).fill(0xffffff);
   floor.mask = floorMask;
   layers.bgTex.addChild(floorMask, floor);
-  const parapet = new PIXI.Graphics();
-  parapet.poly([boardLeft - 30, wallTop, boardRight + 30, wallTop, boardRight + 14, boardTop + 4, boardLeft - 14, boardTop + 4]).fill({ color: 0x3b322f, alpha: 0.9 });
-  parapet.poly([boardLeft - 14, boardTop - 4, boardRight + 14, boardTop - 4, boardRight + 4, boardTop + 14, boardLeft - 4, boardTop + 14]).fill({ color: 0x1e1a1c, alpha: 0.9 });
-  layers.bgTex.addChild(parapet);
+  // The melee front is paved like the campaign road: the theme's road texture under those cells.
+  if (roadTex) {
+    const paving = new PIXI.TilingSprite({ texture: roadTex, width: 960, height: 540 });
+    paving.tileScale.set(0.12);
+    paving.tint = theme.road.tint;
+    paving.alpha = 0.7;
+    const pavingMask = new PIXI.Graphics();
+    for (const cell of board.road) {
+      const [x, y] = cellCenter(board, cell);
+      pavingMask.rect(x - board.cell / 2 + 2, y - board.cell / 2 + 2, board.cell - 4, board.cell - 4).fill(0xffffff);
+    }
+    paving.mask = pavingMask;
+    layers.bgTex.addChild(pavingMask, paving);
+  }
 
   const marks = new PIXI.Graphics(); // telegraph tiles, strike flashes, lava pools
   layers.groundFx.addChild(marks);
-  const armFront = make(layers.fore); // the striking arm, above parapet and heroes
-  const overlayLayer = make(layers.fore);
-  const partsLayer = make(layers.parts);
+  const foreFlat = flat(layers.fore);
+  const armFront = make(foreFlat); // the striking arm, above the board and heroes
+  const overlayLayer = make(foreFlat);
+  const partsLayer = make(layers.parts); // strike particles: board space
+  const flatParts = flat(layers.parts); // ambient embers and ash around the god
   const flashG = new PIXI.Graphics().rect(0, 0, 960, 540).fill(0xfff1d6);
   flashG.alpha = 0;
-  layers.hud.addChild(flashG);
+  flat(layers.hud, 0).addChild(flashG);
 
   // A masked copy of the torso covers the tucked-in shoulder end of the striking arm.
   const torsoOverlay = new PIXI.Sprite(tex[rig.torso.file]);
@@ -157,8 +183,8 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
   const bodyPoint = () => [480 + rnd(-250, 250) * ks, baseY + rnd(-620, -280) * ks];
   function ambient(dt) {
     acc.ember += 26 * dt; acc.ash += 14 * dt; acc.smoke += 3.5 * dt; acc.smokeBack += 3 * dt;
-    for (; acc.ember >= 1; acc.ember--) { const [x, y] = bodyPoint(); emit(partsLayer, { x, y, vx: rnd(-12, 12), vy: -rnd(25, 55), life: rnd(1.2, 2.2), sz: 3, tint: pick(EMBER_TINTS), add: true }); }
-    for (; acc.ash >= 1; acc.ash--) { const [x, y] = bodyPoint(); emit(partsLayer, { x, y, vx: rnd(8, 30), vy: rnd(-8, 8), life: rnd(2.5, 4), sz: 3, a: 0.8, tint: pick([0x1b1614, 0x3a322d]), vr: rnd(-2, 2) }); }
+    for (; acc.ember >= 1; acc.ember--) { const [x, y] = bodyPoint(); emit(flatParts, { x, y, vx: rnd(-12, 12), vy: -rnd(25, 55), life: rnd(1.2, 2.2), sz: 3, tint: pick(EMBER_TINTS), add: true }); }
+    for (; acc.ash >= 1; acc.ash--) { const [x, y] = bodyPoint(); emit(flatParts, { x, y, vx: rnd(8, 30), vy: rnd(-8, 8), life: rnd(2.5, 4), sz: 3, a: 0.8, tint: pick([0x1b1614, 0x3a322d]), vr: rnd(-2, 2) }); }
     for (; acc.smoke >= 1; acc.smoke--) emit(smokeFront, { tex: texPuff, x: 480 + rnd(-210, 210), y: wallTop - 4, vx: rnd(-8, 8), vy: -rnd(14, 24), life: rnd(3, 4.5), sz: 40, sz1: 95, a: 0.5, tint: pick([0x2a2522, 0x3a332e, 0x4a423c]), bell: true });
     for (; acc.smokeBack >= 1; acc.smokeBack--) emit(smokeBack, { tex: texPuff, x: 480 + rnd(-170, 170), y: rnd(wallTop - 150, wallTop - 20), vx: rnd(-6, 6), vy: -rnd(6, 14), life: rnd(4, 6), sz: 70, sz1: 150, a: 0.35, tint: 0x1c1a20, bell: true });
   }
@@ -240,6 +266,7 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
   }
 
   // ---- per frame ----
+  const squash = tilt ? 0.8 : 0.5; // impact rings: the squashed board already supplies most of the perspective
   function drawMarks() {
     marks.clear();
     const state = game.godAttack;
@@ -255,7 +282,7 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
       const r = rings[i], t = (elapsed - r.t0) / r.dur;
       if (t >= 1) { rings.splice(i, 1); continue; }
       const rx = r.rx * easeOut(t);
-      marks.ellipse(r.x, r.y, rx, rx * 0.5).stroke({ color: r.color, width: 6 * (1 - t) + 1, alpha: 0.85 * (1 - t) });
+      marks.ellipse(r.x, r.y, rx, rx * squash).stroke({ color: r.color, width: 6 * (1 - t) + 1, alpha: 0.85 * (1 - t) });
     }
     for (let i = decals.length - 1; i >= 0; i--) {
       const d = decals[i], age = elapsed - d.t0;
@@ -292,23 +319,8 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
     flashG.alpha = reducedMotion ? 0 : flash;
   }
 
-  // ---- tiles (render.js calls this for every placement tile) ----
-  const ringAt = new Map();
-  for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
-    const [type, index] = key.split(":");
-    const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
-    if (pos) ringAt.set(`${pos[0]},${pos[1]}`, kind);
-  }
-  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
-    const raised = ringAt.get(`${x},${y}`) === "highground";
-    const style = type === "road" ? TILES.road : raised ? TILES.highground : TILES.platform;
-    const size = board.cell - 10, edge = size / 2;
-    const fade = highlighted ? 1 : occupied ? 0.4 : mode === "dim" ? 0.18 : mode === "idle" ? 0.32 : 1;
-    const g = new PIXI.Graphics();
-    if (raised) g.roundRect(x - edge, y - edge + 7, size, size, 8).fill({ color: 0x0b0c12, alpha: 0.7 * fade }); // the gallery's shadow
-    g.roundRect(x - edge, y - edge, size, size, 8).fill({ color: style.fill, alpha: style.alpha * fade * (mode === "idle" ? 0.6 : 1) }).stroke({ color: highlighted ? 0xffffff : style.stroke, width: highlighted ? 3 : 2, alpha: 0.75 * fade });
-    container.addChild(g);
-  }
+  // ---- tiles (render.js calls this for every placement tile): the campaign tile art ----
+  const drawSlot = createSlotPainter(PIXI, { theme, board, tilt, textures: {} });
 
   return { draw, drawSlot, destroy() {} };
 }
