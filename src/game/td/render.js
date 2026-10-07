@@ -1742,10 +1742,10 @@ export async function createRenderer(canvas, game, options = {}) {
       return own;
     };
     // Flat ground marks (the Mender's ring) sit just behind their unit's sprite instead of on top of it.
-    const gGround = (unit) => {
+    const gGround = (unit, kind = "enemy") => {
       const own = new PIXI.Graphics();
       if (tiltOn) { own.position.y = unit.y * (1 - 1 / tiltK); own.scale.y = 1 / tiltK; }
-      own.zIndex = unitDepth(unit.y, unit.flying ? "flyer" : "enemy") - 0.25;
+      own.zIndex = unitDepth(unit.y, unit.flying ? "flyer" : kind) - 0.25;
       layerUnits.addChild(own);
       unitBarGfx.push(own);
       return own;
@@ -1760,13 +1760,15 @@ export async function createRenderer(canvas, game, options = {}) {
       const showBar = enemyHurt(unit);
       if (barStyle.overhead && showBar && !(unit.burrowedUntil > 0)) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
-      if ((unit.stanceUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 40).stroke({ width: 3, color: 0xcbd5e1, alpha: 0.75 });
+      // State rings lie flat at the feet, behind the sprite (a full circle over the body hid it).
+      const feetRing = (rx, color, alpha) => gGround(unit).ellipse(unit.x, unit.y + FULL_SPRITE_FEET * enemyScale, rx * enemyScale, rx * 0.34 * enemyScale).stroke({ width: 3, color, alpha });
+      if ((unit.stanceUntil ?? 0) > game.time) feetRing(40, 0xcbd5e1, 0.75);
       // Ochenta: Valor bar under the health bar, gold ring during the Eighty Count rush, red
       // ring while The Final Eight keeps him standing.
       const valor = unit.kind === "boss" ? game.bossTuning?.valor : null;
       if (valor && barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24, 3);
-      if ((unit.rallyUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 38).stroke({ width: 3, color: 0xfbbf24, alpha: 0.8 });
-      if ((unit.finalEightUntil ?? 0) > game.time) g.circle(unit.x, unit.y - 20, 44).stroke({ width: 3, color: 0xef4444, alpha: 0.85 });
+      if ((unit.rallyUntil ?? 0) > game.time) feetRing(38, 0xfbbf24, 0.8);
+      if ((unit.finalEightUntil ?? 0) > game.time) feetRing(44, 0xef4444, 0.85);
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
       const statuses = visibleStatusPips([[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]].filter(([on]) => on));
@@ -1789,7 +1791,7 @@ export async function createRenderer(canvas, game, options = {}) {
       if (unit.shieldMax) {
         const ratio = unit.shield / unit.shieldMax;
         if (barStyle.overhead && showBar) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top - 5), radius * 2, ratio, 0x7dd3fc, 3);
-        if (ratio > 0) g.circle(unit.x, unit.y - fullSpriteSize(unit.kind) * 0.35, fullSpriteSize(unit.kind) * 0.45).stroke({ width: 2, color: 0x7dd3fc, alpha: 0.25 + 0.45 * ratio });
+        if (ratio > 0) feetRing(fullSpriteSize(unit.kind) * 0.5, 0x7dd3fc, 0.3 + 0.5 * ratio);
       }
     }
     for (const unit of game.heroes) {
@@ -1822,12 +1824,12 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       if (game.isSilenced?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
-        statusRing(g, unit, 0xff4d4d, pulse);
+        statusRing(gGround(unit, "hero"), unit, 0xff4d4d, pulse);
       }
       // Hexed (Hexer): a pulsing violet ring while the hero cannot act.
       if (game.isHexed?.(unit)) {
         const pulse = reducedMotion ? 0.8 : 0.55 + 0.35 * Math.sin(performance.now() / 120);
-        statusRing(g, unit, 0xc084fc, pulse);
+        statusRing(gGround(unit, "hero"), unit, 0xc084fc, pulse);
       }
     }
     layerBars.addChild(g);
