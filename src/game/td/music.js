@@ -3,9 +3,10 @@
 // else, and any chapter without a track, falls back to the map's own track.
 import musicData from "../../data/tdMusic.json" with { type: "json" };
 
-/** @param {{ daily?: unknown, expedition?: unknown, stageId?: string | null, map?: { music?: string } }} run */
-export function trackForRun({ daily, expedition, stageId, map }) {
+/** @param {{ daily?: unknown, expedition?: unknown, god?: unknown, stageId?: string | null, map?: { music?: string } }} run */
+export function trackForRun({ daily, expedition, god, stageId, map }) {
   if (daily) return musicData.daily;
+  if (god) return /** @type {Record<string, string>} */ (musicData).god || musicData.daily; // no track of its own yet
   if (expedition) return musicData.expedition;
   const chapter = stageId ? String(stageId).split("-")[0] : "";
   return /** @type {Record<string, string>} */ (musicData.chapters)[chapter] || map?.music || "";

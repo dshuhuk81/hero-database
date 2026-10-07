@@ -38,6 +38,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   import { createBuffBar } from "../../game/td/page/boons";
   import { createResults } from "../../game/td/page/results";
   import { createDaily } from "../../game/td/page/daily";
+  import { createGod } from "../../game/td/page/god";
   import { createExpedition } from "../../game/td/page/expedition";
   import { createCampaign } from "../../game/td/page/campaign";
   import { createDebugPanel } from "../../game/td/page/debug";
@@ -92,7 +93,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const actions = {} as PageActions;
   const ctx: PageContext = {
     root, q, data, heroById,
-    bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
+    bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? (map?.god ? { id: map.boss, name: map.god.name } : { name: "Baphomet" }),
     store, state, pause,
     getSession: () => state.session,
     notice,
@@ -151,6 +152,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   function renderLobby() {
     wallet.render();
     dailyTrial.render();
+    godChallenge.render();
     expedition.render();
     campaignScreens.render();
     quests.render();
@@ -168,8 +170,9 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const dailyTrial = createDaily(ctx);
   const expedition = createExpedition(ctx);
   const campaignScreens = createCampaign(ctx);
+  const godChallenge = createGod(ctx, { openSquad: (onStart) => campaignScreens.openGodSquad(onStart) });
   const quests = createQuests(ctx);
-  const home = createHome(ctx, { campaign: campaignScreens, daily: dailyTrial, expedition });
+  const home = createHome(ctx, { campaign: campaignScreens, daily: dailyTrial, expedition, god: godChallenge });
   const debugPanel = createDebugPanel(ctx);
   const hud = createHud(ctx);
   const powers = createPowers(ctx);

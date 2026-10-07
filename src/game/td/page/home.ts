@@ -21,11 +21,13 @@ type CampaignSummary = {
 };
 type DailySummary = { mapName: string; cleared: boolean; best: number };
 type ExpeditionSummary = { stage: number; stages: number; lives: number; camp: boolean } | null;
+type GodSummary = { bossName: string; best: number };
 
 type Deps = {
   campaign: { homeSummary(): CampaignSummary; focusNextStage(): void };
   daily: { homeSummary(): DailySummary };
   expedition: { homeSummary(): ExpeditionSummary };
+  god: { homeSummary(): GodSummary };
 };
 
 // What the rail says for one mode.
@@ -55,7 +57,7 @@ export function createHome(ctx: PageContext, deps: Deps) {
     });
   }
 
-  function views(camp: CampaignSummary, daily: DailySummary, exp: ExpeditionSummary): Record<HomeMode, ModeView> {
+  function views(camp: CampaignSummary, daily: DailySummary, exp: ExpeditionSummary, god: GodSummary): Record<HomeMode, ModeView> {
     return {
       campaign: camp.next
         ? { note: `${camp.started ? "Continue" : "Begin"} ${camp.next.id}`, badge: "" }
@@ -66,6 +68,9 @@ export function createHome(ctx: PageContext, deps: Deps) {
       expedition: exp
         ? { note: exp.camp ? "Camp reward waiting" : `Stage ${roman(exp.stage + 1)} of ${roman(exp.stages)}`, badge: "" }
         : { note: "Not started", badge: "" },
+      god: god.best
+        ? { note: `${god.bossName} · best ${god.best.toLocaleString()}`, badge: "" }
+        : { note: `${god.bossName} awaits`, badge: "" },
     };
   }
 
@@ -73,7 +78,7 @@ export function createHome(ctx: PageContext, deps: Deps) {
     const camp = deps.campaign.homeSummary();
     const daily = deps.daily.homeSummary();
     const exp = deps.expedition.homeSummary();
-    const all = views(camp, daily, exp);
+    const all = views(camp, daily, exp, deps.god.homeSummary());
     const mode = selected();
 
     modeButtons.forEach((button) => {

@@ -227,6 +227,31 @@ const { assetBase } = Astro.props;
       </div>
     </section>
 
+    <!-- 4b. God Challenge: a stationary god, a clock and a damage score; filled by src/game/td/page/god.ts -->
+    <section class="td-screen" data-td-screen="god" data-title="God Challenge" aria-label="God Challenge" hidden>
+      <div class="td-screen-body td-screen-body--center">
+        <section class="td-trial" aria-labelledby="td-god-title" data-td-god>
+          <header class="td-trial-banner">
+            <div class="td-trial-intro">
+              <p class="td-kicker">God Challenge</p>
+              <h2 id="td-god-title" data-td-god-name>Cronus</h2>
+              <p class="td-trial-boss" data-td-god-subtitle></p>
+              <p class="td-trial-goal" data-td-god-goal></p>
+              <ul class="td-trial-rules" aria-label="Challenge rules" data-td-god-rules></ul>
+            </div>
+          </header>
+          <div class="td-trial-section">
+            <div class="td-trial-section-head"><span class="td-label">The arena</span><small>Reach the god through your attack patterns</small></div>
+            <p class="td-screen-footer-note" data-td-god-arena></p>
+          </div>
+        </section>
+      </div>
+      <div class="td-screen-footer">
+        <p class="td-screen-footer-note" data-td-god-best></p>
+        <button class="action-button action-button--primary" type="button" data-td-god-start data-td-autofocus>Choose squad</button>
+      </div>
+    </section>
+
     <!-- 4c. Daily Quests (R10): fixed activities per UTC day, filled by src/game/td/page/quests.ts -->
     <section class="td-screen" data-td-screen="quests" data-title="Daily Quests" aria-label="Daily Quests" hidden>
       <div class="td-screen-body td-screen-body--center td-quests-screen">

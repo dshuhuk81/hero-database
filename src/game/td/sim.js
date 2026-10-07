@@ -1687,12 +1687,13 @@ export class TowerDefenseGame {
       enemy.burrowReadyAt = enemy.burrowedUntil + burrow.cooldown;
       this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 30, life: 0.4, color: "gold" });
     }
-    if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
-    if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
+    const at = enemy.stationary ? this.godAim(hero, enemy) : enemy; // the god is hit where its covered cell points
+    if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: at.x, y2: at.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
+    if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: at.x, y: at.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     const dealt = Math.max(0, before - Math.max(0, enemy.hp));
     const shieldDealt = Math.max(0, shieldBefore - (enemy.shield || 0));
-    if (dealt + shieldDealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind,
-      x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
+    if (dealt + shieldDealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.stationary ? "god" : enemy.kind,
+      x: at.x, y: at.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
     if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
     if (enemy.stationary) { // God-Mode: every point counts towards the score, the god itself never falls
       this.godDamage += dealt;
@@ -2410,6 +2411,25 @@ export class TowerDefenseGame {
       }
       default: return [];
     }
+  }
+
+  // Where a hero's blow lands on the god: the aim point (tdGodMode.json `aim`, one per boss cell) of
+  // the covered boss cell nearest to the hero; the god's centre when no pattern applies (damage over time).
+  godAim(hero, boss) {
+    const aim = this.god?.aim;
+    const fallback = { x: boss.x, y: boss.y };
+    const board = boardOf(this.map);
+    const pattern = hero?.slotType ? this.patternOf(hero) : null;
+    if (!aim || !board || !pattern) return fallback;
+    const [hc, hr] = cellAt(board, hero.x, hero.y);
+    let best = -1, bestDistance = Infinity;
+    boss.cells.forEach(([c, r], index) => {
+      if (!(PATTERNS[pattern] ?? []).some(([dc, dr]) => hc + dc === c && hr + dr === r)) return;
+      const distance = Math.abs(c - hc) + Math.abs(r - hr);
+      if (distance < bestDistance) { best = index; bestDistance = distance; }
+    });
+    const point = aim[best];
+    return point ? { x: point[0], y: point[1] } : fallback;
   }
 
   // The blow lands: every hero standing in a marked cell loses a share of its health.

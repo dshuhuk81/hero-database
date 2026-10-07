@@ -38,6 +38,7 @@ import { REACTION_INFO } from "../skills.js";
 import { damageRows, lossReport, shortNumber } from "../ui.js";
 import { type CampaignProgress } from "./save";
 import { finishDaily } from "./daily";
+import { finishGod } from "./god";
 import { defeatedCount } from "../daily.js";
 import { collectionReward, grantRewards, laurelLives } from "../campaign.js";
 import { currencyList } from "../currency-icons.js";
@@ -168,9 +169,63 @@ export function createResults(ctx: PageContext) {
       `<ul class="td-result-favor-parts">${chips}</ul>` + collectionHtml + (note ? `<p class="td-result-favor-note">${note}</p>` : "");
   }
 
+  // God Challenge: the plain report view with the damage score, the hero damage table and a
+  // retry; no Favor, Insight or Stage Clear sequence (the challenge pays nothing yet).
+  function finishGodRun(session: any) {
+    const game = session.game;
+    const result = finishGod(store.data, game, session.god, !session.debug);
+    if (!session.debug) store.persist();
+    ctx.actions.closePopover(false);
+    ctx.actions.closeSheet(false);
+    ctx.actions.cancelDeploy();
+    resultEl.dataset.view = "report";
+    resultEl.dataset.outcome = "won";
+    retryButton.hidden = false;
+    retryButton.textContent = "Retry";
+    retryButton.title = "Retry the God Challenge with the same squad";
+    retryButton.classList.add("action-button--primary");
+    retryButton.classList.remove("action-button--quiet");
+    q<HTMLButtonElement>("[data-td-result-continue]").hidden = true;
+    const menuButton = q<HTMLButtonElement>("[data-td-result-menu]");
+    menuButton.hidden = false;
+    menuButton.dataset.tdToLobby = "god";
+    menuButton.textContent = "God Challenge";
+    q("[data-td-result-kicker]").textContent = result.newBest ? "New best" : "Challenge complete";
+    q("[data-td-result-title]").textContent = session.map.name;
+    q("[data-td-result-meta]").textContent = "God Challenge";
+    const dailyEl = q("[data-td-result-daily]");
+    dailyEl.hidden = false;
+    dailyEl.textContent = result.text;
+    dailyEl.classList.toggle("is-reached", result.newBest);
+    q("[data-td-result-score]").textContent = `${result.score.toLocaleString()} damage`;
+    q("[data-td-result-copy]").textContent = "";
+    const top = damageRows(game.heroStats ?? {})[0];
+    q("[data-td-result-stats]").innerHTML = [
+      top ? `<div class="td-result-stat"><span>Top damage</span><strong>${top.name}</strong><small>${shortNumber(top.damage)}</small></div>` : "",
+      `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? game.time)}</strong></div>`,
+      `<div class="td-result-stat"><span>Heroes fallen</span><strong>${game.fallenHeroes?.length ?? 0}</strong></div>`,
+    ].join("");
+    q("[data-td-result-stats]").hidden = false;
+    q("[data-td-result-analysis]").hidden = true;
+    renderDamage(game);
+    q("[data-td-result-battle-empty]").hidden = !q("[data-td-result-damage]").hidden;
+    const favorEl = q("[data-td-result-favor]");
+    favorEl.innerHTML = `<p class="td-result-favor-note">${session.debug ? "Debug run: the score was not recorded." : "The God Challenge pays no rewards yet."}</p>`;
+    favorEl.hidden = false;
+    ctx.actions.syncSpendButton();
+    showTab("summary");
+    statsButton.hidden = true;
+    primaryAction = retryButton;
+    playEl.classList.add("is-result-open");
+    resultEl.hidden = false;
+    resultEl.scrollTop = 0;
+    resultEl.focus({ preventScroll: true });
+  }
+
   function finishRun() {
     const session = ctx.getSession();
     if (!session) return;
+    if (session.god) { finishGodRun(session); return; }
     const game = session.game;
     const map = session.map;
     const saved = store.data;

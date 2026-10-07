@@ -122,6 +122,7 @@ export function createCampaign(ctx: PageContext) {
   let chapterId: string | null = null; // chapter tab on the Stages screen (defaults to the next stage's)
   let drawerId: string | null = null; // stage shown in the details drawer
   let heroicRun = false; // the picked stage is played in its Heroic version
+  let godStart: ((rows: [string[], string[]]) => void) | null = null; // set while the squad screen serves the God Challenge
   let allStagesPlayable = false; // debug-only access override; never changes campaign progress
   let selectedHeroId: string | null = null;
   let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
@@ -357,7 +358,7 @@ export function createCampaign(ctx: PageContext) {
 
   function renderSquad(message = "") {
     const stage = stageId ? stageById(campaign, stageId) : null;
-    if (!stage) return false;
+    if (!stage && !godStart) return false;
     const p = progress();
     squadRows = normalizeSquadRows(squadRows, { allowedIds: new Set(p.owned), lordIds }) as [string[], string[]];
     const selectedIds = flattenSquadRows(squadRows);
@@ -365,7 +366,7 @@ export function createCampaign(ctx: PageContext) {
     const antiAir = selected.filter((hero) => hero.class === "Mage" || hero.class === "Archer").length;
     const powerEl = q("[data-td-squad-power]");
     powerEl.hidden = !selected.length;
-    if (selected.length) {
+    if (selected.length && stage) {
       const squadPower = selected.reduce((sum, hero) => sum + might(hero), 0);
       const recommended = recommendedPower(stage);
       // Crossed swords + squad Might, then the enemy battle power it is measured against.
@@ -375,8 +376,9 @@ export function createCampaign(ctx: PageContext) {
       powerEl.classList.toggle("is-strong", squadPower >= recommended);
       powerEl.classList.toggle("is-weak", squadPower < recommended);
     }
-    const noAir = hasEnemy(stage, "flyer") && !antiAir;
+    const noAir = !!stage && hasEnemy(stage, "flyer") && !antiAir;
     feedbackEl.textContent = message || (noAir ? "Flyers in this stage: bring a Mage or Archer for air damage."
+      : godStart ? "Melee heroes reach the god from the front row; Mages and Archers need the side platforms or the raised gallery."
       : "Drag a hero onto a slot to swap, or tap a slot to free it.");
     feedbackEl.classList.toggle("is-warning", !!message || noAir);
     // Pantheon bonds the squad brings (they count once the heroes stand on the field).
@@ -445,8 +447,8 @@ export function createCampaign(ctx: PageContext) {
     // Only heroes the player owns; the rest of the width is filled with empty placeholders (see fillRosterPlaceholders).
     squadListEl.innerHTML = ownedHeroes.map(tile).join("");
     fillRosterPlaceholders();
-    squadStart.disabled = !isUnlocked(p, stage, allStagesPlayable) || !validSquad(campaign, p, squadRows);
-    squadStart.textContent = heroicRun ? "Start Heroic" : "Start";
+    squadStart.disabled = (!!stage && !isUnlocked(p, stage, allStagesPlayable)) || !validSquad(campaign, p, squadRows);
+    squadStart.textContent = godStart ? "Face the god" : heroicRun ? "Start Heroic" : "Start";
     return true;
   }
 
@@ -783,9 +785,21 @@ export function createCampaign(ctx: PageContext) {
     if (fresh) summonReveal.close();
   }
 
+  // The God Challenge reuses the squad screen: same two rows, no stage; Start hands the rows back.
+  function openGodSquad(onStart: (rows: [string[], string[]]) => void) {
+    godStart = onStart;
+    stageId = null;
+    heroicRun = false;
+    squadRows = normalizeSquadRows(progress().lastSquadRows, { allowedIds: new Set(progress().owned), lordIds }) as [string[], string[]];
+    activeRow = squadRows[0].length < campaign.squadRowSize ? 0 : 1;
+    renderSquad();
+    ctx.actions.showScreen("squad");
+  }
+
   function selectStage(id: string) {
     const stage = stageById(campaign, id);
     if (!stage || !isUnlocked(progress(), stage, allStagesPlayable)) return false;
+    godStart = null;
     stageId = id;
     // Start from the current row save; old flat lineups intentionally do not migrate.
     squadRows = normalizeSquadRows(progress().lastSquadRows, { allowedIds: new Set(progress().owned), lordIds }) as [string[], string[]];
@@ -801,6 +815,13 @@ export function createCampaign(ctx: PageContext) {
   }
 
   function start() {
+    if (godStart) {
+      if (!validSquad(campaign, progress(), squadRows)) return;
+      store.data.campaign = { ...progress(), lastSquadRows: squadRows.map((row) => [...row]) as [string[], string[]] };
+      store.persist();
+      godStart(squadRows.map((row) => [...row]) as [string[], string[]]);
+      return;
+    }
     const stage = stageId ? stageById(campaign, stageId) : null;
     if (!stage || !isUnlocked(progress(), stage, allStagesPlayable) || !validSquad(campaign, progress(), squadRows)) return;
     store.data.campaign = { ...progress(), lastSquadRows: squadRows.map((row) => [...row]) as [string[], string[]] };
@@ -1228,5 +1249,5 @@ export function createCampaign(ctx: PageContext) {
     });
   }
 
-  return { render, renderSquad, renderHeroes, renderSummon, selectStage, homeSummary, focusNextStage };
+  return { render, renderSquad, renderHeroes, renderSummon, selectStage, homeSummary, focusNextStage, openGodSquad };
 }

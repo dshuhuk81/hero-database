@@ -9,6 +9,7 @@ import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
+import { createGodScene } from "./god-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellCenter, patternCells } from "./board.js";
 
@@ -155,7 +156,8 @@ export const visibleStatusPips = (statuses) => statuses.slice(0, 3);
 
 export async function createRenderer(canvas, game, options = {}) {
   // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
-  const sceneArt = mapSceneFor(game.map);
+  // A God-Mode challenge brings its own scene (god-scene.js): no route, gates or sanctuary.
+  const sceneArt = game.god ? { name: "God-Mode", ground: 0x120706, grade: { color: 0x000000, alpha: 0 }, assets: {} } : mapSceneFor(game.map);
   const isAuthored = Boolean(sceneArt);
   let mapScene = null;
   const [PIXI, glowMod] = await Promise.all([
@@ -199,7 +201,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // ?tilt=off disables it, ?tilt=0.7 (or any number 0.5 to 1) overrides k.
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
-  const resolvedTilt = resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign), param: tiltParam });
+  const resolvedTilt = game.god ? { enabled: false, k: 1, offsetY: 0 } : resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign), param: tiltParam }); // the God-Mode arena is drawn flat
   const tiltOn = resolvedTilt.enabled;
   const tiltK = resolvedTilt.k;
   const tiltOffsetY = resolvedTilt.offsetY;
@@ -509,6 +511,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Background art (authored map terrain, async)
   // ------------------------------------------------------------------
   async function buildBgTexture() {
+    if (game.god) return; // god-scene.js paints the arena
     if (isAuthored) {
       // Local versioned artwork ships with the page, including localhost previews.
       // Awaited before exposing the playable canvas: no flash of untextured ground.
@@ -1301,6 +1304,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const seen = new Set();
     let addedPlain = false;
     for (const unit of game.enemies) {
+      if (unit.stationary) continue; // the God-Mode god is the scene's rig, not a unit container
       if (isAuthored && unit.dead && unit.exitReason === "base") continue;
       seen.add(unit.entityId);
       const existing = enemyContainers.get(unit.entityId);
@@ -1755,6 +1759,7 @@ export async function createRenderer(canvas, game, options = {}) {
       return own;
     };
     for (const unit of game.enemies) {
+      if (unit.stationary) continue; // the God-Mode god has infinite health: no bar
       const g = gFor(unit.y);
       const gb = gBar(unit, "enemy");
       const barStyle = combatBarStyle(unit.kind === "boss" ? "boss" : "enemy");
@@ -1926,7 +1931,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // All numbers follow their owner while it lives, not just DoT ticks. A dead unit's
       // final hit keeps its last anchor until fading out.
       const enemy = game.enemies.find((unit) => unit.entityId === popup.enemyId);
-      if (enemy) {
+      if (enemy && !enemy.stationary) { // the god's numbers stay where the blow landed
         const body = enemyBody(enemy);
         popup.x = enemy.x + popup.offsetX;
         popup.y = body.top + popup.offsetY;
@@ -2233,6 +2238,7 @@ export async function createRenderer(canvas, game, options = {}) {
     layerGroundRings.removeChildren();
     for (const effect of game.effects) {
       if (effect.type === "damageNumber") continue;
+      if (effect.type === "godTelegraph" || effect.type === "godStrike") continue; // god-scene.js draws these
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
       if (["thunderWarn", "thunderStrike", "shieldUp", "shieldBlock"].includes(effect.type)) {
         const pg = new PIXI.Graphics();
@@ -2336,7 +2342,13 @@ export async function createRenderer(canvas, game, options = {}) {
   // Initial one-time setup (static layers built here, not in draw loop)
   // ------------------------------------------------------------------
   resize();
-  if (isAuthored) {
+  if (game.god) {
+    mapScene = await createGodScene(PIXI, game, {
+      layers: { bgTex: layerBgTex, bg: layerBg, groundFx: layerGroundFx, fore: layerForeground, parts: layerParts, hud: layerHud },
+      reducedMotion,
+      onImpact: () => startImpact({ ...FX_TIERS.epic, shake: 8, vignette: 0.25 }),
+    });
+  } else if (isAuthored) {
     const load = (key, fallback) => PIXI.Assets.load(sceneArt.assets[key]).catch((error) => {
       console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
       return null;

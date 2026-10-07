@@ -5,12 +5,12 @@
 // stays in the game and opens its menu instead (deps.onGameBack).
 import type { PageContext } from "./context";
 
-export type ScreenId = "home" | "stages" | "squad" | "heroes" | "summon" | "daily" | "quests" | "expedition" | "blessings" | "settings" | "save" | "glossary" | "play";
+export type ScreenId = "home" | "stages" | "squad" | "heroes" | "summon" | "daily" | "quests" | "expedition" | "god" | "blessings" | "settings" | "save" | "glossary" | "play";
 
 // One level up when there is no history entry to go back to (for example after a reload).
 // History entries from older builds that name a removed screen (the Campaign hub) open home.
 const PARENT: Record<ScreenId, ScreenId> = {
-  home: "home", stages: "home", squad: "stages", heroes: "home", summon: "home", daily: "home", quests: "home", expedition: "home", blessings: "home",
+  home: "home", stages: "home", squad: "stages", heroes: "home", summon: "home", daily: "home", quests: "home", expedition: "home", god: "home", blessings: "home",
   settings: "home", save: "settings", glossary: "home", play: "home",
 };
 export const isScreen = (value: unknown): value is ScreenId => typeof value === "string" && value in PARENT;

@@ -41,6 +41,10 @@ export function createHud(ctx: PageContext) {
     if (!game) return;
     updateGold(game.placement);
     q("[data-td-lives]").textContent = String(shownLives(game.lives, game.lifeUnit));
+    // God Challenge: no lives, no enemy counter; the clock takes the goal chip's place.
+    const god = !!game.god;
+    q("[data-td-lives-stat]").hidden = god;
+    q("[data-td-goal-label]").textContent = god ? "Time" : "Goal";
     // How many of the stage's enemies are down (killed or through the gates), like the reference's kill counter.
     const forecast = game.stageForecast?.();
     q("[data-td-down-stat]").hidden = !forecast;
@@ -51,8 +55,12 @@ export function createHud(ctx: PageContext) {
     // Daily Trial goal (M19): enemies defeated out of the goal.
     const daily = state.session?.daily;
     const dailyHud = q("[data-td-daily-hud]");
-    dailyHud.hidden = !daily;
-    if (daily) {
+    dailyHud.hidden = !daily && !god;
+    if (god) {
+      const left = Math.max(0, Math.ceil(game.god.seconds - game.time));
+      q("[data-td-daily-progress]").textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+      dailyHud.classList.remove("is-done");
+    } else if (daily) {
       const cleared = defeatedCount(game);
       q("[data-td-daily-progress]").textContent = cleared >= daily.goal ? "Done" : `${cleared}/${daily.goal}`;
       dailyHud.classList.toggle("is-done", cleared >= daily.goal);
@@ -62,7 +70,7 @@ export function createHud(ctx: PageContext) {
   }
 
   function syncBossHealth(game: any) {
-    const info = bossHudState(game);
+    const info = game.god ? null : bossHudState(game); // the god has no health bar
     bossHealthEl.hidden = !info;
     if (!info) return;
     const percent = Math.round(info.ratio * 100);
@@ -308,6 +316,7 @@ export function createHud(ctx: PageContext) {
   // Boss entrance (P5): 2.5s nameplate over the map. Visual only; the run keeps
   // going and the entrance notice covers screen readers.
   function bossIntro() {
+    if (state.session?.game.god) return; // the god is the arena itself; its screen already names it
     const plate = q("[data-td-boss-plate]");
     const boss = ctx.bossFor(state.session?.map);
     q("[data-td-boss-kicker]").textContent = "Boss";

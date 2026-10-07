@@ -9,10 +9,10 @@ import TdDebugPanel from "./TdDebugPanel.astro";
   <div class="td-topbar">
     <div class="td-stats">
       <div class="td-stat td-stat--gold"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" /><path d="M9 12h6" fill="none" /></svg>Nectar</span><strong data-td-gold>0</strong><em class="td-gold-float" data-td-gold-float aria-hidden="true"></em></div>
-      <div class="td-stat"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-9.5A4.3 4.3 0 0112 7a4.3 4.3 0 017 3.5C19 15.6 12 20 12 20z" fill="none" /></svg>Lives</span><strong data-td-lives>0</strong></div>
+      <div class="td-stat" data-td-lives-stat><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-9.5A4.3 4.3 0 0112 7a4.3 4.3 0 017 3.5C19 15.6 12 20 12 20z" fill="none" /></svg>Lives</span><strong data-td-lives>0</strong></div>
       <div class="td-stat td-stat--down" data-td-down-stat title="Enemies defeated or through, out of the stage total"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7l10 10M17 7L7 17" fill="none" /></svg>Defeated</span><strong><span data-td-down>0</span>/<span data-td-down-total>0</span></strong></div>
       <div class="td-stat" title="Heroes on the field / deploy limit"><span><svg class="td-icon td-stat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.500" fill="none" /><path d="M5 20c0-4 3-6 7-6s7 2 7 6" fill="none" /></svg>Heroes</span><strong class="td-deck-count" data-td-deck-count></strong></div>
-      <div class="td-stat td-stat--goal" data-td-daily-hud hidden><span>Goal</span><strong data-td-daily-progress>0/0</strong></div>
+      <div class="td-stat td-stat--goal" data-td-daily-hud hidden><span data-td-goal-label>Goal</span><strong data-td-daily-progress>0/0</strong></div>
     </div>
     <div class="td-top-actions">
       <button class="td-icon-button" type="button" data-td-speed aria-label="Game speed 1x">1x</button>

@@ -19,6 +19,9 @@ import type { DailySetup } from "./daily";
 import type { CampaignRun } from "./campaign";
 import type { ExpeditionState } from "./save";
 import type { ScreenId } from "./nav";
+import type { GodRun } from "./god";
+import { godChallenge } from "../god-mode.js";
+import { flattenSquadRows, normalizeSquadRows } from "../squad-rows.js";
 
 // Enemy death and final-impact animations use up to 0.5s of wall time in render.js.
 // Keep transition UI off the battlefield until those animations have resolved.
@@ -47,20 +50,22 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   let loadingCanvas: HTMLCanvasElement | null = null;
   let battleSettleTimer: number | undefined;
 
-  async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null; campaign?: CampaignRun | null } = {}) {
+  async function start(map: any, options: { daily?: DailySetup | null; expedition?: ExpeditionState | null; campaign?: CampaignRun | null; god?: GodRun | null } = {}) {
     const token = ++sessionToken;
     const daily = options.daily ?? null;
     const expedition = options.expedition ?? null;
     const campaign = options.campaign ?? null;
+    const god = options.god ?? null;
+    const godRules = god ? godChallenge(god.challengeId) : null;
     const campaignStage = campaign ? stageById(campaignData, campaign.stageId) : null;
     end();
     // The home screen's Play picks this mode next time ("again" or "next").
-    const homeMode = daily ? "daily" : expedition ? "expedition" : "campaign";
+    const homeMode = god ? "god" : daily ? "daily" : expedition ? "expedition" : "campaign";
     if (store.data.ui.homeMode !== homeMode) {
       store.data.ui = { ...store.data.ui, homeMode };
       store.persist();
     }
-    deps.music.play(trackForRun({ daily, expedition, stageId: campaign?.stageId, map }));
+    deps.music.play(trackForRun({ daily, expedition, god, stageId: campaign?.stageId, map }));
     ctx.actions.showScreen("play");
     const environment = environmentFor(map);
     const environmentLabel = q("[data-td-environment-rule]");
@@ -69,8 +74,12 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     environmentLabel.textContent = [environment?.rule, stageRule?.name].filter(Boolean).join(" · ");
     stageNameEl.title = [campaignStage?.name, environment?.rule, environment?.text, stageRule && `${stageRule.name}: ${stageRule.text}`].filter(Boolean).join(" - "); // the compact landscape chip shows only the stage number
     stageNameEl.dataset.kind = campaignStage ? "campaign" : "battlefield";
-    stageNameEl.hidden = !campaignStage && !environment && !stageRule;
-    if (campaignStage) {
+    stageNameEl.hidden = !campaignStage && !environment && !stageRule && !god;
+    if (god && godRules) {
+      stageNameEl.dataset.kind = "battlefield";
+      stageNumberEl.textContent = "God Challenge";
+      stageTitleEl.textContent = godRules.name;
+    } else if (campaignStage) {
       stageNumberEl.textContent = `${campaign!.heroic ? "Heroic stage" : "Stage"} ${campaignStage.id}`;
       stageTitleEl.textContent = campaignStage.name;
     } else if (environment) {
@@ -94,16 +103,18 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     // Daily Trial (M19): the same map, squad and mutators for everyone, so no Divine Blessings
     // (collection upgrades still apply). Campaign stages (M26) are balanced as authored: no
     // Divine Blessings either. Expedition stages (M21) keep them.
-    const runLevels = daily || campaign ? {} : { ...store.data.favLevels };
+    const runLevels = daily || campaign || god ? {} : { ...store.data.favLevels };
     // Hero levels, stars, Evolution and skills apply in every mode (global stats).
     // An Expedition roster is drawn from the owned heroes when it starts. The Daily Trial keeps
     // its own squad.
     const heroes = collectionHeroes(campaignData, store.data.campaign, data.heroes);
-    const special = daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
+    // God Challenge: the player's own two squad rows, nothing else restricted.
+    const godSquad = god ? normalizeSquadRows(god.squadRows, { allowedIds: new Set(store.data.campaign.owned), lordIds: new Set(Object.keys(data.tuning.lords ?? {})) }) : null;
+    const special = god ? { allowedHeroes: flattenSquadRows(godSquad), squadRows: godSquad } : daily ? dailyGameOptions(daily) : expedition ? stageGameOptions(expedition)
       : campaignStage ? campaignGameOptions(campaignStage, campaign!.squadRows, undefined, heroes, !!campaign!.heroic)
       : { allowedHeroes: [...store.data.campaign.owned] };
     // R12: Expedition enemies grow with the collection's upgrades (by less than 100%).
-    if (!daily && !campaignStage) {
+    if (!daily && !campaignStage && !god) {
       const pool: string[] = (special as any).allowedHeroes ?? [...store.data.campaign.owned];
       const might = mightEnemyScale(campaignData, store.data.campaign, data.heroes, pool, data.tuning.run?.deployCap ?? 7);
       if (might !== 1) (special as any).hpScale = ((special as any).hpScale ?? map?.enemyHp ?? 1) * might;
@@ -111,10 +122,10 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const tuning = buildRunTuning(data.tuning, runLevels);
     // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
     // the Daily Trial stays the same for everyone without them.
-    const interventions = daily ? [] : Object.entries(data.tuning.interventions ?? {})
+    const interventions = daily || god ? [] : Object.entries(data.tuning.interventions ?? {})
       .filter(([, cfg]: [string, any]) => !cfg.unlockAfter || store.data.campaign.cleared?.[cfg.unlockAfter]).map(([id]) => id);
     // Expedition lives carry over, so its maximum is the run's full lives, not the carried count.
-    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, timeline: timelineForMap(map, campaignData), tier: "normal", tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
+    const game: any = new TowerDefenseGame({ ...data, heroes, interventions, timeline: god ? [] : timelineForMap(map, campaignData), tier: "normal", tuning, map, ...special, ...(expedition && { maxLives: tuning.run.lives }) });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map), campaign: Boolean(campaignStage || daily || expedition) }); // R18 by run context: Campaign, Daily Trial and Expedition
@@ -133,7 +144,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, keyboardSlots, favLevels: runLevels, debug: false, daily, expedition, campaign };
+    state.session = { game, renderer, canvas, map, started: false, keyboardSlots, favLevels: runLevels, debug: false, daily, expedition, campaign, god };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -144,7 +155,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.renderPreview();
     deps.buffBar.render();
     ctx.actions.resetPowers();
-    const dailyText = daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
+    const dailyText = god && godRules ? ` ${godRules.name}: ${godRules.seconds} seconds, deal as much damage as you can. The clock starts with your first hero.`
+      : daily ? ` Daily Trial: ${daily.heroIds.length} heroes, goal: defeat ${daily.goal} enemies.`
       : campaignStage ? ` Campaign stage ${campaignStage.id} ${campaignStage.name}: ${campaign!.squadRows.flat().length} heroes, ${shownLives(campaignStage.lives, game.lifeUnit)} lives.`
       : expedition ? ` Expedition stage ${expedition.stage + 1} of ${expedition.stages.length}: ${expedition.roster.length} heroes, ${shownLives(expedition.lives, game.lifeUnit)} lives.` : "";
     ctx.notice(`Tap a tile on ${map.name} to deploy a hero (up to ${game.deployCap()} at once).${dailyText}`);
@@ -174,6 +186,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
   // Ends the run and returns to a menu screen (nav.ts exitPlay picks the default).
   function toLobby(target?: ScreenId) {
     sessionToken += 1; // cancels a battlefield that is still loading
+    if (!target && state.session?.god) target = "god"; // back to the challenge screen, not the stage list
     ctx.actions.closePanel(false);
     end();
     deps.music.stop();
@@ -252,8 +265,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (!map) return;
       const daily = state.session?.daily ?? null; // a trial retries the same day's setup
       const campaign = state.session?.campaign ?? null; // a campaign stage retries with the same squad
+      const god = state.session?.god ?? null; // the God Challenge retries with the same squad
       ctx.actions.closePanel(false);
-      start(map, { daily, campaign });
+      start(map, { daily, campaign, god });
       return;
     }
     const exit = target.closest<HTMLElement>("[data-td-to-lobby]");

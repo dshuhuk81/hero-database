@@ -30,10 +30,10 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
   assert.equal(boss.kind, "boss", "the god is a boss unit");
   assert.equal(boss.stationary, true, "that never walks");
   assert.deepEqual(boss.cells, map.god.cells, "and owns the five cells");
-  assert.deepEqual([boss.x, boss.y], [480, 114], "centred on its middle cell");
+  assert.deepEqual([boss.x, boss.y], [480, 221], "centred on its middle cell");
   game.placement = 10000;
   game.step(60);
-  assert.deepEqual([boss.x, boss.y], [480, 114], "it does not move");
+  assert.deepEqual([boss.x, boss.y], [480, 221], "it does not move");
   assert.equal(game.lives, game.maxLives, "and nothing leaks");
 }
 
@@ -69,7 +69,7 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
   const boss = game.enemies[0];
   const centre = { x: boss.x, y: boss.y };
   assert.equal(game.nearPoint(centre, boss, 130), true, "an area around the boss reaches it");
-  assert.equal(game.nearPoint({ x: 12 + 104 * 8.5, y: 62 + 104 * 3.5 }, boss, 130), false, "a far area does not");
+  assert.equal(game.nearPoint({ x: board.origin[0] + board.cell * 8.5, y: board.origin[1] + board.cell * 3.5 }, boss, 130), false, "a far area does not");
 }
 
 // --- the timer ends the run ---
@@ -125,8 +125,24 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
 // --- stationary units are found by cell ---
 {
   const game = make();
-  const [c, r] = cellAt(board, 480, 114);
+  const [c, r] = cellAt(board, 480, 221);
   assert.deepEqual([c, r], [4, 0], "the boss's centre sits in cell (4, 0)");
+}
+
+// --- a blow lands on the aim point of the boss cell the hero's pattern covers ---
+{
+  const game = make();
+  game.placement = 10000;
+  game.place("atlas", "road", roadIndex(2, 1)); // plus pattern: covers boss cell (2, 0) only
+  game.place("odin", "platform", platformIndex(6, 2)); // diamond2 from (6, 2): covers (6, 0)
+  game.start();
+  const boss = game.enemies[0];
+  const atlas = game.heroes.find((hero) => hero.id === "atlas");
+  const odin = game.heroes.find((hero) => hero.id === "odin");
+  const [leftArm, , , , rightArm] = challenge.aim;
+  assert.deepEqual(Object.values(game.godAim(atlas, boss)), leftArm, "a Tank on the left hits the left arm point");
+  assert.deepEqual(Object.values(game.godAim(odin, boss)), rightArm, "a Mage on the right hits the right arm point");
+  assert.deepEqual(Object.values(game.godAim(null, boss)), [boss.x, boss.y], "damage over time uses the centre");
 }
 
 console.log("god mode checks passed");

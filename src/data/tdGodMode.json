@@ -7,6 +7,8 @@
       "title": "The Ember Titan",
       "seconds": 90,
       "boss": { "refHp": 5000000, "armor": 0, "magicRes": 0 },
+      "rig": { "scale": 0.47, "baseY": 298 },
+      "aim": [[400, 160], [440, 150], [480, 70], [520, 150], [560, 160]],
       "firstAttackAt": 4,
       "cycle": [
         { "attack": "slam", "side": "L", "cell": [1, 1], "telegraph": 1.0, "recovery": 1.4, "damage": 0.45 },

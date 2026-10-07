@@ -28,8 +28,8 @@ export type MapRun = { score: number; defeated: number; duration: number; lives:
 
 // Mode picked on the home screen's mode rail; Play launches it. A finished run sets it to
 // that run's mode, so Play means "again" or "next".
-export type HomeMode = "campaign" | "daily" | "expedition"; // Free Play was removed; a save that still names it opens on the Campaign
-export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition"];
+export type HomeMode = "campaign" | "daily" | "expedition" | "god"; // Free Play was removed; a save that still names it opens on the Campaign
+export const HOME_MODES: HomeMode[] = ["campaign", "daily", "expedition", "god"];
 export const isHomeMode = (value: unknown): value is HomeMode => HOME_MODES.includes(value as HomeMode);
 
 // Pending run-end shard (6C) for the next run; cleared when that run starts.
@@ -57,6 +57,7 @@ export type SaveData = {
   expedition: ExpeditionState | null; // Expedition in progress (M21)
   expeditionBest: { stages: number; completed: number }; // most stages cleared in one expedition, expeditions finished
   campaign: CampaignProgress; // Campaign (M26), its own progression
+  godBest: Record<string, number>; // God Challenge: best total damage per challenge id (god-mode.js)
   ui: { homeMode: HomeMode }; // menu choices that follow the save (home screen mode rail)
 };
 
@@ -123,7 +124,7 @@ const pickCounts = (value: unknown): Record<string, number> => isRecord(value)
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestDefeated: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, ui: { homeMode: "campaign" } };
+  return { bestScore: 0, bestDefeated: 0, lastTeam: [], perfectDefense: false, favor: 0, favLevels: {}, insight: {}, resetSpent: 0, refundNotice: 0, treeVersion: TREE.version, repriceNotice: false, mapBests: {}, mapTop: {}, nextRunBoost: null, daily: [], quests: newQuestRecord(dailyDate()), expedition: null, expeditionBest: { stages: 0, completed: 0 }, campaign: newCampaignProgress(campaignData) as CampaignProgress, godBest: {}, ui: { homeMode: "campaign" } };
 }
 
 function sanitizeBoost(value: unknown): RunBoost | null {
@@ -196,6 +197,7 @@ export function sanitizeSave(raw: unknown, rules: SaveRules): SaveData | null {
       completed: Math.max(0, Math.floor(Number(candidate.expeditionBest?.completed) || 0)),
     },
     campaign: sanitizeCampaign(candidate.campaign, campaignData, rules.heroIds, rules.lordIds) as CampaignProgress,
+    godBest: pickCounts(candidate.godBest),
     ui: { homeMode: isHomeMode(candidate.ui?.homeMode) ? candidate.ui.homeMode : "campaign" },
   };
   // Tree v3 (M3): owned levels stay, the price increase is credited back once.

@@ -1,5 +1,6 @@
-// God-Mode arena layout: a fixed 9 x 4 board, 104 px cells, origin (12, 62). The god stands behind
-// the parapet above it and owns the five B cells of the top row (one unit, so an area attack
+// God-Mode arena layout: a fixed 9 x 4 board, 90 px cells, origin (75, 176). The god stands behind
+// the parapet above it (the Cronus rig, tdGodMode.json `rig`, is sized so its striking fist lands on
+// the side platforms) and owns the five B cells of the top row (one unit, so an area attack
 // hits it once).
 //
 //   P  platform tile (side balconies and side platforms)
@@ -12,8 +13,8 @@
 
 export const GOD_ARENA = {
   columns: 9,
-  cell: 104,
-  origin: [12, 62],
+  cell: 90,
+  origin: [75, 176],
   bossTargets: 5,
   rows: [
     "P.BBBBB.P", // side balconies and the god's cells
