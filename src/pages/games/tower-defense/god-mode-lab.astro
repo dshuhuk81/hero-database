@@ -24,7 +24,7 @@ import GameLayout from "../../../layouts/GameLayout.astro";
         <canvas id="gm-canvas" width="960" height="540" aria-label="God-Mode arena preview"></canvas>
         <div class="gm-hud" aria-hidden="true">
           <div class="gm-boss-row">
-            <div class="gm-boss-copy"><span>GOD CHALLENGE</span><strong>BRONTAX · THE BRASS ADJUDICATOR</strong></div>
+            <div class="gm-boss-copy"><span>GOD CHALLENGE</span><strong>CRONUS</strong></div>
             <div class="gm-timer"><span>TIME LEFT</span><strong id="gm-timer">01:30</strong></div>
           </div>
           <div class="gm-health"><i></i><span>∞</span></div>
@@ -42,23 +42,54 @@ import GameLayout from "../../../layouts/GameLayout.astro";
 
         <label>
           <span>Boss asset</span>
-          <select id="gm-boss-mode">
-            <option value="animated">Animated sheet · 110 px source</option>
-            <option value="still" selected>High-res still · 256 px source</option>
+          <select id="gm-boss-mode" autocomplete="off">
+            <option value="cronus" selected>Cronus rig · layered parts</option>
+            <option value="animated">Brontax sheet · 110 px source</option>
+            <option value="still">Brontax still · 256 px source</option>
           </select>
         </label>
         <label>
-          <span>Boss size <output id="gm-scale-value">3.1×</output></span>
-          <input id="gm-scale" type="range" min="1.6" max="4.0" value="3.1" step="0.1" />
+          <span>Boss size <output id="gm-scale-value">2.5×</output></span>
+          <input id="gm-scale" type="range" min="1.6" max="4.0" value="2.5" step="0.1" autocomplete="off" />
         </label>
         <label>
-          <span>Boss height <output id="gm-y-value">380</output></span>
-          <input id="gm-y" type="range" min="300" max="440" value="380" step="2" />
+          <span>Boss height <output id="gm-y-value">310</output></span>
+          <input id="gm-y" type="range" min="220" max="440" value="310" step="2" autocomplete="off" />
         </label>
         <label>
           <span>Arena edge <output id="gm-edge-value">240</output></span>
-          <input id="gm-edge" type="range" min="190" max="290" value="240" step="2" />
+          <input id="gm-edge" type="range" min="190" max="290" value="240" step="2" autocomplete="off" />
         </label>
+
+        <fieldset class="gm-rig" id="gm-rig-controls">
+          <legend>Cronus rig fit</legend>
+          <label>
+            <span>Arm pose preview</span>
+            <select id="gm-pose" autocomplete="off">
+              <option value="auto" selected>Auto (attack cycle)</option>
+              <option value="rest">Rest</option>
+              <option value="raised">Raised</option>
+              <option value="strike">Strike</option>
+              <option value="sweep">Sweep</option>
+            </select>
+          </label>
+          <label>
+            <span>Roar head scale <output id="gm-hs-value">0.55</output></span>
+            <input id="gm-hs" type="range" min="0.4" max="0.75" value="0.55" step="0.01" autocomplete="off" />
+          </label>
+          <label>
+            <span>Roar head X <output id="gm-hx-value">0</output></span>
+            <input id="gm-hx" type="range" min="-60" max="60" value="0" step="1" autocomplete="off" />
+          </label>
+          <label>
+            <span>Roar head Y <output id="gm-hy-value">0</output></span>
+            <input id="gm-hy" type="range" min="-60" max="60" value="0" step="1" autocomplete="off" />
+          </label>
+          <div class="gm-buttons">
+            <button type="button" id="gm-roar" aria-pressed="false">Force roar head</button>
+            <button type="button" id="gm-joints" aria-pressed="false">Show joints</button>
+          </div>
+        </fieldset>
 
         <div class="gm-buttons" role="group" aria-label="Preview actions">
           <button type="button" id="gm-attack">Boss attack</button>
@@ -89,6 +120,11 @@ import GameLayout from "../../../layouts/GameLayout.astro";
   const yInput = $<HTMLInputElement>("gm-y");
   const edgeInput = $<HTMLInputElement>("gm-edge");
   const modeInput = $<HTMLSelectElement>("gm-boss-mode");
+  const poseInput = $<HTMLSelectElement>("gm-pose");
+  const headScaleInput = $<HTMLInputElement>("gm-hs");
+  const headXInput = $<HTMLInputElement>("gm-hx");
+  const headYInput = $<HTMLInputElement>("gm-hy");
+  const rigControls = $("gm-rig-controls");
 
   type Projectile = { g: any; from: [number, number]; to: [number, number]; started: number; duration: number; color: number };
   type FloatNumber = { text: any; started: number; duration: number; y: number };
@@ -100,20 +136,36 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     app.ticker.stop();
 
     const stage = app.stage;
+    const world = new PIXI.Container(); // shaken as a whole; the flash overlay stays outside
     const backdropLayer = new PIXI.Container();
+    const smokeBackLayer = new PIXI.Container();
     const bossLayer = new PIXI.Container();
+    const smokeLayer = new PIXI.Container();
+    const armBackLayer = new PIXI.Container(); // striking arm while it is still behind the parapet
+    const armRearLayer = new PIXI.Container(); // Cronus arms sit behind the torso
+    const armFrontLayer = new PIXI.Container(); // the striking arm, above parapet and heroes
+    const torsoOverlayLayer = new PIXI.Container(); // torso shoulders redrawn over the striking arm
     const groundLayer = new PIXI.Container();
     const heroLayer = new PIXI.Container();
     const frontLayer = new PIXI.Container();
     const fxLayer = new PIXI.Container();
-    stage.addChild(backdropLayer, bossLayer, groundLayer, frontLayer, heroLayer, fxLayer);
+    world.addChild(backdropLayer, smokeBackLayer, armRearLayer, bossLayer, smokeLayer, armBackLayer, groundLayer, frontLayer, heroLayer, armFrontLayer, torsoOverlayLayer, fxLayer);
+    const flashG = new PIXI.Graphics().rect(0, 0, 960, 540).fill(0xfff1d6);
+    flashG.alpha = 0;
+    stage.addChild(world, flashG);
 
-    const [backdropTex, arenaTex, bossSheet, bossStill] = await Promise.all([
+    const CRONUS_DIR = "/td/god-mode/cronus/";
+    const [backdropTex, arenaTex, bossSheet, bossStill, rig] = await Promise.all([
       PIXI.Assets.load("/td/maps/celestial-terrain-wide-v1.png"),
       PIXI.Assets.load("/td/maps/celestial-terrain-v1.png"),
       PIXI.Assets.load("/td/enemies/clips/boss-brontax-v1.json"),
       PIXI.Assets.load("/td/enemies/sprites/boss-brontax-v1.webp"),
+      fetch(`${CRONUS_DIR}rig.json`).then((r) => r.json()),
     ]);
+    const cronusTex: Record<string, any> = {};
+    await Promise.all([rig.torso.file, rig.headRoar.file, ...Object.values<any>(rig.arms).map((a) => a.file)].map(async (file: string) => {
+      cronusTex[file] = await PIXI.Assets.load(`${CRONUS_DIR}${file}`);
+    }));
 
     const backdrop = new PIXI.Sprite(backdropTex);
     backdrop.width = 1320; backdrop.height = 540; backdrop.x = -180;
@@ -135,6 +187,38 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     bossStatic.visible = false;
     bossLayer.addChild(bossAnimated, bossStatic);
 
+    // Cronus rig. Torso and roar head live in bossLayer; the two arms are drawn in world space (above
+    // the boss, below the parapet) so the attacking arm can hop to the front layer.
+    const cronusTorso = new PIXI.Sprite(cronusTex[rig.torso.file]);
+    cronusTorso.anchor.set(0.5, 1);
+    const cronusHead = new PIXI.Sprite(cronusTex[rig.headRoar.file]);
+    cronusHead.anchor.set(rig.headRoar.top[0] / rig.size, rig.headRoar.top[1] / rig.size);
+    cronusHead.visible = false;
+    bossLayer.addChild(cronusTorso, cronusHead);
+    // While an arm is in front, a masked copy of the torso covers its tucked-in shoulder end.
+    const torsoOverlay = new PIXI.Sprite(cronusTex[rig.torso.file]);
+    torsoOverlay.anchor.set(0.5, 1);
+    const torsoOverlayMask = new PIXI.Graphics();
+    torsoOverlay.mask = torsoOverlayMask;
+    torsoOverlay.visible = false;
+    torsoOverlayLayer.addChild(torsoOverlay, torsoOverlayMask);
+    const jointsG = new PIXI.Graphics();
+    jointsG.visible = false;
+    const armSprites = { L: new PIXI.Sprite(), R: new PIXI.Sprite() };
+    const armPoseKey: Record<"L" | "R", string> = { L: "", R: "" };
+    armRearLayer.addChild(armSprites.L, armSprites.R);
+    // Swaps the arm texture and returns the horizontal mirror (arms are authored for one body side).
+    function setArmPose(side: "L" | "R", pose: string): number {
+      const def = rig.arms[pose];
+      if (armPoseKey[side] !== pose) {
+        armPoseKey[side] = pose;
+        armSprites[side].texture = cronusTex[def.file];
+        armSprites[side].anchor.set(def.pivot[0] / rig.size, def.pivot[1] / rig.size);
+      }
+      return def.side === side ? 1 : -1;
+    }
+    setArmPose("L", "rest"); setArmPose("R", "rest");
+
     const board = new PIXI.Graphics();
     const arenaMask = new PIXI.Graphics();
     const arenaSurface = new PIXI.Sprite(arenaTex);
@@ -143,12 +227,28 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     const slots = new PIXI.Graphics();
     const parapetBack = new PIXI.Graphics();
     const parapetFront = new PIXI.Graphics();
-    groundLayer.addChild(arenaMask, arenaSurface, board, slots, parapetBack);
+    const decalG = new PIXI.Graphics(); // lava pools and cracks left by impacts
+    groundLayer.addChild(arenaMask, arenaSurface, board, slots, decalG, parapetBack);
     frontLayer.addChild(parapetFront);
 
     const targetOverlay = new PIXI.Graphics();
     targetOverlay.visible = false;
-    fxLayer.addChild(targetOverlay);
+    const telegraphG = new PIXI.Graphics();
+    const ringG = new PIXI.Graphics();
+    fxLayer.addChild(telegraphG, targetOverlay, ringG, jointsG);
+
+    // Placeholder striking arm cropped from the Brontax still (the fist on the viewer's left).
+    // Replace with the dedicated Cronus arm layers once they exist.
+    const ARM_CROP = { x: 18, y: 108, w: 87, h: 100 };
+    const ARM_SHOULDER = { x: 95, y: 125 }; // still px
+    const ARM_FIST = { x: 55, y: 175 }; // still px
+    const STILL_ANCHOR = { x: 128, y: 225 }; // 0.5 / 0.88 of the 256 px still
+    const armTex = new PIXI.Texture({ source: bossStill.source, frame: new PIXI.Rectangle(ARM_CROP.x, ARM_CROP.y, ARM_CROP.w, ARM_CROP.h) });
+    const armAnchor = { x: (ARM_SHOULDER.x - ARM_CROP.x) / ARM_CROP.w, y: (ARM_SHOULDER.y - ARM_CROP.y) / ARM_CROP.h };
+    const armSprite = new PIXI.Sprite(armTex);
+    armSprite.anchor.set(armAnchor.x, armAnchor.y);
+    armSprite.visible = false;
+    armBackLayer.addChild(armSprite);
 
     const heroes = [
       { id: "odin", name: "Odin", x: 250, y: 345, color: 0x9de7ff },
@@ -187,6 +287,316 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     let totalDamage = 0;
     const startedAt = performance.now();
 
+    // Attack timeline (ms since attack start). Windup shows the telegraph, strike is the fast swing,
+    // impact holds the pose, recovery pulls the arm back.
+    const T_STRIKE = 1000, T_HIT = 1120, T_REC = 1400, T_END = 2000;
+    const IMPACT_Y = 382;
+    // Cronus swings without moving vertically, so the ground target is wherever the strike fist lands
+    // from the shoulder height. Other bosses keep the fixed row.
+    function impactX(side: number): number {
+      if (modeInput.value !== "cronus") return 480 + side * 205;
+      const ks = bossScale() * 0.16, strike = rig.arms.strike, key = side < 0 ? "L" : "R";
+      const shoulder = key === "L" ? rig.torso.stumpL[0] + rig.torso.armInset : rig.torso.stumpR[0] - rig.torso.armInset;
+      const flip = strike.side === key ? 1 : -1;
+      return 480 + (shoulder - rig.size / 2) * ks + (strike.fist[0] - strike.pivot[0]) * flip * ks;
+    }
+    function impactY(): number {
+      if (modeInput.value !== "cronus") return IMPACT_Y;
+      const ks = bossScale() * 0.16, strike = rig.arms.strike;
+      return Number(yInput.value) + (rig.torso.stumpL[1] - rig.size) * ks + (strike.fist[1] - strike.pivot[1]) * ks;
+    }
+    // vnow is the simulation clock: it stops during pause and hitstop so every effect freezes together.
+    let vnow = 0;
+    let lastWall = performance.now();
+    let hitstopUntil = 0;
+    let impactSerial = 0;
+    let shake = 0;
+    let flash = 0;
+    const rings: Array<{ x: number; y: number; t0: number; dur: number; rx: number; color: number }> = [];
+    const decals: Array<{ x: number; y: number; t0: number; cracks: number[] }> = [];
+
+    // ---- particles: pooled sprites with chunky nearest-neighbour textures to match the pixel art ----
+    const makeTex = (draw: (g: any) => void) => {
+      const g = new PIXI.Graphics(); draw(g);
+      const tex = app.renderer.generateTexture(g);
+      tex.source.scaleMode = "nearest";
+      g.destroy();
+      return tex;
+    };
+    const texSq = makeTex((g) => g.rect(0, 0, 4, 4).fill(0xffffff));
+    const texPuff = makeTex((g) => g.circle(12, 12, 12).fill(0xffffff));
+
+    type Particle = { s: any; layer: any; vx: number; vy: number; g: number; life: number; age: number; sz0: number; sz1: number; k: number; flip: number; a0: number; vr: number; bell: boolean };
+    type EmitOpts = { tex?: any; x: number; y: number; vx?: number; vy?: number; g?: number; life: number; sz: number; sz1?: number; a?: number; tint?: number; add?: boolean; vr?: number; rot?: number; bell?: boolean; raw?: boolean; flip?: number; ax?: number; ay?: number };
+    const live: Particle[] = [];
+    const freeSprites: any[] = [];
+    const MAX_PARTICLES = 700;
+    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+    const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
+
+    function emit(layer: any, o: EmitOpts) {
+      if (live.length >= MAX_PARTICLES) return;
+      const s = freeSprites.pop() ?? new PIXI.Sprite();
+      s.texture = o.tex ?? texSq;
+      s.anchor.set(o.ax ?? 0.5, o.ay ?? 0.5);
+      s.tint = o.tint ?? 0xffffff;
+      s.blendMode = o.add ? "add" : "normal";
+      s.position.set(o.x, o.y);
+      s.rotation = o.rot ?? 0;
+      s.visible = true;
+      layer.addChild(s);
+      const k = o.raw ? 1 : 1 / s.texture.width;
+      const flip = o.flip ?? 1;
+      live.push({ s, layer, vx: o.vx ?? 0, vy: o.vy ?? 0, g: o.g ?? 0, life: o.life, age: 0, sz0: o.sz, sz1: o.sz1 ?? o.sz, k, flip, a0: o.a ?? 1, vr: o.vr ?? 0, bell: !!o.bell });
+      s.scale.set(o.sz * k * flip, o.sz * k);
+    }
+
+    function updateParticles(dt: number) {
+      for (let i = live.length - 1; i >= 0; i--) {
+        const p = live[i];
+        p.age += dt;
+        const t = p.age / p.life;
+        if (t >= 1) {
+          p.layer.removeChild(p.s); p.s.visible = false; freeSprites.push(p.s); live.splice(i, 1);
+          continue;
+        }
+        p.vy += p.g * dt;
+        p.s.x += p.vx * dt; p.s.y += p.vy * dt; p.s.rotation += p.vr * dt;
+        const size = p.sz0 + (p.sz1 - p.sz0) * t;
+        p.s.scale.set(size * p.k * p.flip, size * p.k);
+        p.s.alpha = p.a0 * (p.bell ? Math.sin(Math.PI * t) : 1 - t);
+      }
+    }
+
+    function bossBodyPoint(): [number, number] {
+      const pos = bossPosition();
+      if (modeInput.value === "cronus") {
+        const ks = bossScale() * 0.16; // rig sprite scale; the visible bust spans roughly 280..620 texture px
+        return [pos.x + rnd(-250, 250) * ks, pos.y + rnd(-620, -280) * ks];
+      }
+      const k = bossScale() * 0.52;
+      return [pos.x + rnd(-55, 55) * k, pos.y + rnd(-190, -50) * k];
+    }
+
+    const EMBER_TINTS = [0xff7a1a, 0xffb03a, 0xffe08a];
+    const acc = { ember: 0, ash: 0, smoke: 0, smokeBack: 0, drip: 0, telegraph: 0 };
+    function ambient(dt: number, age: number) {
+      const pos = bossPosition();
+      acc.ember += 26 * dt; acc.ash += 14 * dt; acc.smoke += 3.5 * dt; acc.smokeBack += 3 * dt; acc.drip += 3 * dt;
+      for (; acc.ember >= 1; acc.ember--) {
+        const [x, y] = bossBodyPoint();
+        emit(fxLayer, { x, y, vx: rnd(-12, 12), vy: -rnd(25, 55), life: rnd(1.2, 2.2), sz: 3, a: 1, tint: pick(EMBER_TINTS), add: true });
+      }
+      for (; acc.ash >= 1; acc.ash--) {
+        const [x, y] = bossBodyPoint();
+        emit(fxLayer, { x, y, vx: rnd(8, 30), vy: rnd(-8, 8), life: rnd(2.5, 4), sz: 3, a: 0.8, tint: pick([0x1b1614, 0x3a322d]), vr: rnd(-2, 2) });
+      }
+      for (; acc.smoke >= 1; acc.smoke--) {
+        emit(smokeLayer, { tex: texPuff, x: pos.x + rnd(-210, 210), y: arenaEdge - 6, vx: rnd(-8, 8), vy: -rnd(14, 24), life: rnd(3, 4.5), sz: 40, sz1: 95, a: 0.5, tint: pick([0x2a2522, 0x3a332e, 0x4a423c]), bell: true });
+      }
+      for (; acc.smokeBack >= 1; acc.smokeBack--) {
+        emit(smokeBackLayer, { tex: texPuff, x: pos.x + rnd(-170, 170), y: rnd(arenaEdge - 150, arenaEdge - 20), vx: rnd(-6, 6), vy: -rnd(6, 14), life: rnd(4, 6), sz: 70, sz1: 150, a: 0.35, tint: 0x1c1a20, bell: true });
+      }
+      for (; acc.drip >= 1; acc.drip--) {
+        const [x, y] = bossBodyPoint();
+        emit(fxLayer, { x, y, g: 220, life: 0.7, sz: 3, a: 1, tint: 0xff5a1a, add: true });
+      }
+      // Telegraph embers rise from the target rim and ramp up as the strike nears.
+      if (age >= 0 && age < T_STRIKE) {
+        acc.telegraph += (8 + 50 * (age / T_STRIKE)) * dt;
+        const cx = impactX(bossAttackSerial % 2 ? -1 : 1);
+        for (; acc.telegraph >= 1; acc.telegraph--) {
+          const a = Math.random() * Math.PI * 2;
+          emit(fxLayer, { x: cx + Math.cos(a) * 118, y: impactY() + Math.sin(a) * 48, vx: rnd(-10, 10), vy: -rnd(30, 70), life: rnd(0.5, 0.9), sz: 3, tint: pick(EMBER_TINTS), add: true });
+        }
+      }
+    }
+
+    function onImpact(x: number, y: number) {
+      hitstopUntil = performance.now() + 70;
+      shake = Math.max(shake, 11);
+      flash = 0.35;
+      rings.push({ x, y, t0: vnow, dur: 550, rx: 150, color: 0xff8a3d }, { x, y, t0: vnow, dur: 330, rx: 95, color: 0xffffff });
+      decals.push({ x, y, t0: vnow, cracks: Array.from({ length: 8 }, () => rnd(0, Math.PI * 2)) });
+      for (let i = 0; i < 16; i++) {
+        emit(fxLayer, { x: x + rnd(-40, 40), y: y + rnd(-8, 8), vx: rnd(-220, 220), vy: -rnd(180, 380), g: 900, life: rnd(0.8, 1.2), sz: rnd(4, 7), a: 1, tint: pick([0x2b2420, 0x4b3a30, 0x1b1614]), vr: rnd(-8, 8) });
+      }
+      for (let i = 0; i < 28; i++) {
+        emit(fxLayer, { x: x + rnd(-30, 30), y, vx: rnd(-260, 260), vy: -rnd(140, 420), g: 800, life: rnd(0.6, 1), sz: 3, a: 1, tint: pick(EMBER_TINTS), add: true });
+      }
+      for (let i = 0; i < 10; i++) {
+        emit(fxLayer, { tex: texPuff, x: x + rnd(-60, 60), y: y + rnd(-6, 10), vx: rnd(-90, 90), vy: -rnd(10, 40), life: rnd(0.8, 1.2), sz: 20, sz1: 70, a: 0.6, tint: 0x5a4f46 });
+      }
+      for (let i = 0; i < 20; i++) {
+        emit(fxLayer, { x, y, vx: rnd(-420, 420), vy: -rnd(40, 300), g: 500, life: 0.25, sz: 3, tint: 0xffe08a, add: true });
+      }
+    }
+
+    function drawImpactFx(dt: number) {
+      ringG.clear();
+      for (let i = rings.length - 1; i >= 0; i--) {
+        const r = rings[i], t = (vnow - r.t0) / r.dur;
+        if (t >= 1) { rings.splice(i, 1); continue; }
+        const rx = r.rx * (1 - (1 - t) * (1 - t));
+        ringG.ellipse(r.x, r.y, rx, rx * 0.4).stroke({ color: r.color, width: 6 * (1 - t) + 1, alpha: 0.85 * (1 - t) });
+      }
+      decalG.clear();
+      for (let i = decals.length - 1; i >= 0; i--) {
+        const d = decals[i], age = vnow - d.t0;
+        if (age > 4000) { decals.splice(i, 1); continue; }
+        const grow = Math.min(1, age / 250), fade = age < 1600 ? 1 : 1 - (age - 1600) / 2400;
+        const rx = 95 * (1 - (1 - grow) * (1 - grow));
+        decalG.ellipse(d.x, d.y, rx * 1.1, rx * 0.46).fill({ color: 0x2a1208, alpha: 0.6 * fade });
+        decalG.ellipse(d.x, d.y, rx * 0.8, rx * 0.33).fill({ color: 0xff6a1f, alpha: 0.5 * fade });
+        decalG.ellipse(d.x, d.y, rx * 0.4, rx * 0.17).fill({ color: 0xffd166, alpha: 0.4 * fade });
+        for (const a of d.cracks) {
+          const len = rx * 1.35;
+          decalG.moveTo(d.x + Math.cos(a) * rx * 0.3, d.y + Math.sin(a) * rx * 0.12).lineTo(d.x + Math.cos(a) * len, d.y + Math.sin(a) * len * 0.42).stroke({ color: 0xff8a3d, width: 2, alpha: 0.7 * fade });
+        }
+      }
+      shake = Math.max(0, shake - dt * 45);
+      world.position.set(shake > 0 ? rnd(-shake, shake) : 0, shake > 0 ? rnd(-shake, shake) : 0);
+      flash = Math.max(0, flash - dt * 1.6);
+      flashG.alpha = flash;
+    }
+
+    const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
+    const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
+    // Returns torso lean (rad) and lunge (px) for the current attack age, and drives the placeholder arm.
+    function poseBoss(age: number): { lean: number; lunge: number } {
+      const stillMode = modeInput.value === "still";
+      const active = age >= 0 && age < T_END;
+      armSprite.visible = stillMode && active;
+      if (!active) return { lean: 0, lunge: 0 };
+
+      const k = bossScale() * 0.52, pos = bossPosition();
+      const side = bossAttackSerial % 2 ? -1 : 1;
+      const target = { x: 480 + side * 205, y: IMPACT_Y };
+      const rest = { x: pos.x + (ARM_SHOULDER.x - STILL_ANCHOR.x) * k, y: pos.y + (ARM_SHOULDER.y - STILL_ANCHOR.y) * k };
+      const fist = { x: ARM_FIST.x - ARM_SHOULDER.x, y: ARM_FIST.y - ARM_SHOULDER.y };
+      const R_UP = 1.7, R_HIT = -0.15, S_UP = 1.1, S_HIT = 1.6;
+      const fistOffset = (r: number, sc: number) => ({ x: (fist.x * Math.cos(r) - fist.y * Math.sin(r)) * k * sc, y: (fist.x * Math.sin(r) + fist.y * Math.cos(r)) * k * sc });
+      const hitOff = fistOffset(R_HIT, S_HIT);
+      const hit = { x: target.x - hitOff.x, y: target.y - hitOff.y };
+
+      let r = 0, sc = 1, sx = rest.x, sy = rest.y, lean = 0, lunge = 0;
+      if (age < T_STRIKE) {
+        const p = easeOut(age / T_STRIKE);
+        r = R_UP * p; sc = 1 + (S_UP - 1) * p; lean = -0.035 * p; lunge = -4 * p;
+      } else if (age < T_HIT) {
+        const q = clamp01((age - T_STRIKE) / (T_HIT - T_STRIKE)), e = q * q;
+        r = R_UP + (R_HIT - R_UP) * e; sc = S_UP + (S_HIT - S_UP) * e;
+        const from = { x: rest.x, y: rest.y };
+        sx = from.x + (hit.x - from.x) * e; sy = from.y + (hit.y - from.y) * e;
+        lean = -0.035 + 0.085 * e; lunge = -4 + 14 * e;
+      } else if (age < T_REC) {
+        r = R_HIT; sc = S_HIT; sx = hit.x; sy = hit.y; lean = 0.05; lunge = 10;
+      } else {
+        const q = easeOut(clamp01((age - T_REC) / (T_END - T_REC)));
+        r = R_HIT * (1 - q); sc = S_HIT + (1 - S_HIT) * q;
+        sx = hit.x + (rest.x - hit.x) * q; sy = hit.y + (rest.y - hit.y) * q;
+        lean = 0.05 * (1 - q); lunge = 10 * (1 - q);
+      }
+      armSprite.position.set(sx, sy);
+      armSprite.rotation = r;
+      armSprite.scale.set(k * sc);
+      // Layer swap: while striking, the arm leaves the boss plane and draws over parapet and heroes.
+      const want = age >= T_STRIKE - 80 && age < T_REC + 250 ? fxLayer : armBackLayer;
+      if (armSprite.parent !== want) want.addChild(armSprite);
+      if (age >= T_STRIKE - 60 && age < T_HIT + 40) {
+        emit(fxLayer, { tex: armTex, x: sx, y: sy, rot: r, sz: k * sc, a: 0.5, tint: 0xff8a3d, add: true, life: 0.18, raw: true, ax: armAnchor.x, ay: armAnchor.y });
+      }
+      return { lean, lunge };
+    }
+
+    let forceRoar = false;
+    // Poses the Cronus rig: torso, roar head and both arms. Arms swap between authored poses
+    // (rest / raised / strike) instead of rotating one sprite, and the attacking arm hops layers.
+    function poseCronus(age: number, now: number, by: number) {
+      const ks = bossScale() * 0.16, half = rig.size / 2;
+      const toWorld = (p: number[]): [number, number] => [480 + (p[0] - half) * ks, by + (p[1] - rig.size) * ks];
+      // Arms are tucked armInset px under the torso so their own cut face stays hidden.
+      const inset = rig.torso.armInset;
+      const stump = { L: toWorld([rig.torso.stumpL[0] + inset, rig.torso.stumpL[1]]), R: toWorld([rig.torso.stumpR[0] - inset, rig.torso.stumpR[1]]) };
+      const preview = poseInput.value;
+      const attacking = preview === "auto" && age >= 0 && age < T_END;
+      const side: "L" | "R" = bossAttackSerial % 2 ? "L" : "R";
+      const idleSway = (phase: number) => Math.sin(now / 900 + phase) * 0.02;
+
+      const place = (s: "L" | "R", pose: string, x: number, y: number, sc: number, rot: number, layer: any) => {
+        const mirror = setArmPose(s, pose), sprite = armSprites[s];
+        sprite.position.set(x, y);
+        sprite.scale.set(ks * sc * mirror, ks * sc);
+        sprite.rotation = rot * mirror;
+        if (sprite.parent !== layer) layer.addChild(sprite);
+      };
+
+      const other: "L" | "R" = side === "L" ? "R" : "L";
+      const restOf = (s: "L" | "R") => place(s, "rest", stump[s][0], stump[s][1], 1, idleSway(s === "L" ? 0 : 2), armRearLayer);
+      let roar = forceRoar;
+      let rim: number[] | null = null;
+      let frontArm = false;
+      if (!attacking) {
+        const pose = preview === "auto" ? "rest" : preview;
+        if (pose === "rest") { restOf("L"); restOf("R"); }
+        else { place("L", pose, stump.L[0], stump.L[1], 1, 0, armRearLayer); restOf("R"); }
+        rim = stump.L;
+      } else {
+        restOf(other);
+        // The shoulder never moves: the arm only swaps pose and swings about it. The fist therefore
+        // lands where the strike pose reaches, which impactX() / impactY() report to the rest of the lab.
+        const strike = rig.arms.strike;
+        const flip = strike.side === side ? 1 : -1;
+        const home = stump[side];
+        const target = [home[0] + (strike.fist[0] - strike.pivot[0]) * flip * ks, home[1] + (strike.fist[1] - strike.pivot[1]) * ks];
+        const inFront = age >= T_STRIKE - 80 && age < T_REC + 250;
+        const layer = inFront ? armFrontLayer : armRearLayer;
+        frontArm = inFront;
+        if (age < T_STRIKE) {
+          const p = age / T_STRIKE;
+          // Rest until the arm starts to load, then the raised pose settles in with a small lag.
+          if (p < 0.25) place(side, "rest", home[0], home[1], 1, idleSway(0), layer);
+          else place(side, "raised", home[0], home[1], 1, -0.12 * (1 - easeOut((p - 0.25) / 0.75)), layer);
+          if (p > 0.55) roar = true;
+        } else if (age < T_HIT) {
+          // The swing pivots about the shoulder: the strike pose starts lifted and falls into place.
+          const q = clamp01((age - T_STRIKE) / (T_HIT - T_STRIKE));
+          place(side, "strike", home[0], home[1], 1, 0.45 * (1 - q * q), layer);
+          roar = true;
+        } else if (age < T_REC) {
+          place(side, "strike", home[0], home[1], 1, 0, layer);
+          roar = true;
+        } else {
+          const q = easeOut(clamp01((age - T_REC) / (T_END - T_REC)));
+          place(side, q < 0.4 ? "raised" : "rest", home[0], home[1], 1, 0, layer);
+          roar = forceRoar || age < T_REC + 300;
+        }
+        if (age >= T_STRIKE - 60 && age < T_HIT + 40) {
+          const s = armSprites[side];
+          emit(fxLayer, { tex: s.texture, x: s.x, y: s.y, rot: s.rotation, sz: Math.abs(s.scale.y), flip: Math.sign(s.scale.x), a: 0.5, tint: 0xff8a3d, add: true, life: 0.18, raw: true, ax: s.anchor.x, ay: s.anchor.y });
+        }
+        rim = target;
+      }
+      cronusHead.visible = roar;
+
+      torsoOverlay.visible = frontArm;
+      torsoOverlayMask.clear();
+      if (frontArm) {
+        torsoOverlay.position.set(480, by);
+        torsoOverlay.scale.copyFrom(cronusTorso.scale);
+        for (const key of ["L", "R"] as const) torsoOverlayMask.rect(stump[key][0] - 75, 0, 150, arenaEdge - 9).fill(0xffffff);
+      }
+
+      jointsG.clear();
+      if (jointsG.visible) {
+        const cross = (p: number[], color: number) => jointsG.circle(p[0], p[1], 6).stroke({ color, width: 2 }).moveTo(p[0] - 12, p[1]).lineTo(p[0] + 12, p[1]).moveTo(p[0], p[1] - 12).lineTo(p[0], p[1] + 12).stroke({ color, width: 1 });
+        cross(stump.L, 0x00ffff); cross(stump.R, 0x00ffff);
+        cross(toWorld(rig.torso.headTop), 0xff44ff);
+        cross([armSprites.L.x, armSprites.L.y], 0xffff00); cross([armSprites.R.x, armSprites.R.y], 0xffff00);
+        if (rim && attacking) cross(rim, 0xff4444);
+      }
+    }
+
     function bossScale() { return Number(scaleInput.value); }
     function bossPosition() { return { x: 480, y: Number(yInput.value) }; }
     function worldAnchor(index: number): [number, number] {
@@ -221,7 +631,14 @@ import GameLayout from "../../../layouts/GameLayout.astro";
       bossLayer.position.set(480, Number(yInput.value) - (modeInput.value === "animated" ? 60 : 0));
       bossAnimated.scale.set(bossScale());
       bossStatic.scale.set(bossScale() * 0.52);
+      const ks = bossScale() * 0.16;
+      cronusTorso.scale.set(ks);
+      cronusHead.scale.set(ks * Number(headScaleInput.value));
+      cronusHead.position.set(Number(headXInput.value), (rig.torso.headTop[1] - rig.size) * ks + Number(headYInput.value));
       halo.scale.set(bossScale() * 0.55);
+      $("gm-hs-value").textContent = Number(headScaleInput.value).toFixed(2);
+      $("gm-hx-value").textContent = headXInput.value;
+      $("gm-hy-value").textContent = headYInput.value;
       $("gm-scale-value").textContent = `${bossScale().toFixed(1)}×`;
       $("gm-y-value").textContent = yInput.value;
       $("gm-edge-value").textContent = edgeInput.value;
@@ -237,7 +654,7 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     }
 
     function bossAttack() {
-      bossAttackAt = performance.now();
+      bossAttackAt = vnow;
       bossAttackSerial += 1;
     }
 
@@ -248,33 +665,46 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     }
 
     function drawBossAttack(now: number) {
-      let telegraph = fxLayer.getChildByLabel?.("boss-telegraph");
-      if (!telegraph) { telegraph = new PIXI.Graphics(); telegraph.label = "boss-telegraph"; fxLayer.addChildAt(telegraph, 0); }
-      telegraph.clear();
+      telegraphG.clear();
       const elapsed = now - bossAttackAt;
-      if (elapsed < 0 || elapsed > 1650) return;
+      if (elapsed < 0 || elapsed >= T_HIT) return; // the impact effects take over from here
       const side = bossAttackSerial % 2 ? -1 : 1;
-      const cx = 480 + side * 205;
-      if (elapsed < 1050) {
-        const pulse = 0.18 + 0.14 * Math.sin(elapsed / 55);
-        telegraph.ellipse(cx, 382, 118, 48).fill({ color: 0xff442f, alpha: pulse }).stroke({ color: 0xff9b69, width: 3, alpha: 0.85 });
-        telegraph.moveTo(480, arenaEdge).lineTo(cx, 382).stroke({ color: 0xff6b45, width: 8, alpha: 0.14 });
-      } else {
-        const fade = 1 - (elapsed - 1050) / 600;
-        telegraph.ellipse(cx, 382, 135, 56).fill({ color: 0xffd166, alpha: 0.35 * fade }).stroke({ color: 0xffffff, width: 7, alpha: 0.75 * fade });
-        telegraph.moveTo(480, arenaEdge - 70).lineTo(cx, 382).stroke({ color: 0xff8a3d, width: 28, alpha: 0.42 * fade });
-      }
+      const cx = impactX(side);
+      const pulse = 0.18 + 0.14 * Math.sin(elapsed / 55);
+      const ty = impactY();
+      telegraphG.ellipse(cx, ty, 118, 48).fill({ color: 0xff442f, alpha: pulse }).stroke({ color: 0xff9b69, width: 3, alpha: 0.85 });
+      telegraphG.moveTo(480, arenaEdge).lineTo(cx, ty).stroke({ color: 0xff6b45, width: 8, alpha: 0.14 });
     }
 
+    let lastMode = modeInput.value;
     function setBossMode() {
-      const animated = modeInput.value === "animated";
-      bossAnimated.visible = animated;
-      bossStatic.visible = !animated;
+      const mode = modeInput.value, cronus = mode === "cronus";
+      // Each boss has its own framing: Cronus is a tall bust behind the wall, Brontax a full figure.
+      if (mode !== lastMode) {
+        scaleInput.value = cronus ? "2.5" : "3.1";
+        yInput.value = cronus ? "310" : "380";
+        lastMode = mode;
+      }
+      bossAnimated.visible = mode === "animated";
+      bossStatic.visible = mode === "still";
+      cronusTorso.visible = cronus;
+      armSprites.L.visible = armSprites.R.visible = cronus;
+      if (!cronus) { cronusHead.visible = false; jointsG.clear(); }
+      armSprite.visible = false;
+      rigControls.hidden = !cronus;
       redrawArena();
     }
 
-    for (const input of [scaleInput, yInput, edgeInput]) input.addEventListener("input", redrawArena);
+    for (const input of [scaleInput, yInput, edgeInput, headScaleInput, headXInput, headYInput]) input.addEventListener("input", redrawArena);
     modeInput.addEventListener("change", setBossMode);
+    $("gm-roar").addEventListener("click", (event) => {
+      forceRoar = !forceRoar;
+      (event.currentTarget as HTMLButtonElement).setAttribute("aria-pressed", String(forceRoar));
+    });
+    $("gm-joints").addEventListener("click", (event) => {
+      jointsG.visible = !jointsG.visible;
+      (event.currentTarget as HTMLButtonElement).setAttribute("aria-pressed", String(jointsG.visible));
+    });
     $("gm-attack").addEventListener("click", bossAttack);
     $("gm-targets").addEventListener("click", (event) => {
       showTargets = !showTargets; targetOverlay.visible = showTargets;
@@ -287,20 +717,43 @@ import GameLayout from "../../../layouts/GameLayout.astro";
 
     redrawArena(); setBossMode(); loading.hidden = true;
     bossAttack();
-    function tick(now: number) {
+    for (let i = 0; i < 60; i++) { ambient(0.05, -1); updateParticles(0.05); } // pre-warm so the arena does not start empty
+    function tick(wall: number) {
+      const frozen = paused || wall < hitstopUntil;
+      const wallDt = Math.max(0, Math.min(50, wall - lastWall));
+      lastWall = wall;
+      const dt = frozen ? 0 : wallDt / 1000;
+      if (!frozen) vnow += wallDt;
+      const now = vnow;
+
       if (!paused) {
         const attackAge = now - bossAttackAt;
-        const attacking = attackAge >= 1050 && attackAge < 1650;
+        const attacking = attackAge >= T_STRIKE && attackAge < T_REC;
         const bossFrames = attacking ? bossSheet.animations.attack : bossSheet.animations.idle;
-        bossAnimated.texture = bossFrames[attacking ? Math.min(bossFrames.length - 1, Math.floor((attackAge - 1050) / 75)) : Math.floor(now / 170) % bossFrames.length];
-        bossStatic.rotation = Math.sin(now / 850) * 0.012;
+        bossAnimated.texture = bossFrames[attacking ? Math.min(bossFrames.length - 1, Math.floor((attackAge - T_STRIKE) / 75)) : Math.floor(now / 170) % bossFrames.length];
+        const cronus = modeInput.value === "cronus";
+        const pose = cronus ? { lean: 0, lunge: 0 } : poseBoss(attackAge); // Cronus keeps still so the arms stay level
+        bossStatic.rotation = Math.sin(now / 850) * 0.012 + pose.lean;
         bossStatic.scale.set(bossScale() * 0.52, bossScale() * 0.52 * (1 + Math.sin(now / 700) * 0.012));
+        bossLayer.y = Number(yInput.value) - (modeInput.value === "animated" ? 60 : 0) + pose.lunge;
+        if (cronus) {
+          cronusTorso.scale.set(bossScale() * 0.16, bossScale() * 0.16 * (1 + Math.sin(now / 700) * 0.008));
+          poseCronus(attackAge, now, bossLayer.y);
+        }
+        halo.alpha = 0.75 + 0.25 * Math.sin(now / 260) + (attackAge >= 0 && attackAge < T_STRIKE ? 0.9 * (attackAge / T_STRIKE) : 0);
         heroViews.forEach((hero) => {
           hero.sprite.texture = hero.frames[Math.floor(now / 180 + hero.phase * 3) % hero.frames.length];
         });
+        if (impactSerial !== bossAttackSerial && attackAge >= T_HIT) {
+          impactSerial = bossAttackSerial;
+          onImpact(impactX(bossAttackSerial % 2 ? -1 : 1), impactY());
+        }
         if (now - lastShot > 850) { lastShot = now; fireVolley(now); }
         if (now - bossAttackAt > 5200) bossAttack();
+        ambient(dt, attackAge);
       }
+      updateParticles(dt);
+      drawImpactFx(dt);
 
       for (let i = projectiles.length - 1; i >= 0; i--) {
         const shot = projectiles[i];
@@ -362,6 +815,7 @@ import GameLayout from "../../../layouts/GameLayout.astro";
   .gm-controls label { display:grid; gap:8px; color:#d9dde7; font-size:13px; font-weight:650; }.gm-controls label span { display:flex; justify-content:space-between; }.gm-controls output { color:#dfbd6a; }
   .gm-controls input[type="range"] { width:100%; accent-color:#d7ad55; }.gm-controls select { width:100%; border:1px solid #444754; border-radius:6px; padding:9px; color:#eef0f6; background:#1b1d27; }
   .gm-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; }.gm-buttons button { min-height:39px; border:1px solid #4b4e5c; border-radius:6px; color:#e9ebf1; background:#20232e; cursor:pointer; }.gm-buttons button:first-child { grid-column:1/-1; border-color:#7d4d3c; color:#ffd1b6; background:#3a201d; }.gm-buttons button[aria-pressed="true"] { border-color:#d3ad59; color:#ffe7ad; background:#3b311f; }
+  .gm-rig { display:grid; gap:12px; margin:0; padding:12px; border:1px solid #4b4333; border-radius:8px; }.gm-rig legend { padding:0 6px; color:#cda957; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }.gm-rig[hidden]{display:none}.gm-rig .gm-buttons button:first-child { grid-column:auto; border-color:#4b4e5c; color:#e9ebf1; background:#20232e; }.gm-rig .gm-buttons button[aria-pressed="true"] { border-color:#d3ad59; color:#ffe7ad; background:#3b311f; }
   .gm-readout { padding-top:14px; border-top:1px solid #343641; }.gm-readout ul { margin:10px 0 0; padding-left:17px; color:#aeb5c4; font-size:12px; line-height:1.5; }.gm-readout li+li{margin-top:6px}
   @media(max-width:980px){.gm-workspace{grid-template-columns:1fr}.gm-controls{grid-template-columns:1fr 1fr}.gm-control-head,.gm-readout{grid-column:1/-1}}
   @media(max-width:650px){.gm-page{padding:12px}.gm-head{align-items:start}.gm-head>div>p:not(.gm-kicker){display:none}.gm-workspace{gap:12px}.gm-controls{grid-template-columns:1fr}.gm-control-head,.gm-readout{grid-column:auto}.gm-hint{display:none}}

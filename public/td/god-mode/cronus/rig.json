@@ -1,0 +1,65 @@
+{
+  "size": 640,
+  "torso": {
+    "file": "cronus-torso.webp",
+    "stumpL": [
+      38.3,
+      366.4
+    ],
+    "stumpR": [
+      600.7,
+      366.4
+    ],
+    "headTop": [
+      320,
+      0
+    ],
+    "armInset": 30.6
+  },
+  "headRoar": {
+    "file": "cronus-head-roar-v2.webp",
+    "top": [
+      320,
+      0
+    ],
+    "defaultScale": 0.55
+  },
+  "arms": {
+    "rest": {
+      "file": "cronus-arm-rest.webp",
+      "pivot": [
+        438.4,
+        104.1
+      ],
+      "side": "L"
+    },
+    "raised": {
+      "file": "cronus-arm-raised.webp",
+      "pivot": [
+        527.7,
+        516.5
+      ],
+      "side": "L"
+    },
+    "strike": {
+      "file": "cronus-arm-strike.webp",
+      "pivot": [
+        608.4,
+        128.6
+      ],
+      "side": "L",
+      "fist": [
+        289.4,
+        426.7
+      ]
+    },
+    "sweep": {
+      "file": "cronus-arm-sweep.webp",
+      "pivot": [
+        26.5,
+        270.5
+      ],
+      "side": "R"
+    }
+  }
+}
