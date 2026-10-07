@@ -255,6 +255,8 @@ export async function createRenderer(canvas, game, options = {}) {
   const fxKit = createFxKit(PIXI, layerParts, { reducedMotion });
   const zeusFx = createOdinFx(PIXI, layerParts, fxKit, { reducedMotion });
   const groundFxKit = createFxKit(PIXI, layerGroundFx, { reducedMotion, max: 200 });
+  const layerGroundRings = new PIXI.Container(); // hit / splash / ult rings: flat on the ground, behind the figures
+  layerGroundFx.addChild(layerGroundRings);
   const heroFx = createHeroFx(fxKit, { reducedMotion, groundKit: groundFxKit });
   const statusFx = createStatusFx(fxKit, { reducedMotion });
 
@@ -347,6 +349,9 @@ export async function createRenderer(canvas, game, options = {}) {
   // Full-body sprites stand on the path: the build script leaves a 10% margin under the
   // figure, so anchor at 0.9 height and put the feet a little below the path centre line.
   const FULL_SPRITE_FEET = 6;
+  // Sheet px between the packed anchor (lowest opaque pixel) and the real feet, for bosses whose
+  // lowest pixel is a stray tail wisp: without it the body hovers above its shadow.
+  const BOSS_FEET_RAISE = { lerna: 8 };
   // Flyers hover above a faint ground shadow and bob, so they read as airborne
   // (they pass over blockers; only platform heroes can hit them).
   const FLYER_LIFT = 18;
@@ -1385,7 +1390,7 @@ export async function createRenderer(canvas, game, options = {}) {
       if (sheet) {
         // Feet point from the packer; the idle body's larger side gets the still sprite's ~80%.
         const frame = sheet.anims.idle[0];
-        sp.anchor.set(sheet.td.anchor.x / frame.width, sheet.td.anchor.y / frame.height);
+        sp.anchor.set(sheet.td.anchor.x / frame.width, (sheet.td.anchor.y - (kind === "boss" ? BOSS_FEET_RAISE[options.boss?.id] ?? 0 : 0)) / frame.height);
         sp.scale.set(size * 0.8 / Math.max(sheet.td.bodyHeight, sheet.td.bodyWidth ?? 0));
         c._sheet = sheet;
       } else {
@@ -2219,6 +2224,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
+    layerGroundRings.removeChildren();
     for (const effect of game.effects) {
       if (effect.type === "damageNumber") continue;
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
@@ -2262,7 +2268,7 @@ export async function createRenderer(canvas, game, options = {}) {
           g.filters = [new GlowFilter({ distance: 14, outerStrength: 1.5, color })];
         }
       }
-      layerFx.addChild(g);
+      layerGroundRings.addChild(g);
     }
     drawAimPreview(now);
   }

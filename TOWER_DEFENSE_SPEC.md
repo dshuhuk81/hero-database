@@ -1098,3 +1098,4 @@ The order and dependencies of the open work live in
 - **Campaign viability check:** `test-td-campaign` prints the bot win rate per stage and notes stages below 20%, but
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
+- **Board visuals (October 7):** painted maps no longer draw SPAWN / SANCTUARY / INTEGRITY captions (neighbouring tiles clipped them; lives show in the HUD). Hit, splash, cleave and ult rings draw on `layerGroundRings` (inside `layerGroundFx`, under the units). Lerna's sheet feet are raised 8 sheet px (`BOSS_FEET_RAISE` in `render.js`) because its packed anchor was a stray tail pixel, so the shadow sat below the feet.

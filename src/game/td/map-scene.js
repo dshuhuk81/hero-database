@@ -1,7 +1,7 @@
 // Retained scenery for authored battlefields. Coordinates use the game's 960 × 540 world.
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
 import { mapLanes, routeStrokes } from "./lanes.js";
-import { boardOf, shownLives } from "./board.js";
+import { boardOf } from "./board.js";
 import { ENVIRONMENTS } from "./environments.js";
 
 const TAU = Math.PI * 2;
@@ -219,7 +219,6 @@ export function createMapScene(PIXI, game, {
   const strokes = routeStrokes(game.map);
   const base = game.map.base;
   const maxLives = game.maxLives ?? Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
-  const unit = game.lifeUnit ?? 1; // shown lives (board.js shownLives)
   const seen = new WeakSet();
   let hitAt = -Infinity;
   let lastLives = game.lives;
@@ -443,19 +442,8 @@ export function createMapScene(PIXI, game, {
     sprite.width = width; sprite.height = height / tiltK;
   }
 
-  function label(text, x, y, size, color) {
-    // Labels belong to the battlefield, behind placement tiles and combatants. Putting
-    // them on the HUD layer made them paint over enemies, health bars and heroes.
-    const t = add(structures, new PIXI.Text({ text, style: {
-      fontFamily: "Georgia, serif", fontSize: size, fontWeight: "600", fill: color,
-      letterSpacing: size >= 10 ? 1.3 : 0.5,
-      stroke: { color: theme.labels.stroke, width: 3 },
-    } }));
-    t.anchor.set(0.5); t.scale.y = 1 / tiltK; t.position.set(x, y); return t;
-  }
-  const spawnLabels = spawns.map((spawn) => label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]));
-  label(theme.labels.base[0], base.x + 1, base.y + 55, 10, theme.labels.base[1]);
-  const integrityLabel = label("", base.x + 1, base.y + 69, 9, theme.labels.integrity);
+  // No SPAWN / SANCTUARY / integrity captions: the labels sat under the neighbouring placement
+  // tiles and were clipped by them, and the painted gate and sanctuary are self-explanatory.
   const cracks = localGraphic(foreground, base);
   const ambient = graphic(overlay);
   const motes = Array.from({ length: 12 }, (_, i) => ({
@@ -467,7 +455,6 @@ export function createMapScene(PIXI, game, {
 
   function draw(now = 0) {
     const seconds = now / 1000;
-    for (const spawnLabel of spawnLabels) spawnLabel.visible = spawnLabelVisible(game);
     if (game.started !== wasStarted) { wasStarted = game.started; startAt = now; } // the gates flare when the stage starts
     for (const effect of game.effects ?? []) {
       if (effect.type === "baseHit" && !seen.has(effect)) {
@@ -486,8 +473,6 @@ export function createMapScene(PIXI, game, {
     const integrity = Math.max(0, Math.min(1, game.lives / maxLives));
     if (lastIntegrity !== integrity) {
       lastIntegrity = integrity;
-      integrityLabel.text = `${shownLives(game.lives, unit)} / ${shownLives(maxLives, unit)} INTEGRITY`;
-      integrityLabel.style.fill = integrity <= 0.3 ? 0xe8a68b : theme.labels.integrity;
       cracks.clear();
       if (integrity < 0.7) cracks.moveTo(35, -23).lineTo(30, -12).lineTo(35, -5).lineTo(29, 5).stroke({ color: 0x0a1420, width: 2 });
       if (integrity < 0.35) cracks.moveTo(3, 17).lineTo(13, 24).lineTo(11, 30).lineTo(21, 34).stroke({ color: 0x121a20, width: 2 });
