@@ -696,6 +696,8 @@ background (132,130,128 / 126,126,125) that had to be keyed out before packing. 
 83 boards: 82 campaign stage maps, each with its own layout, plus the dev-only `proto-board`.
 Ids, names, themes, art, music and bosses are those of the maps they replaced.
 
+**Music routing** (`music.js`, `tdMusic.json`): Daily Trial and Expedition each have one track, a campaign stage plays its chapter's track (chapter = prefix of the stage id), everything else the map's own `music`. An empty entry in `tdMusic.json` means "not produced yet" and falls back to the map track. Files live at `td/music/{id}.m4a` on R2.
+
 | Group | Board | Gates |
 |---|---|---|
 | Chapter 1 stages 1-1 to 1-9 | 8 x 4 | 1; 2 on 1-7 and 1-9 |

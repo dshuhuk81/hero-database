@@ -7,6 +7,7 @@ import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { environmentFor } from "../environments.js";
 import { timelineForMap } from "../stage-for-map.js";
+import { trackForRun } from "../music.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
@@ -59,7 +60,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       store.data.ui = { ...store.data.ui, homeMode };
       store.persist();
     }
-    deps.music.play(map.music);
+    deps.music.play(trackForRun({ daily, expedition, stageId: campaign?.stageId, map }));
     ctx.actions.showScreen("play");
     const environment = environmentFor(map);
     const environmentLabel = q("[data-td-environment-rule]");
