@@ -35,7 +35,7 @@ export function createRecruit(ctx: PageContext) {
     if (game.complete) return "The battle is over";
     if (game.heroes.some((unit: any) => unit.id === heroId)) return "Already deployed";
     if (game.heroes.length >= game.deployCap()) return `Team full (${game.deployCap()})`;
-    if (game.placement < cost) return `Needs ${cost} placement, you have ${Math.floor(game.placement)}`;
+    if (game.placement < cost) return `Needs ${cost} Nectar, you have ${Math.floor(game.placement)}`;
     return "";
   }
 
@@ -45,7 +45,7 @@ export function createRecruit(ctx: PageContext) {
     if (!game || !hero) { deployButton.disabled = true; reasonEl.textContent = ""; return; }
     const reason = blockReason(game, hero.id);
     deployButton.disabled = !!reason;
-    deployButton.textContent = `Deploy ${hero.name} · ${game.deployCost(hero.id)} placement`;
+    deployButton.textContent = `Deploy ${hero.name} · ${game.deployCost(hero.id)} Nectar`;
     reasonEl.textContent = reason;
     reasonEl.hidden = !reason;
   }
@@ -181,9 +181,9 @@ export function createRecruit(ctx: PageContext) {
       const cost = game.deployCost(hero.id);
       const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
       const full = game.heroes.length >= game.deployCap();
-      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : game.placement < cost ? `Needs ${cost} placement` : "";
+      const reason = deployed ? "Already deployed" : full ? `Team full (${game.deployCap()})` : game.placement < cost ? `Needs ${cost} Nectar` : "";
       button.classList.toggle("is-unavailable", !!reason);
-      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason || `${hero.class} - ${cost} placement`;
+      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason || `${hero.class} - ${cost} Nectar`;
     });
     syncDeploy();
   }
@@ -207,7 +207,7 @@ export function createRecruit(ctx: PageContext) {
       // Relocation (R4): an invalid tile keeps the mode; tapping the hero itself cancels it.
       if (occupant?.entityId === state.relocateEntityId) { ctx.actions.cancelDeploy(); return; }
       const result = game.relocate(state.relocateEntityId, slot.type, slot.index);
-      if (result.ok) { ctx.notice(`${result.hero.name} relocated for ${result.cost} placement.`); ctx.actions.cancelDeploy(); }
+      if (result.ok) { ctx.notice(`${result.hero.name} relocated for ${result.cost} Nectar.`); ctx.actions.cancelDeploy(); }
       else ctx.notice(result.reason || "Relocation unavailable.");
       return;
     }
@@ -216,7 +216,7 @@ export function createRecruit(ctx: PageContext) {
       const hero = heroById.get(state.deployHeroId);
       if (hero.slot !== slot.type) { ctx.notice(`${hero.name} needs a ${hero.slot} tile.`); return; }
       if (game.place(hero.id, slot.type, slot.index)) { ctx.notice(`${hero.name} deployed.`); ctx.actions.cancelDeploy(); }
-      else ctx.notice(game.placement < game.deployCost(hero.id) ? `Needs ${game.deployCost(hero.id)} placement to deploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
+      else ctx.notice(game.placement < game.deployCost(hero.id) ? `Needs ${game.deployCost(hero.id)} Nectar to deploy ${hero.name}.` : `Your team is full (${game.deployCap()} heroes). Sell a hero to make room.`);
       return;
     }
     // Drag a hero from the bar onto a tile to place it.

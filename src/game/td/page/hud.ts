@@ -154,7 +154,7 @@ export function createHud(ctx: PageContext) {
       const short = game.complete || game.placement < cost;
       button.classList.toggle("is-unaffordable", short);
       button.classList.toggle("is-selected", state.deployHeroId === hero.id);
-      button.setAttribute("aria-label", `${hero.name}${fallen ? " has fallen" : ""}. ${fallen ? "Redeploy" : "Deploy"} for ${cost} placement: drag onto the battlefield or tap, then tap a tile.`);
+      button.setAttribute("aria-label", `${hero.name}${fallen ? " has fallen" : ""}. ${fallen ? "Redeploy" : "Deploy"} for ${cost} Nectar: drag onto the battlefield or tap, then tap a tile.`);
       button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${cost}`;
     });
   }
@@ -215,7 +215,7 @@ export function createHud(ctx: PageContext) {
       if (ctx.actions.consumeDragClick()) return;
       const hero = heroById.get((readyButton.dataset.deckFallen ?? readyButton.dataset.deckReady)!);
       const cost = session.game.deployCost(hero.id);
-      if (session.game.placement < cost) { ctx.notice(`${hero.name} needs ${cost} placement, you have ${Math.floor(session.game.placement)}.`); return; }
+      if (session.game.placement < cost) { ctx.notice(`${hero.name} needs ${cost} Nectar, you have ${Math.floor(session.game.placement)}.`); return; }
       ctx.actions.closePopover(false);
       ctx.actions.closeSheet(false);
       state.deployHeroId = state.deployHeroId === hero.id ? "" : hero.id;

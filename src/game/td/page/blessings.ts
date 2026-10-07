@@ -20,7 +20,7 @@ const TRUNK_X = (WORLD_COLS - TRUNK_COLS) / 2;
 const PAD = 0.6; // grid units around the world
 
 const GLYPHS: Record<string, string> = {
-  startingPlacement: "Place", lives: "Life", showHp: "Scout", heroHp: "HP", placementRate: "Rate", ultCharge: "Ult",
+  startingPlacement: "Nectar", lives: "Life", showHp: "Scout", heroHp: "HP", placementRate: "Rate", ultCharge: "Ult",
   synergyTag: "Bond", openingSpeed: "Slow", deployDiscount: "Cost", contactRange: "Wall",
   bossDamage: "Boss", thunderCharge: "Bolt", thunderArea: "Area", shieldCharge: "Ward", shieldSeconds: "Time", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",

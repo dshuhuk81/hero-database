@@ -29,7 +29,7 @@
         "type": "startingPlacement",
         "value": 1
       },
-      "text": "Start each run with +{v} placement points."
+      "text": "Start each run with +{v} Nectar."
     },
     {
       "tree": "trunk",
@@ -86,7 +86,7 @@
         "type": "placementRate",
         "value": 0.03
       },
-      "text": "Placement regrows {p} faster."
+      "text": "Nectar regrows {p} faster."
     },
     {
       "tree": "trunk",
@@ -146,7 +146,7 @@
         "type": "deployDiscount",
         "value": 0.03
       },
-      "text": "Placement costs -{p}."
+      "text": "Nectar costs -{p}."
     },
     {
       "tree": "trunk",
@@ -191,7 +191,7 @@
         "type": "startingPlacement",
         "value": 8
       },
-      "text": "Start each run with +{v} placement points."
+      "text": "Start each run with +{v} Nectar."
     },
     {
       "tree": "trunk",
@@ -327,7 +327,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Tanks deploy for {p} less placement cost."
+      "text": "Tanks deploy for {p} less Nectar cost."
     },
     {
       "tree": "Tank",
@@ -407,7 +407,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating tanks costs {p} less placement."
+      "text": "Relocating tanks costs {p} less Nectar."
     },
     {
       "tree": "Tank",
@@ -502,7 +502,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Warriors deploy for {p} less placement cost."
+      "text": "Warriors deploy for {p} less Nectar cost."
     },
     {
       "tree": "Warrior",
@@ -582,7 +582,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating warriors costs {p} less placement."
+      "text": "Relocating warriors costs {p} less Nectar."
     },
     {
       "tree": "Warrior",
@@ -677,7 +677,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Assassins deploy for {p} less placement cost."
+      "text": "Assassins deploy for {p} less Nectar cost."
     },
     {
       "tree": "Assassin",
@@ -757,7 +757,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating assassins costs {p} less placement."
+      "text": "Relocating assassins costs {p} less Nectar."
     },
     {
       "tree": "Assassin",
@@ -852,7 +852,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Mages deploy for {p} less placement cost."
+      "text": "Mages deploy for {p} less Nectar cost."
     },
     {
       "tree": "Mage",
@@ -932,7 +932,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating mages costs {p} less placement."
+      "text": "Relocating mages costs {p} less Nectar."
     },
     {
       "tree": "Mage",
@@ -1027,7 +1027,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Archers deploy for {p} less placement cost."
+      "text": "Archers deploy for {p} less Nectar cost."
     },
     {
       "tree": "Archer",
@@ -1107,7 +1107,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating archers costs {p} less placement."
+      "text": "Relocating archers costs {p} less Nectar."
     },
     {
       "tree": "Archer",
@@ -1202,7 +1202,7 @@
         "type": "deployDiscount",
         "value": 0.1
       },
-      "text": "Supports deploy for {p} less placement cost."
+      "text": "Supports deploy for {p} less Nectar cost."
     },
     {
       "tree": "Support",
@@ -1281,7 +1281,7 @@
         "type": "relocateDiscount",
         "value": 0.3
       },
-      "text": "Relocating supports costs {p} less placement."
+      "text": "Relocating supports costs {p} less Nectar."
     },
     {
       "tree": "Support",

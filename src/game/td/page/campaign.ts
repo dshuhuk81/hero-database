@@ -548,7 +548,7 @@ export function createCampaign(ctx: PageContext) {
 
   const statRows = (hero: any, now: number, next: number | null) => {
     const row = (label: string, base: number) => `<div><dt>${label}</dt><dd>${Math.round(base * now).toLocaleString()}${next ? ` <span class="td-camp-gain">→ ${Math.round(base * next).toLocaleString()}</span>` : ""}</dd></div>`;
-    return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Placement cost</dt><dd>${hero.cost}</dd></div></dl>`;
+    return `<dl class="td-camp-stats td-hero-profile-stats">${row("Attack", hero.atk)}${row("Health", hero.hp)}<div><dt>Nectar cost</dt><dd>${hero.cost}</dd></div></dl>`;
   };
 
   // Level: capped by stars (10 per star band). Pips show the current band of 10 levels.

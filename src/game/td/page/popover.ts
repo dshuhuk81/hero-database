@@ -145,16 +145,16 @@ export function createPopover(ctx: PageContext) {
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
-    popSell.title = `Remove ${unit.name} from the field and refund its ${refund} placement.`;
+    popSell.title = `Remove ${unit.name} from the field and refund its ${refund} Nectar.`;
     updateHealth(unit);
     updateStats(unit);
     updateTargeting(unit);
     // Relocation (R4): any time (a short cooldown per hero), to an empty tile of the same type, for a share of the deployment cost.
     const move = game.relocationInfo(unit.entityId);
     popRelocate.disabled = !move.ok || game.placement < (move.cost ?? Infinity);
-    popRelocateCost.textContent = Number.isFinite(move.cost) ? (move.cost === 0 ? "Free" : `${move.cost} placement`) : "";
+    popRelocateCost.textContent = Number.isFinite(move.cost) ? (move.cost === 0 ? "Free" : `${move.cost} Nectar`) : "";
     popPreview.textContent = !move.ok ? move.reason || ""
-      : game.placement < move.cost ? `Needs ${move.cost} placement to relocate, you have ${game.placement}.`
+      : game.placement < move.cost ? `Needs ${move.cost} Nectar to relocate, you have ${game.placement}.`
       : `Move ${unit.name} to an empty ${unit.slotType} tile. Health, charge and cooldowns stay.`;
     if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
   }
@@ -285,7 +285,7 @@ export function createPopover(ctx: PageContext) {
     }
     sellArmed = false;
     const result = session.game.sell(state.selectedEntityId);
-    if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} placement. The tile is free again.`);
+    if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} Nectar. The tile is free again.`);
   });
   q("[data-pop-close]").addEventListener("click", () => close());
   popDetailsButton.addEventListener("click", () => {

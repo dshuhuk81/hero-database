@@ -263,7 +263,7 @@ export function createResults(ctx: PageContext) {
     const statsHtml = [
       mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
       `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? 0)}</strong></div>`,
-      `<div class="td-result-stat"><span>Placement left</span><strong>${Math.floor(game.placement)}</strong><small>of ~${Math.round((game.totalPlacementEarned ?? 0) + game.tuning.run.startingPlacement)} earned</small></div>`,
+      `<div class="td-result-stat"><span>Nectar left</span><strong>${Math.floor(game.placement)}</strong><small>of ~${Math.round((game.totalPlacementEarned ?? 0) + game.tuning.run.startingPlacement)} earned</small></div>`,
       `<div class="td-result-stat"><span>Spent</span><strong>${game.totalPlacementSpent ?? 0}</strong></div>`,
       insightStat(earnedInsight),
       reactionStat(game.reactionCounts),

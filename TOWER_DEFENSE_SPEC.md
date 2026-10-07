@@ -667,6 +667,7 @@ background (132,130,128 / 126,126,125) that had to be keyed out before packing. 
   points and gains `run.placementPerSecond` (1) per second of battle time (while the stage runs). Gold only exists outside the battle, for hero levels and stars.
   `sim.placement` is the counter; `addPlacement()` pays extra points and tracks
   `totalPlacementEarned` / `stageStats.placementEarned`; `totalPlacementSpent` tracks spending.
+- **Naming:** the battle currency is shown to players as **Nectar** (was "placement points"). Code, tuning keys and save fields keep the `placement` names (`sim.placement`, `startingPlacement`, `placementRate`, `RunBoost.type`), so only UI text changed.
 - Standard run (Daily Trial, Expedition stage): 25 lives (5 shown), deploy cap 7. Each hero has a placement cost (`cost` in
   `gameBalance.json`, 11 for the cheapest recruits up to 25 for the strongest; tuned by hand,
   `build-game-balance.mjs` keeps an existing cost). Other sources of placement: the Soul Reaper boon (`placement` 3 per
@@ -915,7 +916,7 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 
 ### Summoning
 
-`tdSummon.json`: banner "Ember at the Crossing", 60 Divine Seals per summon, x1 or x10 (600),
+`tdSummon.json`: banner "Ember at the Crossing", 54 Divine Seals per summon, x1 or x10 (540),
 one featured hero for 14 days (rotation `surtr`, `nott`, `hephaestus`, `hecate`; weight x2),
 rarity weights lord 0.5 / legendary 1 / epic 2 / common 10 (retuned October 6, 2026, owner: legendaries and the
 Lord came too often; the old 1.8 / 6 / 4 / 10 gave 16% legendary and 0.8% Lord per summon. Now about 3.8% legendary,

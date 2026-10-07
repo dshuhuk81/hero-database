@@ -6494,32 +6494,6 @@ svg.td-class-icon {
   }
 }
 
-/* Help: articles flow in newspaper columns, so short and long topics pack without gaps. */
-.td-help {
-  display: block;
-  columns: 260px auto;
-  column-gap: var(--space-6);
-}
-
-.td-help article {
-  break-inside: avoid;
-  margin: 0 0 var(--space-5);
-  padding-left: var(--space-3);
-  border-left: 1px solid var(--border-medium);
-}
-
-.td-help strong {
-  color: var(--text-bright);
-  font-size: var(--td-fs-card);
-}
-
-.td-help p {
-  margin: var(--space-1) 0 0;
-  color: var(--text-secondary);
-  font-size: var(--td-fs-body);
-  line-height: var(--leading-normal);
-}
-
 .td-save-block {
   display: grid;
   gap: var(--space-2);

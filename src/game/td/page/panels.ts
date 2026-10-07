@@ -1,4 +1,4 @@
-// Panels (menu, Blessings, help, save): modal open/close with focus restore and a
+// Panels (menu, Blessings, save): modal open/close with focus restore and a
 // "panel" pause reason, or embedded in a menu screen (M22), the Blessings tabs, the
 // Divine Blessings graph (blessings.ts) and the This run tab.
 import { buildRunTuning } from "../favor.js";

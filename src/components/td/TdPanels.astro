@@ -1,21 +1,9 @@
 ---
-// Panels: the in-game pause menu (modal only) and Blessings, help and save data. The
-// last three open as modals during a run and are moved into their menu screens
+// Panels: the in-game pause menu (modal only) and Blessings and save data. The
+// last two open as modals during a run and are moved into their menu screens
 // otherwise (panels.embed). Controlled by src/game/td/page/panels.ts and save.ts.
 interface Props { maps: any[]; bossNames: Record<string, string>; heroes: any[]; }
 import TdSoundControls from "./TdSoundControls.astro";
-import { DAILY } from "../../game/td/daily.js";
-import tuning from "../../data/gameBalance.tuning.json";
-import campaign from "../../data/tdCampaign.json";
-const { maps, bossNames, heroes } = Astro.props;
-// Display names (the active hero skin), so rules text never hard-codes a hero.
-const n = (id: string) => heroes.find((hero: any) => hero.id === id)?.name ?? id;
-const deployCap = tuning.run.deployCap;
-const startingPlacement = tuning.run.startingPlacement;
-const placementPerSecond = tuning.run.placementPerSecond;
-const collectionDefeated = (campaign as any).collectionRewards?.maxDefeated ?? 0;
-const relocationCooldown = tuning.run.relocationCooldownSeconds ?? 8;
-const bossList = maps.filter((map: any) => !map.campaignOnly).map((map: any) => `${bossNames[map.id]} on ${map.name}`).join(", ");
 ---
 
 <div class="td-panel-layer" data-td-panel-layer hidden>
@@ -33,7 +21,6 @@ const bossList = maps.filter((map: any) => !map.campaignOnly).map((map: any) => 
       <TdSoundControls />
       <div class="td-menu-actions">
         <button class="action-button action-button--primary" type="button" data-td-close-panel>Resume</button>
-        <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
         <button class="action-button action-button--quiet" type="button" data-td-restart>Restart run</button>
         <button class="action-button action-button--quiet" type="button" data-td-to-lobby="home">Main menu</button>
         <a class="action-button action-button--quiet" href="/">Exit to database</a>
@@ -58,34 +45,6 @@ const bossList = maps.filter((map: any) => !map.campaignOnly).map((map: any) => 
         <div data-td-favor-tree></div>
       </div>
       <div id="td-tabpanel-run" role="tabpanel" aria-labelledby="td-tab-run" data-td-tabpanel="run" hidden></div>
-    </div>
-  </section>
-
-  <section class="td-panel td-panel--wide" data-td-panel="help" role="dialog" aria-modal="true" aria-labelledby="td-help-title" tabindex="-1" hidden>
-    <div class="td-panel-head">
-      <h2 id="td-help-title">How to play</h2>
-      <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close help">
-        <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
-      </button>
-    </div>
-    <div class="td-panel-body td-help">
-      <article><strong>Campaign</strong><p>Authored stages in chapters, played in order. Before a stage, pick a squad of up to 6 of your heroes; only they can be deployed. You start with 6 heroes and several stages add one on their first clear, plus Gold and Hero XP (replays pay a quarter). Spend them on the Heroes screen: each hero level adds attack and health in every mode. First clears also pay Divine Seals and replays a quarter of them: on the Summon screen, 60 of them call a hero (a x10 call guarantees one you do not own yet). Divine Blessings do not apply and campaign stages earn no Favor.</p></article>
-      <article><strong>Your heroes</strong><p>The heroes you unlock in the Campaign and summon with Divine Seals are your collection. An Expedition draws its squad and camp recruits from them. The Daily Trial and Expeditions pay a share of Gold and Hero XP for every enemy defeated (up to {collectionDefeated} a run) on top of their Favor. Hero levels, Stars, Evolution and Skills count in every mode. The Daily Trial gives everyone the same squad.</p></article>
-      <article><strong>Deploy</strong><p>Tap an empty tile to recruit a hero there. Every battlefield is a board of large tiles: road tiles on the path and a few blocks of platform tiles beside it. Every hero costs placement points: you start each battle with {startingPlacement} and gain {placementPerSecond} more every second of battle. The deploy limit ({deployCap} heroes on the field at once) also applies. Each class attacks a pattern of tiles around its own tile (Tanks and Assassins the tiles next to them, Warriors and Supports a 3 x 3 square, Mages a diamond, Archers a long cross); placing or selecting a hero lights its tiles up green, so pick the tile whose pattern covers the most road. A fallen or sold hero frees a place. You can start the stage as soon as one hero is on the field; enemies then arrive one group after another until the counter at the top reaches its total.</p></article>
-      <article><strong>Road</strong><p>Tiles on the road accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle. A Tank holds up to 3 enemies at once, a Warrior 2 and an Assassin 1; the rest walk past to the next blocker, slowed for a moment as they squeeze by.</p></article>
-      <article><strong>Platforms</strong><p>Tiles beside the road accept Mages, Archers, and Supports. Flyers ignore blockers and road heroes (ultimates included), so ranged coverage matters.</p></article>
-      <article><strong>Special tiles</strong><p>Some tiles carry a marker. High ground (gold triangle) lets the hero reach one step further, a Shrine (cyan diamond) charges the hero's ultimate 30% faster, and a Cursed tile (red cross) gives +30% damage but 20% slower attacks. The recruit sheet names the tile before you place a hero there.</p></article>
-      <article><strong>Classes</strong><p>Every class fights its own way. Tanks shrug off part of every hit, and their ultimate pins every ground enemy nearby in place. Warriors cleave the enemies next to their target. Assassins dash to enemies that slip past the line and hit fast Runners hardest; their ultimate makes them untouchable for a moment while they strike an extra enemy. Mages fire slow magic blasts that splash around the target ({n("odin")} chains instead), best against packs and armored Brutes. Archers fire slow, heavy shots at the toughest enemy in range, pierce armor and hit flyers twice as hard. Supports heal the most injured ally in reach and raise the attack of allies inside their reach, but barely attack. Enemy Archers shoot from range for a few seconds, then close in.</p></article>
-      <article><strong>Hero actions</strong><p>Tap a deployed hero to relocate or sell it. Heroes aim on their own: cone and spread attacks always centre on their target. Relocate works at any time and costs nothing, but a hero cannot move again for {relocationCooldown} seconds: it moves the hero to an empty tile of the same type, keeping its health, ultimate charge and cooldowns. Selling works anytime, frees the tile and returns the hero's full placement cost; tap Sell twice to confirm. Placement points buy deployments only: level, stars, Evolution and skills come from the Heroes screen and apply in every mode.</p></article>
-      <article><strong>Targeting</strong><p>The Target icons in a hero's popup choose who it attacks first: its class rule (Archers the toughest, Assassins loose and weak enemies, everyone else the enemy furthest along), first or last enemy, highest or lowest health, fastest, ground, flyers or the boss. Ground, flyers and boss fall back to other enemies when none are in range. Road heroes still cannot hit flyers, and Supports always heal first. The choice stays with the unit, also through a revive.</p></article>
-      <article><strong>Divine Blessings</strong><p>Every finished run earns Favor for the Divine trunk. Each hero class also has its own branch, paid with that class's Insight: the heroes you deploy earn it for their class, for each class on the field when the stage ends and per kills. Most blessings have several levels, deeper stages open once enough levels are bought in that tree, and Surge and Wrath exclude each other. Drag or pinch to move and zoom the tree. A reset refunds everything for a Favor fee. Purchases made during a run apply from your next run. Runs that defeat at least half of the stage's enemies also earn a Favor shard.</p></article>
-      <article><strong>Expedition</strong><p>A run across all three battlefields with one squad. You start with three random heroes; only your expedition roster can be recruited. Each stage plays its battlefield's enemy timeline, tougher than the last; lives carry over, and a stage cannot be retried. After a won stage the camp on the Expedition screen offers a new hero (costs lives), a pair of relics (rare and epic blessings active from the start) or a drill (your current heroes gain +10% attack and health for the rest of the expedition). Your progress is saved between stages.</p></article>
-      <article><strong>Daily Trial</strong><p>Every day brings one fixed trial, the same for every player: a battlefield, five heroes (at least two for the road and two for platforms), and two mutators that are active from the start. It is one stage at Normal without Divine Blessings, so only your play decides the score. Defeat enough of its enemies to reach the goal for {DAILY.rewardFavor} bonus Favor once per day; the run's normal Favor counts as usual. The Daily Trial screen shows today's trial and your best of the day. A new trial starts at midnight UTC.</p></article>
-      <article><strong>Rare and Epic blessings</strong><p>Some cards in the blessing offers that open as you defeat enemies are Rare (blue) or Epic (purple). Instead of a stat bonus they change how the fight works, for example Tidal Pull slows Wet enemies and Soul Reaper pays placement points on every 10th kill. They are only offered when your deployed heroes can use them, so what you field shapes what you are offered.</p></article>
-      <article><strong>Status effects</strong><p>Some heroes mark enemies with their basic attacks: {n("aegir")} makes them Wet, {n("ymir")} Chills them, {n("hephaestus")} sets them on Burn, {n("stheno")} and {n("fenrir")} Poison them. Small colored dots above an enemy's health bar show its statuses. Statuses combine into reactions, for example Wet plus {n("odin")}'s chain lightning (Conduct) or Wet plus Burn (Steam). The first time a reaction happens in a run, the game names it; the Glossary lists all of them.</p></article>
-      <article><strong>Special enemies</strong><p>In later stages some enemies change what your line needs. Menders heal enemies around them (splash damage or Last enemy targeting reaches them). Shieldbearers carry a shield that breaks faster to many quick hits. Hexers stop the nearest hero for a moment, so don't rely on one hero per spot; Archers outrange them. Broodcallers call Imps until they fall, so kill them early. The Glossary has the numbers.</p></article>
-      <article><strong>Bosses</strong><p>Each battlefield has its own boss ({bossList}), arriving with an escort. Boss health and speed are tuned for this mode. Lilith summons her children around her and cannot be hit while they stand; damage they take also hurts her, and she summons them again, weaker, when all have fallen.</p></article>
-      <article><strong>Keyboard</strong><p>Focus the battlefield, use the arrow keys to move between tiles, and press Enter to use it. F toggles full screen, Escape closes panels and goes back one screen in the menus.</p></article>
     </div>
   </section>
 

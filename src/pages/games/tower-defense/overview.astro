@@ -22,8 +22,8 @@ const num = (v: number) => (v >= 10000 ? `${Math.round(v / 100) / 10}k` : String
 // --- Run economy ---
 const run = t.run;
 const economy: [string, string][] = [
-  ["Start placement", String(run.startingPlacement)],
-  ["Placement regrowth", `${run.placementPerSecond} per second`],
+  ["Start Nectar", String(run.startingPlacement)],
+  ["Nectar regrowth", `${run.placementPerSecond} per second`],
   ["Lives (shown)", `${run.lives} (${run.lives / (t.board?.lifeUnit ?? 1)})`],
   ["Deploy cap", String(run.deployCap)],
   ["Sell refund", pct(run.sellRefund)],
@@ -163,7 +163,7 @@ const heroName = new Map(heroRows.map((hero) => [hero.id, hero.name]));
     <section class="ov-card ov-wide">
       <h2>Heroes ({heroRows.length})</h2>
       <table class="ov-heroes">
-        <thead><tr><th>Hero</th><th>Class</th><th>Slot</th><th>Placement</th><th>ATK</th><th>HP</th><th>APS</th><th>Crit</th><th>Ult cd</th><th>Ult pow</th><th>Bond</th><th>Reach</th></tr></thead>
+        <thead><tr><th>Hero</th><th>Class</th><th>Slot</th><th>Nectar</th><th>ATK</th><th>HP</th><th>APS</th><th>Crit</th><th>Ult cd</th><th>Ult pow</th><th>Bond</th><th>Reach</th></tr></thead>
         <tbody>{heroRows.map((h) => (
           <tr>
             <td>{h.name}</td><td>{h.class}</td><td>{h.slot === "road" ? "Road" : "Plat"}</td><td>{h.cost}</td><td>{h.atk}</td><td>{h.hp}</td><td>{h.aps}</td><td>{pct(h.critChance)}</td><td>{h.ultCooldown}s</td><td>{h.ultPower}</td><td>{h.bond}</td>
