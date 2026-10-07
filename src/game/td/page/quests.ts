@@ -37,7 +37,8 @@ export function createQuests(ctx: PageContext) {
     const reward = `${chest.favor} Favor${chest.seals ? ` + ${chest.seals} Divine Seals` : ""}`;
     const label = chest.state === "claimed" ? `Chest claimed: ${reward}` : ready ? `Claim chest: ${reward}` : `Chest at ${chest.at} activity: ${reward}`;
     return `<button type="button" class="td-quest-chest is-${chest.state}" style="left:${chest.at}%" data-quest-chest="${chest.at}"${ready ? "" : " disabled"} aria-label="${label}">` +
-      `${chestIcon(CHEST_ICON)}<small>${chest.at}</small></button>`;
+      `<span class="td-quest-chest-reward"><b>${chest.favor}</b> Favor${chest.seals ? `<em>+${chest.seals} Seals</em>` : ""}</span>` +
+      `<span class="td-quest-chest-art">${chestIcon(CHEST_ICON)}</span><small>${chest.at}</small></button>`;
   }
 
   function taskRow(task: { id: string; text: string; points: number; go: string; state: string }) {
@@ -47,7 +48,7 @@ export function createQuests(ctx: PageContext) {
       : `<button type="button" class="action-button action-button--quiet" data-td-go="${task.go}">Go</button>`;
     return `<li class="td-quest is-${task.state}">` +
       `<span class="td-quest-icon">${icon(TASK_ICONS[task.id] ?? TASK_ICONS["campaign-clear"])}</span>` +
-      `<span class="td-quest-copy"><strong>${task.text}</strong><small>${task.state === "claimed" ? "Claimed" : progress}</small></span>` +
+      `<span class="td-quest-copy"><strong>${task.text}</strong><small class="td-quest-progress">${task.state === "claimed" ? "Completed · Claimed" : `${progress} completed`}</small></span>` +
       `<span class="td-quest-points">+${task.points}</span>${action}</li>`;
   }
 

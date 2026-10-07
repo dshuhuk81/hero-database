@@ -1571,6 +1571,20 @@
   transform: none;
 }
 
+/* These three source images have substantially more transparent space above the figure than
+   the other recruits. Lift them individually so their heads share the same card focal line. */
+.td-hero-tile[data-camp-hero-select="recruit-hollis"]>img,
+.td-hero-tile[data-camp-hero-select="recruit-sable"]>img,
+.td-hero-tile[data-camp-hero-select="recruit-tilda"]>img {
+  padding: 0;
+  transform: translateY(var(--td-recruit-lift)) scale(1.05);
+  transform-origin: 50% 0;
+}
+
+.td-hero-tile[data-camp-hero-select="recruit-hollis"] { --td-recruit-lift: -14%; }
+.td-hero-tile[data-camp-hero-select="recruit-sable"] { --td-recruit-lift: -6%; }
+.td-hero-tile[data-camp-hero-select="recruit-tilda"] { --td-recruit-lift: -23%; }
+
 .td-hero-tile::before {
   content: "";
   display: block;
@@ -6232,7 +6246,7 @@ svg.td-class-icon {
   align-content: center;
   gap: 1px;
   padding: 0;
-  border: 2px solid color-mix(in srgb, var(--node) 45%, transparent);
+  border: 2px solid color-mix(in srgb, var(--node) 45%, var(--bg-raised));
   border-radius: var(--radius-md);
   background: var(--bg-raised);
   color: var(--text-muted);
@@ -6284,7 +6298,15 @@ svg.td-class-icon {
 }
 
 .td-bnode.is-locked {
-  opacity: .45;
+  /* Opaque (not faded) so the edge lines never show through the node. */
+  border-color: color-mix(in srgb, var(--node) 30%, var(--bg-raised));
+  background: color-mix(in srgb, var(--bg-raised) 88%, #000);
+  color: var(--text-muted);
+}
+
+.td-bnode.is-locked .td-bnode-glyph,
+.td-bnode.is-locked .td-bnode-level {
+  opacity: .6;
 }
 
 .td-bnode.is-selected {
@@ -12813,73 +12835,167 @@ button .td-cur {
   display: grid;
   align-content: start;
   justify-items: center;
-  gap: var(--space-5);
+  min-height: 100%;
 }
 
 .td-quests-screen>* {
-  width: min(760px, 100%);
+  width: min(1040px, 100%);
 }
 
 .td-quests-panel {
+  position: relative;
   display: grid;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);
-  border-radius: var(--radius-lg);
-  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent-gold) 14%, transparent), transparent 60%), color-mix(in srgb, var(--bg-base) 70%, transparent);
+  gap: var(--space-3);
+  padding: clamp(16px, 2.4vw, 28px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 48%, transparent);
+  border-radius: 2px 22px 2px 22px;
+  background:
+    radial-gradient(circle at 78% -35%, rgb(95 70 185 / 0.28), transparent 48%),
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--accent-gold) 18%, transparent), transparent 35%),
+    linear-gradient(145deg, rgb(24 24 43 / 0.98), rgb(11 12 24 / 0.98) 62%, rgb(18 14 29 / 0.98));
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.035), 0 18px 46px rgb(0 0 0 / 0.35);
+}
+
+.td-quests-panel::before,
+.td-quests-panel::after {
+  position: absolute;
+  z-index: 0;
+  width: 82px;
+  height: 82px;
+  border-color: color-mix(in srgb, var(--accent-gold) 55%, transparent);
+  content: "";
+  pointer-events: none;
+}
+
+.td-quests-panel::before {
+  top: 8px;
+  left: 8px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+  clip-path: polygon(0 0, 100% 0, 100% 1px, 18px 1px, 1px 18px, 1px 100%, 0 100%);
+}
+
+.td-quests-panel::after {
+  right: 8px;
+  bottom: 8px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  clip-path: polygon(calc(100% - 1px) 0, 100% 0, 100% 100%, 0 100%, 0 calc(100% - 1px), calc(100% - 18px) calc(100% - 1px), calc(100% - 1px) calc(100% - 18px));
+}
+
+.td-quests-panel>* {
+  position: relative;
+  z-index: 1;
 }
 
 .td-quests-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(18px, 4vw, 56px);
+  padding: 0 var(--space-2) var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-gold) 24%, transparent);
+}
+
+.td-quests-intro {
+  min-width: 0;
+}
+
+.td-quests-head .td-kicker {
   display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: var(--space-4);
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: 3px;
+  color: var(--accent-gold);
+  letter-spacing: 0.18em;
+}
+
+.td-quests-head .td-daily-date {
+  padding-left: var(--space-3);
+  border-left: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
 }
 
 .td-quests-head h2 {
   margin: 0;
-  font-size: var(--td-fs-display);
+  color: #f5f1ff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  line-height: 1.05;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 0.55);
+}
+
+.td-quests-progress-copy {
+  margin: 5px 0 0;
+  color: var(--text-secondary);
+  font-size: var(--td-fs-label);
 }
 
 .td-quests-activity {
+  position: relative;
   display: grid;
-  justify-items: center;
-  gap: 2px;
-  min-width: 96px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--accent-gold) 40%, transparent);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-base) 70%, transparent);
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: var(--space-2);
+  min-width: 158px;
+  padding: 10px 16px 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 58%, transparent);
+  border-radius: 2px 16px 2px 16px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-gold) 17%, transparent), rgb(7 8 17 / 0.82) 55%);
+  box-shadow: inset 0 0 20px rgb(255 196 72 / 0.04), 0 8px 22px rgb(0 0 0 / 0.28);
   text-align: center;
+}
+
+.td-quests-activity-star {
+  grid-row: 1 / 3;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 65%, transparent);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-gold) 28%, transparent), transparent 68%);
+  color: var(--accent-gold);
+  font-size: 18px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent-gold) 20%, transparent);
 }
 
 .td-quests-activity strong {
   color: var(--accent-gold);
-  font-size: var(--td-fs-display);
+  font-size: clamp(19px, 2.2vw, 28px);
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .td-quests-activity small {
   color: var(--text-secondary);
-  font-size: var(--td-fs-label);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 /* The bar: a track the fill grows along, chest buttons on their thresholds. */
 .td-quest-bar {
   position: relative;
-  height: 64px;
-  margin: 0 18px;
+  height: 86px;
+  margin: 0 clamp(18px, 3.5vw, 42px) 2px 8px;
 }
 
 .td-quest-track {
   position: absolute;
-  left: 0;
+  left: 3px;
   right: 0;
-  top: 22px;
-  height: 8px;
+  top: 55px;
+  height: 7px;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--bg-raised) 80%, transparent);
+  border: 1px solid rgb(255 255 255 / 0.05);
+  background: rgb(5 6 14 / 0.8);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / 0.8);
   overflow: hidden;
 }
 
@@ -12887,128 +13003,366 @@ button .td-cur {
   display: block;
   height: 100%;
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-gold) 60%, transparent), var(--accent-gold));
+  background: linear-gradient(90deg, #6551cf, #b691ff 46%, #ffd058);
+  box-shadow: 0 0 13px rgb(187 150 255 / 0.75);
   transition: width 0.3s ease;
+}
+
+.td-quest-track::before {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--accent-gold);
+  background: #171326;
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .td-quest-chest {
   position: absolute;
-  top: 0;
+  top: 1px;
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
-  gap: 1px;
-  padding: 2px;
+  gap: 0;
+  width: 70px;
+  padding: 0;
   border: 0;
   background: none;
   color: var(--text-secondary);
   cursor: pointer;
 }
 
+.td-quest-chest-reward {
+  position: absolute;
+  bottom: calc(100% + 1px);
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  color: var(--text-secondary);
+  font-size: 8px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.td-quest-chest-reward b {
+  color: #f6e8bd;
+  font-size: 10px;
+}
+
+.td-quest-chest-reward em {
+  color: #bfa8ff;
+  font-size: 8px;
+  font-style: normal;
+}
+
+.td-quest-chest-art {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 35px;
+  clip-path: polygon(14% 0, 86% 0, 100% 23%, 92% 100%, 8% 100%, 0 23%);
+  background: linear-gradient(145deg, rgb(65 62 83 / 0.9), rgb(19 20 34 / 0.96));
+  box-shadow: 0 4px 9px rgb(0 0 0 / 0.45);
+}
+
 .td-quest-chest .td-icon {
-  width: 30px;
-  height: 30px;
-  padding: 4px;
+  width: 31px;
+  height: 28px;
+  padding: 5px;
   box-sizing: border-box;
-  border: 1px solid color-mix(in srgb, var(--text-secondary) 40%, transparent);
-  border-radius: var(--radius-md, 8px);
-  background: color-mix(in srgb, var(--bg-raised) 80%, transparent);
   stroke: currentColor;
   stroke-width: 1.6;
 }
 
-.td-quest-chest small {
-  font-size: var(--td-fs-label);
+.td-quest-chest>small {
+  min-width: 28px;
+  margin-top: 1px;
+  padding: 1px 5px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: var(--radius-full);
+  background: #10111d;
+  font-size: 9px;
   font-variant-numeric: tabular-nums;
 }
 
 .td-quest-chest.is-ready {
   color: var(--accent-gold);
+  animation: td-quest-ready 1.8s ease-in-out infinite;
 }
 
-.td-quest-chest.is-ready .td-icon {
-  border-color: var(--accent-gold);
-  background: color-mix(in srgb, var(--accent-gold) 18%, transparent);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent-gold) 55%, transparent);
+.td-quest-chest.is-ready .td-quest-chest-art {
+  background: linear-gradient(145deg, #ffdc76, #805b17 76%);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent-gold) 58%, transparent), 0 5px 10px rgb(0 0 0 / 0.45);
 }
 
 .td-quest-chest.is-locked {
-  opacity: 0.55;
+  opacity: 0.68;
   cursor: default;
 }
 
 .td-quest-chest.is-claimed {
-  color: var(--accent-gold);
-  opacity: 0.8;
+  color: #bca9f4;
+  opacity: 0.86;
   cursor: default;
 }
 
-.td-quest-chest.is-claimed .td-icon {
-  border-color: var(--accent-gold);
-  background: color-mix(in srgb, var(--accent-gold) 30%, transparent);
+.td-quest-chest.is-claimed .td-quest-chest-art {
+  background: linear-gradient(145deg, #62549d, #2d274d 76%);
+}
+
+@keyframes td-quest-ready {
+  50% { filter: brightness(1.18); transform: translateX(-50%) translateY(-2px); }
 }
 
 /* Task rows: icon, text, points, Go / Claim. */
 .td-quest-list {
   display: grid;
-  gap: var(--space-2);
+  gap: 7px;
   margin: 0;
-  padding: 0;
+  padding: 2px 3px 4px;
   list-style: none;
 }
 
 .td-quest {
+  position: relative;
   display: grid;
-  grid-template-columns: 40px 1fr auto auto;
+  grid-template-columns: 46px minmax(0, 1fr) 64px 82px;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--bg-raised) 70%, transparent);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--bg-raised) 55%, transparent);
+  gap: clamp(8px, 1.5vw, 15px);
+  min-height: 54px;
+  padding: 5px 10px 5px 7px;
+  border: 1px solid rgb(146 133 201 / 0.24);
+  border-radius: 2px 12px 2px 12px;
+  background:
+    linear-gradient(90deg, rgb(83 69 132 / 0.2), transparent 25%),
+    linear-gradient(105deg, rgb(32 32 55 / 0.94), rgb(18 19 33 / 0.94));
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.025), 0 3px 8px rgb(0 0 0 / 0.2);
+}
+
+.td-quest::before {
+  position: absolute;
+  top: 9px;
+  bottom: 9px;
+  left: -1px;
+  width: 2px;
+  background: linear-gradient(transparent, #7562bd, transparent);
+  content: "";
 }
 
 .td-quest-icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--accent-gold) 14%, transparent);
-  color: var(--accent-gold);
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(171 149 239 / 0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(106 82 179 / 0.3), rgb(20 20 38 / 0.75) 68%);
+  color: #bda6ff;
+  box-shadow: inset 0 0 10px rgb(136 107 226 / 0.12);
 }
 
 .td-quest-icon .td-icon {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   stroke: currentColor;
-  stroke-width: 1.6;
+  stroke-width: 1.7;
 }
 
 .td-quest-copy {
   display: grid;
-  gap: 1px;
+  min-width: 0;
+  gap: 2px;
+}
+
+.td-quest-copy strong {
+  overflow: hidden;
+  color: #eeeaf7;
+  font-size: var(--td-fs-body);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .td-quest-copy small {
   color: var(--text-secondary);
-  font-size: var(--td-fs-label);
+  font-size: 10px;
   font-variant-numeric: tabular-nums;
 }
 
 .td-quest-points {
-  color: var(--accent-gold);
+  justify-self: center;
+  min-width: 46px;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 28%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--accent-gold) 8%, transparent);
+  color: #f2c94c;
   font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.td-quest .action-button {
+  min-width: 74px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 2px 9px 2px 9px;
+}
+
+.td-quest .action-button--quiet {
+  border-color: rgb(168 149 229 / 0.36);
+  background: linear-gradient(180deg, rgb(82 65 139 / 0.42), rgb(37 31 68 / 0.6));
+  color: #ded5fa;
+}
+
+.td-quest .action-button--primary {
+  border-color: #f0c75c;
+  background: linear-gradient(180deg, #e3bd4f, #8f611c);
+  color: #171015;
+  box-shadow: 0 0 13px rgb(244 194 68 / 0.26);
 }
 
 .td-quest.is-ready {
-  border-color: color-mix(in srgb, var(--accent-gold) 45%, transparent);
-  background: color-mix(in srgb, var(--accent-gold) 10%, transparent);
+  border-color: color-mix(in srgb, var(--accent-gold) 58%, transparent);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--accent-gold) 18%, #24213d), rgb(19 19 33 / 0.96) 55%);
+}
+
+.td-quest.is-ready .td-quest-icon {
+  border-color: color-mix(in srgb, var(--accent-gold) 62%, transparent);
+  color: var(--accent-gold);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent-gold) 18%, transparent);
 }
 
 .td-quest.is-claimed {
-  opacity: 0.62;
+  opacity: 0.55;
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .td-app [data-td-screen="quests"] .td-screen-body {
+    padding-block: 7px;
+  }
+
+  .td-quests-panel {
+    grid-template-rows: auto auto minmax(0, 1fr);
+    align-self: stretch;
+    height: 100%;
+    min-height: 0;
+    padding: 12px 16px 9px;
+  }
+
+  .td-quests-head {
+    padding-bottom: 8px;
+  }
+
+  .td-quests-head h2 {
+    font-size: 24px;
+  }
+
+  .td-quests-progress-copy {
+    margin-top: 2px;
+  }
+
+  .td-quests-activity {
+    min-width: 145px;
+    padding-block: 7px;
+  }
+
+  .td-quest-bar {
+    height: 70px;
+  }
+
+  .td-quest-track {
+    top: 46px;
+  }
+
+  .td-quest-chest {
+    top: -2px;
+  }
+
+  .td-quest-list {
+    min-height: 0;
+    padding-right: 6px;
+    overflow-y: auto;
+    scrollbar-color: rgb(142 117 218 / 0.5) transparent;
+    scrollbar-width: thin;
+  }
+
+  .td-quest {
+    grid-template-columns: 40px minmax(0, 1fr) 58px 76px;
+    min-height: 45px;
+    padding-block: 3px;
+  }
+
+  .td-quest-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .td-quest .action-button {
+    min-width: 68px;
+    min-height: 31px;
+  }
+}
+
+@media (max-width: 620px) {
+  .td-quests-panel {
+    padding: var(--space-3);
+  }
+
+  .td-quests-head {
+    gap: var(--space-3);
+    padding-inline: 0;
+  }
+
+  .td-quests-progress-copy {
+    display: none;
+  }
+
+  .td-quests-activity {
+    min-width: 0;
+    padding: 8px 10px;
+  }
+
+  .td-quests-activity-star {
+    display: none;
+  }
+
+  .td-quests-head .td-daily-date {
+    display: none;
+  }
+
+  .td-quest-bar {
+    margin-right: 28px;
+  }
+
+  .td-quest-chest-reward {
+    font-size: 0;
+  }
+
+  .td-quest-chest-reward b {
+    font-size: 9px;
+  }
+
+  .td-quest-chest-reward em {
+    display: none;
+  }
+
+  .td-quest {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+  }
+
+  .td-quest-points {
+    min-width: 42px;
+  }
+
+  .td-quest .action-button {
+    grid-column: 2 / 4;
+    justify-self: stretch;
+  }
 }
 
 /* R18 prototype (D): floating landscape HUD. On short landscape screens a tilted map drops the side

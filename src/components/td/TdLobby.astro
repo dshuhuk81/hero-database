@@ -232,11 +232,16 @@ const { assetBase } = Astro.props;
       <div class="td-screen-body td-screen-body--center td-quests-screen">
         <section class="td-quests-panel" aria-labelledby="td-quests-title">
           <header class="td-quests-head">
-            <div>
-              <p class="td-kicker">Daily Quests <span class="td-daily-date" data-td-quests-date></span></p>
+            <div class="td-quests-intro">
+              <p class="td-kicker"><span>Daily Quests</span><span class="td-daily-date" data-td-quests-date></span></p>
               <h2 id="td-quests-title">Today's duties</h2>
+              <p class="td-quests-progress-copy">Complete duties, gather activity, and open today's reward chests.</p>
             </div>
-            <div class="td-quests-activity"><strong data-td-quest-activity>0 / 100</strong><small>activity</small></div>
+            <div class="td-quests-activity">
+              <span class="td-quests-activity-star" aria-hidden="true">✦</span>
+              <strong data-td-quest-activity>0 / 100</strong>
+              <small>Daily activity</small>
+            </div>
           </header>
           <div class="td-quest-bar" data-td-quest-bar role="group" aria-label="Activity chests"></div>
           <ul class="td-quest-list" data-td-quest-list></ul>

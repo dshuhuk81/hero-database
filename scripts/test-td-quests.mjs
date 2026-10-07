@@ -1,6 +1,7 @@
 // Daily Quests (R10): task table, activity points, milestone chests, UTC-midnight reset,
 // save record (TOWER_DEFENSE_DAILY_QUESTS.md section 7 checks). Pure logic, no DOM.
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { dailyDate } from "../src/game/td/daily.js";
 import {
   QUEST_BAR_GOAL,
@@ -26,6 +27,16 @@ const NEXT = new Date("2026-10-03T00:30:00Z"); // after the UTC-midnight reset
 const rules = { heroIds: new Set(heroes.map((hero) => hero.id)) };
 const freshSave = () => emptySave();
 const sealsOf = (save) => save.campaign.currencies.divineSeals || 0;
+
+// The quest screen presents the two reward loops directly: task rows show their progress,
+// while every activity milestone exposes its payout without relying on a tooltip.
+{
+  const lobby = readFileSync(new URL("../src/components/td/TdLobby.astro", import.meta.url), "utf8");
+  const page = readFileSync(new URL("../src/game/td/page/quests.ts", import.meta.url), "utf8");
+  assert.ok(lobby.includes("td-quests-progress-copy"), "quest header explains the activity loop");
+  assert.ok(page.includes("td-quest-chest-reward"), "milestone rewards are visible on the activity track");
+  assert.ok(page.includes("td-quest-progress"), "task progress has a dedicated visual treatment");
+}
 
 // The owner-approved tables (spec sections 2 and 3): eight tasks, 110 total, default chests (the Challenge and Free Play tasks went with Free Play).
 {
