@@ -112,7 +112,9 @@ import GameLayout from "../../../layouts/GameLayout.astro";
 </GameLayout>
 
 <script>
-  const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8.21.0/dist/pixi.mjs";
+  import { arenaCells, cellAt, insetQuad } from "../../../game/td/god-mode-arena.js";
+
+  const PIXI_CDN ="https://cdn.jsdelivr.net/npm/pixi.js@8.21.0/dist/pixi.mjs";
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const canvas = $<HTMLCanvasElement>("gm-canvas");
   const loading = $("gm-loading");
@@ -250,17 +252,28 @@ import GameLayout from "../../../layouts/GameLayout.astro";
     armSprite.visible = false;
     armBackLayer.addChild(armSprite);
 
-    const heroes = [
-      { id: "odin", name: "Odin", x: 250, y: 345, color: 0x9de7ff },
-      { id: "boreas", name: "Boreas", x: 155, y: 425, color: 0xa5f3fc },
-      { id: "gaia", name: "Gaia", x: 805, y: 425, color: 0x82e89a },
-      { id: "skadi", name: "Skadi", x: 710, y: 345, color: 0xc4b5fd },
-      { id: "surtr", name: "Surtr", x: 405, y: 290, color: 0xff8c52, melee: true },
-      { id: "fenrir", name: "Fenrir", x: 480, y: 315, color: 0xfacc15, melee: true },
-      { id: "ymir", name: "Ymir", x: 555, y: 290, color: 0x93c5fd, melee: true },
+    // Heroes stand on cells of the God-Mode arena grid (see src/game/td/god-mode-arena.js): [col, row].
+    const heroes: Array<{ id: string; name: string; cell: [number, number]; color: number; melee?: boolean; x: number; y: number }> = [
+      { id: "odin", name: "Odin", cell: [1, 1], color: 0x9de7ff, x: 0, y: 0 },
+      { id: "boreas", name: "Boreas", cell: [3, 3], color: 0xa5f3fc, x: 0, y: 0 },
+      { id: "gaia", name: "Gaia", cell: [5, 3], color: 0x82e89a, x: 0, y: 0 },
+      { id: "skadi", name: "Skadi", cell: [7, 1], color: 0xc4b5fd, x: 0, y: 0 },
+      { id: "surtr", name: "Surtr", cell: [3, 1], color: 0xff8c52, melee: true, x: 0, y: 0 },
+      { id: "fenrir", name: "Fenrir", cell: [4, 1], color: 0xfacc15, melee: true, x: 0, y: 0 },
+      { id: "ymir", name: "Ymir", cell: [5, 1], color: 0x93c5fd, melee: true, x: 0, y: 0 },
     ];
+    // The grid starts below the parapet band so no row hides behind the wall.
+    const GRID_OFFSET = 28;
+    function placeHeroes(edge: number) {
+      const cells = arenaCells(edge + GRID_OFFSET);
+      for (const hero of heroes) {
+        const cell = cellAt(cells, hero.cell[0], hero.cell[1]);
+        hero.x = cell.cx; hero.y = cell.cy + 8;
+      }
+    }
+    placeHeroes(Number(edgeInput.value));
 
-    const heroViews: Array<{ sprite: any; frames: any[]; x: number; y: number; phase: number; color: number; melee?: boolean }> = [];
+    const heroViews: Array<{ hero: (typeof heroes)[number]; sprite: any; frames: any[]; x: number; y: number; phase: number; color: number; melee?: boolean }> = [];
     await Promise.all(heroes.map(async (hero, index) => {
       const version = hero.id === "ymir" ? "v2" : "v1";
       const sheet: any = await PIXI.Assets.load(`/td/heroes-alt/figures/${hero.id}-${version}.json`);
@@ -272,7 +285,7 @@ import GameLayout from "../../../layouts/GameLayout.astro";
       sprite.scale.set(desiredHeight / sheet.data.td.bodyHeight);
       sprite.position.set(hero.x, hero.y);
       heroLayer.addChild(sprite);
-      heroViews.push({ sprite, frames: sheet.animations.idle, x: hero.x, y: hero.y, phase: index * 0.7, color: hero.color, melee: hero.melee });
+      heroViews.push({ hero, sprite, frames: sheet.animations.idle, x: hero.x, y: hero.y, phase: index * 0.7, color: hero.color, melee: hero.melee });
     }));
 
     const projectiles: Projectile[] = [];
@@ -610,17 +623,30 @@ import GameLayout from "../../../layouts/GameLayout.astro";
 
       arenaMask.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill(0xffffff);
       board.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill({ color: 0x20242e, alpha: 0.18 }).stroke({ color: 0xb9a777, width: 3, alpha: 0.75 });
-      for (let y = arenaEdge + 45; y < 540; y += 58) board.moveTo(24 + (y - arenaEdge) * 0.15, y).lineTo(936 - (y - arenaEdge) * 0.15, y).stroke({ color: 0xa7a79b, width: 1, alpha: 0.19 });
-      for (let x = 92; x <= 868; x += 97) board.moveTo(480 + (x - 480) * 0.78, arenaEdge).lineTo(x, 536).stroke({ color: 0xa7a79b, width: 1, alpha: 0.16 });
+      const cells = arenaCells(arenaEdge + GRID_OFFSET);
+      for (const cell of cells) {
+        if (cell.type === ".") board.poly(insetQuad(cell, 1)).fill({ color: 0x05060c, alpha: 0.5 }); // void
+      }
 
       parapetBack.poly([90, arenaEdge - 9, 870, arenaEdge - 9, 850, arenaEdge + 21, 110, arenaEdge + 21]).fill({ color: 0x605d5a, alpha: 1 }).stroke({ color: 0xb8a881, width: 3, alpha: 0.8 });
       parapetFront.poly([110, arenaEdge + 17, 850, arenaEdge + 17, 833, arenaEdge + 43, 127, arenaEdge + 43]).fill({ color: 0x252831, alpha: 1 }).stroke({ color: 0x4e515a, width: 2 });
       for (let x = 132; x < 830; x += 78) parapetFront.moveTo(x, arenaEdge + 19).lineTo(x + 8, arenaEdge + 42).stroke({ color: 0x11131a, width: 2, alpha: 0.65 });
 
-      for (const hero of heroes) {
-        const rx = hero.melee ? 29 : 35, ry = hero.melee ? 11 : 14;
-        slots.ellipse(hero.x, hero.y + 3, rx, ry).fill({ color: hero.melee ? 0x6d4826 : 0x1d4c5f, alpha: 0.58 }).stroke({ color: hero.melee ? 0xffbd52 : 0x62d5ef, width: 2, alpha: 0.85 });
+      const tileStyle: Record<string, { fill: number; alpha: number; stroke: number }> = {
+        P: { fill: 0x1d4c5f, alpha: 0.55, stroke: 0x62d5ef },
+        M: { fill: 0x6d4826, alpha: 0.6, stroke: 0xffbd52 },
+        H: { fill: 0x4a3b1c, alpha: 0.62, stroke: 0xe5bd68 },
+      };
+      for (const cell of cells) {
+        const style = tileStyle[cell.type];
+        if (!style) continue;
+        const quad = insetQuad(cell, 0.9);
+        // The raised gallery gets a drop shadow so it reads as higher ground.
+        if (cell.type === "H") slots.poly(quad.map((v: number, i: number) => (i % 2 ? v + 7 : v))).fill({ color: 0x0b0c12, alpha: 0.7 });
+        slots.poly(quad).fill({ color: style.fill, alpha: style.alpha }).stroke({ color: style.stroke, width: 2, alpha: 0.85 });
       }
+      placeHeroes(arenaEdge);
+      for (const view of heroViews) { view.x = view.hero.x; view.y = view.hero.y; view.sprite.position.set(view.x, view.y); }
 
       anchors.forEach((_, index) => {
         const [x, y] = worldAnchor(index);
