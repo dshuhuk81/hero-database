@@ -11646,11 +11646,6 @@ button .td-cur {
   background: rgba(11, 10, 18, .52);
 }
 
-.td-app .td-squad-row.is-active {
-  border-color: rgba(255, 204, 51, .72);
-  box-shadow: 0 0 0 1px rgba(255, 204, 51, .12), inset 0 0 18px rgba(255, 204, 51, .05);
-}
-
 .td-app .td-squad-row-head {
   position: relative;
   display: grid;
@@ -13921,10 +13916,6 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-squad-row.has-lord {
   border-color: rgba(255, 204, 51, .5);
   background: linear-gradient(rgba(255, 204, 51, .16), rgba(255, 204, 51, .07));
-}
-
-.td-app .td-squad-row.has-lord.is-active {
-  border-color: rgba(255, 204, 51, .9);
 }
 
 .td-app .td-squad-row.has-lord .td-squad-lord-btn {

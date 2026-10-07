@@ -413,7 +413,7 @@ export function createCampaign(ctx: PageContext) {
         return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}${isLord(hero.id) ? " is-lord" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
           <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span></button>`;
       }).join("");
-      return `<section class="td-squad-row${rowIndex === activeRow ? " is-active" : ""}${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
+      return `<section class="td-squad-row${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
         <div class="td-squad-row-head" data-squad-activate-row="${rowIndex}">${status}</div>
         <div class="td-squad-lineup" aria-label="Selected squad row ${rowIndex + 1}">${slots}</div>
         <div class="td-squad-row-foot">${foot}</div></section>`;
@@ -850,9 +850,14 @@ export function createCampaign(ctx: PageContext) {
     const id = button.dataset.squadHero!;
     if (flattenSquadRows(squadRows).includes(id)) squadRows = squadRows.map((row) => row.filter((entry) => entry !== id)) as [string[], string[]];
     else {
-      const placed = placeInSquadRows(squadRows, id, activeRow, squadRows[activeRow].length, { lordIds });
-      squadRows = placed.rows as [string[], string[]];
+      // Fill rank 1 first; once it is full (or can't take this hero, e.g. a second Lord) the hero goes to rank 2.
+      let placed = placeInSquadRows(squadRows, id, 0, squadRows[0].length, { lordIds });
+      if (placed.error || squadRows[0].length >= campaign.squadRowSize) {
+        const second = placeInSquadRows(squadRows, id, 1, squadRows[1].length, { lordIds });
+        if (!second.error || squadRows[0].length >= campaign.squadRowSize) placed = second;
+      }
       if (placed.error) { renderSquad(`${heroName(id)}: ${placed.error}`); return; }
+      squadRows = placed.rows as [string[], string[]];
     }
     renderSquad();
     squadListEl.querySelector<HTMLButtonElement>(`[data-squad-hero="${id}"]`)?.focus({ preventScroll: true });
