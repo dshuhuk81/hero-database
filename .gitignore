@@ -58,3 +58,6 @@ export_ratings_to_sheets.py*
 public/td-local/
 # Asset pipeline work folder (PixelLab frames, clip strips), see docs/td-asset-pipeline.md
 .td-work/
+
+# Cronus God-Mode source art (HD originals); only the built webp layers ship
+public/td/god-mode/cronus/*.png
