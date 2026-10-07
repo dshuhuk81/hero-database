@@ -424,21 +424,24 @@ export function createMapScene(PIXI, game, {
 
   // Painted architecture already carries its own foundation; only a soft contact
   // shadow is needed. Use vector masonry if an image is unavailable.
+  // The painted gate and sanctuary have their plinth in the lower part of the image, so centred on
+  // the tile they sat low and spilled onto the tile below. Lift them so the plinth is on the tile.
+  const STRUCTURE_LIFT = 14;
   for (const [texture, point, back, front, width, height, padWidth, padDepth, role] of [
     ...gates.map(([spawn, gate, gateFront]) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34, "spawn"]),
     [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39, "base"],
   ]) {
     if (!texture) continue;
     back.clear();
-    back.ellipse(3, 16, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
-    back.ellipse(2, 14, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
+    back.ellipse(3, 16 - STRUCTURE_LIFT, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
+    back.ellipse(2, 14 - STRUCTURE_LIFT, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
     const placement = paintedStructurePlacement({ structures, foreground }, role, tilt);
     const sprite = add(placement.parent, new PIXI.Sprite(texture));
     if (placement.zIndex !== null) sprite.zIndex = placement.zIndex;
     if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
-    sprite.position.set(point.x, point.y);
+    sprite.position.set(point.x, point.y - STRUCTURE_LIFT);
     sprite.width = width; sprite.height = height / tiltK;
   }
 
