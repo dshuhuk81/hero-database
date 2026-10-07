@@ -1,7 +1,7 @@
 import { expandTimeline, timelineTotals } from "./timeline.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
-import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern } from "./board.js";
+import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern, unitInPattern } from "./board.js";
 import { environmentMultiplier, modsMultiplier } from "./environments.js";
 import { normalizeSquadRows } from "./squad-rows.js";
 
@@ -157,6 +157,9 @@ export class TowerDefenseGame {
     // Final boss per map (tdMaps.json "boss"); tuning.bosses holds its stat overrides and skills.
     this.bossId = map.boss ?? "baphomet";
     this.bossTuning = tuning.bosses?.[this.bossId] ?? null;
+    // God-Mode challenge (god-mode.js): a map with a `god` block plays a stationary god for a
+    // fixed time instead of a timeline; the score is the damage dealt to it.
+    this.god = map.god ?? null;
     this.reset();
   }
 
@@ -171,6 +174,8 @@ export class TowerDefenseGame {
     this.placementClock = 0;
     this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;
+    this.godDamage = 0; // God-Mode: total damage dealt to the god this run
+    this.godAttack = null; // God-Mode: the attack cycle's state
     this.started = false;
     this.team = [];
     this.heroes = [];
@@ -512,7 +517,8 @@ export class TowerDefenseGame {
 
   // Starts the stage clock: the whole timeline becomes one spawn queue (no waves, no pauses).
   start() {
-    if (this.running || this.complete || !this.timeline.length) return false;
+    if (this.running || this.complete || (!this.timeline.length && !this.god)) return false;
+    if (this.god) return this.startGod();
     const spacingMs = this.tuning.timeline?.spacingMs ?? 700;
     const queue = expandTimeline(this.timeline, { gates: this.lanes.length, spacingMs });
     // Enemies on one lane keep a formation sway so they do not stack into one blob.
@@ -541,6 +547,11 @@ export class TowerDefenseGame {
   step(dt) {
     if (!this.running) return;
     this.time += dt;
+    if (this.god && this.time >= this.god.seconds) { // the challenge ends on the clock, the god never falls
+      this.time = this.god.seconds;
+      this.finish(true);
+      return;
+    }
     this.stepInterventions(dt);
     this.stepLords(dt);
     // Placement regrows by tuning.run.placementPerSecond (x Favor rate) per second of battle time.
@@ -569,6 +580,7 @@ export class TowerDefenseGame {
       if ((enemy.burnUntil ?? 0) > this.time) this.hit(enemy, enemy.burnDps * dt, enemy.burnBy, { showShot: false, showHit: false, dot: true });
       if (!enemy.dead && (enemy.poisonUntil ?? 0) > this.time) this.hit(enemy, enemy.poisonDps * dt, enemy.poisonBy, { showShot: false, showHit: false, dot: true });
       if (enemy.dead) continue;
+      if (enemy.stationary) { this.stepGod(enemy, dt); continue; } // the god never walks, blocks or leaks
       enemy.squeeze = Math.max(0, (enemy.squeeze ?? 0) - dt);
       if ((enemy.rallyUntil ?? 0) > this.time) this.resistCc(enemy, dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
@@ -676,7 +688,7 @@ export class TowerDefenseGame {
     this.enemies = this.enemies.filter((enemy) => !enemy.dead);
     if (!this.complete) this.resummonIfNeeded();
     this.effects = this.effects.filter((effect) => (effect.life -= dt) > 0);
-    if (this.running && !this.spawnQueue.length && !this.enemies.length) {
+    if (this.running && !this.god && !this.spawnQueue.length && !this.enemies.length) {
       this.running = false;
       // Insight: every class that stood on the field at the end counts once, fallen heroes included.
       const classes = [...this.heroes.map((hero) => hero.class), ...this.fallenHeroes.map((entry) => this.heroesById.get(entry.id)?.class)].filter(Boolean);
@@ -1106,7 +1118,7 @@ export class TowerDefenseGame {
   inReach(hero, unit) {
     const pattern = this.patternOf(hero);
     const board = pattern && boardOf(this.map);
-    return board ? inPattern(board, pattern, hero.x, hero.y, unit.x, unit.y) : Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range;
+    return board ? unitInPattern(board, pattern, hero.x, hero.y, unit) : Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range;
   }
 
   // Ultimate areas around the hero (pattern-shaped ultimates): on a board the hero's pattern
@@ -1117,7 +1129,7 @@ export class TowerDefenseGame {
     const board = pattern && boardOf(this.map);
     if (!board) return Math.hypot(hero.x - unit.x, hero.y - unit.y) <= hero.range * scale;
     const steps = scale >= 3.4 ? 4 : scale >= 2.4 ? 3 : scale >= 1.7 ? 2 : scale > 1 ? 1 : 0;
-    return inPattern(board, steppedPattern(pattern, steps), hero.x, hero.y, unit.x, unit.y);
+    return unitInPattern(board, steppedPattern(pattern, steps), hero.x, hero.y, unit);
   }
 
   // Close areas (cleaves, blasts around a target, bounces' splash) of `radius` px around a
@@ -1126,13 +1138,13 @@ export class TowerDefenseGame {
   nearPoint(point, unit, radius) {
     const board = this.boardRules && boardOf(this.map);
     if (!board) return Math.hypot(point.x - unit.x, point.y - unit.y) <= radius;
-    return inPattern(board, radius <= 80 ? "plus" : "block", point.x, point.y, unit.x, unit.y);
+    return unitInPattern(board, radius <= 80 ? "plus" : "block", point.x, point.y, unit);
   }
 
   reaches(hero, enemy, distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y)) {
     const pattern = this.patternOf(hero);
     const board = pattern && boardOf(this.map);
-    if (board) return inPattern(board, pattern, hero.x, hero.y, enemy.x, enemy.y);
+    if (board) return unitInPattern(board, pattern, hero.x, hero.y, enemy);
     // Beam heroes only see their own row, to either side.
     return hero.variant === "sun_beam" ? this.onBeam(hero, enemy, enemy.x < hero.x ? -1 : 1) : distance <= hero.range;
   }
@@ -1682,6 +1694,11 @@ export class TowerDefenseGame {
     if (dealt + shieldDealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.kind,
       x: enemy.x, y: enemy.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
     if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
+    if (enemy.stationary) { // God-Mode: every point counts towards the score, the god itself never falls
+      this.godDamage += dealt;
+      this.score = Math.round(this.godDamage);
+      enemy.hp = enemy.maxHp;
+    }
     if (enemy.hp <= 0) this.killEnemy(enemy, hero);
     return dealt;
   }
@@ -2334,6 +2351,75 @@ export class TowerDefenseGame {
       hero.veilUntil = this.time + kit.veil.seconds;
       this.emitHeroEffect(hero, { type: "veil", x: hero.x, y: hero.y, life: 0.6, color: "purple" });
     }
+  }
+
+  // --- God-Mode challenge (god-mode.js, tdGodMode.json) ---
+
+  // The stationary god takes the field and the clock starts; its attack cycle waits `firstAttackAt`.
+  startGod() {
+    const cfg = this.god;
+    this.spawnQueue = [];
+    this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
+    this.spawnClock = 0;
+    // A fixed reference health keeps percentage effects (true damage, executes) in a sane range;
+    // hit() refills it after every blow, so the god never falls.
+    this.spawnEnemy("boss", { extra: { stationary: true, cells: cfg.cells, godId: cfg.id, speed: 0, attack: 0, hp: cfg.boss.refHp, maxHp: cfg.boss.refHp, armor: cfg.boss.armor ?? 0, magicRes: cfg.boss.magicRes ?? 0 } });
+    this.godAttack = { index: 0, phase: "wait", clock: cfg.firstAttackAt ?? 3, cells: [] };
+    this.started = true;
+    this.running = true;
+    this.paused = false;
+    this.onChange("start", this);
+    return true;
+  }
+
+  // One step of the god's attack cycle: announce (telegraph), strike, recover, next attack.
+  stepGod(boss, dt) {
+    const cfg = this.god, state = this.godAttack;
+    if (!cfg || !state || !cfg.cycle?.length) return;
+    state.clock -= dt;
+    if (state.clock > 0) return;
+    const attack = cfg.cycle[state.index % cfg.cycle.length];
+    if (state.phase === "wait") {
+      state.cells = this.godAttackCells(attack);
+      state.phase = "telegraph";
+      state.clock = attack.telegraph;
+      this.emit({ type: "godTelegraph", attack: attack.attack, side: attack.side ?? null, cells: state.cells, life: attack.telegraph, x: boss.x, y: boss.y });
+    } else if (state.phase === "telegraph") {
+      this.godStrike(boss, attack, state.cells);
+      state.phase = "recover";
+      state.clock = attack.recovery;
+    } else {
+      state.phase = "wait";
+      state.index += 1;
+      state.clock = 0;
+    }
+  }
+
+  // The cells an attack marks: a slam covers a plus around its impact cell, a sweep a whole
+  // row, embers land on `count` cells where heroes stand (chosen with the run's seeded rng).
+  godAttackCells(attack) {
+    const board = boardOf(this.map);
+    switch (attack.attack) {
+      case "slam": return (PATTERNS.plus ?? []).map(([dc, dr]) => [attack.cell[0] + dc, attack.cell[1] + dr]).filter(([c, r]) => c >= 0 && r >= 0 && c < board.cols && r < board.rows);
+      case "sweep": return Array.from({ length: board.cols }, (_, c) => [c, attack.row]);
+      case "embers": {
+        const occupied = [...new Map(this.heroes.map((hero) => cellAt(board, hero.x, hero.y)).map((cell) => [cell.join(","), cell])).values()];
+        const picked = [];
+        while (picked.length < attack.count && occupied.length) picked.push(occupied.splice(Math.floor(this.rng() * occupied.length), 1)[0]);
+        return picked;
+      }
+      default: return [];
+    }
+  }
+
+  // The blow lands: every hero standing in a marked cell loses a share of its health.
+  godStrike(boss, attack, cells) {
+    const board = boardOf(this.map);
+    const marked = new Set(cells.map((cell) => cell.join(",")));
+    for (const hero of [...this.heroes]) {
+      if (marked.has(cellAt(board, hero.x, hero.y).join(","))) this.damageHero(hero, hero.hp * attack.damage, boss);
+    }
+    this.emit({ type: "godStrike", attack: attack.attack, side: attack.side ?? null, cells, life: 0.6, x: boss.x, y: boss.y });
   }
 
   finish(won) {

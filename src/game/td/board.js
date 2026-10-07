@@ -94,6 +94,15 @@ export function inPattern(board, name, hx, hy, x, y) {
   return (PATTERNS[name] ?? []).some(([dc, dr]) => hc + dc === c && hr + dr === r);
 }
 
+// Same for a unit: a unit with `cells` (the God-Mode boss, one unit over several tiles) counts
+// as inside when the pattern covers any of its cells; otherwise the unit's own point decides.
+export function unitInPattern(board, name, hx, hy, unit) {
+  if (!unit.cells) return inPattern(board, name, hx, hy, unit.x, unit.y);
+  const [hc, hr] = cellAt(board, hx, hy);
+  const offsets = PATTERNS[name] ?? [];
+  return unit.cells.some(([c, r]) => offsets.some(([dc, dr]) => hc + dc === c && hr + dr === r));
+}
+
 // Plain names for the UI (glossary, help).
 const LABELS = { plus: "Plus", block: "Square", blockPlus: "Square plus", diamond2: "Diamond", star3: "Star", cross3: "Long cross", cross4: "Longer cross", diamond3: "Large diamond", block2: "Large square", cross2: "Cross", longPlus: "Long plus", lance: "Lance", row2: "Short line", row3: "Line", row4: "Long line", row5: "Longest line" };
 export const patternLabel = (name) => (PATTERNS[name] ? `${LABELS[name] ?? name}, ${PATTERNS[name].length} tiles` : "");

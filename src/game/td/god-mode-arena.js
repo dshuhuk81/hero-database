@@ -1,24 +1,41 @@
-// God-Mode arena layout: a fixed 9 x 4 board below the boss's parapet. The boss is not on the board;
-// it sits behind the wall and is hit through the five target anchors (bossTargets).
+// God-Mode arena layout: a fixed 9 x 4 board, 104 px cells, origin (12, 62). The god stands behind
+// the parapet above it and owns the five B cells of the top row (one unit, so an area attack
+// hits it once).
 //
-//   P  platform (side balconies and side platforms)
-//   M  melee front
-//   H  raised gallery (bottom row)
+//   P  platform tile (side balconies and side platforms)
+//   M  melee front, a road tile
+//   H  raised gallery: a platform tile with the high-ground ring
+//   B  boss cell, not placeable
 //   .  void, no placement
 //
 // Every hero can take boss damage, whatever the cell type.
 
 export const GOD_ARENA = {
   columns: 9,
+  cell: 104,
+  origin: [12, 62],
   bossTargets: 5,
   rows: [
-    "P.......P", // side balconies
+    "P.BBBBB.P", // side balconies and the god's cells
     ".PMMMMMP.", // side platforms and melee front
     "..P...P..", // further side platforms
     "..HHHHH..", // raised gallery
   ],
-  legend: { P: "platform", M: "melee front", H: "raised gallery", ".": "void" },
+  legend: { P: "platform", M: "melee front", H: "raised gallery", B: "boss", ".": "void" },
 };
+
+// The arena as a `grid.board` record (board.js): road tiles for M, platform tiles for P and H
+// (listed in reading order, so slot indices are stable), high-ground rings on H, and the boss cells.
+export function godBoard() {
+  const road = [], platforms = [], rings = [], boss = [];
+  GOD_ARENA.rows.forEach((row, r) => [...row].forEach((type, c) => {
+    if (type === "M") road.push([c, r]);
+    else if (type === "P" || type === "H") platforms.push([c, r]);
+    else if (type === "B") boss.push([c, r]);
+    if (type === "H") rings.push({ type: "platform", cell: [c, r], kind: "highground" });
+  }));
+  return { board: { cell: GOD_ARENA.cell, cols: GOD_ARENA.columns, rows: GOD_ARENA.rows.length, origin: GOD_ARENA.origin, road, platforms, rings }, boss };
+}
 
 // Board trapezoid in canvas px; `edge` is the y of the wall side, the far edge of the board.
 const TOP_X = [102, 858];

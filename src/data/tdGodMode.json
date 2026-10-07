@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "challenges": [
+    {
+      "id": "cronus",
+      "name": "Cronus",
+      "title": "The Ember Titan",
+      "seconds": 90,
+      "boss": { "refHp": 5000000, "armor": 0, "magicRes": 0 },
+      "firstAttackAt": 4,
+      "cycle": [
+        { "attack": "slam", "side": "L", "cell": [1, 1], "telegraph": 1.0, "recovery": 1.4, "damage": 0.45 },
+        { "attack": "embers", "count": 3, "telegraph": 1.2, "recovery": 1.2, "damage": 0.3 },
+        { "attack": "slam", "side": "R", "cell": [7, 1], "telegraph": 1.0, "recovery": 1.4, "damage": 0.45 },
+        { "attack": "sweep", "row": 1, "telegraph": 1.5, "recovery": 1.6, "damage": 0.3 }
+      ]
+    }
+  ]
+}
