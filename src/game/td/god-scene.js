@@ -61,43 +61,16 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
   head.visible = false;
   bossLayer.addChild(torso, head);
 
-  // Board floor: the arena art masked to the board, a lava-lit frame, voids dimmed, the parapet.
+  // The painted floor remains below the boss; only a quiet basalt parapet separates them.
   const floor = new PIXI.Sprite(floorTex);
   floor.width = 960; floor.height = 540;
   const floorMask = new PIXI.Graphics().roundRect(boardLeft - 14, boardTop - 6, boardRight - boardLeft + 28, 540 - boardTop + 6, 10).fill(0xffffff);
   floor.mask = floorMask;
   layers.bgTex.addChild(floorMask, floor);
-  const frame = new PIXI.Graphics();
-  frame.roundRect(boardLeft - 14, boardTop - 6, boardRight - boardLeft + 28, 540 - boardTop + 6, 10).stroke({ color: 0xd9803f, width: 3, alpha: 0.75 });
-  layers.bgTex.addChild(frame);
-  const cells = [];
-  for (let r = 0; r < board.rows; r++) for (let c = 0; c < board.cols; c++) cells.push([c, r]);
-  const typeAt = new Map(); // "c,r" -> M / P / H / B (road, platform, raised, boss) for the dim pass
-  for (const [c, r] of board.road) typeAt.set(`${c},${r}`, "M");
-  for (const [c, r] of board.platforms) typeAt.set(`${c},${r}`, "P");
-  for (const { cell, kind } of board.rings ?? []) if (kind === "highground") typeAt.set(cell.join(","), "H");
-  for (const cell of cfg.cells) typeAt.set(cell.join(","), "B");
-  const voids = new PIXI.Graphics();
-  for (const [c, r] of cells) {
-    if (typeAt.has(`${c},${r}`)) continue;
-    const [x, y] = cellCenter(board, [c, r]);
-    voids.rect(x - board.cell / 2, y - board.cell / 2, board.cell, board.cell).fill({ color: 0x05060c, alpha: 0.48 });
-  }
-  layers.bgTex.addChild(voids);
   const parapet = new PIXI.Graphics();
-  parapet.poly([boardLeft - 30, wallTop, boardRight + 30, wallTop, boardRight + 14, boardTop + 4, boardLeft - 14, boardTop + 4]).fill({ color: 0x3b322f }).stroke({ color: 0xd9803f, width: 3, alpha: 0.8 });
-  parapet.poly([boardLeft - 14, boardTop - 4, boardRight + 14, boardTop - 4, boardRight + 4, boardTop + 14, boardLeft - 4, boardTop + 14]).fill({ color: 0x1e1a1c }).stroke({ color: 0x5a3f33, width: 2 });
-  for (let x = boardLeft; x < boardRight; x += 72) parapet.moveTo(x, boardTop - 3).lineTo(x + 8, boardTop + 13).stroke({ color: 0xff6a1f, width: 2, alpha: 0.5 });
+  parapet.poly([boardLeft - 30, wallTop, boardRight + 30, wallTop, boardRight + 14, boardTop + 4, boardLeft - 14, boardTop + 4]).fill({ color: 0x3b322f, alpha: 0.9 });
+  parapet.poly([boardLeft - 14, boardTop - 4, boardRight + 14, boardTop - 4, boardRight + 4, boardTop + 14, boardLeft - 4, boardTop + 14]).fill({ color: 0x1e1a1c, alpha: 0.9 });
   layers.bgTex.addChild(parapet);
-
-  // The boss cells: faintly red tiles under the god, so players see what the melee reach hits.
-  const bossCells = new PIXI.Graphics();
-  for (const cell of cfg.cells) {
-    const [x, y] = cellCenter(board, cell);
-    const size = board.cell - 10;
-    bossCells.roundRect(x - size / 2, y - size / 2, size, size, 8).fill({ color: 0x5b2428, alpha: 0.4 }).stroke({ color: 0xe27564, width: 2, alpha: 0.6 });
-  }
-  layers.bg.addChild(bossCells);
 
   const marks = new PIXI.Graphics(); // telegraph tiles, strike flashes, lava pools
   layers.groundFx.addChild(marks);
@@ -330,10 +303,10 @@ export async function createGodScene(PIXI, game, { layers, reducedMotion = false
     const raised = ringAt.get(`${x},${y}`) === "highground";
     const style = type === "road" ? TILES.road : raised ? TILES.highground : TILES.platform;
     const size = board.cell - 10, edge = size / 2;
-    const fade = highlighted || occupied ? 1 : mode === "dim" ? 0.3 : mode === "idle" ? 0.62 : 1;
+    const fade = highlighted ? 1 : occupied ? 0.4 : mode === "dim" ? 0.18 : mode === "idle" ? 0.32 : 1;
     const g = new PIXI.Graphics();
     if (raised) g.roundRect(x - edge, y - edge + 7, size, size, 8).fill({ color: 0x0b0c12, alpha: 0.7 * fade }); // the gallery's shadow
-    g.roundRect(x - edge, y - edge, size, size, 8).fill({ color: style.fill, alpha: style.alpha * fade }).stroke({ color: highlighted ? 0xffffff : style.stroke, width: highlighted ? 3 : 2, alpha: 0.9 * fade });
+    g.roundRect(x - edge, y - edge, size, size, 8).fill({ color: style.fill, alpha: style.alpha * fade * (mode === "idle" ? 0.6 : 1) }).stroke({ color: highlighted ? 0xffffff : style.stroke, width: highlighted ? 3 : 2, alpha: 0.75 * fade });
     container.addChild(g);
   }
 

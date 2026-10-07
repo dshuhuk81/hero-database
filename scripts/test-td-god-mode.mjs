@@ -9,13 +9,14 @@ const challenge = godChallenge("cronus");
 const map = godMapFor(challenge);
 const board = boardOf(map);
 
-// --- map: the 9 x 4 arena from the owner's layout ---
+// --- map: a three-row arena with an invisible boss target row ---
 assert.equal(board.cols, 9, "9 columns");
-assert.equal(board.rows, 4, "4 rows");
+assert.equal(board.rows, 3, "the visible arena has three rows");
 assert.equal(map.roadSlots.length, 5, "five melee tiles");
-assert.equal(map.platformSlots.length, 11, "eleven platform tiles (six P, five H)");
+assert.equal(map.platformSlots.length, 9, "nine platform tiles (four P, five H); no upper corner tiles");
 assert.equal(Object.values(map.rings).filter((kind) => kind === "highground").length, 5, "the gallery is high ground");
-assert.deepEqual(map.god.cells, [[2, 0], [3, 0], [4, 0], [5, 0], [6, 0]], "five boss cells in the top row");
+assert.deepEqual(map.god.cells, [[2, -1], [3, -1], [4, -1], [5, -1], [6, -1]], "boss target cells stay above the playable board");
+assert.equal(map.platformSlots.some(([, y]) => y < 300), false, "nothing is placeable in the removed upper row");
 
 const make = (extra = {}) => new TowerDefenseGame({ heroes, tuning, map, timeline: [], seed: 11, allowedHeroes: ["atlas", "odin", "skadi", "plutus", "aegir", "fenrir", "ymir"], ...extra });
 const roadIndex = (c, r) => board.road.findIndex(([rc, rr]) => rc === c && rr === r);
@@ -41,12 +42,11 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
 {
   const game = make();
   game.placement = 10000;
-  // Tank pattern "plus" from the outer melee tile (2, 1) covers (2, 0), a boss cell that is not the centre one.
-  assert.equal(game.place("atlas", "road", roadIndex(2, 1)), true, "Tank on the left melee tile");
-  // Mage "diamond2" from the side platform (1, 1) reaches the boss's left arm cell.
-  assert.equal(game.place("odin", "platform", platformIndex(1, 1)), true, "Mage on the left platform");
-  assert.equal(game.place("skadi", "platform", platformIndex(4, 3)), true, "Archer in the gallery");
-  assert.equal(game.place("plutus", "platform", platformIndex(6, 2)), true, "Support on a side platform");
+  // Tank pattern "plus" from (2, 0) covers the invisible boss cell (2, -1).
+  assert.equal(game.place("atlas", "road", roadIndex(2, 0)), true, "Tank on the left melee tile");
+  assert.equal(game.place("odin", "platform", platformIndex(1, 0)), true, "Mage on the left platform");
+  assert.equal(game.place("skadi", "platform", platformIndex(4, 2)), true, "Archer in the gallery");
+  assert.equal(game.place("plutus", "platform", platformIndex(6, 1)), true, "Support on a side platform");
   game.start();
   const boss = game.enemies[0];
   for (const id of ["atlas", "odin", "skadi"]) {
@@ -69,7 +69,7 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
   const boss = game.enemies[0];
   const centre = { x: boss.x, y: boss.y };
   assert.equal(game.nearPoint(centre, boss, 130), true, "an area around the boss reaches it");
-  assert.equal(game.nearPoint({ x: board.origin[0] + board.cell * 8.5, y: board.origin[1] + board.cell * 3.5 }, boss, 130), false, "a far area does not");
+  assert.equal(game.nearPoint({ x: board.origin[0] + board.cell * 8.5, y: board.origin[1] + board.cell * 2.5 }, boss, 130), false, "a far area does not");
 }
 
 // --- the timer ends the run ---
@@ -86,8 +86,8 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
 {
   const game = make();
   game.placement = 10000;
-  game.place("atlas", "road", roadIndex(2, 1)); // inside the first slam's plus around (1, 1)
-  game.place("skadi", "platform", platformIndex(4, 3)); // far from the first slam
+  game.place("atlas", "road", roadIndex(2, 0)); // inside the first slam's plus around (1, 0)
+  game.place("skadi", "platform", platformIndex(4, 2)); // far from the first slam
   const effects = [];
   game.onEffect = (effect) => { if (String(effect.type).startsWith("god")) effects.push(effect); };
   game.start();
@@ -99,7 +99,7 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
   const telegraph = effects.find((effect) => effect.type === "godTelegraph");
   assert.ok(telegraph, "the first attack is announced");
   assert.equal(telegraph.attack, "slam");
-  assert.ok(telegraph.cells.some(([c, r]) => c === 1 && r === 1), "the left slam marks the left platform cell");
+  assert.ok(telegraph.cells.some(([c, r]) => c === 1 && r === 0), "the left slam marks the left platform cell");
   assert.equal(atlas.hpLeft, atlas.hp, "no damage during the telegraph");
   for (let i = 0; i < 60 * (first.telegraph + 0.2); i += 1) game.step(1 / 60);
   const strike = effects.find((effect) => effect.type === "godStrike");
@@ -108,33 +108,49 @@ const platformIndex = (c, r) => board.platforms.findIndex(([pc, pr]) => pc === c
   assert.equal(skadi.hpLeft, skadi.hp, "a hero outside the marked cells is not");
 }
 
-// --- heroes fall to the god and the run goes on ---
+// --- losing the last hero ends the challenge immediately ---
 {
   const game = make();
   game.placement = 10000;
-  game.place("odin", "platform", platformIndex(1, 1));
+  game.place("odin", "platform", platformIndex(1, 0));
   game.start();
   const odin = game.heroes[0];
   odin.hpLeft = 1; // one more hit is fatal
   for (let i = 0; i < 60 * 30 && game.heroes.includes(odin); i += 1) game.step(1 / 60);
   assert.equal(game.heroes.includes(odin), false, "a fragile hero falls to a strike");
   assert.ok(game.fallenHeroes.some((entry) => entry.id === "odin"), "and is recorded as fallen");
-  assert.equal(game.complete, false, "the run is not over");
+  assert.equal(game.complete, true, "the run ends when the last hero falls");
+  assert.equal(game.won, false, "the wipe is a defeat, not a completed timer");
+  assert.ok(game.time < challenge.seconds, "the wipe ends before the timer");
+}
+
+// --- losing one of several heroes does not end the challenge ---
+{
+  const game = make();
+  game.placement = 10000;
+  game.place("odin", "platform", platformIndex(1, 0));
+  game.place("skadi", "platform", platformIndex(4, 2));
+  game.start();
+  const odin = game.heroes.find((hero) => hero.id === "odin");
+  odin.hpLeft = 1;
+  for (let i = 0; i < 60 * 30 && game.heroes.includes(odin); i += 1) game.step(1 / 60);
+  assert.equal(game.heroes.includes(odin), false, "one hero falls");
+  assert.equal(game.complete, false, "survivors keep the run going");
 }
 
 // --- stationary units are found by cell ---
 {
   const game = make();
   const [c, r] = cellAt(board, 480, 221);
-  assert.deepEqual([c, r], [4, 0], "the boss's centre sits in cell (4, 0)");
+  assert.deepEqual([c, r], [4, -1], "the boss's centre sits in the invisible row");
 }
 
 // --- a blow lands on the aim point of the boss cell the hero's pattern covers ---
 {
   const game = make();
   game.placement = 10000;
-  game.place("atlas", "road", roadIndex(2, 1)); // plus pattern: covers boss cell (2, 0) only
-  game.place("odin", "platform", platformIndex(6, 2)); // diamond2 from (6, 2): covers (6, 0)
+  game.place("atlas", "road", roadIndex(2, 0)); // plus pattern: covers boss cell (2, -1) only
+  game.place("odin", "platform", platformIndex(6, 1)); // diamond2 from (6, 1): covers (6, -1)
   game.start();
   const boss = game.enemies[0];
   const atlas = game.heroes.find((hero) => hero.id === "atlas");

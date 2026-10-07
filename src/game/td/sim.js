@@ -1052,6 +1052,7 @@ export class TowerDefenseGame {
       this.team = this.team.filter((id) => id !== hero.id);
       if (this.stageStats) this.stageStats.heroDeaths += 1;
       this.onChange("death", this);
+      if (this.god && this.started && !this.heroes.length) this.finish(false);
     }
   }
 

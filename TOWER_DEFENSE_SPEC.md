@@ -1102,3 +1102,7 @@ The order and dependencies of the open work live in
   no longer fails on it (October 5: the bot has no focus targeting or relocation and underrates a human player).
 - **Bosses:** Lerna, Kraghorn and Vorruk have no rules yet; Ochenta's numbers are untested.
 - **Board visuals (October 7):** painted maps no longer draw SPAWN / SANCTUARY / INTEGRITY captions (neighbouring tiles clipped them; lives show in the HUD). Hit, splash, cleave and ult rings draw on `layerGroundRings` (inside `layerGroundFx`, under the units). Lerna's sheet feet are raised 8 sheet px (`BOSS_FEET_RAISE` in `render.js`) because its packed anchor was a stray tail pixel, so the shadow sat below the feet.
+
+## God Challenge screen
+
+Layout (`TdLobby.astro` screen `god`, `page/god.ts`, `.td-god*` in `td.css`): god tabs on the left (one entry per challenge in `tdGodMode.json`), full-bleed backdrop `public/td/god-mode/{id}/{id}-select-bg-v1.webp` (gradient fallback if missing), right panel with the highscore, a score ladder (`milestones` damage thresholds per challenge; a tier fills and marks reached from the saved best damage) and the "Choose squad" button. Tiers carry no rewards yet; the thresholds are placeholder values.
