@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TD Scaling Overview</title>
+<style>
+:root{--bg:#14161c;--card:#1c1f27;--ink:#e8e6df;--mute:#8d93a1;--line:#2c303b;--hp:#e0a24a;--atk:#6aa9e0;--up:#e86a5c;--down:#6cc08b;--dirty:rgba(224,162,74,.16);--field:#12141a}
+@media (prefers-color-scheme:light){:root{--bg:#f6f4ee;--card:#fff;--ink:#22252c;--mute:#6b7080;--line:#e2dfd5;--hp:#b8741a;--atk:#2d6fae;--up:#c4382a;--down:#2c8a55;--dirty:rgba(184,116,26,.14);--field:#faf8f3}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif;padding:24px 16px 90px}
+main{max-width:1200px;margin:0 auto}h1{margin:0 0 4px;font-size:24px}p.sub{color:var(--mute);margin:0 0 20px}
+section,.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px;overflow-x:auto}
+h2{font-size:16px;margin:0 0 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}h2 small{color:var(--mute);font-weight:400}
+.tools{margin-left:auto;display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mute)}
+table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--mute);font-weight:500;font-size:12px}.num{text-align:right;font-variant-numeric:tabular-nums}
+.id{color:var(--mute)}.atk{color:var(--atk)}.up{color:var(--up)}.down{color:var(--down)}.goal{color:var(--mute)}
+.barcell{width:24%}.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--hp)}
+.tag{font-size:11px;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:4px}
+input,button{font:inherit;color:var(--ink)}
+input.hp{width:84px;text-align:right;background:var(--field);border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-variant-numeric:tabular-nums;color:var(--hp);font-weight:600}
+input.hp:focus{outline:2px solid var(--hp);outline-offset:0}input.fac{width:60px;text-align:right;background:var(--field);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.ro{color:var(--hp);font-weight:600}
+button{background:var(--field);border:1px solid var(--line);border-radius:6px;padding:3px 10px;cursor:pointer}button:hover{border-color:var(--hp)}
+tr.dirty td{background:var(--dirty)}.orig{color:var(--mute);font-size:11px;margin-left:6px}
+.legend{display:flex;gap:16px;color:var(--mute);font-size:12px;margin-bottom:6px}.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
+svg{width:100%;height:auto;display:block}.grid{stroke:var(--line)}.ch{stroke:var(--line);stroke-dasharray:3 3}.lbl{fill:var(--mute);font-size:11px}
+#savebar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;display:none;justify-content:center;gap:12px;align-items:center}
+#savebar.on{display:flex}#savebar .go{background:var(--hp);color:#14161c;border-color:var(--hp);font-weight:600;padding:6px 18px}
+#msg{color:var(--mute)}
+</style></head><body><main>
+<h1>Tower Defense scaling overview</h1>
+<p class="sub" id="sub"></p>
+<div class="card"><div class="legend"><span><b style="background:var(--hp)"></b>Enemy HP (log axis)</span><span><b style="background:var(--atk)"></b>Enemy ATK (linear)</span></div><div id="chart"></div></div>
+<div id="chapters"></div>
+</main>
+<div id="savebar"><span id="count"></span><button id="reset">Discard changes</button><button class="go" id="save">Save to tdCampaign.json</button><span id="msg"></span></div>
+<script>
+const D = {"editable":false,"heroic":{"hp":2,"atk":1.3},"chapters":[{"n":1,"name":"The Road to the Crossing","stages":[{"id":"1-1","name":"First Watch","rule":"","hp":6.82,"atk":1,"lives":20,"might":6740,"goal":"No life lost"},{"id":"1-2","name":"The Green Road","rule":"","hp":19.47,"atk":1.03,"lives":15,"might":7020,"goal":"No flyer leaks"},{"id":"1-3","name":"Iron Hides","rule":"","hp":2.26,"atk":1.07,"lives":15,"might":7230,"goal":"Max 5 heroes"},{"id":"1-4","name":"Shield Wall","rule":"nightfall","hp":11.9,"atk":1.1,"lives":15,"might":7660,"goal":"Max 4 heroes"},{"id":"1-5","name":"The Horned Warden","rule":"hardenedHides","hp":3.78,"atk":1.13,"lives":14,"might":7880,"goal":"No life lost"},{"id":"1-6","name":"Hexfire","rule":"","hp":10.02,"atk":1.17,"lives":15,"might":8170,"goal":"No life lost"},{"id":"1-7","name":"Two Gates","rule":"forcedMarch","hp":9.67,"atk":1.2,"lives":16,"might":8470,"goal":"Max 5 heroes"},{"id":"1-8","name":"Brood Hollow","rule":"leanSupplies","hp":8.47,"atk":1.23,"lives":15,"might":8820,"goal":"No Mage"},{"id":"1-9","name":"Eve of the Crossing","rule":"","hp":3.79,"atk":1.27,"lives":18,"might":9180,"goal":"No runner leaks"},{"id":"1-10","name":"The Crossing","rule":"quickened","hp":4.83,"atk":1.3,"lives":15,"might":9460,"goal":"No Archer"}]},{"n":2,"name":"The Sunscar March","stages":[{"id":"2-1","name":"The Dry Basin","rule":"blessedGround","hp":6.72,"atk":1.37,"lives":16,"might":10110,"goal":"No Mage"},{"id":"2-2","name":"Glass Sands","rule":"","hp":5.08,"atk":1.43,"lives":15,"might":10410,"goal":"Max 5 heroes"},{"id":"2-3","name":"Serpent Wells","rule":"richCamp","hp":2.23,"atk":1.5,"lives":15,"might":10760,"goal":"No Mage"},{"id":"2-4","name":"Brood of Noon","rule":"nightfall","hp":1.48,"atk":1.57,"lives":16,"might":11060,"goal":"No life lost"},{"id":"2-5","name":"Mirage Gate","rule":"","hp":0.86,"atk":1.63,"lives":16,"might":11400,"goal":"No Archer"},{"id":"2-6","name":"Throne of Ash","rule":"hardenedHides","hp":3.63,"atk":1.7,"lives":18,"might":11760,"goal":"No flyer leaks"}]},{"n":3,"name":"The Emerald Deep","stages":[{"id":"3-1","name":"Beneath the Canopy","rule":"forcedMarch","hp":3.12,"atk":1.78,"lives":16,"might":12270,"goal":"No Assassin"},{"id":"3-2","name":"The Root Maze","rule":"","hp":2.23,"atk":1.87,"lives":15,"might":12570,"goal":"No Support"},{"id":"3-3","name":"Flooded Court","rule":"leanSupplies","hp":1.82,"atk":1.95,"lives":15,"might":12570,"goal":"No Warrior"},{"id":"3-4","name":"Jaguar Steps","rule":"quickened","hp":2.31,"atk":2.03,"lives":15,"might":12570,"goal":"No flyer leaks"},{"id":"3-5","name":"Emerald Coil","rule":"","hp":0.78,"atk":2.12,"lives":16,"might":12570,"goal":"Max 5 heroes"},{"id":"3-6","name":"Heart of the Jungle","rule":"blessedGround","hp":1.72,"atk":2.2,"lives":18,"might":12570,"goal":"No flyer leaks"}]},{"n":4,"name":"The Frozen Covenant","stages":[{"id":"4-1","name":"White Gate","rule":"richCamp","hp":6.98,"atk":2.37,"lives":16,"might":15790,"goal":"No Archer"},{"id":"4-2","name":"Rime Causeway","rule":"","hp":5.08,"atk":2.53,"lives":16,"might":16260,"goal":"Max 4 heroes"},{"id":"4-3","name":"Glacier Court","rule":"nightfall","hp":3.12,"atk":2.7,"lives":16,"might":16680,"goal":"No Assassin"},{"id":"4-4","name":"Frozen Sigils","rule":"hardenedHides","hp":2.74,"atk":2.87,"lives":16,"might":17060,"goal":"No flyer leaks"},{"id":"4-5","name":"Winter Coil","rule":"","hp":5.37,"atk":3.03,"lives":16,"might":17390,"goal":"No Warrior"},{"id":"4-6","name":"Covenant Spire","rule":"forcedMarch","hp":6.6,"atk":3.2,"lives":18,"might":17860,"goal":"No flyer leaks"}]},{"n":5,"name":"The Cinder Oath","stages":[{"id":"5-1","name":"Coal Gate","rule":"leanSupplies","hp":3.24,"atk":3.37,"lives":16,"might":18400,"goal":"Max 5 heroes"},{"id":"5-2","name":"Copper Descent","rule":"","hp":5.57,"atk":3.53,"lives":16,"might":18640,"goal":"No life lost"},{"id":"5-3","name":"Furnace Court","rule":"quickened","hp":2.54,"atk":3.7,"lives":16,"might":19110,"goal":"No Archer"},{"id":"5-4","name":"Ember Locks","rule":"blessedGround","hp":4.54,"atk":3.87,"lives":16,"might":19350,"goal":"No flyer leaks"},{"id":"5-5","name":"Cinder Circuit","rule":"","hp":2.07,"atk":4.03,"lives":16,"might":19820,"goal":"No Assassin"},{"id":"5-6","name":"Forge Heart","rule":"richCamp","hp":2.23,"atk":4.2,"lives":18,"might":20060,"goal":"No flyer leaks"}]},{"n":6,"name":"The Thunder Stair","stages":[{"id":"6-1","name":"Cloud Gate","rule":"nightfall","hp":2.45,"atk":4.37,"lives":16,"might":20620,"goal":"No Warrior"},{"id":"6-2","name":"Thunder Steps","rule":"","hp":2.59,"atk":4.53,"lives":16,"might":20950,"goal":"No Mage"},{"id":"6-3","name":"Rain Court","rule":"hardenedHides","hp":2.27,"atk":4.7,"lives":16,"might":20950,"goal":"Max 5 heroes"},{"id":"6-4","name":"Windbreak","rule":"forcedMarch","hp":2.84,"atk":4.87,"lives":16,"might":20950,"goal":"No flyer leaks"},{"id":"6-5","name":"Lightning Coil","rule":"","hp":1.72,"atk":5.03,"lives":16,"might":20950,"goal":"No Archer"},{"id":"6-6","name":"Storm Crown","rule":"leanSupplies","hp":1.27,"atk":5.2,"lives":18,"might":20950,"goal":"No flyer leaks"}]},{"n":7,"name":"The Drowned Crown","stages":[{"id":"7-1","name":"Coral Gate","rule":"quickened","hp":7.95,"atk":5.42,"lives":16,"might":24830,"goal":"No Assassin"},{"id":"7-2","name":"Tideway","rule":"","hp":6.98,"atk":5.63,"lives":16,"might":25180,"goal":"No Support"},{"id":"7-3","name":"Pearl Court","rule":"blessedGround","hp":4.8,"atk":5.85,"lives":16,"might":25610,"goal":"No Warrior"},{"id":"7-4","name":"Sunken Bells","rule":"richCamp","hp":5.68,"atk":6.07,"lives":16,"might":25960,"goal":"No flyer leaks"},{"id":"7-5","name":"Undertow","rule":"","hp":7.66,"atk":6.28,"lives":16,"might":26290,"goal":"Max 5 heroes"},{"id":"7-6","name":"Drowned Throne","rule":"nightfall","hp":3.49,"atk":6.5,"lives":18,"might":26550,"goal":"No flyer leaks"}]},{"n":8,"name":"The Spore Lanterns","stages":[{"id":"8-1","name":"Spore Gate","rule":"hardenedHides","hp":7.24,"atk":6.75,"lives":16,"might":27160,"goal":"No Archer"},{"id":"8-2","name":"Lantern Roots","rule":"","hp":3.43,"atk":7,"lives":16,"might":27520,"goal":"Max 4 heroes"},{"id":"8-3","name":"Fungal Court","rule":"forcedMarch","hp":2.4,"atk":7.25,"lives":16,"might":27840,"goal":"No Assassin"},{"id":"8-4","name":"Bloom Chambers","rule":"leanSupplies","hp":3.83,"atk":7.5,"lives":16,"might":28100,"goal":"No flyer leaks"},{"id":"8-5","name":"Mycelial Coil","rule":"","hp":4.21,"atk":7.75,"lives":16,"might":28450,"goal":"No Warrior"},{"id":"8-6","name":"Spore Heart","rule":"quickened","hp":2.27,"atk":8,"lives":18,"might":28810,"goal":"No flyer leaks"}]},{"n":9,"name":"The Shattered Prism","stages":[{"id":"9-1","name":"Quartz Gate","rule":"blessedGround","hp":4.89,"atk":8.17,"lives":16,"might":29390,"goal":"Max 5 heroes"},{"id":"9-2","name":"Prism Steps","rule":"","hp":4.54,"atk":8.33,"lives":16,"might":29660,"goal":"No life lost"},{"id":"9-3","name":"Facet Court","rule":"richCamp","hp":5.9,"atk":8.5,"lives":16,"might":30000,"goal":"No Archer"},{"id":"9-4","name":"Resonance Hall","rule":"nightfall","hp":2.27,"atk":8.67,"lives":16,"might":30360,"goal":"No flyer leaks"},{"id":"9-5","name":"Mirror Coil","rule":"","hp":3.49,"atk":8.83,"lives":16,"might":30620,"goal":"No Assassin"},{"id":"9-6","name":"Crystal Crown","rule":"hardenedHides","hp":2.31,"atk":9,"lives":18,"might":30620,"goal":"No Support"}]},{"n":10,"name":"The Silent Procession","stages":[{"id":"10-1","name":"Mourning Gate","rule":"forcedMarch","hp":8.9,"atk":9.17,"lives":16,"might":34020,"goal":"No Warrior"},{"id":"10-2","name":"Bone Road","rule":"","hp":9.06,"atk":9.33,"lives":16,"might":34470,"goal":"No Mage"},{"id":"10-3","name":"Silent Court","rule":"leanSupplies","hp":6.35,"atk":9.5,"lives":16,"might":34860,"goal":"Max 5 heroes"},{"id":"10-4","name":"Wraith Watch","rule":"quickened","hp":5.9,"atk":9.67,"lives":16,"might":35210,"goal":"No flyer leaks"},{"id":"10-5","name":"Funeral Coil","rule":"","hp":9.59,"atk":9.83,"lives":16,"might":35490,"goal":"No Archer"},{"id":"10-6","name":"Grave Throne","rule":"blessedGround","hp":2.23,"atk":10,"lives":18,"might":35870,"goal":"No flyer leaks"}]},{"n":11,"name":"The Last Harvest","stages":[{"id":"11-1","name":"Amber Gate","rule":"richCamp","hp":10.93,"atk":10.17,"lives":16,"might":36340,"goal":"No Assassin"},{"id":"11-2","name":"Maple Road","rule":"","hp":9.24,"atk":10.33,"lives":16,"might":36710,"goal":"No Support"},{"id":"11-3","name":"Harvest Court","rule":"nightfall","hp":7.11,"atk":10.5,"lives":16,"might":37100,"goal":"No Warrior"},{"id":"11-4","name":"Falling Leaves","rule":"hardenedHides","hp":11.78,"atk":10.67,"lives":16,"might":37380,"goal":"No flyer leaks"},{"id":"11-5","name":"Golden Coil","rule":"","hp":3.98,"atk":10.83,"lives":16,"might":37840,"goal":"Max 5 heroes"},{"id":"11-6","name":"Last Orchard","rule":"forcedMarch","hp":10.33,"atk":11,"lives":18,"might":38230,"goal":"No flyer leaks"}]},{"n":12,"name":"The Astral Meridian","stages":[{"id":"12-1","name":"Star Gate","rule":"leanSupplies","hp":10.73,"atk":11.17,"lives":16,"might":38680,"goal":"No Archer"},{"id":"12-2","name":"Moon Meridian","rule":"","hp":10.14,"atk":11.33,"lives":16,"might":39070,"goal":"Max 4 heroes"},{"id":"12-3","name":"Astral Court","rule":"quickened","hp":4.89,"atk":11.5,"lives":16,"might":39420,"goal":"No Assassin"},{"id":"12-4","name":"Orbit Hall","rule":"blessedGround","hp":9.06,"atk":11.67,"lives":16,"might":39700,"goal":"No flyer leaks"},{"id":"12-5","name":"Comet Coil","rule":"","hp":8.1,"atk":11.83,"lives":16,"might":40080,"goal":"No Warrior"},{"id":"12-6","name":"Zenith Crown","rule":"richCamp","hp":5.08,"atk":12,"lives":18,"might":40460,"goal":"No flyer leaks"}]},{"n":13,"name":"The Brass Reckoning","stages":[{"id":"13-1","name":"Brass Gate","rule":"nightfall","hp":6.6,"atk":12.17,"lives":16,"might":40920,"goal":"Max 5 heroes"},{"id":"13-2","name":"Gearway","rule":"","hp":11.14,"atk":12.33,"lives":16,"might":41310,"goal":"No life lost"},{"id":"13-3","name":"Piston Court","rule":"hardenedHides","hp":5.68,"atk":12.5,"lives":16,"might":41590,"goal":"No Archer"},{"id":"13-4","name":"Steam Locks","rule":"forcedMarch","hp":8.41,"atk":12.67,"lives":16,"might":41590,"goal":"No flyer leaks"},{"id":"13-5","name":"Escapement","rule":"","hp":11.78,"atk":12.83,"lives":16,"might":41590,"goal":"No Assassin"},{"id":"13-6","name":"Clockwork Heart","rule":"leanSupplies","hp":8.9,"atk":13,"lives":18,"might":41590,"goal":"No flyer leaks"}]}]};
+const $ = (s, r = document) => r.querySelector(s);
+const fmt = (n) => String(Math.round(n * 100) / 100);
+const stages = D.chapters.flatMap((c) => c.stages.map((s) => (s.orig = s.hp, s.ch = c.n, s)));
+const dirtyList = () => stages.filter((s) => s.hp !== s.orig);
+
+$('#sub').innerHTML = (D.editable
+  ? 'Edit any <b>Enemy HP</b> value (or use the chapter factor), then <b>Save</b>. It writes <code>hpScale</code> into <code>src/data/tdCampaign.json</code>, so tests pick it up right away.'
+  : 'Read only. Run <code>npm run td:scaling-editor</code> to edit and save.')
+  + ' Enemy HP is the stage <code>hpScale</code>, ATK is <code>atkScale</code>. Heroic columns apply x' + D.heroic.hp + ' HP and x' + D.heroic.atk + ' ATK.';
+
+function chart() {
+  const W = 1000, H = 220, p = { l: 40, r: 10, t: 10, b: 24 }, iw = W - p.l - p.r, ih = H - p.t - p.b;
+  const hs = stages.map((s) => s.hp), lo = Math.min(...hs) * 0.8, hi = Math.max(...hs) * 1.05;
+  const maxAtk = Math.max(...stages.map((s) => s.atk)) * 1.05, n = stages.length;
+  const x = (i) => p.l + i / (n - 1) * iw;
+  const yH = (v) => p.t + ih - (Math.log(v) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) * ih;
+  const yA = (v) => p.t + ih - v / maxAtk * ih;
+  const path = (f) => stages.map((s, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + f(s).toFixed(1)).join(' ');
+  const origPath = stages.map((s, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ',' + yH(s.orig).toFixed(1)).join(' ');
+  let grid = [0.5, 1, 2, 5, 10, 20, 50, 100].filter((v) => v >= lo && v <= hi).map((v) =>
+    '<line x1="' + p.l + '" x2="' + (W - p.r) + '" y1="' + yH(v).toFixed(1) + '" y2="' + yH(v).toFixed(1) + '" class="grid"/><text x="' + (p.l - 6) + '" y="' + (yH(v) + 4).toFixed(1) + '" class="lbl" text-anchor="end">' + v + 'x</text>').join('');
+  let idx = 0, lines = '';
+  D.chapters.forEach((c, ci) => {
+    const xx = x(idx) - (ci ? iw / (n - 1) / 2 : 0); idx += c.stages.length;
+    lines += '<line x1="' + xx.toFixed(1) + '" x2="' + xx.toFixed(1) + '" y1="' + p.t + '" y2="' + (p.t + ih) + '" class="ch"/><text x="' + (xx + 3).toFixed(1) + '" y="' + (H - 8) + '" class="lbl">Ch ' + c.n + '</text>';
+  });
+  const changed = dirtyList().length ? '<path d="' + origPath + '" fill="none" stroke="var(--mute)" stroke-width="1.5" stroke-dasharray="4 3"/>' : '';
+  $('#chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '">' + grid + lines + '<path d="' + path((s) => yA(s.atk)) + '" fill="none" stroke="var(--atk)" stroke-width="2"/>' + changed + '<path d="' + path((s) => yH(s.hp)) + '" fill="none" stroke="var(--hp)" stroke-width="2"/></svg>';
+}
+
+function build() {
+  $('#chapters').innerHTML = D.chapters.map((c) => '<section data-ch="' + c.n + '"><h2>Chapter ' + c.n + ': ' + c.name +
+    ' <small class="stat"></small>' + (D.editable ? '<span class="tools">chapter factor x <input class="fac" type="number" step="0.05" value="1"><button class="apply">Apply</button></span>' : '') + '</h2>' +
+    '<table><thead><tr><th>Stage</th><th>Name</th><th class="num">Enemy HP</th><th>HP (log scale)</th><th class="num">vs prev</th><th class="num">Enemy ATK</th><th class="num">Heroic HP</th><th class="num">Heroic ATK</th><th class="num">Lives</th><th class="num">Rec. Might</th><th>Goal</th></tr></thead><tbody>' +
+    c.stages.map((s) => '<tr data-id="' + s.id + '"><td class="id">' + s.id + '</td><td>' + s.name + (s.rule ? ' <span class="tag">' + s.rule + '</span>' : '') + '</td>' +
+      '<td class="num">' + (D.editable ? '<input class="hp" type="number" step="0.01" min="0.01" value="' + s.hp + '">' : '<span class="ro">' + fmt(s.hp) + 'x</span>') + '<span class="orig"></span></td>' +
+      '<td class="barcell"><div class="bar"><i></i></div></td><td class="num d"></td><td class="num atk">' + fmt(s.atk) + 'x</td><td class="num hh"></td><td class="num">' + fmt(s.atk * D.heroic.atk) + 'x</td>' +
+      '<td class="num">' + s.lives + '</td><td class="num">' + (s.might ? s.might.toLocaleString('en-US') : '') + '</td><td class="goal">' + s.goal + '</td></tr>').join('') +
+    '</tbody></table></section>').join('');
+}
+
+function refresh() {
+  const hs = stages.map((s) => s.hp), lo = Math.min(...hs) * 0.8, hi = Math.max(...hs);
+  stages.forEach((s, i) => {
+    const tr = $('tr[data-id="' + s.id + '"]');
+    const prev = stages[i - 1], d = prev ? s.hp / prev.hp : null;
+    $('.bar i', tr).style.width = Math.max(1, (Math.log(s.hp) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) * 100) + '%';
+    const dc = $('.d', tr); dc.textContent = d == null ? 'start' : (d >= 1 ? '+' : '') + Math.round((d - 1) * 100) + '%';
+    dc.className = 'num d' + (d != null && d > 1.5 ? ' up' : d != null && d < 0.67 ? ' down' : '');
+    $('.hh', tr).textContent = fmt(s.hp * D.heroic.hp) + 'x';
+    const dirty = s.hp !== s.orig; tr.classList.toggle('dirty', dirty);
+    $('.orig', tr).textContent = dirty ? 'was ' + fmt(s.orig) : '';
+  });
+  D.chapters.forEach((c) => {
+    const v = c.stages.map((s) => s.hp);
+    $('section[data-ch="' + c.n + '"] .stat').textContent = c.stages.length + ' stages \u00b7 min ' + fmt(Math.min(...v)) + 'x \u00b7 avg ' + fmt(v.reduce((a, b) => a + b, 0) / v.length) + 'x \u00b7 max ' + fmt(Math.max(...v)) + 'x';
+  });
+  const n = dirtyList().length;
+  $('#savebar').classList.toggle('on', D.editable && n > 0);
+  $('#count').textContent = n + ' stage' + (n === 1 ? '' : 's') + ' changed';
+  chart();
+}
+
+build(); refresh();
+if (D.editable) {
+  const byId = Object.fromEntries(stages.map((s) => [s.id, s]));
+  $('#chapters').addEventListener('input', (e) => {
+    if (!e.target.classList.contains('hp')) return;
+    const v = parseFloat(e.target.value);
+    if (v > 0) { byId[e.target.closest('tr').dataset.id].hp = v; refresh(); }
+  });
+  $('#chapters').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('apply')) return;
+    const sec = e.target.closest('section'), f = parseFloat($('.fac', sec).value);
+    if (!(f > 0)) return;
+    D.chapters[sec.dataset.ch - 1].stages.forEach((s) => { s.hp = Math.round(s.hp * f * 100) / 100; $('tr[data-id="' + s.id + '"] input.hp').value = s.hp; });
+    $('.fac', sec).value = 1; refresh();
+  });
+  $('#reset').onclick = () => { stages.forEach((s) => { s.hp = s.orig; $('tr[data-id="' + s.id + '"] input.hp').value = s.hp; }); refresh(); };
+  $('#save').onclick = async () => {
+    const changes = Object.fromEntries(dirtyList().map((s) => [s.id, s.hp]));
+    $('#msg').textContent = 'saving...';
+    try {
+      const r = await fetch('/save', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(changes) });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || r.status);
+      stages.forEach((s) => { s.orig = s.hp; });
+      refresh(); $('#savebar').classList.add('on'); $('#msg').textContent = 'saved ' + j.saved + ' stages at ' + new Date().toLocaleTimeString();
+      setTimeout(() => $('#savebar').classList.remove('on'), 4000);
+    } catch (err) { $('#msg').textContent = 'save failed: ' + err.message; }
+  };
+  addEventListener('beforeunload', (e) => { if (dirtyList().length) e.preventDefault(); });
+}
+</script></body></html>

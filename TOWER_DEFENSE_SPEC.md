@@ -970,6 +970,13 @@ MVP, Hero contribution, Rewards), 2 s each, then shows the footer (Back to Camp,
 Favor, Continue, Retry). Losses and Endless runs open the detailed report. After a campaign
 stage the footer offers Retry, Next stage or Change squad, and Campaign.
 
+The Rewards scene shows currencies as item tiles (icon over amount) and, after a Campaign clear,
+a "Hero experience" row: one card per fielded hero with portrait, stars, level, an XP bar that
+animates from the old to the new share of the next level's Hero XP cost (a level-up fills the bar,
+then restarts), a level-up marker and "EXP +n". Data: `heroXp` from `finishCampaignRun`
+(`page/campaign.ts`) through `StageClearReport.heroXp` (`page/stage-clear.ts`). The result text
+no longer repeats the XP line on a win.
+
 Hero portrait backdrops: every hero portrait `<img>` carries `data-rarity` (from the hero's `rarity`); `td.css` paints common green, epic purple, legendary gold via `--rarity-*-bg` tokens in `tokens.css`. New portrait templates must set the attribute.
 
 ## 13. Meta progression and persistence

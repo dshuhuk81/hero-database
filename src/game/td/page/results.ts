@@ -190,7 +190,7 @@ export function createResults(ctx: PageContext) {
     const expedition = session.expedition;
     const dailyRun = daily ? finishDaily(saved, game, daily, !session.debug)
       : expedition ? { ...finishExpeditionStage(saved, game, expedition, data, !session.debug), reached: game.won }
-      : campaign ? (({ text, won, followUp, paid, laurels }) => ({ text, reached: won, reward: 0, followUp, paid, laurels }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
+      : campaign ? (({ text, won, followUp, paid, laurels, heroXp }) => ({ text, reached: won, reward: 0, followUp, paid, laurels, heroXp }))(finishCampaignRun(saved, game, campaign, (id) => ctx.heroById.get(id)?.name ?? id, !session.debug)) : null;
     // The Daily Trial and Expedition pay a share of Gold and Hero XP into the collection (Phase 2).
     const collection = campaign || session.debug ? [] : collectionReward(campaignData, defeatedCount(game));
     if (collection.length) {
@@ -327,7 +327,8 @@ export function createResults(ctx: PageContext) {
       rating: (dailyRun as any)?.laurels?.filter(Boolean).length ?? laurelLives(campaignData, { lives: game.maxLives }).filter((lives: number) => game.lives >= lives).length,
       laurels: (dailyRun as any)?.laurels ?? undefined, // Campaign: the earned laurels, which can skip one when the stage goal was missed
       rewards: [...(campaign ? [] : [{ id: "favor", amount: favorGained }]), ...Object.entries(paid).map(([id, amount]) => ({ id, amount }))],
-      note: session.debug ? "Debug run: score, bests and rewards were not recorded." : dailyRun?.text ?? "",
+      heroXp: (dailyRun as any)?.heroXp ?? [],
+      note: session.debug ? "Debug run: score, bests and rewards were not recorded." : campaign ? "" : dailyRun?.text ?? "", // Campaign: tiles and hero row replace the text
       rows: damageRows(game.heroStats ?? {}),
     });
     resultEl.focus({ preventScroll: true });

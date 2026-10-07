@@ -1,0 +1,44 @@
+{
+  "assets": [
+    {
+      "name": "isis-gacha",
+      "master": [
+        2048,
+        2048
+      ],
+      "upscaled": true,
+      "animationInput": [
+        256,
+        256
+      ],
+      "silhouetteBounds": {
+        "left": 602,
+        "top": 410,
+        "width": 844,
+        "height": 1228
+      },
+      "nominalGroundY": 0.8,
+      "scalePolicy": "same total silhouette height; final rig requires foot pivot calibration"
+    },
+    {
+      "name": "isis-fantasy",
+      "master": [
+        2048,
+        2048
+      ],
+      "upscaled": true,
+      "animationInput": [
+        256,
+        256
+      ],
+      "silhouetteBounds": {
+        "left": 647,
+        "top": 410,
+        "width": 754,
+        "height": 1228
+      },
+      "nominalGroundY": 0.8,
+      "scalePolicy": "same total silhouette height; final rig requires foot pivot calibration"
+    }
+  ]
+}

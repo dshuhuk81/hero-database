@@ -177,7 +177,7 @@ run in parallel.
 |---|---|---|---|---|
 | R11 | Three-gate boards in content: the generator supports them (`--gates=3`), no map uses one yet | Owner workflow | - | S |
 | R15 | Ice-theme enemy set: behavior + tuning data (art via owner PixelLab pipeline in parallel) | Agent (behavior), Owner (art) | - | L |
-| R18 | Tilted board and landscape HUD: the shared presentation is live across all Campaign stages and remains explicit per map in Free Play; authored panoramas and real-device acceptance remain. See **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)** | Agent (shared renderer/HUD), Owner (device approval and theme art) | - | L |
+| R18 | Tilted board and landscape HUD: the shared presentation is live across all Campaign stages ; authored panoramas and real-device acceptance remain. See **[Tower Defense — Tilted Board and Landscape HUD](TOWER_DEFENSE_TOP_CLIPPING_CONCEPT.md)** | Agent (shared renderer/HUD), Owner (device approval and theme art) | - | L |
 
 **R15 — Ice-theme enemy set ("Fjord" theme map family).** Specs below are the text brief the
 owner's PixelLab pipeline needs; behavior and tuning data can be built against placeholder

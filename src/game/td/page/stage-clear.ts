@@ -21,6 +21,7 @@ export type StageClearReport = {
   rating: number; // stage rating 0-3 (laurels, by lives kept)
   laurels?: boolean[]; // Campaign: which of the three laurels were earned (the goal laurel may be missing)
   rewards: { id: string; amount: number }[]; // what the save gained: favor, gold, heroXp, ...
+  heroXp?: { id: string; xp: number; stars: number; levelBefore: number; levelAfter: number; barBefore: number; barAfter: number }[]; // Campaign battle XP per fielded hero
   note: string; // mode outcome (Daily, Expedition, Campaign, debug)
   rows: any[]; // damageRows(), highest damage first
 };
@@ -59,6 +60,22 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
       `<div><strong>+${Math.round(amount).toLocaleString()}</strong><small>${REWARD_LABELS[id] ?? currencyName(id)}</small></div></div>`;
   }
 
+  // One fielded hero: portrait, stars, level, XP bar filling from its old to its new share (a level-up
+  // fills the bar to the end first, then restarts from empty), "EXP +n".
+  function heroXpCard(row: NonNullable<StageClearReport["heroXp"]>[number]) {
+    const hero = heroById.get(row.id);
+    const up = row.levelAfter > row.levelBefore;
+    const pct = (share: number) => `${Math.round(share * 100)}%`;
+    const art = hero?.image ? `<img data-rarity="${hero.rarity ?? ""}" src="${hero.image}" alt="" decoding="async">` : "";
+    const stars = row.stars > 0 ? `<span class="td-clear-hero-stars" aria-label="${row.stars} stars">${"★".repeat(row.stars)}</span>` : "";
+    return `<li class="td-clear-hero${up ? " is-levelup" : ""}" style="--from:${pct(up ? 0 : row.barBefore)};--to:${pct(row.barAfter)}">` +
+      `<span class="td-clear-hero-art">${art}${stars}</span>` +
+      `<span class="td-clear-hero-info">` +
+      `<span class="td-clear-hero-level"><strong>Lv. ${row.levelAfter}</strong>${up ? `<em class="td-clear-hero-up" title="Level up">▲ +${row.levelAfter - row.levelBefore}</em>` : ""}</span>` +
+      `<span class="td-clear-hero-bar"><i></i></span>` +
+      `<small>EXP +${row.xp.toLocaleString()}</small></span></li>`;
+  }
+
   function rankingRow(row: any, index: number) {
     const hero = heroById.get(row.id);
     const share = Math.round(row.share * 100);
@@ -79,6 +96,9 @@ export function createStageClear(ctx: PageContext, onFinal: () => void) {
     const scoreText = report.score.toLocaleString();
     q("[data-clear-rewards-kicker]").textContent = `Victory · ${report.mapName}`;
     q("[data-clear-rewards]").innerHTML = report.rewards.map(rewardCard).join("");
+    const heroXp = report.heroXp ?? [];
+    q("[data-clear-heroes]").innerHTML = heroXp.map(heroXpCard).join("");
+    q("[data-clear-heroes-wrap]").hidden = !heroXp.length;
     const note = q("[data-clear-note]");
     note.textContent = report.note;
     note.hidden = !report.note;

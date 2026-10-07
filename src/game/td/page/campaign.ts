@@ -49,6 +49,16 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   const result = finishCampaignStage(campaign, save.campaign, run.stageId, { won: !!game.won, lives: game.lives ?? 0, heroic: !!run.heroic, facts: runFacts(game) });
   // Battle XP for every fielded hero, win or loss (raises levels for free, see grantBattleXp).
   const battle = grantBattleXp(campaign, result.progress, flattenSquadRows(run.squadRows), run.stageId, !!game.won);
+  // Per hero: level and XP bar before and after (bar = share of the next level's Hero XP cost), for the Stage Clear hero row.
+  const barShare = (progress: any, id: string) => {
+    const cost = levelUpCost(campaign, heroLevel(progress, id), heroLevelCap(campaign, progress, id));
+    return cost ? Math.min(1, (progress.xp?.[id] ?? 0) / cost.heroXp) : 1;
+  };
+  const heroXp = record ? battle.gains.map((gain: any) => ({
+    id: gain.id, xp: gain.xp, stars: heroStars(battle.progress, gain.id),
+    levelBefore: heroLevel(result.progress, gain.id), levelAfter: heroLevel(battle.progress, gain.id),
+    barBefore: barShare(result.progress, gain.id), barAfter: barShare(battle.progress, gain.id),
+  })) : [];
   const levelled = battle.gains.filter((gain: any) => gain.levels > 0).map((gain: any) => `${heroName(gain.id)} reached level ${heroLevel(battle.progress, gain.id)}`);
   const xpLine = record && battle.gains.length ? ` Heroes earned ${battle.gains[0].xp} XP${levelled.length ? `: ${levelled.join(", ")}` : ""}.` : "";
   if (record) {
@@ -57,7 +67,7 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
   }
   const label = `${run.heroic ? "Heroic " : ""}Stage ${run.stageId} ${stage?.name ?? ""}`.trim();
   // Follow-up for the result screen: the same stage's squad after a loss, else the next open stage.
-  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.${xpLine}`, won: false, followUp: run.stageId, paid: [] as any[], laurels: null as boolean[] | null };
+  if (!game.won) return { text: `${label} lost. Try another squad, or level your heroes on the Heroes screen.${xpLine}`, won: false, followUp: run.stageId, paid: [] as any[], laurels: null as boolean[] | null, heroXp };
   const parts = [`${label} ${result.firstClear ? "cleared for the first time" : "cleared again"}.`];
   const currencies = result.granted.filter((reward: any) => reward.type === "currency");
   if (currencies.length) parts.push(`${rewardText(currencies)}.`);
@@ -71,11 +81,11 @@ export function finishCampaignRun(save: SaveData, game: any, run: CampaignRun, h
       if (cfg.unlockAfter === run.stageId) parts.push(`Divine Intervention unlocked: ${POWER_INFO[id]?.name ?? id}. ${POWER_INFO[id]?.text ?? ""}`);
     }
   }
-  if (record) parts.push(xpLine.trim());
+  // XP shows as the Stage Clear hero row, not as text.
   if (!record) parts.push("Debug run: progress was not recorded.");
   // Currencies paid by the clear and its chapter milestones, for the Stage Clear reward cards.
   const paid = record ? [...currencies, ...(result.milestones ?? []).flatMap((milestone: any) => milestone.rewards.filter((reward: any) => reward.type === "currency"))] : [];
-  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null, paid, laurels: result.laurels?.flags ?? null };
+  return { text: parts.join(" "), won: true, followUp: nextStage(campaign, result.progress)?.id ?? null, paid, laurels: result.laurels?.flags ?? null, heroXp };
 }
 
 // Stage rating (M26 sprint 10, internally "laurels"): a laurel wreath per point, no
