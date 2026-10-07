@@ -119,6 +119,7 @@ for (const [art, id, version] of [["verdant-shrine-v1", "verdant", "v2"], ["suns
   assert.equal(mapScene.mapBackdropFor({ art }), `/td/maps/${id}-terrain-wide-v1.png`, `${id} selects its own panorama`);
   assert.equal(mapScene.mapSceneFor({ art }).assets.terrain, `/td/maps/${id}-terrain-${version}.png`, `${id} keeps its selected playable terrain`);
 }
+
 {
   const { ENVIRONMENTS } = await import("../src/game/td/environments.js");
   for (const environment of Object.values(ENVIRONMENTS)) {

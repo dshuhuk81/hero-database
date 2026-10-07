@@ -16,6 +16,7 @@ export const MAP_SCENES = {
       spawn: "/td/maps/moonlit-spawn-v1.png",
       base: "/td/maps/moonlit-base-v1.png",
       road: "/td/maps/moonlit-road-v1.png",
+      platform: "/td/maps/moonlit-platform-v1.png",
     },
     ground: 0x202e3d, grade: { color: 0x08101c, alpha: 0.14 },
     seed: 0x6d6f6f6e,
@@ -35,6 +36,7 @@ export const MAP_SCENES = {
       spawn: "/td/maps/verdant-spawn-v2.png",
       base: "/td/maps/verdant-base-v2.png",
       road: "/td/maps/verdant-road-v2.png",
+      platform: "/td/maps/verdant-platform-v1.png",
     },
     ground: 0x1f2d24, grade: { color: 0x07140f, alpha: 0.12 },
     seed: 0x76657264,
@@ -55,6 +57,7 @@ export const MAP_SCENES = {
       spawn: "/td/maps/sunscar-spawn-v1.png",
       base: "/td/maps/sunscar-base-v1.png",
       road: "/td/maps/sunscar-road-v1.png",
+      platform: "/td/maps/sunscar-platform-v1.png",
     },
     ground: 0x3a3226, grade: { color: 0x1a1208, alpha: 0.1 },
     seed: 0x73756e73,
@@ -98,7 +101,7 @@ const panoramicEnvironments = new Set([
 for (const environment of Object.values(ENVIRONMENTS)) {
   const source = MAP_SCENES[environment.reuse === "verdant" ? "verdant-shrine-v1" : `${environment.reuse}-sanctuary-v1`];
   // Architecture may be shared, but a panorama belongs only to its own theme.
-  const { bleed: _sourcePanorama, ...sharedAssets } = source.assets;
+  const { bleed: _sourcePanorama, platform: _sourcePlatform, ...sharedAssets } = source.assets;
   MAP_SCENES[`${environment.id}-sanctuary-v1`] = {
     ...source, name: environment.name, baseName: "Sanctuary",
     assets: {
@@ -123,6 +126,13 @@ export function mapSceneFor(map) {
 export function mapBackdropFor(map) {
   const scene = mapSceneFor(map);
   return scene?.assets?.bleed ?? scene?.assets?.terrain ?? null;
+}
+
+// Screen-space footprint for the compact painted ranged platform. Keeping this proportional to
+// the board cell leaves a deliberate gutter even on the smallest campaign boards.
+export function platformTileLayout(cell = 62) {
+  const width = Math.round(cell * 0.746);
+  return { width, height: Math.round(width * 0.75), y: Math.round(cell * 0.025) };
 }
 
 export const spawnLabelVisible = (game) => !game?.running;
@@ -547,7 +557,19 @@ export function createMapScene(PIXI, game, {
   const DARK = 0x04070c;
   function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
     const h = TILE / 2;
-    if (tilt && type === "platform") {
+    const paintedPlatform = type === "platform" && textures.platform;
+    const platformLayout = platformTileLayout(board?.cell ?? 62);
+    const visualWidth = paintedPlatform ? platformLayout.width : TILE;
+    const visualHeight = paintedPlatform ? platformLayout.height / tiltK : TILE;
+    const halfWidth = visualWidth / 2, halfHeight = visualHeight / 2;
+    if (paintedPlatform) {
+      const sprite = new PIXI.Sprite(textures.platform);
+      sprite.anchor.set(0.5);
+      sprite.position.set(x, y + platformLayout.y / tiltK);
+      sprite.width = visualWidth;
+      sprite.height = visualHeight;
+      container.addChild(sprite);
+    } else if (tilt && type === "platform") {
       const slabRoot = new PIXI.Container(); // R18 prototype (B): full strength, independent of the tile's idle fade
       slabRoot.position.set(x, y);
       container.addChild(slabRoot);
@@ -593,13 +615,13 @@ export function createMapScene(PIXI, game, {
     const accent = type === "road" ? theme.pad.road : theme.pad.platform;
     const brackets = (inset, arm, color, width, alpha) => {
       for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
-        const cx = sx * (h - inset), cy = sy * (h - inset);
+        const cx = sx * (halfWidth - inset), cy = sy * (halfHeight - inset);
         g.moveTo(cx - sx * arm, cy).lineTo(cx, cy).lineTo(cx, cy - sy * arm);
       }
       g.stroke({ color, width, alpha, cap: "round", join: "round" });
     };
     if (occupied && !highlighted) {
-      g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: DARK, alpha: 0.14 });
+      g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: 0.14 });
       brackets(3, 7, accent, 1.2, 0.2);
       return g;
     }
@@ -607,20 +629,22 @@ export function createMapScene(PIXI, game, {
     const strength = eligible ? 1 : mode === "dim" ? 0.2 : mode === "idle" ? 0.32 : 0.78;
     g.alpha = strength;
     // Surface: road sockets sink into the stone, platforms sit on it as a plate.
-    const surface = type === "road" ? (tilt ? 0.1 : 0.3) : 0.38;
-    g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: DARK, alpha: surface });
-    g.rect(-h + 2, -h + 2, TILE - 4, TILE - 4).fill({ color: accent, alpha: eligible ? 0.16 : 0.07 });
+    const surface = type === "road" ? (tilt ? 0.1 : 0.3) : paintedPlatform ? 0.08 : 0.38;
+    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: DARK, alpha: surface });
+    g.rect(-halfWidth + 2, -halfHeight + 2, visualWidth - 4, visualHeight - 4).fill({ color: accent, alpha: eligible ? 0.16 : paintedPlatform ? 0.025 : 0.07 });
     // Contrasting rim: dark outline first, accent line inside it.
-    g.rect(-h + 1.5, -h + 1.5, TILE - 3, TILE - 3).stroke({ color: DARK, width: 3, alpha: 0.6 });
+    g.rect(-halfWidth + 1.5, -halfHeight + 1.5, visualWidth - 3, visualHeight - 3).stroke({ color: DARK, width: paintedPlatform ? 1.5 : 3, alpha: paintedPlatform ? 0.3 : 0.6 });
     if (type === "platform") {
-      g.rect(-h + 3.5, -h + 3.5, TILE - 7, TILE - 7).stroke({ color: accent, width: eligible ? 2 : 1.5, alpha: 0.95 });
+      g.rect(-halfWidth + 3.5, -halfHeight + 3.5, visualWidth - 7, visualHeight - 7).stroke({ color: accent, width: eligible ? 2 : 1.5, alpha: paintedPlatform && !eligible ? 0.28 : 0.95 });
       // Bevel: light top/left, dark bottom/right edge inside the rim.
-      const b = h - 6;
-      g.moveTo(-b, b).lineTo(-b, -b).lineTo(b, -b).stroke({ color: 0xffffff, width: 1.2, alpha: 0.28 });
-      g.moveTo(b, -b).lineTo(b, b).lineTo(-b, b).stroke({ color: DARK, width: 1.2, alpha: 0.5 });
+      const bx = halfWidth - 6, by = halfHeight - 6;
+      g.moveTo(-bx, by).lineTo(-bx, -by).lineTo(bx, -by).stroke({ color: 0xffffff, width: 1.2, alpha: paintedPlatform ? 0.08 : 0.28 });
+      g.moveTo(bx, -by).lineTo(bx, by).lineTo(-bx, by).stroke({ color: DARK, width: 1.2, alpha: paintedPlatform ? 0.16 : 0.5 });
       // Double chevron: raised ground.
-      for (const dy of [-2.5, 3.5]) g.moveTo(-5, dy + 3).lineTo(0, dy - 2).lineTo(5, dy + 3);
-      g.stroke({ color: accent, width: 1.8, alpha: 0.9, cap: "round", join: "round" });
+      if (!paintedPlatform) {
+        for (const dy of [-2.5, 3.5]) g.moveTo(-5, dy + 3).lineTo(0, dy - 2).lineTo(5, dy + 3);
+        g.stroke({ color: accent, width: 1.8, alpha: 0.9, cap: "round", join: "round" });
+      }
     } else {
       // Recess: dark top/left, light bottom/right edge, then the corner brackets.
       const b = h - 5;
@@ -632,11 +656,11 @@ export function createMapScene(PIXI, game, {
         .fill({ color: DARK, alpha: 0.35 }).stroke({ color: accent, width: 1.6, alpha: 0.9, join: "round" });
     }
     if (highlighted) {
-      g.rect(-h, -h, TILE, TILE).fill({ color: theme.pad.highlight, alpha: 0.14 });
-      g.rect(-h + 0.5, -h + 0.5, TILE - 1, TILE - 1).stroke({ color: theme.pad.highlight, width: 2.5, alpha: 1 });
-      g.rect(-h - 3, -h - 3, TILE + 6, TILE + 6).stroke({ color: theme.pad.highlight, width: 4, alpha: 0.3 });
+      g.rect(-halfWidth, -halfHeight, visualWidth, visualHeight).fill({ color: theme.pad.highlight, alpha: 0.14 });
+      g.rect(-halfWidth + 0.5, -halfHeight + 0.5, visualWidth - 1, visualHeight - 1).stroke({ color: theme.pad.highlight, width: 2.5, alpha: 1 });
+      g.rect(-halfWidth - 3, -halfHeight - 3, visualWidth + 6, visualHeight + 6).stroke({ color: theme.pad.highlight, width: 4, alpha: 0.3 });
     } else if (mode === "eligible") {
-      g.rect(-h - 2, -h - 2, TILE + 4, TILE + 4).stroke({ color: accent, width: 3, alpha: 0.35 });
+      g.rect(-halfWidth - 2, -halfHeight - 2, visualWidth + 4, visualHeight + 4).stroke({ color: accent, width: 3, alpha: 0.35 });
     }
     return g;
   }

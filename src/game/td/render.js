@@ -8,7 +8,7 @@ import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
-import { createMapScene, mapBackdropFor, mapSceneFor, spawnLabelVisible } from "./map-scene.js";
+import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellCenter, patternCells } from "./board.js";
 
@@ -639,17 +639,21 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
       const [type, index] = key.split(":");
       const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
-      if (pos) drawRingMark(layerSlots, pos[0], pos[1], kind);
+      if (pos) drawRingMark(layerSlots, pos[0], pos[1], kind, type);
     }
   }
 
   // Special ring marker (M16): a colored frame around the tile and a small badge.
   const RING_MARKS = { highground: 0xfacc15, shrine: 0x67e8f9, cursed: 0xf87171 };
-  function drawRingMark(container, x, y, kind) {
+  function drawRingMark(container, x, y, kind, type) {
     const color = RING_MARKS[kind] ?? 0xffffff;
     const g = new PIXI.Graphics();
-    g.rect(x - 30, y - 30, 60, 60).stroke({ width: 2, color, alpha: 0.6 });
-    const bx = x + 24, by = y - 26;
+    const compact = type === "platform" && sceneArt.assets.platform;
+    const layout = compact ? platformTileLayout(boardOf(game.map)?.cell ?? 62) : { width: 60, height: 60, y: 0 };
+    const markHeight = compact ? layout.height / tiltK : layout.height;
+    const halfWidth = layout.width / 2, halfHeight = markHeight / 2;
+    g.rect(x - halfWidth, y - halfHeight, layout.width, markHeight).stroke({ width: 2, color, alpha: 0.6 });
+    const bx = x + halfWidth - 6, by = y - halfHeight + 4;
     g.circle(bx, by, 9).fill({ color: 0x13111c, alpha: 0.92 }).stroke({ width: 2, color });
     if (kind === "highground") g.moveTo(bx, by - 5).lineTo(bx + 5, by + 4).lineTo(bx - 5, by + 4).closePath().fill({ color });
     else if (kind === "shrine") g.moveTo(bx, by - 5).lineTo(bx + 4, by).lineTo(bx, by + 5).lineTo(bx - 4, by).closePath().fill({ color });
@@ -2337,11 +2341,12 @@ export async function createRenderer(canvas, game, options = {}) {
       console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
       return null;
     });
-    const [spawnTexture, baseTexture, roadTexture] = await Promise.all([
+    const [spawnTexture, baseTexture, roadTexture, platformTexture] = await Promise.all([
       load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
+      sceneArt.assets.platform ? load("platform", "procedural ranged platform") : null,
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, platform: platformTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();
