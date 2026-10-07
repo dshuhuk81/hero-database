@@ -372,6 +372,8 @@ export function createMapScene(PIXI, game, {
     g.poly(points).fill({ color, alpha });
   }
 
+  // Direction of each lane's first road segment (the way enemies leave the gate).
+  const spawnRoad = mapLanes(game.map).map(({ path }) => (path.length > 1 ? { dx: path[1][0] - path[0][0], dy: path[1][1] - path[0][1] } : null));
   const gates = spawns.map((spawn) => {
     const gate = localGraphic(structures, spawn);
     foundation(gate, 37, 34);
@@ -427,8 +429,8 @@ export function createMapScene(PIXI, game, {
   // The painted gate and sanctuary have their plinth in the lower part of the image, so centred on
   // the tile they sat low and spilled onto the tile below. Lift them so the plinth is on the tile.
   const STRUCTURE_LIFT = 14;
-  for (const [texture, point, back, front, width, height, padWidth, padDepth, role] of [
-    ...gates.map(([spawn, gate, gateFront]) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34, "spawn"]),
+  for (const [texture, point, back, front, width, height, padWidth, padDepth, role, road] of [
+    ...gates.map(([spawn, gate, gateFront], i) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34, "spawn", spawnRoad[i]]),
     [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39, "base"],
   ]) {
     if (!texture) continue;
@@ -436,8 +438,12 @@ export function createMapScene(PIXI, game, {
     // The gate must stay inside its road row: the slab above it is drawn over anything taller.
     // The lip of the slab above reaches about 13 px into the row, so the gate's top edge must stay
     // below row-top + 13 (cell 118: art height <= ~84 px), centred on the road.
-    const fit = board ? Math.min(1, board.cell * (role === "spawn" ? 0.68 : 0.88) / height) : 1;
-    const lift = role === "spawn" ? 0 : STRUCTURE_LIFT;
+    // A gate whose road runs up or down has open road on one side and no slab lip over it, so it
+    // keeps its full size (road up: it stands on the spawn point; road down: centred). Only a gate
+    // whose road runs sideways sits between two slab rows and has to stay compact.
+    const sideways = role === "spawn" && road && Math.abs(road.dx) >= Math.abs(road.dy);
+    const fit = board ? Math.min(1, board.cell * (role !== "spawn" ? 0.88 : sideways ? 0.68 : 0.95) / height) : 1;
+    const lift = role !== "spawn" ? STRUCTURE_LIFT : road && !sideways && road.dy < 0 ? 14 : 0;
     back.ellipse(3, 16 - lift, padWidth * fit, padDepth * 0.7 * fit).fill({ color: 0x06111b, alpha: 0.17 });
     back.ellipse(2, 14 - lift, padWidth * 0.8 * fit, padDepth * 0.5 * fit).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;

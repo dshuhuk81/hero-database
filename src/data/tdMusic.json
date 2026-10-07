@@ -1,20 +1,20 @@
 {
-  "daily": "",
-  "expedition": "",
+  "daily": "td_daily_trial",
+  "expedition": "td_expedition",
   "chapters": {
-    "1": "",
-    "2": "",
-    "3": "",
-    "4": "",
-    "5": "",
-    "6": "",
-    "7": "",
-    "8": "",
-    "9": "",
-    "10": "",
-    "11": "",
-    "12": "",
-    "13": ""
+    "1": "td_ch01_crossing",
+    "2": "td_ch02_sunscar",
+    "3": "td_ch03_emerald",
+    "4": "td_ch04_frozen",
+    "5": "td_ch05_cinder",
+    "6": "td_ch06_thunder",
+    "7": "td_ch07_drowned",
+    "8": "td_ch08_spore",
+    "9": "td_ch09_prism",
+    "10": "td_ch10_procession",
+    "11": "td_ch11_harvest",
+    "12": "td_ch12_astral",
+    "13": "td_ch13_brass"
   },
-  "_note": "Track ids under td/music/{id}.m4a on R2. Empty = not produced yet, the map's own track plays instead. Planned ids: td_ch01_crossing ... td_ch13_brass, td_daily_trial, td_expedition."
+  "_note": "Track ids under td/music/{id}.m4a on R2 (and public/td/music). An empty entry falls back to the map's own track. Tracks generated with Coplay generate_music (Oct 2026), 96 kbps AAC."
 }
