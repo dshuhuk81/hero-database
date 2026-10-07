@@ -3,6 +3,8 @@
 // none: common). A tap flips one card, Reveal all flips the rest, and the
 // result bar offers the same summon again or closing. Face-up cards are art plus a small New tag; the panel under them names the last revealed hero (class, role, stars). The summon itself
 // is already paid and saved before the stage opens; this module only shows it.
+// A new epic / legendary / lord hero gets its own introduction screen once the cards are up (or
+// right after its flip on a single pull); a ten pull shows cards only, no detail panel.
 import type { PageContext } from "./context";
 
 export type RevealOptions = {
@@ -11,7 +13,9 @@ export type RevealOptions = {
   skip: boolean; // "Skip animation": open with every card already face up
   again: { label: string; enabled: boolean } | null;
   wallet: string; // trusted markup: the Divine Seal balance after this summon
-  describe: (id: string, isNew: boolean) => string; // trusted markup: name, class, role and stars of a revealed hero
+  describe: (id: string, isNew: boolean) => string; // trusted markup: name and class of the revealed hero (single pulls only)
+  badges: (id: string) => string; // trusted markup: mythology group icons for a card's top-left corner
+  intro: (id: string) => string; // trusted markup: introduction screen for a newly pulled epic / legendary hero
 };
 
 const FLIP_GAP_MS = 140; // Reveal all: delay between cards
@@ -36,10 +40,16 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   const doneEl = q("[data-td-summon-done]");
   const detailEl = q("[data-td-summon-detail]");
   const againButton = q<HTMLButtonElement>("[data-td-summon-again]");
+  const introEl = q<HTMLDialogElement>("[data-td-summon-intro]");
+  const introBody = q("[data-td-summon-intro-body]");
+  const introContinue = q<HTMLButtonElement>("[data-td-summon-intro-continue]");
   let heroIds: string[] = [];
   let featured: string | null = null;
   let isNew: boolean[] = [];
   let describe: RevealOptions["describe"] = () => "";
+  let badges: RevealOptions["badges"] = () => "";
+  let intro: RevealOptions["intro"] = () => "";
+  let introQueue: number[] = [];
   let timers: number[] = [];
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -57,6 +67,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
       `<span class="td-summon-face td-summon-face--back" aria-hidden="true"></span>` +
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +
       `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image ?? ""}" alt="" decoding="async">` +
+      `<span class="td-summon-face-groups">${badges(id)}</span>` +
       (isNew[index] ? `<span class="td-summon-face-tag">New</span>` : "") +
       `</span></span></button>`;
   }
@@ -66,6 +77,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
 
   // The panel under the cards: details of the last hero revealed or tapped.
   function showDetail(index: number) {
+    if (heroIds.length > 1) return; // ten pull: cards only
     detailEl.innerHTML = describe(heroIds[index], isNew[index]);
     detailEl.hidden = false;
     cards().forEach((card, i) => card.classList.toggle("is-shown", i === index));
@@ -79,7 +91,20 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     card.classList.add("is-flipped");
     showDetail(index);
     card.setAttribute("aria-label", `${hero?.name ?? id}, ${hero?.class ?? ""}${id === featured ? ", featured hero" : ""}, ${isNew[index] ? "new hero" : "spare copy"}`);
+    const rarity = hero?.rarity;
+    if (isNew[index] && (rarity === "epic" || rarity === "legendary" || rarity === "lord")) {
+      introQueue.push(index);
+      // Single flips and a finished set show it after the flip lands; Reveal all waits for the last card.
+      if (!timers.length || !hidden().length) window.setTimeout(nextIntro, reducedMotion() ? 0 : 700);
+    }
     if (!hidden().length) finish();
+  }
+
+  function nextIntro() {
+    if (introEl.open || !stageEl.open || !introQueue.length || (timers.length && hidden().length)) return;
+    introBody.innerHTML = intro(heroIds[introQueue.shift() as number]);
+    introEl.showModal();
+    introContinue.focus();
   }
 
   // Every card is face up: the result bar replaces Reveal all and the summary is announced.
@@ -108,6 +133,10 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     featured = options.featuredId;
     isNew = options.isNew;
     describe = options.describe;
+    badges = options.badges;
+    intro = options.intro;
+    introQueue = [];
+    if (introEl.open) introEl.close();
     detailEl.hidden = true;
     detailEl.innerHTML = "";
     timers.forEach(clearTimeout);
@@ -133,12 +162,19 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   function close() {
     timers.forEach(clearTimeout);
     timers = [];
+    introQueue = [];
+    if (introEl.open) introEl.close();
     if (stageEl.open) stageEl.close();
   }
 
   cardsEl.addEventListener("click", (event) => {
     const card = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-summon-card]");
     if (card) flip(card);
+  });
+  introContinue.addEventListener("click", () => {
+    introEl.close();
+    if (introQueue.length) window.setTimeout(nextIntro, 120);
+    else focusDone();
   });
   revealAllButton.addEventListener("click", revealAll);
   againButton.addEventListener("click", onAgain);
@@ -149,7 +185,8 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     if (event.key !== "Escape" || !stageEl.open) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    close();
+    if (introEl.open) introContinue.click();
+    else close();
   }, true);
 
   return { open, close, isOpen: () => stageEl.open };

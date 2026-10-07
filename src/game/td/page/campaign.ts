@@ -1116,15 +1116,22 @@ export function createCampaign(ctx: PageContext) {
       skip: summonSkipInput.checked,
       again: { label: `Summon x${count} ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
       wallet: currencyAmount("divineSeals", progress().currencies.divineSeals || 0),
-      describe: (id, fresh) => {
+      describe: (id) => {
+        const hero = heroById.get(id);
+        return hero ? `<h3>${hero.name}</h3><p class="td-summon-detail-role">${classIconImg(hero.class, 16)}${hero.class}</p>` : "";
+      },
+      badges: (id) => mythologyIcons(heroById.get(id)),
+      intro: (id) => {
         const hero = heroById.get(id);
         if (!hero) return "";
-        const p = progress();
-        const spare = p.copies?.[id] ?? 0;
-        const status = fresh ? "New hero" : `Spare copy${spare ? ` (${spare} spare)` : ""}`;
-        return `<h3>${hero.name}</h3><p class="td-summon-detail-role">${classIconImg(hero.class, 16)}${hero.class} · ${hero.slot === "road" ? "Road defender" : "Platform defender"}</p>` +
-          `<p class="td-summon-detail-text">${hero.title ?? ROLE_HINTS[hero.class] ?? ""}</p>` +
-          `<p class="td-summon-detail-meta">${stars(heroStars(p, id))}<span class="td-summon-detail-status${fresh ? " is-new" : ""}">${status}</span></p>`;
+        const groups = (isLord(id) ? (hero.mythologyGroups ?? []).slice(0, 1) : (hero.mythologyGroups ?? [])).map((g: string) => mythologyGroups[g]?.name).filter(Boolean).join(", ");
+        const text = ROLE_HINTS[hero.class] ?? "";
+        return `<div class="td-summon-intro-info"><span class="td-summon-intro-new">New</span><h3>${hero.name}</h3>${stars(heroStars(progress(), id))}` +
+          `<p class="td-summon-intro-class">${classIconImg(hero.class, 18)}${hero.class}</p>` +
+          (hero.title ? `<p class="td-summon-intro-title">${hero.title}</p>` : "") +
+          (text ? `<p class="td-summon-intro-text">${text}</p>` : "") +
+          (groups ? `<p class="td-summon-intro-groups">${mythologyIcons(hero)}<span>${groups}</span></p>` : "") + `</div>` +
+          `<img class="td-summon-intro-art" data-rarity="${hero.rarity ?? ""}" src="${hero.splash ?? hero.portrait ?? hero.image ?? ""}" alt="${hero.name}" onerror="this.onerror=null;this.src='${hero.portrait ?? hero.image ?? ""}'">`;
       },
     });
   }

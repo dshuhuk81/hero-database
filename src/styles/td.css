@@ -14092,3 +14092,123 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
 .td-app .td-summon-cards.is-single {
   --card-w: min(200px, 64cqw, calc((100cqh - 280px) / 1.5));
 }
+
+/* Summon reveal: mythology icons top-left of a card, New tag moved top-right */
+.td-summon-face-groups {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.td-summon-face-groups .td-mythology-icon {
+  width: clamp(14px, calc(var(--card-w) / 7), 24px);
+  height: clamp(14px, calc(var(--card-w) / 7), 24px);
+  filter: drop-shadow(0 1px 2px #000);
+}
+
+.td-summon-face-groups .td-mythology-badge {
+  display: grid;
+  place-items: center;
+}
+
+.td-summon-face-tag {
+  left: auto;
+  right: 5px;
+}
+
+/* New hero introduction (epic / legendary / lord): full-screen over the reveal stage */
+.td-summon-intro {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text-primary);
+  background: radial-gradient(ellipse at 65% 40%, #2b2158 0%, #0d0c1f 60%, #05060c 100%);
+}
+
+.td-summon-intro[open] {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+  animation: td-stage-in 260ms ease-out both;
+}
+
+.td-summon-intro-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  width: min(900px, 100%);
+  min-height: 0;
+}
+
+.td-summon-intro-info {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+}
+
+.td-summon-intro-info h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5cqh, 2.4rem);
+}
+
+.td-summon-intro-info p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.td-summon-intro-new {
+  padding: 0 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent-gold);
+  color: #1a1405;
+  font-weight: var(--weight-bold);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.td-summon-intro-class,
+.td-summon-intro-groups {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  background: rgb(255 255 255 / .08);
+}
+
+.td-summon-intro-groups .td-mythology-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.td-summon-intro-title {
+  color: var(--accent-gold);
+  font-weight: var(--weight-bold);
+}
+
+.td-summon-intro-art {
+  justify-self: center;
+  max-width: 100%;
+  max-height: calc(100dvh - 120px);
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgb(0 0 0 / .7));
+}
+
+@media (max-width: 560px) {
+  .td-summon-intro-body {
+    grid-template-columns: 1fr;
+  }
+}
