@@ -1,0 +1,368 @@
+---
+// Throwaway visual feasibility spike for a stationary God-Mode boss. This route is removed
+// from production builds by localOnlyRoutes in astro.config.mjs.
+export const prerender = true;
+import GameLayout from "../../../layouts/GameLayout.astro";
+---
+
+<GameLayout
+  title="God-Mode Arena Lab | The Last Crossing"
+  description="Local visual prototype for a stationary God-Mode challenge boss."
+>
+  <main class="gm-page">
+    <header class="gm-head">
+      <div>
+        <p class="gm-kicker">Tower Defense · Visual Spike</p>
+        <h1>God-Mode Arena Lab</h1>
+        <p>Testet nur Komposition und Render-Limitierungen. Keine echte Kampf- oder Belohnungslogik.</p>
+      </div>
+      <a class="gm-back" href="/games/tower-defense">Zurück zum Spiel</a>
+    </header>
+
+    <section class="gm-workspace" aria-label="God-Mode visual prototype">
+      <div class="gm-stage-shell">
+        <canvas id="gm-canvas" width="960" height="540" aria-label="God-Mode arena preview"></canvas>
+        <div class="gm-hud" aria-hidden="true">
+          <div class="gm-boss-row">
+            <div class="gm-boss-copy"><span>GOD CHALLENGE</span><strong>BRONTAX · THE BRASS ADJUDICATOR</strong></div>
+            <div class="gm-timer"><span>TIME LEFT</span><strong id="gm-timer">01:30</strong></div>
+          </div>
+          <div class="gm-health"><i></i><span>∞</span></div>
+          <div class="gm-score"><span>TOTAL DAMAGE</span><strong id="gm-score">0</strong></div>
+          <div class="gm-hint">Visuelle Simulation · Angriffsreichweiten folgen später</div>
+        </div>
+        <div class="gm-loading" id="gm-loading">Preparing arena…</div>
+      </div>
+
+      <aside class="gm-controls">
+        <div class="gm-control-head">
+          <span>Live controls</span>
+          <strong>Boss composition</strong>
+        </div>
+
+        <label>
+          <span>Boss asset</span>
+          <select id="gm-boss-mode">
+            <option value="animated">Animated sheet · 110 px source</option>
+            <option value="still" selected>High-res still · 256 px source</option>
+          </select>
+        </label>
+        <label>
+          <span>Boss size <output id="gm-scale-value">3.1×</output></span>
+          <input id="gm-scale" type="range" min="1.6" max="4.0" value="3.1" step="0.1" />
+        </label>
+        <label>
+          <span>Boss height <output id="gm-y-value">380</output></span>
+          <input id="gm-y" type="range" min="300" max="440" value="380" step="2" />
+        </label>
+        <label>
+          <span>Arena edge <output id="gm-edge-value">240</output></span>
+          <input id="gm-edge" type="range" min="190" max="290" value="240" step="2" />
+        </label>
+
+        <div class="gm-buttons" role="group" aria-label="Preview actions">
+          <button type="button" id="gm-attack">Boss attack</button>
+          <button type="button" id="gm-targets" aria-pressed="false">Show hit anchors</button>
+          <button type="button" id="gm-pause" aria-pressed="false">Pause motion</button>
+        </div>
+
+        <section class="gm-readout">
+          <span>What this exposes</span>
+          <ul>
+            <li>The current animated boss source is only about 110 px tall per frame.</li>
+            <li>The 256 px still is sharper, but needs procedural idle/attack motion.</li>
+            <li>The parapet hides the feet and makes the boss belong to the arena.</li>
+            <li>Five visible anchors show where normal hero attack zones could hit later.</li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+  </main>
+</GameLayout>
+
+<script>
+  const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8.21.0/dist/pixi.mjs";
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const canvas = $<HTMLCanvasElement>("gm-canvas");
+  const loading = $("gm-loading");
+  const scaleInput = $<HTMLInputElement>("gm-scale");
+  const yInput = $<HTMLInputElement>("gm-y");
+  const edgeInput = $<HTMLInputElement>("gm-edge");
+  const modeInput = $<HTMLSelectElement>("gm-boss-mode");
+
+  type Projectile = { g: any; from: [number, number]; to: [number, number]; started: number; duration: number; color: number };
+  type FloatNumber = { text: any; started: number; duration: number; y: number };
+
+  (async () => {
+    const PIXI: any = await import(/* @vite-ignore */ PIXI_CDN);
+    const app = new PIXI.Application();
+    await app.init({ canvas, width: 960, height: 540, antialias: true, autoDensity: true, resolution: window.devicePixelRatio || 1, backgroundColor: 0x0b0d15 });
+    app.ticker.stop();
+
+    const stage = app.stage;
+    const backdropLayer = new PIXI.Container();
+    const bossLayer = new PIXI.Container();
+    const groundLayer = new PIXI.Container();
+    const heroLayer = new PIXI.Container();
+    const frontLayer = new PIXI.Container();
+    const fxLayer = new PIXI.Container();
+    stage.addChild(backdropLayer, bossLayer, groundLayer, frontLayer, heroLayer, fxLayer);
+
+    const [backdropTex, arenaTex, bossSheet, bossStill] = await Promise.all([
+      PIXI.Assets.load("/td/maps/celestial-terrain-wide-v1.png"),
+      PIXI.Assets.load("/td/maps/celestial-terrain-v1.png"),
+      PIXI.Assets.load("/td/enemies/clips/boss-brontax-v1.json"),
+      PIXI.Assets.load("/td/enemies/sprites/boss-brontax-v1.webp"),
+    ]);
+
+    const backdrop = new PIXI.Sprite(backdropTex);
+    backdrop.width = 1320; backdrop.height = 540; backdrop.x = -180;
+    backdrop.tint = 0x8791a9;
+    backdropLayer.addChild(backdrop);
+    const grade = new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x090b13, alpha: 0.37 });
+    backdropLayer.addChild(grade);
+
+    const halo = new PIXI.Graphics();
+    halo.circle(0, -55, 122).fill({ color: 0xff8a35, alpha: 0.1 });
+    halo.circle(0, -55, 88).fill({ color: 0xff472d, alpha: 0.12 });
+    bossLayer.addChild(halo);
+
+    const bossAnimated = new PIXI.Sprite(bossSheet.animations.idle[0]);
+    const bossAnchor = bossSheet.data.td.anchor;
+    bossAnimated.anchor.set(bossAnchor.x / bossAnimated.texture.width, bossAnchor.y / bossAnimated.texture.height);
+    const bossStatic = new PIXI.Sprite(bossStill);
+    bossStatic.anchor.set(0.5, 0.88);
+    bossStatic.visible = false;
+    bossLayer.addChild(bossAnimated, bossStatic);
+
+    const board = new PIXI.Graphics();
+    const arenaMask = new PIXI.Graphics();
+    const arenaSurface = new PIXI.Sprite(arenaTex);
+    arenaSurface.width = 960; arenaSurface.height = 540;
+    arenaSurface.mask = arenaMask;
+    const slots = new PIXI.Graphics();
+    const parapetBack = new PIXI.Graphics();
+    const parapetFront = new PIXI.Graphics();
+    groundLayer.addChild(arenaMask, arenaSurface, board, slots, parapetBack);
+    frontLayer.addChild(parapetFront);
+
+    const targetOverlay = new PIXI.Graphics();
+    targetOverlay.visible = false;
+    fxLayer.addChild(targetOverlay);
+
+    const heroes = [
+      { id: "odin", name: "Odin", x: 250, y: 345, color: 0x9de7ff },
+      { id: "boreas", name: "Boreas", x: 155, y: 425, color: 0xa5f3fc },
+      { id: "gaia", name: "Gaia", x: 805, y: 425, color: 0x82e89a },
+      { id: "skadi", name: "Skadi", x: 710, y: 345, color: 0xc4b5fd },
+      { id: "surtr", name: "Surtr", x: 405, y: 290, color: 0xff8c52, melee: true },
+      { id: "fenrir", name: "Fenrir", x: 480, y: 315, color: 0xfacc15, melee: true },
+      { id: "ymir", name: "Ymir", x: 555, y: 290, color: 0x93c5fd, melee: true },
+    ];
+
+    const heroViews: Array<{ sprite: any; frames: any[]; x: number; y: number; phase: number; color: number; melee?: boolean }> = [];
+    await Promise.all(heroes.map(async (hero, index) => {
+      const version = hero.id === "ymir" ? "v2" : "v1";
+      const sheet: any = await PIXI.Assets.load(`/td/heroes-alt/figures/${hero.id}-${version}.json`);
+      const frame = sheet.animations.idle[0];
+      const sprite = new PIXI.Sprite(frame);
+      const anchor = sheet.data.td.anchor;
+      sprite.anchor.set(anchor.x / frame.width, anchor.y / frame.height);
+      const desiredHeight = hero.melee ? 76 : 66;
+      sprite.scale.set(desiredHeight / sheet.data.td.bodyHeight);
+      sprite.position.set(hero.x, hero.y);
+      heroLayer.addChild(sprite);
+      heroViews.push({ sprite, frames: sheet.animations.idle, x: hero.x, y: hero.y, phase: index * 0.7, color: hero.color, melee: hero.melee });
+    }));
+
+    const projectiles: Projectile[] = [];
+    const floatNumbers: FloatNumber[] = [];
+    const anchors: [number, number][] = [[-80, -125], [0, -160], [80, -125], [-55, -90], [55, -90]];
+    let arenaEdge = Number(edgeInput.value);
+    let showTargets = false;
+    let paused = false;
+    let bossAttackAt = -10_000;
+    let bossAttackSerial = 0;
+    let lastShot = 0;
+    let totalDamage = 0;
+    const startedAt = performance.now();
+
+    function bossScale() { return Number(scaleInput.value); }
+    function bossPosition() { return { x: 480, y: Number(yInput.value) }; }
+    function worldAnchor(index: number): [number, number] {
+      const p = anchors[index % anchors.length], pos = bossPosition(), s = bossScale();
+      return [pos.x + p[0] * s * 0.54, pos.y + p[1] * s * 0.54];
+    }
+
+    function redrawArena() {
+      arenaEdge = Number(edgeInput.value);
+      board.clear(); arenaMask.clear(); slots.clear(); parapetBack.clear(); parapetFront.clear(); targetOverlay.clear();
+
+      arenaMask.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill(0xffffff);
+      board.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill({ color: 0x20242e, alpha: 0.18 }).stroke({ color: 0xb9a777, width: 3, alpha: 0.75 });
+      for (let y = arenaEdge + 45; y < 540; y += 58) board.moveTo(24 + (y - arenaEdge) * 0.15, y).lineTo(936 - (y - arenaEdge) * 0.15, y).stroke({ color: 0xa7a79b, width: 1, alpha: 0.19 });
+      for (let x = 92; x <= 868; x += 97) board.moveTo(480 + (x - 480) * 0.78, arenaEdge).lineTo(x, 536).stroke({ color: 0xa7a79b, width: 1, alpha: 0.16 });
+
+      parapetBack.poly([90, arenaEdge - 9, 870, arenaEdge - 9, 850, arenaEdge + 21, 110, arenaEdge + 21]).fill({ color: 0x605d5a, alpha: 1 }).stroke({ color: 0xb8a881, width: 3, alpha: 0.8 });
+      parapetFront.poly([110, arenaEdge + 17, 850, arenaEdge + 17, 833, arenaEdge + 43, 127, arenaEdge + 43]).fill({ color: 0x252831, alpha: 1 }).stroke({ color: 0x4e515a, width: 2 });
+      for (let x = 132; x < 830; x += 78) parapetFront.moveTo(x, arenaEdge + 19).lineTo(x + 8, arenaEdge + 42).stroke({ color: 0x11131a, width: 2, alpha: 0.65 });
+
+      for (const hero of heroes) {
+        const rx = hero.melee ? 29 : 35, ry = hero.melee ? 11 : 14;
+        slots.ellipse(hero.x, hero.y + 3, rx, ry).fill({ color: hero.melee ? 0x6d4826 : 0x1d4c5f, alpha: 0.58 }).stroke({ color: hero.melee ? 0xffbd52 : 0x62d5ef, width: 2, alpha: 0.85 });
+      }
+
+      anchors.forEach((_, index) => {
+        const [x, y] = worldAnchor(index);
+        targetOverlay.circle(x, y, 11).fill({ color: 0xff4d4d, alpha: 0.3 }).stroke({ color: 0xffb4a8, width: 2 });
+        targetOverlay.moveTo(x - 17, y).lineTo(x + 17, y).moveTo(x, y - 17).lineTo(x, y + 17).stroke({ color: 0xffd1c9, width: 1, alpha: 0.75 });
+      });
+
+      bossLayer.position.set(480, Number(yInput.value) - (modeInput.value === "animated" ? 60 : 0));
+      bossAnimated.scale.set(bossScale());
+      bossStatic.scale.set(bossScale() * 0.52);
+      halo.scale.set(bossScale() * 0.55);
+      $("gm-scale-value").textContent = `${bossScale().toFixed(1)}×`;
+      $("gm-y-value").textContent = yInput.value;
+      $("gm-edge-value").textContent = edgeInput.value;
+    }
+
+    function fireVolley(now: number) {
+      heroViews.forEach((hero, index) => {
+        const target = worldAnchor(index);
+        const g = new PIXI.Graphics();
+        fxLayer.addChild(g);
+        projectiles.push({ g, from: [hero.x, hero.y - 35], to: target, started: now + index * 45, duration: hero.melee ? 170 : 360, color: hero.color });
+      });
+    }
+
+    function bossAttack() {
+      bossAttackAt = performance.now();
+      bossAttackSerial += 1;
+    }
+
+    function spawnDamage(now: number, x: number, y: number, amount: number) {
+      const text = new PIXI.Text({ text: amount.toLocaleString("en-US"), style: { fontFamily: "system-ui", fontSize: 18, fontWeight: "800", fill: 0xffe092, stroke: { color: 0x2b1111, width: 4 } } });
+      text.anchor.set(0.5, 1); text.position.set(x, y); fxLayer.addChild(text);
+      floatNumbers.push({ text, started: now, duration: 700, y });
+    }
+
+    function drawBossAttack(now: number) {
+      let telegraph = fxLayer.getChildByLabel?.("boss-telegraph");
+      if (!telegraph) { telegraph = new PIXI.Graphics(); telegraph.label = "boss-telegraph"; fxLayer.addChildAt(telegraph, 0); }
+      telegraph.clear();
+      const elapsed = now - bossAttackAt;
+      if (elapsed < 0 || elapsed > 1650) return;
+      const side = bossAttackSerial % 2 ? -1 : 1;
+      const cx = 480 + side * 205;
+      if (elapsed < 1050) {
+        const pulse = 0.18 + 0.14 * Math.sin(elapsed / 55);
+        telegraph.ellipse(cx, 382, 118, 48).fill({ color: 0xff442f, alpha: pulse }).stroke({ color: 0xff9b69, width: 3, alpha: 0.85 });
+        telegraph.moveTo(480, arenaEdge).lineTo(cx, 382).stroke({ color: 0xff6b45, width: 8, alpha: 0.14 });
+      } else {
+        const fade = 1 - (elapsed - 1050) / 600;
+        telegraph.ellipse(cx, 382, 135, 56).fill({ color: 0xffd166, alpha: 0.35 * fade }).stroke({ color: 0xffffff, width: 7, alpha: 0.75 * fade });
+        telegraph.moveTo(480, arenaEdge - 70).lineTo(cx, 382).stroke({ color: 0xff8a3d, width: 28, alpha: 0.42 * fade });
+      }
+    }
+
+    function setBossMode() {
+      const animated = modeInput.value === "animated";
+      bossAnimated.visible = animated;
+      bossStatic.visible = !animated;
+      redrawArena();
+    }
+
+    for (const input of [scaleInput, yInput, edgeInput]) input.addEventListener("input", redrawArena);
+    modeInput.addEventListener("change", setBossMode);
+    $("gm-attack").addEventListener("click", bossAttack);
+    $("gm-targets").addEventListener("click", (event) => {
+      showTargets = !showTargets; targetOverlay.visible = showTargets;
+      (event.currentTarget as HTMLButtonElement).setAttribute("aria-pressed", String(showTargets));
+    });
+    $("gm-pause").addEventListener("click", (event) => {
+      paused = !paused; (event.currentTarget as HTMLButtonElement).setAttribute("aria-pressed", String(paused));
+      (event.currentTarget as HTMLButtonElement).textContent = paused ? "Resume motion" : "Pause motion";
+    });
+
+    redrawArena(); setBossMode(); loading.hidden = true;
+    bossAttack();
+    function tick(now: number) {
+      if (!paused) {
+        const attackAge = now - bossAttackAt;
+        const attacking = attackAge >= 1050 && attackAge < 1650;
+        const bossFrames = attacking ? bossSheet.animations.attack : bossSheet.animations.idle;
+        bossAnimated.texture = bossFrames[attacking ? Math.min(bossFrames.length - 1, Math.floor((attackAge - 1050) / 75)) : Math.floor(now / 170) % bossFrames.length];
+        bossStatic.rotation = Math.sin(now / 850) * 0.012;
+        bossStatic.scale.set(bossScale() * 0.52, bossScale() * 0.52 * (1 + Math.sin(now / 700) * 0.012));
+        heroViews.forEach((hero) => {
+          hero.sprite.texture = hero.frames[Math.floor(now / 180 + hero.phase * 3) % hero.frames.length];
+        });
+        if (now - lastShot > 850) { lastShot = now; fireVolley(now); }
+        if (now - bossAttackAt > 5200) bossAttack();
+      }
+
+      for (let i = projectiles.length - 1; i >= 0; i--) {
+        const shot = projectiles[i];
+        if (now < shot.started) continue;
+        const t = Math.min(1, (now - shot.started) / shot.duration);
+        const ease = 1 - (1 - t) * (1 - t);
+        const x = shot.from[0] + (shot.to[0] - shot.from[0]) * ease;
+        const y = shot.from[1] + (shot.to[1] - shot.from[1]) * ease - Math.sin(t * Math.PI) * 24;
+        shot.g.clear().moveTo(shot.from[0], shot.from[1]).lineTo(x, y).stroke({ color: shot.color, width: 2, alpha: 0.25 });
+        shot.g.circle(x, y, 4.5).fill({ color: shot.color, alpha: 0.95 });
+        if (t >= 1) {
+          const damage = 700 + Math.round(Math.random() * 1800);
+          totalDamage += damage;
+          spawnDamage(now, shot.to[0] + (Math.random() - 0.5) * 22, shot.to[1], damage);
+          $("gm-score").textContent = totalDamage.toLocaleString("en-US");
+          fxLayer.removeChild(shot.g); shot.g.destroy(); projectiles.splice(i, 1);
+        }
+      }
+
+      for (let i = floatNumbers.length - 1; i >= 0; i--) {
+        const item = floatNumbers[i], t = (now - item.started) / item.duration;
+        item.text.y = item.y - 30 * t; item.text.alpha = Math.max(0, 1 - t);
+        if (t >= 1) { fxLayer.removeChild(item.text); item.text.destroy(); floatNumbers.splice(i, 1); }
+      }
+
+      drawBossAttack(now);
+      const remaining = Math.max(0, 90 - Math.floor((now - startedAt) / 1000));
+      $("gm-timer").textContent = `0${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}`;
+      app.render();
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })().catch((error) => {
+    console.error(error);
+    loading.textContent = "Arena failed to load. Check the browser console.";
+  });
+</script>
+
+<style>
+  .gm-page { min-height:100vh; padding:clamp(18px,3vw,38px); background:radial-gradient(circle at 50% 0,#29263b 0,#0b0c13 58%); color:#eef0f6; }
+  .gm-head { width:min(1500px,100%); margin:0 auto 20px; display:flex; align-items:end; justify-content:space-between; gap:20px; }
+  .gm-head h1 { margin:2px 0 5px; font:700 clamp(26px,3vw,42px)/1.05 Georgia,serif; letter-spacing:-.02em; }
+  .gm-head p { margin:0; color:#aeb5c4; }
+  .gm-kicker { color:#e5bd68!important; font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  .gm-back { color:#e9c875; text-decoration:none; border:1px solid #76633f; border-radius:7px; padding:9px 13px; background:#1a1820; white-space:nowrap; }
+  .gm-workspace { width:min(1500px,100%); margin:auto; display:grid; grid-template-columns:minmax(0,1fr) 310px; gap:20px; }
+  .gm-stage-shell { position:relative; aspect-ratio:16/9; overflow:hidden; border:1px solid #524a3c; border-radius:12px; background:#080910; box-shadow:0 24px 70px #0009; }
+  #gm-canvas { display:block; width:100%!important; height:100%!important; }
+  .gm-hud { position:absolute; inset:0; pointer-events:none; font-family:system-ui,sans-serif; text-shadow:0 2px 4px #000; }
+  .gm-boss-row { position:absolute; top:12px; left:18px; right:18px; display:grid; grid-template-columns:1fr auto; align-items:end; gap:18px; }
+  .gm-boss-copy { display:grid; gap:1px; }.gm-boss-copy span,.gm-timer span,.gm-score span { color:#deb969; font-size:10px; font-weight:800; letter-spacing:.13em; }.gm-boss-copy strong { font:700 clamp(12px,1.25vw,18px)/1.1 Georgia,serif; }
+  .gm-timer { text-align:right; display:grid; }.gm-timer strong { font-size:clamp(18px,2vw,28px); }
+  .gm-health { position:absolute; top:74px; left:18px; right:18px; height:16px; padding:3px; border:1px solid #8b7651; background:#17131a; box-shadow:0 4px 12px #0009; }.gm-health i { display:block; height:100%; background:linear-gradient(90deg,#811d2c,#db3d43 55%,#f16a4e); box-shadow:inset 0 1px #ffb083; }.gm-health span { position:absolute; inset:-2px 8px auto auto; color:#ffe7b5; font-weight:900; }
+  .gm-score { position:absolute; top:103px; right:18px; display:grid; text-align:right; padding:8px 11px; background:#0b0b11c9; border-right:3px solid #d4ae58; }.gm-score strong { color:#fff0c6; font-size:22px; }
+  .gm-hint { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); padding:6px 11px; border-radius:99px; background:#090a10c9; color:#d2d7e1; font-size:11px; white-space:nowrap; }
+  .gm-loading { position:absolute; inset:0; display:grid; place-items:center; background:#0b0c13; color:#d9bd7a; font-weight:700; }.gm-loading[hidden]{display:none}
+  .gm-controls { align-self:start; display:grid; gap:17px; padding:20px; border:1px solid #383a45; border-radius:12px; background:#11131be8; box-shadow:0 18px 45px #0007; }
+  .gm-control-head { display:grid; gap:3px; padding-bottom:12px; border-bottom:1px solid #343641; }.gm-control-head span,.gm-readout>span { color:#cda957; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }.gm-control-head strong{font-size:19px}
+  .gm-controls label { display:grid; gap:8px; color:#d9dde7; font-size:13px; font-weight:650; }.gm-controls label span { display:flex; justify-content:space-between; }.gm-controls output { color:#dfbd6a; }
+  .gm-controls input[type="range"] { width:100%; accent-color:#d7ad55; }.gm-controls select { width:100%; border:1px solid #444754; border-radius:6px; padding:9px; color:#eef0f6; background:#1b1d27; }
+  .gm-buttons { display:grid; grid-template-columns:1fr 1fr; gap:8px; }.gm-buttons button { min-height:39px; border:1px solid #4b4e5c; border-radius:6px; color:#e9ebf1; background:#20232e; cursor:pointer; }.gm-buttons button:first-child { grid-column:1/-1; border-color:#7d4d3c; color:#ffd1b6; background:#3a201d; }.gm-buttons button[aria-pressed="true"] { border-color:#d3ad59; color:#ffe7ad; background:#3b311f; }
+  .gm-readout { padding-top:14px; border-top:1px solid #343641; }.gm-readout ul { margin:10px 0 0; padding-left:17px; color:#aeb5c4; font-size:12px; line-height:1.5; }.gm-readout li+li{margin-top:6px}
+  @media(max-width:980px){.gm-workspace{grid-template-columns:1fr}.gm-controls{grid-template-columns:1fr 1fr}.gm-control-head,.gm-readout{grid-column:1/-1}}
+  @media(max-width:650px){.gm-page{padding:12px}.gm-head{align-items:start}.gm-head>div>p:not(.gm-kicker){display:none}.gm-workspace{gap:12px}.gm-controls{grid-template-columns:1fr}.gm-control-head,.gm-readout{grid-column:auto}.gm-hint{display:none}}
+</style>

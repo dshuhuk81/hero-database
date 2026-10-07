@@ -292,7 +292,7 @@ export async function createRenderer(canvas, game, options = {}) {
       }).catch((err) => console.warn(`anim lab frames for ${heroId} not loaded`, err));
       return;
     }
-    PIXI.Assets.load(heroFigureUrl(heroId)).then((sheet) => {
+    PIXI.Assets.load({ src: heroFigureUrl(heroId), data: { cachePrefix: `fig:${heroId}:` } }).then((sheet) => {
       const td = sheet.data.td;
       animHeroes.set(heroId, { clips: sheet.animations, anchor: [td.anchor.x, td.anchor.y], bodyHeight: td.bodyHeight, hand: td.hand });
     }).catch(() => {}); // no sheet yet (not uploaded): the token stays
@@ -393,7 +393,7 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const [kind, file, version] of [...own, ...borrowed]) {
       const url = localSet ? `/td-local/sheets/${localSet}/${file}-${version}.json` : enemySheetUrl(file, version);
       if (!url) continue;
-      PIXI.Assets.load(url).then((sheet) => {
+      PIXI.Assets.load({ src: url, data: { cachePrefix: `enemy:${file}-${version}:` } }).then((sheet) => {
         if (sheet.data.td?.pixelArt) sheet.textureSource.scaleMode = "nearest";
         enemySheets.set(kind, { anims: sheet.animations, td: sheet.data.td });
       }).catch(() => {});

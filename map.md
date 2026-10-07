@@ -17,6 +17,7 @@ All files live in `public/td/maps/`. Their runtime URLs start with `/td/maps/` (
 | Enemy entrance / `spawn` | [moonlit-spawn-v1.png](public/td/maps/moonlit-spawn-v1.png) | [verdant-spawn-v2.png](public/td/maps/verdant-spawn-v2.png) | [sunscar-spawn-v1.png](public/td/maps/sunscar-spawn-v1.png) |
 | Defended sanctuary / `base` | [moonlit-base-v1.png](public/td/maps/moonlit-base-v1.png) | [verdant-base-v2.png](public/td/maps/verdant-base-v2.png) | [sunscar-base-v1.png](public/td/maps/sunscar-base-v1.png) |
 | Repeating road surface / `road` | [moonlit-road-v1.png](public/td/maps/moonlit-road-v1.png) | [verdant-road-v2.png](public/td/maps/verdant-road-v2.png) | [sunscar-road-v1.png](public/td/maps/sunscar-road-v1.png) |
+| Compact ranged platform / `platform` | [moonlit-platform-v1.png](public/td/maps/moonlit-platform-v1.png) | [verdant-platform-v1.png](public/td/maps/verdant-platform-v1.png) | [sunscar-platform-v1.png](public/td/maps/sunscar-platform-v1.png) |
 | Hero deployment tile / `pad` (unused since M22b: tiles are drawn procedurally) | [moonlit-pad-v1.png](public/td/maps/moonlit-pad-v1.png) | [verdant-pad-v2.png](public/td/maps/verdant-pad-v2.png) | [sunscar-pad-v1.png](public/td/maps/sunscar-pad-v1.png) |
 
 ## Current map status
