@@ -71,8 +71,15 @@ for (const name of files) {
   await image.resize(SIZE, SIZE, { kernel: "lanczos3" }).webp({ quality: 92, alphaQuality: 100 }).toFile(path.join(OUT, `${name}.webp`));
 }
 
+// Arena art: the wide canyon backdrop and the floor that is masked to the board trapezoid.
+const maps = { "map_bg_1.png": "cronus-arena-wide.webp", "map_bg_2.png": "cronus-arena-floor.webp" };
+for (const [from, to] of Object.entries(maps)) {
+  await sharp(path.join(SRC, from)).webp({ quality: 86 }).toFile(path.join(OUT, to));
+}
+
 const out = {
   size: SIZE,
+  arena: { wide: maps["map_bg_1.png"], floor: maps["map_bg_2.png"] },
   torso: { file: `${rig.torso.file}.webp`, stumpL: scale(rig.torso.stumpL), stumpR: scale(rig.torso.stumpR), headTop: scale(rig.torso.headTop), armInset: Math.round(rig.torso.armInset * K * 10) / 10 },
   headRoar: { file: `${rig.headRoar.file}.webp`, top: scale(rig.headRoar.top), defaultScale: rig.headRoar.defaultScale },
   arms: Object.fromEntries(Object.entries(rig.arms).map(([key, a]) => [key, { file: `${a.file}.webp`, pivot: scale(a.pivot), side: a.side, ...(a.fist ? { fist: scale(a.fist) } : {}) }])),

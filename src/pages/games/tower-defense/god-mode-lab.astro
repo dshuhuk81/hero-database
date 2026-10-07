@@ -164,6 +164,10 @@ import GameLayout from "../../../layouts/GameLayout.astro";
       PIXI.Assets.load("/td/enemies/sprites/boss-brontax-v1.webp"),
       fetch(`${CRONUS_DIR}rig.json`).then((r) => r.json()),
     ]);
+    const [lavaWideTex, lavaFloorTex] = await Promise.all([
+      PIXI.Assets.load(`${CRONUS_DIR}${rig.arena.wide}`),
+      PIXI.Assets.load(`${CRONUS_DIR}${rig.arena.floor}`),
+    ]);
     const cronusTex: Record<string, any> = {};
     await Promise.all([rig.torso.file, rig.headRoar.file, ...Object.values<any>(rig.arms).map((a) => a.file)].map(async (file: string) => {
       cronusTex[file] = await PIXI.Assets.load(`${CRONUS_DIR}${file}`);
@@ -617,20 +621,37 @@ import GameLayout from "../../../layouts/GameLayout.astro";
       return [pos.x + p[0] * s * 0.54, pos.y + p[1] * s * 0.54];
     }
 
+    // Arena art and wall palette per boss: Cronus fights above a lava canyon, the Brontax modes keep
+    // the celestial terrain.
+    const ENVIRONMENTS = {
+      cronus: { wide: lavaWideTex, floor: lavaFloorTex, backdropW: 1260, backdropX: -150, tint: 0xd8c8c0, grade: 0x120706, gradeAlpha: 0.4, parapetBack: 0x3b322f, parapetRim: 0xd9803f, parapetFront: 0x1e1a1c, parapetFrontRim: 0x5a3f33, parapetCrack: 0xff6a1f, parapetCrackAlpha: 0.55, boardRim: 0xd9803f },
+      celestial: { wide: backdropTex, floor: arenaTex, backdropW: 1320, backdropX: -180, tint: 0x8791a9, grade: 0x090b13, gradeAlpha: 0.37, parapetBack: 0x605d5a, parapetRim: 0xb8a881, parapetFront: 0x252831, parapetFrontRim: 0x4e515a, parapetCrack: 0x11131a, parapetCrackAlpha: 0.65, boardRim: 0xb9a777 },
+    };
+    let env = ENVIRONMENTS.cronus;
+    function applyEnvironment(cronus: boolean) {
+      env = cronus ? ENVIRONMENTS.cronus : ENVIRONMENTS.celestial;
+      backdrop.texture = env.wide;
+      backdrop.width = env.backdropW; backdrop.height = 540; backdrop.x = env.backdropX;
+      backdrop.tint = env.tint;
+      arenaSurface.texture = env.floor;
+      arenaSurface.width = 960; arenaSurface.height = 540;
+      grade.clear().rect(0, 0, 960, 540).fill({ color: env.grade, alpha: env.gradeAlpha });
+    }
+
     function redrawArena() {
       arenaEdge = Number(edgeInput.value);
       board.clear(); arenaMask.clear(); slots.clear(); parapetBack.clear(); parapetFront.clear(); targetOverlay.clear();
 
       arenaMask.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill(0xffffff);
-      board.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill({ color: 0x20242e, alpha: 0.18 }).stroke({ color: 0xb9a777, width: 3, alpha: 0.75 });
+      board.poly([102, arenaEdge, 858, arenaEdge, 950, 536, 10, 536]).fill({ color: 0x20242e, alpha: 0.18 }).stroke({ color: env.boardRim, width: 3, alpha: 0.75 });
       const cells = arenaCells(arenaEdge + GRID_OFFSET);
       for (const cell of cells) {
         if (cell.type === ".") board.poly(insetQuad(cell, 1)).fill({ color: 0x05060c, alpha: 0.5 }); // void
       }
 
-      parapetBack.poly([90, arenaEdge - 9, 870, arenaEdge - 9, 850, arenaEdge + 21, 110, arenaEdge + 21]).fill({ color: 0x605d5a, alpha: 1 }).stroke({ color: 0xb8a881, width: 3, alpha: 0.8 });
-      parapetFront.poly([110, arenaEdge + 17, 850, arenaEdge + 17, 833, arenaEdge + 43, 127, arenaEdge + 43]).fill({ color: 0x252831, alpha: 1 }).stroke({ color: 0x4e515a, width: 2 });
-      for (let x = 132; x < 830; x += 78) parapetFront.moveTo(x, arenaEdge + 19).lineTo(x + 8, arenaEdge + 42).stroke({ color: 0x11131a, width: 2, alpha: 0.65 });
+      parapetBack.poly([90, arenaEdge - 9, 870, arenaEdge - 9, 850, arenaEdge + 21, 110, arenaEdge + 21]).fill({ color: env.parapetBack, alpha: 1 }).stroke({ color: env.parapetRim, width: 3, alpha: 0.8 });
+      parapetFront.poly([110, arenaEdge + 17, 850, arenaEdge + 17, 833, arenaEdge + 43, 127, arenaEdge + 43]).fill({ color: env.parapetFront, alpha: 1 }).stroke({ color: env.parapetFrontRim, width: 2 });
+      for (let x = 132; x < 830; x += 78) parapetFront.moveTo(x, arenaEdge + 19).lineTo(x + 8, arenaEdge + 42).stroke({ color: env.parapetCrack, width: 2, alpha: env.parapetCrackAlpha });
 
       const tileStyle: Record<string, { fill: number; alpha: number; stroke: number }> = {
         P: { fill: 0x1d4c5f, alpha: 0.55, stroke: 0x62d5ef },
@@ -711,6 +732,7 @@ import GameLayout from "../../../layouts/GameLayout.astro";
         yInput.value = cronus ? "310" : "380";
         lastMode = mode;
       }
+      applyEnvironment(cronus);
       bossAnimated.visible = mode === "animated";
       bossStatic.visible = mode === "still";
       cronusTorso.visible = cronus;
