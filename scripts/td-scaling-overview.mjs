@@ -32,6 +32,7 @@ export function buildHtml({ editable = false } = {}) {
     editable,
     heroic: { hp: tiers.heroic.enemyHp, atk: tiers.heroic.enemyAttack },
     classes: Object.keys(tuning.classes),
+    sizes: { heroScale: tuning.board.heroScale ?? 1, enemyScale: tuning.board.enemyScale ?? 1, bossScale: tuning.board.bossScale ?? tuning.board.enemyScale ?? 1 },
     mult: { atk: 1, hp: 1, armor: 1, magicRes: 1, ...mult, byRarity: mult.byRarity ?? {}, byClass: mult.byClass ?? {}, byHero: mult.byHero ?? {} },
     heroes: heroes.map((h) => ({
       id: h.id, name: h.name, class: h.class, rarity: h.rarity, tier: h.tier, slot: h.slot, range: h.range,
@@ -88,7 +89,7 @@ td.chg{background:var(--dirty)}
 </style></head><body><main>
 <h1>Tower Defense scaling overview</h1>
 <p class="sub" id="sub"></p>
-<div class="tabs"><button data-tab="camp" class="on">Campaign enemy HP</button><button data-tab="heroes">Heroes</button></div>
+<div class="tabs"><button data-tab="camp" class="on">Campaign enemy HP</button><button data-tab="heroes">Heroes</button><button data-tab="sizes">Sizes</button></div>
 <div id="tab-camp">
 <div class="card"><div class="legend"><span><b style="background:var(--hp)"></b>Enemy HP (log axis)</span><span><b style="background:var(--atk)"></b>Enemy ATK (linear)</span></div><div id="chart"></div></div>
 <div id="chapters"></div>
@@ -97,6 +98,10 @@ td.chg{background:var(--dirty)}
 <p class="sub" id="hsub"></p>
 <div class="card"><h2>Stat factors <small>final stat = base x all factors that apply (rounded). Empty or 1 = no change.</small></h2><div id="factors"></div></div>
 <div class="card"><div class="filters"><label>Class <select id="fclass"><option value="">all</option></select></label><label>Rarity <select id="frar"><option value="">all</option></select></label></div><div id="heroes"></div></div>
+</div>
+<div id="tab-sizes" class="hidden">
+<p class="sub" id="zsub"></p>
+<div class="card"><table style="min-width:560px"><thead><tr><th>Unit</th><th class="num">Scale</th><th>Base size (code)</th><th class="num">Effective</th></tr></thead><tbody id="sizes"></tbody></table></div>
 </div>
 </main>
 <div id="savebar"><span id="count"></span><button id="reset">Discard changes</button><button class="go" id="save">Save changes</button><span id="msg"></span></div>
@@ -108,6 +113,8 @@ const stages = D.chapters.flatMap((c) => c.stages.map((s) => (s.orig = s.hp, s.c
 const dirtyList = () => stages.filter((s) => s.hp !== s.orig);
 const STATS = ['atk', 'hp', 'armor', 'magicRes'], STAT_LABEL = { atk: 'ATK', hp: 'HP', armor: 'Armor', magicRes: 'M.Res' };
 const M = D.mult; let M0 = JSON.stringify(M);
+const S = D.sizes; let S0 = JSON.stringify(S);
+const sizeDirty = () => JSON.stringify(S) !== S0;
 const hf = (h, st) => M.byHero[h.id]?.[st] ?? 1;
 const fac = (v) => (Number.isFinite(v) && v > 0 ? v : 1);
 const total = (h, st) => fac(M[st]) * fac(M.byRarity[h.rarity]?.[st]) * fac(M.byClass[h.class]?.[st]) * fac(M.byHero[h.id]?.[st]);
@@ -172,11 +179,11 @@ function refresh() {
     const v = c.stages.map((s) => s.hp);
     $('section[data-ch="' + c.n + '"] .stat').textContent = c.stages.length + ' stages \\u00b7 min ' + fmt(Math.min(...v)) + 'x \\u00b7 avg ' + fmt(v.reduce((a, b) => a + b, 0) / v.length) + 'x \\u00b7 max ' + fmt(Math.max(...v)) + 'x';
   });
-  const n = dirtyList().length, hd = heroDirty();
+  const n = dirtyList().length, hd = heroDirty(), zd = sizeDirty();
   $('#savebar').classList.toggle('on', D.editable);
-  $('#save').disabled = $('#reset').disabled = !(n > 0 || hd);
-  $('#count').textContent = n > 0 || hd ? [n ? n + ' stage' + (n === 1 ? '' : 's') : '', hd ? 'hero factors' : ''].filter(Boolean).join(' + ') + ' changed' : 'No unsaved changes';
-  heroRefresh();
+  $('#save').disabled = $('#reset').disabled = !(n > 0 || hd || zd);
+  $('#count').textContent = n > 0 || hd || zd ? [n ? n + ' stage' + (n === 1 ? '' : 's') : '', hd ? 'hero factors' : '', zd ? 'sizes' : ''].filter(Boolean).join(' + ') + ' changed' : 'No unsaved changes';
+  heroRefresh(); sizeRefresh();
   chart();
 }
 
@@ -224,13 +231,27 @@ function heroRestore() {
   Object.keys(M).forEach((k) => delete M[k]); Object.assign(M, JSON.parse(M0));
   heroSync();
 }
+const SIZE_ROWS = [['heroScale', 'Heroes', 'hero figure on the board (HP bars follow)', 'figure art, scaled to the tile'], ['enemyScale', 'Enemies', 'default 44, brute 64, per kind in ENEMY_ART (assets.js)', 44], ['bossScale', 'Bosses', 'default 96, Lilith 108 (render.js)', 96]];
+function sizeBuild() {
+  $('#zsub').innerHTML = (D.editable ? 'Edit a scale, then <b>Save</b>. It writes <code>board.heroScale / enemyScale / bossScale</code> in <code>src/data/gameBalance.tuning.json</code> (board maps, applies on the next page load). ' : 'Read only. Run <code>npm run td:scaling-editor</code> to edit. ')
+    + 'These are global multipliers. Per kind base sizes live in code (<code>ENEMY_ART</code> in <code>assets.js</code>, boss sizes in <code>render.js</code>).';
+  $('#sizes').innerHTML = SIZE_ROWS.map(([k, label, base]) => '<tr data-k="' + k + '"><td>' + label + '</td><td class="num"><input class="zf" type="number" step="0.05" min="0.2" max="5" value="' + S[k] + '"' + (D.editable ? '' : ' disabled') + '></td><td class="goal">' + base + '</td><td class="fin eff"></td></tr>').join('');
+}
+function sizeRefresh() {
+  const o = JSON.parse(S0);
+  SIZE_ROWS.forEach(([k, , , px]) => {
+    const tr = $('#sizes tr[data-k="' + k + '"]'), cell = $('.eff', tr);
+    cell.innerHTML = (typeof px === 'number' ? 'x' + fmt(S[k]) + ' = ' + fmt(px * S[k]) + ' px' : 'x' + fmt(S[k])) + (S[k] !== o[k] ? '<small>was x' + fmt(o[k]) + '</small>' : '');
+    cell.classList.toggle('chg', S[k] !== o[k]);
+  });
+}
 function tabs() {
-  const show = (t) => { ['camp', 'heroes'].forEach((n) => { $('#tab-' + n).classList.toggle('hidden', n !== t); $('.tabs [data-tab="' + n + '"]').classList.toggle('on', n === t); }); try { history.replaceState(null, '', '#' + t); } catch (e) {} };
+  const show = (t) => { ['camp', 'heroes', 'sizes'].forEach((n) => { $('#tab-' + n).classList.toggle('hidden', n !== t); $('.tabs [data-tab="' + n + '"]').classList.toggle('on', n === t); }); try { history.replaceState(null, '', '#' + t); } catch (e) {} };
   $('.tabs').addEventListener('click', (e) => { if (e.target.dataset.tab) show(e.target.dataset.tab); });
-  show(location.hash === '#heroes' ? 'heroes' : 'camp');
+  show(['#heroes', '#sizes'].includes(location.hash) ? location.hash.slice(1) : 'camp');
 }
 
-build(); heroBuild(); refresh(); tabs();
+build(); heroBuild(); sizeBuild(); refresh(); tabs();
 $('#fclass').onchange = $('#frar').onchange = heroRefresh;
 if (D.editable) {
   const byId = Object.fromEntries(stages.map((s) => [s.id, s]));
@@ -254,7 +275,11 @@ if (D.editable) {
     const i = e.target; if (!i.classList.contains('hf')) return;
     setFactor('byHero', i.closest('tr').dataset.hero, i.dataset.st, i.value === '' ? 0 : parseFloat(i.value)); refresh();
   });
-  $('#reset').onclick = () => { stages.forEach((s) => { s.hp = s.orig; $('tr[data-id="' + s.id + '"] input.hp').value = s.hp; }); heroRestore(); refresh(); };
+  $('#sizes').addEventListener('input', (e) => {
+    const i = e.target, v = parseFloat(i.value); if (!i.classList.contains('zf') || !(v >= 0.2 && v <= 5)) return;
+    S[i.closest('tr').dataset.k] = v; refresh();
+  });
+  $('#reset').onclick = () => { Object.assign(S, JSON.parse(S0)); SIZE_ROWS.forEach(([k]) => { $('#sizes tr[data-k="' + k + '"] input').value = S[k]; }); stages.forEach((s) => { s.hp = s.orig; $('tr[data-id="' + s.id + '"] input.hp').value = s.hp; }); heroRestore(); refresh(); };
   $('#save').onclick = async () => {
     const changes = Object.fromEntries(dirtyList().map((s) => [s.id, s.hp]));
     const post = async (url, body) => { const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }); const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j; };
@@ -263,10 +288,11 @@ if (D.editable) {
       const parts = [];
       if (Object.keys(changes).length) { const j = await post('/save', changes); stages.forEach((s) => { s.orig = s.hp; }); parts.push(j.saved + ' stages'); }
       if (heroDirty()) { await post('/save-heroes', M); M0 = JSON.stringify(M); parts.push('hero factors'); }
+      if (sizeDirty()) { await post('/save-sizes', S); S0 = JSON.stringify(S); parts.push('sizes'); }
       refresh(); $('#msg').textContent = 'saved ' + parts.join(' + ') + ' at ' + new Date().toLocaleTimeString();
     } catch (err) { $('#msg').textContent = 'save failed: ' + err.message; }
   };
-  addEventListener('beforeunload', (e) => { if (dirtyList().length || heroDirty()) e.preventDefault(); });
+  addEventListener('beforeunload', (e) => { if (dirtyList().length || heroDirty() || sizeDirty()) e.preventDefault(); });
 }
 </script></body></html>
 `;

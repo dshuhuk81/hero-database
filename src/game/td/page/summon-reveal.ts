@@ -10,6 +10,7 @@ import type { PageContext } from "./context";
 export type RevealOptions = {
   featuredId: string | null;
   isNew: boolean[]; // per card: a hero not owned before, else a spare copy
+  dust: number[]; // per card: Seal Dust the spare copy was turned into (auto-dust), else 0
   skip: boolean; // "Skip animation": open with every card already face up
   again: { label: string; enabled: boolean } | null;
   wallet: string; // trusted markup: the Divine Seal balance after this summon
@@ -46,6 +47,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   let heroIds: string[] = [];
   let featured: string | null = null;
   let isNew: boolean[] = [];
+  let dust: number[] = [];
   let describe: RevealOptions["describe"] = () => "";
   let badges: RevealOptions["badges"] = () => "";
   let intro: RevealOptions["intro"] = () => "";
@@ -69,7 +71,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
       `<span class="td-summon-face td-summon-face--front" aria-hidden="true">` +
       `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image ?? ""}" alt="" decoding="async">` +
       `<span class="td-summon-face-groups">${badges(id)}</span>` +
-      (isNew[index] ? `<span class="td-summon-face-tag">New</span>` : "") +
+      (isNew[index] ? `<span class="td-summon-face-tag">New</span>` : dust[index] ? `<span class="td-summon-face-tag is-dust">+${dust[index]} Dust</span>` : "") +
       `</span></span></button>`;
   }
 
@@ -147,6 +149,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     heroIds = ids;
     featured = options.featuredId;
     isNew = options.isNew;
+    dust = options.dust;
     describe = options.describe;
     badges = options.badges;
     intro = options.intro;

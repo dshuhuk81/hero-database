@@ -111,6 +111,9 @@ export function createCampaign(ctx: PageContext) {
   const summonSkipInput = q<HTMLInputElement>("[data-td-summon-skip]");
   const SKIP_KEY = "td:summonSkip"; // per-browser convenience, not part of the save
   try { summonSkipInput.checked = localStorage.getItem(SKIP_KEY) === "1"; } catch { /* storage blocked */ }
+  const autoDustInput = q<HTMLInputElement>("[data-td-summon-auto-dust]");
+  const AUTO_DUST_KEY = "td:summonAutoDust"; // per-browser convenience, not part of the save
+  try { autoDustInput.checked = localStorage.getItem(AUTO_DUST_KEY) === "1"; } catch { /* storage blocked */ }
   let lastCount = 1; // the reveal stage's Summon again repeats the last summon size
   const summonReveal = createSummonReveal(ctx, () => doSummon(lastCount));
   let stageId: string | null = null; // stage picked on the Campaign screen
@@ -1105,7 +1108,21 @@ export function createCampaign(ctx: PageContext) {
     if (!result) return;
     lastCount = count;
     notifyQuest(store.data, "summon"); // R10 daily quest #7: a completed pull
-    store.data.campaign = result.progress as CampaignProgress;
+    // Auto-dust: spare copies of common heroes (not epic / legendary / lord) turn into Seal Dust
+    // at once; a common hero pulled for the first time stays in the collection.
+    let progressAfter: any = result.progress;
+    const dust = result.heroIds.map(() => 0);
+    if (autoDustInput.checked) {
+      result.heroIds.forEach((id: string, i: number) => {
+        const rarity = heroById.get(id)?.rarity;
+        if (result.isNew[i] || rarity === "epic" || rarity === "legendary" || rarity === "lord") return;
+        const next = convertCopies(summonCfg, progressAfter, id, 1);
+        if (!next) return;
+        progressAfter = next;
+        dust[i] = summonCfg.dust.perCopy;
+      });
+    }
+    store.data.campaign = progressAfter as CampaignProgress;
     store.persist();
     renderSummon();
     render();
@@ -1113,6 +1130,7 @@ export function createCampaign(ctx: PageContext) {
     summonReveal.open(result.heroIds, {
       featuredId: featuredHeroId(banner),
       isNew: result.isNew,
+      dust,
       skip: summonSkipInput.checked,
       again: { label: `Summon x${count} ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
       wallet: currencyAmount("divineSeals", progress().currencies.divineSeals || 0),
@@ -1145,6 +1163,9 @@ export function createCampaign(ctx: PageContext) {
   });
   summonButton.addEventListener("click", () => doSummon(1));
   summonMultiButton.addEventListener("click", () => doSummon(multiSummonCount(summonCfg, banner.id, progress(), allHeroIds())));
+  autoDustInput.addEventListener("change", () => {
+    try { localStorage.setItem(AUTO_DUST_KEY, autoDustInput.checked ? "1" : "0"); } catch { /* storage blocked */ }
+  });
   summonSkipInput.addEventListener("change", () => {
     try { localStorage.setItem(SKIP_KEY, summonSkipInput.checked ? "1" : "0"); } catch { /* storage blocked */ }
   });

@@ -14231,3 +14231,19 @@ img[data-rarity="lord"] { background: var(--rarity-legendary-bg); }
     grid-template-rows: auto minmax(0, 1fr);
   }
 }
+
+/* Summon screen: auto-dust toggle under the summon buttons */
+.td-app .td-summon-auto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+  cursor: pointer;
+}
+
+.td-summon-face-tag.is-dust {
+  background: rgb(5 6 12 / .75);
+  color: var(--text-primary);
+}

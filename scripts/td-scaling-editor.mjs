@@ -1,4 +1,4 @@
-// Local editor: stage hpScale (tdCampaign.json) and hero stat factors (heroMultipliers in gameBalance.tuning.json).
+// Local editor: stage hpScale (tdCampaign.json) and hero stat factors (heroMultipliers) and board sizes (heroScale/enemyScale/bossScale) in gameBalance.tuning.json.
 // Serves the scaling page and writes edits back.
 // Run: npm run td:scaling-editor  [--port=4599]
 // Only the hpScale number of each edited stage is replaced in the raw text, so the file keeps its formatting.
@@ -78,6 +78,24 @@ function saveHeroMultipliers(m) {
   return Object.keys(clean.byHero).length;
 }
 
+// Replace only the three board scale numbers in gameBalance.tuning.json.
+function saveSizes(sizes) {
+  let text = readFileSync(TUNING_PATH, "utf8");
+  const before = JSON.parse(text);
+  for (const key of ["heroScale", "enemyScale", "bossScale"]) {
+    const v = sizes[key];
+    if (typeof v !== "number" || !(v >= 0.2 && v <= 5)) throw new Error(`bad ${key}`);
+    const re = new RegExp(`("${key}":\\s*)[\\d.]+`);
+    if (!re.test(text)) throw new Error(`${key} not found in file`);
+    text = text.replace(re, `$1${Math.round(v * 100) / 100}`);
+  }
+  const after = JSON.parse(text);
+  const strip = (t) => ({ ...t, board: { ...t.board, heroScale: 0, enemyScale: 0, bossScale: 0 } });
+  if (JSON.stringify(strip(after)) !== JSON.stringify(strip(before))) throw new Error("unexpected change outside the scales");
+  writeFileSync(TUNING_PATH, text);
+  return 3;
+}
+
 createServer((req, res) => {
   const send = (code, body, type = "application/json") => { res.writeHead(code, { "content-type": type }); res.end(body); };
   try {
@@ -96,6 +114,15 @@ createServer((req, res) => {
       req.on("data", (d) => (body += d));
       req.on("end", () => {
         try { send(200, JSON.stringify({ heroOverrides: saveHeroMultipliers(JSON.parse(body)) })); }
+        catch (e) { send(400, JSON.stringify({ error: e.message })); }
+      });
+      return;
+    }
+    if (req.method === "POST" && req.url === "/save-sizes") {
+      let body = "";
+      req.on("data", (d) => (body += d));
+      req.on("end", () => {
+        try { send(200, JSON.stringify({ saved: saveSizes(JSON.parse(body)) })); }
         catch (e) { send(400, JSON.stringify({ error: e.message })); }
       });
       return;
