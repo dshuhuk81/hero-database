@@ -433,16 +433,21 @@ export function createMapScene(PIXI, game, {
   ]) {
     if (!texture) continue;
     back.clear();
-    back.ellipse(3, 16 - STRUCTURE_LIFT, padWidth, padDepth * 0.7).fill({ color: 0x06111b, alpha: 0.17 });
-    back.ellipse(2, 14 - STRUCTURE_LIFT, padWidth * 0.8, padDepth * 0.5).fill({ color: 0x06111b, alpha: 0.14 });
+    // The gate must stay inside its road row: the slab above it is drawn over anything taller.
+    // The lip of the slab above reaches about 13 px into the row, so the gate's top edge must stay
+    // below row-top + 13 (cell 118: art height <= ~84 px), centred on the road.
+    const fit = board ? Math.min(1, board.cell * (role === "spawn" ? 0.68 : 0.88) / height) : 1;
+    const lift = role === "spawn" ? 0 : STRUCTURE_LIFT;
+    back.ellipse(3, 16 - lift, padWidth * fit, padDepth * 0.7 * fit).fill({ color: 0x06111b, alpha: 0.17 });
+    back.ellipse(2, 14 - lift, padWidth * 0.8 * fit, padDepth * 0.5 * fit).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
     const placement = paintedStructurePlacement({ structures, foreground }, role, tilt);
     const sprite = add(placement.parent, new PIXI.Sprite(texture));
     if (placement.zIndex !== null) sprite.zIndex = placement.zIndex;
     if (theme.structureTint) sprite.tint = theme.structureTint;
     sprite.anchor.set(0.5);
-    sprite.position.set(point.x, point.y - STRUCTURE_LIFT);
-    sprite.width = width; sprite.height = height / tiltK;
+    sprite.position.set(point.x, point.y - lift);
+    sprite.width = width * fit; sprite.height = height * fit / tiltK;
   }
 
   // No SPAWN / SANCTUARY / integrity captions: the labels sat under the neighbouring placement
