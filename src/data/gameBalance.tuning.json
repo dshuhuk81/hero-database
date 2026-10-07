@@ -37,7 +37,14 @@
       "lord": { "atk": 1.6, "hp": 1.6 }
     },
     "byClass": {},
-    "byHero": {}
+    "byHero": {
+      "isis": { "armor": 1.01, "hp": 0.66, "atk": 0.61 },
+      "hephaestus": { "atk": 1.06 },
+      "nott": { "atk": 2.01 },
+      "hecate": { "atk": 2 },
+      "atlas": { "hp": 2 },
+      "skadi": { "atk": 1.5 }
+    }
   },
   "roster": [
     "atlas",

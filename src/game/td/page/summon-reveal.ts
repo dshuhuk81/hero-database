@@ -51,6 +51,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   let intro: RevealOptions["intro"] = () => "";
   let introQueue: number[] = [];
   let timers: number[] = [];
+  let sequence: HTMLButtonElement[] | null = null; // Reveal all: cards still to flip, one at a time
   const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const glowOf = (id: string) => {
@@ -94,14 +95,14 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     const rarity = hero?.rarity;
     if (isNew[index] && (rarity === "epic" || rarity === "legendary" || rarity === "lord")) {
       introQueue.push(index);
-      // Single flips and a finished set show it after the flip lands; Reveal all waits for the last card.
-      if (!timers.length || !hidden().length) window.setTimeout(nextIntro, reducedMotion() ? 0 : 700);
+      // Shown once the flip lands; during Reveal all the sequence pauses on it (see step).
+      if (!sequence) window.setTimeout(nextIntro, introDelay());
     }
     if (!hidden().length) finish();
   }
 
   function nextIntro() {
-    if (introEl.open || !stageEl.open || !introQueue.length || (timers.length && hidden().length)) return;
+    if (introEl.open || !stageEl.open || !introQueue.length) return;
     introBody.innerHTML = intro(heroIds[introQueue.shift() as number]);
     introEl.showModal();
     introContinue.focus();
@@ -121,11 +122,25 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
 
   const focusDone = () => (!againButton.hidden && !againButton.disabled ? againButton : q<HTMLButtonElement>("[data-td-summon-close]")).focus();
 
+  const introDelay = () => (reducedMotion() ? 0 : 700);
+
+  // Reveal all flips one card at a time; a new epic / legendary hero pauses it on the intro
+  // screen, and Continue picks the sequence up again.
+  function step() {
+    if (!sequence || introEl.open) return;
+    if (introQueue.length) { window.setTimeout(nextIntro, introDelay()); return; }
+    const card = sequence.shift();
+    if (!card) { sequence = null; if (!doneEl.hidden) focusDone(); return; }
+    if (!card.classList.contains("is-flipped")) flip(card);
+    if (introQueue.length) { window.setTimeout(nextIntro, introDelay()); return; }
+    timers = [window.setTimeout(step, reducedMotion() ? 0 : FLIP_GAP_MS)];
+  }
+
   function revealAll() {
-    const rest = hidden();
-    if (reducedMotion()) { rest.forEach(flip); return; }
     timers.forEach(clearTimeout);
-    timers = rest.map((card, i) => window.setTimeout(() => flip(card), i * FLIP_GAP_MS));
+    timers = [];
+    sequence = hidden();
+    step();
   }
 
   function open(ids: string[], options: RevealOptions) {
@@ -136,6 +151,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     badges = options.badges;
     intro = options.intro;
     introQueue = [];
+    sequence = null;
     if (introEl.open) introEl.close();
     detailEl.hidden = true;
     detailEl.innerHTML = "";
@@ -163,6 +179,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
     timers.forEach(clearTimeout);
     timers = [];
     introQueue = [];
+    sequence = null;
     if (introEl.open) introEl.close();
     if (stageEl.open) stageEl.close();
   }
@@ -174,7 +191,9 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   introContinue.addEventListener("click", () => {
     introEl.close();
     if (introQueue.length) window.setTimeout(nextIntro, 120);
-    else focusDone();
+    else if (sequence) window.setTimeout(step, 300);
+    else if (!doneEl.hidden) focusDone();
+    else cards().find((card) => !card.classList.contains("is-flipped"))?.focus();
   });
   revealAllButton.addEventListener("click", revealAll);
   againButton.addEventListener("click", onAgain);

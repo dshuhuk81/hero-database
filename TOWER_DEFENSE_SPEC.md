@@ -797,7 +797,7 @@ geometry. No game mode uses classic maps.
 | Daily Trial | One UTC-day seed: map, allowed heroes, 2 mutators, goal: defeat 60% of the stage's enemies (`DAILY.goalShare`). One stage at Normal, no blessings or boosts; +15 Divine Seals for the goal, plus Gold and Hero XP per enemy defeated (`collectionReward`, 2 Gold + 1 Hero XP, up to 120) | `daily.js` |
 | Expedition | Chain of stages (each plays its battlefield's timeline) on 3 random open maps with rising health; starts with 3 random owned heroes; camp after each win (hero, relic or veteran: veterans get +10% attack and health for the rest of the expedition, `heroBonuses`, save field `veterans`); lives carry over; Divine Blessings apply; +60 Divine Seals on completion | `expedition.js` |
 
-Restricted rosters (Campaign squad, Daily, Expedition) also cap `deployCap()`.
+Restricted rosters (Campaign squad, Daily, Expedition) field every hero in the roster: `deployCap()` equals the roster size and ignores `tuning.run.deployCap` (7), which only applies to open rosters.
 
 **One hero collection:** heroes are owned and upgraded through the campaign (save key
 `campaign`), and every mode except the Daily Trial uses the owned heroes (`ownedHeroes()`).

@@ -1052,10 +1052,10 @@ export class TowerDefenseGame {
     return alive[0] ?? null;
   }
 
-  // Heroes allowed on the field at once (tuning.run.deployCap), never more than a restricted
-  // roster (Campaign squad, Daily Trial, Expedition) can field.
+  // Heroes allowed on the field at once. A restricted roster (Campaign squad, Daily Trial,
+  // Expedition) can field every hero in it; only an open roster uses tuning.run.deployCap.
   deployCap() {
-    return Math.min(this.tuning.run.deployCap ?? Infinity, this.allowedHeroes?.size ?? Infinity);
+    return this.allowedHeroes ? this.allowedHeroes.size : this.tuning.run.deployCap ?? Infinity;
   }
 
   // Removes and returns the newest fallen entry that can be revived, or null.
