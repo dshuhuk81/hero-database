@@ -1,43 +1,5 @@
 [
   {
-    "id": "hephaestus",
-    "name": "Hephaestus",
-    "class": "Mage",
-    "tier": "B",
-    "slot": "platform",
-    "range": 160,
-    "ability": "nuke",
-    "damageType": "magical",
-    "image": "",
-    "atk": 66,
-    "aps": 0.5,
-    "dps": 33,
-    "hp": 556,
-    "armor": 70,
-    "magicRes": 80,
-    "critChance": 0.1,
-    "ultCooldown": 15,
-    "ultPower": 1.05,
-    "synergies": [
-      "SELF_ATK_SPEED",
-      "SELF_ATK_UP",
-      "SELF_ENERGY_RESTORE",
-      "SELF_HEAL",
-      "SELF_HIT_AVOID",
-      "REVIVE",
-      "SELF_HP_UP",
-      "PLAYSTYLE_AREA_DAMAGE",
-      "PLAYSTYLE_BASIC_ATTACK_SCALER",
-      "SELF_SUSTAIN",
-      "SELF_HEAL_EFFECT_UP"
-    ],
-    "cost": 15,
-    "rarity": "epic",
-    "mythologyGroups": [
-      "greek"
-    ]
-  },
-  {
     "id": "nott",
     "name": "Nott",
     "class": "Assassin",
@@ -73,140 +35,6 @@
     ]
   },
   {
-    "id": "helios",
-    "name": "Helios",
-    "class": "Warrior",
-    "tier": "B",
-    "slot": "road",
-    "range": 70,
-    "ability": "cleave",
-    "damageType": "magical",
-    "image": "",
-    "atk": 143,
-    "aps": 0.48,
-    "dps": 69,
-    "hp": 991,
-    "armor": 228,
-    "magicRes": 220,
-    "critChance": 0.06,
-    "ultCooldown": 18,
-    "ultPower": 1.05,
-    "synergies": [
-      "TEAM_ENERGY_RESTORE",
-      "ENEMY_ATK_DOWN",
-      "ENEMY_CROWD_CONTROL",
-      "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_CC_RESISTANCE",
-      "SELF_DODGE",
-      "SELF_ENERGY_RESTORE",
-      "SELF_HEAL"
-    ],
-    "cost": 14,
-    "rarity": "epic",
-    "mythologyGroups": [
-      "greek",
-      "elder-powers"
-    ]
-  },
-  {
-    "id": "odin",
-    "name": "Odin",
-    "class": "Mage",
-    "tier": "A",
-    "slot": "platform",
-    "range": 160,
-    "ability": "nuke",
-    "damageType": "magical",
-    "image": "",
-    "atk": 63,
-    "aps": 0.46,
-    "dps": 29,
-    "hp": 637,
-    "armor": 40,
-    "magicRes": 110,
-    "critChance": 0.1,
-    "ultCooldown": 18,
-    "ultPower": 1.15,
-    "synergies": [
-      "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ATK_SPEED",
-      "SELF_ENERGY_RESTORE",
-      "SUMMON",
-      "PLAYSTYLE_BASIC_ATTACK_SCALER"
-    ],
-    "cost": 16,
-    "rarity": "legendary",
-    "mythologyGroups": [
-      "norse"
-    ]
-  },
-  {
-    "id": "aegir",
-    "name": "Aegir",
-    "class": "Warrior",
-    "tier": "S",
-    "slot": "road",
-    "range": 70,
-    "ability": "cleave",
-    "damageType": "magical",
-    "image": "",
-    "atk": 127,
-    "aps": 0.32,
-    "dps": 41,
-    "hp": 797,
-    "armor": 120,
-    "magicRes": 60,
-    "critChance": 0.06,
-    "ultCooldown": 11.3,
-    "ultPower": 1.45,
-    "synergies": [
-      "ENEMY_CROWD_CONTROL",
-      "ENEMY_ATTRIBUTE_REDUCTION",
-      "SELF_ATK_UP",
-      "SELF_ENERGY_RESTORE",
-      "SELF_SHIELD",
-      "PLAYSTYLE_AREA_DAMAGE"
-    ],
-    "cost": 17,
-    "rarity": "legendary",
-    "mythologyGroups": [
-      "norse",
-      "wildborn"
-    ]
-  },
-  {
-    "id": "boreas",
-    "name": "Boreas",
-    "class": "Mage",
-    "tier": "B",
-    "slot": "platform",
-    "range": 160,
-    "ability": "nuke",
-    "damageType": "magical",
-    "image": "",
-    "atk": 62,
-    "aps": 0.37,
-    "dps": 23,
-    "hp": 367,
-    "armor": 80,
-    "magicRes": 90,
-    "critChance": 0.1,
-    "ultCooldown": 18,
-    "ultPower": 1.05,
-    "synergies": [
-      "ENEMY_ATTRIBUTE_REDUCTION",
-      "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ATK_UP",
-      "SELF_ENERGY_RESTORE"
-    ],
-    "cost": 19,
-    "rarity": "legendary",
-    "mythologyGroups": [
-      "greek",
-      "wildborn"
-    ]
-  },
-  {
     "id": "hecate",
     "name": "Hecate",
     "class": "Assassin",
@@ -239,46 +67,6 @@
     ]
   },
   {
-    "id": "atlas",
-    "name": "Atlas",
-    "class": "Tank",
-    "tier": "B",
-    "slot": "road",
-    "range": 60,
-    "ability": "taunt",
-    "damageType": "physical",
-    "image": "",
-    "atk": 64,
-    "aps": 0.48,
-    "dps": 31,
-    "hp": 1312,
-    "armor": 345,
-    "magicRes": 230,
-    "critChance": 0,
-    "ultCooldown": 22.5,
-    "ultPower": 1.05,
-    "synergies": [
-      "TEAM_BUFF",
-      "TEAM_CC_IMMUNITY",
-      "TEAM_HEAL",
-      "TEAM_SHIELD",
-      "ENEMY_CROWD_CONTROL",
-      "ENEMY_TAUNT",
-      "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ENERGY_RESTORE",
-      "SUMMON",
-      "SELF_SHIELD",
-      "SELF_DAMAGE_REDUCTION",
-      "PLAYSTYLE_BASIC_ATTACK_SCALER"
-    ],
-    "cost": 14,
-    "rarity": "epic",
-    "mythologyGroups": [
-      "greek",
-      "elder-powers"
-    ]
-  },
-  {
     "id": "stheno",
     "name": "Stheno",
     "class": "Archer",
@@ -305,6 +93,38 @@
     ],
     "cost": 20,
     "rarity": "epic",
+    "mythologyGroups": [
+      "greek",
+      "wildborn"
+    ]
+  },
+  {
+    "id": "boreas",
+    "name": "Boreas",
+    "class": "Mage",
+    "tier": "B",
+    "slot": "platform",
+    "range": 160,
+    "ability": "nuke",
+    "damageType": "magical",
+    "image": "",
+    "atk": 62,
+    "aps": 0.37,
+    "dps": 23,
+    "hp": 367,
+    "armor": 80,
+    "magicRes": 90,
+    "critChance": 0.1,
+    "ultCooldown": 18,
+    "ultPower": 1.05,
+    "synergies": [
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE"
+    ],
+    "cost": 19,
+    "rarity": "legendary",
     "mythologyGroups": [
       "greek",
       "wildborn"
@@ -379,6 +199,40 @@
     "mythologyGroups": [
       "norse",
       "elder-powers"
+    ]
+  },
+  {
+    "id": "aegir",
+    "name": "Aegir",
+    "class": "Warrior",
+    "tier": "S",
+    "slot": "road",
+    "range": 70,
+    "ability": "cleave",
+    "damageType": "magical",
+    "image": "",
+    "atk": 127,
+    "aps": 0.32,
+    "dps": 41,
+    "hp": 797,
+    "armor": 120,
+    "magicRes": 60,
+    "critChance": 0.06,
+    "ultCooldown": 11.3,
+    "ultPower": 1.45,
+    "synergies": [
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
+    ],
+    "cost": 17,
+    "rarity": "legendary",
+    "mythologyGroups": [
+      "norse",
+      "wildborn"
     ]
   },
   {
@@ -457,41 +311,6 @@
     ]
   },
   {
-    "id": "gaia",
-    "name": "Gaia",
-    "class": "Support",
-    "tier": "C",
-    "slot": "platform",
-    "range": 170,
-    "ability": "aura",
-    "damageType": "magical",
-    "image": "",
-    "atk": 39,
-    "aps": 0.56,
-    "dps": 22,
-    "hp": 853,
-    "armor": 200,
-    "magicRes": 200,
-    "critChance": 0,
-    "ultCooldown": 18,
-    "ultPower": 1,
-    "synergies": [
-      "TEAM_SHIELD",
-      "ENEMY_CROWD_CONTROL",
-      "ENEMY_ENERGY_DRAIN",
-      "SELF_HEAL",
-      "SELF_CC_RESISTANCE",
-      "SELF_DAMAGE_REDUCTION",
-      "SELF_SHIELD"
-    ],
-    "cost": 12,
-    "rarity": "epic",
-    "mythologyGroups": [
-      "greek",
-      "elder-powers"
-    ]
-  },
-  {
     "id": "heimdall",
     "name": "Heimdall",
     "class": "Tank",
@@ -531,6 +350,76 @@
     ]
   },
   {
+    "id": "odin",
+    "name": "Odin",
+    "class": "Mage",
+    "tier": "A",
+    "slot": "platform",
+    "range": 160,
+    "ability": "nuke",
+    "damageType": "magical",
+    "image": "",
+    "atk": 63,
+    "aps": 0.46,
+    "dps": 29,
+    "hp": 637,
+    "armor": 40,
+    "magicRes": 110,
+    "critChance": 0.1,
+    "ultCooldown": 18,
+    "ultPower": 1.15,
+    "synergies": [
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ENERGY_RESTORE",
+      "SUMMON",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
+    ],
+    "cost": 16,
+    "rarity": "legendary",
+    "mythologyGroups": [
+      "norse"
+    ]
+  },
+  {
+    "id": "hephaestus",
+    "name": "Hephaestus",
+    "class": "Mage",
+    "tier": "B",
+    "slot": "platform",
+    "range": 160,
+    "ability": "nuke",
+    "damageType": "magical",
+    "image": "",
+    "atk": 66,
+    "aps": 0.5,
+    "dps": 33,
+    "hp": 556,
+    "armor": 70,
+    "magicRes": 80,
+    "critChance": 0.1,
+    "ultCooldown": 15,
+    "ultPower": 1.05,
+    "synergies": [
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_HIT_AVOID",
+      "REVIVE",
+      "SELF_HP_UP",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "SELF_SUSTAIN",
+      "SELF_HEAL_EFFECT_UP"
+    ],
+    "cost": 15,
+    "rarity": "epic",
+    "mythologyGroups": [
+      "greek"
+    ]
+  },
+  {
     "id": "asclepius",
     "name": "Asclepius",
     "class": "Support",
@@ -563,6 +452,46 @@
     "mythologyGroups": [
       "greek",
       "divine-guardians"
+    ]
+  },
+  {
+    "id": "atlas",
+    "name": "Atlas",
+    "class": "Tank",
+    "tier": "B",
+    "slot": "road",
+    "range": 60,
+    "ability": "taunt",
+    "damageType": "physical",
+    "image": "",
+    "atk": 64,
+    "aps": 0.48,
+    "dps": 31,
+    "hp": 1312,
+    "armor": 345,
+    "magicRes": 230,
+    "critChance": 0,
+    "ultCooldown": 22.5,
+    "ultPower": 1.05,
+    "synergies": [
+      "TEAM_BUFF",
+      "TEAM_CC_IMMUNITY",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_TAUNT",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ENERGY_RESTORE",
+      "SUMMON",
+      "SELF_SHIELD",
+      "SELF_DAMAGE_REDUCTION",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
+    ],
+    "cost": 14,
+    "rarity": "epic",
+    "mythologyGroups": [
+      "greek",
+      "elder-powers"
     ]
   },
   {
@@ -629,6 +558,42 @@
     "mythologyGroups": [
       "greek",
       "divine-guardians"
+    ]
+  },
+  {
+    "id": "helios",
+    "name": "Helios",
+    "class": "Warrior",
+    "tier": "B",
+    "slot": "road",
+    "range": 70,
+    "ability": "cleave",
+    "damageType": "magical",
+    "image": "",
+    "atk": 143,
+    "aps": 0.48,
+    "dps": 69,
+    "hp": 991,
+    "armor": 228,
+    "magicRes": 220,
+    "critChance": 0.06,
+    "ultCooldown": 18,
+    "ultPower": 1.05,
+    "synergies": [
+      "TEAM_ENERGY_RESTORE",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_CC_RESISTANCE",
+      "SELF_DODGE",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL"
+    ],
+    "cost": 14,
+    "rarity": "epic",
+    "mythologyGroups": [
+      "greek",
+      "elder-powers"
     ]
   },
   {
@@ -734,6 +699,41 @@
     "mythologyGroups": [
       "greek",
       "wildborn"
+    ]
+  },
+  {
+    "id": "gaia",
+    "name": "Gaia",
+    "class": "Support",
+    "tier": "C",
+    "slot": "platform",
+    "range": 170,
+    "ability": "aura",
+    "damageType": "magical",
+    "image": "",
+    "atk": 39,
+    "aps": 0.56,
+    "dps": 22,
+    "hp": 853,
+    "armor": 200,
+    "magicRes": 200,
+    "critChance": 0,
+    "ultCooldown": 18,
+    "ultPower": 1,
+    "synergies": [
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_HEAL",
+      "SELF_CC_RESISTANCE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_SHIELD"
+    ],
+    "cost": 12,
+    "rarity": "epic",
+    "mythologyGroups": [
+      "greek",
+      "elder-powers"
     ]
   },
   {

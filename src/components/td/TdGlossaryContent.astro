@@ -27,6 +27,7 @@ import { patternLabel } from "../../game/td/board.js";
 import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, lordText, ENEMY_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
+import { ELITE_AFFIXES } from "../../game/td/elites.js";
 
 interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
 const { assetBase, embedded = false, headingLevel = 2 } = Astro.props;
@@ -224,7 +225,9 @@ const iconFont = `https://fonts.googleapis.com/css2?family=Material+Symbols+Roun
 const reactionIds = Object.keys(REACTION_INFO);
 // Section jump chips under the tabs (per panel).
 const heroJumps = [["hero-attrs", "Attributes"], ["classes", "Classes"], ["status", "Status effects"], ["hero-list", "Heroes"]];
-const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["bosses", "Bosses"]];
+const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["elites", "Elites"], ["bosses", "Bosses"]];
+const eliteFrom = Math.min(...(rawTuning.elites?.schedule ?? []).map((step) => step.fromChapter));
+const affixHex = (color: number) => `#${color.toString(16).padStart(6, "0")}`;
 ---
 
 <link rel="stylesheet" href={iconFont} />
@@ -354,6 +357,16 @@ const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["
       <div class="td-glossary-grid">
         {enemyCardsView.map((enemy) => <EnemyCard enemy={enemy} headingLevel={headingLevel + 1} />)}
       </div>
+    </section>
+
+    <section aria-labelledby={id("elites")}>
+      <Section class="td-glossary-heading" id={id("elites")}><span class="td-msym" aria-hidden="true">{UI_ICON.enemies}</span>Elites</Section>
+      <p class="td-glossary-lead">From Chapter {eliteFrom} on, a few enemies of each campaign stage arrive as Elites: a gold crown and glow, more health, and one or more traits. The stage details list them before the battle; the diamonds next to an Elite's health bar show its traits in these colours.</p>
+      <dl class="td-glossary-terms">
+        {Object.values(ELITE_AFFIXES).map((affix) => (
+          <div><span class="td-elite-affix" style={`--affix:${affixHex(affix.color)}`} aria-hidden="true"></span><dt>{affix.name}</dt><dd>{affix.text}</dd></div>
+        ))}
+      </dl>
     </section>
 
     <section aria-labelledby={id("bosses")}>

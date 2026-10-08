@@ -57,7 +57,10 @@
     }
   },
   "repeatShare": 0.25,
-  "battleXp": { "win": 0.2, "loss": 0.08 },
+  "battleXp": {
+    "win": 0.2,
+    "loss": 0.08
+  },
   "collectionRewards": {
     "perDefeated": {
       "gold": 10,
@@ -212,7 +215,7 @@
           "mapId": "moonlit-pass",
           "text": "The first refugees are on the road. Hold the pass against grunts and fast runners; road heroes block them, platform heroes shoot from above.",
           "lives": 20,
-          "hpScale": 6.82,
+          "hpScale": 9.55,
           "atkScale": 1,
           "unlockAfter": null,
           "rewards": [
@@ -279,7 +282,7 @@
           "mapId": "verdant-crossing",
           "text": "Flyers arrive: they soar over your blockers and only platform heroes can hit them. Keep at least two heroes on the platforms.",
           "lives": 15,
-          "hpScale": 9.46,
+          "hpScale": 13.24,
           "atkScale": 1.03,
           "unlockAfter": "1-1",
           "rewards": [
@@ -358,7 +361,7 @@
           "mapId": "moonlit-terraces",
           "text": "Brutes shrug off physical hits, so bring magic damage. Menders heal everyone around them; take them out first.",
           "lives": 15,
-          "hpScale": 2.26,
+          "hpScale": 3.16,
           "atkScale": 1.07,
           "unlockAfter": "1-2",
           "rewards": [
@@ -437,7 +440,7 @@
           "mapId": "verdant-thicket",
           "text": "Shieldbearers carry a shield that regrows if you stop hitting them, and archers shoot your blockers from range. Many quick hits break shields fastest.",
           "lives": 15,
-          "hpScale": 6.86,
+          "hpScale": 9.6,
           "atkScale": 1.1,
           "unlockAfter": "1-3",
           "rewards": [
@@ -519,7 +522,7 @@
           "mapId": "moonlit-horned-gate",
           "text": "Baphomet guards the end of the pass. It silences the hero that hit it last and hardens its hide from time to time; spread your damage over several heroes.",
           "lives": 14,
-          "hpScale": 3.78,
+          "hpScale": 5.29,
           "atkScale": 1.13,
           "unlockAfter": "1-4",
           "rewards": [
@@ -612,7 +615,7 @@
           "mapId": "verdant-glade",
           "text": "Hexers resist magic and hex the nearest hero so it briefly cannot attack. Archers outrange the hex and physical damage cuts them down fastest.",
           "lives": 15,
-          "hpScale": 6.02,
+          "hpScale": 8.43,
           "atkScale": 1.17,
           "unlockAfter": "1-5",
           "rewards": [
@@ -690,7 +693,7 @@
           "mapId": "sunscar-ruins",
           "text": "The ruins have two gates and every group of enemies splits between them. Spread your squad so neither lane is left open.",
           "lives": 16,
-          "hpScale": 9.67,
+          "hpScale": 13.54,
           "atkScale": 1.2,
           "unlockAfter": "1-6",
           "rewards": [
@@ -737,7 +740,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "grunt",
               "count": 1
             },
@@ -775,7 +778,7 @@
           "mapId": "verdant-hollow",
           "text": "Broodcallers resist magic and keep calling imps while they walk. Snipe the callers with archers before the swarm grows.",
           "lives": 15,
-          "hpScale": 8.47,
+          "hpScale": 11.86,
           "atkScale": 1.23,
           "unlockAfter": "1-7",
           "rewards": [
@@ -817,7 +820,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "runner",
               "count": 1
             },
@@ -860,7 +863,7 @@
           "mapId": "sunscar-eve",
           "text": "Every enemy you have met comes at once, through both gates. A long stage tests your whole squad; level your heroes if you fall short.",
           "lives": 18,
-          "hpScale": 3.79,
+          "hpScale": 5.31,
           "atkScale": 1.27,
           "unlockAfter": "1-8",
           "rewards": [
@@ -907,7 +910,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "mender",
               "count": 1
             },
@@ -954,7 +957,7 @@
           "mapId": "verdant-last-crossing",
           "text": "Lilith waits at the crossing and cannot be hit while her children stand; every blow to them also hurts her. The chapter's final battle.",
           "lives": 15,
-          "hpScale": 4.83,
+          "hpScale": 6.76,
           "atkScale": 1.3,
           "unlockAfter": "1-9",
           "rewards": [
@@ -1001,7 +1004,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "mender",
               "count": 1
             },
@@ -1131,12 +1134,7 @@
             {
               "startMs": 5100,
               "kind": "grunt",
-              "count": 2
-            },
-            {
-              "startMs": 17800,
-              "kind": "grunt",
-              "count": 1
+              "count": 3
             },
             {
               "startMs": 18500,
@@ -1209,7 +1207,7 @@
               "count": 2
             },
             {
-              "startMs": 5800,
+              "startMs": 17100,
               "kind": "grunt",
               "count": 1
             },
@@ -1231,7 +1229,12 @@
             {
               "startMs": 19900,
               "kind": "runner",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 31900,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 32600,
@@ -1308,7 +1311,7 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "flyer",
               "count": 1
             },
@@ -1399,11 +1402,11 @@
             },
             {
               "startMs": 19900,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "brute",
               "count": 1
             },
@@ -1414,13 +1417,8 @@
             },
             {
               "startMs": 33300,
-              "kind": "broodcaller",
-              "count": 1
-            },
-            {
-              "startMs": 34000,
               "kind": "runner",
-              "count": 2
+              "count": 3
             }
           ],
           "recommendedMight": 11060,
@@ -1606,7 +1604,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "burrower",
               "count": 1
             },
@@ -1759,14 +1757,9 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 32600,
-              "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 33300,
@@ -1948,7 +1941,7 @@
               "count": 2
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "mender",
               "count": 1
             },
@@ -2043,7 +2036,7 @@
               "count": 3
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "archer",
               "count": 1
             },
@@ -2118,7 +2111,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "brute",
               "count": 1
             },
@@ -2143,7 +2136,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "vinebinder",
               "count": 1
             },
@@ -2155,12 +2148,7 @@
             {
               "startMs": 34000,
               "kind": "jaguar",
-              "count": 2
-            },
-            {
-              "startMs": 35400,
-              "kind": "broodcaller",
-              "count": 1
+              "count": 3
             },
             {
               "startMs": 36100,
@@ -2252,7 +2240,7 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "mender",
               "count": 1
             },
@@ -2277,7 +2265,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "hexer",
               "count": 1
             },
@@ -2430,9 +2418,14 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "runner",
-              "count": 3
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "runner",
+              "count": 2
             },
             {
               "startMs": 34700,
@@ -2492,12 +2485,12 @@
             {
               "startMs": 5800,
               "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
-              "startMs": 17800,
+              "startMs": 18500,
               "kind": "runner",
-              "count": 2
+              "count": 1
             },
             {
               "startMs": 19200,
@@ -2510,7 +2503,7 @@
               "count": 2
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "mender",
               "count": 1
             },
@@ -2609,14 +2602,9 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 32600,
-              "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 33300,
@@ -2626,7 +2614,12 @@
             {
               "startMs": 34000,
               "kind": "grunt",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -2720,7 +2713,7 @@
             },
             {
               "startMs": 19900,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -2741,17 +2734,12 @@
             {
               "startMs": 34700,
               "kind": "runner",
-              "count": 2
+              "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 46700,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 48100,
-              "kind": "broodcaller",
-              "count": 1
+              "count": 3
             },
             {
               "startMs": 48800,
@@ -2953,7 +2941,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "hexer",
               "count": 1
             },
@@ -2973,9 +2961,14 @@
               "count": 2
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "flyer",
-              "count": 3
+              "count": 1
+            },
+            {
+              "startMs": 48100,
+              "kind": "flyer",
+              "count": 2
             },
             {
               "startMs": 49500,
@@ -3096,7 +3089,7 @@
               "count": 2
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "archer",
               "count": 1
             },
@@ -3121,7 +3114,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "broodcaller",
               "count": 1
             },
@@ -3198,7 +3191,12 @@
             {
               "startMs": 19900,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 31900,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 32600,
@@ -3221,7 +3219,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -3321,7 +3319,12 @@
             {
               "startMs": 34700,
               "kind": "grunt",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -3410,7 +3413,7 @@
             },
             {
               "startMs": 19900,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -3450,7 +3453,7 @@
             },
             {
               "startMs": 48800,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -3544,7 +3547,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "archer",
               "count": 1
             },
@@ -3564,13 +3567,18 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "runner",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 48100,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 48800,
-              "kind": "broodcaller",
+              "kind": "grunt",
               "count": 1
             },
             {
@@ -3643,7 +3651,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "mender",
               "count": 1
             },
@@ -3668,7 +3676,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "flyer",
               "count": 1
             },
@@ -3693,14 +3701,19 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 36800,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 48800,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -3846,7 +3859,7 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "hexer",
               "count": 1
             },
@@ -3863,7 +3876,12 @@
             {
               "startMs": 34000,
               "kind": "runner",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 46700,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -3961,7 +3979,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "hexer",
               "count": 1
             },
@@ -4155,7 +4173,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "hexer",
               "count": 1
             },
@@ -4172,15 +4190,10 @@
             {
               "startMs": 19900,
               "kind": "flyer",
-              "count": 1
+              "count": 2
             },
             {
-              "startMs": 20600,
-              "kind": "broodcaller",
-              "count": 1
-            },
-            {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "grunt",
               "count": 1
             },
@@ -4205,9 +4218,14 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "runner",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 48800,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -4297,7 +4315,12 @@
             {
               "startMs": 19900,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 31900,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 32600,
@@ -4317,7 +4340,12 @@
             {
               "startMs": 34700,
               "kind": "grunt",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -4332,11 +4360,16 @@
             {
               "startMs": 48800,
               "kind": "runner",
-              "count": 2
+              "count": 1
             },
             {
-              "startMs": 50200,
-              "kind": "broodcaller",
+              "startMs": 60800,
+              "kind": "runner",
+              "count": 1
+            },
+            {
+              "startMs": 61500,
+              "kind": "grunt",
               "count": 1
             },
             {
@@ -4449,7 +4482,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "brute",
               "count": 1
             },
@@ -4469,7 +4502,7 @@
               "count": 1
             },
             {
-              "startMs": 50200,
+              "startMs": 61500,
               "kind": "flyer",
               "count": 1
             },
@@ -4702,9 +4735,14 @@
               "count": 3
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 34000,
@@ -4722,7 +4760,7 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "hexer",
               "count": 1
             },
@@ -4791,7 +4829,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "flyer",
               "count": 1
             },
@@ -4816,9 +4854,14 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "runner",
-              "count": 3
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "runner",
+              "count": 2
             },
             {
               "startMs": 34700,
@@ -4831,9 +4874,14 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "grunt",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 48800,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -4928,7 +4976,12 @@
             {
               "startMs": 33300,
               "kind": "grunt",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -4938,7 +4991,12 @@
             {
               "startMs": 48100,
               "kind": "runner",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 61500,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -5152,65 +5210,65 @@
             {
               "startMs": 33300,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 34000,
+              "kind": "hexer",
+              "count": 1
             },
             {
               "startMs": 34700,
-              "kind": "hexer",
+              "kind": "mender",
               "count": 1
             },
             {
               "startMs": 35400,
-              "kind": "mender",
-              "count": 1
-            },
-            {
-              "startMs": 47400,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 47400,
               "kind": "runner",
               "count": 2
             },
             {
-              "startMs": 49500,
+              "startMs": 48800,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 50200,
+              "startMs": 49500,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 62200,
+              "startMs": 50200,
               "kind": "flyer",
+              "count": 1
+            },
+            {
+              "startMs": 62200,
+              "kind": "grunt",
               "count": 1
             },
             {
               "startMs": 62900,
-              "kind": "grunt",
-              "count": 1
-            },
-            {
-              "startMs": 63600,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 64300,
+              "startMs": 63600,
               "kind": "grunt",
               "count": 2
             },
             {
-              "startMs": 65700,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 77700,
+              "startMs": 77000,
               "kind": "boss",
               "count": 1
             }
@@ -5303,7 +5361,7 @@
               "count": 5
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "runner",
               "count": 1
             },
@@ -5328,7 +5386,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "hexer",
               "count": 1
             },
@@ -5345,12 +5403,12 @@
             {
               "startMs": 34700,
               "kind": "runner",
-              "count": 2
+              "count": 4
             },
             {
-              "startMs": 47400,
+              "startMs": 48800,
               "kind": "runner",
-              "count": 3
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -5410,7 +5468,12 @@
             {
               "startMs": 17800,
               "kind": "runner",
-              "count": 5
+              "count": 4
+            },
+            {
+              "startMs": 31900,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 32600,
@@ -5428,7 +5491,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "broodcaller",
               "count": 1
             },
@@ -5448,14 +5511,9 @@
               "count": 1
             },
             {
-              "startMs": 49500,
+              "startMs": 60800,
               "kind": "runner",
-              "count": 2
-            },
-            {
-              "startMs": 62200,
-              "kind": "runner",
-              "count": 3
+              "count": 5
             }
           ],
           "recommendedMight": 27520,
@@ -5534,7 +5592,12 @@
             {
               "startMs": 33300,
               "kind": "runner",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 46700,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -5544,7 +5607,12 @@
             {
               "startMs": 48100,
               "kind": "grunt",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 61500,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -5643,7 +5711,7 @@
             },
             {
               "startMs": 33300,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -5662,7 +5730,7 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -5674,12 +5742,7 @@
             {
               "startMs": 48800,
               "kind": "runner",
-              "count": 3
-            },
-            {
-              "startMs": 62200,
-              "kind": "runner",
-              "count": 1
+              "count": 4
             },
             {
               "startMs": 62900,
@@ -5778,36 +5841,31 @@
             },
             {
               "startMs": 34700,
-              "kind": "archer",
-              "count": 1
-            },
-            {
-              "startMs": 35400,
-              "kind": "grunt",
-              "count": 1
-            },
-            {
-              "startMs": 47400,
               "kind": "grunt",
               "count": 3
             },
             {
-              "startMs": 49500,
+              "startMs": 48100,
+              "kind": "grunt",
+              "count": 1
+            },
+            {
+              "startMs": 48800,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 50200,
-              "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 62200,
+              "startMs": 49500,
               "kind": "runner",
               "count": 3
             },
             {
-              "startMs": 64300,
+              "startMs": 62900,
+              "kind": "runner",
+              "count": 1
+            },
+            {
+              "startMs": 63600,
               "kind": "flyer",
               "count": 4
             }
@@ -5867,68 +5925,68 @@
             },
             {
               "startMs": 5800,
-              "kind": "shieldbearer",
+              "kind": "flyer",
               "count": 1
             },
             {
               "startMs": 17800,
               "kind": "flyer",
-              "count": 2
+              "count": 1
             },
             {
-              "startMs": 19200,
+              "startMs": 18500,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 19900,
+              "startMs": 19200,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 19900,
               "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 32600,
-              "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 33300,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 34000,
+              "startMs": 33300,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 34700,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 35400,
+              "startMs": 34000,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 34700,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 48100,
-              "kind": "broodcaller",
+              "startMs": 35400,
+              "kind": "runner",
               "count": 1
             },
             {
-              "startMs": 48800,
+              "startMs": 47400,
               "kind": "runner",
               "count": 3
+            },
+            {
+              "startMs": 49500,
+              "kind": "flyer",
+              "count": 1
+            },
+            {
+              "startMs": 50200,
+              "kind": "hexer",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -5937,36 +5995,21 @@
             },
             {
               "startMs": 62900,
-              "kind": "hexer",
-              "count": 1
-            },
-            {
-              "startMs": 63600,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 64300,
-              "kind": "grunt",
-              "count": 1
-            },
-            {
-              "startMs": 65000,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 77000,
+              "startMs": 63600,
               "kind": "grunt",
               "count": 2
             },
             {
-              "startMs": 78400,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 90400,
+              "startMs": 77000,
               "kind": "boss",
               "count": 1
             }
@@ -6104,7 +6147,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "broodcaller",
               "count": 1
             },
@@ -6181,12 +6224,7 @@
             {
               "startMs": 5800,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 17800,
-              "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 18500,
@@ -6204,7 +6242,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "mender",
               "count": 1
             },
@@ -6307,14 +6345,9 @@
               "count": 1
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 32600,
-              "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 33300,
@@ -6329,7 +6362,12 @@
             {
               "startMs": 34700,
               "kind": "grunt",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -6428,7 +6466,7 @@
             },
             {
               "startMs": 20600,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -6459,12 +6497,7 @@
             {
               "startMs": 47400,
               "kind": "runner",
-              "count": 2
-            },
-            {
-              "startMs": 48800,
-              "kind": "broodcaller",
-              "count": 1
+              "count": 3
             },
             {
               "startMs": 49500,
@@ -6557,7 +6590,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -6582,7 +6615,7 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "mender",
               "count": 1
             },
@@ -6666,7 +6699,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "mender",
               "count": 1
             },
@@ -6691,7 +6724,7 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "brute",
               "count": 1
             },
@@ -6712,16 +6745,16 @@
             },
             {
               "startMs": 35400,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "brute",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 36800,
               "kind": "runner",
               "count": 1
             },
@@ -6879,7 +6912,7 @@
               "count": 2
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "hexer",
               "count": 1
             },
@@ -6894,7 +6927,7 @@
               "count": 3
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -6994,7 +7027,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "shieldbearer",
               "count": 1
             },
@@ -7183,7 +7216,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "brute",
               "count": 1
             },
@@ -7203,8 +7236,8 @@
               "count": 1
             },
             {
-              "startMs": 32600,
-              "kind": "broodcaller",
+              "startMs": 21300,
+              "kind": "runner",
               "count": 1
             },
             {
@@ -7214,7 +7247,7 @@
             },
             {
               "startMs": 34000,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -7228,14 +7261,19 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 36800,
               "kind": "runner",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 48800,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -7244,7 +7282,7 @@
             },
             {
               "startMs": 50200,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -7328,7 +7366,7 @@
               "count": 2
             },
             {
-              "startMs": 20600,
+              "startMs": 31900,
               "kind": "broodcaller",
               "count": 1
             },
@@ -7345,7 +7383,12 @@
             {
               "startMs": 34000,
               "kind": "grunt",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 46700,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -7355,11 +7398,16 @@
             {
               "startMs": 48100,
               "kind": "runner",
-              "count": 3
+              "count": 2
             },
             {
-              "startMs": 50200,
-              "kind": "broodcaller",
+              "startMs": 60800,
+              "kind": "runner",
+              "count": 1
+            },
+            {
+              "startMs": 61500,
+              "kind": "grunt",
               "count": 1
             },
             {
@@ -7472,7 +7520,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "broodcaller",
               "count": 1
             },
@@ -7494,7 +7542,12 @@
             {
               "startMs": 49500,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 61500,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -7720,9 +7773,14 @@
               "count": 3
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 34000,
@@ -7740,7 +7798,7 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "hexer",
               "count": 1
             },
@@ -7809,7 +7867,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "flyer",
               "count": 1
             },
@@ -7834,9 +7892,14 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "runner",
-              "count": 3
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "runner",
+              "count": 2
             },
             {
               "startMs": 34700,
@@ -7849,9 +7912,14 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "grunt",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 48800,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -7946,12 +8014,12 @@
             {
               "startMs": 33300,
               "kind": "grunt",
-              "count": 4
+              "count": 3
             },
             {
-              "startMs": 47400,
+              "startMs": 46700,
               "kind": "grunt",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 48100,
@@ -7961,7 +8029,12 @@
             {
               "startMs": 48800,
               "kind": "runner",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 61500,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -7970,7 +8043,7 @@
             },
             {
               "startMs": 62900,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -8091,12 +8164,7 @@
             {
               "startMs": 62200,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 62900,
-              "kind": "broodcaller",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 63600,
@@ -8194,51 +8262,41 @@
             },
             {
               "startMs": 34000,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 34700,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 34700,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 47400,
-              "kind": "broodcaller",
+              "startMs": 35400,
+              "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 47400,
               "kind": "runner",
               "count": 2
             },
             {
-              "startMs": 49500,
+              "startMs": 48800,
               "kind": "flyer",
-              "count": 2
+              "count": 3
             },
             {
               "startMs": 62200,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 62900,
               "kind": "grunt",
               "count": 4
             },
             {
-              "startMs": 65700,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 77700,
+              "startMs": 77000,
               "kind": "boss",
               "count": 1
             }
@@ -8451,9 +8509,14 @@
               "count": 3
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "flyer",
+              "count": 1
             },
             {
               "startMs": 34000,
@@ -8471,7 +8534,7 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "hexer",
               "count": 1
             },
@@ -8540,7 +8603,7 @@
               "count": 1
             },
             {
-              "startMs": 17800,
+              "startMs": 6500,
               "kind": "flyer",
               "count": 1
             },
@@ -8565,9 +8628,14 @@
               "count": 1
             },
             {
-              "startMs": 32600,
+              "startMs": 21300,
               "kind": "runner",
-              "count": 3
+              "count": 1
+            },
+            {
+              "startMs": 33300,
+              "kind": "runner",
+              "count": 2
             },
             {
               "startMs": 34700,
@@ -8580,9 +8648,14 @@
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 36100,
               "kind": "grunt",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 48800,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -8677,12 +8750,12 @@
             {
               "startMs": 33300,
               "kind": "grunt",
-              "count": 4
+              "count": 3
             },
             {
-              "startMs": 47400,
+              "startMs": 46700,
               "kind": "grunt",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 48100,
@@ -8692,7 +8765,12 @@
             {
               "startMs": 48800,
               "kind": "runner",
-              "count": 3
+              "count": 2
+            },
+            {
+              "startMs": 61500,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -8701,7 +8779,7 @@
             },
             {
               "startMs": 62900,
-              "kind": "broodcaller",
+              "kind": "runner",
               "count": 1
             },
             {
@@ -8822,12 +8900,7 @@
             {
               "startMs": 62200,
               "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 62900,
-              "kind": "broodcaller",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 63600,
@@ -8925,51 +8998,41 @@
             },
             {
               "startMs": 34000,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 34700,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 34700,
               "kind": "archer",
               "count": 1
             },
             {
-              "startMs": 47400,
-              "kind": "broodcaller",
+              "startMs": 35400,
+              "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 47400,
               "kind": "runner",
               "count": 2
             },
             {
-              "startMs": 49500,
+              "startMs": 48800,
               "kind": "flyer",
-              "count": 2
+              "count": 3
             },
             {
               "startMs": 62200,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 62900,
               "kind": "grunt",
               "count": 4
             },
             {
-              "startMs": 65700,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 77700,
+              "startMs": 77000,
               "kind": "boss",
               "count": 1
             }
@@ -9064,12 +9127,7 @@
             {
               "startMs": 5100,
               "kind": "runner",
-              "count": 2
-            },
-            {
-              "startMs": 17800,
-              "kind": "runner",
-              "count": 1
+              "count": 3
             },
             {
               "startMs": 18500,
@@ -9089,12 +9147,12 @@
             {
               "startMs": 20600,
               "kind": "flyer",
-              "count": 1
+              "count": 2
             },
             {
-              "startMs": 32600,
+              "startMs": 33300,
               "kind": "flyer",
-              "count": 3
+              "count": 2
             },
             {
               "startMs": 34700,
@@ -9104,12 +9162,12 @@
             {
               "startMs": 35400,
               "kind": "runner",
-              "count": 1
+              "count": 3
             },
             {
-              "startMs": 47400,
+              "startMs": 48800,
               "kind": "runner",
-              "count": 3
+              "count": 1
             },
             {
               "startMs": 49500,
@@ -9189,7 +9247,12 @@
             {
               "startMs": 19900,
               "kind": "runner",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 31900,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 32600,
@@ -9207,7 +9270,7 @@
               "count": 1
             },
             {
-              "startMs": 35400,
+              "startMs": 46700,
               "kind": "mender",
               "count": 1
             },
@@ -9222,14 +9285,9 @@
               "count": 2
             },
             {
-              "startMs": 49500,
+              "startMs": 60800,
               "kind": "runner",
-              "count": 2
-            },
-            {
-              "startMs": 62200,
-              "kind": "runner",
-              "count": 3
+              "count": 5
             }
           ],
           "recommendedMight": 41310,
@@ -9292,7 +9350,12 @@
             {
               "startMs": 33300,
               "kind": "runner",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 46700,
+              "kind": "runner",
+              "count": 1
             },
             {
               "startMs": 47400,
@@ -9302,7 +9365,12 @@
             {
               "startMs": 48100,
               "kind": "grunt",
-              "count": 4
+              "count": 3
+            },
+            {
+              "startMs": 61500,
+              "kind": "grunt",
+              "count": 1
             },
             {
               "startMs": 62200,
@@ -9407,12 +9475,12 @@
             {
               "startMs": 34000,
               "kind": "grunt",
-              "count": 3
+              "count": 4
             },
             {
-              "startMs": 47400,
+              "startMs": 48100,
               "kind": "grunt",
-              "count": 2
+              "count": 1
             },
             {
               "startMs": 48800,
@@ -9422,12 +9490,12 @@
             {
               "startMs": 49500,
               "kind": "runner",
-              "count": 2
+              "count": 3
             },
             {
-              "startMs": 62200,
+              "startMs": 62900,
               "kind": "runner",
-              "count": 2
+              "count": 1
             },
             {
               "startMs": 63600,
@@ -9506,46 +9574,41 @@
             },
             {
               "startMs": 34700,
-              "kind": "archer",
-              "count": 1
-            },
-            {
-              "startMs": 35400,
-              "kind": "grunt",
-              "count": 1
-            },
-            {
-              "startMs": 47400,
               "kind": "grunt",
               "count": 3
             },
             {
-              "startMs": 49500,
+              "startMs": 48100,
+              "kind": "grunt",
+              "count": 1
+            },
+            {
+              "startMs": 48800,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 50200,
-              "kind": "runner",
-              "count": 1
-            },
-            {
-              "startMs": 62200,
+              "startMs": 49500,
               "kind": "runner",
               "count": 3
             },
             {
-              "startMs": 64300,
+              "startMs": 62900,
+              "kind": "runner",
+              "count": 1
+            },
+            {
+              "startMs": 63600,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 65000,
+              "startMs": 64300,
               "kind": "shieldbearer",
               "count": 1
             },
             {
-              "startMs": 65700,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 2
             }
@@ -9595,67 +9658,72 @@
             },
             {
               "startMs": 5800,
-              "kind": "archer",
+              "kind": "flyer",
               "count": 1
             },
             {
               "startMs": 17800,
               "kind": "flyer",
-              "count": 2
+              "count": 1
+            },
+            {
+              "startMs": 18500,
+              "kind": "mender",
+              "count": 1
             },
             {
               "startMs": 19200,
-              "kind": "mender",
+              "kind": "hexer",
               "count": 1
             },
             {
               "startMs": 19900,
-              "kind": "hexer",
-              "count": 1
-            },
-            {
-              "startMs": 20600,
               "kind": "runner",
-              "count": 1
+              "count": 2
             },
             {
               "startMs": 32600,
-              "kind": "runner",
+              "kind": "shieldbearer",
               "count": 1
             },
             {
               "startMs": 33300,
-              "kind": "shieldbearer",
+              "kind": "flyer",
               "count": 1
             },
             {
               "startMs": 34000,
-              "kind": "flyer",
-              "count": 2
-            },
-            {
-              "startMs": 35400,
               "kind": "hexer",
               "count": 1
             },
             {
-              "startMs": 47400,
+              "startMs": 34700,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 48100,
+              "startMs": 35400,
               "kind": "broodcaller",
               "count": 1
             },
             {
-              "startMs": 48800,
+              "startMs": 47400,
               "kind": "runner",
               "count": 2
             },
             {
-              "startMs": 50200,
+              "startMs": 48800,
               "kind": "shieldbearer",
+              "count": 1
+            },
+            {
+              "startMs": 49500,
+              "kind": "flyer",
+              "count": 1
+            },
+            {
+              "startMs": 50200,
+              "kind": "hexer",
               "count": 1
             },
             {
@@ -9665,36 +9733,21 @@
             },
             {
               "startMs": 62900,
-              "kind": "hexer",
-              "count": 1
-            },
-            {
-              "startMs": 63600,
-              "kind": "flyer",
-              "count": 1
-            },
-            {
-              "startMs": 64300,
-              "kind": "grunt",
-              "count": 1
-            },
-            {
-              "startMs": 65000,
               "kind": "mender",
               "count": 1
             },
             {
-              "startMs": 77000,
+              "startMs": 63600,
               "kind": "grunt",
               "count": 2
             },
             {
-              "startMs": 78400,
+              "startMs": 65000,
               "kind": "flyer",
               "count": 1
             },
             {
-              "startMs": 90400,
+              "startMs": 77000,
               "kind": "boss",
               "count": 1
             }

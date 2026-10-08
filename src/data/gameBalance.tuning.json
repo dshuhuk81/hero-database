@@ -322,8 +322,8 @@
         "kind": "imp",
         "every": 4,
         "count": 2,
-        "max": 4,
-        "total": 8
+        "max": 2,
+        "total": 4
       }
     },
     "imp": {
@@ -549,6 +549,23 @@
       "aps": -0.2
     }
   },
+  "elites": {
+    "schedule": [
+      { "fromChapter": 4, "count": 1, "affixes": 1 },
+      { "fromChapter": 8, "count": 2, "affixes": 2 }
+    ],
+    "finaleAffixes": 1,
+    "hp": 2.2,
+    "reward": 3,
+    "affixes": {
+      "vampiric": { "heal": 0.03 },
+      "blink": { "at": 0.5, "distance": 110 },
+      "mirror": { "share": 0.15 },
+      "banner": { "radius": 90, "speed": 0.2 },
+      "thief": { "drain": 0.08 },
+      "splitter": { "kind": "grunt", "count": 2, "hp": 0.3 }
+    }
+  },
   "mutators": {
     "pool": {
       "fortified": {
@@ -652,6 +669,7 @@
   "timeline": {
     "spacingMs": 700,
     "bossWaitMs": 30000,
+    "waveHold": { "gapMs": 3000, "maxAlive": 2, "maxHoldMs": 10000 },
     "laneSpread": 0.23,
     "openingSeconds": 30,
     "phaseSeconds": 20,

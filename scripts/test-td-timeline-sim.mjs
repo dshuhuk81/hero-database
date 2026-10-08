@@ -34,6 +34,30 @@ const make = (extra = {}) => new TowerDefenseGame({ heroes, tuning, map, timelin
   assert.ok(g.stageForecast().ahead[0].eta <= 3, "ETA ticks down with the simulation clock");
 }
 
+// Wave hold: a later group waits while more than maxAlive enemies stand, at most maxHoldMs, and pushes the queue back.
+{
+  const hold = tuning.timeline.waveHold;
+  const waves = [{ startMs: 1000, kind: "grunt", count: 4 }, { startMs: 3100 + hold.gapMs + 2000, kind: "runner", count: 2 }];
+  const run = (cfg) => {
+    const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, timeline: { ...tuning.timeline, waveHold: cfg } }, map, timeline: waves, seed: 7, hpScale: 1e6, lives: 999 });
+    g.start();
+    let runnerAt = null;
+    while (g.time < 60 && runnerAt == null) { g.step(1 / 60); if (g.enemies.some((e) => e.kind === "runner")) runnerAt = g.time; }
+    return runnerAt;
+  };
+  const authored = (3100 + hold.gapMs + 2000) / 1000;
+  const free = run(null);
+  const held = run(hold);
+  assert.ok(Math.abs(free - authored) < 0.05, "without waveHold the group comes on time");
+  assert.ok(Math.abs(held - (authored + hold.maxHoldMs / 1000)) < 0.1, `four grunts alive hold the next group ${hold.maxHoldMs} ms (${held})`);
+  const cleared = new TowerDefenseGame({ heroes, tuning, map, timeline: waves, seed: 7, hpScale: 1e6, lives: 999 });
+  cleared.start();
+  while (cleared.time < authored - 0.5) cleared.step(1 / 60);
+  for (const e of cleared.enemies) e.dead = true;
+  while (cleared.time < authored + 0.1) cleared.step(1 / 60);
+  assert.ok(cleared.enemies.some((e) => e.kind === "runner" && !e.dead), "a cleared field lets the next group in on time");
+}
+
 // A deterministic run: same spawn times and kinds at 1x and at 4x speed.
 {
   const spawnLog = (stepsPerFrame) => {

@@ -14,7 +14,8 @@ import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
-import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
+import { ELITE_AFFIXES } from "../elites.js";
+import { stageRuleFor, stageElitesFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { notifyQuest } from "../quests.js";
@@ -262,6 +263,16 @@ export function createCampaign(ctx: PageContext) {
         <span class="td-camp-laurel-need">${laurelIcon(m.paid)}${m.laurels}</span>${rewardHtml(m.rewards)}${m.paid ? '<span class="td-camp-laurel-done">Received</span>' : ""}</li>`).join("")}</ol>`;
   }
 
+  // Elites (G1): one line per Elite with its affixes; the affix rules sit in a hover title.
+  function eliteHtml(elites: string[][]) {
+    if (!elites.length) return "";
+    const pip = (id: string) => `<span class="td-elite-affix" style="--affix:#${(ELITE_AFFIXES as any)[id].color.toString(16).padStart(6, "0")}">${(ELITE_AFFIXES as any)[id].name}</span>`;
+    return `<div class="td-camp-drawer-about td-elite-list"><strong>${elites.length > 1 ? `${elites.length} Elites` : "Elite"}:</strong>
+      ${elites.map((affixes) => `<span class="td-elite-entry">${affixes.map(pip).join("")}</span>`).join("")}
+      <ul class="td-elite-rules">${[...new Set(elites.flat())].map((id) => `<li><b>${(ELITE_AFFIXES as any)[id].name}:</b> ${(ELITE_AFFIXES as any)[id].text}</li>`).join("")}</ul>
+      <span class="td-elite-note">Elites wear a gold crown and have more health.</span></div>`;
+  }
+
   function renderDrawer() {
     const stage = drawerId ? stageById(campaign, drawerId) : null;
     if (!stage) return;
@@ -285,6 +296,7 @@ export function createCampaign(ctx: PageContext) {
         <section><p class="td-camp-drawer-about">${stage.text}</p>
           ${environmentFor(mapOf(stage.mapId)) ? `<p class="td-camp-drawer-about"><strong>${environmentFor(mapOf(stage.mapId))!.rule}:</strong> ${environmentFor(mapOf(stage.mapId))!.text}</p>` : ""}
           ${stageRuleFor(stage) ? `<p class="td-camp-drawer-about"><strong>${stageRuleFor(stage)!.name}:</strong> ${stageRuleFor(stage)!.text}</p>` : ""}
+          ${eliteHtml(stageElitesFor(stage))}
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>
             <div><dt>Enemies</dt><dd>${enemyCount(stage)}</dd></div>

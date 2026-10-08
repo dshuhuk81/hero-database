@@ -9,6 +9,8 @@
 // (src/data/tdSummon.json). Pure logic; the page module is page/campaign.ts.
 import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 import stageRules from "../../data/tdStageRules.json" with { type: "json" };
+import tuning from "../../data/gameBalance.tuning.json" with { type: "json" };
+import { stageElites } from "./elites.js";
 import { emptySquadRows, flattenSquadRows, normalizeSquadRows, validateSquadRows } from "./squad-rows.js";
 
 export const CAMPAIGN_SAVE_VERSION = 11; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored); 11: + battle XP per hero
@@ -25,7 +27,7 @@ const FIRST_CLEAR_ONLY = [];
 
 // Every stage in play order, with its chapter.
 export function allStages(campaign) {
-  return campaign.chapters.flatMap((chapter) => chapter.stages.map((stage) => ({ ...stage, chapter: chapter.id })));
+  return campaign.chapters.flatMap((chapter) => chapter.stages.map((stage, i) => ({ ...stage, chapter: chapter.id, finale: i === chapter.stages.length - 1 })));
 }
 
 export function stageById(campaign, id) {
@@ -72,6 +74,9 @@ export function validSquad(campaign, progress, squad) {
 // The stage's own rule ({ id, name, text, mods }) or null (A2 of the gameplay ideas).
 export const stageRuleFor = (stage) => (stage?.rule && stageRules[stage.rule] ? { id: stage.rule, ...stageRules[stage.rule] } : null);
 
+// The stage's Elites (G1 of the gameplay ideas): one affix id list per Elite, [] before Chapter 4.
+export const stageElitesFor = (stage) => stageElites(stage, tuning);
+
 export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() * 2 ** 31), heroes = null, heroic = false) {
   const squadRows = normalizeSquadRows(structuredRows(squad), { lordIds: LORD_IDS });
   return {
@@ -85,6 +90,7 @@ export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() *
     hpScale: stage.hpScale ?? 1,
     atkScale: stage.atkScale ?? 1,
     stageRule: stageRuleFor(stage),
+    elites: stageElitesFor(stage), // G1: Elite affix lists, placed on spawns at start
   };
 }
 

@@ -14,6 +14,7 @@ import { createGodScene } from "./god-scene.js";
 import { godPerspectivePoint, godPerspectiveQuad } from "./god-mode-arena.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellAt, cellCenter, patternCells } from "./board.js";
+import { ELITE_AFFIXES } from "./elites.js";
 
 // Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
 // deliberately and re-run the Chromium checks.
@@ -77,6 +78,11 @@ export function effectTier(effect) {
 export function enemyRenderScale(kind, rules) {
   return kind === "boss" ? rules?.bossScale ?? rules?.enemyScale ?? 1 : rules?.enemyScale ?? 1;
 }
+
+// Elites (G1) stand a little taller than their kind so they read in a crowd.
+export const ELITE_SCALE = 1.15;
+const unitRenderScale = (unit, rules) => enemyRenderScale(unit.kind, rules) * (unit.elite ? ELITE_SCALE : 1);
+export const ELITE_GOLD = 0xfbbf24;
 
 // Targetability is communicated by combat behavior and boss mechanics, not by degrading art
 // (Lilith stays opaque). The one exception is a diving Burrower: underground it is all but gone.
@@ -1458,6 +1464,8 @@ export async function createRenderer(canvas, game, options = {}) {
       if (kind === "brood" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 8, outerStrength: 1.4, color: 0xa855f7 })];
       // Borrowed sprites (M11) get a colored rim so they don't read as the original kind.
       if (ENEMY_ART[kind]?.glow && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 8, outerStrength: 1.6, color: ENEMY_ART[kind].glow })];
+      // Elites (G1): a gold rim over everything else, so they stand out from their kind.
+      if (unit.elite && GlowFilter) sp.filters = [new GlowFilter({ distance: 10, outerStrength: 2.2, color: ELITE_GOLD })];
     }
 
     // Boss: hero image > Kenney tile > vector circle (handled in buildEnemyShape)
@@ -1531,7 +1539,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c._iceOverlay = ice;
     c.addChild(ice);
 
-    c.scale.set(enemyRenderScale(kind, game.boardRules));
+    c.scale.set(unitRenderScale(unit, game.boardRules));
     c.scale.y /= tiltK; // R18
     return c;
   }
@@ -1608,7 +1616,7 @@ export async function createRenderer(canvas, game, options = {}) {
     // Emerging: ground enemies grow and fade in over their first stretch of road, so they step out
     // of the portal instead of popping in on top of it.
     const emerge = unit.flying || !(unit.distance < EMERGE_DISTANCE) ? 1 : 0.55 + 0.45 * Math.max(0, unit.distance) / EMERGE_DISTANCE;
-    if (tiltOn) { const es = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y) * emerge; c.scale.set(es, es / tiltK); } // R18 depth scaling
+    if (tiltOn) { const es = unitRenderScale(unit, game.boardRules) * depthScale(unit.y) * emerge; c.scale.set(es, es / tiltK); } // R18 depth scaling
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = enemyRenderAlpha(unit) * (emerge < 1 ? (emerge - 0.55) / 0.45 : 1);
     if (c._anim) animateEnemy(unit, c);
@@ -1795,10 +1803,10 @@ export async function createRenderer(canvas, game, options = {}) {
       const g = gFor(unit.y);
       const gb = gBar(unit, "enemy");
       const barStyle = combatBarStyle(unit.kind === "boss" ? "boss" : "enemy");
-      const enemyScale = enemyRenderScale(unit.kind, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
+      const enemyScale = unitRenderScale(unit, game.boardRules) * depthScale(unit.y); // bars follow each sprite's scale
       const radius = (unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12) * enemyScale;
       const top = ((fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius / enemyScale - 9) - (unit.flying ? FLYER_LIFT : 0)) * enemyScale;
-      const showBar = enemyHurt(unit);
+      const showBar = unit.elite || enemyHurt(unit); // Elites always show their bar, crown and affixes
       if (barStyle.overhead && showBar && !(unit.burrowedUntil > 0)) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, barStyle.healthColor, barStyle.healthHeight);
       // Baphomet's Defensive Stance (M18): a steel ring while it takes less damage.
       // State rings lie flat at the feet, behind the sprite (a full circle over the body hid it).
@@ -1810,6 +1818,24 @@ export async function createRenderer(canvas, game, options = {}) {
       if (valor && barStyle.overhead) drawBar(gb, unit.x - radius, Math.max(2, unit.y + top) + 5, radius * 2, (unit.valor ?? 0) / valor.max, 0xfbbf24, 3);
       if ((unit.rallyUntil ?? 0) > game.time) feetRing(38, 0xfbbf24, 0.8);
       if ((unit.finalEightUntil ?? 0) > game.time) feetRing(44, 0xef4444, 0.85);
+      // Elites (G1): a pulsing double gold ring at the feet, a crown left of the health bar and one
+      // diamond per affix (its colour, elites.js) right of it.
+      if (unit.elite) {
+        const pulse = reducedMotion ? 0.6 : 0.6 + 0.4 * Math.sin(performance.now() / 260 + unit.entityId);
+        const ringR = fullSpriteSize(unit.kind) * 0.42;
+        feetRing(ringR, ELITE_GOLD, 0.55 + 0.35 * pulse);
+        feetRing(ringR + 5 + pulse * 2, ELITE_GOLD, 0.25 * pulse);
+        if (barStyle.overhead && !(unit.burrowedUntil > 0)) {
+          const barY = Math.max(2, unit.y + top);
+          const cx = unit.x - radius - 7, cy = barY + 1;
+          gb.poly([cx - 5, cy + 3, cx - 5, cy - 3, cx - 2.5, cy, cx, cy - 5, cx + 2.5, cy, cx + 5, cy - 3, cx + 5, cy + 3])
+            .fill({ color: ELITE_GOLD }).stroke({ width: 1, color: 0x07060c, alpha: 0.9 });
+          (unit.affixes ?? []).forEach((id, i) => {
+            const ax = unit.x + radius + 6 + i * 8, ay = barY + 1;
+            gb.poly([ax, ay - 3.5, ax + 3.5, ay, ax, ay + 3.5, ax - 3.5, ay]).fill({ color: ELITE_AFFIXES[id]?.color ?? 0xffffff }).stroke({ width: 1, color: 0x07060c, alpha: 0.9 });
+          });
+        }
+      }
       // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
       let pip = 0;
       const statuses = visibleStatusPips([[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]].filter(([on]) => on));
@@ -2082,6 +2108,12 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("flare_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1, tint: "red" });
       spawnParticle("twirl_01", effect.x, effect.y, { size: 55 * tier.burst, life: 1.1, vr: 4, tint: "red" });
       spawnParticle("flame_04", effect.x, effect.y, { size: 48 * tier.burst, life: 1, vy: -70, tint: "red" });
+    } else if (effect.type === "eliteSpawn") {
+      spawnParticle("flare_01", effect.x, effect.y, { size: 80, life: 0.9, tint: "gold" });
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        spawnParticle("star_03", effect.x, effect.y, { size: 18, life: 0.8, vx: Math.cos(angle) * 90, vy: Math.sin(angle) * 90 - 20, vr: 3, tint: "gold" });
+      }
     } else if (effect.type === "summon") {
       spawnParticle("twirl_01", effect.x, effect.y, { size: 90, life: 0.8, vr: -4, tint: "purple" });
       spawnParticle("magic_01", effect.x, effect.y, { size: 70, life: 0.7, tint: "purple" });

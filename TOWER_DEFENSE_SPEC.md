@@ -258,6 +258,7 @@ Stages with more than 10 enemies (79 of 82) were a steady drip of single enemies
 - **Starters:** `gaia`, `fenrir`, `vidar`, `atalanta`, `asclepius` (epic) and `recruit-bram` (common Tank): only common and epic, six heroes for `squadSize` 6. The first legendary is the Stage 1-5 gift: `boreas` (Mage; it was `plutus`, who still comes at 8-3 and 8-6). The second legendary, `odin`, follows at 1-10.
 - **Rarity strength (WoR quality 3 / 4 / 5, Adv 1-6 totals, medians):** HP 2150 / 3150 / 5429, ATK 691 / 1135 / 1599, so a legendary is about 1.4-1.7x an epic and an epic about 1.5x a common. `heroMultipliers.byRarity` in `gameBalance.tuning.json` now gives legendary x1.6 ATK and HP on top of the global factor (epic and common x1).
 - **Enemy ramp:** `ENEMY_RAMP` in `scripts/td-regroup-timelines.mjs` caps the enemies per stage (boss excluded), first to last stage of a chapter: ch1 8-12, ch2 12-16, ch3 14-18, ch4 16-21, ch5 17-22, ch6 18-24, ch7 20-26, ch8 22-28, ch9 16-22, ch10 18-24, ch11-12 20-26, ch13 22-28 (was 11-48). `node scripts/td-regroup-timelines.mjs --thin --write` thins evenly spread enemies (kinds keep their mix), then groups of 5 with the 12000 ms pause.
+- **Burst cap (October 8, 2026, owner: chapter 6 was close to unwinnable with too many enemies at once):** owner target is 4-6 enemies per group, about 10 s apart, at most 25-30 enemies per stage. (A) Broodcaller `summon` is now `max` 2 alive / `total` 4 (was 4 / 8). Each stage keeps at most one Broodcaller; extras became the stage's most common other kind. Stages are thinned so minions + boss + 4 imps per Broodcaller stay at 30 or fewer (8-4..8-6, 13-5/13-6 and the 7/11/12 finales lost 1-3 enemies). (B) Groups are split evenly (`round(total / 5)` groups), so every group from chapter 2 on holds 4-6 enemies (before, a leftover could make a group of 7). Command: `node scripts/td-regroup-timelines.mjs --max-brood=1 --cap=30 --write`. (C) **Wave hold** (`tuning.timeline.waveHold` `{ gapMs: 3000, maxAlive: 2, maxHoldMs: 10000 }`, sim `holdWave`): a group that starts 3 s or more after the previous spawn waits while more than 2 enemies (imps included, boss and Lilith's children not) are alive, at most 10 s; holding pushes the rest of the queue back by the same time, so the authored pauses after it stay intact. Bot measurement for chapter 6 with an unlevelled squad: peak enemies alive at once fell from 18-24 to 12-14 at the stage `hpScale`, and from 11-13 to 7-9 at `hpScale` 1. The bot cliff (`td-board-tune`, `--max=80 --steps=12`) rose by about x1.3 on median (noisy per stage: x0.6-x2.3), so chapters 2-13 are deliberately easier and keep their `hpScale` until the owner playtests. Chapter 1 kept its pacing intent (stall around 1-5): every 1-x `hpScale` x1.4 (the chapter's median cliff rise), i.e. `H` grew by the same factor.
 - **Difficulty targets** (`td-board-tune.mjs`, bot win rate at the expected levels): 1-1 95 %, rest of chapter 1 85 % (finale 70 %), chapter 2 60 % (finale 45 %), later 50 % (finale 35 %). Chapter 1 is meant to be easy with the starters; from chapter 2 levelling and new heroes carry the player. `hpScale` of all 82 stages was re-tuned.
 - **WoR progression facts (for later work):** hero level cost per level 200 (Lv 2-10), 750 (Lv 20), 5750 (Lv 30), 17250 (Lv 50), 54750 (Lv 60); cumulative 1800 / 7050 / 42050 / 270300 / 625300 at Lv 10 / 20 / 30 / 50 / 60 (15x between Lv 30 and 60), far steeper than our linear 100 + 50 per level. Our whole campaign pays about 297k Gold, enough for Lv 15-25 on a squad of six. Growth Lv 1 -> cap is about x10 for every quality (Rex Lv 30, Kassandra Lv 60); common heroes cap at Lv 30 and 3 stars, legendary at Lv 60 and 6 stars (Q4 cap not measured). We did not copy the cost curve: income, not cost, limits our levels, so it would change little.
 
@@ -593,6 +594,38 @@ units it replaces:
 
 Values live in data, so a map can override them in its `rules`.
 
+### Elites (G1 of the gameplay ideas, October 8, 2026)
+
+From Chapter 4 on, campaign stages field **Elites**: ordinary timeline enemies with more health and
+gold plus affixes (`src/game/td/elites.js`, numbers in `tuning.elites`, first guesses).
+
+- **Schedule** (`tuning.elites.schedule`): Chapters 4-7 one Elite with one affix, Chapters 8-13 two
+  Elites with two affixes; a chapter finale (last stage, `finale` from `allStages()`) adds
+  `finaleAffixes` (1). Heroic replays keep the same Elites. Daily Trial and Expedition have none.
+- **Which affixes:** `stageElites(stage, tuning)` draws distinct affixes per Elite from a generator
+  seeded with the stage id, so a stage always shows the same Elites; `stageElitesFor(stage)` in
+  `campaign.js` passes them to the game as the `elites` option.
+- **Which enemies:** `start()` calls `markEliteSpawns()` on the built spawn queue: ground spawns only
+  (no boss, no flyer), spread evenly (one Elite a third of the way in; two at a third and two
+  thirds). Timelines and enemy counts are unchanged; summoned children never become Elites.
+- **Stats:** health and shield x`hp` (2.2), gold x`reward` (3). The older Daily Trial mutator
+  `elites` (every 3rd enemy, no affixes) is separate and also sets `enemy.elite`.
+- **Affixes** (`tuning.elites.affixes`): Vampiric (heals `heal` 3% of max health per hit on a
+  hero), Blink (at `at` 50% health jumps `distance` 110 px down the road once, leaving its
+  blocker), Mirror (reflects `share` 15% of non-DoT magic damage to the attacking hero), Banner
+  (enemies within `radius` 90, itself included, move `speed` 20% faster), Thief (each hit removes
+  `drain` 8% of the hero's ultimate cooldown from its charge), Splitter (on death spawns `count` 2
+  `kind` grunts with `hp` 30% of its max health each, no gold). Hooks in `sim.js`: `makeElite`,
+  `eliteTraits`, `eliteOnStrike`, `eliteOnHit`, `eliteOnDeath`.
+- **Visuals** (`render.js`): sprite 15% larger (`ELITE_SCALE`), gold glow rim, a pulsing double gold
+  ring at the feet, a gold crown left of the health bar and one diamond per affix (colour from
+  `ELITE_AFFIXES`) right of it; the bar shows from the start. Arrival plays a gold flare with stars
+  (`eliteSpawn` effect); Blink shows a purple burst at both ends, Thief a purple drain line, Mirror
+  a purple bolt back to the hero.
+- **UI:** the stage drawer lists the Elites as coloured affix chips plus one rule line per affix;
+  the glossary's enemy tab has an Elites section.
+- Test: `scripts/test-td-elites.mjs` (in `npm run test:tower-defense`).
+
 ### Bosses
 
 - `baphomet` (marks the highest recent damage dealer: silence plus 10% health; defensive
@@ -604,6 +637,7 @@ Values live in data, so a map can override them in its `rules`.
 - TD-original bosses prepared without rules yet: `lerna`, `kraghorn`, `vorruk` (art and
   sheets exist; they fight as the plain boss). Concepts: `TOWER_DEFENSE_BOSS_CONCEPTS.md`.
 - The boss closes the stage: its group waits until no regular enemy is left, or `timeline.bossWaitMs` (30 s) after its scheduled time.
+- Wave hold: a later group waits while more than `timeline.waveHold.maxAlive` (2) enemies are alive, at most `maxHoldMs` (10 s); see "Burst cap".
 - Each map names its boss; a campaign stage can replace it with `"boss": "<id>"`.
 - Adding a boss: still and animation sheet on R2, name in `tdBosses.json`, placement on a
   stage or map, optional `tuning.bosses[id]` rules plus sim code and glossary text, then

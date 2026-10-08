@@ -1,4 +1,5 @@
 import { expandTimeline, timelineTotals } from "./timeline.js";
+import { markEliteSpawns } from "./elites.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern, unitInPattern } from "./board.js";
@@ -97,7 +98,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, stageRule = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, stageRule = null, elites = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -122,6 +123,7 @@ export class TowerDefenseGame {
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     // Enemy attack scale: a campaign stage's own `atkScale` (tdCampaign.json), 1 everywhere else.
     this.atkScale = atkScale ?? 1;
+    this.eliteList = elites ?? []; // G1: a campaign stage's Elites (affix id lists, elites.js), [] elsewhere
     this.stageRule = stageRule; // a campaign stage's own rule ({ name, text, mods }, tdStageRules.json), null elsewhere
     this.tuning = tuning;
     // Life maximum for the HUD, scenery and results: a campaign stage's own lives, the run's
@@ -526,8 +528,11 @@ export class TowerDefenseGame {
     for (const entry of queue) entry.sway = this.formationSway(laneSpawned[entry.lane]++);
     // The boss closes the stage: it waits for the field to clear, at most tuning.timeline.bossWaitMs.
     this.spawnQueue = [...queue.filter((e) => e.kind !== "boss"), ...queue.filter((e) => e.kind === "boss")];
+    markEliteSpawns(this.spawnQueue, this.eliteList, this.tuning); // G1: some authored spawns arrive as Elites
     this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
     this.spawnClock = 0;
+    this.lastSpawnAt = null;
+    this.waveHeld = 0;
     this.started = true;
     this.running = true;
     this.paused = false;
@@ -567,8 +572,10 @@ export class TowerDefenseGame {
       // A boss waits for the field to clear, but never longer than tuning.timeline.bossWaitMs after its time.
       const bossHeld = next.kind === "boss" && this.fieldHasMinions() && this.spawnClock < next.at + (this.tuning.timeline?.bossWaitMs ?? 30000) / 1000;
       if (next.at > this.spawnClock || bossHeld) break;
+      if (this.holdWave(next)) break;
       this.spawnQueue.shift();
-      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0, sway: next.sway ?? 0 });
+      this.lastSpawnAt = next.at;
+      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0, sway: next.sway ?? 0, elite: next.elite ?? null });
     }
 
     this.engaged = new Map(); // road hero -> melee enemies it holds this step (block limit)
@@ -585,6 +592,7 @@ export class TowerDefenseGame {
       if ((enemy.rallyUntil ?? 0) > this.time) this.resistCc(enemy, dt);
       // Petrification and stuns stop movement and attacks; simulation time still advances.
       if ((enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time) continue;
+      if (enemy.affixes) this.eliteTraits(enemy);
       this.enemyTraits(enemy, dt);
       const boost = enemy.kind === "boss" ? this.bossBoost(enemy) : NO_BOOST;
       const target = enemy.flying || (enemy.burrowedUntil ?? 0) > this.time ? null : this.findEnemyTarget(enemy); // a burrowed enemy walks under its blockers
@@ -614,6 +622,7 @@ export class TowerDefenseGame {
             const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
             const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor, "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
+            if (enemy.affixes) this.eliteOnStrike(enemy, target);
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
           enemy.attackClock = (enemy.attackPeriod || 0.9) / this.childFrenzy(enemy) / (1 + boost.attackSpeed);
@@ -625,7 +634,8 @@ export class TowerDefenseGame {
         if (enemy.brushed) enemy.squeeze = Math.max(enemy.squeeze, blocking.passSlow || 0);
         const tidal = this.hasBoon("tidal_pull") && this.isWet(enemy) ? this.hasBoon("tidal_pull").slow : 1;
         const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1) * tidal;
-        enemy.distance += enemy.speed * pace * (1 + boost.speed) * dt;
+        const banner = (enemy.bannerUntil ?? 0) > this.time ? 1 + (enemy.bannerSpeed || 0) : 1; // G1 Banner Elite
+        enemy.distance += enemy.speed * pace * (1 + boost.speed) * banner * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
         enemy.x = point.x; enemy.y = point.y;
@@ -809,6 +819,24 @@ export class TowerDefenseGame {
   }
 
   // Regular enemies still on the field (not bosses, not a boss's children): the boss waits for them.
+  // Wave hold (tuning.timeline.waveHold): a group that starts `gapMs` or more after the previous spawn waits while
+  // more than `maxAlive` enemies (imps included, bosses and Lilith's children not) are still on the field, at most
+  // `maxHoldMs`. Holding pushes the rest of the queue back by the same time, so later pauses stay as authored.
+  holdWave(next) {
+    const cfg = this.tuning.timeline?.waveHold;
+    if (!cfg || next.kind === "boss" || this.lastSpawnAt == null || next.at - this.lastSpawnAt < (cfg.gapMs ?? 3000) / 1000) return false;
+    const alive = this.enemies.filter((enemy) => !enemy.dead && enemy.kind !== "boss" && !enemy.parentId).length;
+    this.waveHeld ??= 0;
+    if (alive <= (cfg.maxAlive ?? 2) || this.waveHeld >= (cfg.maxHoldMs ?? 10000) / 1000) {
+      this.waveHeld = 0;
+      return false;
+    }
+    const shift = this.spawnClock - next.at;
+    this.waveHeld += shift;
+    for (const entry of this.spawnQueue) entry.at += shift;
+    return true;
+  }
+
   fieldHasMinions() {
     return this.enemies.some((enemy) => !enemy.dead && enemy.kind !== "boss" && !enemy.parentId);
   }
@@ -817,7 +845,7 @@ export class TowerDefenseGame {
     return this.lanes[enemy.lane] ?? this.lanes[0];
   }
 
-  spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, sway = 0, extra = null } = {}) {
+  spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, sway = 0, extra = null, elite = null } = {}) {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
     const scale = this.difficulty.enemyHp * this.tierHp * statScale * this.environment("enemyHp");
@@ -836,6 +864,7 @@ export class TowerDefenseGame {
     }
     if (base.shield) enemy.shield = enemy.shieldMax = enemy.maxHp * base.shield.hp;
     this.applyMutators(enemy);
+    if (elite?.length) this.makeElite(enemy, elite);
     this.enemies.push(enemy);
     if (kind === "boss") {
       enemy.bossId = this.bossId;
@@ -843,6 +872,80 @@ export class TowerDefenseGame {
       if (this.bossTuning?.summon) this.summonChildren(enemy, statScale);
     }
     return enemy;
+  }
+
+  // Elites (G1, elites.js): more health and gold plus affixes (tuning.elites). Their rules run in
+  // eliteTraits (Banner), eliteOnStrike (Vampiric, Thief), eliteOnHit (Mirror, Blink) and killEnemy (Splitter).
+  makeElite(enemy, affixes) {
+    const cfg = this.tuning.elites ?? {};
+    enemy.elite = true;
+    enemy.affixes = [...affixes];
+    enemy.maxHp *= cfg.hp ?? 2;
+    enemy.hp = enemy.maxHp;
+    if (enemy.shieldMax) { enemy.shieldMax *= cfg.hp ?? 2; enemy.shield = enemy.shieldMax; }
+    enemy.reward = (enemy.reward || 0) * (cfg.reward ?? 1);
+    this.emit({ type: "eliteSpawn", enemyId: enemy.entityId, x: enemy.x, y: enemy.y, affixes: enemy.affixes, life: 1 });
+  }
+
+  affix(enemy, id) {
+    return enemy.affixes?.includes(id) ? this.tuning.elites?.affixes?.[id] ?? null : null;
+  }
+
+  // Banner: enemies around the Elite (itself included) march faster while they stay close.
+  eliteTraits(enemy) {
+    const banner = this.affix(enemy, "banner");
+    if (!banner) return;
+    for (const other of this.enemies) {
+      if (other.dead || Math.hypot(other.x - enemy.x, other.y - enemy.y) > banner.radius) continue;
+      other.bannerUntil = this.time + 0.25;
+      other.bannerSpeed = Math.max(other.bannerSpeed ?? 0, banner.speed);
+    }
+  }
+
+  // The Elite landed a hit on a hero: Vampiric heals it, Thief drains the hero's ultimate charge.
+  eliteOnStrike(enemy, hero) {
+    const vampiric = this.affix(enemy, "vampiric");
+    if (vampiric && enemy.hp < enemy.maxHp) {
+      enemy.hp = Math.min(enemy.maxHp, enemy.hp + enemy.maxHp * vampiric.heal);
+      this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 22, life: 0.35, color: "red", enemyHeal: true });
+    }
+    const thief = this.affix(enemy, "thief");
+    if (thief && hero.ultCooldown && hero.ultClock > 0) {
+      hero.ultClock = Math.max(0, hero.ultClock - hero.ultCooldown * thief.drain);
+      this.emit({ type: "hex", x1: enemy.x, y1: enemy.y, x2: hero.x, y2: hero.y, x: hero.x, y: hero.y, life: 0.35, color: "purple" });
+    }
+  }
+
+  // The Elite took a hit: Mirror sends part of magic damage back, Blink jumps ahead once at half health.
+  eliteOnHit(enemy, hero, dealt, dot) {
+    const mirror = this.affix(enemy, "mirror");
+    if (mirror && !dot && dealt > 0 && hero?.hpLeft > 0 && hero.damageType === "magical") {
+      this.damageHero(hero, dealt * mirror.share, enemy);
+      this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: hero.x, y2: hero.y, life: 0.15, color: "purple" });
+    }
+    const blink = this.affix(enemy, "blink");
+    if (blink && !enemy.blinked && enemy.hp > 0 && enemy.hp <= enemy.maxHp * blink.at && !enemy.flying) {
+      enemy.blinked = true;
+      enemy.held = false;
+      const lane = this.laneOf(enemy);
+      this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "purple" });
+      enemy.distance = Math.min(lane.total - 1, enemy.distance + blink.distance);
+      const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
+      enemy.x = point.x; enemy.y = point.y;
+      this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "purple" });
+    }
+  }
+
+  // Splitter: the fallen Elite breaks into smaller enemies of `kind` sharing `hp` of its health each.
+  eliteOnDeath(enemy) {
+    const split = this.affix(enemy, "splitter");
+    if (!split) return;
+    for (let i = 0; i < split.count; i += 1) {
+      const child = this.spawnEnemy(split.kind, { distance: Math.max(0, enemy.distance - 10 * i), statScale: enemy.statScale ?? 1, lane: enemy.lane ?? 0, sway: this.formationSway(enemy.entityId + i), extra: { splitFrom: enemy.entityId } });
+      child.maxHp = child.hp = enemy.maxHp * split.hp;
+      child.reward = 0;
+    }
+    this.emit({ type: "splash", x: enemy.x, y: enemy.y, radius: 34, life: 0.45, color: "green" });
   }
 
   // Summed effects of the chosen mutators.
@@ -1696,6 +1799,7 @@ export class TowerDefenseGame {
     if (dealt + shieldDealt > 0) this.emit({ type: "damageNumber", enemyId: enemy.entityId, enemyKind: enemy.stationary ? "god" : enemy.kind,
       x: at.x, y: at.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
     if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
+    if (enemy.affixes) this.eliteOnHit(enemy, hero, dealt, dot);
     if (enemy.stationary) { // God-Mode: every point counts towards the score, the god itself never falls
       this.godDamage += dealt;
       this.score = Math.round(this.godDamage);
@@ -1983,6 +2087,7 @@ export class TowerDefenseGame {
     enemy.dead = true;
     if (!enemy.parentId) this.enemiesDown += 1;
     if (this.boons.length) this.boonsOnKill(enemy, hero);
+    if (enemy.affixes) this.eliteOnDeath(enemy);
     const spores = this.tuning.enemies[enemy.kind]?.spores;
     if (spores) {
       for (const hero of this.heroes) {

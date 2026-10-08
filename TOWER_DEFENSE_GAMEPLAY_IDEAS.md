@@ -537,6 +537,66 @@ step 2 (tile patterns on a compact board) can start from these numbers. Raw outp
 `docs/audits/td-2026-10-01-wave-shape/variant-b-3-seeds.txt`,
 `variant-b-mage-focus-3-seeds.txt`, `mage-focus-today-1-seed.txt`.
 
+### G. Late-game variety: chapters 4-13 (October 8, 2026)
+
+**Finding (from `tdCampaign.json`).** From Chapter 4 on, every stage asks the same question with
+bigger numbers. Chapters 4-13 field exactly the ten enemy kinds of Chapter 1 (only Chapters 2 and 3
+got creatures of their own). The seven stage rules rotate mechanically (Chapter 4 = 8 = 12 in
+pattern) and are all multipliers. The four goal types rotate too. Chapter environments carry one
+rule each, but it is a stat modifier the player does not feel as an event on the board. Lerna,
+Kraghorn and Vorruk still have no rules.
+
+**G1. Elite affixes (S-M, built October 8, 2026).** From Chapter 4 on, a few ordinary timeline
+enemies arrive as **Elites**: more health, a gold crown ring at their feet, a glow, and one to
+three affixes shown as coloured pips over the health bar and listed in the stage drawer before
+the stage starts. One system, many combinations, active in every late chapter at once. Elites
+are picked at stage start from the stage's own spawns, so timelines and enemy counts stay
+untouched. Affixes: Vampiric (heals on hits against blockers), Blink (jumps ahead once at half
+health), Mirror (reflects part of magic damage to the hero), Banner (speeds up nearby enemies),
+Thief (drains ultimate charge on hit), Splitter (breaks into two grunts on death). Schedule:
+Chapters 4-7 one Elite with one affix, Chapters 8-13 two Elites with two affixes, chapter finales
+one affix more. Numbers in `tuning.elites`; first guesses.
+
+**G2. Chapter environment as a board event (M each).** Replace the multiplier with one telegraphed
+event per chapter that attacks positioning, so relocation becomes an active tool:
+
+| Chapter | Event |
+|---|---|
+| 4 Frostbound | A hero standing still for 15 s freezes over (Chill, slower attacks); moving or a Support cleanse ends it |
+| 5 Ashen Forge | Every 20 s two tiles are marked 3 s ahead, then erupt; heroes left there take damage |
+| 6 Thunder Stair | A lightning-rod tile charges the ultimate faster but strikes its hero periodically |
+| 7 Tidal Ruins | Flood phases: some road tiles flood (enemies slower), neighbouring platforms close |
+| 8 Mycelium | Mushrooms grow on empty road tiles and heal enemies walking over them; a blocker on the tile clears it |
+| 9 Crystal Vault | Prism tiles split projectiles passing through them |
+| 10 Necropolis | Fallen enemies rise once as ghosts, except after holy damage or an Assassin kill |
+| 11 Autumn | Nectar fruit appears on tiles; tap to collect |
+| 12 Celestial | Reach patterns rotate 90 degrees every 20 s |
+| 13 Clockwork | Switch gates: the route flips between two paths periodically (the old map levers idea) |
+
+Start with Ashen (lava) and Tidal (flood).
+
+**G3. A creature family per chapter (L).** Continue A4 and R15 (Fjord set): two new kinds per
+chapter that attack the player's habits. Examples: Saboteur (blocks a platform tile for 10 s until a
+hero in reach kills it), Phase Walker (switches gates), Mimic (copies the nearest hero's pattern),
+Siege Tower (slow, armoured, drops enemies behind the blocker line, so Tanks matter).
+
+**G4. Other win conditions (M each).** One per chapter is enough: Escort (protect a caravan
+walking the road), Hold the Shrine (enemies attack a mid-board tile instead of the base), Ambush
+(a third gate opens mid-stage, R11), Fog (enemies only visible inside hero reach), Siege (no Nectar
+income, start budget only), Guest Hero (one fixed hero in the squad, a banner teaser).
+
+**G5. Player choices for experienced players.** Pact (Hades-style heat): before a stage the
+player opts into one to three curses for more reward. Hero talents from Chapter 5: each hero
+picks one of two talents that change behaviour, not numbers (Archer: pierce or multishot). Boss
+phases: give Lerna, Kraghorn and Vorruk their concept rules, plus a new finale boss for later
+chapters.
+
+**G6. Long term.** Tower of the Gods (endless floors with rotating affixes, local record),
+Expedition route map (D3), Bestiary (kill milestones per enemy kind with small bonuses).
+
+**Suggested order:** G1 Elite affixes, then G2 starting with Ashen and Tidal, then stage rules
+assigned by theme instead of rotation (data only), then G5 hero talents.
+
 ## 3. Suggested order
 
 The audit's warning still holds: the game is at risk of too many layers to learn. Every idea
