@@ -2,35 +2,34 @@
 // chests), the eight task rows (progress, Go deep-link, Claim) and the UTC-reset countdown
 // footer. Rules, task table and chest table live in ../quests.js; the save record in
 // page/save.ts. Daily only - no Weekly/Achievements tabs (spec section 5).
+import { homeEmblemPath, loadTdImage, questArtPath } from "../assets.js";
 import { dailyDate } from "../daily.js";
 import { resetText } from "./daily";
 import { QUEST_BAR_GOAL, claimQuestMilestone, claimQuestTask, questProgress } from "../quests.js";
 import type { PageContext } from "./context";
 
-// One simple glyph per task (24x24 stroke paths, like the home screen icons).
-const TASK_ICONS: Record<string, string> = {
-  "campaign-clear": "M6 21V3M6 4h11l-2.5 4L17 12H6", // flag
-  "heroic-clear": "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z", // star
-  "trial-goal": "M6 3h12M6 21h12M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9", // hourglass
-  expedition: "M3 12a9 9 0 1018 0a9 9 0 10-18 0M15.5 8.5l-2 5-5 2 2-5z", // compass
-  summon: "M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18", // sparkle rays
-  blessing: "M12 3l2.2 6.3L20.5 12l-6.3 2.7L12 21l-2.2-6.3L3.5 12l6.3-2.7z", // same star glyph as Heroic
-  intervention: "M13 2L5 13h6l-1 9 8-11h-6z", // bolt
-  "hero-upgrade": "M7 8a3 3 0 106 0a3 3 0 10-6 0M3 20c0-4 3-6 7-6s7 2 7 6M15 5a3 3 0 010 6M17 14c2.5.5 4 2.5 4 6", // heroes
+// One PixelLab emblem per task (ui/emblems, shared with the home screen where the task's mode lives).
+const TASK_EMBLEMS: Record<string, string> = {
+  "campaign-clear": "campaign",
+  "heroic-clear": "heroic",
+  "trial-goal": "trial",
+  expedition: "expedition",
+  summon: "summon",
+  blessing: "blessings",
+  intervention: "intervention",
+  "hero-upgrade": "heroes",
 };
-
-const CHEST_ICON = "M4 10v9h16v-9M4 10h16M12 10v9M12 10s-4.5.2-4.5-2.4C7.5 5.6 12 5 12 8.5c0-3.5 4.5-3 4.5-.9S12 10 12 10z"; // chest with a clasp
-const icon = (path: string) => `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${path}" fill="none" /></svg>`;
-const chestIcon = (path: string) => `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${path}" fill="none" stroke-linejoin="round" /></svg>`;
+const art = (path: string) => `<img class="td-quest-art" data-td-art="${path}" alt="" decoding="async">`;
 
 export function createQuests(ctx: PageContext) {
-  const { q, store } = ctx;
+  const { q, store, root } = ctx;
   const dateEl = q("[data-td-quests-date]");
   const activityEl = q("[data-td-quest-activity]");
   const barEl = q("[data-td-quest-bar]");
   const listEl = q("[data-td-quest-list]");
   const resetEl = q("[data-td-quests-reset]");
   let seenDate = "";
+  loadTdImage(q<HTMLImageElement>("[data-td-quests-coin]"), questArtPath("activity"));
 
   function chestHtml(chest: { at: number; favor: number; seals: number; state: string }) {
     const ready = chest.state === "ready";
@@ -38,7 +37,7 @@ export function createQuests(ctx: PageContext) {
     const label = chest.state === "claimed" ? `Chest claimed: ${reward}` : ready ? `Claim chest: ${reward}` : `Chest at ${chest.at} activity: ${reward}`;
     return `<button type="button" class="td-quest-chest is-${chest.state}" style="left:${chest.at}%" data-quest-chest="${chest.at}"${ready ? "" : " disabled"} aria-label="${label}">` +
       `<span class="td-quest-chest-reward"><b>${chest.favor}</b> Favor${chest.seals ? `<em>+${chest.seals} Seals</em>` : ""}</span>` +
-      `<span class="td-quest-chest-art">${chestIcon(CHEST_ICON)}</span><small>${chest.at}</small></button>`;
+      `<span class="td-quest-chest-art">${art(questArtPath(chest.state === "claimed" ? "chest-open" : "chest-closed"))}</span><small>${chest.at}</small></button>`;
   }
 
   function taskRow(task: { id: string; text: string; points: number; go: string; state: string }) {
@@ -47,9 +46,9 @@ export function createQuests(ctx: PageContext) {
       ? `<button type="button" class="action-button action-button--primary td-quest-claim" data-quest-claim="${task.id}">Claim</button>`
       : `<button type="button" class="action-button action-button--quiet" data-td-go="${task.go}">Go</button>`;
     return `<li class="td-quest is-${task.state}">` +
-      `<span class="td-quest-icon">${icon(TASK_ICONS[task.id] ?? TASK_ICONS["campaign-clear"])}</span>` +
+      `<span class="td-quest-icon">${art(homeEmblemPath(TASK_EMBLEMS[task.id] ?? "campaign"))}</span>` +
       `<span class="td-quest-copy"><strong>${task.text}</strong><small class="td-quest-progress">${task.state === "claimed" ? "Completed · Claimed" : `${progress} completed`}</small></span>` +
-      `<span class="td-quest-points">+${task.points}</span>${action}</li>`;
+      `<span class="td-quest-points">${art(questArtPath("activity"))}+${task.points}</span>${action}</li>`;
   }
 
   function render() {
@@ -61,6 +60,7 @@ export function createQuests(ctx: PageContext) {
     barEl.innerHTML = `<span class="td-quest-track" aria-hidden="true"><span class="td-quest-fill" style="width:${fill}%"></span></span>` +
       progress.milestones.map(chestHtml).join("");
     listEl.innerHTML = progress.tasks.map(taskRow).join("");
+    for (const img of root.querySelectorAll<HTMLImageElement>(".td-quests-screen img[data-td-art]")) loadTdImage(img, img.dataset.tdArt);
     resetEl.textContent = `New quests in ${resetText()} - unclaimed points and chests expire at UTC midnight.`;
   }
 

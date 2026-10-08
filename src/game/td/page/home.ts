@@ -2,7 +2,7 @@
 // each mode on the rail opens its screen (the last played mode, ui.homeMode in the save,
 // stays expanded), the objective shows the next campaign stage, and dock badges mark actions
 // that can be taken right now. The mode screens themselves stay where they were.
-import { campHomeArt, homeEmblemPath, tdAsset } from "../assets.js";
+import { campHomeArt, homeEmblemPath, loadTdImage } from "../assets.js";
 import { canBuy, levelCost, TREE } from "../favor.js";
 import { questBadgeText } from "../quests.js";
 import { resetText } from "./daily";
@@ -45,12 +45,7 @@ export function createHome(ctx: PageContext, deps: Deps) {
   // Solid fallback color (td.css) until the art arrives.
   q("[data-td-home-scene]").style.backgroundImage = `url("${campHomeArt()}")`;
 
-  // Emblems load from R2; files not uploaded yet fall back to the copy in public/td.
-  root.querySelectorAll<HTMLImageElement>("[data-home-emblem]").forEach((img) => {
-    const path = homeEmblemPath(img.dataset.homeEmblem);
-    img.addEventListener("error", () => { if (!img.dataset.local) { img.dataset.local = "1"; img.src = `/td/${path}`; } });
-    img.src = tdAsset(path);
-  });
+  root.querySelectorAll<HTMLImageElement>("[data-home-emblem]").forEach((img) => loadTdImage(img, homeEmblemPath(img.dataset.homeEmblem)));
 
   const selected = (): HomeMode => store.data.ui.homeMode;
 

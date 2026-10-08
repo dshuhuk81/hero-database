@@ -817,6 +817,12 @@ the quest list has eight tasks (110 activity, the bar pays up to 100). Old saves
 legacy fields `bestScore`, `bestDefeated`, `mapBests`, `mapTop` and `nextRunBoost` are kept but never
 written, `challenges` and a `free` home mode are dropped on load.
 
+**Daily Quests art (October 2026).** Each task row shows the PixelLab emblem of the home button
+that leads to it (`TASK_EMBLEMS` in `page/quests.ts`; new: `campaign`, `heroic`, `intervention`
+in `td/ui/emblems/`). The activity bar uses pixel chests (`td/ui/quests/chest-closed-v1.webp`,
+`chest-open-v1.webp` once claimed; locked ones dimmed, a ready one glows) and the activity coin
+`td/ui/quests/activity-v1.webp` sits next to the counter and every task's points.
+
 **Campaign chapters:** 1 The Road to the Crossing (10 stages), 2 The Sunscar March,
 3 The Emerald Deep, 4 The Frozen Covenant, 5 The Cinder Oath, 6 The Thunder Stair,
 7 The Drowned Crown, 8 The Spore Lanterns, 9 The Shattered Prism, 10 The Silent Procession,

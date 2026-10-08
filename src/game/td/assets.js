@@ -18,6 +18,14 @@ export const campHomeArt = () => tdAsset("ui/camp-home.webp");
 // Home screen emblems (PixelLab, 128 px): ui/emblems/{name}-{version}.webp.
 export const HOME_EMBLEM_VERSION = "v1";
 export const homeEmblemPath = (name) => `ui/emblems/${name}-${HOME_EMBLEM_VERSION}.webp`;
+// Daily Quests art (PixelLab): chest states and the activity coin, ui/quests/{name}-v1.webp.
+export const questArtPath = (name) => `ui/quests/${name}-v1.webp`;
+
+// Loads a UI image from R2; a file not uploaded yet falls back to the copy in public/td.
+export function loadTdImage(img, path) {
+  img.addEventListener("error", () => { if (!img.dataset.local) { img.dataset.local = "1"; img.src = `/td/${path}`; } }, { once: true });
+  img.src = tdAsset(path);
+}
 
 // Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
 // M24 white label: grunt, runner, flyer, archer, brute (v2) and Lilith with her brood (v3)
