@@ -15,6 +15,9 @@ export function tdAsset(path) {
 
 // Home screen camp scene (TdHome.astro, page/home.ts).
 export const campHomeArt = () => tdAsset("ui/camp-home.webp");
+// Home screen emblems (PixelLab, 128 px): ui/emblems/{name}-{version}.webp.
+export const HOME_EMBLEM_VERSION = "v1";
+export const homeEmblemPath = (name) => `ui/emblems/${name}-${HOME_EMBLEM_VERSION}.webp`;
 
 // Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
 // M24 white label: grunt, runner, flyer, archer, brute (v2) and Lilith with her brood (v3)

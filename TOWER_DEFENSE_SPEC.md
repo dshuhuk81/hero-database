@@ -842,8 +842,11 @@ changes to `hpScale`, composition, counts, timing, resistances or lives.
 
 ### Navigation
 
-Play on the home screen (Campaign selected) opens the stage list; Heroes and Summon sit on the
-home dock. Back returns home.
+The Campaign banner (bottom right of the home screen, the only big button) opens the stage list;
+Daily Trial, Expedition and God Challenge are emblems top right, and the dock (Daily, Heroes,
+Summon, Blessings, Glossary) runs along the bottom left as emblems with labels. Emblems are
+PixelLab art in `td/ui/emblems/{name}-v1.webp` (`homeEmblemPath` in `assets.js`; a file not yet
+on R2 falls back to `public/td`). Back returns home.
 
 - **Campaign stages:** one row of full-height stage cards for the current chapter (swiped
   sideways, scrolled to the next stage), the rating track on one line below, chapter tabs.

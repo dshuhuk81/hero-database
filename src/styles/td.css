@@ -553,7 +553,8 @@
    switch the layout: short frames slim the bars, portrait frames stack objective and rail
    above Play. Sizes are logical px inside the menu frame (844 x 390 and up). */
 .td-camp-home {
-  --td-home-medal: 46px;
+  --td-home-medal: 64px;
+  --td-home-dock: 54px;
   --td-home-edge: color-mix(in srgb, var(--accent-gold) 38%, transparent);
   position: relative;
   isolation: isolate;
@@ -616,9 +617,9 @@
 .td-camp-home-layout {
   height: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  grid-template-areas: "top top top" "quest . rail" "dock dock dock";
+  grid-template-areas: "top top" "quest rail" "dock campaign";
   gap: var(--space-2) var(--space-4);
   padding: 0 var(--space-4) var(--space-2);
   box-sizing: border-box;
@@ -808,73 +809,88 @@
   font-style: italic;
 }
 
-/* Mode rail: medallions on the right edge; the selected one (and a hovered or focused one)
-   slides out its name and status to the left. */
+/* Mode rail: PixelLab emblems top right with their name and status underneath, no panels.
+   The last played mode glows. */
 .td-camp-home-rail {
   grid-area: rail;
   align-self: start;
-  display: grid;
-  justify-items: end;
-  gap: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
   margin-top: var(--space-3);
 }
 
 .td-camp-home-mode {
   display: grid;
-  grid-template-columns: 0fr var(--td-home-medal);
-  align-items: center;
+  justify-items: center;
+  gap: 2px;
+  width: calc(var(--td-home-medal) + 34px);
   padding: 0;
-  gap: 8px;
   border: 0;
   background: none;
-  color: var(--text-secondary);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: grid-template-columns 0.2s ease, color 0.2s ease;
-}
-
-.td-camp-home-mode:is(.is-selected, :hover, :focus-visible) {
-  grid-template-columns: 124px var(--td-home-medal);
   color: var(--text-bright);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
 }
 
 .td-camp-home-mode:focus-visible {
   outline: none;
 }
 
-/* The label panel matches the medal height, so expanding it never grows the row. */
-.td-camp-home-mode-copy {
-  grid-area: 1 / 1;
-  display: grid;
-  align-content: center;
-  height: var(--td-home-medal);
-  box-sizing: border-box;
-  min-width: 0;
-  overflow: hidden;
-  line-height: 1.25;
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--bg-base) 80%, transparent);
-  opacity: 0;
-  white-space: nowrap;
-  transition: opacity 0.15s ease;
+.td-camp-home-emblem {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .7));
+  transition: transform .18s ease, filter .18s ease;
 }
 
-.td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy {
-  padding-inline: var(--space-3);
-  opacity: 1;
+.td-camp-home-medal {
+  position: relative;
+  width: var(--td-home-medal);
+  height: var(--td-home-medal);
+}
+
+.td-camp-home-mode.is-selected .td-camp-home-emblem {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .7)) drop-shadow(0 0 10px color-mix(in srgb, var(--accent-gold) 75%, transparent));
+}
+
+.td-camp-home-mode:is(:hover, :focus-visible) .td-camp-home-emblem,
+.td-camp-home-dock-item:is(:hover, :focus-visible) .td-camp-home-emblem {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.td-camp-home-mode:focus-visible .td-camp-home-medal,
+.td-camp-home-dock-item:focus-visible .td-camp-home-dock-icon {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.td-camp-home-mode-copy {
+  display: grid;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px #000, 0 0 8px #000, 0 0 14px var(--bg-base);
 }
 
 .td-camp-home-mode-copy strong {
   overflow: hidden;
   font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  letter-spacing: .02em;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .td-camp-home-mode-copy small {
   overflow: hidden;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: var(--td-fs-label);
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
@@ -882,69 +898,11 @@
   color: var(--accent-gold);
 }
 
-.td-camp-home-medal {
-  grid-area: 1 / 2;
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: var(--td-home-medal);
-  height: var(--td-home-medal);
-  box-sizing: border-box;
-  border: 1px solid var(--td-home-edge);
-  border-radius: var(--radius-md);
-  background: linear-gradient(145deg, color-mix(in srgb, var(--accent-gold) 12%, var(--bg-raised)), var(--bg-base));
-  box-shadow: var(--shadow-md);
-}
-
-.td-camp-home-medal .td-icon {
-  width: 24px;
-  height: 24px;
-  stroke-width: 1.75;
-  stroke-linejoin: round;
-}
-
-.td-camp-home-mode.is-selected .td-camp-home-medal {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-gold) 22%, transparent), 0 0 18px color-mix(in srgb, var(--accent-gold) 25%, transparent);
-}
-
-/* The selected mode is one panel: label, status and medal inside a single gold-edged
-   rectangle that is always open, so it stands out from the collapsed medallions. */
-.td-camp-home-mode.is-selected {
-  grid-template-columns: minmax(124px, auto) var(--td-home-medal);
-  gap: 0;
-  border: 1px solid var(--accent-gold);
-  border-radius: var(--radius-md);
-  background: linear-gradient(145deg, color-mix(in srgb, var(--accent-gold) 16%, var(--bg-raised)), var(--bg-base));
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-gold) 22%, transparent), 0 0 18px color-mix(in srgb, var(--accent-gold) 25%, transparent), var(--shadow-md);
-}
-
-.td-camp-home-mode.is-selected .td-camp-home-mode-copy {
-  height: calc(var(--td-home-medal) - 2px);
-  padding-inline: var(--space-3) var(--space-1);
-  background: none;
-  opacity: 1;
-}
-
-.td-camp-home-mode.is-selected .td-camp-home-medal {
-  width: calc(var(--td-home-medal) - 2px);
-  height: calc(var(--td-home-medal) - 2px);
-  border: 0;
-  background: none;
-  box-shadow: none;
-}
-
-.td-camp-home-mode:focus-visible .td-camp-home-medal {
-  outline: 2px solid var(--accent-gold);
-  outline-offset: 2px;
-}
-
 /* Badges: a count on a mode, a dot on a dock item. */
 .td-camp-home-badge {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 0;
+  right: 0;
   display: grid;
   place-items: center;
   min-width: 18px;
@@ -961,87 +919,149 @@
 }
 
 .td-camp-home-badge--dot {
-  top: -1px;
-  right: -1px;
+  top: 2px;
+  right: 2px;
   min-width: 12px;
   width: 12px;
   height: 12px;
   padding: 0;
 }
 
-/* Dock: collection and help screens. */
+/* Dock: collection and help screens as emblems along the bottom left. */
 .td-camp-home-dock {
   grid-area: dock;
-  justify-self: center;
+  justify-self: start;
+  align-self: end;
   display: flex;
   gap: var(--space-2);
-  padding: 6px var(--space-3);
-  border: 0;
-  border-radius: var(--radius-xl);
-  /* background: linear-gradient(180deg, color-mix(in srgb, var(--bg-raised) 88%, transparent), color-mix(in srgb, var(--bg-base) 96%, transparent));*/
-  box-shadow: var(--shadow-lg);
+  min-width: 0;
 }
 
 .td-camp-home-dock-item {
   display: grid;
   justify-items: center;
-  gap: 3px;
-  min-width: 64px;
-  padding: 0 var(--space-1);
+  gap: 2px;
+  min-width: calc(var(--td-home-dock) + 8px);
+  padding: 0;
   border: 0;
   background: none;
-  color: var(--text-secondary);
+  color: var(--text-bright);
   font: inherit;
   cursor: pointer;
-  transition: var(--transition-colors);
+}
+
+.td-camp-home-dock-item:focus-visible {
+  outline: none;
 }
 
 .td-camp-home-dock-icon {
   position: relative;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  box-sizing: border-box;
-  border: 1px solid color-mix(in srgb, var(--accent-gold) 26%, transparent);
-  border-radius: 50%;
-  background: radial-gradient(circle at 45% 35%, color-mix(in srgb, var(--accent-gold) 18%, var(--bg-raised)), var(--bg-base) 70%);
-  transition: border-color 0.18s ease;
-}
-
-.td-camp-home-dock-icon .td-icon {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.75;
-  stroke-linejoin: round;
+  width: var(--td-home-dock);
+  height: var(--td-home-dock);
 }
 
 .td-camp-home-dock-label {
   font-size: var(--td-fs-label);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-bold);
   line-height: 1.1;
   white-space: nowrap;
+  text-shadow: 0 1px 2px #000, 0 0 8px #000;
 }
 
-.td-camp-home-dock-item:is(:hover, :focus-visible) {
-  color: var(--text-bright);
+/* Campaign: the one big button, in the primary gold of the TD UI with dark text and a slow sheen. */
+.td-camp-home-campaign {
+  --td-campaign-shape: polygon(0 50%, 14px 0, 100% 0, 100% 100%, 14px 100%);
+  grid-area: campaign;
+  align-self: end;
+  justify-self: end;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-width: 220px;
+  min-height: 64px;
+  padding: var(--space-2) var(--space-6) var(--space-2) var(--space-7);
+  border: 0;
+  background: linear-gradient(180deg, #fff0b8, #6b4512 60%, #a77a2a);
+  clip-path: var(--td-campaign-shape);
+  color: #171015;
+  font: inherit;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, .6));
+  transition: transform .18s ease;
+}
+
+.td-camp-home-campaign::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  clip-path: var(--td-campaign-shape);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(180deg, #f0cd63, #c9962f 55%, #8f611c);
+}
+
+.td-camp-home-campaign::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  clip-path: var(--td-campaign-shape);
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 250, 225, .45) 50%, transparent 65%) -150% 0 / 60% 100% no-repeat;
+  animation: td-campaign-sheen 4.5s ease-in-out infinite;
+}
+
+@keyframes td-campaign-sheen {
+
+  0%,
+  55% {
+    background-position: -150% 0;
+  }
+
+  100% {
+    background-position: 250% 0;
+  }
+}
+
+.td-camp-home-campaign:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
+}
+
+.td-camp-home-campaign:focus-visible {
   outline: none;
+  filter: drop-shadow(0 0 3px var(--accent-gold)) drop-shadow(0 6px 12px rgba(0, 0, 0, .6));
 }
 
-.td-camp-home-dock-item:is(:hover, :focus-visible) .td-camp-home-dock-icon {
-  border-color: var(--accent-gold);
-  color: var(--accent-gold);
+.td-camp-home-campaign-copy {
+  display: grid;
+  justify-items: center;
+  line-height: 1.1;
+  text-shadow: 0 1px 0 rgba(255, 236, 170, .55);
 }
 
-.td-camp-home-dock-item:focus-visible .td-camp-home-dock-icon {
-  outline: 2px solid var(--accent-gold);
-  outline-offset: 2px;
+.td-camp-home-campaign-copy strong {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.td-camp-home-campaign-copy small {
+  color: #3a2508;
+  font-size: var(--td-fs-label);
+  font-weight: var(--weight-semibold);
+}
+
+.td-camp-home-campaign .td-camp-home-badge {
+  top: 6px;
+  right: 8px;
 }
 
 .td-camp-home-exit {
-  grid-area: dock;
-  justify-self: end;
-  align-self: center;
+  grid-area: quest;
+  justify-self: start;
+  align-self: end;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1071,10 +1091,11 @@
   border-radius: var(--radius-sm);
 }
 
-/* Short frames (phones in landscape): slimmer bars, the objective as one line. */
+/* Short frames (phones in landscape): smaller emblems, the objective as one line. */
 @container td-home (max-height: 420px) {
   .td-camp-home-layout {
-    --td-home-medal: 42px;
+    --td-home-medal: 50px;
+    --td-home-dock: 44px;
     row-gap: 6px;
   }
 
@@ -1097,28 +1118,46 @@
     text-overflow: ellipsis;
   }
 
-  .td-camp-home-dock {
-    padding-block: var(--space-1);
+  .td-camp-home-campaign {
+    min-width: 180px;
+    min-height: 54px;
+  }
+
+  .td-camp-home-campaign-copy strong {
+    font-size: var(--text-lg);
   }
 }
 
-/* The smallest frames (below the zoom floor): dock icons only; labels stay as aria-label. */
+/* The smallest frames (below the zoom floor): dock emblems only; labels stay as aria-label. */
 @container td-home (max-height: 360px) {
-  .td-camp-home-dock-label {
+  .td-camp-home-dock-label,
+  .td-camp-home-mode-copy small {
     display: none;
   }
 
   .td-camp-home-dock-item {
-    min-width: 48px;
+    min-width: 0;
   }
 }
 
-/* Portrait frames (tablets, tall windows): objective and rail above Play, dock at the bottom. */
+/* Narrow landscape frames: dock and Campaign no longer fit side by side. */
+@container td-home (max-width: 760px) and (orientation: landscape) {
+  .td-camp-home-dock {
+    gap: 2px;
+  }
+
+  .td-camp-home-campaign {
+    min-width: 0;
+    padding-inline: var(--space-5) var(--space-3);
+  }
+}
+
+/* Portrait frames (tablets, tall windows): objective and modes on top, Campaign above the dock. */
 @container td-home (orientation: portrait) {
   .td-camp-home-layout {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
-    grid-template-areas: "top" "quest" "rail" "." "dock";
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "top" "quest" "rail" "exit" "campaign" "dock";
     row-gap: var(--space-4);
   }
 
@@ -1130,34 +1169,23 @@
 
   .td-camp-home-rail {
     justify-self: center;
-    grid-auto-flow: column;
-    justify-items: center;
-    gap: var(--space-3);
     margin-top: 0;
   }
 
-  .td-camp-home-mode,
-  .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) {
-    grid-template-columns: 110px;
-    grid-template-rows: auto auto;
-    justify-items: center;
-    gap: var(--space-1);
+  .td-camp-home-campaign {
+    justify-self: center;
+    width: min(360px, 100%);
   }
 
-  .td-camp-home-medal {
-    grid-area: 1 / 1;
+  .td-camp-home-dock {
+    justify-self: center;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .td-camp-home-mode-copy,
-  .td-camp-home-mode:is(.is-selected, :hover, :focus-visible) .td-camp-home-mode-copy {
-    grid-area: 2 / 1;
-    justify-items: center;
-    height: auto;
-    max-width: 100%;
-    padding: 2px var(--space-2);
-    border-radius: var(--radius-sm);
-    opacity: 1;
-    text-align: center;
+  .td-camp-home-exit {
+    grid-area: exit;
+    justify-self: center;
   }
 }
 
@@ -1173,10 +1201,13 @@
     display: none;
   }
 
-  .td-camp-home-mode,
-  .td-camp-home-mode-copy,
-  .td-camp-home-dock-icon {
+  .td-camp-home-emblem,
+  .td-camp-home-campaign {
     transition: none;
+  }
+
+  .td-camp-home-campaign::after {
+    animation: none;
   }
 }
 
