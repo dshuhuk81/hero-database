@@ -6,7 +6,7 @@ import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemyS
 import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
-import { loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
+import { BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
@@ -274,8 +274,12 @@ export async function createRenderer(canvas, game, options = {}) {
   const statusFx = createStatusFx(fxKit, { reducedMotion });
   const authoredLayer = new PIXI.Container();
   layerParts.addChild(authoredLayer);
+  const authoredGround = new PIXI.Container();
+  layerGroundFx.addChild(authoredGround);
   const authoredFx = await loadAuthoredFx(PIXI, authoredLayer, {
+    groundParent: authoredGround,
     reducedMotion,
+    preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : [])],
     uprightScale: tiltOn ? 1 / tiltK : 1,
     locate: (effect, recipe) => locateAuthoredFx(effect, recipe, game, visualHeroPoint),
   });
@@ -886,13 +890,23 @@ export async function createRenderer(canvas, game, options = {}) {
       }
       const veil = game.isVeiled?.(hero) ? 0.45 : 1;
       const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * 2.4 + fx.phase);
+      // Authored aura (authored-fx.js SUPPORT_AURA) replaces the pulsing glow and ring;
+      // the range wave below still shows where the aura reaches.
+      const auraRecipe = HERO_ATLAS_FX[hero.id]?.aura;
+      const authoredAura = auraRecipe && authoredFx.has(auraRecipe.clip);
+      fx.glow.visible = !authoredAura;
+      if (authoredAura) {
+        const [ax, ay] = visualHeroPoint(hero);
+        authoredFx.keep(hero, { ...auraRecipe, alpha: auraRecipe.alpha * veil }, ax, ay + 6);
+      }
       // Figures: glow and ring lie flat at the feet instead of circling the body.
       fx.glow.position.set(hero.x, hero.y + (FIGURES ? HERO_ANIM.feetY : 6));
       fx.glow.width = 88 + pulse * 22;
       fx.glow.height = FIGURES ? 30 + pulse * 6 : 56 + pulse * 14;
       fx.glow.alpha = (0.32 + pulse * 0.3) * veil;
       const ringR = 31 + pulse * 4;
-      if (FIGURES) auraGfx.ellipse(hero.x, hero.y + HERO_ANIM.feetY, ringR, ringR * 0.32).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
+      if (authoredAura) { /* the clip carries the ring */ }
+      else if (FIGURES) auraGfx.ellipse(hero.x, hero.y + HERO_ANIM.feetY, ringR, ringR * 0.32).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
       else auraGfx.circle(hero.x, hero.y, ringR).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
       if (reducedMotion) {
         auraGfx.circle(hero.x, hero.y, hero.range).stroke({ color: fx.color, width: 1.5, alpha: 0.12 * veil });
@@ -2369,6 +2383,7 @@ export async function createRenderer(canvas, game, options = {}) {
       tilt: tiltOn ? { k: tiltK, offsetY: tiltOffsetY } : null,
       perspective: godPerspective,
       reducedMotion,
+      authoredFx,
       onImpact: () => startImpact({ ...FX_TIERS.epic, shake: 8, vignette: 0.25 }),
     });
   } else if (isAuthored) {

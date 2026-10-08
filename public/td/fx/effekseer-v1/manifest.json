@@ -241,6 +241,116 @@
         0.5,
         0.6341640786499874
       ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 3,
+      "id": "aura",
+      "source": "00_Version16/Aura01.efkefc",
+      "author": "Effekseer",
+      "view": 8,
+      "targetY": 2.5,
+      "start": 0,
+      "frames": 80,
+      "width": 120,
+      "fps": 20,
+      "anchor": [
+        0.5,
+        0.7795084971874737
+      ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 3,
+      "id": "aura-gold",
+      "source": "00_Version16/Aura01.efkefc",
+      "author": "Effekseer",
+      "view": 8,
+      "targetY": 2.5,
+      "start": 0,
+      "frames": 80,
+      "width": 120,
+      "hue": -70,
+      "fps": 20,
+      "anchor": [
+        0.5,
+        0.7795084971874737
+      ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 3,
+      "id": "aura-rose",
+      "source": "00_Version16/Aura01.efkefc",
+      "author": "Effekseer",
+      "view": 8,
+      "targetY": 2.5,
+      "start": 0,
+      "frames": 80,
+      "width": 120,
+      "hue": 210,
+      "fps": 20,
+      "anchor": [
+        0.5,
+        0.7795084971874737
+      ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 4,
+      "id": "boss-rise",
+      "source": "00_Version16/Barrior02.efkefc",
+      "author": "Effekseer",
+      "view": 10,
+      "targetY": 2,
+      "start": 0,
+      "frames": 30,
+      "width": 150,
+      "fps": 15,
+      "anchor": [
+        0.5,
+        0.678885438199983
+      ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 2,
+      "id": "boss-death",
+      "source": "01_AndrewFM01/boss_death.efk",
+      "author": "AndrewFM",
+      "view": 60,
+      "targetY": 2,
+      "start": 100,
+      "frames": 90,
+      "width": 220,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5298142396999972
+      ]
+    },
+    {
+      "size": 192,
+      "columns": 8,
+      "ticks": 2,
+      "id": "blast",
+      "source": "01_Pierre02/FireBall.efk",
+      "author": "Pierre",
+      "view": 50,
+      "targetY": 5,
+      "start": 160,
+      "frames": 45,
+      "width": 150,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5894427190999916
+      ]
     }
   ]
 }

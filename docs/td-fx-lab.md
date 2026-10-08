@@ -23,6 +23,50 @@ pause, replay, repeat and speed controls. Reduced-motion users start paused.
 | Surtr | `ult` | fire | 132 | 0.90 | 1× | Supplement; melee/lifesteal cues remain |
 | Heimdall | `buff` | buff | 132 | 0.90 | 1× | Replaces activation particles on the recipient |
 
+### Roster expansion — 2026-10-08
+
+Eleven more families cover every hero whose ultimate has a theme. All are supplements
+(`replace: false`): the hero-specific renderer keeps drawing; the clip is added on top.
+`at: 'source'` plays on the caster, otherwise on the ultimate's target point.
+
+| Clip | Source sample | Heroes (ultimate) |
+| --- | --- | --- |
+| ice | NextSoft `MagicCold` | Boreas |
+| water | NextSoft `MagicWater` (sound off) | Aegir |
+| heal | NextSoft `MagicHeal2` | Asclepius, Gaia (green tint), all `heal` events of Atlas, Gaia, Harmonia, Asclepius, Bram, Jory |
+| holy | Pierre `Benediction` | Helios, Isis, Atlas, Harmonia (pink), Bram, Jory |
+| shadow | NextSoft `MagicDark` | Nott, Hecate, Nyra, Ash, Elm |
+| feather | Pierre `FeatherBomb` | Thanatos |
+| cosmic | Pierre `CosmicMist` | Skadi, Wren |
+| wind | NextSoft `MagicTornade` | Vidar (on himself) |
+| shockwave | Pierre `SonicBoom` | Ymir (ice tint), Sable, Hollis, Kellan and Tilda (on themselves) |
+| venom | Pierre `BloodLance`, hue +110 | Fenrir |
+| stone | Pierre `HolySandstorm`, starts 1.5 s in | Stheno |
+
+Without an ultimate clip (activation cue only): Heimdall (ward clip on allies), Plutus and
+Poppy (coin signature), Atalanta (attack-window buff). The full table lives in `ULTS` in
+`authored-fx.js`.
+
+Loading: the renderer fetches only the manifest at start. `prepare(game.heroes)` downloads
+a hero's clips when it first appears on the board (`heroAtlasClips`), so a battle loads only
+the families of its squad (all 20 clips are ~16 MB; a normal stage loads 2-4 MB). A cast before its clip arrives uses the
+baseline effect. Every clip fades over the last fifth of its length.
+
+### Support auras, bosses, Cronus — 2026-10-08
+
+- **Support auras:** the six supports with the passive attack aura (Gaia, Asclepius, Poppy:
+  `aura`; Plutus, Jory: `aura-gold`; Harmonia: `aura-rose`, all from `00_Version16/Aura01`)
+  play a swirling ground aura under the figure instead of the pulsing glow and ring
+  (`updateAuraFx` in `render.js`). The loop is built from overlapping instances that fade in
+  and out (`keep()`), so the clip never visibly restarts. The range wave and the ally rims stay:
+  they show the real aura reach and who is inside it.
+- **Bosses** (`EVENT_ATLAS_FX`): `boss` arrival → `boss-rise` (`00_Version16/Barrior02`),
+  `bossDown` → `boss-death` (AndrewFM `boss_death`), `summon` → `shadow` (red tint). All
+  supplement the existing particles. Preloaded when the stage has a boss (`options.boss`).
+- **Cronus (God Mode):** every slam or ember burst cell plays `blast` (Pierre `FireBall`,
+  explosion only) via `authoredFx.play()`; sweep cells get a short `fire` clip. Arms, poses,
+  chunky debris and fissures are unchanged. Preloaded when `game.god` is set.
+
 Widths are in the game's 960×540 coordinate space. The baked effect stays upright
 on tilted maps. Heimdall's clip follows the recipient and stops if that hero dies,
 is removed, or its Bifrost ward expires. The existing persistent ward rim still
@@ -44,7 +88,7 @@ assignments with `gameBalance.tuning.json` and `hero-fx.js` before implementing.
 
 ## Assets and provenance
 
-`public/td/fx/effekseer-v1/` contains six WebP atlases and `manifest.json`.
+`public/td/fx/effekseer-v1/` contains 40 WebP atlases (20 clips × normal/add) and `manifest.json`.
 All clips are real Effekseer renders, not procedurally imitated particles.
 
 Source: official [Effekseer 1.80.7 release](https://github.com/effekseer/Effekseer/releases/tag/1807).
@@ -53,6 +97,12 @@ Source: official [Effekseer 1.80.7 release](https://github.com/effekseer/Effekse
 - `Sample/01_NextSoft01/MagicFire1.efkproj` — NextSoft. Sound disabled for visual export
   (the archive does not include the referenced `Sound/effects_79.wav`).
 - `Sample/01_NextSoft01/PowerUp.efkproj` — NextSoft.
+
+- Expansion: `01_NextSoft01/{MagicCold,MagicWater,MagicHeal2,MagicDark,MagicTornade}`,
+  `01_Pierre02/{Benediction,FeatherBomb,CosmicMist,BloodLance}`,
+  `01_Pierre01/{SonicBoom,HolySandstorm}`, `00_Version16/{Aura01,Barrior02}.efkefc` (no CLI
+  export needed), `01_AndrewFM01/boss_death`, `01_Pierre02/FireBall`. `MagicWater.efkproj`: set both `SoundValues/Type`
+  to `0` like MagicFire1 (its wav files are not in the archive).
 
 The official sample readme declares all these sample effects CC0. Its original text
 is retained beside the generated assets as `SAMPLE-LICENSE.txt`.
@@ -74,11 +124,15 @@ added to the production browser bundle. Production uses the existing PixiJS runt
    ./Effekseer -cui -in /path/to/Sample/01_NextSoft01/PowerUp.efkproj -e /path/to/Sample/01_NextSoft01/PowerUp.efk
    ```
 
+   Same for every expansion source listed above.
+
 4. From the repo root, with an existing Playwright installation:
 
    ```sh
    node scripts/export-td-effekseer.mjs --samples /path/to/Sample --runtime /path/to/EffekseerForWebGL --playwright /path/to/node_modules/playwright
    ```
+
+   `--only ice,venom` re-exports some clips and keeps the other manifest entries.
 
 The exporter serves those inputs only on localhost, opens a test browser, captures
 at 192×192 / 30 fps with seed 42, and writes the atlases. Camera settings, dimensions,

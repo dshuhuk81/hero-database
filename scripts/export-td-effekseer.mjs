@@ -31,7 +31,15 @@ const clips = [
   { id: 'shockwave', source: '01_Pierre01/SonicBoom.efk', author: 'Pierre', view: 34, targetY: 3, start: 0, frames: 50, width: 120 },
   { id: 'venom', source: '01_Pierre02/BloodLance.efk', author: 'Pierre', view: 34, targetY: 3, start: 60, frames: 80, width: 130, hue: 110 },
   { id: 'stone', source: '01_Pierre01/HolySandstorm.efk', author: 'Pierre', view: 80, targetY: 12, start: 90, frames: 75, width: 140 },
-].map(clip => ({ ...clip, size: 192, columns: 8, fps: 30 }));
+  // Support auras (looped by overlapping instances), bosses and the Cronus god strike.
+  // `ticks` = 60 Hz Effekseer updates per atlas frame (fps = 60 / ticks).
+  { id: 'aura', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 2.5, start: 0, frames: 80, ticks: 3, width: 120 },
+  { id: 'aura-gold', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 2.5, start: 0, frames: 80, ticks: 3, width: 120, hue: -70 },
+  { id: 'aura-rose', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 2.5, start: 0, frames: 80, ticks: 3, width: 120, hue: 210 },
+  { id: 'boss-rise', source: '00_Version16/Barrior02.efkefc', author: 'Effekseer', view: 10, targetY: 2, start: 0, frames: 30, ticks: 4, width: 150 },
+  { id: 'boss-death', source: '01_AndrewFM01/boss_death.efk', author: 'AndrewFM', view: 60, targetY: 2, start: 100, frames: 90, width: 220 },
+  { id: 'blast', source: '01_Pierre02/FireBall.efk', author: 'Pierre', view: 50, targetY: 5, start: 160, frames: 45, width: 150 },
+].map(clip => ({ size: 192, columns: 8, ticks: 2, ...clip, fps: 60 / (clip.ticks ?? 2) }));
 // --only id,id re-exports some clips and keeps the other manifest entries unchanged.
 const only = process.argv.includes('--only') ? arg('only').split(',') : null;
 
@@ -78,7 +86,7 @@ window.record = async function(clip) {
       gl.readPixels(0, 0, clip.size, clip.size, gl.RGBA, gl.UNSIGNED_BYTE, buffer);
     };
     for (let frame = 0; frame < clip.frames; frame++) {
-      context.update(1); context.update(1); // Effekseer: 60 Hz, atlas: 30 fps
+      for (let tick = 0; tick < clip.ticks; tick++) context.update(1); // Effekseer: 60 Hz; 2 ticks = 30 fps
       draw(0, black); draw(64 / 255, gray);
       const normal = contexts[0].createImageData(clip.size, clip.size);
       const add = contexts[1].createImageData(clip.size, clip.size);

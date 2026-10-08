@@ -668,13 +668,18 @@ Effekseer samples into WebP atlas pairs (`normal` layer for smoke, `add` layer f
 played by PixiJS; no Effekseer runtime ships with the game. Phaser stays the fallback engine if
 this approach stops meeting visual expectations.
 
-- `authored-fx.js` (`HERO_ATLAS_FX`): Odin `ult` lightning (replaces the old sky strike, chain
-  shots stay dynamic), Surtr `hit` and `ult` fire (supplement), Heimdall `buff` (replaces the
-  activation particles, follows the recipient and stops when the ward expires or the hero
-  leaves). Other heroes keep the existing renderer.
+- `authored-fx.js` (`HERO_ATLAS_FX`): 20 clips (lightning, fire, buff, ice, water, heal, holy,
+  shadow, feather, cosmic, wind, shockwave, venom, stone, aura ×3, boss-rise, boss-death, blast). Every hero gets a
+  tinted `buff` activation; every hero with a themed ultimate gets an element clip (`ULTS`)
+  on the target or on itself, as a supplement to its own renderer. Odin's lightning and
+  Heimdall's ward clip replace the old cues. Heimdall, Plutus, Poppy and Atalanta keep only
+  their activation cues. Clips download per hero when it joins the board (`prepare`).
+- Support auras (6 supports) are a looped swirl clip instead of the drawn ring; range wave and
+  ally rims stay. Bosses: arrival, death and summons get clips (`EVENT_ATLAS_FX`). Cronus:
+  lava `blast` per struck cell (`god-scene.js` via `authoredFx.play`).
 - `fx-atlas.js`: frame lookup on the renderer's FX clock (pause, speed, restart clear), at most
   32 live instances; missing clips, full capacity or reduced motion fall back to baseline effects.
-- Assets: `public/td/fx/effekseer-v1/` (six atlases, `manifest.json`, `SAMPLE-LICENSE.txt`),
+- Assets: `public/td/fx/effekseer-v1/` (40 atlases, ~16 MB in total, loaded per squad/stage, `manifest.json`, `SAMPLE-LICENSE.txt`),
   loaded from the site's own `/td/fx/` path, not from R2 yet.
 - Local comparison page `/games/tower-defense/fx-lab/` (local-only route).
 - Provenance, export runbook (`scripts/export-td-effekseer.mjs`) and per-hero profile

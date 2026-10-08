@@ -31,7 +31,7 @@ export function godImpactPlan(attack, cells) {
   return { burstCells: centre ? [centre] : [], crackCells: cells, sweepCells: [] };
 }
 
-export async function createGodScene(PIXI, game, { layers, tilt = null, perspective = false, reducedMotion = false, onImpact = () => {} }) {
+export async function createGodScene(PIXI, game, { layers, tilt = null, perspective = false, reducedMotion = false, authoredFx = null, onImpact = () => {} }) {
   const cfg = game.god;
   const board = boardOf(game.map);
   const rig = await fetch(`${DIR}rig.json`).then((response) => response.json());
@@ -237,6 +237,8 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, perspect
     for (let i = 0; i < (heavy ? 12 : 6); i++) emit(partsLayer, { x: x + rnd(-30, 30), y: y + rnd(-6, 6), vx: rnd(-200, 200), vy: -rnd(160, 340), g: 900, life: rnd(0.7, 1.1), sz: rnd(4, 7), tint: pick([0x2b2420, 0x4b3a30, 0x1b1614]), vr: rnd(-8, 8) });
     for (let i = 0; i < 20; i++) emit(partsLayer, { x, y, vx: rnd(-240, 240), vy: -rnd(120, 380), g: 800, life: rnd(0.5, 0.9), sz: 3, tint: pick(EMBER_TINTS), add: true });
     for (let i = 0; i < 6; i++) emit(partsLayer, { tex: texPuff, x: x + rnd(-40, 40), y: y + rnd(-6, 8), vx: rnd(-80, 80), vy: -rnd(10, 40), life: rnd(0.7, 1.1), sz: 18, sz1: 60, a: 0.55, tint: 0x5a4f46 });
+    // Baked lava blast (authored-fx.js GOD_CLIPS) on top of the chunky debris; presentation only.
+    authoredFx?.play("blast", x, y, { width: heavy ? 180 : 120, alpha: 0.95 });
   }
 
   // ---- reading the sim ----
@@ -254,6 +256,7 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, perspect
           const [firstX, rowY] = cellCenter(board, plan.sweepCells[0]);
           const [lastX] = cellCenter(board, plan.sweepCells.at(-1));
           for (let i = 0; i < 20; i++) emit(partsLayer, { x: rnd(firstX, lastX), y: rowY + rnd(-8, 8), vx: rnd(-100, 120), vy: rnd(-120, -35), g: 280, life: rnd(0.25, 0.55), sz: rnd(2, 4), tint: pick(EMBER_TINTS), add: true });
+          for (const cell of plan.sweepCells) authoredFx?.play("fire", ...cellCenter(board, cell), { width: 90, alpha: 0.8, speed: 1.6 });
         }
         for (const cell of plan.burstCells) strikeCell(cell, effect.attack);
         flash = 0.16;

@@ -185,3 +185,42 @@ test('recipient tracking uses the relevant status and ignores unrelated wards fo
   ally.hpLeft = 0;
   assert.equal(heal.follow(), null);
 });
+
+test('boss arrival, boss death and summons get world clips; hero events with the same type do not', () => {
+  const { player, created } = fixture();
+  player.update([{ type: 'boss', x: 1, y: 2 }, { type: 'bossDown', x: 3, y: 4 }, { type: 'summon', x: 5, y: 6 }, { type: 'baseHit', x: 0, y: 0 }], 0);
+  assert.equal(created.length, 3);
+  for (const clip of fx.BOSS_CLIPS) assert.ok(CLIPS.includes(clip), clip);
+  for (const clip of fx.GOD_CLIPS) assert.ok(CLIPS.includes(clip), clip);
+});
+
+test('play() spawns a one-shot clip and respects reduced motion and capacity', () => {
+  const { player, created } = fixture();
+  assert.equal(player.play('blast', 10, 20, { width: 150 }), true);
+  assert.deepEqual([created[0].x, created[0].y, created[0].width], [10, 20, 150]);
+  assert.equal(player.play('missing', 0, 0), false);
+  assert.equal(fixture({ reducedMotion: true }).player.play('blast', 0, 0), false);
+  assert.equal(fixture({ max: 0 }).player.play('blast', 0, 0), false);
+});
+
+test('support auras loop by cross-fading instances and stop when no longer kept', () => {
+  const created = [];
+  const atlas = { duration: 2, create(_parent, x, y) {
+    const entry = { x, y, destroyed: false, container: { alpha: 1, scale: { y: 1 }, position: { set(nx, ny) { entry.x = nx; entry.y = ny; } } } };
+    created.push(entry);
+    return { container: entry.container, seek: time => time < 2, destroy() { entry.destroyed = true; } };
+  } };
+  const player = fx.createAuthoredFx({ atlases: new Map([['aura', atlas]]) });
+  const recipe = fx.HERO_ATLAS_FX.gaia.aura;
+  assert.equal(recipe.ground, true);
+  const hero = {};
+  const alphas = [];
+  for (let i = 0; i < 20; i++) { player.keep(hero, recipe, 50, 60 + i); player.update([], 0.1); alphas.push(created[0].container.alpha); }
+  assert.ok(alphas[1] < recipe.alpha && alphas[1] > 0, 'a new instance fades in');
+  assert.equal(created.length, 2, 'second instance starts before the first ends');
+  assert.equal(created[0].y, 79, 'the loop follows its hero');
+  player.update([], 0.1);
+  assert.ok(created.every(entry => entry.destroyed));
+  assert.deepEqual(['gaia', 'asclepius', 'recruit-poppy', 'plutus', 'recruit-jory', 'harmonia'].map(id => fx.HERO_ATLAS_FX[id].aura.clip),
+    ['aura', 'aura', 'aura', 'aura-gold', 'aura-gold', 'aura-rose']);
+});

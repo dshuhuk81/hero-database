@@ -73,6 +73,24 @@ const ULTS = {
 };
 for (const [id, ult] of Object.entries(ULTS)) HERO_ATLAS_FX[id].ult = { alpha: 0.85, speed: 1, replace: false, ...ult };
 
+// Supports with the passive attack aura: a swirling ground aura instead of the drawn ring.
+// Three hue variants of one clip; the drawn range wave and ally rims stay (they carry rules).
+const SUPPORT_AURA = { gaia: 'aura', asclepius: 'aura', 'recruit-poppy': 'aura',
+  plutus: 'aura-gold', 'recruit-jory': 'aura-gold', harmonia: 'aura-rose' };
+for (const [id, clip] of Object.entries(SUPPORT_AURA)) {
+  HERO_ATLAS_FX[id].aura = { clip, ground: true, width: id.startsWith('recruit-') ? 96 : 116, alpha: id.startsWith('recruit-') ? 0.6 : 0.75, speed: 1 };
+}
+
+// World events without a hero (sim.js emit): boss arrival, boss death, summons.
+// Supplements; the particle cues in render.js stay. Cronus strikes play through `play()`.
+export const EVENT_ATLAS_FX = {
+  boss: { clip: 'boss-rise', width: 150, alpha: 0.8, speed: 1, replace: false },
+  bossDown: { clip: 'boss-death', width: 220, alpha: 0.9, speed: 1, replace: false },
+  summon: { clip: 'shadow', width: 100, alpha: 0.75, speed: 1.2, replace: false, tint: 0xffa0a0 },
+};
+export const BOSS_CLIPS = [...new Set(Object.values(EVENT_ATLAS_FX).map(recipe => recipe.clip))];
+export const GOD_CLIPS = ['blast', 'fire'];
+
 // Clips a hero can play, so a battle only downloads the families of heroes on the board.
 export const heroAtlasClips = id => [...new Set(Object.values(HERO_ATLAS_FX[id] ?? {}).map(recipe => recipe.clip))];
 
@@ -102,53 +120,87 @@ export function locateAuthoredFx(effect, recipe, game, visualHeroPoint) {
   return { x, y: y + 6 };
 };
 
-const FADE = 0.2;
+const FADE = 0.2, FADE_IN = 0.12, OVERLAP = 0.65;
 
-export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = false, max = 32, uprightScale = 1,
+export function createAuthoredFx({ atlases = new Map(), parent, groundParent = parent, reducedMotion = false, max = 32, uprightScale = 1,
   locate = effect => ({ x: effect.x, y: effect.y }) } = {}) {
   let seen = new WeakSet(), accepted = new WeakSet();
   const live = [];
+  // Sustained loops (support auras): key -> { clip, recipe, x, y } requested this frame.
+  let kept = new Map();
   const valid = point => point && Number.isFinite(point.x) && Number.isFinite(point.y);
   const remove = index => { live[index].instance.destroy(); live.splice(index, 1); };
+  const spawn = (atlas, recipe, point, extra = {}) => {
+    const instance = atlas.create(recipe.ground ? groundParent : parent, point.x, point.y, recipe.width);
+    instance.container.alpha = extra.key ? 0 : recipe.alpha;
+    instance.container.tint = recipe.tint ?? 0xffffff;
+    instance.container.scale.y = uprightScale;
+    instance.seek(0);
+    live.push({ instance, recipe, age: 0, follow: point.follow, duration: atlas.duration, ...extra });
+  };
   return {
     owns: effect => accepted.has(effect),
     count: () => live.length,
+    has: clip => atlases.has(clip),
+    // One-shot clip at a board point (Cronus strikes). Returns false when it cannot play.
+    play(clip, x, y, recipe = {}) {
+      const atlas = atlases.get(clip);
+      if (reducedMotion || !atlas || live.length >= max || !valid({ x, y })) return false;
+      spawn(atlas, { width: undefined, alpha: 1, speed: 1, ...recipe, clip }, { x, y });
+      return true;
+    },
+    // Call every frame while the loop should show; overlapping instances cross-fade, so the
+    // clip never visibly restarts. A key not kept for one update fades out and is removed.
+    keep(key, recipe, x, y) {
+      if (!reducedMotion && atlases.has(recipe.clip) && valid({ x, y })) kept.set(key, { recipe, x, y });
+    },
     update(effects, dt) {
       // Advance existing instances before spawning, so new casts begin at frame zero.
       for (let i = live.length - 1; i >= 0; i--) {
         const entry = live[i];
         entry.age += Math.max(0, dt) * entry.recipe.speed;
+        if (entry.key !== undefined) {
+          const want = kept.get(entry.key);
+          if (!want) { remove(i); continue; }
+          entry.instance.container.position.set(want.x, want.y);
+        }
         if (entry.follow) {
           const point = entry.follow();
           if (!valid(point)) { remove(i); continue; }
           entry.instance.container.position.set(point.x, point.y);
         }
         if (!entry.instance.seek(entry.age)) { remove(i); continue; }
-        // Fade the last fifth so clips cut at their atlas length never pop out.
-        if (entry.duration > 0) entry.instance.container.alpha = entry.recipe.alpha * Math.min(1, (1 - entry.age / entry.duration) / FADE);
+        if (entry.duration > 0) {
+          const t = entry.age / entry.duration;
+          // Fade the last fifth so clips cut at their atlas length never pop out;
+          // loops also fade in so the next instance blends over the previous one.
+          const fadeIn = entry.key !== undefined ? Math.min(1, t / FADE_IN) : 1;
+          entry.instance.container.alpha = entry.recipe.alpha * Math.min(1, (1 - t) / FADE, fadeIn);
+        }
       }
+      for (const [key, want] of kept) {
+        const atlas = atlases.get(want.recipe.clip);
+        const newest = live.reduce((best, entry) => entry.key === key && (!best || entry.age < best.age) ? entry : best, null);
+        if (atlas && (!newest || newest.age >= atlas.duration * OVERLAP) && live.length < max) spawn(atlas, want.recipe, want, { key });
+      }
+      kept = new Map();
       if (reducedMotion) return;
       for (const effect of effects) {
         if (seen.has(effect)) continue;
         seen.add(effect);
-        const recipe = HERO_ATLAS_FX[effect.heroId]?.[effect.type];
+        const recipe = effect.heroId ? HERO_ATLAS_FX[effect.heroId]?.[effect.type] : EVENT_ATLAS_FX[effect.type];
         const atlas = recipe && atlases.get(recipe.clip);
         // If a clip is unavailable or the visual budget is exhausted, keep baseline FX.
         if (!atlas || live.length >= max) continue;
         const point = locate(effect, recipe);
         if (!valid(point)) continue;
-        const instance = atlas.create(parent, point.x, point.y, recipe.width);
-        instance.container.alpha = recipe.alpha;
-        instance.container.tint = recipe.tint ?? 0xffffff;
-        instance.container.scale.y = uprightScale;
-        instance.seek(0);
-        live.push({ instance, recipe, age: 0, follow: point.follow, duration: atlas.duration });
+        spawn(atlas, recipe, point);
         if (recipe.replace) accepted.add(effect);
       }
     },
     clear() {
       while (live.length) remove(live.length - 1);
-      seen = new WeakSet(); accepted = new WeakSet();
+      seen = new WeakSet(); accepted = new WeakSet(); kept = new Map();
     },
     destroy() {
       this.clear();
@@ -159,8 +211,10 @@ export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = 
 }
 
 // Fetches the manifest only; each clip downloads when a hero that uses it joins the board
-// (`prepare`). The first cast after a slow download falls back to the baseline effect.
+// (`prepare`) or the stage needs it (`options.preload`: boss and god clips). The first cast
+// after a slow download falls back to the baseline effect.
 export async function loadAuthoredFx(PIXI, parent, options = {}) {
+  // options.groundParent: layer under the units for ground clips (support auras).
   const atlases = new Map(), requested = new Set(), prepared = new Set();
   let manifest = null, destroyed = false;
   if (!options.reducedMotion) {
@@ -179,9 +233,11 @@ export async function loadAuthoredFx(PIXI, parent, options = {}) {
       atlas => { if (destroyed) atlas.destroy(); else atlases.set(id, atlas); },
       error => console.warn(`Authored FX "${id}" unavailable; using baseline effect.`, error));
   };
+  (options.preload ?? []).forEach(request);
   const player = createAuthoredFx({ ...options, parent, atlases });
   return {
     ...player,
+    request,
     prepare(heroes) {
       for (const hero of heroes) {
         if (prepared.has(hero.id)) continue;
