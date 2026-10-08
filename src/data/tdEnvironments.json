@@ -24,10 +24,18 @@
     "reuse": "sunscar",
     "color": 15636574,
     "rule": "Forge Heat",
-    "text": "Road heroes deal 15% more damage but receive 20% less healing. Platform heroes keep normal healing.",
+    "text": "Road heroes deal 15% more damage but receive 20% less healing. Eruptions: every 20 seconds two tiles glow, hero tiles first; 3 seconds later lava bursts there and heroes still standing on them lose 25% of their health. Move them in time.",
     "mods": {
       "roadAttack": 1.15,
       "roadHeal": 0.8
+    },
+    "event": {
+      "type": "eruption",
+      "first": 12,
+      "every": 20,
+      "warn": 3,
+      "count": 2,
+      "damage": 0.25
     }
   },
   {
@@ -55,10 +63,16 @@
     "reuse": "verdant",
     "color": 7985355,
     "rule": "Tidal Rhythm",
-    "text": "Enemies move 15% slower for 20 seconds, then 10% faster for 20 seconds, and so on. Plan your blockers around the tide.",
+    "text": "High tide (every other 20 seconds) floods a stretch of road: enemies wading through it move 35% slower and are Wet, heroes standing in it deal 20% less damage. At low tide enemies move 10% faster.",
     "mods": {
-      "oddSpeed": 0.85,
       "evenSpeed": 1.1
+    },
+    "event": {
+      "type": "flood",
+      "count": 3,
+      "slow": 0.35,
+      "heroAttack": 0.2,
+      "wetSeconds": 1
     }
   },
   {

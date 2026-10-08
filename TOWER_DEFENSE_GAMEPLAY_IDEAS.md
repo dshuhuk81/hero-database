@@ -573,7 +573,8 @@ event per chapter that attacks positioning, so relocation becomes an active tool
 | 12 Celestial | Reach patterns rotate 90 degrees every 20 s |
 | 13 Clockwork | Switch gates: the route flips between two paths periodically (the old map levers idea) |
 
-Start with Ashen (lava) and Tidal (flood).
+Start with Ashen (lava) and Tidal (flood). *Status October 8, 2026: Ashen Eruption and Tidal High
+Tide built (`board-events.js`, spec section 10 "Board events"); the other eight chapters are open.*
 
 **G3. A creature family per chapter (L).** Continue A4 and R15 (Fjord set): two new kinds per
 chapter that attack the player's habits. Examples: Saboteur (blocks a platform tile for 10 s until a

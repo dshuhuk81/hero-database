@@ -6,7 +6,7 @@ import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemyS
 import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
-import { BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
+import { BOARD_EVENT_CLIPS, BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
@@ -285,7 +285,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const authoredFx = await loadAuthoredFx(PIXI, authoredLayer, {
     groundParent: authoredGround,
     reducedMotion,
-    preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : [])],
+    preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : []), ...(BOARD_EVENT_CLIPS[game.boardEvent?.type] ?? [])],
     uprightScale: tiltOn ? 1 / tiltK : 1,
     locate: (effect, recipe) => locateAuthoredFx(effect, recipe, game, visualHeroPoint),
   });
@@ -2198,6 +2198,30 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
+  // Chapter board events (G2, board-events.js): tile marks flat on the ground, under the figures.
+  // The Effekseer clips (fire, blast, water) play on top through authored-fx.js.
+  function drawBoardEvent(effect, g, now) {
+    if (effect.type === "lavaWarn") {
+      // Marked tiles glow hotter as the eruption nears.
+      const heat = 1 - Math.max(0, effect.life) / (effect.total || 3);
+      const pulse = 0.5 + 0.5 * Math.sin(now / (110 - heat * 60));
+      drawArea(g, effect, { color: 0xff5a1f, alpha: 0.14 + heat * 0.2 + pulse * 0.12 }, { width: 3, color: 0xffb347, alpha: 0.55 + pulse * 0.45 });
+      return true;
+    }
+    if (effect.type === "lavaBurst") {
+      drawArea(g, effect, { color: 0xffd08a, alpha: Math.min(1, effect.life / 0.6) * 0.55 });
+      return true;
+    }
+    if (effect.type === "flood") {
+      // Water stands on the flooded road until the tide turns; it rises and drains over a second.
+      const rise = Math.max(0, Math.min(1, effect.life, (effect.total ?? 1) - effect.life));
+      const wave = 0.5 + 0.5 * Math.sin(now / 420);
+      drawArea(g, effect, { color: 0x2bb3c8, alpha: rise * (0.26 + wave * 0.08) }, { width: 2, color: 0x9de7ff, alpha: rise * (0.35 + wave * 0.25) });
+      return true;
+    }
+    return false;
+  }
+
   // R5 power visuals drawn every frame on layerFx; true when the effect was handled.
   function drawPowerEffect(effect, g, now) {
     if (effect.type === "thunderWarn") {
@@ -2307,6 +2331,13 @@ export async function createRenderer(canvas, game, options = {}) {
       if (effect.type === "damageNumber") continue;
       if (effect.type === "godTelegraph" || effect.type === "godStrike") continue; // god-scene.js draws these
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
+      if (["lavaWarn", "lavaBurst", "flood"].includes(effect.type)) {
+        const eg = new PIXI.Graphics();
+        drawBoardEvent(effect, eg, now);
+        layerGroundRings.addChild(eg);
+        continue;
+      }
+      if (effect.type === "floodRise") continue; // Effekseer water clip only
       if (["thunderWarn", "thunderStrike", "shieldUp", "shieldBlock"].includes(effect.type)) {
         const pg = new PIXI.Graphics();
         drawPowerEffect(effect, pg, now);

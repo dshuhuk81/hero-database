@@ -1,5 +1,6 @@
 import { expandTimeline, timelineTotals } from "./timeline.js";
 import { markEliteSpawns } from "./elites.js";
+import { boardEventFor, floodAttack, floodPace, newBoardEventState, stepBoardEvents } from "./board-events.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern, unitInPattern } from "./board.js";
@@ -123,6 +124,8 @@ export class TowerDefenseGame {
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
     // Enemy attack scale: a campaign stage's own `atkScale` (tdCampaign.json), 1 everywhere else.
     this.atkScale = atkScale ?? 1;
+    this.boardEvent = boardEventFor(map); // G2: the environment's board event (eruption, flood), null elsewhere
+    this.boardEventState = newBoardEventState();
     this.eliteList = elites ?? []; // G1: a campaign stage's Elites (affix id lists, elites.js), [] elsewhere
     this.stageRule = stageRule; // a campaign stage's own rule ({ name, text, mods }, tdStageRules.json), null elsewhere
     this.tuning = tuning;
@@ -529,6 +532,7 @@ export class TowerDefenseGame {
     // The boss closes the stage: it waits for the field to clear, at most tuning.timeline.bossWaitMs.
     this.spawnQueue = [...queue.filter((e) => e.kind !== "boss"), ...queue.filter((e) => e.kind === "boss")];
     markEliteSpawns(this.spawnQueue, this.eliteList, this.tuning); // G1: some authored spawns arrive as Elites
+    this.boardEventState = newBoardEventState();
     this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
     this.spawnClock = 0;
     this.lastSpawnAt = null;
@@ -558,6 +562,7 @@ export class TowerDefenseGame {
       return;
     }
     this.stepInterventions(dt);
+    if (this.boardEvent && !this.god) stepBoardEvents(this, dt); // G2 chapter board events
     this.stepLords(dt);
     // Placement regrows by tuning.run.placementPerSecond (x Favor rate) per second of battle time.
     this.placementClock += dt * (1 + (this.favor.placementRate || 0)) * this.environment("placementRate");
@@ -635,7 +640,7 @@ export class TowerDefenseGame {
         const tidal = this.hasBoon("tidal_pull") && this.isWet(enemy) ? this.hasBoon("tidal_pull").slow : 1;
         const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1, enemy.chill > 0 ? enemy.chillFactor : 1) * tidal;
         const banner = (enemy.bannerUntil ?? 0) > this.time ? 1 + (enemy.bannerSpeed || 0) : 1; // G1 Banner Elite
-        enemy.distance += enemy.speed * pace * (1 + boost.speed) * banner * dt;
+        enemy.distance += enemy.speed * pace * (1 + boost.speed) * banner * floodPace(this, enemy) * dt;
         const lane = this.laneOf(enemy);
         const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
         enemy.x = point.x; enemy.y = point.y;
@@ -1130,7 +1135,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
+    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * floodAttack(this, hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.

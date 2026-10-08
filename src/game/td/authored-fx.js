@@ -87,7 +87,13 @@ export const EVENT_ATLAS_FX = {
   boss: { clip: 'boss-rise', width: 150, alpha: 0.8, speed: 1, replace: false },
   bossDown: { clip: 'boss-death', width: 220, alpha: 0.9, speed: 1, replace: false },
   summon: { clip: 'shadow', width: 100, alpha: 0.75, speed: 1.2, replace: false, tint: 0xffa0a0 },
+  // Chapter board events (board-events.js, G2): Ashen eruption warning and burst, Tidal flood.
+  lavaWarn: { clip: 'fire', width: 78, alpha: 0.75, speed: 0.7, replace: false, tint: 0xffb070 },
+  lavaBurst: { clip: 'blast', width: 150, alpha: 0.95, speed: 1, replace: false },
+  floodRise: { clip: 'water', width: 120, alpha: 0.8, speed: 1, replace: false },
 };
+// Clips each board event needs, preloaded when the stage's environment has that event.
+export const BOARD_EVENT_CLIPS = { eruption: ['fire', 'blast'], flood: ['water'] };
 export const BOSS_CLIPS = [...new Set(Object.values(EVENT_ATLAS_FX).map(recipe => recipe.clip))];
 export const GOD_CLIPS = ['blast', 'fire'];
 

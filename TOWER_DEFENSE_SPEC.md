@@ -833,15 +833,39 @@ cell width, so any theme takes any board. Chapters 4-13 each have an environment
 | Environment | Rule |
 |---|---|
 | Frostbound | Enemies 12% slower; heroes attack 8% slower except on shrine tiles |
-| Ashen Forge | Road heroes +15% damage, -20% healing received |
+| Ashen Forge | Road heroes +15% damage, -20% healing received; board event **Eruption** (below) |
 | Stormpeak | Flyers 20% slower; platform heroes reach one step less unless on high ground |
-| Tidal Ruins | Enemies 15% slower for 20 s, then 10% faster for 20 s, repeating |
+| Tidal Ruins | Board event **High Tide** (below) in odd phases; enemies 10% faster in even phases |
 | Mycelium Hollow | Heroes +25% healing received; enemies +10% health |
 | Crystal Vault | Magical heroes +15% damage; physical heroes +10% attack speed |
 | Haunted Necropolis | Placement regrows 20% faster; heroes -15% healing received |
 | Autumn Sanctuary | Placement regrows 15% faster; road heroes charge ultimates 15% faster |
 | Celestial Observatory | Ultimates charge 20% faster for 20 s, then heroes attack 10% faster for 20 s, repeating |
 | Clockwork Citadel | Heroes attack 15% faster; enemies move 10% faster |
+
+**Board events** (G2 of the gameplay ideas, October 8, 2026; `board-events.js`): an environment
+may carry an `event` in `tdEnvironments.json` that changes the board while the stage runs, so
+positioning and relocation matter mid-stage. It runs on boards in every mode, never in the God
+Challenge (`sim.boardEvent`, `sim.boardEventState`, stepped from `step()`). Numbers are first
+guesses; no `hpScale` was re-measured.
+
+- **Eruption** (Ashen Forge, `type: "eruption"`): from `first` (12 s), every `every` (20 s)
+  seconds `count` (2) tiles are marked, tiles holding heroes first (shuffled with the run's RNG),
+  then other road and platform tiles. `warn` (3) seconds later lava bursts there: every hero still
+  on a marked tile loses `damage` (25%) of its maximum health. Free relocation (8 s cooldown) is
+  the answer.
+- **High Tide** (Tidal Ruins, `type: "flood"`): at the start of every odd environment phase a
+  stretch of `count` (3) consecutive road tiles floods (never the first or last road tile) until
+  the phase ends. Ground enemies on a flooded tile move `slow` (35%) slower and are Wet for
+  `wetSeconds` (1), which feeds the Wet reactions; heroes standing in the water deal `heroAttack`
+  (20%) less damage (`floodAttack` in `attackValue`). The old global odd-phase slow is gone.
+- **Visuals:** tile marks lie flat on the ground under the figures (`drawBoardEvent` in
+  `render.js` on `layerGroundRings`): marked lava tiles pulse orange and glow hotter as the burst
+  nears, a burst flashes the tile, flood water stands as a breathing teal layer that rises and
+  drains over a second. Effekseer clips via `EVENT_ATLAS_FX` (`authored-fx.js`): `lavaWarn` fire on
+  each marked tile, `lavaBurst` blast, `floodRise` water on each flooded tile; preloaded per event
+  through `BOARD_EVENT_CLIPS`.
+- Test: `scripts/test-td-board-events.mjs` (in `npm run test:tower-defense`).
 
 ### Classic maps and legacy generators
 
