@@ -885,7 +885,7 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
 
   return {
     reset() { seen = new WeakSet(); windowsSeen = new WeakMap(); zonesSeen = new WeakSet(); wardsSeen = new WeakMap(); },
-    update(game) {
+    update(game, skipEffect = () => false) {
       for (const hero of game.heroes ?? []) {
         const win = hero.win;
         if (win && win.until > game.time && windowsSeen.get(hero) !== win) { windowsSeen.set(hero, win); startWindow(hero, win.until - game.time); }
@@ -897,7 +897,7 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
         startLava(z, z.until - game.time, game.map);
       }
       for (const effect of game.effects) {
-        if (seen.has(effect) || !hasHeroFx(effect)) continue;
+        if (seen.has(effect) || !hasHeroFx(effect) || skipEffect(effect)) continue;
         seen.add(effect);
         create(effect);
       }

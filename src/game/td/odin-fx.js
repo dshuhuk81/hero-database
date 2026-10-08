@@ -128,13 +128,13 @@ export function createOdinFx(PIXI, parent, kit, { reducedMotion = false } = {}) 
   }
 
   return {
-    update(effects) {
+    update(effects, skipEffect = () => false) {
       graphics.clear();
       stripUsed = 0;
       boltsThisFrame = 0;
       const live = new Set();
       for (const effect of effects) {
-        if (effect.heroVariant !== "chain_lightning" || !["shot", "hit", "ult"].includes(effect.type)) continue;
+        if (effect.heroVariant !== "chain_lightning" || !["shot", "hit", "ult"].includes(effect.type) || skipEffect(effect)) continue;
         live.add(effect);
         if (!active.has(effect)) active.set(effect, create(effect));
         draw(effect, active.get(effect));

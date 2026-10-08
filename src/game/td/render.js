@@ -6,6 +6,7 @@ import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemyS
 import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
+import { loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
@@ -271,6 +272,13 @@ export async function createRenderer(canvas, game, options = {}) {
   layerGroundFx.addChild(layerGroundRings);
   const heroFx = createHeroFx(fxKit, { reducedMotion, groundKit: groundFxKit });
   const statusFx = createStatusFx(fxKit, { reducedMotion });
+  const authoredLayer = new PIXI.Container();
+  layerParts.addChild(authoredLayer);
+  const authoredFx = await loadAuthoredFx(PIXI, authoredLayer, {
+    reducedMotion,
+    uprightScale: tiltOn ? 1 / tiltK : 1,
+    locate: (effect, recipe) => locateAuthoredFx(effect, recipe, game, visualHeroPoint),
+  });
 
   // On-board tokens: transparent head-and-shoulders cutouts from the hero skin (skin.js).
   // A hero without a token keeps the circle portrait.
@@ -2233,12 +2241,13 @@ export async function createRenderer(canvas, game, options = {}) {
     advanceParticles(dt);
     // Kit effects run on game time: frozen while paused, faster at higher game speed,
     // wall time after a stage so tails finish. A restarted run clears them.
-    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && fxKit.count())) { fxKit.clear(); groundFxKit.clear(); heroFx.reset(); hurtEnemies.clear(); }
+    if (game.time < fxClock || (game.time === 0 && !game.heroes.length && (fxKit.count() || authoredFx.count()))) { fxKit.clear(); groundFxKit.clear(); heroFx.reset(); authoredFx.clear(); hurtEnemies.clear(); }
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;
     moveAnimShotOrigins();
-    heroFx.update(game);
-    zeusFx.update(game.effects);
+    authoredFx.update(game.effects, fxDt);
+    heroFx.update(game, authoredFx.owns);
+    zeusFx.update(game.effects, authoredFx.owns);
     statusFx.update(game.enemies, fxDt, enemyBody, enemyStatuses);
     fxKit.update(fxDt);
     groundFxKit.update(fxDt);
@@ -2383,12 +2392,13 @@ export async function createRenderer(canvas, game, options = {}) {
     destroyed = true;
     playHost?.removeAttribute("data-bleed");
     mapScene?.destroy?.();
+    authoredFx.destroy();
     // Removes the canvas from the DOM; shared textures stay in the Assets cache for the next run.
     app.destroy({ removeView: true }, { children: true });
     softTexture?.destroy(true);
   }
 
-  return { draw, resize, destroy, sprites, particles, fxCount: () => fxKit.count() };
+  return { draw, resize, destroy, sprites, particles, fxCount: () => fxKit.count() + authoredFx.count() };
 }
 
 // ------------------------------------------------------------------

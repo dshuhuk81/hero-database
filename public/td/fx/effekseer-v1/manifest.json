@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "tool": "Effekseer 1.80.7",
+  "seed": 42,
+  "clips": [
+    {
+      "id": "lightning",
+      "source": "01_Pierre01/LightningStrike.efk",
+      "author": "Pierre",
+      "view": 140,
+      "targetY": 15,
+      "start": 0,
+      "frames": 60,
+      "width": 245,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.595831484749991
+      ]
+    },
+    {
+      "id": "fire",
+      "source": "01_NextSoft01/MagicFire1.efk",
+      "author": "NextSoft",
+      "view": 10,
+      "targetY": 3,
+      "start": 0,
+      "frames": 60,
+      "width": 132,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.7683281572999747
+      ]
+    },
+    {
+      "id": "buff",
+      "source": "01_NextSoft01/PowerUp.efk",
+      "author": "NextSoft",
+      "view": 6,
+      "targetY": 1,
+      "start": 0,
+      "frames": 90,
+      "width": 132,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.6490711984999855
+      ]
+    }
+  ]
+}

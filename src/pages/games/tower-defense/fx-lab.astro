@@ -1,0 +1,95 @@
+---
+// Local visual comparison, removed from production by localOnlyRoutes.
+export const prerender = true;
+import GameLayout from '../../../layouts/GameLayout.astro';
+---
+<GameLayout title="Effekt-Labor | The Last Crossing" description="Lokaler Vergleich von Blitz, Feuer und Buff mit Effekseer-Animationen.">
+  <Fragment slot="head"><meta name="robots" content="noindex,nofollow" /></Fragment>
+  <main class="fx-page">
+    <header class="fx-header">
+      <div><p class="fx-eyebrow">THE LAST CROSSING <span> / </span> VISUAL LAB 01</p><h1>Magie, die man spürt.</h1><p>Blitz, Feuer und Verstärkung auf Moonlit Pass. Gleiche Szene, zwei Darstellungen.</p></div>
+      <a href="/games/tower-defense/">Zurück zum Spiel <span aria-hidden="true">↗</span></a>
+    </header>
+    <div class="fx-workspace">
+      <section class="fx-view" aria-label="Effektvorschau">
+        <div class="fx-view-head"><span><i></i> MOONLIT PASS</span><strong id="fx-mode-label">Effekseer</strong><output id="fx-fps">— FPS</output></div>
+        <div class="fx-canvas-wrap"><canvas id="fx-canvas" width="960" height="540" aria-label="Animierte Vergleichsszene mit drei Helden und Effekten"></canvas><p id="fx-loading" role="status">Szene und Effekte werden geladen …</p></div>
+        <div class="fx-timeline"><progress id="fx-progress" max="4" value="0" aria-label="Fortschritt der Effektsequenz"></progress><div><span id="fx-state" role="status">Vorschau wird vorbereitet</span><output id="fx-time">0.00 / 4.00 s</output></div></div>
+        <p class="fx-caption">Lokale Vorschau · keine Kämpfe, Belohnungen oder Änderungen am Spielstand.</p>
+      </section>
+      <aside class="fx-panel" aria-label="Vergleich einstellen">
+        <fieldset><legend>01 <span>Darstellung</span></legend><div class="fx-switch"><label><input type="radio" name="mode" value="current" /><span>Bisher</span></label><label><input type="radio" name="mode" value="effekseer" checked /><span>Effekseer</span></label></div><p>Umschalten startet dieselbe Sequenz neu.</p></fieldset>
+        <fieldset><legend>02 <span>Effekt</span></legend><div class="fx-effects">
+          <label><input type="radio" name="effect" value="all" checked /><span><b>Alle zusammen</b><small>Wirkung im Zusammenspiel</small></span></label>
+          <label><input type="radio" name="effect" value="lightning" /><span><b>Blitz</b><small>Odin · Aufladung & Einschlag</small></span></label>
+          <label><input type="radio" name="effect" value="fire" /><span><b>Feuer</b><small>Surtr · Flammenkörper</small></span></label>
+          <label><input type="radio" name="effect" value="buff" /><span><b>Verstärkung</b><small>Heimdall · Aktivierung & Aura</small></span></label>
+        </div></fieldset>
+        <fieldset><legend>03 <span>Wiedergabe</span></legend><label class="fx-speed">Tempo<select id="fx-speed"><option value="0.5">0,5× · Zeitlupe</option><option value="1" selected>1× · Normal</option><option value="2">2× · Schnell</option></select></label><label class="fx-check"><input type="checkbox" id="fx-repeat" checked /> Sequenz wiederholen</label><div class="fx-actions"><button id="fx-replay" disabled>Neu abspielen</button><button id="fx-pause" disabled aria-pressed="false">Pause</button></div></fieldset>
+        <p class="fx-note">Beurteile Form, Timing und Lesbarkeit bei normaler Spielgröße. Phaser bleibt die Alternative, falls der Unterschied nicht überzeugt.</p>
+      </aside>
+    </div>
+    <footer class="fx-footer"><span>Effekseer-Beispiele: Pierre / NextSoft · CC0 · als Bildanimationen in PixiJS</span><span>Entscheidung offen: erst ansehen, dann übernehmen.</span></footer>
+  </main>
+</GameLayout>
+<script>
+  import { startFxLab } from '../../../game/td/fx-lab.js';
+  startFxLab();
+</script>
+<style>
+  :global(body.game-body) { overflow: auto; }
+  .fx-page { max-width: 1540px; margin: 0 auto; padding: 42px 36px 22px; color: #eee9db; }
+  .fx-header { display: flex; justify-content: space-between; gap: 28px; align-items: center; margin-bottom: 32px; }
+  .fx-eyebrow { font-size: 10px; letter-spacing: .2em; color: #b9a578; font-weight: 700; margin: 0 0 12px; }
+  .fx-eyebrow span { color: #5d625e; margin: 0 8px; }
+  h1 { font-family: Georgia, serif; font-size: clamp(28px, 3vw, 43px); font-weight: 400; line-height: 1.1; margin: 0 0 12px; }
+  .fx-header p:not(.fx-eyebrow) { color: #969e9a; font-size: 13px; margin: 0; }
+  .fx-header a { color: #c9c8b8; font-size: 12px; white-space: nowrap; text-decoration: none; }
+  .fx-header a span { margin-left: 14px; color: #c5ad73; }
+  .fx-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 270px; align-items: start; gap: 22px; }
+  .fx-view { min-width: 0; border: 1px solid #32372f; border-radius: 12px; background: #101615; overflow: hidden; }
+  .fx-view-head { display: flex; align-items: center; gap: 20px; height: 49px; padding: 0 20px; background: #161d1b; font-size: 10px; letter-spacing: .13em; }
+  .fx-view-head i { display: inline-block; width: 6px; height: 6px; background: #a6c2a8; border-radius: 50%; margin-right: 8px; }
+  .fx-view-head strong { margin-left: auto; font-weight: 500; color: #d3ba81; letter-spacing: .03em; }
+  .fx-view-head output { color: #8b9b94; font-variant-numeric: tabular-nums; min-width: 48px; text-align: right; }
+  .fx-canvas-wrap { position: relative; aspect-ratio: 16 / 9; background: #141d23; }
+  /* Pixi autoDensity sets inline pixel sizes; the wrapper owns responsive geometry. */
+  canvas { position: absolute; inset: 0; display: block; width: 100% !important; height: 100% !important; }
+  #fx-loading { position: absolute; inset: 0; margin: 0; padding: 30px; display: grid; place-content: center; background: #141d23ec; text-align: center; color: #d3c69f; font-size: 14px; }
+  #fx-loading[hidden] { display: none; }
+  .fx-timeline { padding: 18px 20px 12px; }
+  progress { appearance: none; display: block; border: 0; border-radius: 2px; width: 100%; height: 3px; background: #30392f; accent-color: #cab27c; }
+  progress::-webkit-progress-bar { background: #30392f; }
+  progress::-webkit-progress-value { background: #cab27c; }
+  .fx-timeline div { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; font-size: 11px; color: #a6afa7; font-variant-numeric: tabular-nums; }
+  .fx-caption { margin: 0; padding: 4px 20px 18px; color: #77877f; font-size: 11px; }
+  .fx-panel { border: 1px solid #30352e; border-radius: 12px; padding: 20px; background: #121816; }
+  fieldset { border: 0; padding: 0; margin: 0 0 23px; min-width: 0; }
+  legend { font-size: 10px; letter-spacing: .08em; color: #8c805f; margin-bottom: 12px; width: 100%; }
+  legend span { margin-left: 9px; color: #d7d7c5; text-transform: uppercase; }
+  .fx-switch { display: flex; border: 1px solid #3d4236; border-radius: 6px; padding: 3px; gap: 3px; }
+  .fx-switch label { flex: 1; cursor: pointer; }
+  .fx-switch span { display: block; text-align: center; padding: 9px 4px; font-size: 12px; border-radius: 4px; color: #9fa798; }
+  .fx-switch input, .fx-effects input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  input:focus-visible + span { outline: 2px solid #e1c889; outline-offset: 3px; }
+  .fx-switch input:checked + span { background: #d2bc87; color: #18211c; font-weight: 700; }
+  fieldset > p { font-size: 10px; color: #7e8e84; line-height: 1.6; margin: 8px 0 0; }
+  .fx-effects { display: grid; gap: 5px; }
+  .fx-effects label { cursor: pointer; }
+  .fx-effects span { display: block; padding: 9px 12px; border-left: 2px solid #303d34; background: #19211d; border-radius: 0 4px 4px 0; }
+  .fx-effects b { font-weight: 500; font-size: 12px; }
+  .fx-effects small { display: block; font-size: 10px; margin-top: 3px; color: #8d9b91; }
+  .fx-effects input:checked + span { background: #283127; border-color: #cdb27a; }
+  .fx-speed { display: flex; justify-content: space-between; gap: 10px; align-items: center; color: #abb6aa; font-size: 11px; }
+  select { padding: 8px; color: #e4decb; background: #20291f; border: 1px solid #434939; border-radius: 5px; font-size: 11px; max-width: 160px; }
+  .fx-check { display: flex; align-items: center; gap: 9px; font-size: 11px; margin: 15px 0; color: #b6beaf; }
+  input[type=checkbox] { accent-color: #cdb27a; }
+  .fx-actions { display: flex; gap: 8px; }
+  button { flex: 1; padding: 10px 8px; border: 1px solid #52573f; border-radius: 5px; background: #2c3426; color: #e0d9bd; font-size: 11px; cursor: pointer; }
+  button:hover { background: #3e482f; }
+  button:disabled { opacity: .4; cursor: wait; }
+  .fx-note { font-size: 11px; line-height: 1.7; color: #899889; border-top: 1px solid #303b2e; padding-top: 15px; margin: 0; }
+  .fx-footer { display: flex; justify-content: space-between; gap: 20px; font-size: 10px; color: #798277; padding-top: 22px; line-height: 1.6; }
+  @media (max-width: 900px) { .fx-page { padding: 24px 16px; } .fx-workspace { grid-template-columns: 1fr; } .fx-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; } .fx-note { grid-column: 1 / -1; } fieldset { margin: 0; } }
+  @media (max-width: 600px) { .fx-header { display: block; margin-bottom: 22px; } .fx-header a { display: inline-block; margin-top: 18px; } .fx-panel { grid-template-columns: 1fr; } .fx-effects { grid-template-columns: 1fr 1fr; } .fx-footer { display: block; } .fx-footer span { display: block; } .fx-view-head { padding: 0 12px; gap: 10px; } .fx-caption { line-height: 1.5; } }
+</style>
