@@ -125,8 +125,8 @@ export function resolveTilt(map, tiltConfig, { campaign = false, param = null } 
   };
 }
 
-export function resolveGodPerspective(map, search = "") {
-  return Boolean(map?.godOnly) && new URLSearchParams(search).get("godPerspective") === "1";
+export function resolveGodPerspective(map) {
+  return Boolean(map?.godOnly);
 }
 
 export function syncTiltBleed(playHost, enabled) {
@@ -207,7 +207,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
   const resolvedTilt = resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign) || Boolean(game.god), param: tiltParam }); // the God-Mode arena is tilted like the campaign boards
-  const godPerspective = resolveGodPerspective(game.map, location.search);
+  const godPerspective = resolveGodPerspective(game.map);
   const visualHeroPoint = (unit) => godPerspective
     ? godPerspectivePoint(boardOf(game.map), cellAt(boardOf(game.map), unit.x, unit.y))
     : [unit.x, unit.y];
@@ -2403,8 +2403,9 @@ export function canvasPoint(canvas, event) {
 // that tile, so the corners of staggered tiles at road bends are not stolen by a neighbour
 // whose centre is closer.
 const TILE_HALF = 28;
-export function nearestSlot(map, point, maxDistance = 38, perspective = resolveGodPerspective(map, globalThis.location?.search ?? "")) {
+export function nearestSlot(map, point, maxDistance = 38) {
   const board = boardOf(map);
+  const perspective = resolveGodPerspective(map);
   const half = board ? board.cell / 2 : TILE_HALF;
   // Compare in displayed-world units: tilt compresses vertical distances on screen, so a
   // circular touch target must counter that compression after canvasPoint() restores world y.

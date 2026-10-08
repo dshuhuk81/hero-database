@@ -23,11 +23,10 @@ assert.equal(Object.values(map.rings).filter((kind) => kind === "highground").le
 assert.deepEqual(map.god.cells, [[2, -1], [3, -1], [4, -1], [5, -1], [6, -1]], "boss target cells stay above the playable board");
 assert.equal(map.platformSlots.some(([, y]) => y < 300), false, "nothing is placeable in the removed upper row");
 
-// --- the optional visual-only perspective keeps slot centres but tapers near/far geometry ---
+// --- God Mode always uses the shared visual perspective; Campaign does not ---
 {
-  assert.equal(render.resolveGodPerspective?.(map, "?godPerspective=1"), true, "the comparison URL enables God-only perspective");
-  assert.equal(render.resolveGodPerspective?.(map, "?godPerspective=0"), false, "the normal God board remains the default");
-  assert.equal(render.resolveGodPerspective?.({ id: "campaign-test" }, "?godPerspective=1"), false, "Campaign ignores the prototype flag");
+  assert.equal(render.resolveGodPerspective?.(map), true, "God Mode enables perspective by default");
+  assert.equal(render.resolveGodPerspective?.({ id: "campaign-test" }), false, "Campaign remains outside the God board perspective");
   const far = arena.godPerspectiveQuad?.(board, [4, 0]);
   const near = arena.godPerspectiveQuad?.(board, [4, 2]);
   assert.ok(far && near, "both playable rows have visual quads");
@@ -54,7 +53,7 @@ assert.equal(map.platformSlots.some(([, y]) => y < 300), false, "nothing is plac
   const farCorner = { x: far[2] - 2, y: far[3] + 2 };
   assert.deepEqual(render.nearestSlot(map, farCorner)?.type, "road", "a visible far tile corner remains clickable");
   const projectedCorner = { x: farLeft[2] - 2, y: farLeft[3] + 2 };
-  assert.deepEqual(render.nearestSlot(map, projectedCorner, 38, true)?.type, "platform", "the shifted perspective tile remains clickable at its drawn corner");
+  assert.deepEqual(render.nearestSlot(map, projectedCorner)?.type, "platform", "the shifted perspective tile remains clickable at its drawn corner");
   assert.deepEqual(heroFx.moltenGroundPoint?.(map, 480, 221), [480, 311], "a lava hit on Cronus is painted on the front-row ground");
   assert.deepEqual(heroFx.moltenGroundPoint?.({ id: "campaign" }, 300, 221), [300, 221], "Campaign lava retains its target position");
   const sweepStrip = arena.godPerspectiveSweepQuad?.(board, [[0, 0], [1, 0], [2, 0]]);

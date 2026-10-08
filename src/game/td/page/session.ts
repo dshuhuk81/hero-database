@@ -120,6 +120,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       if (might !== 1) (special as any).hpScale = ((special as any).hpScale ?? map?.enemyHp ?? 1) * might;
     }
     const tuning = buildRunTuning(data.tuning, runLevels);
+    if (godRules?.startingNectar != null) tuning.run.startingPlacement = godRules.startingNectar; // God Challenge sets its own Nectar start
     // Divine Interventions unlock with campaign stages (tuning.interventions.<id>.unlockAfter);
     // the Daily Trial stays the same for everyone without them.
     const interventions = daily || god ? [] : Object.entries(data.tuning.interventions ?? {})
