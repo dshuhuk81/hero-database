@@ -3408,6 +3408,30 @@
   display: none;
 }
 
+.td-pop-wide {
+  grid-column: 1 / -1;
+  width: 100%;
+  justify-content: center;
+}
+
+.td-pop-target[hidden] {
+  display: none;
+}
+
+.td-pop-reach {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.td-pop-reach-box {
+  display: grid;
+  place-items: center;
+  min-height: 140px;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .04);
+}
+
 .td-pop-actions [data-pop-sell].is-armed {
   border-color: var(--td-warn);
   color: var(--td-warn);

@@ -1,11 +1,10 @@
 // Hero panel (M22): full-height side panel next to the map, or a sheet below the map on
 // portrait screens. Permanent progress, target, relocate, sell and details. Buttons are updated
 // in place so focus survives game events. The game keeps running while the panel is open.
-import { CLASS_ROLES, heroProgress, worldToLocal } from "../ui.js";
+import { heroProgress, worldToLocal } from "../ui.js";
 import { patternSvg } from "../board.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
-import { RING_INFO } from "../skills.js";
 import { roman } from "./route";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 
@@ -16,8 +15,12 @@ import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 const PUSH_MIN_MAP = 520;
 const SHEET_MIN = 220;
 const STAR_MAX = (campaignData as any).heroStars?.max ?? 5;
-const SKILL_SHORT: Record<string, string> = { ultimate: "Ultimate", passiveAttack: "Attack", passiveHealth: "Health" };
 const HERO_RADIUS = 36; // world units kept clear around the selected hero
+
+// Road maps: the attack range as a ring around the hero, labelled with the range value.
+function rangeRingSvg(range: number) {
+  return `<svg class="td-pattern-grid" width="112" height="112" viewBox="0 0 112 112" role="img" aria-label="Range ${range}"><circle cx="56" cy="56" r="50" fill="rgba(95,214,122,.14)" stroke="#5fd67a" stroke-width="2" stroke-dasharray="5 4"/><circle cx="56" cy="56" r="5" fill="#f2c35a"/><text x="56" y="86" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">${range}</text></svg>`;
+}
 
 export function createPopover(ctx: PageContext) {
   const { q, state, data, heroById } = ctx;
@@ -33,18 +36,17 @@ export function createPopover(ctx: PageContext) {
   const popHp = q("[data-pop-hp]");
   const popAtk = q("[data-pop-atk]");
   const popAps = q("[data-pop-aps]");
+  const popLvl = q("[data-pop-lvl]");
   const popRange = q("[data-pop-range]");
   const popRangeLabel = q("[data-pop-range-label]");
   const popCrit = q("[data-pop-crit]");
-  const popProgress = q("[data-pop-progress]");
   const popRelocate = q<HTMLButtonElement>("[data-pop-relocate]");
   const popRelocateCost = q("[data-pop-relocate-cost]");
-  const popPreview = q("[data-pop-preview]");
-  const popDetailsButton = q<HTMLButtonElement>("[data-pop-details]");
-  const popDetails = q("[data-pop-details-body]");
   const popSell = q<HTMLButtonElement>("[data-pop-sell]");
   const popTarget = q("[data-pop-target]");
   const popTargetLabel = q("[data-pop-target-label]");
+  const popTargetBox = q("[data-pop-target-box]");
+  const popTargetToggle = q<HTMLButtonElement>("[data-pop-target-toggle]");
   const targetButtons = [...popTarget.querySelectorAll<HTMLButtonElement>("[data-target]")];
   let sellArmed = false; // selling needs a second tap to confirm
   const TARGET_NAMES: Record<string, string> = { first: "First enemy", last: "Last enemy", strongest: "Highest health", weakest: "Lowest health", fastest: "Fastest enemy", ground: "Ground first", flying: "Flyers first", boss: "Boss first" };
@@ -63,9 +65,10 @@ export function createPopover(ctx: PageContext) {
     ctx.actions.closeSheet(false);
     state.selectedEntityId = unit.entityId;
     session.game.uiSelected = unit.entityId;
-    setSection(popDetailsButton, popDetails, false); // always starts collapsed
     sellArmed = false;
     forcedPush = false;
+    popTargetBox.hidden = true;
+    popTargetToggle.setAttribute("aria-expanded", "false");
     popover.hidden = false;
     popBody.scrollTop = 0;
     update(unit);
@@ -107,9 +110,10 @@ export function createPopover(ctx: PageContext) {
     popAps.textContent = `${Math.round(unit.aps * 100) / 100}/s`;
     // Board maps: the attack pattern as a grid instead of the range number.
     const pattern = state.session!.game.patternOf(unit);
-    if (pattern) popRange.innerHTML = patternSvg(pattern, 6);
-    else popRange.textContent = String(Math.round(unit.range));
+    if (pattern) popRange.innerHTML = patternSvg(pattern, 14);
+    else popRange.innerHTML = rangeRingSvg(Math.round(unit.range));
     popRangeLabel.textContent = pattern ? "Reach" : "Range";
+    popLvl.textContent = String(heroProgress(unit).level);
     popCrit.textContent = `${Math.round(unit.critChance * 1000) / 10}%`;
   }
 
@@ -120,7 +124,8 @@ export function createPopover(ctx: PageContext) {
       button.setAttribute("aria-pressed", String(button.dataset.target === mode));
       if (button.dataset.target === "flying") button.hidden = unit.slotType === "road";
     }
-    popTargetLabel.textContent = mode === "auto" ? `Class rule: ${CLASS_TARGETS[unit.class] ?? "first enemy"}` : TARGET_NAMES[mode];
+    popTargetLabel.textContent = mode === "auto" ? "Auto" : TARGET_NAMES[mode];
+    popTargetToggle.title = mode === "auto" ? `Class rule: ${CLASS_TARGETS[unit.class] ?? "first enemy"}` : "";
   }
 
   function update(unit: any) {
@@ -141,7 +146,6 @@ export function createPopover(ctx: PageContext) {
         (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "");
     }
     popLevel.textContent = unit.class;
-    popProgress.textContent = `Level ${progress.level} · Skills: ${progress.skills.map((skill) => `${SKILL_SHORT[skill.id] ?? skill.id} ${skill.level}`).join(", ")}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
@@ -153,47 +157,7 @@ export function createPopover(ctx: PageContext) {
     const move = game.relocationInfo(unit.entityId);
     popRelocate.disabled = !move.ok || game.placement < (move.cost ?? Infinity);
     popRelocateCost.textContent = Number.isFinite(move.cost) ? (move.cost === 0 ? "Free" : `${move.cost} Nectar`) : "";
-    popPreview.textContent = !move.ok ? move.reason || ""
-      : game.placement < move.cost ? `Needs ${move.cost} Nectar to relocate, you have ${game.placement}.`
-      : `Move ${unit.name} to an empty ${unit.slotType} tile. Health, charge and cooldowns stay.`;
-    if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
-  }
-
-  function setSection(button: HTMLButtonElement, body: HTMLElement, open: boolean) {
-    body.hidden = !open;
-    button.setAttribute("aria-expanded", String(open));
-  }
-
-  function detailsHtml(unit: any) {
-    const game = state.session!.game;
-    const lines: string[] = [];
-    const role = (CLASS_ROLES as Record<string, string>)[unit.class];
-    if (role) lines.push(`<p class="td-aura-line">${unit.class}: ${role}</p>`);
-    const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
-    if (unit.ability === "aura") {
-      const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);
-      lines.push(allies.length
-        ? `<p class="td-aura-line">Aura: ${allies.map((ally: any) => ally.name).join(", ")} gain${allies.length === 1 ? "s" : ""} +${auraPct}% attack inside the ring.</p>`
-        : `<p class="td-aura-line">Aura: no allies inside the ring. The +${auraPct}% attack bonus is positional.</p>`);
-    } else {
-      const aura = game.supportAuraFor(unit);
-      if (aura) lines.push(`<p class="td-aura-line">Receiving +${auraPct}% attack from ${aura.source.name}'s aura.</p>`);
-    }
-    const links = game.synergyLinksFor(unit);
-    if (links.length) {
-      const parts = links.map((link: any) => `${link.hero.name} (${link.shared.length} tag${link.shared.length !== 1 ? "s" : ""})`).join(", ");
-      lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
-    }
-    if (unit.variant === "valkyrie_call") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free tile with ${unit.awakenedUlt ? "full" : "half"} health. Heals nearby allies when nobody can be revived.</p>`);
-    }
-    if (unit.variant === "soul_drain") {
-      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: heavy hit on the weakest enemy in range that stuns it for ${unit.awakenedUlt ? 3 : 2} seconds. A kill refunds ${unit.awakenedUlt ? 80 : 60}% of the charge.</p>`);
-    }
-    const ring = (RING_INFO as Record<string, { name: string; text: string }>)[game.ringKind(unit.slotType, unit.slotIndex)];
-    if (ring) lines.push(`<p class="td-aura-line">Standing on ${ring.name}: ${ring.text}</p>`);
-    lines.push(`<p>Level, stars, Evolution and skill levels come from your collection and are already included in this hero's stats. Upgrade heroes in the lobby; the upgrades apply in every mode.</p>`);
-    return lines.join("");
+    popRelocate.title = !move.ok ? move.reason || "" : game.placement < move.cost ? `Needs ${move.cost} Nectar to relocate, you have ${game.placement}.` : "";
   }
 
   // Layout state lives on the stage (data-hero-panel + CSS variables) so the map, notices and
@@ -273,6 +237,8 @@ export function createPopover(ctx: PageContext) {
     session.game.setTargeting(state.selectedEntityId, button.dataset.target);
     const unit = findUnit(state.selectedEntityId);
     if (unit) updateTargeting(unit);
+    popTargetBox.hidden = true;
+    popTargetToggle.setAttribute("aria-expanded", "false");
   });
   popSell.addEventListener("click", () => {
     const session = state.session;
@@ -288,12 +254,10 @@ export function createPopover(ctx: PageContext) {
     if (result.ok) ctx.notice(`${result.hero.name} sold for ${result.refund} Nectar. The tile is free again.`);
   });
   q("[data-pop-close]").addEventListener("click", () => close());
-  popDetailsButton.addEventListener("click", () => {
-    const unit = findUnit(state.selectedEntityId);
-    if (!unit) return;
-    const open = !!popDetails.hidden; // hidden may also be "until-found" in the DOM types
-    setSection(popDetailsButton, popDetails, open);
-    if (open) popDetails.innerHTML = detailsHtml(unit);
+  q("[data-pop-close-bottom]").addEventListener("click", () => close());
+  popTargetToggle.addEventListener("click", () => {
+    popTargetBox.hidden = !popTargetBox.hidden;
+    popTargetToggle.setAttribute("aria-expanded", String(!popTargetBox.hidden));
   });
 
   return { select, close, refresh, position, tick, isOpen: () => !popover.hidden };

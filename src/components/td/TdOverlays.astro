@@ -30,13 +30,17 @@
       <dl class="td-pop-stats">
         <div><dt>Attack</dt><dd data-pop-atk></dd></div>
         <div><dt>Speed</dt><dd data-pop-aps></dd></div>
-        <div><dt data-pop-range-label>Range</dt><dd data-pop-range></dd></div>
+        <div><dt>Lvl</dt><dd data-pop-lvl></dd></div>
         <div><dt>Crit</dt><dd data-pop-crit></dd></div>
       </dl>
     </section>
+    <!-- Reach: attack pattern grid on board maps, range ring on road maps. -->
+    <section class="td-pop-section td-pop-reach" aria-label="Reach">
+      <span class="td-pop-heading" data-pop-range-label>Reach</span>
+      <div class="td-pop-reach-box" data-pop-range></div>
+    </section>
     <!-- Target priority: class rule by default; overrides stay folded away (audit, September 2026). -->
-    <details class="td-pop-section td-pop-target" data-pop-target-box>
-    <summary class="td-pop-target-head"><span>Target</span><strong data-pop-target-label></strong><svg class="td-pop-target-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg></summary>
+    <section class="td-pop-section td-pop-target" data-pop-target-box hidden>
     <div class="td-pop-target-row" data-pop-target role="group" aria-label="Target priority">
       <button type="button" data-target="auto"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="1.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></svg><span>Class rule</span></button>
       <button type="button" data-target="first"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6l6 6-6 6M11 6l6 6-6 6M20 5v14" /></svg><span>First enemy</span></button>
@@ -48,26 +52,18 @@
       <button type="button" data-target="flying"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8c3.5 0 6.5 2 9 6 2.5-4 5.5-6 9-6" /><path d="M9 19h6" /></svg><span>Flyers first</span></button>
       <button type="button" data-target="boss"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 18h16M4 18L3 8l5 4 4-6 4 6 5-4-1 10" /></svg><span>Boss first</span></button>
     </div>
-    </details>
-    <!-- Details starts collapsed on every selection. -->
-    <section class="td-pop-section">
-      <button class="td-pop-details-toggle" type="button" data-pop-details aria-expanded="false" aria-controls="td-pop-details">
-        <span>Details</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
-      </button>
-      <div class="td-pop-details" id="td-pop-details" data-pop-details-body hidden></div>
     </section>
   </div>
   <!-- Pinned footer (R4): permanent progress from the collection, then Relocate and Sell.
        Relocation moves a placed hero for free, with a short cooldown per hero. -->
   <div class="td-pop-actions">
-    <p class="td-pop-progress td-pop-action-row" data-pop-progress></p>
-    <p class="td-pop-preview td-pop-action-row" data-pop-preview></p>
     <button class="action-button action-button--primary td-pop-relocate" type="button" data-pop-relocate>
       <span>Relocate</span>
       <span class="td-pop-cost" data-pop-relocate-cost></span>
     </button>
     <button class="action-button action-button--quiet" type="button" data-pop-sell>Sell</button>
+    <button class="action-button action-button--quiet td-pop-wide" type="button" data-pop-target-toggle aria-expanded="false">Target: <span data-pop-target-label></span></button>
+    <button class="action-button action-button--quiet td-pop-wide" type="button" data-pop-close-bottom>Close</button>
   </div>
 </aside>
 
