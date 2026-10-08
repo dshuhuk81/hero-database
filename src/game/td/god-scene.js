@@ -4,6 +4,7 @@
 // Everything is driven by the sim: `game.godAttack` (phase, clock, index) and the god effects
 // (godTelegraph, godStrike). Pure view code; nothing here touches combat state.
 import { boardOf, cellCenter } from "./board.js";
+import { godPerspectiveFloorSpan, godPerspectiveQuad, godPerspectiveSweepQuad } from "./god-mode-arena.js";
 import { createSlotPainter, mapSceneFor } from "./map-scene.js";
 
 const DIR = "/td/god-mode/cronus/";
@@ -30,7 +31,7 @@ export function godImpactPlan(attack, cells) {
   return { burstCells: centre ? [centre] : [], crackCells: cells, sweepCells: [] };
 }
 
-export async function createGodScene(PIXI, game, { layers, tilt = null, reducedMotion = false, onImpact = () => {} }) {
+export async function createGodScene(PIXI, game, { layers, tilt = null, perspective = false, reducedMotion = false, onImpact = () => {} }) {
   const cfg = game.god;
   const board = boardOf(game.map);
   const rig = await fetch(`${DIR}rig.json`).then((response) => response.json());
@@ -86,12 +87,37 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
   head.visible = false;
   bossLayer.addChild(torso, head);
 
-  // The painted floor lies below the board; no wall between it and the god.
-  const floor = new PIXI.Sprite(floorTex);
+  // The prototype warps the actual floor artwork into the tapered arena once on startup.
+  // This avoids a hard trapezoid crop around an otherwise top-down rectangular texture.
+  let warpedFloor = null;
+  if (perspective) {
+    try {
+      const image = new Image();
+      image.src = `${DIR}${rig.arena.floor}`;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = 960; canvas.height = 540;
+      const ctx = canvas.getContext("2d");
+      const sourceRow = image.naturalHeight / canvas.height;
+      const top = Math.max(0, boardTop - 6);
+      for (let y = top; y < canvas.height; y++) {
+        const [left, right] = godPerspectiveFloorSpan(board, y + 0.5);
+        ctx.drawImage(image, 0, y * sourceRow, image.naturalWidth, sourceRow,
+          left, y, right - left, 1);
+      }
+      warpedFloor = PIXI.Texture.from(canvas);
+    } catch (error) {
+      console.warn("Cronus perspective floor unavailable; using the unwarped arena art.", error);
+    }
+  }
+  const floor = new PIXI.Sprite(warpedFloor ?? floorTex);
   floor.width = 960; floor.height = 540;
-  const floorMask = new PIXI.Graphics().roundRect(boardLeft - 14, boardTop - 6, boardRight - boardLeft + 28, 540 - boardTop + 6, 10).fill(0xffffff);
-  floor.mask = floorMask;
-  layers.bgTex.addChild(floorMask, floor);
+  if (!warpedFloor) {
+    const floorMask = new PIXI.Graphics().roundRect(boardLeft - 14, boardTop - 6, boardRight - boardLeft + 28, 540 - boardTop + 6, 10).fill(0xffffff);
+    floor.mask = floorMask;
+    layers.bgTex.addChild(floorMask);
+  }
+  layers.bgTex.addChild(floor);
   // The melee front is paved like the campaign road: the theme's road texture under those cells.
   if (roadTex) {
     const paving = new PIXI.TilingSprite({ texture: roadTex, width: 960, height: 540 });
@@ -101,7 +127,8 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
     const pavingMask = new PIXI.Graphics();
     for (const cell of board.road) {
       const [x, y] = cellCenter(board, cell);
-      pavingMask.rect(x - board.cell / 2 + 2, y - board.cell / 2 + 2, board.cell - 4, board.cell - 4).fill(0xffffff);
+      if (perspective) pavingMask.poly(godPerspectiveQuad(board, cell)).fill(0xffffff);
+      else pavingMask.rect(x - board.cell / 2 + 2, y - board.cell / 2 + 2, board.cell - 4, board.cell - 4).fill(0xffffff);
     }
     paving.mask = pavingMask;
     layers.bgTex.addChild(pavingMask, paving);
@@ -306,15 +333,30 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
 
   function drawSweep(cells, strength, progress = 1) {
     if (!cells.length) return;
-    const [left, y] = cellCenter(board, cells[0]);
-    const [right] = cellCenter(board, cells.at(-1));
-    const start = left - board.cell * 0.45;
-    const end = start + (right - left + board.cell * 0.9) * progress;
-    for (const [width, color, alpha] of [[18, 0x842207, 0.18], [5, 0xff7928, 0.5], [1.5, 0xffd080, 0.75]]) {
-      marks.moveTo(start, y + 3);
-      for (let x = start + 24, i = 1; x < end; x += 24, i++) marks.lineTo(x, y + (i % 3 - 1) * 8);
-      marks.lineTo(end, y - 3).stroke({ color, width, alpha: alpha * strength, cap: "round", join: "round" });
+    const quad = perspective ? godPerspectiveSweepQuad(board, cells) : (() => {
+      const [left, y] = cellCenter(board, cells[0]);
+      const [right] = cellCenter(board, cells.at(-1));
+      return [left - board.cell * 0.47, y - 24, right + board.cell * 0.47, y - 24,
+        right + board.cell * 0.47, y + 24, left - board.cell * 0.47, y + 24];
+    })();
+    const endTop = quad[0] + (quad[2] - quad[0]) * progress;
+    const endBottom = quad[6] + (quad[4] - quad[6]) * progress;
+    const top = quad[1] + 9, bottom = quad[7] - 9;
+    marks.poly([quad[0], top, endTop, top, endBottom, bottom, quad[6], bottom])
+      .fill({ color: 0x230b05, alpha: 0.55 * strength });
+    const upper = [], lower = [];
+    const segments = Math.max(2, Math.ceil((endTop - quad[0]) / 26));
+    for (let i = 0; i <= segments; i++) {
+      const p = i / segments;
+      const x = quad[0] + (endTop - quad[0]) * p;
+      const y = (top + bottom) / 2 + Math.sin(i * 2.8) * 5;
+      upper.push(x, y - 5 - (i % 3) * 2);
+      lower.unshift(y + 5 + (i % 4)); lower.unshift(x);
     }
+    marks.poly(upper.concat(lower)).fill({ color: 0xa8370d, alpha: 0.56 * strength });
+    marks.moveTo(upper[0], upper[1] + 5);
+    for (let i = 2; i < upper.length; i += 2) marks.lineTo(upper[i], upper[i + 1] + 5);
+    marks.stroke({ color: 0xffa145, width: 2.5, alpha: 0.75 * strength, join: "round" });
   }
 
   function drawMarks() {
@@ -365,8 +407,64 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
     flashG.alpha = reducedMotion ? 0 : flash;
   }
 
-  // ---- tiles (render.js calls this for every placement tile): the campaign tile art ----
-  const drawSlot = createSlotPainter(PIXI, { theme, board, tilt, textures: {} });
+  // ---- tiles (render.js calls this for every placement tile): Campaign by default,
+  // tapered God-only quads for the visual comparison ----
+  const campaignSlot = createSlotPainter(PIXI, { theme, board, tilt, textures: {} });
+  const raisedSlots = new Set(Object.entries(game.map.rings ?? {})
+    .filter(([key, kind]) => key.startsWith("platform:") && kind === "highground")
+    .map(([key]) => game.map.platformSlots[Number(key.split(":")[1])]?.join(",")));
+  function drawSlot(container, x, y, type, occupied, highlighted, mode = "") {
+    if (!perspective) return campaignSlot(container, x, y, type, occupied, highlighted, mode);
+    const c = Math.floor((x - board.origin[0]) / board.cell);
+    const r = Math.floor((y - board.origin[1]) / board.cell);
+    const quad = godPerspectiveQuad(board, [c, r]);
+    const raised = raisedSlots.has(`${x},${y}`);
+    const platform = type === "platform";
+    const eligible = highlighted || mode === "eligible";
+    const strength = highlighted ? 1 : occupied ? 0.65 : mode === "dim" ? 0.32 : mode === "idle" ? 0.55 : 0.85;
+    const accent = raised ? 0xe5bd68 : platform ? theme.pad.platform : theme.pad.road;
+    const top = raised ? 0x655a4b : platform ? 0x5a554d : 0x3a302b;
+    const lip = platform ? 10 + r * 2 : 0;
+    const face = new PIXI.Graphics();
+    container.addChild(face);
+    if (platform) {
+      face.poly(quad.map((value, index) => index % 2 ? value + lip + 3 : value))
+        .fill({ color: 0x050505, alpha: 0.22 });
+      face.poly([quad[6], quad[7], quad[4], quad[5], quad[4], quad[5] + lip, quad[6], quad[7] + lip])
+        .fill({ color: 0x211e1a, alpha: 0.98 });
+      face.poly([quad[2], quad[3], quad[4], quad[5], quad[4], quad[5] + lip, quad[2] + 3, quad[3] + lip * 0.35])
+        .fill({ color: 0x302922, alpha: 0.92 });
+      face.moveTo(quad[6] + 2, quad[7] + lip - 1).lineTo(quad[4] - 2, quad[5] + lip - 1)
+        .stroke({ color: 0x080706, width: 2, alpha: 0.6 });
+      if (warpedFloor) {
+        const stone = new PIXI.Sprite(warpedFloor);
+        stone.width = 960; stone.height = 540; stone.tint = 0xb5a99a;
+        const stoneMask = new PIXI.Graphics().poly(quad).fill(0xffffff);
+        stone.mask = stoneMask;
+        container.addChild(stoneMask, stone);
+      }
+    }
+    const g = new PIXI.Graphics();
+    container.addChild(g);
+    g.poly(quad).fill({ color: top, alpha: platform ? warpedFloor ? 0.4 : 0.96 : 0.42 * strength })
+      .stroke({ color: eligible ? 0xffe8aa : accent, width: highlighted ? 3 : 1.5, alpha: (eligible ? 0.95 : 0.48) * strength, join: "round" });
+    g.moveTo(quad[0] + 5, quad[1] + 3).lineTo(quad[2] - 5, quad[3] + 3)
+      .stroke({ color: 0xe4d8be, width: 1.3, alpha: 0.28 * strength });
+    if (platform) {
+      const left = quad[0] + (quad[2] - quad[0]) * 0.24;
+      const right = quad[0] + (quad[2] - quad[0]) * 0.73;
+      g.moveTo(left, quad[1] + 7).lineTo(left + 5, y - 2).lineTo(left - 2, quad[7] - 8)
+        .moveTo(right, quad[3] + 5).lineTo(right - 6, y + 1).lineTo(right + 1, quad[5] - 9)
+        .stroke({ color: 0x211d19, width: 1.2, alpha: 0.3, join: "round" });
+    }
+    if (raised) {
+      const bx = quad[2] - 10, by = quad[3] + 10;
+      g.circle(bx, by, 8).fill({ color: 0x17140f, alpha: 0.9 }).stroke({ color: accent, width: 1.7, alpha: strength });
+      g.moveTo(bx, by - 4).lineTo(bx + 4, by + 3).lineTo(bx - 4, by + 3).closePath().fill({ color: accent, alpha: strength });
+    }
+    if (eligible) g.poly(quad).fill({ color: accent, alpha: highlighted ? 0.16 : 0.08 });
+    return g;
+  }
 
-  return { draw, drawSlot, destroy() {} };
+  return { draw, drawSlot, destroy() { warpedFloor?.destroy(true); } };
 }

@@ -10,8 +10,9 @@ import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
 import { createGodScene } from "./god-scene.js";
+import { godPerspectivePoint, godPerspectiveQuad } from "./god-mode-arena.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
-import { boardOf, cellCenter, patternCells } from "./board.js";
+import { boardOf, cellAt, cellCenter, patternCells } from "./board.js";
 
 // Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
 // deliberately and re-run the Chromium checks.
@@ -124,6 +125,10 @@ export function resolveTilt(map, tiltConfig, { campaign = false, param = null } 
   };
 }
 
+export function resolveGodPerspective(map, search = "") {
+  return Boolean(map?.godOnly) && new URLSearchParams(search).get("godPerspective") === "1";
+}
+
 export function syncTiltBleed(playHost, enabled) {
   if (!playHost) return;
   if (enabled) playHost.setAttribute("data-bleed", "1");
@@ -202,6 +207,10 @@ export async function createRenderer(canvas, game, options = {}) {
   const tiltCfg = game.boardRules?.tilt;
   const tiltParam = new URLSearchParams(location.search).get("tilt");
   const resolvedTilt = resolveTilt(game.map, tiltCfg, { campaign: Boolean(options.campaign) || Boolean(game.god), param: tiltParam }); // the God-Mode arena is tilted like the campaign boards
+  const godPerspective = resolveGodPerspective(game.map, location.search);
+  const visualHeroPoint = (unit) => godPerspective
+    ? godPerspectivePoint(boardOf(game.map), cellAt(boardOf(game.map), unit.x, unit.y))
+    : [unit.x, unit.y];
   const tiltOn = resolvedTilt.enabled;
   const tiltK = resolvedTilt.k;
   const tiltOffsetY = resolvedTilt.offsetY;
@@ -640,7 +649,7 @@ export async function createRenderer(canvas, game, options = {}) {
         drawSlot(layerSlots, x, y, type, occupied, focused, mode);
       });
     }
-    for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
+    for (const [key, kind] of Object.entries(godPerspective ? {} : game.map.rings ?? {})) {
       const [type, index] = key.split(":");
       const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
       if (pos) drawRingMark(layerSlots, pos[0], pos[1], kind, type);
@@ -1168,7 +1177,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function updateHeroSprite(unit, container) {
-    container.position.set(unit.x, unit.y);
+    container.position.set(...visualHeroPoint(unit));
     // Assassin veil (class ultimate): translucent while nothing can hurt it.
     container.alpha = game.isVeiled?.(unit) ? 0.45 : 1;
 
@@ -1807,14 +1816,15 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const unit of game.heroes) {
       const g = gFor(unit.y);
       const gb = gBar(unit, "hero");
+      const [visualX] = visualHeroPoint(unit);
       if (tiltOn) { // hero bars above the head, in the top layer (R18)
-        const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = unit.x - 24 * hs, top = unit.y - 82 * hs;
+        const hs = (game.boardRules?.heroScale ?? 1) * depthScale(unit.y), left = visualX - 24 * hs, top = unit.y - 82 * hs;
         const style = combatBarStyle("hero");
         const width = 48 * hs;
         drawBar(gb, left, top, width, unit.hpLeft / unit.hp, style.healthColor, style.healthHeight);
         if (unit.ultClock !== undefined && unit.ultCooldown) {
           const secondary = width * style.secondaryWidth;
-          drawBar(gb, unit.x - secondary / 2, top + style.healthHeight + 2, secondary, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple, style.secondaryHeight);
+          drawBar(gb, visualX - secondary / 2, top + style.healthHeight + 2, secondary, Math.min(1, unit.ultClock / unit.ultCooldown), palette.purple, style.secondaryHeight);
         }
       }
       // Baphomet's mark (M18): a red reticle during the warning, a red ring while silenced.
@@ -2347,6 +2357,7 @@ export async function createRenderer(canvas, game, options = {}) {
     mapScene = await createGodScene(PIXI, game, {
       layers: { bgTex: layerBgTex, bg: layerBg, groundFx: layerGroundFx, fore: layerForeground, parts: layerParts, hud: layerHud, band: layerBand },
       tilt: tiltOn ? { k: tiltK, offsetY: tiltOffsetY } : null,
+      perspective: godPerspective,
       reducedMotion,
       onImpact: () => startImpact({ ...FX_TIERS.epic, shake: 8, vignette: 0.25 }),
     });
@@ -2392,7 +2403,7 @@ export function canvasPoint(canvas, event) {
 // that tile, so the corners of staggered tiles at road bends are not stolen by a neighbour
 // whose centre is closer.
 const TILE_HALF = 28;
-export function nearestSlot(map, point, maxDistance = 38) {
+export function nearestSlot(map, point, maxDistance = 38, perspective = resolveGodPerspective(map, globalThis.location?.search ?? "")) {
   const board = boardOf(map);
   const half = board ? board.cell / 2 : TILE_HALF;
   // Compare in displayed-world units: tilt compresses vertical distances on screen, so a
@@ -2400,11 +2411,24 @@ export function nearestSlot(map, point, maxDistance = 38) {
   // Without this, the promised touch halo becomes `tiltView.k` times smaller above/below tiles.
   const viewK = Math.max(0.01, tiltView.k || 1);
   let best = null, bestInside = false;
+  const insideQuad = (quad) => {
+    let sign = 0;
+    for (let i = 0; i < 4; i++) {
+      const j = (i + 1) % 4;
+      const cross = (quad[j * 2] - quad[i * 2]) * (point.y - quad[i * 2 + 1])
+        - (quad[j * 2 + 1] - quad[i * 2 + 1]) * (point.x - quad[i * 2]);
+      if (cross && sign && Math.sign(cross) !== sign) return false;
+      if (cross) sign = Math.sign(cross);
+    }
+    return true;
+  };
   for (const type of ["road", "platform"]) {
     const slots = type === "road" ? map.roadSlots : map.platformSlots;
     slots.forEach(([x, y], index) => {
-      const distance = Math.hypot(point.x - x, (point.y - y) * viewK);
-      const inside = Math.abs(point.x - x) <= half && Math.abs(point.y - y) <= half;
+      const cell = perspective && board ? cellAt(board, x, y) : null;
+      const [vx, vy] = cell ? godPerspectivePoint(board, cell) : [x, y];
+      const distance = Math.hypot(point.x - vx, (point.y - vy) * viewK);
+      const inside = cell ? insideQuad(godPerspectiveQuad(board, cell)) : Math.abs(point.x - x) <= half && Math.abs(point.y - y) <= half;
       if (!inside && distance > maxDistance) return;
       if (!best || (inside && !bestInside) || (inside === bestInside && distance < best.distance)) {
         best = { type, index, distance };

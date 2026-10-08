@@ -35,6 +35,47 @@ export function godBoard() {
   return { board: { cell: GOD_ARENA.cell, cols: GOD_ARENA.columns, rows: GOD_ARENA.rows.length, origin: GOD_ARENA.origin, road, platforms, rings }, boss };
 }
 
+// Each column boundary is sampled from the SAME floor trapezoid. Keeping a small gap between
+// columns leaves separate placement slabs without giving every slab its own vanishing point.
+export function godPerspectiveQuad(board, [c, r]) {
+  const top = board.origin[1] + board.cell * r + 14;
+  const bottom = board.origin[1] + board.cell * (r + 1) - 14;
+  const edge = (y, column) => {
+    const [left, right] = godPerspectiveFloorSpan(board, y);
+    return left + (right - left) * column / board.cols;
+  };
+  const gap = 0.07;
+  return [edge(top, c + gap), top, edge(top, c + 1 - gap), top,
+    edge(bottom, c + 1 - gap), bottom, edge(bottom, c + gap), bottom];
+}
+
+export function godPerspectivePoint(board, cell) {
+  const quad = godPerspectiveQuad(board, cell);
+  return [(quad[0] + quad[2] + quad[4] + quad[6]) / 4,
+    (quad[1] + quad[3] + quad[5] + quad[7]) / 4];
+}
+
+export function godPerspectiveSweepQuad(board, cells) {
+  if (!cells.length) return null;
+  const first = godPerspectiveQuad(board, cells[0]);
+  const last = godPerspectiveQuad(board, cells.at(-1));
+  return [first[0], first[1], last[2], last[3], last[4], last[5], first[6], first[7]];
+}
+
+export function godPerspectiveFloor(board) {
+  const left = board.origin[0], right = left + board.cols * board.cell;
+  const top = board.origin[1] - 6, bottom = board.origin[1] + board.rows * board.cell + 4;
+  return [left + 44, top, right - 44, top, right + 14, bottom, left - 14, bottom];
+}
+
+// Destination span for a horizontal source-image slice at canvas y. A perspective floor can
+// redraw each slice into this span without moving any gameplay or pointer coordinates.
+export function godPerspectiveFloorSpan(board, y) {
+  const quad = godPerspectiveFloor(board);
+  const t = Math.max(0, Math.min(1, (y - quad[1]) / (quad[5] - quad[1])));
+  return [quad[0] + (quad[6] - quad[0]) * t, quad[2] + (quad[4] - quad[2]) * t];
+}
+
 // Board trapezoid in canvas px; `edge` is the y of the wall side, the far edge of the board.
 const TOP_X = [102, 858];
 const BASE_X = [10, 950];

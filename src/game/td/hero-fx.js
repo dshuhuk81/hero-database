@@ -4,6 +4,7 @@
 // Rule: no instant straight tracer lines. Ranged attacks travel (arrow, fragment, gust,
 // coin, pulse), melee shows a weapon arc or impact, heals flow along curves.
 // Odin's lightning (heroVariant chain_lightning) lives in odin-fx.js.
+import { boardOf } from "./board.js";
 
 const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash", "extra", "wardhit"]);
 const LIGHTNING = new Set(["shot", "hit", "ult"]);
@@ -53,6 +54,14 @@ export const hasHeroFx = (effect) => {
   // Lightning shots, hits and ultimates belong to odin-fx.
   return !(effect.heroVariant === "chain_lightning" && LIGHTNING.has(effect.type));
 };
+
+// Cronus's hit point is an invisible cell behind the parapet. Molten ground belongs on the
+// visible floor in front of him; Campaign and other modes retain the actual target point.
+export function moltenGroundPoint(map, x, y) {
+  if (!map?.godOnly) return [x, y];
+  const board = boardOf(map);
+  return board && y < board.origin[1] ? [x, board.origin[1] + board.cell / 2] : [x, y];
+}
 
 export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {}) {
   const { TAU, rand } = kit;
@@ -559,10 +568,9 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
         path: { x1: e.x, y1: e.y - 8, x2: e.x + rand(-10, 10), y2: e.y - 70, helix: 8, helixFreq: 1.5, phase: i } });
       for (let i = 0; i < 2; i++) groundRing(e.x, e.y + 6, 8, 36, p.color, { delay: 0.3 + i * 0.3, life: 0.6, width: 2 });
     },
-    hephaestus(e, p, sx, sy) { // Work the Living Furnace: the hammer lands, molten rings and a spark fountain
+    hephaestus(e, p, sx, sy) { // Work the Living Furnace: the hammer lands; the active zone paints the lava
       const r = e.awakened ? 110 : 72;
       flash(e.x, e.y, 0xffffff, 60, { life: 0.25 });
-      for (let i = 0; i < 3; i++) groundRing(e.x, e.y + 6, 8, r * (0.6 + i * 0.2), i ? p.color : p.accent, { delay: i * 0.08, width: 5 - i, life: 0.55 });
       sparks(e.x, e.y, 16, p.accent, { speed: 220, up: 160, gravity: 520, size: 12, dir: -Math.PI / 2, spread: 2.6, life: 0.7 });
       for (let i = 0; i < kit.n(6); i++) {
         const a = i / 6 * TAU;
@@ -840,26 +848,30 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
     }
   }
 
-  function startLava(z, life) {
-    const veins = Array.from({ length: 7 }, (_, i) => {
-      const a = i / 7 * TAU + rand(-0.25, 0.25), len = z.radius * rand(0.55, 0.95);
-      return kit.boltPoints(0, 0, Math.cos(a) * len, Math.sin(a) * len * 0.5, { detail: 2, rough: 0.35 });
+  function startLava(z, life, map) {
+    const [x, y] = moltenGroundPoint(map, z.x, z.y);
+    const edge = Array.from({ length: 16 }, (_, i) => {
+      const a = i / 16 * TAU;
+      const distance = z.radius * rand(0.75, 0.98);
+      return [x + Math.cos(a) * distance, y + Math.sin(a) * distance * 0.43];
+    }).flat();
+    const veins = Array.from({ length: 6 }, (_, i) => {
+      const dy = (i - 2.5) * z.radius * 0.12;
+      const halfWidth = z.radius * (0.72 - Math.abs(i - 2.5) * 0.12);
+      return kit.boltPoints(x - halfWidth, y + dy, x + halfWidth, y + dy + rand(-8, 8), { detail: 3, rough: 0.18 });
     });
-    ground.shape((g, t, age) => {
-      const shrink = Math.min(1, life * (1 - t) / 1.2);
-      g.ellipse(z.x, z.y + 4, z.radius * (0.85 + 0.15 * shrink), z.radius * 0.5 * (0.85 + 0.15 * shrink)).fill({ color: 0x4a1408, alpha: 0.5 * shrink });
-    }, life, { add: false });
-    running(life, 0.11, (age, left) => {
+    running(life, 0.11, () => {
       const a = rand(0, TAU), d = Math.sqrt(Math.random()) * z.radius * 0.85;
-      kit.spawn("ember", z.x + Math.cos(a) * d, z.y + 4 + Math.sin(a) * d * 0.5, { tint: Math.random() < 0.5 ? 0xff7a2e : 0xffd27a, size: 8, vy: -55, life: 0.6, optional: true });
-      if (Math.random() < 0.3) kit.spawn("flame", z.x + Math.cos(a) * d, z.y + 4 + Math.sin(a) * d * 0.5, { tint: 0xff7a2e, size: 10, sizeEnd: 18, vy: -35, life: 0.5, optional: true });
-    }, (g, t, age, left) => {
-      const shrink = Math.min(1, left / 1.2), k = blink(left, age), pulse = 0.65 + 0.35 * Math.sin(age * 4);
+      kit.spawn("ember", x + Math.cos(a) * d, y + Math.sin(a) * d * 0.43, { tint: Math.random() < 0.5 ? 0xff7a2e : 0xffd27a, size: 8, vy: -55, life: 0.6, optional: true });
+      if (Math.random() < 0.3) kit.spawn("flame", x + Math.cos(a) * d, y + Math.sin(a) * d * 0.43, { tint: 0xff7a2e, size: 10, sizeEnd: 18, vy: -35, life: 0.5, optional: true });
+    }, (g, _t, age, left) => {
+      const fade = Math.min(1, left / 1.2), k = blink(left, age), pulse = 0.65 + 0.35 * Math.sin(age * 4);
+      g.poly(edge).fill({ color: 0x180807, alpha: 0.62 * fade });
       for (const v of veins) {
-        const pts = v.map((c, i) => (i % 2 ? z.y + 4 + c * shrink : z.x + c * shrink));
-        kit.polyline(g, pts, { width: 2.5, color: 0xff8a3d, alpha: 0.75 * pulse * k * shrink, cap: "round", join: "round" });
+        kit.polyline(g, v, { width: 12, color: 0x721e0a, alpha: 0.65 * fade, cap: "round", join: "round" });
+        kit.polyline(g, v, { width: 4, color: 0xff7a20, alpha: 0.65 * pulse * k * fade, cap: "round", join: "round" });
+        kit.polyline(g, v, { width: 1.2, color: 0xffcb69, alpha: 0.5 * pulse * k * fade, cap: "round", join: "round" });
       }
-      kit.ring(g, z.x, z.y + 4, z.radius * (0.85 + 0.15 * shrink), { color: 0xff7a2e, width: 3, alpha: 0.7 * k * shrink, squash: 0.5 });
     });
   }
 
@@ -882,7 +894,7 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
       for (const z of game.zones ?? []) {
         if (zonesSeen.has(z) || z.until <= game.time) continue;
         zonesSeen.add(z);
-        startLava(z, z.until - game.time);
+        startLava(z, z.until - game.time, game.map);
       }
       for (const effect of game.effects) {
         if (seen.has(effect) || !hasHeroFx(effect)) continue;

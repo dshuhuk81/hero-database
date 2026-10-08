@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
 import { godChallenge, godMapFor } from "../src/game/td/god-mode.js";
+import * as arena from "../src/game/td/god-mode-arena.js";
 import { boardOf, cellAt } from "../src/game/td/board.js";
 import { resolveTilt } from "../src/game/td/render.js";
+import * as render from "../src/game/td/render.js";
 import * as godScene from "../src/game/td/god-scene.js";
+import * as heroFx from "../src/game/td/hero-fx.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 
@@ -19,6 +22,44 @@ assert.equal(map.platformSlots.length, 9, "nine platform tiles (four P, five H);
 assert.equal(Object.values(map.rings).filter((kind) => kind === "highground").length, 5, "the gallery is high ground");
 assert.deepEqual(map.god.cells, [[2, -1], [3, -1], [4, -1], [5, -1], [6, -1]], "boss target cells stay above the playable board");
 assert.equal(map.platformSlots.some(([, y]) => y < 300), false, "nothing is placeable in the removed upper row");
+
+// --- the optional visual-only perspective keeps slot centres but tapers near/far geometry ---
+{
+  assert.equal(render.resolveGodPerspective?.(map, "?godPerspective=1"), true, "the comparison URL enables God-only perspective");
+  assert.equal(render.resolveGodPerspective?.(map, "?godPerspective=0"), false, "the normal God board remains the default");
+  assert.equal(render.resolveGodPerspective?.({ id: "campaign-test" }, "?godPerspective=1"), false, "Campaign ignores the prototype flag");
+  const far = arena.godPerspectiveQuad?.(board, [4, 0]);
+  const near = arena.godPerspectiveQuad?.(board, [4, 2]);
+  assert.ok(far && near, "both playable rows have visual quads");
+  const farLeft = arena.godPerspectiveQuad?.(board, [1, 0]);
+  const farRight = arena.godPerspectiveQuad?.(board, [7, 0]);
+  assert.ok(farLeft[0] > farLeft[6], "the left tile's outer edge leans toward the shared vanishing point");
+  assert.ok(farLeft[2] > farLeft[4], "the left tile's inner edge also leans toward that point");
+  assert.ok(farRight[0] < farRight[6], "the right tile's inner edge leans in the opposite direction");
+  assert.ok(farRight[2] < farRight[4], "the right tile's outer edge leans toward that same point");
+  assert.ok(far[2] - far[0] < far[4] - far[6], "a tile widens toward the viewer");
+  assert.ok(far[4] - far[6] < near[4] - near[6], "near tiles are wider than far tiles");
+  assert.equal((far[0] + far[2] + far[4] + far[6]) / 4, 480, "middle tile stays centered");
+  assert.equal((far[1] + far[3] + far[5] + far[7]) / 4, 311, "visual tile keeps its gameplay y centre");
+  const visualLeft = arena.godPerspectivePoint?.(board, [1, 0]);
+  assert.ok(visualLeft && visualLeft[0] > 210, "far-side hero art can follow its shifted tile centre");
+  const floor = arena.godPerspectiveFloor?.(board);
+  assert.ok(floor && floor[2] - floor[0] < floor[4] - floor[6], "the arena silhouette tapers toward Cronus");
+  const farSpan = arena.godPerspectiveFloorSpan?.(board, 266);
+  const nearSpan = arena.godPerspectiveFloorSpan?.(board, 536);
+  assert.ok(farSpan && nearSpan, "the floor artwork can be sampled at each depth");
+  assert.ok(nearSpan[1] - nearSpan[0] > farSpan[1] - farSpan[0], "the artwork widens smoothly toward the viewer");
+  assert.equal((farSpan[0] + farSpan[1]) / 2, 480, "the far floor stays centred on the playable cells");
+  assert.equal((nearSpan[0] + nearSpan[1]) / 2, 480, "the near floor stays centred on the playable cells");
+  const farCorner = { x: far[2] - 2, y: far[3] + 2 };
+  assert.deepEqual(render.nearestSlot(map, farCorner)?.type, "road", "a visible far tile corner remains clickable");
+  const projectedCorner = { x: farLeft[2] - 2, y: farLeft[3] + 2 };
+  assert.deepEqual(render.nearestSlot(map, projectedCorner, 38, true)?.type, "platform", "the shifted perspective tile remains clickable at its drawn corner");
+  assert.deepEqual(heroFx.moltenGroundPoint?.(map, 480, 221), [480, 311], "a lava hit on Cronus is painted on the front-row ground");
+  assert.deepEqual(heroFx.moltenGroundPoint?.({ id: "campaign" }, 300, 221), [300, 221], "Campaign lava retains its target position");
+  const sweepStrip = arena.godPerspectiveSweepQuad?.(board, [[0, 0], [1, 0], [2, 0]]);
+  assert.ok(sweepStrip && sweepStrip[0] < sweepStrip[2] && sweepStrip[6] < sweepStrip[4], "a front-row sweep occupies one continuous ground strip");
+}
 
 // --- the arena tilts more than Campaign without lifting its near edge ---
 {
