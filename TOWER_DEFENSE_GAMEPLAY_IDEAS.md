@@ -573,8 +573,13 @@ event per chapter that attacks positioning, so relocation becomes an active tool
 | 12 Celestial | Reach patterns rotate 90 degrees every 20 s |
 | 13 Clockwork | Switch gates: the route flips between two paths periodically (the old map levers idea) |
 
-Start with Ashen (lava) and Tidal (flood). *Status October 8, 2026: Ashen Eruption and Tidal High
-Tide built (`board-events.js`, spec section 10 "Board events"); the other eight chapters are open.*
+Start with Ashen (lava) and Tidal (flood). *Status October 8, 2026: all ten built (`board-events.js`,
+spec section 10 "Board events"). Changed from the table: Crystal prisms refract each basic attack
+onto a second enemy; Necropolis ghosts stay down after an Assassin or Support kill (no holy damage
+type exists); Autumn fruit is collected by moving a hero onto it (no new tap input); Celestial
+aligns one row or column for +25% attack instead of rotating patterns (most patterns are
+symmetric, so rotation changed little); Clockwork jams marked tiles instead of switching routes
+(no board has two routes yet).*
 
 **G3. A creature family per chapter (L).** Continue A4 and R15 (Fjord set): two new kinds per
 chapter that attack the player's habits. Examples: Saboteur (blocks a platform tile for 10 s until a
@@ -596,7 +601,9 @@ chapters.
 Expedition route map (D3), Bestiary (kill milestones per enemy kind with small bonuses).
 
 **Suggested order:** G1 Elite affixes, then G2 starting with Ashen and Tidal, then stage rules
-assigned by theme instead of rotation (data only), then G5 hero talents.
+assigned by theme instead of rotation (data only), then G5 hero talents. *Status October 8, 2026: G1, G2 and the
+themed stage rules (two per chapter for Chapters 4-13, spec section 12 "Stage rules") are built;
+G3-G6 are open.*
 
 ## 3. Suggested order
 

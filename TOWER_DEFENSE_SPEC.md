@@ -832,16 +832,16 @@ cell width, so any theme takes any board. Chapters 4-13 each have an environment
 
 | Environment | Rule |
 |---|---|
-| Frostbound | Enemies 12% slower; heroes attack 8% slower except on shrine tiles |
+| Frostbound | Enemies 12% slower; board event **Frostbite** |
 | Ashen Forge | Road heroes +15% damage, -20% healing received; board event **Eruption** (below) |
-| Stormpeak | Flyers 20% slower; platform heroes reach one step less unless on high ground |
+| Stormpeak | Flyers 20% slower; platform heroes reach one step less unless on high ground; **Lightning Rod** |
 | Tidal Ruins | Board event **High Tide** (below) in odd phases; enemies 10% faster in even phases |
-| Mycelium Hollow | Heroes +25% healing received; enemies +10% health |
-| Crystal Vault | Magical heroes +15% damage; physical heroes +10% attack speed |
-| Haunted Necropolis | Placement regrows 20% faster; heroes -15% healing received |
-| Autumn Sanctuary | Placement regrows 15% faster; road heroes charge ultimates 15% faster |
-| Celestial Observatory | Ultimates charge 20% faster for 20 s, then heroes attack 10% faster for 20 s, repeating |
-| Clockwork Citadel | Heroes attack 15% faster; enemies move 10% faster |
+| Mycelium Hollow | Heroes +25% healing received; enemies +10% health; **Spore Bloom** |
+| Crystal Vault | Magical heroes +15% damage; physical heroes +10% attack speed; **Prisms** |
+| Haunted Necropolis | Placement regrows 20% faster; heroes -15% healing received; **Restless Dead** |
+| Autumn Sanctuary | Placement regrows 15% faster; road heroes charge ultimates 15% faster; **Windfall** |
+| Celestial Observatory | Ultimates charge 20% faster for 20 s, then heroes attack 10% faster for 20 s, repeating; **Alignment** |
+| Clockwork Citadel | Heroes attack 15% faster; enemies move 10% faster; **Gear Jam** |
 
 **Board events** (G2 of the gameplay ideas, October 8, 2026; `board-events.js`): an environment
 may carry an `event` in `tdEnvironments.json` that changes the board while the stage runs, so
@@ -858,13 +858,46 @@ guesses; no `hpScale` was re-measured.
   stretch of `count` (3) consecutive road tiles floods (never the first or last road tile) until
   the phase ends. Ground enemies on a flooded tile move `slow` (35%) slower and are Wet for
   `wetSeconds` (1), which feeds the Wet reactions; heroes standing in the water deal `heroAttack`
-  (20%) less damage (`floodAttack` in `attackValue`). The old global odd-phase slow is gone.
-- **Visuals:** tile marks lie flat on the ground under the figures (`drawBoardEvent` in
-  `render.js` on `layerGroundRings`): marked lava tiles pulse orange and glow hotter as the burst
-  nears, a burst flashes the tile, flood water stands as a breathing teal layer that rises and
-  drains over a second. Effekseer clips via `EVENT_ATLAS_FX` (`authored-fx.js`): `lavaWarn` fire on
+  (20%) less damage. The old global odd-phase slow is gone.
+- **Frostbite** (Frostbound, `frostbite`): a hero that stays `after` (15) s on one tile freezes over
+  and attacks `aps` (25%) slower until it moves (tracked per hero by tile; relocation thaws);
+  shrine tiles never freeze. Replaces the old global -8% attack speed. Clip `ice` on freezing.
+- **Lightning Rod** (Stormpeak, `rod`): each environment phase one random road or platform tile
+  becomes the rod. A hero on it charges its ultimate `charge` (60%) faster; every `every` (5) s
+  lightning strikes the tile and a hero there loses `damage` (8%) of max health. Clip `lightning`.
+- **Spore Bloom** (Mycelium Hollow, `spores`): from `first` (8) s, every `every` (12) s a mushroom
+  grows on an empty road tile (never the first or last, at most `max` 3). Ground enemies on it
+  heal `heal` (3%) of max health per second; a road hero on the tile tramples it. Clip `venom`.
+- **Prisms** (Crystal Vault, `prism`): each phase `count` (2) platform tiles become prisms; a hero
+  on one also strikes the nearest other enemy in reach for `share` (50%) of every basic attack
+  (`prismSplit` in `basicAttack`). Clip `holy` (violet tint) when they form.
+- **Restless Dead** (Haunted Necropolis, `ghosts`): a fallen ground enemy (no boss, flyer, child,
+  summon, Splitter child or ghost) rises `delay` (1.5) s later with `chance` (30%) as a ghost: same
+  kind, `hp` (40%) of its max health, no gold, drawn see-through with a pale blue tint. A kill by a
+  `restClasses` hero (Assassin, Support) stays down. Ghosts and Splitter children do not count
+  toward the stage counter. Clip `shadow`.
+- **Windfall** (Autumn Sanctuary, `windfall`): from `first` (10) s, every `every` (15) s a golden
+  fruit falls on an empty road or platform tile (if none is lying) and spoils after `seconds`
+  (12). A hero placed or relocated onto it collects `nectar` (6) Nectar. Clips `feather` (drop),
+  `buff` (collect).
+- **Alignment** (Celestial Observatory, `alignment`): each phase one random board row or column
+  aligns; heroes standing in it deal `attack` (25%) more damage. Clip `cosmic` on its hero tiles.
+- **Gear Jam** (Clockwork Citadel, `gearjam`): like Eruption (from `first` 14 s, every `every`
+  18 s, `count` 2 tiles, `warn` 3 s, hero tiles first), but heroes still on a marked tile are
+  jammed: they cannot attack for `seconds` (5), their ultimate keeps charging (`rootedUntil`).
+  Clips `stone` (warning), `shockwave` (jam).
+- **Hooks:** hero stats go through `boardEventMultiplier` inside `sim.environment()` (attack, aps,
+  charge); enemy pace through `floodPace`; kills through `boardEventOnKill`.
+- **Visuals:** tile marks lie flat on the ground under the figures (`render.js`,
+  `layerGroundRings`). One-off effects (`drawBoardEvent`): marked lava tiles pulse orange and glow
+  hotter as the burst nears, a burst flashes the tile, flood water stands as a breathing teal layer
+  that rises and drains over a second, gear warnings tick amber. Standing states come from
+  `boardEventMarks(game)` every frame (`drawBoardMarks`, `MARK_LOOKS`): frost creeping over a
+  hero's tile, the rod's charging frame, green mushroom tiles with caps, violet prisms, a golden
+  fruit that shrinks as it spoils, a faint starlit line, jammed tiles. Cues that are only a clip
+  are listed in `CLIP_ONLY_EVENTS`. Effekseer clips via `EVENT_ATLAS_FX` (`authored-fx.js`): `lavaWarn` fire on
   each marked tile, `lavaBurst` blast, `floodRise` water on each flooded tile; preloaded per event
-  through `BOARD_EVENT_CLIPS`.
+  through `BOARD_EVENT_CLIPS` (all ten events).
 - Test: `scripts/test-td-board-events.mjs` (in `npm run test:tower-defense`).
 
 ### Classic maps and legacy generators
@@ -1022,6 +1055,13 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
   `sim.environment()`. The first three stages and every third stage stay plain. The rule shows in
   the stage drawer and, after the environment rule, in the battle chip. Values are first guesses;
   no recommended Might was re-measured.
+  **Themed rules (October 8, 2026, G of the gameplay ideas):** Chapters 1-3 keep the seven
+  generic rules. Chapters 4-13 each have two rules of their own that fit the theme, alternating on
+  the chapter's rule slots (X-1 and X-4 the first, X-3 and X-6 the second): Frostbound Blizzard /
+  Frozen Ground, Ashen Ember Rain / Smelter's Due, Stormpeak Gale / Thin Air, Tidal Undertow / Salt
+  Spray, Mycelium Thick Spores / Glowcaps, Crystal Shatterlight / Hard Facets, Necropolis Moonless /
+  Mourning Bells, Autumn Falling Leaves / Harvest Moon, Celestial Starfall / Eclipse, Clockwork
+  Overclock / Rusted Gears. Same mod vocabulary, no sim change.
 - Chapter milestones at 10 / 20 / 30 rating points pay Gold and Hero XP / Divine Seals /
   Divine Seals and Seal Dust, once (`payMilestones`).
 

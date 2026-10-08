@@ -91,9 +91,21 @@ export const EVENT_ATLAS_FX = {
   lavaWarn: { clip: 'fire', width: 78, alpha: 0.75, speed: 0.7, replace: false, tint: 0xffb070 },
   lavaBurst: { clip: 'blast', width: 150, alpha: 0.95, speed: 1, replace: false },
   floodRise: { clip: 'water', width: 120, alpha: 0.8, speed: 1, replace: false },
+  frostSet: { clip: 'ice', width: 110, alpha: 0.85, speed: 1.2, replace: false },
+  rodStrike: { clip: 'lightning', width: 150, alpha: 0.9, speed: 1.4, replace: false },
+  sporeGrow: { clip: 'venom', width: 100, alpha: 0.8, speed: 1, replace: false },
+  sporeTrampled: { clip: 'venom', width: 80, alpha: 0.6, speed: 1.8, replace: false },
+  prismOn: { clip: 'holy', width: 110, alpha: 0.8, speed: 1, replace: false, tint: 0xd7b8ff },
+  ghostRise: { clip: 'shadow', width: 110, alpha: 0.85, speed: 1, replace: false, tint: 0xb8c8ff },
+  fruitDrop: { clip: 'feather', width: 110, alpha: 0.85, speed: 1, replace: false, tint: 0xffc56b },
+  fruitTaken: { clip: 'buff', width: 110, alpha: 0.9, speed: 1.3, replace: false, tint: 0xffd36b },
+  alignOn: { clip: 'cosmic', width: 100, alpha: 0.75, speed: 1, replace: false },
+  gearWarn: { clip: 'stone', width: 80, alpha: 0.6, speed: 0.8, replace: false },
+  gearJam: { clip: 'shockwave', width: 130, alpha: 0.9, speed: 1, replace: false },
 };
 // Clips each board event needs, preloaded when the stage's environment has that event.
-export const BOARD_EVENT_CLIPS = { eruption: ['fire', 'blast'], flood: ['water'] };
+export const BOARD_EVENT_CLIPS = { eruption: ['fire', 'blast'], flood: ['water'], frostbite: ['ice'], rod: ['lightning'], spores: ['venom'],
+  prism: ['holy'], ghosts: ['shadow'], windfall: ['feather', 'buff'], alignment: ['cosmic'], gearjam: ['stone', 'shockwave'] };
 export const BOSS_CLIPS = [...new Set(Object.values(EVENT_ATLAS_FX).map(recipe => recipe.clip))];
 export const GOD_CLIPS = ['blast', 'fire'];
 

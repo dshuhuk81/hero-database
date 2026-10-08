@@ -8,11 +8,14 @@
     "reuse": "moonlit",
     "color": 11066346,
     "rule": "Deep Frost",
-    "text": "Enemies move 12% slower. Heroes attack 8% slower; shrine tiles restore normal attack speed.",
+    "text": "Enemies move 12% slower. Frostbite: a hero that stays 15 seconds on one tile freezes over and attacks 25% slower until it moves. Shrine tiles never freeze.",
     "mods": {
-      "enemySpeed": 0.88,
-      "heroAps": 0.92,
-      "shrineAps": 1.0869565217391304
+      "enemySpeed": 0.88
+    },
+    "event": {
+      "type": "frostbite",
+      "after": 15,
+      "aps": 0.25
     }
   },
   {
@@ -47,11 +50,17 @@
     "reuse": "moonlit",
     "color": 10201326,
     "rule": "Headwinds",
-    "text": "Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them.",
+    "text": "Flying enemies move 20% slower. Platform heroes reach one step less; high-ground tiles shelter them. Lightning Rod: every 20 seconds a new tile draws the storm. A hero on it charges its ultimate 60% faster, but lightning strikes it for 8% of its health every 5 seconds.",
     "mods": {
       "flyerSpeed": 0.8,
       "platformRange": 0.9,
       "highgroundRange": 1.1111111111111112
+    },
+    "event": {
+      "type": "rod",
+      "charge": 0.6,
+      "every": 5,
+      "damage": 0.08
     }
   },
   {
@@ -84,10 +93,17 @@
     "reuse": "verdant",
     "color": 11459744,
     "rule": "Restorative Spores",
-    "text": "Heroes receive 25% more healing. Enemies gain 10% maximum health.",
+    "text": "Heroes receive 25% more healing. Enemies gain 10% maximum health. Spore Bloom: every 12 seconds a mushroom grows on an empty road tile (up to 3). Enemies on it heal 3% of their health per second; a road hero standing on it tramples it.",
     "mods": {
       "heroHeal": 1.25,
       "enemyHp": 1.1
+    },
+    "event": {
+      "type": "spores",
+      "first": 8,
+      "every": 12,
+      "max": 3,
+      "heal": 0.03
     }
   },
   {
@@ -99,10 +115,15 @@
     "reuse": "moonlit",
     "color": 12625135,
     "rule": "Prismatic Resonance",
-    "text": "Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed.",
+    "text": "Magical heroes deal 15% more damage. Physical heroes gain 10% attack speed. Prisms: every 20 seconds two platform tiles turn into prisms. A hero on one refracts each attack onto a second enemy for 50% damage.",
     "mods": {
       "magicAttack": 1.15,
       "physicalAps": 1.1
+    },
+    "event": {
+      "type": "prism",
+      "count": 2,
+      "share": 0.5
     }
   },
   {
@@ -114,10 +135,20 @@
     "reuse": "moonlit",
     "color": 10210223,
     "rule": "Grave Tribute",
-    "text": "Nectar regrows 20% faster. Heroes receive 15% less healing.",
+    "text": "Nectar regrows 20% faster. Heroes receive 15% less healing. Restless Dead: fallen enemies may rise again as ghosts with 40% health and no gold. Enemies an Assassin or Support finishes stay down.",
     "mods": {
       "placementRate": 1.2,
       "heroHeal": 0.85
+    },
+    "event": {
+      "type": "ghosts",
+      "chance": 0.3,
+      "delay": 1.5,
+      "hp": 0.4,
+      "restClasses": [
+        "Assassin",
+        "Support"
+      ]
     }
   },
   {
@@ -129,10 +160,17 @@
     "reuse": "verdant",
     "color": 15317623,
     "rule": "Harvest Blessing",
-    "text": "Nectar regrows 15% faster. Road heroes charge their ultimates 15% faster.",
+    "text": "Nectar regrows 15% faster. Road heroes charge their ultimates 15% faster. Windfall: every 15 seconds a golden fruit falls on an empty tile for 12 seconds. Move a hero onto it to collect 6 Nectar.",
     "mods": {
       "placementRate": 1.15,
       "roadCharge": 1.15
+    },
+    "event": {
+      "type": "windfall",
+      "first": 10,
+      "every": 15,
+      "seconds": 12,
+      "nectar": 6
     }
   },
   {
@@ -144,10 +182,14 @@
     "reuse": "moonlit",
     "color": 15785381,
     "rule": "Astral Convergence",
-    "text": "Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on.",
+    "text": "Heroes charge ultimates 20% faster for 20 seconds, then attack 10% faster for 20 seconds, and so on. Alignment: every 20 seconds the stars align over one row or column. Heroes standing in it deal 25% more damage.",
     "mods": {
       "oddCharge": 1.2,
       "evenAps": 1.1
+    },
+    "event": {
+      "type": "alignment",
+      "attack": 0.25
     }
   },
   {
@@ -159,10 +201,18 @@
     "reuse": "sunscar",
     "color": 13414011,
     "rule": "Overdrive",
-    "text": "Heroes attack 15% faster. Enemies move 10% faster.",
+    "text": "Heroes attack 15% faster. Enemies move 10% faster. Gear Jam: every 18 seconds two tiles are marked, hero tiles first; 3 seconds later the gears jam there and heroes still on them cannot attack for 5 seconds.",
     "mods": {
       "heroAps": 1.15,
       "enemySpeed": 1.1
+    },
+    "event": {
+      "type": "gearjam",
+      "first": 14,
+      "every": 18,
+      "warn": 3,
+      "count": 2,
+      "seconds": 5
     }
   }
 ]

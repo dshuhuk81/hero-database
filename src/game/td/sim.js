@@ -1,6 +1,6 @@
 import { expandTimeline, timelineTotals } from "./timeline.js";
 import { markEliteSpawns } from "./elites.js";
-import { boardEventFor, floodAttack, floodPace, newBoardEventState, stepBoardEvents } from "./board-events.js";
+import { boardEventFor, boardEventMultiplier, boardEventOnKill, floodPace, newBoardEventState, prismSplit, stepBoardEvents } from "./board-events.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern, unitInPattern } from "./board.js";
@@ -279,7 +279,8 @@ export class TowerDefenseGame {
 
   environment(stat, hero = null, kind = null) {
     const ctx = { phase: this.environmentPhase(), hero, kind, ring: hero ? this.ringKind(hero.slotType, hero.slotIndex) : null };
-    return environmentMultiplier(this.map, stat, ctx) * (this.stageRule ? modsMultiplier(this.stageRule.mods, stat, ctx) : 1); // chapter environment x stage rule
+    return environmentMultiplier(this.map, stat, ctx) * (this.stageRule ? modsMultiplier(this.stageRule.mods, stat, ctx) : 1) // chapter environment x stage rule
+      * (hero && this.boardEvent ? boardEventMultiplier(this, stat, hero) : 1); // x the hero's tile in a board event (G2)
   }
 
   // What place() would field on this tile, without spending anything (recruit preview).
@@ -661,7 +662,7 @@ export class TowerDefenseGame {
           }
           this.leakKinds[enemy.kind] = (this.leakKinds[enemy.kind] || 0) + (enemy.damage || 1);
           this.totalLeaks += 1;
-          if (!enemy.parentId) this.enemiesDown += 1;
+          if (!enemy.parentId && !enemy.ghost && !enemy.splitFrom) this.enemiesDown += 1;
           this.onChange("leak", this);
           if (this.lives === 0) this.finish(false);
         }
@@ -1135,7 +1136,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * floodAttack(this, hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
+    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -1543,6 +1544,16 @@ export class TowerDefenseGame {
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
     const beam = hero.basic === "beam";
     strike(target, (kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others)), beam ? { showShot: false } : {});
+    // Crystal Vault prism tile (G2): the attack also refracts onto the nearest other enemy in reach.
+    const prism = this.boardEvent ? prismSplit(this, hero) : null;
+    if (prism) {
+      const second = this.enemies.filter((e) => e !== target && !e.dead && this.canHit(hero, e) && this.inReach(hero, e))
+        .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y))[0];
+      if (second) {
+        this.emitHeroEffect(hero, { type: "shot", x1: target.x, y1: target.y, x2: second.x, y2: second.y, life: 0.2, color: "purple" });
+        strike(second, prism, { showShot: false });
+      }
+    }
     if (beam) {
       // Isis: the shot is a horizontal beam that strikes every enemy on her row on that side
       // (nearest first, up to `targets`), the target in full and the rest for the splash share.
@@ -2090,8 +2101,9 @@ export class TowerDefenseGame {
 
   killEnemy(enemy, hero) {
     enemy.dead = true;
-    if (!enemy.parentId) this.enemiesDown += 1;
+    if (!enemy.parentId && !enemy.ghost && !enemy.splitFrom) this.enemiesDown += 1; // ghosts and Splitter children are extra bodies
     if (this.boons.length) this.boonsOnKill(enemy, hero);
+    if (this.boardEvent) boardEventOnKill(this, enemy, hero); // Necropolis ghosts (G2)
     if (enemy.affixes) this.eliteOnDeath(enemy);
     const spores = this.tuning.enemies[enemy.kind]?.spores;
     if (spores) {

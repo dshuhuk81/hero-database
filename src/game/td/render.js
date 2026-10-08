@@ -15,6 +15,7 @@ import { godPerspectivePoint, godPerspectiveQuad } from "./god-mode-arena.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf, cellAt, cellCenter, patternCells } from "./board.js";
 import { ELITE_AFFIXES } from "./elites.js";
+import { boardEventMarks } from "./board-events.js";
 
 // Exact versions (audit step 4): a CDN major tag would ship untested releases. Bump both
 // deliberately and re-run the Chromium checks.
@@ -79,6 +80,9 @@ export function enemyRenderScale(kind, rules) {
   return kind === "boss" ? rules?.bossScale ?? rules?.enemyScale ?? 1 : rules?.enemyScale ?? 1;
 }
 
+// Board event cues (G2) that are only an Effekseer clip (authored-fx.js EVENT_ATLAS_FX), no drawn shape.
+const CLIP_ONLY_EVENTS = new Set(["floodRise", "frostSet", "rodStrike", "sporeGrow", "sporeTrampled", "prismOn", "ghostRise", "fruitDrop", "fruitTaken", "alignOn"]);
+
 // Elites (G1) stand a little taller than their kind so they read in a crowd.
 export const ELITE_SCALE = 1.15;
 const unitRenderScale = (unit, rules) => enemyRenderScale(unit.kind, rules) * (unit.elite ? ELITE_SCALE : 1);
@@ -87,7 +91,7 @@ export const ELITE_GOLD = 0xfbbf24;
 // Targetability is communicated by combat behavior and boss mechanics, not by degrading art
 // (Lilith stays opaque). The one exception is a diving Burrower: underground it is all but gone.
 export function enemyRenderAlpha(unit) {
-  return unit?.burrowedUntil > 0 && unit.untargetable ? 0.12 : 1;
+  return unit?.burrowedUntil > 0 && unit.untargetable ? 0.12 : unit?.ghost ? 0.6 : 1; // Necropolis ghosts (G2) are see-through
 }
 
 // A boss's large display size must not stretch its eight-frame gait into a near-still
@@ -1737,7 +1741,7 @@ export async function createRenderer(canvas, game, options = {}) {
     c._iceOverlay.visible = frozen;
     const stunned = !petrified && !frozen && (unit.stunnedUntil ?? 0) > game.time;
     const chilled = unit.chill > 0;
-    const own = ENEMY_ART[unit.kind]?.tint ?? 0xffffff;
+    const own = unit.ghost ? 0x9fb4ff : ENEMY_ART[unit.kind]?.tint ?? 0xffffff;
     for (const sprite of [c._fullSprite, c._portraitSprite, c._bossSprite, c._enemySprite]) {
       if (sprite) sprite.tint = petrified ? 0x9ba39f : frozen ? 0xa8e4ff : stunned ? 0xb9a8ff : chilled ? 0xd2f0ff : own;
     }
@@ -2212,6 +2216,16 @@ export async function createRenderer(canvas, game, options = {}) {
       drawArea(g, effect, { color: 0xffd08a, alpha: Math.min(1, effect.life / 0.6) * 0.55 });
       return true;
     }
+    if (effect.type === "gearWarn") {
+      // Clockwork: marked tiles tick amber as the gears wind up.
+      const tick = Math.floor(now / 250) % 2;
+      drawArea(g, effect, { color: 0xc58a2b, alpha: 0.16 + tick * 0.12 }, { width: 3, color: 0xffd27a, alpha: 0.6 + tick * 0.35 });
+      return true;
+    }
+    if (effect.type === "gearJam") {
+      drawArea(g, effect, { color: 0xfff1c9, alpha: Math.min(1, effect.life / 0.6) * 0.5 });
+      return true;
+    }
     if (effect.type === "flood") {
       // Water stands on the flooded road until the tide turns; it rises and drains over a second.
       const rise = Math.max(0, Math.min(1, effect.life, (effect.total ?? 1) - effect.life));
@@ -2220,6 +2234,38 @@ export async function createRenderer(canvas, game, options = {}) {
       return true;
     }
     return false;
+  }
+
+  // Standing board event states (boardEventMarks), drawn every frame flat on the ground.
+  const MARK_LOOKS = {
+    frost: (p) => [{ color: 0xbfeaff, alpha: p >= 1 ? 0.32 : (p - 0.5) * 0.3 }, { width: p >= 1 ? 3 : 2, color: 0xe6f8ff, alpha: p >= 1 ? 0.9 : p * 0.6 }],
+    rod: (p, pulse) => [{ color: 0xfff6b0, alpha: 0.1 + p * 0.22 }, { width: 3, color: 0xfff3a0, alpha: 0.45 + pulse * 0.45 }],
+    spores: (p, pulse) => [{ color: 0x6fbf3a, alpha: 0.24 + pulse * 0.08 }, { width: 2, color: 0xb5f07a, alpha: 0.6 }],
+    prism: (p, pulse) => [{ color: 0xb38cff, alpha: 0.16 + pulse * 0.1 }, { width: 3, color: 0xe2d2ff, alpha: 0.55 + pulse * 0.4 }],
+    fruit: () => [null, { width: 2, color: 0xffc56b, alpha: 0.7 }],
+    align: (p, pulse) => [{ color: 0xfff1c2, alpha: 0.07 + pulse * 0.06 }, { width: 1.5, color: 0xfff1c2, alpha: 0.3 + pulse * 0.2 }],
+    jam: (p, pulse) => [{ color: 0x8a6a3a, alpha: 0.25 }, { width: 3, color: 0xffd27a, alpha: 0.5 + pulse * 0.4 }],
+  };
+  function drawBoardMarks(g, now) {
+    const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(now / 300);
+    for (const mark of boardEventMarks(game)) {
+      const [fill, stroke] = MARK_LOOKS[mark.look]?.(mark.progress, pulse) ?? [];
+      const size = mark.cell;
+      for (const [x, y] of mark.cells) {
+        if (fill) g.rect(x, y, size, size).fill(fill);
+        if (stroke) g.rect(x + 2, y + 2, size - 4, size - 4).stroke(stroke);
+        if (mark.look === "spores") {
+          // Three mushroom caps on the tile.
+          for (const [fx, fy] of [[0.3, 0.35], [0.62, 0.55], [0.4, 0.72]]) g.ellipse(x + size * fx, y + size * fy, size * 0.09, size * 0.06).fill({ color: 0xd8f5a2, alpha: 0.85 });
+        }
+        if (mark.look === "fruit") {
+          // A golden fruit that shrinks as it spoils.
+          const r = size * (0.08 + 0.06 * mark.progress) * (1 + pulse * 0.08);
+          g.circle(x + size / 2, y + size / 2, r).fill({ color: 0xffb43b, alpha: 0.95 }).stroke({ width: 2, color: 0x7a3d0a, alpha: 0.9 });
+          g.ellipse(x + size / 2 + r * 0.3, y + size / 2 - r * 1.05, r * 0.4, r * 0.2).fill({ color: 0x6fbf3a });
+        }
+      }
+    }
   }
 
   // R5 power visuals drawn every frame on layerFx; true when the effect was handled.
@@ -2327,17 +2373,18 @@ export async function createRenderer(canvas, game, options = {}) {
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
     layerGroundRings.removeChildren();
+    if (game.boardEvent) { const mg = new PIXI.Graphics(); drawBoardMarks(mg, now); layerGroundRings.addChild(mg); }
     for (const effect of game.effects) {
       if (effect.type === "damageNumber") continue;
       if (effect.type === "godTelegraph" || effect.type === "godStrike") continue; // god-scene.js draws these
       if (effect.type === "baseHit") continue; // physical sanctuary owns its impact feedback
-      if (["lavaWarn", "lavaBurst", "flood"].includes(effect.type)) {
+      if (["lavaWarn", "lavaBurst", "flood", "gearWarn", "gearJam"].includes(effect.type)) {
         const eg = new PIXI.Graphics();
         drawBoardEvent(effect, eg, now);
         layerGroundRings.addChild(eg);
         continue;
       }
-      if (effect.type === "floodRise") continue; // Effekseer water clip only
+      if (CLIP_ONLY_EVENTS.has(effect.type)) continue; // board event cues: Effekseer clips only
       if (["thunderWarn", "thunderStrike", "shieldUp", "shieldBlock"].includes(effect.type)) {
         const pg = new PIXI.Graphics();
         drawPowerEffect(effect, pg, now);

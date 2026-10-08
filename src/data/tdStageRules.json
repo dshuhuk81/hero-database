@@ -54,5 +54,168 @@
       "heroHeal": 1.25,
       "flyerSpeed": 1.15
     }
+  },
+  "blizzard": {
+    "name": "Blizzard",
+    "text": "Flying enemies move 25% slower. Platform heroes reach 10% less; high-ground tiles shelter them.",
+    "mods": {
+      "flyerSpeed": 0.75,
+      "platformRange": 0.9,
+      "highgroundRange": 1.1111111111111112
+    }
+  },
+  "frozenGround": {
+    "name": "Frozen Ground",
+    "text": "Enemies move 10% slower. Heroes attack 8% slower.",
+    "mods": {
+      "enemySpeed": 0.9,
+      "heroAps": 0.92
+    }
+  },
+  "emberRain": {
+    "name": "Ember Rain",
+    "text": "Enemies have 10% more health. Magical heroes deal 15% more damage.",
+    "mods": {
+      "enemyHp": 1.1,
+      "magicAttack": 1.15
+    }
+  },
+  "smeltersDue": {
+    "name": "Smelter's Due",
+    "text": "Nectar arrives 15% slower. Road heroes deal 15% more damage.",
+    "mods": {
+      "placementRate": 0.85,
+      "roadAttack": 1.15
+    }
+  },
+  "gale": {
+    "name": "Gale",
+    "text": "Flying enemies move 20% faster. Heroes charge ultimates 20% faster every other 20 seconds.",
+    "mods": {
+      "flyerSpeed": 1.2,
+      "oddCharge": 1.2
+    }
+  },
+  "thinAir": {
+    "name": "Thin Air",
+    "text": "Heroes attack 10% slower. Enemies have 10% less health.",
+    "mods": {
+      "heroAps": 0.9,
+      "enemyHp": 0.9
+    }
+  },
+  "undertow": {
+    "name": "Undertow",
+    "text": "At low tide enemies move another 10% faster. Road heroes receive 20% more healing.",
+    "mods": {
+      "evenSpeed": 1.1,
+      "roadHeal": 1.2
+    }
+  },
+  "saltSpray": {
+    "name": "Salt Spray",
+    "text": "Physical heroes attack 10% slower. Magical heroes deal 10% more damage.",
+    "mods": {
+      "physicalAps": 0.9,
+      "magicAttack": 1.1
+    }
+  },
+  "thickSpores": {
+    "name": "Thick Spores",
+    "text": "Enemies have 15% more health. Healing is 20% stronger.",
+    "mods": {
+      "enemyHp": 1.15,
+      "heroHeal": 1.2
+    }
+  },
+  "glowcaps": {
+    "name": "Glowcaps",
+    "text": "Nectar arrives 15% faster. Flying enemies move 15% faster.",
+    "mods": {
+      "placementRate": 1.15,
+      "flyerSpeed": 1.15
+    }
+  },
+  "shatterlight": {
+    "name": "Shatterlight",
+    "text": "Magical heroes deal 20% more damage. Enemies have 10% more health.",
+    "mods": {
+      "magicAttack": 1.2,
+      "enemyHp": 1.1
+    }
+  },
+  "hardFacets": {
+    "name": "Hard Facets",
+    "text": "Physical heroes attack 15% faster. Enemies have 15% more health.",
+    "mods": {
+      "physicalAps": 1.15,
+      "enemyHp": 1.15
+    }
+  },
+  "moonless": {
+    "name": "Moonless",
+    "text": "Platform heroes reach 10% less; high-ground tiles shelter them. Flying enemies move 10% faster.",
+    "mods": {
+      "platformRange": 0.9,
+      "highgroundRange": 1.1111111111111112,
+      "flyerSpeed": 1.1
+    }
+  },
+  "mourningBells": {
+    "name": "Mourning Bells",
+    "text": "Heroes receive 20% less healing. Road heroes charge ultimates 20% faster.",
+    "mods": {
+      "heroHeal": 0.8,
+      "roadCharge": 1.2
+    }
+  },
+  "fallingLeaves": {
+    "name": "Falling Leaves",
+    "text": "Nectar arrives 20% faster. Enemies move 8% faster.",
+    "mods": {
+      "placementRate": 1.2,
+      "enemySpeed": 1.08
+    }
+  },
+  "harvestMoon": {
+    "name": "Harvest Moon",
+    "text": "Heroes charge ultimates 20% faster every other 20 seconds. Enemies have 10% more health.",
+    "mods": {
+      "oddCharge": 1.2,
+      "enemyHp": 1.1
+    }
+  },
+  "starfall": {
+    "name": "Starfall",
+    "text": "Magical heroes deal 15% more damage. Heroes receive 15% less healing.",
+    "mods": {
+      "magicAttack": 1.15,
+      "heroHeal": 0.85
+    }
+  },
+  "eclipse": {
+    "name": "Eclipse",
+    "text": "Platform heroes reach 10% less; high-ground tiles shelter them. Road heroes deal 15% more damage.",
+    "mods": {
+      "platformRange": 0.9,
+      "highgroundRange": 1.1111111111111112,
+      "roadAttack": 1.15
+    }
+  },
+  "overclock": {
+    "name": "Overclock",
+    "text": "Heroes attack 10% faster. Enemies move 10% faster.",
+    "mods": {
+      "heroAps": 1.1,
+      "enemySpeed": 1.1
+    }
+  },
+  "rustedGears": {
+    "name": "Rusted Gears",
+    "text": "Enemies move 10% slower. Heroes attack 10% slower.",
+    "mods": {
+      "enemySpeed": 0.9,
+      "heroAps": 0.9
+    }
   }
 }
