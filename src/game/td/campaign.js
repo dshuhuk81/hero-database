@@ -518,12 +518,19 @@ export function multiSummonCount(summonCfg, bannerId, progress, heroes, now = Da
   if (!banner) return 0;
   const pool = bannerPool(banner, progress, heroes, now).length;
   const count = Math.min(Math.max(1, Number(banner.multiCount) || 10), withReplacement(banner) && pool ? Infinity : pool);
-  return count > 0 && canAfford(progress, scaleCost(banner.cost, count)) ? count : 0;
+  return count > 0 && canAfford(progress, summonCost(banner, count)) ? count : 0;
 }
 
 const scaleCost = (cost, count) => Object.fromEntries(Object.entries(cost ?? {}).map(([id, amount]) => [id, amount * count]));
 
-// Pays `count` times the banner's cost and draws `count` heroes one after another. Each
+// Price of `count` summons: a full multi summon (`multiCount`) uses `multiCost` when the banner
+// sets one (the x10 discount: 60 single, 540 for ten); anything else is count x `cost`.
+export function summonCost(banner, count) {
+  const multi = Math.max(1, Number(banner?.multiCount) || 10);
+  return count === multi && banner?.multiCost ? { ...banner.multiCost } : scaleCost(banner?.cost, count);
+}
+
+// Pays summonCost(banner, count) and draws `count` heroes one after another. Each
 // hero's weight is its rarity weight (`rarityWeights`: lord/legendary/epic/common); the
 // current featured hero's rarity weight is multiplied by `featuredWeight`. A "locked"
 // banner draws without replacement (new heroes only); an "all" banner with replacement:
@@ -535,7 +542,7 @@ export function summonMany(summonCfg, bannerId, progress, heroes, count = 1, rng
   const n = Math.floor(Number(count) || 0);
   if (!banner || n < 1) return null;
   let pool = bannerPool(banner, progress, heroes, now);
-  const cost = scaleCost(banner.cost, n);
+  const cost = summonCost(banner, n);
   if (!pool.length || (!withReplacement(banner) && pool.length < n) || !canAfford(progress, cost)) return null;
   const featured = featuredHeroId(banner, now);
   const featuredWeight = Math.max(1, Number(banner.featuredWeight) || 1);

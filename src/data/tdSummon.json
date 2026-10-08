@@ -13,9 +13,12 @@
       "id": "crossing",
       "name": "Ember at the Crossing",
       "cost": {
-        "divineSeals": 54
+        "divineSeals": 60
       },
       "multiCount": 10,
+      "multiCost": {
+        "divineSeals": 540
+      },
       "pool": "all",
       "featuredRotation": [
         "surtr",

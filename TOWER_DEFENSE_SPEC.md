@@ -830,6 +830,16 @@ pixel chest (open once claimed). Mutators show crimson PixelLab emblems
 Squad cards are neutral; class color only on the class mark. Scoped to `.td-trial--daily`; the
 Expedition screen keeps the old look.
 
+**Currency icons (October 2026).** Favor, Gold, Hero XP, Divine Seals and Seal Dust use PixelLab
+pixel icons `td/ui/currency/{favor,gold,hero-xp,divine-seals,seal-dust}-v1.webp` (32 px drawn,
+64 px stored), all built in `currency-icons.js`; Favor no longer uses the star SVG. The old
+painted item art in `td/icons/items/` is no longer referenced by the currency chips.
+
+**Summon screen, fewer boxes (October 2026).** No outlined panels: the stage fades out at its
+edges, banner tabs are a list with a gold-lit active entry, Seal Dust and the featured rotation
+sit without frames. Summon x10 is the primary gold button, x1 a dark ghost button; both have
+angled ends. Focus starts on x10 when it is affordable.
+
 **Campaign chapters:** 1 The Road to the Crossing (10 stages), 2 The Sunscar March,
 3 The Emerald Deep, 4 The Frozen Covenant, 5 The Cinder Oath, 6 The Thunder Stair,
 7 The Drowned Crown, 8 The Spore Lanterns, 9 The Shattered Prism, 10 The Silent Procession,
@@ -858,7 +868,7 @@ changes to `hpScale`, composition, counts, timing, resistances or lives.
 The Campaign banner (bottom right of the home screen, the only big button) opens the stage list;
 Daily Trial, Expedition and God Challenge are emblems top right, and the dock (Daily, Heroes,
 Summon, Blessings, Glossary) runs along the bottom left as emblems with labels. Emblems are
-PixelLab art in `td/ui/emblems/{name}-v1.webp` (`homeEmblemPath` in `assets.js`; a file not yet
+PixelLab art in `td/ui/emblems/{name}-v3.webp` (`homeEmblemPath` in `assets.js`; a file not yet
 on R2 falls back to `public/td`). Back returns home.
 
 - **Campaign stages:** one row of full-height stage cards for the current chapter (swiped
@@ -934,7 +944,7 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 
 ### Summoning
 
-`tdSummon.json`: banner "Ember at the Crossing", 54 Divine Seals per summon, x1 or x10 (540),
+`tdSummon.json`: banner "Ember at the Crossing", 60 Divine Seals for x1, 540 for x10 (`multiCost`, priced by `summonCost` in `campaign.js`),
 one featured hero for 14 days (rotation `surtr`, `nott`, `hephaestus`, `hecate`; weight x2),
 rarity weights lord 0.5 / legendary 1 / epic 2 / common 10 (retuned October 6, 2026, owner: legendaries and the
 Lord came too often; the old 1.8 / 6 / 4 / 10 gave 16% legendary and 0.8% Lord per summon. Now about 3.8% legendary,

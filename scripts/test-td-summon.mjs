@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import campaignData from "../src/data/tdCampaign.json" with { type: "json" };
 import summonData from "../src/data/tdSummon.json" with { type: "json" };
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
-import { bannerPool, heroAvailability, rotationEndsAt, allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, collectionHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
+import { bannerPool, heroAvailability, rotationEndsAt, allStages, stageRewardHeroes, heroRewardStage, summonableHeroes, canSummon, CAMPAIGN_SAVE_VERSION, CURRENCIES, CURRENCY_NAMES, featuredChance, featuredHeroId, finishCampaignStage, multiSummonCount, newCampaignProgress, repeatRewards, rewardText, sanitizeCampaign, summon, summonCost, summonMany, summonPool, summonRates, addSeals, validSquad, autoFodder, buyCopiesWithDust, collectionHeroes, convertCopies, evolutionBonus, evolutionMaterial, evolve, exchangeDust, heroEvolution, heroStars, starScale, starUp, starUpCost } from "../src/game/td/campaign.js";
 
 const heroIds = new Set(heroes.map((hero) => hero.id));
 const ids = heroes.map((hero) => hero.id);
@@ -172,10 +172,10 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
   const p = newCampaignProgress(campaign);
   const pool = summonPool(p, ids);
   const n = Math.min(multi, pool.length);
-  assert.equal(multiSummonCount(summonCfg, banner.id, withSeals(p, cost * n - 1), ids), 0, "multi: one seal short");
-  const rich = withSeals(p, cost * n + 3);
+  assert.equal(multiSummonCount(summonCfg, banner.id, withSeals(p, summonCost(banner, n).divineSeals - 1), ids), 0, "multi: one seal short");
+  const rich = withSeals(p, summonCost(banner, n).divineSeals + 3);
   assert.equal(multiSummonCount(summonCfg, banner.id, rich, ids), n, "multi count = multiCount or pool left");
-  assert.equal(summonMany(summonCfg, banner.id, withSeals(p, cost * n - 1), ids, n), null, "summonMany: short wallet is null, nothing paid");
+  assert.equal(summonMany(summonCfg, banner.id, withSeals(p, summonCost(banner, n).divineSeals - 1), ids, n), null, "summonMany: short wallet is null, nothing paid");
   assert.equal(summonMany(summonCfg, banner.id, rich, ids, pool.length + 1), null, "summonMany: more than the pool is null");
   assert.equal(summonMany(summonCfg, banner.id, rich, ids, 0), null, "summonMany: count 0 is null");
   const many = summonMany(summonCfg, banner.id, rich, ids, n, Math.random);
@@ -197,7 +197,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 // --- Economy: the authored campaign pays at least one full multi summon ---
 {
   const campaignSeals = allStages(campaignData).reduce((sum, stage) => sum + (stage.rewards ?? []).filter((reward) => reward.id === "divineSeals").reduce((m, reward) => m + reward.amount, 0), 0);
-  assert.ok(campaignSeals >= cost * banner.multiCount, `campaign pays ${campaignSeals} seals, a full x${banner.multiCount} costs ${cost * banner.multiCount}`);
+  assert.ok(campaignSeals >= summonCost(banner, banner.multiCount).divineSeals, `campaign pays ${campaignSeals} seals, a full x${banner.multiCount} costs ${summonCost(banner, banner.multiCount).divineSeals}`);
 }
 
 // --- Duplicates, Stars, Evolution, Seal Dust (M26 sprint 9) ---

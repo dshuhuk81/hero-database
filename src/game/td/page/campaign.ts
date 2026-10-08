@@ -14,7 +14,7 @@ import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
-import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
+import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
 import { notifyQuest } from "../quests.js";
@@ -721,11 +721,13 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-summon-feature-class]").innerHTML = featured ? classGlyph(featured.class, 22) : "";
     const ok = canSummon(summonCfg, banner.id, p, ids, now);
     summonButton.disabled = !ok;
-    summonButton.toggleAttribute("data-td-autofocus", ok);
     summonButton.innerHTML = `<span>Summon x1</span>${currencyAmount("divineSeals", banner.cost.divineSeals)}`;
     const multi = Number(banner.multiCount) || 10;
     summonMultiButton.disabled = !multiSummonCount(summonCfg, banner.id, p, ids, now);
-    summonMultiButton.innerHTML = `<span>Summon x${multi}</span>${currencyAmount("divineSeals", banner.cost.divineSeals * multi)}`;
+    // Focus lands on the primary x10 when it is affordable, else on x1.
+    summonMultiButton.toggleAttribute("data-td-autofocus", !summonMultiButton.disabled);
+    summonButton.toggleAttribute("data-td-autofocus", ok && summonMultiButton.disabled);
+    summonMultiButton.innerHTML = `<span>Summon x${multi}</span>${currencyAmount("divineSeals", summonCost(banner, multi).divineSeals)}`;
     q("[data-td-summon-price]").innerHTML = `${currencyList(banner.cost)} per summon`;
 
     // Right: the featured rotation (current and coming heroes); chances live in the info popover.
@@ -1153,7 +1155,7 @@ export function createCampaign(ctx: PageContext) {
       isNew: result.isNew,
       dust,
       skip: summonSkipInput.checked,
-      again: { label: `Summon x${count} ${currencyAmount("divineSeals", banner.cost.divineSeals * count)}`, enabled: again },
+      again: { label: `Summon x${count} ${currencyAmount("divineSeals", summonCost(banner, count).divineSeals)}`, enabled: again },
       wallet: currencyAmount("divineSeals", progress().currencies.divineSeals || 0),
       describe: (id) => {
         const hero = heroById.get(id);

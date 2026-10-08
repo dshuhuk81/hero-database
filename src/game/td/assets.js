@@ -16,7 +16,7 @@ export function tdAsset(path) {
 // Home screen camp scene (TdHome.astro, page/home.ts).
 export const campHomeArt = () => tdAsset("ui/camp-home.webp");
 // Home screen emblems (PixelLab, 128 px): ui/emblems/{name}-{version}.webp.
-export const HOME_EMBLEM_VERSION = "v1";
+export const HOME_EMBLEM_VERSION = "v3"; // v3: every ring scaled to one diameter and centered
 export const homeEmblemPath = (name) => `ui/emblems/${name}-${HOME_EMBLEM_VERSION}.webp`;
 // Daily Quests art (PixelLab): chest states and the activity coin, ui/quests/{name}-v1.webp.
 export const questArtPath = (name) => `ui/quests/${name}-v1.webp`;
