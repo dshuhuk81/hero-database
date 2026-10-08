@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
 import { godChallenge, godMapFor } from "../src/game/td/god-mode.js";
 import { boardOf, cellAt } from "../src/game/td/board.js";
+import { resolveTilt } from "../src/game/td/render.js";
+import * as godScene from "../src/game/td/god-scene.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 
@@ -17,6 +19,24 @@ assert.equal(map.platformSlots.length, 9, "nine platform tiles (four P, five H);
 assert.equal(Object.values(map.rings).filter((kind) => kind === "highground").length, 5, "the gallery is high ground");
 assert.deepEqual(map.god.cells, [[2, -1], [3, -1], [4, -1], [5, -1], [6, -1]], "boss target cells stay above the playable board");
 assert.equal(map.platformSlots.some(([, y]) => y < 300), false, "nothing is placeable in the removed upper row");
+
+// --- the arena tilts more than Campaign without lifting its near edge ---
+{
+  const view = resolveTilt(map, tuning.board.tilt, { campaign: true });
+  assert.ok(view.k < 0.75, "God Mode has a stronger board tilt than Campaign");
+  assert.ok(Math.abs(view.offsetY + view.k * 536 - 457) < 2, "the near edge stays anchored on screen");
+}
+
+// --- area attacks get distinct impact compositions, not one identical burst per tile ---
+{
+  const slam = godScene.godImpactPlan?.("slam", [[1, 0], [0, 0], [1, 1], [2, 0]]);
+  assert.deepEqual(slam?.burstCells, [[1, 0]], "a slam has one focal impact");
+  assert.deepEqual(slam?.crackCells, [[1, 0], [0, 0], [1, 1], [2, 0]], "all damaged cells remain marked by fissures");
+  const sweep = godScene.godImpactPlan?.("sweep", [[0, 0], [1, 0], [2, 0]]);
+  assert.deepEqual(sweep?.burstCells, [], "a sweep does not stamp impacts across the row");
+  assert.deepEqual(sweep?.sweepCells, [[0, 0], [1, 0], [2, 0]], "the sweep is one directional ground effect");
+  assert.deepEqual(godScene.godImpactPlan?.("embers", [[2, 0], [6, 1]])?.burstCells, [[2, 0], [6, 1]], "separate ember strikes keep their own impacts");
+}
 
 const make = (extra = {}) => new TowerDefenseGame({ heroes, tuning, map, timeline: [], seed: 11, allowedHeroes: ["atlas", "odin", "skadi", "plutus", "aegir", "fenrir", "ymir"], ...extra });
 const roadIndex = (c, r) => board.road.findIndex(([rc, rr]) => rc === c && rr === r);

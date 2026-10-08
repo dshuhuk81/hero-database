@@ -19,6 +19,17 @@ const easeOut = (t) => 1 - (1 - t) * (1 - t);
 // The arena borrows the Ashen theme for its tile art, so the placement tiles match the campaign boards.
 const TILE_THEME = "ashen-sanctuary-v1";
 
+// Keep every threatened tile legible, but give wide attacks one visual focal point.
+export function godImpactPlan(attack, cells) {
+  if (attack === "sweep") return { burstCells: [], crackCells: [], sweepCells: cells };
+  if (attack === "embers") return { burstCells: cells, crackCells: cells, sweepCells: [] };
+  const centre = cells.reduce((best, cell) => {
+    const neighbours = cells.filter(([c, r]) => Math.abs(c - cell[0]) + Math.abs(r - cell[1]) === 1).length;
+    return neighbours > best.neighbours ? { cell, neighbours } : best;
+  }, { cell: cells[0], neighbours: -1 }).cell;
+  return { burstCells: centre ? [centre] : [], crackCells: cells, sweepCells: [] };
+}
+
 export async function createGodScene(PIXI, game, { layers, tilt = null, reducedMotion = false, onImpact = () => {} }) {
   const cfg = game.god;
   const board = boardOf(game.map);
@@ -191,12 +202,10 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
   for (let i = 0; i < 60; i++) { ambient(0.05); updateParticles(0.05); } // pre-warm
 
   // ---- impacts ----
-  const rings = [], decals = [];
+  const fissures = [], sweeps = [];
   let flash = 0;
   function strikeCell(cell, attack) {
     const [x, y] = cellCenter(board, cell);
-    rings.push({ x, y, t0: elapsed, dur: 0.5, rx: board.cell * 1.1, color: 0xff8a3d });
-    decals.push({ x, y, t0: elapsed, cracks: Array.from({ length: 6 }, () => rnd(0, TAU)) });
     const heavy = attack === "slam";
     for (let i = 0; i < (heavy ? 12 : 6); i++) emit(partsLayer, { x: x + rnd(-30, 30), y: y + rnd(-6, 6), vx: rnd(-200, 200), vy: -rnd(160, 340), g: 900, life: rnd(0.7, 1.1), sz: rnd(4, 7), tint: pick([0x2b2420, 0x4b3a30, 0x1b1614]), vr: rnd(-8, 8) });
     for (let i = 0; i < 20; i++) emit(partsLayer, { x, y, vx: rnd(-240, 240), vy: -rnd(120, 380), g: 800, life: rnd(0.5, 0.9), sz: 3, tint: pick(EMBER_TINTS), add: true });
@@ -211,8 +220,16 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
       if (seen.has(effect)) continue;
       seen.add(effect);
       if (effect.type === "godStrike") {
-        for (const cell of effect.cells) strikeCell(cell, effect.attack);
-        flash = 0.32;
+        const plan = godImpactPlan(effect.attack, effect.cells);
+        for (const [c, r] of plan.crackCells) fissures.push({ c, r, t0: elapsed });
+        if (plan.sweepCells.length) {
+          sweeps.push({ cells: plan.sweepCells, t0: elapsed });
+          const [firstX, rowY] = cellCenter(board, plan.sweepCells[0]);
+          const [lastX] = cellCenter(board, plan.sweepCells.at(-1));
+          for (let i = 0; i < 20; i++) emit(partsLayer, { x: rnd(firstX, lastX), y: rowY + rnd(-8, 8), vx: rnd(-100, 120), vy: rnd(-120, -35), g: 280, life: rnd(0.25, 0.55), sz: rnd(2, 4), tint: pick(EMBER_TINTS), add: true });
+        }
+        for (const cell of plan.burstCells) strikeCell(cell, effect.attack);
+        flash = 0.16;
         onImpact(effect.attack);
       }
     }
@@ -266,33 +283,62 @@ export async function createGodScene(PIXI, game, { layers, tilt = null, reducedM
   }
 
   // ---- per frame ----
-  const squash = tilt ? 0.8 : 0.5; // impact rings: the squashed board already supplies most of the perspective
+  function drawFissure(c, r, strength, growth = 1) {
+    const [x, y] = cellCenter(board, [c, r]);
+    const flip = (c * 3 + r) % 2 ? -1 : 1;
+    const bend = ((c * 7 + r * 3) % 5 - 2) * 2;
+    const point = (dx, dy) => [x + dx * flip * growth, y + (dy + bend) * growth];
+    const paths = [
+      [point(-29, 12), point(-12, 3), point(-3, 9), point(9, -4), point(28, -14)],
+      [point(-12, 3), point(-18, -12), point(-26, -17)],
+      [point(9, -4), point(19, 11), point(27, 14)],
+    ];
+    const outline = [point(-33, 15), point(-11, -2), point(3, 2), point(17, -15), point(32, -17), point(14, 1), point(1, 15), point(-17, 8)];
+    marks.poly(outline.flat()).fill({ color: 0x150d0a, alpha: 0.28 * strength });
+    for (const [width, color, alpha] of [[8, 0xb32d0d, 0.18], [2.5, 0xffa347, 0.78]]) {
+      for (const path of paths) {
+        marks.moveTo(...path[0]);
+        for (const point of path.slice(1)) marks.lineTo(...point);
+        marks.stroke({ color, width, alpha: alpha * strength, cap: "round", join: "round" });
+      }
+    }
+  }
+
+  function drawSweep(cells, strength, progress = 1) {
+    if (!cells.length) return;
+    const [left, y] = cellCenter(board, cells[0]);
+    const [right] = cellCenter(board, cells.at(-1));
+    const start = left - board.cell * 0.45;
+    const end = start + (right - left + board.cell * 0.9) * progress;
+    for (const [width, color, alpha] of [[18, 0x842207, 0.18], [5, 0xff7928, 0.5], [1.5, 0xffd080, 0.75]]) {
+      marks.moveTo(start, y + 3);
+      for (let x = start + 24, i = 1; x < end; x += 24, i++) marks.lineTo(x, y + (i % 3 - 1) * 8);
+      marks.lineTo(end, y - 3).stroke({ color, width, alpha: alpha * strength, cap: "round", join: "round" });
+    }
+  }
+
   function drawMarks() {
     marks.clear();
     const state = game.godAttack;
     if (state?.phase === "telegraph" && game.running) {
-      const pulse = 0.2 + 0.14 * Math.sin(elapsed * 18);
-      for (const cell of state.cells) {
-        const [x, y] = cellCenter(board, cell), size = board.cell - 6;
-        marks.roundRect(x - size / 2, y - size / 2, size, size, 8).fill({ color: 0xff442f, alpha: pulse }).stroke({ color: 0xff9b69, width: 3, alpha: 0.85 });
+      const pulse = 0.45 + 0.18 * Math.sin(elapsed * 12);
+      const attack = cfg.cycle[state.index % cfg.cycle.length];
+      if (attack.attack === "sweep") drawSweep(state.cells, pulse, 1);
+      for (const [c, r] of attack.attack === "sweep" ? [] : state.cells) {
+        drawFissure(c, r, pulse, 0.55);
+        const [x, y] = cellCenter(board, [c, r]);
         if (Math.random() < 0.3) emit(partsLayer, { x: x + rnd(-board.cell / 2, board.cell / 2), y: y + rnd(-6, 8), vy: -rnd(30, 70), life: rnd(0.5, 0.9), sz: 3, tint: pick(EMBER_TINTS), add: true });
       }
     }
-    for (let i = rings.length - 1; i >= 0; i--) {
-      const r = rings[i], t = (elapsed - r.t0) / r.dur;
-      if (t >= 1) { rings.splice(i, 1); continue; }
-      const rx = r.rx * easeOut(t);
-      marks.ellipse(r.x, r.y, rx, rx * squash).stroke({ color: r.color, width: 6 * (1 - t) + 1, alpha: 0.85 * (1 - t) });
+    for (let i = sweeps.length - 1; i >= 0; i--) {
+      const sweep = sweeps[i], age = elapsed - sweep.t0;
+      if (age > 0.55) { sweeps.splice(i, 1); continue; }
+      drawSweep(sweep.cells, 1 - age / 0.55, Math.min(1, age / 0.16));
     }
-    for (let i = decals.length - 1; i >= 0; i--) {
-      const d = decals[i], age = elapsed - d.t0;
-      if (age > 4) { decals.splice(i, 1); continue; }
-      const grow = Math.min(1, age / 0.25), fade = age < 1.6 ? 1 : 1 - (age - 1.6) / 2.4;
-      const rx = board.cell * 0.55 * easeOut(grow);
-      marks.ellipse(d.x, d.y, rx * 1.1, rx * 0.7).fill({ color: 0x2a1208, alpha: 0.6 * fade });
-      marks.ellipse(d.x, d.y, rx * 0.8, rx * 0.5).fill({ color: 0xff6a1f, alpha: 0.5 * fade });
-      marks.ellipse(d.x, d.y, rx * 0.4, rx * 0.25).fill({ color: 0xffd166, alpha: 0.4 * fade });
-      for (const a of d.cracks) marks.moveTo(d.x + Math.cos(a) * rx * 0.3, d.y + Math.sin(a) * rx * 0.2).lineTo(d.x + Math.cos(a) * rx * 1.3, d.y + Math.sin(a) * rx * 0.85).stroke({ color: 0xff8a3d, width: 2, alpha: 0.7 * fade });
+    for (let i = fissures.length - 1; i >= 0; i--) {
+      const mark = fissures[i], age = elapsed - mark.t0;
+      if (age > 1.4) { fissures.splice(i, 1); continue; }
+      drawFissure(mark.c, mark.r, 1 - age / 1.4, Math.min(1, age / 0.14));
     }
   }
 

@@ -12,7 +12,7 @@ import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT, lordText } from "../skills.js";
 import { classGlyph, classIconImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
-import { heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
+import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
 import { stageRuleFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
@@ -1215,6 +1215,31 @@ export function createCampaign(ctx: PageContext) {
         if (!window.confirm("Reset all Tower Defense progress and settings stored in this browser?")) return;
         resetTdAccount(localStorage);
         window.location.reload();
+        return;
+      }
+      if (id === "maxAllHeroes") {
+        // Every roster hero owned at max stars, level cap, evolution and skill ranks (mode testing).
+        const p = progress();
+        const maxStars = campaignData.heroStars?.max ?? 0;
+        const level = levelCap(campaignData, maxStars);
+        const tier = campaignData.heroEvolution?.tiers?.length ?? 0;
+        const skillMax = campaignData.heroSkillLevels?.max ?? 1;
+        const ids = [...heroById.keys()];
+        store.data.campaign = {
+          ...p,
+          owned: [...new Set([...p.owned, ...ids])],
+          levels: { ...p.levels, ...Object.fromEntries(ids.map((h) => [h, level])) },
+          stars: { ...p.stars, ...Object.fromEntries(ids.map((h) => [h, maxStars])) },
+          evolution: { ...p.evolution, ...Object.fromEntries(ids.map((h) => [h, tier])) },
+          skillLevels: { ...p.skillLevels, ...Object.fromEntries(ids.map((h) => [h, Object.fromEntries(SKILL_IDS.map((s) => [s, skillMax]))])) },
+        };
+        store.persist();
+        const screen = root.dataset.screen;
+        render();
+        if (screen === "heroes") renderHeroes();
+        if (screen === "summon") renderSummon();
+        if (screen === "squad") renderSquad();
+        ctx.notice(`Debug: ${ids.length} heroes at max level, stars, evolution and skills.`);
         return;
       }
       if (id.startsWith("hero:")) {
