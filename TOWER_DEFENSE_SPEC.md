@@ -150,7 +150,8 @@ Hard rules:
 
 - **Presentation:** `render.js` (PixiJS 8.21.0 and filter-glow 5.2.1 from jsDelivr, exact
   versions pinned; bump deliberately), `map-scene.js`, `fx-kit.js`, `hero-fx.js`,
-  `status-fx.js`, `odin-fx.js`, `skin.js`, `audio.ts`, `ui.js`. Presentation never affects
+  `status-fx.js`, `odin-fx.js`, `authored-fx.js` + `fx-atlas.js` (baked Effekseer clips, see
+  "Authored effects" in section 8), `skin.js`, `audio.ts`, `ui.js`. Presentation never affects
   combat or consumes combat RNG.
 - Styles: `src/styles/td.css`, `td-*` classes. Assets: Cloudflare R2 under `td/`, resolved by
   `assets.js` (R2 public URL in production, `/r2` dev proxy locally; the proxy sends `no-cache` and dev sound fetches revalidate, so files replaced on R2 show up locally).
@@ -660,6 +661,25 @@ built sharp (`TD_CLIP_TARGET=160 python3 scripts/td-warp-anim.py ...`, frames ~1
 because she used to keep the static 256 px still. The PixelLab frames came with a flat grey
 background (132,130,128 / 126,126,125) that had to be keyed out before packing. Not on R2 yet.
 
+### Authored effects (Effekseer atlases, October 8, 2026)
+
+Hand-designed effect animations for lightning, fire and buffs, baked offline from CC0
+Effekseer samples into WebP atlas pairs (`normal` layer for smoke, `add` layer for light) and
+played by PixiJS; no Effekseer runtime ships with the game. Phaser stays the fallback engine if
+this approach stops meeting visual expectations.
+
+- `authored-fx.js` (`HERO_ATLAS_FX`): Odin `ult` lightning (replaces the old sky strike, chain
+  shots stay dynamic), Surtr `hit` and `ult` fire (supplement), Heimdall `buff` (replaces the
+  activation particles, follows the recipient and stops when the ward expires or the hero
+  leaves). Other heroes keep the existing renderer.
+- `fx-atlas.js`: frame lookup on the renderer's FX clock (pause, speed, restart clear), at most
+  32 live instances; missing clips, full capacity or reduced motion fall back to baseline effects.
+- Assets: `public/td/fx/effekseer-v1/` (six atlases, `manifest.json`, `SAMPLE-LICENSE.txt`),
+  loaded from the site's own `/td/fx/` path, not from R2 yet.
+- Local comparison page `/games/tower-defense/fx-lab/` (local-only route).
+- Provenance, export runbook (`scripts/export-td-effekseer.mjs`) and per-hero profile
+  checklist: `docs/td-fx-lab.md`.
+
 ## 9. Battle economy
 
 - **Placement points replace in-battle gold (October 5, 2026).** There is no gold in a run:
@@ -1101,6 +1121,8 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:maps` | Map geometry metrics and validation |
 | `npm run td:generate-map -- --check` | Legacy generators (classic maps) |
 | `npm run build:game-balance` / `node scripts/build-td-grid.mjs` / `node scripts/td-audio-levels.mjs` | Regenerate hero stats / tiles / audio gains |
+| `node --test scripts/test-td-fx-atlas.mjs scripts/test-td-authored-fx.mjs` | Authored effect atlases: frame timing, hero profiles, recipient tracking (not part of `test:tower-defense`) |
+| `node scripts/export-td-effekseer.mjs --samples --runtime --playwright` | Re-bake the Effekseer atlases (`docs/td-fx-lab.md`) |
 | Asset scripts | `build-td-enemy-sprites.mjs`, `td-pixellab-clips.mjs`, `build-td-enemy-anims.mjs`, `td-hero-assets.mjs`, `upload-to-r2.mjs`; runbook `docs/td-asset-pipeline.md` |
 
 Test fixtures: `scripts/fixtures/td-classic-maps.json` (pre-board maps for rule tests),

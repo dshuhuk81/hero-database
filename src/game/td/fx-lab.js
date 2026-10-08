@@ -43,6 +43,8 @@ export async function startFxLab() {
       import(/* @vite-ignore */ PIXI_CDN),
       fetch(`${BASE}/manifest.json`).then(response => { if (!response.ok) throw new Error('Effektdateien fehlen'); return response.json(); }),
     ]);
+    // The lab compares the three original families only.
+    manifest.clips = manifest.clips.filter(clip => ['lightning', 'fire', 'buff'].includes(clip.id));
     if (disposed) return;
     app = new PIXI.Application();
     await app.init({ canvas, width: 960, height: 540, antialias: true, autoDensity: true, resolution: Math.min(devicePixelRatio || 1, 2), backgroundColor: 0x192630 });

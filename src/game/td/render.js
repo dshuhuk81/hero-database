@@ -2245,6 +2245,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const fxDt = Math.min(0.1, game.paused ? 0 : game.time > fxClock ? game.time - fxClock : game.running ? 0 : dt);
     fxClock = game.time;
     moveAnimShotOrigins();
+    authoredFx.prepare(game.heroes);
     authoredFx.update(game.effects, fxDt);
     heroFx.update(game, authoredFx.owns);
     zeusFx.update(game.effects, authoredFx.owns);

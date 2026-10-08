@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 const arg = name => process.argv[process.argv.indexOf(`--${name}`) + 1];
 if (!['samples', 'runtime', 'playwright'].every(name => process.argv.includes(`--${name}`))) {
-  throw new Error('Usage: node scripts/export-td-effekseer.mjs --samples PATH --runtime PATH --playwright PATH_TO_PACKAGE');
+  throw new Error('Usage: node scripts/export-td-effekseer.mjs --samples PATH --runtime PATH --playwright PATH_TO_PACKAGE [--only id,id]');
 }
 const samples = resolve(arg('samples'));
 const runtime = resolve(arg('runtime'));
@@ -18,7 +18,22 @@ const clips = [
   { id: 'lightning', source: '01_Pierre01/LightningStrike.efk', author: 'Pierre', view: 140, targetY: 15, start: 0, frames: 60, width: 245 },
   { id: 'fire', source: '01_NextSoft01/MagicFire1.efk', author: 'NextSoft', view: 10, targetY: 3, start: 0, frames: 60, width: 132 },
   { id: 'buff', source: '01_NextSoft01/PowerUp.efk', author: 'NextSoft', view: 6, targetY: 1, start: 0, frames: 90, width: 132 },
+  // Element families for the rest of the roster (October 8, 2026). `hue` rotates the baked
+  // colours (sharp modulate) when a sample's shape fits but its palette does not.
+  { id: 'ice', source: '01_NextSoft01/MagicCold.efk', author: 'NextSoft', view: 14, targetY: 4, start: 0, frames: 70, width: 150 },
+  { id: 'water', source: '01_NextSoft01/MagicWater.efk', author: 'NextSoft', view: 10, targetY: 1, start: 0, frames: 75, width: 150 },
+  { id: 'heal', source: '01_NextSoft01/MagicHeal2.efk', author: 'NextSoft', view: 17, targetY: 4.5, start: 0, frames: 100, width: 160 },
+  { id: 'holy', source: '01_Pierre02/Benediction.efk', author: 'Pierre', view: 44, targetY: 3, start: 0, frames: 75, width: 130 },
+  { id: 'shadow', source: '01_NextSoft01/MagicDark.efk', author: 'NextSoft', view: 6.5, targetY: 1.6, start: 0, frames: 60, width: 110 },
+  { id: 'feather', source: '01_Pierre02/FeatherBomb.efk', author: 'Pierre', view: 26, targetY: 3, start: 0, frames: 75, width: 150 },
+  { id: 'cosmic', source: '01_Pierre02/CosmicMist.efk', author: 'Pierre', view: 46, targetY: 3, start: 0, frames: 90, width: 130 },
+  { id: 'wind', source: '01_NextSoft01/MagicTornade.efk', author: 'NextSoft', view: 13, targetY: 5.2, start: 0, frames: 90, width: 110 },
+  { id: 'shockwave', source: '01_Pierre01/SonicBoom.efk', author: 'Pierre', view: 34, targetY: 3, start: 0, frames: 50, width: 120 },
+  { id: 'venom', source: '01_Pierre02/BloodLance.efk', author: 'Pierre', view: 34, targetY: 3, start: 60, frames: 80, width: 130, hue: 110 },
+  { id: 'stone', source: '01_Pierre01/HolySandstorm.efk', author: 'Pierre', view: 80, targetY: 12, start: 90, frames: 75, width: 140 },
 ].map(clip => ({ ...clip, size: 192, columns: 8, fps: 30 }));
+// --only id,id re-exports some clips and keeps the other manifest entries unchanged.
+const only = process.argv.includes('--only') ? arg('only').split(',') : null;
 
 const html = `<!doctype html><canvas id="capture"></canvas>
 <script src="/runtime/effekseer.js"></script><script src="/runtime/Sample/three.min.js"></script>
@@ -115,16 +130,18 @@ try {
   page.on('response', response => { if (!response.ok()) failures.push(`${response.status()} ${response.url()}`); });
   await page.goto(`http://127.0.0.1:${server.address().port}`);
   await mkdir(out, { recursive: true });
-  for (const clip of clips) {
+  for (const clip of clips.filter(clip => !only || only.includes(clip.id))) {
     const result = await page.evaluate(clip => window.record(clip), clip);
     if (failures.length) throw new Error(failures.join('\n'));
     clip.anchor = result.anchor;
     for (const [i, layer] of ['normal', 'add'].entries()) {
-      await sharp(Buffer.from(result.images[i].split(',')[1], 'base64')).webp({ quality: 92, alphaQuality: 100 }).toFile(resolve(out, `${clip.id}-${layer}.webp`));
+      await sharp(Buffer.from(result.images[i].split(',')[1], 'base64')).modulate({ hue: clip.hue ?? 0 }).webp({ quality: 92, alphaQuality: 100 }).toFile(resolve(out, `${clip.id}-${layer}.webp`));
     }
     console.log(`Exported ${clip.id}: ${clip.frames} frames at ${clip.fps} fps`);
   }
-  await writeFile(resolve(out, 'manifest.json'), JSON.stringify({ version: 1, tool: 'Effekseer 1.80.7', seed: 42, clips }, null, 2) + '\n');
+  const previous = only ? JSON.parse(await readFile(resolve(out, 'manifest.json'), 'utf8')).clips : [];
+  const written = clips.map(clip => only && !only.includes(clip.id) ? previous.find(entry => entry.id === clip.id) : clip).filter(Boolean);
+  await writeFile(resolve(out, 'manifest.json'), JSON.stringify({ version: 1, tool: 'Effekseer 1.80.7', seed: 42, clips: written }, null, 2) + '\n');
 } finally {
   await browser?.close();
   server.close();

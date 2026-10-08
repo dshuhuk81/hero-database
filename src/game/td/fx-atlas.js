@@ -18,6 +18,7 @@ export async function loadFxAtlas(PIXI, clip, base = '/td/fx/effekseer-v1') {
     frame: new PIXI.Rectangle((i % clip.columns) * clip.size, Math.floor(i / clip.columns) * clip.size, clip.size, clip.size),
   })));
   return {
+    duration: clip.frames / clip.fps,
     create(parent, x, y, width = clip.width) {
       const container = new PIXI.Container();
       container.position.set(x, y);

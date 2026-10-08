@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const fx = await import('../src/game/td/authored-fx.js').catch(() => ({}));
+const { readFileSync } = await import('node:fs');
+const CLIPS = JSON.parse(readFileSync(new URL('../public/td/fx/effekseer-v1/manifest.json', import.meta.url))).clips.map(clip => clip.id);
 
 function fixture(options = {}) {
   assert.equal(typeof fx.createAuthoredFx, 'function');
@@ -12,7 +14,7 @@ function fixture(options = {}) {
       seek(time) { entry.samples.push(time); return time < 2; },
       destroy() { entry.destroyed = true; } };
   } };
-  const player = fx.createAuthoredFx({ atlases: new Map(['lightning', 'fire', 'buff'].map(id => [id, atlas])), ...options });
+  const player = fx.createAuthoredFx({ atlases: new Map(CLIPS.map(id => [id, atlas])), ...options });
   return { player, created };
 }
 
@@ -70,7 +72,7 @@ test('Surtr adds flames without removing his melee and lifesteal cues; unknown h
   const { player, created } = fixture();
   const hit = { heroId: 'surtr', type: 'hit', x: 10, y: 20 };
   const ultimate = { ...hit, type: 'ult' };
-  const unknown = { ...hit, heroId: 'ymir' };
+  const unknown = { ...hit, heroId: 'nobody' };
   player.update([hit, ultimate, unknown], 0);
   assert.equal(created.length, 2);
   assert.equal(player.owns(hit), false);
@@ -96,7 +98,7 @@ test('real simulation casts activate fire, healing and buff profiles without mod
     import('../src/data/gameBalance.tuning.json', { with: { type: 'json' } }),
     import('../src/data/tdMaps.json', { with: { type: 'json' } }),
   ]);
-  for (const id of ['odin', 'surtr', 'heimdall', 'hephaestus', 'helios', 'vidar', 'atalanta', 'skadi', 'atlas', 'gaia', 'asclepius', 'plutus', 'harmonia', 'recruit-bram', 'recruit-kellan', 'recruit-ives', 'recruit-wren', 'recruit-poppy', 'recruit-jory']) {
+  for (const { id } of heroes) {
     const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], seed: 914 });
     game.placement = 100000;
     const base = heroes.find(hero => hero.id === id);
@@ -116,16 +118,54 @@ test('real simulation casts activate fire, healing and buff profiles without mod
   }
 });
 
-test('every roster hero has a buff cue, while fire remains restricted to fire skills', async () => {
+test('every roster hero has a buff cue and an element clip; fire stays with fire skills', async () => {
   const { default: heroes } = await import('../src/data/gameBalance.json', { with: { type: 'json' } });
+  const ultless = new Set(['heimdall', 'plutus', 'recruit-poppy', 'atalanta']);
   for (const hero of heroes) {
     const { player, created } = fixture();
     player.update([{ heroId: hero.id, type: 'buff', x: 1, y: 2 }], 0);
     assert.equal(created.length, 1, `${hero.id}: activation cue`);
+    const ult = fx.HERO_ATLAS_FX[hero.id].ult;
+    assert.equal(Boolean(ult), !ultless.has(hero.id), `${hero.id}: ultimate clip`);
+    if (ult && hero.id !== 'odin') assert.equal(ult.replace, false, `${hero.id}: keeps its own renderer`);
   }
-  const { player, created } = fixture();
-  player.update([{ heroId: 'boreas', type: 'ult', x: 1, y: 2 }], 0);
-  assert.equal(created.length, 0, 'ice keeps its dedicated renderer');
+  const fire = heroes.filter(hero => fx.HERO_ATLAS_FX[hero.id].ult?.clip === 'fire').map(hero => hero.id).sort();
+  assert.deepEqual(fire, ['hephaestus', 'recruit-ives', 'surtr']);
+  assert.deepEqual(fx.heroAtlasClips('boreas'), ['buff', 'ice']);
+  assert.deepEqual(fx.heroAtlasClips('nobody'), []);
+});
+
+test('every clip a hero uses exists in the manifest', async () => {
+  const ids = new Set(CLIPS);
+  for (const [hero, recipes] of Object.entries(fx.HERO_ATLAS_FX)) {
+    for (const recipe of Object.values(recipes)) assert.ok(ids.has(recipe.clip), `${hero}: ${recipe.clip}`);
+  }
+});
+
+test('source-anchored ultimates play on the caster, target ultimates on the target', () => {
+  const caster = { entityId: 7, x: 40, y: 50 };
+  const game = { heroes: [caster], map: {} };
+  const effect = { heroId: 'vidar', type: 'ult', sourceId: 7, sourceX: 40, sourceY: 50, x: 300, y: 200 };
+  const point = h => [h.x + 1, h.y + 2];
+  assert.deepEqual(fx.locateAuthoredFx(effect, { clip: 'wind', at: 'source' }, game, point), { x: 41, y: 58 });
+  assert.deepEqual(fx.locateAuthoredFx(effect, { clip: 'ice' }, game, point), { x: 300, y: 206 });
+  game.heroes = [];
+  assert.deepEqual(fx.locateAuthoredFx(effect, { clip: 'wind', at: 'source' }, game, point), { x: 40, y: 56 });
+});
+
+test('clips fade out over their last fifth', () => {
+  const containers = [];
+  const atlas = { duration: 1, create() {
+    const container = { alpha: 1, scale: { y: 1 }, position: { set() {} } };
+    containers.push(container);
+    return { container, seek: time => time < 1, destroy() {} };
+  } };
+  const player = fx.createAuthoredFx({ atlases: new Map([['lightning', atlas]]) });
+  player.update([ult()], 0);
+  player.update([], 0.5);
+  assert.equal(containers[0].alpha, 0.72);
+  player.update([], 0.4);
+  assert.ok(Math.abs(containers[0].alpha - 0.36) < 1e-9);
 });
 
 test('recipient tracking uses the relevant status and ignores unrelated wards for heals', () => {
@@ -133,7 +173,7 @@ test('recipient tracking uses the relevant status and ignores unrelated wards fo
   const game = { time: 1, heroes: [ally] };
   const event = { heroId: 'gaia', type: 'heal', x: 10, y: 20 };
   const locate = (e, r) => fx.locateAuthoredFx(e, r, game, h => [h.x + 5, h.y + 8]);
-  const heal = locate(event, { clip: 'buff' });
+  const heal = locate(event, { clip: 'heal' });
   assert.deepEqual([heal.x, heal.y], [15, 34]);
   game.time = 3;
   assert.ok(heal.follow(), 'an unrelated expired ward must not cancel healing');

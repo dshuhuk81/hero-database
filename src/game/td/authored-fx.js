@@ -33,11 +33,51 @@ for (const id of ['skadi', 'plutus', 'recruit-wren', 'recruit-poppy']) HERO_ATLA
 // Keep coins, notes, leaves and healing motes as the readable hero signature.
 // Fortune Shower emits heal AND buff: only its buff gets an atlas to avoid doubling.
 for (const id of ['atlas', 'gaia', 'harmonia', 'asclepius', 'recruit-bram', 'recruit-jory']) {
-  HERO_ATLAS_FX[id].heal = { ...activation(PROFILES[id].accent, id.startsWith('recruit-')), alpha: 0.55, speed: 2.2, replace: false };
+  const recruit = id.startsWith('recruit-');
+  HERO_ATLAS_FX[id].heal = { clip: 'heal', width: recruit ? 62 : 78, alpha: recruit ? 0.55 : 0.7, speed: 1.6, replace: false };
 }
 
+// Ultimate supplements by element (October 8, 2026). Every one keeps the hero's own
+// renderer (replace: false) and only adds the baked clip. `at: 'source'` plays on the
+// caster (self or ally skills), otherwise on the ult's target point. Themes follow the
+// skill names in gameBalance.tuning.json heroSkills; none adds a status or changes a number.
+// Heimdall (ward on allies), Plutus and Poppy (coins), Atalanta (attack window) keep
+// their activation cues only.
+const ULTS = {
+  boreas: { clip: 'ice', width: 150 },                                    // Ice Shockwave
+  ymir: { clip: 'shockwave', width: 130, tint: 0xbfe8ff },                // Titan's Expose
+  aegir: { clip: 'water', width: 150 },                                   // Tidal Surge
+  'recruit-sable': { clip: 'shockwave', width: 100, alpha: 0.7 },         // Knockback
+  helios: { clip: 'holy', width: 140 },                                   // Solar Rush
+  isis: { clip: 'holy', width: 120 },                                     // Sun Beam
+  atlas: { clip: 'holy', width: 150, at: 'source', tint: 0xfff1c9 },      // Celestial Bulwark
+  'recruit-bram': { clip: 'holy', width: 110, at: 'source', alpha: 0.6 }, // Shield Wall
+  gaia: { clip: 'heal', width: 170, at: 'source', tint: 0xc8f5a8 },       // Rooted Sanctuary
+  asclepius: { clip: 'heal', width: 170, at: 'source' },                  // Valkyrie's Call
+  harmonia: { clip: 'holy', width: 130, at: 'source', tint: 0xffb3c8 },   // Fate Link
+  'recruit-jory': { clip: 'holy', width: 100, at: 'source', alpha: 0.6, tint: 0xffe1a8 },
+  nott: { clip: 'shadow', width: 110 },                                   // Shadow Step
+  hecate: { clip: 'shadow', width: 120, tint: 0xd7a6ff },                 // Claw Sweep
+  'recruit-nyra': { clip: 'shadow', width: 90, alpha: 0.7 },              // Claw Sweep
+  'recruit-ash': { clip: 'shadow', width: 90, alpha: 0.7 },               // Rapid Strike
+  'recruit-elm': { clip: 'shadow', width: 100, alpha: 0.75, tint: 0xd0f5b8 }, // Weaken Burst
+  thanatos: { clip: 'feather', width: 150 },                              // Featherfall Judgment
+  vidar: { clip: 'wind', width: 110, at: 'source' },                      // Flurry
+  fenrir: { clip: 'venom', width: 130 },                                  // Venom Coil
+  stheno: { clip: 'stone', width: 140 },                                  // Petrifying Gaze
+  skadi: { clip: 'cosmic', width: 130 },                                  // Moon Barrage
+  'recruit-wren': { clip: 'cosmic', width: 100, alpha: 0.7 },             // Moon Barrage
+  'recruit-hollis': { clip: 'shockwave', width: 80, alpha: 0.6 },         // Piercing Shot
+  'recruit-kellan': { clip: 'shockwave', width: 120, at: 'source', tint: 0xffe2a0 }, // War Cry
+  'recruit-tilda': { clip: 'shockwave', width: 120, at: 'source', tint: 0xffe2b0 },  // Mass Taunt
+};
+for (const [id, ult] of Object.entries(ULTS)) HERO_ATLAS_FX[id].ult = { alpha: 0.85, speed: 1, replace: false, ...ult };
+
+// Clips a hero can play, so a battle only downloads the families of heroes on the board.
+export const heroAtlasClips = id => [...new Set(Object.values(HERO_ATLAS_FX[id] ?? {}).map(recipe => recipe.clip))];
+
 export function locateAuthoredFx(effect, recipe, game, visualHeroPoint) {
-  if (recipe.clip === 'buff') {
+  if (effect.type === 'buff' || effect.type === 'heal') {
     const ally = game.heroes.find(hero => Math.hypot(hero.x - effect.x, hero.y - effect.y) < 1);
     if (!ally) return null;
     const expires = () => recipe.status === 'ward' ? ally.wardUntil
@@ -53,9 +93,16 @@ export function locateAuthoredFx(effect, recipe, game, visualHeroPoint) {
     const point = follow();
     return point && { ...point, follow };
   }
+  if (recipe.at === 'source') {
+    const caster = game.heroes.find(hero => hero.entityId === effect.sourceId);
+    const [x, y] = caster ? visualHeroPoint(caster) : [effect.sourceX, effect.sourceY];
+    return { x, y: y + 6 };
+  }
   const [x, y] = recipe.clip === 'fire' ? moltenGroundPoint(game.map, effect.x, effect.y) : [effect.x, effect.y];
   return { x, y: y + 6 };
 };
+
+const FADE = 0.2;
 
 export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = false, max = 32, uprightScale = 1,
   locate = effect => ({ x: effect.x, y: effect.y }) } = {}) {
@@ -76,7 +123,9 @@ export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = 
           if (!valid(point)) { remove(i); continue; }
           entry.instance.container.position.set(point.x, point.y);
         }
-        if (!entry.instance.seek(entry.age)) remove(i);
+        if (!entry.instance.seek(entry.age)) { remove(i); continue; }
+        // Fade the last fifth so clips cut at their atlas length never pop out.
+        if (entry.duration > 0) entry.instance.container.alpha = entry.recipe.alpha * Math.min(1, (1 - entry.age / entry.duration) / FADE);
       }
       if (reducedMotion) return;
       for (const effect of effects) {
@@ -93,7 +142,7 @@ export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = 
         instance.container.tint = recipe.tint ?? 0xffffff;
         instance.container.scale.y = uprightScale;
         instance.seek(0);
-        live.push({ instance, recipe, age: 0, follow: point.follow });
+        live.push({ instance, recipe, age: 0, follow: point.follow, duration: atlas.duration });
         if (recipe.replace) accepted.add(effect);
       }
     },
@@ -109,21 +158,37 @@ export function createAuthoredFx({ atlases = new Map(), parent, reducedMotion = 
   };
 }
 
+// Fetches the manifest only; each clip downloads when a hero that uses it joins the board
+// (`prepare`). The first cast after a slow download falls back to the baseline effect.
 export async function loadAuthoredFx(PIXI, parent, options = {}) {
-  const atlases = new Map();
+  const atlases = new Map(), requested = new Set(), prepared = new Set();
+  let manifest = null, destroyed = false;
   if (!options.reducedMotion) {
     try {
       const response = await fetch('/td/fx/effekseer-v1/manifest.json', { signal: AbortSignal.timeout(8000) });
       if (!response.ok) throw new Error(`FX manifest: HTTP ${response.status}`);
-      const { clips } = await response.json();
-      const results = await Promise.allSettled(clips.map(async clip => [clip.id, await loadFxAtlas(PIXI, clip)]));
-      for (const result of results) {
-        if (result.status === 'fulfilled') atlases.set(...result.value);
-        else console.warn('Authored FX unavailable; using baseline effect.', result.reason);
-      }
+      manifest = new Map((await response.json()).clips.map(clip => [clip.id, clip]));
     } catch (error) {
       console.warn('Authored FX unavailable; using baseline effects.', error);
     }
   }
-  return createAuthoredFx({ ...options, parent, atlases });
+  const request = id => {
+    if (!manifest?.has(id) || requested.has(id)) return;
+    requested.add(id);
+    loadFxAtlas(PIXI, manifest.get(id)).then(
+      atlas => { if (destroyed) atlas.destroy(); else atlases.set(id, atlas); },
+      error => console.warn(`Authored FX "${id}" unavailable; using baseline effect.`, error));
+  };
+  const player = createAuthoredFx({ ...options, parent, atlases });
+  return {
+    ...player,
+    prepare(heroes) {
+      for (const hero of heroes) {
+        if (prepared.has(hero.id)) continue;
+        prepared.add(hero.id);
+        heroAtlasClips(hero.id).forEach(request);
+      }
+    },
+    destroy() { destroyed = true; player.destroy(); },
+  };
 }

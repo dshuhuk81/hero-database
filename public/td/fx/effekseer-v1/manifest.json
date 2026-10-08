@@ -53,6 +53,194 @@
         0.5,
         0.6490711984999855
       ]
+    },
+    {
+      "id": "ice",
+      "source": "01_NextSoft01/MagicCold.efk",
+      "author": "NextSoft",
+      "view": 14,
+      "targetY": 4,
+      "start": 0,
+      "frames": 70,
+      "width": 150,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.755550625999976
+      ]
+    },
+    {
+      "id": "water",
+      "source": "01_NextSoft01/MagicWater.efk",
+      "author": "NextSoft",
+      "view": 10,
+      "targetY": 1,
+      "start": 0,
+      "frames": 75,
+      "width": 150,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5894427190999914
+      ]
+    },
+    {
+      "id": "heal",
+      "source": "01_NextSoft01/MagicHeal2.efk",
+      "author": "NextSoft",
+      "view": 17,
+      "targetY": 4.5,
+      "start": 0,
+      "frames": 100,
+      "width": 160,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.7367601387940953
+      ]
+    },
+    {
+      "id": "holy",
+      "source": "01_Pierre02/Benediction.efk",
+      "author": "Pierre",
+      "view": 44,
+      "targetY": 3,
+      "start": 0,
+      "frames": 75,
+      "width": 130,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5609836721136306
+      ]
+    },
+    {
+      "id": "shadow",
+      "source": "01_NextSoft01/MagicDark.efk",
+      "author": "NextSoft",
+      "view": 6.5,
+      "targetY": 1.6,
+      "start": 0,
+      "frames": 60,
+      "width": 110,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.7201666931692101
+      ]
+    },
+    {
+      "id": "feather",
+      "source": "01_Pierre02/FeatherBomb.efk",
+      "author": "Pierre",
+      "view": 26,
+      "targetY": 3,
+      "start": 0,
+      "frames": 75,
+      "width": 150,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.6032031374230672
+      ]
+    },
+    {
+      "id": "cosmic",
+      "source": "01_Pierre02/CosmicMist.efk",
+      "author": "Pierre",
+      "view": 46,
+      "targetY": 3,
+      "start": 0,
+      "frames": 90,
+      "width": 130,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5583322081086901
+      ]
+    },
+    {
+      "id": "wind",
+      "source": "01_NextSoft01/MagicTornade.efk",
+      "author": "NextSoft",
+      "view": 13,
+      "targetY": 5.2,
+      "start": 0,
+      "frames": 90,
+      "width": 110,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.8577708763999663
+      ]
+    },
+    {
+      "id": "shockwave",
+      "source": "01_Pierre01/SonicBoom.efk",
+      "author": "Pierre",
+      "view": 34,
+      "targetY": 3,
+      "start": 0,
+      "frames": 50,
+      "width": 120,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5789200462646984
+      ]
+    },
+    {
+      "id": "venom",
+      "source": "01_Pierre02/BloodLance.efk",
+      "author": "Pierre",
+      "view": 34,
+      "targetY": 3,
+      "start": 60,
+      "frames": 80,
+      "width": 130,
+      "hue": 110,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.5789200462646984
+      ]
+    },
+    {
+      "id": "stone",
+      "source": "01_Pierre01/HolySandstorm.efk",
+      "author": "Pierre",
+      "view": 80,
+      "targetY": 12,
+      "start": 90,
+      "frames": 75,
+      "width": 140,
+      "size": 192,
+      "columns": 8,
+      "fps": 30,
+      "anchor": [
+        0.5,
+        0.6341640786499874
+      ]
     }
   ]
 }
