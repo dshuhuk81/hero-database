@@ -20,6 +20,8 @@ export const HOME_EMBLEM_VERSION = "v1";
 export const homeEmblemPath = (name) => `ui/emblems/${name}-${HOME_EMBLEM_VERSION}.webp`;
 // Daily Quests art (PixelLab): chest states and the activity coin, ui/quests/{name}-v1.webp.
 export const questArtPath = (name) => `ui/quests/${name}-v1.webp`;
+// Daily Trial mutator emblems (PixelLab, crimson center): ui/mutators/{id}-v1.webp.
+export const mutatorArtPath = (id) => `ui/mutators/${id}-v1.webp`;
 
 // Loads a UI image from R2; a file not uploaded yet falls back to the copy in public/td.
 export function loadTdImage(img, path) {

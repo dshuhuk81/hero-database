@@ -15101,3 +15101,172 @@ img[data-rarity="lord"] {
     grid-row: 3;
   }
 }
+/* Daily Trial, calm layout (October 2026): one gold accent, no outlined boxes or pills, PixelLab
+   emblems for the mode, the reward chest and the mutators, neutral squad cards with class color
+   only on the class mark. Scoped to .td-trial--daily; the Expedition screen keeps its look. */
+.td-app .td-trial--daily .td-trial-banner {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: 0;
+  background:
+    radial-gradient(110% 160% at 80% 50%, color-mix(in srgb, var(--td-warn) 10%, transparent), transparent 60%),
+    linear-gradient(135deg, var(--bg-raised), var(--bg-surface));
+}
+
+.td-trial-emblem {
+  width: 72px;
+  height: 72px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.6));
+}
+
+.td-app .td-trial--daily .td-trial-boss-art {
+  opacity: 0.18;
+  filter: none;
+}
+
+.td-app .td-trial--daily .td-trial-intro h2 {
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.td-trial-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+}
+
+.td-trial-meta strong {
+  color: var(--text-bright);
+  font-weight: var(--weight-bold);
+}
+
+.td-trial-rules-line {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--td-fs-label);
+}
+
+.td-app .td-trial--daily .td-trial-reward {
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-items: start;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.td-trial-reward-chest {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent-gold) 45%, transparent)) drop-shadow(0 4px 6px rgb(0 0 0 / 0.6));
+}
+
+.td-trial-reward-copy {
+  display: grid;
+  gap: 1px;
+}
+
+.td-app .td-trial--daily .td-trial-reward strong {
+  font-size: var(--text-2xl);
+}
+
+.td-app .td-trial--daily .td-trial-reward-extra {
+  color: var(--text-secondary);
+}
+
+.td-app .td-trial--daily .td-trial-reward-state {
+  color: var(--text-muted);
+  font-size: var(--td-fs-label);
+}
+
+.td-app .td-trial--daily .td-trial-reward.is-claimed strong {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.td-app .td-trial--daily .td-trial-reward.is-claimed .td-trial-reward-chest {
+  filter: brightness(0.8) drop-shadow(0 4px 6px rgb(0 0 0 / 0.6));
+}
+
+.td-app .td-trial--daily .td-trial-reward.is-claimed .td-trial-reward-state {
+  color: var(--td-hp);
+}
+
+.td-app .td-trial--daily .td-trial-section-head small {
+  display: none;
+}
+
+/* Mutators: emblem, name, text. No boxes. */
+.td-app .td-trial--daily .td-trial-mutators {
+  gap: var(--space-2);
+}
+
+.td-app .td-trial--daily .td-trial-mutators li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-secondary);
+  font-size: var(--td-fs-body);
+}
+
+.td-trial-mutator-art {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 3px 5px rgb(0 0 0 / 0.55));
+}
+
+.td-app .td-trial--daily .td-trial-mutators strong {
+  display: block;
+  margin: 0;
+  color: var(--text-bright);
+}
+
+/* Squad: neutral cards; the class color stays on the class mark only. */
+.td-app .td-trial--daily .td-trial-card {
+  background: linear-gradient(180deg, var(--bg-raised), var(--bg-base));
+  box-shadow: 0 8px 18px -10px rgb(0 0 0 / 0.8);
+}
+
+.td-app .td-trial--daily .td-trial-card-class {
+  border: 0;
+  background: color-mix(in srgb, var(--bg-base) 80%, transparent);
+}
+
+.td-app .td-trial--daily .td-trial-card-cost {
+  border: 0;
+  background: color-mix(in srgb, var(--bg-base) 80%, transparent);
+}
+
+@media (hover: hover) {
+  .td-app .td-trial--daily .td-trial-card:hover {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-gold) 45%, transparent), 0 12px 24px -10px rgb(0 0 0 / 0.85);
+  }
+}
+
+@media (max-width: 640px) {
+  .td-app .td-trial--daily .td-trial-banner {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .td-app .td-trial--daily .td-trial-reward {
+    grid-column: 1 / -1;
+  }
+
+  .td-trial-emblem {
+    width: 52px;
+    height: 52px;
+  }
+}

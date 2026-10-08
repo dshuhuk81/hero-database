@@ -823,6 +823,13 @@ in `td/ui/emblems/`). The activity bar uses pixel chests (`td/ui/quests/chest-cl
 `chest-open-v1.webp` once claimed; locked ones dimmed, a ready one glows) and the activity coin
 `td/ui/quests/activity-v1.webp` sits next to the counter and every task's points.
 
+**Daily Trial screen, calm layout (October 2026).** Banner: the Daily Trial emblem, map name, one
+meta line (Boss, goal), the rules as one muted text line, and the first-clear reward next to a
+pixel chest (open once claimed). Mutators show crimson PixelLab emblems
+(`td/ui/mutators/{id}-v1.webp`, `mutatorArtPath` in `assets.js`) with name and text, no boxes.
+Squad cards are neutral; class color only on the class mark. Scoped to `.td-trial--daily`; the
+Expedition screen keeps the old look.
+
 **Campaign chapters:** 1 The Road to the Crossing (10 stages), 2 The Sunscar March,
 3 The Emerald Deep, 4 The Frozen Covenant, 5 The Cinder Oath, 6 The Thunder Stair,
 7 The Drowned Crown, 8 The Spore Lanterns, 9 The Shattered Prism, 10 The Silent Procession,

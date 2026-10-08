@@ -191,29 +191,29 @@ const { assetBase } = Astro.props;
     <!-- 4a. Daily Trial (M19): filled for today's UTC date by src/game/td/page/daily.ts -->
     <section class="td-screen" data-td-screen="daily" data-title="Daily Trial" aria-label="Daily Trial" hidden>
       <div class="td-screen-body td-screen-body--center">
-        <section class="td-trial" aria-labelledby="td-daily-title" data-td-daily>
+        <section class="td-trial td-trial--daily" aria-labelledby="td-daily-title" data-td-daily>
+          <!-- Calm banner (October 2026): emblem, title, one meta line, rules as plain text, chest reward. -->
           <header class="td-trial-banner">
             <img class="td-trial-boss-art" data-td-daily-boss-art alt="" loading="lazy" decoding="async">
+            <img class="td-trial-emblem" data-td-daily-emblem alt="" width="128" height="128" decoding="async">
             <div class="td-trial-intro">
               <p class="td-kicker">Daily Trial <span class="td-daily-date" data-td-daily-date></span></p>
               <h2 id="td-daily-title" data-td-daily-map>Today's battlefield</h2>
-              <p class="td-trial-boss">Boss <strong data-td-daily-boss></strong></p>
-              <p class="td-trial-goal" data-td-daily-goal></p>
-              <ul class="td-trial-rules" aria-label="Trial rules">
-                <li>Normal</li>
-                <li>No Divine Blessings</li>
-                <li>No shard boosts</li>
-              </ul>
+              <p class="td-trial-meta"><span>Boss <strong data-td-daily-boss></strong></span><span data-td-daily-goal></span></p>
+              <p class="td-trial-rules-line">Normal · No Divine Blessings · No shard boosts</p>
             </div>
             <div class="td-trial-reward" data-td-daily-reward>
-              <span class="td-label">First clear today</span>
-              <strong><span data-td-daily-reward-amount></span> <small>Favor</small></strong>
-              <small class="td-trial-reward-extra" data-td-daily-reward-seals></small>
-              <span class="td-trial-reward-state" data-td-daily-reward-state></span>
+              <img class="td-trial-reward-chest" data-td-daily-chest alt="" width="128" height="128" decoding="async">
+              <div class="td-trial-reward-copy">
+                <span class="td-label">First clear today</span>
+                <strong><span data-td-daily-reward-amount></span> <small>Favor</small></strong>
+                <small class="td-trial-reward-extra" data-td-daily-reward-seals></small>
+                <span class="td-trial-reward-state" data-td-daily-reward-state></span>
+              </div>
             </div>
           </header>
           <div class="td-trial-section">
-            <div class="td-trial-section-head"><span class="td-label">Mutators</span><small>Active from the start</small></div>
+            <div class="td-trial-section-head"><span class="td-label">Mutators</span></div>
             <ul class="td-trial-mutators" data-td-daily-mutators></ul>
           </div>
           <div class="td-trial-section">

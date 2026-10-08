@@ -1,7 +1,7 @@
 // Daily Trial (M19) on the page: the Daily Trial screen with today's setup and best, its
 // summary for the home screen, starting the trial run, and recording a finished trial for the
 // result screen. Setup, seed and the save record live in ../daily.js.
-import { bossSprite, classIconImg } from "../assets.js";
+import { bossSprite, classIconImg, homeEmblemPath, loadTdImage, mutatorArtPath, questArtPath } from "../assets.js";
 import { defeatedCount, DAILY, dailyDate, dailyRecord, dailySetup, recordDaily } from "../daily.js";
 import { addSeals } from "../campaign.js";
 import { notifyQuest } from "../quests.js";
@@ -83,6 +83,7 @@ export function createDaily(ctx: PageContext) {
   const rewardStateEl = q("[data-td-daily-reward-state]");
   const squadCountEl = q("[data-td-daily-squad-count]");
   let today: DailySetup | null = null;
+  loadTdImage(q<HTMLImageElement>("[data-td-daily-emblem]"), homeEmblemPath("trial"));
 
   // Recomputed when the UTC date changes while the page stays open.
   function setup(): DailySetup {
@@ -101,14 +102,18 @@ export function createDaily(ctx: PageContext) {
     bossEl.textContent = boss.name;
     const bossArt = bossSprite(boss.id);
     if (bossArtEl.getAttribute("src") !== bossArt) bossArtEl.src = bossArt;
-    goalEl.innerHTML = `Hold the line and defeat <strong>${current.goal} enemies</strong>.`;
+    goalEl.innerHTML = `Defeat <strong>${current.goal} enemies</strong>`;
     rewardAmountEl.textContent = `+${DAILY.rewardFavor}`;
     q("[data-td-daily-reward-seals]").textContent = DAILY_SEALS ? `+${DAILY_SEALS} Divine Seals` : "";
     rewardEl.classList.toggle("is-claimed", !!record?.goalReached);
     rewardStateEl.textContent = record?.goalReached ? "Claimed today" : "Reward available";
+    const chestEl = q<HTMLImageElement>("[data-td-daily-chest]");
+    const chestPath = questArtPath(record?.goalReached ? "chest-open" : "chest-closed");
+    if (chestEl.dataset.path !== chestPath) { chestEl.dataset.path = chestPath; delete chestEl.dataset.local; loadTdImage(chestEl, chestPath); }
     squadCountEl.textContent = `${current.heroIds.length} heroes locked in`;
     heroesEl.innerHTML = current.heroIds.map((id, index) => trialCardHtml(heroById.get(id), index)).join("");
-    mutatorsEl.innerHTML = current.mutators.map((id) => `<li title="${mutatorInfo[id]?.text ?? ""}"><strong>${mutatorInfo[id]?.name ?? id}</strong>${mutatorInfo[id]?.text ?? ""}</li>`).join("");
+    mutatorsEl.innerHTML = current.mutators.map((id) => `<li><img class="td-trial-mutator-art" data-td-art="${mutatorArtPath(id)}" alt="" decoding="async"><span><strong>${mutatorInfo[id]?.name ?? id}</strong>${mutatorInfo[id]?.text ?? ""}</span></li>`).join("");
+    for (const img of mutatorsEl.querySelectorAll<HTMLImageElement>("img[data-td-art]")) loadTdImage(img, img.dataset.tdArt);
     bestEl.textContent = dailyBestText(store.data, current.date);
   }
 
