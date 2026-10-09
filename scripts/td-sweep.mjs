@@ -9,6 +9,7 @@
 //   -theme    map theme off (board events, environment rules, stage rules)
 // Cells: win rate over the sampled squads x seeds. Run:
 //   npm run td:sweep -- [--from=1] [--to=13] [--sample=6] [--seeds=1] [--ab]
+// --hpf=0.35 scales every stage hpScale (measurement only, the sweep itself uses the shipped HP).
 // --ab  talent A/B: for each talent-eligible hero in the chapters, its Tier I / Tier II option A against
 //       option B on the same squads and seeds (win rate and mean lives left of wins).
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
@@ -33,6 +34,9 @@ const SEEDS = Number(args.seeds ?? 1);
 const stages = allStages(campaign).filter((stage) => stage.chapter >= fromChapter && stage.chapter <= toChapter);
 const mapFor = (stage) => maps.find((entry) => entry.id === stage.mapId);
 const TIER_CHAPTER = { I: 4, II: 8 };
+// Measurement only: scales every stage hpScale (the bot loses Chapter 5+ at full HP, so A/B needs a lower HP to see anything).
+const HP_FACTOR = Number(args.hpf ?? 1);
+const scaledHp = (game) => ({ ...game, hpScale: (game.hpScale ?? 1) * HP_FACTOR });
 
 // Deterministic PRNG so every run of the sweep samples the same squads.
 const rng = (seed) => () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 2 ** 32; };
@@ -85,7 +89,7 @@ function runStage(stage, squad, seed, progress, { talents = true, elites = true,
   const leveled = talents ? withTalents(progress, stage.chapter) : { ...progress, talents: {} };
   const runHeroes = collectionHeroes(campaign, leveled, heroes);
   const map = mapFor(stage);
-  const game = stageGameOptions(stage, rowsOf(squad), seed, runHeroes);
+  const game = scaledHp(stageGameOptions(stage, rowsOf(squad), seed, runHeroes));
   if (!elites) game.elites = [];
   return playRun(squad, seed, theme ? map : { ...map, theme: null }, { game });
 }
@@ -116,15 +120,16 @@ if (args.ab) {
           const squads = sampleSquads(ownedAll, campaign.squadSize, SAMPLE, stage.chapter * 97 + 1).map((squad) => (squad.includes(heroId) ? squad : [heroId, ...squad.slice(1)]));
           for (const squad of squads) for (let seed = 1; seed <= SEEDS; seed++) {
             const runHeroes = collectionHeroes(campaign, { ...newCampaignProgress(campaign), owned: ownedAll, talents: talentsFor(stage, heroId, tier, pick) }, heroes);
-            const run = playRun(squad, seed, mapFor(stage), { game: stageGameOptions(stage, rowsOf(squad), seed, runHeroes) });
+            const run = playRun(squad, seed, mapFor(stage), { game: scaledHp(stageGameOptions(stage, rowsOf(squad), seed, runHeroes)) });
             wins += run.won ? 1 : 0;
             defeated += run.defeated;
             n += 1;
           }
         }
-        return { win: wins / n, defeated: defeated / n };
+        return { win: n ? wins / n : 0, defeated: n ? defeated / n : 0, n };
       });
       const [a, b] = cells;
+      if (!a.n || !b.n) continue; // no arena of this tier in the chosen chapters
       console.log(heroId.padEnd(12), tier.padEnd(5), `${pct(a.win)} ${a.defeated.toFixed(1).padStart(6)}`.padEnd(20), `${pct(b.win)} ${b.defeated.toFixed(1).padStart(6)}`.padEnd(20), `${((a.win - b.win) * 100).toFixed(0)} pts`);
     }
   }

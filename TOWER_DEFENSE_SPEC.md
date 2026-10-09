@@ -1048,6 +1048,33 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 - **Might:** (base attack + health) x level scale x star scale x (1 + 0.06 x evolution tier);
   sorts the roster and is compared with each stage's recommended Might.
 
+### Balance pass (October 9, 2026)
+
+Measured with `npm run td:sweep` (full campaign, 8 sampled squads x 2 seeds per stage; bot policy, lives 1 per
+won stage, so the roster grows only through summons). Win rate per chapter, shipped numbers:
+
+| Chapter | full (as shipped) | -talents | -elites | -theme (no board event, environment, stage rule) |
+|---|---|---|---|---|
+| 1 | 39% | 39% | 39% | 39% |
+| 2 | 57% | 57% | 57% | 57% |
+| 3 | 3% | 3% | 3% | 3% |
+| 4 | 10% | 7% | 15% | 24% |
+| 5-13 | 0% | 0% | 0% | 0% |
+
+Reading: talents add 3 points in Chapter 4 (bot, first option of each pair); Elites cost 5 points there; the theme
+costs 14 points in Chapter 4, mostly Frostbound (frostbite freezes a hero that stays 15 s on one tile, and the bot
+never moves heroes, so it freezes every time; a player relocates). Chapters 5-13 are 0% for every column: the bot
+loses at its first leaks, so its results there say nothing about Elites, talents or events. Talent A/B (Tier I,
+Chapter 4 arenas) showed no difference beyond noise; Tier II cannot be measured by the bot (Chapter 8+ at 0%).
+
+Changes: none. The numbers below stay as first guesses: `tdTalents.json` `fx`, `tdEnvironments.json` `event`,
+`tuning.elites`, `tdStageRules.json`, `hpScale` in `tdCampaign.json`. Check on dev: Frostbound frostbite with a
+moving hero, and Tier II talents on the six playtest heroes.
+
+Also found: `scripts/test-td-campaign.mjs --viability` (and the old sweep) passed flat 10-hero squads to
+`stageGameOptions`, which reads a flat list as one row capped at five, so only five heroes deployed. `td-sweep.mjs`
+passes two rows; the viability check still has the bug (not changed here).
+
 ### Hero talents (T1, October 9, 2026)
 
 Two talent tiers per hero (G5 of the gameplay ideas, `docs/tower-defense-hero-talents-concept.md`).
@@ -1116,8 +1143,9 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   for Thorns, Gjallarhorn and Northwind, `talentIce` for Frost Expose and Deep Freeze, `talentFire`
   for Torchlight and Hephaestus' forge, `talentHeal` for Second Life and Serpent Rod). The cue
   types and clips are listed in `authored-fx.js` (`EVENT_ATLAS_FX`).
-- **Not built yet:** a balance sweep (`td:sweep`), PixelLab talent icons (T6). Cues are first-pass
-  clip choices; they have not been seen in the browser.
+- **Balance (October 9, 2026):** `npm run td:sweep` measures the campaign with talents, Elites and stage
+  themes on or off (section 15). The bot shows no talent effect beyond noise, so no talent numbers changed.
+- **Not built yet:** PixelLab talent icons (T6). Cues are first-pass clip choices; they have not been seen in the browser.
 - Tests: `scripts/test-td-talents.mjs` (data, gates, prices, save) and
   `scripts/test-td-talent-effects.mjs` (each Tier I effect against the same setup without it); both
   in `npm run test:tower-defense`.
@@ -1308,7 +1336,8 @@ Content is not JSON-only. Before shipping, walk the matching list.
 | `npm run td:campaign-load -- [--chapter=<n>] [--csv=<path>]` | Effective Campaign stage load from simulator enemy shaping, gates, stats and spawn pressure; evidence only, no data writes |
 | `node scripts/migrate-td-boards.mjs [--dry]` | The one-time migration of every map to boards (reference for publishing) |
 | `npm run td:stage-lint -- [--chapter=<n>] [--stage=<id>]` | Pacing lint: enemies, groups, spawn window and mix per stage against the WoR chapter table; report only |
-| `npm run td:sweep`, `td:classes`, `td:pacing`, `td:economy`, `td:upgrade-sweep`, `td:progression` | Difficulty, class, pacing, gold and summon reports |
+| `npm run td:sweep -- [--from=<n>] [--to=<n>] [--sample=6] [--seeds=1] [--hpf=<f>] [--ab]` | Campaign sweep (restored October 9, 2026): walks the campaign with first-clear wins, summons from Divine Seals, samples squads of owned heroes; columns full / -talents / -elites / -theme win rate and defeated count. `--ab` is the talent A/B (option A against B, same squads). `--hpf` scales stage HP for measurement only |
+| `npm run td:classes`, `td:pacing`, `td:upgrade-sweep`, `td:progression` | Class, pacing, Stars and Evolution, and summon reports |
 | `npm run td:maps` | Map geometry metrics and validation |
 | `npm run td:generate-map -- --check` | Legacy generators (classic maps) |
 | `npm run build:game-balance` / `node scripts/build-td-grid.mjs` / `node scripts/td-audio-levels.mjs` | Regenerate hero stats / tiles / audio gains |

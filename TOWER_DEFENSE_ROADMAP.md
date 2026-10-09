@@ -299,9 +299,12 @@ Source: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) secti
 
 #### Open (agent, next steps)
 
-- Balance: `npm run td:sweep` and `td:classes` with talents forced on, Elites and board events on; then
-  retune the first-guess numbers in `tdTalents.json` (`fx`), `tdEnvironments.json` (`event`),
-  `tuning.elites`, `tdStageRules.json`. Chapter 4-13 `hpScale` values were not re-measured after Elites.
+- [x] Balance pass (October 9): `td:sweep` restored as `scripts/td-sweep.mjs` (removed in 02c9570d) and run
+  with talents, Elites and themes on or off; `td:classes` run too. Result: no number changed. Chapters 1-3
+  are unchanged by the features; Chapter 4 costs 14 points for the theme (mostly frostbite, which the bot
+  triggers because it never moves heroes) and 5 points for Elites; talents add 3 points. Chapters 5-13 are 0%
+  for the bot in every column, so the bot cannot tune those `hpScale` values or the Elite numbers. Details in
+  the spec, section "Balance pass (October 9, 2026)". Test result: see the report.
 - PixelLab icons for talents and the Talents tab (T6, `td/ui/talents/`), replacing the placeholder glyphs.
 - Simplifications to revisit once the playtest is in: Overgrowth roots as a 2 s stun (no root state),
   Whirlwind uses the cleave radius, Three Roads uses the hero pattern, Twin Beam draws one side only,
@@ -317,6 +320,14 @@ Source: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) secti
   talents or Elites; it also failed before those changes. Fix or update the assertion separately.
 - Test runs: `test:tower-defense` as a chain stops at `test-td-ui`; run the other tests individually
   (the list is in `package.json`; the talent tests are `test-td-talents` and `test-td-talent-effects`).
+- Run October 9, one by one with a watchdog: 29 of 32 pass (the 30 chain entries of `test:tower-defense` plus
+  `test-td-balance` and `test-td-environments`). Failing: `test-td-ui` (known, Squad code), `test-td-balance`
+  (class matrix: armored should call for a Mage on platform rings, best is Archer; fails the same way at HEAD
+  5019b1d1, so not from the balance pass), `test-td-environments` (`frostbound` `environment("aps")` expects 0.92;
+  the frozen-ground 8% now lives in the stage rule, so the test looks stale).
+- `scripts/test-td-campaign.mjs --viability` and the old sweep passed flat 10-hero squads to `stageGameOptions`,
+  which caps a flat list at five per row, so only five heroes deployed. `td-sweep.mjs` passes two rows; the
+  viability check still has the bug.
 
 ### Doc drift (audit)
 
