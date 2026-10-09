@@ -2502,12 +2502,12 @@ export async function createRenderer(canvas, game, options = {}) {
       console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
       return null;
     });
-    const [spawnTexture, baseTexture, roadTexture, platformTexture] = await Promise.all([
-      load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"),
+    const [baseTexture, roadTexture, platformTexture] = await Promise.all([
+      load("base", "sanctuary"), load("road", "stone paving"),
       sceneArt.assets.platform ? load("platform", "procedural ranged platform") : null,
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, platform: platformTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { base: baseTexture, road: roadTexture, platform: platformTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();

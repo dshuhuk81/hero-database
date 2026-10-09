@@ -137,6 +137,21 @@ export function platformTileLayout(cell = 62) {
 
 export const spawnLabelVisible = (game) => !game?.running;
 
+// A spawn is a low ground feature aligned with the lane, never a tall prop competing with the
+// raised placement slabs. The fixed footprint deliberately stays below one classic road cell.
+export function spawnRiftLayout(road, _cell = 70) {
+  const dx = road?.dx ?? 1, dy = road?.dy ?? 0;
+  const length = Math.hypot(dx, dy) || 1;
+  const ux = dx / length, uy = dy / length;
+  return {
+    angle: Math.atan2(dy, dx),
+    width: 50,
+    depth: 22,
+    emergeX: Math.round(ux * 13),
+    emergeY: Math.round(uy * 13),
+  };
+}
+
 // Painted architecture is opaque scenery and stays behind combatants. Keeping the full spawn-gate
 // sprite in the foreground hid an enemy on its first visible frame; doorway-front occlusion belongs
 // in a separate transparent foreground asset, not in the complete painted structure.
@@ -504,23 +519,30 @@ export function createMapScene(PIXI, game, {
 
   // Direction of each lane's first road segment (the way enemies leave the gate).
   const spawnRoad = mapLanes(game.map).map(({ path }) => (path.length > 1 ? { dx: path[1][0] - path[0][0], dy: path[1][1] - path[0][1] } : null));
-  const gates = spawns.map((spawn) => {
-    const gate = localGraphic(structures, spawn);
-    foundation(gate, 37, 34);
-    // A narrow, vertical opening presents its bright threshold toward the right.
-    gate.ellipse(-5, -7, 13, 33).fill(0x101529);
-    gate.ellipse(-4, -7, 10, 29).fill({ color: 0x6578ad, alpha: 0.48 });
-    gate.ellipse(-2, -6, 5, 25).fill({ color: 0xacc4e6, alpha: 0.32 });
-    column(gate, -11, -21, 22, 13);
-    polygon(gate, [[-19, -42], [-11, -49], [2, -43], [7, -30], [0, -24], [-4, -36]], 0x74818b);
-    gate.moveTo(-12, -43).lineTo(-2, -37).lineTo(2, -28).stroke({ color: GOLD, alpha: 0.8, width: 1.5 });
-    gate.moveTo(-27, 21).lineTo(27, 21).stroke({ width: 1.2, color: GOLD, alpha: 0.65 });
-    for (let i = 0; i < 4; i++) gate.rect(6 + i * 6, -12, 3, 24).fill({ color: 0xa4afb4, alpha: 0.17 });
-    const gateFront = localGraphic(foreground, spawn);
-    column(gateFront, -10, 29, 21, 14);
-    polygon(gateFront, [[-21, 30], [-18, 23], [0, 23], [5, 29], [1, 35], [-18, 35]], 0x394b5b);
-    star(gateFront, -10, 12, 4.5, LIGHT, 0.8);
-    return [spawn, gate, gateFront];
+  const rifts = spawns.map((spawn, i) => {
+    const layout = spawnRiftLayout(spawnRoad[i], board?.cell);
+    const riftColor = theme.structureTint ?? theme.glow.spawn;
+    const groundRift = localGraphic(structures, spawn);
+    groundRift.rotation = layout.angle;
+    // Dark centre, broken glowing seam and a few physical fragments create a world feature rather
+    // than a UI marker. Its short axis stays inside the road even beside raised placement tiles.
+    groundRift.ellipse(0, 3, layout.width / 2 + 4, layout.depth / 2 + 3)
+      .fill({ color: 0x05060b, alpha: 0.72 });
+    polygon(groundRift, [[-25, 1], [-17, -5], [-8, -2], [1, -7], [10, -2], [20, -5], [26, 1],
+      [16, 5], [7, 3], [-2, 7], [-13, 3], [-21, 6]], 0x160a10, 0.96);
+    groundRift.moveTo(-23, 0).lineTo(-15, -3).lineTo(-7, 0).lineTo(1, -4).lineTo(10, 0).lineTo(20, -2)
+      .stroke({ color: riftColor, alpha: 0.78, width: 2.2, cap: "round", join: "round" });
+    groundRift.moveTo(-20, 4).lineTo(-12, 2).moveTo(13, 3).lineTo(22, 1)
+      .stroke({ color: 0xffd0b0, alpha: 0.35, width: 1 });
+    for (const [x, y, radius] of [[-22, -7, 4], [-11, 8, 3], [17, 7, 4], [24, -5, 3]]) {
+      groundRift.poly([x - radius, y + 2, x - 1, y - radius, x + radius, y, x + 1, y + radius])
+        .fill({ color: STONE[(i + x + 24) % STONE.length], alpha: 0.92 });
+    }
+    const veil = localGraphic(foreground, {
+      x: spawn.x + layout.emergeX,
+      y: spawn.y + layout.emergeY,
+    });
+    return { spawn, layout, groundRift, veil, riftColor, phase: random() * TAU };
   });
 
   const sanctuary = localGraphic(structures, base);
@@ -559,21 +581,13 @@ export function createMapScene(PIXI, game, {
   // The painted gate and sanctuary have their plinth in the lower part of the image, so centred on
   // the tile they sat low and spilled onto the tile below. Lift them so the plinth is on the tile.
   const STRUCTURE_LIFT = 14;
-  for (const [texture, point, back, front, width, height, padWidth, padDepth, role, road] of [
-    ...gates.map(([spawn, gate, gateFront], i) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34, "spawn", spawnRoad[i]]),
+  for (const [texture, point, back, front, width, height, padWidth, padDepth, role] of [
     [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39, "base"],
   ]) {
     if (!texture) continue;
     back.clear();
-    // The gate must stay inside its road row: the slab above it is drawn over anything taller.
-    // The lip of the slab above reaches about 13 px into the row, so the gate's top edge must stay
-    // below row-top + 13 (cell 118: art height <= ~84 px), centred on the road.
-    // A gate whose road runs up or down has open road on one side and no slab lip over it, so it
-    // keeps its full size (road up: it stands on the spawn point; road down: centred). Only a gate
-    // whose road runs sideways sits between two slab rows and has to stay compact.
-    const sideways = role === "spawn" && road && Math.abs(road.dx) >= Math.abs(road.dy);
-    const fit = board ? Math.min(1, board.cell * (role !== "spawn" ? 0.88 : sideways ? 0.68 : 0.95) / height) : 1;
-    const lift = role !== "spawn" ? STRUCTURE_LIFT : road && !sideways && road.dy < 0 ? 14 : 0;
+    const fit = board ? Math.min(1, board.cell * 0.88 / height) : 1;
+    const lift = STRUCTURE_LIFT;
     back.ellipse(3, 16 - lift, padWidth * fit, padDepth * 0.7 * fit).fill({ color: 0x06111b, alpha: 0.17 });
     back.ellipse(2, 14 - lift, padWidth * 0.8 * fit, padDepth * 0.5 * fit).fill({ color: 0x06111b, alpha: 0.14 });
     front.visible = false;
@@ -625,18 +639,27 @@ export function createMapScene(PIXI, game, {
     const breath = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.4) * 0.5;
     const hit = Math.max(0, 1 - (now - hitAt) / 650);
     const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - startAt) / 1100);
-    for (const spawn of spawns) {
-      ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
-      if (tilt) { // red portal: enemies come from here
-        ambient.ellipse(spawn.x - 2, spawn.y - 4, 20, 34).fill({ color: 0xff3b30, alpha: 0.1 + breath * 0.08 + wave * 0.18 });
-        ambient.ellipse(spawn.x - 2, spawn.y - 4, 13, 26).stroke({ width: 2.5, color: 0xff7a6e, alpha: 0.55 + breath * 0.3 });
+    for (const rift of rifts) {
+      const pulse = 0.55 + breath * 0.25 + wave * 0.35;
+      rift.groundRift.alpha = Math.min(1, 0.82 + pulse * 0.18);
+      rift.veil.clear();
+      // A small foreground veil gives the first enemy frames contact with the rift without placing
+      // the complete portal in front of the unit. Reduced motion keeps a single static wisp.
+      const wisps = reducedMotion ? 1 : 3;
+      for (let i = 0; i < wisps; i++) {
+        const phase = seconds * (0.55 + i * 0.11) + rift.phase + i * 2.1;
+        const rise = reducedMotion ? 4 : ((phase * 13) % 17);
+        const drift = reducedMotion ? 0 : Math.sin(phase * 1.7) * (3 + i);
+        rift.veil.ellipse(drift, 5 - rise, 8 - i * 1.4, 4 + i)
+          .fill({ color: i ? rift.riftColor : 0x1a1018, alpha: (0.12 + wave * 0.08) * (1 - rise / 24) });
       }
     }
-    ambient.ellipse(base.x - 5, base.y, 15, 24).fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.035 + breath * 0.025 + hit * 0.2 });
-    if (hit > 0) {
-      ambient.ellipse(base.x - 7, base.y, 24 + (reducedMotion ? 0 : (1 - hit) * 9), 33)
-        .stroke({ width: 2, color: theme.glow.ring, alpha: hit * 0.75 });
-    }
+    // Home communicates through its core: steady light while healthy, an internal flash on impact.
+    // There is no selection-like halo around the building.
+    const coreX = base.x + 7, coreY = base.y - STRUCTURE_LIFT - 24;
+    ambient.circle(coreX, coreY, 4 + breath * 1.2 + hit * 3)
+      .fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.22 + breath * 0.15 + hit * 0.42 });
+    ambient.circle(coreX, coreY, 1.8).fill({ color: 0xfff5cf, alpha: 0.78 });
     for (let i = placements.length - 1; i >= 0; i--) {
       const placement = placements[i];
       const progress = (now - placement.at) / 350;

@@ -176,20 +176,22 @@ assert.equal(render.enemyRenderScale("boss", { enemyScale: 1.4 }), 1.4, "legacy 
 assert.equal(render.enemyRenderScale("grunt", null), 1, "classic enemies keep their original scale");
 assert.equal(render.enemyRenderScale("boss", null), 1, "classic bosses keep their original scale");
 
-// Painted gates occlude newly spawned enemies until they emerge onto the road.
+// Spawn rifts stay inside the road corridor and face the first path segment. This prevents
+// neighbouring raised tiles from clipping a tall gate and gives enemy emergence one direction.
+assert.equal(typeof mapScene.spawnRiftLayout, "function", "map scene exposes spawn-rift placement");
+assert.deepEqual(mapScene.spawnRiftLayout({ dx: 70, dy: 0 }, 70), {
+  angle: 0, width: 50, depth: 22, emergeX: 13, emergeY: 0,
+}, "horizontal lanes get a compact horizontal rift");
+assert.deepEqual(mapScene.spawnRiftLayout({ dx: 0, dy: -70 }, 70), {
+  angle: -Math.PI / 2, width: 50, depth: 22, emergeX: 0, emergeY: -13,
+}, "vertical lanes rotate the rift and its emergence direction");
+assert.ok(mapScene.spawnRiftLayout({ dx: -118, dy: 0 }, 118).width < 70, "large boards keep the rift clear of neighbouring tile slabs");
+
+// Painted home art remains scenery behind combatants. Spawn no longer uses a monolithic painted
+// gate; its ground and foreground pieces are assigned explicitly by createMapScene.
 {
   const structures = {}, foreground = {};
-  assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "spawn"), structures, "painted spawn gates stay behind units");
   assert.equal(mapScene.paintedStructureLayer?.({ structures, foreground }, "base"), structures, "painted sanctuary stays behind units");
-}
-
-// Tilted painted spawn gates remain upright, but the opaque art stays in the structure layer so a
-// ground enemy is visible in front of it from its first spawn frame.
-{
-  const structures = {}, foreground = {}, units = {};
-  const placement = mapScene.paintedStructurePlacement?.({ structures, foreground }, "spawn", { units });
-  assert.equal(placement?.parent, structures, "tilted spawn gate uses the structure layer behind units");
-  assert.equal(placement?.zIndex, null, "tilted spawn gate needs no unit-layer depth override");
 }
 
 // Lilith's walk steps foot by foot in a sharp sheet (frames ~196 px, not the usual ~100 px) and
