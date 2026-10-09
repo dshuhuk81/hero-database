@@ -768,7 +768,8 @@ export async function createRenderer(canvas, game, options = {}) {
       for (const [width, alpha, tint] of [[20, 0.14, color], [11, 0.26, color], [5, 0.6, color], [2, 0.95, 0xffffff]]) {
         contour.rect(frame.x, frame.y, frame.w, frame.h).stroke({ width, color: tint, alpha });
       }
-      layerSlotAurasTop.addChild(contour);
+      // Ground layer: above the slabs, under the heroes, so the figure stands in front of the frame.
+      layerGroundFx.addChild(contour);
 
       // Occupant: soft ground light under the figure, as before.
       const ground = new PIXI.Container();
