@@ -45,7 +45,7 @@ for (const id of ['atlas', 'gaia', 'harmonia', 'asclepius', 'recruit-bram', 'rec
 // their activation cues only.
 const ULTS = {
   boreas: { clip: 'ice', width: 150 },                                    // Ice Shockwave
-  ymir: { clip: 'shockwave', width: 130, tint: 0xbfe8ff },                // Titan's Expose
+  ymir: { clip: 'frost-burst', width: 200, at: 'source' },              // Titan's Expose (frost shatter on Ymir)
   aegir: { clip: 'water', width: 150 },                                   // Tidal Surge
   'recruit-sable': { clip: 'shockwave', width: 100, alpha: 0.7 },         // Knockback
   helios: { clip: 'holy', width: 140 },                                   // Solar Rush

@@ -109,6 +109,11 @@ while paused. Reduced motion uses a static luminous frame; missing atlases retai
 and an irregular textured rim. Home loses brightness with health and flashes on an impact.
 
 Re-export with the command below plus `--only portal-red,portal-blue`.
+
+`frost-burst` (CC0 `02_Tktk03/ToonHit.efkefc`, hue +180, 30 frames) and `frost-shell` (CC0
+`00_Version16/Barrior02.efkefc`, hue +185, from frame 8, 60 frames) are the frost set from
+October 9, 2026: Ymir's ultimate and the frozen-enemy ice dome. Re-export with
+`--only frost-burst,frost-shell`. The `.efkefc` samples load directly; `ToonHit` needs no CLI export.
 Focused checks: `node --test scripts/test-td-spawn-rift.mjs scripts/test-td-fx-atlas.mjs scripts/test-td-authored-fx.mjs`.
 
 `public/td/fx/effekseer-v1/` contains 44 WebP atlases (22 clips × normal/add) and `manifest.json`.

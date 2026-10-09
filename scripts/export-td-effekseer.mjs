@@ -39,6 +39,10 @@ const clips = [
   { id: 'boss-rise', source: '00_Version16/Barrior02.efkefc', author: 'Effekseer', view: 10, targetY: 2, start: 0, frames: 30, ticks: 4, width: 150 },
   { id: 'boss-death', source: '01_AndrewFM01/boss_death.efk', author: 'AndrewFM', view: 60, targetY: 2, start: 100, frames: 90, width: 220 },
   { id: 'blast', source: '01_Pierre02/FireBall.efk', author: 'Pierre', view: 50, targetY: 5, start: 160, frames: 45, width: 150 },
+  // Frost (October 9, 2026): Ymir's ultimate and the Freeze status. ToonHit shifted to ice blue is
+  // a shattering burst; Barrior02 shifted to ice blue is a cracked ice dome that encases a frozen enemy.
+  { id: 'frost-burst', source: '02_Tktk03/ToonHit.efkefc', author: 'Tktk', view: 14, targetY: 1, start: 0, frames: 30, width: 170, hue: 180 },
+  { id: 'frost-shell', source: '00_Version16/Barrior02.efkefc', author: 'Effekseer', view: 10, targetY: 2, start: 8, frames: 60, width: 90, hue: 185 },
   // Persistent world portals: bake the flowing Aura01 from overhead. Pixi projects this ground
   // plane with the board; using the combat camera here would flatten the circle twice.
   { id: 'portal-red', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 0,

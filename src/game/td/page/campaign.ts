@@ -479,7 +479,7 @@ export function createCampaign(ctx: PageContext) {
     const owned = heroes.filter((hero: any) => p.owned.includes(hero.id));
     if (!selectedHeroId || !p.owned.includes(selectedHeroId)) selectedHeroId = owned[0]?.id ?? null;
     q("[data-td-heroes-count]").textContent = `${p.owned.length} / ${heroes.length}`;
-    heroListEl.innerHTML = heroes.map((hero: any) => {
+    heroListEl.innerHTML = owned.map((hero: any) => {
       const isOwned = p.owned.includes(hero.id);
       const isRecruit = hero.id.startsWith("recruit-");
       const unlock = heroRewardStage(campaign, hero.id);

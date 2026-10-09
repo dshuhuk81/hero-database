@@ -853,22 +853,35 @@ export async function createRenderer(canvas, game, options = {}) {
     }
   }
 
-  // Effekseer loops for Gift (poison), Feuer (burn) and Eis (chill, frozen) on enemies, at their
+  // Effekseer loops for Gift (poison), Feuer (burn) and Eis (chill) on enemies, at their
   // feet. Supplements the particle cues in status-fx.js. Ends when the status ends.
-  const STATUS_LOOPS = { poison: "venom", burn: "fire", chill: "ice", frozen: "ice" };
+  // Freeze encases the enemy in a cracked ice dome (frost-shell, drawn over the body) and
+  // shatters a frost burst when it sets in; the drawn ice shell is the fallback.
+  const STATUS_LOOPS = { poison: "venom", burn: "fire", chill: "ice" };
   const statusKeys = new WeakMap();
   function updateStatusLoops() {
     if (reducedMotion) return;
     for (const enemy of game.enemies) {
       if (enemy.dead) continue;
+      if (!statusKeys.has(enemy)) statusKeys.set(enemy, {});
+      const keys = statusKeys.get(enemy);
+      const statuses = enemyStatuses(enemy);
+      const frozen = statuses.includes("frozen");
+      if (frozen) {
+        const body = enemyBody(enemy);
+        authoredFx.request("frost-shell");
+        authoredFx.request("frost-burst");
+        if (!keys.frozen) authoredFx.play("frost-burst", body.x, body.y - body.width, { width: Math.max(80, body.width * 4), alpha: 0.9 });
+        keys.shell ??= {};
+        authoredFx.keep(keys.shell, { clip: "frost-shell", width: Math.max(64, body.width * 3.2), alpha: 0.8, speed: 1 }, body.x, body.y + 2);
+      }
+      keys.frozen = frozen;
       const shown = new Set();
-      for (const name of enemyStatuses(enemy)) {
+      for (const name of statuses) {
         const clip = STATUS_LOOPS[name];
         if (!clip || shown.has(clip)) continue;
         shown.add(clip);
         const body = enemyBody(enemy);
-        if (!statusKeys.has(enemy)) statusKeys.set(enemy, {});
-        const keys = statusKeys.get(enemy);
         keys[clip] ??= {};
         groundLoop(keys[clip], { clip, width: Math.max(56, body.width * 3.5), alpha: 0.45, speed: 1 }, body.x, body.y + 4);
       }
@@ -1671,7 +1684,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const petrified = (unit.petrifiedUntil ?? 0) > game.time;
     c._stoneOverlay.visible = petrified;
     const frozen = !petrified && (unit.frozenUntil ?? 0) > game.time;
-    c._iceOverlay.visible = frozen;
+    c._iceOverlay.visible = frozen && (reducedMotion || !authoredFx.has("frost-shell")); // the Effekseer ice dome replaces it
     const stunned = !petrified && !frozen && (unit.stunnedUntil ?? 0) > game.time;
     const chilled = unit.chill > 0;
     const own = unit.ghost ? 0x9fb4ff : ENEMY_ART[unit.kind]?.tint ?? 0xffffff;
@@ -2010,7 +2023,8 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("magic_01", effect.x, effect.y, { size: effect.radius * 2, life: 0.35, tint: effect.color === "green" ? "green" : "purple" });
     } else if (effect.type === "reaction") {
       const tint = { steam: "white", freeze: "white", blight: "green", conduct: "purple", harvest: "purple" }[effect.reaction] ?? "white";
-      spawnParticle(effect.reaction === "freeze" ? "star_03" : "twirl_01", effect.x, effect.y, { size: Math.max(40, effect.radius * 1.6), life: 0.6, vr: 4, tint });
+      // Freeze: the frost burst from updateStatusLoops covers it once its clip is loaded.
+      if (effect.reaction !== "freeze" || reducedMotion || !authoredFx.has("frost-burst")) spawnParticle(effect.reaction === "freeze" ? "star_03" : "twirl_01", effect.x, effect.y, { size: Math.max(40, effect.radius * 1.6), life: 0.6, vr: 4, tint });
       if (effect.reaction === "steam") for (let i = 0; i < 4; i++) spawnParticle("light_01", effect.x + rand(30), effect.y, { size: 34, life: 0.8, vy: -50, tint: "white" });
     } else if (effect.type === "shieldBreak") {
       for (let i = 0; i < 5; i++) spawnParticle("spark_04", effect.x, effect.y, { size: 16, life: 0.4, vx: rand(180), vy: rand(180), tint: "white" });
@@ -2459,13 +2473,13 @@ export async function createRenderer(canvas, game, options = {}) {
       advanceDying(dyingDt);
       syncHeroes();
       drawBars();
+      updateStatusLoops(); // at the drawn positions, so ice domes sit on the sprites
       drawEffects(now);
     } finally {
       for (const [enemy, x, y] of standOff) { enemy.x = x; enemy.y = y; }
     }
     updateSpecialTileFx(now);
     updateAuraFx(now);
-    updateStatusLoops();
     // Molten ground (Hephaestus zones): fire loop under the lava area while it lasts.
     for (const zone of game.zones ?? []) {
       if (zone.until > game.time) groundLoop(zone, { clip: "fire", width: Math.max(96, zone.radius * 2.2), alpha: 0.5, speed: 1 }, zone.x, zone.y);

@@ -729,13 +729,17 @@ this approach stops meeting visual expectations.
   (`updateAuraFx`, replaces the drawn ellipse when the clip exists); Feuer warning area
   (`lavaWarn`, fire); Gift and Eis marks (`MARK_LOOPS`: spores venom, frostbite ice); molten
   zones (`game.zones`, fire); enemy statuses (`STATUS_LOOPS` in `updateStatusLoops`: poison
-  venom, burn fire, chill/frozen ice, at the feet). Special tiles (October 9, 2026, owner): no
+  venom, burn fire, chill ice, at the feet). Freeze (October 9, 2026): a frozen enemy is
+  encased in `frost-shell` (Barrior02, ice-blue cracked dome, drawn over the body) and a
+  `frost-burst` (ToonHit, ice blue) shatters as the freeze sets in; the drawn hexagon shell and
+  the freeze-reaction star stay only as fallback. Ymir's ultimate plays `frost-burst` on Ymir
+  (was a tinted `shockwave`). Status loops run at the drawn (stand-off) enemy positions. Special tiles (October 9, 2026, owner): no
   smoke clips; a pulsing additive contour around the tile frame (`buildSpecialTileFx`) replaces
   the old glow, motes, wisps and rim, and the occupant keeps a soft underglow. Other supplements:
   particles and pips stay. Clips request on first use. Budget `max` raised 32 to 96 (hero casts share it).
 - `fx-atlas.js`: frame lookup on the renderer's FX clock (pause, speed, restart clear), at most
   96 live instances; missing clips, full capacity or reduced motion fall back to baseline effects.
-- Assets: `public/td/fx/effekseer-v1/` (40 atlases, ~16 MB in total, loaded per squad/stage, `manifest.json`, `SAMPLE-LICENSE.txt`),
+- Assets: `public/td/fx/effekseer-v1/` (44 atlases, ~16 MB in total, loaded per squad/stage, `manifest.json`, `SAMPLE-LICENSE.txt`),
   loaded from the site's own `/td/fx/` path, not from R2 yet.
 - Local comparison page `/games/tower-defense/fx-lab/` (local-only route).
 - Provenance, export runbook (`scripts/export-td-effekseer.mjs`) and per-hero profile
