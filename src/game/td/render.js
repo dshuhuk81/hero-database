@@ -292,8 +292,25 @@ export async function createRenderer(canvas, game, options = {}) {
     reducedMotion,
     preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : []), ...(BOARD_EVENT_CLIPS[game.boardEvent?.type] ?? []), ...(game.heroes.some((h) => h.talents?.length) ? TALENT_CLIPS : [])],
     uprightScale: tiltOn ? 1 / tiltK : 1,
+    // Ground loops (tiles, auras, hazards, statuses) share the budget with hero casts.
+    max: 96,
     locate: (effect, recipe) => locateAuthoredFx(effect, recipe, game, visualHeroPoint),
   });
+  // Looping ground clip for a state that lasts (call every frame; the key is the state's owner).
+  // Clips download on first use. Reduced motion keeps the drawn cues only.
+  const groundLoop = (key, recipe, x, y) => {
+    authoredFx.request(recipe.clip);
+    authoredFx.keep(key, { ground: true, width: 100, alpha: 0.6, speed: 1, ...recipe }, x, y);
+  };
+  // Bounding centre and span of a board area (effect or mark cells), in world space.
+  const areaOf = target => {
+    const cells = target.area?.cells;
+    if (!cells?.length) return { x: target.x, y: target.y, span: (target.radius ?? 40) * 2 };
+    const size = target.area?.cell ?? target.cell;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const [x, y] of cells) { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x + size); maxY = Math.max(maxY, y + size); }
+    return { x: (minX + maxX) / 2, y: (minY + maxY) / 2, span: Math.max(maxX - minX, maxY - minY) };
+  };
 
   // On-board tokens: transparent head-and-shoulders cutouts from the hero skin (skin.js).
   // A hero without a token keeps the circle portrait.
@@ -703,6 +720,12 @@ export async function createRenderer(canvas, game, options = {}) {
   // on occupied tiles too. The hero standing on a special tile gets an underglow and a rim in the
   // tile's colour. Reduced motion keeps the static glow and rim and hides the moving parts.
   const specialTileFx = [];
+  // Effekseer ground loop per tile kind (authored-fx.js clips). Supplements the soft glow below.
+  const TILE_LOOPS = {
+    highground: { clip: "buff", width: 120, alpha: 0.5, speed: 1 },
+    shrine: { clip: "holy", width: 124, alpha: 0.55, speed: 1 },
+    cursed: { clip: "shadow", width: 116, alpha: 0.6, speed: 1, tint: 0xd7a6ff },
+  };
   let softTexture = null;
   function getSoftTexture() {
     if (softTexture) return softTexture;
@@ -802,7 +825,7 @@ export async function createRenderer(canvas, game, options = {}) {
       } else top.addChild(rimHolder);
       layerSlotAurasTop.addChild(top);
 
-      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], bleed, core, halo, underglow, parts, rim, rimHolder });
+      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], bleed, core, halo, underglow, parts, rim, rimHolder, loop: TILE_LOOPS[kind] });
     }
   }
 
@@ -811,6 +834,7 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const fx of specialTileFx) {
       const unit = game.heroes.find((h) => h.slotType === fx.type && h.slotIndex === fx.index);
       const veil = unit && game.isVeiled?.(unit) ? 0.45 : 1;
+      if (fx.loop) groundLoop(fx, { ...fx.loop, alpha: fx.loop.alpha * veil }, fx.x, fx.y + 5);
       fx.underglow.visible = fx.rimHolder.visible = !!unit;
       if (unit) {
         const feet = FIGURES ? HERO_ANIM.feetY : 0;
@@ -939,7 +963,34 @@ export async function createRenderer(canvas, game, options = {}) {
       const color = timed ? palette.gold : auraFx.get(aura.source)?.color ?? palette.gold;
       const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * (timed ? 5 : 2.4));
       const veil = game.isVeiled?.(ally) ? 0.45 : 1;
+      // Authored rim: a buff loop at the ally's feet, following the ally; it ends with the buff.
+      // The drawn ellipse stays as the fallback while the clip is missing or in reduced motion.
+      const [bx, by] = visualHeroPoint(ally);
+      groundLoop(ally, { clip: "buff", width: 96, alpha: (timed ? 0.7 : 0.5) * veil, speed: 1, tint: color }, bx, by + 6);
+      if (authoredFx.has("buff") && !reducedMotion) continue;
       auraGfx.ellipse(ally.x, ally.y + 22, 26, 9).stroke({ color, width: timed ? 2.5 : 1.5, alpha: (timed ? 0.55 + pulse * 0.35 : 0.3 + pulse * 0.25) * veil });
+    }
+  }
+
+  // Effekseer loops for Gift (poison), Feuer (burn) and Eis (chill, frozen) on enemies, at their
+  // feet. Supplements the particle cues in status-fx.js. Ends when the status ends.
+  const STATUS_LOOPS = { poison: "venom", burn: "fire", chill: "ice", frozen: "ice" };
+  const statusKeys = new WeakMap();
+  function updateStatusLoops() {
+    if (reducedMotion) return;
+    for (const enemy of game.enemies) {
+      if (enemy.dead) continue;
+      const shown = new Set();
+      for (const name of enemyStatuses(enemy)) {
+        const clip = STATUS_LOOPS[name];
+        if (!clip || shown.has(clip)) continue;
+        shown.add(clip);
+        const body = enemyBody(enemy);
+        if (!statusKeys.has(enemy)) statusKeys.set(enemy, {});
+        const keys = statusKeys.get(enemy);
+        keys[clip] ??= {};
+        groundLoop(keys[clip], { clip, width: Math.max(56, body.width * 3.5), alpha: 0.45, speed: 1 }, body.x, body.y + 4);
+      }
     }
   }
 
@@ -2212,6 +2263,8 @@ export async function createRenderer(canvas, game, options = {}) {
       const heat = 1 - Math.max(0, effect.life) / (effect.total || 3);
       const pulse = 0.5 + 0.5 * Math.sin(now / (110 - heat * 60));
       drawArea(g, effect, { color: 0xff5a1f, alpha: 0.14 + heat * 0.2 + pulse * 0.12 }, { width: 3, color: 0xffb347, alpha: 0.55 + pulse * 0.45 });
+      const c = areaOf(effect);
+      groundLoop(effect, { clip: "fire", width: Math.max(96, c.span * 1.25), alpha: 0.35 + heat * 0.4, speed: 0.7 }, c.x, c.y);
       return true;
     }
     if (effect.type === "lavaBurst") {
@@ -2248,11 +2301,21 @@ export async function createRenderer(canvas, game, options = {}) {
     align: (p, pulse) => [{ color: 0xfff1c2, alpha: 0.07 + pulse * 0.06 }, { width: 1.5, color: 0xfff1c2, alpha: 0.3 + pulse * 0.2 }],
     jam: (p, pulse) => [{ color: 0x8a6a3a, alpha: 0.25 }, { width: 3, color: 0xffd27a, alpha: 0.5 + pulse * 0.4 }],
   };
+  // Gift (spores) and Eis (frostbite) marks also carry an Effekseer ground loop per mark.
+  const MARK_LOOPS = {
+    spores: { clip: "venom", alpha: 0.5, speed: 1 },
+    frost: { clip: "ice", alpha: 0.6, speed: 1 },
+  };
   function drawBoardMarks(g, now) {
     const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(now / 300);
     for (const mark of boardEventMarks(game)) {
       const [fill, stroke] = MARK_LOOKS[mark.look]?.(mark.progress, pulse) ?? [];
       const size = mark.cell;
+      const loop = MARK_LOOPS[mark.look];
+      if (loop) {
+        const c = areaOf({ area: { cells: mark.cells, cell: size } });
+        groundLoop(`${mark.look}:${mark.cells[0]}`, { ...loop, width: Math.max(size * 1.6, c.span * 1.2) }, c.x, c.y);
+      }
       for (const [x, y] of mark.cells) {
         if (fill) g.rect(x, y, size, size).fill(fill);
         if (stroke) g.rect(x + 2, y + 2, size - 4, size - 4).stroke(stroke);
@@ -2479,6 +2542,11 @@ export async function createRenderer(canvas, game, options = {}) {
     }
     updateSpecialTileFx(now);
     updateAuraFx(now);
+    updateStatusLoops();
+    // Molten ground (Hephaestus zones): fire loop under the lava area while it lasts.
+    for (const zone of game.zones ?? []) {
+      if (zone.until > game.time) groundLoop(zone, { clip: "fire", width: Math.max(96, zone.radius * 2.2), alpha: 0.5, speed: 1 }, zone.x, zone.y);
+    }
     applyImpact(now);
     for (const entranceLabel of entrancePortalLabels) entranceLabel.visible = spawnLabelVisible(game);
     mapScene?.draw(now);

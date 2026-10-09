@@ -188,3 +188,22 @@ The nine focused Node tests pass. No production build was run (repo rule).
 Pre-existing broad checks: `test-td-ui.mjs` fails at its roster-placement assertion
 (line 34, unchanged campaign controller). `npm run check` reports 2053 errors in the
 existing codebase; its initial lab run reported none in the new FX files.
+
+## Ground loops — 2026-10-09 (implemented, not yet visually approved)
+
+`render.js` `groundLoop(key, recipe, x, y)` keeps a ground clip alive every frame while a state
+lasts (`authoredFx.keep`). Clips download on first use. Reduced motion keeps only the drawn cues.
+
+| Target | Clip | Source of the state |
+| --- | --- | --- |
+| Special tile highground / shrine / cursed | buff / holy / shadow (cursed tinted violet) | `game.map.rings` (`TILE_LOOPS`) |
+| Ally with buff or support aura | buff, tinted by the aura colour | `ally.buffUntil`, `supportAuraFor` (replaces the ellipse rim) |
+| Feuer warning area | fire, slower | `lavaWarn` effect area |
+| Gift marks (spores) | venom | `boardEventMarks` `spores` (`MARK_LOOPS`) |
+| Eis marks (frostbite) | ice | `boardEventMarks` `frost` |
+| Molten ground zone | fire | `game.zones` until expiry |
+| Enemy poison / burn / chill / frozen | venom / fire / ice / ice, at the feet | `enemyStatuses` (`STATUS_LOOPS`) |
+
+Supplements, not replacements: soft glow, status particles and pips stay. The Effekseer clip
+budget rose from 32 to 96. Open for feedback: whether the status loops crowd the screen with many
+enemies, and whether the particles should go once the loops are approved.

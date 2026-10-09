@@ -1,6 +1,6 @@
 # Tower Defense Roadmap
 
-Last updated: October 5, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
+Last updated: October 9, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md) (the full pre-cleanup roadmap text is archived there under "Roadmap cleanup, September 29, 2026").
 
 Maps come from generators: `board-v1` for compact boards (`npm run td:board`, spec section 10)
 and the owner's map workflow ([docs/tower-defense-map-generator-plan.md](docs/tower-defense-map-generator-plan.md)).
@@ -270,6 +270,53 @@ A4 chapter creatures, first slice (October 6): Burrower in Chapter 2, Vinebinder
 
 Backlog from the ideas document, not scheduled: D3 Expedition route
 map, boss rush, hero mastery. Early call is dropped (a timeline has no waves to call early).
+
+### Gameplay ideas G and hero talents (October 8-9, 2026)
+
+Source: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) section G (late-game variety), talent concept:
+[docs/tower-defense-hero-talents-concept.md](docs/tower-defense-hero-talents-concept.md). Built code is in the spec
+(section 8 Elites and board events, section 11/12 talents and stage rules). All numbers are first guesses.
+
+#### Built (not in the archive yet)
+
+- G1 Elite affixes from Chapter 4 (`elites.js`, six affixes, drawer and glossary), G2 chapter board events (all
+  ten, `board-events.js`), themed stage rules for Chapters 4-13 (`tdStageRules.json`).
+- Talents T1-T3: data and save version 12, unlock and switch rules (Tier I after Chapter 4, Tier II after
+  Chapter 8; switching costs 200 / 500 Gold), Heroes screen Talents tab, squad badge, battle popover chips, glossary.
+- Talents T2/T4/T5: all 22 signature pairs (44 talents) have battle effects; Tier I as well.
+- Talent cues T5: every talent emits an Effekseer cue type (`talent*` in `authored-fx.js`), clip-only in `render.js`.
+- Heroes screen: Stars, Evolution, Skills and Talents use the full width; compact head; sticky footer fixed.
+
+#### Open (owner)
+
+- Play-test the six Tier II heroes on dev (Atlas, Surtr, Nott, Odin, Atalanta, Plutus). Decide which
+  talents stay, which get reworked.
+- Check the talent UI on a phone: tab rail with five tabs, card height, unlock button text, compact head.
+- Confirm switch prices (200 Gold Tier I, 500 Gold Tier II): these are the assistant's numbers.
+- Check the Effekseer talent cues on dev: size, tint and clip choice are first passes.
+- Check Elite visuals and board events on dev (crown, affix diamonds, lava, flood, frost, rod, mushrooms,
+  prisms, ghosts, fruit, lines, gear jam).
+
+#### Open (agent, next steps)
+
+- Balance: `npm run td:sweep` and `td:classes` with talents forced on, Elites and board events on; then
+  retune the first-guess numbers in `tdTalents.json` (`fx`), `tdEnvironments.json` (`event`),
+  `tuning.elites`, `tdStageRules.json`. Chapter 4-13 `hpScale` values were not re-measured after Elites.
+- PixelLab icons for talents and the Talents tab (T6, `td/ui/talents/`), replacing the placeholder glyphs.
+- Simplifications to revisit once the playtest is in: Overgrowth roots as a 2 s stun (no root state),
+  Whirlwind uses the cleave radius, Three Roads uses the hero pattern, Twin Beam draws one side only,
+  Hunt Mark keeps one target, Thorns counts as the Tank's damage.
+- Eclipse changed from "2 s veil after the step" to "veil 6 s instead of 3 s" (classes already veil after ults).
+- Tier I cues are one deploy cue plus per-trigger cues; passive talents (Duelist, Stalker, Focus Lens,
+  Wildfire, War Hymn, Iron Wall) only show the deploy cue.
+
+#### Repository state
+
+- Everything above is uncommitted in the working tree (no commits were made in this session).
+- `scripts/test-td-ui.mjs` fails on the Squad code (`activeRow` removed from `placeInSquadRows`), not related to
+  talents or Elites; it also failed before those changes. Fix or update the assertion separately.
+- Test runs: `test:tower-defense` as a chain stops at `test-td-ui`; run the other tests individually
+  (the list is in `package.json`; the talent tests are `test-td-talents` and `test-td-talent-effects`).
 
 ### Doc drift (audit)
 

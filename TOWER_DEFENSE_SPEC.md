@@ -715,8 +715,16 @@ this approach stops meeting visual expectations.
 - Support auras (6 supports) are a looped swirl clip instead of the drawn ring; range wave and
   ally rims stay. Bosses: arrival, death and summons get clips (`EVENT_ATLAS_FX`). Cronus:
   lava `blast` per struck cell (`god-scene.js` via `authoredFx.play`).
+- Ground loops (`render.js` `groundLoop`, October 9, 2026): states that last are kept each frame
+  through `authoredFx.keep()` as ground clips under the units, cross-faded, ending with the state.
+  Special tiles (`TILE_LOOPS`: highground buff, shrine holy, cursed shadow); ally buff rim
+  (`updateAuraFx`, replaces the drawn ellipse when the clip exists); Feuer warning area
+  (`lavaWarn`, fire); Gift and Eis marks (`MARK_LOOPS`: spores venom, frostbite ice); molten
+  zones (`game.zones`, fire); enemy statuses (`STATUS_LOOPS` in `updateStatusLoops`: poison
+  venom, burn fire, chill/frozen ice, at the feet). Supplements: the soft glow, particles and
+  pips stay. Clips request on first use. Budget `max` raised 32 to 96 (hero casts share it).
 - `fx-atlas.js`: frame lookup on the renderer's FX clock (pause, speed, restart clear), at most
-  32 live instances; missing clips, full capacity or reduced motion fall back to baseline effects.
+  96 live instances; missing clips, full capacity or reduced motion fall back to baseline effects.
 - Assets: `public/td/fx/effekseer-v1/` (40 atlases, ~16 MB in total, loaded per squad/stage, `manifest.json`, `SAMPLE-LICENSE.txt`),
   loaded from the site's own `/td/fx/` path, not from R2 yet.
 - Local comparison page `/games/tower-defense/fx-lab/` (local-only route).
