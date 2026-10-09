@@ -94,48 +94,38 @@ const CONFIGS = { full: {}, "-talents": { talents: false }, "-elites": { elites:
 const pct = (value) => `${Math.round(value * 100)}%`.padStart(5);
 
 if (args.ab) {
-  // Talent A/B: option A (index 0) against B (index 1), same squads and seeds, only heroes in the stage range.
-  console.log("hero".padEnd(12), "tier".padEnd(5), "A win  A lives".padEnd(18), "B win  B lives".padEnd(18), "diff");
-  const cache = new Map();
-  let progress = newCampaignProgress(campaign);
-  const owned = new Set(progress.owned);
-  for (const stage of stages) {
-    progress = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
-  }
-  // Every hero in the roster can own the talent in the sweep: treat all eligible heroes as owned.
-  const allOwned = heroes.filter((hero) => talentEligible(hero.id)).map((hero) => hero.id);
-  const ownedProgress = { ...progress, owned: [...new Set([...owned, ...allOwned])] };
-  for (const hero of heroes.filter((entry) => talentEligible(entry.id))) {
+  // Talent A/B: option A (index 0) against option B on the same squads and seeds. The tested hero carries
+  // the tested option, every other eligible hero carries its first option. Metric: win rate and defeated
+  // enemies (the bot loses most stages from Chapter 5 on, so the defeated count carries the signal there).
+  console.log("hero".padEnd(12), "tier".padEnd(5), "A win  A def".padEnd(20), "B win  B def".padEnd(20), "diff win");
+  const eligible = heroes.filter((hero) => talentEligible(hero.id)).map((hero) => hero.id);
+  const ownedAll = [...new Set([...campaign.starters, ...eligible])];
+  const arenas = stages.filter((stage) => stage.chapter >= 4).filter((_, i, all) => i % Math.max(1, Math.floor(all.length / 4)) === 0).slice(0, 4);
+  const talentsFor = (leveledStage, heroId, tier, pick) => Object.fromEntries(ownedAll.filter((id) => talentEligible(id)).map((id) => {
+    const slot = {};
+    if (leveledStage.chapter >= TIER_CHAPTER.I) slot.I = talentPool(id, "I")[id === heroId && tier === "I" ? pick : 0]?.id;
+    if (leveledStage.chapter >= TIER_CHAPTER.II) slot.II = talentPool(id, "II")[id === heroId && tier === "II" ? pick : 0]?.id;
+    return [id, slot];
+  }));
+  for (const heroId of eligible) {
     for (const tier of ["I", "II"]) {
-      const pool = talentPool(hero.id, tier);
-      if (pool.length < 2) continue;
-      const row = pool.map((_, pick) => {
-        let wins = 0, lives = 0, n = 0;
-        const sample = stages.filter((stage) => stage.chapter >= TIER_CHAPTER[tier]).filter((_, i, all) => all.length <= 3 || i % Math.ceil(all.length / 3) === 0).slice(0, 3);
-        for (const stage of sample) {
-          const squads = sampleSquads(ownedProgress.owned, campaign.squadSize, SAMPLE, stage.chapter * 97 + 1).map((squad) => (squad.includes(hero.id) ? squad : [hero.id, ...squad.slice(1)]));
-          for (const squad of squads) for (let s = 1; s <= SEEDS; s++) {
-            const leveled = { ...ownedProgress, talents: {} };
-            const talents = {};
-            for (const id of leveled.owned) {
-              if (!talentEligible(id)) continue;
-              const slot = {};
-              if (stage.chapter >= 4) slot.I = talentPool(id, "I")[id === hero.id && tier === "I" ? pick : 0]?.id;
-              if (stage.chapter >= 8) slot.II = talentPool(id, "II")[id === hero.id && tier === "II" ? pick : 0]?.id;
-              talents[id] = slot;
-            }
-            const runHeroes = collectionHeroes(campaign, { ...leveled, talents }, heroes);
-            const key = `${stage.id}|${squad.join(",")}|${s}|${tier}|${pick}`;
-            const run = cache.get(key) ?? playRun(squad, s, mapFor(stage), { game: stageGameOptions(stage, rowsOf(squad), s, runHeroes) });
-            cache.set(key, run);
+      if (talentPool(heroId, tier).length < 2) continue;
+      const cells = [0, 1].map((pick) => {
+        let wins = 0, defeated = 0, n = 0;
+        for (const stage of arenas.filter((entry) => entry.chapter >= TIER_CHAPTER[tier])) {
+          const squads = sampleSquads(ownedAll, campaign.squadSize, SAMPLE, stage.chapter * 97 + 1).map((squad) => (squad.includes(heroId) ? squad : [heroId, ...squad.slice(1)]));
+          for (const squad of squads) for (let seed = 1; seed <= SEEDS; seed++) {
+            const runHeroes = collectionHeroes(campaign, { ...newCampaignProgress(campaign), owned: ownedAll, talents: talentsFor(stage, heroId, tier, pick) }, heroes);
+            const run = playRun(squad, seed, mapFor(stage), { game: stageGameOptions(stage, rowsOf(squad), seed, runHeroes) });
+            wins += run.won ? 1 : 0;
+            defeated += run.defeated;
             n += 1;
-            if (run.won) { wins += 1; lives += run.lives; }
           }
         }
-        return { win: wins / n, lives: wins ? lives / wins : 0 };
+        return { win: wins / n, defeated: defeated / n };
       });
-      const [a, b] = row;
-      console.log(hero.id.padEnd(12), tier.padEnd(5), `${pct(a.win)} ${a.lives.toFixed(1).padStart(6)}`.padEnd(18), `${pct(b.win)} ${b.lives.toFixed(1).padStart(6)}`.padEnd(18), `${((a.win - b.win) * 100).toFixed(0)} pts`);
+      const [a, b] = cells;
+      console.log(heroId.padEnd(12), tier.padEnd(5), `${pct(a.win)} ${a.defeated.toFixed(1).padStart(6)}`.padEnd(20), `${pct(b.win)} ${b.defeated.toFixed(1).padStart(6)}`.padEnd(20), `${((a.win - b.win) * 100).toFixed(0)} pts`);
     }
   }
   process.exit(0);
