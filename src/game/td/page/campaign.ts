@@ -231,16 +231,16 @@ export function createCampaign(ctx: PageContext) {
     const stages: any[] = chapter.stages;
     const cleared = stages.filter((stage) => isCleared(p, stage.id)).length;
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
-    progressEl.textContent = `${cleared} of ${stages.length} stages cleared - ${p.owned.length} of ${data.heroes.length} heroes`;
+    progressEl.textContent = ""; // chapter progress line removed (owner, October 9, 2026)
     stagesEl.innerHTML = stages.map((stage) => {
       const open = isUnlocked(p, stage, allStagesPlayable);
       const done = p.cleared[stage.id];
-      const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? `Cleared · ${livesShown(done.bestLives)}/${livesShown(stage.lives)} lives` : "Ready to play";
+      const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? "Cleared" : "Ready to play";
       return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
-        <small>${enemyCount(stage)} enemies${hasEnemy(stage, "boss") ? " · Boss battle" : ""}</small><small class="td-camp-stage-status">${status}</small>${open ? laurelRow(laurelFlags(campaign, p, stage)) : ""}</span></button>`;
+        ${stageRuleFor(stage) ? `<small class="td-camp-stage-rule" title="${stageRuleFor(stage)!.text}">${stageRuleFor(stage)!.name}</small>` : ""}<small class="td-camp-stage-status">${status}</small>${open ? laurelRow(laurelFlags(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
     // The stage row scrolls sideways: bring the next stage into view.
     const nextCard = stagesEl.querySelector<HTMLElement>(".is-next");
@@ -297,7 +297,7 @@ export function createCampaign(ctx: PageContext) {
         ${mapPreview(mapOf(stage.mapId))}
         <section><p class="td-camp-drawer-about">${stage.text}</p>
           ${environmentFor(mapOf(stage.mapId)) ? `<p class="td-camp-drawer-about"><strong>${environmentFor(mapOf(stage.mapId))!.rule}:</strong> ${environmentFor(mapOf(stage.mapId))!.text}</p>` : ""}
-          ${stageRuleFor(stage) ? `<p class="td-camp-drawer-about"><strong>${stageRuleFor(stage)!.name}:</strong> ${stageRuleFor(stage)!.text}</p>` : ""}
+          ${stageRuleFor(stage) ? `<p class="td-camp-drawer-about td-camp-drawer-rule"><strong>${stageRuleFor(stage)!.name}:</strong> ${stageRuleFor(stage)!.text}</p>` : ""}
           ${eliteHtml(stageElitesFor(stage))}
           <dl class="td-camp-drawer-facts">
             <div><dt>Battlefield</dt><dd>${mapOf(stage.mapId)?.name ?? ""}</dd></div>

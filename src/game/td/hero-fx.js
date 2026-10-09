@@ -821,18 +821,11 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
       running(life, 0.16, (age) => {
         const a = age * 4 + Math.random() * 2;
         kit.spawn("leaf", hero.x + Math.cos(a) * 24, fy() - 4 + Math.sin(a) * 8, { tint: p.color, size: 8, vy: -50, vx: Math.cos(a) * 20, life: 0.7, spin: rand(-6, 6), add: false, optional: true });
-      }, (g, t, age, left) => {
-        const k = blink(left, age);
-        kit.ring(g, hero.x, fy(), 30 + Math.sin(age * 5) * 2, { color: p.color, width: 2.5, alpha: 0.6 * k, squash: 0.32 });
-        kit.ring(g, hero.x, fy(), 40 + Math.sin(age * 5 + 1) * 3, { color: p.accent, width: 1.5, alpha: 0.35 * k, squash: 0.32 });
-      });
+      }, () => {}); // no pulsing rings (removed): the leaves carry the window
     } else if (hero.id === "vidar") {
       running(life, 0.22, () => {
         kit.spawn("streak", hero.x + rand(-14, 14), hero.y + rand(-6, 14), { tint: p.accent, size: 26, sizeEnd: 8, life: 0.2, rot: rand(-0.4, 0.4), alpha: 0.5, optional: true });
-      }, (g, t, age, left) => {
-        const k = blink(left, age);
-        kit.ring(g, hero.x, fy(), 26, { color: p.accent, width: 2, alpha: 0.5 * k, squash: 0.32 });
-      });
+      }, () => {}); // the ring under Vidar was removed; the afterimages below stay
       // Two fading afterimages trail behind him, drawn dark and flat.
       ground.shape((g, t, age) => {
         const left = life * (1 - t), k = blink(left, age);
@@ -841,10 +834,7 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
     } else if (hero.id === "helios") {
       running(life, 0.07, () => {
         kit.spawn("ember", hero.x + rand(-18, 18), hero.y + rand(2, 22), { tint: Math.random() < 0.5 ? p.color : p.accent, size: 7, vy: -80, life: 0.5, optional: true });
-      }, (g, t, age, left) => {
-        const k = blink(left, age);
-        kit.ring(g, hero.x, fy(), 29 + Math.sin(age * 9) * 2, { color: p.color, width: 3, alpha: (0.5 + 0.2 * Math.sin(age * 9)) * k, squash: 0.32 });
-      });
+      }, () => {}); // the pulsing ring under Helios was removed; the embers stay
     }
   }
 

@@ -202,7 +202,9 @@ export function createHud(ctx: PageContext) {
     if (game.start()) {
       pause.remove("manual");
       syncPauseButton();
-      ctx.notice("The stage has started. Heroes attack automatically.");
+      // A stage rule is told once at the start (e.g. Siege: no Nectar comes in after the start).
+      const rule = game.stageRule;
+      ctx.notice(`The stage has started. ${rule ? `${rule.name}: ${rule.text} ` : ""}Heroes attack automatically.`);
     }
     renderPreview();
   }

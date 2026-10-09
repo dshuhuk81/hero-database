@@ -1296,6 +1296,11 @@
   background: color-mix(in srgb, var(--accent-gold) 18%, var(--bg-base));
 }
 
+.td-camp-stage-rule {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
 .td-camp-stage-copy {
   display: grid;
   gap: 2px;
@@ -9529,6 +9534,18 @@ svg.td-class-icon {
 .td-camp-drawer-about {
   color: var(--text-secondary);
   font-size: calc(var(--td-fs-body) - 2px);
+}
+
+.td-camp-drawer-rule {
+  padding: 10px 12px;
+  border: 2px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-gold) 10%, transparent);
+  color: var(--text-bright);
+}
+
+.td-camp-drawer-rule strong {
+  color: var(--accent-gold);
 }
 
 .td-camp-drawer-head .td-label {

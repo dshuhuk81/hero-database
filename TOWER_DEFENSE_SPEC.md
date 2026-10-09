@@ -712,6 +712,11 @@ this approach stops meeting visual expectations.
   on the target or on itself, as a supplement to its own renderer. Odin's lightning and
   Heimdall's ward clip replace the old cues. Heimdall, Plutus, Poppy and Atalanta keep only
   their activation cues. Clips download per hero when it joins the board (`prepare`).
+- **Pulsing circles removed (October 9, 2026, owner):** support auras (Plutus, Asclepius, Harmonia, Gaia, recruits
+  Poppy and Jory) no longer draw the pulsing glow, the pulsing ring or the expanding range wave; the static range
+  circle stays. Allies no longer get the pulsing rim ellipse (the authored buff loop stays). The rings under
+  Atalanta (Endless Quiver), Helios (Zenith) and Vidar (Silent Fury) windows are gone; their particles and afterimages
+  stay. Expanding ult rings (Harmonia and the other ults) are not pulsing and are unchanged.
 - Support auras (6 supports) are a looped swirl clip instead of the drawn ring; range wave and
   ally rims stay. Bosses: arrival, death and summons get clips (`EVENT_ATLAS_FX`). Cronus:
   lava `blast` per struck cell (`god-scene.js` via `authoredFx.play`).

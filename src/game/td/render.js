@@ -820,41 +820,22 @@ export async function createRenderer(canvas, game, options = {}) {
       let fx = auraFx.get(hero);
       if (!fx) {
         const color = PROFILES[hero.id]?.color ?? palette.gold;
-        fx = { glow: softSprite(color, 96, 60, 0.4), color, phase: Math.random() * Math.PI * 2 };
-        layerSlotAuras.addChild(fx.glow);
+        fx = { color };
         auraFx.set(hero, fx);
       }
       const veil = game.isVeiled?.(hero) ? 0.45 : 1;
-      const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * 2.4 + fx.phase);
-      // Authored aura (authored-fx.js SUPPORT_AURA) replaces the pulsing glow and ring;
-      // the range wave below still shows where the aura reaches.
+      // No pulsing circles around support auras (glow, ring and expanding wave removed). The authored aura
+      // clip (authored-fx.js SUPPORT_AURA) is the only visual at the hero; the static range circle stays.
       const auraRecipe = HERO_ATLAS_FX[hero.id]?.aura;
       const authoredAura = auraRecipe && authoredFx.has(auraRecipe.clip);
-      fx.glow.visible = !authoredAura;
       if (authoredAura) {
         const [ax, ay] = visualHeroPoint(hero);
         authoredFx.keep(hero, { ...auraRecipe, alpha: auraRecipe.alpha * veil }, ax, ay + 6);
       }
-      // Figures: glow and ring lie flat at the feet instead of circling the body.
-      fx.glow.position.set(hero.x, hero.y + (FIGURES ? HERO_ANIM.feetY : 6));
-      fx.glow.width = 88 + pulse * 22;
-      fx.glow.height = FIGURES ? 30 + pulse * 6 : 56 + pulse * 14;
-      fx.glow.alpha = (0.32 + pulse * 0.3) * veil;
-      const ringR = 31 + pulse * 4;
-      if (authoredAura) { /* the clip carries the ring */ }
-      else if (FIGURES) auraGfx.ellipse(hero.x, hero.y + HERO_ANIM.feetY, ringR, ringR * 0.32).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
-      else auraGfx.circle(hero.x, hero.y, ringR).stroke({ color: fx.color, width: 2.5, alpha: (0.35 + pulse * 0.4) * veil });
-      if (reducedMotion) {
-        auraGfx.circle(hero.x, hero.y, hero.range).stroke({ color: fx.color, width: 1.5, alpha: 0.12 * veil });
-      } else {
-        const t = ((seconds + fx.phase) / 2.8) % 1;
-        const r = 34 + (hero.range - 34) * (1 - (1 - t) * (1 - t));
-        auraGfx.circle(hero.x, hero.y, r).stroke({ color: fx.color, width: 2, alpha: 0.3 * (1 - t) * veil });
-      }
+      auraGfx.circle(hero.x, hero.y, hero.range).stroke({ color: fx.color, width: 1.5, alpha: 0.12 * veil });
     }
     for (const [hero, fx] of auraFx) {
       if (live.has(hero)) continue;
-      fx.glow.destroy();
       auraFx.delete(hero);
     }
     for (const ally of game.heroes) {
@@ -862,14 +843,12 @@ export async function createRenderer(canvas, game, options = {}) {
       const timed = game.time < (ally.buffUntil || 0);
       if (!aura && !timed) continue;
       const color = timed ? palette.gold : auraFx.get(aura.source)?.color ?? palette.gold;
-      const pulse = reducedMotion ? 0.5 : 0.5 + 0.5 * Math.sin(seconds * (timed ? 5 : 2.4));
       const veil = game.isVeiled?.(ally) ? 0.45 : 1;
       // Authored rim: a buff loop at the ally's feet, following the ally; it ends with the buff.
       // The drawn ellipse stays as the fallback while the clip is missing or in reduced motion.
       const [bx, by] = visualHeroPoint(ally);
       groundLoop(ally, { clip: "buff", width: 96, alpha: (timed ? 0.7 : 0.5) * veil, speed: 1, tint: color }, bx, by + 6);
-      if (authoredFx.has("buff") && !reducedMotion) continue;
-      auraGfx.ellipse(ally.x, ally.y + 22, 26, 9).stroke({ color, width: timed ? 2.5 : 1.5, alpha: (timed ? 0.55 + pulse * 0.35 : 0.3 + pulse * 0.25) * veil });
+      // The pulsing ellipse rim under allies was removed; the authored buff loop above is the only rim.
     }
   }
 
