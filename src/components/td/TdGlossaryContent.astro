@@ -279,10 +279,10 @@ const affixHex = (color: number) => `#${color.toString(16).padStart(6, "0")}`;
       <p class="td-glossary-lead">Tier I is the class talent: two choices shared by the class, unlocked after Chapter 4 at Level 20 with one star. Tier II is the hero's own signature talent, unlocked after Chapter 8 at Level 40 with three stars. Each unlock costs a one-time price in Gold and Seal Dust; switching costs Gold. Common recruits have no talents.</p>
       <dl class="td-glossary-terms">
         {Object.entries(talentData.classes).flatMap(([cls, pair]) => pair.map((talent) => (
-          <div><dt><img class="td-glossary-talent-art" data-td-art={talentArtPath(talent.id)} width="32" height="32" alt="" decoding="async" />{talent.name}</dt><dd>{cls} talent. {talent.text}</dd></div>
+          <div><dt><img class="td-glossary-talent-art" src={`${assetBase}/td/${talentArtPath(talent.id)}`} onerror="this.onerror=null;this.src='/td/'+this.dataset.path" data-path={talentArtPath(talent.id)} width="32" height="32" alt="" decoding="async" />{talent.name}</dt><dd>{cls} talent. {talent.text}</dd></div>
         )))}
         {Object.entries(talentData.heroes).flatMap(([heroId, pair]) => pair.map((talent) => (
-          <div><dt><img class="td-glossary-talent-art" data-td-art={talentArtPath(talent.id)} width="32" height="32" alt="" decoding="async" />{talent.name}</dt><dd>{heroes.find((hero: any) => hero.id === heroId)?.name ?? heroId} signature talent. {talent.text}</dd></div>
+          <div><dt><img class="td-glossary-talent-art" src={`${assetBase}/td/${talentArtPath(talent.id)}`} onerror="this.onerror=null;this.src='/td/'+this.dataset.path" data-path={talentArtPath(talent.id)} width="32" height="32" alt="" decoding="async" />{talent.name}</dt><dd>{heroes.find((hero: any) => hero.id === heroId)?.name ?? heroId} signature talent. {talent.text}</dd></div>
         )))}
       </dl>
     </section>
