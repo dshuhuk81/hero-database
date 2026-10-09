@@ -35,6 +35,11 @@ export const talentArtPath = (id) => `ui/talents/${id}-v1.webp`;
 export function talentArtImg(id, cls = "td-talent-art", size = 48) {
   return `<img class="${cls}" data-td-art="${talentArtPath(id)}" width="${size}" height="${size}" alt="" decoding="async">`;
 }
+// Hero screen tab icons (PixelLab, 64 px): ui/hero-tabs/{id}-v1.webp (level, stars, evolution, skills).
+export const heroTabArtPath = (id) => `ui/hero-tabs/${id}-v1.webp`;
+export function heroTabArtImg(id) {
+  return `<img class="td-tab-art" data-td-art="${heroTabArtPath(id)}" width="20" height="20" alt="" decoding="async">`;
+}
 export function hydrateTdArt(root) {
   for (const img of root.querySelectorAll("img[data-td-art]")) if (!img.dataset.tdLoaded) { img.dataset.tdLoaded = "1"; loadTdImage(img, img.dataset.tdArt); }
 }

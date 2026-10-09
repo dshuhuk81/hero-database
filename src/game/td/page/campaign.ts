@@ -10,7 +10,7 @@ import { shownLives } from "../board.js";
 import { environmentFor } from "../environments.js";
 import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT, lordText } from "../skills.js";
-import { classGlyph, classIconImg, hydrateTdArt, talentArtImg } from "../assets.js";
+import { classGlyph, classIconImg, heroTabArtImg, hydrateTdArt, talentArtImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
@@ -505,9 +505,7 @@ export function createCampaign(ctx: PageContext) {
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
     const skill = data.tuning.heroSkills?.[hero.id];
     const tabLabels = { level: "Level", stars: "Stars", evolution: "Evolution", skills: "Skills", talents: "Talents" } as const;
-    // Talents icon: a placeholder line glyph until the PixelLab talent icon lands (concept T6).
-    const tabIcons = { level: "M7 13l5-5 5 5M7 19l5-5 5 5", stars: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z", evolution: "M12 3l8 9-8 9-8-9zM8 12h8", skills: "M13 2L5 13h6l-1 9 8-11h-6z", talents: "M12 3l2 5h5l-4 3 1.5 5L12 13l-4.5 3L9 11 5 8h5z" } as const;
-    const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}">${id === "talents" ? talentArtImg("tab", "td-tab-art", 20) : `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${tabIcons[id]}" fill="none" stroke-linejoin="round" /></svg>`}${tabLabels[id]}</button>`).join("");
+    const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}">${id === "talents" ? talentArtImg("tab", "td-tab-art", 20) : heroTabArtImg(id)}${tabLabels[id]}</button>`).join("");
     const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : heroTab === "skills" ? skillsPanel(p, hero, skill) : heroTab === "talents" ? talentsPanel(p, hero) : levelPanel(p, hero);
     // Identity sits over the hero art on every tab; the upgrade flyout beside it only
     // holds the active tab.

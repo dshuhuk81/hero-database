@@ -1647,8 +1647,8 @@
 
 .td-hero-tile-evo {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 4px;
+  right: 4px;
   display: grid;
   place-items: center;
   min-width: 26px;
@@ -14462,7 +14462,7 @@ img[data-rarity="lord"] {
 .td-app .td-hero-tile-evo {
   top: auto;
     right: 4px;
-    bottom: 4px;
+    bottom: 6px;
     z-index: 2;
     min-width: 16px;
     height: 16px;
