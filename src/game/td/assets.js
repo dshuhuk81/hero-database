@@ -29,6 +29,16 @@ export function loadTdImage(img, path) {
   img.src = tdAsset(path);
 }
 
+// Talent icons (PixelLab, 64 px): ui/talents/{id}-v1.webp; the tab icon is "tab". Markup carries data-td-art and
+// hydrateTdArt() loads it after the markup is in the page, with the same public/td fallback as loadTdImage.
+export const talentArtPath = (id) => `ui/talents/${id}-v1.webp`;
+export function talentArtImg(id, cls = "td-talent-art", size = 48) {
+  return `<img class="${cls}" data-td-art="${talentArtPath(id)}" width="${size}" height="${size}" alt="" decoding="async">`;
+}
+export function hydrateTdArt(root) {
+  for (const img of root.querySelectorAll("img[data-td-art]")) if (!img.dataset.tdLoaded) { img.dataset.tdLoaded = "1"; loadTdImage(img, img.dataset.tdArt); }
+}
+
 // Full-body enemy sprites (enemies/sprites/{file}-{version}.webp); v1 unless listed.
 // M24 white label: grunt, runner, flyer, archer, brute (v2) and Lilith with her brood (v3)
 // were regenerated from text-only prompts (src/game/td/sprite-spec-for-ai.md).

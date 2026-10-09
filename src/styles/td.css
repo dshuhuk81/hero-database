@@ -1593,36 +1593,27 @@
   transform-origin: 50% 0;
 }
 
-/* Recruit art is a transparent full-body figure rather than a close-up card. */
+/* Recruit art is a transparent full-body figure rather than a close-up card. The figures sit at
+   different heights on their canvas, so --td-recruit-y (cover object-position) puts each head top
+   on the same line. Values come from the alpha bbox of the card-240 art, head line at 10% of the tile. */
 .td-hero-tile.is-recruit>img {
-  box-sizing: border-box;
-  padding: 3px 2px 8px;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: 50% var(--td-recruit-y, 0%);
   transform: none;
 }
 
-/* These three source images have substantially more transparent space above the figure than
-   the other recruits. Lift them individually so their heads share the same card focal line. */
-.td-hero-tile[data-camp-hero-select="recruit-hollis"]>img,
-.td-hero-tile[data-camp-hero-select="recruit-sable"]>img,
-.td-hero-tile[data-camp-hero-select="recruit-tilda"]>img {
-  padding: 0;
-  transform: translateY(var(--td-recruit-lift)) scale(1.05);
-  transform-origin: 50% 0;
-}
-
-.td-hero-tile[data-camp-hero-select="recruit-hollis"] {
-  --td-recruit-lift: -14%;
-}
-
-.td-hero-tile[data-camp-hero-select="recruit-sable"] {
-  --td-recruit-lift: -6%;
-}
-
-.td-hero-tile[data-camp-hero-select="recruit-tilda"] {
-  --td-recruit-lift: -23%;
-}
+.td-hero-tile[data-camp-hero-select="recruit-ash"],
+.td-hero-tile[data-camp-hero-select="recruit-nyra"] { --td-recruit-y: 10.8%; }
+.td-hero-tile[data-camp-hero-select="recruit-bram"],
+.td-hero-tile[data-camp-hero-select="recruit-tilda"] { --td-recruit-y: 22%; }
+.td-hero-tile[data-camp-hero-select="recruit-kellan"],
+.td-hero-tile[data-camp-hero-select="recruit-sable"] { --td-recruit-y: 15%; }
+.td-hero-tile[data-camp-hero-select="recruit-hollis"],
+.td-hero-tile[data-camp-hero-select="recruit-wren"] { --td-recruit-y: 30.3%; }
+.td-hero-tile[data-camp-hero-select="recruit-elm"],
+.td-hero-tile[data-camp-hero-select="recruit-ives"] { --td-recruit-y: -7%; }
+.td-hero-tile[data-camp-hero-select="recruit-jory"],
+.td-hero-tile[data-camp-hero-select="recruit-poppy"] { --td-recruit-y: -5.2%; }
 
 .td-hero-tile::before {
   content: "";
@@ -1686,9 +1677,9 @@
 .td-hero-tile-lv {
   display: flex;
   align-items: baseline;
-  gap: 3px;
+  gap: 2px;
   color: var(--text-bright);
-  font-size: var(--text-xl);
+  font-size: var(--text-base);
   font-weight: var(--weight-bold);
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -15515,6 +15506,27 @@ img[data-rarity="lord"] {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
+}
+
+/* Talent icons (PixelLab, ui/talents): card art, tab icon and the battle popover chip. */
+.td-talent-art {
+  justify-self: start;
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+
+.td-tab-art {
+  width: 20px;
+  height: 20px;
+  image-rendering: pixelated;
+}
+
+.td-talent-chip-art {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  image-rendering: pixelated;
 }
 
 .td-talent-card {

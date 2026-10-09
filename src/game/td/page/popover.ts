@@ -5,7 +5,7 @@ import { heroProgress, worldToLocal } from "../ui.js";
 import { patternSvg } from "../board.js";
 import { talentById } from "../campaign.js";
 import type { PageContext } from "./context";
-import { classGlyph } from "../assets.js";
+import { classGlyph, hydrateTdArt, talentArtImg } from "../assets.js";
 import { roman } from "./route";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 
@@ -146,7 +146,8 @@ export function createPopover(ctx: PageContext) {
       popBadges.innerHTML =
         `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
         (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "") +
-        talents.map((id) => `<span class="td-talent-chip">${talentById(id)?.name ?? id}</span>`).join("");
+        talents.map((id) => `<span class="td-talent-chip">${talentArtImg(id, "td-talent-chip-art", 16)}${talentById(id)?.name ?? id}</span>`).join("");
+      hydrateTdArt(popBadges);
     }
     popLevel.textContent = unit.class;
     const refund = game.sellValue(unit.entityId);
