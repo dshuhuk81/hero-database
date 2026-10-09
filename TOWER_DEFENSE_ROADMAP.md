@@ -305,6 +305,9 @@ Source: [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](TOWER_DEFENSE_GAMEPLAY_IDEAS.md) secti
   triggers because it never moves heroes) and 5 points for Elites; talents add 3 points. Chapters 5-13 are 0%
   for the bot in every column, so the bot cannot tune those `hpScale` values or the Elite numbers. Details in
   the spec, section "Balance pass (October 9, 2026)". Test result: see the report.
+- [ ] Bot covers all chapters (owner, October 9): `td-sweep.mjs` bot now levels, stars, evolves, replays and
+  picks the best preset (spec, "Bot upgrade"). Chapters 1-6 give win rates; 7-13 still 0%: runners and menders
+  leak. Open: bot targeting or positioning, not the numbers. Frozen-hero relocation tested and rejected.
 - PixelLab icons for talents and the Talents tab (T6, `td/ui/talents/`), replacing the placeholder glyphs.
 - Simplifications to revisit once the playtest is in: Overgrowth roots as a 2 s stun (no root state),
   Whirlwind uses the cleave radius, Three Roads uses the hero pattern, Twin Beam draws one side only,

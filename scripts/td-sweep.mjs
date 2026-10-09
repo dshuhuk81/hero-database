@@ -1,6 +1,7 @@
 // Campaign balance sweep (restores `npm run td:sweep`, removed from package.json in 02c9570d).
-// Walks the campaign like test-td-campaign's viability check: every stage is assumed won with
-// lives 1, owned heroes level up evenly, and each stage is played with sampled squads of owned heroes.
+// Walks the campaign: every stage is won with lives 1, then the bot grinds (battle XP, replays, summons from
+// Divine Seals) and spends everything (levels, stars, evolution, skills; scripts/lib/td-progress.mjs).
+// Each stage is played with the squad presets of owned heroes.
 // Four columns per stage, so the effect of each Phase 3 feature is visible:
 //   full      as shipped: talents (Tier I from Chapter 4, Tier II from Chapter 8, first option of each pair),
 //             Elites, board events and stage rules (map theme)
@@ -8,7 +9,7 @@
 //   -elites   no Elite affixes
 //   -theme    map theme off (board events, environment rules, stage rules)
 // Cells: win rate over the sampled squads x seeds. Run:
-//   npm run td:sweep -- [--from=1] [--to=13] [--sample=6] [--seeds=1] [--ab]
+//   npm run td:sweep -- [--from=1] [--to=13] [--seeds=1] [--squads=random] [--replays=1] [--relocate] [--ab]
 // --hpf=0.35 scales every stage hpScale (measurement only, the sweep itself uses the shipped HP).
 // --ab  talent A/B: for each talent-eligible hero in the chapters, its Tier I / Tier II option A against
 //       option B on the same squads and seeds (win rate and mean lives left of wins).
@@ -18,7 +19,8 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import talentData from "../src/data/tdTalents.json" with { type: "json" };
 import summonCfg from "../src/data/tdSummon.json" with { type: "json" };
 import { allStages, collectionHeroes, finishCampaignStage, heroLevel, levelUp, newCampaignProgress, stageGameOptions, summonMany, talentEligible, talentPool } from "../src/game/td/campaign.js";
-import { maps, playRun } from "./lib/td-runner.mjs";
+import { maps, playRun, SQUADS } from "./lib/td-runner.mjs";
+import { bankBattleXp, spendAll } from "./lib/td-progress.mjs";
 import { applyHeroMultipliers } from "../src/game/td/hero-multipliers.js";
 
 const heroes = applyHeroMultipliers(rawHeroes, tuning);
@@ -34,6 +36,9 @@ const SEEDS = Number(args.seeds ?? 1);
 const stages = allStages(campaign).filter((stage) => stage.chapter >= fromChapter && stage.chapter <= toChapter);
 const mapFor = (stage) => maps.find((entry) => entry.id === stage.mapId);
 const TIER_CHAPTER = { I: 4, II: 8 };
+// Replays per stage after the first clear (the bot grinds for gold and XP like a player does).
+const REPLAYS = Number(args.replays ?? 1);
+const RELOCATE = args.relocate === "true";
 // Measurement only: scales every stage hpScale (the bot loses Chapter 5+ at full HP, so A/B needs a lower HP to see anything).
 const HP_FACTOR = Number(args.hpf ?? 1);
 const scaledHp = (game) => ({ ...game, hpScale: (game.hpScale ?? 1) * HP_FACTOR });
@@ -41,6 +46,21 @@ const scaledHp = (game) => ({ ...game, hpScale: (game.hpScale ?? 1) * HP_FACTOR 
 // Deterministic PRNG so every run of the sweep samples the same squads.
 const rng = (seed) => () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 2 ** 32; };
 function sampleSquads(owned, size, n, seed) {
+  // --squads=balanced: the S-tier preset (owned heroes only, filled with other owned heroes) instead of random squads.
+  // Default: every squad preset from td-runner (best of the presets, owned heroes only, filled with other owned heroes).
+  // --squads=random samples random squads of owned heroes instead.
+  if (args.squads !== "random") {
+    return Object.values(SQUADS).map((preset) => {
+      const picked = preset.filter((id) => owned.includes(id));
+      const rest = owned.filter((id) => !picked.includes(id));
+      return [...picked, ...rest].slice(0, Math.min(size, owned.length)).sort((a, b) => cost[a] - cost[b]);
+    });
+  }
+  if (args.squads === "balanced") {
+    const preset = SQUADS["balanced (S-tier core)"].filter((id) => owned.includes(id));
+    const rest = owned.filter((id) => !preset.includes(id));
+    return [[...preset, ...rest].slice(0, Math.min(size, owned.length)).sort((a, b) => cost[a] - cost[b])];
+  }
   const random = rng(seed);
   const squads = [];
   for (let i = 0; i < n; i++) {
@@ -62,14 +82,13 @@ function summonAll(progress, seed) {
   const result = summonMany(summonCfg, banner.id, progress, heroes.map((hero) => hero.id), count, random, SWEEP_NOW);
   return result?.progress ?? progress;
 }
-// Level the lowest owned hero while the currencies last (as in test-td-campaign).
-function spendEvenly(progress) {
-  for (;;) {
-    const lowest = [...progress.owned].sort((a, b) => heroLevel(progress, a) - heroLevel(progress, b))[0];
-    const next = levelUp(campaign, progress, lowest);
-    if (!next) return progress;
-    progress = next;
-  }
+// One stage won (lives 1) and what the player does next: battle XP for the squad, summons, then every upgrade.
+function advance(progress, stage, squad) {
+  // A player also replays each stage REPLAYS times: repeat currencies and battle XP.
+  let won = finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress;
+  for (let r = 0; r < REPLAYS; r += 1) won = finishCampaignStage(campaign, won, stage.id, { won: true, lives: 1 }).progress;
+  const xp = bankBattleXp(campaign, won, squad ?? campaign.starters, stage.id);
+  return spendAll(campaign, summonAll(xp, Number(stage.chapter) * 7 + 3));
 }
 // stageGameOptions reads a flat list as one row (capped at five), so the squad goes in as two rows.
 const rowsOf = (squad) => [squad.slice(0, 5), squad.slice(5, 10)];
@@ -91,7 +110,7 @@ function runStage(stage, squad, seed, progress, { talents = true, elites = true,
   const map = mapFor(stage);
   const game = scaledHp(stageGameOptions(stage, rowsOf(squad), seed, runHeroes));
   if (!elites) game.elites = [];
-  return playRun(squad, seed, theme ? map : { ...map, theme: null }, { game });
+  return playRun(squad, seed, theme ? map : { ...map, theme: null }, { game, relocate: RELOCATE });
 }
 
 const CONFIGS = { full: {}, "-talents": { talents: false }, "-elites": { elites: false }, "-theme": { theme: false } };
@@ -142,19 +161,19 @@ let progress = newCampaignProgress(campaign);
 const totals = Object.fromEntries(Object.keys(CONFIGS).map((name) => [name, { wins: 0, n: 0 }]));
 const perChapter = {};
 for (const stage of allStages(campaign)) {
-  const leveled = spendEvenly(progress);
+  const leveled = progress;
+  const squads = sampleSquads(leveled.owned, campaign.squadSize, SAMPLE, Number(stage.chapter) * 1000 + Number(stage.id.split("-")[1]));
   if (stage.chapter < fromChapter) {
-    progress = summonAll(finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress, Number(stage.chapter) * 7 + 3);
+    progress = advance(progress, stage, squads[0]);
     continue;
   }
   if (stage.chapter > toChapter) break;
-  const squads = sampleSquads(leveled.owned, campaign.squadSize, SAMPLE, Number(stage.chapter) * 1000 + Number(stage.id.split("-")[1]));
   const cells = {};
   for (const [name, options] of Object.entries(CONFIGS)) {
     let wins = 0, n = 0, defeated = 0;
     for (const squad of squads) for (let s = 1; s <= SEEDS; s++) {
       const run = runStage(stage, squad, s, leveled, options);
-      if (args.debug) console.log(stage.id, squad.join(","), JSON.stringify({ ...run, insightLog: undefined, mutators: undefined, boons: undefined }));
+      if (args.debug) console.log(stage.id, squad.join(","), JSON.stringify({ ...run, insightLog: undefined, mutators: undefined, boons: undefined, leakKinds: run.leakKinds }));
       wins += run.won ? 1 : 0;
       defeated += run.defeated;
       n += 1;
@@ -167,8 +186,9 @@ for (const stage of allStages(campaign)) {
     chapter[name].wins += wins;
     chapter[name].n += n;
   }
+  if (args.debug) console.log("  roster", leveled.owned.length, "avg level", (leveled.owned.reduce((n, id) => n + heroLevel(leveled, id), 0) / leveled.owned.length).toFixed(1), "stars", leveled.owned.reduce((n, id) => n + (leveled.stars?.[id] ?? 0), 0), "evo", leveled.owned.reduce((n, id) => n + (leveled.evolution?.[id] ?? 0), 0), "gold", leveled.currencies.gold, "xp", leveled.currencies.heroXp);
   console.log(stage.id.padEnd(8), String(leveled.owned.length).padStart(6), Object.keys(CONFIGS).map((name) => pct(cells[name]).padStart(8)).join(""), "  defeated", Object.keys(CONFIGS).map((name) => cells[`${name}:defeated`].toFixed(1).padStart(7)).join(""));
-  progress = summonAll(finishCampaignStage(campaign, progress, stage.id, { won: true, lives: 1 }).progress, Number(stage.chapter) * 7 + 3);
+  progress = advance(progress, stage, squads[0]);
 }
 console.log("\nper chapter (win rate)");
 for (const [chapter, row] of Object.entries(perChapter)) {

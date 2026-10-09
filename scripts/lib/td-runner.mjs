@@ -52,7 +52,7 @@ export const SQUADS = {
 // `policy` remains in the result label for historical balance comparisons; heroes spend placement only on deployment,
 // and automated relocation is deferred to the balance pass.
 export const POLICIES = ["cheapest", "carry"];
-export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, tier = "normal", maxSeconds = 1800, game: gameOptions = {} } = {}) {
+export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLevels = null, tuning: tuningOverride, tier = "normal", maxSeconds = 1800, game: gameOptions = {}, relocate = false } = {}) {
   const source = tuningOverride ?? baseTuning;
   const runTuning = favLevels ? buildRunTuning(source, favLevels) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
@@ -79,6 +79,16 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
       }
     }
   };
+  // Optional bot relocation: a hero frozen by a board event (Frostbound) moves to the best free tile of its slot type.
+  const relocateFrozen = () => {
+    for (const hero of [...g.heroes]) {
+      if (!g.boardEventState?.frost?.get(hero.entityId)?.frozen || g.relocationInfo(hero.entityId).ok !== true) continue;
+      const base = g.heroesById.get(hero.id);
+      const free = rankedTiles(map, hero.slotType, g.rangeFor(base), patternFor(g.boardRules, base.class, base.id))
+        .find((i) => !g.heroes.some((h) => h.slotType === hero.slotType && h.slotIndex === i));
+      if (free !== undefined) g.relocate(hero.entityId, hero.slotType, free);
+    }
+  };
   deployAll();
   if (!g.start()) throw new Error("The stage could not start");
   // Standoff guard: blockers and heals can outlast enemies nobody can kill. A stage with no kill and no leak
@@ -91,6 +101,7 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
     step += 1;
     if (step % 60 === 0) { // once a second: spend regrown placement
       deployAll();
+      if (relocate) relocateFrozen();
     }
     const now = g.totalLeaks + Object.values(g.heroKills).reduce((sum, h) => sum + h.kills, 0);
     quietSteps = now === progress ? quietSteps + 1 : 0;
@@ -98,5 +109,5 @@ export function playRun(ids, seed, map, { policy = "cheapest", difficulty, favLe
     if (quietSteps >= 60 * STALL_SECONDS) { stalled = true; break; }
   }
   const won = g.won && !stalled;
-  return { won, stalled, complete: g.complete || stalled, defeated: g.enemiesDown, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, insightLog: g.insightLog, mutators: [...(g.mutators ?? [])], boons: [...(g.boons ?? [])] };
+  return { won, stalled, complete: g.complete || stalled, defeated: g.enemiesDown, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect, insightLog: g.insightLog, leakKinds: g.leakKinds, mutators: [...(g.mutators ?? [])], boons: [...(g.boons ?? [])] };
 }

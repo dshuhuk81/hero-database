@@ -1071,6 +1071,14 @@ Changes: none. The numbers below stay as first guesses: `tdTalents.json` `fx`, `
 `tuning.elites`, `tdStageRules.json`, `hpScale` in `tdCampaign.json`. Check on dev: Frostbound frostbite with a
 moving hero, and Tier II talents on the six playtest heroes.
 
+Bot upgrade (October 9, second pass): the first sweep was not a fair player. It had no battle XP, no replays,
+no stars, evolution or skills, and random squads. `td-sweep.mjs` now grants battle XP, replays each stage once
+(`--replays`), summons from seals, spends everything (`scripts/lib/td-progress.mjs`) and plays the best of the
+five squad presets. Win rate with that bot: Chapter 1 46%, 2 70%, 3 27%, 4 33%, 5 13%, 6 0%, 7-13 0%. The
+bot now reaches Chapter 7+ with avg level ~19 and ~19 stars, so the remaining wall is the bot's play, not its
+roster: runners and menders leak through (15 damage per runner). Frozen-hero relocation (`playRun` option
+`relocate`, `--relocate`) was tried and cut Chapter 4 from 35% to 20%; it is off by default.
+
 Also found: `scripts/test-td-campaign.mjs --viability` (and the old sweep) passed flat 10-hero squads to
 `stageGameOptions`, which reads a flat list as one row capped at five, so only five heroes deployed. `td-sweep.mjs`
 passes two rows; the viability check still has the bug (not changed here).
