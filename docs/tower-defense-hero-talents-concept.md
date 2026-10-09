@@ -1,6 +1,6 @@
 # Tower Defense: Hero Talents (G5) - concept
 
-Written October 9, 2026. Status: **approved by owner, T1 and T2 done (data, save, logic, Tier I battle effects; UI and Tier II open)**. Source idea: G5 in
+Written October 9, 2026. Status: **approved by owner, T1 to T5 effects done (data, save, logic, Tier I and Tier II battle effects, UI); cues, balance pass and icons open**. Source idea: G5 in
 [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](../TOWER_DEFENSE_GAMEPLAY_IDEAS.md). All numbers are first guesses.
 
 Owner decisions (October 9, 2026): unlock after Chapter 4; prices as proposed; switching never free;
@@ -32,9 +32,9 @@ picked during a battle since October 5).
   - **Tier I, class talent**: two choices shared by the hero's class (12 talents for 6 classes).
   - **Tier II, signature talent**: two choices that change the hero's own ultimate (one pair per
     mythic hero and Isis, 44 talents).
-- **Unlock** (owner): talents open for the whole collection after clearing **Chapter 4** (the first
-  chapter with Elites). Per hero, Tier I opens at **Level 20** (needs 1 star) and Tier II at
-  **Level 40** (needs 3 stars), so a new hero must still be grown before it changes shape.
+- **Unlock** (owner, changed October 9, 2026): Tier I opens after clearing **Chapter 4** at **Level 20**
+  (needs 1 star). Tier II opens after clearing **Chapter 8** at **Level 40** (needs 3 stars), so a new hero
+  must still be grown before it changes shape.
 - **Cost** (owner): unlocking a slot is a one-time price per hero (Tier I: 1,000 Gold and 30 Seal
   Dust; Tier II: 3,000 Gold and 150 Seal Dust).
 - **Switching** (owner: never free): changing a chosen talent costs Gold, Tier I 200, Tier II 500
@@ -75,7 +75,7 @@ numbers come with the build.
 | Helios | Solar Rush | **Zenith**: the rush window lasts longer. | **Blinding Noon**: struck enemies deal 30% less damage for a few seconds. |
 | Surtr | Crimson Cleave | **Blood Pact**: the lifesteal also heals neighbouring allies. | **Ragnarok**: the cleave leaves burning ground. |
 | Fenrir | Venom Coil | **Lock Jaw**: the bitten target is held in place (stun). | **Pack Howl**: neighbouring allies attack faster for a few seconds. |
-| Nott | Shadow Step | **Eclipse**: after the step she is veiled for 2 s. | **Twin Stars**: the step strikes two enemies. |
+| Nott | Shadow Step | **Eclipse**: the veil after her ultimate lasts 6 s instead of 3 s (the class veil already exists). | **Twin Stars**: the step strikes two enemies. |
 | Hecate | Claw Sweep | **Three Roads**: the sweep reaches every tile around her. | **Torchlight**: the sweep leaves fire that burns. |
 | Vidar | Flurry | **Silent Fury**: more strikes, each weaker. | **Vengeance**: the flurry grows stronger the more health he is missing. |
 | Thanatos | Featherfall Judgment | **Reaper**: the judgment finishes enemies below 15% health. | **Soul Harvest**: every kill during the ultimate refunds charge. |
@@ -176,9 +176,9 @@ Respect `prefers-reduced-motion`.
 |---|---|---|
 | T1 | `tdTalents.json`, save version 12, unlock, choose and switch logic in `campaign.js`, tests (**done**, October 9, 2026) | S |
 | T2 | Tier I class talents in the sim (12 effects) and `talents.js`, tests (**done**, October 9, 2026) | M |
-| T3 | Heroes screen "Talents" tab, squad-slot glyph, battle panel line, glossary section | M |
-| T4 | Tier II for one hero per class (Atlas, Surtr, Nott, Odin, Atalanta, Plutus), owner playtest | M |
-| T5 | Remaining Tier II talents, Effekseer cues, `td:sweep` balance pass | L |
+| T3 | Heroes screen "Talents" tab, squad-slot badge, battle popover chips, glossary section (**done**, October 9, 2026; owner check on dev pending) | M |
+| T4 | Tier II for one hero per class (Atlas, Surtr, Nott, Odin, Atalanta, Plutus), owner playtest (**built**, October 9, 2026; playtest pending) | M |
+| T5 | Remaining Tier II talents (**effects built**, October 9, 2026), Effekseer cues and `td:sweep` balance pass (**open**) | L |
 | T6 | PixelLab talent icons (owner pipeline), spec and glossary final | M |
 
 T1 to T3 make the feature playable with class talents; T4 is the checkpoint where the owner decides
@@ -186,7 +186,7 @@ whether the signature tier is worth the remaining 32 effects.
 
 ## 8. Decisions (October 9, 2026)
 
-1. Unlock after Chapter 4, plus Level 20 / Level 40 per hero.
+1. Unlock after Chapter 4 (Tier I) and Chapter 8 (Tier II, changed October 9), plus Level 20 / Level 40 per hero.
 2. Prices as proposed (one-time per slot).
 3. Switching is never free: 200 Gold (Tier I), 500 Gold (Tier II). Owner to confirm the numbers.
 4. Recruits (common) have no talents.

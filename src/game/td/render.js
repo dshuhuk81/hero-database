@@ -6,7 +6,7 @@ import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemyS
 import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
-import { BOARD_EVENT_CLIPS, BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
+import { BOARD_EVENT_CLIPS, BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, TALENT_CLIPS, loadAuthoredFx, locateAuthoredFx } from "./authored-fx.js";
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
@@ -81,7 +81,7 @@ export function enemyRenderScale(kind, rules) {
 }
 
 // Board event cues (G2) that are only an Effekseer clip (authored-fx.js EVENT_ATLAS_FX), no drawn shape.
-const CLIP_ONLY_EVENTS = new Set(["floodRise", "frostSet", "rodStrike", "sporeGrow", "sporeTrampled", "prismOn", "ghostRise", "fruitDrop", "fruitTaken", "alignOn"]);
+const CLIP_ONLY_EVENTS = new Set(["floodRise", "frostSet", "rodStrike", "sporeGrow", "sporeTrampled", "prismOn", "ghostRise", "fruitDrop", "fruitTaken", "alignOn", "talentWall", "talentShield", "talentBurn", "talentVeil", "talentMark", "talentSlow", "talentTithe", "talentMidas"]);
 
 // Elites (G1) stand a little taller than their kind so they read in a crowd.
 export const ELITE_SCALE = 1.15;
@@ -289,7 +289,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const authoredFx = await loadAuthoredFx(PIXI, authoredLayer, {
     groundParent: authoredGround,
     reducedMotion,
-    preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : []), ...(BOARD_EVENT_CLIPS[game.boardEvent?.type] ?? [])],
+    preload: [...(options.boss ? BOSS_CLIPS : []), ...(game.god ? GOD_CLIPS : []), ...(BOARD_EVENT_CLIPS[game.boardEvent?.type] ?? []), ...(game.heroes.some((h) => h.talents?.length) ? TALENT_CLIPS : [])],
     uprightScale: tiltOn ? 1 / tiltK : 1,
     locate: (effect, recipe) => locateAuthoredFx(effect, recipe, game, visualHeroPoint),
   });
@@ -2052,6 +2052,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function spawnParticles(effect) {
+    if (CLIP_ONLY_EVENTS.has(effect.type)) return; // Effekseer clip only (authored-fx.js)
     if (effect.type === "damageNumber") return spawnDamageNumber(effect);
     if (effect.type === "thunderStrike" || effect.type === "shieldUp" || effect.type === "shieldBlock") return spawnPowerParticles(effect);
     if (hasHeroFx(effect)) return;

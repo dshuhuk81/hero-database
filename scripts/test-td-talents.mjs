@@ -28,7 +28,7 @@ const ready = (overrides = {}) => {
   return clearChapter({ ...base, ...overrides }, 4);
 };
 
-// Gates: Chapter 4 cleared, then Level 20 with a star for Tier I; Level 40 with 3 stars for Tier II.
+// Gates: Tier I after Chapter 4 at Level 20 with a star; Tier II after Chapter 8 at Level 40 with 3 stars.
 {
   const fresh = newCampaignProgress(campaign);
   fresh.owned = ["odin"];
@@ -43,8 +43,11 @@ const ready = (overrides = {}) => {
   assert.equal(talentSlot(campaign, low, "odin", "I").requirement, "Level 20");
   const starless = { ...cleared, levels: { odin: 25 }, stars: { odin: 0 } };
   assert.equal(talentSlot(campaign, starless, "odin", "I").requirement, "1 star");
-  const tier1 = { ...cleared, levels: { odin: 25 }, stars: { odin: 1 } };
-  assert.equal(talentSlot(campaign, tier1, "odin", "II").requirement, "Level 40");
+  const tier1 = { ...cleared, levels: { odin: 45 }, stars: { odin: 3 } };
+  assert.equal(talentSlot(campaign, tier1, "odin", "II").requirement, "Clear Chapter 8", "Tier II waits for Chapter 8");
+  const chapter8 = clearChapter(tier1, 8);
+  assert.equal(talentSlot(campaign, chapter8, "odin", "II").locked, false, "Tier II opens after Chapter 8");
+  assert.equal(talentSlot(campaign, { ...chapter8, levels: { odin: 39 } }, "odin", "II").requirement, "Level 40");
   assert.equal(talentSlot(campaign, tier1, "odin", "I").requirement, null);
 }
 

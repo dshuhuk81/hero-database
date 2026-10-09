@@ -15,6 +15,7 @@ import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
 import { ELITE_AFFIXES } from "../elites.js";
+import { talentById, talentSlot, unlockTalent, switchTalent, talentEligible, TALENT_TIERS } from "../campaign.js";
 import { stageRuleFor, stageElitesFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
@@ -126,7 +127,8 @@ export function createCampaign(ctx: PageContext) {
   let godStart: ((rows: [string[], string[]]) => void) | null = null; // set while the squad screen serves the God Challenge
   let allStagesPlayable = false; // debug-only access override; never changes campaign progress
   let selectedHeroId: string | null = null;
-  let heroTab: "level" | "stars" | "evolution" | "skills" = "level"; // Heroes screen detail tab
+  let heroTab: "level" | "stars" | "evolution" | "skills" | "talents" = "level"; // Heroes screen detail tab
+  let talentPick: { hero: string; tier: string; id: string } | null = null; // talent card picked, not yet unlocked or switched
   let heroDetailKey = ""; // hero + tab last drawn, to keep scroll when an upgrade redraws it
   let fodder: Record<string, number> = {}; // Stars: spare copies picked for the next star
   let evoTarget: number | null = null; // Evolution tier currently being prepared (1 based)
@@ -428,7 +430,7 @@ export function createCampaign(ctx: PageContext) {
         if (!hero) return `<button type="button" class="td-squad-slot is-empty" data-squad-activate-row="${rowIndex}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" aria-label="Empty slot ${slotIndex + 1} in row ${rowIndex + 1}"><span class="td-squad-slot-card"><strong aria-hidden="true">+</strong></span></button>`;
         const matches = group && hero.mythologyGroups?.includes(group.id);
         return `<button type="button" class="td-squad-slot${matches ? " is-group-match" : ""}${isLord(hero.id) ? " is-lord" : ""}" data-class="${hero.class.toLowerCase()}" data-td-row="${rowIndex}" data-squad-slot="${slotIndex}" data-squad-remove="${hero.id}" aria-label="${hero.name}, ${hero.class}, ${hero.cost} placement. Remove from row ${rowIndex + 1}">
-          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span></span></button>`;
+          <span class="td-squad-slot-card"><img class="td-squad-slot-portrait" data-rarity="${hero.rarity ?? ''}" src="${hero.image}" alt=""><span class="td-squad-slot-groups">${mythologyIcons(hero)}</span><span class="td-squad-slot-class">${classGlyph(hero.class, 16)}</span>${talentBadge(p, hero.id)}</span></button>`;
       }).join("");
       return `<section class="td-squad-row${lordId ? " has-lord" : ""}" data-td-squad-row="${rowIndex}">
         <div class="td-squad-row-head" data-squad-activate-row="${rowIndex}">${status}</div>
@@ -483,7 +485,7 @@ export function createCampaign(ctx: PageContext) {
       const unlock = heroRewardStage(campaign, hero.id);
       const tier = heroEvolution(p, hero.id);
       const source = unlock ? `Stage ${unlock.id}` : "Summon";
-      const ready = isOwned && (canLevelUp(campaign, p, hero.id) || evolutionMaterial(campaign, p, hero.id) === "copy");
+      const ready = isOwned && (canLevelUp(campaign, p, hero.id) || evolutionMaterial(campaign, p, hero.id) === "copy" || talentReady(p, hero.id));
       // Portrait card: the face fills the tile; class top left, evolution top right, level and
       // stars over the bottom fade. The name is the accessible label and tooltip.
       const label = isOwned
@@ -502,10 +504,11 @@ export function createCampaign(ctx: PageContext) {
     const hero = heroById.get(selectedHeroId ?? "");
     if (!hero) { q("[data-td-hero-detail]").innerHTML = ""; return; }
     const skill = data.tuning.heroSkills?.[hero.id];
-    const tabLabels = { level: "Level", stars: "Stars", evolution: "Evolution", skills: "Skills" } as const;
-    const tabIcons = { level: "M7 13l5-5 5 5M7 19l5-5 5 5", stars: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z", evolution: "M12 3l8 9-8 9-8-9zM8 12h8", skills: "M13 2L5 13h6l-1 9 8-11h-6z" } as const;
+    const tabLabels = { level: "Level", stars: "Stars", evolution: "Evolution", skills: "Skills", talents: "Talents" } as const;
+    // Talents icon: a placeholder line glyph until the PixelLab talent icon lands (concept T6).
+    const tabIcons = { level: "M7 13l5-5 5 5M7 19l5-5 5 5", stars: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z", evolution: "M12 3l8 9-8 9-8-9zM8 12h8", skills: "M13 2L5 13h6l-1 9 8-11h-6z", talents: "M12 3l2 5h5l-4 3 1.5 5L12 13l-4.5 3L9 11 5 8h5z" } as const;
     const tabs = (Object.keys(tabLabels) as (keyof typeof tabLabels)[]).map((id) => `<button type="button" role="tab" class="td-hero-tab${heroTab === id ? " is-active" : ""}" id="td-hero-tab-${id}" data-camp-hero-tab="${id}" aria-selected="${heroTab === id}" aria-controls="td-hero-panel" tabindex="${heroTab === id ? "0" : "-1"}"><svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${tabIcons[id]}" fill="none" stroke-linejoin="round" /></svg>${tabLabels[id]}</button>`).join("");
-    const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : heroTab === "skills" ? skillsPanel(p, hero, skill) : levelPanel(p, hero);
+    const body = heroTab === "stars" ? starsPanel(p, hero) : heroTab === "evolution" ? evolutionPanel(p, hero) : heroTab === "skills" ? skillsPanel(p, hero, skill) : heroTab === "talents" ? talentsPanel(p, hero) : levelPanel(p, hero);
     // Identity sits over the hero art on every tab; the upgrade flyout beside it only
     // holds the active tab.
     const evo = heroEvolution(p, hero.id);
@@ -521,15 +524,78 @@ export function createCampaign(ctx: PageContext) {
     const scrolls = detailKey === heroDetailKey ? [...detailEl.querySelectorAll<HTMLElement>(scrollSel)].map((el) => el.scrollTop) : [];
     heroDetailKey = detailKey;
     const pickerOpen = heroTab === "evolution" && evoPicker && evoTarget !== null;
-    const art = pickerOpen ? evolutionPicker(p, hero) : `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="${hero.name}">${summary}`;
-    detailEl.innerHTML = `<article class="td-hero-profile${hero.id.startsWith("recruit-") ? " is-recruit" : ""}">
-      <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${art}</div>
-      <div class="td-hero-profile-copy">
-      <div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${body}</div>
-      </div>
+    const recruit = hero.id.startsWith("recruit-") ? " is-recruit" : "";
+    const portrait = `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="${hero.name}">`;
+    // Stars, Evolution, Skills and Talents use the whole screen: the portrait gives way to a compact
+    // head (thumbnail, name, Might, stars), and the picker (when open) takes the body. Level keeps the portrait.
+    const wide = heroTab !== "level";
+    const panel = `<div class="td-hero-tab-panel" id="td-hero-panel" role="tabpanel" aria-labelledby="td-hero-tab-${heroTab}">${wide && pickerOpen ? evolutionPicker(p, hero) : body}</div>`;
+    detailEl.innerHTML = wide
+      ? `<article class="td-hero-profile is-wide${recruit}">
+      <header class="td-hero-profile-head">${portrait.replace("<img ", '<img class="td-hero-profile-thumb" ')}${summary}</header>
+      <div class="td-hero-profile-copy">${panel}</div>
+      <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
+      </article>`
+      : `<article class="td-hero-profile${recruit}">
+      <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${pickerOpen ? evolutionPicker(p, hero) : `${portrait}${summary}`}</div>
+      <div class="td-hero-profile-copy">${panel}</div>
       <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
       </article>`;
     detailEl.querySelectorAll<HTMLElement>(scrollSel).forEach((el, i) => { if (scrolls[i]) el.scrollTop = scrolls[i]; });
+  }
+
+  // Talents (T3, docs/tower-defense-hero-talents-concept.md): two tiers, each a pair of cards. Tapping a card
+  // picks it; the action under the pair unlocks it or switches the chosen one.
+  function talentAffordable(p: any, slot: any) {
+    return (p.currencies.gold || 0) >= slot.unlockCost.gold && (p.currencies.sealDust || 0) >= slot.unlockCost.sealDust;
+  }
+  function talentReady(p: any, id: string) {
+    return TALENT_TIERS.some((tier) => {
+      const slot = talentSlot(campaign, p, id, tier);
+      return !slot.locked && !slot.unlocked && talentAffordable(p, slot);
+    });
+  }
+  // Badge on a squad slot: the highest tier with a chosen talent (I or II).
+  function talentBadge(p: any, id: string) {
+    const chosen = p.talents?.[id] ?? {};
+    const label = chosen.II ? "II" : chosen.I ? "I" : "";
+    return label ? `<span class="td-talent-badge" aria-hidden="true">${label}</span>` : "";
+  }
+  function talentsPanel(p: any, hero: any) {
+    if (!talentEligible(hero.id)) return `<div class="td-talents"><span class="td-label">Talents</span><p>Common recruits do not learn talents.</p></div>`;
+    if (!p.owned.includes(hero.id)) return `<div class="td-talents"><span class="td-label">Talents</span><p>Own ${hero.name} to choose talents.</p></div>`;
+    const tiers = TALENT_TIERS.map((tier) => {
+      const slot = talentSlot(campaign, p, hero.id, tier);
+      const pick = talentPick && talentPick.hero === hero.id && talentPick.tier === tier ? talentPick.id : slot.chosen;
+      const cards = slot.options.map((talent: any) => {
+        const chosen = slot.chosen === talent.id;
+        const selected = pick === talent.id;
+        const state = chosen ? " is-chosen" : slot.locked ? " is-locked" : "";
+        return `<button type="button" class="td-talent-card${state}${selected ? " is-selected" : ""}" data-camp-talent-pick="${tier}" data-camp-talent-id="${talent.id}" aria-pressed="${selected}" aria-label="${talent.name}. ${talent.text}${chosen ? " Chosen." : ""}">
+          <strong>${talent.name}</strong><span>${talent.text}</span>${chosen ? `<em>Chosen</em>` : ""}</button>`;
+      }).join("");
+      const head = tier === "I" ? "Tier I · class talent" : "Tier II · signature talent";
+      const status = slot.requirement ? `Unlocks at ${slot.requirement.toLowerCase()}` : slot.unlocked ? "Unlocked" : "Ready to unlock";
+      // Tier II has no battle effect yet (concept T4-T5): say so instead of letting it look broken.
+      const note = tier === "II" && !slot.options.some((talent: any) => Object.keys(talent.fx ?? {}).length) ? `<p class="td-talent-note">Battle effect comes in a later update.</p>` : "";
+      let action = "";
+      if (!slot.locked && !slot.unlocked) {
+        const ok = !!pick && talentAffordable(p, slot);
+        // A disabled button says why: no card picked yet, or the currency that is short.
+        const short = [(p.currencies.gold || 0) < slot.unlockCost.gold ? `${slot.unlockCost.gold.toLocaleString()} Gold (you have ${Math.floor(p.currencies.gold || 0).toLocaleString()})` : "", (p.currencies.sealDust || 0) < slot.unlockCost.sealDust ? `${slot.unlockCost.sealDust} Seal Dust (you have ${Math.floor(p.currencies.sealDust || 0)})` : ""].filter(Boolean);
+        const hint = !pick ? `<p class="td-talent-hint">Tap a talent above to choose it.</p>` : ok ? "" : `<p class="td-talent-hint">Needs ${short.join(" and ")}.</p>`;
+        action = `<button type="button" class="action-button action-button--primary td-talent-action" data-camp-talent-unlock="${tier}" data-camp-talent-id="${pick ?? ""}"${ok ? "" : " disabled"}>Unlock <small>${slot.unlockCost.gold.toLocaleString()} Gold · ${slot.unlockCost.sealDust} Seal Dust</small></button>${hint}`;
+      } else if (slot.unlocked && pick && pick !== slot.chosen) {
+        const ok = (p.currencies.gold || 0) >= slot.switchCost.gold;
+        action = `<button type="button" class="action-button td-talent-action" data-camp-talent-switch="${tier}" data-camp-talent-id="${pick}"${ok ? "" : " disabled"}>Switch <small>${slot.switchCost.gold.toLocaleString()} Gold</small></button>`;
+      } else if (slot.unlocked) {
+        action = `<p class="td-talent-hint">Tap the other talent to switch for ${slot.switchCost.gold.toLocaleString()} Gold.</p>`;
+      }
+      return `<section class="td-talent-tier${slot.locked ? " is-locked" : ""}" aria-label="${head}">
+        <header><span class="td-label">${head}</span><small>${status}</small></header>
+        <div class="td-talent-pair">${cards}</div>${note}${action}</section>`;
+    }).join("");
+    return `<div class="td-talents">${tiers}</div>`;
   }
 
   function skillsPanel(p: any, hero: any, skill: any) {
@@ -1032,7 +1098,7 @@ export function createCampaign(ctx: PageContext) {
     q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`${focus}:not([disabled])`)?.focus({ preventScroll: true });
   }
   function upgradeClick(target: HTMLElement) {
-    const el = target.closest<HTMLButtonElement>("[data-camp-hero-tab], [data-camp-skillup], [data-camp-evo-start], [data-camp-evo-back], [data-camp-evo-slot], [data-camp-evo-material-index], [data-camp-evo-picker-close], [data-camp-evo-dust], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
+    const el = target.closest<HTMLButtonElement>("[data-camp-talent-pick], [data-camp-talent-unlock], [data-camp-talent-switch], [data-camp-hero-tab], [data-camp-skillup], [data-camp-evo-start], [data-camp-evo-back], [data-camp-evo-slot], [data-camp-evo-material-index], [data-camp-evo-picker-close], [data-camp-evo-dust], [data-camp-fodder-add], [data-camp-fodder-remove], [data-camp-fodder-auto], [data-camp-starup], [data-camp-evolve], [data-camp-dust]");
     if (!el || el.disabled || !selectedHeroId) return !!el;
     const id = selectedHeroId;
     const d = el.dataset;
@@ -1043,6 +1109,17 @@ export function createCampaign(ctx: PageContext) {
       resetEvolutionDraft();
       renderHeroes();
       q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-hero-tab="${heroTab}"]`)?.focus({ preventScroll: true });
+    } else if (d.campTalentPick) {
+      talentPick = { hero: id, tier: d.campTalentPick, id: d.campTalentId ?? "" };
+      renderHeroes();
+      q("[data-td-hero-detail]").querySelector<HTMLButtonElement>(`[data-camp-talent-id="${d.campTalentId}"]`)?.focus({ preventScroll: true });
+    } else if (d.campTalentUnlock || d.campTalentSwitch) {
+      const tier = d.campTalentUnlock ?? d.campTalentSwitch ?? "";
+      const talentId = d.campTalentId ?? "";
+      const next = d.campTalentUnlock ? unlockTalent(campaign, p, id, tier, talentId) : switchTalent(campaign, p, id, tier, talentId);
+      if (!next) return true;
+      talentPick = null;
+      commit(next, `${heroName(id)}: ${talentById(talentId)?.name ?? "talent"} chosen.`, `[data-camp-talent-id="${talentId}"]`);
     } else if (d.campSkillup) {
       const next = skillUp(campaign, p, id, d.campSkillup);
       if (!next) return true;

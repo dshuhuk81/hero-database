@@ -103,6 +103,18 @@ export const EVENT_ATLAS_FX = {
   gearWarn: { clip: 'stone', width: 80, alpha: 0.6, speed: 0.8, replace: false },
   gearJam: { clip: 'shockwave', width: 130, alpha: 0.9, speed: 1, replace: false },
 };
+// Talent cues (T5 of the talent plan): the Tier II effects of the playtest heroes. Sim events with these
+// types come from sim.js (talent hooks); clips are preloaded when a hero in the squad carries talents.
+EVENT_ATLAS_FX.talentWall = { clip: 'stone', width: 130, alpha: 0.85, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentShield = { clip: 'buff', width: 110, alpha: 0.8, speed: 1.2, replace: false, tint: 0xffd27a };
+EVENT_ATLAS_FX.talentBurn = { clip: 'fire', width: 90, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentVeil = { clip: 'shadow', width: 110, alpha: 0.7, speed: 1, replace: false, tint: 0xb8a0ff };
+EVENT_ATLAS_FX.talentMark = { clip: 'cosmic', width: 100, alpha: 0.85, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentSlow = { clip: 'wind', width: 100, alpha: 0.7, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentTithe = { clip: 'buff', width: 120, alpha: 0.9, speed: 1.2, replace: false, tint: 0xffd36b };
+EVENT_ATLAS_FX.talentMidas = { clip: 'heal', width: 110, alpha: 0.85, speed: 1, replace: false, tint: 0xffe27a };
+export const TALENT_EVENTS = ['talentWall', 'talentShield', 'talentBurn', 'talentVeil', 'talentMark', 'talentSlow', 'talentTithe', 'talentMidas'];
+export const TALENT_CLIPS = ['stone', 'buff', 'fire', 'shadow', 'cosmic', 'wind', 'heal'];
 // Clips each board event needs, preloaded when the stage's environment has that event.
 export const BOARD_EVENT_CLIPS = { eruption: ['fire', 'blast'], flood: ['water'], frostbite: ['ice'], rod: ['lightning'], spores: ['venom'],
   prism: ['holy'], ghosts: ['shadow'], windfall: ['feather', 'buff'], alignment: ['cosmic'], gearjam: ['stone', 'shockwave'] };

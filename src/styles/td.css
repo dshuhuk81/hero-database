@@ -15477,3 +15477,332 @@ img[data-rarity="lord"] {
   font-size: 0.9em;
   opacity: 0.8;
 }
+
+/* Hero talents (T3): Talents tab on the Heroes screen, squad badge, battle popover chips.
+   Two tiers, each a pair of cards; gold = chosen, grey = locked, dashed = available. Touch targets 44 px. */
+.td-talents {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.td-talents > p,
+.td-talents > .td-label {
+  margin: 0;
+}
+
+.td-talent-tier {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.td-talent-tier.is-locked .td-talent-card {
+  opacity: .55;
+}
+
+.td-talent-tier > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
+.td-talent-tier > header small {
+  color: var(--text-secondary);
+}
+
+.td-talent-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.td-talent-card {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 96px;
+  padding: var(--space-3);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.td-talent-card strong {
+  color: var(--text-bright);
+  font-size: calc(var(--td-fs-body) - 1px);
+}
+
+.td-talent-card span {
+  font-size: calc(var(--td-fs-body) - 3px);
+  line-height: 1.35;
+}
+
+.td-talent-card em {
+  justify-self: start;
+  color: var(--accent-gold);
+  font-style: normal;
+  font-size: calc(var(--td-fs-body) - 3px);
+  font-weight: 600;
+}
+
+.td-talent-card:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.td-talent-card.is-chosen {
+  border: 1px solid var(--accent-gold);
+  background: var(--accent-gold-dim);
+}
+
+.td-talent-card.is-selected:not(.is-chosen) {
+  border-style: solid;
+  border-color: var(--text-secondary);
+}
+
+.td-talent-card.is-locked {
+  color: var(--text-muted);
+}
+
+.td-talent-action {
+  justify-self: stretch;
+  min-height: 44px;
+}
+
+.td-talent-action small {
+  font-weight: 500;
+}
+
+.td-talent-hint,
+.td-talent-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: calc(var(--td-fs-body) - 3px);
+}
+
+/* Squad slot badge: the highest tier with a chosen talent. */
+.td-talent-badge {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  border: 1px solid var(--bg-base);
+  border-radius: var(--radius-sm);
+  background: var(--accent-gold);
+  color: #1a1400;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Battle popover: one chip per chosen talent. */
+.td-talent-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 55%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--accent-gold-light);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .td-talent-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Wide hero detail (Stars, Evolution, Skills, Talents): no portrait column. A compact head (thumbnail,
+   name, Might, stars) sits above the content, which takes the full width; the tab rail stays on the right. */
+.td-app .td-hero-profile.is-wide {
+  grid-template-columns: minmax(0, 1fr) 76px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "head tabs" "copy tabs";
+}
+
+.td-hero-profile-head {
+  grid-area: head;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.td-hero-profile-thumb {
+  flex: none;
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.td-hero-profile-head .td-hero-summary {
+  position: static;
+  min-width: 0;
+  padding: 0;
+}
+
+.td-hero-profile-head .td-hero-summary h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.td-hero-profile-head .td-hero-summary > p {
+  margin: 2px 0 0;
+}
+
+.td-hero-profile-head .td-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.td-app .td-hero-profile.is-wide .td-hero-profile-copy {
+  border-left: 0;
+  padding: var(--space-4);
+}
+
+.td-app .td-hero-profile.is-wide .td-hero-tab-panel {
+  max-width: 980px;
+}
+
+@media (max-width: 600px) {
+  .td-app .td-hero-profile.is-wide {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(420px, auto);
+    grid-template-areas: "head" "tabs" "copy";
+    height: auto;
+    min-height: 0;
+  }
+
+  .td-app .td-hero-profile.is-wide .td-hero-profile-copy {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .td-app .td-hero-profile.is-wide .td-hero-tab-panel {
+    max-width: none;
+  }
+}
+
+/* Compact wide head (Stars, Evolution, Skills, Talents): one slim row. Thumbnail and name on the left,
+   role, Might, stars and Evolution on the right, so the content starts higher on the screen. */
+.td-app .td-hero-profile.is-wide {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.td-app .td-hero-profile-head {
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-4);
+}
+
+.td-app .td-hero-profile-thumb {
+  width: 52px;
+  height: 52px;
+}
+
+.td-app .td-hero-profile-head .td-hero-summary {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-3);
+  row-gap: 2px;
+}
+
+.td-app .td-hero-profile-head .td-hero-summary h2 {
+  font-size: 22px;
+}
+
+.td-app .td-hero-profile-head .td-hero-summary .td-hero-role {
+  margin: 0;
+  font-size: var(--td-fs-label);
+}
+
+.td-app .td-hero-profile-head .td-hero-summary > .td-hero-might {
+  margin: 0 0 0 auto;
+}
+
+.td-app .td-hero-profile-head .td-hero-summary > .td-hero-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.td-app .td-hero-profile.is-wide .td-hero-profile-copy {
+  padding: var(--space-3) var(--space-4);
+}
+
+@media (max-width: 600px) {
+  .td-app .td-hero-profile-head {
+    flex-wrap: wrap;
+  }
+
+  .td-app .td-hero-profile-head .td-hero-summary > .td-hero-might {
+    margin-left: 0;
+  }
+}
+
+/* Sticky upgrade footer (Stars, Evolution, Skills, Talents): it sticks to the scroller's bottom edge.
+   The scroller must not pad its bottom, or the content scrolls through the gap under the footer. */
+.td-app .td-hero-profile.is-wide .td-hero-profile-copy {
+  padding-bottom: 0;
+}
+
+.td-app .td-hero-profile.is-wide .td-hero-upgrade {
+  bottom: 0;
+  padding-bottom: var(--space-3);
+  background: linear-gradient(transparent, var(--bg-raised) 30%);
+}
+
+/* Talent unlock/switch button: gold fill with dark text in every state. The label and the price line
+   are set explicitly, so no inherited light colour can wash them out. Disabled stays dark, only dimmed. */
+.td-app .td-talent-action.action-button--primary,
+.td-app .td-talent-action.action-button--primary:hover,
+.td-app .td-talent-action.action-button--primary:focus-visible {
+  color: #171015;
+}
+
+/* Switch is the quiet button (dark surface): keep its light text. */
+.td-app .td-talent-action:not(.action-button--primary),
+.td-app .td-talent-action:not(.action-button--primary):hover {
+  color: var(--text-bright);
+}
+
+.td-app .td-talent-action.action-button--primary {
+  border-color: #f0c75c;
+  background: linear-gradient(180deg, #e3bd4f, #8f611c);
+}
+
+.td-app .td-talent-action.action-button--primary:hover {
+  background: linear-gradient(180deg, #f0cb5f, #9f6e22);
+}
+
+.td-app .td-talent-action--primary small,
+.td-app .td-talent-action.action-button--primary small {
+  color: #171015;
+  opacity: .85;
+}
+
+.td-app .td-talent-action:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}

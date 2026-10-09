@@ -27,6 +27,7 @@ import { patternLabel } from "../../game/td/board.js";
 import { SKILL_TEXT, AWAKEN_TEXT, CLASS_ULT_TEXT, lordText, ENEMY_INFO, STATUS_INFO, REACTION_INFO, BOSS_RULES } from "../../game/td/skills.js";
 import { ENEMY_ART, bossSpriteFile, classGlyph, enemySpriteVersion } from "../../game/td/assets.js";
 import EnemyCard from "./TdEnemyCard.astro";
+import talentData from "../../data/tdTalents.json";
 import { ELITE_AFFIXES } from "../../game/td/elites.js";
 
 interface Props { assetBase: string; embedded?: boolean; headingLevel?: 2 | 3 | 4; }
@@ -224,7 +225,7 @@ const iconNames = [...new Set([
 const iconFont = `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,500,0..1,0&icon_names=${iconNames.join(",")}&display=block`;
 const reactionIds = Object.keys(REACTION_INFO);
 // Section jump chips under the tabs (per panel).
-const heroJumps = [["hero-attrs", "Attributes"], ["classes", "Classes"], ["status", "Status effects"], ["hero-list", "Heroes"]];
+const heroJumps = [["hero-attrs", "Attributes"], ["classes", "Classes"], ["talents", "Talents"], ["status", "Status effects"], ["hero-list", "Heroes"]];
 const enemyJumps = [["enemy-attrs", "Attributes"], ["enemy-list", "Enemies"], ["elites", "Elites"], ["bosses", "Bosses"]];
 const eliteFrom = Math.min(...(rawTuning.elites?.schedule ?? []).map((step) => step.fromChapter));
 const affixHex = (color: number) => `#${color.toString(16).padStart(6, "0")}`;
@@ -271,6 +272,19 @@ const affixHex = (color: number) => `#${color.toString(16).padStart(6, "0")}`;
           </article>
         ))}
       </div>
+    </section>
+
+    <section aria-labelledby={id("talents")}>
+      <Section class="td-glossary-heading" id={id("talents")}><span class="td-msym" aria-hidden="true">{UI_ICON.classes}</span>Talents</Section>
+      <p class="td-glossary-lead">Tier I is the class talent: two choices shared by the class, unlocked after Chapter 4 at Level 20 with one star. Tier II is the hero's own signature talent, unlocked after Chapter 8 at Level 40 with three stars. Each unlock costs a one-time price in Gold and Seal Dust; switching costs Gold. Common recruits have no talents.</p>
+      <dl class="td-glossary-terms">
+        {Object.entries(talentData.classes).flatMap(([cls, pair]) => pair.map((talent) => (
+          <div><dt>{talent.name}</dt><dd>{cls} talent. {talent.text}</dd></div>
+        )))}
+        {Object.entries(talentData.heroes).flatMap(([heroId, pair]) => pair.map((talent) => (
+          <div><dt>{talent.name}</dt><dd>{heroes.find((hero: any) => hero.id === heroId)?.name ?? heroId} signature talent. {talent.text}</dd></div>
+        )))}
+      </dl>
     </section>
 
     <section aria-labelledby={id("status")}>

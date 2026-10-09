@@ -3,6 +3,7 @@
 // in place so focus survives game events. The game keeps running while the panel is open.
 import { heroProgress, worldToLocal } from "../ui.js";
 import { patternSvg } from "../board.js";
+import { talentById } from "../campaign.js";
 import type { PageContext } from "./context";
 import { classGlyph } from "../assets.js";
 import { roman } from "./route";
@@ -137,13 +138,15 @@ export function createPopover(ctx: PageContext) {
     // Collection stars, Evolution and skill levels (every mode; they are already in the stats).
     const progress = heroProgress(unit);
     const { stars, evolution: evo } = progress;
-    const badgeKey = `${unit.id}:${stars}:${evo}`;
+    const talents: string[] = unit.talents ?? [];
+    const badgeKey = `${unit.id}:${stars}:${evo}:${talents.join(",")}`;
     if (popBadges.dataset.key !== badgeKey) {
       popBadges.dataset.key = badgeKey;
       popBadges.hidden = false;
       popBadges.innerHTML =
         `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
-        (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "");
+        (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "") +
+        talents.map((id) => `<span class="td-talent-chip">${talentById(id)?.name ?? id}</span>`).join("");
     }
     popLevel.textContent = unit.class;
     const refund = game.sellValue(unit.entityId);

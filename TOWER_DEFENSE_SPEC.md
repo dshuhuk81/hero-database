@@ -1044,8 +1044,9 @@ Two talent tiers per hero (G5 of the gameplay ideas, `docs/tower-defense-hero-ta
 Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II the hero's own pair
 (`heroes`, 22 pairs). Eligible heroes: rarity epic, legendary or lord; recruits have none.
 
-- **Gates:** Chapter 4 cleared (`chapterCleared`); Tier I at Level 20 and 1 star, Tier II at Level 40
-  and 3 stars (`talentSlot` gives the requirement text).
+- **Gates:** Tier I needs Chapter 4 cleared (`chapterCleared`), Level 20 and 1 star. Tier II needs
+  Chapter 8 cleared, Level 40 and 3 stars (`talentSlot` gives the requirement text; the chapter per tier is
+  `unlock.tiers.I/II.chapter` in `tdTalents.json`).
 - **Unlock** (`unlockTalent`): one-time price per tier, Tier I 1,000 Gold and 30 Seal Dust, Tier II
   3,000 Gold and 150 Seal Dust; the unlock picks one of the pair.
 - **Switch** (`switchTalent`): never free, Tier I 200 Gold, Tier II 500 Gold; only for unlocked tiers.
@@ -1065,7 +1066,44 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   for 6 s, takes hits first), War Hymn (heals x0.6, its aura x1.6).
 - **Simplifications:** Whirlwind uses the cleave radius, not the full pattern. Thorns damage counts
   as the Tank's damage. Tier I has no own visuals yet (planned as Effekseer cues, T5).
-- **Not built yet:** Tier II signature effects (T4-T5), the Heroes screen tab and the squad badge (T3).
+- **Screens (T3, October 9, 2026):** the Heroes screen has a Talents tab (`talentsPanel` in
+  `page/campaign.ts`): per tier a header with status or requirement, two cards (tap to pick), and one
+  action button (Unlock with its price, or Switch when another card is picked). Buttons carry
+  `data-camp-talent-unlock|switch` with `data-camp-talent-id`. The roster tile shows the red dot when a
+  talent can be unlocked; a squad slot shows a gold I or II badge (`talentBadge`); the battle popover
+  shows one chip per chosen talent (`page/popover.ts`); the glossary has a Talents section. Tier II shows
+  "Battle effect comes in a later update." until its effects exist. The tab icon is a placeholder line
+  glyph; PixelLab icons follow in T6.
+- **Tier II battle effects, T4 (October 9, 2026):** six heroes, one pair each side (12 talents,
+  `fx` in `tdTalents.json`, read through `talentFx(hero)` like Tier I). Atlas: Sky Pillar (the
+  Celestial Bulwark keeps +2 blockers for 6 s, `wallUntil`), World's Weight (the Bulwark also gives
+  every ally in reach a barrier of 15% x power for 6 s, platform allies included). Surtr: Blood Pact
+  (Crimson Cleave heals neighbouring road allies for half its heal), Ragnarok (struck enemies burn
+  for 4 s, 30% of power). Nott: Eclipse (the class veil lasts 6 s instead of 3), Twin Stars (Shadow
+  Step strikes the two weakest enemies, as awakened does). Odin: Storm Lord (two more bolts,
+  `falloff` 6 steps), Rune Mark (struck target takes +20% from everyone for 6 s, the `exposed`
+  mechanic). Atalanta: Endless Quiver (shot window +2 s), Wind Step (each shot in the window slows
+  its target 1.5 s). Plutus: Golden Tithe (+3 Nectar, ultimate heal x0.6), Midas Touch (ultimate heal
+  x1.5, no Nectar). Plutus uses `ultHealFactor`, so the Support Tier I `healFactor` stays separate.
+- **Tier II battle effects for the other 16 heroes (T5, October 9, 2026):** every non-recruit hero now
+  has two working signature talents (44 in all). Effects are data in `tdTalents.json` `fx` and hooks in
+  the ultimate branches of `sim.js`; new mechanics: `stepTalentClocks` (delayed hits for Long Noon,
+  Gjallarhorn's stun when the ward ends, Serpent Rod's heal over time), `pushBack` (Northwind), the
+  Shared Fate damage split in `damageHero`, Soul Harvest refunds in `killEnemy`, and Second Life's
+  once-per-stage revive (`secondLifeUsed`). Deep Roots blocks relocation while the ward holds
+  (`relocationInfo`). Overgrowth roots with a 2 s stun, not a separate root state. Blinding Noon marks
+  enemies (`blindShare`) which lowers their attacks. Heroes: Ymir, Heimdall, Gaia, Aegir, Helios,
+  Fenrir, Hecate, Vidar, Thanatos, Hephaestus, Boreas, Isis, Skadi, Stheno, Harmonia, Asclepius.
+- **Simplifications (T5):** Twin Beam draws the beam on the chosen side only; Hunt Mark keeps the
+  volley on one target; Three Roads uses the hero's pattern instead of the cleave radius.
+- **Effekseer cues (October 9, 2026):** the Tier II effects of the six playtest heroes emit cue
+  events (`talentWall`, `talentShield`, `talentBurn`, `talentVeil`, `talentMark`, `talentSlow`,
+  `talentTithe`, `talentMidas`). They map to existing clips in `EVENT_ATLAS_FX` (`authored-fx.js`:
+  stone, buff, fire, shadow, cosmic, wind, heal), preloaded when a squad hero carries talents
+  (`TALENT_CLIPS`). They are clip-only (`CLIP_ONLY_EVENTS` in `render.js`). Tier I and the other 16
+  heroes' Tier II still have no cues.
+- **Not built yet:** cues for the remaining talents, a balance sweep (`td:sweep`), PixelLab talent
+  icons (T6).
 - Tests: `scripts/test-td-talents.mjs` (data, gates, prices, save) and
   `scripts/test-td-talent-effects.mjs` (each Tier I effect against the same setup without it); both
   in `npm run test:tower-defense`.

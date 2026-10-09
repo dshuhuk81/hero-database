@@ -1,21 +1,22 @@
 {
   "version": 1,
   "unlock": {
-    "chapter": 4,
     "tiers": {
       "I": {
         "level": 20,
         "stars": 1,
         "gold": 1000,
         "sealDust": 30,
-        "switchGold": 200
+        "switchGold": 200,
+        "chapter": 4
       },
       "II": {
         "level": 40,
         "stars": 3,
         "gold": 3000,
         "sealDust": 150,
-        "switchGold": 500
+        "switchGold": 500,
+        "chapter": 8
       }
     }
   },
@@ -150,264 +151,423 @@
       {
         "id": "atlas-sky-pillar",
         "name": "Sky Pillar",
-        "text": "The wall holds 2 more enemies."
+        "text": "The wall holds 2 more enemies.",
+        "fx": {
+          "wallSeconds": 6,
+          "wallBlockAdd": 2
+        }
       },
       {
         "id": "atlas-world-s-weight",
         "name": "World's Weight",
-        "text": "Allies in his pattern also get the shield."
+        "text": "Allies in his pattern also get the shield.",
+        "fx": {
+          "weightShare": 0.15,
+          "weightSeconds": 6
+        }
       }
     ],
     "ymir": [
       {
         "id": "ymir-frost-expose",
         "name": "Frost Expose",
-        "text": "Exposed enemies are Chilled."
+        "text": "Exposed enemies are Chilled.",
+        "fx": {
+          "chillOnExpose": true
+        }
       },
       {
         "id": "ymir-giant-s-reach",
         "name": "Giant's Reach",
-        "text": "Expose covers a wider area, shorter duration."
+        "text": "Expose covers a wider area, shorter duration.",
+        "fx": {
+          "areaFactor": 1.5,
+          "durationFactor": 0.5
+        }
       }
     ],
     "heimdall": [
       {
         "id": "heimdall-rainbow-bridge",
         "name": "Rainbow Bridge",
-        "text": "The ward also covers neighbouring allies at half strength."
+        "text": "The ward also covers neighbouring allies at half strength.",
+        "fx": {
+          "bridgeShare": 0.5,
+          "bridgeRange": 2
+        }
       },
       {
         "id": "heimdall-gjallarhorn",
         "name": "Gjallarhorn",
-        "text": "When the ward ends it bursts and stuns enemies around him."
+        "text": "When the ward ends it bursts and stuns enemies around him.",
+        "fx": {
+          "hornStun": 1.5
+        }
       }
     ],
     "aegir": [
       {
         "id": "aegir-undertow",
         "name": "Undertow",
-        "text": "Weaker knockback, enemies are Wet and slowed."
+        "text": "Weaker knockback, enemies are Wet and slowed.",
+        "fx": {
+          "knockbackFactor": 0.5,
+          "wetSeconds": 3,
+          "slowSeconds": 3
+        }
       },
       {
         "id": "aegir-rogue-wave",
         "name": "Rogue Wave",
-        "text": "Knockback twice as far, fewer targets."
+        "text": "Knockback twice as far, fewer targets.",
+        "fx": {
+          "knockbackFactor": 2,
+          "targetsSet": 2
+        }
       }
     ],
     "helios": [
       {
         "id": "helios-zenith",
         "name": "Zenith",
-        "text": "The rush window lasts longer."
+        "text": "The rush window lasts longer.",
+        "fx": {
+          "rushSecondsAdd": 3
+        }
       },
       {
         "id": "helios-blinding-noon",
         "name": "Blinding Noon",
-        "text": "Struck enemies deal 30% less damage for a few seconds."
+        "text": "Struck enemies deal 30% less damage for a few seconds.",
+        "fx": {
+          "blindShare": 0.3,
+          "blindSeconds": 4
+        }
       }
     ],
     "surtr": [
       {
         "id": "surtr-blood-pact",
         "name": "Blood Pact",
-        "text": "The lifesteal also heals neighbouring allies."
+        "text": "The lifesteal also heals neighbouring allies.",
+        "fx": {
+          "neighbourShare": 0.5
+        }
       },
       {
         "id": "surtr-ragnarok",
         "name": "Ragnarok",
-        "text": "The cleave leaves burning ground."
+        "text": "The cleave leaves burning ground.",
+        "fx": {
+          "burnShare": 0.3,
+          "burnSeconds": 4
+        }
       }
     ],
     "fenrir": [
       {
         "id": "fenrir-lock-jaw",
         "name": "Lock Jaw",
-        "text": "The bitten target is held in place (stun)."
+        "text": "The bitten target is held in place (stun).",
+        "fx": {
+          "stunSeconds": 1.5
+        }
       },
       {
         "id": "fenrir-pack-howl",
         "name": "Pack Howl",
-        "text": "Neighbouring allies attack faster for a few seconds."
+        "text": "Neighbouring allies attack faster for a few seconds.",
+        "fx": {
+          "howlAps": 0.25,
+          "howlSeconds": 4
+        }
       }
     ],
     "nott": [
       {
         "id": "nott-eclipse",
         "name": "Eclipse",
-        "text": "After the step she is veiled for 2 s."
+        "text": "After the step she is veiled for 2 s.",
+        "fx": {
+          "veilAdd": 3
+        }
       },
       {
         "id": "nott-twin-stars",
         "name": "Twin Stars",
-        "text": "The step strikes two enemies."
+        "text": "The step strikes two enemies.",
+        "fx": {
+          "twinStrike": true
+        }
       }
     ],
     "hecate": [
       {
         "id": "hecate-three-roads",
         "name": "Three Roads",
-        "text": "The sweep reaches every tile around her."
+        "text": "The sweep reaches every tile around her.",
+        "fx": {
+          "roadsAll": true
+        }
       },
       {
         "id": "hecate-torchlight",
         "name": "Torchlight",
-        "text": "The sweep leaves fire that burns."
+        "text": "The sweep leaves fire that burns.",
+        "fx": {
+          "burnShare": 0.3,
+          "burnSeconds": 4
+        }
       }
     ],
     "vidar": [
       {
         "id": "vidar-silent-fury",
         "name": "Silent Fury",
-        "text": "More strikes, each weaker."
+        "text": "More strikes, each weaker.",
+        "fx": {
+          "strikesAdd": 2,
+          "shareFactor": 0.7
+        }
       },
       {
         "id": "vidar-vengeance",
         "name": "Vengeance",
-        "text": "The flurry grows stronger the more health he is missing."
+        "text": "The flurry grows stronger the more health he is missing.",
+        "fx": {
+          "vengeance": 0.8
+        }
       }
     ],
     "thanatos": [
       {
         "id": "thanatos-reaper",
         "name": "Reaper",
-        "text": "The judgment finishes enemies below 15% health."
+        "text": "The judgment finishes enemies below 15% health.",
+        "fx": {
+          "finishBelow": 0.15
+        }
       },
       {
         "id": "thanatos-soul-harvest",
         "name": "Soul Harvest",
-        "text": "Every kill during the ultimate refunds charge."
+        "text": "Every kill during the ultimate refunds charge.",
+        "fx": {
+          "harvestSeconds": 6,
+          "harvestShare": 0.1
+        }
       }
     ],
     "odin": [
       {
         "id": "odin-storm-lord",
         "name": "Storm Lord",
-        "text": "Two more bolts."
+        "text": "Two more bolts.",
+        "fx": {
+          "boltsAdd": 2
+        }
       },
       {
         "id": "odin-rune-mark",
         "name": "Rune Mark",
-        "text": "The struck target takes 20% more damage from everyone for 6 s."
+        "text": "The struck target takes 20% more damage from everyone for 6 s.",
+        "fx": {
+          "exposeSeconds": 6
+        }
       }
     ],
     "hephaestus": [
       {
         "id": "hephaestus-forge-bed",
         "name": "Forge Bed",
-        "text": "The molten area lasts longer and is wider."
+        "text": "The molten area lasts longer and is wider.",
+        "fx": {
+          "radiusFactor": 1.3,
+          "secondsFactor": 1.5
+        }
       },
       {
         "id": "hephaestus-hammerfall",
         "name": "Hammerfall",
-        "text": "One heavy blow instead of the pool, with a short stun."
+        "text": "One heavy blow instead of the pool, with a short stun.",
+        "fx": {
+          "hammerfall": true,
+          "stunSeconds": 1,
+          "damageFactor": 1.6
+        }
       }
     ],
     "boreas": [
       {
         "id": "boreas-deep-freeze",
         "name": "Deep Freeze",
-        "text": "The shockwave freezes."
+        "text": "The shockwave freezes.",
+        "fx": {
+          "freezeAlways": true
+        }
       },
       {
         "id": "boreas-northwind",
         "name": "Northwind",
-        "text": "The shockwave pushes enemies back one tile."
+        "text": "The shockwave pushes enemies back one tile.",
+        "fx": {
+          "pushDistance": 104
+        }
       }
     ],
     "isis": [
       {
         "id": "isis-long-noon",
         "name": "Long Noon",
-        "text": "The beam lasts longer."
+        "text": "The beam lasts longer.",
+        "fx": {
+          "noonHits": 2,
+          "noonShare": 0.4
+        }
       },
       {
         "id": "isis-twin-beam",
         "name": "Twin Beam",
-        "text": "The beam fires both ways."
+        "text": "The beam fires both ways.",
+        "fx": {
+          "twinBeam": true
+        }
       }
     ],
     "skadi": [
       {
         "id": "skadi-hunt-mark",
         "name": "Hunt Mark",
-        "text": "The barrage focuses one target."
+        "text": "The barrage focuses one target.",
+        "fx": {
+          "focus": true
+        }
       },
       {
         "id": "skadi-wide-barrage",
         "name": "Wide Barrage",
-        "text": "More targets, less damage each."
+        "text": "More targets, less damage each.",
+        "fx": {
+          "shotsAdd": 3,
+          "shareFactor": 0.7
+        }
       }
     ],
     "atalanta": [
       {
         "id": "atalanta-endless-quiver",
         "name": "Endless Quiver",
-        "text": "The window lasts 2 s longer."
+        "text": "The window lasts 2 s longer.",
+        "fx": {
+          "windowSeconds": 2
+        }
       },
       {
         "id": "atalanta-wind-step",
         "name": "Wind Step",
-        "text": "Every shot in the window slows its target."
+        "text": "Every shot in the window slows its target.",
+        "fx": {
+          "slowSeconds": 1.5
+        }
       }
     ],
     "stheno": [
       {
         "id": "stheno-stone-stare",
         "name": "Stone Stare",
-        "text": "One target, longer petrify, works on Elites."
+        "text": "One target, longer petrify, works on Elites.",
+        "fx": {
+          "gazeTargetsSet": 1,
+          "durationFactor": 1.5
+        }
       },
       {
         "id": "stheno-coiled-gaze",
         "name": "Coiled Gaze",
-        "text": "More targets, shorter petrify."
+        "text": "More targets, shorter petrify.",
+        "fx": {
+          "gazeTargetsAdd": 2,
+          "durationFactor": 0.6
+        }
       }
     ],
     "plutus": [
       {
         "id": "plutus-golden-tithe",
         "name": "Golden Tithe",
-        "text": "More Nectar, less healing."
+        "text": "More Nectar, less healing.",
+        "fx": {
+          "nectarAdd": 3,
+          "ultHealFactor": 0.6
+        }
       },
       {
         "id": "plutus-midas-touch",
         "name": "Midas Touch",
-        "text": "More healing, no Nectar."
+        "text": "More healing, no Nectar.",
+        "fx": {
+          "ultHealFactor": 1.5,
+          "noNectar": true
+        }
       }
     ],
     "asclepius": [
       {
         "id": "asclepius-second-life",
         "name": "Second Life",
-        "text": "Once per stage, a fallen ally returns at 30% health."
+        "text": "Once per stage, a fallen ally returns at 30% health.",
+        "fx": {
+          "reviveShare": 0.3,
+          "onceStage": true
+        }
       },
       {
         "id": "asclepius-serpent-rod",
         "name": "Serpent Rod",
-        "text": "The heal turns into healing over time for the whole squad."
+        "text": "The heal turns into healing over time for the whole squad.",
+        "fx": {
+          "hotShare": 0.1,
+          "hotSeconds": 4
+        }
       }
     ],
     "harmonia": [
       {
         "id": "harmonia-shared-fate",
         "name": "Shared Fate",
-        "text": "Linked allies split damage taken."
+        "text": "Linked allies split damage taken.",
+        "fx": {
+          "fateSeconds": 6,
+          "fateSplit": true
+        }
       },
       {
         "id": "harmonia-harmony",
         "name": "Harmony",
-        "text": "Linked allies attack faster."
+        "text": "Linked allies attack faster.",
+        "fx": {
+          "fateSeconds": 6,
+          "fateAps": 0.2
+        }
       }
     ],
     "gaia": [
       {
         "id": "gaia-deep-roots",
         "name": "Deep Roots",
-        "text": "Stronger ward, she cannot be relocated while it holds."
+        "text": "Stronger ward, she cannot be relocated while it holds.",
+        "fx": {
+          "wardAdd": 0.15,
+          "rootsRelocate": true
+        }
       },
       {
         "id": "gaia-overgrowth",
         "name": "Overgrowth",
-        "text": "The sanctuary also roots enemies in her pattern."
+        "text": "The sanctuary also roots enemies in her pattern.",
+        "fx": {
+          "rootSeconds": 2
+        }
       }
     ]
   }

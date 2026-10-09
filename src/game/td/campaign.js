@@ -391,7 +391,7 @@ export function talentPool(id, tier) {
   if (!hero || !talentEligible(id) || !TALENT_TIERS.includes(tier)) return [];
   return tier === "I" ? talentData.classes[hero.class] ?? [] : talentData.heroes[id] ?? [];
 }
-const talentById = (talentId) => [...Object.values(talentData.classes).flat(), ...Object.values(talentData.heroes).flat()].find((talent) => talent.id === talentId) ?? null;
+export const talentById = (talentId) => [...Object.values(talentData.classes).flat(), ...Object.values(talentData.heroes).flat()].find((talent) => talent.id === talentId) ?? null;
 export const talentChosen = (progress, id, tier) => progress.talents?.[id]?.[tier] ?? null;
 
 // Chapter cleared when every stage of it is cleared.
@@ -408,7 +408,7 @@ export function talentSlot(campaign, progress, id, tier) {
   const eligible = !!hero && talentEligible(id) && progress.owned.includes(id);
   const chosen = talentChosen(progress, id, tier);
   const level = heroLevel(progress, id), stars = heroStars(progress, id);
-  const gate = !chapterCleared(campaign, progress, talentData.unlock.chapter) ? { text: `Clear Chapter ${talentData.unlock.chapter}` }
+  const gate = !chapterCleared(campaign, progress, cfg.chapter) ? { text: `Clear Chapter ${cfg.chapter}` }
     : level < cfg.level ? { text: `Level ${cfg.level}` }
     : stars < cfg.stars ? { text: `${cfg.stars} ${cfg.stars === 1 ? "star" : "stars"}` }
     : null;
