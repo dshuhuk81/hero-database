@@ -1589,7 +1589,7 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% var(--td-face-y, 0%);
-  transform: translateY(4%) scale(var(--td-face-zoom, 1.5));
+  transform: translateY(0%) scale(var(--td-face-zoom, 1.5));
   transform-origin: 50% 0;
 }
 
@@ -1679,7 +1679,7 @@
   align-items: baseline;
   gap: 2px;
   color: var(--text-bright);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -12464,7 +12464,7 @@ button .td-cur {
 }
 
 .td-app .td-heroes-browser .td-camp-heroes {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
   overscroll-behavior: contain;
   touch-action: pan-y;
@@ -12475,15 +12475,15 @@ button .td-cur {
 }
 
 .td-app .td-hero-tile-class {
-  top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
+  top: 4px;
+  left: 4px;
+  width: 16px;
+  height: 16px;
 }
 
 .td-app .td-hero-tile-class img {
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
 }
 
 .td-app .td-hero-tile-evo {
@@ -12495,13 +12495,15 @@ button .td-cur {
   border-radius: 5px;
 }
 
+/* Level and stars left aligned at the bottom; the evolution badge takes the bottom right. */
 .td-app .td-hero-tile-foot {
   gap: 1px;
-  padding: 0 2px 4px;
+  padding: 0 6px 6px;
+  justify-items: start;
 }
 
 .td-app .td-hero-tile-lv {
-  font-size: var(--td-fs-number);
+  font-size: var(--text-xs);
 }
 
 .td-app .td-hero-tile-lv small {
@@ -14456,8 +14458,16 @@ img[data-rarity="lord"] {
   filter: none;
 }
 
+/* Evolution badge sits bottom right, on the stars row (reference card layout). */
 .td-app .td-hero-tile-evo {
-  top: 24px;
+  top: auto;
+    right: 4px;
+    bottom: 4px;
+    z-index: 2;
+    min-width: 16px;
+    height: 16px;
+    font-size: var(--text-2xs);
+    border-radius: 4px;
 }
 
 /* Squad rows follow the original's lord logic: no Lord = dim row, dim crown emblem and a hint
