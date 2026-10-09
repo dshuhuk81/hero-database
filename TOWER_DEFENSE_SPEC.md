@@ -506,7 +506,9 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   Asclepius, Gaia) 2: 7% less damage taken, 4: 13% less and heals 15% stronger (the healer's
   bond counts). Recruits are wildcards: each joins the set with more of its own heroes on the
   field (Norse on a tie) and shares its bonus. The squad screen lists the bonds a squad
-  brings; in battle active bonds show as gold chips in the bar on the map. Tag synergy stays
+  brings; in battle active bonds show as gold chips in the bar on the map, labelled with a short
+  set name and the field count (`NOR 4`, also on the short landscape row). Tapping a chip
+  shows the reached tier and the next tier in the stage notice. Tag synergy stays
   underneath as before; `synergy.bonusPerTag: 0` would retire it.
 - **Hero panel** (`page/popover.ts`): stars and Evolution badge, stats (attack, speed, reach
   grid, crit), target priority, collapsed details, and a pinned footer with the permanent
@@ -1033,6 +1035,25 @@ and `tdSummon.json` (`dust`). Every upgrade is chosen by the player.
 - **Skills:** ultimate and class passives, the final rank costs 150 Seal Dust.
 - **Might:** (base attack + health) x level scale x star scale x (1 + 0.06 x evolution tier);
   sorts the roster and is compared with each stage's recommended Might.
+
+### Hero talents (T1, October 9, 2026)
+
+Two talent tiers per hero (G5 of the gameplay ideas, `docs/tower-defense-hero-talents-concept.md`).
+Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II the hero's own pair
+(`heroes`, 22 pairs). Eligible heroes: rarity epic, legendary or lord; recruits have none.
+
+- **Gates:** Chapter 4 cleared (`chapterCleared`); Tier I at Level 20 and 1 star, Tier II at Level 40
+  and 3 stars (`talentSlot` gives the requirement text).
+- **Unlock** (`unlockTalent`): one-time price per tier, Tier I 1,000 Gold and 30 Seal Dust, Tier II
+  3,000 Gold and 150 Seal Dust; the unlock picks one of the pair.
+- **Switch** (`switchTalent`): never free, Tier I 200 Gold, Tier II 500 Gold; only for unlocked tiers.
+- **Save:** `campaign.talents[heroId] = { I?, II? }`, `CAMPAIGN_SAVE_VERSION` 12; `sanitizeCampaign`
+  drops foreign, unknown and recruit talents.
+- **Collection stats:** `collectionHeroes()` adds `talents: [ids]` only when a talent is chosen;
+  `heroTalents()` returns the talent objects.
+- **Not built yet:** the effects in the battle (T2), the Heroes screen tab and the squad badge (T3).
+  Until T2 a chosen talent changes nothing in battle.
+- Test: `scripts/test-td-talents.mjs` (in `npm run test:tower-defense`).
 
 ### Stage rating and chapter rewards
 

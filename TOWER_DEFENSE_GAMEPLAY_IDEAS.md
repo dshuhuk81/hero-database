@@ -593,7 +593,7 @@ income, start budget only), Guest Hero (one fixed hero in the squad, a banner te
 
 **G5. Player choices for experienced players.** Pact (Hades-style heat): before a stage the
 player opts into one to three curses for more reward. Hero talents from Chapter 5: each hero
-picks one of two talents that change behaviour, not numbers (Archer: pierce or multishot). Boss
+picks one of two talents that change behaviour, not numbers (Archer: pierce or multishot). Concept (October 9, 2026): [docs/tower-defense-hero-talents-concept.md](docs/tower-defense-hero-talents-concept.md). Boss
 phases: give Lerna, Kraghorn and Vorruk their concept rules, plus a new finale boss for later
 chapters.
 

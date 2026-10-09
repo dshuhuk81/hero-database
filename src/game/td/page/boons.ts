@@ -40,15 +40,27 @@ export function createBuffBar(ctx: PageContext) {
     // Pantheon bonds active on the field (bonds.js).
     const bonds = (game?.bonds?.() ?? []).filter((bond: any) => bond.tier);
     buffsEl.hidden = mutators.length === 0 && bonds.length === 0;
-    const bondChips = bonds.map((bond: any) => `<span class="td-buff td-buff--bond" title="${bond.name} bond (${bond.count} heroes): ${bondText(bond.tier)}"><b>${bond.count}</b><span>${bond.name}</span></span>`).join("");
+    // Short label (NOR 4) so the chip reads on its own in short landscape; tap explains it.
+    const bondChips = bonds.map((bond: any, index: number) => `<button type="button" class="td-buff td-buff--bond" data-bond-index="${index}" aria-label="${bond.name} bond, ${bond.count} heroes" title="${bond.name} bond (${bond.count} heroes)"><b>${bond.count}</b><span>${bond.name.slice(0, 3).toUpperCase()}</span></button>`).join("");
     // Mutators sit after the bonds, in warning red.
     const mutatorChips = mutators.map((id) => {
       const info = (MUTATOR_INFO as Record<string, { name: string; text: string }>)[id];
       return `<span class="td-buff td-buff--mutator" title="${info?.text ?? id}"><b>!</b><span>${info?.name ?? id}</span></span>`;
     }).join("");
     buffsEl.innerHTML = bondChips + mutatorChips;
+    bondsOnField = bonds;
     position();
   }
+
+  // Tap a bond chip: what the reached tier does and what the next tier needs.
+  let bondsOnField: any[] = [];
+  buffsEl.addEventListener("click", (event: Event) => {
+    const chip = (event.target as HTMLElement).closest<HTMLElement>("[data-bond-index]");
+    const bond = chip && bondsOnField[Number(chip.dataset.bondIndex)];
+    if (!bond) return;
+    const next = bond.next ? ` Next at ${bond.next.count} heroes: ${bondText(bond.next)}.` : "";
+    ctx.notice(`${bond.name} bond, ${bond.count} heroes: ${bondText(bond.tier)}.${next}`);
+  });
 
   function reset() {
     buffsEl.hidden = true;

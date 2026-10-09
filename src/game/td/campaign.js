@@ -11,9 +11,10 @@ import heroBalance from "../../data/gameBalance.json" with { type: "json" };
 import stageRules from "../../data/tdStageRules.json" with { type: "json" };
 import tuning from "../../data/gameBalance.tuning.json" with { type: "json" };
 import { stageElites } from "./elites.js";
+import talentData from "../../data/tdTalents.json" with { type: "json" };
 import { emptySquadRows, flattenSquadRows, normalizeSquadRows, validateSquadRows } from "./squad-rows.js";
 
-export const CAMPAIGN_SAVE_VERSION = 11; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored); 11: + battle XP per hero
+export const CAMPAIGN_SAVE_VERSION = 12; // 1: owned, cleared, lastSquad; 2: + currencies, hero levels; 3: + Divine Seals, summons; 4: + copies, stars, evolution, Seal Dust, Divine Essence; 5: stars count from 0, level cap by stars; 6: independently upgradeable skills; 7: Divine Essence merged into Seal Dust (mechanics overview recommendation 8); 8: + paid chapter milestones; 9: + Heroic clears; 10: two squad rows (legacy flat lineup intentionally ignored); 11: + battle XP per hero; 12: + hero talents (talents: heroId -> { I, II } chosen talent ids)
 export const LORD_IDS = new Set(heroBalance.filter((hero) => hero.rarity === "lord").map((hero) => hero.id));
 export const CURRENCIES = ["gold", "heroXp", "divineSeals", "sealDust"];
 export const CURRENCY_NAMES = { gold: "Gold", heroXp: "Hero XP", divineSeals: "Divine Seals", sealDust: "Seal Dust" };
@@ -36,7 +37,7 @@ export function stageById(campaign, id) {
 
 // Fresh progress: the starter heroes, nothing cleared.
 export function newCampaignProgress(campaign) {
-  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquadRows: emptySquadRows(), currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {}, xp: {} };
+  return { version: CAMPAIGN_SAVE_VERSION, owned: [...campaign.starters], cleared: {}, lastSquadRows: emptySquadRows(), currencies: Object.fromEntries(CURRENCIES.map((id) => [id, 0])), levels: {}, summons: 0, copies: {}, stars: {}, evolution: {}, skillLevels: {}, milestones: {}, heroic: {}, xp: {}, talents: {} };
 }
 
 export const isCleared = (progress, stageId) => !!progress.cleared[stageId];
@@ -378,6 +379,65 @@ export function starReachSteps(campaign, stars) {
   return steps;
 }
 
+// Hero talents (G5, docs/tower-defense-hero-talents-concept.md; data in tdTalents.json).
+// Tier I is the class pair, Tier II the hero's own pair. Recruits (common) have none.
+export const TALENT_TIERS = ["I", "II"];
+export const talentEligible = (id) => {
+  const hero = heroBalance.find((entry) => entry.id === id);
+  return !!hero && talentData.eligibleRarity.includes(hero.rarity);
+};
+export function talentPool(id, tier) {
+  const hero = heroBalance.find((entry) => entry.id === id);
+  if (!hero || !talentEligible(id) || !TALENT_TIERS.includes(tier)) return [];
+  return tier === "I" ? talentData.classes[hero.class] ?? [] : talentData.heroes[id] ?? [];
+}
+const talentById = (talentId) => [...Object.values(talentData.classes).flat(), ...Object.values(talentData.heroes).flat()].find((talent) => talent.id === talentId) ?? null;
+export const talentChosen = (progress, id, tier) => progress.talents?.[id]?.[tier] ?? null;
+
+// Chapter cleared when every stage of it is cleared.
+export function chapterCleared(campaign, progress, chapterNumber) {
+  const chapter = campaign.chapters.find((entry) => Number(entry.id) === chapterNumber);
+  return !!chapter && chapter.stages.every((stage) => isCleared(progress, stage.id));
+}
+
+// The state of one talent tier of a hero: what it needs, what it costs and what is chosen.
+// `available` means it can be unlocked now (requirements met, nothing chosen yet).
+export function talentSlot(campaign, progress, id, tier) {
+  const cfg = talentData.unlock.tiers[tier];
+  const hero = heroBalance.find((entry) => entry.id === id);
+  const eligible = !!hero && talentEligible(id) && progress.owned.includes(id);
+  const chosen = talentChosen(progress, id, tier);
+  const level = heroLevel(progress, id), stars = heroStars(progress, id);
+  const gate = !chapterCleared(campaign, progress, talentData.unlock.chapter) ? { text: `Clear Chapter ${talentData.unlock.chapter}` }
+    : level < cfg.level ? { text: `Level ${cfg.level}` }
+    : stars < cfg.stars ? { text: `${cfg.stars} ${cfg.stars === 1 ? "star" : "stars"}` }
+    : null;
+  return { tier, eligible, chosen, options: talentPool(id, tier), unlocked: !!chosen, locked: !eligible || !!gate, requirement: gate?.text ?? null,
+    unlockCost: { gold: cfg.gold, sealDust: cfg.sealDust }, switchCost: { gold: cfg.switchGold } };
+}
+
+// Pays the unlock price and chooses one of the two talents of a tier (once per tier).
+export function unlockTalent(campaign, progress, id, tier, talentId) {
+  const slot = talentSlot(campaign, progress, id, tier);
+  if (slot.unlocked || slot.locked || !slot.options.some((talent) => talent.id === talentId)) return null;
+  const cost = slot.unlockCost;
+  if ((progress.currencies.gold || 0) < cost.gold || (progress.currencies.sealDust || 0) < cost.sealDust) return null;
+  const currencies = { ...progress.currencies, gold: progress.currencies.gold - cost.gold, sealDust: progress.currencies.sealDust - cost.sealDust };
+  return { ...progress, currencies, talents: { ...progress.talents, [id]: { ...progress.talents?.[id], [tier]: talentId } } };
+}
+
+// Switches an unlocked tier to the other talent of its pair. Never free: pays the switch price.
+export function switchTalent(campaign, progress, id, tier, talentId) {
+  const slot = talentSlot(campaign, progress, id, tier);
+  if (!slot.unlocked || slot.chosen === talentId || !slot.options.some((talent) => talent.id === talentId)) return null;
+  if ((progress.currencies.gold || 0) < slot.switchCost.gold) return null;
+  const currencies = { ...progress.currencies, gold: progress.currencies.gold - slot.switchCost.gold };
+  return { ...progress, currencies, talents: { ...progress.talents, [id]: { ...progress.talents?.[id], [tier]: talentId } } };
+}
+
+// The chosen talents of a hero as talent objects (name, text), Tier I first.
+export const heroTalents = (progress, id) => TALENT_TIERS.map((tier) => talentById(talentChosen(progress, id, tier))).filter(Boolean);
+
 export function collectionHeroes(campaign, progress, heroes) {
   return heroes.map((hero) => {
     const level = heroLevel(progress, hero.id), stars = heroStars(progress, hero.id), tier = heroEvolution(progress, hero.id);
@@ -388,7 +448,8 @@ export function collectionHeroes(campaign, progress, heroes) {
     const healthSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveHealth") - 1);
     const ultimateSkill = 1 + (skillCfg.ultimatePowerPerLevel ?? 0) * (heroSkillLevel(progress, hero.id, "ultimate") - 1);
     const reachSteps = starReachSteps(campaign, stars);
-    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1 && !reachSteps) return hero;
+    const talents = heroTalents(progress, hero.id).map((talent) => talent.id);
+    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1 && !reachSteps && !talents.length) return hero;
     const bonus = evolutionBonus(campaign, tier);
     return {
       ...hero,
@@ -406,6 +467,7 @@ export function collectionHeroes(campaign, progress, heroes) {
       campaignStars: stars,
       campaignEvolution: tier,
       campaignSkillLevels: { ...progress.skillLevels?.[hero.id] },
+      ...(talents.length && { talents }),
     };
   });
 }
@@ -857,6 +919,13 @@ export function sanitizeCampaign(value, campaign, heroIds, lordIds = LORD_IDS) {
     const n = Math.max(0, Math.floor(Number(amount) || 0));
     if (owned.includes(id) && n > 0) xp[id] = n;
   }
-  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquadRows, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic, xp };
+  // Version 11 had no talents: none are chosen. Only talents of the hero's own pool, for eligible owned heroes.
+  const talents = {};
+  for (const [id, slots] of Object.entries(value.talents && typeof value.talents === "object" ? value.talents : {})) {
+    if (!owned.includes(id) || !talentEligible(id) || !slots || typeof slots !== "object") continue;
+    const kept = Object.fromEntries(["I", "II"].filter((tier) => talentPool(id, tier).some((talent) => talent.id === slots[tier])).map((tier) => [tier, slots[tier]]));
+    if (Object.keys(kept).length) talents[id] = kept;
+  }
+  const clean = { version: CAMPAIGN_SAVE_VERSION, owned, cleared, lastSquadRows, currencies, levels, summons, copies, stars, evolution, skillLevels, milestones, heroic, xp, talents };
   return payMilestones(campaign, clean).progress;
 }

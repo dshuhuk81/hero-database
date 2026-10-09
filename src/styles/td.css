@@ -7713,7 +7713,6 @@ svg.td-class-icon {
 
 .td-buff--bond {
   --boon: var(--accent-gold);
-  cursor: default;
 }
 
 .td-mutator-row {
@@ -7830,6 +7829,11 @@ svg.td-class-icon {
 
   .td-buff span {
     display: none;
+  }
+
+  /* Bond chips keep their short set label (NOR 4) on the compact row. */
+  .td-buff--bond span {
+    display: inline;
   }
 
   .td-buff b {

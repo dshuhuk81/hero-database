@@ -118,7 +118,7 @@ assert.equal(rewardText([{ type: "currency", id: "divineSeals", amount: 50 }]), 
 
 // --- Save section ---
 {
-  assert.equal(CAMPAIGN_SAVE_VERSION, 11, "save version 11");
+  assert.equal(CAMPAIGN_SAVE_VERSION, 12, "save version 12 (hero talents)");
   const fresh = sanitizeCampaign(undefined, campaign, heroIds);
   assert.deepEqual([fresh.version, fresh.currencies.divineSeals, fresh.summons], [CAMPAIGN_SAVE_VERSION, 0, 0], "fresh section");
   const clean = sanitizeCampaign({ version: 3, owned: [...campaign.starters], cleared: {}, currencies: { divineSeals: "120" }, summons: "4.7" }, campaign, heroIds);
