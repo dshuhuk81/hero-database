@@ -1,5 +1,6 @@
 import { expandTimeline, timelineTotals } from "./timeline.js";
 import { markEliteSpawns } from "./elites.js";
+import { talentFx } from "./talents.js";
 import { boardEventFor, boardEventMultiplier, boardEventOnKill, floodPace, newBoardEventState, prismSplit, stepBoardEvents } from "./board-events.js";
 import { mapLanes } from "./lanes.js";
 import { bondsOf } from "./bonds.js";
@@ -338,6 +339,11 @@ export class TowerDefenseGame {
   }
 
   // Divine Blessings class branch bonuses (favor.js applyBlessings) for a hero or class name.
+  // Chosen Tier I talents of a hero, merged into one effect object (talents.js).
+  talentFx(hero) {
+    return talentFx(hero?.talents);
+  }
+
   classBonus(heroOrClass) {
     const cls = typeof heroOrClass === "string" ? heroOrClass : heroOrClass?.class;
     return this.favor.classBonus?.[cls] ?? {};
@@ -628,6 +634,8 @@ export class TowerDefenseGame {
             const reach = target.slotType === "platform" ? enemy.platformAttack ?? 1 : 1; // archers hit platforms softer
             const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack), target.armor, "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
+            const reflect = this.talentFx(target).reflect; // Tier I Thorns: the attacker takes a share back
+            if (reflect && taken > 0 && enemy.hp > 0) this.hit(enemy, taken * reflect, target, { showShot: false, showHit: false });
             if (enemy.affixes) this.eliteOnStrike(enemy, target);
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
@@ -1052,7 +1060,7 @@ export class TowerDefenseGame {
       const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
       // Block limit: a blocker that already holds its share lets further melee enemies walk
       // past, but they brush against it (step() slows them, tuning.blocking.passSlow).
-      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) : undefined;
+      const limit = melee && limits?.[hero.class] !== undefined ? limits[hero.class] + (this.classBonus(hero).blockLimit || 0) + (this.talentFx(hero).blockLimitAdd || 0) : undefined;
       if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) {
         if (distance <= reach) enemy.brushed = true;
         continue;
@@ -1082,7 +1090,7 @@ export class TowerDefenseGame {
     // Passive local aura: allies inside a support's range gain attack. Does not stack.
     for (const support of this.heroes) {
       if (support.ability !== "aura" || support === hero) continue;
-      if (this.inReach(support, hero)) return { source: support, bonus: this.support.passiveAuraBonus * (1 + (this.classBonus(support).support || 0)) };
+      if (this.inReach(support, hero)) return { source: support, bonus: this.support.passiveAuraBonus * (1 + (this.classBonus(support).support || 0)) * (this.talentFx(support).auraFactor ?? 1) };
     }
     return null;
   }
@@ -1136,7 +1144,7 @@ export class TowerDefenseGame {
     const ultBuff = this.time < (hero.buffUntil || 0) ? 1 + this.support.auraAttackBonus : 1;
     const synBonus = this.synergyBonusFor(hero);
     const rally = this.time < (this.rallyUntil || 0) ? 1 + (this.hasBoon("rally")?.atk || 0) : 1;
-    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0));
+    return hero.atk * (1 + (this.classBonus(hero).atk || 0)) * (aura ? 1 + aura.bonus : 1) * ultBuff * (1 + synBonus) * (1 + (this.bondFx(hero).atk || 0)) * (1 + (this.ringFx(hero)?.atk || 0)) * rally * (1 + this.rapidFx(hero).atk) * this.environment("attack", hero) * (1 + (this.lordFx(hero).atk || 0)) * (1 + (this.lordFx(hero).dmg || 0)) * (this.talentFx(hero).attackFactor ?? 1);
   }
 
   // Rapid fire (Atalanta's awakened Burning Volley): faster, harder shots for a few seconds.
@@ -1146,6 +1154,12 @@ export class TowerDefenseGame {
 
   damageHero(hero, amount, source) {
     if (amount <= 0 || this.isVeiled(hero)) return;
+    if (hero.barrierHp > 0 && this.time < (hero.barrierUntil || 0)) { // Warden (Tier I): a barrier from overhealing takes hits first
+      const absorbed = Math.min(hero.barrierHp, amount);
+      hero.barrierHp -= absorbed;
+      amount -= absorbed;
+      if (amount <= 0) return;
+    }
     if (this.time < (hero.wardUntil || 0)) { // Gaia's Rooted Sanctuary, Heimdall's Bifrost Ward
       amount *= 1 - hero.wardCut;
       if (hero.wardFx === "bifrost") this.emit({ type: "wardhit", heroId: "heimdall", x: hero.x, y: hero.y - 8, life: 0.3 });
@@ -1346,10 +1360,17 @@ export class TowerDefenseGame {
   // Class kit numbers with their class blessings (blessingTree *_special), for sim and UI.
   splashRadius(hero) {
     const splash = this.kit(hero).splash;
-    return splash ? splash.radius * (1 + (this.classBonus(hero).splash || 0)) : 0;
+    return splash ? splash.radius * (1 + (this.classBonus(hero).splash || 0)) * (this.talentFx(hero).splashFactor ?? 1) : 0;
+  }
+
+  // The share a splash hit deals to each neighbour (Wildfire, Tier I, sets it to 25%).
+  splashShare(hero) {
+    return this.talentFx(hero).splashShareSet ?? this.kit(hero).splash?.share ?? 0;
   }
 
   cleaveShare(hero) {
+    const set = this.talentFx(hero).cleaveShareSet;
+    if (set) return set;
     const cleave = this.kit(hero).cleave;
     return cleave ? cleave.share + (this.classBonus(hero).cleave || 0) : 0;
   }
@@ -1501,9 +1522,9 @@ export class TowerDefenseGame {
       const found = others(reach).length;
       return falloff.slice(found).reduce((sum, share) => sum + share, 0) * (focus.share ?? 1);
     }
-    if (!kit.splash) return 0;
+    if (!kit.splash || this.talentFx(hero).noSplash) return 0;
     const missing = Math.max(0, (focus.slots ?? 2) - others(this.splashRadius(hero)).length);
-    return missing * kit.splash.share * (focus.share ?? 1);
+    return missing * this.splashShare(hero) * (focus.share ?? 1);
   }
 
   // One basic attack, shaped by the class kit (tuning.classes, M6). Returns false when
@@ -1516,6 +1537,7 @@ export class TowerDefenseGame {
   basicAttack(hero, target) {
     const kit = this.kit(hero);
     const cb = this.classBonus(hero);
+    const fx = this.talentFx(hero);
     if (cb.purify) this.purify(hero);
     if (kit.heal && this.healPulse(hero, kit, cb)) return true;
     if (!target) return false;
@@ -1529,10 +1551,16 @@ export class TowerDefenseGame {
     const strike = (enemy, share, opts = {}) => {
       const shred = (enemy.sunderUntil ?? 0) > this.time ? enemy.sunder : 0;
       const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce) * (1 - shred);
-      const loose = kit.looseBonus && !enemy.held ? kit.looseBonus * (kit.looseSpeed ? Math.min(1, enemy.speed / kit.looseSpeed) ** 2 : 1) : 0;
+      const loose = kit.looseBonus && !enemy.held ? kit.looseBonus * (fx.looseFactor ?? 1) * (kit.looseSpeed ? Math.min(1, enemy.speed / kit.looseSpeed) ** 2 : 1) : 0;
       const conducts = chainer && this.isWet(enemy) ? 1 + (this.statusCfg()?.reactions?.conduct?.bonus || 0) : 1;
-      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * conducts;
+      // Duelist (Tier I): more damage on the held enemy, and on Elites and bosses.
+      const duel = (enemy.held ? fx.heldFactor ?? 1 : 1) * (enemy.elite || enemy.kind === "boss" ? fx.eliteFactor ?? 1 : 1);
+      const bonus = (1 + (enemy.flying ? kit.airBonus || 0 : 0) + loose) * conducts * duel;
       const dealt = this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts }) || 0;
+      // Executioner (Tier I): a hit finishes a ground enemy below its threshold (not bosses).
+      if (fx.finishBelow && !enemy.dead && !enemy.flying && enemy.kind !== "boss" && enemy.hp / enemy.maxHp < fx.finishBelow) {
+        this.hit(enemy, enemy.hp + (enemy.shield || 0) + 1, hero, { showShot: false, showHit: false });
+      }
       this.onStrike(hero, enemy, dealt);
       return dealt;
     };
@@ -1543,7 +1571,8 @@ export class TowerDefenseGame {
       .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
     const beam = hero.basic === "beam";
-    strike(target, (kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others)), beam ? { showShot: false } : {});
+    // Focus Lens (Tier I) adds a third to the main target's share.
+    strike(target, ((kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others))) * (fx.mainFactor ?? 1), beam ? { showShot: false } : {});
     // Crystal Vault prism tile (G2): the attack also refracts onto the nearest other enemy in reach.
     const prism = this.boardEvent ? prismSplit(this, hero) : null;
     if (prism) {
@@ -1552,6 +1581,23 @@ export class TowerDefenseGame {
       if (second) {
         this.emitHeroEffect(hero, { type: "shot", x1: target.x, y1: target.y, x2: second.x, y2: second.y, life: 0.2, color: "purple" });
         strike(second, prism, { showShot: false });
+      }
+    }
+    // Archer Tier I: Piercing Shot flies on through the target into the enemies behind it on the same line;
+    // Multishot also shoots the nearest other enemy in reach.
+    if (fx.pierceTargets && !beam) {
+      const angle = Math.atan2(target.y - hero.y, target.x - hero.x), along = Math.hypot(target.x - hero.x, target.y - hero.y);
+      const beyond = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(e.x - hero.x, e.y - hero.y) > along
+        && Math.abs(Math.atan2(e.y - hero.y, e.x - hero.x) - angle) < 0.12)
+        .sort((a, b) => Math.hypot(a.x - hero.x, a.y - hero.y) - Math.hypot(b.x - hero.x, b.y - hero.y)).slice(0, fx.pierceTargets);
+      for (const e of beyond) strike(e, fx.pierceShare, { showShot: false, showHit: false });
+    }
+    if (fx.extraTargets && !beam) {
+      const second = this.enemies.filter((e) => e !== target && !e.dead && this.canHit(hero, e) && this.inReach(hero, e))
+        .sort((a, b) => Math.hypot(a.x - hero.x, a.y - hero.y) - Math.hypot(b.x - hero.x, b.y - hero.y)).slice(0, fx.extraTargets);
+      for (const e of second) {
+        this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: e.x, y2: e.y, life: 0.2, color: "gold" });
+        strike(e, fx.extraShare, { showShot: false });
       }
     }
     if (beam) {
@@ -1595,13 +1641,13 @@ export class TowerDefenseGame {
         from = next;
       }
     }
-    if (kit.splash && !beam && !(hero.basic === "chain" && kit.chain)) {
+    if (kit.splash && !beam && !(hero.basic === "chain" && kit.chain) && !fx.noSplash) {
       const radius = this.splashRadius(hero);
       this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
-      for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
-    } else if (kit.cleave) {
+      for (const e of others(radius)) strike(e, this.splashShare(hero), { showShot: false, showHit: false });
+    } else if (kit.cleave && !fx.noCleave) {
       const radius = kit.cleave.radius;
-      const victims = others(radius).slice(0, kit.cleave.targets);
+      const victims = others(radius).slice(0, fx.cleaveTargetsSet ?? kit.cleave.targets);
       this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius, life: 0.3, color: "gold" });
       for (const e of victims) strike(e, this.cleaveShare(hero), { showShot: false, showHit: false });
     }
@@ -1777,7 +1823,7 @@ export class TowerDefenseGame {
       if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
     }
     if (!ally) return false;
-    const amount = this.attackValue(hero) * kit.heal * (1 + (cb.support || 0));
+    const amount = this.attackValue(hero) * kit.heal * (1 + (cb.support || 0)) * (this.talentFx(hero).healFactor ?? 1);
     this.healHero(ally, amount, hero);
     this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
     return true;
@@ -1848,8 +1894,15 @@ export class TowerDefenseGame {
   // Heals a hero up to its maximum and credits the healer (M14). Returns the amount healed.
   healHero(target, amount, by) {
     amount *= this.environment("heal", target) * (1 + (by?.entityId ? this.bondFx(by).heal || 0 : 0)) * (1 + (by?.entityId ? this.lordFx(by).heal || 0 : 0));
+    const overflow = Math.max(0, target.hpLeft + amount - target.hp);
     const healed = Math.max(0, Math.min(target.hp, target.hpLeft + amount) - target.hpLeft);
     target.hpLeft += healed;
+    const warden = by?.entityId ? this.talentFx(by) : null;
+    if (warden?.barrierShare && overflow > 0) {
+      const kept = target.barrierUntil > this.time ? target.barrierHp || 0 : 0;
+      target.barrierHp = Math.min(warden.barrierShare * target.hp, kept + overflow);
+      target.barrierUntil = this.time + (warden.barrierSeconds || 0);
+    }
     if (by?.id && healed > 0) this.statFor(by).heal += healed;
     return healed;
   }

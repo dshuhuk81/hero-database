@@ -1,7 +1,17 @@
 // Relic card for the run panel and the on-map bar with the active bonds and mutators.
 import { MUTATOR_INFO, RUN_BOON_INFO } from "../skills.js";
-import { bondText } from "../bonds.js";
 import type { PageContext } from "./context";
+
+// Shortest readable tier: "+12% ATK +10% ULT". Stat keys match tuning.bonds tiers.
+function bondShort(tier: any) {
+  if (!tier) return "";
+  const parts: string[] = [];
+  if (tier.atk) parts.push(`+${Math.round(tier.atk * 100)}% ATK`);
+  if (tier.ultCharge) parts.push(`+${Math.round(tier.ultCharge * 100)}% ULT`);
+  if (tier.guard) parts.push(`-${Math.round(tier.guard * 100)}% dmg taken`);
+  if (tier.heal) parts.push(`+${Math.round(tier.heal * 100)}% heal`);
+  return parts.join(" ");
+}
 
 // Rare and epic run blessing card (M17): rarity badge, name and what it changes.
 const RARITY_ICON = '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z" />';
@@ -49,20 +59,56 @@ export function createBuffBar(ctx: PageContext) {
     }).join("");
     buffsEl.innerHTML = bondChips + mutatorChips;
     bondsOnField = bonds;
+    // Deaths re-render the bar: keep an open tip on its bond, drop it if that bond is gone.
+    const open = openBond && bonds.find((bond: any) => bond.name === openBond.name);
+    if (open) showTip(buffsEl.querySelector<HTMLElement>(`[data-bond-index="${bonds.indexOf(open)}"]`)!, open);
+    else hideTip();
     position();
   }
 
-  // Tap a bond chip: what the reached tier does and what the next tier needs.
+  // Tap a bond chip: small tooltip right under it (not the notice line, which buff/change messages use).
   let bondsOnField: any[] = [];
+  let openBond: any = null;
+  const tipEl = document.createElement("div");
+  tipEl.className = "td-bond-tip";
+  tipEl.hidden = true;
+  stageEl.appendChild(tipEl);
+
+  function hideTip() {
+    tipEl.hidden = true;
+    openBond = null;
+    document.removeEventListener("pointerdown", onOutsideTap, true);
+  }
+
+  function onOutsideTap(event: Event) {
+    if (!tipEl.contains(event.target as Node) && !(event.target as HTMLElement).closest?.("[data-bond-index]")) hideTip();
+  }
+
+  function showTip(chip: HTMLElement, bond: any) {
+    const next = bond.next ? `<span>Next ${bond.next.count}: ${bondShort(bond.next)}</span>` : "";
+    tipEl.innerHTML = `<b>${bond.count} ${bond.name}: ${bondShort(bond.tier)}</b>${next}`;
+    tipEl.hidden = false;
+    openBond = bond;
+    // Under the chip, clamped to the stage.
+    const stageRect = stageEl.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const width = tipEl.offsetWidth;
+    const left = Math.max(4, Math.min(chipRect.left - stageRect.left, stageEl.clientWidth - width - 4));
+    tipEl.style.left = `${left}px`;
+    tipEl.style.top = `${chipRect.bottom - stageRect.top + 4}px`;
+    document.addEventListener("pointerdown", onOutsideTap, true);
+  }
+
   buffsEl.addEventListener("click", (event: Event) => {
     const chip = (event.target as HTMLElement).closest<HTMLElement>("[data-bond-index]");
     const bond = chip && bondsOnField[Number(chip.dataset.bondIndex)];
     if (!bond) return;
-    const next = bond.next ? ` Next at ${bond.next.count} heroes: ${bondText(bond.next)}.` : "";
-    ctx.notice(`${bond.name} bond, ${bond.count} heroes: ${bondText(bond.tier)}.${next}`);
+    if (openBond?.name === bond.name) hideTip();
+    else showTip(chip!, bond);
   });
 
   function reset() {
+    hideTip();
     buffsEl.hidden = true;
   }
 

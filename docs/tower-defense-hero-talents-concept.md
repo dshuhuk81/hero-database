@@ -1,6 +1,6 @@
 # Tower Defense: Hero Talents (G5) - concept
 
-Written October 9, 2026. Status: **approved by owner, T1 done (data, save, logic; no battle effects or UI yet)**. Source idea: G5 in
+Written October 9, 2026. Status: **approved by owner, T1 and T2 done (data, save, logic, Tier I battle effects; UI and Tier II open)**. Source idea: G5 in
 [TOWER_DEFENSE_GAMEPLAY_IDEAS.md](../TOWER_DEFENSE_GAMEPLAY_IDEAS.md). All numbers are first guesses.
 
 Owner decisions (October 9, 2026): unlock after Chapter 4; prices as proposed; switching never free;
@@ -175,7 +175,7 @@ Respect `prefers-reduced-motion`.
 | Step | Content | Size |
 |---|---|---|
 | T1 | `tdTalents.json`, save version 12, unlock, choose and switch logic in `campaign.js`, tests (**done**, October 9, 2026) | S |
-| T2 | Tier I class talents in the sim (12 effects) and `talents.js`, tests | M |
+| T2 | Tier I class talents in the sim (12 effects) and `talents.js`, tests (**done**, October 9, 2026) | M |
 | T3 | Heroes screen "Talents" tab, squad-slot glyph, battle panel line, glossary section | M |
 | T4 | Tier II for one hero per class (Atlas, Surtr, Nott, Odin, Atalanta, Plutus), owner playtest | M |
 | T5 | Remaining Tier II talents, Effekseer cues, `td:sweep` balance pass | L |

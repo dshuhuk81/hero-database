@@ -29,72 +29,119 @@
       {
         "id": "tank-iron-wall",
         "name": "Iron Wall",
-        "text": "Holds 4 enemies instead of 3; its attacks deal 30% less damage."
+        "text": "Holds 4 enemies instead of 3; its attacks deal 30% less damage.",
+        "fx": {
+          "blockLimitAdd": 1,
+          "attackFactor": 0.7
+        }
       },
       {
         "id": "tank-thorns",
         "name": "Thorns",
-        "text": "Enemies that hit it take 25% of the damage back."
+        "text": "Enemies that hit it take 25% of the damage back.",
+        "fx": {
+          "reflect": 0.25
+        }
       }
     ],
     "Warrior": [
       {
         "id": "warrior-whirlwind",
         "name": "Whirlwind",
-        "text": "The cleave strikes every enemy in its pattern for 50% (instead of up to 5 for 70%)."
+        "text": "The cleave strikes every enemy in its pattern for 50% (instead of up to 5 for 70%).",
+        "fx": {
+          "cleaveTargetsSet": 99,
+          "cleaveShareSet": 0.5
+        }
       },
       {
         "id": "warrior-duelist",
         "name": "Duelist",
-        "text": "No cleave; +50% damage to the enemy it holds, +100% against Elites and bosses."
+        "text": "No cleave; +50% damage to the enemy it holds, +100% against Elites and bosses.",
+        "fx": {
+          "noCleave": true,
+          "heldFactor": 1.5,
+          "eliteFactor": 2.0
+        }
       }
     ],
     "Assassin": [
       {
         "id": "assassin-stalker",
         "name": "Stalker",
-        "text": "Dash reach +50%; always hunts enemies nobody holds, runners first."
+        "text": "Dash reach +50%; always hunts enemies nobody holds, runners first.",
+        "fx": {
+          "dashFactor": 1.5,
+          "looseFactor": 1.5
+        }
       },
       {
         "id": "assassin-executioner",
         "name": "Executioner",
-        "text": "Its hits finish ground enemies (not bosses) below 12% health."
+        "text": "Its hits finish ground enemies (not bosses) below 12% health.",
+        "fx": {
+          "finishBelow": 0.12
+        }
       }
     ],
     "Mage": [
       {
         "id": "mage-focus-lens",
         "name": "Focus Lens",
-        "text": "No splash; +35% damage to the main target (chain bounces stay)."
+        "text": "No splash; +35% damage to the main target (chain bounces stay).",
+        "fx": {
+          "noSplash": true,
+          "mainFactor": 1.35
+        }
       },
       {
         "id": "mage-wildfire",
         "name": "Wildfire",
-        "text": "Splash radius +50%, splash share 35% -> 25%."
+        "text": "Splash radius +50%, splash share 35% -> 25%.",
+        "fx": {
+          "splashFactor": 1.5,
+          "splashShareSet": 0.25
+        }
       }
     ],
     "Archer": [
       {
         "id": "archer-piercing-shot",
         "name": "Piercing Shot",
-        "text": "Each arrow flies on through its target and hits up to 2 more enemies in line for 60%."
+        "text": "Each arrow flies on through its target and hits up to 2 more enemies in line for 60%.",
+        "fx": {
+          "pierceTargets": 2,
+          "pierceShare": 0.6
+        }
       },
       {
         "id": "archer-multishot",
         "name": "Multishot",
-        "text": "Shoots 2 targets at once for 65% each."
+        "text": "Shoots 2 targets at once for 65% each.",
+        "fx": {
+          "extraTargets": 1,
+          "extraShare": 0.65
+        }
       }
     ],
     "Support": [
       {
         "id": "support-warden",
         "name": "Warden",
-        "text": "Healing beyond full health becomes a barrier for 6 s (up to 20% of max health)."
+        "text": "Healing beyond full health becomes a barrier for 6 s (up to 20% of max health).",
+        "fx": {
+          "barrierShare": 0.2,
+          "barrierSeconds": 6
+        }
       },
       {
         "id": "support-war-hymn",
         "name": "War Hymn",
-        "text": "Heals 40% less; its attack aura is 60% stronger."
+        "text": "Heals 40% less; its attack aura is 60% stronger.",
+        "fx": {
+          "healFactor": 0.6,
+          "auraFactor": 1.6
+        }
       }
     ]
   },

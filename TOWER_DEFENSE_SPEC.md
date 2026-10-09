@@ -508,7 +508,9 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   field (Norse on a tie) and shares its bonus. The squad screen lists the bonds a squad
   brings; in battle active bonds show as gold chips in the bar on the map, labelled with a short
   set name and the field count (`NOR 4`, also on the short landscape row). Tapping a chip
-  shows the reached tier and the next tier in the stage notice. Tag synergy stays
+  opens a small tooltip right under it with the reached tier and the next tier in short form
+  (`4 Norse: +12% ATK +10% ULT`, `Next 6: ...`); it lives in its own layer, not the notice line,
+  and stays open across death re-renders until its bond is gone. Tag synergy stays
   underneath as before; `synergy.bonusPerTag: 0` would retire it.
 - **Hero panel** (`page/popover.ts`): stars and Evolution badge, stats (attack, speed, reach
   grid, crit), target priority, collapsed details, and a pinned footer with the permanent
@@ -1051,9 +1053,22 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   drops foreign, unknown and recruit talents.
 - **Collection stats:** `collectionHeroes()` adds `talents: [ids]` only when a talent is chosen;
   `heroTalents()` returns the talent objects.
-- **Not built yet:** the effects in the battle (T2), the Heroes screen tab and the squad badge (T3).
-  Until T2 a chosen talent changes nothing in battle.
-- Test: `scripts/test-td-talents.mjs` (in `npm run test:tower-defense`).
+- **Battle effects (T2, October 9, 2026):** the 12 Tier I talents work in the simulation
+  (`talents.js`, numbers in `tdTalents.json` `fx`; `sim.talentFx(hero)`). Merge rules: `...Factor`
+  multiplies, `...Set` replaces, other numbers add. Iron Wall (block limit +1, own attacks x0.7),
+  Thorns (attackers take 25% of the damage a blocker takes), Whirlwind (cleave 50% on every enemy in
+  the cleave radius, no cap), Duelist (no cleave; x1.5 on held enemies, x2 on Elites and bosses),
+  Stalker (loose-target bonus x1.5, dash reach x1.5), Executioner (a hit finishes a ground non-boss
+  enemy below 12%), Focus Lens (no splash, main target +35%), Wildfire (splash radius x1.5, share
+  25%), Piercing Shot (the enemies behind the target on its line take 60%), Multishot (the nearest
+  other enemy in reach takes 65%), Warden (overflow healing becomes a barrier, max 20% of max health
+  for 6 s, takes hits first), War Hymn (heals x0.6, its aura x1.6).
+- **Simplifications:** Whirlwind uses the cleave radius, not the full pattern. Thorns damage counts
+  as the Tank's damage. Tier I has no own visuals yet (planned as Effekseer cues, T5).
+- **Not built yet:** Tier II signature effects (T4-T5), the Heroes screen tab and the squad badge (T3).
+- Tests: `scripts/test-td-talents.mjs` (data, gates, prices, save) and
+  `scripts/test-td-talent-effects.mjs` (each Tier I effect against the same setup without it); both
+  in `npm run test:tower-defense`.
 
 ### Stage rating and chapter rewards
 
