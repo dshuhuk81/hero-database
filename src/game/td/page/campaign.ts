@@ -15,7 +15,7 @@ import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
 import { ELITE_AFFIXES } from "../elites.js";
-import { talentById, talentSlot, unlockTalent, switchTalent, talentEligible, TALENT_TIERS } from "../campaign.js";
+import { talentById, talentPool, talentSlot, unlockTalent, switchTalent, talentEligible, TALENT_TIERS } from "../campaign.js";
 import { stageRuleFor, stageElitesFor, chapterLaurels, goalText, laurelFlags, laurelLives, runFacts, currentChapter, heroRewardStage, summonableHeroes, autoFodder, buyCopiesWithDust, canAfford, canLevelUp, canSkillUp, canSummon, convertCopies, CURRENCY_NAMES, evolutionCopyCost, evolutionMaterial, evolve, exchangeDust, featuredChance, featuredHeroId, bannerPool, heroAvailability, rotationEndsAt, finishCampaignStage, grantBattleXp, heroEvolution, heroLevel, heroLevelCap, heroMight, heroSkillLevel, levelCap, levelStepGain, heroStars, isCleared, isUnlocked, levelScale, levelUp, levelUpCost, multiSummonCount, nextStage, pendingRewards, repeatRewards, rewardText, skillUp, skillUpCost, stageById, starScale, starUp, starUpCost, summonCost, summonMany, summonPool, summonRates, validSquad, starReachSteps } from "../campaign.js";
 import campaignData from "../../../data/tdCampaign.json" with { type: "json" };
 import summonData from "../../../data/tdSummon.json" with { type: "json" };
@@ -1305,6 +1305,26 @@ export function createCampaign(ctx: PageContext) {
         if (!window.confirm("Reset all Tower Defense progress and settings stored in this browser?")) return;
         resetTdAccount(localStorage);
         window.location.reload();
+        return;
+      }
+      if (id === "talents") {
+        // Every owned talent-eligible hero gets both tiers (first option of each pair) without the chapter, level or star gates.
+        // A choice already made stays; tests the talents and their battle effects.
+        const p = progress();
+        const talents = { ...p.talents };
+        for (const hid of p.owned) {
+          if (!talentEligible(hid)) continue;
+          talents[hid] = {
+            I: talents[hid]?.I ?? talentPool(hid, "I")[0]?.id,
+            II: talents[hid]?.II ?? talentPool(hid, "II")[0]?.id,
+          };
+        }
+        store.data.campaign = { ...p, talents };
+        store.persist();
+        const screen = root.dataset.screen;
+        render();
+        if (screen === "heroes") renderHeroes();
+        ctx.notice("Debug: first talent of both tiers set for every owned eligible hero.");
         return;
       }
       if (id === "maxAllHeroes") {

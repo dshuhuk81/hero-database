@@ -15486,7 +15486,16 @@ img[data-rarity="lord"] {
   gap: var(--space-2);
 }
 
-/* Talent icons (PixelLab, ui/talents): card art, tab icon and the battle popover chip. */
+/* Talent icons (PixelLab, ui/talents): card art, tab icon, battle popover chip and glossary entries. */
+.td-glossary-talent-art {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  vertical-align: middle;
+  image-rendering: pixelated;
+}
+
 .td-talent-art {
   justify-self: start;
   width: 48px;

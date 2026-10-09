@@ -31,7 +31,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   // modules in src/game/td/page/. Menu screen rendering and audio settings live here;
   // screen switching is page/nav.ts.
   import { createAudio, createMusic } from "../../game/td/audio";
-  import { setAssetBase } from "../../game/td/assets.js";
+  import { hydrateTdArt, setAssetBase } from "../../game/td/assets.js";
   import { createPauseController } from "../../game/td/ui.js";
   import type { PageActions, PageContext, PageState } from "../../game/td/page/context";
   import { createSavePanel, createSaveStore } from "../../game/td/page/save";
@@ -64,6 +64,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   const debugAllowed = data.isDev || new URLSearchParams(location.search).get("debug") === "1";
   if (!debugAllowed) root.querySelectorAll("[data-td-debug-gate]").forEach((el) => el.remove());
   setAssetBase(data.assetBase);
+  hydrateTdArt(root); // glossary talent icons (server markup with data-td-art)
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;
 
