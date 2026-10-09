@@ -119,6 +119,9 @@ EVENT_ATLAS_FX.talentIce = { clip: 'ice', width: 110, alpha: 0.85, speed: 1.2, r
 EVENT_ATLAS_FX.talentShock = { clip: 'shockwave', width: 120, alpha: 0.8, speed: 1, replace: false };
 EVENT_ATLAS_FX.talentBlast = { clip: 'blast', width: 120, alpha: 0.9, speed: 1, replace: false };
 EVENT_ATLAS_FX.talentBolt = { clip: 'lightning', width: 120, alpha: 0.9, speed: 1.4, replace: false };
+// Thunderfall (manual Divine Intervention, sim.thunderStrike): the Effekseer lightning clip on the strike spot.
+// The drawn bolt and flash in render.js (drawPowerEffect) stay underneath.
+EVENT_ATLAS_FX.thunderStrike = { clip: 'lightning', width: 170, alpha: 0.9, speed: 1.3, replace: false };
 EVENT_ATLAS_FX.talentVenom = { clip: 'venom', width: 100, alpha: 0.8, speed: 1, replace: false };
 EVENT_ATLAS_FX.talentHoly = { clip: 'holy', width: 100, alpha: 0.8, speed: 1, replace: false };
 EVENT_ATLAS_FX.talentWind = { clip: 'wind', width: 100, alpha: 0.7, speed: 1, replace: false };
