@@ -59,7 +59,7 @@ export const ENEMY_SHEETS = new Set([
   "grunt-v2", "runner-v2", "flyer-v2", "archer-v3", "brute-v3", "brood-v4",
   "boss-v2", "boss-lilith-v4b", "boss-lerna-v1b", "burrower-v1", "vinebinder-v1", "jaguar-v1", "sporeling-v1", "boss-lerna-v1", "boss-kraghorn-v1", "boss-vorruk-v1", "boss-ochenta-v1",
   "boss-skeld-v1", "boss-thyrak-v1", "boss-neressa-v1", "boss-morthul-v1",
-  "boss-ilyr-v1", "boss-eidros-v1", "boss-astreon-v1", "boss-brontax-v1",
+  "boss-ilyr-v1", "boss-eidros-v1", "boss-astreon-v1", "boss-brontax-v1", "caravan-v2",
   "brood-v1", "boss-lilith-v1", // broodcaller and hexer keep the older stills on purpose
 ]);
 // Remade sheets for a still: still name -> sheet name with a suffix.
@@ -105,6 +105,9 @@ export const ENEMY_ART = {
   vinebinder: { file: "vinebinder", version: "v1", tint: 0xffffff, size: 54 },
   jaguar: { file: "jaguar", version: "v1", tint: 0xffffff, size: 44 },
   sporeling: { file: "sporeling", version: "v1", tint: 0xffffff, size: 34 },
+  // Escort caravan (G4, stage 3-2): own still, a wagon with an ox (PixelLab), walks the road as an escorted unit.
+  // v2: ground shadow removed; its sheet (clips/caravan-v2) turns the wheels and moves the ox's legs.
+  caravan: { file: "caravan", version: "v2", tint: 0xffffff, size: 84 },
 };
 
 // A map's final boss sprite: Baphomet is "boss", other bosses "boss-{id}".

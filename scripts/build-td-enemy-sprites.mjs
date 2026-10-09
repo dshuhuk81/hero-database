@@ -22,7 +22,9 @@ const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "arche
   // TD-original bosses (artifacts/td-bosses-v1), ready for a map or stage to use.
   boss_lerna: "boss-lerna", boss_kraghorn: "boss-kraghorn", boss_vorruk: "boss-vorruk", boss_ochenta: "boss-ochenta",
   // Chapter creatures (A4 of the gameplay ideas).
-  burrower: "burrower", vinebinder: "vinebinder", jaguar: "jaguar", sporeling: "sporeling" };
+  burrower: "burrower", vinebinder: "vinebinder", jaguar: "jaguar", sporeling: "sporeling",
+  // Escort caravan (G4, stage 3-2): a wagon with an ox.
+  caravan: "caravan" };
 
 const inDir = process.argv[2];
 if (!inDir) { console.error("Usage: node scripts/build-td-enemy-sprites.mjs <input folder>"); process.exit(1); }

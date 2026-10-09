@@ -455,7 +455,10 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   timeline. Tapping an empty tile with nothing picked only hints at the drag. The old recruit
   sheet is still in the code but no tile opens it.
 - **Blocking:** `blockLimit` Tank 3, Warrior 2, Assassin 1, contact 24 px. Held enemies take
-  +20% damage; enemies passing a full blocker are slowed.
+  +20% damage; enemies passing a full blocker are slowed. Render only: held enemies are drawn
+  just past the blocker's tile edge, fanned in an arc (3 per rank, extra ranks further out), and
+  every enemy's drawn position eases toward its goal, so being held, released or knocked back
+  slides instead of jumping (`standOffHeldEnemies` in `render.js`; leaps over 2.2 cells snap).
 - **Class archetypes** (`tuning.classes`): Tank `taunt` (guard: shrugs off part of each hit),
   Warrior `cleave`, Assassin `execute` (dash to loose enemies, veil), Mage `nuke` (splash,
   chain), Archer `volley` (pierce, targets the strongest, +100% vs flyers), Support aura and
@@ -1177,6 +1180,16 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   leaking flyer), to be tuned from playtests. Saves from before goals keep a laurel they earned by
   keeping 90% of the lives. The stage drawer lists all three goals; the Stage Clear screen fills
   only the laurels that were earned.
+- **Escort** (October 9, 2026, G4 of the gameplay ideas, first prototype on stage 3-2 with `escort: true`): a caravan
+  (kind `caravan` in `tuning.enemies`, flagged `escort`; `tuning.escort`: hp 60) spawns with the wave and walks the road. Heroes never
+  target it (untargetable), blockers never hold it, and every ground enemy within 40 px wears it down at 1.2 hp/s.
+  Caravan at 0 hp ends the stage as a loss (`escortLost`); reaching the base is safe (`escortSafe`, no life lost, not a
+  leak). The stage is not complete while the caravan still walks. Sim: `spawnCaravan`, `stepEscort`. Art: PixelLab
+  wagon with an ox, `enemies/sprites/caravan-v2.webp` (256 px, transparent, feet on the 90% line, ENEMY_ART `caravan`, drawn 84 px;
+  v2 = v1 without the grey ground shadow). Sheet `enemies/clips/caravan-v2` (PixelLab, part A of `docs/td-asset-pipeline.md`):
+  walk turns both wheels and moves the ox's legs; idle, attack (head toss, hoof stamp), hurt and death as usual. The earlier
+  drawn-on spoke overlay is gone. Upload `td/enemies/sprites/caravan-v2.webp` and `td/enemies/clips/caravan-v2.*` to R2
+  before dev shows them. Values are first guesses for the owner's playtest.
 - **Siege** (October 9, 2026, G4 of the gameplay ideas): stage 2-2 uses the rule `siege` (`tdStageRules.json`: placement rate 0) and starts with `startPlacement` 55 (`tdCampaign.json`, passed to the sim as `startPlacement`). No Nectar arrives after the start. Bot on 2-2: 20% (45: 0%, 65 and 75: 100%, no rule: 100%). 55 is a first guess for the owner's playtest.
 - **Stage rules** (October 6, 2026, A2 of the gameplay ideas): 53 of the 82 stages carry a `rule`
   naming an entry of `tdStageRules.json` (Nightfall, Forced March, Hardened Hides, Lean Supplies,

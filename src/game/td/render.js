@@ -40,6 +40,7 @@ const COLORS = {
   vinebinder: 0x86efac,
   jaguar: 0xfbbf24,
   sporeling: 0xbef264,
+  caravan: 0xd6a35c,
 };
 
 // Kenney Micro Roguelike packed sheet: 128x80, 8x8 tiles, no gaps.
@@ -2382,23 +2383,65 @@ export async function createRenderer(canvas, game, options = {}) {
   // can change any tick.
   // ------------------------------------------------------------------
   // A melee enemy stops deep inside its blocker's tile (blocking.contactRange), where its sprite
-  // hides behind or under the hero. Visual only: while drawing, held enemies are pushed out past
-  // the tile edge (like Watcher of Realms: enemies never stand on a hero's tile), along the line
-  // from the hero, and the simulation positions are restored right after, so hit tests,
-  // targeting and balance are untouched.
-  function standOffHeldEnemies() {
+  // hides behind or under the hero. Visual only: while drawing, held enemies stand just past the
+  // tile edge (like Watcher of Realms: enemies never stand on a hero's tile), fanned along an arc
+  // facing their approach so a group does not stack on one spot. Every enemy's drawn position
+  // eases toward its goal, so getting held, released or knocked back reads as a step, not a jump.
+  // The simulation positions are restored right after drawing, so hit tests, targeting and
+  // balance are untouched.
+  const enemyDrawPos = new WeakMap(); // enemy -> { x, y } last drawn position
+  let standOffClock = null;
+  function standOffHeldEnemies(now) {
     const board = boardOf(game.map);
-    const standOff = (board?.cell ?? 96) * 0.62; // half a cell is the tile edge, the rest is the sprite's own width
+    const cell = board?.cell ?? 96;
+    const standOff = cell * 0.62; // half a cell is the tile edge, the rest is the sprite's own width
+    const dt = standOffClock === null ? 0 : Math.min((now - standOffClock) / 1000, 0.1);
+    standOffClock = now;
+    const ease = reducedMotion ? 1 : 1 - Math.exp(-dt * 14);
+    const groups = new Map(); // hero -> held enemies
+    for (const enemy of game.enemies) {
+      const hero = enemy.held && !enemy.dead ? enemy.heldBy : null;
+      if (!hero) continue;
+      if (!groups.has(hero)) groups.set(hero, []);
+      groups.get(hero).push(enemy);
+    }
+    const goals = new Map();
+    for (const [hero, held] of groups) {
+      // Face the group's middle; spread its members by their side of that line, so the fan keeps
+      // the order they walked in and nobody crosses over when a neighbour drops out.
+      let mx = 0, my = 0;
+      for (const e of held) { mx += e.x - hero.x; my += e.y - hero.y; }
+      const md = Math.hypot(mx, my);
+      const ux = md > 0.5 ? mx / md : -1, uy = md > 0.5 ? my / md : 0;
+      const side = (e) => (e.x - hero.x) * -uy + (e.y - hero.y) * ux;
+      held.sort((a, b) => side(a) - side(b) || a.entityId - b.entityId);
+      const perRank = 3, step = 0.62; // radians between neighbours (about a sprite width at standOff)
+      const base = Math.atan2(uy, ux);
+      held.forEach((e, i) => {
+        const rank = Math.floor(i / perRank);
+        const inRank = Math.min(perRank, held.length - rank * perRank);
+        const slot = i % perRank - (inRank - 1) / 2;
+        const r = standOff + rank * cell * 0.34;
+        const a = base + (slot + (rank % 2 ? 0.5 : 0)) * step * (standOff / r);
+        goals.set(e, { x: hero.x + Math.cos(a) * r, y: hero.y + Math.sin(a) * r });
+      });
+    }
     const moved = [];
     for (const enemy of game.enemies) {
-      const hero = enemy.held ? enemy.heldBy : null;
-      if (!hero || enemy.dead) continue;
-      const dx = enemy.x - hero.x, dy = enemy.y - hero.y, d = Math.hypot(dx, dy);
-      if (d >= standOff) continue;
+      if (enemy.stationary) continue;
+      const goal = goals.get(enemy) ?? enemy;
+      const last = enemyDrawPos.get(enemy);
+      let x = goal.x, y = goal.y;
+      // Long hops (leaps, blinks, spawns) snap; everything shorter slides.
+      if (last && !enemy.dead && Math.hypot(goal.x - last.x, goal.y - last.y) < cell * 2.2) {
+        x = last.x + (goal.x - last.x) * ease;
+        y = last.y + (goal.y - last.y) * ease;
+      }
+      enemyDrawPos.set(enemy, { x, y });
+      if (x === enemy.x && y === enemy.y) continue;
       moved.push([enemy, enemy.x, enemy.y]);
-      const ux = d > 0.5 ? dx / d : -1, uy = d > 0.5 ? dy / d : 0;
-      enemy.x = hero.x + ux * standOff;
-      enemy.y = hero.y + uy * standOff;
+      enemy.x = x;
+      enemy.y = y;
     }
     return moved;
   }
@@ -2410,7 +2453,7 @@ export async function createRenderer(canvas, game, options = {}) {
     buildSlots();
     buildRanges();
     buildLinks();
-    const standOff = standOffHeldEnemies();
+    const standOff = standOffHeldEnemies(now);
     try {
       syncEnemies();
       advanceDying(dyingDt);

@@ -100,7 +100,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, startPlacement = null, stageRule = null, elites = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, startPlacement = null, escort = null, stageRule = null, elites = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -121,6 +121,7 @@ export class TowerDefenseGame {
     this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
     this.startLives = lives;
     this.startPlacement = startPlacement; // campaign stage Nectar at the start (Siege), null elsewhere
+    this.escortCfg = escort ? { ...(tuning.escort ?? {}) } : null; // Escort stage (G4): a caravan walks the road, tuning.escort
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
     // (`enemyHp` in tdMaps.json, evens out map difficulty in the Daily Trial and Expedition).
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
@@ -546,6 +547,7 @@ export class TowerDefenseGame {
     this.stageStats = { kills: 0, leaks: 0, placementEarned: 0, heroDeaths: 0, leakKinds: {} };
     this.spawnClock = 0;
     this.lastSpawnAt = null;
+    if (this.escortCfg) this.spawnCaravan();
     this.waveHeld = 0;
     this.started = true;
     this.running = true;
@@ -573,6 +575,7 @@ export class TowerDefenseGame {
     }
     this.stepInterventions(dt);
     if (this.boardEvent && !this.god) stepBoardEvents(this, dt); // G2 chapter board events
+    if (this.escortCfg && !this.god) this.stepEscort(dt);
     this.stepTalentClocks(dt);
     this.stepLords(dt);
     // Placement regrows by tuning.run.placementPerSecond (x Favor rate) per second of battle time.
@@ -659,6 +662,7 @@ export class TowerDefenseGame {
         enemy.x = point.x; enemy.y = point.y;
         if (enemy.distance >= lane.total) {
           enemy.dead = true;
+          if (enemy.escort) { this.emit({ type: "escortSafe", x: enemy.x, y: enemy.y, life: 0.8, color: "gold" }); continue; } // the caravan reached the base
           const previousLives = this.lives;
           if (!this.difficulty.invincible && !this.shielded()) this.lives = Math.max(0, this.lives - enemy.damage);
           else if (this.shielded() && this.map.base) this.emit({ type: "shieldBlock", x: this.map.base.x, y: this.map.base.y, life: 0.8 });
@@ -1047,12 +1051,39 @@ export class TowerDefenseGame {
       facing: hero.rotation || 0, range: hero.range, ...effect });
   }
 
+  // Escort (G4): a caravan walks the road with the wave. Heroes never target it, blockers never hold it,
+  // enemies that touch it wear it down, and reaching the base is safe. Its loss ends the stage.
+  spawnCaravan() {
+    const cfg = this.escortCfg;
+    this.spawnEnemy("caravan");
+    const caravan = this.enemies[this.enemies.length - 1];
+    caravan.escort = true;
+    caravan.untargetable = true;
+    caravan.reward = 0;
+    caravan.maxHp = caravan.hp = cfg.hp ?? 60;
+    caravan.shield = caravan.shieldMax = 0;
+  }
+
+  stepEscort(dt) {
+    const caravan = this.enemies.find((enemy) => enemy.escort && !enemy.dead);
+    if (!caravan) return;
+    const cfg = this.escortCfg;
+    const touching = this.enemies.filter((enemy) => !enemy.escort && !enemy.dead && !enemy.flying && Math.hypot(enemy.x - caravan.x, enemy.y - caravan.y) <= (cfg.touchRange ?? 40)).length;
+    if (touching) caravan.hp -= touching * (cfg.touchDps ?? 1.2) * dt;
+    if (caravan.hp <= 0) {
+      caravan.dead = true;
+      this.emit({ type: "escortLost", x: caravan.x, y: caravan.y, life: 0.9, color: "red" });
+      this.finish(false);
+    }
+  }
+
   // Ranged enemies (attackRange) shoot from distance until their holdSeconds run out.
   shootsFromRange(enemy) {
     return enemy.attackRange !== undefined && (enemy.rangedTime ?? 0) < (enemy.holdSeconds ?? Infinity);
   }
 
   findEnemyTarget(enemy) {
+    if (enemy.escort) return null; // the caravan walks past blockers
     // Ranged enemies stop and shoot from distance; melee (and ranged past their hold) needs contact.
     const melee = !this.shootsFromRange(enemy);
     const reach = melee ? (this.tuning.blocking?.contactRange ?? 42) + (this.favor.contactRangeBonus || 0) : enemy.attackRange;

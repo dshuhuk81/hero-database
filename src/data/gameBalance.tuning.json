@@ -205,6 +205,15 @@
     "D": 1
   },
   "enemies": {
+    "caravan": {
+      "hp": 60,
+      "speed": 23,
+      "armor": 0,
+      "reward": 0,
+      "damage": 1,
+      "attack": 0,
+      "attackPeriod": 0.9
+    },
     "grunt": {
       "hp": 337.5,
       "speed": 42,
@@ -1039,5 +1048,6 @@
       "buff": { "dmg": 0.5, "heal": 0.5, "seconds": 20, "baseInterval": 50, "perMember": 6, "minInterval": 30 },
       "mark": { "bonus": 0.2, "seconds": 3 }
     }
-  }
+  },
+  "escort": { "hp": 60, "touchRange": 40, "touchDps": 1.2 }
 }

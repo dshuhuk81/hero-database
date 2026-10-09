@@ -43,6 +43,7 @@ const SETS = {
     "vinebinder-v1": { dir: "vinebinder-v1", clips: clipFiles("vinebinder-v1") },
     "jaguar-v1": { dir: "jaguar-v1", clips: clipFiles("jaguar-v1") },
     "sporeling-v1": { dir: "sporeling-v1", clips: clipFiles("sporeling-v1") },
+    "caravan-v2": { dir: "caravan-v2", clips: clipFiles("caravan-v2") },
     "boss-v2": { dir: "boss", clips: clipFiles("boss") },
     "boss-lilith-v4": { dir: "lilith", clips: clipFiles("lilith") },
     // Remade walk (feet step one after the other): same still, new sheet name (R2 caches a year).

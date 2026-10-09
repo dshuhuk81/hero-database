@@ -1785,7 +1785,7 @@
           "id": "3-2",
           "name": "The Root Maze",
           "mapId": "jungle-root-maze",
-          "text": "Ancient roots split the road into overlapping kill zones. Hold the central turns while archers and hexers attack from behind the advance.",
+          "text": "Ancient roots split the road into overlapping kill zones. Hold the central turns while archers and hexers attack from behind the advance. A caravan walks the road with the wave: keep it alive until it reaches the base.",
           "lives": 15,
           "hpScale": 8.23,
           "atkScale": 1.87,
@@ -1868,7 +1868,8 @@
           "goal": {
             "type": "noClass",
             "class": "Support"
-          }
+          },
+          "escort": true
         },
         {
           "id": "3-3",
