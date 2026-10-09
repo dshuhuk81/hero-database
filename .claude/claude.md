@@ -18,6 +18,7 @@ There is a tower defense game I created and its saved in `src/game/td`
 - Asset jobs (enemy clips, new stills, new hero art): follow `docs/td-asset-pipeline.md` step by step.
 - Enemy animations (live): PixelLab clips -> `scripts/td-warp-anim.py --pixellab` -> `scripts/build-td-enemy-anims.mjs --release` -> R2 `td/enemies/clips/{still}.json` (named after the still it animates); workflow in `src/game/td/sprite-spec-for-ai.md` ("Animation frames").
 - Maps are theme (art) + generated route: `scripts/generate-td-map.mjs --gen=lattice-v2` (`src/game/td/map-generator-v2.js`); see `docs/tower-defense-map-generator-plan.md` ("Lattice v2").
+- Design backlogs (owner ideas, NOT approved, NOT implemented; no todo unless owner asks): `docs/td-new-hero-backlog.md` (30 new heroes + 5 reserves) and `docs/td-lord-backlog.md` (Lords for all 7 mythology groups; Isis is the only live Lord). Don't treat entries as spec; read before designing new heroes/Lords.
 - After each implementation, update the .md Documentation to keep our source of truth up to date:
 `/Users/daschultheiss/hero-database/TOWER_DEFENSE_SPEC.md`
 
