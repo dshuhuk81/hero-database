@@ -113,8 +113,25 @@ EVENT_ATLAS_FX.talentMark = { clip: 'cosmic', width: 100, alpha: 0.85, speed: 1,
 EVENT_ATLAS_FX.talentSlow = { clip: 'wind', width: 100, alpha: 0.7, speed: 1, replace: false };
 EVENT_ATLAS_FX.talentTithe = { clip: 'buff', width: 120, alpha: 0.9, speed: 1.2, replace: false, tint: 0xffd36b };
 EVENT_ATLAS_FX.talentMidas = { clip: 'heal', width: 110, alpha: 0.85, speed: 1, replace: false, tint: 0xffe27a };
-export const TALENT_EVENTS = ['talentWall', 'talentShield', 'talentBurn', 'talentVeil', 'talentMark', 'talentSlow', 'talentTithe', 'talentMidas'];
-export const TALENT_CLIPS = ['stone', 'buff', 'fire', 'shadow', 'cosmic', 'wind', 'heal'];
+// Generic talent cues (T5): one clip per effect kind; sim.js emits them by type.
+EVENT_ATLAS_FX.talentDeploy = { clip: 'holy', width: 80, alpha: 0.5, speed: 1.0, replace: false };
+EVENT_ATLAS_FX.talentIce = { clip: 'ice', width: 110, alpha: 0.85, speed: 1.2, replace: false };
+EVENT_ATLAS_FX.talentShock = { clip: 'shockwave', width: 120, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentBlast = { clip: 'blast', width: 120, alpha: 0.9, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentBolt = { clip: 'lightning', width: 120, alpha: 0.9, speed: 1.4, replace: false };
+EVENT_ATLAS_FX.talentVenom = { clip: 'venom', width: 100, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentHoly = { clip: 'holy', width: 100, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentWind = { clip: 'wind', width: 100, alpha: 0.7, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentFeather = { clip: 'feather', width: 110, alpha: 0.85, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentWater = { clip: 'water', width: 110, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentFire = { clip: 'fire', width: 100, alpha: 0.8, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentBuff = { clip: 'buff', width: 100, alpha: 0.8, speed: 1.2, replace: false };
+EVENT_ATLAS_FX.talentHeal = { clip: 'heal', width: 100, alpha: 0.85, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentShadow = { clip: 'shadow', width: 100, alpha: 0.7, speed: 1, replace: false, tint: 0xb8a0ff };
+EVENT_ATLAS_FX.talentCosmic = { clip: 'cosmic', width: 100, alpha: 0.85, speed: 1, replace: false };
+EVENT_ATLAS_FX.talentStone = { clip: 'stone', width: 110, alpha: 0.8, speed: 1, replace: false };
+export const TALENT_EVENTS = ['talentWall', 'talentShield', 'talentBurn', 'talentVeil', 'talentMark', 'talentSlow', 'talentTithe', 'talentMidas', 'talentDeploy', 'talentIce', 'talentShock', 'talentBlast', 'talentBolt', 'talentVenom', 'talentHoly', 'talentWind', 'talentFeather', 'talentWater', 'talentFire', 'talentBuff', 'talentHeal', 'talentShadow', 'talentCosmic', 'talentStone'];
+export const TALENT_CLIPS = ['blast', 'buff', 'cosmic', 'feather', 'fire', 'heal', 'holy', 'ice', 'lightning', 'shadow', 'shockwave', 'stone', 'venom', 'water', 'wind'];
 // Clips each board event needs, preloaded when the stage's environment has that event.
 export const BOARD_EVENT_CLIPS = { eruption: ['fire', 'blast'], flood: ['water'], frostbite: ['ice'], rod: ['lightning'], spores: ['venom'],
   prism: ['holy'], ghosts: ['shadow'], windfall: ['feather', 'buff'], alignment: ['cosmic'], gearjam: ['stone', 'shockwave'] };

@@ -39,6 +39,12 @@ const clips = [
   { id: 'boss-rise', source: '00_Version16/Barrior02.efkefc', author: 'Effekseer', view: 10, targetY: 2, start: 0, frames: 30, ticks: 4, width: 150 },
   { id: 'boss-death', source: '01_AndrewFM01/boss_death.efk', author: 'AndrewFM', view: 60, targetY: 2, start: 100, frames: 90, width: 220 },
   { id: 'blast', source: '01_Pierre02/FireBall.efk', author: 'Pierre', view: 50, targetY: 5, start: 160, frames: 45, width: 150 },
+  // Persistent world portals: bake the flowing Aura01 from overhead. Pixi projects this ground
+  // plane with the board; using the combat camera here would flatten the circle twice.
+  { id: 'portal-red', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 0,
+    eye: [0, 40, 0.01], start: 35, frames: 60, width: 96, size: 256, hue: -115 },
+  { id: 'portal-blue', source: '00_Version16/Aura01.efkefc', author: 'Effekseer', view: 8, targetY: 0,
+    eye: [0, 40, 0.01], start: 35, frames: 60, width: 96, size: 256, hue: 90 },
 ].map(clip => ({ size: 192, columns: 8, ticks: 2, ...clip, fps: 60 / (clip.ticks ?? 2) }));
 // --only id,id re-exports some clips and keeps the other manifest entries unchanged.
 const only = process.argv.includes('--only') ? arg('only').split(',') : null;
@@ -61,7 +67,7 @@ window.record = async function(clip) {
       const loaded = context.loadEffect('/sample/' + clip.source, 1, () => resolve(loaded), (message, url) => reject(new Error(message + ' ' + url)));
     });
     const camera = new THREE.OrthographicCamera(-clip.view / 2, clip.view / 2, clip.view / 2, -clip.view / 2, 0.1, 1000);
-    camera.position.set(0, clip.targetY + 20, 40);
+    camera.position.set(...(clip.eye ?? [0, clip.targetY + 20, 40]));
     camera.lookAt(new THREE.Vector3(0, clip.targetY, 0));
     camera.updateMatrixWorld();
     context.setProjectionMatrix(camera.projectionMatrix.elements);

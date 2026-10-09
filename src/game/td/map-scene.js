@@ -3,6 +3,7 @@
 import { mapLanes, routeStrokes } from "./lanes.js";
 import { boardOf } from "./board.js";
 import { ENVIRONMENTS } from "./environments.js";
+import { createWorldPortals } from './world-portals.js';
 
 const TAU = Math.PI * 2;
 
@@ -136,33 +137,6 @@ export function platformTileLayout(cell = 62) {
 }
 
 export const spawnLabelVisible = (game) => !game?.running;
-
-// A spawn is a low ground feature aligned with the lane, never a tall prop competing with the
-// raised placement slabs. The fixed footprint deliberately stays below one classic road cell.
-export function spawnRiftLayout(road, _cell = 70) {
-  const dx = road?.dx ?? 1, dy = road?.dy ?? 0;
-  const length = Math.hypot(dx, dy) || 1;
-  const ux = dx / length, uy = dy / length;
-  return {
-    angle: Math.atan2(dy, dx),
-    width: 50,
-    depth: 22,
-    emergeX: Math.round(ux * 13),
-    emergeY: Math.round(uy * 13),
-  };
-}
-
-// Painted architecture is opaque scenery and stays behind combatants. Keeping the full spawn-gate
-// sprite in the foreground hid an enemy on its first visible frame; doorway-front occlusion belongs
-// in a separate transparent foreground asset, not in the complete painted structure.
-export function paintedStructureLayer(layers, _role) {
-  return layers.structures;
-}
-
-export function paintedStructurePlacement(layers, role, _tilt = null) {
-  return { parent: paintedStructureLayer(layers, role), zIndex: null };
-}
-
 
 // R18 prototype (B): procedural stone for the raised slabs. A few variants are painted once on a
 // canvas (grain, mottling, cracks, chipped edges, moss in the corners) and shared; each tile picks
@@ -345,13 +319,13 @@ export function createSlotPainter(PIXI, { theme, board, tilt = null, textures = 
 }
 
 export function createMapScene(PIXI, game, {
-  ground, structures, foreground, overlay, reducedMotion = false, textures = {}, tilt = null,
+  ground, structures, foreground, overlay, portalGround = structures, units = structures,
+  portalAtlases = {}, reducedMotion = false, textures = {}, tilt = null,
 }) {
-  // R18 tilt prototype: the ground layers are squashed to k, so upright sprites (gates,
-  // sanctuary and labels) are counter-scaled by 1/k. Painted structures stay behind units.
+  // Ground portals inherit the board tilt; their upright crystal and teeth use unit depth.
   const tiltK = tilt?.k ?? 1;
   const theme = mapSceneFor(game.map);
-  const STONE = theme.stone, GOLD = theme.gold, LIGHT = theme.light;
+  const STONE = theme.stone;
   const owned = [];
   const add = (parent, object) => { parent.addChild(object); owned.push(object); return object; };
   const graphic = parent => add(parent, new PIXI.Graphics());
@@ -363,13 +337,11 @@ export function createMapScene(PIXI, game, {
   const roadScale = board ? board.cell / 70 : 1;
   const strokes = routeStrokes(game.map);
   const base = game.map.base;
-  const maxLives = game.maxLives ?? Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
   const seen = new WeakSet();
   let hitAt = -Infinity;
   let lastLives = game.lives;
   let wasStarted = game.started;
   let startAt = -Infinity;
-  let lastIntegrity = -1;
   const placements = [];
 
   function polygon(g, points, color, alpha = 1) {
@@ -480,33 +452,6 @@ export function createMapScene(PIXI, game, {
     fragments.moveTo(x - w * 0.6, y - h).lineTo(x + w * 0.6, y - h * 0.5).stroke({ width: 0.7, color: theme.fragments.edge, alpha: 0.2 });
   }
 
-  function localGraphic(parent, point) {
-    const g = graphic(parent); g.position.set(point.x, point.y); return g;
-  }
-
-  function foundation(g, width, depth) {
-    g.ellipse(5, 17, width + 4, depth + 8).fill({ color: 0x050a13, alpha: 0.48 });
-    const p = [[-width, -depth + 8], [-width + 12, -depth], [width - 12, -depth], [width, -depth + 8],
-      [width, depth - 6], [width - 12, depth], [-width + 12, depth], [-width, depth - 6]];
-    polygon(g, p.map(([x, y]) => [x, y + 8]), 0x17232e);
-    polygon(g, p, 0x53616d);
-    g.poly(p.flat()).stroke({ color: 0x8b989a, alpha: 0.45, width: 1 });
-    g.moveTo(-width + 12, depth + 4).lineTo(width - 12, depth + 4).stroke({ color: 0x354652, width: 2 });
-    g.ellipse(0, 0, width - 11, depth - 8).stroke({ color: GOLD, alpha: 0.42, width: 1 });
-  }
-
-  function column(g, x, y, height, width = 12) {
-    g.rect(x - width / 2 + 3, y - height + 5, width, height + 3).fill({ color: 0x09131d, alpha: 0.7 });
-    g.rect(x - width / 2, y - height, width, height).fill(0x52616f);
-    g.rect(x + 1, y - height, width / 2 - 1, height).fill(0x2d3d4b);
-    g.rect(x - width / 2 + 2, y - height + 3, 2, height - 5).fill({ color: 0xa0adb0, alpha: 0.45 });
-    g.rect(x - width / 2 - 3, y - height, width + 6, 5).fill(0x77818a);
-    g.rect(x - width / 2 - 3, y - 3, width + 6, 6).fill(0x657381);
-    g.rect(x - width / 2 - 1, y - height + 7, width + 2, 2).fill({ color: GOLD, alpha: 0.8 });
-    for (let cut = 11; cut < height - 5; cut += 12) {
-      g.moveTo(x - width / 2, y - cut).lineTo(x + width / 2, y - cut).stroke({ color: 0x1e2e3c, width: 1, alpha: 0.65 });
-    }
-  }
 
   function star(g, x, y, radius, color, alpha = 1) {
     const points = [];
@@ -517,97 +462,11 @@ export function createMapScene(PIXI, game, {
     g.poly(points).fill({ color, alpha });
   }
 
-  // Direction of each lane's first road segment (the way enemies leave the gate).
-  const spawnRoad = mapLanes(game.map).map(({ path }) => (path.length > 1 ? { dx: path[1][0] - path[0][0], dy: path[1][1] - path[0][1] } : null));
-  const rifts = spawns.map((spawn, i) => {
-    const layout = spawnRiftLayout(spawnRoad[i], board?.cell);
-    const riftColor = theme.structureTint ?? theme.glow.spawn;
-    const groundRift = localGraphic(structures, spawn);
-    groundRift.rotation = layout.angle;
-    // Dark centre, broken glowing seam and a few physical fragments create a world feature rather
-    // than a UI marker. Its short axis stays inside the road even beside raised placement tiles.
-    groundRift.ellipse(0, 3, layout.width / 2 + 4, layout.depth / 2 + 3)
-      .fill({ color: 0x05060b, alpha: 0.72 });
-    polygon(groundRift, [[-25, 1], [-17, -5], [-8, -2], [1, -7], [10, -2], [20, -5], [26, 1],
-      [16, 5], [7, 3], [-2, 7], [-13, 3], [-21, 6]], 0x160a10, 0.96);
-    groundRift.moveTo(-23, 0).lineTo(-15, -3).lineTo(-7, 0).lineTo(1, -4).lineTo(10, 0).lineTo(20, -2)
-      .stroke({ color: riftColor, alpha: 0.78, width: 2.2, cap: "round", join: "round" });
-    groundRift.moveTo(-20, 4).lineTo(-12, 2).moveTo(13, 3).lineTo(22, 1)
-      .stroke({ color: 0xffd0b0, alpha: 0.35, width: 1 });
-    for (const [x, y, radius] of [[-22, -7, 4], [-11, 8, 3], [17, 7, 4], [24, -5, 3]]) {
-      groundRift.poly([x - radius, y + 2, x - 1, y - radius, x + radius, y, x + 1, y + radius])
-        .fill({ color: STONE[(i + x + 24) % STONE.length], alpha: 0.92 });
-    }
-    const veil = localGraphic(foreground, {
-      x: spawn.x + layout.emergeX,
-      y: spawn.y + layout.emergeY,
-    });
-    return { spawn, layout, groundRift, veil, riftColor, phase: random() * TAU };
+  const portals = createWorldPortals(PIXI, game, {
+    ground: portalGround, units, foreground, cell: board?.cell ?? 70, tiltK,
+    reducedMotion, atlases: portalAtlases,
   });
-
-  const sanctuary = localGraphic(structures, base);
-  foundation(sanctuary, 51, 39);
-  // West-facing vestibule: a dark doorway, roofed chamber and raised rear wall.
-  polygon(sanctuary, [[-8, -30], [30, -37], [43, -26], [43, 21], [27, 29], [-8, 22]], 0x263745);
-  polygon(sanctuary, [[30, -37], [43, -26], [43, 21], [30, 27]], 0x1b2b38);
-  sanctuary.ellipse(-7, -2, 19, 25).fill(0x101b2a);
-  sanctuary.ellipse(-4, -2, 13, 21).fill({ color: 0xd4b576, alpha: 0.12 });
-  polygon(sanctuary, [[-18, -29], [11, -53], [39, -36], [43, -29], [12, -43], [-15, -23]], 0x77818a);
-  sanctuary.moveTo(-18, -29).lineTo(11, -53).lineTo(39, -36).stroke({ color: 0xccb779, width: 2 });
-  column(sanctuary, -13, -16, 19, 10);
-  column(sanctuary, 32, -20, 19, 10);
-  // The astrolabe is mounted above the sanctuary, with small physical gold inlays.
-  sanctuary.circle(12, -35, 17).fill(0x283843).stroke({ width: 2.3, color: GOLD });
-  sanctuary.circle(12, -35, 12).stroke({ width: 0.8, color: LIGHT, alpha: 0.65 });
-  sanctuary.ellipse(12, -35, 7, 14).stroke({ width: 1, color: GOLD, alpha: 0.75 });
-  sanctuary.moveTo(-2, -35).lineTo(26, -35).stroke({ width: 1, color: GOLD, alpha: 0.8 });
-  star(sanctuary, 12, -35, 9, LIGHT, 0.95);
-  for (let i = 0; i < 8; i++) {
-    const a = i * TAU / 8;
-    sanctuary.circle(12 + Math.cos(a) * 17, -35 + Math.sin(a) * 17, 1.4).fill(LIGHT);
-  }
-  for (let i = 0; i < 3; i++) {
-    const x = -42 + i * 8;
-    sanctuary.moveTo(x, -17).lineTo(x, 19).stroke({ width: 1.5, color: 0xa7aaa0, alpha: 0.3 });
-  }
-  const baseFront = localGraphic(foreground, base);
-  column(baseFront, 2, 27, 20, 11);
-  column(baseFront, 34, 23, 24, 11);
-  polygon(baseFront, [[0, 26], [37, 22], [41, 29], [5, 35]], 0x3b4d59);
-  baseFront.moveTo(4, 28).lineTo(36, 25).stroke({ width: 1.4, color: GOLD, alpha: 0.8 });
-
-  // Painted architecture already carries its own foundation; only a soft contact
-  // shadow is needed. Use vector masonry if an image is unavailable.
-  // The painted gate and sanctuary have their plinth in the lower part of the image, so centred on
-  // the tile they sat low and spilled onto the tile below. Lift them so the plinth is on the tile.
-  const STRUCTURE_LIFT = 14;
-  for (const [texture, point, back, front, width, height, padWidth, padDepth, role] of [
-    [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39, "base"],
-  ]) {
-    if (!texture) continue;
-    back.clear();
-    const fit = board ? Math.min(1, board.cell * 0.88 / height) : 1;
-    const lift = STRUCTURE_LIFT;
-    back.ellipse(3, 16 - lift, padWidth * fit, padDepth * 0.7 * fit).fill({ color: 0x06111b, alpha: 0.17 });
-    back.ellipse(2, 14 - lift, padWidth * 0.8 * fit, padDepth * 0.5 * fit).fill({ color: 0x06111b, alpha: 0.14 });
-    front.visible = false;
-    const placement = paintedStructurePlacement({ structures, foreground }, role, tilt);
-    const sprite = add(placement.parent, new PIXI.Sprite(texture));
-    if (placement.zIndex !== null) sprite.zIndex = placement.zIndex;
-    if (theme.structureTint) sprite.tint = theme.structureTint;
-    sprite.anchor.set(0.5);
-    sprite.position.set(point.x, point.y - lift);
-    sprite.width = width * fit; sprite.height = height * fit / tiltK;
-  }
-
-  // No SPAWN / SANCTUARY / integrity captions: the labels sat under the neighbouring placement
-  // tiles and were clipped by them, and the painted gate and sanctuary are self-explanatory.
-  const cracks = localGraphic(foreground, base);
   const ambient = graphic(overlay);
-  const motes = Array.from({ length: 12 }, (_, i) => ({
-    x: i < 6 ? spawns[i % spawns.length].x : base.x + 9, y: i < 6 ? spawns[i % spawns.length].y : base.y - 10,
-    phase: random() * TAU, span: 10 + random() * 17, speed: 0.1 + random() * 0.15,
-  }));
   const extra = theme.decorate?.({ PIXI, game, add, graphic, random, polygon, star, distanceToPath, allSlots,
     layers: { ground, structures, foreground, overlay }, reducedMotion, theme });
 
@@ -628,38 +487,11 @@ export function createMapScene(PIXI, game, {
     // This also works while an older saved run has no explicit baseHit effect.
     if (game.lives < lastLives) hitAt = now;
     lastLives = game.lives;
-    const integrity = Math.max(0, Math.min(1, game.lives / maxLives));
-    if (lastIntegrity !== integrity) {
-      lastIntegrity = integrity;
-      cracks.clear();
-      if (integrity < 0.7) cracks.moveTo(35, -23).lineTo(30, -12).lineTo(35, -5).lineTo(29, 5).stroke({ color: 0x0a1420, width: 2 });
-      if (integrity < 0.35) cracks.moveTo(3, 17).lineTo(13, 24).lineTo(11, 30).lineTo(21, 34).stroke({ color: 0x121a20, width: 2 });
-    }
+    portals.draw(now);
     ambient.clear();
     const breath = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.4) * 0.5;
     const hit = Math.max(0, 1 - (now - hitAt) / 650);
     const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - startAt) / 1100);
-    for (const rift of rifts) {
-      const pulse = 0.55 + breath * 0.25 + wave * 0.35;
-      rift.groundRift.alpha = Math.min(1, 0.82 + pulse * 0.18);
-      rift.veil.clear();
-      // A small foreground veil gives the first enemy frames contact with the rift without placing
-      // the complete portal in front of the unit. Reduced motion keeps a single static wisp.
-      const wisps = reducedMotion ? 1 : 3;
-      for (let i = 0; i < wisps; i++) {
-        const phase = seconds * (0.55 + i * 0.11) + rift.phase + i * 2.1;
-        const rise = reducedMotion ? 4 : ((phase * 13) % 17);
-        const drift = reducedMotion ? 0 : Math.sin(phase * 1.7) * (3 + i);
-        rift.veil.ellipse(drift, 5 - rise, 8 - i * 1.4, 4 + i)
-          .fill({ color: i ? rift.riftColor : 0x1a1018, alpha: (0.12 + wave * 0.08) * (1 - rise / 24) });
-      }
-    }
-    // Home communicates through its core: steady light while healthy, an internal flash on impact.
-    // There is no selection-like halo around the building.
-    const coreX = base.x + 7, coreY = base.y - STRUCTURE_LIFT - 24;
-    ambient.circle(coreX, coreY, 4 + breath * 1.2 + hit * 3)
-      .fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.22 + breath * 0.15 + hit * 0.42 });
-    ambient.circle(coreX, coreY, 1.8).fill({ color: 0xfff5cf, alpha: 0.78 });
     for (let i = placements.length - 1; i >= 0; i--) {
       const placement = placements[i];
       const progress = (now - placement.at) / 350;
@@ -675,14 +507,6 @@ export function createMapScene(PIXI, game, {
           const y = placement.y + 7 + Math.sin(a) * (9 + progress * 13) - Math.sin(progress * Math.PI) * 5;
           ambient.ellipse(x, y, 1.8 - progress, 1.1).fill({ color: theme.glow.dust, alpha: fade * 0.4 });
         }
-      }
-    }
-    if (!reducedMotion) {
-      for (const mote of motes) {
-        const phase = (seconds * mote.speed + mote.phase) % 1;
-        const x = mote.x + Math.sin(mote.phase + seconds * 0.35) * mote.span;
-        const y = mote.y + 12 - phase * 53;
-        ambient.circle(x, y, 0.7 + Math.sin(mote.phase) * 0.2).fill({ color: theme.glow.mote, alpha: Math.sin(phase * Math.PI) * 0.35 });
       }
     }
     extra?.draw(now, { hit, wave, breath });
@@ -702,6 +526,7 @@ export function createMapScene(PIXI, game, {
   return {
     draw, drawSlot,
     destroy() {
+      portals.destroy();
       for (const object of owned) if (!object.destroyed) { object.removeFromParent(); object.destroy({ children: true }); }
     },
   };

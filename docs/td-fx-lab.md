@@ -88,7 +88,30 @@ assignments with `gameBalance.tuning.json` and `hero-fx.js` before implementing.
 
 ## Assets and provenance
 
-`public/td/fx/effekseer-v1/` contains 40 WebP atlases (20 clips × normal/add) and `manifest.json`.
+### World portals — approved 2026-10-09
+
+The spawn and home presentation in `world-portals.js` was visually approved by the user on
+Coal Gate. Preserve this appearance: red flowing ground energy with four small obsidian teeth;
+blue ground energy with a floating faceted crystal and soft upward light. The earlier black
+oval / zigzag implementation was rejected and removed, including the painted home building.
+
+`portal-red` and `portal-blue` are overhead exports of the CC0 `00_Version16/Aura01.efkefc`
+sample (256 px, 60 frames at 30 fps, red hue -115 / blue hue +90). Two instances cross-fade
+through each loop, avoiding a visible restart. The pair costs approximately 6 MB in total and
+is loaded once per authored battlefield through Pixi's asset cache; per-scene frame wrappers
+are released on teardown. No new runtime dependency is used.
+
+Ground energy inherits the board tilt and is drawn after placement tiles, underneath units.
+The crystal and teeth counter-scale vertically and sort with units by their ground contact.
+Enemy emergence uses the existing short 18px fade at full body size instead of the old 70px
+growth. Animation runs during preparation, follows simulation time during combat, and freezes
+while paused. Reduced motion uses a static luminous frame; missing atlases retain soft light
+and an irregular textured rim. Home loses brightness with health and flashes on an impact.
+
+Re-export with the command below plus `--only portal-red,portal-blue`.
+Focused checks: `node --test scripts/test-td-spawn-rift.mjs scripts/test-td-fx-atlas.mjs scripts/test-td-authored-fx.mjs`.
+
+`public/td/fx/effekseer-v1/` contains 44 WebP atlases (22 clips × normal/add) and `manifest.json`.
 All clips are real Effekseer renders, not procedurally imitated particles.
 
 Source: official [Effekseer 1.80.7 release](https://github.com/effekseer/Effekseer/releases/tag/1807).

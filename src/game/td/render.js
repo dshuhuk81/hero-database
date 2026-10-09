@@ -10,6 +10,7 @@ import { BOARD_EVENT_CLIPS, BOSS_CLIPS, GOD_CLIPS, HERO_ATLAS_FX, TALENT_CLIPS, 
 import { createFxKit } from "./fx-kit.js";
 import { createStatusFx } from "./status-fx.js";
 import { createMapScene, mapBackdropFor, mapSceneFor, platformTileLayout, spawnLabelVisible } from "./map-scene.js";
+import { loadWorldPortalAtlases } from './world-portals.js';
 import { createGodScene } from "./god-scene.js";
 import { godPerspectivePoint, godPerspectiveQuad } from "./god-mode-arena.js";
 import { mapLanes, routeStrokes } from "./lanes.js";
@@ -1617,9 +1618,9 @@ export async function createRenderer(canvas, game, options = {}) {
       c._lastX = unit.x;
       c.position.set(unit.x, unit.y);
     }
-    // Emerging: ground enemies grow and fade in over their first stretch of road, so they step out
-    // of the portal instead of popping in on top of it.
-    const emerge = unit.flying || !(unit.distance < EMERGE_DISTANCE) ? 1 : 0.55 + 0.45 * Math.max(0, unit.distance) / EMERGE_DISTANCE;
+    // Authored maps use a ground portal: full-size enemies materialize over its short 18px exit
+    // (syncEnemies). The older 70px growth/fade would make them appear far outside the new pool.
+    const emerge = isAuthored || unit.flying || !(unit.distance < EMERGE_DISTANCE) ? 1 : 0.55 + 0.45 * Math.max(0, unit.distance) / EMERGE_DISTANCE;
     if (tiltOn) { const es = unitRenderScale(unit, game.boardRules) * depthScale(unit.y) * emerge; c.scale.set(es, es / tiltK); } // R18 depth scaling
     if (unit.flying && c._fullSprite) c._fullSprite.y = FULL_SPRITE_FEET - FLYER_LIFT + flyerBob(unit);
     c.alpha = enemyRenderAlpha(unit) * (emerge < 1 ? (emerge - 0.55) / 0.45 : 1);
@@ -2052,7 +2053,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function spawnParticles(effect) {
-    if (CLIP_ONLY_EVENTS.has(effect.type)) return; // Effekseer clip only (authored-fx.js)
+    if (CLIP_ONLY_EVENTS.has(effect.type) || effect.type.startsWith("talent")) return; // Effekseer clip only (authored-fx.js)
     if (effect.type === "damageNumber") return spawnDamageNumber(effect);
     if (effect.type === "thunderStrike" || effect.type === "shieldUp" || effect.type === "shieldBlock") return spawnPowerParticles(effect);
     if (hasHeroFx(effect)) return;
@@ -2385,7 +2386,7 @@ export async function createRenderer(canvas, game, options = {}) {
         layerGroundRings.addChild(eg);
         continue;
       }
-      if (CLIP_ONLY_EVENTS.has(effect.type)) continue; // board event cues: Effekseer clips only
+      if (CLIP_ONLY_EVENTS.has(effect.type) || effect.type.startsWith("talent")) continue; // board event and talent cues: Effekseer clips only
       if (["thunderWarn", "thunderStrike", "shieldUp", "shieldBlock"].includes(effect.type)) {
         const pg = new PIXI.Graphics();
         drawPowerEffect(effect, pg, now);
@@ -2502,12 +2503,17 @@ export async function createRenderer(canvas, game, options = {}) {
       console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
       return null;
     });
-    const [baseTexture, roadTexture, platformTexture] = await Promise.all([
-      load("base", "sanctuary"), load("road", "stone paving"),
+    const [roadTexture, platformTexture, portalAtlases] = await Promise.all([
+      load("road", "stone paving"),
       sceneArt.assets.platform ? load("platform", "procedural ranged platform") : null,
+      loadWorldPortalAtlases(PIXI),
       buildBgTexture(),
     ]);
-    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, tilt: tiltOn ? { k: tiltK } : null, textures: { base: baseTexture, road: roadTexture, platform: platformTexture } });
+    mapScene = createMapScene(PIXI, game, {
+      ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud,
+      portalGround: layerGroundFx, units: layerUnits, portalAtlases, reducedMotion,
+      tilt: tiltOn ? { k: tiltK } : null, textures: { road: roadTexture, platform: platformTexture },
+    });
   } else buildBgTexture();
   buildBg();
   buildPortals();

@@ -263,6 +263,7 @@ export class TowerDefenseGame {
     const atk = this.atkFor({ ...base, baseAtk: base.atk });
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, atk, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    if (base.talents?.length) this.emit({ type: "talentDeploy", x: slot[0], y: slot[1], life: 0.6 }); // Tier I/II talents are active
     this.heroes.at(-1).invested = cost;
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
@@ -637,7 +638,7 @@ export class TowerDefenseGame {
             const taken = resolveDamage(enemy.attack * reach * (1 + boost.attack) * (enemy.blindUntil > this.time ? 1 - enemy.blindShare : 1), target.armor, "physical") * (1 - this.guardFor(target));
             this.damageHero(target, taken, enemy);
             const reflect = this.talentFx(target).reflect; // Tier I Thorns: the attacker takes a share back
-            if (reflect && taken > 0 && enemy.hp > 0) this.hit(enemy, taken * reflect, target, { showShot: false, showHit: false });
+            if (reflect && taken > 0 && enemy.hp > 0) { this.hit(enemy, taken * reflect, target, { showShot: false, showHit: false }); this.emit({ type: "talentShock", x: enemy.x, y: enemy.y, life: 0.4 }); }
             if (enemy.affixes) this.eliteOnStrike(enemy, target);
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
@@ -1161,6 +1162,7 @@ export class TowerDefenseGame {
       const group = this.heroes.filter((a) => a.fateSplit && this.time < (a.fateUntil || 0) && a.hpLeft > 0);
       if (group.length > 1) {
         this.splittingFate = true;
+        this.emit({ type: "talentHoly", x: hero.x, y: hero.y, life: 0.5 });
         try { for (const member of group) this.damageHero(member, amount / group.length, source); } finally { this.splittingFate = false; }
         return;
       }
@@ -1571,6 +1573,7 @@ export class TowerDefenseGame {
       // Executioner (Tier I): a hit finishes a ground enemy below its threshold (not bosses).
       if (fx.finishBelow && !enemy.dead && !enemy.flying && enemy.kind !== "boss" && enemy.hp / enemy.maxHp < fx.finishBelow) {
         this.hit(enemy, enemy.hp + (enemy.shield || 0) + 1, hero, { showShot: false, showHit: false });
+        this.emit({ type: "talentBlast", x: enemy.x, y: enemy.y, life: 0.5 });
       }
       this.onStrike(hero, enemy, dealt);
       return dealt;
@@ -1601,13 +1604,14 @@ export class TowerDefenseGame {
       const beyond = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(e.x - hero.x, e.y - hero.y) > along
         && Math.abs(Math.atan2(e.y - hero.y, e.x - hero.x) - angle) < 0.12)
         .sort((a, b) => Math.hypot(a.x - hero.x, a.y - hero.y) - Math.hypot(b.x - hero.x, b.y - hero.y)).slice(0, fx.pierceTargets);
-      for (const e of beyond) strike(e, fx.pierceShare, { showShot: false, showHit: false });
+      for (const e of beyond) { strike(e, fx.pierceShare, { showShot: false, showHit: false }); this.emit({ type: "talentWind", x: e.x, y: e.y, life: 0.4 }); }
     }
     if (fx.extraTargets && !beam) {
       const second = this.enemies.filter((e) => e !== target && !e.dead && this.canHit(hero, e) && this.inReach(hero, e))
         .sort((a, b) => Math.hypot(a.x - hero.x, a.y - hero.y) - Math.hypot(b.x - hero.x, b.y - hero.y)).slice(0, fx.extraTargets);
       for (const e of second) {
         this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: e.x, y2: e.y, life: 0.2, color: "gold" });
+        this.emit({ type: "talentBolt", x: e.x, y: e.y, life: 0.4 });
         strike(e, fx.extraShare, { showShot: false });
       }
     }
@@ -1914,6 +1918,7 @@ export class TowerDefenseGame {
       const kept = target.barrierUntil > this.time ? target.barrierHp || 0 : 0;
       target.barrierHp = Math.min(warden.barrierShare * target.hp, kept + overflow);
       target.barrierUntil = this.time + (warden.barrierSeconds || 0);
+      this.emit({ type: "talentHoly", x: target.x, y: target.y, life: 0.6 });
     }
     if (by?.id && healed > 0) this.statFor(by).heal += healed;
     return healed;
@@ -2025,7 +2030,7 @@ export class TowerDefenseGame {
     if (this.timedHits?.length) {
       const due = this.timedHits.filter((h) => h.at <= this.time);
       this.timedHits = this.timedHits.filter((h) => h.at > this.time);
-      for (const h of due) if (!h.enemy.dead) this.hit(h.enemy, h.amount, h.hero, { showShot: false, showHit: false });
+      for (const h of due) if (!h.enemy.dead) { this.hit(h.enemy, h.amount, h.hero, { showShot: false, showHit: false }); this.emit({ type: "talentBlast", x: h.enemy.x, y: h.enemy.y, life: 0.4 }); }
     }
     for (const hero of this.heroes) {
       if (hero.hornAt && this.time >= hero.hornAt) {
@@ -2033,6 +2038,7 @@ export class TowerDefenseGame {
         const radius = hero.range * 1.2;
         for (const e of this.enemies) if (!e.dead && !e.flying && Math.hypot(e.x - hero.x, e.y - hero.y) <= radius) e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + hero.hornStun);
         this.emit({ type: "splash", x: hero.x, y: hero.y, radius, life: 0.5, color: "gold" });
+        this.emit({ type: "talentShock", x: hero.x, y: hero.y, life: 0.6 });
       }
       if (hero.hotPerSecond && this.time < (hero.hotUntil || 0)) this.healHero(hero, hero.hotPerSecond * dt, null);
     }
@@ -2223,7 +2229,7 @@ export class TowerDefenseGame {
     this.chargeInterventionsOnKill();
     if (hero && (hero.harvestUntil ?? 0) > this.time) { // Tier II Soul Harvest: kills during the window refund charge
       const share = this.talentFx(hero).harvestShare;
-      if (share) hero.ultClock = Math.min(hero.ultCooldown, hero.ultClock + hero.ultCooldown * share);
+      if (share) { hero.ultClock = Math.min(hero.ultCooldown, hero.ultClock + hero.ultCooldown * share); this.emit({ type: "talentFeather", x: hero.x, y: hero.y, life: 0.5 }); }
     }
     if (hero) {
       if (hero.id) this.statFor(hero).kills += 1;
@@ -2275,6 +2281,7 @@ export class TowerDefenseGame {
       const fx = this.talentFx(hero); // Tier II: Silent Fury adds weaker strikes; Vengeance hits harder the more health is missing
       hero.win = { until: this.time + (skill?.seconds ?? 4) + (aw ? skill?.awakenSeconds ?? 2 : 0), extra: (aw ? 4 : 2) + (fx.strikesAdd ?? 0),
         share: (skill?.share ?? 0.6) * (fx.shareFactor ?? 1) * (1 + (fx.vengeance ?? 0) * (1 - hero.hpLeft / hero.hp)) };
+      if (fx.strikesAdd || fx.vengeance) this.emit({ type: fx.vengeance ? "talentBlast" : "talentBolt", x: hero.x, y: hero.y, life: 0.6 });
       this.emitHeroEffect(hero, { type: "buff", x: hero.x, y: hero.y, life: 0.4, color: "purple" });
     } else if (variant === "solar_rush") {
       // Helios: cleave in front of him, then a rush: faster, harder attacks with a second strike each.
@@ -2285,9 +2292,10 @@ export class TowerDefenseGame {
       (cone.length ? cone : around).forEach((e) => {
         this.hit(e, power * 0.6, hero);
         e.slow = 2;
-        if (fx.blindShare) { e.blindShare = fx.blindShare; e.blindUntil = this.time + fx.blindSeconds; }
+        if (fx.blindShare) { e.blindShare = fx.blindShare; e.blindUntil = this.time + fx.blindSeconds; this.emit({ type: "talentShadow", x: e.x, y: e.y, life: 0.6 }); }
       });
       const seconds = (skill?.seconds ?? 5) + (aw ? skill?.awakenSeconds ?? 3 : 0) + (fx.rushSecondsAdd ?? 0);
+      if (fx.rushSecondsAdd) this.emit({ type: "talentBuff", x: hero.x, y: hero.y, life: 0.6 });
       hero.win = { until: this.time + seconds, extra: 1, share: skill?.share ?? 0.7 };
       hero.rapid = { aps: skill?.rapidAps ?? 0.3, atk: skill?.rapidAtk ?? 0.2 };
       hero.rapidUntil = this.time + seconds;
@@ -2302,6 +2310,7 @@ export class TowerDefenseGame {
         a.wardCut = Math.max(a.wardCut ?? 0, cut * fx.bridgeShare);
         a.wardUntil = Math.max(until, a.wardUntil || 0);
         a.wardFx = "bifrost";
+        this.emit({ type: "talentHoly", x: a.x, y: a.y, life: 0.5 });
       });
       if (fx.hornStun) { hero.hornAt = until; hero.hornStun = fx.hornStun; }
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
@@ -2316,9 +2325,10 @@ export class TowerDefenseGame {
       const fx = this.talentFx(hero); // Tier II: Hammerfall is one heavy blow with a stun; Forge Bed is wider and lasts longer
       if (fx.hammerfall) {
         this.hit(target, power * (fx.damageFactor ?? 1), hero);
-        if (!target.dead) target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + (fx.stunSeconds ?? 1));
+        if (!target.dead) { target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + (fx.stunSeconds ?? 1)); this.emit({ type: "talentBlast", x: target.x, y: target.y, life: 0.6 }); }
       } else {
         const seconds = ((skill?.seconds ?? 4) + (aw ? skill?.awakenSeconds ?? 1 : 0)) * (fx.secondsFactor ?? 1);
+        if (fx.secondsFactor) this.emit({ type: "talentFire", x: target.x, y: target.y, life: 0.6 });
         (this.zones ??= []).push({ x: target.x, y: target.y, radius: (aw ? skill?.awakenRadius ?? 110 : skill?.radius ?? 80) * (fx.radiusFactor ?? 1),
           until: this.time + seconds, dps: power * (skill?.dps ?? 0.5), hero });
       }
@@ -2341,6 +2351,7 @@ export class TowerDefenseGame {
       this.hit(target, power * 1.8, hero);
       if (!target.dead && fx.finishBelow && !target.flying && target.kind !== "boss" && target.hp / target.maxHp < fx.finishBelow) {
         this.hit(target, target.hp + (target.shield || 0) + 1, hero, { showShot: false, showHit: false });
+        this.emit({ type: "talentShadow", x: target.x, y: target.y, life: 0.5 });
       }
       if (target.dead) hero.ultRefund = hero.ultCooldown * (aw ? 0.8 : 0.6);
       else target.stunnedUntil = Math.max(target.stunnedUntil ?? 0, this.time + (aw ? 3 : 2));
@@ -2349,7 +2360,7 @@ export class TowerDefenseGame {
       // Eligible: not already back on the field, ring still free, and room in the team.
       const fx = this.talentFx(hero); // Tier II: Second Life revives once per stage at 30%; Serpent Rod turns the heal into healing over time
       const fallen = fx.reviveShare && this.secondLifeUsed ? null : this.takeRevivableFallen();
-      if (fallen && fx.reviveShare) this.secondLifeUsed = true;
+      if (fallen && fx.reviveShare) { this.secondLifeUsed = true; this.emit({ type: "talentHeal", x: hero.x, y: hero.y, life: 0.7 }); }
       if (fallen) {
         const base = this.heroesById.get(fallen.id);
         const slotArr = fallen.slotType === "road" ? this.map.roadSlots : this.map.platformSlots;
@@ -2367,6 +2378,7 @@ export class TowerDefenseGame {
           this.heroes.forEach((a) => {
             a.hotPerSecond = (a.hp * fx.hotShare * utilityPower) / fx.hotSeconds;
             a.hotUntil = this.time + fx.hotSeconds;
+            this.emit({ type: "talentHeal", x: a.x, y: a.y, life: 0.6 });
           });
           this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.6, color: "green" });
         } else this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
@@ -2384,7 +2396,8 @@ export class TowerDefenseGame {
         this.hit(e, power, hero);
         // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
         e.distance = Math.max(0, e.distance - (aw ? 140 : 80) * (fx.knockbackFactor ?? 1));
-        if (fx.wetSeconds) { this.applyStatusKind("wet", hero, e, 0); e.slow = Math.max(e.slow ?? 0, fx.slowSeconds ?? 0); }
+        if (fx.wetSeconds) { this.applyStatusKind("wet", hero, e, 0); e.slow = Math.max(e.slow ?? 0, fx.slowSeconds ?? 0); this.emit({ type: "talentWater", x: e.x, y: e.y, life: 0.6 }); }
+        if ((fx.knockbackFactor ?? 1) > 1) this.emit({ type: "talentShock", x: e.x, y: e.y, life: 0.5 });
         const point = pointOnPath(this.laneOf(e).path, e.distance, e.sway);
         e.x = point.x; e.y = point.y;
       });
@@ -2401,7 +2414,7 @@ export class TowerDefenseGame {
       const gazeTargets = victims.map(e => ({ x: e.x, y: e.y }));
       for (const victim of victims) {
         this.hit(victim, power * 0.55, hero, { showShot: false });
-        if (!victim.dead) victim.petrifiedUntil = Math.max(victim.petrifiedUntil ?? 0, this.time + duration);
+        if (!victim.dead) { victim.petrifiedUntil = Math.max(victim.petrifiedUntil ?? 0, this.time + duration); if (fx.durationFactor) this.emit({ type: "talentStone", x: victim.x, y: victim.y, life: 0.6 }); }
       }
       this.emitHeroEffect(hero, { type: "ult", x: gazeTargets[0].x, y: gazeTargets[0].y,
         gazeTargets, life: 0.55, color: "purple" });
@@ -2426,10 +2439,11 @@ export class TowerDefenseGame {
     } else if (variant === "expose") {
       // Ymir: taunt + expose enemies (take +20% damage for 4s, see hit())
       const fx = this.talentFx(hero); // Tier II: Giant's Reach widens and shortens the expose; Frost Expose also chills
+      if (fx.areaFactor) this.emit({ type: "talentShock", x: hero.x, y: hero.y, life: 0.6 });
       foes.filter((e) => this.inUltArea(hero, e, 1.8 * (fx.areaFactor ?? 1))).forEach((e) => {
         e.slow = 3;
         e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 7 : 4) * controlPower * (fx.durationFactor ?? 1));
-        if (fx.chillOnExpose) this.applyStatusKind("chill", hero, e, 0);
+        if (fx.chillOnExpose) { this.applyStatusKind("chill", hero, e, 0); this.emit({ type: "talentIce", x: e.x, y: e.y, life: 0.5 }); }
       });
     } else if (variant === "mass_taunt") {
       // Heimdall: wide taunt (2.5x range)
@@ -2441,7 +2455,8 @@ export class TowerDefenseGame {
       const fx = this.talentFx(hero); // Tier II: Deep Roots strengthens the ward; Overgrowth roots enemies in her pattern
       const cut = (aw ? skill?.awakenWard ?? 0.4 : skill?.ward ?? 0.3) + (fx.wardAdd ?? 0);
       const until = this.time + (skill?.wardSeconds ?? 8);
-      if (fx.rootSeconds) this.enemies.filter((e) => !e.dead && this.inReach(hero, e)).forEach((e) => { e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + fx.rootSeconds); });
+      if (fx.wardAdd) this.emit({ type: "talentStone", x: hero.x, y: hero.y, life: 0.6 });
+      if (fx.rootSeconds) this.enemies.filter((e) => !e.dead && this.inReach(hero, e)).forEach((e) => { e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + fx.rootSeconds); this.emit({ type: "talentStone", x: e.x, y: e.y, life: 0.5 }); });
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         this.healHero(a, heal, hero);
         a.wardCut = Math.max(cut, this.time < (a.wardUntil || 0) ? a.wardCut : 0);
@@ -2482,11 +2497,12 @@ export class TowerDefenseGame {
       bitten.forEach((e) => {
         this.hit(e, power, hero);
         e.exposed = Math.max(e.exposed ?? 0, this.time + (aw ? 8 : 4));
-        if (fx.stunSeconds && e === bitten[0]) e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + fx.stunSeconds);
+        if (fx.stunSeconds && e === bitten[0]) { e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + fx.stunSeconds); this.emit({ type: "talentVenom", x: e.x, y: e.y, life: 0.5 }); }
       });
       if (fx.howlAps) this.heroes.filter((a) => a !== hero && this.inReach(hero, a)).forEach((a) => {
         a.rapid = { aps: fx.howlAps, atk: 0 };
         a.rapidUntil = this.time + fx.howlSeconds;
+        this.emit({ type: "talentBuff", x: a.x, y: a.y, life: 0.5 });
       });
     } else if (variant === "claw_sweep") {
       // Hecate: execute target + AoE execute around it
@@ -2495,7 +2511,7 @@ export class TowerDefenseGame {
       const fx = this.talentFx(hero); // Tier II: Three Roads sweeps everything in her pattern; Torchlight leaves burning ground
       foes.filter((e) => !e.dead && e !== target && (fx.roadsAll ? this.inReach(hero, e) : this.nearPoint(target, e, aw ? 90 : 55))).forEach((e) => {
         this.hit(e, power * (e.hp / e.maxHp < this.executeThreshold(hero) ? 1.8 : 0.7), hero);
-        if (fx.burnShare && !e.dead) this.applyBurn(e, hero, power * fx.burnShare, fx.burnSeconds ?? 4);
+        if (fx.burnShare && !e.dead) { this.applyBurn(e, hero, power * fx.burnShare, fx.burnSeconds ?? 4); this.emit({ type: "talentFire", x: e.x, y: e.y, life: 0.5 }); }
       });
     } else if (variant === "rapid_strike") {
       // Vidar: 3 rapid hits at 50% power
@@ -2533,10 +2549,11 @@ export class TowerDefenseGame {
       const seconds = (skill?.freezeSeconds ?? 2) + (aw ? skill?.awakenFreezeSeconds ?? 1 : 0);
       foes.filter((e) => this.inReach(hero, e)).forEach((e) => {
         this.hit(e, power * (skill?.damage ?? 1.15), hero, { showShot: false });
-        if (fx.pushDistance && !e.dead) this.pushBack(e, fx.pushDistance);
+        if (fx.pushDistance && !e.dead) { this.pushBack(e, fx.pushDistance); this.emit({ type: "talentWind", x: e.x, y: e.y, life: 0.5 }); }
         if (e.dead || this.rng() >= chance) return;
         e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, this.time + seconds);
         e.frozenUntil = Math.max(e.frozenUntil ?? 0, this.time + seconds);
+        if (fx.freezeAlways) this.emit({ type: "talentIce", x: e.x, y: e.y, life: 0.5 });
       });
     } else if (variant === "weaken_burst") {
       // Recruit Elm: nuke + expose hit targets
@@ -2547,6 +2564,8 @@ export class TowerDefenseGame {
       const shots = (aw ? 5 : 3) + (fx.shotsAdd ?? 0);
       const spread = fx.focus ? [] : foes.filter((e) => !e.dead && e !== target && this.inUltArea(hero, e) && this.inCone(hero, e)).slice(0, shots - 1);
       const victims = [target, ...spread];
+      if (fx.focus) this.emit({ type: "talentCosmic", x: target.x, y: target.y, life: 0.6 });
+      if (fx.shotsAdd) for (const v of spread) this.emit({ type: "talentWind", x: v.x, y: v.y, life: 0.5 });
       for (let i = 0; i < shots; i += 1) { const v = victims[i % victims.length]; if (!v.dead) this.hit(v, power * 0.55 * (fx.shareFactor ?? 1), hero); }
       this.heroes.filter((a) => this.inReach(hero, a)).forEach((a) => {
         a.buffUntil = Math.max(a.buffUntil || 0, this.time + (aw ? 8 : 5));
@@ -2588,6 +2607,7 @@ export class TowerDefenseGame {
       const line = fx.twinBeam ? [...this.beamLine(hero, foes, beam.dir), ...this.beamLine(hero, foes, -beam.dir)].sort((a, b) => Math.abs(a.x - hero.x) - Math.abs(b.x - hero.x)) : this.beamLine(hero, foes, beam.dir);
       const struck = line.slice(0, limit);
       beam.hits = struck.map((e) => ({ x: e.x, y: e.y }));
+      if (fx.twinBeam) for (const e of struck) if ((e.x - hero.x) * beam.dir < 0) this.emit({ type: "talentBolt", x: e.x, y: e.y, life: 0.5 });
       for (const e of struck) this.hit(e, power * (skill?.damage ?? 1), hero, { showShot: false });
       for (let i = 1; i <= (fx.noonHits ?? 0); i += 1) {
         for (const e of struck) (this.timedHits ??= []).push({ at: this.time + 0.8 * i, enemy: e, amount: power * (skill?.damage ?? 1) * (fx.noonShare ?? 0), hero });
@@ -2618,7 +2638,7 @@ export class TowerDefenseGame {
         if (fx.fateSeconds) { // Tier II: linked allies share the damage taken (Shared Fate) and attack faster (Harmony)
           a.fateUntil = this.time + fx.fateSeconds;
           a.fateSplit = !!fx.fateSplit;
-          if (fx.fateAps) { a.rapid = { aps: fx.fateAps, atk: 0 }; a.rapidUntil = this.time + fx.fateSeconds; }
+          if (fx.fateAps) { a.rapid = { aps: fx.fateAps, atk: 0 }; a.rapidUntil = this.time + fx.fateSeconds; this.emit({ type: "talentBuff", x: a.x, y: a.y, life: 0.5 }); }
         }
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });

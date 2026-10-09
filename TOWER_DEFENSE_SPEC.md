@@ -1100,10 +1100,14 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   events (`talentWall`, `talentShield`, `talentBurn`, `talentVeil`, `talentMark`, `talentSlow`,
   `talentTithe`, `talentMidas`). They map to existing clips in `EVENT_ATLAS_FX` (`authored-fx.js`:
   stone, buff, fire, shadow, cosmic, wind, heal), preloaded when a squad hero carries talents
-  (`TALENT_CLIPS`). They are clip-only (`CLIP_ONLY_EVENTS` in `render.js`). Tier I and the other 16
-  heroes' Tier II still have no cues.
-- **Not built yet:** cues for the remaining talents, a balance sweep (`td:sweep`), PixelLab talent
-  icons (T6).
+  (`TALENT_CLIPS`). Every event whose type starts with `talent` is clip-only (render.js).
+  All talents have cues now (October 9, 2026): a placed hero with talents shows `talentDeploy`
+  (holy glow), and each effect emits its own type at the moment it happens (e.g. `talentShock`
+  for Thorns, Gjallarhorn and Northwind, `talentIce` for Frost Expose and Deep Freeze, `talentFire`
+  for Torchlight and Hephaestus' forge, `talentHeal` for Second Life and Serpent Rod). The cue
+  types and clips are listed in `authored-fx.js` (`EVENT_ATLAS_FX`).
+- **Not built yet:** a balance sweep (`td:sweep`), PixelLab talent icons (T6). Cues are first-pass
+  clip choices; they have not been seen in the browser.
 - Tests: `scripts/test-td-talents.mjs` (data, gates, prices, save) and
   `scripts/test-td-talent-effects.mjs` (each Tier I effect against the same setup without it); both
   in `npm run test:tower-defense`.

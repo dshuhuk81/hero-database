@@ -566,4 +566,35 @@ const near = (g, hero, x = 5, y = 5) => enemyAt(g, hero.x + x, hero.y + y);
   assert.ok(cues("plutus", ["plutus-midas-touch"], "platform", (g, h) => { ally(g, h, "road"); g.castUltimate(h, at(g, h)); }).includes("talentMidas"));
 }
 
+// Remaining talent cues: each talent's trigger emits its cue type; the deploy cue marks any hero with talents.
+{
+  const types = (id, talents, slot, cast) => {
+    const g = game({ id, talents, slot }); const h = g.heroes[0]; h.hp = h.hpLeft = 1e9; g.start(); g.effects = [];
+    cast(g, h); return g.effects.map((e) => e.type);
+  };
+  const at = (g, h, x = 5, y = 5) => enemyAt(g, h.x + x, h.y + y);
+  const deploy = game({ id: "atlas", talents: ["tank-iron-wall"], slot: "road" });
+  assert.ok(deploy.effects.some((e) => e.type === "talentDeploy"), "a hero with talents shows the deploy cue");
+  assert.ok(!game({ id: "atlas", slot: "road" }).effects.some((e) => e.type === "talentDeploy"), "without talents none");
+  const cases = [
+    ["ymir", ["ymir-frost-expose"], "road", (g, h) => g.castUltimate(h, at(g, h)), "talentIce"],
+    ["gaia", ["gaia-deep-roots"], "platform", (g, h) => g.castUltimate(h, at(g, h)), "talentStone"],
+    ["aegir", ["aegir-undertow"], "road", (g, h) => g.castUltimate(h, at(g, h)), "talentWater"],
+    ["helios", ["helios-blinding-noon"], "road", (g, h) => g.castUltimate(h, at(g, h)), "talentShadow"],
+    ["fenrir", ["fenrir-lock-jaw"], "road", (g, h) => g.castUltimate(h, at(g, h)), "talentVenom"],
+    ["hecate", ["hecate-torchlight"], "road", (g, h) => { const t = at(g, h); at(g, h); g.castUltimate(h, t); }, "talentFire"],
+    ["thanatos", ["thanatos-soul-harvest"], "road", (g, h) => { g.castUltimate(h, at(g, h)); g.killEnemy(g.spawnEnemy("grunt", { distance: 60 }), h); }, "talentFeather"],
+    ["hephaestus", ["hephaestus-hammerfall"], "platform", (g, h) => g.castUltimate(h, at(g, h)), "talentBlast"],
+    ["boreas", ["boreas-deep-freeze"], "platform", (g, h) => g.castUltimate(h, at(g, h, 0, 0)), "talentIce"],
+    ["isis", ["isis-twin-beam"], "platform", (g, h) => { const t = at(g, h, 104, 0); at(g, h, -104, 0); g.castUltimate(h, t); }, "talentBolt"],
+    ["skadi", ["skadi-hunt-mark"], "platform", (g, h) => g.castUltimate(h, at(g, h, 0, 0)), "talentCosmic"],
+    ["stheno", ["stheno-stone-stare"], "platform", (g, h) => { at(g, h, 0, 0); g.castUltimate(h, g.enemies[0]); }, "talentStone"],
+    ["harmonia", ["harmonia-shared-fate"], "platform", (g, h) => { const a = ally(g, h, "platform", { hpLeft: 1000 }); a.fateUntil = g.time + 6; a.fateSplit = true; h.fateUntil = g.time + 6; h.fateSplit = true; g.damageHero(h, 50, null); }, "talentHoly"],
+    ["asclepius", ["asclepius-second-life"], "platform", (g, h) => { g.fallenHeroes.push({ id: "atlas", slotType: "road", slotIndex: 1, targeting: "auto" }); g.castUltimate(h, at(g, h)); }, "talentHeal"],
+  ];
+  for (const [id, talents, slot, cast, type] of cases) {
+    assert.ok(types(id, talents, slot, cast).includes(type), `${talents[0]} emits ${type}`);
+  }
+}
+
 console.log("td talent effects ok");
