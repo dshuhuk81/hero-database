@@ -67,6 +67,8 @@ function spendEvenly(progress) {
     progress = next;
   }
 }
+// stageGameOptions reads a flat list as one row (capped at five), so the squad goes in as two rows.
+const rowsOf = (squad) => [squad.slice(0, 5), squad.slice(5, 10)];
 // Talents for the sweep: first option of each tier pair, for every owned eligible hero, once the tier's chapter is reached.
 function withTalents(progress, chapter, pick = 0) {
   const talents = {};
@@ -83,7 +85,7 @@ function runStage(stage, squad, seed, progress, { talents = true, elites = true,
   const leveled = talents ? withTalents(progress, stage.chapter) : { ...progress, talents: {} };
   const runHeroes = collectionHeroes(campaign, leveled, heroes);
   const map = mapFor(stage);
-  const game = stageGameOptions(stage, squad, seed, runHeroes);
+  const game = stageGameOptions(stage, rowsOf(squad), seed, runHeroes);
   if (!elites) game.elites = [];
   return playRun(squad, seed, theme ? map : { ...map, theme: null }, { game });
 }
@@ -124,7 +126,7 @@ if (args.ab) {
             }
             const runHeroes = collectionHeroes(campaign, { ...leveled, talents }, heroes);
             const key = `${stage.id}|${squad.join(",")}|${s}|${tier}|${pick}`;
-            const run = cache.get(key) ?? playRun(squad, s, mapFor(stage), { game: stageGameOptions(stage, squad, s, runHeroes) });
+            const run = cache.get(key) ?? playRun(squad, s, mapFor(stage), { game: stageGameOptions(stage, rowsOf(squad), s, runHeroes) });
             cache.set(key, run);
             n += 1;
             if (run.won) { wins += 1; lives += run.lives; }
@@ -157,6 +159,7 @@ for (const stage of allStages(campaign)) {
     let wins = 0, n = 0, defeated = 0;
     for (const squad of squads) for (let s = 1; s <= SEEDS; s++) {
       const run = runStage(stage, squad, s, leveled, options);
+      if (args.debug) console.log(stage.id, squad.join(","), JSON.stringify({ ...run, insightLog: undefined, mutators: undefined, boons: undefined }));
       wins += run.won ? 1 : 0;
       defeated += run.defeated;
       n += 1;

@@ -714,18 +714,10 @@ export async function createRenderer(canvas, game, options = {}) {
     container.addChild(g);
   }
 
-  // Special-tile atmosphere is built once and animated by changing transforms only, so combat
-  // never allocates display objects. Two parts: soft ground light under the slot art (spills past
-  // the tile onto the map) and drifting motes / mist / wisps above the heroes, so the effect reads
-  // on occupied tiles too. The hero standing on a special tile gets an underglow and a rim in the
-  // tile's colour. Reduced motion keeps the static glow and rim and hides the moving parts.
+  // Special tiles: a glowing contour around the tile frame, built once and pulsed by alpha only.
+  // The hero standing on a special tile gets a soft ground underglow in the tile's colour.
+  // Reduced motion keeps the static contour.
   const specialTileFx = [];
-  // Effekseer ground loop per tile kind (authored-fx.js clips). Supplements the soft glow below.
-  const TILE_LOOPS = {
-    highground: { clip: "buff", width: 120, alpha: 0.5, speed: 1 },
-    shrine: { clip: "holy", width: 124, alpha: 0.55, speed: 1 },
-    cursed: { clip: "shadow", width: 116, alpha: 0.6, speed: 1, tint: 0xd7a6ff },
-  };
   let softTexture = null;
   function getSoftTexture() {
     if (softTexture) return softTexture;
@@ -754,78 +746,39 @@ export async function createRenderer(canvas, game, options = {}) {
     return sp;
   }
 
+  // Tile frame, same geometry as drawRingMark: the glow contour follows the frame the tile already has.
+  function tileFrame(type, x, y) {
+    const compact = type === "platform" && sceneArt.assets.platform;
+    const layout = compact ? platformTileLayout(boardOf(game.map)?.cell ?? 62) : { width: 60, height: 60 };
+    const height = compact ? layout.height / tiltK : layout.height;
+    return { x: x - layout.width / 2, y: y - height / 2, w: layout.width, h: height };
+  }
+
   function buildSpecialTileFx() {
     for (const [key, kind] of Object.entries(game.map.rings ?? {})) {
       const [type, index] = key.split(":");
       const pos = (type === "road" ? game.map.roadSlots : game.map.platformSlots)[Number(index)];
       if (!pos) continue;
       const color = RING_MARKS[kind] ?? 0xffffff;
-      const blend = kind === "shrine" ? "screen" : "add";
+      const frame = tileFrame(type, pos[0], pos[1]);
 
-      // Ground: wide soft bleed (about twice the tile), brighter core, crisp halo keeps the tile edge.
+      // Contour: wide faint strokes around the frame, under a hot white-core line. Additive, no particles.
+      const contour = new PIXI.Graphics();
+      contour.blendMode = "add";
+      for (const [width, alpha, tint] of [[20, 0.14, color], [11, 0.26, color], [5, 0.6, color], [2, 0.95, 0xffffff]]) {
+        contour.rect(frame.x, frame.y, frame.w, frame.h).stroke({ width, color: tint, alpha });
+      }
+      layerSlotAurasTop.addChild(contour);
+
+      // Occupant: soft ground light under the figure, as before.
       const ground = new PIXI.Container();
       ground.position.set(pos[0], pos[1]);
-      const bleed = softSprite(color, 164, 106, kind === "cursed" ? 0.5 : 0.42, blend);
-      bleed.position.set(0, 5);
-      const core = softSprite(color, 78, 50, 0.4, blend);
-      core.position.set(0, 5);
-      const halo = new PIXI.Graphics();
-      halo.ellipse(0, 4, 34, 22).stroke({ color, width: kind === "shrine" ? 3 : 2, alpha: 0.42 });
-      // Standing figures reach into the slot above, so the occupant glow lies flat at the feet.
-      const underglow = softSprite(color, 116, FIGURES ? 40 : 116, 0.5, blend);
+      const underglow = softSprite(color, 116, FIGURES ? 40 : 116, 0.5);
       underglow.visible = false;
-      ground.addChild(bleed, core, halo, underglow);
+      ground.addChild(underglow);
       layerSlotAuras.addChild(ground);
 
-      // Top: drifting parts and the occupant rim, drawn over the hero token.
-      const top = new PIXI.Container();
-      top.position.set(pos[0], pos[1]);
-      const parts = [];
-      const count = kind === "highground" ? 7 : kind === "shrine" ? 4 : 6;
-      for (let i = 0; i < count; i += 1) {
-        const part = new PIXI.Container();
-        if (kind === "highground") {
-          part.addChild(softSprite(color, 12, 12, 0.9));
-          const spark = new PIXI.Graphics();
-          spark.circle(0, 0, i % 2 ? 1.2 : 1.6).fill({ color: 0xfff7d6, alpha: 0.95 });
-          if (i % 2 === 0) spark.moveTo(-3.5, 0).lineTo(3.5, 0).moveTo(0, -3.5).lineTo(0, 3.5).stroke({ color, width: 0.8, alpha: 0.7 });
-          part.addChild(spark);
-        } else if (kind === "shrine") {
-          part.addChild(softSprite(color, 54 + i * 6, 26 + i * 3, 0.5, "screen"));
-        } else {
-          const wisp = new PIXI.Graphics();
-          wisp.moveTo(-6, 5).bezierCurveTo(-1, -6, 5, 3, 3, -9).stroke({ color, width: 2, alpha: 0.6, cap: "round" });
-          part.addChild(softSprite(color, 16, 20, 0.55), wisp, softSprite(0xffd0c0, 5, 5, 0.9));
-          part.children[2].position.set(3, -9);
-        }
-        part.blendMode = blend;
-        top.addChild(part);
-        parts.push(part);
-      }
-      const rim = new PIXI.Graphics();
-      if (kind === "highground") {
-        // Three arcs that rotate: a slow gold shimmer around the token.
-        for (let a = 0; a < 3; a += 1) {
-          const start = (a * Math.PI * 2) / 3;
-          rim.moveTo(Math.cos(start) * 32, Math.sin(start) * 32).arc(0, 0, 32, start, start + 1.3).stroke({ color, width: 2.5, alpha: 0.9, cap: "round" });
-        }
-      } else {
-        rim.circle(0, 0, 32).stroke({ color, width: kind === "shrine" ? 2.5 : 2, alpha: 0.85 });
-        if (kind === "shrine") rim.circle(0, 0, 36).stroke({ color, width: 1, alpha: 0.4 });
-      }
-      rim.blendMode = blend;
-      // Figures: the rim becomes a ground ring at the feet (squashed wrapper, so the highground
-      // arcs still rotate) under the units; tokens keep the rim drawn over the token.
-      const rimHolder = new PIXI.Container();
-      rimHolder.addChild(rim);
-      rimHolder.visible = false;
-      if (FIGURES) {
-        rimHolder.scale.set(1, 0.32);
-        ground.addChild(rimHolder);
-      } else top.addChild(rimHolder);
-      layerSlotAurasTop.addChild(top);
-
-      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], bleed, core, halo, underglow, parts, rim, rimHolder, loop: TILE_LOOPS[kind] });
+      specialTileFx.push({ kind, type, index: Number(index), x: pos[0], y: pos[1], contour, underglow });
     }
   }
 
@@ -834,72 +787,19 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const fx of specialTileFx) {
       const unit = game.heroes.find((h) => h.slotType === fx.type && h.slotIndex === fx.index);
       const veil = unit && game.isVeiled?.(unit) ? 0.45 : 1;
-      if (fx.loop) groundLoop(fx, { ...fx.loop, alpha: fx.loop.alpha * veil }, fx.x, fx.y + 5);
-      fx.underglow.visible = fx.rimHolder.visible = !!unit;
+      fx.underglow.visible = !!unit;
       if (unit) {
         const feet = FIGURES ? HERO_ANIM.feetY : 0;
         fx.underglow.position.set(unit.x - fx.x, unit.y - fx.y + feet);
-        fx.rimHolder.position.set(unit.x - fx.x, unit.y - fx.y + feet);
       }
       if (reducedMotion) {
-        fx.bleed.alpha = fx.kind === "cursed" ? 0.5 : 0.42;
-        fx.core.alpha = 0.4;
-        fx.halo.alpha = 0.72;
-        fx.halo.scale.set(1);
+        fx.contour.alpha = 0.9 * veil;
         fx.underglow.alpha = 0.45 * veil;
-        fx.rim.alpha = 0.8 * veil;
-        fx.rim.scale.set(1);
-        fx.rim.rotation = 0;
-        for (const part of fx.parts) part.visible = false;
         continue;
       }
       const pulse = 0.5 + 0.5 * Math.sin(seconds * (fx.kind === "cursed" ? 2.1 : 1.45));
-      fx.bleed.alpha = (fx.kind === "cursed" ? 0.38 : 0.32) + pulse * 0.18;
-      fx.core.alpha = 0.3 + pulse * 0.2;
-      fx.halo.alpha = 0.34 + pulse * 0.34;
-      fx.halo.scale.set(0.94 + pulse * 0.11);
-      if (unit) {
-        fx.underglow.alpha = (0.4 + pulse * 0.25) * veil;
-        if (fx.kind === "highground") {
-          fx.rim.rotation = seconds * 0.9;
-          fx.rim.alpha = (0.6 + pulse * 0.3) * veil;
-          fx.rim.scale.set(1);
-        } else if (fx.kind === "shrine") {
-          fx.rim.rotation = 0;
-          fx.rim.alpha = (0.5 + pulse * 0.4) * veil;
-          fx.rim.scale.set(0.96 + pulse * 0.08);
-        } else {
-          // Uneven flicker: two out-of-phase sines, so it never settles into a steady beat.
-          const flicker = 0.5 + 0.25 * Math.sin(seconds * 7.3) + 0.25 * Math.sin(seconds * 11.9 + 1.3);
-          fx.rim.rotation = 0;
-          fx.rim.alpha = (0.35 + flicker * 0.55) * veil;
-          fx.rim.scale.set(1);
-        }
-      }
-      // Parts over a hero stay fainter so the token and its level border remain readable.
-      const over = unit ? 0.7 : 1;
-      for (let i = 0; i < fx.parts.length; i += 1) {
-        const part = fx.parts[i];
-        part.visible = true;
-        const phase = (seconds * (fx.kind === "shrine" ? 0.07 : fx.kind === "cursed" ? 0.16 : 0.2) + i / fx.parts.length) % 1;
-        if (fx.kind === "highground") {
-          part.position.set(Math.sin(seconds * 0.7 + i * 2.2) * (12 + i * 1.5), 18 - phase * 62);
-          part.alpha = Math.sin(phase * Math.PI) * 0.85 * over;
-          part.scale.set(0.75 + phase * 0.5);
-        } else if (fx.kind === "shrine") {
-          // Mist rolls around the tile and spills a little past its edge.
-          const angle = seconds * 0.35 + (i / fx.parts.length) * Math.PI * 2;
-          part.position.set(Math.cos(angle) * 26, 6 + Math.sin(angle) * 12 - Math.sin(phase * Math.PI) * 14);
-          part.rotation = Math.sin(seconds * 0.3 + i) * 0.35;
-          part.alpha = (0.28 + pulse * 0.14) * Math.sin(phase * Math.PI) * over + 0.08;
-          part.scale.set(0.85 + phase * 0.4, 0.8 + phase * 0.3);
-        } else {
-          part.position.set(Math.sin(seconds * 1.15 + i * 1.7) * (12 + i * 1.5), 18 - phase * 56);
-          part.rotation = Math.sin(seconds * 0.8 + i) * 0.22;
-          part.alpha = Math.sin(phase * Math.PI) * 0.72 * over;
-          part.scale.set(0.8 + phase * 0.4);
-        }
-      }
+      fx.contour.alpha = (0.7 + pulse * 0.3) * veil;
+      fx.underglow.alpha = (0.4 + pulse * 0.25) * veil;
     }
   }
 

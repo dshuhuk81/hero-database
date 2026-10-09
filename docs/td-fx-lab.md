@@ -196,7 +196,6 @@ lasts (`authoredFx.keep`). Clips download on first use. Reduced motion keeps onl
 
 | Target | Clip | Source of the state |
 | --- | --- | --- |
-| Special tile highground / shrine / cursed | buff / holy / shadow (cursed tinted violet) | `game.map.rings` (`TILE_LOOPS`) |
 | Ally with buff or support aura | buff, tinted by the aura colour | `ally.buffUntil`, `supportAuraFor` (replaces the ellipse rim) |
 | Feuer warning area | fire, slower | `lavaWarn` effect area |
 | Gift marks (spores) | venom | `boardEventMarks` `spores` (`MARK_LOOPS`) |
@@ -204,6 +203,6 @@ lasts (`authoredFx.keep`). Clips download on first use. Reduced motion keeps onl
 | Molten ground zone | fire | `game.zones` until expiry |
 | Enemy poison / burn / chill / frozen | venom / fire / ice / ice, at the feet | `enemyStatuses` (`STATUS_LOOPS`) |
 
-Supplements, not replacements: soft glow, status particles and pips stay. The Effekseer clip
+Special tiles (owner, 2026-10-09): smoke loops dropped. A pulsing additive contour around the tile frame replaces the old glow, motes, wisps and rim; the occupant keeps a soft underglow. Status particles and pips stay. The Effekseer clip
 budget rose from 32 to 96. Open for feedback: whether the status loops crowd the screen with many
 enemies, and whether the particles should go once the loops are approved.
