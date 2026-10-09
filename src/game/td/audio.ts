@@ -174,7 +174,11 @@ export function createMusic() {
     }
     applyVolume();
     if (context?.state === "suspended") context.resume().catch(() => {});
-    audio.play().catch(() => {});
+    audio.play().catch(() => {
+      // Autoplay is blocked until the first tap or key press (the menu track starts on load).
+      document.addEventListener("pointerdown", sync, { once: true });
+      document.addEventListener("keydown", sync, { once: true });
+    });
   }
 
   document.addEventListener("visibilitychange", sync);

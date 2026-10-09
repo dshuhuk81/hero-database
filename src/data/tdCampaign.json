@@ -1251,7 +1251,9 @@
           "goal": {
             "type": "maxHeroes",
             "count": 5
-          }
+          },
+          "rule": "siege",
+          "startPlacement": 55
         },
         {
           "id": "2-3",

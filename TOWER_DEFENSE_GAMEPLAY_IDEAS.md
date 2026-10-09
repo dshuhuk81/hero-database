@@ -586,7 +586,7 @@ chapter that attack the player's habits. Examples: Saboteur (blocks a platform t
 hero in reach kills it), Phase Walker (switches gates), Mimic (copies the nearest hero's pattern),
 Siege Tower (slow, armoured, drops enemies behind the blocker line, so Tanks matter).
 
-**G4. Other win conditions (M each).** One per chapter is enough: Escort (protect a caravan
+**G4. Other win conditions (M each).** *Status October 9, 2026: Siege built as the first one (stage 2-2: rule `siege`, `startPlacement` 55 as a first guess, no Nectar income after the start; bot 20%, was 100% without it). Open: Escort, Hold the Shrine, Ambush, Fog, Guest Hero.* One per chapter is enough: Escort (protect a caravan
 walking the road), Hold the Shrine (enemies attack a mid-board tile instead of the base), Ambush
 (a third gate opens mid-stage, R11), Fog (enemies only visible inside hero reach), Siege (no Nectar
 income, start budget only), Guest Hero (one fixed hero in the squad, a banner teaser).

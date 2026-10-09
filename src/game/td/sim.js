@@ -100,7 +100,7 @@ function cornerPoint(c, t, offset) {
 }
 
 export class TowerDefenseGame {
-  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, stageRule = null, elites = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
+  constructor({ heroes, tuning, map, timeline, tier = "normal", seed = 1337, allowedHeroes = null, squadRows = null, mutators = null, boons = null, lives = null, maxLives = null, hpScale = null, atkScale = null, startPlacement = null, stageRule = null, elites = null, interventions = null, heroBonuses = null, onChange = () => {} }) {
     // Expedition veterans (M21): per-hero attack and health bonuses for this run only,
     // folded into the base stats so every placement and redeploy uses them.
     const boosted = (hero) => {
@@ -120,6 +120,7 @@ export class TowerDefenseGame {
     // Divine Interventions unlocked for this run (the page passes them; none in the Daily Trial).
     this.interventionIds = (interventions ?? []).filter((id) => tuning.interventions?.[id]);
     this.startLives = lives;
+    this.startPlacement = startPlacement; // campaign stage Nectar at the start (Siege), null elsewhere
     // Enemy health scale: a mode's own stage scale (campaign, Expedition), else the map's
     // (`enemyHp` in tdMaps.json, evens out map difficulty in the Daily Trial and Expedition).
     this.hpScale = hpScale ?? map?.enemyHp ?? 1;
@@ -176,7 +177,7 @@ export class TowerDefenseGame {
     this.shieldUntil = 0;
     this.shieldReadyAt = 0; // Shield of the Crossing cooldown (tuning.interventions.shield.cooldownSeconds)
     // Placement points replace gold: heroes cost points, the counter regrows with battle time.
-    this.placement = this.tuning.run.startingPlacement;
+    this.placement = this.startPlacement ?? this.tuning.run.startingPlacement; // a campaign stage may start with its own Nectar (Siege)
     this.placementClock = 0;
     this.lives = this.startLives ?? this.tuning.run.lives;
     this.score = 0;

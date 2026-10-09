@@ -48,6 +48,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
   import { createRecruit } from "../../game/td/page/recruit";
   import { createPanels } from "../../game/td/page/panels";
   import { createSessionController } from "../../game/td/page/session";
+  import { trackForMenu } from "../../game/td/music.js";
   import { createNav } from "../../game/td/page/nav";
   import { createQuests } from "../../game/td/page/quests";
   import { createOrientGate } from "../../game/td/page/orient";
@@ -243,6 +244,7 @@ const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.
 
   nav.init();
   controller.run();
+  music.play(trackForMenu());
 
   // Phones in portrait: blocking rotate gate above every screen (page/orient.ts).
   createOrientGate(ctx);

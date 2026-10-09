@@ -1172,6 +1172,7 @@ Data in `src/data/tdTalents.json`: Tier I is the class pair (`classes`), Tier II
   leaking flyer), to be tuned from playtests. Saves from before goals keep a laurel they earned by
   keeping 90% of the lives. The stage drawer lists all three goals; the Stage Clear screen fills
   only the laurels that were earned.
+- **Siege** (October 9, 2026, G4 of the gameplay ideas): stage 2-2 uses the rule `siege` (`tdStageRules.json`: placement rate 0) and starts with `startPlacement` 55 (`tdCampaign.json`, passed to the sim as `startPlacement`). No Nectar arrives after the start. Bot on 2-2: 20% (45: 0%, 65 and 75: 100%, no rule: 100%). 55 is a first guess for the owner's playtest.
 - **Stage rules** (October 6, 2026, A2 of the gameplay ideas): 53 of the 82 stages carry a `rule`
   naming an entry of `tdStageRules.json` (Nightfall, Forced March, Hardened Hides, Lean Supplies,
   Quickened, Blessed Ground, Rich Camp). A rule is a bundle of the same multipliers a chapter

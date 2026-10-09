@@ -89,6 +89,7 @@ export function stageGameOptions(stage, squad, seed = Math.floor(Math.random() *
     squadRows,
     lives: stage.lives,
     hpScale: stage.hpScale ?? 1,
+    ...(stage.startPlacement && { startPlacement: stage.startPlacement }),
     atkScale: stage.atkScale ?? 1,
     stageRule: stageRuleFor(stage),
     elites: stageElitesFor(stage), // G1: Elite affix lists, placed on spawns at start

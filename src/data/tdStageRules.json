@@ -217,5 +217,12 @@
       "enemySpeed": 0.9,
       "heroAps": 0.9
     }
+  },
+  "siege": {
+    "name": "Siege",
+    "text": "No Nectar arrives after the start: the starting Nectar is all you get.",
+    "mods": {
+      "placementRate": 0
+    }
   }
 }

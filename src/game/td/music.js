@@ -3,6 +3,11 @@
 // else, and any chapter without a track, falls back to the map's own track.
 import musicData from "../../data/tdMusic.json" with { type: "json" };
 
+/** Track for every menu screen (home, lobby, stage list, ...). */
+export function trackForMenu() {
+  return musicData.menu || "";
+}
+
 /** @param {{ daily?: unknown, expedition?: unknown, god?: unknown, stageId?: string | null, map?: { music?: string } }} run */
 export function trackForRun({ daily, expedition, god, stageId, map }) {
   if (daily) return musicData.daily;

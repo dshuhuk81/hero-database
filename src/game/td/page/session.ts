@@ -7,7 +7,7 @@ import { createRenderer } from "../render.js";
 import { mapSceneFor } from "../map-scene.js";
 import { environmentFor } from "../environments.js";
 import { timelineForMap } from "../stage-for-map.js";
-import { trackForRun } from "../music.js";
+import { trackForMenu, trackForRun } from "../music.js";
 import { TowerDefenseGame } from "../sim.js";
 import { REACTION_INFO } from "../skills.js";
 import type { PageContext, Slot } from "./context";
@@ -190,7 +190,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (!target && state.session?.god) target = "god"; // back to the challenge screen, not the stage list
     ctx.actions.closePanel(false);
     end();
-    deps.music.stop();
+    deps.music.play(trackForMenu());
     pause.clear();
     ctx.actions.renderLobby();
     ctx.actions.exitPlay(target);
