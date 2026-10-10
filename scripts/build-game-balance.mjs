@@ -9,7 +9,8 @@
 //   - roster ids with no database entry (the recruits) are hand-authored rows, kept as-is.
 // TD ids are the mythic names (odin, atlas, ...); `tuning.statSource` names the database hero
 // whose stats seed each generated row. Row names come from the mythic skin (tdSkinMythic.json).
-// `rarity` is kept from the file, or derived from tier for a new hero.
+// Authored row fields can be pinned through tuning.rowOverrides. `rarity` is kept from the file,
+// read from tuning.rarityOverrides for a new TD identity, or derived from tier.
 //
 //   npm run build:game-balance                 rewrite gameBalance.json
 //   npm run build:game-balance -- --check      fail when the file is stale (tests)
@@ -104,7 +105,7 @@ function buildRow(h, group) {
   // Cost is ranked within the slot type.
   const slotValues = all.filter((r) => r.slot === row.slot).map(value);
   // Placement points (11-25). A cost already in gameBalance.json wins: those are tuned by hand.
-  row.cost = currentById.get(row.id)?.cost ?? Math.round(lerp(11, 25, rankIn(slotValues, value(row))));
+  row.cost = tuning.rowOverrides?.[row.id]?.cost ?? currentById.get(row.id)?.cost ?? Math.round(lerp(11, 25, rankIn(slotValues, value(row))));
   // Class kits apply after pricing, so they shift a whole class without re-ranking costs:
   // durability (hpMult/armorMult), attack rhythm (apsMult keeps DPS, so fewer but heavier
   // hits; maxAps caps it), class damage (dpsMult), damage type and crit.
@@ -117,7 +118,8 @@ function buildRow(h, group) {
   row.dps = Math.round(dps);
   if (damageType) row.damageType = damageType;
   if (crit) row.critChance = Math.round((row.critChance + crit) * 100) / 100;
-  row.rarity = currentById.get(row.id)?.rarity ?? TIER_RARITY[String(row.tier)[0]] ?? "epic";
+  row.ultCooldown = tuning.rowOverrides?.[row.id]?.ultCooldown ?? row.ultCooldown;
+  row.rarity = currentById.get(row.id)?.rarity ?? tuning.rarityOverrides?.[row.id] ?? TIER_RARITY[String(row.tier)[0]] ?? "epic";
   return row;
 }
 

@@ -35,6 +35,41 @@
     ]
   },
   {
+    "id": "houyi",
+    "name": "Hou Yi",
+    "class": "Archer",
+    "tier": "B",
+    "slot": "platform",
+    "range": 210,
+    "ability": "volley",
+    "damageType": "physical",
+    "image": "",
+    "atk": 94,
+    "aps": 0.36,
+    "dps": 34,
+    "hp": 546,
+    "armor": 59,
+    "magicRes": 68,
+    "critChance": 0.2,
+    "ultCooldown": 22,
+    "ultPower": 1.05,
+    "synergies": [
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "TEAM_ENERGY_RESTORE",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_ARMOR_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ENERGY_RESTORE"
+    ],
+    "cost": 22,
+    "rarity": "legendary",
+    "mythologyGroups": [
+      "divine-guardians",
+      "wildborn"
+    ]
+  },
+  {
     "id": "hecate",
     "name": "Hecate",
     "class": "Assassin",

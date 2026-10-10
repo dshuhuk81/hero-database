@@ -660,3 +660,23 @@ No additional mechanics are proposed in this pack. A spell's name or fictional d
 
 **Status:** Sounds are placeholders (copies of Odin's). Persona text is a draft for the owner's review.
 
+### 23. Hou Yi — Archer Beneath the Last Sun
+
+**Binding:** `houyi` · `nine_suns` · Archer · platform · he/him · Legendary
+
+**Myth anchor:** Hou Yi is the archer of Chinese mythology who shot down nine of the ten suns that scorched the world. His place at the Last Crossing, title, faction bonds and combat kit are original game adaptations.
+
+**Card:** The court archer who brought down the false suns watches the skies above the Last Crossing. Every impossible target adds heat to his next volley; when nine suns answer the bowstring, nowhere in his reach is safe.
+
+**Look:** A calm Chinese court archer in dark cinnabar, lacquer black and antique gold with small jade accents. His broad ritual bow carries a black solar-bird motif; nine restrained sun discs identify his legendary deed without turning him into a fire mage.
+
+**Basic — Crow-Feather Arrow:** Fires a dark-feathered physical arrow using the standard Archer rules and anti-Flyer bonus. A successful primary hit on a Flyer or Elite prepares one sun, up to nine.
+
+**Trait — Ten in the Sky:** Each prepared sun adds 4% damage to every arrow in the next valid ultimate. A valid cast consumes the stored suns; an empty cast does not.
+
+**Ultimate — Nine Suns Fall:** Fires nine arrows for 95% attack each, prioritizing Flyers and then enemies furthest along the path. Every target receives one arrow before repeats, with at most three arrows on one target.
+
+**Awakening — The Last Sky:** If exactly one valid target remains, every arrow strikes it. The first three deal full damage and all later arrows deal 45% damage.
+
+**Status:** Persona and first-pass mechanics are approved. UI art, animation source, runtime assets, board animation, combat integration and effects are not yet present.
+

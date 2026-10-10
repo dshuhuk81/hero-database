@@ -82,7 +82,8 @@
     "recruit-hollis",
     "recruit-poppy",
     "recruit-jory",
-    "isis"
+    "isis",
+    "houyi"
   ],
   "statSource": {
     "atlas": "nuwa",
@@ -105,7 +106,17 @@
     "plutus": "caishen",
     "harmonia": "yuelao",
     "asclepius": "freya",
-    "thanatos": "anubis"
+    "thanatos": "anubis",
+    "houyi": "diana"
+  },
+  "rarityOverrides": {
+    "houyi": "legendary"
+  },
+  "rowOverrides": {
+    "houyi": {
+      "cost": 22,
+      "ultCooldown": 22
+    }
   },
   "classes": {
     "Tank": {
@@ -1038,6 +1049,20 @@
       "targets": 8,
       "awakenTargets": 12,
       "rowTolerance": 24
+    },
+    "houyi": {
+      "skillName": "Nine Suns Fall",
+      "variant": "nine_suns",
+      "arrows": 9,
+      "damage": 0.95,
+      "rank2Damage": 1.05,
+      "rank3Arrows": 10,
+      "rank4CooldownFactor": 0.9,
+      "rank5FlyerStun": 2,
+      "repeatCap": 3,
+      "singleTargetShare": 0.45,
+      "sunCap": 9,
+      "sunBonus": 0.04
     }
   },
   "lords": {
