@@ -569,6 +569,29 @@
           "rootSeconds": 2
         }
       }
+    ],
+    "houyi": [
+      {
+        "id": "houyi-sun-hunter",
+        "name": "Sun Hunter",
+        "text": "Every enemy killed by an arrow from Nine Suns Fall queues 1 extra arrow, up to 9. Bonus arrows obey the same targeting and repeat limits.",
+        "fx": {
+          "bonusArrowOnKill": true,
+          "maxBonusArrows": 9
+        }
+      },
+      {
+        "id": "houyi-droughtbreaker",
+        "name": "Droughtbreaker",
+        "text": "Nine Suns Fall fires at most 5 arrows. Each arrow explodes within 55px for 40% of its direct damage, and every direct or explosion hit Burns for 40% of its damage over 4s.",
+        "fx": {
+          "arrowCap": 5,
+          "blastRadius": 55,
+          "blastShare": 0.4,
+          "burnShare": 0.4,
+          "burnSeconds": 4
+        }
+      }
     ]
   }
 }

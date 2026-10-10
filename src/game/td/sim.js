@@ -2586,14 +2586,19 @@ export class TowerDefenseGame {
       if (!candidates.length) return false;
 
       const rank = Math.max(1, Math.floor(hero.campaignSkillLevels?.ultimate ?? 1));
-      const arrows = rank >= 3 ? skill?.rank3Arrows ?? 10 : skill?.arrows ?? 9;
+      const fx = this.talentFx(hero);
+      const sunHunter = fx.bonusArrowOnKill === true;
+      const droughtbreaker = Number.isFinite(fx.arrowCap);
+      const nominalArrows = rank >= 3 ? skill?.rank3Arrows ?? 10 : skill?.arrows ?? 9;
+      const arrows = Math.min(nominalArrows, fx.arrowCap ?? nominalArrows);
       const damageShare = rank >= 2 ? skill?.rank2Damage ?? 1.05 : skill?.damage ?? 0.95;
       const counterSnapshot = Math.min(skill?.sunCap ?? 9, hero.sunCounter ?? 0);
       const counterMultiplier = 1 + counterSnapshot * (skill?.sunBonus ?? 0.04);
+      const lastSky = aw && candidates.length === 1;
       const plan = houYiArrowPlan(candidates, {
         arrows,
         repeatCap: skill?.repeatCap ?? 3,
-        awakened: aw,
+        awakened: lastSky,
         sunHunter: false,
         maxBonusArrows: 0,
       });
@@ -2605,21 +2610,48 @@ export class TowerDefenseGame {
       for (let index = 0; index < plan.length; index += 1) {
         const entry = plan[index];
         const enemy = entry.enemy;
+        const wasAlive = !enemy.dead;
         const resistance = hero.damageType === "magical" ? enemy.magicRes : enemy.armor;
         const raw = this.attackValue(hero) * hero.ultPower * (1 + (this.classBonus(hero).ultPower || 0))
           * damageShare * counterMultiplier * entry.share;
         const dealt = this.hit(enemy, resolveDamage(raw, resistance, hero.damageType), hero, { showShot: false, showHit: false }) || 0;
-        if (rank >= 5 && enemy.flying) flyerEndpoints.set(enemy.entityId, enemy);
+        const directKill = wasAlive && enemy.dead;
+        if (rank >= 5 && enemy.flying && wasAlive) flyerEndpoints.set(enemy.entityId, enemy);
+
+        if (droughtbreaker && dealt > 0) {
+          if (!enemy.dead) this.applyBurn(enemy, hero, dealt * fx.burnShare, fx.burnSeconds);
+          const blastTargets = this.enemies.filter((other) => other !== enemy && this.canHit(hero, other) && this.nearPoint(enemy, other, fx.blastRadius));
+          for (const other of blastTargets) {
+            const splashDealt = this.hit(other, dealt * fx.blastShare, hero, { showShot: false, showHit: false }) || 0;
+            if (splashDealt > 0 && !other.dead) this.applyBurn(other, hero, splashDealt * fx.burnShare, fx.burnSeconds);
+          }
+        }
+
         arrowEvents.push({ type: "houYiArrow", x: enemy.x, y: enemy.y, targetId: enemy.entityId,
-          share: entry.share, arrowIndex: index, arrowCount: plan.length, counterSnapshot,
-          sunHunter: false, droughtbreaker: false, bonus: false, dealt, life: 0.55 });
+          share: entry.share, arrowIndex: index, arrowCount: 0, counterSnapshot,
+          sunHunter, droughtbreaker, bonus: entry.bonus, dealt,
+          ...(droughtbreaker && { blastRadius: fx.blastRadius }), life: 0.55 });
+
+        if (sunHunter && directKill) {
+          const bonusCandidates = this.enemies.filter((other) => !other.dead && this.canHit(hero, other) && this.inReach(hero, other));
+          const bonusPlan = houYiArrowPlan(bonusCandidates, {
+            arrows: 1,
+            repeatCap: skill?.repeatCap ?? 3,
+            awakened: lastSky,
+            sunHunter: true,
+            maxBonusArrows: fx.maxBonusArrows ?? 9,
+            existingPlan: plan,
+          });
+          if (bonusPlan.length) plan.push(bonusPlan[0]);
+        }
       }
+      for (const event of arrowEvents) event.arrowCount = plan.length;
       if (rank >= 5) for (const enemy of flyerEndpoints.values()) {
         if (!enemy.dead) enemy.stunnedUntil = Math.max(enemy.stunnedUntil ?? 0, this.time + (skill?.rank5FlyerStun ?? 2));
       }
 
       this.emitHeroEffect(hero, { type: "houYiCast", x: hero.x, y: hero.y, arrowCount: plan.length,
-        counterSnapshot, sunHunter: false, droughtbreaker: false,
+        counterSnapshot, sunHunter, droughtbreaker,
         targets: [...new Map(plan.map(({ enemy }) => [enemy.entityId, { targetId: enemy.entityId, x: enemy.x, y: enemy.y }])).values()],
         life: 0.7 });
       for (const event of arrowEvents) this.emitHeroEffect(hero, event);
