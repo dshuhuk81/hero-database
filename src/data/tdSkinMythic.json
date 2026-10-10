@@ -6,7 +6,10 @@
       "name": "Atlas",
       "title": "Shoulder of the Crossing",
       "skillName": "A Place to Stand",
-      "mythologyGroups": ["greek", "elder-powers"],
+      "mythologyGroups": [
+        "greek",
+        "elder-powers"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -16,7 +19,10 @@
       "name": "Ymir",
       "title": "Memory of the First Frost",
       "skillName": "Faults Beneath the Ice",
-      "mythologyGroups": ["norse", "elder-powers"],
+      "mythologyGroups": [
+        "norse",
+        "elder-powers"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -26,7 +32,10 @@
       "name": "Heimdall",
       "title": "Watchman at the World-Seam",
       "skillName": "The Gate Hears You",
-      "mythologyGroups": ["norse", "divine-guardians"],
+      "mythologyGroups": [
+        "norse",
+        "divine-guardians"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -36,7 +45,10 @@
       "name": "Gaia",
       "title": "Ground Beneath the Refuge",
       "skillName": "Where the Roots Hold",
-      "mythologyGroups": ["greek", "elder-powers"],
+      "mythologyGroups": [
+        "greek",
+        "elder-powers"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -46,7 +58,10 @@
       "name": "Aegir",
       "title": "Host of the Deep Hall",
       "skillName": "The Sea Takes a Step",
-      "mythologyGroups": ["norse", "wildborn"],
+      "mythologyGroups": [
+        "norse",
+        "wildborn"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -56,7 +71,10 @@
       "name": "Helios",
       "title": "Keeper of the Eastern Road",
       "skillName": "Noon at the Narrow Gate",
-      "mythologyGroups": ["greek", "elder-powers"],
+      "mythologyGroups": [
+        "greek",
+        "elder-powers"
+      ],
       "sounds": {
         "attack": "v5"
       },
@@ -66,14 +84,20 @@
       "name": "Surtr",
       "title": "Ember at the Boundary",
       "skillName": "Fuel for the Last Fire",
-      "mythologyGroups": ["norse", "elder-powers"],
+      "mythologyGroups": [
+        "norse",
+        "elder-powers"
+      ],
       "splash": true
     },
     "fenrir": {
       "name": "Fenrir",
       "title": "The Unfastened Jaw",
       "skillName": "Leave the Wound Open",
-      "mythologyGroups": ["norse", "wildborn"],
+      "mythologyGroups": [
+        "norse",
+        "wildborn"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -83,28 +107,40 @@
       "name": "Nott",
       "title": "Rider Between Watchfires",
       "skillName": "Where the Lantern Ends",
-      "mythologyGroups": ["norse", "elder-powers"],
+      "mythologyGroups": [
+        "norse",
+        "elder-powers"
+      ],
       "splash": true
     },
     "hecate": {
       "name": "Hecate",
       "title": "Keeper of the Third Turning",
       "skillName": "Every Exit Is Mine",
-      "mythologyGroups": ["greek", "underworld"],
+      "mythologyGroups": [
+        "greek",
+        "underworld"
+      ],
       "splash": true
     },
     "vidar": {
       "name": "Vidar",
       "title": "Answer Without a Word",
       "skillName": "The Debt Comes Due",
-      "mythologyGroups": ["norse", "divine-guardians"],
+      "mythologyGroups": [
+        "norse",
+        "divine-guardians"
+      ],
       "splash": true
     },
     "thanatos": {
       "name": "Thanatos",
       "title": "Witness of the Final Breath",
       "skillName": "One Breath Remaining",
-      "mythologyGroups": ["greek", "underworld"],
+      "mythologyGroups": [
+        "greek",
+        "underworld"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -114,7 +150,9 @@
       "name": "Odin",
       "title": "Reader of Unfinished Roads",
       "skillName": "The Answer Travels",
-      "mythologyGroups": ["norse"],
+      "mythologyGroups": [
+        "norse"
+      ],
       "art": "v2",
       "splash": true
     },
@@ -122,20 +160,28 @@
       "name": "Isis",
       "title": "Sovereign of the Hidden Sun",
       "skillName": "Light of the Hidden Sun",
-      "mythologyGroups": ["egyptian"],
+      "mythologyGroups": [
+        "egyptian"
+      ],
       "splash": true
     },
     "houyi": {
       "name": "Hou Yi",
       "title": "Archer Beneath the Last Sun",
       "skillName": "Nine Suns Fall",
-      "mythologyGroups": ["divine-guardians", "wildborn"]
+      "mythologyGroups": [
+        "divine-guardians",
+        "wildborn"
+      ],
+      "splash": true
     },
     "hephaestus": {
       "name": "Hephaestus",
       "title": "Smith of the Refuge Gate",
       "skillName": "Work the Living Furnace",
-      "mythologyGroups": ["greek"],
+      "mythologyGroups": [
+        "greek"
+      ],
       "sounds": {
         "attack": "v5"
       },
@@ -145,14 +191,20 @@
       "name": "Boreas",
       "title": "Winter at the Open Door",
       "skillName": "Winter Comes Through the Door",
-      "mythologyGroups": ["greek", "wildborn"],
+      "mythologyGroups": [
+        "greek",
+        "wildborn"
+      ],
       "splash": true
     },
     "skadi": {
       "name": "Skadi",
       "title": "Hunter Above the Pass",
       "skillName": "Follow My Arrow",
-      "mythologyGroups": ["norse", "wildborn"],
+      "mythologyGroups": [
+        "norse",
+        "wildborn"
+      ],
       "sounds": {
         "ultimate": "v5"
       },
@@ -162,7 +214,10 @@
       "name": "Atalanta",
       "title": "First Through the Brambles",
       "skillName": "Fire in the Brambles",
-      "mythologyGroups": ["greek", "wildborn"],
+      "mythologyGroups": [
+        "greek",
+        "wildborn"
+      ],
       "sounds": {
         "attack": "v5",
         "ultimate": "v5"
@@ -173,7 +228,10 @@
       "name": "Stheno",
       "title": "Stillness at the Threshold",
       "skillName": "Hold That Last Step",
-      "mythologyGroups": ["greek", "wildborn"],
+      "mythologyGroups": [
+        "greek",
+        "wildborn"
+      ],
       "sounds": {
         "attack": "v5",
         "ultimate": "v5"
@@ -184,7 +242,9 @@
       "name": "Plutus",
       "title": "Keeper of the Common Store",
       "skillName": "Enough for Everyone",
-      "mythologyGroups": ["greek"],
+      "mythologyGroups": [
+        "greek"
+      ],
       "sounds": {
         "attack": "v5",
         "ultimate": "v5"
@@ -195,14 +255,20 @@
       "name": "Harmonia",
       "title": "The Meeting of Many Hands",
       "skillName": "Together, Once More",
-      "mythologyGroups": ["greek", "divine-guardians"],
+      "mythologyGroups": [
+        "greek",
+        "divine-guardians"
+      ],
       "splash": true
     },
     "asclepius": {
       "name": "Asclepius",
       "title": "Physician of the Last Watch",
       "skillName": "There Is Still a Pulse",
-      "mythologyGroups": ["greek", "divine-guardians"],
+      "mythologyGroups": [
+        "greek",
+        "divine-guardians"
+      ],
       "splash": true
     },
     "recruit-bram": {
