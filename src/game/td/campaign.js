@@ -448,10 +448,15 @@ export function collectionHeroes(campaign, progress, heroes) {
     const skillStat = skillCfg.passiveStatPerLevel ?? 0;
     const attackSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveAttack") - 1);
     const healthSkill = 1 + skillStat * (heroSkillLevel(progress, hero.id, "passiveHealth") - 1);
-    const ultimateSkill = 1 + (skillCfg.ultimatePowerPerLevel ?? 0) * (heroSkillLevel(progress, hero.id, "ultimate") - 1);
+    const ultimateLevel = heroSkillLevel(progress, hero.id, "ultimate");
+    const customUltimateRanks = tuning.heroSkills?.[hero.id]?.variant === "nine_suns";
+    const ultimateSkill = customUltimateRanks ? 1 : 1 + (skillCfg.ultimatePowerPerLevel ?? 0) * (ultimateLevel - 1);
+    const ultimateCooldown = customUltimateRanks && ultimateLevel >= 4
+      ? tuning.heroSkills[hero.id].rank4CooldownFactor ?? 0.9
+      : 1;
     const reachSteps = starReachSteps(campaign, stars);
     const talents = heroTalents(progress, hero.id).map((talent) => talent.id);
-    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1 && !reachSteps && !talents.length) return hero;
+    if (scale === 1 && !tier && attackSkill === 1 && healthSkill === 1 && ultimateSkill === 1 && ultimateCooldown === 1 && !customUltimateRanks && !reachSteps && !talents.length) return hero;
     const bonus = evolutionBonus(campaign, tier);
     return {
       ...hero,
@@ -463,12 +468,12 @@ export function collectionHeroes(campaign, progress, heroes) {
       // effect scaling separate so an unupgraded cast retains its authored values.
       ultimateEffectPower: +(Math.min(1.75, (1 + bonus.ultPower) * ultimateSkill)).toFixed(4),
       critChance: +(hero.critChance + bonus.crit).toFixed(4),
-      ultCooldown: +(hero.ultCooldown * (1 + bonus.ultCooldown)).toFixed(3),
+      ultCooldown: +(hero.ultCooldown * (1 + bonus.ultCooldown) * ultimateCooldown).toFixed(3),
       ...(bonus.awakenedUlt && { awakenedUlt: true }),
       campaignLevel: level,
       campaignStars: stars,
       campaignEvolution: tier,
-      campaignSkillLevels: { ...progress.skillLevels?.[hero.id] },
+      campaignSkillLevels: { ...progress.skillLevels?.[hero.id], ultimate: ultimateLevel },
       ...(talents.length && { talents }),
     };
   });

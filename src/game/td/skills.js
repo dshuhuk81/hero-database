@@ -34,6 +34,15 @@ export const SKILL_TEXT = {
   valkyrie_call: "Revives the most recently fallen hero on its free tile at level 1 with half health. Heals allies in range when nobody can be revived.",
   rooted_sanctuary: "Heals allies in range for 30% of her own max health. For 8s they take 30% less damage.",
   sun_beam: "Fires a bright beam along her row, to the left or right (never up or down), toward the side with more enemies. Hits up to 8 enemies on that line once for 100% each.",
+  nine_suns: "Fires 9 arrows for 95% attack each. Flyers are targeted first, then enemies furthest along the path. Every target receives one arrow before repeats, with at most 3 arrows per target. Rank II raises each arrow to 105%; Rank III fires 10 arrows; Rank IV shortens charge time by 10%; Rank V stuns every Flyer hit for 2s.",
+};
+
+/** @type {Record<string, { basic: { name: string, text: string }, trait: { name: string, text: string } }>} */
+export const HERO_KIT_TEXT = {
+  houyi: {
+    basic: { name: "Crow-Feather Arrow", text: "Fires a dark-feathered physical arrow using the standard Archer attack and anti-Flyer bonus." },
+    trait: { name: "Ten in the Sky", text: "A successful primary basic hit on a Flyer or Elite prepares 1 sun, up to 9. Each sun adds 4% damage to every arrow of the next valid Nine Suns Fall; that cast consumes all prepared suns." },
+  },
 };
 
 // Campaign skill progression uses the same two passive slots for every hero so saves stay
@@ -97,6 +106,7 @@ export const AWAKEN_TEXT = {
   rooted_sanctuary: "heals for 50% of her max health, allies take 40% less damage",
   sun_beam: "hits up to 12 enemies instead of 8",
   soul_drain: "stun lasts 3s, a kill refunds 80% of the charge",
+  nine_suns: "when exactly one valid target remains, every arrow strikes it; the first 3 deal full damage and later arrows deal 45%",
 };
 
 // Lord skill (tuning.lords): what a selected Lord gives matching heroes in that squad row.

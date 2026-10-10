@@ -7,6 +7,7 @@ import { bondsOf } from "./bonds.js";
 import { boardOf, boardRules, cellAt, inPattern, PATTERNS, patternFor, patternRadius, steppedPattern, unitInPattern } from "./board.js";
 import { environmentMultiplier, modsMultiplier } from "./environments.js";
 import { normalizeSquadRows } from "./squad-rows.js";
+import { houYiArrowPlan } from "./houyi.js";
 
 const K = 260;
 // Symmetric positions across a lane. The actual width follows the board and melee reach.
@@ -264,7 +265,7 @@ export class TowerDefenseGame {
     const hp = this.maxHpFor(base.hp, base.class);
     const atk = this.atkFor({ ...base, baseAtk: base.atk });
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, atk, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
+    this.heroes.push({ ...base, atk, range: this.deployRange(base, slotType, slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: "auto", baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null, ...(skill?.variant === "nine_suns" && { sunCounter: 0 }) });
     if (base.talents?.length) this.emit({ type: "talentDeploy", x: slot[0], y: slot[1], life: 0.6 }); // Tier I/II talents are active
     this.heroes.at(-1).invested = cost;
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
@@ -1618,7 +1619,13 @@ export class TowerDefenseGame {
       .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
     const beam = hero.basic === "beam";
     // Focus Lens (Tier I) adds a third to the main target's share.
-    strike(target, ((kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others))) * (fx.mainFactor ?? 1), beam ? { showShot: false } : {});
+    const primaryDealt = strike(target, ((kit.damageShare ?? 1) + (beam ? 0 : this.focusShare(hero, kit, others))) * (fx.mainFactor ?? 1), beam ? { showShot: false } : {});
+    // Ten in the Sky counts only Hou Yi's successful primary basic hit. Pierce, Multishot,
+    // prism and other secondary strikes cannot add more suns.
+    if (hero.variant === "nine_suns" && primaryDealt > 0 && (target.flying || target.elite)) {
+      const cap = this.tuning.heroSkills?.[hero.id]?.sunCap ?? 9;
+      hero.sunCounter = Math.min(cap, (hero.sunCounter ?? 0) + 1);
+    }
     // Crystal Vault prism tile (G2): the attack also refracts onto the nearest other enemy in reach.
     const prism = this.boardEvent ? prismSplit(this, hero) : null;
     if (prism) {
@@ -2399,7 +2406,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, atk: this.atkFor({ ...base, baseAtk: base.atk }), range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * Math.min(1, (fx.reviveShare ?? (aw ? 1 : 0.5)) * utilityPower)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
+        this.heroes.push({ ...base, atk: this.atkFor({ ...base, baseAtk: base.atk }), range: this.deployRange(base, fallen.slotType, fallen.slotIndex), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * Math.min(1, (fx.reviveShare ?? (aw ? 1 : 0.5)) * utilityPower)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), targeting: fallen.targeting ?? "auto", baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null, ...(fSkill?.variant === "nine_suns" && { sunCounter: 0 }) });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
@@ -2573,6 +2580,51 @@ export class TowerDefenseGame {
       foes.filter((e) => this.nearPoint(target, e, aw ? 110 : 72)).forEach((e) => this.hit(e, power, hero));
       this.healHero(hero, hero.hp * (aw ? 0.4 : 0.2), hero);
       this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.5, color: "green" });
+    } else if (variant === "nine_suns") {
+      const skill = this.tuning.heroSkills?.[hero.id];
+      const candidates = foes.filter((e) => !e.dead && this.canHit(hero, e) && this.inReach(hero, e));
+      if (!candidates.length) return false;
+
+      const rank = Math.max(1, Math.floor(hero.campaignSkillLevels?.ultimate ?? 1));
+      const arrows = rank >= 3 ? skill?.rank3Arrows ?? 10 : skill?.arrows ?? 9;
+      const damageShare = rank >= 2 ? skill?.rank2Damage ?? 1.05 : skill?.damage ?? 0.95;
+      const counterSnapshot = Math.min(skill?.sunCap ?? 9, hero.sunCounter ?? 0);
+      const counterMultiplier = 1 + counterSnapshot * (skill?.sunBonus ?? 0.04);
+      const plan = houYiArrowPlan(candidates, {
+        arrows,
+        repeatCap: skill?.repeatCap ?? 3,
+        awakened: aw,
+        sunHunter: false,
+        maxBonusArrows: 0,
+      });
+      if (!plan.length) return false;
+      hero.sunCounter = 0;
+
+      const arrowEvents = [];
+      const flyerEndpoints = new Map();
+      for (let index = 0; index < plan.length; index += 1) {
+        const entry = plan[index];
+        const enemy = entry.enemy;
+        const resistance = hero.damageType === "magical" ? enemy.magicRes : enemy.armor;
+        const raw = this.attackValue(hero) * hero.ultPower * (1 + (this.classBonus(hero).ultPower || 0))
+          * damageShare * counterMultiplier * entry.share;
+        const dealt = this.hit(enemy, resolveDamage(raw, resistance, hero.damageType), hero, { showShot: false, showHit: false }) || 0;
+        if (rank >= 5 && enemy.flying) flyerEndpoints.set(enemy.entityId, enemy);
+        arrowEvents.push({ type: "houYiArrow", x: enemy.x, y: enemy.y, targetId: enemy.entityId,
+          share: entry.share, arrowIndex: index, arrowCount: plan.length, counterSnapshot,
+          sunHunter: false, droughtbreaker: false, bonus: false, dealt, life: 0.55 });
+      }
+      if (rank >= 5) for (const enemy of flyerEndpoints.values()) {
+        if (!enemy.dead) enemy.stunnedUntil = Math.max(enemy.stunnedUntil ?? 0, this.time + (skill?.rank5FlyerStun ?? 2));
+      }
+
+      this.emitHeroEffect(hero, { type: "houYiCast", x: hero.x, y: hero.y, arrowCount: plan.length,
+        counterSnapshot, sunHunter: false, droughtbreaker: false,
+        targets: [...new Map(plan.map(({ enemy }) => [enemy.entityId, { targetId: enemy.entityId, x: enemy.x, y: enemy.y }])).values()],
+        life: 0.7 });
+      for (const event of arrowEvents) this.emitHeroEffect(hero, event);
+      this.classUltimate(hero, foes);
+      return;
     } else if (variant === "ice_shockwave") {
       // Boreas: an ice shockwave fills his whole attack radius; each enemy hit may freeze.
       const skill = this.tuning.heroSkills?.[hero.id];
