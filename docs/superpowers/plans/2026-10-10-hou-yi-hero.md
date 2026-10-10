@@ -432,3 +432,7 @@ Code- and asset-side complete. Only owner steps remain.
 - No automated tests, bot tests, simulations, sweeps or builds were run, at explicit owner request. Only `git diff --check` and read-only git commands.
 - R2 upload and deployment NOT done. Owner steps: review branch locally, optional manual playtest, `npm run upload-assets`, merge, wait for Cloudflare Pages deploy, then optionally remove superseded R2 files.
 - Task 10 Step 4 (final owner gate) is open: audio and a later manual playtest as separate tasks are the owner's call.
+
+## Post-release fix: UI art fit (art v3)
+
+The 2:3 UI master did not fit the tall 240x587 card spec (letterboxed detail view, wrong tile and thumb crops). v1 and v2 were already on R2 (cached), so the fix ships as `"art": "v3"` in `tdSkinMythic.json`: card is 240x371 (figure only, so `contain` fills the Heroes detail height), thumb and token are face crops, `FACE_FOCUS.houyi = "83%"` in `campaign.ts`. Owner confirmed the fit in game. Old v1/v2 R2 files are dead and can be removed.
