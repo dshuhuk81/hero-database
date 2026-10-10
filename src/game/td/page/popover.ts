@@ -139,13 +139,15 @@ export function createPopover(ctx: PageContext) {
     const progress = heroProgress(unit);
     const { stars, evolution: evo } = progress;
     const talents: string[] = unit.talents ?? [];
-    const badgeKey = `${unit.id}:${stars}:${evo}:${talents.join(",")}`;
+    const suns = Math.max(0, Math.min(9, unit.sunCounter ?? 0));
+    const badgeKey = `${unit.id}:${stars}:${evo}:${talents.join(",")}:${suns}`;
     if (popBadges.dataset.key !== badgeKey) {
       popBadges.dataset.key = badgeKey;
       popBadges.hidden = false;
       popBadges.innerHTML =
         `<span class="td-stars" aria-label="${stars} of ${STAR_MAX} stars">${"★".repeat(stars)}<span aria-hidden="true">${"★".repeat(Math.max(0, STAR_MAX - stars))}</span></span>` +
         (evo ? `<span class="td-evo-badge">Evolved ${roman(evo)}</span>` : "") +
+        (unit.variant === "nine_suns" ? `<span class="td-talent-chip" aria-label="Ten in the Sky: ${suns} of 9 suns, next ultimate +${suns * 4}% damage" title="Ten in the Sky: ${suns}/9 · +${suns * 4}%"><span aria-hidden="true">${"●".repeat(suns)}${"○".repeat(9 - suns)}</span></span>` : "") +
         talents.map((id) => `<span class="td-talent-chip">${talentArtImg(id, "td-talent-chip-art", 16)}${talentById(id)?.name ?? id}</span>`).join("");
       hydrateTdArt(popBadges);
     }

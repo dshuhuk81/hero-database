@@ -2620,7 +2620,7 @@ export class TowerDefenseGame {
 
         if (droughtbreaker && dealt > 0) {
           if (!enemy.dead) this.applyBurn(enemy, hero, dealt * fx.burnShare, fx.burnSeconds);
-          const blastTargets = this.enemies.filter((other) => other !== enemy && this.canHit(hero, other) && this.nearPoint(enemy, other, fx.blastRadius));
+          const blastTargets = this.enemies.filter((other) => other !== enemy && this.canHit(hero, other) && Math.hypot(other.x - enemy.x, other.y - enemy.y) <= fx.blastRadius);
           for (const other of blastTargets) {
             const splashDealt = this.hit(other, dealt * fx.blastShare, hero, { showShot: false, showHit: false }) || 0;
             if (splashDealt > 0 && !other.dead) this.applyBurn(other, hero, splashDealt * fx.burnShare, fx.burnSeconds);

@@ -282,7 +282,8 @@ export async function createRenderer(canvas, game, options = {}) {
   const groundFxKit = createFxKit(PIXI, layerGroundFx, { reducedMotion, max: 200 });
   const layerGroundRings = new PIXI.Container(); // hit / splash / ult rings: flat on the ground, behind the figures
   layerGroundFx.addChild(layerGroundRings);
-  const heroFx = createHeroFx(fxKit, { reducedMotion, groundKit: groundFxKit });
+  const heroFx = createHeroFx(fxKit, { reducedMotion, groundKit: groundFxKit,
+    onHouYiImpact: (x, y) => authoredFx.play("holy", x, y, HERO_ATLAS_FX.houyi.ultHouYiImpact) });
   const statusFx = createStatusFx(fxKit, { reducedMotion });
   const authoredLayer = new PIXI.Container();
   layerParts.addChild(authoredLayer);
@@ -1171,6 +1172,10 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Ultimate charge bar, directly below health.
     const ultBar = container._ultBar.clear();
+    if (unit.variant === "nine_suns") {
+      for (let i = 0; i < 9; i++) ultBar.circle((i - 4) * 5, 45, 1.8)
+        .fill({ color: i < (unit.sunCounter ?? 0) ? 0xffd479 : 0x503739, alpha: 1 });
+    }
     if (unit.ultClock !== undefined && unit.ultCooldown) {
       const pct = Math.min(1, unit.ultClock / unit.ultCooldown);
       if (!tiltOn) {
@@ -1204,7 +1209,7 @@ export async function createRenderer(canvas, game, options = {}) {
     for (const effect of game.effects) {
       if (animShotSeen.has(effect)) continue;
       animShotSeen.add(effect);
-      const fig = effect.type === "shot" && animHeroes.get(effect.heroId);
+      const fig = (effect.type === "shot" || effect.type === "houYiArrow") && animHeroes.get(effect.heroId);
       if (!fig?.hand) continue;
       const unit = game.heroes.find((h) => h.entityId === effect.sourceId);
       if (!unit) continue;

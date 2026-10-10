@@ -6,12 +6,13 @@
 // Odin's lightning (heroVariant chain_lightning) lives in odin-fx.js.
 import { boardOf } from "./board.js";
 
-const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash", "extra", "wardhit"]);
+const TYPES = new Set(["shot", "hit", "ult", "heal", "buff", "beam", "dash", "cleave", "splash", "extra", "wardhit", "houYiCast", "houYiArrow"]);
 const LIGHTNING = new Set(["shot", "hit", "ult"]);
 const UTILITY_ULTS = new Set(["shield_wall", "expose", "mass_taunt", "bifrost_ward", "rooted_sanctuary", "fortune_shower", "fate_link", "valkyrie_call"]);
 
 // name/color/accent are also used by the docs table; ranged heroes launch projectiles.
 export const PROFILES = {
+  houyi: { name: "Hou Yi", color: 0xb83b32, accent: 0xffedba, mote: "feather", kind: "archer", ranged: true, speed: 1050 },
   atlas:        { name: "Atlas", color: 0xd9b26f, accent: 0xfff1c9, mote: "twinkle" },
   ymir:  { name: "Ymir", color: 0x8fd0ff, accent: 0xeaf8ff, mote: "flake" },
   heimdall:       { name: "Heimdall", color: 0xffd66e, accent: 0xffffff, mote: "twinkle" },
@@ -63,7 +64,7 @@ export function moltenGroundPoint(map, x, y) {
   return board && y < board.origin[1] ? [x, board.origin[1] + board.cell / 2] : [x, y];
 }
 
-export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {}) {
+export function createHeroFx(kit, { reducedMotion = false, groundKit = kit, onHouYiImpact = () => {} } = {}) {
   const { TAU, rand } = kit;
   // Flat ground effects (rings, lava, rims) draw on the ground kit, below the units, so they
   // never cover an enemy standing in them. Particles and bursts stay on the main kit.
@@ -686,9 +687,40 @@ export function createHeroFx(kit, { reducedMotion = false, groundKit = kit } = {
     const angle = Math.atan2(y - sy, x - sx);
     const big = e.crit ? 1.5 : 1;
     switch (e.type) {
+      case "houYiCast": {
+        for (const target of e.targets ?? []) {
+          ground.shape((g) => {
+            g.circle(target.x, target.y, 10).stroke({ width: 2, color: p.color, alpha: 0.8 });
+            g.circle(target.x, target.y, 3).fill({ color: p.accent, alpha: 0.8 });
+          }, 0.4 + (e.arrowCount ?? 0) * 0.045);
+        }
+        return;
+      }
+      case "houYiArrow": {
+        const delay = (e.arrowIndex ?? 0) * 0.045;
+        const end = projectile("arrow", sx, sy, x, y, 0x30232a, {
+          speed: p.speed, arc: reducedMotion ? 0 : 8, size: 25, add: false, delay,
+          trail: streakTrail(p.color, { size: 22 }),
+        });
+        flash(x, y, p.accent, 24, { delay: end, life: 0.16 });
+        if (!reducedMotion) groundRing(x, y, 7, 15, p.color, { delay: end, squash: 1, life: 0.22 });
+        if (e.droughtbreaker && e.dealt > 0) {
+          ground.shape((g) => {
+            g.circle(x, y, e.blastRadius).stroke({ width: 1.5, color: p.color, alpha: 0.5 });
+          }, 0.25, { delay: end });
+        }
+        if (!reducedMotion) kit.spawn("dot", x, y, { size: 0.1, alpha: 0, life: end,
+          onEnd: () => onHouYiImpact(x, y) });
+        return;
+      }
       case "shot": {
         // Melee heroes show their weapon at the impact (hit event); nothing crosses the gap.
         if (!p.ranged) return;
+        if (e.heroId === "houyi") {
+          projectile("arrow", sx, sy, x, y, 0x30232a, { speed: p.speed, arc: reducedMotion ? 0 : 6,
+            size: 23, add: false, trail: streakTrail(p.color, { size: 18 }) });
+          return;
+        }
         (SHOTS[e.heroId] ?? CLASS_SHOTS[p.kind] ?? SHOTS.asclepius)(e, sx, sy, x, y, p);
         return;
       }

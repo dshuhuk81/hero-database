@@ -21,6 +21,10 @@ export const HERO_ATLAS_FX = {
     ult: { clip: 'fire', width: 132, alpha: 0.9, speed: 1, replace: false },
   },
   heimdall: { buff: { clip: 'buff', width: 132, alpha: 0.9, speed: 1, replace: true, status: 'ward' } },
+  houyi: {
+    buff: activation(PROFILES.houyi.accent),
+    ultHouYiImpact: { clip: 'holy', width: 58, alpha: 0.5, speed: 2, tint: 0xffedba, replace: false },
+  },
 };
 
 // Only fire-themed ultimates get flames. Projectiles, their timed impacts and
