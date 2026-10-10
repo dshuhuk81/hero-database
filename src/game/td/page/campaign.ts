@@ -41,7 +41,7 @@ const mythologyGroups: Record<string, any> = mythologyGroupsData;
 const summonCfg: any = summonData;
 let banner: any = summonCfg.banners[0]; // the banner picked in the Summon tabs
 // Heroes screen tiles crop the full-body portrait to the face; heads sit lower on these.
-const FACE_FOCUS: Record<string, string> = { fenrir: "18%", atlas: "5%", odin: "4%", nott: "3%", aegir: "3%" }; // Fenrir, Atlas, Odin, Nott, Aegir
+const FACE_FOCUS: Record<string, string> = { fenrir: "18%", atlas: "5%", odin: "4%", nott: "3%", aegir: "3%", houyi: "83%" }; // Fenrir, Atlas, Odin, Nott, Aegir, Hou Yi (wide 240x371 card)
 const UPCOMING_CHAPTERS = 3; // chapter tabs shown, unauthored ones as "Coming soon"
 
 // Records a finished stage (skipped for debug runs) and returns the result screen line.
