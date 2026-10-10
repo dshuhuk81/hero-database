@@ -46,11 +46,11 @@
 - Consumes: existing `tuning.roster`, `tuning.statSource`, `tdSkinMythic.heroes` and balance-generator row shape.
 - Produces: a generated `houyi` row and `tuning.heroSkills.houyi` configuration consumed by later tasks.
 
-- [ ] **Step 1: Add generic rarity overrides to the balance generator**
+- [x] **Step 1: Add generic rarity overrides to the balance generator**
 
 Read `tuning.rarityOverrides?.[id]` after the existing-current-row rarity and before source-tier fallback. Keep all existing rows unchanged.
 
-- [ ] **Step 2: Add Hou Yi's roster and tuning records**
+- [x] **Step 2: Add Hou Yi's roster and tuning records**
 
 Add:
 
@@ -61,23 +61,23 @@ Add:
 
 Preserve Archer class range/pattern and set the final generated row to cost 22 and cooldown 22.
 
-- [ ] **Step 3: Add the skin/persona record**
+- [x] **Step 3: Add the skin/persona record**
 
 Add `Hou Yi`, `Archer Beneath the Last Sun`, `Nine Suns Fall` and the two approved mythology groups. Do not set `splash` until the approved splash exists.
 
-- [ ] **Step 4: Add the mythic persona section**
+- [x] **Step 4: Add the mythic persona section**
 
 Document his myth anchor, original Last Crossing card text, look, basic, trait, ultimate, awakening and current asset status without quoting another game.
 
-- [ ] **Step 5: Regenerate only the derived balance data**
+- [x] **Step 5: Regenerate only the derived balance data**
 
 Run the repository's balance-data generator, not the Astro production build. Inspect the appended Hou Yi row and the diff to confirm existing hero rows did not change.
 
-- [ ] **Step 6: Owner gate**
+- [x] **Step 6: Owner gate**
 
 Show the exact generated row, persona text and changed-file summary. Stop for approval before combat code.
 
-- [ ] **Step 7: Commit the approved data foundation**
+- [x] **Step 7: Commit the approved data foundation**
 
 Commit only Task 1 files with message `feat(td): register Hou Yi hero data`.
 
@@ -92,31 +92,31 @@ Commit only Task 1 files with message `feat(td): register Hou Yi hero data`.
   - `houYiTargetOrder(enemies: object[]): object[]`
   - `houYiArrowPlan(enemies: object[], options: { arrows: number, repeatCap: number, awakened: boolean, sunHunter: boolean, maxBonusArrows: number }): Array<{ enemy: object, share: number, bonus: boolean }>`
 
-- [ ] **Step 1: Implement target ordering**
+- [x] **Step 1: Implement target ordering**
 
 Filter to eligible enemies supplied by `sim.js`, then sort Flyer first, greatest `distance` second and ascending `entityId` last.
 
-- [ ] **Step 2: Implement normal allocation**
+- [x] **Step 2: Implement normal allocation**
 
 Assign one arrow to every ordered enemy before repeats, then round-robin without exceeding `repeatCap: 3`. Return fewer arrows if no legal allocation remains.
 
-- [ ] **Step 3: Implement The Last Sky allocation**
+- [x] **Step 3: Implement The Last Sky allocation**
 
 When `awakened` and exactly one eligible target exists, allocate every nominal arrow to it: first three at share `1`, later arrows at `0.45`.
 
-- [ ] **Step 4: Define the Sun Hunter continuation contract**
+- [x] **Step 4: Define the Sun Hunter continuation contract**
 
 The planner accepts bonus-arrow requests one at a time and never returns more than nine `bonus: true` entries. It applies normal caps, or the awakened one-target share rule.
 
-- [ ] **Step 5: Inspect the module against the approved allocation examples**
+- [x] **Step 5: Inspect the module against the approved allocation examples**
 
 Review the code for zero targets, one awakened target, two targets, more targets than arrows, fewer targets than the three-arrow capacity and stable ties. Do not run a test harness.
 
-- [ ] **Step 6: Owner gate**
+- [x] **Step 6: Owner gate**
 
 Present the exported interfaces and allocation table. Stop for approval.
 
-- [ ] **Step 7: Commit the approved planner**
+- [x] **Step 7: Commit the approved planner**
 
 Commit with message `feat(td): add Hou Yi arrow planner`.
 
@@ -131,39 +131,39 @@ Commit with message `feat(td): add Hou Yi arrow planner`.
 - Consumes: Task 1 `heroSkills.houyi`, Task 2 `houYiArrowPlan`, placed hero `campaignSkillLevels` and `awakenedUlt`.
 - Produces: combat entity `sunCounter`, ultimate damage/stun behavior and emitted Hou Yi presentation facts.
 
-- [ ] **Step 1: Preserve Hou Yi's custom rank table in collection heroes**
+- [x] **Step 1: Preserve Hou Yi's custom rank table in collection heroes**
 
 Exclude `nine_suns` from the generic per-rank `ultPower` multiplier while retaining the common Evolution bonuses and attaching the current ultimate rank.
 
-- [ ] **Step 2: Add sun-counter state**
+- [x] **Step 2: Add sun-counter state**
 
 Initialize `sunCounter: 0` on a placed Hou Yi. Increment once after a successful primary basic hit whose primary target is a Flyer or Elite; cap at nine.
 
-- [ ] **Step 3: Add the ultimate branch**
+- [x] **Step 3: Add the ultimate branch**
 
 Reject a cast with no valid target. For a valid cast, snapshot and consume the counter, select in-pattern targets, call the planner and resolve each arrow using the approved rank damage and counter multiplier.
 
-- [ ] **Step 4: Add skill-rank effects**
+- [x] **Step 4: Add skill-rank effects**
 
 Rank II changes damage to 1.05, rank III arrows to ten, rank IV cooldown to 90% and rank V applies one two-second stun endpoint to each hit Flyer.
 
-- [ ] **Step 5: Add Evolution V**
+- [x] **Step 5: Add Evolution V**
 
 Pass `awakenedUlt` into the single-target planner behavior without changing normal multi-target allocation.
 
-- [ ] **Step 6: Emit presentation facts**
+- [x] **Step 6: Emit presentation facts**
 
 Emit the cast source, allocated target entity/position, share, arrow index/count, counter snapshot and talent flags. Damage must already be resolved before visual playback.
 
-- [ ] **Step 7: Add player-facing text**
+- [x] **Step 7: Add player-facing text**
 
 Add exact basic, trait, ultimate and awakening descriptions. Keep dynamic numbers aligned with tuning values where the existing text system supports it.
 
-- [ ] **Step 8: Source inspection and owner gate**
+- [x] **Step 8: Source inspection and owner gate**
 
 Trace one basic hit and one cast through the diff, then present the mechanic summary. Run no simulations or tests. Stop for approval.
 
-- [ ] **Step 9: Commit the approved combat integration**
+- [x] **Step 9: Commit the approved combat integration**
 
 Commit with message `feat(td): implement Hou Yi combat kit`.
 
@@ -178,30 +178,30 @@ Commit with message `feat(td): implement Hou Yi combat kit`.
 - Consumes: existing Tier-II talent lookup and Task 2 bonus-arrow contract.
 - Produces: `houyi-sun-hunter` and `houyi-droughtbreaker` effects on the `nine_suns` cast.
 
-- [ ] **Step 1: Add both talent records**
+- [x] **Step 1: Add both talent records**
 
 Use exact approved text and data fields:
 
 - Sun Hunter: `bonusArrowOnKill: true`, `maxBonusArrows: 9`
 - Droughtbreaker: `arrowCap: 5`, `blastRadius: 55`, `blastShare: 0.4`, `burnShare: 0.4`, `burnSeconds: 4`
 
-- [ ] **Step 2: Implement Sun Hunter**
+- [x] **Step 2: Implement Sun Hunter**
 
 Resolve bonus arrows after each killing direct arrow, use the planner, stop at nine extras and discard an arrow when no legal allocation remains.
 
-- [ ] **Step 3: Implement Droughtbreaker**
+- [x] **Step 3: Implement Droughtbreaker**
 
 Cap nominal arrows at five. Apply non-recursive splash excluding the direct target, then apply Burn from the damage each direct or splash hit actually dealt.
 
-- [ ] **Step 4: Preserve composition rules**
+- [x] **Step 4: Preserve composition rules**
 
 Make Evolution V use five arrows under Droughtbreaker and reduced shares after arrow three. Ensure Archer Tier-I Pierce/Multishot affect basic attacks only and cannot create sun counters through secondary hits.
 
-- [ ] **Step 5: Source inspection and owner gate**
+- [x] **Step 5: Source inspection and owner gate**
 
 Present the final talent records and a concise interaction matrix. Run no tests or bots. Stop for approval.
 
-- [ ] **Step 6: Commit the approved talents**
+- [x] **Step 6: Commit the approved talents**
 
 Commit with message `feat(td): add Hou Yi signature talents`.
 
@@ -216,31 +216,31 @@ Commit with message `feat(td): add Hou Yi signature talents`.
 - Consumes: Task 3 emitted Hou Yi cast/arrow facts and combat entity `sunCounter`.
 - Produces: `PROFILES.houyi`, target marks, travelling arrows, impacts, counter cue and Droughtbreaker boundary.
 
-- [ ] **Step 1: Add the Hou Yi profile**
+- [x] **Step 1: Add the Hou Yi profile**
 
 Use cinnabar primary, white-gold accent, dark feather mote, ranged projectile speed matching the quick Archer presentation.
 
-- [ ] **Step 2: Draw authoritative target and counter cues**
+- [x] **Step 2: Draw authoritative target and counter cues**
 
 Show nine compact counter pips in the inspect/status UI and one restrained static sun mark per actually allocated target.
 
-- [ ] **Step 3: Draw projectile and impact phases**
+- [x] **Step 3: Draw projectile and impact phases**
 
 Travel from the registered hand point; use a dark arrow, red-gold streak and white-gold/red impact. Preserve exact arrow count and target allocation from the sim event.
 
-- [ ] **Step 4: Add Droughtbreaker and Reduced Motion**
+- [x] **Step 4: Add Droughtbreaker and Reduced Motion**
 
 Draw the real 55 px boundary and existing Burn cue. Reduced Motion keeps marks, straight arrow travel and one impact flash only.
 
-- [ ] **Step 5: Register the authored supplement**
+- [x] **Step 5: Register the authored supplement**
 
 Reuse `holy` for `ultHouYiImpact` with `replace: false`. Do not create a new atlas before visual owner review.
 
-- [ ] **Step 6: Diff review and owner gate**
+- [x] **Step 6: Diff review and owner gate**
 
 Present event-to-effect mapping and fallback behavior. Do not launch automated or browser tests. Stop for approval.
 
-- [ ] **Step 7: Commit the approved baseline effects**
+- [x] **Step 7: Commit the approved baseline effects**
 
 Commit with message `feat(td): add Hou Yi combat effects`.
 
@@ -254,27 +254,27 @@ Commit with message `feat(td): add Hou Yi combat effects`.
 - Consumes: approved visual identity from the spec; existing roster art only as internal style observation, never as copyrighted image input.
 - Produces: approved transparent UI master used by Task 7 and as identity reference for Task 8.
 
-- [ ] **Step 1: Write the final ImageGen prompt**
+- [x] **Step 1: Write the final ImageGen prompt**
 
 Use case `stylized-concept`; require full transparent figure, dynamic upward bow draw, complete face/body/bow/hands/feet, dark cinnabar/lacquer black/antique gold/jade palette, black solar-bird motif and exactly nine restrained red sun discs. Exclude text, frame, scenery, floor, shadow, Japanese elements, western bow and generic wuxia armor.
 
-- [ ] **Step 2: Prompt gate**
+- [x] **Step 2: Prompt gate**
 
 Show the complete final prompt to the owner. Stop before calling ImageGen.
 
-- [ ] **Step 3: Announce image generation and generate one UI master**
+- [x] **Step 3: Announce image generation and generate one UI master**
 
 Use built-in ImageGen with transparent background. Generate one deliberate candidate, not a batch.
 
-- [ ] **Step 4: Inspect and persist the result**
+- [x] **Step 4: Inspect and persist the result**
 
 Inspect anatomy, exact sun-disc count, bow/string/hands, full feet, alpha and crop safety. Copy the candidate into the versioned artifact path; do not derive runtime assets.
 
-- [ ] **Step 5: Image gate**
+- [x] **Step 5: Image gate**
 
 Show the image and inspection findings. If rejected, make only the requested targeted revision. Stop until explicit approval.
 
-- [ ] **Step 6: Commit the approved UI master and prompt**
+- [x] **Step 6: Commit the approved UI master and prompt**
 
 Commit with message `art(td): add approved Hou Yi UI master`.
 
@@ -291,23 +291,23 @@ Commit with message `art(td): add approved Hou Yi UI master`.
 - Consumes: Task 6 approved UI master.
 - Produces: runtime UI assets and `splash: true` registration.
 
-- [ ] **Step 1: Run the existing hero asset exporter**
+- [x] **Step 1: Run the existing hero asset exporter**
 
 Generate card, thumbnail and token with `scripts/td-hero-assets.mjs` from the approved master.
 
-- [ ] **Step 2: Run the existing splash exporter**
+- [x] **Step 2: Run the existing splash exporter**
 
 Generate the 720 px splash and let the script add `splash: true`.
 
-- [ ] **Step 3: Visually inspect all four derivatives**
+- [x] **Step 3: Visually inspect all four derivatives**
 
 Check face visibility, bow cropping, complete token silhouette, alpha and that sun ornaments do not read as UI badges.
 
-- [ ] **Step 4: Asset gate**
+- [x] **Step 4: Asset gate**
 
 Show a contact sheet or the four files. Stop for approval.
 
-- [ ] **Step 5: Commit the approved UI derivatives**
+- [x] **Step 5: Commit the approved UI derivatives**
 
 Commit with message `art(td): add Hou Yi UI assets`.
 
@@ -321,27 +321,27 @@ Commit with message `art(td): add Hou Yi UI assets`.
 - Consumes: Task 6 approved UI master as an identity reference.
 - Produces: approved neutral transparent full-body still for PixelLab and the procedural idle exporter.
 
-- [ ] **Step 1: Write the identity-preserving ImageGen prompt**
+- [x] **Step 1: Write the identity-preserving ImageGen prompt**
 
 Require the exact same face, hair, body, costume, palette, ritual bow and quiver. Change only pose and remove energy: three-quarter facing right, balanced feet, vertical bow in left hand, free right hand near string, separated limbs, short controlled cloth, no sun discs/effects/shadow/scenery.
 
-- [ ] **Step 2: Prompt gate**
+- [x] **Step 2: Prompt gate**
 
 Show the complete edit/reference prompt. Stop before generation.
 
-- [ ] **Step 3: Announce generation and create one animation source**
+- [x] **Step 3: Announce generation and create one animation source**
 
 Load the approved UI master as the reference and use built-in ImageGen with transparent background.
 
-- [ ] **Step 4: Inspect and persist**
+- [x] **Step 4: Inspect and persist**
 
 Compare face, costume, bow, quiver and proportions against the UI master; inspect hands, string, feet, limb separation and alpha. Save to the artifact path.
 
-- [ ] **Step 5: Animation-source gate**
+- [x] **Step 5: Animation-source gate**
 
 Show both masters side by side and report any identity drift. Stop until approval.
 
-- [ ] **Step 6: Commit the approved animation source and prompt**
+- [x] **Step 6: Commit the approved animation source and prompt**
 
 Commit with message `art(td): add Hou Yi animation source`.
 
@@ -358,31 +358,31 @@ Commit with message `art(td): add Hou Yi animation source`.
 - Consumes: Task 8 approved animation source.
 - Produces: 24-frame preview idle, idle/attack/ultimate board sheet and `HERO_FIGURES.houyi` registration.
 
-- [ ] **Step 1: Generate the procedural preview idle**
+- [x] **Step 1: Generate the procedural preview idle**
 
 Use `td-idle-anim.py` and visually inspect pinned feet, breathing and cloth deformation.
 
-- [ ] **Step 2: Write PixelLab prompts and owner gate**
+- [x] **Step 2: Write PixelLab prompts and owner gate**
 
 Define `idle: 8`, `attack: 8`, `ultimate: 12`; character motion only. Show the exact keep/motion prompts before using PixelLab.
 
-- [ ] **Step 3: Check PixelLab availability without exposing the key**
+- [x] **Step 3: Check PixelLab availability without exposing the key**
 
 Only report whether `PIXELLAB_API_KEY` exists. If absent, stop and retain all completed work.
 
-- [ ] **Step 4: Generate the three clips**
+- [x] **Step 4: Generate the three clips**
 
 Idle breathes in place; attack draws/releases one ordinary arrow right; ultimate plants stance and performs one ceremonial upward full draw. No generated effects.
 
-- [ ] **Step 5: Inspect every frame and request approval**
+- [x] **Step 5: Inspect every frame and request approval**
 
 Reject extra/missing fingers or limbs, changing bow size, detached string, identity drift, body drift, baked arrows/energy and clipped feet. Show the animation review before packing.
 
-- [ ] **Step 6: Pack and register only approved clips**
+- [x] **Step 6: Pack and register only approved clips**
 
 Build `houyi-v1` and add `houyi: "houyi-v1"` to `HERO_FIGURES`.
 
-- [ ] **Step 7: Commit the approved animation assets**
+- [x] **Step 7: Commit the approved animation assets**
 
 Commit with message `art(td): add Hou Yi board animation`.
 
@@ -396,15 +396,15 @@ Commit with message `art(td): add Hou Yi board animation`.
 - Consumes: all approved task outputs.
 - Produces: a review report of completed functionality, assets and explicitly unrun validation.
 
-- [ ] **Step 1: Inspect the complete diff**
+- [x] **Step 1: Inspect the complete diff**
 
 Check for unrelated edits, accidental overwrites, missing registrations, inconsistent names and unapproved value changes. Run only `git diff --check`; do not run game tests, bot tests, simulations, sweeps or builds.
 
-- [ ] **Step 2: Inspect final assets**
+- [x] **Step 2: Inspect final assets**
 
 Open UI master, four UI derivatives, animation master, idle strip and board sheet. Confirm the two masters intentionally differ in pose but preserve identity.
 
-- [ ] **Step 3: Decide whether a new Effekseer atlas is necessary**
+- [x] **Step 3: Decide whether a new Effekseer atlas is necessary**
 
 Present the procedural/`holy` result to the owner. Create no `sun-arrow` atlas unless explicitly requested after this review.
 
@@ -412,6 +412,23 @@ Present the procedural/`holy` result to the owner. Create no `sun-arrow` atlas u
 
 Report every delivered path, implementation commit and the explicit fact that automated validation was not run at owner request. Ask whether audio or a later manual playtest should become a separate task.
 
-- [ ] **Step 5: Commit any approved review-only documentation update**
+- [x] **Step 5: Commit any approved review-only documentation update**
 
 Commit with message `docs(td): record Hou Yi integration review`.
+
+## Completion Status (2026-10-10)
+
+Code- and asset-side complete. Only owner steps remain.
+
+- UI master approved; UI runtime assets (card, thumb, token, splash) approved; animation source approved.
+- Procedural idle strip (`anims/houyi-idle-v1.webp`) approved.
+- PixelLab v2 used for `idle` and `attack` (`.td-work/pixellab/houyi-v2/`, frames 01-08 each).
+- PixelLab v3 used for `ultimate` (`.td-work/pixellab/houyi-v3/`, frames 01-12). Prompt trimmed to 988 effective characters (limit 1000). Owner accepted v3 after a full-size frame check despite two known deviations: bow tilt only about 15-25 degrees instead of 35-45, and a 7 px top margin at the tightest frames (06, 07). Feet are pixel-stable in all frames, frame 12 matches the start pose.
+- PixelLab generations: v1 4, v2 4, v3 2.00 (as reported by `td-pixellab-clips.mjs`), total 10.
+- Board sheet packed with `build-td-hero-figures.mjs --only houyi --version v1`: `houyi-v1.webp` (1488x528) and `houyi-v1.json`; animations idle 8, attack 8, ultimate 12. `td.hand` = [96, 78] sheet px, measured from lab still point [181, 114] (bow grip). Registered as `HERO_FIGURES.houyi = "houyi-v1"`.
+- Anim-lab files (`public/td-local/anim-lab/houyi/`, manifest entry) are git-ignored review material and are not committed.
+- No new Effekseer atlas needed; the procedural and `holy` effects stay.
+- No audio generated.
+- No automated tests, bot tests, simulations, sweeps or builds were run, at explicit owner request. Only `git diff --check` and read-only git commands.
+- R2 upload and deployment NOT done. Owner steps: review branch locally, optional manual playtest, `npm run upload-assets`, merge, wait for Cloudflare Pages deploy, then optionally remove superseded R2 files.
+- Task 10 Step 4 (final owner gate) is open: audio and a later manual playtest as separate tasks are the owner's call.
