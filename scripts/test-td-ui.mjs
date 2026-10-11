@@ -21,6 +21,21 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import campaign from "../src/data/tdCampaign.json" with { type: "json" };
 
+// A newly summoned epic, legendary or lord hero opens as a full-screen presentation:
+// reusable atmospheric stage, large centred splash and a left identity/skill rail.
+{
+  const { readFileSync } = await import("node:fs");
+  const lobby = readFileSync(new URL("../src/components/td/TdLobby.astro", import.meta.url), "utf8");
+  const controller = readFileSync(new URL("../src/game/td/page/campaign.ts", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/styles/td.css", import.meta.url), "utf8");
+  assert.ok(controller.includes("td-summon-intro-kicker") && controller.includes("td-summon-intro-class-emblem"), "summon intro renders the left identity rail");
+  assert.ok(controller.includes("td-summon-intro-skills") && controller.includes("entry.icon"), "summon intro renders graphical skill tiles with icon support");
+  assert.ok(controller.includes("td-summon-intro-hero") && controller.includes("td-summon-intro-art"), "summon intro gives the splash its own centred stage");
+  assert.ok(lobby.includes("td-summon-intro-continue"), "summon intro keeps an accessible dedicated continue control");
+  assert.match(css, /\.td-summon-intro-body\s*\{[\s\S]*grid-template-columns:\s*minmax\(220px,\s*30%\)\s+minmax\(0,\s*1fr\)\s+minmax\(120px,\s*24%\)/, "wide summon intro reserves a left rail and centred hero stage");
+  assert.match(css, /\.td-summon-intro::before[\s\S]*radial-gradient/, "summon intro supplies a reusable atmospheric background layer");
+}
+
 // Squad selection is row-aware: two rendered rows, shared placement rules and mythology chips.
 {
   const { readFileSync } = await import("node:fs");

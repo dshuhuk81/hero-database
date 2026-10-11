@@ -14743,6 +14743,7 @@ img[data-rarity="lord"] {
 
 /* New hero introduction (epic / legendary / lord): full-screen over the reveal stage */
 .td-summon-intro {
+  --intro-accent: #e8c77d;
   position: fixed;
   inset: 0;
   width: auto;
@@ -14753,40 +14754,82 @@ img[data-rarity="lord"] {
   padding: 0;
   border: 0;
   color: var(--text-primary);
-  background: radial-gradient(ellipse at 65% 40%, #2b2158 0%, #0d0c1f 60%, #05060c 100%);
+  background:
+    linear-gradient(180deg, rgb(4 8 20 / .1), rgb(3 5 13 / .86)),
+    radial-gradient(ellipse at 52% 42%, #27365b 0%, #11192d 42%, #050712 82%);
+  isolation: isolate;
+}
+
+.td-summon-intro::backdrop {
+  background: #03050b;
+}
+
+.td-summon-intro::before {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background:
+    radial-gradient(circle at 50% 23%, rgb(185 210 255 / .18), transparent 22%),
+    radial-gradient(ellipse at 49% 78%, rgb(97 119 172 / .18), transparent 38%),
+    radial-gradient(ellipse at 12% 58%, rgb(43 61 102 / .4), transparent 32%),
+    linear-gradient(112deg, transparent 23%, rgb(121 151 213 / .06) 44%, transparent 59%);
+  pointer-events: none;
+}
+
+.td-summon-intro::after {
+  position: absolute;
+  inset: auto -8% 0;
+  z-index: -1;
+  height: 32%;
+  content: "";
+  background:
+    radial-gradient(ellipse at 50% 100%, rgb(111 132 177 / .16), transparent 55%),
+    linear-gradient(178deg, transparent 0 24%, rgb(5 8 17 / .35) 25%, #03050a 82%);
+  filter: blur(1px);
+  pointer-events: none;
 }
 
 .td-summon-intro[open] {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  justify-items: center;
-  gap: var(--space-3);
+  display: block;
   box-sizing: border-box;
   overflow: hidden;
-  padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+  padding: max(var(--space-4), env(safe-area-inset-top)) max(var(--space-4), env(safe-area-inset-right)) max(var(--space-4), env(safe-area-inset-bottom)) max(var(--space-4), env(safe-area-inset-left));
   animation: td-stage-in 260ms ease-out both;
 }
 
 .td-summon-intro-body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-4);
+  grid-template-columns: minmax(220px, 30%) minmax(0, 1fr) minmax(120px, 24%);
   grid-template-rows: minmax(0, 1fr);
-  width: min(900px, 100%);
+  align-items: center;
+  width: min(1440px, 100%);
   height: 100%;
   min-height: 0;
+  margin-inline: auto;
 }
 
 .td-summon-intro-info {
+  z-index: 3;
+  grid-column: 1;
+  grid-row: 1;
   display: grid;
+  align-content: center;
   justify-items: start;
-  gap: var(--space-2);
+  gap: clamp(5px, 1.25cqh, 14px);
+  min-width: 0;
+  padding: clamp(12px, 3vw, 38px) 0 clamp(54px, 10cqh, 96px) clamp(4px, 1.5vw, 20px);
+  text-shadow: 0 2px 8px #000, 0 0 24px rgb(4 7 16 / .88);
 }
 
 .td-summon-intro-info h3 {
   margin: 0;
-  font-size: clamp(1.5rem, 5cqh, 2.4rem);
+  color: #fff7e5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 6.4cqh, 4.25rem);
+  font-weight: 600;
+  line-height: .96;
+  letter-spacing: -.025em;
 }
 
 .td-summon-intro-info p {
@@ -14794,32 +14837,84 @@ img[data-rarity="lord"] {
   color: var(--text-secondary);
 }
 
-.td-summon-intro-new {
-  padding: 0 10px;
-  border-radius: var(--radius-full);
-  background: var(--accent-gold);
-  color: #1a1405;
+.td-summon-intro-kicker {
+  color: var(--intro-accent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 3cqh, 1.6rem);
   font-weight: var(--weight-bold);
-  letter-spacing: .08em;
+  letter-spacing: .03em;
+}
+
+.td-summon-intro-class {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.td-summon-intro-class-emblem {
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 7cqh, 68px);
+  aspect-ratio: .86;
+  color: #fff9e8;
+  background: linear-gradient(145deg, #74623e, #171923 55%, #05060a);
+  border: 2px solid #d7c089;
+  clip-path: polygon(50% 0, 92% 16%, 92% 70%, 50% 100%, 8% 70%, 8% 16%);
+  filter: drop-shadow(0 4px 6px #000) drop-shadow(0 0 8px rgb(232 199 125 / .24));
+}
+
+.td-summon-intro-class-emblem .td-class-icon {
+  width: 52%;
+  height: 52%;
+}
+
+.td-summon-intro-class > span:last-child {
+  display: grid;
+  gap: 1px;
+}
+
+.td-summon-intro-class small,
+.td-summon-intro-class strong {
+  line-height: 1.05;
+}
+
+.td-summon-intro-class small {
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: .11em;
   text-transform: uppercase;
 }
 
-.td-summon-intro-class,
+.td-summon-intro-class strong {
+  color: #fff;
+  font-size: clamp(.95rem, 2.5cqh, 1.3rem);
+}
+
 .td-summon-intro-groups {
-  display: inline-flex;
+  display: grid;
+  gap: 4px;
+}
+
+.td-summon-intro-groups > p {
+  display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  background: rgb(255 255 255 / .08);
+  color: #ede7d9;
+  font-weight: 600;
 }
 
 .td-app .td-summon-intro-groups .td-mythology-badge {
   display: grid;
   place-items: center;
   flex: none;
-  width: 22px;
-  height: 22px;
+  width: clamp(24px, 4.2cqh, 38px);
+  height: clamp(24px, 4.2cqh, 38px);
+  padding: 3px;
+  border: 1px solid rgb(232 199 125 / .52);
+  border-radius: 50%;
+  background: rgb(5 8 18 / .72);
+  box-shadow: 0 2px 8px #000;
 }
 
 .td-app .td-summon-intro-groups .td-mythology-icon {
@@ -14829,27 +14924,184 @@ img[data-rarity="lord"] {
 }
 
 .td-summon-intro-title {
-  color: var(--accent-gold);
+  color: var(--intro-accent) !important;
   font-weight: var(--weight-bold);
+}
+
+.td-summon-intro-text {
+  max-width: 34ch;
+  line-height: 1.4;
+}
+
+.td-summon-intro-skills {
+  display: grid;
+  gap: 5px;
+  margin-top: clamp(2px, 1cqh, 10px);
+}
+
+.td-summon-intro-skill-row {
+  display: flex;
+  gap: clamp(7px, 1vw, 12px);
+}
+
+.td-summon-intro-skill {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  width: clamp(58px, 7.5vw, 88px);
+  min-width: 0;
+}
+
+.td-summon-intro-skill-art {
+  display: grid;
+  place-items: center;
+  width: clamp(48px, 7cqh, 72px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 2px solid #a88e56;
+  background: radial-gradient(circle at 45% 35%, #334369, #111523 62%, #06070c);
+  color: #f7df9d;
+  font-family: Georgia, serif;
+  font-size: clamp(1.4rem, 4cqh, 2.25rem);
+  box-shadow: inset 0 0 0 2px rgb(0 0 0 / .45), 0 4px 10px rgb(0 0 0 / .65);
+}
+
+.td-summon-intro-skill-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.td-summon-intro-skill small {
+  width: 100%;
+  overflow: hidden;
+  color: #d8d8df;
+  font-size: clamp(9px, 1.5cqh, 11px);
+  line-height: 1.15;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.td-summon-intro-hero {
+  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: stretch;
+  justify-self: center;
+  display: grid;
+  place-items: end center;
+  width: min(64vw, 920px);
+  min-width: 0;
+  pointer-events: none;
 }
 
 .td-summon-intro-art {
   justify-self: center;
-  align-self: stretch;
+  align-self: end;
   width: auto;
-  max-width: 100%;
-  height: 100%;
+  max-width: min(66vw, 940px);
+  height: min(94cqh, 1040px);
   min-height: 0;
   object-fit: contain;
-  border: 2px solid var(--accent-gold);
-  border-radius: 12px;
-  box-shadow: 0 0 28px 4px color-mix(in srgb, var(--accent-gold) 40%, transparent);
+  object-position: center bottom;
+  filter: drop-shadow(0 22px 22px rgb(0 0 0 / .85)) drop-shadow(0 0 26px rgb(133 164 225 / .14));
+}
+
+.td-summon-intro-ambient {
+  z-index: 0;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: end;
+  height: 42%;
+  background: radial-gradient(ellipse at 40% 75%, rgb(227 187 104 / .09), transparent 66%);
+  pointer-events: none;
+}
+
+.td-summon-intro-continue {
+  position: absolute;
+  right: max(var(--space-4), env(safe-area-inset-right));
+  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  z-index: 5;
+  min-width: 132px;
 }
 
 @media (max-width: 560px) {
   .td-summon-intro-body {
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .td-summon-intro-info {
+    grid-column: 1;
+    align-self: end;
+    width: min(86%, 340px);
+    padding: 18px 10px 72px;
+    background: linear-gradient(90deg, rgb(4 7 16 / .9), rgb(4 7 16 / .55) 72%, transparent);
+  }
+
+  .td-summon-intro-hero {
+    grid-column: 1;
+    align-self: start;
+    width: 100%;
+    height: 72%;
+  }
+
+  .td-summon-intro-art {
+    max-width: 96vw;
+    height: 100%;
+  }
+
+  .td-summon-intro-text {
+    display: none;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .td-summon-intro[open] {
+    padding-block: 6px;
+  }
+
+  .td-summon-intro-info {
+    gap: 4px;
+    padding: 4px 0 42px 8px;
+  }
+
+  .td-summon-intro-info h3 {
+    font-size: clamp(1.55rem, 7.5cqh, 2.35rem);
+  }
+
+  .td-summon-intro-text,
+  .td-summon-intro-title {
+    display: none;
+  }
+
+  .td-summon-intro-class-emblem,
+  .td-summon-intro-skill-art {
+    width: clamp(38px, 11cqh, 52px);
+  }
+
+  .td-app .td-summon-intro-groups .td-mythology-badge {
+    width: 25px;
+    height: 25px;
+  }
+
+  .td-summon-intro-skill {
+    width: 56px;
+  }
+
+  .td-summon-intro-skill small {
+    display: none;
+  }
+
+  .td-summon-intro-art {
+    height: 100cqh;
+  }
+
+  .td-summon-intro-continue {
+    right: 8px;
+    bottom: 8px;
+    min-width: 104px;
   }
 }
 

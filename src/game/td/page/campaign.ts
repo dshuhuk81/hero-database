@@ -1253,14 +1253,27 @@ export function createCampaign(ctx: PageContext) {
       intro: (id) => {
         const hero = heroById.get(id);
         if (!hero) return "";
+        const ultimate = data.tuning.heroSkills?.[hero.id];
+        const passives = (CLASS_PASSIVE_SKILLS as Record<string, Array<{ id: string; name: string; text: string; icon?: string }>>)[hero.class] ?? [];
+        const skillEntries = [
+          ...(ultimate ? [{ kind: "Ultimate", name: ultimate.skillName, glyph: "✦", icon: ultimate.icon }] : []),
+          ...passives.slice(0, 2).map((entry, index) => ({ kind: "Passive", name: entry.name, glyph: index ? "◇" : "◆", icon: entry.icon })),
+        ];
+        const skillTiles = skillEntries.length ? `<div class="td-summon-intro-skills" role="list" aria-label="${hero.name} skills">
+          <span class="td-label">Skills</span><div class="td-summon-intro-skill-row">${skillEntries.map((entry) => `<div class="td-summon-intro-skill" role="listitem" title="${entry.kind}: ${entry.name}">
+            <span class="td-summon-intro-skill-art" aria-hidden="true">${entry.icon ? `<img src="${entry.icon}" alt="">` : entry.glyph}</span><small>${entry.name}</small>
+          </div>`).join("")}</div></div>` : "";
         const groups = (isLord(id) ? (hero.mythologyGroups ?? []).slice(0, 1) : (hero.mythologyGroups ?? [])).map((g: string) => mythologyGroups[g]?.name).filter(Boolean).join(", ");
         const text = ROLE_HINTS[hero.class] ?? "";
-        return `<div class="td-summon-intro-info"><span class="td-summon-intro-new">New</span><h3>${hero.name}</h3>${stars(heroStars(progress(), id))}` +
-          `<p class="td-summon-intro-class">${classIconImg(hero.class, 18)}${hero.class}</p>` +
+        return `<div class="td-summon-intro-info"><span class="td-summon-intro-kicker">New hero</span>` +
+          `<div class="td-summon-intro-class"><span class="td-summon-intro-class-emblem">${classIconImg(hero.class, 34)}</span><span><small>Class</small><strong>${hero.class}</strong></span></div>` +
+          `<h3>${hero.name}</h3>${stars(heroStars(progress(), id))}` +
           (hero.title ? `<p class="td-summon-intro-title">${hero.title}</p>` : "") +
           (text ? `<p class="td-summon-intro-text">${text}</p>` : "") +
-          (groups ? `<p class="td-summon-intro-groups">${mythologyIcons(hero)}<span>${groups}</span></p>` : "") + `</div>` +
-          `<img class="td-summon-intro-art" data-rarity="${hero.rarity ?? ""}" src="${hero.splash ?? hero.portrait ?? hero.image ?? ""}" alt="${hero.name}" onerror="this.onerror=null;this.src='${hero.portrait ?? hero.image ?? ""}'">`;
+          (groups ? `<div class="td-summon-intro-groups"><span class="td-label">Mythology</span><p>${mythologyIcons(hero)}<span>${groups}</span></p></div>` : "") +
+          `${skillTiles}</div>` +
+          `<div class="td-summon-intro-hero"><img class="td-summon-intro-art" data-rarity="${hero.rarity ?? ""}" src="${hero.splash ?? hero.portrait ?? hero.image ?? ""}" alt="${hero.name}" onerror="this.onerror=null;this.src='${hero.portrait ?? hero.image ?? ""}'"></div>` +
+          `<div class="td-summon-intro-ambient" aria-hidden="true"></div>`;
       },
     });
   }
