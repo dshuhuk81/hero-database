@@ -15822,3 +15822,95 @@ img[data-rarity="lord"] {
   opacity: .5;
   cursor: not-allowed;
 }
+
+/* Damage meter ("Statistics"): right edge of the battlefield, below the blessing chips, collapsible.
+   Size and position follow the owner's reference (about 21% of the width, from 28% of the height). */
+.td-dmg-meter {
+  position: absolute;
+  top: 28%;
+  right: var(--space-2);
+  z-index: 4;
+  width: clamp(150px, 21%, 280px);
+  border-radius: var(--radius-sm);
+  background: rgb(13 11 20 / 0.62);
+  color: var(--text-bright);
+  pointer-events: auto;
+}
+
+.td-dmg-meter[hidden] {
+  display: none;
+}
+
+.td-dmg-meter-head {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: clamp(12px, 2.6vh, 17px);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+}
+
+.td-dmg-meter-head .td-icon {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform 160ms ease;
+}
+
+.td-dmg-meter.is-collapsed .td-dmg-meter-head .td-icon {
+  transform: rotate(180deg);
+}
+
+.td-dmg-meter.is-collapsed .td-dmg-meter-list {
+  display: none;
+}
+
+.td-dmg-meter-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.td-dmg-meter-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: clamp(20px, 4.4vh, 30px);
+  padding: 0 var(--space-2);
+  font-size: clamp(11px, 2.3vh, 15px);
+  line-height: 1;
+}
+
+.td-dmg-meter-list li::before {
+  content: "";
+  position: absolute;
+  inset: 1px auto 1px 0;
+  width: var(--share);
+  background: rgb(190 52 62 / 0.78);
+  transition: width 200ms ease;
+}
+
+.td-dmg-meter-list li>* {
+  position: relative;
+}
+
+.td-dmg-meter-list strong {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-bold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-dmg-meter-head .td-icon,
+  .td-dmg-meter-list li::before {
+    transition: none;
+  }
+}

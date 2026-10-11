@@ -45,6 +45,13 @@ import TdDebugPanel from "./TdDebugPanel.astro";
       <i class="td-boss-valor-fill" data-td-boss-valor-fill hidden></i>
       <strong data-td-boss-health-value>100%</strong>
     </div>
+    <aside class="td-dmg-meter" data-td-dmg hidden aria-label="Damage by hero">
+      <button class="td-dmg-meter-head" type="button" data-td-dmg-toggle aria-expanded="true">
+        <span>Statistics</span>
+        <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 15l6-6 6 6" fill="none" /></svg>
+      </button>
+      <ol class="td-dmg-meter-list" data-td-dmg-list></ol>
+    </aside>
     <p class="td-notice" data-td-notice role="status" aria-live="polite"></p>
     <div class="td-boss-plate" data-td-boss-plate aria-hidden="true" hidden>
       <img class="td-boss-plate-art" data-td-boss-art alt="" decoding="async" />

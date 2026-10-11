@@ -2,7 +2,7 @@
 // heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 import { shownLives } from "../board.js";
-import { bossHudState } from "../ui.js";
+import { bossHudState, damageRows } from "../ui.js";
 import { defeatedCount } from "../daily.js";
 import { bossSprite } from "../assets.js";
 
@@ -35,6 +35,36 @@ export function createHud(ctx: PageContext) {
   let deckKey = "";
   let lastStrip = 0;
   let bossPlateTimer = 0;
+  let lastMeter = 0;
+  let meterKey = "";
+
+  // Damage meter (reference: Statistics panel, right edge): per-hero damage so far, highest first, bars scaled to the leader.
+  const meterEl = q("[data-td-dmg]");
+  const meterList = q("[data-td-dmg-list]");
+  const meterToggle = q<HTMLButtonElement>("[data-td-dmg-toggle]");
+  const METER_ROWS = 6;
+  const METER_STORE = "td-dmg-meter-collapsed";
+  const setMeterCollapsed = (collapsed: boolean) => {
+    meterEl.classList.toggle("is-collapsed", collapsed);
+    meterToggle.setAttribute("aria-expanded", String(!collapsed));
+  };
+  try { setMeterCollapsed(localStorage.getItem(METER_STORE) === "1"); } catch { /* storage can be blocked */ }
+  meterToggle.addEventListener("click", () => {
+    const collapsed = !meterEl.classList.contains("is-collapsed");
+    setMeterCollapsed(collapsed);
+    try { localStorage.setItem(METER_STORE, collapsed ? "1" : "0"); } catch { /* ignore */ }
+  });
+
+  function renderMeter(game: any) {
+    const rows = damageRows(game?.heroStats ?? {}).filter((row: any) => row.damage > 0).slice(0, METER_ROWS);
+    meterEl.hidden = !rows.length;
+    const key = rows.map((row: any) => `${row.id}:${Math.round(row.damage)}`).join("|");
+    if (key === meterKey) return;
+    meterKey = key;
+    const top = rows[0]?.damage || 1;
+    meterList.innerHTML = rows.map((row: any) =>
+      `<li style="--share:${Math.max(4, Math.round((row.damage / top) * 100))}%"><span>${row.name}</span><strong>${Math.round(row.damage).toLocaleString("en-US")}</strong></li>`).join("");
+  }
 
   function update() {
     const game = state.session?.game;
@@ -287,6 +317,7 @@ export function createHud(ctx: PageContext) {
     const game = state.session?.game;
     if (!game) return;
     syncBossHealth(game);
+    if (now - lastMeter >= 250) { lastMeter = now; renderMeter(game); }
     // Placement regrows every battle second without a change event: keep the counter and the
     // deck's affordable/dimmed state current so heroes can be dragged out mid-stage.
     if (Math.floor(game.placement) !== lastPlacement) {

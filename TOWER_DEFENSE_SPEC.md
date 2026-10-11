@@ -525,6 +525,13 @@ Range is never upgraded in battle; nothing about a hero is upgraded in battle (s
   start or the run end cancel it. Deck and board badges show the collection level.
 - **Boss warnings** (`page/hud.ts`): "<boss> has entered <map>" and the boss nameplate appear when the boss
   group spawns.
+- **Damage meter** (October 11, 2026; `page/hud.ts` `renderMeter`, markup in `TdPlayScreen.astro`, styles at the end of
+  `td.css`): a collapsible "Statistics" panel on the right edge of the stage (top 28%, width 21% clamped to
+  150-280 px, sized after the owner's reference screenshot). It lists up to six heroes with damage so far this
+  stage, highest first (`damageRows(game.heroStats)`, the same numbers as the result screen, DoT included), a red
+  bar scaled to the leader behind each row. Refreshes 4 times a second and only rebuilds when a number changes;
+  hidden until a hero has dealt damage. The collapsed state is remembered in `localStorage` (`td-dmg-meter-collapsed`).
+  It shows cumulative damage, not a per-second rate.
 
 Hero-specific rules worth knowing when touching their kits: Boreas `ice_shockwave` (140% per
 enemy around him, 10% freeze chance), Gaia `rooted_sanctuary` (heals allies in reach for 30% of
