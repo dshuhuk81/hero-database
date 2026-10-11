@@ -202,6 +202,9 @@ export const ENEMY_INFO = {
   vinebinder: { name: "Vinebinder", text: "Roots the road hero it is fighting every 7 seconds: that hero cannot attack for 4 seconds but still blocks, and its ultimate keeps charging. Resists magic somewhat; a Support heals through it." },
   jaguar: { name: "Jaguar", text: "Fast. Leaps over the first blocker it meets (once) and keeps running. A second blocker behind the first, or Archers, stop it." },
   sporeling: { name: "Sporeling", text: "Weak and quick. When it dies it leaves spores: heroes within 70 range attack 25% slower for 4 seconds. Kill it before it reaches the line." },
+  glasswarden: { name: "Glass Warden", text: "Wards enemies within 90 range, itself included: they send 30% of the magic damage they take back to the caster. Resists magic. Archers, Warriors and Assassins do not trigger it." },
+  siegetower: { name: "Siege Tower", text: "Slow and heavily armoured. The first time a blocker stops it, it drops 3 Grunts past your blocker line. Costs 2 lives if it gets through. Kill the crew before they reach the base; Archers and Tanks answer it." },
+  saboteur: { name: "Saboteur", text: "Every 8 seconds jams the nearest platform hero within 150 range for 10 seconds: it cannot attack or cast. Killing the Saboteur frees the hero at once. Fast and fragile." },
   imp: { name: "Imp", text: "Small, fast and fragile. Only appears from a Broodcaller." },
   brood: { name: "Lilith's Children", text: "Summoned around Lilith. While any of them stand she cannot be hit, and all damage they take also hurts her. When all have fallen she summons them again, weaker." },
 };

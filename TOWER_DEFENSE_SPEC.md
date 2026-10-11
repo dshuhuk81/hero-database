@@ -581,6 +581,19 @@ Kinds: `grunt`, `runner`, `flyer`, `archer`, `brute`, `brood`, `mender`, `shield
   (`enemies/sprites/{kind}-v1`, source `artifacts/td-chapter-enemies-v1/`) and animation sheet
   (`enemies/clips/{kind}-v1`, PixelLab clips, 110 px frames); the files are local and **not on R2
   yet**. Numbers are first guesses.
+- **Glass Warden, Siege Tower, Saboteur** (October 10, 2026, G3/A4 second slice; `glasswarden`, `siegetower`,
+  `saboteur` in `tuning.enemies`; swapped into existing timelines entry for entry, counts per stage
+  unchanged except capped at 1-2): **Glass Warden** (2-3 to 2-6) wards enemies within 90 px, itself
+  included: they send 30% of the magic damage they take back to the caster (`wardReflect`, wards do not
+  stack; physical damage is untouched). **Siege Tower** (Chapters 4-13, stages 2/4/6, replaces a brute) is
+  slow with armor 90 and unloads 3 grunts 70 px ahead the first time a blocker holds it (`unloadSiegeTower`;
+  the crew are summoned bodies, no wave shape). **Saboteur** (Chapters 4-13, stages 1/3/5, replaces a runner)
+  jams the nearest platform hero within 150 px every 8 s for 10 s (rooted: no attacks or casts); killing it
+  frees the hero. Art (October 10): own PixelLab Pro stills `enemies/sprites/{glasswarden,siegetower,saboteur}-v1`
+  (source `artifacts/td-chapter-enemies-v2/`, Burrower still as style image) and PixelLab sheets
+  `enemies/clips/{kind}-v1` (part A of `docs/td-asset-pipeline.md`, prompts `.td-work/prompts-{kind}-v1.json`);
+  local only, **not on R2 yet**. No `waveShape.kinds` rows yet. Numbers are first guesses; tests in
+  `test-td-sim.mjs`.
 
 ### Fewer, stronger enemies (`tuning.board.enemyShape`)
 

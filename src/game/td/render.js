@@ -40,6 +40,9 @@ const COLORS = {
   vinebinder: 0x86efac,
   jaguar: 0xfbbf24,
   sporeling: 0xbef264,
+  glasswarden: 0x67e8f9,
+  siegetower: 0xd6c3a0,
+  saboteur: 0xfde68a,
   caravan: 0xd6a35c,
 };
 

@@ -44,12 +44,20 @@ function apiKey() {
   throw new Error("No PixelLab key: set PIXELLAB_API_KEY");
 }
 
-async function call(path, body) {
-  const res = await fetch(API + path, {
-    method: body ? "POST" : "GET",
-    headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+async function call(path, body, tries = 5) {
+  let res;
+  try {
+    res = await fetch(API + path, {
+      method: body ? "POST" : "GET",
+      headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch (err) { // dropped connections (ECONNRESET, EPIPE) are retried; the job ids in jobs.json survive
+    if (tries <= 1) throw err;
+    console.log(`network error (${err.cause?.code ?? err.message}), retrying`);
+    await new Promise((r) => setTimeout(r, 5000));
+    return call(path, body, tries - 1);
+  }
   const json = await res.json().catch(() => ({}));
   return res.ok ? json : { error: res.status, detail: json.detail ?? json };
 }

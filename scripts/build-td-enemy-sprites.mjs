@@ -23,6 +23,8 @@ const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "arche
   boss_lerna: "boss-lerna", boss_kraghorn: "boss-kraghorn", boss_vorruk: "boss-vorruk", boss_ochenta: "boss-ochenta",
   // Chapter creatures (A4 of the gameplay ideas).
   burrower: "burrower", vinebinder: "vinebinder", jaguar: "jaguar", sporeling: "sporeling",
+  // Chapter creatures, second slice (G3): Glass Warden (Ch 2), Siege Tower and Saboteur (Ch 4-13), PixelLab Pro stills.
+  glasswarden: "glasswarden", siegetower: "siegetower", saboteur: "saboteur",
   // Escort caravan (G4, stage 3-2): a wagon with an ox.
   caravan: "caravan" };
 

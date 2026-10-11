@@ -44,6 +44,10 @@ const SETS = {
     "jaguar-v1": { dir: "jaguar-v1", clips: clipFiles("jaguar-v1") },
     "sporeling-v1": { dir: "sporeling-v1", clips: clipFiles("sporeling-v1") },
     "caravan-v2": { dir: "caravan-v2", clips: clipFiles("caravan-v2") },
+    // Chapter creatures, second slice (G3).
+    "glasswarden-v1": { dir: "glasswarden-v1", clips: clipFiles("glasswarden-v1") },
+    "siegetower-v1": { dir: "siegetower-v1", clips: clipFiles("siegetower-v1") },
+    "saboteur-v1": { dir: "saboteur-v1", clips: clipFiles("saboteur-v1") },
     "boss-v2": { dir: "boss", clips: clipFiles("boss") },
     "boss-lilith-v4": { dir: "lilith", clips: clipFiles("lilith") },
     // Remade walk (feet step one after the other): same still, new sheet name (R2 caches a year).

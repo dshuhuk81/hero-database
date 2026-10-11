@@ -135,7 +135,7 @@ export function bossHudState(game) {
   return state;
 }
 
-const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps", burrower: "Burrowers", vinebinder: "Vinebinders", jaguar: "Jaguars", sporeling: "Sporelings" };
+const LEAK_NAMES = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: "the boss", brood: "Lilith's Children", mender: "Menders' packs", shieldbearer: "Shieldbearers", hexer: "Hexers", broodcaller: "Broodcallers", imp: "Imps", burrower: "Burrowers", vinebinder: "Vinebinders", jaguar: "Jaguars", sporeling: "Sporelings", glasswarden: "Glass Wardens", siegetower: "Siege Towers", saboteur: "Saboteurs" };
 const LEAK_HINTS = {
   grunt: "Crowds overran the line: Warrior cleave and Mage splash thin them out.",
   runner: "Runners slip past full blockers: Assassins catch loose enemies, Tanks hold 3, and Frost or Crippling slow them.",
@@ -152,6 +152,9 @@ const LEAK_HINTS = {
   burrower: "Burrowers dive under your blockers when hit: Assassins catch them on the surface, and a second Tank holds the next one.",
   vinebinder: "Vinebinders root the hero they fight: a Support heals through it, and a Tank still blocks while rooted.",
   jaguar: "Jaguars leap over the first blocker: keep a second blocker behind the first, and Archers focus them.",
+  glasswarden: "Glass Wardens reflected your magic: switch to Archers, Warriors or Assassins near them.",
+  siegetower: "Siege Towers unloaded a crew behind your blockers: kill the crew early and keep Archers back.",
+  saboteur: "Saboteurs jammed your platform heroes: kill them first, Assassins and Archers reach them fastest.",
   sporeling: "Sporelings slow your heroes when they die: kill them with Archers and Mages before they reach the line.",
 };
 

@@ -411,6 +411,50 @@
         "distance": 110
       }
     },
+    "glasswarden": {
+      "hp": 520,
+      "speed": 32,
+      "armor": 30,
+      "magicRes": 120,
+      "reward": 18,
+      "damage": 1,
+      "attack": 20,
+      "attackPeriod": 1.1,
+      "ward": {
+        "radius": 90,
+        "share": 0.3
+      }
+    },
+    "siegetower": {
+      "hp": 1400,
+      "speed": 22,
+      "armor": 90,
+      "magicRes": 60,
+      "reward": 30,
+      "damage": 2,
+      "attack": 34,
+      "attackPeriod": 1.4,
+      "unload": {
+        "kind": "grunt",
+        "count": 3,
+        "ahead": 70,
+        "gap": 14
+      }
+    },
+    "saboteur": {
+      "hp": 260,
+      "speed": 44,
+      "armor": 15,
+      "reward": 14,
+      "damage": 1,
+      "attack": 14,
+      "attackPeriod": 1,
+      "sabotage": {
+        "every": 8,
+        "seconds": 10,
+        "range": 150
+      }
+    },
     "sporeling": {
       "hp": 150,
       "speed": 50,

@@ -2289,6 +2289,44 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
     g.time = atlas.sporedUntil + 0.01;
     assert.equal(g.sporeFactor(atlas), 1, "spores wear off");
   }
+  // Glass Warden: magic hits inside its ward come back at the caster; physical hits do not.
+  {
+    const cfg = tuning.enemies.glasswarden.ward;
+    const { g, atlas, foes: [warden, other] } = setup("glasswarden", "grunt");
+    other.x = warden.x + 10; other.y = warden.y;
+    const before = atlas.hpLeft;
+    g.wardReflect(other, atlas, 100);
+    assert.equal(before - atlas.hpLeft > 0, true, "a ward sends damage back");
+    other.x = warden.x + cfg.radius * 5;
+    const after = atlas.hpLeft;
+    g.wardReflect(other, atlas, 100);
+    assert.equal(atlas.hpLeft, after, "outside the ward nothing is reflected");
+  }
+  // Siege Tower: the first blocker contact drops its crew once.
+  {
+    const cfg = tuning.enemies.siegetower.unload;
+    const { g, foes: [tower] } = setup("siegetower");
+    tower.distance = 200;
+    const n0 = g.enemies.length;
+    g.step(1 / 60);
+    assert.equal(g.enemies.filter((e) => e.kind === cfg.kind && e.summonerId === tower.entityId).length, cfg.count, "the crew drops past the blocker");
+    g.step(1 / 60);
+    assert.equal(g.enemies.length, n0 + cfg.count, "only once");
+  }
+  // Saboteur: jams a platform hero in reach until it dies.
+  {
+    const cfg = tuning.enemies.saboteur.sabotage;
+    const { g, atlas, foes: [sab] } = setup("saboteur");
+    g.place("odin", "platform", 0);
+    const odin = g.heroes.find((h) => h.id === "odin");
+    odin.x = sab.x + 20; odin.y = sab.y;
+    sab.sabotageClock = 0;
+    g.enemyTraits(sab, 1 / 60);
+    assert.ok(g.isRooted(odin) && odin.sabotagedBy === sab.entityId, "the platform hero is jammed");
+    assert.ok(!g.isRooted(atlas), "road heroes are not targeted");
+    g.killEnemy(sab, atlas);
+    assert.ok(!g.isRooted(odin), "killing the Saboteur frees the hero");
+  }
 }
 
 console.log("Tower defense checks passed");

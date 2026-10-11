@@ -634,6 +634,8 @@ export class TowerDefenseGame {
         // Ranged enemies hold position for holdSeconds, then close in (no endless standoff
         // against a healed blocker nobody else can reach).
         if (ranged) enemy.rangedTime = (enemy.rangedTime ?? 0) + dt;
+        const unload = this.tuning.enemies[enemy.kind]?.unload;
+        if (unload && !enemy.unloaded) this.unloadSiegeTower(enemy, unload);
         if (target.slotType === "platform") target.aimedAt = this.time; // renderer: target warning
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
@@ -1917,6 +1919,7 @@ export class TowerDefenseGame {
       x: at.x, y: at.y, flying: enemy.flying, amount: dealt + shieldDealt, shielded: shieldDealt > 0, crit, dot, life: 0.75 });
     if (hero && dealt > 0) this.recordDamage(hero, enemy, dealt, dot);
     if (enemy.affixes) this.eliteOnHit(enemy, hero, dealt, dot);
+    if (!dot && dealt > 0 && hero?.hpLeft > 0 && hero.damageType === "magical") this.wardReflect(enemy, hero, dealt);
     if (enemy.stationary) { // God-Mode: every point counts towards the score, the god itself never falls
       this.godDamage += dealt;
       this.score = Math.round(this.godDamage);
@@ -2036,6 +2039,24 @@ export class TowerDefenseGame {
         if (room > 0) this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "red" });
       }
     }
+    if (cfg.sabotage) {
+      // Saboteur: jams the nearest platform hero in reach (it cannot attack or cast) until the Saboteur dies or `seconds` pass.
+      enemy.sabotageClock = (enemy.sabotageClock ?? cfg.sabotage.every * 0.5) - dt;
+      if (enemy.sabotageClock <= 0) {
+        let best = null;
+        for (const hero of this.heroes) {
+          if (hero.slotType !== "platform" || this.isVeiled(hero) || this.isRooted(hero)) continue;
+          const d = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
+          if (d <= cfg.sabotage.range && (!best || d < best.d)) best = { hero, d };
+        }
+        if (best) {
+          enemy.sabotageClock = cfg.sabotage.every;
+          best.hero.rootedUntil = this.time + cfg.sabotage.seconds;
+          best.hero.sabotagedBy = enemy.entityId;
+          this.emit({ type: "hex", x1: enemy.x, y1: enemy.y, x2: best.hero.x, y2: best.hero.y, x: best.hero.x, y: best.hero.y, life: 0.5, color: "gold" });
+        }
+      }
+    }
     if (cfg.hex) {
       enemy.hexClock = (enemy.hexClock ?? cfg.hex.every * 0.5) - dt;
       if (enemy.hexClock <= 0) {
@@ -2088,6 +2109,27 @@ export class TowerDefenseGame {
     enemy.distance = Math.max(0, enemy.distance - distance);
     const point = pointOnPath(this.laneOf(enemy).path, enemy.distance, enemy.sway);
     enemy.x = point.x; enemy.y = point.y;
+  }
+
+  // Siege Tower: the first time a blocker stops it, it drops its crew past the blocker line. The crew are
+  // plain summoned bodies (no wave shape) that walk on while the tower is still being fought.
+  unloadSiegeTower(enemy, unload) {
+    enemy.unloaded = true;
+    for (let i = 0; i < unload.count; i += 1) {
+      this.spawnEnemy(unload.kind, { distance: enemy.distance + unload.ahead + unload.gap * i, statScale: enemy.statScale ?? 1, lane: enemy.lane ?? 0, sway: this.formationSway(enemy.entityId + i), extra: { summonerId: enemy.entityId } });
+    }
+    this.emit({ type: "summon", x: enemy.x, y: enemy.y, life: 0.5, color: "red" });
+  }
+
+  // Glass Warden: enemies inside its ward (itself included) send part of the magic damage back to the caster.
+  wardReflect(enemy, hero, dealt) {
+    for (const warden of this.enemies) {
+      const ward = warden.dead ? null : this.tuning.enemies[warden.kind]?.ward;
+      if (!ward || Math.hypot(warden.x - enemy.x, warden.y - enemy.y) > ward.radius) continue;
+      this.damageHero(hero, dealt * ward.share, warden);
+      this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: hero.x, y2: hero.y, life: 0.15, color: "purple" });
+      return; // overlapping wards do not stack
+    }
   }
 
   isRooted(hero) {
@@ -2246,6 +2288,9 @@ export class TowerDefenseGame {
     if (this.boons.length) this.boonsOnKill(enemy, hero);
     if (this.boardEvent) boardEventOnKill(this, enemy, hero); // Necropolis ghosts (G2)
     if (enemy.affixes) this.eliteOnDeath(enemy);
+    if (this.tuning.enemies[enemy.kind]?.sabotage) {
+      for (const h of this.heroes) if (h.sabotagedBy === enemy.entityId) { h.sabotagedBy = null; h.rootedUntil = 0; }
+    }
     const spores = this.tuning.enemies[enemy.kind]?.spores;
     if (spores) {
       for (const hero of this.heroes) {
