@@ -558,6 +558,8 @@ export function createCampaign(ctx: PageContext) {
     const pickerOpen = heroTab === "evolution" && evoPicker && evoTarget !== null;
     const recruit = hero.id.startsWith("recruit-") ? " is-recruit" : "";
     const portrait = `<img data-rarity="${hero.rarity ?? ''}" src="${hero.portrait ?? hero.image}" alt="${hero.name}">`;
+    // The stage uses the full-size cutout; compact headers keep the inexpensive card.
+    const stagePortrait = `<img class="td-hero-stage-figure" src="${hero.splash ?? hero.portrait ?? hero.image}" alt="${hero.name}" decoding="async">`;
     // Stars, Evolution, Skills and Talents use the whole screen: the portrait gives way to a compact
     // head (thumbnail, name, Might, stars), and the picker (when open) takes the body. Level keeps the portrait.
     const wide = heroTab !== "level";
@@ -569,7 +571,7 @@ export function createCampaign(ctx: PageContext) {
       <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
       </article>`
       : `<article class="td-hero-profile${recruit}">
-      <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${pickerOpen ? evolutionPicker(p, hero) : `${portrait}${summary}`}</div>
+      <div class="td-hero-profile-art${pickerOpen ? " is-picker" : ""}">${pickerOpen ? evolutionPicker(p, hero) : `${stagePortrait}${summary}`}</div>
       <div class="td-hero-profile-copy">${panel}</div>
       <nav class="td-hero-tabs" role="tablist" aria-label="Hero upgrades">${tabs}</nav>
       </article>`;

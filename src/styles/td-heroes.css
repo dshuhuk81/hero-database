@@ -1,0 +1,181 @@
+/* One shared scene, with quiet reading surfaces and gold reserved for selection.
+   Menus use logical pixels and are scaled by page/frame.ts, including on desktop. */
+[data-screen="heroes"] .td-app {
+  --hs-gold: #e4c785;
+  --hs-muted: #b9afc7;
+  background: #12101e url('/td/ui/heroes/elysian-ruins-v1.webp') center / cover no-repeat;
+  isolation: isolate;
+}
+
+[data-screen="heroes"] .td-app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #080911b8, transparent 35%, #0a08152b 56%, #080911bd),
+    linear-gradient(#0807116b, transparent 22%, transparent 70%, #0807119e);
+}
+
+[data-screen="heroes"] .td-app .td-appbar {
+  background: linear-gradient(#080711bd, #08071126);
+  border: 0;
+  box-shadow: none;
+}
+
+[data-screen="heroes"] .td-app [data-td-appbar-title] {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #f5e8c9;
+  font-weight: 500;
+  letter-spacing: .015em;
+}
+
+.td-app .td-heroes-screen { background: transparent; }
+.td-app .td-heroes-workspace { gap: 4px; }
+
+.td-app .td-heroes-browser,
+.td-app .td-hero-profile {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.td-app .td-heroes-browser {
+  padding: 8px 10px 8px 0;
+  background: linear-gradient(90deg, #09091485, #09091426 85%, transparent);
+}
+
+.td-app .td-collection-head {
+  padding: 0 2px 8px;
+  border: 0;
+}
+
+.td-app .td-collection-head .td-label {
+  color: var(--hs-gold);
+  font: 500 12px Georgia, "Times New Roman", serif;
+  letter-spacing: .13em;
+}
+
+.td-app .td-collection-head > span { color: #cec5d8; }
+.td-app .td-heroes-browser .td-camp-heroes { gap: 6px; padding: 2px; }
+
+.td-app .td-heroes-browser .td-hero-tile {
+  border-radius: 2px;
+  border-color: #e4c78530;
+  box-shadow: 0 3px 8px #0005;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.td-app .td-heroes-browser .td-hero-tile:hover { border-color: #e4c785a6; }
+.td-app .td-heroes-browser .td-hero-tile.is-selected {
+  border-color: #ffe3a1;
+  box-shadow: 0 0 0 1px #e4c78570, 0 0 12px #e1b45b45;
+}
+
+.td-app .td-hero-profile-art { background: transparent; overflow: hidden; }
+.td-app .td-hero-profile-art::after {
+  height: 34%;
+  background: linear-gradient(transparent, #0908117a);
+  pointer-events: none;
+}
+
+.td-app .td-hero-profile-art .td-hero-stage-figure {
+  background: transparent;
+  padding: 0 0 2px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 7px 5px #0009) drop-shadow(0 0 16px #b7a1e51c);
+  animation: td-hero-enter .35s ease-out both;
+}
+
+.td-app .td-hero-profile.is-recruit .td-hero-profile-art img { padding: 0 8px 2px; }
+.td-app .td-hero-summary { padding: 12px 10px; text-shadow: 0 2px 6px #000, 0 0 18px #000; }
+.td-app .td-hero-summary h2 {
+  color: #f7df9d;
+  font: 500 38px/.98 Georgia, "Times New Roman", serif;
+  letter-spacing: -.025em;
+  margin-bottom: 5px;
+}
+.td-app .td-hero-role { color: #ead6a5; }
+.td-app .td-hero-might { color: #e0d7e6; }
+.td-app .td-hero-might strong { color: #fff5df; font-family: Georgia, "Times New Roman", serif; }
+.td-app .td-hero-badges .td-stars { color: #b6a8bd; }
+
+.td-app .td-hero-profile-copy {
+  border: 0;
+  background: linear-gradient(90deg, transparent, #0b0915bb 14%, #0b0915db 90%, #0b0915a6);
+  padding: 18px 14px 0 20px;
+  box-shadow: none;
+}
+.td-app .td-hero-tab-copy { color: #d6cedf; line-height: 1.55; }
+.td-app .td-hero-level-head {
+  border: 0;
+  padding-top: 14px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #f4e9d6;
+}
+.td-app .td-hero-profile .td-camp-pips { gap: 3px; margin-top: 7px; }
+.td-app .td-hero-profile .td-camp-pips i { max-width: none; height: 4px; background: #e4c78522; border-radius: 2px; }
+.td-app .td-hero-profile .td-camp-pips i.is-on {
+  background: linear-gradient(#fff0b9, #d5a649);
+  box-shadow: 0 0 6px #ffd77866;
+}
+.td-app .td-hero-profile-stats { border: 0; padding-block: 20px; gap: 9px; }
+.td-app .td-hero-profile-stats div { border: 0; padding: 0; }
+.td-app .td-hero-profile-stats dt { color: var(--hs-muted); letter-spacing: .08em; font-size: 10px; }
+.td-app .td-hero-profile-stats dd { font: 500 19px Georgia, "Times New Roman", serif; color: #f8f0e1; }
+.td-app .td-hero-upgrade,
+.td-app .td-hero-profile.is-wide .td-hero-upgrade {
+  background: linear-gradient(transparent, #0b0915f5 25%);
+  padding-block: 12px 8px;
+}
+.td-app .td-hero-upgrade .action-button--primary {
+  border-radius: 3px;
+  border: 1px solid #c9a65b85;
+  color: #f5dfad;
+  background: linear-gradient(115deg, #92703952, #16121e 70%);
+  box-shadow: inset 0 1px #ffe6ac20;
+}
+.td-app .td-hero-upgrade .action-button--primary:not(:disabled):hover {
+  border-color: #efd092;
+  background: linear-gradient(115deg, #aa84496b, #211827 70%);
+}
+
+.td-app .td-hero-tabs { border: 0; background: #0b091559; padding-block: 8px; }
+.td-app .td-hero-tab {
+  border: 0;
+  border-radius: 0;
+  color: #c1b6cb;
+  font: 500 10px Georgia, "Times New Roman", serif;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+  background: transparent;
+  transition: color .18s ease, background .18s ease;
+}
+.td-app .td-hero-tab img { width: 27px; height: 27px; image-rendering: auto; filter: drop-shadow(0 2px 4px #0009); }
+.td-app .td-hero-tab:hover { color: #fff0cf; background: #e4c7850d; }
+.td-app .td-hero-tab.is-active {
+  color: #ffe2a0;
+  background: radial-gradient(ellipse at 50% 55%, #e6bb5830, transparent 72%);
+  box-shadow: inset 2px 0 #e4c785;
+  text-shadow: 0 0 12px #efbd5966;
+}
+.td-app .td-hero-tab.is-active img { filter: drop-shadow(0 0 7px #efbd5966); }
+.td-app .td-hero-tab:focus-visible,
+.td-app .td-heroes-browser .td-hero-tile:focus-visible { outline: 2px solid #fff0bf; outline-offset: -2px; }
+
+/* Complex upgrade views retain their working space, without a second outer box. */
+.td-app .td-hero-profile-head { border: 0; background: #0b09158c; }
+.td-app .td-hero-profile.is-wide .td-hero-profile-copy { background: #0b0915cf; }
+.td-app .td-hero-profile-head .td-hero-summary h2 { font-size: 24px; }
+.td-app .td-hero-profile.is-wide .td-hero-profile-copy { border: 0; }
+
+@keyframes td-hero-enter {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .td-app .td-hero-profile-art .td-hero-stage-figure { animation: none; }
+  .td-app .td-hero-tab, .td-app .td-heroes-browser .td-hero-tile { transition: none; }
+}
