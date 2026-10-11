@@ -16166,3 +16166,560 @@ img[data-rarity="lord"] {
     transition: none;
   }
 }
+
+/* Heroes screen, premium skin (October 2026): same layout, richer finish. Gilded hairline
+   frames with corner brackets, glass flyout, glowing active tab, serif hero name with a gold
+   sheen, gold progress pips and a beveled upgrade button. Colours stay on the site tokens
+   (gold accent on dark raised surfaces) so the screen matches the rest of the game. */
+.td-app .td-heroes-screen {
+  --hs-gold: var(--accent-gold);
+  --hs-gold-line: color-mix(in srgb, var(--accent-gold) 42%, transparent);
+  --hs-gold-faint: color-mix(in srgb, var(--accent-gold) 16%, transparent);
+  --hs-glass: color-mix(in srgb, var(--bg-base) 72%, transparent);
+  --hs-frame: linear-gradient(160deg, color-mix(in srgb, var(--accent-gold) 70%, #fff 0%), color-mix(in srgb, var(--accent-gold) 18%, transparent) 30%, color-mix(in srgb, var(--accent-gold) 10%, transparent) 70%, color-mix(in srgb, var(--accent-gold) 55%, transparent));
+}
+
+/* Gilded frame: a gradient border drawn by a masked pseudo element, plus inner shading. */
+.td-app .td-heroes-browser,
+.td-app .td-hero-profile {
+  position: relative;
+  border-color: transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .5), inset 0 0 40px rgb(0 0 0 / .45), 0 10px 30px rgb(0 0 0 / .45);
+}
+
+.td-app .td-heroes-browser::before,
+.td-app .td-hero-profile::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 3;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--hs-frame);
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Corner brackets, top left and bottom right, like engraved metal fittings. */
+.td-app .td-heroes-browser::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.td-app .td-heroes-browser::after {
+  top: 5px;
+  left: 5px;
+  border-top: 2px solid var(--hs-gold);
+  border-left: 2px solid var(--hs-gold);
+  border-top-left-radius: 3px;
+  filter: drop-shadow(0 0 4px var(--hs-gold-line));
+}
+
+.td-app .td-heroes-browser {
+  background:
+    radial-gradient(120% 60% at 50% 0%, var(--hs-gold-faint), transparent 60%),
+    linear-gradient(180deg, var(--bg-raised), color-mix(in srgb, var(--bg-base) 80%, var(--bg-raised)));
+}
+
+.td-app .td-collection-head {
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--hs-gold-line);
+}
+
+.td-app .td-collection-head .td-label {
+  color: var(--hs-gold);
+  letter-spacing: .14em;
+  text-shadow: 0 0 10px var(--hs-gold-line);
+}
+
+/* Roster tiles: thin frame, lift on hover, gold glow on the selected hero. */
+.td-app .td-heroes-browser .td-hero-tile {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06), 0 2px 6px rgb(0 0 0 / .4);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.td-app .td-heroes-browser .td-hero-tile:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px var(--hs-gold-line), 0 4px 10px rgb(0 0 0 / .5);
+}
+
+.td-app .td-heroes-browser .td-hero-tile.is-selected {
+  box-shadow: inset 0 0 0 2px var(--hs-gold), inset 0 0 16px var(--hs-gold-line), 0 0 14px var(--hs-gold-line);
+}
+
+/* Stage: vignette around the art and a soft gold rim light behind the hero. */
+.td-app .td-hero-profile {
+  background:
+    radial-gradient(60% 70% at 30% 35%, var(--hs-gold-faint), transparent 70%),
+    radial-gradient(circle at 25% 20%, rgb(140 90 255 / .10), transparent 45%),
+    var(--bg-raised);
+}
+
+.td-app .td-hero-profile-art {
+  background: radial-gradient(70% 80% at 50% 45%, transparent 40%, rgb(0 0 0 / .45));
+}
+
+.td-app .td-hero-profile-art img {
+  filter: drop-shadow(0 12px 24px rgb(0 0 0 / .6));
+}
+
+/* Hero name: serif display, gold sheen, engraved shadow. */
+.td-app .td-hero-summary h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1;
+  background: linear-gradient(180deg, #fff8dc 0%, var(--accent-gold-light) 40%, var(--hs-gold) 75%, color-mix(in srgb, var(--hs-gold) 60%, #7a4a00));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 0 rgb(0 0 0 / .7)) drop-shadow(0 0 12px rgb(250 204 21 / .25));
+}
+
+.td-app .td-hero-profile.is-wide .td-hero-summary h2 {
+  font-size: 26px;
+}
+
+.td-app .td-hero-might strong {
+  color: var(--text-bright);
+  text-shadow: 0 1px 0 rgb(0 0 0 / .8);
+}
+
+.td-app .td-hero-badges .td-stars {
+  filter: drop-shadow(0 0 4px var(--hs-gold-line));
+}
+
+/* Flyout: dark glass with a gold rule above the level heading. */
+.td-app .td-hero-profile-copy {
+  position: relative;
+  border-left: 1px solid var(--hs-gold-line);
+  background: linear-gradient(180deg, var(--hs-glass), color-mix(in srgb, var(--bg-base) 88%, transparent));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 1px 0 0 rgb(255 255 255 / .04);
+}
+
+.td-app .td-hero-level-head {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--hs-gold-line);
+  color: var(--text-bright);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+}
+
+/* Progress pips: chunky gold segments with an inner highlight. */
+.td-app .td-hero-profile .td-camp-pips {
+  gap: 4px;
+}
+
+.td-app .td-hero-profile .td-camp-pips i {
+  max-width: none;
+  height: 7px;
+  background: rgb(255 255 255 / .08);
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / .6);
+}
+
+.td-app .td-hero-profile .td-camp-pips i.is-on {
+  background: linear-gradient(180deg, var(--accent-gold-light), var(--hs-gold) 55%, color-mix(in srgb, var(--hs-gold) 70%, #6b3f00));
+  box-shadow: 0 0 6px var(--hs-gold-line), inset 0 1px 0 rgb(255 255 255 / .5);
+}
+
+/* Stat rows: engraved separators, large tabular values. */
+.td-app .td-hero-profile-stats {
+  border-block: 1px solid var(--hs-gold-line);
+}
+
+.td-app .td-hero-profile-stats div {
+  padding-block: 5px;
+  border-bottom: 1px solid rgb(255 255 255 / .05);
+}
+
+.td-app .td-hero-profile-stats div:last-child {
+  border-bottom: 0;
+}
+
+.td-app .td-hero-profile-stats dt {
+  color: var(--text-secondary);
+  font-size: var(--td-fs-label);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.td-app .td-hero-profile-stats dd {
+  color: var(--text-bright);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* Upgrade button: beveled gold plate. */
+.td-app .td-hero-upgrade {
+  background: linear-gradient(transparent, color-mix(in srgb, var(--bg-base) 92%, transparent) 30%);
+}
+
+.td-app .td-hero-upgrade .action-button--primary:not([disabled]) {
+  border: 1px solid color-mix(in srgb, var(--hs-gold) 80%, #fff);
+  background: linear-gradient(180deg, var(--accent-gold-light), var(--hs-gold) 45%, color-mix(in srgb, var(--hs-gold) 70%, #7a4a00));
+  color: #1a1206;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .55), inset 0 -2px 0 rgb(0 0 0 / .25), 0 0 14px var(--hs-gold-line);
+  text-shadow: 0 1px 0 rgb(255 255 255 / .35);
+}
+
+.td-app .td-hero-upgrade .action-button--primary:not([disabled]):hover {
+  filter: brightness(1.08);
+}
+
+/* Tab rail: dark metal column; active tab gets a gold plate, frame and glow. */
+.td-app .td-hero-tabs {
+  border-left: 1px solid var(--hs-gold-line);
+  background: linear-gradient(90deg, rgb(0 0 0 / .35), color-mix(in srgb, var(--bg-base) 85%, transparent));
+}
+
+.td-app .td-hero-tab {
+  border-bottom-color: var(--hs-gold-faint);
+  color: var(--text-secondary);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color .15s ease, background .15s ease;
+}
+
+.td-app .td-hero-tab:hover {
+  color: var(--text-bright);
+  background: var(--hs-gold-faint);
+}
+
+.td-app .td-hero-tab img,
+.td-app .td-hero-tab .td-icon {
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / .7));
+}
+
+.td-app .td-hero-tab.is-active {
+  color: var(--hs-gold);
+  background: radial-gradient(90% 70% at 50% 50%, color-mix(in srgb, var(--hs-gold) 22%, transparent), transparent 75%), rgb(0 0 0 / .25);
+  box-shadow: inset 0 0 0 1px var(--hs-gold), inset 0 0 18px var(--hs-gold-line), 0 0 12px var(--hs-gold-line);
+  text-shadow: 0 0 8px var(--hs-gold-line);
+}
+
+.td-app .td-hero-tab.is-active img,
+.td-app .td-hero-tab.is-active .td-icon {
+  filter: drop-shadow(0 0 6px var(--hs-gold-line)) drop-shadow(0 2px 3px rgb(0 0 0 / .7));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-app .td-heroes-browser .td-hero-tile,
+  .td-app .td-hero-tab {
+    transition: none;
+  }
+
+  .td-app .td-heroes-browser .td-hero-tile:hover {
+    transform: none;
+  }
+}
+
+/* Campaign atlas: authored landscape and DOM controls share one coordinate plane.
+   The minimum width preserves touch targets; narrow screens pan the landscape. */
+.td-app .td-camp-stages.td-campaign-atlas {
+  display: block;
+  overflow: auto;
+  scroll-snap-type: none;
+  border: 1px solid #8ca5b33d;
+  border-radius: 14px;
+  background: #101c28;
+  isolation: isolate;
+  container-type: size;
+}
+.td-atlas-world {
+  position: relative;
+  width: max(100%, 177.778cqh);
+  height: 100%;
+  min-width: 600px;
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+.td-atlas-landscape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+.td-atlas-world::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, #06101d6b, transparent 28%, transparent 66%, #06101dbb), linear-gradient(90deg, #08131e44, transparent 20%, transparent 85%, #08131e44);
+  box-shadow: inset 0 0 60px #020a1466;
+}
+.td-atlas-caption {
+  position: absolute;
+  z-index: 2;
+  top: 6%;
+  left: 4%;
+  display: grid;
+  gap: 5px;
+  color: #e7eff4;
+  text-shadow: 0 2px 12px #000;
+  pointer-events: none;
+}
+.td-atlas-caption > span { color: #d4b97e; font-size: 10px; letter-spacing: .24em; }
+.td-atlas-caption strong { font: 500 clamp(20px, 2.5vw, 34px)/1.1 Georgia, serif; }
+.td-atlas-caption small { color: #c0ccd7; font-size: 11px; }
+.td-atlas-route { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.td-atlas-route path { fill: none; stroke: #dce5ec70; stroke-width: 1.5; stroke-dasharray: 3 7; vector-effect: non-scaling-stroke; }
+.td-atlas-route path.is-reached { stroke: #e6c987a6; stroke-width: 2; stroke-dasharray: 3 5; }
+.td-app .td-atlas-stop {
+  position: absolute;
+  z-index: 3;
+  left: var(--stop-x);
+  top: var(--stop-y);
+  transform: translate(-50%, -22px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 130px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: #f3eddf;
+  cursor: pointer;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.td-atlas-pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid #b6cbd3;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 20%, #384b59, #0e1a27 75%);
+  box-shadow: 0 3px 0 #07111c, 0 5px 14px #000a, inset 0 0 0 4px #172333;
+  font-size: 13px;
+  font-weight: 700;
+  transition: box-shadow .2s, border-color .2s;
+}
+.td-app .td-atlas-pin .td-camp-stage-badge {
+  top: -4px;
+  right: -7px;
+  width: 19px;
+  height: 19px;
+  border: 1px solid #77968c;
+  background: #1c3932;
+  color: #c9e1c0;
+}
+.td-app .td-atlas-pin .td-camp-stage-badge svg { width: 11px; height: 11px; }
+.td-atlas-label {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #08121cce;
+  box-shadow: 0 4px 16px #0003;
+}
+.td-atlas-label strong { font-size: 11px; font-weight: 600; white-space: nowrap; }
+.td-atlas-label small { font-size: 9px; color: #a3b4c2; }
+.td-atlas-label .td-laurels { display: flex; justify-content: center; gap: 2px; }
+.td-app .td-atlas-label .td-laurel { width: 14px; height: 14px; color: #708190; }
+.td-app .td-atlas-label .td-laurel.is-earned { color: #eac675; }
+.td-atlas-stop.is-cleared .td-atlas-pin { border-color: #c6b379; }
+.td-app .td-atlas-stop.is-locked { opacity: .78; cursor: default; }
+.td-atlas-stop.is-locked .td-atlas-pin { border-color: #7c939e; color: #a5b7c5; background: #172535ec; }
+.td-app .td-atlas-stop.is-locked .td-camp-stage-badge { background: #142130; color: #c0ccd4; border-color: #7b8f9d; }
+.td-atlas-stop.is-next .td-atlas-pin, .td-atlas-stop.is-featured .td-atlas-pin {
+  border: 2px solid #f8d28a;
+  color: #fff2c9;
+  background: radial-gradient(circle at 40% 20%, #87643a, #322a21 75%);
+  box-shadow: 0 0 0 5px #efc97b25, 0 0 28px #ffae3d6b, 0 4px 12px #000;
+}
+.td-app .td-atlas-stop.is-next .td-camp-stage-badge { background: #e8c17a; color: #281b0a; border-color: #ffe3a8; }
+.td-atlas-stop:not(:disabled):hover .td-atlas-pin { border-color: #ffe6ab; box-shadow: 0 0 0 5px #efc97b40, 0 0 30px #efc97b70; }
+.td-atlas-stop:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 7px; }
+.td-atlas-here { position: absolute; bottom: calc(100% + 5px); color: #ffe0a0; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 2px 5px #000; white-space: nowrap; }
+.td-atlas-camp {
+  position: absolute;
+  left: -14px;
+  top: -12px;
+  width: 50px;
+  height: 58px;
+  pointer-events: none;
+  isolation: isolate;
+}
+.td-atlas-camp img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 3px 3px #0009); }
+.td-atlas-camp::before {
+  content: "";
+  position: absolute;
+  inset: 35% -20% -12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #ffbd5266, #f4822526 45%, transparent 72%);
+  mix-blend-mode: screen;
+  animation: td-atlas-fire 2.7s ease-in-out infinite alternate;
+}
+.td-atlas-camp i {
+  position: absolute;
+  z-index: 2;
+  left: 46%;
+  top: 44%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #ffe0a1;
+  box-shadow: 0 0 4px #ff9e35;
+  opacity: 0;
+  animation: td-atlas-ember 3.2s ease-out infinite;
+}
+.td-atlas-camp i:nth-of-type(2) { left: 58%; animation-delay: 1.1s; }
+.td-atlas-camp i:nth-of-type(3) { left: 38%; animation-delay: 2.2s; }
+@keyframes td-atlas-ember {
+  15% { opacity: .9; }
+  75%, 100% { transform: translate(5px, -27px); opacity: 0; }
+}
+.td-atlas-mist { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 80% 75%, #a9c9e733, transparent 35%), radial-gradient(ellipse at 10% 90%, #b4d3e72b, transparent 30%); animation: td-atlas-drift 18s ease-in-out infinite alternate; }
+.td-atlas-compass { position: absolute; bottom: 5%; right: 3%; z-index: 2; display: grid; text-align: center; color: #dfce9a9e; font: 9px Georgia, serif; }
+.td-atlas-compass span { font-size: 36px; line-height: 1; }
+.td-atlas-drawer::backdrop { background: #030a1440; }
+@keyframes td-atlas-fire { from { opacity: .6; transform: scale(.94); } to { opacity: 1; transform: scale(1.06); } }
+@keyframes td-atlas-drift { to { transform: translate(3%, -2%); opacity: .6; } }
+@media (max-width: 600px) and (orientation: portrait) {
+  .td-atlas-world { min-width: 600px; }
+  .td-atlas-drawer { inset: auto 0 0; width: 100%; height: 74dvh; border: 1px solid #8094a54d; border-radius: 18px 18px 0 0; }
+  .td-atlas-drawer[open] { animation: td-atlas-sheet-in 200ms ease-out both; }
+}
+@keyframes td-atlas-sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .td-atlas-mist, .td-atlas-camp::before, .td-atlas-camp i, .td-atlas-drawer[open] { animation: none; }
+  .td-atlas-pin { transition: none; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .td-atlas-caption { top: 5%; gap: 2px; }
+  .td-atlas-caption > span, .td-atlas-caption small { display: none; }
+  .td-atlas-caption strong { font-size: 17px; }
+  .td-app .td-atlas-stop { gap: 3px; }
+  .td-atlas-pin { width: 38px; height: 38px; }
+  .td-atlas-label { padding: 3px 6px; }
+  .td-atlas-label strong { font-size: 10px; }
+  .td-app .td-atlas-label .td-laurel { width: 11px; height: 11px; }
+}
+
+/* Atlas chrome floats above the landscape; rewards expand only on request. */
+.td-app [data-td-screen="stages"] .td-camp-screen.has-campaign-atlas {
+  position: relative;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 4px;
+  padding: 6px 10px;
+}
+.td-app .has-campaign-atlas .td-camp-head {
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  right: 175px;
+  z-index: 5;
+  pointer-events: none;
+}
+.td-app .has-campaign-atlas .td-camp-head .td-camp-chapter {
+  margin: 0;
+  font: 500 17px/1.3 Georgia, serif;
+  color: #efe5d0;
+  text-shadow: 0 2px 5px #000, 0 0 15px #000;
+}
+.td-app .has-campaign-atlas .td-camp-progress { display: none; }
+.td-app .has-campaign-atlas .td-camp-stages { grid-row: 1; border-radius: 8px; }
+.td-app .has-campaign-atlas .td-camp-laurels {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  z-index: 6;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.td-atlas-rewards summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 3px 10px;
+  border: 1px solid #c3aa6b60;
+  border-radius: 6px;
+  background: #101b28e6;
+  color: #e6d3a3;
+  font-size: 11px;
+  cursor: pointer;
+  list-style: none;
+}
+.td-atlas-rewards summary::-webkit-details-marker { display: none; }
+.td-atlas-rewards summary:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 3px; }
+.td-atlas-rewards summary .td-laurel { width: 16px; height: 16px; }
+.td-atlas-rewards summary strong span { color: #9faab5; font-weight: 400; }
+.td-atlas-rewards[open] .td-atlas-reward-chevron { transform: rotate(180deg); }
+.td-atlas-reward-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  width: min(340px, calc(100vw - 48px));
+  max-height: 65dvh;
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid #bfa77666;
+  border-radius: 8px;
+  background: #0c1523f5;
+  box-shadow: 0 8px 32px #0009;
+  font-size: 12px;
+}
+.td-atlas-reward-panel > strong { color: #e6d3a3; }
+.td-atlas-reward-panel > p { margin: 6px 0 12px; color: #b1bac8; font-size: 11px; }
+.td-atlas-reward-track { display: grid; gap: 8px; }
+.td-app .td-atlas-reward-track .td-camp-laurel-goals { display: grid; gap: 6px; }
+.td-app .td-atlas-reward-track .td-camp-laurel-goals li { padding: 8px; flex-wrap: wrap; }
+.td-app .has-campaign-atlas .td-camp-chapters {
+  grid-row: 2;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  gap: 2px;
+}
+.td-app .has-campaign-atlas .td-camp-chapter-tab {
+  min-height: 30px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-size: 11px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+}
+.td-app .has-campaign-atlas .td-camp-chapter-tab.is-current {
+  border-bottom-color: #d7b76c;
+  background: linear-gradient(0deg, #c9a95722, transparent);
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .td-app .has-campaign-atlas .td-camp-head { right: 145px; left: 20px; }
+  .td-app .has-campaign-atlas .td-camp-head .td-camp-chapter { font-size: 14px; }
+  .td-atlas-rewards summary { gap: 4px; padding: 3px 6px; }
+}
+.td-app .has-campaign-atlas .td-camp-laurels {
+  left: auto;
+  width: max-content;
+  max-width: calc(100% - 36px);
+  min-width: 0;
+}
+.td-app .has-campaign-atlas .td-camp-chapters { min-width: 0; }

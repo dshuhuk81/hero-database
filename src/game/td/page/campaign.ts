@@ -232,16 +232,44 @@ export function createCampaign(ctx: PageContext) {
     const cleared = stages.filter((stage) => isCleared(p, stage.id)).length;
     chapterEl.textContent = `Chapter ${chapter.id}: ${chapter.name}`;
     progressEl.textContent = ""; // chapter progress line removed (owner, October 9, 2026)
-    stagesEl.innerHTML = stages.map((stage) => {
+    // Chapter 4 is the first authored atlas. Coordinates refer to its illustration,
+    // not the battlefield geometry. Other chapters keep their existing selection.
+    const atlas = chapter.id === 4;
+    const locations = [[10, 64], [29, 48], [47, 50], [60, 29], [77, 43], [90, 25]];
+    stagesEl.classList.toggle("td-campaign-atlas", atlas);
+    stagesEl.closest(".td-camp-screen")?.classList.toggle("has-campaign-atlas", atlas);
+    drawerEl.classList.toggle("td-atlas-drawer", atlas);
+    const stageButtons = stages.map((stage, index) => {
       const open = isUnlocked(p, stage, allStagesPlayable);
       const done = p.cleared[stage.id];
       const status = !open ? `Clear ${stage.unlockAfter} to unlock` : done ? "Cleared" : "Ready to play";
+      if (atlas) {
+        const [x, y] = locations[index];
+        const nextStop = stage.id === next?.id;
+        return `<button type="button" class="td-atlas-stop${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${nextStop ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" style="--stop-x:${x}%;--stop-y:${y}%" data-camp-stage="${stage.id}" aria-haspopup="dialog" aria-label="Stage ${stage.id}: ${stage.name}. ${status}"${nextStop ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
+          ${nextStop ? '<span class="td-atlas-camp" aria-hidden="true"><img src="/td/campaign/campfire.webp" alt="" width="256" height="256" draggable="false"><i></i><i></i><i></i></span><span class="td-atlas-here">Your journey</span>' : ""}
+          <span class="td-atlas-pin">${stage.id}${stageBadge(done ? "done" : !open ? "locked" : nextStop ? "next" : "")}</span>
+          <span class="td-atlas-label"><strong>${stage.name}</strong>${open ? laurelRow(laurelFlags(campaign, p, stage)) : '<small>Unexplored</small>'}</span>
+        </button>`;
+      }
       return `<button type="button" class="td-camp-stage${done ? " is-cleared" : ""}${!open ? " is-locked" : ""}${stage.id === next?.id ? " is-next" : ""}${stage.id === drawerId ? " is-featured" : ""}" data-camp-stage="${stage.id}" aria-haspopup="dialog"${stage.id === next?.id ? " data-td-autofocus" : ""}${open ? "" : " disabled"}>
         <img class="td-camp-stage-art" src="${terrain(stage)}" alt="" loading="lazy">
         ${stageBadge(done ? "done" : !open ? "locked" : stage.id === next?.id ? "next" : "")}
         <span class="td-camp-stage-id">${stage.id}</span><span class="td-camp-stage-copy"><strong>${stage.name}</strong>
         ${stageRuleFor(stage) ? `<small class="td-camp-stage-rule" title="${stageRuleFor(stage)!.text}">${stageRuleFor(stage)!.name}</small>` : ""}<small class="td-camp-stage-status">${status}</small>${open ? laurelRow(laurelFlags(campaign, p, stage)) : ""}</span></button>`;
     }).join("");
+    const route = atlas ? locations.slice(1).map(([x, y], index) => {
+      const [previousX, previousY] = locations[index];
+      const reached = isUnlocked(p, stages[index + 1], allStagesPlayable);
+      return `<path class="${reached ? "is-reached" : ""}" d="M${previousX} ${previousY} Q${(previousX + x) / 2} ${previousY + 7} ${x} ${y}" />`;
+    }).join("") : "";
+    stagesEl.innerHTML = atlas ? `<div class="td-atlas-world">
+      <img class="td-atlas-landscape" src="/td/campaign/frozen-covenant.webp" alt="" fetchpriority="high" draggable="false">
+      <div class="td-atlas-mist" aria-hidden="true"></div>
+      <svg class="td-atlas-route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${route}</svg>
+      ${stageButtons}
+      <span class="td-atlas-compass" aria-hidden="true">N<span>✧</span>S</span>
+    </div>` : stageButtons;
     // The stage row scrolls sideways: bring the next stage into view.
     const nextCard = stagesEl.querySelector<HTMLElement>(".is-next");
     stagesEl.scrollLeft = nextCard ? Math.max(0, nextCard.offsetLeft - (stagesEl.clientWidth - nextCard.offsetWidth) / 2) : 0;
@@ -259,10 +287,16 @@ export function createCampaign(ctx: PageContext) {
     // Chapter rating track: points earned and the milestone rewards (paid automatically).
     const track = chapterLaurels(campaign, p, chapter.id);
     laurelTrackEl.hidden = !track.milestones.length;
-    laurelTrackEl.innerHTML = `<div class="td-camp-laurel-total">${laurelIcon(true)}<strong>${track.earned}</strong><span>/ ${track.max}</span></div>
+    const rewardTrack = `<div class="td-camp-laurel-total">${laurelIcon(true)}<strong>${track.earned}</strong><span>/ ${track.max}</span></div>
       <div class="td-camp-laurel-meter"><span style="width:${track.max ? Math.round((track.earned / track.max) * 100) : 0}%"></span></div>
       <ol class="td-camp-laurel-goals">${track.milestones.map((m: any) => `<li class="${m.paid ? "is-paid" : ""}">
         <span class="td-camp-laurel-need">${laurelIcon(m.paid)}${m.laurels}</span>${rewardHtml(m.rewards)}${m.paid ? '<span class="td-camp-laurel-done">Received</span>' : ""}</li>`).join("")}</ol>`;
+    const nextMilestone = track.milestones.find((milestone: any) => !milestone.paid);
+    laurelTrackEl.innerHTML = atlas ? `<details class="td-atlas-rewards">
+      <summary>${laurelIcon(true)}<strong>${track.earned}<span> / ${track.max}</span></strong><span>Rewards</span><span class="td-atlas-reward-chevron" aria-hidden="true">⌄</span></summary>
+      <div class="td-atlas-reward-panel"><strong>Chapter rewards</strong><p>${nextMilestone ? `Next reward at ${nextMilestone.laurels} laurels` : "All chapter rewards received"}. Rewards are granted automatically.</p><div class="td-atlas-reward-track">${rewardTrack}</div></div>
+    </details>` : rewardTrack;
+
   }
 
   // Elites (G1): one line per Elite with its affixes; the affix rules sit in a hover title.
