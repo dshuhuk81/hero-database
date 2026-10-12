@@ -4,13 +4,13 @@ Guidance for AI coding agents working in this repository. Read this before makin
 
 ## Project overview
 
-This is a fan-made database and guide site for the mobile gacha game **Motto Immortal**, published at `https://motto-immortal-db.com`. It is a content-heavy static site: heroes, stats, skills, relics, synergy tags, tier ratings, team compositions, bosses, virtues, totems, events, written guides, and a client-side tower-defense mini game.
+This is a fan-made database and guide site for the mobile gacha game **Motto Immortal**, published at `https://motto-immortal-db.com`. It is a content-heavy static site: heroes, stats, skills, relics, synergy tags, tier ratings, team compositions, bosses, virtues, totems, events, written guides. The tower-defense game moved to its own repo and site (the-last-crossing, https://tower.motto-immortal-db.com) on 2026-10-12; old `/games/tower-defense` URLs redirect there via `public/_redirects`.
 
 The project is built with **Astro 7** (`output: 'static'`) and plain TypeScript/JavaScript — there is no React, Vue, or other frontend framework. Styling is plain CSS and global CSS token files. The site is deployed to **Cloudflare Pages** from the `dist/` output; build and deploy are handled by Cloudflare (no CI deploy workflow in this repo). Static assets (hero images, skill icons) are served from **Cloudflare R2** (`pub-a33abfbc3135413881a1d8eb86543559.r2.dev`), with some files under `public/`. In dev, requests to `/r2/*` are proxied to R2 by the Vite config so the browser revalidates assets (`astro.config.mjs`).
 
 Game knowledge matters as much as code knowledge here. Do not invent game facts. Prefer existing JSON data, markdown guides in `docs/`, `data-mine/`, or clearly marked community data.
 
-Several root-level markdown files are design docs and working memory, not code: `TOWER_DEFENSE_*.md`, `PROJECT_MEMORY.md` (agent working memory, notes documentation drift), `STATUS_DASHBOARD.md`, `WORKFLOWS.md` (German, operational workflows — helpful background but cross-check against `package.json` and the actual scripts before acting), `map.md` (TD map art assignments).
+Several root-level markdown files are design docs and working memory, not code: `PROJECT_MEMORY.md` (agent working memory, notes documentation drift), `STATUS_DASHBOARD.md`, `WORKFLOWS.md` (German, operational workflows — helpful background but cross-check against `package.json` and the actual scripts before acting).
 
 ## Technology stack
 
@@ -23,14 +23,14 @@ Several root-level markdown files are design docs and working memory, not code: 
 
 ## Repository layout
 
-- `src/pages/` — Astro routes. Top level holds the main site pages (`heroes`, `tierlist`, `bosses`, `virtues`, `artifacts`, `events`, `summon-calculator`, `status`, `games/tower-defense/*`...). `src/pages/[locale]/` holds localized variants. `src/pages/heroes/[id].astro` generates one static page per hero from the JSON data.
-- `src/components/` — Astro components, grouped by area: page-level components in `pages/`, reusable UI primitives in `ui/`, tower-defense screens in `td/`, plus shared layout pieces (`Sidebar.astro`, `Footer.astro`, `filter.astro`).
+- `src/pages/` — Astro routes. Top level holds the main site pages (`heroes`, `tierlist`, `bosses`, `virtues`, `artifacts`, `events`, `summon-calculator`, `status`...). `src/pages/[locale]/` holds localized variants. `src/pages/heroes/[id].astro` generates one static page per hero from the JSON data.
+- `src/components/` — Astro components, grouped by area: page-level components in `pages/`, reusable UI primitives in `ui/`, plus shared layout pieces (`Sidebar.astro`, `Footer.astro`, `filter.astro`).
 - `src/layouts/` — `Base.astro` and `GameLayout.astro`.
-- `src/data/` — the content core. `heroes/*.json` (one file per hero, ~90 heroes — this is the source of truth for hero data), `all_heroes_db.json` (generated merge of all hero files), `tags.json` + `tagRules.json`, `virtues.json` + `virtueRules.json`, `compRules.json`, `ratings/` (rating system code + data), `bosses.json`, `td*.json` (tower-defense game data), `guides.ts`, `nav.ts`, `eventsGlobal.ts`, `game_id_mapping.json` (maps project hero ids to internal game data ids).
-- `src/game/td/` — the tower-defense game engine, plain JS modules (`sim.js`, `waves.js`, `skills.js`, `render.js`, `grid.js`, `map-generator*.js`, `save.js` via `page/save.ts`, ...). `src/game/td/page/` holds the page-level controller modules. `src/game/media/`, `src/game/moodboards/` hold art direction assets.
+- `src/data/` — the content core. `heroes/*.json` (one file per hero, ~90 heroes — this is the source of truth for hero data), `all_heroes_db.json` (generated merge of all hero files), `tags.json` + `tagRules.json`, `virtues.json` + `virtueRules.json`, `compRules.json`, `ratings/` (rating system code + data), `bosses.json`, `guides.ts`, `nav.ts`, `eventsGlobal.ts`, `game_id_mapping.json` (maps project hero ids to internal game data ids).
+- `src/game/media/`, `src/game/moodboards/` hold art direction assets.
 - `src/i18n/`, `src/utils/` (`heroTags.js`, `synergyTags.js`, `ratingScale.ts`, `projectStatus.js`), `src/styles/`.
-- `public/` — static assets served as-is (`heroes/`, `skills/`, `td/`, `td-local/`, banners, ...).
-- `scripts/` — ~80 Node/Python tools: data merge and validation, imports, R2 upload/download, image variant generation, tower-defense balance/build/test/report tools, and the tag-manager server. `scripts/lib/` holds shared TD helpers (`td-runner.mjs`, `td-class-matrix.mjs`), `scripts/fixtures/` test fixtures.
+- `public/` — static assets served as-is (`heroes/`, `skills/`, banners, ...).
+- `scripts/` — ~80 Node/Python tools: data merge and validation, imports, R2 upload/download, image variant generation, and the tag-manager server.
 - `tests/` — `rating-system.test.mjs` (node:test) and `test_combat_analysis.py` (unittest; imports `combat_analysis.py` from the repo root).
 - `functions/api/` — the Cloudflare Pages Function.
 - `extracted/`, `artifacts/`, `assets/`, `data-mine/`, `outputs/`, `design-system/` — extracted game assets, generated art, research notes, and design-system docs. Mostly inputs/outputs of asset pipelines, not application code.
@@ -62,7 +62,6 @@ The pre-commit hook (`.githooks/pre-commit`) rejects commits where hero JSON or 
 Tests are plain `node --test` runner scripts and Python `unittest` — no Jest/Vitest/pytest.
 
 - `npm run test:ratings` — rating system unit tests (`tests/rating-system.test.mjs`).
-- `npm run test:tower-defense` — the big TD suite: balance check plus simulation, UI, save, skin, board-classes, map-generator, daily, challenges, expedition, campaign, summon tests (`scripts/test-td-*.mjs`).
 - `npm run validate:all` — data quality validation (tags, virtue rules, comp rules, bosses).
 - `npm run validate:ratings` / `ratings:report` — rating data checks.
 - Python: `python -m unittest tests.test_combat_analysis` (needs repo root on `PYTHONPATH` for `combat_analysis.py`).
@@ -73,7 +72,6 @@ Run the tests that cover what you changed; do not re-run the full suite after un
 
 - Generated data files (`src/data/all_heroes_db.json`) must stay in sync with their sources — see the pre-commit hook above.
 - Several docs mention files that no longer exist (`generator.js`, `validate-pvp-ratings.js`, `src/data/derived/`). Treat `WORKFLOWS.md` and `PROJECT_MEMORY.md` as background; verify script names against `package.json` before running them.
-- TD map geometry is generated, not hand-edited: `roadSlots`, `platformSlots`, and `rings` in `src/data/tdMaps.json` come from `node scripts/build-td-grid.mjs`, and `test-td-sim.mjs` fails when the file is stale. Map art assignments are documented in `map.md` — do not substitute painted assets.
 - Keep public URLs stable (including the `wishlisht` typo).
 - Ask for confirmation before adding new production dependencies.
 
