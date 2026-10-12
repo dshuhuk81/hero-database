@@ -1304,8 +1304,7 @@ export function createCampaign(ctx: PageContext) {
           .map((group: any) => `<li><img src="${group.icon}" alt="">${group.name}</li>`).join("");
         const text = ROLE_HINTS[hero.class] ?? "";
         return `<div class="td-summon-intro-info"><span class="td-summon-intro-kicker">New hero</span>` +
-          `<div class="td-summon-intro-head"><span class="td-summon-intro-class-emblem" title="${hero.class}">${classIconImg(hero.class, 34)}</span>` +
-          `<div><h3>${hero.name}</h3>${stars(heroStars(progress(), id))}</div></div>` +
+          `<div class="td-summon-intro-head"><h3>${hero.name}</h3>${stars(heroStars(progress(), id))}</div>` +
           `<ul class="td-summon-intro-groups" aria-label="Class and mythology"><li class="is-class">${classIconImg(hero.class, 16)}${hero.class}</li>${chips}</ul>` +
           (hero.title ? `<p class="td-summon-intro-title">${hero.title}</p>` : "") +
           (text ? `<p class="td-summon-intro-text">${text}</p>` : "") +

@@ -14838,9 +14838,8 @@ img[data-rarity="lord"] {
 }
 
 .td-summon-intro-head {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 16px);
+  display: grid;
+  justify-items: start;
 }
 
 .td-summon-intro-head h3 {
@@ -14856,24 +14855,6 @@ img[data-rarity="lord"] {
   display: block;
   margin-top: 4px;
   font-size: clamp(1rem, 3cqh, 1.5rem);
-}
-
-.td-summon-intro-class-emblem {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: clamp(48px, 8cqh, 68px);
-  aspect-ratio: .86;
-  color: #fff9e8;
-  background: linear-gradient(145deg, #74623e, #171923 55%, #05060a);
-  border: 2px solid #d7c089;
-  clip-path: polygon(50% 0, 92% 16%, 92% 70%, 50% 100%, 8% 70%, 8% 16%);
-  filter: drop-shadow(0 4px 6px #000);
-}
-
-.td-summon-intro-class-emblem .td-class-icon {
-  width: 52%;
-  height: 52%;
 }
 
 /* Class and mythology as light chips (reference: faction tags under the name) */
@@ -15075,7 +15056,6 @@ img[data-rarity="lord"] {
     display: none;
   }
 
-  .td-summon-intro-class-emblem,
   .td-summon-intro-skill-art {
     width: clamp(38px, 11cqh, 52px);
   }
