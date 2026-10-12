@@ -22,6 +22,9 @@ export const homeEmblemPath = (name) => `ui/emblems/${name}-${HOME_EMBLEM_VERSIO
 export const questArtPath = (name) => `ui/quests/${name}-v1.webp`;
 // Daily Trial mutator emblems (PixelLab, crimson center): ui/mutators/{id}-v1.webp.
 export const mutatorArtPath = (id) => `ui/mutators/${id}-v1.webp`;
+// Enemy status icons over the health bar (PixelLab, 32 px drawn, stored at 64 px): ui/status/{id}-v1.webp.
+export const STATUS_ICON_IDS = ["frozen", "petrified", "stun", "wet", "burn", "poison", "chill", "slow", "exposed", "sunder", "blind", "mark"];
+export const statusIconPath = (id) => `ui/status/${id}-v1.webp`;
 
 // Loads a UI image from R2; a file not uploaded yet falls back to the copy in public/td.
 export function loadTdImage(img, path) {

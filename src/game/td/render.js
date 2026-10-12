@@ -2,7 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
-import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, tdAsset } from "./assets.js";
+import { bossSpriteFile, ENEMY_ART, ENEMY_SPRITE_VERSIONS, enemySheetUrl, enemySpriteVersion, HERO_FIGURES, heroFigureUrl, STATUS_ICON_IDS, statusIconPath, tdAsset } from "./assets.js";
 import { bleedCanvasSize, fitRect, shortNumber, tiltView } from "./ui.js";
 import { createOdinFx } from "./odin-fx.js";
 import { createHeroFx, hasHeroFx, PROFILES } from "./hero-fx.js";
@@ -377,6 +377,16 @@ export async function createRenderer(canvas, game, options = {}) {
   for (const name of FX_NAMES) {
     PIXI.Assets.load(tdAsset(`fx/${name}.png`))
       .then((tex) => fxTex.set(name, tex))
+      .catch(() => {});
+  }
+
+  // Status icons over enemy health bars; a file not on R2 yet falls back to public/td, and an
+  // icon that never loads keeps its coloured pip.
+  const statusIcons = new Map(); // id -> PIXI.Texture
+  for (const id of STATUS_ICON_IDS) {
+    const path = statusIconPath(id);
+    PIXI.Assets.load(tdAsset(path)).catch(() => PIXI.Assets.load(`/td/${path}`))
+      .then((tex) => statusIcons.set(id, tex))
       .catch(() => {});
   }
 
@@ -1794,13 +1804,23 @@ export async function createRenderer(canvas, game, options = {}) {
           });
         }
       }
-      // Status pips (M13) left to right above the health bar: Wet, Burn, Poison, Chill.
-      let pip = 0;
-      const statuses = visibleStatusPips([[game.isWet?.(unit), 0x60a5fa], [game.isBurning?.(unit), 0xfb923c], [game.isPoisoned?.(unit), 0x84cc16], [unit.chill > 0, 0xa5f3fc]].filter(([on]) => on));
-      for (const [, color] of statuses) {
-        gb.circle(unit.x - radius + 3 + pip * 7, Math.max(2, unit.y + top) - 5 - (unit.shieldMax ? 5 : 0), 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
-        pip += 1;
-      }
+      // Status icons (M13) left to right above the health bar, hard control first (STATUS_ICON_IDS
+      // order); the first three show. Until its icon loads a status keeps its coloured pip.
+      const t = game.time;
+      const frozen = (unit.frozenUntil ?? 0) > t;
+      const statuses = visibleStatusPips([
+        [frozen, "frozen", 0x7dd3fc], [(unit.petrifiedUntil ?? 0) > t, "petrified", 0x9ca3af], [!frozen && (unit.stunnedUntil ?? 0) > t, "stun", 0xfacc15],
+        [game.isWet?.(unit), "wet", 0x60a5fa], [game.isBurning?.(unit), "burn", 0xfb923c], [game.isPoisoned?.(unit), "poison", 0x84cc16],
+        [!frozen && unit.chill > 0, "chill", 0xa5f3fc], [unit.slow > 0, "slow", 0xd6a77a], [(unit.exposed ?? 0) > t, "exposed", 0xef4444],
+        [(unit.sunderUntil ?? 0) > t, "sunder", 0x94a3b8], [(unit.blindUntil ?? 0) > t, "blind", 0xa855f7], [(unit.lordMarkUntil ?? 0) > t, "mark", 0xfbbf24],
+      ].filter(([on]) => on));
+      const iconY = Math.max(2, unit.y + top) - 6 - (unit.shieldMax ? 5 : 0);
+      statuses.forEach(([, id, color], i) => {
+        const x = unit.x - radius + 5 + i * 11;
+        const tex = statusIcons.get(id);
+        if (tex) gb.texture(tex, 0xffffff, x - 5, iconY - 5, 10, 10);
+        else gb.circle(x, iconY, 2.6).fill({ color }).stroke({ width: 1, color: 0x07060c, alpha: 0.8 });
+      });
       // Mender: green heal ring at its feet, showing the heal radius faintly.
       const heal = game.tuning.enemies[unit.kind]?.heal;
       if (heal) {

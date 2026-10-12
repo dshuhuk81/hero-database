@@ -1003,6 +1003,17 @@ pixel icons `td/ui/currency/{favor,gold,hero-xp,divine-seals,seal-dust}-v1.webp`
 64 px stored), all built in `currency-icons.js`; Favor no longer uses the star SVG. The old
 painted item art in `td/icons/items/` is no longer referenced by the currency chips.
 
+**Status icons (October 12, 2026).** The coloured status pips above enemy health bars are
+PixelLab pixel icons `td/ui/status/{id}-v1.webp` (32 px drawn, 64 px stored, drawn 10 world px,
+`STATUS_ICON_IDS` / `statusIconPath` in `assets.js`, loaded in `render.js` with the public/td
+fallback). Twelve statuses, shown in this priority order, first three visible
+(`visibleStatusPips`): frozen (ice cube), petrified (stone face), stun (star ring, hidden while
+frozen), wet (drop), burn (flame), poison (bubbling green drop), chill (snowflake, hidden while
+frozen), slow (snail, `enemy.slow`), exposed (red reticle, +20% damage taken), sunder (cracked
+shield, armor shred), blind (crossed eye, weaker attacks), mark (gold rune, a Lord's mark). A
+status whose icon has not loaded keeps its coloured pip. Hero debuffs (hex, silence) keep their
+rings at the feet.
+
 **Summon screen, fewer boxes (October 2026).** No outlined panels: the stage fades out at its
 edges, banner tabs are a list with a gold-lit active entry, Seal Dust and the featured rotation
 sit without frames. Summon x10 is the primary gold button, x1 a dark ghost button; both have
