@@ -34,7 +34,7 @@
       "common": {},
       "epic": {},
       "legendary": { "atk": 1.6, "hp": 1.6 },
-      "lord": { "atk": 1.6, "hp": 1.6 }
+      "lord": { "atk": 1.9, "hp": 1.9 }
     },
     "byClass": {},
     "byHero": {
@@ -481,6 +481,7 @@
   },
   "bosses": {
     "baphomet": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 },
       "mark": {
         "every": 15,
         "warn": 1.5,
@@ -495,9 +496,7 @@
       }
     },
     "lilith": {
-      "stats": {
-        "hp": 9750
-      },
+      "stats": { "hp": 9750, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 },
       "summon": {
         "kind": "brood",
         "count": 3,
@@ -547,6 +546,39 @@
         "attackSpeed": 0.8,
         "speed": 0.4
       }
+    },
+    "lerna": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "kraghorn": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "vorruk": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "skeld": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "thyrak": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "neressa": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "morthul": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "ilyr": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "eidros": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "astreon": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
+    },
+    "brontax": {
+      "stats": { "hp": 8250, "speed": 20, "armor": 200, "magicRes": 90, "attack": 85, "attackPeriod": 1, "damage": 3, "reward": 100 }
     }
   },
   "difficulty": {
@@ -763,8 +795,8 @@
   "board": {
     "enemyShape": {
       "enabled": true,
-      "power": 5,
-      "hp": 5,
+      "power": 2,
+      "hp": 2,
       "attack": 2.5,
       "kinds": {
         "grunt": {
@@ -898,9 +930,9 @@
   "blocking": {
     "contactRange": 24,
     "blockLimit": {
-      "Tank": 3,
-      "Warrior": 2,
-      "Assassin": 1
+      "Tank": 2,
+      "Warrior": 1,
+      "Assassin": 0
     },
     "heldDamageBonus": 0.2,
     "passSlow": 1.5,

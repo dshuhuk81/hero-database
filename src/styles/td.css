@@ -14799,16 +14799,19 @@ img[data-rarity="lord"] {
 }
 
 .td-summon-intro-body {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(220px, 30%) minmax(0, 1fr) minmax(120px, 24%);
+  grid-template-columns: minmax(260px, 34%) minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
   align-items: center;
   width: min(1440px, 100%);
   height: 100%;
   min-height: 0;
   margin-inline: auto;
+  font-family: var(--font-base);
 }
 
+/* Identity column: no panels, text sits on the backdrop with a soft shadow for contrast */
 .td-summon-intro-info {
   z-index: 3;
   grid-column: 1;
@@ -14816,51 +14819,56 @@ img[data-rarity="lord"] {
   display: grid;
   align-content: center;
   justify-items: start;
-  gap: clamp(5px, 1.25cqh, 14px);
+  gap: clamp(8px, 1.8cqh, 16px);
   min-width: 0;
-  padding: clamp(12px, 3vw, 38px) 0 clamp(54px, 10cqh, 96px) clamp(4px, 1.5vw, 20px);
-  text-shadow: 0 2px 8px #000, 0 0 24px rgb(4 7 16 / .88);
-}
-
-.td-summon-intro-info h3 {
-  margin: 0;
-  color: #fff7e5;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2rem, 6.4cqh, 4.25rem);
-  font-weight: 600;
-  line-height: .96;
-  letter-spacing: -.025em;
+  padding: var(--space-4) 0 clamp(56px, 10cqh, 96px) clamp(4px, 2vw, 32px);
+  text-shadow: 0 2px 10px rgb(0 0 0 / .9);
 }
 
 .td-summon-intro-info p {
   margin: 0;
-  color: var(--text-secondary);
 }
 
 .td-summon-intro-kicker {
   color: var(--intro-accent);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1rem, 3cqh, 1.6rem);
+  font-size: var(--text-sm);
   font-weight: var(--weight-bold);
-  letter-spacing: .03em;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-.td-summon-intro-class {
+.td-summon-intro-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(10px, 1.4vw, 16px);
+}
+
+.td-summon-intro-head h3 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 7cqh, 4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.td-summon-intro-head .td-stars {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(1rem, 3cqh, 1.5rem);
 }
 
 .td-summon-intro-class-emblem {
   display: grid;
   place-items: center;
-  width: clamp(48px, 7cqh, 68px);
+  flex: none;
+  width: clamp(48px, 8cqh, 68px);
   aspect-ratio: .86;
   color: #fff9e8;
   background: linear-gradient(145deg, #74623e, #171923 55%, #05060a);
   border: 2px solid #d7c089;
   clip-path: polygon(50% 0, 92% 16%, 92% 70%, 50% 100%, 8% 70%, 8% 16%);
-  filter: drop-shadow(0 4px 6px #000) drop-shadow(0 0 8px rgb(232 199 125 / .24));
+  filter: drop-shadow(0 4px 6px #000);
 }
 
 .td-summon-intro-class-emblem .td-class-icon {
@@ -14868,154 +14876,156 @@ img[data-rarity="lord"] {
   height: 52%;
 }
 
-.td-summon-intro-class > span:last-child {
-  display: grid;
-  gap: 1px;
-}
-
-.td-summon-intro-class small,
-.td-summon-intro-class strong {
-  line-height: 1.05;
-}
-
-.td-summon-intro-class small {
-  color: var(--text-muted);
-  font-size: 10px;
-  letter-spacing: .11em;
-  text-transform: uppercase;
-}
-
-.td-summon-intro-class strong {
-  color: #fff;
-  font-size: clamp(.95rem, 2.5cqh, 1.3rem);
-}
-
+/* Class and mythology as light chips (reference: faction tags under the name) */
 .td-summon-intro-groups {
   display: grid;
-  gap: 4px;
-}
-
-.td-summon-intro-groups > p {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  justify-items: start;
   gap: 6px;
-  color: #ede7d9;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.td-summon-intro-groups li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 14px 3px 4px;
+  color: #f1ece0;
+  font-size: var(--text-sm);
   font-weight: 600;
+  background: linear-gradient(90deg, rgb(8 12 26 / .78), rgb(8 12 26 / .35));
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgb(232 199 125 / .22);
 }
 
-.td-app .td-summon-intro-groups .td-mythology-badge {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: clamp(24px, 4.2cqh, 38px);
-  height: clamp(24px, 4.2cqh, 38px);
-  padding: 3px;
-  border: 1px solid rgb(232 199 125 / .52);
-  border-radius: 50%;
-  background: rgb(5 8 18 / .72);
-  box-shadow: 0 2px 8px #000;
-}
-
-.td-app .td-summon-intro-groups .td-mythology-icon {
-  width: 100%;
-  height: 100%;
+.td-summon-intro-groups img,
+.td-summon-intro-groups .td-class-icon {
+  width: 22px;
+  height: 22px;
   object-fit: contain;
 }
 
+.td-summon-intro-groups .is-class .td-class-icon {
+  width: 16px;
+  height: 16px;
+  margin-inline: 3px;
+}
+
 .td-summon-intro-title {
-  color: var(--intro-accent) !important;
+  color: var(--intro-accent);
+  font-size: clamp(1rem, 2.6cqh, 1.25rem);
   font-weight: var(--weight-bold);
 }
 
 .td-summon-intro-text {
   max-width: 34ch;
-  line-height: 1.4;
+  margin-top: -6px !important;
+  color: var(--text-secondary);
+  line-height: 1.45;
 }
 
+/* Skill icons in a row, names small below (no frames around the group) */
 .td-summon-intro-skills {
-  display: grid;
-  gap: 5px;
-  margin-top: clamp(2px, 1cqh, 10px);
-}
-
-.td-summon-intro-skill-row {
   display: flex;
-  gap: clamp(7px, 1vw, 12px);
+  gap: clamp(8px, 1.2vw, 14px);
+  margin: clamp(2px, 1cqh, 10px) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.td-summon-intro-skill {
+.td-summon-intro-skills li {
   display: grid;
   justify-items: center;
-  gap: 3px;
-  width: clamp(58px, 7.5vw, 88px);
+  gap: 5px;
+  width: clamp(60px, 7.5vw, 86px);
   min-width: 0;
 }
 
 .td-summon-intro-skill-art {
+  position: relative;
   display: grid;
   place-items: center;
-  width: clamp(48px, 7cqh, 72px);
+  width: clamp(48px, 8cqh, 68px);
   aspect-ratio: 1;
   overflow: hidden;
-  border: 2px solid #a88e56;
-  background: radial-gradient(circle at 45% 35%, #334369, #111523 62%, #06070c);
   color: #f7df9d;
-  font-family: Georgia, serif;
-  font-size: clamp(1.4rem, 4cqh, 2.25rem);
-  box-shadow: inset 0 0 0 2px rgb(0 0 0 / .45), 0 4px 10px rgb(0 0 0 / .65);
+  font-size: clamp(1.3rem, 3.6cqh, 2rem);
+  background: radial-gradient(circle at 45% 35%, #2c3a5c, #0d1220 70%);
+  border: 2px solid #a88e56;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / .6);
+}
+
+.td-summon-intro-skills li:first-child .td-summon-intro-skill-art {
+  border-color: var(--intro-accent);
+  box-shadow: 0 4px 12px rgb(0 0 0 / .6), 0 0 14px rgb(232 199 125 / .3);
 }
 
 .td-summon-intro-skill-art img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  image-rendering: pixelated;
 }
 
-.td-summon-intro-skill small {
+.td-summon-intro-skill-art.is-loaded > span {
+  visibility: hidden;
+}
+
+.td-summon-intro-skills small {
   width: 100%;
   overflow: hidden;
   color: #d8d8df;
-  font-size: clamp(9px, 1.5cqh, 11px);
-  line-height: 1.15;
+  font-size: 11px;
+  line-height: 1.2;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* The figure stands free: rarity only tints the light behind it, never a panel */
 .td-summon-intro-hero {
+  --intro-glow: rgb(133 164 225 / .22);
+  position: absolute;
+  inset: 0 0 0 18%;
   z-index: 1;
-  grid-column: 1 / -1;
-  grid-row: 1;
-  align-self: stretch;
-  justify-self: center;
   display: grid;
   place-items: end center;
-  width: min(64vw, 920px);
-  min-width: 0;
   pointer-events: none;
+}
+
+.td-summon-intro-hero[data-rarity="epic"] {
+  --intro-glow: rgb(139 79 214 / .3);
+}
+
+.td-summon-intro-hero[data-rarity="legendary"],
+.td-summon-intro-hero[data-rarity="lord"] {
+  --intro-glow: rgb(242 193 78 / .24);
+}
+
+.td-summon-intro-hero::before {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(70cqh, 60vw);
+  aspect-ratio: 1;
+  content: "";
+  background: radial-gradient(circle, var(--intro-glow), transparent 68%);
+  transform: translate(-50%, -50%);
 }
 
 .td-summon-intro-art {
-  justify-self: center;
-  align-self: end;
+  position: relative;
   width: auto;
-  max-width: min(66vw, 940px);
-  height: min(94cqh, 1040px);
-  min-height: 0;
+  max-width: 100%;
+  height: 100%;
+  max-height: 1100px;
   object-fit: contain;
   object-position: center bottom;
-  filter: drop-shadow(0 22px 22px rgb(0 0 0 / .85)) drop-shadow(0 0 26px rgb(133 164 225 / .14));
-}
-
-.td-summon-intro-ambient {
-  z-index: 0;
-  grid-column: 3;
-  grid-row: 1;
-  align-self: end;
-  height: 42%;
-  background: radial-gradient(ellipse at 40% 75%, rgb(227 187 104 / .09), transparent 66%);
-  pointer-events: none;
+  filter: drop-shadow(0 22px 22px rgb(0 0 0 / .85));
 }
 
 .td-summon-intro-continue {
@@ -15029,27 +15039,17 @@ img[data-rarity="lord"] {
 @media (max-width: 560px) {
   .td-summon-intro-body {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr);
   }
 
   .td-summon-intro-info {
-    grid-column: 1;
     align-self: end;
-    width: min(86%, 340px);
+    width: 100%;
     padding: 18px 10px 72px;
-    background: linear-gradient(90deg, rgb(4 7 16 / .9), rgb(4 7 16 / .55) 72%, transparent);
+    background: linear-gradient(0deg, rgb(4 7 16 / .92) 55%, transparent);
   }
 
   .td-summon-intro-hero {
-    grid-column: 1;
-    align-self: start;
-    width: 100%;
-    height: 72%;
-  }
-
-  .td-summon-intro-art {
-    max-width: 96vw;
-    height: 100%;
+    inset: 0 0 30%;
   }
 
   .td-summon-intro-text {
@@ -15063,16 +15063,15 @@ img[data-rarity="lord"] {
   }
 
   .td-summon-intro-info {
-    gap: 4px;
+    gap: 6px;
     padding: 4px 0 42px 8px;
   }
 
-  .td-summon-intro-info h3 {
-    font-size: clamp(1.55rem, 7.5cqh, 2.35rem);
+  .td-summon-intro-head h3 {
+    font-size: clamp(1.55rem, 8cqh, 2.35rem);
   }
 
-  .td-summon-intro-text,
-  .td-summon-intro-title {
+  .td-summon-intro-text {
     display: none;
   }
 
@@ -15081,21 +15080,16 @@ img[data-rarity="lord"] {
     width: clamp(38px, 11cqh, 52px);
   }
 
-  .td-app .td-summon-intro-groups .td-mythology-badge {
-    width: 25px;
-    height: 25px;
+  .td-summon-intro-groups li {
+    font-size: 12px;
   }
 
-  .td-summon-intro-skill {
-    width: 56px;
+  .td-summon-intro-skills li {
+    width: 58px;
   }
 
-  .td-summon-intro-skill small {
+  .td-summon-intro-skills small {
     display: none;
-  }
-
-  .td-summon-intro-art {
-    height: 100cqh;
   }
 
   .td-summon-intro-continue {

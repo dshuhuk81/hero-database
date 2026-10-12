@@ -40,6 +40,12 @@ export const heroTabArtPath = (id) => `ui/hero-tabs/${id}-v1.webp`;
 export function heroTabArtImg(id) {
   return `<img class="td-tab-art" data-td-art="${heroTabArtPath(id)}" width="20" height="20" alt="" decoding="async">`;
 }
+// Skill icons (PixelLab, 64 px): ui/skills/{id}-v1.webp; {heroId}-ultimate per hero, {class}-{passiveId} per class
+// (tank-passiveAttack). The glyph under the image stays visible until the icon loads; a missing icon removes the image.
+export const skillArtPath = (id) => `ui/skills/${id}-v1.webp`;
+export function skillArtImg(id, glyph, cls = "td-skill-art") {
+  return `<span class="${cls}" aria-hidden="true"><span>${glyph}</span><img data-td-art="${skillArtPath(id)}" width="64" height="64" alt="" decoding="async" onerror="if(this.dataset.local)this.remove()" onload="this.parentNode.classList.add('is-loaded')"></span>`;
+}
 export function hydrateTdArt(root) {
   for (const img of root.querySelectorAll("img[data-td-art]")) if (!img.dataset.tdLoaded) { img.dataset.tdLoaded = "1"; loadTdImage(img, img.dataset.tdArt); }
 }

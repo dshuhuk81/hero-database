@@ -10,7 +10,7 @@ import { shownLives } from "../board.js";
 import { environmentFor } from "../environments.js";
 import { mapPreviewModel, routePreviewPoints } from "../map-preview.js";
 import { CLASS_PASSIVE_SKILLS, SKILL_TEXT, lordText } from "../skills.js";
-import { classGlyph, classIconImg, heroTabArtImg, hydrateTdArt, talentArtImg } from "../assets.js";
+import { classGlyph, classIconImg, heroTabArtImg, hydrateTdArt, skillArtImg, talentArtImg } from "../assets.js";
 import { ROLE_HINTS } from "../ui.js";
 import { SKILL_IDS, heroicRewards, heroicUnlocked, isHeroicCleared } from "../campaign.js";
 import { squadReactions } from "../reactions.js";
@@ -1290,26 +1290,27 @@ export function createCampaign(ctx: PageContext) {
         const hero = heroById.get(id);
         if (!hero) return "";
         const ultimate = data.tuning.heroSkills?.[hero.id];
-        const passives = (CLASS_PASSIVE_SKILLS as Record<string, Array<{ id: string; name: string; text: string; icon?: string }>>)[hero.class] ?? [];
+        const passives = (CLASS_PASSIVE_SKILLS as Record<string, Array<{ id: string; name: string; text: string }>>)[hero.class] ?? [];
         const skillEntries = [
-          ...(ultimate ? [{ kind: "Ultimate", name: ultimate.skillName, glyph: "✦", icon: ultimate.icon }] : []),
-          ...passives.slice(0, 2).map((entry, index) => ({ kind: "Passive", name: entry.name, glyph: index ? "◇" : "◆", icon: entry.icon })),
+          ...(ultimate ? [{ kind: "Ultimate", name: ultimate.skillName, glyph: "✦", art: `${hero.id}-ultimate` }] : []),
+          ...passives.slice(0, 2).map((entry, index) => ({ kind: "Passive", name: entry.name, glyph: index ? "◇" : "◆", art: `${hero.class.toLowerCase()}-${entry.id}` })),
         ];
-        const skillTiles = skillEntries.length ? `<div class="td-summon-intro-skills" role="list" aria-label="${hero.name} skills">
-          <span class="td-label">Skills</span><div class="td-summon-intro-skill-row">${skillEntries.map((entry) => `<div class="td-summon-intro-skill" role="listitem" title="${entry.kind}: ${entry.name}">
-            <span class="td-summon-intro-skill-art" aria-hidden="true">${entry.icon ? `<img src="${entry.icon}" alt="">` : entry.glyph}</span><small>${entry.name}</small>
-          </div>`).join("")}</div></div>` : "";
-        const groups = (isLord(id) ? (hero.mythologyGroups ?? []).slice(0, 1) : (hero.mythologyGroups ?? [])).map((g: string) => mythologyGroups[g]?.name).filter(Boolean).join(", ");
+        // Open layout (reference: in-game hero introduction): identity, mythology chips and skill icons
+        // sit on the backdrop; the figure stands free in the middle with no frame or rarity panel.
+        const skillIcons = skillEntries.length ? `<ul class="td-summon-intro-skills" aria-label="${hero.name} skills">${skillEntries.map((entry) =>
+          `<li title="${entry.kind}: ${entry.name}">${skillArtImg(entry.art, entry.glyph, "td-summon-intro-skill-art")}<small>${entry.name}</small></li>`).join("")}</ul>` : "";
+        const groupIds = isLord(id) ? (hero.mythologyGroups ?? []).slice(0, 1) : (hero.mythologyGroups ?? []);
+        const chips = groupIds.map((g: string) => mythologyGroups[g]).filter(Boolean)
+          .map((group: any) => `<li><img src="${group.icon}" alt="">${group.name}</li>`).join("");
         const text = ROLE_HINTS[hero.class] ?? "";
         return `<div class="td-summon-intro-info"><span class="td-summon-intro-kicker">New hero</span>` +
-          `<div class="td-summon-intro-class"><span class="td-summon-intro-class-emblem">${classIconImg(hero.class, 34)}</span><span><small>Class</small><strong>${hero.class}</strong></span></div>` +
-          `<h3>${hero.name}</h3>${stars(heroStars(progress(), id))}` +
+          `<div class="td-summon-intro-head"><span class="td-summon-intro-class-emblem" title="${hero.class}">${classIconImg(hero.class, 34)}</span>` +
+          `<div><h3>${hero.name}</h3>${stars(heroStars(progress(), id))}</div></div>` +
+          `<ul class="td-summon-intro-groups" aria-label="Class and mythology"><li class="is-class">${classIconImg(hero.class, 16)}${hero.class}</li>${chips}</ul>` +
           (hero.title ? `<p class="td-summon-intro-title">${hero.title}</p>` : "") +
           (text ? `<p class="td-summon-intro-text">${text}</p>` : "") +
-          (groups ? `<div class="td-summon-intro-groups"><span class="td-label">Mythology</span><p>${mythologyIcons(hero)}<span>${groups}</span></p></div>` : "") +
-          `${skillTiles}</div>` +
-          `<div class="td-summon-intro-hero"><img class="td-summon-intro-art" data-rarity="${hero.rarity ?? ""}" src="${hero.splash ?? hero.portrait ?? hero.image ?? ""}" alt="${hero.name}" onerror="this.onerror=null;this.src='${hero.portrait ?? hero.image ?? ""}'"></div>` +
-          `<div class="td-summon-intro-ambient" aria-hidden="true"></div>`;
+          `${skillIcons}</div>` +
+          `<div class="td-summon-intro-hero" data-rarity="${hero.rarity ?? ""}"><img class="td-summon-intro-art" src="${hero.splash ?? hero.portrait ?? hero.image ?? ""}" alt="${hero.name}" onerror="this.onerror=null;this.src='${hero.portrait ?? hero.image ?? ""}'"></div>`;
       },
     });
   }

@@ -47,8 +47,8 @@
     ],
     "cost": {
       "gold": {
-        "base": 100,
-        "perLevel": 50
+        "base": 200,
+        "perLevel": 100
       },
       "heroXp": {
         "base": 50,
@@ -63,7 +63,7 @@
   },
   "collectionRewards": {
     "perDefeated": {
-      "gold": 10,
+      "gold": 20,
       "heroXp": 1
     },
     "maxDefeated": 900

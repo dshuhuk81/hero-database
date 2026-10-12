@@ -24,10 +24,10 @@
 }
 
 [data-screen="heroes"] .td-app [data-td-appbar-title] {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   color: #f5e8c9;
-  font-weight: 500;
-  letter-spacing: .015em;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
 }
 
 .td-app .td-heroes-screen { background: transparent; }
@@ -53,7 +53,9 @@
 
 .td-app .td-collection-head .td-label {
   color: var(--hs-gold);
-  font: 500 12px Georgia, "Times New Roman", serif;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: var(--weight-bold);
   letter-spacing: .13em;
 }
 
@@ -72,6 +74,8 @@
   border-color: #ffe3a1;
   box-shadow: 0 0 0 1px #e4c78570, 0 0 12px #e1b45b45;
 }
+
+.td-app .td-heroes-browser .td-hero-tile-evo { font-family: inherit; }
 
 .td-app .td-hero-profile-art { background: transparent; overflow: hidden; }
 .td-app .td-hero-profile-art::after {
@@ -93,14 +97,17 @@
 .td-app .td-hero-summary { padding: 12px 10px; text-shadow: 0 2px 6px #000, 0 0 18px #000; }
 .td-app .td-hero-summary h2 {
   color: #f7df9d;
-  font: 500 38px/.98 Georgia, "Times New Roman", serif;
+  font-family: inherit;
+  font-size: 38px;
+  font-weight: var(--weight-bold);
+  line-height: 1.05;
   letter-spacing: -.025em;
   margin-bottom: 5px;
 }
 .td-app .td-hero-role { color: #ead6a5; }
 .td-app .td-hero-might { color: #e0d7e6; }
-.td-app .td-hero-might strong { color: #fff5df; font-family: Georgia, "Times New Roman", serif; }
-.td-app .td-hero-badges .td-stars { color: #b6a8bd; }
+.td-app .td-hero-might strong { color: #fff5df; font-family: inherit; }
+.td-app .td-hero-badges .td-stars { color: var(--hs-gold); }
 
 .td-app .td-hero-profile-copy {
   border: 0;
@@ -112,7 +119,7 @@
 .td-app .td-hero-level-head {
   border: 0;
   padding-top: 14px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   color: #f4e9d6;
 }
 .td-app .td-hero-profile .td-camp-pips { gap: 3px; margin-top: 7px; }
@@ -124,7 +131,7 @@
 .td-app .td-hero-profile-stats { border: 0; padding-block: 20px; gap: 9px; }
 .td-app .td-hero-profile-stats div { border: 0; padding: 0; }
 .td-app .td-hero-profile-stats dt { color: var(--hs-muted); letter-spacing: .08em; font-size: 10px; }
-.td-app .td-hero-profile-stats dd { font: 500 19px Georgia, "Times New Roman", serif; color: #f8f0e1; }
+.td-app .td-hero-profile-stats dd { font-family: inherit; font-size: 19px; font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; color: #f8f0e1; }
 .td-app .td-hero-upgrade,
 .td-app .td-hero-profile.is-wide .td-hero-upgrade {
   background: linear-gradient(transparent, #0b0915f5 25%);
@@ -147,7 +154,9 @@
   border: 0;
   border-radius: 0;
   color: #c1b6cb;
-  font: 500 10px Georgia, "Times New Roman", serif;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
   letter-spacing: .045em;
   text-transform: uppercase;
   background: transparent;

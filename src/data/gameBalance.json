@@ -134,38 +134,6 @@
     ]
   },
   {
-    "id": "boreas",
-    "name": "Boreas",
-    "class": "Mage",
-    "tier": "B",
-    "slot": "platform",
-    "range": 160,
-    "ability": "nuke",
-    "damageType": "magical",
-    "image": "",
-    "atk": 62,
-    "aps": 0.37,
-    "dps": 23,
-    "hp": 367,
-    "armor": 80,
-    "magicRes": 90,
-    "critChance": 0.1,
-    "ultCooldown": 18,
-    "ultPower": 1.05,
-    "synergies": [
-      "ENEMY_ATTRIBUTE_REDUCTION",
-      "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ATK_UP",
-      "SELF_ENERGY_RESTORE"
-    ],
-    "cost": 19,
-    "rarity": "legendary",
-    "mythologyGroups": [
-      "greek",
-      "wildborn"
-    ]
-  },
-  {
     "id": "plutus",
     "name": "Plutus",
     "class": "Support",
@@ -198,42 +166,6 @@
     "rarity": "legendary",
     "mythologyGroups": [
       "greek"
-    ]
-  },
-  {
-    "id": "ymir",
-    "name": "Ymir",
-    "class": "Tank",
-    "tier": "C",
-    "slot": "road",
-    "range": 60,
-    "ability": "taunt",
-    "damageType": "magical",
-    "image": "",
-    "atk": 50,
-    "aps": 0.3,
-    "dps": 15,
-    "hp": 1496,
-    "armor": 330,
-    "magicRes": 150,
-    "critChance": 0,
-    "ultCooldown": 45,
-    "ultPower": 1,
-    "synergies": [
-      "ENEMY_CROWD_CONTROL",
-      "ENEMY_VULNERABILITY",
-      "ENEMY_ARMOR_REDUCTION",
-      "ENEMY_TAUNT",
-      "SELF_DAMAGE_REDUCTION",
-      "SELF_ARMOR_UP",
-      "SELF_SHIELD",
-      "PLAYSTYLE_AREA_DAMAGE"
-    ],
-    "cost": 18,
-    "rarity": "epic",
-    "mythologyGroups": [
-      "norse",
-      "elder-powers"
     ]
   },
   {
@@ -346,6 +278,38 @@
     ]
   },
   {
+    "id": "boreas",
+    "name": "Boreas",
+    "class": "Mage",
+    "tier": "B",
+    "slot": "platform",
+    "range": 160,
+    "ability": "nuke",
+    "damageType": "magical",
+    "image": "",
+    "atk": 62,
+    "aps": 0.37,
+    "dps": 23,
+    "hp": 367,
+    "armor": 80,
+    "magicRes": 90,
+    "critChance": 0.1,
+    "ultCooldown": 18,
+    "ultPower": 1.05,
+    "synergies": [
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE"
+    ],
+    "cost": 16,
+    "rarity": "legendary",
+    "mythologyGroups": [
+      "greek",
+      "wildborn"
+    ]
+  },
+  {
     "id": "heimdall",
     "name": "Heimdall",
     "class": "Tank",
@@ -452,6 +416,42 @@
     "rarity": "epic",
     "mythologyGroups": [
       "greek"
+    ]
+  },
+  {
+    "id": "ymir",
+    "name": "Ymir",
+    "class": "Tank",
+    "tier": "C",
+    "slot": "road",
+    "range": 60,
+    "ability": "taunt",
+    "damageType": "magical",
+    "image": "",
+    "atk": 50,
+    "aps": 0.3,
+    "dps": 15,
+    "hp": 1496,
+    "armor": 330,
+    "magicRes": 150,
+    "critChance": 0,
+    "ultCooldown": 45,
+    "ultPower": 1,
+    "synergies": [
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_VULNERABILITY",
+      "ENEMY_ARMOR_REDUCTION",
+      "ENEMY_TAUNT",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ARMOR_UP",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
+    ],
+    "cost": 15,
+    "rarity": "epic",
+    "mythologyGroups": [
+      "norse",
+      "elder-powers"
     ]
   },
   {

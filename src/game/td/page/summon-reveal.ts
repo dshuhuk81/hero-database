@@ -6,6 +6,7 @@
 // A new epic / legendary / lord hero gets its own introduction screen once the cards are up (or
 // right after its flip on a single pull); a ten pull shows cards only, no detail panel.
 import type { PageContext } from "./context";
+import { hydrateTdArt } from "../assets.js";
 
 export type RevealOptions = {
   featuredId: string | null;
@@ -106,6 +107,7 @@ export function createSummonReveal(ctx: PageContext, onAgain: () => void) {
   function nextIntro() {
     if (introEl.open || !stageEl.open || !introQueue.length) return;
     introBody.innerHTML = intro(heroIds[introQueue.shift() as number]);
+    hydrateTdArt(introBody);
     introEl.showModal();
     introContinue.focus();
   }
