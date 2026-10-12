@@ -8,8 +8,8 @@ The generated set is collected in [`campaign-atlas-overview.webp`](campaign-atla
 
 | Chapter | Campaign | Asset | Initial stage coordinates (%) |
 | --- | --- | --- | --- |
-| 1 | The Road to the Crossing | `road-to-crossing.webp` | `12,78 · 28,68 · 38,52 · 23,51 · 48,25 · 61,35 · 78,43 · 74,24 · 86,15 · 94,10` |
-| 2 | The Sunscar March | `sunscar-march.webp` | `10,74 · 25,53 · 48,57 · 55,34 · 78,22 · 92,14` |
+| 1 | The Road to the Crossing | `road-to-crossing.webp` | `12,78 · 28,66 · 39,55 · 24,49 · 48,28 · 62,38 · 79,45 · 74,27 · 86,22 · 94,17` |
+| 2 | The Sunscar March | `sunscar-march.webp` | `10,74 · 25,53 · 48,57 · 55,34 · 79,27 · 92,20` |
 | 3 | The Emerald Deep | `emerald-deep.webp` | `9,69 · 28,56 · 48,51 · 66,35 · 78,47 · 92,16` |
 | 4 | The Frozen Covenant | `frozen-covenant-v2.webp` | `10,64 · 29,48 · 47,50 · 60,29 · 77,43 · 90,25` |
 | 5 | The Cinder Oath | `cinder-oath.webp` | `10,68 · 27,56 · 45,35 · 58,55 · 75,37 · 91,16` |

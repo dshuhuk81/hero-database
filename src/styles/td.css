@@ -16204,12 +16204,12 @@ img[data-rarity="lord"] {
   z-index: 3;
   left: var(--stop-x);
   top: var(--stop-y);
-  transform: translate(-50%, -22px);
+  transform: translate(-50%, -18px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  width: 130px;
+  gap: 0;
+  width: 40px;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -16223,40 +16223,26 @@ img[data-rarity="lord"] {
   position: relative;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 38px;
+  height: 38px;
   border: 1px solid #b6cbd3;
   border-radius: 50%;
   background: radial-gradient(circle at 40% 20%, #384b59, #0e1a27 75%);
-  box-shadow: 0 3px 0 #07111c, 0 5px 14px #000a, inset 0 0 0 4px #172333;
-  font-size: 13px;
+  box-shadow: 0 2px 0 #07111c, 0 4px 10px #000a, inset 0 0 0 3px #172333;
+  font-size: 11px;
   font-weight: 700;
   transition: box-shadow .2s, border-color .2s;
 }
 .td-app .td-atlas-pin .td-camp-stage-badge {
-  top: -4px;
-  right: -7px;
-  width: 19px;
-  height: 19px;
+  top: -5px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
   border: 1px solid #77968c;
   background: #1c3932;
   color: #c9e1c0;
 }
-.td-app .td-atlas-pin .td-camp-stage-badge svg { width: 11px; height: 11px; }
-.td-atlas-label {
-  display: grid;
-  justify-items: center;
-  gap: 2px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background: #08121cce;
-  box-shadow: 0 4px 16px #0003;
-}
-.td-atlas-label strong { font-size: 11px; font-weight: 600; white-space: nowrap; }
-.td-atlas-label small { font-size: 9px; color: #a3b4c2; }
-.td-atlas-label .td-laurels { display: flex; justify-content: center; gap: 2px; }
-.td-app .td-atlas-label .td-laurel { width: 14px; height: 14px; color: #708190; }
-.td-app .td-atlas-label .td-laurel.is-earned { color: #eac675; }
+.td-app .td-atlas-pin .td-camp-stage-badge svg { width: 9px; height: 9px; }
 .td-atlas-stop.is-cleared .td-atlas-pin { border-color: #c6b379; }
 .td-app .td-atlas-stop.is-locked { opacity: .78; cursor: default; }
 .td-atlas-stop.is-locked .td-atlas-pin { border-color: #7c939e; color: #a5b7c5; background: #172535ec; }
@@ -16267,10 +16253,13 @@ img[data-rarity="lord"] {
   background: radial-gradient(circle at 40% 20%, #87643a, #322a21 75%);
   box-shadow: 0 0 0 5px #efc97b25, 0 0 28px #ffae3d6b, 0 4px 12px #000;
 }
+.td-app .td-atlas-stop.is-next,
+.td-app .td-atlas-stop.is-featured { z-index: 7; }
+.td-app .td-atlas-stop:not(:disabled):hover { z-index: 6; }
 .td-app .td-atlas-stop.is-next .td-camp-stage-badge { background: #e8c17a; color: #281b0a; border-color: #ffe3a8; }
 .td-atlas-stop:not(:disabled):hover .td-atlas-pin { border-color: #ffe6ab; box-shadow: 0 0 0 5px #efc97b40, 0 0 30px #efc97b70; }
 .td-atlas-stop:focus-visible { outline: 2px solid #ffe0a0; outline-offset: 7px; }
-.td-atlas-here { position: absolute; bottom: calc(100% + 5px); color: #ffe0a0; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 2px 5px #000; white-space: nowrap; }
+.td-atlas-here { position: absolute; bottom: calc(100% + 6px); color: #ffe0a0; font-size: 8px; letter-spacing: .14em; text-transform: uppercase; text-shadow: 0 2px 5px #000; white-space: nowrap; }
 .td-atlas-camp {
   position: absolute;
   left: -14px;
@@ -16330,11 +16319,7 @@ img[data-rarity="lord"] {
   .td-atlas-caption { top: 5%; gap: 2px; }
   .td-atlas-caption > span, .td-atlas-caption small { display: none; }
   .td-atlas-caption strong { font-size: 17px; }
-  .td-app .td-atlas-stop { gap: 3px; }
-  .td-atlas-pin { width: 38px; height: 38px; }
-  .td-atlas-label { padding: 3px 6px; }
-  .td-atlas-label strong { font-size: 10px; }
-  .td-app .td-atlas-label .td-laurel { width: 11px; height: 11px; }
+  .td-atlas-pin { width: 34px; height: 34px; font-size: 10px; }
 }
 
 /* Atlas chrome floats above the landscape; rewards expand only on request. */
@@ -16349,7 +16334,7 @@ img[data-rarity="lord"] {
   top: 16px;
   left: 24px;
   right: 175px;
-  z-index: 5;
+  z-index: 9;
   pointer-events: none;
 }
 .td-app .has-campaign-atlas .td-camp-head .td-camp-chapter {
@@ -16364,7 +16349,7 @@ img[data-rarity="lord"] {
   position: absolute;
   top: 12px;
   right: 18px;
-  z-index: 6;
+  z-index: 10;
   display: block;
   margin: 0;
   padding: 0;
