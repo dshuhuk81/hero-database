@@ -8,6 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const FORCE = process.argv.includes("--force");
 const DRY_RUN = process.argv.includes("--dry-run");
+const CHANGED = process.argv.includes("--changed");
 const PREFIX = process.argv.includes("--prefix")
   ? process.argv[process.argv.indexOf("--prefix") + 1]?.replace(/^\/+/, "")
   : "";
@@ -27,7 +28,10 @@ const env = Object.fromEntries(
   readFileSync(envPath, "utf-8")
     .split("\n")
     .filter((l) => l.includes("="))
-    .map((l) => l.split("=").map((s) => s.trim()))
+    .map((l) => {
+      const i = l.indexOf("=");
+      return [l.slice(0, i).trim(), l.slice(i + 1).trim()];
+    })
 );
 
 const client = new S3Client({
@@ -89,12 +93,15 @@ function getAllFiles(dir, files = []) {
   return files;
 }
 
-async function fileExistsInR2(key) {
+// Returns the remote size in bytes, or null if the key does not exist.
+// Any other error (auth, network) is rethrown instead of being treated as "missing".
+async function remoteSize(key) {
   try {
-    await client.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }));
-    return true;
-  } catch {
-    return false;
+    const head = await client.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }));
+    return head.ContentLength ?? 0;
+  } catch (err) {
+    if (err.name === "NotFound" || err.$metadata?.httpStatusCode === 404) return null;
+    throw err;
   }
 }
 
@@ -133,9 +140,11 @@ async function main() {
   }
   console.log(`Found ${files.length} files to upload${PREFIX ? ` with prefix ${PREFIX}` : EXACT ? " from exact key list" : ""}`);
   if (DRY_RUN) {
-    console.log(`[DRY RUN] ${FORCE ? "Overwrite mode enabled" : "Existing remote files will be skipped"}`);
+    console.log(`[DRY RUN] ${FORCE ? "Overwrite mode enabled" : CHANGED ? "Only new or size-changed files will be uploaded" : "Existing remote files will be skipped"}`);
   } else if (FORCE) {
     console.log(`[LIVE] Overwrite mode enabled`);
+  } else if (CHANGED) {
+    console.log(`[LIVE] Uploading new or size-changed files only`);
   }
 
   let uploaded = 0;
@@ -145,14 +154,15 @@ async function main() {
   for (const filePath of files) {
     const key = relative(PUBLIC_DIR, filePath).replace(/\\/g, "/");
     try {
-      const exists = FORCE ? false : await fileExistsInR2(key);
-      if (exists) {
-        console.log(`  SKIP ${key} (already exists)`);
+      const remote = FORCE ? null : await remoteSize(key);
+      const replaced = CHANGED && remote !== null && remote !== statSync(filePath).size;
+      if (remote !== null && !replaced) {
+        console.log(`  SKIP ${key} (${CHANGED ? "unchanged" : "already exists"})`);
         skipped++;
         continue;
       }
       await uploadFile(filePath);
-      console.log(`  ${DRY_RUN ? "PLAN" : "OK  "} ${key}${FORCE ? " (overwrite)" : ""}`);
+      console.log(`  ${DRY_RUN ? "PLAN" : "OK  "} ${key}${FORCE || replaced ? " (overwrite)" : ""}`);
       uploaded++;
     } catch (err) {
       console.error(`  ERR  ${key}: ${err.message}`);
