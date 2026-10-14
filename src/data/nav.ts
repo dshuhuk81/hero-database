@@ -109,21 +109,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5M12 2v3"/>`,
   },
   {
-  label: "Event Calendar",
-  href: "/events",
-  group: "content",
-  sidebar: false,
-  description: {
-    en: "Global event dates, banners and recurring activities",
-    de: "Globale Event-Termine, Banner und wiederkehrende Aktivitäten",
-    es: "Fechas globales, banners y actividades recurrentes",
-    ru: "Глобальные события, баннеры и регулярные активности",
-    zh: "全球服活动时间、卡池与周期活动",
-  },
-  icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
-    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)", until: "2026-08-01" },
-  },
-  {
     label: "Guides",
     href: "/guides",
     group: "content",
