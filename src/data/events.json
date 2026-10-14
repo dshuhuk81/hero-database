@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "mazu-event",
+      "id": "yaoji-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "mazu",
-      "startDate": "2026-09-30",
-      "endDate": "2026-10-13",
+      "hero": "yaoji",
+      "startDate": "2026-10-14",
+      "endDate": "2026-10-28",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,99 +23,105 @@
         {
           "id": 1,
           "name": {
-            "en": "The First Salty Breeze",
-            "de": "Die erste salzige Brise",
-            "es": "La primera brisa salada",
-            "ru": "Первый солёный бриз",
-            "zh": "初来咸风"
+            "en": "First Startled by Vine Shadows",
+            "de": "Zuerst vom Rankenschatten erschreckt",
+            "es": "Primero asustado por las sombras de las enredaderas",
+            "ru": "Сначала напуганный тенями лоз"
           },
           "composition": {
-            "front": ["Taurus", "Aries"],
-            "back": ["Mazu"]
+            "front": ["Yaoji", "Taurus"],
+            "back": []
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "Drifting Like Duckweed",
-            "de": "Treibend wie Wasserlinsen",
-            "es": "A la deriva como lentejas de agua",
-            "ru": "Дрейфуя, как ряска",
-            "zh": "萍水漂泊"
+            "en": "Bound by Green Vines",
+            "de": "Von grünen Ranken gefesselt",
+            "es": "Atado por enredaderas verdes",
+            "ru": "Опутанный зелёными лозами"
           },
           "composition": {
-            "front": ["Taurus", "Sagittarius"],
-            "back": ["Capricorn", "Mazu", "Virgo"]
+            "front": ["Gemini", "Leo"],
+            "back": ["Libra", "Virgo", "Capricorn"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "No Waves Without Wind",
-            "de": "Keine Wellen ohne Wind",
-            "es": "No hay olas sin viento",
-            "ru": "Нет волн без ветра",
-            "zh": "无风不起浪"
+            "en": "Rampant Branches",
+            "de": "Wuchernde Zweige",
+            "es": "Ramas desenfrenadas",
+            "ru": "Буйные ветви"
           },
           "composition": {
-            "front": ["Heracles", "Prometheus"],
-            "back": ["Caishen", "Mazu", "Phoenix"]
+            "front": ["Yaoji", "Leo"],
+            "back": ["Cancer", "Libra", "Sagittarius"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "In the Sky, Far Away",
-            "de": "Am Himmel, weit entfernt",
-            "es": "En el cielo, muy lejos",
-            "ru": "В небе, далеко-далеко",
-            "zh": "远在天边"
+            "en": "Entangled Heart",
+            "de": "Verstricktes Herz",
+            "es": "Corazón enredado",
+            "ru": "Запутанное сердце"
           },
           "composition": {
-            "front": ["Heracles", "Prometheus"],
-            "back": ["Caishen", "Mazu", "Phoenix"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "Once Tightly Held Hands",
-            "de": "Einst fest gehaltene Hände",
-            "es": "Manos que una vez se sostuvieron con fuerza",
-            "ru": "Когда-то крепко сжатые руки",
-            "zh": "曾经紧握的手"
+            "en": "Pruning the Wilds",
+            "de": "Die Wildnis beschneiden",
+            "es": "Podando lo salvaje",
+            "ru": "Обрезка дикой чащи"
           },
           "composition": {
-            "front": ["Prometheus", "Heracles"],
-            "back": ["Caishen", "Mazu", "Phoenix"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "Eyes Full of Attachment",
-            "de": "Augen voller Zuneigung",
-            "es": "Ojos llenos de apego",
-            "ru": "Глаза, полные привязанности",
-            "zh": "满眼眷恋"
+            "en": "Water Veins Restored",
+            "de": "Wasseradern wiederhergestellt",
+            "es": "Venas de agua restauradas",
+            "ru": "Водные жилы восстановлены"
           },
           "composition": {
-            "front": ["Heracles", "Prometheus"],
-            "back": ["Caishen", "Mazu", "Phoenix"]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "A Bright Light in the Deep Fog",
-            "de": "Ein helles Licht im dichten Nebel",
-            "es": "Una luz brillante en la niebla profunda",
-            "ru": "Яркий свет в густом тумане",
-            "zh": "深雾明灯"
+            "en": "Roots and Leaves Returned to Order",
+            "de": "Wurzeln und Blätter zur Ordnung zurückgekehrt",
+            "es": "Raíces y hojas devueltas al orden",
+            "ru": "Корни и листья возвращены к порядку"
           },
           "composition": {
-            "front": ["Poseidon", "Momus"],
-            "back": ["Skadi", "Mazu", "Tefnut"]
+            "front": [],
+            "back": []
+          }
+        },
+        {
+          "id": 8,
+          "name": {
+            "en": "Biding Time",
+            "de": "Auf den richtigen Moment warten",
+            "es": "Esperando el momento",
+            "ru": "Ожидание подходящего момента"
+          },
+          "composition": {
+            "front": [],
+            "back": []
           }
         }
       ]
