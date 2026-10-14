@@ -14783,55 +14783,55 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Wushan Cloud Rain",
-        "description": "Yaoji summons Wushan Cloud Rain, expanding the Cloud Mist Domain to the entire battlefield for 8s. Upon cast, immediately applies 1 stack of Withering Mark to enemies within the domain, then applies 1 additional stack every 2s. Withering Mark: Each stack increases the target's DMG taken by 3% and deals 25% of Yaoji's ATK as DMG every second. Max 10 stacks. Lasts 30s. This ultimate can only be cast while attached. If Yaoji is not attached when casting, she immediately attaches to the frontmost allied unit, then casts the ultimate.",
+        "name": "Clouds and Rain of Wushan",
+        "description": "Yaoji stirs up the clouds and rain of Wushan, expanding the AoE of Miasmic Field to the entire battlefield for 8s. When cast, immediately inflicts 1 stack of Blossom & Blight to enemies within the field's AoE, and then inflicts 1 stack of Blossom & Blight to enemies within the field every 2s. (Blossom & Blight: Each stack increases DMG taken by the target by 3% and deals DMG equal to 25% of Yaoji's ATK per second. Stacks up to 10 times and lasts 30s.) This Ultimate can only be cast while possessing a host. If Yaoji is not possessing a host when cast, she immediately possesses the frontmost ally, then casts the Ultimate.",
         "upgrades": {
-          "level2": "Withering Mark's damage per second increases to 40%.",
-          "level3": "Duration increases to 10s.",
-          "level4": "Each Withering Mark stack increases enemy DMG taken by 5%."
+          "level2": "Increases DMG per second of Blossom & Blight to 40%.",
+          "level3": "Duration extends to 10s.",
+          "level4": "Each stack of Blossom & Blight increases DMG taken by enemies by 5%."
         },
         "damageType": "Magic",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Cloudbound Possession",
-        "description": "Passive: At the start of battle, Yaoji attaches to the frontmost ally and becomes untargetable. While attached, forms a Cloud Mist Domain with a 4-meter radius centered on the host. Attachment lasts 12s. After leaving the host, Yaoji takes 50% reduced DMG for 5s. Active: Deals 150% ATK as DMG to all enemies within the Cloud Mist Domain and applies 1 stack of Withering Mark.",
+        "name": "Twining Clouds",
+        "description": "Passive: At the start of battle, Yaoji possesses the frontmost ally and becomes Untargetable. While possessing a host, she creates a Miasmic Field in a 4-meter radius around the host. Possession lasts 12s. After leaving the host, she takes 50% less DMG for 5s. When actively cast, deals DMG equal to 150% of ATK to all enemies within the Miasmic Field and inflicts 1 stack of Blossom & Blight.",
         "upgrades": {
-          "level2": "Active DMG increases to 180% ATK.",
-          "level3": "Active DMG increases to 210% ATK.",
-          "level4": "Active cooldown is reduced by 30%."
+          "level2": "When actively cast, deals DMG equal to 180% of ATK.",
+          "level3": "When actively cast, deals DMG equal to 210% of ATK.",
+          "level4": "Active cast CD is reduced by 30%."
         },
         "damageType": "Magic"
       },
       {
         "id": "skill_3",
-        "name": "Mist Isle Domain",
-        "description": "Passive: Enemies within the Cloud Mist Domain have their ATK reduced by 15% and healing received reduced by 30%.",
+        "name": "Mistborne Erosion",
+        "description": "Passive: Reduces ATK of enemies within the Miasmic Field by 15% and their healing effects received by 30%.",
         "upgrades": {
-          "level2": "Enemies within the Cloud Mist Domain have their ATK reduced by 20%.",
-          "level3": "Enemies within the Cloud Mist Domain have their healing received reduced by 60%.",
-          "level4": "Enemies within the Cloud Mist Domain have their ATK reduced by 25%."
+          "level2": "Reduces ATK of enemies within the Miasmic Field by 20%.",
+          "level3": "Reduces healing effects received by enemies within the Miasmic Field by 60%.",
+          "level4": "Reduces ATK of enemies within the Miasmic Field by 25%."
         }
       },
       {
         "id": "skill_4",
-        "name": "Cloud Veil Protection",
-        "description": "Allows the host to take 30% reduced DMG for the next 5s and recover 3% of Max HP every second. This skill can only be cast while attached.",
+        "name": "Cloudveil Shelter",
+        "description": "The host takes 30% less DMG for the next 5s and restores 3% of max HP per second. This skill can only be cast while possessing a host.",
         "upgrades": {
-          "level2": "DMG taken is reduced by 40% for the next 5s.",
-          "level3": "Recovers 5% of Max HP every second.",
-          "level4": "Duration increases to 6s."
+          "level2": "Takes 40% less DMG for the next 5s.",
+          "level3": "Restores 5% of max HP per second.",
+          "level4": "Duration extends to 6s."
         }
       }
     ],
     "relic": {
-      "name": "Falling Blossoms",
-      "description": "When an enemy first reaches 10 stacks of Withering Mark, inflicts Wither on the target. Wither: Loses 3% of Max HP every second, ATK SPD reduced by 30%, ATK reduced by 30%. Lasts 5s.",
+      "name": "Last Petals Fallen",
+      "description": "When Blossom & Blight on each enemy first reaches 10 stacks, inflicts Blight on the target. (Blight: Loses 3% of max HP per second, ATK SPD reduced by 30%, and ATK reduced by 30% for 5s.)",
       "upgrades": {
-        "level2": "Each time the host loses 40% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain.",
-        "level3": "When an enemy first reaches 10 stacks of Withering Mark, Wither becomes stronger: loses 5% of Max HP every second, ATK SPD reduced by 50%, ATK reduced by 50%. Lasts 5s.",
-        "level4": "Each time the host loses 30% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain."
+        "level2": "Each time the host loses 40% of max HP, immediately casts an additional Twining Clouds on enemies within the Miasmic Field.",
+        "level3": "When Blossom & Blight on each enemy first reaches 10 stacks, inflicts Blight on the target. (Blight: Loses 5% of max HP per second, ATK SPD reduced by 50%, and ATK reduced by 50% for 5s.)",
+        "level4": "Each time the host loses 30% of max HP, immediately casts an additional Twining Clouds on enemies within the Miasmic Field."
       }
     },
     "synergies": [
