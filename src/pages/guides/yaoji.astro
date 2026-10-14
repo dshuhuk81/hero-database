@@ -8,6 +8,8 @@ import yaojiData from "../../data/heroes/yaoji.json";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const heroCardImage = (id: string) => `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-240.webp?v=${HERO_IMAGE_VERSION}`;
 const skillImage = (id: string) => `${R2_BASE}/skills/yaoji_${id}.webp`;
 
 const takeaways: Record<string, string> = {
@@ -233,7 +235,7 @@ const weaknesses = [
         <div class="yaoji-partners">
           {partners.map((partner) => (
             <a class="yaoji-partner" href={`/heroes/${partner.id}`}>
-              <img src={heroImage(partner.id)} alt="" width="56" height="56" loading="lazy" />
+              <img src={heroCardImage(partner.id)} alt="" width="56" height="56" loading="lazy" decoding="async" onerror={`this.onerror=null;this.src='${heroImage(partner.id)}'`} />
               <div><strong>{partner.name}</strong><p>{partner.text}</p></div>
             </a>
           ))}
@@ -246,7 +248,7 @@ const weaknesses = [
         <div class="yaoji-partners yaoji-partners--compact">
           {sustainPartners.map((partner) => (
             <a class="yaoji-partner" href={`/heroes/${partner.id}`}>
-              <img src={heroImage(partner.id)} alt="" width="56" height="56" loading="lazy" />
+              <img src={heroCardImage(partner.id)} alt="" width="56" height="56" loading="lazy" decoding="async" onerror={`this.onerror=null;this.src='${heroImage(partner.id)}'`} />
               <div><strong>{partner.name}</strong><ul class="yaoji-tags">{partner.tags.map((tag) => <li>{tag}</li>)}</ul></div>
             </a>
           ))}
