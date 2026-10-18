@@ -74,12 +74,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
       </header>
       <h2 id="languageNoticeTitle">{t(locale, "home", "languageNoticeTitle")}</h2>
       <p id="languageNoticeBody">{t(locale, "home", "languageNoticeBody")}</p>
-      <p class="language-notice-discord">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-        </svg>
-        <span>{t(locale, "home", "languageNoticeDiscord")}</span>
-      </p>
       <form method="dialog" class="language-notice-actions">
         <button class="language-notice-primary" type="submit" value="dismiss" data-language-notice-close>
           {t(locale, "home", "languageNoticeDismiss")}
@@ -324,7 +318,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   <script is:inline>
     (() => {
-      const storageKey = "motto-language-notice-v1";
+      const storageKey = "motto-language-notice-v2";
       const dialog = document.querySelector("[data-language-notice]");
       if (!(dialog instanceof HTMLDialogElement)) return;
 
@@ -1101,7 +1095,11 @@ const featuredImageFor = (href: string) => href === "/heroes"
   }
 
   .language-notice {
+    position: fixed;
+    inset: 0;
+    margin: auto;
     width: min(420px, calc(100vw - var(--space-8)));
+    height: fit-content;
     padding: 0;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
@@ -1127,8 +1125,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-bottom: var(--space-4);
   }
 
-  .language-notice-badge,
-  .language-notice-discord {
+  .language-notice-badge {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
@@ -1168,8 +1165,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     color: var(--text-bright);
   }
 
-  .language-notice-close svg,
-  .language-notice-discord svg {
+  .language-notice-close svg {
     width: 18px;
     height: 18px;
   }
@@ -1186,21 +1182,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
     color: var(--text-secondary);
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
-  }
-
-  .language-notice-discord {
-    width: 100%;
-    padding: var(--space-3);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    background: var(--surface-tint);
-    color: var(--text-primary);
-    font-weight: var(--weight-semibold);
-  }
-
-  .language-notice-discord svg {
-    color: var(--accent-purple);
-    flex: 0 0 auto;
   }
 
   .language-notice-actions {
