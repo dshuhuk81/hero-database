@@ -242,6 +242,7 @@ const translations: TranslationTree = {
     languageNoticeEyebrow: { en: "Notice", de: "Notice", es: "Notice", ru: "Notice", zh: "Notice" },
     languageNoticeTitle: { en: "Notice", de: "Notice", es: "Notice", ru: "Notice", zh: "Notice" },
     languageNoticeBody: { en: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", de: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", es: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", ru: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", zh: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information." },
+    languageNoticeDiscord: { en: "Questions? Contact me on Discord: ds_frieren", de: "Questions? Contact me on Discord: ds_frieren", es: "Questions? Contact me on Discord: ds_frieren", ru: "Questions? Contact me on Discord: ds_frieren", zh: "Questions? Contact me on Discord: ds_frieren" },
     languageNoticeDismiss: { en: "Got it", de: "Alles klar", es: "Entendido", ru: "Понятно", zh: "知道了" },
   },
   events: {
