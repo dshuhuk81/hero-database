@@ -324,7 +324,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   <script is:inline>
     (() => {
-      const storageKey = "motto-language-notice-v1";
+      const storageKey = "motto-language-notice-v2";
       const dialog = document.querySelector("[data-language-notice]");
       if (!(dialog instanceof HTMLDialogElement)) return;
 
@@ -1101,7 +1101,11 @@ const featuredImageFor = (href: string) => href === "/heroes"
   }
 
   .language-notice {
+    position: fixed;
+    inset: 0;
+    margin: auto;
     width: min(420px, calc(100vw - var(--space-8)));
+    height: fit-content;
     padding: 0;
     border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
