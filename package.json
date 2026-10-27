@@ -4,55 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "dev:api": "node api-server.js",
-    "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
-    "build": "node scripts/build-with-supported-node.mjs",
+    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "tag-manager": "node scripts/tag-manager-server.js",
-    "mergeHeroes": "node scripts/merge-heroes-db.js",
-    "import-attack-rates": "node scripts/import-attack-rates.cjs",
-    "import-investment": "node scripts/import-investment.cjs",
-    "import-ratings": "node scripts/import-ratings.cjs",
-    "db:merge": "node scripts/merge-heroes-db.js",
-    "validate:tags": "node scripts/test-hero-tags.js",
-    "validate:tag-rules": "node --test scripts/test-tag-rules.mjs",
-    "validate:virtue-rules": "node --test scripts/test-virtue-rules.mjs",
-    "validate:comp-rules": "node --test scripts/test-comp-rules.mjs",
-    "validate:ratings": "node scripts/validate-ratings.mjs",
-    "ratings:report": "node scripts/rating-report.mjs",
-    "test:ratings": "node --test tests/rating-system.test.mjs",
-    "suggest:tags": "node scripts/suggest-synergy-tags.mjs",
-    "suggest:virtues": "node scripts/suggest-virtues.mjs",
-    "suggest:comps": "node scripts/suggest-comps.mjs",
-    "validate:all": "node scripts/validate-bosses.js && node scripts/test-hero-tags.js && node --test scripts/test-tag-rules.mjs && node --test scripts/test-virtue-rules.mjs && node --test scripts/test-comp-rules.mjs",
-    "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
-    "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
-    "after:boss-import": "node scripts/merge-heroes-db.js",
-    "upload-assets": "node scripts/upload-to-r2.mjs",
-    "upload-assets:changed": "node scripts/upload-to-r2.mjs --changed",
-    "upload-assets:force": "node scripts/upload-to-r2.mjs --force",
-    "upload-hero-variants": "node scripts/upload-to-r2.mjs --prefix heroes/cards/ && node scripts/upload-to-r2.mjs --prefix heroes/thumbs/",
-    "sync:r2-down": "node scripts/download-from-r2.mjs",
-    "sync:r2-heroes-down": "node scripts/download-from-r2.mjs --heroes-only --dest public --skip-existing",
-    "build:hero-variants": "node scripts/create-hero-image-variants.mjs",
-    "prepare-hero-variants": "npm run sync:r2-heroes-down && npm run build:hero-variants",
-    "r2:cors": "node scripts/r2-cors.mjs",
-    "check": "astro check"
+    "astro": "astro"
   },
   "engines": {
     "node": ">=22.12.0"
   },
   "dependencies": {
-    "astro": "^7.3.5",
-    "cookie": "^2.0.1",
-    "dotenv": "^18.0.3",
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/sitemap": "^3.7.1",
-    "@aws-sdk/client-s3": "^3.1030.0",
-    "typescript": "^6.0.3"
+    "astro": "^7.3.5"
   }
 }

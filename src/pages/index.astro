@@ -1,7 +1,124 @@
 ---
 export const prerender = true;
-import HomePage from "../components/pages/HomePage.astro";
-import { defaultLocale } from "../i18n/config";
 ---
 
-<HomePage locale={defaultLocale} />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="Motto Immortal Database has closed permanently. A farewell and thank-you to the community." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <title>Motto Immortal Database has closed</title>
+</head>
+<body>
+  <main class="closed">
+    <p class="eyebrow">A farewell to the community</p>
+    <h1>Motto Immortal Database<br />has closed for good.</h1>
+    <p class="lead">
+      To everyone who used this site: thank you. I'm sorry to tell you that it
+      is no longer available and will not be run any further.
+    </p>
+
+    <div class="body">
+      <p>
+        The publisher of Motto Immortal raised a copyright objection against this
+        fan project. I respect their rights, and I don't want to put myself or
+        the community in a difficult position, so I have decided to withdraw the
+        site completely. All heroes, tier lists, guides, calculators and tools
+        have been taken offline, and they will not return elsewhere.
+      </p>
+      <p>
+        I'm not writing this lightly. This project was a labour of love, built
+        on my own in my free time because I enjoy this game and wanted to make
+        it a little easier for all of us to understand and enjoy. Every hero
+        page, every rating and every guide carried a lot of care.
+      </p>
+      <p>
+        What made it worth doing was you. Every message, every correction, every
+        suggestion and every kind word about how the information helped your
+        team or your decisions made my day. Knowing that this was useful to real
+        players was the best part of the whole project, and I'm truly grateful
+        for it.
+      </p>
+      <p>
+        I'm very sad to end it this way. Thank you for your support, your
+        feedback and your trust. I hope you keep enjoying Motto Immortal, and
+        each other's company in the community.
+      </p>
+    </div>
+
+    <p class="sign">With heartfelt thanks,<br /><strong>the creator of Motto Immortal Database</strong></p>
+
+    <hr />
+
+    <p class="note">
+      Motto Immortal Database was an unofficial, non-commercial fan project and
+      was never affiliated with, endorsed by, or sponsored by the game's
+      developer or publisher. All game names, artwork and trademarks belong to
+      their respective owners.
+    </p>
+  </main>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --bg-base: #07060c;
+    --text-bright: #f4f1ff;
+    --text-primary: #e6e6eb;
+    --text-secondary: rgba(230, 230, 235, 0.72);
+    --text-muted: rgba(230, 230, 235, 0.45);
+    --accent-gold: #facc15;
+    --accent-purple-dim: rgba(168, 85, 247, 0.15);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, var(--accent-purple-dim), transparent 70%),
+      var(--bg-base);
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  .closed { width: 100%; max-width: 580px; }
+
+  .eyebrow {
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+  }
+
+  .closed h1 {
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--text-bright);
+  }
+
+  .lead { margin-top: 20px; font-size: 18px; color: var(--text-bright); }
+
+  .body { margin-top: 28px; display: grid; gap: 16px; color: var(--text-secondary); }
+
+  .sign { margin-top: 28px; color: var(--text-primary); }
+  .sign strong { color: var(--text-bright); font-weight: 600; }
+
+  .closed hr { margin: 36px 0 24px; border: 0; border-top: 1px solid var(--border-subtle); }
+
+  .note { font-size: 13px; color: var(--text-muted); }
+</style>
