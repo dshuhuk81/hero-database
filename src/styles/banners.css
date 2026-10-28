@@ -11,38 +11,52 @@
 .banner-section > h2 { margin: 0 0 var(--space-5); color: var(--text-bright); font-size: var(--text-2xl); }
 .banner-month { margin-bottom: var(--space-8); }
 .banner-month-title { margin: 0 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-faint); color: var(--text-secondary); font-size: var(--text-lg); font-weight: var(--weight-semibold); }
-.banner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); }
+.spotlight-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
 
-.banner-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); background: var(--bg-surface); color: inherit; text-decoration: none; transition: transform 0.2s ease, border-color 0.2s ease; }
-a.banner-card:hover { transform: translateY(-3px); border-color: var(--border-medium); }
-.banner-card--ended { opacity: 0.78; }
-.banner-card--running { border-color: rgba(250, 204, 21, 0.45); }
+/* Card design carried over from the hero roadmap (former summon-calendar page). */
+.spotlight-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(250, 204, 21, 0.2); border-radius: 14px; background: var(--bg-surface); color: inherit; text-decoration: none; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+a.spotlight-card:hover { transform: translateY(-4px); border-color: var(--accent-gold); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(250, 204, 21, 0.12); }
+.spotlight-card.is-static { cursor: default; }
+.banner-card--ended { opacity: 0.72; filter: saturate(0.6); }
+.banner-card--ended:hover { opacity: 1; filter: none; }
+.banner-card--running { border-color: rgba(250, 204, 21, 0.55); }
+.banner-card--upcoming { border-color: rgba(168, 85, 247, 0.3); }
 
-.banner-art { position: relative; display: flex; align-items: flex-end; min-height: 150px; padding: var(--space-4); background: linear-gradient(135deg, #1b1830, #0f0d18); }
-.banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
-.banner-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 6, 14, 0.92), rgba(8, 6, 14, 0.1) 70%); }
-.banner-art h3 { position: relative; z-index: 1; margin: 0; color: var(--text-bright); font-size: var(--text-xl); line-height: var(--leading-tight); }
-.banner-badges { position: absolute; z-index: 2; top: var(--space-3); right: var(--space-3); left: var(--space-3); display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-1); }
-.banner-badge { padding: 2px var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-full); background: rgba(8, 6, 14, 0.7); color: var(--text-secondary); font-size: var(--text-2xs); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-.banner-badge--running { border-color: var(--accent-gold); color: var(--accent-gold); }
-.banner-badge--upcoming { border-color: var(--accent-purple); color: var(--accent-purple); }
-.banner-badge--estimated { border-style: dashed; }
+.spotlight-order { position: absolute; top: 10px; left: 10px; z-index: 3; display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 50%; background: rgba(7, 6, 12, 0.75); color: var(--text-secondary); font-size: 0.7rem; font-weight: 700; backdrop-filter: blur(4px); }
+.pull-badge { position: absolute; top: 10px; right: 10px; z-index: 3; padding: 3px 8px; border-radius: 6px; background: rgba(7, 6, 12, 0.78); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; backdrop-filter: blur(4px); }
+.pull-pull { color: #6fd29a; border: 1px solid rgba(111, 210, 154, 0.4); }
+.pull-optional, .pull-unsure { color: #e0b43a; border: 1px solid rgba(224, 180, 58, 0.4); }
+.pull-whales-only { color: #b896ee; border: 1px solid rgba(184, 150, 238, 0.4); }
+.pull-skip { color: #e07a8e; border: 1px solid rgba(224, 122, 142, 0.4); }
 
-.banner-body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); }
-.banner-body time { color: var(--accent-gold); font-size: var(--text-sm); }
-.banner-body small { color: var(--text-muted); font-size: var(--text-xs); font-style: italic; }
-.banner-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-height: 24px; }
-.banner-icon { width: 20px; height: 20px; object-fit: contain; }
-.banner-rating { padding: 1px var(--space-2); border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.08); color: var(--text-bright); font-size: var(--text-xs); font-weight: var(--weight-bold); }
-.banner-pull { margin-left: auto; padding: 1px var(--space-2); border-radius: var(--radius-sm); font-size: var(--text-2xs); font-weight: var(--weight-bold); text-transform: uppercase; }
-.banner-pull--pull { background: rgba(85, 169, 120, 0.2); color: #6fd29a; }
-.banner-pull--optional, .banner-pull--unsure { background: rgba(217, 167, 26, 0.18); color: #e0b43a; }
-.banner-pull--whales-only { background: rgba(148, 102, 216, 0.2); color: #b896ee; }
-.banner-pull--skip { background: rgba(201, 93, 114, 0.2); color: #e07a8e; }
+.spotlight-img-wrap { position: relative; width: 100%; padding-top: 100%; overflow: hidden; background: linear-gradient(135deg, #1b1830, #0d1624); }
+.spotlight-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.35s ease; }
+a.spotlight-card:hover .spotlight-img { transform: scale(1.06); }
+.spotlight-img-fade { position: absolute; right: 0; bottom: 0; left: 0; height: 50%; background: linear-gradient(to top, var(--bg-surface), transparent); pointer-events: none; }
+.spotlight-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: var(--text-sm); letter-spacing: 0.1em; text-transform: uppercase; }
+.banner-chip-row { position: absolute; right: 10px; bottom: 8px; left: 10px; z-index: 2; display: flex; flex-wrap: wrap; gap: 4px; }
+.banner-chip { padding: 2px 8px; border: 1px solid var(--border-medium); border-radius: var(--radius-full); background: rgba(8, 6, 14, 0.72); color: var(--text-secondary); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.banner-chip--running { border-color: var(--accent-gold); color: var(--accent-gold); }
+.banner-chip--upcoming { border-color: var(--accent-purple); color: var(--accent-purple); }
+.banner-chip--estimated { border-style: dashed; }
+
+.spotlight-body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 12px 14px 14px; }
+.hero-meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 22px; }
+.meta-icon { width: 22px; height: 22px; flex-shrink: 0; object-fit: contain; }
+.spotlight-rating { margin-left: auto; padding: 1px 8px; border-radius: 5px; background: rgba(255, 255, 255, 0.08); color: var(--text-bright); font-size: 0.75rem; font-weight: 800; }
+.spotlight-name { margin: 0; color: var(--text-bright); font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+.hero-detail-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); }
+.hero-role { margin: 0; color: var(--text-muted); font-size: 0.75rem; }
+.hero-release-date { margin-left: auto; color: var(--accent-gold); font-size: 0.75rem; white-space: nowrap; }
+.banner-guess { color: var(--text-muted); font-size: var(--text-xs); font-style: italic; }
 
 .banner-empty { padding: var(--space-8); color: var(--text-muted); text-align: center; }
 
-@media (max-width: 480px) {
-  .banner-grid { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
+  .spotlight-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 400px) {
+  .spotlight-grid { grid-template-columns: 1fr; }
   .banner-search { max-width: none; }
 }

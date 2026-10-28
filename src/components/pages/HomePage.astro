@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
-import { teaserEntries as teasers, defaultMaintenanceTooltip, activeBadge, type NavEntry } from "../../data/nav";
+import { teaserEntries as teasers, entriesByGroup, navGroupLabels, defaultMaintenanceTooltip, activeBadge, type NavEntry, type NavGroup } from "../../data/nav";
 import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
@@ -19,10 +19,12 @@ const featured = FEATURED_HREFS
   .map((href) => teasers.find((entry) => entry.href === href))
   .filter(Boolean) as NavEntry[];
 const secondary = teasers.filter((entry) => !FEATURED_HREFS.includes(entry.href));
-const tools = secondary.filter((entry) => entry.group === "tools");
-const library = secondary
-  .filter((entry) => entry.group !== "tools")
-  .sort((a, b) => Number(b.href === "/tips") - Number(a.href === "/tips"));
+const directoryGroups = entriesByGroup(secondary);
+// Two stacked columns (big sections left, small ones right) so short groups do not leave gaps in a shared grid row.
+const directoryColumns = [
+  directoryGroups.filter((bucket) => ["heroes", "tools"].includes(bucket.group)),
+  directoryGroups.filter((bucket) => !["heroes", "tools"].includes(bucket.group)),
+];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -210,74 +212,50 @@ const featuredImageFor = (href: string) => href === "/heroes"
         </header>
 
         <div class="directory-layout">
-          <div class="directory-group">
-            <h3>{t(locale, "home", "libraryHeadline")}</h3>
-            <div class="link-list">
-              {library.map((entry) => {
-                const isMaintenance = entry.status?.type === "maintenance";
-                const badge = activeBadge(entry);
-                const content = (
-                  <>
-                    <span class="link-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
-                    </span>
-                    <span class="link-copy">
-                      <span class="link-title">
-                        {navLabel(entry.href, entry.label, locale)}
-                        {badge && (
-                          <span class="entry-badge" style={badge.color ? `--badge-color:${badge.color}` : ""}>
-                            {pickLang(badge.text, locale)}
-                          </span>
-                        )}
+          {directoryColumns.map((column) => (
+          <div class="directory-column">
+          {column.map((bucket) => (
+            <div class="directory-group">
+              <h3>{navGroupLabels[bucket.group as NavGroup] ? pickLang(navGroupLabels[bucket.group as NavGroup]!, locale) : ""}</h3>
+              <div class="link-list">
+                {bucket.entries.map((entry) => {
+                  const isMaintenance = entry.status?.type === "maintenance";
+                  const badge = activeBadge(entry);
+                  const content = (
+                    <>
+                      <span class="link-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
                       </span>
-                      <span class="link-description">{pickLang(entry.description, locale)}</span>
-                    </span>
-                    <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                      <path d="m9 18 6-6-6-6" />
-                    </svg>
-                  </>
-                );
-
-                return isMaintenance ? (
-                  <span class="directory-link is-disabled" title={entry.status?.tooltip ?? defaultMaintenanceTooltip} aria-disabled="true">
-                    {content}
-                  </span>
-                ) : (
-                  <a class="directory-link" href={hrefFor(entry.href)}>{content}</a>
-                );
-              })}
-            </div>
-          </div>
-
-          <div class="directory-group directory-group-tools">
-            <h3>{t(locale, "home", "toolsHeadline")}</h3>
-            <div class="link-list">
-              {tools.map((entry) => {
-                const badge = activeBadge(entry);
-                return (
-                  <a class="directory-link" href={hrefFor(entry.href)}>
-                    <span class="link-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
-                    </span>
-                    <span class="link-copy">
-                      <span class="link-title">
-                        {navLabel(entry.href, entry.label, locale)}
-                        {badge && (
-                          <span class="entry-badge" style={badge.color ? `--badge-color:${badge.color}` : ""}>
-                            {pickLang(badge.text, locale)}
-                          </span>
-                        )}
+                      <span class="link-copy">
+                        <span class="link-title">
+                          {navLabel(entry.href, entry.label, locale)}
+                          {badge && (
+                            <span class="entry-badge" style={badge.color ? `--badge-color:${badge.color}` : ""}>
+                              {pickLang(badge.text, locale)}
+                            </span>
+                          )}
+                        </span>
+                        <span class="link-description">{pickLang(entry.description, locale)}</span>
                       </span>
-                      <span class="link-description">{pickLang(entry.description, locale)}</span>
+                      <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </>
+                  );
+
+                  return isMaintenance ? (
+                    <span class="directory-link is-disabled" title={entry.status?.tooltip ?? defaultMaintenanceTooltip} aria-disabled="true">
+                      {content}
                     </span>
-                    <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                      <path d="m9 18 6-6-6-6" />
-                    </svg>
-                  </a>
-                );
-              })}
+                  ) : (
+                    <a class="directory-link" href={hrefFor(entry.href)}>{content}</a>
+                  );
+                })}
+              </div>
             </div>
+          ))}
           </div>
+          ))}
         </div>
       </section>
     </main>
@@ -865,6 +843,12 @@ const featuredImageFor = (href: string) => href === "/heroes"
   .directory-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    gap: var(--space-10);
+  }
+
+  .directory-column {
+    display: grid;
+    align-content: start;
     gap: var(--space-10);
   }
 

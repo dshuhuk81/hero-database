@@ -28,7 +28,8 @@ const heroById = new Map(Object.values(allHeroes as Record<string, any>).map((he
 const ratingById = new Map((ratedHeroes as any[]).map((hero) => [hero.id, hero.ratings?.overall as string | undefined]));
 const scheduleById = new Map(summonSchedule.map((entry) => [entry.id, entry]));
 
-function heroFields(siteId: string) {
+/** Reruns repeat a hero that already had a banner, so they carry no pull recommendation or order number. */
+function heroFields(siteId: string, rerun = false) {
   const hero = heroById.get(siteId) ?? {};
   const entry = scheduleById.get(siteId);
   return {
@@ -38,8 +39,8 @@ function heroFields(siteId: string) {
     heroClass: hero.class,
     role: hero.role,
     overall: ratingById.get(siteId),
-    pullQuality: entry?.pullQuality,
-    order: entry?.order,
+    pullQuality: rerun ? undefined : entry?.pullQuality,
+    order: rerun ? undefined : entry?.order,
   };
 }
 
@@ -49,7 +50,8 @@ export function buildBanners(today = new Date().toISOString().slice(0, 10)): Ban
 
   for (const event of globalEvents.filter((e) => e.category === "banners")) {
     const siteId = event.heroGameId === undefined ? undefined : siteIdForGameId(event.heroGameId);
-    if (siteId) bannedHeroes.add(siteId);
+    // Only a first banner makes a hero "announced"; reruns repeat heroes that already came.
+    if (siteId && event.series !== "rerun_card_push") bannedHeroes.add(siteId);
     banners.push({
       id: String(event.id),
       kind: event.series === "rerun_card_push" ? "rerun" : "new",
@@ -57,7 +59,7 @@ export function buildBanners(today = new Date().toISOString().slice(0, 10)): Ban
       end: event.end,
       label: event.label,
       estimated: false,
-      ...(siteId ? heroFields(siteId) : {}),
+      ...(siteId ? heroFields(siteId, event.series === "rerun_card_push") : {}),
     });
   }
 

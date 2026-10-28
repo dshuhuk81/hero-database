@@ -51,7 +51,10 @@ const icon = (type: string, value?: string) => (value ? `${R2_BASE}/icons/${type
 
 const banners = buildBanners().map((banner) => ({
   ...banner,
-  image: banner.heroSiteId ? `${R2_BASE}/heroes/cards/${encodeURIComponent(banner.heroSiteId)}-480.webp?v=${VERSION}` : null,
+  image: banner.heroSiteId ? `${R2_BASE}/heroes/cards/${encodeURIComponent(banner.heroSiteId)}-360.webp?v=${VERSION}` : null,
+  srcset: banner.heroSiteId
+    ? [240, 360, 480].map((width) => `${R2_BASE}/heroes/cards/${encodeURIComponent(banner.heroSiteId!)}-${width}.webp?v=${VERSION} ${width}w`).join(", ")
+    : null,
   href: banner.heroSiteId && detailPages.has(banner.heroSiteId) ? localizePath(`/heroes/${banner.heroSiteId}`, locale) : null,
   icons: [icon("factions", banner.faction), icon("classes", banner.heroClass), icon("roles", banner.role)].filter(Boolean),
 }));
@@ -64,7 +67,7 @@ const clientCopy = Object.fromEntries(
 const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
 ---
 
-<Base title={pickLang(copy.metaTitle, locale)} description={pickLang(copy.metaDescription, locale)} locale={locale} noindex>
+<Base title={pickLang(copy.metaTitle, locale)} description={pickLang(copy.metaDescription, locale)} locale={locale}>
   <PageHero tag={pickLang(copy.tag, locale)} headline={pickLang(copy.headline, locale)} subtitle={pickLang(copy.subtitle, locale)} locale={locale} />
 
   <main class="page-wrapper banners-page page-content" data-locale={locale}>
@@ -113,19 +116,20 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
         const status = bannerStatus(b.start, b.end, today);
         const name = b.heroName || copy.rerunName;
         const art = b.image
-          ? `<img class="banner-img" src="${esc(b.image)}" alt="" loading="lazy" decoding="async" />`
-          : "";
-        const icons = (b.icons || []).map((src) => `<img class="banner-icon" src="${esc(src)}" alt="" width="20" height="20" loading="lazy" />`).join("");
-        const pull = b.pullQuality ? `<span class="banner-pull banner-pull--${esc(b.pullQuality)}">${esc(copy.pull[b.pullQuality])}</span>` : "";
-        const rating = b.overall ? `<span class="banner-rating" title="${esc(copy.rating)}">${esc(b.overall)}</span>` : "";
-        const badges = [`<span class="banner-badge banner-badge--${status}">${esc(copy[status])}</span>`, b.kind === "rerun" ? `<span class="banner-badge">${esc(copy.rerun)}</span>` : "", b.estimated ? `<span class="banner-badge banner-badge--estimated">${esc(copy.estimated)}</span>` : ""].join("");
-        const inner = `<div class="banner-art">${art}<div class="banner-badges">${badges}</div><h3>${esc(name)}</h3></div><div class="banner-body"><time>${esc(period(b))}</time>${b.estimated ? `<small>${esc(copy.guessNote)}</small>` : ""}<div class="banner-meta">${icons}${rating}${pull}</div></div>`;
+          ? `<img class="spotlight-img" src="${esc(b.image)}" srcset="${esc(b.srcset)}" sizes="(max-width: 400px) calc(100vw - 40px), (max-width: 600px) calc((100vw - 56px) / 2), 220px" alt="${esc(name)}" width="360" height="360" loading="lazy" decoding="async" />`
+          : `<span class="spotlight-empty">${esc(copy.rerun)}</span>`;
+        const icons = (b.icons || []).map((src) => `<img class="meta-icon" src="${esc(src)}" alt="" width="22" height="22" loading="lazy" />`).join("");
+        const pull = b.pullQuality ? `<div class="pull-badge pull-${esc(b.pullQuality)}">${esc(copy.pull[b.pullQuality])}</div>` : "";
+        const order = b.order ? `<div class="spotlight-order">${esc(b.order)}</div>` : "";
+        const chips = [`<span class="banner-chip banner-chip--${status}">${esc(copy[status])}</span>`, b.kind === "rerun" ? `<span class="banner-chip">${esc(copy.rerun)}</span>` : "", b.estimated ? `<span class="banner-chip banner-chip--estimated">${esc(copy.estimated)}</span>` : ""].join("");
+        const rating = b.overall ? `<span class="spotlight-rating" title="${esc(copy.rating)}">${esc(b.overall)}</span>` : "";
+        const inner = `${order}${pull}<div class="spotlight-img-wrap">${art}<div class="spotlight-img-fade"></div><div class="banner-chip-row">${chips}</div></div><div class="spotlight-body"><div class="hero-meta-row">${icons}${rating}</div><h3 class="spotlight-name">${esc(name)}</h3><div class="hero-detail-row"><p class="hero-role">${esc(b.role || "")}</p><time class="hero-release-date">${esc(period(b))}</time></div>${b.estimated ? `<small class="banner-guess">${esc(copy.guessNote)}</small>` : ""}</div>`;
         const tag = b.href ? "a" : "div";
-        return `<${tag} class="banner-card banner-card--${status}"${b.href ? ` href="${esc(b.href)}"` : ""}>${inner}</${tag}>`;
+        return `<${tag} class="spotlight-card banner-card--${status}${b.href ? "" : " is-static"}"${b.href ? ` href="${esc(b.href)}"` : ""}>${inner}</${tag}>`;
       }
 
       function section(title, groups) {
-        const body = groups.map((g) => `<div class="banner-month"><h3 class="banner-month-title">${esc(g.month ? fmt(`${g.month}-01`, { month: "long", year: "numeric" }) : "")}</h3><div class="banner-grid">${g.items.map(card).join("")}</div></div>`).join("");
+        const body = groups.map((g) => `<div class="banner-month"><h3 class="banner-month-title">${esc(g.month ? fmt(`${g.month}-01`, { month: "long", year: "numeric" }) : "")}</h3><div class="spotlight-grid">${g.items.map(card).join("")}</div></div>`).join("");
         return `<section class="banner-section"><h2>${esc(title)}</h2>${body}</section>`;
       }
 
@@ -133,11 +137,11 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
         const filters = { kind: chip === "new" || chip === "rerun" ? chip : undefined, status: chip === "running" || chip === "upcoming" ? chip : undefined, query };
         const { current, history: past } = splitBanners(filterBanners(banners, filters, today), today);
         const parts = [];
-        if (current.length) parts.push(`<section class="banner-section"><h2>${esc(copy.currentTitle)}</h2><div class="banner-grid">${current.map(card).join("")}</div></section>`);
+        if (current.length) parts.push(`<section class="banner-section"><h2>${esc(copy.currentTitle)}</h2><div class="spotlight-grid">${current.map(card).join("")}</div></section>`);
         if (past.length) parts.push(section(copy.historyTitle, groupByMonth(past)));
         list.innerHTML = parts.join("") || `<p class="banner-empty">${esc(copy.nothing)}</p>`;
-        list.querySelectorAll("img.banner-img").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
-        list.querySelectorAll("img.banner-icon").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
+        list.querySelectorAll("img.spotlight-img").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
+        list.querySelectorAll("img.meta-icon").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
         const next = new URLSearchParams();
         if (chip !== "all") next.set("f", chip);
         if (query) next.set("q", query);

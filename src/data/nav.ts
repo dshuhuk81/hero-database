@@ -6,7 +6,7 @@
 //
 // Rules:
 //  - Array order drives display order on BOTH surfaces. On the sidebar, items
-//    are bucketed by `group` (primary / content / meta) but keep this array's
+//    are bucketed by `group` (see navGroupOrder) but keep this array's
 //    relative order within each bucket. The teaser grid shows every entry with
 //    `teaser: true` in this array's order.
 //  - `label` is the only label. The teaser shows it as the card headline; the
@@ -15,6 +15,21 @@
 //  - `icon` is the inner SVG markup (24x24 viewBox, stroke-based, Lucide-style).
 
 import { type LocalizedString } from "../i18n/helpers";
+import { entriesByGroup, navGroupOrder } from "./navGroups.js";
+
+export type NavGroup = "home" | "heroes" | "whatson" | "tools" | "learn" | "meta";
+
+/** Section headings. `home` and `meta` are unlabelled. */
+export const navGroupLabels: Record<NavGroup, LocalizedString | undefined> = {
+  home: undefined,
+  heroes: { en: "Heroes", de: "Helden", es: "Héroes", ru: "Герои", zh: "英雄" },
+  whatson: { en: "What's on", de: "Aktuelles", es: "Novedades", ru: "Актуальное", zh: "当前动态" },
+  tools: { en: "Tools", de: "Werkzeuge", es: "Herramientas", ru: "Инструменты", zh: "工具" },
+  learn: { en: "Guides & Tips", de: "Guides & Tipps", es: "Guías y consejos", ru: "Гайды и советы", zh: "攻略与技巧" },
+  meta: undefined,
+};
+
+export { entriesByGroup, navGroupOrder };
 
 export interface NavEntry {
   /** Display label. Teaser headline + sidebar tooltip/mobile text. */
@@ -22,8 +37,8 @@ export interface NavEntry {
   href: string;
   /** Inner SVG markup for a 24x24 stroke icon. */
   icon: string;
-  /** Sidebar bucket. */
-  group: "primary" | "content" | "tools" | "meta";
+  /** Navigation section; see navGroupOrder for the display order. */
+  group: NavGroup;
   /** Show this entry as a card on the index.astro teaser grid. */
   teaser?: boolean;
   /** Pin this entry to the mobile bottom bar (max 4). Others go to the More sheet. */
@@ -46,14 +61,14 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Home",
     href: "/",
-    group: "primary",
+    group: "home",
     mobile: true,
     icon: `<path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
   },
   {
     label: "Boss Encounters",
     href: "/bosses",
-    group: "content",
+    group: "learn",
     sidebar: false,
     description: {
       en: "Boss counters & recommended team comps",
@@ -67,7 +82,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Divine Throne",
     href: "/guides/divine-throne",
-    group: "content",
+    group: "learn",
     sidebar: false,
     description: {
       en: "New Divine Throne system - unlocks, Ether upgrades and first-wave heroes",
@@ -82,7 +97,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Infinite Labyrinth",
     href: "/guides/infinite-labyrinth",
-    group: "content",
+    group: "learn",
     sidebar: false,
     description: {
       en: "Chapters, Temporal Relics, teams, rewards and merge-board strategy",
@@ -97,7 +112,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Timed Challenge",
     href: "/guides/timed-challenge",
-    group: "content",
+    group: "learn",
     sidebar: false,
     description: {
       en: "Campaign stages & event team guides",
@@ -111,7 +126,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Guides",
     href: "/guides",
-    group: "content",
+    group: "learn",
     mobile: true,
     teaser: true,
     description: {
@@ -127,7 +142,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Hero List",
     href: "/heroes",
-    group: "primary",
+    group: "heroes",
     mobile: true,
     teaser: true,
     description: {
@@ -143,7 +158,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Hero Stats",
     href: "/hero-stats",
-    group: "primary",
+    group: "heroes",
     mobile: true,
     teaser: true,
     description: {
@@ -158,7 +173,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Tier List",
     href: "/tierlist",
-    group: "primary",
+    group: "heroes",
     teaser: true,
     description: {
       en: "Browse hero rankings in a visual gallery",
@@ -172,7 +187,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Relic Investment",
     href: "/relic-investment",
-    group: "primary",
+    group: "heroes",
     teaser: true,
     description: {
       en: "See the recommended relic level for every rated hero",
@@ -187,7 +202,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Tips",
     href: "/tips",
-    group: "content",
+    group: "learn",
     teaser: true,
     description: {
       en: "Beginner tips and early game advice",
@@ -202,7 +217,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Hero Evolution",
     href: "/hero-evolution",
-    group: "content",
+    group: "heroes",
     teaser: true,
     sidebar: false,
     description: {
@@ -218,7 +233,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Totems",
     href: "/totems",
-    group: "content",
+    group: "heroes",
     teaser: true,
     description: {
       en: "All totems with effects, tags & ratings",
@@ -246,7 +261,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Virtue List",
     href: "/virtues",
-    group: "tools",
+    group: "heroes",
     teaser: true,
     description: {
       en: "Virtue sets, rarities and farming recommendations",
@@ -260,7 +275,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Artifact Enhancement Tool",
     href: "/artifact-enhancement",
-    group: "tools",
+    group: "heroes",
     teaser: true,
     description: {
       en: "Preview awakened-effect values and enhancement success rates",
@@ -286,16 +301,16 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M12 21s-7-4.6-9.2-9.1C1 8.2 3.2 4 7.3 4c2 0 3.7 1.1 4.7 2.6C13 5.1 14.7 4 16.7 4c4.1 0 6.3 4.2 4.5 7.9C19 16.4 12 21 12 21z"/><path d="m16.5 7 .5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5z"/>`,
   },
   {
-    label: "Hero Roadmap",
-    href: "/summon-calendar",
-    group: "tools",
+    label: "Banners",
+    href: "/banners",
+    group: "whatson",
     teaser: true,
     description: {
-      en: "Possible guesses on upcoming releases.",
-      de: "Mögliche Vorhersagen zu kommenden Veröffentlichungen.",
-      es: "Posibles predicciones de próximos lanzamientos.",
-      ru: "Возможные прогнозы будущих релизов на основе данных CN.",
-      zh: "基于国服数据对后续上线内容的推测。",
+      en: "Every summon banner: running, upcoming and past.",
+      de: "Alle Beschwörungs-Banner: laufend, kommend und vergangen.",
+      es: "Todos los banners de invocación: actuales, próximos y pasados.",
+      ru: "Все баннеры призыва: текущие, будущие и прошедшие.",
+      zh: "所有召唤卡池：进行中、即将开启与已结束。",
     },
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 12.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z"/>`,
   },

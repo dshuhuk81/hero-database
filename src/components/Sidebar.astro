@@ -2,7 +2,8 @@
 // Navigation is derived from the single source of truth in src/data/nav.ts.
 // Do NOT define nav items here - add/edit/remove them in that file and both
 // this sidebar and the index.astro teaser grid update automatically.
-import { navEntries, defaultMaintenanceTooltip, type NavEntry } from "../data/nav";
+import { navEntries, entriesByGroup, navGroupLabels, defaultMaintenanceTooltip, type NavEntry, type NavGroup } from "../data/nav";
+import { pickLang } from "../i18n/helpers";
 import { getLocaleFromPathname, localizePath, stripLocaleFromPathname } from "../i18n/config";
 import { navLabel, t } from "../i18n/ui";
 
@@ -26,10 +27,8 @@ const isActive = (href: string) => {
   return target !== "/" && currentPath.startsWith(target + "/");
 };
 
-const primaryItems = sidebarEntries.filter(i => i.group === "primary");
-const contentItems = sidebarEntries.filter(i => i.group === "content");
-const toolsItems   = sidebarEntries.filter(i => i.group === "tools");
-const metaItems    = sidebarEntries.filter(i => i.group === "meta");
+const railGroups = entriesByGroup(sidebarEntries);
+const overflowGroups = entriesByGroup(mobileOverflowItems);
 
 function getIcon(item: NavEntry) {
   return item.icon;
@@ -50,120 +49,48 @@ function getHref(item: NavEntry) {
 function getLabel(item: NavEntry) {
   return navLabel(item.href, item.label, locale);
 }
+
+function groupLabel(group: string) {
+  const label = navGroupLabels[group as NavGroup];
+  return label ? pickLang(label, locale) : undefined;
+}
 ---
 
 <!-- Desktop Rail -->
 <aside class="rail">
   <nav class="rail-nav">
-    {primaryItems.map((item) => {
-      const disabled = isMaintenance(item);
-      const label = getLabel(item);
-      const tooltip = disabled ? getTooltip(item) : label;
-      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
-      const itemContent = (
-        <>
-          <div class="rail-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
-            {isActive(item.href) && !disabled && <span class="active-pill" />}
-          </div>
-          <span class="rail-label">{label}</span>
-        </>
-      );
+    {railGroups.map((bucket, index) => (
+      <>
+        {index > 0 && <div class="rail-divider" />}
+        <div class="rail-group" role="group" aria-label={groupLabel(bucket.group)}>
+          {bucket.entries.map((item) => {
+            const disabled = isMaintenance(item);
+            const label = getLabel(item);
+            const tooltip = disabled ? getTooltip(item) : label;
+            const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+            const itemContent = (
+              <>
+                <div class="rail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
+                  {isActive(item.href) && !disabled && <span class="active-pill" />}
+                </div>
+                <span class="rail-label">{label}</span>
+              </>
+            );
 
-      return disabled ? (
-        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
-          {itemContent}
-        </span>
-      ) : (
-        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
-          {itemContent}
-        </a>
-      );
-    })}
-
-    <div class="rail-divider" />
-
-    {contentItems.map((item) => {
-      const disabled = isMaintenance(item);
-      const label = getLabel(item);
-      const tooltip = disabled ? getTooltip(item) : label;
-      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
-      const itemContent = (
-        <>
-          <div class="rail-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
-            {isActive(item.href) && !disabled && <span class="active-pill" />}
-          </div>
-          <span class="rail-label">{label}</span>
-        </>
-      );
-
-      return disabled ? (
-        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
-          {itemContent}
-        </span>
-      ) : (
-        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
-          {itemContent}
-        </a>
-      );
-    })}
-
-    <div class="rail-divider" />
-
-    {toolsItems.map((item) => {
-      const disabled = isMaintenance(item);
-      const label = getLabel(item);
-      const tooltip = disabled ? getTooltip(item) : label;
-      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
-      const itemContent = (
-        <>
-          <div class="rail-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
-            {isActive(item.href) && !disabled && <span class="active-pill" />}
-          </div>
-          <span class="rail-label">{label}</span>
-        </>
-      );
-
-      return disabled ? (
-        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
-          {itemContent}
-        </span>
-      ) : (
-        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
-          {itemContent}
-        </a>
-      );
-    })}
-
-    <div class="rail-divider" />
-
-    {metaItems.map((item) => {
-      const disabled = isMaintenance(item);
-      const label = getLabel(item);
-      const tooltip = disabled ? getTooltip(item) : label;
-      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
-      const itemContent = (
-        <>
-          <div class="rail-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
-            {isActive(item.href) && !disabled && <span class="active-pill" />}
-          </div>
-          <span class="rail-label">{label}</span>
-        </>
-      );
-
-      return disabled ? (
-        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
-          {itemContent}
-        </span>
-      ) : (
-        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
-          {itemContent}
-        </a>
-      );
-    })}
+            return disabled ? (
+              <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
+                {itemContent}
+              </span>
+            ) : (
+              <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
+                {itemContent}
+              </a>
+            );
+          })}
+        </div>
+      </>
+    ))}
   </nav>
   
 
@@ -235,30 +162,35 @@ function getLabel(item: NavEntry) {
 <div class="more-sheet-backdrop" id="moreSheetBackdrop">
   <div class="more-sheet" id="moreSheet">
     <div class="more-sheet-handle"></div>
-    {mobileOverflowItems.map((item) => {
-      const disabled = isMaintenance(item);
-      const label = getLabel(item);
-      const tooltip = getTooltip(item);
-      const itemClass = `more-sheet-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
-      const itemContent = (
-        <>
-          <div class="more-sheet-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
-          </div>
-          <span class="more-sheet-label">{label}</span>
-        </>
-      );
+    {overflowGroups.map((bucket) => (
+      <>
+        {groupLabel(bucket.group) && <p class="more-sheet-group">{groupLabel(bucket.group)}</p>}
+        {bucket.entries.map((item) => {
+          const disabled = isMaintenance(item);
+          const label = getLabel(item);
+          const tooltip = getTooltip(item);
+          const itemClass = `more-sheet-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+          const itemContent = (
+            <>
+              <div class="more-sheet-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
+              </div>
+              <span class="more-sheet-label">{label}</span>
+            </>
+          );
 
-      return disabled ? (
-        <span class={itemClass} title={tooltip} aria-disabled="true" role="link">
-          {itemContent}
-        </span>
-      ) : (
-        <a href={getHref(item)} class={itemClass}>
-          {itemContent}
-        </a>
-      );
-    })}
+          return disabled ? (
+            <span class={itemClass} title={tooltip} aria-disabled="true" role="link">
+              {itemContent}
+            </span>
+          ) : (
+            <a href={getHref(item)} class={itemClass}>
+              {itemContent}
+            </a>
+          );
+        })}
+      </>
+    ))}
     <div class="more-sheet-divider" />
     <a href="/#support" class="more-sheet-item more-sheet-support">
       <div class="more-sheet-icon">
@@ -390,6 +322,10 @@ function getLabel(item: NavEntry) {
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
+  }
+
+  .rail-group {
+    display: contents;
   }
 
   /* ─── Rail Item ─── */
@@ -650,6 +586,15 @@ function getLabel(item: NavEntry) {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 2px;
     margin: 0 auto 16px;
+  }
+
+  .more-sheet-group {
+    margin: 12px 8px 2px;
+    color: rgba(230, 230, 235, 0.5);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .more-sheet-item {
