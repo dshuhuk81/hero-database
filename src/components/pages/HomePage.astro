@@ -35,7 +35,7 @@ const jsonLd = {
 
 
 const hrefFor = (href: string) => localizePath(href, locale);
-const launchHero = getHeroById("yaoji");
+const launchHero = getHeroById("charon");
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -88,7 +88,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
           <aside class="launch-card">
             <div class="launch-backdrop" aria-hidden="true"></div>
             <div class="launch-content">
-              <div class="launch-character" aria-label="Yaoji hero card">
+              <div class="launch-character" aria-label="Charon hero card">
                 <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
                   <img src={`https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
                   <img src={`https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
@@ -97,8 +97,8 @@ const featuredImageFor = (href: string) => href === "/heroes"
               </div>
             </div>
             <div class="launch-meta">
-              <strong class="launch-meta-name">Yaoji</strong>
-              <a class="launch-meta-action" href={hrefFor("/heroes/yaoji")}>
+              <strong class="launch-meta-name">Charon</strong>
+              <a class="launch-meta-action" href={hrefFor("/heroes/charon")}>
                 Explore the hero
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" />
