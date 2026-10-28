@@ -1,4 +1,4 @@
-// src/datahttps://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/index.js
+// src/data/heroes/index.js
 
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });

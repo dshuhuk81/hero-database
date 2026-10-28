@@ -1,0 +1,23 @@
+---
+export const prerender = true;
+
+import EventsPage from "../../components/pages/EventsPage.astro";
+import { defaultLocale, locales, type Locale } from "../../i18n/config";
+
+export function getStaticPaths() {
+  return locales
+    .filter((locale) => locale !== defaultLocale)
+    .map((locale) => ({
+      params: { locale },
+      props: { locale },
+    }));
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<EventsPage locale={locale} />

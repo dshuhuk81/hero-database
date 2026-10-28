@@ -4,7 +4,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import { heroes as heroPages } from "../data/heroes/withRatings";
-import { summonSchedule as schedule, type PullQuality, type ScheduleEntry } from "../data/summonSchedule";
+import { summonSchedule as schedule, resolveScheduleEntry, formatReleaseDate, type PullQuality, type ScheduleEntry } from "../data/summonSchedule";
 
 const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string }> = {
   "pull":   { label: "Pull",   className: "pull-must" },
@@ -45,12 +45,7 @@ function heroThumbImg(id: string): string {
 const iconUrl = (type: string, value: string) =>
   value ? `${R2_BASE}/icons/${type}/${value.toLowerCase()}.webp` : null;
 
-const RELEASE_DATE_PLACEHOLDERS = new Set(["tbd", "tba", "unknown", "n/a", "na", "none", "-", "—", "?", "placeholder"]);
-
-function visibleReleaseDate(value?: string): string | null {
-  const date = value?.trim();
-  return date && !RELEASE_DATE_PLACEHOLDERS.has(date.toLowerCase()) ? date : null;
-}
+const today = new Date().toISOString().slice(0, 10);
 
 function resolveEntry(entry: ScheduleEntry) {
   const h = heroMap.get(entry.id) || {};
@@ -58,6 +53,7 @@ function resolveEntry(entry: ScheduleEntry) {
   const faction = h.faction || "";
   const heroClass = h.class || "";
   const role = h.role || "";
+  const resolved = resolveScheduleEntry(entry, today);
   return {
     id: entry.id,
     displayName: entry.displayName || h.name || entry.id,
@@ -71,16 +67,18 @@ function resolveEntry(entry: ScheduleEntry) {
     overallRating: r.overall || "?",
     pvpRating: r.pvpendgame || "?",
     pveRating: r.pveendgame || "?",
-    status: entry.status,
+    status: resolved.status,
     order: entry.order,
-    releaseDate: visibleReleaseDate(entry.releaseDate),
+    releaseDate: resolved.date ? formatReleaseDate(resolved.date) : null,
+    isEstimated: resolved.dateSource === "estimated",
     hasDetailPage: heroPageIds.has(entry.id),
     pullQuality: entry.pullQuality ? PULL_QUALITY_META[entry.pullQuality] : null,
   };
 }
 
-const upcoming = schedule.filter(e => e.status === "upcoming").map(resolveEntry);
-const released = schedule.filter(e => e.status === "released").map(resolveEntry);
+const resolvedSchedule = schedule.map(resolveEntry);
+const upcoming = resolvedSchedule.filter(e => e.status === "upcoming");
+const released = resolvedSchedule.filter(e => e.status === "released");
 
 ---
 
@@ -145,7 +143,7 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
                 <h3 class="spotlight-name">{hero.displayName}</h3>
                 <div class="hero-detail-row">
                   <p class="hero-role">{hero.role}</p>
-                  {hero.releaseDate && <time class="hero-release-date">{hero.releaseDate}</time>}
+                  {hero.releaseDate && <time class="hero-release-date">{hero.releaseDate}{hero.isEstimated && <span class="release-estimated"> (est.)</span>}</time>}
                 </div>
               </div>
             </>
@@ -187,7 +185,7 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
               <span class="tl-name">{hero.displayName}</span>
               <span class="tl-sub">
                 {hero.role}
-                {hero.releaseDate && <><span aria-hidden="true"> · </span><time class="tl-release-date">{hero.releaseDate}</time></>}
+                {hero.releaseDate && <><span aria-hidden="true"> · </span><time class="tl-release-date">{hero.releaseDate}{hero.isEstimated && <span class="release-estimated"> (est.)</span>}</time></>}
               </span>
             </div>
             <div class="tl-faction">{hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" /> : null}</div>
@@ -572,6 +570,11 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
     font-weight: 400;
     color: var(--accent-gold);
     white-space: nowrap;
+  }
+
+  .release-estimated {
+    color: var(--text-muted);
+    font-weight: 400;
   }
 
   .hero-note {

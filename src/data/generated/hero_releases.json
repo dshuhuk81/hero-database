@@ -1,0 +1,693 @@
+{
+  "generatedAt": "2026-10-28T12:39:56Z",
+  "client": {
+    "global": "v102687",
+    "cn": "1.0.13"
+  },
+  "heroes": [
+    {
+      "gameId": 1001,
+      "name": "Hecate",
+      "internalName": "Hekate",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Hekate02_Img"
+    },
+    {
+      "gameId": 1002,
+      "name": "Medusa",
+      "internalName": "Meidusha",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Meidusha02_Img"
+    },
+    {
+      "gameId": 1003,
+      "name": "Hela",
+      "internalName": "Haila",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Haila02_Img"
+    },
+    {
+      "gameId": 1004,
+      "name": "Poseidon",
+      "internalName": "Bosaidong",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Bosaidong02_Img"
+    },
+    {
+      "gameId": 1005,
+      "name": "Nemesis",
+      "internalName": "Niemoxisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Niemoxisi02_Img"
+    },
+    {
+      "gameId": 1006,
+      "name": "Iris",
+      "internalName": "Yilisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yilisi02_Img"
+    },
+    {
+      "gameId": 1007,
+      "name": "Khepri",
+      "internalName": "Kaibuli",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Kaibuli02_Img"
+    },
+    {
+      "gameId": 1008,
+      "name": "Momus",
+      "internalName": "Momosi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Momosi02_Img"
+    },
+    {
+      "gameId": 1009,
+      "name": "Tefnut",
+      "internalName": "Taifunute",
+      "globalRelease": "2026-02-04",
+      "cnRelease": "2025-10-03",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Taifunute02_Img"
+    },
+    {
+      "gameId": 1010,
+      "name": "Skadi",
+      "internalName": "Sikadi",
+      "globalRelease": "2026-04-01",
+      "cnRelease": "2025-11-28",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Sikadi02_Img"
+    },
+    {
+      "gameId": 1011,
+      "name": "Nephthys",
+      "internalName": "Naifudisi",
+      "globalRelease": "2026-07-08",
+      "cnRelease": "2026-03-17",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Naifudisi02_Img"
+    },
+    {
+      "gameId": 1012,
+      "name": "Nut",
+      "internalName": "Nute",
+      "globalRelease": "2026-06-17",
+      "cnRelease": "2026-02-20",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Nute02_Img"
+    },
+    {
+      "gameId": 1013,
+      "name": "Hebo",
+      "internalName": "Hebo",
+      "globalRelease": "2026-09-02",
+      "cnRelease": "2026-05-15",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Hebo02_Img"
+    },
+    {
+      "gameId": 1014,
+      "name": null,
+      "internalName": "Youmier",
+      "globalRelease": null,
+      "cnRelease": "2026-09-18",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Youmier02_Img"
+    },
+    {
+      "gameId": 1015,
+      "name": null,
+      "internalName": "Tianyiana",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Tianyiana02_Img"
+    },
+    {
+      "gameId": 2001,
+      "name": "Sekhmet",
+      "internalName": "Saihemaite",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Saihemaite02_Img"
+    },
+    {
+      "gameId": 2002,
+      "name": "Ares",
+      "internalName": "Aruisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Aruisi02_Img"
+    },
+    {
+      "gameId": 2003,
+      "name": "Horus",
+      "internalName": "Helusi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Helusi02_Img"
+    },
+    {
+      "gameId": 2004,
+      "name": "Geb",
+      "internalName": "Gaibui",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Gaibu02_Img"
+    },
+    {
+      "gameId": 2005,
+      "name": "Bastet",
+      "internalName": "Basite",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Basite02_Img"
+    },
+    {
+      "gameId": 2006,
+      "name": "Athena",
+      "internalName": "Yadianna",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yadianna02_Img"
+    },
+    {
+      "gameId": 2007,
+      "name": "Set",
+      "internalName": "Saite",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Saite02_Img"
+    },
+    {
+      "gameId": 2008,
+      "name": "Phoenix",
+      "internalName": "Feinikesi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Feinikesi02_Img"
+    },
+    {
+      "gameId": 2009,
+      "name": "Heracles",
+      "internalName": "Helakelesi",
+      "globalRelease": "2026-02-18",
+      "cnRelease": "2025-10-17",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Helakelesi02_Img"
+    },
+    {
+      "gameId": 2010,
+      "name": "Meret",
+      "internalName": "Maierte",
+      "globalRelease": "2026-04-22",
+      "cnRelease": "2025-12-26",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Maierte02_Img"
+    },
+    {
+      "gameId": 2011,
+      "name": "Serket",
+      "internalName": "Saierkaite",
+      "globalRelease": "2026-05-20",
+      "cnRelease": "2026-01-23",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Saierkaite02_Img"
+    },
+    {
+      "gameId": 2012,
+      "name": "Audhumla",
+      "internalName": "Oudemubula",
+      "globalRelease": "2026-08-05",
+      "cnRelease": "2026-04-17",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Oudemubula02_Img"
+    },
+    {
+      "gameId": 2013,
+      "name": "Mazu",
+      "internalName": "Mazu",
+      "globalRelease": "2026-09-30",
+      "cnRelease": "2026-06-26",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Mazu02_Img"
+    },
+    {
+      "gameId": 2014,
+      "name": "Ananke",
+      "internalName": "Ananke",
+      "globalRelease": "2026-11-13",
+      "cnRelease": "2026-07-24",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Ananke02_Img"
+    },
+    {
+      "gameId": 3001,
+      "name": "Anubis",
+      "internalName": "Anubisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Anubisi02_Img"
+    },
+    {
+      "gameId": 3002,
+      "name": "Freya",
+      "internalName": "Fuleiya",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Fuleiya02_Img"
+    },
+    {
+      "gameId": 3003,
+      "name": "Demeter",
+      "internalName": "Demoteer",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Demoteer02_Img"
+    },
+    {
+      "gameId": 3004,
+      "name": "Jormungandr",
+      "internalName": "Yemengjiade",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yemengjiade02_Img"
+    },
+    {
+      "gameId": 3005,
+      "name": "Artemis",
+      "internalName": "Aertemisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Aertemisi02_Img"
+    },
+    {
+      "gameId": 3006,
+      "name": "Pan",
+      "internalName": "Pan",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Pan02_Img"
+    },
+    {
+      "gameId": 3007,
+      "name": "Diana",
+      "internalName": "Dianna",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Dianna02_Img"
+    },
+    {
+      "gameId": 3008,
+      "name": "Fengyi",
+      "internalName": "Fengyi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Fengyi02_Img"
+    },
+    {
+      "gameId": 3009,
+      "name": "Wenshen",
+      "internalName": "Wenshen",
+      "globalRelease": "2026-04-08",
+      "cnRelease": "2025-10-31",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Wenshen02_Img"
+    },
+    {
+      "gameId": 3010,
+      "name": "Nvba",
+      "internalName": "Nvba",
+      "globalRelease": "2026-03-04",
+      "cnRelease": "2025-12-12",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Nvba02_Img"
+    },
+    {
+      "gameId": 3011,
+      "name": "Eris",
+      "internalName": "Elisi",
+      "globalRelease": "2026-06-03",
+      "cnRelease": "2026-02-06",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Elisi02_Img"
+    },
+    {
+      "gameId": 3012,
+      "name": "Heqet",
+      "internalName": "Haikuite",
+      "globalRelease": "2026-08-19",
+      "cnRelease": "2026-05-01",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Haikuite02_Img"
+    },
+    {
+      "gameId": 3013,
+      "name": "Xuannv",
+      "internalName": "Jiutianxuannv",
+      "globalRelease": "2026-06-24",
+      "cnRelease": "2026-03-03",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Jiutianxuannv02_Img"
+    },
+    {
+      "gameId": 3014,
+      "name": "Yaoji",
+      "internalName": "Yaoji",
+      "globalRelease": "2026-10-14",
+      "cnRelease": "2026-06-12",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Yaoji02_Img"
+    },
+    {
+      "gameId": 3015,
+      "name": "Venus",
+      "internalName": "Weinasi",
+      "globalRelease": null,
+      "cnRelease": "2026-08-21",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Weinasi02_Img"
+    },
+    {
+      "gameId": 3016,
+      "name": null,
+      "internalName": "Yanv",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_YaNv02_Img"
+    },
+    {
+      "gameId": 4001,
+      "name": "Isis",
+      "internalName": "Yixisi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yixisi02_Img"
+    },
+    {
+      "gameId": 4002,
+      "name": "Caishen",
+      "internalName": "Caishen",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Caishen02_Img"
+    },
+    {
+      "gameId": 4003,
+      "name": "Yanluo",
+      "internalName": "Yanwang",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yanwang02_Img"
+    },
+    {
+      "gameId": 4004,
+      "name": "Yuelao",
+      "internalName": "Yuelao",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Yuelao02_Img"
+    },
+    {
+      "gameId": 4005,
+      "name": "Jingwei",
+      "internalName": "Jingwei",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Jingwei02_Img"
+    },
+    {
+      "gameId": 4006,
+      "name": "Prometheus",
+      "internalName": "Puluomixiusi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Puluomixiusi02_Img"
+    },
+    {
+      "gameId": 4007,
+      "name": "Surtr",
+      "internalName": "Suerteer",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Suerteer02_Img"
+    },
+    {
+      "gameId": 4008,
+      "name": "Ullr",
+      "internalName": "Wuleer",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Wuleer02_Img"
+    },
+    {
+      "gameId": 4009,
+      "name": "Hladgunnr",
+      "internalName": "Heladeguna",
+      "globalRelease": "2026-01-21",
+      "cnRelease": "2025-09-19",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Heladeguna02_Img"
+    },
+    {
+      "gameId": 4010,
+      "name": "Mengpo",
+      "internalName": "Mengpo",
+      "globalRelease": "2026-03-18",
+      "cnRelease": "2025-11-14",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Mengpo02_Img"
+    },
+    {
+      "gameId": 4011,
+      "name": "Hephaestus",
+      "internalName": "Hehuaisituosi",
+      "globalRelease": "2026-05-06",
+      "cnRelease": "2026-01-09",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Hehuaisituosi02_Img"
+    },
+    {
+      "gameId": 4012,
+      "name": "Idunn",
+      "internalName": "Yideng",
+      "globalRelease": "2026-07-22",
+      "cnRelease": "2026-04-03",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Yideng02_Img"
+    },
+    {
+      "gameId": 4013,
+      "name": "Zaojun",
+      "internalName": "Zaojun",
+      "globalRelease": "2026-09-16",
+      "cnRelease": "2026-05-29",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Zaojun02_Img"
+    },
+    {
+      "gameId": 4014,
+      "name": "Charon",
+      "internalName": "Karong",
+      "globalRelease": "2026-10-28",
+      "cnRelease": "2026-07-10",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Karong02_Img"
+    },
+    {
+      "gameId": 4015,
+      "name": null,
+      "internalName": "Najia",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Najia02_Img"
+    },
+    {
+      "gameId": 4016,
+      "name": null,
+      "internalName": "ZhenDe",
+      "globalRelease": null,
+      "cnRelease": "2026-10-16",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_ZhenDe02_Img"
+    },
+    {
+      "gameId": 5001,
+      "name": "Amun-Ra",
+      "internalName": "Amengla",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Amengla02_Img"
+    },
+    {
+      "gameId": 5002,
+      "name": "Nyx",
+      "internalName": "Nikesi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Nikesi02_Img"
+    },
+    {
+      "gameId": 5003,
+      "name": "Dionysus",
+      "internalName": "Diaonisuosi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Diaonisuosi02_Img"
+    },
+    {
+      "gameId": 5004,
+      "name": "Nuwa",
+      "internalName": "Nvwa",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Nvwa02_Img"
+    },
+    {
+      "gameId": 5005,
+      "name": "Zeus",
+      "internalName": "Zhousi",
+      "globalRelease": null,
+      "cnRelease": null,
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Zhousi02_Img"
+    },
+    {
+      "gameId": 5006,
+      "name": "Nezha",
+      "internalName": "Nezha",
+      "globalRelease": "2026-02-02",
+      "cnRelease": "2025-10-01",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Nezha02_Img"
+    },
+    {
+      "gameId": 5007,
+      "name": "Cronus",
+      "internalName": "Keluonuosi",
+      "globalRelease": "2026-04-05",
+      "cnRelease": "2025-12-24",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Keluonuosi02_Img"
+    },
+    {
+      "gameId": 5008,
+      "name": "Hera",
+      "internalName": "Hela",
+      "globalRelease": "2026-05-25",
+      "cnRelease": "2026-02-18",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Hela02_Img"
+    },
+    {
+      "gameId": 5009,
+      "name": "Hades",
+      "internalName": "Hadisi",
+      "globalRelease": "2026-07-27",
+      "cnRelease": "2026-05-01",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Hadisi02_Img"
+    },
+    {
+      "gameId": 5010,
+      "name": "Gaiya",
+      "internalName": "Gaiya",
+      "globalRelease": "2026-09-28",
+      "cnRelease": "2026-07-08",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Gaiya02_Img"
+    },
+    {
+      "gameId": 5011,
+      "name": "Nidhogg",
+      "internalName": "Nidehuoge",
+      "globalRelease": "2026-11-02",
+      "cnRelease": "2026-08-05",
+      "globalSource": "client",
+      "portrait": "A_UI_HeadPortrait_Nidehuoge02_Img"
+    },
+    {
+      "gameId": 5012,
+      "name": "Chaos",
+      "internalName": "Kaesi",
+      "globalRelease": null,
+      "cnRelease": "2026-09-01",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Kaesi02_Img"
+    },
+    {
+      "gameId": 5013,
+      "name": null,
+      "internalName": "Pandora",
+      "globalRelease": null,
+      "cnRelease": "2026-09-30",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Pandora02_Img"
+    },
+    {
+      "gameId": 5014,
+      "name": null,
+      "internalName": "Cthulhu",
+      "globalRelease": null,
+      "cnRelease": "2026-09-30",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_Cthulhu02_Img"
+    },
+    {
+      "gameId": 5015,
+      "name": null,
+      "internalName": "SunWuKong",
+      "globalRelease": null,
+      "cnRelease": "2026-10-28",
+      "globalSource": null,
+      "portrait": "A_UI_HeadPortrait_SunWuKong02_Img"
+    }
+  ]
+}

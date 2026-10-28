@@ -1,0 +1,159 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import "../../styles/banners.css";
+import { buildBanners } from "../../data/banners";
+import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
+import { pickLang } from "../../i18n/helpers";
+import { heroes as ratedHeroes } from "../../data/heroes/withRatings";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const L = (en: string, de: string, es: string, ru: string, zh: string) => ({ en, de, es, ru, zh });
+const copy = {
+  metaTitle: L("Banner History | Motto Immortal", "Banner-Verlauf | Motto Immortal", "Historial de banners | Motto Immortal", "История баннеров | Motto Immortal", "卡池记录｜Motto Immortal"),
+  metaDescription: L("Every Global hero banner: what is running, what is coming and what has ended.", "Alle Global-Hero-Banner: was läuft, was kommt und was beendet ist.", "Todos los banners globales de héroes: en curso, próximos y finalizados.", "Все баннеры героев Global: идущие, будущие и завершённые.", "全球服英雄卡池：进行中、即将开启与已结束。"),
+  tag: L("Summon banners", "Beschwörungs-Banner", "Banners de invocación", "Баннеры призыва", "召唤卡池"),
+  headline: L("Banner History", "Banner-Verlauf", "Historial de banners", "История баннеров", "卡池记录"),
+  subtitle: L("Track every hero banner, past, running and coming.", "Alle Hero-Banner im Blick: vergangen, laufend und kommend.", "Todos los banners de héroes: pasados, actuales y próximos.", "Все баннеры героев: прошедшие, текущие и будущие.", "查看所有英雄卡池：过去、当前与即将开启。"),
+  search: L("Search heroes", "Helden suchen", "Buscar héroes", "Поиск героев", "搜索英雄"),
+  all: L("All", "Alle", "Todos", "Все", "全部"),
+  new: L("New", "Neu", "Nuevo", "Новые", "新卡池"),
+  rerun: L("Rerun", "Wiederholung", "Repetición", "Повтор", "复刻"),
+  running: L("Running", "Läuft", "En curso", "Идёт", "进行中"),
+  upcoming: L("Upcoming", "Kommend", "Próximo", "Скоро", "即将开启"),
+  ended: L("Ended", "Beendet", "Finalizado", "Завершён", "已结束"),
+  estimated: L("Estimated", "Geschätzt", "Estimado", "Ориентировочно", "预估"),
+  currentTitle: L("Running and upcoming", "Laufend und kommend", "En curso y próximos", "Идут и скоро", "进行中与即将开启"),
+  historyTitle: L("History", "Verlauf", "Historial", "История", "历史"),
+  nothing: L("No banners match.", "Keine passenden Banner.", "No hay banners.", "Баннеров нет.", "没有匹配的卡池。"),
+  rerunName: L("Rerun banner", "Wiederholungs-Banner", "Banner repetido", "Повторный баннер", "复刻卡池"),
+  guessNote: L("Date is a guess.", "Datum ist geschätzt.", "Fecha estimada.", "Дата ориентировочная.", "日期为推测。"),
+  rating: L("Overall", "Gesamt", "General", "Общий", "综合"),
+  pull: {
+    pull: L("Pull", "Ziehen", "Invocar", "Брать", "建议抽"),
+    optional: L("Optional", "Optional", "Opcional", "По желанию", "可选"),
+    unsure: L("Unsure", "Unklar", "Dudoso", "Неясно", "待定"),
+    "whales-only": L("Whales only", "Nur Whales", "Solo ballenas", "Только донатерам", "仅大佬"),
+    skip: L("Skip", "Überspringen", "Omitir", "Пропустить", "跳过"),
+  },
+};
+
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const VERSION = "2026-06-08-portrait";
+const detailPages = new Set((ratedHeroes as any[]).map((hero) => hero.id));
+const icon = (type: string, value?: string) => (value ? `${R2_BASE}/icons/${type}/${value.toLowerCase()}.webp` : null);
+
+const banners = buildBanners().map((banner) => ({
+  ...banner,
+  image: banner.heroSiteId ? `${R2_BASE}/heroes/cards/${encodeURIComponent(banner.heroSiteId)}-480.webp?v=${VERSION}` : null,
+  href: banner.heroSiteId && detailPages.has(banner.heroSiteId) ? localizePath(`/heroes/${banner.heroSiteId}`, locale) : null,
+  icons: [icon("factions", banner.faction), icon("classes", banner.heroClass), icon("roles", banner.role)].filter(Boolean),
+}));
+
+const localized = (value: Record<string, any>): any =>
+  "en" in value ? pickLang(value as any, locale) : Object.fromEntries(Object.entries(value).map(([key, inner]) => [key, localized(inner)]));
+const clientCopy = Object.fromEntries(
+  Object.entries(copy).filter(([key]) => !["metaTitle", "metaDescription", "tag", "headline", "subtitle"].includes(key)).map(([key, value]) => [key, localized(value as any)]),
+);
+const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
+---
+
+<Base title={pickLang(copy.metaTitle, locale)} description={pickLang(copy.metaDescription, locale)} locale={locale} noindex>
+  <PageHero tag={pickLang(copy.tag, locale)} headline={pickLang(copy.headline, locale)} subtitle={pickLang(copy.subtitle, locale)} locale={locale} />
+
+  <main class="page-wrapper banners-page page-content" data-locale={locale}>
+    <div class="banner-toolbar">
+      <input class="banner-search" type="search" data-banner-search placeholder={pickLang(copy.search, locale)} aria-label={pickLang(copy.search, locale)} />
+      <div class="banner-chips" role="group">
+        {["all", "new", "rerun", "running", "upcoming"].map((id) => (
+          <button type="button" data-chip={id} class={id === "all" ? "active" : ""}>{pickLang((copy as any)[id], locale)}</button>
+        ))}
+      </div>
+    </div>
+    <div data-banner-list></div>
+  </main>
+
+  <script type="application/json" id="banner-data" set:html={json(banners)}></script>
+  <script type="application/json" id="banner-copy" set:html={json(clientCopy)}></script>
+
+  <script>
+    import { filterBanners, groupByMonth, splitBanners, bannerStatus } from "../../data/bannerList.js";
+
+    const readJson = (id) => JSON.parse(document.getElementById(id)?.textContent || "null");
+    const banners = readJson("banner-data");
+    const copy = readJson("banner-copy");
+    const list = document.querySelector("[data-banner-list]");
+    const search = document.querySelector("[data-banner-search]");
+    const chips = document.querySelectorAll("[data-chip]");
+    const root = document.querySelector(".banners-page");
+
+    if (banners && copy && list && search && root) {
+      const locale = root.dataset.locale || "en";
+      const today = new Date().toISOString().slice(0, 10);
+      const params = new URLSearchParams(location.search);
+      let chip = params.get("f") || "all";
+      let query = params.get("q") || "";
+      search.value = query;
+
+      const esc = (value) => String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+      const fmt = (iso, options) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(new Date(`${iso}T00:00:00Z`));
+      const period = (b) => {
+        if (!b.start) return "";
+        const short = { day: "numeric", month: "short" };
+        return b.end ? `${fmt(b.start, short)} – ${fmt(b.end, short)}` : fmt(b.start, short);
+      };
+
+      function card(b) {
+        const status = bannerStatus(b.start, b.end, today);
+        const name = b.heroName || copy.rerunName;
+        const art = b.image
+          ? `<img class="banner-img" src="${esc(b.image)}" alt="" loading="lazy" decoding="async" />`
+          : "";
+        const icons = (b.icons || []).map((src) => `<img class="banner-icon" src="${esc(src)}" alt="" width="20" height="20" loading="lazy" />`).join("");
+        const pull = b.pullQuality ? `<span class="banner-pull banner-pull--${esc(b.pullQuality)}">${esc(copy.pull[b.pullQuality])}</span>` : "";
+        const rating = b.overall ? `<span class="banner-rating" title="${esc(copy.rating)}">${esc(b.overall)}</span>` : "";
+        const badges = [`<span class="banner-badge banner-badge--${status}">${esc(copy[status])}</span>`, b.kind === "rerun" ? `<span class="banner-badge">${esc(copy.rerun)}</span>` : "", b.estimated ? `<span class="banner-badge banner-badge--estimated">${esc(copy.estimated)}</span>` : ""].join("");
+        const inner = `<div class="banner-art">${art}<div class="banner-badges">${badges}</div><h3>${esc(name)}</h3></div><div class="banner-body"><time>${esc(period(b))}</time>${b.estimated ? `<small>${esc(copy.guessNote)}</small>` : ""}<div class="banner-meta">${icons}${rating}${pull}</div></div>`;
+        const tag = b.href ? "a" : "div";
+        return `<${tag} class="banner-card banner-card--${status}"${b.href ? ` href="${esc(b.href)}"` : ""}>${inner}</${tag}>`;
+      }
+
+      function section(title, groups) {
+        const body = groups.map((g) => `<div class="banner-month"><h3 class="banner-month-title">${esc(g.month ? fmt(`${g.month}-01`, { month: "long", year: "numeric" }) : "")}</h3><div class="banner-grid">${g.items.map(card).join("")}</div></div>`).join("");
+        return `<section class="banner-section"><h2>${esc(title)}</h2>${body}</section>`;
+      }
+
+      function render() {
+        const filters = { kind: chip === "new" || chip === "rerun" ? chip : undefined, status: chip === "running" || chip === "upcoming" ? chip : undefined, query };
+        const { current, history: past } = splitBanners(filterBanners(banners, filters, today), today);
+        const parts = [];
+        if (current.length) parts.push(`<section class="banner-section"><h2>${esc(copy.currentTitle)}</h2><div class="banner-grid">${current.map(card).join("")}</div></section>`);
+        if (past.length) parts.push(section(copy.historyTitle, groupByMonth(past)));
+        list.innerHTML = parts.join("") || `<p class="banner-empty">${esc(copy.nothing)}</p>`;
+        list.querySelectorAll("img.banner-img").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
+        list.querySelectorAll("img.banner-icon").forEach((img) => img.addEventListener("error", () => img.remove(), { once: true }));
+        const next = new URLSearchParams();
+        if (chip !== "all") next.set("f", chip);
+        if (query) next.set("q", query);
+        history.replaceState(null, "", `${location.pathname}${next.size ? `?${next}` : ""}`);
+      }
+
+      chips.forEach((button) => {
+        button.classList.toggle("active", button.dataset.chip === chip);
+        button.addEventListener("click", () => {
+          chip = button.dataset.chip;
+          chips.forEach((entry) => entry.classList.toggle("active", entry === button));
+          render();
+        });
+      });
+      search.addEventListener("input", () => { query = search.value; render(); });
+      render();
+    }
+  </script>
+</Base>

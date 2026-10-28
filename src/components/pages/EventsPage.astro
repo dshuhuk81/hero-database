@@ -1,0 +1,410 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import "../../styles/events.css";
+import { globalEvents, globalEventsMeta } from "../../data/eventsGlobal";
+import gameIdMapping from "../../data/game_id_mapping.json";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang } from "../../i18n/helpers";
+import { t } from "../../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const copy = {
+  source: { en: "Global client data", de: "Daten des Global-Clients", es: "Datos del cliente global", ru: "Данные глобального клиента", zh: "全球服数据" },
+  updated: { en: "Config updated", de: "Config aktualisiert", es: "Config actualizada", ru: "Конфигурация обновлена", zh: "配置更新时间" },
+  title: { en: "Global event schedule", de: "Globaler Event-Zeitplan", es: "Calendario global de eventos", ru: "Расписание событий Global", zh: "全球服活动日程" },
+  description: { en: "Browse banners, featured events, leaderboards, recurring activities and limited offers found in the Global client configuration.", de: "Durchsuche Banner, besondere Events, Ranglisten, wiederkehrende Aktivitäten und zeitlich begrenzte Angebote aus der Global-Client-Konfiguration.", es: "Consulta banners, eventos destacados, clasificaciones, actividades recurrentes y ofertas limitadas de la configuración global.", ru: "Просматривайте баннеры, события, рейтинги, регулярные активности и ограниченные предложения из конфигурации Global.", zh: "浏览全球服配置中的卡池、主题活动、排行榜、周期活动和限时礼包。" },
+  today: { en: "Today", de: "Heute", es: "Hoy", ru: "Сегодня", zh: "今天" },
+  previous: { en: "Previous period", de: "Vorheriger Zeitraum", es: "Periodo anterior", ru: "Предыдущий период", zh: "上一周期" },
+  next: { en: "Next period", de: "Nächster Zeitraum", es: "Periodo siguiente", ru: "Следующий период", zh: "下一周期" },
+  all: { en: "All", de: "Alle", es: "Todos", ru: "Все", zh: "全部" },
+  empty: { en: "No scheduled events in this period.", de: "Keine geplanten Events in diesem Zeitraum.", es: "No hay eventos programados en este periodo.", ru: "В этот период событий нет.", zh: "此时间段暂无活动。" },
+  selectEvent: { en: "Select an event bar to see its full schedule.", de: "Wähle einen Event-Balken für den vollständigen Zeitraum.", es: "Selecciona una barra para ver el calendario completo.", ru: "Выберите событие, чтобы увидеть полное расписание.", zh: "选择活动条可查看完整日程。" },
+};
+
+const L = (en: string, de: string, es: string, ru: string, zh: string) => ({ en, de, es, ru, zh });
+// Strings used by the calendar script. "{n}" is replaced with a number in the browser.
+const scriptCopy = {
+  rightNow: L("Right now", "Jetzt aktuell", "Ahora mismo", "Прямо сейчас", "当前活动"),
+  running: L("Running", "Läuft gerade", "En curso", "Идёт сейчас", "进行中"),
+  upcoming: L("Coming up", "Als Nächstes", "Próximamente", "Скоро", "即将开始"),
+  nothingRunning: L("Nothing is running right now.", "Gerade läuft nichts.", "No hay nada en curso.", "Сейчас ничего не идёт.", "目前没有进行中的活动。"),
+  nothingUpcoming: L("No upcoming events known yet.", "Noch keine kommenden Events bekannt.", "Aún no hay eventos próximos.", "Ближайших событий пока нет.", "暂无即将开始的活动。"),
+  endsToday: L("ends today", "endet heute", "termina hoy", "заканчивается сегодня", "今天结束"),
+  endsIn: L("ends in {n}d", "endet in {n} T.", "termina en {n} d", "ещё {n} дн.", "{n}天后结束"),
+  startsTomorrow: L("tomorrow", "morgen", "mañana", "завтра", "明天"),
+  startsIn: L("in {n}d", "in {n} T.", "en {n} d", "через {n} дн.", "{n}天后"),
+  ongoing: L("Already running", "Läuft bereits", "Ya en curso", "Уже идёт", "已在进行"),
+  starts: L("Starts", "Beginn", "Inicio", "Начало", "开始"),
+  ends: L("Ends", "Ende", "Fin", "Конец", "结束"),
+  duration: L("Duration", "Dauer", "Duración", "Длительность", "时长"),
+  days: L("{n} days", "{n} Tage", "{n} días", "{n} дн.", "{n}天"),
+  derived: L("Name derived from game data", "Name aus Spieldaten abgeleitet", "Nombre derivado de los datos del juego", "Название выведено из данных игры", "名称根据游戏数据推导"),
+  viewTimeline: L("Timeline", "Zeitachse", "Cronología", "Шкала", "时间轴"),
+  viewList: L("List", "Liste", "Lista", "Список", "列表"),
+  range: L("Range", "Zeitraum", "Rango", "Период", "范围"),
+};
+const zoomOptions = [7, 14, 30, 60, 90];
+
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const siteIdByGameId = new Map(
+  Object.entries(gameIdMapping as Record<string, { game_hero_id: number | null; alias_of?: string }>)
+    .filter(([, entry]) => entry.game_hero_id && !entry.alias_of)
+    .map(([siteId, entry]) => [entry.game_hero_id as number, siteId]),
+);
+const heroImage = (gameId?: number) => {
+  const siteId = gameId === undefined ? undefined : siteIdByGameId.get(gameId);
+  return siteId ? `${R2_BASE}/heroes/thumbs/${encodeURIComponent(siteId)}-96.webp?v=${HERO_IMAGE_VERSION}` : null;
+};
+
+const categories = [
+  { id: "banners", label: { en: "Hero banners", de: "Helden-Banner", es: "Banners de héroes", ru: "Баннеры героев", zh: "英雄卡池" } },
+  { id: "events", label: { en: "Featured events", de: "Besondere Events", es: "Eventos destacados", ru: "Главные события", zh: "主题活动" } },
+  { id: "leaderboards", label: { en: "Leaderboards", de: "Ranglisten", es: "Clasificaciones", ru: "Рейтинги", zh: "排行榜" } },
+  { id: "recurring", label: { en: "Recurring", de: "Wiederkehrend", es: "Recurrentes", ru: "Регулярные", zh: "周期活动" } },
+  { id: "offers", label: { en: "Shops & offers", de: "Shops & Angebote", es: "Tiendas y ofertas", ru: "Магазины и предложения", zh: "商店与礼包" } },
+];
+
+const clientData = JSON.stringify(globalEvents.map((event) => ({ ...event, heroImage: heroImage(event.heroGameId) }))).replace(/</g, "\\u003c");
+const scriptCopyData = JSON.stringify(Object.fromEntries(Object.entries(scriptCopy).map(([key, value]) => [key, pickLang(value, locale)]))).replace(/</g, "\\u003c");
+const categoryData = JSON.stringify(categories.map((category) => ({ id: category.id, label: pickLang(category.label, locale) }))).replace(/</g, "\\u003c");
+const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${globalEventsMeta.generated.slice(0, 10)}T00:00:00Z`));
+---
+
+<Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale} noindex>
+  <PageHero
+    tag={t(locale, "events", "tag")}
+    headline={t(locale, "events", "headline")}
+    subtitle={t(locale, "events", "subtitle")}
+    locale={locale}
+  />
+
+  <main class="page-wrapper events-page page-content">
+    <section class="events-overview" aria-labelledby="events-title">
+      <div class="events-overview-copy">
+        <p class="content-heading-kicker">{pickLang(copy.source, locale)}</p>
+        <h2 id="events-title">{pickLang(copy.title, locale)}</h2>
+        <p>{pickLang(copy.description, locale)}</p>
+      </div>
+      <div class="events-source">
+        <span class="events-live-dot" aria-hidden="true"></span>
+        <span>{globalEventsMeta.client}</span>
+        <small>{pickLang(copy.updated, locale)} {generatedDate}</small>
+      </div>
+    </section>
+
+    <section class="right-now" aria-labelledby="right-now-title" data-right-now>
+      <h2 id="right-now-title">{pickLang(scriptCopy.rightNow, locale)}</h2>
+      <div class="right-now-grid">
+        <div>
+          <h3>{pickLang(scriptCopy.running, locale)}</h3>
+          <ul class="right-now-list" data-running></ul>
+        </div>
+        <div>
+          <h3>{pickLang(scriptCopy.upcoming, locale)}</h3>
+          <ul class="right-now-list" data-upcoming></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="calendar-shell" aria-label={pickLang(copy.title, locale)} data-locale={locale} data-view="timeline">
+      <header class="calendar-toolbar">
+        <div>
+          <p class="calendar-range" data-calendar-range></p>
+          <p class="calendar-hint">{pickLang(copy.selectEvent, locale)}</p>
+        </div>
+        <div class="calendar-actions">
+          <div class="calendar-view" role="group" aria-label={pickLang(scriptCopy.viewTimeline, locale)}>
+            <button type="button" data-view-switch="timeline" class="active">{pickLang(scriptCopy.viewTimeline, locale)}</button>
+            <button type="button" data-view-switch="list">{pickLang(scriptCopy.viewList, locale)}</button>
+          </div>
+          <div class="calendar-zoom" role="group" aria-label={pickLang(scriptCopy.range, locale)}>
+            {zoomOptions.map((days) => (
+              <button type="button" data-zoom={days} class={days === 30 ? "active" : ""}>{days}{locale === "zh" ? "天" : "d"}</button>
+            ))}
+          </div>
+          <div class="calendar-nav" aria-label="Calendar navigation">
+            <button type="button" data-shift="previous" aria-label={pickLang(copy.previous, locale)}>‹</button>
+            <button type="button" data-today>{pickLang(copy.today, locale)}</button>
+            <button type="button" data-shift="next" aria-label={pickLang(copy.next, locale)}>›</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="calendar-filters" aria-label="Event categories">
+        <button type="button" class="active" data-filter="all">{pickLang(copy.all, locale)}</button>
+        {categories.map((category) => (
+          <button type="button" data-filter={category.id}>
+            <span class={`category-mark category-mark--${category.id}`} aria-hidden="true"></span>
+            {pickLang(category.label, locale)}
+          </button>
+        ))}
+      </div>
+
+      <div class="calendar-scroll" data-calendar-scroll tabindex="0">
+        <div class="calendar-canvas" data-calendar-canvas></div>
+      </div>
+      <div class="calendar-agenda" data-calendar-agenda></div>
+      <p class="calendar-empty" data-calendar-empty hidden>{pickLang(copy.empty, locale)}</p>
+    </section>
+  </main>
+
+  <dialog class="event-dialog" data-event-dialog>
+    <button type="button" class="event-dialog-close" data-dialog-close aria-label="Close">×</button>
+    <span class="event-dialog-category" data-dialog-category></span>
+    <h2 data-dialog-title></h2>
+    <p class="event-dialog-family" data-dialog-family></p>
+    <p class="event-dialog-derived" data-dialog-derived hidden>{pickLang(scriptCopy.derived, locale)}</p>
+    <dl>
+      <div><dt>{pickLang(scriptCopy.starts, locale)}</dt><dd data-dialog-start></dd></div>
+      <div><dt>{pickLang(scriptCopy.ends, locale)}</dt><dd data-dialog-end></dd></div>
+      <div><dt>{pickLang(scriptCopy.duration, locale)}</dt><dd data-dialog-duration></dd></div>
+    </dl>
+  </dialog>
+
+  <aside class="event-tooltip" data-event-tooltip role="tooltip" hidden>
+    <span class="event-tooltip-category" data-tooltip-category></span>
+    <strong data-tooltip-title></strong>
+    <span class="event-tooltip-family" data-tooltip-family></span>
+    <span class="event-tooltip-dates" data-tooltip-dates></span>
+  </aside>
+
+  <script type="application/json" id="global-event-data" set:html={clientData}></script>
+  <script type="application/json" id="event-category-data" set:html={categoryData}></script>
+
+  <script type="application/json" id="event-copy-data" set:html={scriptCopyData}></script>
+
+  <script>
+    import { assignLanes, daysUntil, runningEvents, upcomingEvents } from "../../data/eventTimeline.js";
+
+    const root = document.querySelector(".calendar-shell");
+    const canvas = root?.querySelector("[data-calendar-canvas]");
+    const agenda = root?.querySelector("[data-calendar-agenda]");
+    const scroll = root?.querySelector("[data-calendar-scroll]");
+    const rangeLabel = root?.querySelector("[data-calendar-range]");
+    const empty = root?.querySelector("[data-calendar-empty]");
+    const runningList = document.querySelector("[data-running]");
+    const upcomingList = document.querySelector("[data-upcoming]");
+    const readJson = (id) => JSON.parse(document.getElementById(id)?.textContent || "null");
+    const events = readJson("global-event-data");
+    const categories = readJson("event-category-data");
+    const copy = readJson("event-copy-data");
+
+    if (root && canvas && agenda && scroll && rangeLabel && empty && runningList && upcomingList && events && categories && copy) {
+      const locale = root.dataset.locale || "en";
+      const dialog = document.querySelector("[data-event-dialog]");
+      const tooltip = document.querySelector("[data-event-tooltip]");
+      const dayMs = 86400000;
+      const todayIso = new Date().toISOString().slice(0, 10);
+      const isMobile = () => window.matchMedia("(max-width: 720px)").matches;
+      const labelWidth = () => (isMobile() ? 36 : 156);
+      const fill = (template, n) => template.replace("{n}", String(n));
+      let zoom = isMobile() ? 7 : 30;
+      let activeFilter = "all";
+      let anchor = addDays(parseDate(todayIso), -2);
+
+      function parseDate(value) {
+        return new Date(`${value}T00:00:00Z`);
+      }
+      function addDays(date, amount) {
+        return new Date(date.getTime() + amount * dayMs);
+      }
+      function iso(date) {
+        return date.toISOString().slice(0, 10);
+      }
+      function formatDate(date, options) {
+        return new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(date);
+      }
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+      }
+      const durationDays = (item) => daysUntil(item.end, item.start) + 1;
+      const categoryLabel = (id) => categories.find((entry) => entry.id === id)?.label || id;
+      const endsText = (item) => {
+        const left = daysUntil(item.end, todayIso);
+        return left === 0 ? copy.endsToday : fill(copy.endsIn, left);
+      };
+      const startsText = (item) => {
+        const left = daysUntil(item.start, todayIso);
+        return left === 1 ? copy.startsTomorrow : fill(copy.startsIn, left);
+      };
+      const heroImg = (item) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" />` : "");
+      function watchBrokenHeroImages(scope) {
+        scope.querySelectorAll("img.event-hero").forEach((img) => {
+          img.addEventListener("error", () => img.replaceWith(Object.assign(document.createElement("span"), { className: "event-hero event-hero--missing" })), { once: true });
+        });
+      }
+
+      function openDialog(item) {
+        if (!(dialog instanceof HTMLDialogElement)) return;
+        dialog.dataset.category = item.category;
+        dialog.querySelector("[data-dialog-category]").textContent = categoryLabel(item.category);
+        dialog.querySelector("[data-dialog-title]").textContent = item.label;
+        dialog.querySelector("[data-dialog-family]").textContent = item.hero || item.family;
+        dialog.querySelector("[data-dialog-derived]").hidden = !item.derivedLabel;
+        const long = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
+        dialog.querySelector("[data-dialog-start]").textContent = formatDate(parseDate(item.start), long);
+        dialog.querySelector("[data-dialog-end]").textContent = formatDate(parseDate(item.end), long);
+        dialog.querySelector("[data-dialog-duration]").textContent = fill(copy.days, durationDays(item));
+        dialog.showModal();
+      }
+
+      function positionTooltip(target, pointerEvent) {
+        if (!(tooltip instanceof HTMLElement)) return;
+        const rect = target.getBoundingClientRect();
+        const gap = 14;
+        const x = pointerEvent?.clientX ?? rect.right;
+        const y = pointerEvent?.clientY ?? rect.top;
+        const box = tooltip.getBoundingClientRect();
+        let left = x + gap;
+        let top = y + gap;
+        if (left + box.width > window.innerWidth - 12) left = x - box.width - gap;
+        if (top + box.height > window.innerHeight - 12) top = window.innerHeight - box.height - 12;
+        tooltip.style.left = `${Math.max(12, left)}px`;
+        tooltip.style.top = `${Math.max(12, top)}px`;
+      }
+      function showTooltip(item, target, pointerEvent) {
+        if (!(tooltip instanceof HTMLElement)) return;
+        tooltip.dataset.category = item.category;
+        tooltip.querySelector("[data-tooltip-category]").textContent = `${categoryLabel(item.category)} · ${fill(copy.days, durationDays(item))}`;
+        tooltip.querySelector("[data-tooltip-title]").textContent = item.label;
+        tooltip.querySelector("[data-tooltip-family]").textContent = item.hero || item.family;
+        const short = { day: "numeric", month: "short", year: "numeric" };
+        tooltip.querySelector("[data-tooltip-dates]").textContent = `${formatDate(parseDate(item.start), short)} – ${formatDate(parseDate(item.end), short)}`;
+        tooltip.hidden = false;
+        positionTooltip(target, pointerEvent);
+      }
+      function hideTooltip() {
+        if (tooltip instanceof HTMLElement) tooltip.hidden = true;
+      }
+      function bindEventButtons(scope) {
+        scope.querySelectorAll("[data-event-id]").forEach((button) => {
+          const item = events.find((entry) => String(entry.id) === button.dataset.eventId);
+          if (!item) return;
+          button.addEventListener("pointerenter", (event) => showTooltip(item, button, event));
+          button.addEventListener("pointermove", (event) => positionTooltip(button, event));
+          button.addEventListener("pointerleave", hideTooltip);
+          button.addEventListener("focus", () => showTooltip(item, button));
+          button.addEventListener("blur", hideTooltip);
+          button.addEventListener("click", () => { hideTooltip(); openDialog(item); });
+        });
+      }
+
+      function renderRightNow() {
+        const row = (item, meta) => `<li><button type="button" class="right-now-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(meta)}</small></button></li>`;
+        const running = runningEvents(events, todayIso).slice(0, 6);
+        const upcoming = upcomingEvents(events, todayIso, 4);
+        runningList.innerHTML = running.length ? running.map((item) => row(item, endsText(item))).join("") : `<li class="right-now-empty">${escapeHtml(copy.nothingRunning)}</li>`;
+        upcomingList.innerHTML = upcoming.length ? upcoming.map((item) => row(item, startsText(item))).join("") : `<li class="right-now-empty">${escapeHtml(copy.nothingUpcoming)}</li>`;
+        for (const list of [runningList, upcomingList]) { bindEventButtons(list); watchBrokenHeroImages(list); }
+      }
+
+      function renderGantt(rangeStart, rangeEnd, visible) {
+        const dayWidth = Math.max(14, Math.floor((scroll.clientWidth - labelWidth()) / zoom));
+        const dense = dayWidth < 28;
+        canvas.classList.toggle("is-dense", dense);
+        canvas.style.setProperty("--calendar-days", zoom);
+        canvas.style.setProperty("--calendar-day-width", `${dayWidth}px`);
+        const dayInfo = (index) => {
+          const date = addDays(rangeStart, index);
+          return { date, today: iso(date) === todayIso, weekend: date.getUTCDay() === 0 || date.getUTCDay() === 6 };
+        };
+
+        let html = '<div class="calendar-date-row"><div class="calendar-corner">UTC</div><div class="calendar-days">';
+        for (let index = 0; index < zoom; index += 1) {
+          const { date, today, weekend } = dayInfo(index);
+          html += `<div class="calendar-day${today ? " is-today" : ""}${weekend ? " is-weekend" : ""}"><span>${escapeHtml(formatDate(date, { weekday: "short" }))}</span><strong>${date.getUTCDate()}</strong>${date.getUTCDate() === 1 ? `<small>${escapeHtml(formatDate(date, { month: "short" }))}</small>` : ""}</div>`;
+        }
+        html += "</div></div>";
+
+        categories.filter((category) => activeFilter === "all" || category.id === activeFilter).forEach((category) => {
+          const items = assignLanes(visible.filter((item) => item.category === category.id));
+          const laneCount = Math.max(1, ...items.map((item) => item.lane + 1));
+          html += `<section class="calendar-group" data-category="${category.id}"><div class="calendar-group-label"><span class="category-mark category-mark--${category.id}"></span><strong>${escapeHtml(category.label)}</strong><small>${items.length}</small></div><div class="calendar-track" style="--lane-count:${laneCount}">`;
+          for (let index = 0; index < zoom; index += 1) {
+            const { today, weekend } = dayInfo(index);
+            html += `<i class="calendar-cell${today ? " is-today" : ""}${weekend ? " is-weekend" : ""}" style="grid-column:${index + 1};"></i>`;
+          }
+          items.forEach((item) => {
+            const startOffset = Math.max(0, daysUntil(item.start, iso(rangeStart)));
+            const endOffset = Math.min(zoom - 1, daysUntil(item.end, iso(rangeStart)));
+            const span = endOffset - startOffset + 1;
+            const clippedStart = item.start < iso(rangeStart);
+            const clippedEnd = item.end > iso(rangeEnd);
+            const left = daysUntil(item.end, todayIso);
+            const badge = !clippedEnd && left >= 0 && left <= 3 && durationDays(item) > 3 ? `<small class="calendar-event-badge">${escapeHtml(endsText(item))}</small>` : "";
+            const narrow = span * dayWidth < 90;
+            const classes = ["calendar-event", clippedStart && "is-clipped-start", clippedEnd && "is-clipped-end", item.series === "rerun_card_push" && "is-rerun", narrow && "is-narrow"].filter(Boolean).join(" ");
+            html += `<button type="button" class="${classes}" data-event-id="${item.id}" style="grid-column:${startOffset + 1} / span ${span};grid-row:${item.lane + 1}" aria-label="${escapeHtml(item.label)} · ${item.start} – ${item.end}">${heroImg(item)}<span>${escapeHtml(item.label)}</span>${badge}</button>`;
+          });
+          html += "</div></section>";
+        });
+        canvas.innerHTML = html;
+        bindEventButtons(canvas);
+        watchBrokenHeroImages(canvas);
+      }
+
+      function renderAgenda(rangeStartIso, visible) {
+        const groups = new Map();
+        [...visible].sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end)).forEach((item) => {
+          const key = item.start < rangeStartIso ? "ongoing" : item.start;
+          groups.set(key, [...(groups.get(key) || []), item]);
+        });
+        agenda.innerHTML = [...groups.entries()].map(([key, items]) => {
+          const title = key === "ongoing" ? copy.ongoing : formatDate(parseDate(key), { weekday: "short", day: "numeric", month: "short" });
+          const rows = items.map((item) => `<li><button type="button" class="agenda-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<span class="agenda-text"><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(formatDate(parseDate(item.start), { day: "numeric", month: "short" }))} – ${escapeHtml(formatDate(parseDate(item.end), { day: "numeric", month: "short" }))}</small></span></button></li>`).join("");
+          return `<section class="agenda-group"><h3>${escapeHtml(title)}</h3><ul>${rows}</ul></section>`;
+        }).join("");
+        bindEventButtons(agenda);
+        watchBrokenHeroImages(agenda);
+      }
+
+      function render() {
+        hideTooltip();
+        const rangeStart = anchor;
+        const rangeEnd = addDays(rangeStart, zoom - 1);
+        const visible = events.filter((item) => item.end >= iso(rangeStart) && item.start <= iso(rangeEnd) && (activeFilter === "all" || item.category === activeFilter));
+        rangeLabel.textContent = `${formatDate(rangeStart, { day: "numeric", month: "short" })} – ${formatDate(rangeEnd, { day: "numeric", month: "short", year: "numeric" })}`;
+        renderGantt(rangeStart, rangeEnd, visible);
+        renderAgenda(iso(rangeStart), visible);
+        empty.hidden = visible.length > 0;
+      }
+
+      root.querySelectorAll("[data-filter]").forEach((button) => button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        root.querySelectorAll("[data-filter]").forEach((entry) => entry.classList.toggle("active", entry === button));
+        render();
+      }));
+      root.querySelectorAll("[data-zoom]").forEach((entry) => entry.classList.toggle("active", Number(entry.dataset.zoom) === zoom));
+      root.querySelectorAll("[data-view-switch]").forEach((button) => button.addEventListener("click", () => {
+        root.dataset.view = button.dataset.viewSwitch;
+        root.querySelectorAll("[data-view-switch]").forEach((entry) => entry.classList.toggle("active", entry === button));
+      }));
+      root.querySelectorAll("[data-zoom]").forEach((button) => button.addEventListener("click", () => {
+        zoom = Number(button.dataset.zoom);
+        root.querySelectorAll("[data-zoom]").forEach((entry) => entry.classList.toggle("active", entry === button));
+        render();
+      }));
+      root.querySelector("[data-today]")?.addEventListener("click", () => { anchor = addDays(parseDate(todayIso), -2); render(); scroll.scrollLeft = 0; });
+      root.querySelectorAll("[data-shift]").forEach((button) => button.addEventListener("click", () => {
+        anchor = addDays(anchor, (button.dataset.shift === "next" ? 1 : -1) * zoom);
+        render();
+        scroll.scrollLeft = 0;
+      }));
+      dialog?.querySelector("[data-dialog-close]")?.addEventListener("click", () => dialog.close());
+      dialog?.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+      scroll.addEventListener("scroll", hideTooltip, { passive: true });
+      let resizeTimer;
+      window.addEventListener("resize", () => { hideTooltip(); clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 150); });
+      renderRightNow();
+      render();
+    }
+  </script>
+</Base>

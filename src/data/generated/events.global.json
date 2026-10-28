@@ -1,0 +1,1447 @@
+{
+  "generatedAt": "2026-10-28T12:55:33Z",
+  "client": "GLOBAL",
+  "events": [
+    {
+      "id": 200380001,
+      "label": "Spending Rebate Claim",
+      "family": "Spending Rebate",
+      "series": "rebate",
+      "start": "2026-01-15",
+      "end": "2027-01-15",
+      "category": "offers"
+    },
+    {
+      "id": 200760001,
+      "label": "Hero Skin Discount",
+      "family": "Skin Discount",
+      "series": "skin_discount",
+      "start": "2026-01-16",
+      "end": "2026-01-24",
+      "category": "offers"
+    },
+    {
+      "id": 200760002,
+      "label": "Hero Skin Discount",
+      "family": "Skin Discount",
+      "series": "skin_discount",
+      "start": "2026-01-16",
+      "end": "2026-01-24",
+      "category": "offers"
+    },
+    {
+      "id": 200390001,
+      "label": "New Card Push · Hladgunnr",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-01-21",
+      "end": "2026-01-30",
+      "category": "banners",
+      "heroGameId": 4009
+    },
+    {
+      "id": 200390003,
+      "label": "New Card Push · Nezha",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-02-02",
+      "end": "2026-02-11",
+      "category": "banners",
+      "heroGameId": 5006
+    },
+    {
+      "id": 200390002,
+      "label": "New Card Push · Tefnut",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-02-04",
+      "end": "2026-02-13",
+      "category": "banners",
+      "heroGameId": 1009
+    },
+    {
+      "id": 200390004,
+      "label": "New Card Push · Heracles",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-02-18",
+      "end": "2026-02-27",
+      "category": "banners",
+      "heroGameId": 2009
+    },
+    {
+      "id": 200550000,
+      "label": "Splendor",
+      "family": "Splendor",
+      "series": "splendor",
+      "start": "2026-03-02",
+      "end": "2026-03-16",
+      "category": "events"
+    },
+    {
+      "id": 200760003,
+      "label": "Hero Skin Discount",
+      "family": "Skin Discount",
+      "series": "skin_discount",
+      "start": "2026-03-02",
+      "end": "2026-03-10",
+      "category": "offers"
+    },
+    {
+      "id": 200810001,
+      "label": "Mystery Shop · Phase 1",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-03-02",
+      "end": "2026-03-10",
+      "category": "offers"
+    },
+    {
+      "id": 200390008,
+      "label": "New Card Push · Nvba",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-03-04",
+      "end": "2026-03-13",
+      "category": "banners",
+      "heroGameId": 3010
+    },
+    {
+      "id": 200890001,
+      "label": "Recharge Event · Phase 1",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-03-16",
+      "end": "2026-03-22",
+      "category": "offers"
+    },
+    {
+      "id": 200390006,
+      "label": "New Card Push · Mengpo",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-03-18",
+      "end": "2026-03-31",
+      "category": "banners",
+      "heroGameId": 4010
+    },
+    {
+      "id": 200810003,
+      "label": "Mystery Shop · Phase 2",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-03-30",
+      "end": "2026-04-07",
+      "category": "offers"
+    },
+    {
+      "id": 200390007,
+      "label": "New Card Push · Skadi",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-04-01",
+      "end": "2026-04-07",
+      "category": "banners",
+      "heroGameId": 1010
+    },
+    {
+      "id": 200390010,
+      "label": "New Card Push · Cronus",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-04-05",
+      "end": "2026-04-14",
+      "category": "banners",
+      "heroGameId": 5007
+    },
+    {
+      "id": 200760004,
+      "label": "Hero Skin Discount",
+      "family": "Skin Discount",
+      "series": "skin_discount",
+      "start": "2026-04-05",
+      "end": "2026-04-13",
+      "category": "offers"
+    },
+    {
+      "id": 200390005,
+      "label": "New Card Push · Wenshen",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-04-08",
+      "end": "2026-04-21",
+      "category": "banners",
+      "heroGameId": 3009
+    },
+    {
+      "id": 200890002,
+      "label": "Recharge Event · Phase 2",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-04-13",
+      "end": "2026-04-21",
+      "category": "offers"
+    },
+    {
+      "id": 200390009,
+      "label": "New Card Push · Meret",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-04-22",
+      "end": "2026-05-05",
+      "category": "banners",
+      "heroGameId": 2010
+    },
+    {
+      "id": 200550001,
+      "label": "Splendor",
+      "family": "Splendor",
+      "series": "splendor",
+      "start": "2026-04-23",
+      "end": "2026-05-07",
+      "category": "events"
+    },
+    {
+      "id": 200820001,
+      "label": "Red Packet Handout · Phase 1",
+      "family": "Red Packet",
+      "series": "give_red_packet",
+      "start": "2026-04-23",
+      "end": "2026-05-06",
+      "category": "offers"
+    },
+    {
+      "id": 201120001,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-04-23",
+      "end": "2026-04-29",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200560001,
+      "label": "Treasure Hunt · Phase 1",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-04-24",
+      "end": "2026-04-28",
+      "category": "recurring"
+    },
+    {
+      "id": 200810002,
+      "label": "Mystery Shop · Phase 3",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-04-27",
+      "end": "2026-05-05",
+      "category": "offers"
+    },
+    {
+      "id": 200560002,
+      "label": "Treasure Hunt · Phase 2",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-05-01",
+      "end": "2026-05-05",
+      "category": "recurring"
+    },
+    {
+      "id": 200390011,
+      "label": "New Card Push · Hephaestus",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-05-06",
+      "end": "2026-05-19",
+      "category": "banners",
+      "heroGameId": 4011
+    },
+    {
+      "id": 200560003,
+      "label": "Treasure Hunt · Phase 3",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-05-08",
+      "end": "2026-05-12",
+      "category": "recurring"
+    },
+    {
+      "id": 200560004,
+      "label": "Treasure Hunt · Phase 4",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-05-15",
+      "end": "2026-05-19",
+      "category": "recurring"
+    },
+    {
+      "id": 201090001,
+      "label": "Event · 201090001",
+      "family": "Featured Event",
+      "series": "active_20109",
+      "start": "2026-05-15",
+      "end": "2026-05-21",
+      "category": "events"
+    },
+    {
+      "id": 200390012,
+      "label": "New Card Push · Serket",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-05-20",
+      "end": "2026-06-02",
+      "category": "banners",
+      "heroGameId": 2011
+    },
+    {
+      "id": 200560005,
+      "label": "Treasure Hunt · Phase 5",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-05-22",
+      "end": "2026-05-26",
+      "category": "recurring"
+    },
+    {
+      "id": 200390014,
+      "label": "New Card Push · Hera",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-05-25",
+      "end": "2026-06-03",
+      "category": "banners",
+      "heroGameId": 5008
+    },
+    {
+      "id": 201120002,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-05-27",
+      "end": "2026-06-02",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200560006,
+      "label": "Treasure Hunt · Phase 6",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-05-29",
+      "end": "2026-06-02",
+      "category": "recurring"
+    },
+    {
+      "id": 200390013,
+      "label": "New Card Push · Eris",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-06-03",
+      "end": "2026-06-16",
+      "category": "banners",
+      "heroGameId": 3011
+    },
+    {
+      "id": 200560007,
+      "label": "Treasure Hunt · Phase 7",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-06-05",
+      "end": "2026-06-09",
+      "category": "recurring"
+    },
+    {
+      "id": 200560008,
+      "label": "Treasure Hunt · Phase 8",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-06-12",
+      "end": "2026-06-16",
+      "category": "recurring"
+    },
+    {
+      "id": 200390015,
+      "label": "New Card Push · Nut",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-06-17",
+      "end": "2026-06-23",
+      "category": "banners",
+      "heroGameId": 1012
+    },
+    {
+      "id": 200890003,
+      "label": "Recharge Event · Phase 3",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-06-17",
+      "end": "2026-06-25",
+      "category": "offers"
+    },
+    {
+      "id": 200560009,
+      "label": "Treasure Hunt · Phase 9",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-06-19",
+      "end": "2026-06-23",
+      "category": "recurring"
+    },
+    {
+      "id": 200810004,
+      "label": "Mystery Shop · Phase 4",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-06-20",
+      "end": "2026-06-26",
+      "category": "offers"
+    },
+    {
+      "id": 200390016,
+      "label": "New Card Push · Xuannv",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-06-24",
+      "end": "2026-07-07",
+      "category": "banners",
+      "heroGameId": 3013
+    },
+    {
+      "id": 200560010,
+      "label": "Treasure Hunt · Phase 10",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-06-26",
+      "end": "2026-06-30",
+      "category": "recurring"
+    },
+    {
+      "id": 200560011,
+      "label": "Treasure Hunt · Phase 11",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-07-03",
+      "end": "2026-07-07",
+      "category": "recurring"
+    },
+    {
+      "id": 200390017,
+      "label": "New Card Push · Nephthys",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-07-08",
+      "end": "2026-07-21",
+      "category": "banners",
+      "heroGameId": 1011
+    },
+    {
+      "id": 200890004,
+      "label": "Recharge Event · Phase 4",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-07-08",
+      "end": "2026-07-16",
+      "category": "offers"
+    },
+    {
+      "id": 200560012,
+      "label": "Treasure Hunt · Phase 12",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-07-10",
+      "end": "2026-07-14",
+      "category": "recurring"
+    },
+    {
+      "id": 200560013,
+      "label": "Treasure Hunt · Phase 13",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-07-17",
+      "end": "2026-07-21",
+      "category": "recurring"
+    },
+    {
+      "id": 200390018,
+      "label": "New Card Push · Idunn",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-07-22",
+      "end": "2026-08-04",
+      "category": "banners",
+      "heroGameId": 4012
+    },
+    {
+      "id": 200560014,
+      "label": "Treasure Hunt · Phase 14",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-07-24",
+      "end": "2026-07-28",
+      "category": "recurring"
+    },
+    {
+      "id": 200820002,
+      "label": "Red Packet Handout · Phase 1",
+      "family": "Red Packet",
+      "series": "give_red_packet",
+      "start": "2026-07-25",
+      "end": "2026-08-02",
+      "category": "offers"
+    },
+    {
+      "id": 201160001,
+      "label": "Sea War · Hades",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2026-07-27",
+      "end": "2026-08-07",
+      "category": "events",
+      "heroGameId": 5009
+    },
+    {
+      "id": 200560015,
+      "label": "Treasure Hunt · Phase 15",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-07-31",
+      "end": "2026-08-04",
+      "category": "recurring"
+    },
+    {
+      "id": 200390019,
+      "label": "New Card Push · Audhumla",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-08-05",
+      "end": "2026-08-18",
+      "category": "banners",
+      "heroGameId": 2012
+    },
+    {
+      "id": 200560016,
+      "label": "Treasure Hunt · Phase 16",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-08-07",
+      "end": "2026-08-11",
+      "category": "recurring"
+    },
+    {
+      "id": 200810005,
+      "label": "Mystery Shop · Phase 5",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-08-12",
+      "end": "2026-08-18",
+      "category": "offers"
+    },
+    {
+      "id": 200560017,
+      "label": "Treasure Hunt · Phase 17",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-08-14",
+      "end": "2026-08-18",
+      "category": "recurring"
+    },
+    {
+      "id": 200390020,
+      "label": "New Card Push · Heqet",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-08-19",
+      "end": "2026-09-01",
+      "category": "banners",
+      "heroGameId": 3012
+    },
+    {
+      "id": 200560018,
+      "label": "Treasure Hunt · Phase 18",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-08-21",
+      "end": "2026-08-25",
+      "category": "recurring"
+    },
+    {
+      "id": 200560019,
+      "label": "Treasure Hunt · Phase 19",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-08-28",
+      "end": "2026-09-01",
+      "category": "recurring"
+    },
+    {
+      "id": 200390021,
+      "label": "New Card Push · He Bo",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-09-02",
+      "end": "2026-09-15",
+      "category": "banners",
+      "heroGameId": 1013
+    },
+    {
+      "id": 200890005,
+      "label": "Recharge Event · Phase 5",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-09-02",
+      "end": "2026-09-10",
+      "category": "offers"
+    },
+    {
+      "id": 200560020,
+      "label": "Treasure Hunt · Phase 20",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-09-04",
+      "end": "2026-09-08",
+      "category": "recurring"
+    },
+    {
+      "id": 200560021,
+      "label": "Treasure Hunt · Phase 21",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-09-11",
+      "end": "2026-09-15",
+      "category": "recurring"
+    },
+    {
+      "id": 200390022,
+      "label": "New Card Push · Zaojun",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-09-16",
+      "end": "2026-09-29",
+      "category": "banners",
+      "heroGameId": 4013
+    },
+    {
+      "id": 200820003,
+      "label": "Red Packet Handout · Phase 3",
+      "family": "Red Packet",
+      "series": "give_red_packet",
+      "start": "2026-09-16",
+      "end": "2026-09-29",
+      "category": "offers"
+    },
+    {
+      "id": 200560022,
+      "label": "Treasure Hunt · Phase 22",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-09-18",
+      "end": "2026-09-22",
+      "category": "recurring"
+    },
+    {
+      "id": 200900003,
+      "label": "God Direct Purchase · Nuwa",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-09-19",
+      "end": "2026-09-21",
+      "category": "offers",
+      "heroGameId": 5004
+    },
+    {
+      "id": 201040002,
+      "label": "God Direct Purchase · Hladgunnr",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-09-24",
+      "end": "2026-09-26",
+      "category": "offers",
+      "heroGameId": 4009
+    },
+    {
+      "id": 200560023,
+      "label": "Treasure Hunt · Phase 23",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-09-25",
+      "end": "2026-09-29",
+      "category": "recurring"
+    },
+    {
+      "id": 201160002,
+      "label": "Sea War · Gaia",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2026-09-28",
+      "end": "2026-10-09",
+      "category": "events",
+      "heroGameId": 5010
+    },
+    {
+      "id": 200390024,
+      "label": "New Card Push · Mazu",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-09-30",
+      "end": "2026-10-13",
+      "category": "banners",
+      "heroGameId": 2013
+    },
+    {
+      "id": 200560024,
+      "label": "Treasure Hunt · Phase 24",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-10-02",
+      "end": "2026-10-06",
+      "category": "recurring"
+    },
+    {
+      "id": 200810006,
+      "label": "Mystery Shop · Phase 6",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-10-04",
+      "end": "2026-10-10",
+      "category": "offers"
+    },
+    {
+      "id": 200900001,
+      "label": "God Direct Purchase · Hera",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-10-05",
+      "end": "2026-10-07",
+      "category": "offers",
+      "heroGameId": 5008
+    },
+    {
+      "id": 200560025,
+      "label": "Treasure Hunt · Phase 25",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-10-09",
+      "end": "2026-10-13",
+      "category": "recurring"
+    },
+    {
+      "id": 201040003,
+      "label": "God Direct Purchase · Meret",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-10-10",
+      "end": "2026-10-12",
+      "category": "offers",
+      "heroGameId": 2010
+    },
+    {
+      "id": 201250001,
+      "label": "Choice Gift Pack",
+      "family": "Gift",
+      "series": "choose_gift",
+      "start": "2026-10-12",
+      "end": "2026-10-15",
+      "category": "offers"
+    },
+    {
+      "id": 200390023,
+      "label": "New Card Push · Yaoji",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-10-14",
+      "end": "2026-10-27",
+      "category": "banners",
+      "heroGameId": 3014
+    },
+    {
+      "id": 200890006,
+      "label": "Recharge Event · Phase 6",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-10-14",
+      "end": "2026-10-22",
+      "category": "offers"
+    },
+    {
+      "id": 201110001,
+      "label": "Totem Rank",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2026-10-14",
+      "end": "2026-10-20",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200560026,
+      "label": "Treasure Hunt · Phase 26",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-10-16",
+      "end": "2026-10-20",
+      "category": "recurring"
+    },
+    {
+      "id": 200900002,
+      "label": "God Direct Purchase · Amun-Ra",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-10-18",
+      "end": "2026-10-20",
+      "category": "offers",
+      "heroGameId": 5001
+    },
+    {
+      "id": 201130001,
+      "label": "Relic Awakening Rank",
+      "family": "Leaderboard",
+      "series": "active_rank5",
+      "start": "2026-10-21",
+      "end": "2026-10-27",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200560027,
+      "label": "Treasure Hunt · Phase 27",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-10-23",
+      "end": "2026-10-27",
+      "category": "recurring"
+    },
+    {
+      "id": 201040004,
+      "label": "God Direct Purchase · Heracles",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-10-25",
+      "end": "2026-10-27",
+      "category": "offers",
+      "heroGameId": 2009
+    },
+    {
+      "id": 200390025,
+      "label": "New Card Push · Charon",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-10-28",
+      "end": "2026-11-12",
+      "category": "banners",
+      "heroGameId": 4014
+    },
+    {
+      "id": 201120003,
+      "label": "Virtue Collection Rank · Phase 3",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-10-28",
+      "end": "2026-11-03",
+      "category": "leaderboards"
+    },
+    {
+      "id": 201310001,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2026-10-28",
+      "end": "2026-11-03",
+      "category": "offers"
+    },
+    {
+      "id": 201390001,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2026-10-28",
+      "end": "2026-11-03",
+      "category": "banners"
+    },
+    {
+      "id": 200560028,
+      "label": "Treasure Hunt · Phase 28",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-10-30",
+      "end": "2026-11-03",
+      "category": "recurring"
+    },
+    {
+      "id": 201300001,
+      "label": "Team Boss · Phase 1",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2026-10-30",
+      "end": "2026-11-03",
+      "category": "events"
+    },
+    {
+      "id": 201500004,
+      "label": "Login Carnival",
+      "family": "Login",
+      "series": "carnival_sign",
+      "start": "2026-10-30",
+      "end": "2026-11-05",
+      "category": "events"
+    },
+    {
+      "id": 200540002,
+      "label": "Card Replacement",
+      "family": "Card Replacement",
+      "series": "card_replacement",
+      "start": "2026-10-31",
+      "end": "2026-11-07",
+      "category": "events"
+    },
+    {
+      "id": 200900004,
+      "label": "God Direct Purchase · Chronus",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-11-01",
+      "end": "2026-11-03",
+      "category": "offers",
+      "heroGameId": 5007
+    },
+    {
+      "id": 201400001,
+      "label": "Golden Eye",
+      "family": "Featured Event",
+      "series": "active_gem_creation",
+      "start": "2026-11-02",
+      "end": "2026-11-13",
+      "category": "events"
+    },
+    {
+      "id": 201110002,
+      "label": "Totem Rank · Phase 2",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2026-11-04",
+      "end": "2026-11-10",
+      "category": "leaderboards"
+    },
+    {
+      "id": 201250002,
+      "label": "Choice Gift Pack · Phase 2",
+      "family": "Gift",
+      "series": "choose_gift",
+      "start": "2026-11-04",
+      "end": "2026-11-07",
+      "category": "offers"
+    },
+    {
+      "id": 200560029,
+      "label": "Treasure Hunt · Phase 29",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-11-06",
+      "end": "2026-11-10",
+      "category": "recurring"
+    },
+    {
+      "id": 201040005,
+      "label": "God Direct Purchase · Xuannv",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-11-08",
+      "end": "2026-11-10",
+      "category": "offers",
+      "heroGameId": 3013
+    },
+    {
+      "id": 201130002,
+      "label": "Relic Awakening Rank · Phase 2",
+      "family": "Leaderboard",
+      "series": "active_rank5",
+      "start": "2026-11-11",
+      "end": "2026-11-17",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200390026,
+      "label": "New Card Push · Ananke",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-11-13",
+      "end": "2026-11-26",
+      "category": "banners",
+      "heroGameId": 2014
+    },
+    {
+      "id": 200560030,
+      "label": "Treasure Hunt · Phase 30",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-11-13",
+      "end": "2026-11-17",
+      "category": "recurring"
+    },
+    {
+      "id": 200890007,
+      "label": "Recharge Event · Phase 7",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-11-13",
+      "end": "2026-11-21",
+      "category": "offers"
+    },
+    {
+      "id": 201300002,
+      "label": "Team Boss · Phase 2",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2026-11-13",
+      "end": "2026-11-17",
+      "category": "events"
+    },
+    {
+      "id": 201120004,
+      "label": "Virtue Collection Rank · Phase 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-11-18",
+      "end": "2026-11-24",
+      "category": "leaderboards"
+    },
+    {
+      "id": 200560031,
+      "label": "Treasure Hunt · Phase 31",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-11-20",
+      "end": "2026-11-24",
+      "category": "recurring"
+    },
+    {
+      "id": 201310002,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2026-11-20",
+      "end": "2026-11-26",
+      "category": "offers"
+    },
+    {
+      "id": 201390002,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2026-11-20",
+      "end": "2026-11-26",
+      "category": "banners"
+    },
+    {
+      "id": 200810007,
+      "label": "Mystery Shop · Phase 7",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-11-22",
+      "end": "2026-11-28",
+      "category": "offers"
+    },
+    {
+      "id": 200560032,
+      "label": "Treasure Hunt · Phase 32",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-11-27",
+      "end": "2026-12-01",
+      "category": "recurring"
+    },
+    {
+      "id": 201300003,
+      "label": "Team Boss · Phase 3",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2026-11-27",
+      "end": "2026-12-01",
+      "category": "events"
+    },
+    {
+      "id": 200560033,
+      "label": "Treasure Hunt · Phase 33",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-12-04",
+      "end": "2026-12-08",
+      "category": "recurring"
+    },
+    {
+      "id": 201160003,
+      "label": "Sea War · Chaos",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2026-12-07",
+      "end": "2026-12-18",
+      "category": "events",
+      "heroGameId": 5012
+    },
+    {
+      "id": 200560034,
+      "label": "Treasure Hunt · Phase 34",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-12-11",
+      "end": "2026-12-15",
+      "category": "recurring"
+    },
+    {
+      "id": 201300004,
+      "label": "Team Boss · Phase 4",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2026-12-11",
+      "end": "2026-12-15",
+      "category": "events"
+    },
+    {
+      "id": 200560035,
+      "label": "Treasure Hunt · Phase 35",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-12-18",
+      "end": "2026-12-22",
+      "category": "recurring"
+    },
+    {
+      "id": 200560036,
+      "label": "Treasure Hunt · Phase 36",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2026-12-25",
+      "end": "2026-12-29",
+      "category": "recurring"
+    },
+    {
+      "id": 201300005,
+      "label": "Team Boss · Phase 5",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2026-12-25",
+      "end": "2026-12-29",
+      "category": "events"
+    },
+    {
+      "id": 201310003,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2026-12-25",
+      "end": "2026-12-31",
+      "category": "offers"
+    },
+    {
+      "id": 201390003,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2026-12-25",
+      "end": "2026-12-31",
+      "category": "banners"
+    },
+    {
+      "id": 200560037,
+      "label": "Treasure Hunt · Phase 37",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-01-01",
+      "end": "2027-01-05",
+      "category": "recurring"
+    },
+    {
+      "id": 200560038,
+      "label": "Treasure Hunt · Phase 38",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-01-08",
+      "end": "2027-01-12",
+      "category": "recurring"
+    },
+    {
+      "id": 201300006,
+      "label": "Team Boss · Phase 6",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-01-08",
+      "end": "2027-01-12",
+      "category": "events"
+    },
+    {
+      "id": 200560039,
+      "label": "Treasure Hunt · Phase 39",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-01-15",
+      "end": "2027-01-19",
+      "category": "recurring"
+    },
+    {
+      "id": 201310004,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2027-01-15",
+      "end": "2027-01-21",
+      "category": "offers"
+    },
+    {
+      "id": 201390004,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-01-15",
+      "end": "2027-01-21",
+      "category": "banners"
+    },
+    {
+      "id": 200560040,
+      "label": "Treasure Hunt · Phase 40",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-01-22",
+      "end": "2027-01-26",
+      "category": "recurring"
+    },
+    {
+      "id": 201300007,
+      "label": "Team Boss · Phase 7",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-01-22",
+      "end": "2027-01-26",
+      "category": "events"
+    },
+    {
+      "id": 200560041,
+      "label": "Treasure Hunt · Phase 41",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-01-29",
+      "end": "2027-02-02",
+      "category": "recurring"
+    },
+    {
+      "id": 200560042,
+      "label": "Treasure Hunt · Phase 42",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-02-05",
+      "end": "2027-02-09",
+      "category": "recurring"
+    },
+    {
+      "id": 201300008,
+      "label": "Team Boss · Phase 8",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-02-05",
+      "end": "2027-02-09",
+      "category": "events"
+    },
+    {
+      "id": 200560043,
+      "label": "Treasure Hunt · Phase 43",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-02-12",
+      "end": "2027-02-16",
+      "category": "recurring"
+    },
+    {
+      "id": 200560044,
+      "label": "Treasure Hunt · Phase 44",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-02-19",
+      "end": "2027-02-23",
+      "category": "recurring"
+    },
+    {
+      "id": 201300009,
+      "label": "Team Boss · Phase 9",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-02-19",
+      "end": "2027-02-23",
+      "category": "events"
+    },
+    {
+      "id": 200560045,
+      "label": "Treasure Hunt · Phase 45",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-02-26",
+      "end": "2027-03-02",
+      "category": "recurring"
+    },
+    {
+      "id": 200560046,
+      "label": "Treasure Hunt · Phase 46",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-03-05",
+      "end": "2027-03-09",
+      "category": "recurring"
+    },
+    {
+      "id": 201300010,
+      "label": "Team Boss · Phase 10",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-03-05",
+      "end": "2027-03-09",
+      "category": "events"
+    },
+    {
+      "id": 200560047,
+      "label": "Treasure Hunt · Phase 47",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-03-12",
+      "end": "2027-03-16",
+      "category": "recurring"
+    },
+    {
+      "id": 200560048,
+      "label": "Treasure Hunt · Phase 48",
+      "family": "Treasure Hunt",
+      "series": "treasure_hunt",
+      "start": "2027-03-19",
+      "end": "2027-03-23",
+      "category": "recurring"
+    },
+    {
+      "id": 201300011,
+      "label": "Team Boss · Phase 11",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-03-19",
+      "end": "2027-03-23",
+      "category": "events"
+    },
+    {
+      "id": 201300012,
+      "label": "Team Boss · Phase 12",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-04-02",
+      "end": "2027-04-06",
+      "category": "events"
+    },
+    {
+      "id": 201300013,
+      "label": "Team Boss · Phase 13",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-04-16",
+      "end": "2027-04-20",
+      "category": "events"
+    },
+    {
+      "id": 201300014,
+      "label": "Team Boss · Phase 14",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-04-30",
+      "end": "2027-05-04",
+      "category": "events"
+    },
+    {
+      "id": 201300015,
+      "label": "Team Boss · Phase 15",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-05-14",
+      "end": "2027-05-18",
+      "category": "events"
+    },
+    {
+      "id": 201300016,
+      "label": "Team Boss · Phase 16",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-05-28",
+      "end": "2027-06-01",
+      "category": "events"
+    },
+    {
+      "id": 201300017,
+      "label": "Team Boss · Phase 17",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-06-11",
+      "end": "2027-06-15",
+      "category": "events"
+    },
+    {
+      "id": 201300018,
+      "label": "Team Boss · Phase 18",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-06-25",
+      "end": "2027-06-29",
+      "category": "events"
+    },
+    {
+      "id": 201300019,
+      "label": "Team Boss · Phase 19",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-07-09",
+      "end": "2027-07-13",
+      "category": "events"
+    },
+    {
+      "id": 201300020,
+      "label": "Team Boss · Phase 20",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-07-23",
+      "end": "2027-07-27",
+      "category": "events"
+    },
+    {
+      "id": 201300021,
+      "label": "Team Boss · Phase 21",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-08-06",
+      "end": "2027-08-10",
+      "category": "events"
+    },
+    {
+      "id": 201300022,
+      "label": "Team Boss · Phase 22",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-08-20",
+      "end": "2027-08-24",
+      "category": "events"
+    },
+    {
+      "id": 201300023,
+      "label": "Team Boss · Phase 23",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-09-03",
+      "end": "2027-09-07",
+      "category": "events"
+    },
+    {
+      "id": 201300024,
+      "label": "Team Boss · Phase 24",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-09-17",
+      "end": "2027-09-21",
+      "category": "events"
+    },
+    {
+      "id": 201300025,
+      "label": "Team Boss · Phase 25",
+      "family": "Team Boss",
+      "series": "team_boss",
+      "start": "2027-10-01",
+      "end": "2027-10-05",
+      "category": "events"
+    }
+  ]
+}

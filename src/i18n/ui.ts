@@ -239,11 +239,6 @@ const translations: TranslationTree = {
     },
     supportKofi: { en: "Support on Ko-fi", de: "Auf Ko-fi unterstützen", es: "Apoyar en Ko-fi", ru: "Поддержать на Ko-fi", zh: "在 Ko-fi 上支持" },
     supportPaypal: { en: "Donate via PayPal", de: "Per PayPal spenden", es: "Donar por PayPal", ru: "Пожертвовать через PayPal", zh: "通过 PayPal 捐助" },
-    languageNoticeEyebrow: { en: "Notice", de: "Notice", es: "Notice", ru: "Notice", zh: "Notice" },
-    languageNoticeTitle: { en: "Notice", de: "Notice", es: "Notice", ru: "Notice", zh: "Notice" },
-    languageNoticeBody: { en: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", de: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", es: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", ru: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information.", zh: "Dear visitors, due to circumstances it is currently not possible to post new event data, correct dates or any other forward-looking information." },
-    languageNoticeDiscord: { en: "Questions? Contact me on Discord: ds_frieren", de: "Questions? Contact me on Discord: ds_frieren", es: "Questions? Contact me on Discord: ds_frieren", ru: "Questions? Contact me on Discord: ds_frieren", zh: "Questions? Contact me on Discord: ds_frieren" },
-    languageNoticeDismiss: { en: "Got it", de: "Alles klar", es: "Entendido", ru: "Понятно", zh: "知道了" },
   },
   events: {
     metaTitle: { en: "Global Event Calendar | Motto Immortal", de: "Globaler Event-Kalender | Motto Immortal", es: "Calendario global de eventos | Motto Immortal", ru: "Календарь событий Global | Motto Immortal", zh: "全球服活动日历｜Motto Immortal" },

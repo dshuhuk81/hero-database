@@ -1258,5 +1258,38 @@
       "spine_name": null,
       "skill_icon_prefix": null
     }
+  },
+  "venus": {
+    "game_hero_id": 3015,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_releases.json+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Weinasi"
+    }
+  },
+  "chaos": {
+    "game_hero_id": 5012,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_releases.json+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Kaesi"
+    }
+  },
+  "joanneofarc": {
+    "game_hero_id": 4016,
+    "all_game_hero_ids": null,
+    "match_confidence": "medium",
+    "match_method": "owner_confirmed_2026-10-28",
+    "status": "ok",
+    "notes": "ZhenDe (CN name 贞德). Global name not known yet; CN release 2026-10-16, no Global date.",
+    "assets": {
+      "internal_name": "ZhenDe"
+    }
   }
 }
