@@ -30,9 +30,9 @@ test("every group used in nav.ts is a known group", () => {
   for (const group of used) assert.ok(navGroupOrder.includes(group), `unknown group "${group}" in nav.ts`);
 });
 
-test("banners is in the navigation, the hidden events page and the old roadmap are not", () => {
+test("banners and events are in the navigation, the old roadmap is not", () => {
   const source = readFileSync(new URL("../src/data/nav.ts", import.meta.url), "utf-8");
   assert.ok(/href: "\/banners"/.test(source), "expected a /banners entry");
-  assert.ok(!/href: "\/events"/.test(source), "/events stays unlisted");
+  assert.ok(/href: "\/events"/.test(source), "expected an /events entry");
   assert.ok(!/href: "\/summon-calendar"/.test(source), "the roadmap entry was replaced by /banners");
 });

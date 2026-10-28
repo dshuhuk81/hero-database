@@ -22,6 +22,7 @@
     "validate:ratings": "node scripts/validate-ratings.mjs",
     "ratings:report": "node scripts/rating-report.mjs",
     "test:ratings": "node --test tests/rating-system.test.mjs",
+    "test:android": "${ANDROID_PYTHON:-$HOME/Downloads/Sites/android/.venv-arm/bin/python} -m unittest tests/test_android_tools.py",
     "suggest:tags": "node scripts/suggest-synergy-tags.mjs",
     "suggest:virtues": "node scripts/suggest-virtues.mjs",
     "suggest:comps": "node scripts/suggest-comps.mjs",

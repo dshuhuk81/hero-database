@@ -23,6 +23,9 @@ Der Bucket enthält keinen einzigen Key unter `icons/`. Betroffen sind alle Klas
 ## Helden
 Seit dem Upload vom 2026-10-28 liegen `ananke`, `nidhogg`, `venus` und `chaos` vollständig im Bucket (Original, `cards/` 240/360/480, `thumbs/` 96). Weiterhin fehlt **`joanneofarc`**: Der Held ist ZhenDe (Spiel-ID 4016, vom Besitzer bestätigt, Global-Name unbekannt, CN-Release 2026-10-16). Das Porträt liegt beim Agenten unter `out/art_cn/portraits/A_UI_Portrait_ZhenDe_Img.png`.
 
+## Korrektur der Heldenbilder am 2026-10-28
+Im Bucket lagen 39 Helden mit weißem Hintergrund oder falschem Bild (acht Helden zeigten dasselbe Bild). Sie wurden aus `extracted/UI_Hero_Portraits`, den `art_new_*`-Ordnern des Agenten und Git (`77c601dc^`) ersetzt, jeweils mit `cards/` und `thumbs/`. Zusätzlich wurden `hall.webp`, `bg_neutral.webp`, `bg_halle.webp`, `shrineBG.webp` und `frieren.jpg` aus Git wiederhergestellt. Sicherungen des vorherigen Stands liegen nur im Arbeitsordner der Sitzung. Die Bild-Version im Code ist `2026-10-28-cutouts`.
+
 ## Prüfen
 ```bash
 node scripts/check-r2-refs.mjs   # Exit 1, solange Lücken bestehen

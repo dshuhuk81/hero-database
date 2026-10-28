@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "yaoji-event",
+      "id": "charon-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "yaoji",
-      "startDate": "2026-10-14",
-      "endDate": "2026-10-28",
+      "hero": "charon",
+      "startDate": "2026-10-28",
+      "endDate": "2026-11-12",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,106 +23,62 @@
         {
           "id": 1,
           "name": {
-            "en": "First Startled by Vine Shadows",
-            "de": "Zuerst vom Rankenschatten erschreckt",
-            "es": "Primero asustado por las sombras de las enredaderas",
-            "ru": "Сначала напуганный тенями лоз"
+            "en": "Where are you, Guide of Thoughts!",
+            "de": "Wo bist du, Führer der Gedanken!",
+            "es": "¡Dónde estás, Guía de los Pensamientos!",
+            "ru": "Где ты, Проводник мыслей!"
           },
-          "composition": {
-            "front": ["Yaoji", "Taurus"],
-            "back": []
-          }
+          "composition": { "front": [], "back": [] }
         },
         {
           "id": 2,
           "name": {
-            "en": "Bound by Green Vines",
-            "de": "Von grünen Ranken gefesselt",
-            "es": "Atado por enredaderas verdes",
-            "ru": "Опутанный зелёными лозами"
+            "en": "That Terrifying Night",
+            "de": "Jene schreckliche Nacht",
+            "es": "Aquella noche aterradora",
+            "ru": "Та ужасная ночь"
           },
-          "composition": {
-            "front": ["Gemini", "Leo"],
-            "back": ["Libra", "Virgo", "Capricorn"]
-          }
+          "composition": { "front": [], "back": [] }
         },
         {
           "id": 3,
           "name": {
-            "en": "Rampant Branches",
-            "de": "Wuchernde Zweige",
-            "es": "Ramas desenfrenadas",
-            "ru": "Буйные ветви"
+            "en": "Take My Wild Scent to Your Boat",
+            "de": "Trag meinen wilden Duft auf dein Boot",
+            "es": "Lleva mi aroma salvaje a tu barca",
+            "ru": "Забери мой дикий аромат в свою лодку"
           },
-          "composition": {
-            "front": ["Yaoji", "Leo"],
-            "back": ["Cancer", "Libra", "Sagittarius"]
-          }
+          "composition": { "front": [], "back": [] }
         },
         {
           "id": 4,
           "name": {
-            "en": "Entangled Heart",
-            "de": "Verstricktes Herz",
-            "es": "Corazón enredado",
-            "ru": "Запутанное сердце"
+            "en": "Unreachable Shore",
+            "de": "Unerreichbares Ufer",
+            "es": "Orilla inalcanzable",
+            "ru": "Недостижимый берег"
           },
-          "composition": {
-            "front": ["Yaoji", "Demeter"],
-            "back": ["Nuba", "Wenshen", "Anubis"]
-          }
+          "composition": { "front": [], "back": [] }
         },
         {
           "id": 5,
           "name": {
-            "en": "Pruning the Wilds",
-            "de": "Die Wildnis beschneiden",
-            "es": "Podando lo salvaje",
-            "ru": "Обрезка дикой чащи"
+            "en": "The Same Future",
+            "de": "Dieselbe Zukunft",
+            "es": "El mismo futuro",
+            "ru": "То же будущее"
           },
-          "composition": {
-            "front": ["Yaoji", "Demeter"],
-            "back": ["Anubis", "Wenshen", "Artemis"]
-          }
+          "composition": { "front": [], "back": [] }
         },
         {
           "id": 6,
           "name": {
-            "en": "Water Veins Restored",
-            "de": "Wasseradern wiederhergestellt",
-            "es": "Venas de agua restauradas",
-            "ru": "Водные жилы восстановлены"
+            "en": "Waves Blow Away the Past",
+            "de": "Wellen spülen die Vergangenheit fort",
+            "es": "Las olas se llevan el pasado",
+            "ru": "Волны смывают прошлое"
           },
-          "composition": {
-            "front": ["Yaoji", "Demeter"],
-            "back": ["Anubis", "Jormungandr", "Wenshen"]
-          }
-        },
-        {
-          "id": 7,
-          "name": {
-            "en": "Roots and Leaves Returned to Order",
-            "de": "Wurzeln und Blätter zur Ordnung zurückgekehrt",
-            "es": "Raíces y hojas devueltas al orden",
-            "ru": "Корни и листья возвращены к порядку"
-          },
-          "composition": {
-            "front": ["Yaoji", "Jormungandr"],
-            "back": ["Nuba", "Anubis", "Wenshen"]
-          }
-        },
-        {
-          "id": 8,
-          "name": {
-            "en": "Biding Time",
-            "de": "Auf den richtigen Moment warten",
-            "es": "Esperando el momento",
-            "ru": "Ожидание подходящего момента"
-          },
-          "composition": {
-            "front": ["Yaoji", "Poseidon"],
-            "back": ["Khepri", "Skadi", "Tefnut"]
-          }
+          "composition": { "front": [], "back": [] }
         }
       ]
     }

@@ -78,7 +78,7 @@ const categoryData = JSON.stringify(categories.map((category) => ({ id: category
 const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${globalEventsMeta.generated.slice(0, 10)}T00:00:00Z`));
 ---
 
-<Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale} noindex>
+<Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale}>
   <PageHero
     tag={t(locale, "events", "tag")}
     headline={t(locale, "events", "headline")}

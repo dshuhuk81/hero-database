@@ -46,7 +46,7 @@ export default defineConfig({
 
   output: 'static',
 
-  integrations: [sitemap({ filter: (page) => !/\/events\/?$/.test(page) }), localOnlyRoutes()],
+  integrations: [sitemap(), localOnlyRoutes()],
 
   vite: {
     server: {

@@ -315,6 +315,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 12.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z"/>`,
   },
   {
+    label: "Events",
+    href: "/events",
+    group: "whatson",
+    teaser: true,
+    description: {
+      en: "Global event calendar: what is running and what comes next",
+      de: "Globaler Event-Kalender: was läuft und was als Nächstes kommt",
+      es: "Calendario global de eventos: qué está activo y qué viene después",
+      ru: "Календарь событий Global: что идёт сейчас и что дальше",
+      zh: "全球服活动日历：当前进行与即将开始的活动",
+    },
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+  },
+  {
     label: "Virtue Wizard",
     href: "/virtue-wizard",
     group: "tools",
