@@ -16,7 +16,7 @@ const byEndThenBanner = (a, b) => a.end.localeCompare(b.end) || Number(b.categor
  * @param banners hero banners as { id, kind: "new" | "rerun", start, end }; end is null for a hero without a banner yet
  * @returns {{ featured, nextBanner, running, moreRunning, coming }}
  */
-export function pickRightNow(items, banners, today, { runningLimit = 5, comingLimit = 5, minRunning = 4 } = {}) {
+export function pickRightNow(items, banners, today, { runningLimit = 5, comingLimit = 6, minRunning = 5 } = {}) {
   // Only real banners (with an end date) count; a hero announced without a banner is not one.
   const newBanners = banners.filter((b) => b.kind === "new" && b.start && b.end);
   const featured = newBanners

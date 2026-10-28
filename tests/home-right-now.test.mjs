@@ -50,7 +50,7 @@ test("running items end soonest first, offers are left out and the limit reports
     item(4, "2026-10-28", "2026-10-28", "leaderboards"),
     item(5, "2026-10-01", "2026-12-01", "recurring"),
   ];
-  const { running, moreRunning } = pickRightNow(items, [], TODAY, { runningLimit: 3 });
+  const { running, moreRunning } = pickRightNow(items, [], TODAY, { runningLimit: 3, minRunning: 4 });
   assert.deepEqual(running.map((i) => i.id), [4, 2, 1]);
   assert.equal(moreRunning, 1);
 });

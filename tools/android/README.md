@@ -33,7 +33,7 @@ npm run import:game-data                                 # validates and copies 
 
 # c) hero art
 tools/android/run.sh extract_hero_art.py $D/global/data/packages --out out/art_new_global
-tools/android/run.sh build_site_assets.py --config $X/x_global --art out/art_new_global --write   # -> out/site_public
+tools/android/run.sh build_site_assets.py --config $X/x_global --art out/art_new_global out/art_global --write   # -> out/site_public (first folder wins)
 ```
 `vNNNNNN` is the Global resource version (the number of the folder in `$D/global/download/`, e.g. 102687).
 The exports write only to `$ANDROID_DATA_DIR/out/site_data/`; `npm run import:game-data` reads them from there.
@@ -57,16 +57,19 @@ Without `--write`, `build_site_assets.py` is a dry run that prints what it would
 | `export_events.py` | `events.global.json` (+ report): every dated Global event, banners with `heroGameId` (also reruns) |
 | `export_release_schedule_md.py` | human-readable release overview |
 | `unpack_config.py` | decrypts and unpacks the config zips of a pull into `x_<label>/` |
-| `extract_hero_art.py`, `update_global_art.py` | hero portraits and skill icons from client bundles / patches |
+| `extract_hero_art.py`, `update_global_art.py` | hero portraits (cutouts only) and skill icons from client bundles / patches |
 | `build_site_assets.py` | WebP portraits and skill icons for the site; skips portraits without alpha or shared by several heroes |
 | `emu_status.py`, `restart_emulator.sh`, `ram_scan.py`, `motto_crypt.py` | emulator control, memory scan, config decryption |
 | `skill_contact_sheet.py` | contact sheet for skill icon checks |
 
 ## Known pitfall: white hero backgrounds
-`out/art_global` and `out/art_cn` hold opaque 1024x2048 portraits with a white background for many older heroes.
-The transparent ones (838x2048) are in `out/art_new_global`, `out/art_new_cn` and in the repo's `extracted/UI_Hero_Portraits`.
-`extract_hero_art.py` on the emulator's `data/packages` (the `new_texture_*` bundles) produced the transparent set. `build_site_assets.py` now checks this itself.
-The game's `hero_skin` also points several heroes at one portrait (Canopic Jar, Jinchan, Kraken, Nymphia, Ratatoskr, Tailao, Treant, Ushabti and Cancer all at `Juxiezuo`); those are reported as `portrait_shared` and their images need another source.
+The older bundles (APK, CDN patch via `update_global_art.py`, folders `out/art_global` / `out/art_cn`) hold opaque 1024x2048
+portraits with a white background for many older heroes. The emulator's `data/packages` (`new_texture_ui_herofigure_*`) give
+transparent 838x2048 cutouts (`out/art_new_global`, `out/art_new_cn`; the repo also has them in `extracted/UI_Hero_Portraits`).
+The scripts now guard against this: `extract_hero_art.py` skips portraits without transparency (`--keep-opaque` overrides),
+`build_site_assets.py` reports and skips them (`portrait_opaque`) and takes several art folders, the first one wins.
+The game's `hero_skin` also points several heroes at one portrait (Canopic Jar, Jinchan, Kraken, Nymphia, Ratatoskr, Tailao,
+Treant, Ushabti and Cancer all at `Juxiezuo`); those are reported as `portrait_shared` and their images need another source.
 
 ## Editing
 Edit the scripts in this repository only. If the data directory has a `scripts` entry, it is a symlink to `tools/android/scripts`.
