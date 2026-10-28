@@ -38,7 +38,7 @@ function localOnlyRoutes() {
   };
 }
 
-const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
+const R2_BASE = 'https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev';
 
 export default defineConfig({
   // Site Configuration

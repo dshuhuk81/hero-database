@@ -325,9 +325,9 @@ Asset workflow from existing docs:
 
 Common image paths in current data are R2 URLs:
 
-- Heroes: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/{hero_id}.webp`
-- Skills: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/{hero_id}_skill_{n}.webp`
-- Relics: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/{hero_id}_relic.webp`
+- Heroes: `https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/{hero_id}.webp`
+- Skills: `https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/skills/{hero_id}_skill_{n}.webp`
+- Relics: `https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/skills/{hero_id}_relic.webp`
 - Icons: R2 folders such as `icons/factions`, `icons/roles`, `icons/classes`, `icons/totems`.
 
 ## Scripts

@@ -1,4 +1,4 @@
-// src/datahttps://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/index.js
+// src/datahttps://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/index.js
 
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });
@@ -51,7 +51,7 @@ function adaptHero(raw) {
     id: raw.id,
     heroID: raw.heroID ?? null,
     name: raw.name,
-    image: raw.image ?? `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${raw.id}.webp`,
+    image: raw.image ?? `https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/${raw.id}.webp`,
     release: raw.release ?? true,
     faction: raw.faction,
     role: raw.role,

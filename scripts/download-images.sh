@@ -2,7 +2,7 @@
 # Downloads all hero portraits, skill images, and relic images from Cloudflare R2
 # Output: ~/Downloads/hero-images/{heroes,skills}/
 
-BASE="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev"
+BASE="https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev"
 OUT="$HOME/Downloads/hero-images"
 
 mkdir -p "$OUT/heroes"

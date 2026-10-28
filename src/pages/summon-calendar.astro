@@ -18,7 +18,7 @@ const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: 
 const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
 const ratedHeroMap = new Map((heroPages as any[]).map((hero) => [hero.id, hero]));
 
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
 const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
 const HERO_IMAGE_VERSION = "2026-06-08-portrait";
 const SPOTLIGHT_IMAGE_SIZES = "(max-width: 400px) calc(100vw - 40px), (max-width: 600px) calc((100vw - 56px) / 2), 220px";
@@ -465,7 +465,7 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
     padding-top: 100%;
     overflow: hidden;
     background-color: #0d1624;
-    background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+    background-image: url(https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/hall.webp);
     background-size: cover;
     background-position: center top;
   }

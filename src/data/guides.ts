@@ -80,7 +80,7 @@ export const guides: GuideEntry[] = [
   },
   {
     href: "/guides/divine-throne",
-    image: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_neutral.webp",
+    image: "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bg_neutral.webp",
     title: "Divine Throne - System Guide",
   },
   {

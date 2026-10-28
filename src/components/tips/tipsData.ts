@@ -1,4 +1,4 @@
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cards";
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/cards";
 
 export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
   Hearts: [
@@ -30,7 +30,7 @@ export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
   ],
 };
 
-const R2_ICONS = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions";
+const R2_ICONS = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/icons/factions";
 
 export const FACTION_META: Record<string, { color: string; glow: string; dim: string; icon: string }> = {
   Hearts: {

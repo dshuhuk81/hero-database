@@ -5,7 +5,7 @@ import { dirname } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const R2_URL = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const R2_URL = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
 
 // Asset path prefixes that should be moved to R2
 const ASSET_PREFIXES = [

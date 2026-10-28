@@ -100,13 +100,15 @@
     }
   },
   "audhumla": {
-    "game_hero_id": null,
+    "game_hero_id": 2012,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Not found in divination_character_setting.json, hero_skin.lua, or game_graphics. Hero exists in project with skill descriptions but has no game data yet.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Oudemubula"
+    }
   },
   "bastet": {
     "game_hero_id": 2005,
@@ -252,8 +254,9 @@
     "match_confidence": "none",
     "match_method": null,
     "status": "not_yet_released",
-    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
-    "assets": {}
+    "notes": "Alter Projektname von Idunn (CN: Yideng, game_hero_id 4012). Eigenes Asset-Set nicht noetig.",
+    "assets": {},
+    "alias_of": "idunn"
   },
   "eris": {
     "game_hero_id": 3011,
@@ -329,22 +332,26 @@
     }
   },
   "hades": {
-    "game_hero_id": null,
+    "game_hero_id": 5009,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Hadisi"
+    }
   },
   "hebo": {
-    "game_hero_id": null,
+    "game_hero_id": 1013,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Hebo"
+    }
   },
   "hecate": {
     "game_hero_id": 1001,
@@ -363,13 +370,15 @@
     }
   },
   "heket": {
-    "game_hero_id": null,
+    "game_hero_id": 3012,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Haikuite"
+    }
   },
   "hela": {
     "game_hero_id": 1003,
@@ -458,13 +467,15 @@
     }
   },
   "idunn": {
-    "game_hero_id": null,
+    "game_hero_id": 4012,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Not found in divination_character_setting.json, hero_skin.lua, or game_graphics. Hero exists in project with skill descriptions but has no game data yet.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Yideng"
+    }
   },
   "iris": {
     "game_hero_id": 1006,
@@ -542,7 +553,8 @@
       "portrait_normal": null,
       "spine_name": null,
       "skill_icon_prefix": null
-    }
+    },
+    "alias_of": "jiutian-xuannv"
   },
   "jormungandr": {
     "game_hero_id": 3004,
@@ -691,13 +703,15 @@
     }
   },
   "nephtys": {
-    "game_hero_id": null,
+    "game_hero_id": 1011,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "not_yet_released",
-    "notes": "Project hero exists, but no standalone game hero ID or CN asset internal name is confirmed. Divination label Nephtys appears on ID 1011, which currently uses Skadi assets.",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "hero_detail_global_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Naifudisi"
+    }
   },
   "nezha": {
     "game_hero_id": 5006,
@@ -1152,6 +1166,97 @@
       "portrait_circle": "A_UI_HeadPortrait_Zhousi03_Img",
       "spine_name": "zhousi",
       "skill_icon_prefix": "ZhouSi"
+    }
+  },
+  "yaoji": {
+    "game_hero_id": 3014,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Yaoji"
+    }
+  },
+  "zaojun": {
+    "game_hero_id": 4013,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Zaojun"
+    }
+  },
+  "gaiya": {
+    "game_hero_id": 5010,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Gaiya"
+    }
+  },
+  "mazu": {
+    "game_hero_id": 2013,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Mazu"
+    }
+  },
+  "ananke": {
+    "game_hero_id": 2014,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Ananke"
+    }
+  },
+  "charon": {
+    "game_hero_id": 4014,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Karong"
+    }
+  },
+  "nidhogg": {
+    "game_hero_id": 5011,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "hero_json_heroID+global_config_2026-10-28",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "Nidehuoge"
+    }
+  },
+  "jiutian-xuannv": {
+    "game_hero_id": 3013,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "divination_character_setting",
+    "status": "unreleased",
+    "notes": "en_name=Xuannv confirmed via divination. enable_time=2027-12-12. No portrait or spine in game_graphics leak. Only new_card_push UI assets found.",
+    "assets": {
+      "internal_name": "jiutianxuannv",
+      "portrait_normal": null,
+      "spine_name": null,
+      "skill_icon_prefix": null
     }
   }
 }
