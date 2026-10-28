@@ -7,6 +7,13 @@ import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
 import HeroCard from "../HeroCard.astro";
 import { getHeroById } from "../../data/heroes/withRatings";
+import "../../styles/home-live.css";
+import { globalEvents } from "../../data/eventsGlobal";
+import { buildBanners } from "../../data/banners";
+import { siteIdForGameId, getHeroRelease } from "../../data/heroReleases";
+import { summonSchedule } from "../../data/summonSchedule";
+import { pickRightNow, recentReleases } from "../../data/homeRightNow.js";
+import { renderRightNow } from "../../data/homeRightNowView.js";
 
 interface Props {
   locale?: Locale;
@@ -33,9 +40,81 @@ const jsonLd = {
   url: new URL("/", Astro.site).href,
 };
 
-
 const hrefFor = (href: string) => localizePath(href, locale);
-const launchHero = getHeroById("charon");
+const L = (en: string, de: string, es: string, ru: string, zh: string) => ({ en, de, es, ru, zh });
+const R2 = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const IMG_VERSION = "2026-10-28-cutouts";
+const copy = {
+  rightNow: L("Right now", "Jetzt aktuell", "Ahora mismo", "Прямо сейчас", "当前动态"),
+  running: L("Running", "Läuft gerade", "En curso", "Идёт сейчас", "进行中"),
+  comingUp: L("Coming up", "Als Nächstes", "Próximamente", "Скоро", "即将开始"),
+  lastDay: L("Last day", "Letzter Tag", "Último día", "Последний день", "最后一天"),
+  daysLeft: L("days left", "Tage übrig", "días restantes", "дн. осталось", "天后结束"),
+  dayLeft: L("day left", "Tag übrig", "día restante", "дн. остался", "天后结束"),
+  inDays: L("in {n} days", "in {n} Tagen", "en {n} días", "через {n} дн.", "{n}天后"),
+  tomorrow: L("tomorrow", "morgen", "mañana", "завтра", "明天"),
+  nextBanner: L("Next banner", "Nächstes Banner", "Próximo banner", "Следующий баннер", "下一个卡池"),
+  moreRunning: L("{n} more running", "{n} weitere laufen", "{n} más en curso", "ещё {n} идут", "另有{n}个进行中"),
+  nothingRunning: L("Nothing is running right now.", "Gerade läuft nichts.", "No hay nada en curso.", "Сейчас ничего не идёт.", "目前没有进行中的活动。"),
+  nothingComing: L("No upcoming events known yet.", "Noch keine kommenden Events bekannt.", "Aún no hay eventos próximos.", "Ближайших событий пока нет.", "暂无即将开始的活动。"),
+  rerun: L("Rerun", "Wiederholung", "Repetición", "Повтор", "复刻"),
+  allEvents: L("All events", "Alle Events", "Todos los eventos", "Все события", "全部活动"),
+  allBanners: L("All banners", "Alle Banner", "Todos los banners", "Все баннеры", "全部卡池"),
+  newArrivals: L("New arrivals", "Neue Helden", "Recién llegados", "Новые герои", "新英雄"),
+  allHeroes: L("All heroes", "Alle Helden", "Todos los héroes", "Все герои", "全部英雄"),
+  released: L("Released {date}", "Erschienen {date}", "Lanzado {date}", "Вышел {date}", "{date}上线"),
+  pull: {
+    pull: L("Pull", "Ziehen", "Invocar", "Брать", "建议抽"),
+    optional: L("Optional", "Optional", "Opcional", "По желанию", "可选"),
+    unsure: L("Unsure", "Unklar", "Dudoso", "Неясно", "待定"),
+    "whales-only": L("Whales only", "Nur Whales", "Solo ballenas", "Только донатерам", "仅大佬"),
+    skip: L("Skip", "Überspringen", "Omitir", "Пропустить", "跳过"),
+  },
+  categories: {
+    banners: L("Banner", "Banner", "Banner", "Баннер", "卡池"),
+    events: L("Event", "Event", "Evento", "Событие", "活动"),
+    leaderboards: L("Leaderboard", "Rangliste", "Clasificación", "Рейтинг", "排行榜"),
+    recurring: L("Recurring", "Wiederkehrend", "Recurrente", "Регулярное", "周期活动"),
+    offers: L("Offer", "Angebot", "Oferta", "Предложение", "礼包"),
+  },
+};
+const pickDeep = (value: any): any =>
+  "en" in value ? pickLang(value, locale) : Object.fromEntries(Object.entries(value).map(([key, inner]) => [key, pickDeep(inner)]));
+const copyForScript = pickDeep(copy);
+
+const buildDate = new Date().toISOString().slice(0, 10);
+const heroThumb = (siteId?: string) => (siteId ? `${R2}/heroes/thumbs/${encodeURIComponent(siteId)}-96.webp?v=${IMG_VERSION}` : undefined);
+const banners = buildBanners(buildDate)
+  .filter((banner) => banner.start && (banner.end ?? "9999") >= buildDate)
+  .map((banner) => ({
+    id: banner.id, kind: banner.kind, start: banner.start, end: banner.end, heroName: banner.heroName, heroSiteId: banner.heroSiteId,
+    image: banner.heroSiteId ? `${R2}/heroes/cards/${encodeURIComponent(banner.heroSiteId)}-480.webp?v=${IMG_VERSION}` : undefined,
+  }));
+// Events and rerun banners for the lists; hero banners themselves are the featured tile and the "next banner" line.
+const liveItems = [
+  ...globalEvents
+    .filter((event) => event.category !== "banners" && event.end >= buildDate)
+    .map((event) => ({ id: String(event.id), label: event.label, category: event.category, start: event.start, end: event.end, heroImage: heroThumb(event.heroGameId === undefined ? undefined : siteIdForGameId(event.heroGameId)) })),
+  ...banners
+    .filter((banner) => banner.kind === "rerun")
+    .map((banner) => ({ id: banner.id, label: `${banner.heroName ?? pickLang(copy.rerun, locale)} · ${pickLang(copy.rerun, locale)}`, category: "banners", start: banner.start, end: banner.end, heroImage: heroThumb(banner.heroSiteId) })),
+];
+const rightNowCtx = {
+  locale, copy: copyForScript, today: buildDate,
+  eventsHref: localizePath("/events", locale), bannersHref: localizePath("/banners", locale), heroPrefix: localizePath("/heroes/", locale),
+};
+const rightNow = pickRightNow(liveItems, banners, buildDate);
+const rightNowHtml = renderRightNow(rightNow, { ...rightNowCtx, heroHref: (id: string) => `${rightNowCtx.heroPrefix}${id}` });
+const liveData = JSON.stringify({ items: liveItems, banners }).replace(/</g, "\\u003c");
+const liveCopy = JSON.stringify({ ...rightNowCtx, today: undefined }).replace(/</g, "\\u003c");
+
+const scheduleById = new Map(summonSchedule.map((entry) => [entry.id, entry]));
+const releaseDate = (iso: string) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", day: "numeric", month: "short" }).format(new Date(`${iso}T00:00:00Z`));
+const arrivals = recentReleases(
+  summonSchedule.map((entry) => ({ id: entry.id, date: getHeroRelease(entry.id)?.globalRelease ?? null })).filter((entry) => getHeroById(entry.id) && entry.id !== rightNow.featured?.heroSiteId), // the featured hero is already shown above
+  buildDate,
+  6,
+).map((entry) => ({ hero: getHeroById(entry.id)!, date: entry.date!, pull: scheduleById.get(entry.id)?.pullQuality }));
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -78,85 +157,50 @@ const featuredImageFor = (href: string) => href === "/heroes"
     </section>
 
     <main class="home-main">
-      <div class="teaser-grid">
-        <section class="launch-section" aria-labelledby="launchTitle">
-          <header class="section-heading launch-heading">
-            <p class="section-kicker">Current release</p>
-            <h2 id="launchTitle">Latest Banner</h2>
-          </header>
+      <section class="home-section hl-section" aria-labelledby="rightNowTitle" data-live>
+        <header class="hl-head">
+          <h2 id="rightNowTitle">{pickLang(copy.rightNow, locale)}</h2>
+          <nav class="hl-links" aria-label={pickLang(copy.rightNow, locale)}>
+            <a href={hrefFor("/events")}>{pickLang(copy.allEvents, locale)}</a>
+            <a href={hrefFor("/banners")}>{pickLang(copy.allBanners, locale)}</a>
+          </nav>
+        </header>
+        <div class="hl-panel">
+          <div class="hl-slot-feature" data-live-feature set:html={rightNowHtml.feature}></div>
+          <div class="hl-col">
+            <h3>{pickLang(copy.running, locale)}</h3>
+            <div data-live-running set:html={rightNowHtml.running}></div>
+          </div>
+          <div class="hl-col">
+            <h3>{pickLang(copy.comingUp, locale)}</h3>
+            <div data-live-coming set:html={rightNowHtml.coming}></div>
+          </div>
+        </div>
+      </section>
 
-          <aside class="launch-card">
-            <div class="launch-backdrop" aria-hidden="true"></div>
-            <div class="launch-content">
-              <div class="launch-character" aria-label="Charon hero card">
-                <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
-                  <img src={`https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
-                  <img src={`https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
+      {arrivals.length > 0 && (
+        <section class="home-section hl-section" aria-labelledby="arrivalsTitle">
+          <header class="hl-head">
+            <h2 id="arrivalsTitle">{pickLang(copy.newArrivals, locale)}</h2>
+            <nav class="hl-links"><a href={hrefFor("/heroes")}>{pickLang(copy.allHeroes, locale)}</a></nav>
+          </header>
+          <ul class="hl-arrivals">
+            {arrivals.map(({ hero, date, pull }) => (
+              <li class="hl-arrival">
+                <HeroCard hero={hero} showNewBadge={false} />
+                <div class="hl-arrival-meta">
+                  <strong>{hero.name}</strong>
+                  <small>{[hero.class, hero.role].filter(Boolean).join(" · ")}</small>
+                  <span class="hl-arrival-foot">
+                    <time datetime={date}>{pickLang(copy.released, locale).replace("{date}", releaseDate(date))}</time>
+                    {pull && <span class={`hl-pull hl-pull--${pull}`}>{pickLang(copy.pull[pull], locale)}</span>}
+                  </span>
                 </div>
-                {launchHero && <HeroCard hero={launchHero} />}
-              </div>
-            </div>
-            <div class="launch-meta">
-              <strong class="launch-meta-name">Charon</strong>
-              <a class="launch-meta-action" href={hrefFor("/heroes/charon")}>
-                Explore the hero
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </a>
-              <span class="launch-date"><span aria-hidden="true">◷</span> Oct 14 — Oct 27, 2026 <span class="launch-age" data-banner-start="2026-10-14">· today</span></span>
-            </div>
-          </aside>
-
+              </li>
+            ))}
+          </ul>
         </section>
-
-        <section class="launch-section" aria-labelledby="gameTitle">
-          <header class="section-heading launch-heading">
-            <p class="section-kicker">Play</p>
-            <h2 id="gameTitle">Tower Defense</h2>
-          </header>
-
-          <a class="game-card" href="https://tower.motto-immortal-db.com/">
-            <img
-              class="game-card-art"
-              src="https://tower-assets.motto-immortal-db.com/td/ui/camp-home.webp"
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="game-card-content">
-              <span class="entry-badge" style="--badge-color: var(--accent-gold)">Alpha</span>
-              <h3>The Last Crossing</h3>
-              <p>Hold the line with gods of Greek and Norse myth. A free tower defense game, right in your browser.</p>
-              <span class="game-card-cta">
-                Play now
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </span>
-            </div>
-          </a>
-        </section>
-      </div>
-
-      <aside id="support" class="support-card" aria-labelledby="supportTitle">
-        <div>
-          <p class="section-kicker">{t(locale, "home", "communityEyebrow")}</p>
-          <h2 id="supportTitle">{t(locale, "home", "keepFreeHeadline")}</h2>
-          <p>{t(locale, "home", "supportCompactBody")}</p>
-        </div>
-        <div class="support-actions">
-          <a href="https://buymeacoffee.com/dshuhuk1" target="_blank" rel="noopener noreferrer" class="support-primary">
-            {t(locale, "home", "supportBuyMeCoffee")}
-          </a>
-          <a href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A" target="_blank" rel="noopener noreferrer" class="support-secondary">
-            {t(locale, "home", "supportPaypal")}
-          </a>
-          <a href="https://ko-fi.com/dsfrieren" target="_blank" rel="noopener noreferrer" class="support-secondary">
-            {t(locale, "home", "supportKofi")}
-          </a>
-        </div>
-      </aside>
+      )}
 
       <section class="home-section" aria-labelledby="startTitle">
         <header class="section-heading">
@@ -204,6 +248,49 @@ const featuredImageFor = (href: string) => href === "/heroes"
           })}
         </div>
       </section>
+
+      <div class="home-promo">
+        <section class="launch-section" aria-label="Tower Defense">
+          <a class="game-card" href="https://tower.motto-immortal-db.com/">
+            <img
+              class="game-card-art"
+              src="https://tower-assets.motto-immortal-db.com/td/ui/camp-home.webp"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="game-card-content">
+              <span class="entry-badge" style="--badge-color: var(--accent-gold)">Alpha</span>
+              <h3>The Last Crossing</h3>
+              <p>Hold the line with gods of Greek and Norse myth. A free tower defense game, right in your browser.</p>
+              <span class="game-card-cta">
+                Play now
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </section>
+      <aside id="support" class="support-card" aria-labelledby="supportTitle">
+        <div>
+          <p class="section-kicker">{t(locale, "home", "communityEyebrow")}</p>
+          <h2 id="supportTitle">{t(locale, "home", "keepFreeHeadline")}</h2>
+          <p>{t(locale, "home", "supportCompactBody")}</p>
+        </div>
+        <div class="support-actions">
+          <a href="https://buymeacoffee.com/dshuhuk1" target="_blank" rel="noopener noreferrer" class="support-primary">
+            {t(locale, "home", "supportBuyMeCoffee")}
+          </a>
+          <a href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A" target="_blank" rel="noopener noreferrer" class="support-secondary">
+            {t(locale, "home", "supportPaypal")}
+          </a>
+          <a href="https://ko-fi.com/dsfrieren" target="_blank" rel="noopener noreferrer" class="support-secondary">
+            {t(locale, "home", "supportKofi")}
+          </a>
+        </div>
+      </aside>
+      </div>
 
       <section class="home-section home-directory" aria-labelledby="directoryTitle">
         <header class="section-heading">
@@ -404,28 +491,32 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-top: var(--space-16);
   }
 
-  .support-card + .home-section {
+  .support-card + .home-section,
+  .home-promo + .home-section {
     margin-top: var(--space-20);
   }
 
-  .teaser-grid {
+  .home-promo {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     gap: var(--space-6);
+    margin-top: var(--space-20);
   }
 
-  .teaser-grid .launch-section {
+  .home-promo .launch-section {
     display: flex;
     flex-direction: column;
   }
 
-  .teaser-grid .launch-card,
-  .teaser-grid .game-card {
+  .home-promo .game-card {
     flex: 1;
   }
 
-  .launch-heading {
-    margin-bottom: var(--space-8);
+  .home-promo .support-card {
+    margin-top: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
   }
 
   .game-card {
@@ -523,141 +614,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   .game-card:hover .game-card-cta svg {
     transform: translateX(var(--space-1));
-  }
-
-  .launch-card {
-    position: relative;
-    min-height: 390px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    background: #12101a;
-    isolation: isolate;
-  }
-
-  .launch-backdrop {
-    position: absolute;
-    z-index: -2;
-    inset: 0;
-    background:
-      linear-gradient(90deg, rgba(5, 11, 20, .62), rgba(7, 20, 32, .12) 55%, rgba(4, 10, 18, .38)),
-      url('/banners/hero-preview.png') center / cover no-repeat;
-  }
-
-  .launch-card::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    background: linear-gradient(0deg, rgba(7, 6, 12, .92), transparent 38%);
-    pointer-events: none;
-  }
-
-  .launch-content {
-    position: relative;
-    z-index: 1;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    padding: clamp(var(--space-8), 4vw, var(--space-12));
-  }
-
-  .launch-character {
-    --launch-character-image-position: center top;
-    position: relative;
-    z-index: 1;
-    width: 200px;
-    height: 250px;
-    overflow: hidden;
-    border: 1px solid rgba(241, 185, 255, .42);
-    border-radius: var(--radius-lg);
-    background: linear-gradient(180deg, rgba(28, 19, 40, .54), rgba(10, 8, 14, .92));
-    box-shadow: 0 18px 40px rgba(0, 0, 0, .34);
-  }
-
-  .launch-character-icons {
-    position: absolute;
-    z-index: 4;
-    top: 8px;
-    left: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .launch-character-icons img {
-    width: 20px;
-    height: 20px;
-    border-radius: var(--radius-sm);
-    background: rgba(8, 7, 12, .72);
-  }
-
-  .launch-character :global(.hero-card) {
-    height: 250px;
-  }
-
-  .launch-character :global(.hero-card-image) {
-    object-position: var(--launch-character-image-position) !important;
-  }
-
-  .launch-meta-action {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--accent-gold-light);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    text-decoration: none;
-  }
-
-  .launch-meta-action svg {
-    width: 18px;
-    height: 18px;
-    transition: var(--transition-transform);
-  }
-
-  .launch-meta-action:hover svg {
-    transform: translateX(var(--space-1));
-  }
-
-  .launch-meta {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: clamp(var(--space-5), 4vw, var(--space-10));
-    margin-top: 8px;
-    padding: 8px clamp(var(--space-5), 4vw, var(--space-10));
-    color: var(--text-secondary);
-    font-size: var(--text-xs);
-    background: rgba(10, 8, 14, .7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-
-  .teaser-grid .launch-meta {
-    flex-wrap: wrap;
-  }
-
-  .launch-meta-name {
-    color: var(--text-bright);
-    font-size: var(--text-lg);
-    font-weight: var(--weight-black);
-  }
-
-  .launch-date {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-  }
-
-  .launch-age {
-    color: var(--text-bright);
   }
 
   .section-heading {
@@ -1013,9 +969,8 @@ const featuredImageFor = (href: string) => href === "/heroes"
   }
 
   @media (max-width: 900px) {
-    .teaser-grid {
+    .home-promo {
       grid-template-columns: 1fr;
-      gap: var(--space-16);
     }
 
     .featured-grid {
@@ -1093,44 +1048,8 @@ const featuredImageFor = (href: string) => href === "/heroes"
       grid-template-columns: 1fr 1fr;
     }
 
-    .launch-card {
-      min-height: 360px;
-      padding: 0;
-    }
-
-    .launch-content {
-      padding: var(--space-5);
-    }
-
-    .launch-backdrop {
-      background-position: 63% center;
-    }
-
     .game-card {
       min-height: 360px;
-    }
-
-    .launch-character {
-      width: 150px;
-      height: 220px;
-    }
-
-    .launch-character :global(.hero-card) {
-      height: 220px;
-    }
-
-    .launch-meta {
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: var(--space-1) var(--space-4);
-      padding: 8px var(--space-5);
-    }
-
-    .launch-date {
-      width: 100%;
-      margin-left: 0;
-      flex-wrap: wrap;
-      justify-content: flex-start;
     }
 
     .featured-grid {
@@ -1196,7 +1115,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   @media (prefers-reduced-motion: reduce) {
     .home-action,
-    .launch-meta-action svg,
     .featured-card,
     .featured-image,
     .game-card,
@@ -1212,11 +1130,32 @@ const featuredImageFor = (href: string) => href === "/heroes"
   }
 </style>
 
+<script type="application/json" id="live-data" set:html={liveData}></script>
+<script type="application/json" id="live-copy" set:html={liveCopy}></script>
+
 <script>
-  const bannerAge = document.querySelector<HTMLElement>("[data-banner-start]");
-  if (bannerAge) {
-    const startedAt = new Date(`${bannerAge.dataset.bannerStart}T00:00:00`);
-    const days = Math.max(0, Math.floor((Date.now() - startedAt.getTime()) / 86400000));
-    bannerAge.textContent = `· ${days} ${days === 1 ? "day" : "days"} ago`;
+  import { pickRightNow } from "../../data/homeRightNow.js";
+  import { renderRightNow } from "../../data/homeRightNowView.js";
+
+  // The page is built once and deployed later, so "today" comes from the visitor's clock.
+  const read = (id: string) => JSON.parse(document.getElementById(id)?.textContent || "null");
+  const data = read("live-data");
+  const ctx = read("live-copy");
+  const slots = {
+    feature: document.querySelector<HTMLElement>("[data-live-feature]"),
+    running: document.querySelector<HTMLElement>("[data-live-running]"),
+    coming: document.querySelector<HTMLElement>("[data-live-coming]"),
+  };
+
+  if (data && ctx && slots.feature && slots.running && slots.coming) {
+    const today = new Date().toISOString().slice(0, 10);
+    const html = renderRightNow(pickRightNow(data.items, data.banners, today), {
+      ...ctx,
+      today,
+      heroHref: (id: string) => `${ctx.heroPrefix}${id}`,
+    });
+    slots.feature.innerHTML = html.feature;
+    slots.running.innerHTML = html.running;
+    slots.coming.innerHTML = html.coming;
   }
 </script>
