@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from combat_analysis import analyze, compare, rebuild, save_report
+from hero_combat_capture import FightSplitter
 
 
 class CombatAnalysisTests(unittest.TestCase):
@@ -55,6 +56,20 @@ class CombatAnalysisTests(unittest.TestCase):
         formula = result["hero_adapter"]["food_offering_formula"]
         self.assertEqual(formula["status"], "captured_operands")
         self.assertEqual(formula["events"][0]["victim_max_hp"], 30000)
+
+    def test_fixed_point_manifest_descales_values_without_mutating_raw_rows(self):
+        meta = dict(self.meta, fixed_point_one=1024)
+        rows = [dict(row) for row in self.rows]
+        for row in rows:
+            for key in ("out", "effective", "spent", "actual", "max_hp", "atk", "victim_max_hp"):
+                if key in row:
+                    row[key] = str(int(row[key]) * 1024)
+        result = analyze(meta, rows)
+        self.assertEqual(result["metrics"]["calculator_damage"], 5000)
+        self.assertEqual(result["benefits"]["given"][0]["effective_healing"], 1200)
+        self.assertEqual(result["benefits"]["allied_energy_spending"][0]["energy_spent"], 1000)
+        self.assertEqual(result["hero_adapter"]["food_offering_formula"]["events"][0]["victim_max_hp"], 30000)
+        self.assertEqual(next(row["out"] for row in rows if row["kind"] == "DAMAGE"), str(5000 * 1024))
 
     def test_flags_cast_without_completion_or_hit(self):
         rows = self.rows + [
@@ -115,6 +130,58 @@ class CombatAnalysisTests(unittest.TestCase):
             output = root / "comparison"
             compare(folders, output)
             self.assertTrue((output / "COMPARISON.md").exists())
+
+
+class HeroReportTests(unittest.TestCase):
+    def test_skill_label_names_skill_ids_but_not_buff_ids(self):
+        from combat_analysis import skill_label
+        self.assertEqual(skill_label("401424"), "Ferry the Dead (401424)")
+        self.assertEqual(skill_label("40142101"), "40142101")
+        self.assertEqual(skill_label("normal_or_delayed"), "normal_or_delayed")
+
+    def test_back_to_back_casts_merge_into_one_channel(self):
+        from combat_analysis import _cast_chains
+        casts = [{"skill": "401414", "start": 1000, "end": 5000}, {"skill": "401414", "start": 5000, "end": 9000},
+                 {"skill": "401451", "start": 9500, "end": 9900}, {"skill": "401414", "start": 12000, "end": 13000}]
+        chains = _cast_chains(casts)
+        self.assertEqual([(c["skill"], c["start"], c["end"], c["casts"]) for c in chains],
+                         [("401414", 1000, 9000, 2), ("401451", 9500, 9900, 1), ("401414", 12000, 13000, 1)])
+
+
+class FightSplitterTests(unittest.TestCase):
+    def test_session_writes_one_folder_per_fought_scene(self):
+        meta = {"capture_id": "session_x", "fixed_point_one": 1024,
+                "hero": {"id": 4013, "slug": "zaojun", "runtime_identity": "H_ZaoJun"},
+                "experiment": {"name": "", "variant": "single", "repeat": 1}}
+        def scene(name, kind, **extra):
+            return {"kind": kind, "scene": name, "mode": "1", "param": "5042", "seed": "77", "round": "1", **extra}
+        rows = [
+            {"ms": "0", "kind": "READY"},
+            scene("teams", "BATTLE_STATE", state="1", mode="-1"),
+            {"ms": "0", "kind": "PLAYER_LINEUP", "hero": "H_ZaoJun", "instance": "@1", "camp": "1"},
+            scene("a", "BATTLE_STATE", state="6"),
+            {"ms": "100", "kind": "DAMAGE", "src": "H_ZaoJun", "src_instance": "@1", "src_camp": "1", "out": "1024"},
+            scene("a", "BATTLE_END", result="1"),
+            scene("b", "BATTLE_STATE", state="6", mode="63", param="0"),
+            {"ms": "50", "kind": "DAMAGE", "src": "H_ZaoJun", "src_instance": "@1", "src_camp": "1", "out": "2048"},
+        ]
+        with tempfile.TemporaryDirectory() as temp:
+            splitter = FightSplitter(Path(temp), meta, "1", None)
+            for row in rows:
+                splitter.feed(row)
+            splitter.close()
+            folders = sorted(p.name for p in Path(temp).iterdir())
+            self.assertEqual(folders, ["01_stage_5042", "02_friend_battle_0"])
+            first = json.loads((Path(temp) / folders[0] / "capture_manifest.json").read_text())
+            self.assertEqual(first["battle"]["result"], "victory")
+            self.assertEqual(first["battle"]["seed"], "77")
+            self.assertEqual(first["experiment"]["mode"], "pve")
+            second = json.loads((Path(temp) / folders[1] / "capture_manifest.json").read_text())
+            self.assertEqual(second["battle"]["result"], "unknown")
+            self.assertEqual(second["experiment"]["mode"], "pvp")
+            first_kinds = [json.loads(l)["kind"] for l in (Path(temp) / folders[0] / "events.jsonl").read_text().splitlines()]
+            self.assertEqual(first_kinds[0], "READY")
+            self.assertIn("PLAYER_LINEUP", first_kinds)
 
 
 if __name__ == "__main__":

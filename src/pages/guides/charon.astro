@@ -1,0 +1,243 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+import charonData from "../../data/heroes/charon.json";
+
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/charon_${id}.webp`;
+
+const takeaways: Record<string, string> = {
+  skill_1: "His damage source. The beam grows stronger the longer it holds but costs Energy every second. It ends when Energy runs out, or when the target falls and refunds Energy. Waves can chain it; a lone boss cannot.",
+  skill_2: "An opening move, not a damage skill. The farthest enemy leaves the fight, and your team cannot target it either. Upgrades add damage and a second target.",
+  skill_3: "His bodyguard. The first enemy that reaches him is removed briefly, which gives him room to stand still. The long cooldown means it answers one approach, not every one.",
+  skill_4: "Rewards standing still. Protect the ground he stands on as much as Charon himself, because the bonus is gone the moment he moves.",
+};
+
+const skills = charonData.skills.map((skill) => ({
+  ...skill,
+  badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
+  takeaway: takeaways[skill.id],
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+}));
+
+const relic = {
+  ...charonData.relic,
+  upgrades: Object.entries(charonData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+};
+
+const statMap = [
+  { stat: "ATK", skills: ["skill_1", "skill_2", "skill_3"] },
+  { stat: "M-DMG Bonus", skills: ["skill_1", "skill_2"] },
+  { stat: "Lifesteal", skills: ["skill_4"] },
+  { stat: "Energy recharge", skills: ["skill_1"] },
+];
+const skillName = (id: string) => skills.find((skill) => skill.id === id)?.name ?? id;
+
+const strengths = [
+  "Banishment, River Styx and the beam are all in the base kit",
+  "Opens by removing the farthest enemy",
+  "Passage Denied answers the first approaching enemy",
+  "Beam damage grows the longer it holds",
+  "Falling targets refund Energy, so a beam can chain across a wave",
+  "Relic Lv2 and Lv3 add emergency immunity and Crowd Control protection",
+];
+
+const weaknesses = [
+  "The beam starts only at full Energy, after an opening gap",
+  "Energy drains every second; a lone durable target ends the beam",
+  "River Styx needs 8 seconds of standing still and is lost when he moves",
+  "A target that stealths or becomes untargetable ends the beam",
+  "Passage Denied has a long cooldown",
+  "Emergency immunity lasts 3 seconds and does not heal him",
+];
+---
+
+<Base title="Charon Guide - Lanternfire Torrent & River Styx | Motto Immortal" description="Charon guide covering Banishment, the Lanternfire Torrent channel, River Styx, Relic investment, Energy limits, team functions, and practical battle advice.">
+  <div class="guide-banner guide-banner--hearts">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("charon")}'); --guide-banner-y: 6%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Charon</h1>
+      <p class="guide-hero-subtitle">Channel Carry &middot; Banishment Control</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/hearts.webp`} alt="Hearts" />Hearts</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/archer.webp`} alt="Archer" />Archer</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket guide-body--hearts">
+    <GuideSectionNav />
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Charon at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-verdict">
+        <div class="heket-verdict-main">
+          <div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Lanternfire Torrent, Charon's Ultimate"></div>
+          <div><span class="heket-verdict-kicker">Playstyle verdict</span><h3>Hold the ground, keep the beam alive.</h3><p>Charon is a Hearts Archer who deals damage with a channeled beam that grows stronger the longer it holds. Banishment removes enemies around it, and standing still adds damage and lifesteal. He needs protection through the opening and a steady supply of Energy, because the beam costs Energy every second.</p></div>
+        </div>
+        <div class="heket-fact-strip"><div><span>Role</span><strong>Channel damage and Banishment</strong></div><div><span>Core resource</span><strong>Energy</strong></div><div><span>Best fit</span><strong>Teams that protect a stationary carry</strong></div></div>
+        <div class="heket-verdict-warning"><strong>Key warning</strong><span>The beam only starts at full Energy, then drains it. Without falling targets or Energy support, he spends part of the fight recharging.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The Channel Engine</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-engine">
+        <div class="heket-engine-flow">
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Ferry the Dead"></div><span>Open</span><strong>Banish the farthest enemy</strong><p>Ferry the Dead banishes the farthest enemy on entry. Passage Denied does the same to the first enemy that gets close.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`} role="img" aria-label="Styx Descends"></div><span>Hold</span><strong>Stand still for River Styx</strong><p>After 8 seconds without moving he gains River Styx: more damage and lifesteal. Moving clears it.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Lanternfire Torrent"></div><span>Channel</span><strong>Beam at the current target</strong><p>At full Energy the beam starts and drains Energy each second.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label="Ferryman's Stance"></div><span>Scale</span><strong>Damage grows with every second</strong><p>Damage per second grows the longer the beam holds. The Relic speeds this up.</p></div>
+        </div>
+        <div class="heket-engine-return"><span>Target falls: Energy refund &middot; Energy empties: recharge</span></div>
+        <div class="heket-engine-rule"><strong>Banishment is not a normal stun.</strong><span>A banished unit cannot act and neither side can target it, so Ferry the Dead also removes the enemy from your team's reach.</span></div>
+        <div class="heket-engine-rule"><strong>Energy sets the beam's length.</strong><span>If the target falls, stealths or becomes untargetable, the beam ends and refunds 600 Energy. Waves keep refunding; a boss that never falls does not.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Skills: What They Mean</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-skill-explorer" data-guide-skill-explorer>
+        <div class="guide-skill-detail">
+          {skills.map((skill, index) => <article class={`guide-skill-panel${index === 0 ? " is-active" : ""}`} data-guide-skill={skill.id}>
+            <header class="guide-skill-panel-head"><div><h3>{skill.name}</h3><span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div><img src={skillImage(skill.id)} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{skill.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{skill.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>{skill.takeaway}</p>
+          </article>)}
+          <article class="guide-skill-panel" data-guide-skill="relic">
+            <header class="guide-skill-panel-head"><div><h3>{relic.name}</h3><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">Relic</span><span class="guide-skill-badge guide-skill-badge--level">Channel ramp &amp; survival</span></div></div><img src={skillImage("relic")} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{relic.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{relic.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>Mostly about the beam's ramp, with defense on top. A steeper ramp only pays off while the beam keeps running, so its value follows how long Energy and targets let him channel.</p>
+          </article>
+        </div>
+        <ol class="guide-skill-selector">
+          {skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><small>{skill.badge}</small></span></button></li>)}
+          <li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><small>Relic</small></span></button></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Relic Investment</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Base Relic</span><strong>A faster ramp</strong><p>The multiplier grows every second instead of every three, with a higher cap, so even short beams hit harder.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>Emergency immunity and retaliation</strong><p>About to fall: immune to the damage for 3 seconds, and the attacker is banished. Buys time, does not heal.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv3</span><strong>Crowd Control protection in River Styx</strong><p>Immune to 3 Crowd Control effects while River Styx is active, so not in the first 8 seconds or after moving. The text does not say whether it counts effects or types.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv4 &middot; Damage upgrade</span><strong>A much steeper ramp</strong><p>The cap needs about 20 seconds of channeling, more than a full Energy bar covers alone, so it relies on refunds or Energy support.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment takeaway:</strong> The base kit already has the opening, River Styx and the beam. Lv2 and Lv3 protect him; Lv4 raises the ceiling for long beams. On the skill side, Lanternfire Torrent Lv3 cuts the drain from 150 to 100 Energy per second. No level has been compared in testing.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Strengths &amp; Weaknesses</h2><div class="lt-flourish lt-flourish-center"></div><StrengthWeakness strengths={strengths} weaknesses={weaknesses} /></section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Team Building</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-function-grid">
+        <article class="guide-function"><span>Function 1</span><strong>Early protection</strong><p>His own tools cover one approach and one emergency.</p>
+          <div class="guide-function-heroes">
+            <div class="guide-function-hero"><img src={heroImage("mazu")} alt="" loading="lazy" /><div><strong>Mazu</strong><span>Shields all allies and spreads damage taken for 8 seconds.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("aquarius")} alt="" loading="lazy" /><div><strong>Aquarius</strong><span>Shields all allies for 6 seconds.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("tefnut")} alt="" loading="lazy" /><div><strong>Tefnut</strong><span>Shields any ally that drops below 30% HP.</span></div></div>
+          </div>
+        </article>
+        <article class="guide-function"><span>Function 2</span><strong>Energy</strong><p>Energy gates the first beam and limits every later one.</p>
+          <div class="guide-function-heroes">
+            <div class="guide-function-hero"><img src={heroImage("diana")} alt="" loading="lazy" /><div><strong>Diana</strong><span>15 Energy per second to all allies for 7 seconds, cast at combat start.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("caishen")} alt="" loading="lazy" /><div><strong>Caishen</strong><span>Energy to nearby allies; his Relic can top up an ally at 700.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("hephaestus")} alt="" loading="lazy" /><div><strong>Hephaestus</strong><span>Device area restores Energy and HP. Charon has to stand inside it.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("dionysus")} alt="" loading="lazy" /><div><strong>Dionysus</strong><span>Brief team Energy Regen boost.</span></div></div>
+          </div>
+        </article>
+        <article class="guide-function"><span>Function 3</span><strong>Falling targets</strong><p>Fast kills on the beam's target refund Energy. This depends on team damage and the enemy, not on one skill.</p><span class="guide-evidence-chip guide-evidence-chip--nodata">No hero assigned</span></article>
+        <article class="guide-function"><span>Function 4</span><strong>Keeping enemies away</strong><p>Only his own skills are documented.</p>
+          <div class="guide-function-heroes">
+            <div class="guide-function-hero"><img src={heroImage("hera")} alt="" loading="lazy" /><div><strong>Hera</strong><span>Enemies entering the ally half for the first time are suppressed for 2 seconds.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("venus")} alt="" loading="lazy" /><div><strong>Venus</strong><span>Taunts all enemies for 5 seconds.</span></div></div>
+          </div>
+        </article>
+        <article class="guide-function"><span>Function 5</span><strong>Against interruptions</strong><p>Relic Lv3 only works inside River Styx. Forced movement is untested.</p>
+          <div class="guide-function-heroes">
+            <div class="guide-function-hero"><img src={heroImage("dionysus")} alt="" loading="lazy" /><div><strong>Dionysus</strong><span>At Lv4, one ally loses all debuffs and resists Crowd Control for 2 seconds.</span></div></div>
+            <div class="guide-function-hero"><img src={heroImage("tefnut")} alt="" loading="lazy" /><div><strong>Tefnut</strong><span>At Relic Lv4, dispels one debuff from allies in her rain every 2 seconds.</span></div></div>
+          </div>
+        </article>
+      </div>
+      <p class="guide-function-note"><strong>How to read this:</strong> for functions 1, 2, 4 and 5, every other hero's skill and Relic text was checked, and the examples are heroes whose text fits clearly. They are not ranked, not a complete list, and not tested with Charon. Mengpo and Yuelao give Energy to the ally with the highest Energy or ATK, so they only help if that is Charon.</p>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">PvE or PvP?</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Mode verdict</span><h3>His mechanics favor long PvE fights. PvP is unproven.</h3></div>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Campaign / Odyssey</span><strong>Many targets keep the beam going</strong><p>Every enemy that falls refunds Energy, so waves can chain the beam.</p><span class="guide-evidence-chip guide-evidence-chip--inferred">From his mechanics</span></div>
+          <div class="heket-matchup-good"><span>Spire</span><strong>Same logic as Odyssey</strong><p>Depends on how many targets fall and how long fights last.</p><span class="guide-evidence-chip guide-evidence-chip--nodata">No separate data</span></div>
+        </div>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Boss encounters</span><strong>Energy is the limit</strong><p>A boss never falls, so nothing refunds Energy and the beam ends when the bar runs low.</p><span class="guide-evidence-chip guide-evidence-chip--inferred">From his mechanics</span></div>
+          <div class="heket-matchup-bad"><span>PvP</span><strong>No evidence</strong><p>The beam needs a full bar first, so a very short fight may end before it fires.</p><span class="guide-evidence-chip guide-evidence-chip--nodata">No data</span></div>
+        </div>
+        <p class="heket-hades-note"><strong>Battle takeaway:</strong> Fight length, falling targets and survival decide how much of his kit he uses.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Build, Battle Plan &amp; Counterplay</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Winning pattern</span><h3>Survive the opening, fill the bar, keep the beam alive.</h3></div>
+        <div class="guide-subhead"><span>Position</span><p>Who he targets, and where he has to stand still.</p></div>
+        <div class="guide-lane">
+          <div class="guide-lane-step"><div class="guide-lane-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Ferry the Dead"></div><span>Farthest enemy</span><strong>Banished on entry</strong></div>
+          <div class="guide-lane-step"><div class="guide-lane-icon" style={`background-image: url('${skillImage("skill_3")}');`} role="img" aria-label="Passage Denied"></div><span>First enemy to get close</span><strong>Banished briefly</strong></div>
+          <div class="guide-lane-step"><div class="guide-lane-icon" style={`background-image: url('${skillImage("skill_4")}');`} role="img" aria-label="Styx Descends"></div><span>Charon holds position</span><strong>River Styx after 8 seconds</strong></div>
+        </div>
+        <p class="guide-lane-caption">Your frontline decides how long he can stand still.</p>
+        <div class="guide-subhead"><span>Damage &amp; Energy</span><p>Which stats connect to his documented skills.</p></div>
+        <div class="guide-statmap">
+          {statMap.map((row) => <div class="guide-statmap-row"><strong class="guide-statmap-stat">{row.stat}</strong><div class="guide-statmap-skills">{row.skills.map((id) => <span class="guide-skillchip"><img src={skillImage(id)} alt="" width="24" height="24" loading="lazy" />{skillName(id)}</span>)}</div></div>)}
+        </div>
+        <p class="guide-lane-caption">Whether Ultimate Power affects the beam is untested.</p>
+        <div class="guide-subhead"><span>If it goes wrong</span><p>Find the symptom, then check the cause.</p></div>
+        <div class="guide-diagnose">
+          <div class="guide-diagnose-row"><strong>He falls before the beam</strong><span aria-hidden="true">&rarr;</span><p>Protection and position</p></div>
+          <div class="guide-diagnose-row"><strong>The first beam starts late</strong><span aria-hidden="true">&rarr;</span><p>What feeds the Energy bar</p></div>
+          <div class="guide-diagnose-row"><strong>The beam ends quickly</strong><span aria-hidden="true">&rarr;</span><p>Did the target stealth, become untargetable or fall?</p></div>
+          <div class="guide-diagnose-row"><strong>Immunity triggered, he still falls</strong><span aria-hidden="true">&rarr;</span><p>3 seconds was not enough cover</p></div>
+        </div>
+        <div class="guide-subhead"><span>Documented interference</span><p>From his skill text.</p></div>
+        <div class="guide-chip-row">
+          <span class="guide-skillchip">Stealth or untargetable ends the beam</span>
+          <span class="guide-skillchip">Moving clears River Styx</span>
+          <span class="guide-skillchip">First 8 seconds: no River Styx, no Lv3 immunity</span>
+          <span class="guide-skillchip">Early burst removes all of it</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A stationary channeler whose output depends on Energy and survival</h3><p class="guide-verdict-text">Charon banishes enemies, gains damage and lifesteal while standing still, and deals growing damage through Lanternfire Torrent. Protect him through the opening and keep the beam running with falling targets or Energy support, and he uses his whole kit. The Energy cost, standing still and the wait for the first beam are his limits. Open questions: PvP and boss performance, forced movement, and what each Relic level changes.</p></div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+  <script>
+    for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {
+      const buttons = Array.from(explorer.querySelectorAll("[data-guide-skill-button]"));
+      const panels = Array.from(explorer.querySelectorAll("[data-guide-skill]"));
+      for (const button of buttons) button.addEventListener("click", () => {
+        const id = button.getAttribute("data-guide-skill-button");
+        for (const other of buttons) { const active = other === button; other.classList.toggle("is-active", active); other.setAttribute("aria-pressed", String(active)); }
+        for (const panel of panels) panel.classList.toggle("is-active", panel.getAttribute("data-guide-skill") === id);
+      });
+    }
+  </script>
+</Base>

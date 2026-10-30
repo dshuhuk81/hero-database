@@ -58,6 +58,7 @@ Without `--write`, `build_site_assets.py` is a dry run that prints what it would
 | `export_release_schedule_md.py` | human-readable release overview |
 | `unpack_config.py` | decrypts and unpacks the config zips of a pull into `x_<label>/` |
 | `extract_hero_art.py`, `update_global_art.py` | hero portraits (cutouts only) and skill icons from client bundles / patches |
+| `extract_all_art.py` | every UI texture/sprite of a client (APK or `data/packages`) -> `out/art_all/<source>/<group>/<bundle>/*.png` + `index.tsv` |
 | `build_site_assets.py` | WebP portraits and skill icons for the site; skips portraits without alpha or shared by several heroes |
 | `emu_status.py`, `restart_emulator.sh`, `ram_scan.py`, `motto_crypt.py` | emulator control, memory scan, config decryption |
 | `skill_contact_sheet.py` | contact sheet for skill icon checks |

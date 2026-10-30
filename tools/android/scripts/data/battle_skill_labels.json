@@ -1,0 +1,15 @@
+{
+  "_comment": "Battle skill and buff ids are <heroId><slot><level>[<n>] (e.g. 401424 = hero 4014, slot 2, level 4; buff 40142301 = slot 2). Slots are the client's hero_detail skill keys (5 = basic attack, 6 = relic) and do not follow the site's skill_1..4 order, so each hero is mapped from battle evidence.",
+  "4014": {
+    "hero": "charon",
+    "slots": {
+      "1": "Lanternfire Torrent",
+      "2": "Ferry the Dead",
+      "3": "Passage Denied",
+      "4": "Styx Descends",
+      "5": "Basic attack",
+      "6": "Relic"
+    },
+    "evidence": "fights 2026-10-30 Odyssey 50-42: slot 2 fires once at ~3 s and buffs the back-line enemies; slot 1 starts only at full Energy and repeats; slot 3 hits the approaching melee enemy; slot 4 is a self buff refreshed on every slot-1 start."
+  }
+}

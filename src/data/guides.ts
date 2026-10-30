@@ -19,7 +19,13 @@ export interface GuideEntry {
 
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
-    {
+  {
+    heroId: "charon",
+    href: "/guides/charon",
+    title: "Charon",
+    updated: "2026-10-30",
+  },
+  {
     heroId: "yaoji",
     href: "/guides/yaoji",
     title: "Yaoji",

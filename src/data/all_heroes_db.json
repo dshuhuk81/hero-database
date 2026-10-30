@@ -2492,7 +2492,8 @@
     "heroID": 4014,
     "name": "Charon",
     "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/charon.webp",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Archer",
@@ -2500,70 +2501,99 @@
     "rarity": "Legendary",
     "description": "",
     "recommendedRelicLevel": null,
-    "evolution": null,
-    "level": null,
-    "stats": null,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 1793701,
+      "atk": 230079,
+      "armor": 30298,
+      "magicRes": 30298,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 10,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
     "skills": [
       {
         "id": "skill_1",
-        "name": "Soul Ferry",
-        "description": "When entering battle, Charon deals damage based on a percentage of his ATK to the farthest unit and banishes the target to the Netherworld for a period of time. The banished target temporarily leaves the battlefield, cannot act, and cannot be selected by either side.",
+        "name": "Lanternfire Torrent",
+        "description": "Continuously channels a beam at the current target, dealing DMG equal to 100% of Charon's ATK per second. For every 3 seconds of channeling, this DMG multiplier increases by 25%, up to a total increase of 200%. Consumes 150 Energy per second during the duration. If the target Falls/enters Stealth/becomes Untargetable during channeling, ends the channeling and restores 600 Energy to self.",
         "upgrades": {
-          "level2": "Increases the damage dealt to the target.",
-          "level3": "Extends the banish duration and additionally affects one more unit.",
-          "level4": "Further increases the damage dealt to the target."
+          "level2": "Deals 120% self ATK as DMG per second to the target.",
+          "level3": "Consumes 100 Energy per sec for the duration.",
+          "level4": "Deals 140% self ATK as DMG per second to the target."
         },
-        "damageType": "",
+        "damageType": "Magical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Lantern Scorching Current",
-        "description": "Charon channels continuously, directing a beam at the current target and dealing damage each second based on a percentage of his ATK. For every period of time the channel continues, this damage multiplier increases by a percentage, up to a cap. While channeling, Charon consumes Energy each second. If interrupted, he loses a portion of Energy.",
+        "name": "Ferry the Dead",
+        "description": "Upon entering the battlefield, deals DMG equal to 200% ATK to the farthest unit and banishes them to the Underworld for 8 seconds. Banishment: The target is exiled from the battlefield, unable to act, and cannot be targeted by either side. When all units on the battlefield are in the Banishment state, Banishment is forcibly canceled.",
         "upgrades": {
-          "level2": "Increases the damage dealt to the target each second.",
-          "level3": "Reduces the Energy consumed each second while channeling.",
-          "level4": "Further increases the damage dealt each second."
+          "level2": "Deals DMG equal to 250% of ATK to the target.",
+          "level3": "Affects one more unit.",
+          "level4": "Deals DMG equal to 300% of ATK to the target."
         },
-        "damageType": ""
+        "damageType": "Magical"
       },
       {
         "id": "skill_3",
-        "name": "Refuse Passage",
-        "description": "When any enemy unit approaches Charon, Charon banishes that unit for a period of time. After this effect triggers, it enters cooldown.",
+        "name": "Passage Denied",
+        "description": "When any enemy unit approaches Charon, he inflicts Banishment on them for 3s. Skill CD: 30s.",
         "upgrades": {
-          "level2": "Extends the banish duration.",
-          "level3": "Reduces this skill's cooldown.",
-          "level4": "When triggered, Charon gains a Shield based on a percentage of his ATK."
+          "level2": "Banishment duration extends to 4s.",
+          "level3": "Reduces the skill CD to 25s.",
+          "level4": "When triggered, grants a Shield equal to 500% of ATK."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Nether River Descends",
-        "description": "Charon slowly summons the Nether River into the mortal world. If Charon does not move for a period of time, he gains the Nether River state. Once he moves, this state is removed. While in the Nether River state, Charon deals increased damage and gains increased Lifesteal.",
+        "name": "Styx Descends",
+        "description": "Charon slowly summons the River Styx into the mortal realm. When Charon has not moved for 8s, he gains the [River Styx] state. This state is cleared upon moving. River Styx state: Increases DMG dealt by 40% and Lifesteal by 20%.",
         "upgrades": {
-          "level2": "While in the Nether River state, Charon's damage dealt is further increased.",
-          "level3": "While in the Nether River state, Charon's ATK is increased.",
-          "level4": "While in the Nether River state, Charon's damage dealt is increased again."
+          "level2": "In the River Styx state, increases DMG dealt by 45%.",
+          "level3": "In the River Styx state, increases ATK by 50%.",
+          "level4": "In the River Styx state, increases DMG dealt by 50%."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "River-Crossing Form",
-      "description": "For every period of time Lantern Scorching Current continues channeling, its damage multiplier increases by a percentage, up to a cap.",
+      "name": "Ferryman's Stance",
+      "description": "For every 1s of channeling, Lanternfire Torrent's DMG multiplier increases by 25%, up to a total increase of 250%.",
       "upgrades": {
-        "level2": "When Charon is about to die, he becomes immune to that instance of damage and briefly becomes invincible, then banishes the enemy unit that dealt that damage.",
-        "level3": "While in the Nether River state, Charon can become immune to a certain number of control effects.",
-        "level4": "For every period of time Lantern Scorching Current continues channeling, the amount by which its damage multiplier increases is raised, and the damage multiplier cap is increased."
+        "level2": "When Charon is about to fall, he becomes Immune to the DMG and Invincible for 3s, and inflicts Banishment on the enemy unit that dealt the DMG.",
+        "level3": "While in the River Styx state, is immune to 3 Crowd Control effects.",
+        "level4": "For every 1s of channeling, Lanternfire Torrent's DMG multiplier increases by 40%, up to a total increase of 800%."
       }
     },
     "synergies": [],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
-      "summary": "Sustained channel damage that scales the longer it is held, paired with a stationary state that boosts damage and Lifesteal when Charon does not move. His defensive tools use banish effects to remove threats from the battlefield temporarily rather than killing them outright.",
+      "summary": "Sustained channel damage (Lanternfire Torrent) that scales the longer it is held, paired with a stationary River Styx state that boosts damage and Lifesteal when Charon does not move. His defensive tools use Banishment to remove threats from the battlefield temporarily rather than killing them outright.",
       "depthRating": "",
       "commonlyMisunderstood": false
     },
@@ -2577,15 +2607,6 @@
     "content-creator": null,
     "strengths": [],
     "weaknesses": [],
-    "_meta": {
-      "source": "[CN-COMMUNITY] user-uploaded screenshot, likely new CN leak",
-      "transcriptionNote": "All descriptionCN and upgrade text transcribed from screenshot. No numeric values, percentages, damage type, rarity, stats, image, release date, or role were visible in the source image. Do not infer numbers.",
-      "openFlags": [
-        "damageType unset for all skills - no Magical tag visible in screenshot, needs stat-panel screenshot to confirm Physical vs Magical",
-        "rarity, stats, image, and release date not present in this screenshot",
-        "role (Arcane/Nimble/Hefty) not shown in this screenshot"
-      ]
-    },
     "cardImgY": "0%"
   },
   "cronus": {
@@ -3965,10 +3986,10 @@
   "gaiya": {
     "id": "gaiya",
     "heroID": 5010,
-    "name": "Gaiya",
+    "name": "Gaia",
     "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/gaiya.webp",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Starglint",
     "role": "Hefty",
     "class": "Tank",
@@ -7335,6 +7356,113 @@
       }
     ]
   },
+  "joanneofarc": {
+    "id": "joanneofarc",
+    "name": "Joanne of Arc",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/joanneofarc.webp",
+    "release": false,
+    "faction": "Hearts",
+    "role": "Hefty",
+    "class": "Tank",
+    "rarity": "Legendary",
+    "description": "Joanne of Arc, the maiden warrior of France, embodies courage and determination.",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 3077032,
+      "atk": 163181,
+      "armor": 50901,
+      "magicRes": 60597,
+      "dodgeRate": 0,
+      "hitBonus": 4,
+      "critRate": 0,
+      "critRes": 10,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Nile Dance",
+        "description": "Bastet gracefully leaps toward the position of the enemy with the highest ATK, dealing DMG equal to 160% of ATK to enemies around her each time she lands.",
+        "upgrades": {
+          "level2": "Increases DMG per hit to 180% of ATK.",
+          "level3": "Increases DMG per instance to 200% of ATK.",
+          "level4": "Removes the cooldown of Feline Agility during the skill."
+        },
+        "damageType": "Physical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Bastet’s Spin",
+        "description": "Bastet spins her body and strikes nearby enemies 3 times, dealing DMG equal to 100% of ATK per strike and reducing their Hit Rate by 15% for 5s.",
+        "upgrades": {
+          "level2": "Increases DMG per hit to 110% of ATK.",
+          "level3": "Reduces the Hit Rate of hit enemies by 20%.",
+          "level4": "Increases DMG per hit to 120% of ATK."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Furball",
+        "description": "Creates orbs that orbit Bastet for 15s, dealing DMG equal to 42% of ATK per second to nearby enemies.",
+        "upgrades": {
+          "level2": "Increases DMG dealt to 50% of ATK.",
+          "level3": "Duration extends to 30s.",
+          "level4": "Increases DMG dealt to 60% of ATK."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Feline Agility",
+        "description": "When Bastet takes a single hit dealing DMG exceeding 10% of her max HP, she becomes immune to the DMG and gains 30% Dodge Rate for 6s. Can trigger once every 15s.",
+        "upgrades": {
+          "level2": "Dodge bonus lasts for 8s.",
+          "level3": "Gains a 50% Dodge Rate.",
+          "level4": "Dodge bonus lasts for 10s."
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Feline Celerity",
+      "description": "Gains 25% Dodge Rate when HP drops below 50%.",
+      "upgrades": {
+        "level2": "When dodging a hit, deals 100% ATK as DMG to the attacker.",
+        "level3": "Gains 35% Dodge Rate when HP drops below 50%.",
+        "level4": "When dodging a hit, deals 200% ATK as DMG to the attacker."
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {},
+    "detailComps": [],
+    "virtueSets": [],
+    "synergyPartners": [],
+    "cardImgY": "0%"
+  },
   "jormungandr": {
     "id": "jormungandr",
     "heroID": 3004,
@@ -8125,7 +8253,7 @@
     "imgY": "-30%",
     "cardImgY": "0%",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Diamonds",
     "role": "Arcane",
     "class": "Support",
@@ -14319,7 +14447,7 @@
     "id": "xuannv",
     "heroID": 3013,
     "name": "Xuannv",
-    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/jiutianxuannv.webp",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/jiutian-xuannv.webp",
     "imgY": "-20%",
     "cardImgY": "0%",
     "release": true,
@@ -14741,7 +14869,7 @@
     "name": "Yaoji",
     "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/yaoji.webp",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Support",
