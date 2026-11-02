@@ -9792,7 +9792,7 @@
     "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/nidhogg.webp",
     "imgY": "-30%",
     "cardImgY": "0%",
-    "release": false,
+    "release": true,
     "newHero": false,
     "faction": "Starglint",
     "role": "Nimble",
@@ -9835,66 +9835,80 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Black Dragon Form",
-        "description": "Passive: Nidhogg possesses dragon bloodline and cannot be attached to by any unit. Active: Transforms into [Black Dragon Form], increasing ATK and max HP by 100%, dealing DMG equal to 400% ATK to all enemies, and silencing them for 5s via dragon might. Upon transforming, clears all positive and negative effects from himself. For each positive effect cleared, ATK and max HP increase by 40%, stacking up to 3 times. During [Black Dragon Form], ATK SPD increases by 150%, 40% of DMG dealt is converted to True DMG, and basic attacks hit all enemies in a frontal fan-shaped area for 150% ATK, adding [Dragon Rage] to hit enemies. Dragon Rage: each stack increases the target's DMG taken from Nidhogg by 3%, stacking up to 10 times. This form continuously drains Energy; when Energy is depleted, [Black Dragon Form] ends.",
+        "name": "Dragon's True Form",
+        "description": "Passive: Nidhogg's dragon bloodline makes him immune to possession by any unit. Active: Transforms into \"Dark Dragon Form\", increasing ATK and Max HP by 100%, and dealing DMG equal to 400% of ATK to all enemies. The dragon's might silences them for 5s. After transforming, clears all buffs and debuffs. For each buff cleared, increases ATK and Max HP by 40%, up to 3 stacks. During \"Dark Dragon Form\", increases ATK SPD by 150%, and converts 40% of DMG dealt into True DMG. Normal Attacks deal DMG equal to 150% of ATK to enemies in a fan-shaped area in front, and inflict [Dragon's Wrath] on hit enemies (Dragon's Wrath: DMG taken from Dark Dragon Form increases by 3%, up to 10 stacks) while continuously draining Energy. Exits \"Dark Dragon Form\" when Energy is depleted.",
         "upgrades": {
-          "level2": "Deals DMG equal to 500% ATK to all enemies upon transformation.",
-          "level3": "Deals DMG equal to 600% ATK to all enemies upon transformation.",
-          "level4": "Each [Dragon Rage] stack increases the target's DMG taken from Nidhogg by 5%, stacking up to 10 times."
+          "level2": "Deals DMG equal to 500% of ATK to all enemies.",
+          "level3": "Deals DMG equal to 600% of ATK to all enemies.",
+          "level4": "Dragon's Wrath: Increases DMG taken from Nidhogg by 5%, up to 10 stacks."
         },
         "damageType": "Physical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Root-Scorching Dragon Flame",
-        "description": "Deals DMG equal to 200% ATK to the nearest enemy and all enemies within 3 meters, reducing their Armor and M-RES by 20% for 12s. While in [Black Dragon Form], breathes dragon fire in a frontal fan-shaped area, dealing DMG equal to 250% ATK and burning enemies. During the burn, reduces Armor and M-RES by 30% and deals 50% ATK as burn DMG per sec for 8s.",
+        "name": "Worldroot Blightfire",
+        "description": "Deals DMG equal to 200% of ATK to the nearest enemy and enemies within a 3m AoE, and reduces Armor and M-RES by 20% for 12s. Dark Dragon Form: Unleashes dragon breath at enemies in front, dealing DMG equal to 250% of ATK and burning them, reducing Armor and M-RES by 30%, and dealing DMG equal to 50% of ATK per sec for 8s.",
         "upgrades": {
-          "level2": "Armor and M-RES reduction increased to 25% in normal state and 35% in [Black Dragon Form].",
-          "level3": "DMG increased to 250% ATK in normal state and 300% ATK in [Black Dragon Form].",
-          "level4": "Burn DMG in [Black Dragon Form] increased to 80% ATK per sec."
+          "level2": "Armor and M-RES reduction increases to 25%. Dark Dragon Form Armor and M-RES reduction increases to 35%.",
+          "level3": "Increases DMG to 250% of ATK. Dark Dragon Form DMG increases to 300% of ATK.",
+          "level4": "Increases Dark Dragon Form burn DMG per sec to 80%."
         },
         "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "End-Time Dragon Might",
-        "description": "Passive: During [Black Dragon Form], when any unit approaches within 3 meters of Nidhogg, deals DMG equal to 250% ATK to all enemies within 5 meters and inflicts [Terror] on them for 2.5s. Terrified enemies additionally receive 3 stacks of [Dragon Rage]. This effect can only trigger once every 18s.",
+        "name": "Doomwyrm's Dread",
+        "description": "Passive: In Dark Dragon Form, when any unit comes within 3m of Nidhogg, deals DMG equal to 250% ATK to enemies within a 5m AoE and inflicts Terror on them for 2.5s. Enemies inflicted with Terror gain an extra 3 stacks of [Dragon's Wrath]. This effect triggers once every 18s.",
         "upgrades": {
-          "level2": "This effect can only trigger once every 16s. [Terror] duration increased to 3s.",
-          "level3": "Terrified enemies receive 15% increased DMG for 5s.",
-          "level4": "This effect can only trigger once every 14s."
+          "level2": "This effect triggers once every 16s. Terror duration is increased to 3s.",
+          "level3": "Enemies inflicted with Terror take 15% increased DMG for 5s.",
+          "level4": "This effect triggers once every 14s."
         },
         "damageType": "Physical"
       },
       {
         "id": "skill_4",
-        "name": "Abyssal Dragon Surge",
-        "description": "Deals DMG equal to 200% ATK to the nearest enemy and knocks them down. While in [Black Dragon Form], summons a ground eruption dealing DMG equal to 250% ATK to the nearest enemy and all enemies within 3 meters, knocking them down.",
+        "name": "Abyssal Wyrm Surge",
+        "description": "Deals DMG equal to 200% ATK to the nearest enemy and knocks them down. Dark Dragon Form: Summons hellfire to deal DMG equal to 250% ATK to the nearest enemy and enemies within a 3m AoE, knocking them down.",
         "upgrades": {
-          "level2": "DMG increased to 225% ATK in normal state and 275% ATK in [Black Dragon Form].",
-          "level3": "In [Black Dragon Form], hit enemies receive 15% increased DMG for 6s.",
-          "level4": "DMG increased to 250% ATK in normal state and 300% ATK in [Black Dragon Form]."
+          "level2": "Increases DMG dealt to 225% ATK. DMG is increased to 275% ATK in Dark Dragon Form.",
+          "level3": "Enemies hit in Dark Dragon Form take 15% more DMG for 6s.",
+          "level4": "Increases DMG dealt to 250% ATK. DMG is increased to 300% ATK in Dark Dragon Form."
         },
         "damageType": "Physical"
       }
     ],
     "relic": {
-      "name": "Undying Dragon Scale",
-      "description": "Each time the Ultimate is cast, gains a Shield equal to 80% of max HP. While the Shield is active, DMG taken is reduced by 40%.",
+      "name": "Deathless Wrathscale",
+      "description": "Gains a shield equal to 80% of Max HP each time an Ultimate is cast. DMG taken is reduced by 40% while the shield is active.",
       "upgrades": {
-        "level2": "While the Shield generated by the Ultimate is active, Nidhogg is immune to control effects.",
-        "level3": "For every 3 [Dragon Rage] stacks applied to an enemy, that enemy is stunned for 2s. If the target is immune to control effects, instead deals True DMG equal to 200% ATK.",
-        "level4": "During [Black Dragon Form], 60% of DMG dealt is converted to True DMG."
+        "level2": "Immune to Control effects while the Shield generated by the Ultimate is active.",
+        "level3": "For every 3 stacks of Dragon's Wrath applied to an enemy, stuns the target for an extra 2s. If the target is Immune to Control effects, deals extra True DMG equal to 200% ATK instead.",
+        "level4": "60% of the DMG dealt in Dark Dragon Form is converted to True DMG."
       }
     },
-    "synergies": [],
+    "synergies": [
+      "SELF_ATK_UP",
+      "SELF_HP_UP",
+      "SELF_ATK_SPEED",
+      "SELF_SHIELD",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_CC_RESISTANCE",
+      "SELF_DEF_IGNORE",
+      "ENEMY_ARMOR_REDUCTION",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_VULNERABILITY",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
+    ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
-      "summary": "",
-      "depthRating": "",
-      "commonlyMisunderstood": false
+      "summary": "Nidhogg builds Energy as a human, then transforms into a separate Dark Dragon unit. The form drains Energy and ends when Energy runs out or the dragon dies, at which point the human returns. Dragon uptime is his real resource: it decides how much of Dragon's Wrath, burn, armor shred and True DMG he ever applies.",
+      "depthRating": "high",
+      "commonlyMisunderstood": true
     },
     "synergyLinks": [],
     "virtueSets": [
@@ -9904,7 +9918,27 @@
         "virtues": []
       }
     ],
-    "synergyPartners": []
+    "synergyPartners": [],
+    "description": "A transformation-based physical Archer. Human form is the preparation phase; once Energy is full he turns into the Dark Dragon, a fast AoE carry with armor shred, burn, Dragon's Wrath amplification and a large share of True DMG. His output depends almost entirely on reaching Dark Dragon Form and keeping it alive.",
+    "strengths": [
+      "Huge damage ceiling in Dark Dragon Form - +150% ATK SPD, 150% ATK fan-shaped basic attacks and burn up to 80% ATK per sec at Lv4; in suitable fights he can account for 87-97% of team damage",
+      "Self-sufficient armor shred - Worldroot Blightfire reduces Armor and M-RES by up to 35%, so he needs far less external shred than a typical physical carry",
+      "Stacking damage amplification - Dragon's Wrath adds up to +50% DMG taken from Nidhogg at Lv4, plus separate +15% DMG windows from Doomwyrm's Dread and Abyssal Wyrm Surge (additive vs multiplicative stacking is unconfirmed)",
+      "High True DMG share - 40% of DMG dealt in dragon form is True DMG, 60% with Relic Lv4, which makes enemy Armor largely irrelevant",
+      "Transformation control - 5s mass Silence on transform, plus Knockdown, Terror and Relic Lv3 stuns (or 200% ATK True DMG against control-immune targets)",
+      "Relic protection - Shield equal to 80% Max HP and 40% DMG reduction on every Ultimate, with Control immunity from Relic Lv2"
+    ],
+    "weaknesses": [
+      "Unreliable transformation - Dark Dragon Form arrives roughly 13-16s into a fight; fights under about 12s sometimes ended without a transform at all",
+      "Dragon uptime varies wildly - the dragon lived about 11-12s in Tower 721, about 44s in World Boss and until the end of some Odyssey / Alliance Boss fights",
+      "Vulnerability window after dragon death - in every Tower 721 loss the human Nidhogg died 1.1-5.6s after his last dragon fell",
+      "Weak in short fights and against heavy early burst, since the payoff only starts after the transform",
+      "Poor investment efficiency - a widely read TapTap guide (updated 12 Aug 2026) rates him lower-mid tier with few use cases and suggests skipping him on tight resources",
+      "No confirmed PvP data and no confirmed team synergies yet - Energy support and dragon healing/shielding still need testing"
+    ],
+    "f2pInvestment": "Low priority on tight resources. Skill levels work on their own, but the kit only feels complete at Relic Lv3 and peaks at Relic Lv4. Divine rank effects are not documented yet.",
+    "activeBug": null,
+    "activeBugNotes": null
   },
   "nuba": {
     "id": "nuba",
