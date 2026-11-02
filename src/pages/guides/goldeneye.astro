@@ -65,7 +65,7 @@ const eye = [
 const steps = ["G→B", "B→P", "P→O", "O→R", "R→D", "D→Rb"];
 
 const items = [
-  { id: "410001", img: "coin-1", name: "Crystal", text: "Rare drop from crafting (10% rate). Pays for every Eye upgrade and for extra Energy." },
+  { id: "410001", img: "coin-1", name: "Crystal", text: "Rare drop from crafting (10% rate). Buys extra Energy and pays for every Eye upgrade." },
   { id: "410002", img: "coin-2", name: "Gold Coin", text: "Earned from room matches. Pays for Workshop, Forge, Anvil and Rest." },
   { id: "410003", img: "coin-3", name: "Gold Ingot", text: "Event shop currency." },
   { id: "410005", img: "score-doubler", name: "Score Doubler", text: "Doubles the score of your best submitted artifact. The strongest boost in the event." },
@@ -102,15 +102,21 @@ const buildings = [
 ];
 
 const strategy = [
-  ["Never let Energy overflow.", "Every craft costs 5. Spend the bar before it caps, because regeneration stops at the cap. Rest Lv 5 is worth about 6 more crafts a day."],
-  ["Build in level steps.", "Raise the Workshop one level, then fill that level in Rest, Anvil and Forge, in that order, then repeat. The other buildings cannot pass the Workshop."],
-  ["Put Crystals into the Eye.", "Crystals do not compete with Gold Coins, and Eye Lv 2-5 only need Workshop 1. Diamond and Rainbow never appear naturally, so the Eye is the only road to them. Buy Energy with leftover Crystals only."],
-  ["Pick one type and stay on it.", "Mastery is per type and grows from the final score of that type's artifacts. High mastery removes the 20-rolls and makes 100 the usual roll. Forge Lv 5 makes the type 85% reliable."],
-  ["Time your items.", "Use Score Doubler on your best artifact just before the 5-minute countdown ends. Use Score Eye and Quality Eye to judge whether you can win the room. Insight Lens only matters when you are fighting for first place."],
-  ["Choose rooms you can place in.", "Only the top 3 earn real points. A lower room you dominate pays more than a high room where you finish 20th. Spend your limited submits there."],
+  ["Upgrade in this order.", "Workshop, then Rest, then Anvil. Every building is capped by the Workshop's level, so raise the Workshop one level and fill that level before moving on. Take the Eye to level 4 and stop there unless you spend money."],
+  ["Craft right after the daily reset.", "Energy stops regenerating at the cap, so never let it fill. The daily leaderboard is usually won with 900 points and many players end on exactly 900, so the early crafter takes the spot."],
+  ["Submit one great artifact and fill the rest with weak ones.", "Your best artifact sets the base reward, and that reward is multiplied by how many of your own entries sit in the room. Add your weakest artifacts as fillers. Set auto-deploy to Highest first or Lowest first to match."],
+  ["Choose a room with free slots.", "Each room holds 50 entries. Below about 35 total entries the reward drops, so aim for a room filled to roughly 27 to 42 of 50 where your entries still fit. On a tie, the artifact placed earlier wins."],
+  ["Spend Crystals on Energy, not on Eye level 5.", "10 Energy costs 5 Crystals, up to 200 per day. Eye level 5 costs 400 Crystals, which is about 160 extra crafts, and it adds no Rainbow chance. Rainbow starts at Eye level 6, which is a spender's upgrade."],
+  ["Time your items.", "Use Score Doubler on your best artifact just before the 5-minute countdown ends. Score Eye and Quality Eye show whether you can win the room. Insight Lens only matters when you are fighting for first place."],
   ["Finish the collection.", "All 28 artifacts give +20% score on everything after."],
 ];
 
+const dailyRewards = [
+  ["1st", 15, 25, 20], ["2nd", 10, 20, 20], ["3rd", 5, 20, 20],
+  ["4th to 6th", "-", 20, 20], ["7th to 10th", "-", 20, 15], ["11th to 20th", "-", 20, 10],
+  ["21st to 50th", "-", 20, 5], ["51st to 100th", "-", 20, "-"], ["101st to 500th", "-", 15, "-"],
+  ["501st to 1000th", "-", 10, "-"], ["1001st to 9999th", "-", 5, "-"],
+];
 const rankLabels = ["1st", "2nd", "3rd", "4th", "5th to 50th"];
 const shopOrder = [
   "Buy every limited entry you want first.",
@@ -142,7 +148,7 @@ const shopOrder = [
       <div class="heket-verdict">
         <div class="heket-verdict-main">
           <div class="heket-verdict-icon" style={`background-image: url('${IMG}/score-doubler.webp');`} role="img" aria-label="Score Doubler"></div>
-          <div><h3>Craft, submit, outscore the room.</h3><p>You spend Energy to craft artifacts, then submit them into an arena room. Everyone in the room is ranked when the 5-minute countdown ends, and the top three take most of the points. Building upgrades, mastery and a growing collection make every craft score higher.</p></div>
+          <div><h3>Craft, submit, outscore the room.</h3><p>You spend Energy to craft artifacts, then submit them into an arena room. Your best artifact sets the base reward, and the number of entries you place in the room multiplies it. Building upgrades and a growing collection make every craft score higher.</p></div>
         </div>
         <div class="heket-fact-strip"><div><span>Craft cost</span><strong>5 Energy, start with 100</strong></div><div><span>Countdown</span><strong>5 minutes per room</strong></div><div><span>Collection</span><strong>4 types x 7 qualities</strong></div></div>
         <div class="heket-verdict-warning"><strong>Key fact</strong><span>Diamond and Rainbow artifacts never come from a plain craft. They only appear through Eye promotions, so the Eye decides your ceiling.</span></div>
@@ -154,8 +160,8 @@ const shopOrder = [
       <div class="ge-flow">
         <div class="ge-step"><img src={`${IMG}/type-potion.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Craft</strong><p>Spend 5 Energy. You get a Potion, Pill, Ore or Machine of some quality with a score inside that quality's range.</p></div>
         <div class="ge-step"><img src={`${IMG}/quality-eye.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Promote</strong><p>The Eye can lift the finished artifact one quality step higher.</p></div>
-        <div class="ge-step"><img src={`${IMG}/workshop.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Submit</strong><p>Enter artifacts into a room. Your Workshop level caps how many you can submit per room.</p></div>
-        <div class="ge-step"><img src={`${IMG}/coin-2.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Rank</strong><p>When the countdown ends, rank decides your points. Every match also pays Gold Coins.</p></div>
+        <div class="ge-step"><img src={`${IMG}/workshop.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Submit</strong><p>Enter artifacts into a room of 50 slots. Your Workshop level caps how many you can submit, and auto-deploy can send them Highest first or Lowest first.</p></div>
+        <div class="ge-step"><img src={`${IMG}/coin-2.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Rank</strong><p>When the countdown ends, your best artifact and your entry count decide the reward. Every match also pays Gold Coins.</p></div>
       </div>
       <div class="heket-engine-rule"><strong>Energy.</strong><span>You start with 100 and each craft costs 5. You can buy 10 Energy for 5 Crystals, up to 200 Energy per day. Rest raises the cap to 200 and regeneration to 20 per hour.</span></div>
       <div class="heket-engine-rule"><strong>Leaderboard.</strong><span>The event has three leaderboard tabs. Points from rooms are what you climb with.</span></div>
@@ -195,7 +201,7 @@ const shopOrder = [
 
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Arena Rooms</h2><div class="lt-flourish lt-flourish-center"></div>
-      <p class="ge-lead">Your event level decides your room. Level 2 needs 10,000 EXP and Level 3 needs 80,000. Without spending, expect Room 2 after about 3 to 5 days and Room 3 after about 6.</p>
+      <p class="ge-lead">Your event level decides which room you can enter. Level 2 needs 10,000 EXP and Level 3 needs 80,000. Without spending, expect Room 2 after about 3 to 5 days and Room 3 after about 6.</p>
       <div class="ge-rooms">
         {rooms.map((room) => (
           <article class="ge-room">
@@ -213,7 +219,26 @@ const shopOrder = [
           </article>
         ))}
       </div>
-      <div class="guide-callout"><strong>Rank pays, depth does not.</strong> First place is worth 20 times a place from 5th down in Room 3. Plan your submits around the rooms where you can finish in the top three.</div>
+      <div class="ge-rules">
+        <article><strong>Best artifact sets the base</strong><p>Only your strongest entry decides the base reward. The others do not add score.</p></article>
+        <article><strong>Entries multiply it</strong><p>The base is multiplied by how many of your own entries are in the room, so fillers are worth submitting.</p></article>
+        <article><strong>About 35 entries to be safe</strong><p>With fewer than roughly 35 entries in the room overall, the reward shrinks. A room at 27 to 42 of 50 slots is the sweet spot.</p></article>
+        <article><strong>Ties go to the earlier artifact</strong><p>If two artifacts tie, the one placed first ranks higher.</p></article>
+      </div>
+      <p class="ge-note">These reward rules come from player testing, so exact numbers may shift.</p>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Daily Leaderboard</h2><div class="lt-flourish lt-flourish-center"></div>
+      <p class="ge-lead">The daily ranking pays items 1114 and 1115 plus Crystals. Crystals stop at rank 50 and never exceed 20, so first place beats fourth mainly through item 1115.</p>
+      <div class="ge-table-wrap">
+        <table class="ge-table ge-table--daily">
+          <thead><tr><th scope="col">Rank</th><th scope="col">Item 1115</th><th scope="col">Item 1114</th><th scope="col">Crystals</th></tr></thead>
+          <tbody>
+            {dailyRewards.map((r) => <tr><th scope="row">{r[0]}</th>{r.slice(1).map((c) => <td class={c === "-" ? "is-zero" : ""}>{c}</td>)}</tr>)}
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
@@ -239,7 +264,7 @@ const shopOrder = [
       <h2 class="guide-section-title lt-h2 lt-h2-center">The Eye</h2><div class="lt-flourish lt-flourish-center"></div>
       <div class="ge-eye-head">
         <img src={`${IMG}/eye.webp`} alt="" width="120" height="120" loading="lazy" />
-        <p>The Eye gives each craft a chance to rise one quality step. It is paid in Crystals, not Gold Coins. Levels 1 to 5 only need Workshop 1, level 6 and 7 need Workshop 2, level 8 and 9 need Workshop 3, and level 10 needs Workshop 4. Total cost to level 10: 5,850 Crystals.</p>
+        <p>The Eye gives each craft a chance to rise one quality step. It is paid in Crystals, not Gold Coins. Levels 1 to 5 only need Workshop 1, level 6 and 7 need Workshop 2, level 8 and 9 need Workshop 3, and level 10 needs Workshop 4. Total cost to level 10: 5,850 Crystals. Level 4 already gives a 100% chance for Green to Blue and 75% for Blue to Purple.</p>
       </div>
       <div class="ge-table-wrap">
         <table class="ge-table ge-table--eye">
@@ -254,12 +279,12 @@ const shopOrder = [
           </tbody>
         </table>
       </div>
-      <div class="guide-callout"><strong>Reading it:</strong> each column is the chance to rise from one quality to the next. Eye Lv 5 gives 25% for Orange to Red and 4% for Red to Diamond. Rainbow only opens at Lv 6, at 1%, and reaches 30% at Lv 10.</div>
+      <div class="guide-callout"><strong>Reading it:</strong> each column is the chance to rise from one quality to the next. Free-to-play players should stop at Lv 4: Lv 5 costs 400 Crystals and still gives no Rainbow chance. Rainbow only opens at Lv 6, at 1%, and reaches 30% at Lv 10.</div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Mastery</h2><div class="lt-flourish lt-flourish-center"></div>
-      <p class="ge-lead">Each type has its own mastery, Lv 0 to 10. It grows with the final score of that type's artifacts. Higher mastery shifts your score rolls toward 100 and removes the weakest ones: 20-rolls are gone from Lv 4, and at Lv 10 four rolls in five are a 100.</p>
+      <p class="ge-lead">Each type has its own mastery, Lv 0 to 10. It grows with the final score of that type's artifacts. Higher mastery shifts your score rolls toward 100 and removes the weakest ones: 20-rolls are gone from Lv 4, and at Lv 10 four rolls in five are a 100. How much this changes results in practice has not been tested.</p>
       <div class="ge-mastery">
         <div class="ge-mastery-key">{rollLabels.map((l, i) => <span><i style={`background:${rollShades[i]}`}></i>{l}</span>)}</div>
         {mastery.map(([lv, exp, w]) => (
@@ -272,7 +297,7 @@ const shopOrder = [
           </div>
         ))}
       </div>
-      <div class="guide-callout"><strong>Specialize.</strong> Spreading crafts evenly across four types keeps every mastery low. Focus one type until it is high, then widen.</div>
+      <div class="guide-callout"><strong>Optional.</strong> Because mastery is per type, focusing on one type raises it faster. This is a side benefit, not a priority over Energy and timing.</div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
@@ -308,12 +333,12 @@ const shopOrder = [
       <ol class="ge-strategy">
         {strategy.map(([h, p]) => <li><div class="ge-strategy-body"><strong>{h}</strong><p>{p}</p></div></li>)}
       </ol>
-      <div class="guide-callout"><strong>Common advice says to delay the Eye.</strong> That only applies to Gold Coins, which go into Rest, Anvil and Forge. Crystals are a separate currency, so the Eye can start early.</div>
+      <div class="guide-callout"><strong>Gold Coins and Crystals are separate.</strong> Gold Coins go into Workshop, Rest and Anvil. Crystals are better spent on Energy than on the Eye past level 4. Crystals are a separate currency, so the Eye can start early.</div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div>
-      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A ranking contest decided by prep and timing</h3><p class="guide-verdict-text">Spend all your Energy, build in Workshop steps, feed Crystals to the Eye and master one type. Then enter only rooms where a top-three finish is realistic and fire Score Doubler at the end of the countdown. Leaderboard rewards and the full craft odds will be added once confirmed.</p></div>
+      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A race decided by timing and entry count</h3><p class="guide-verdict-text">Build Workshop, Rest and Anvil in that order, craft right after the reset and never waste Energy. Submit one strong artifact with weak fillers into a room that is well filled but not full, and fire Score Doubler at the end of the countdown. Crystals go into Energy, not past Eye level 4.</p></div>
     </section>
   </div>
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
@@ -447,6 +472,11 @@ const shopOrder = [
   .ge-shop-side span { color: var(--text-primary); font-size: 0.95rem; }
   .ge-order { margin: var(--space-4) 0 0; padding-left: 1.4rem; color: var(--text-primary); line-height: 1.7; }
 
+  .ge-rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  .ge-rules article { background: var(--bg-surface); border-radius: 12px; padding: var(--space-4) var(--space-5); }
+  .ge-rules strong { display: block; color: var(--text-bright); font-size: 1.1rem; margin-bottom: 4px; }
+  .ge-rules p { margin: 0; color: var(--text-primary); line-height: 1.5; }
+  .ge-table--daily { min-width: 460px; }
   .ge-strategy { list-style: none; counter-reset: ge; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
   .ge-strategy li { counter-increment: ge; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-4); align-items: start; background: var(--bg-surface); border-radius: 14px; padding: var(--space-5); }
   .ge-strategy-body { min-width: 0; }
@@ -456,7 +486,7 @@ const shopOrder = [
 
   @media (max-width: 860px) {
     .ge-flow { grid-template-columns: repeat(2, 1fr); }
-    .ge-rooms, .ge-buildings, .ge-items, .ge-shop { grid-template-columns: 1fr; }
+    .ge-rooms, .ge-buildings, .ge-items, .ge-shop, .ge-rules { grid-template-columns: 1fr; }
     .ge-tiers { grid-template-columns: repeat(4, 1fr); }
   }
   @media (max-width: 520px) {
