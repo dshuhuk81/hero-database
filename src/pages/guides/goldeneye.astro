@@ -1,0 +1,473 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+
+const IMG = "/images/guides/goldeneye";
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+
+const qualities = [
+  { id: "green", name: "Green", range: "20-100", color: "#7cd286" },
+  { id: "blue", name: "Blue", range: "100-180", color: "#9dabff" },
+  { id: "purple", name: "Purple", range: "180-300", color: "#d56fef" },
+  { id: "orange", name: "Orange", range: "300-460", color: "#efa56f" },
+  { id: "red", name: "Red", range: "460-650", color: "#ef6f6f" },
+  { id: "diamond", name: "Diamond", range: "650-900", color: "#f4f4f0" },
+  { id: "rainbow", name: "Rainbow", range: "900-1200", color: "#cf4db5" },
+];
+
+const types = [
+  { id: "potion", name: "Potion" },
+  { id: "pill", name: "Pill" },
+  { id: "ore", name: "Ore" },
+  { id: "machine", name: "Machine" },
+];
+
+const collectionTiers = [
+  [4, 1], [8, 2], [12, 4], [16, 8], [20, 12], [24, 16], [28, 20],
+];
+
+const rooms = [
+  { name: "Room 1", unlock: "Start", ranks: [100, 50, 25, 10, 5], mix: [60, 30, 10] },
+  { name: "Room 2", unlock: "10,000 EXP", ranks: [300, 150, 75, 40, 20], mix: [40, 30, 20, 10] },
+  { name: "Room 3", unlock: "80,000 EXP", ranks: [1000, 500, 250, 100, 50], mix: [20, 20, 30, 20, 10] },
+];
+
+const mastery = [
+  [0, 0, [20, 20, 20, 20, 20]],
+  [1, 500, [15, 22, 22, 21, 20]],
+  [2, 1250, [10, 24, 24, 22, 20]],
+  [3, 2450, [5, 24, 26, 24, 21]],
+  [4, 4250, [0, 20, 28, 30, 22]],
+  [5, 6950, [0, 16, 28, 32, 24]],
+  [6, 10950, [0, 8, 26, 38, 28]],
+  [7, 16950, [0, 0, 20, 48, 32]],
+  [8, 25950, [0, 0, 10, 50, 40]],
+  [9, 39450, [0, 0, 0, 45, 55]],
+  [10, 59450, [0, 0, 0, 20, 80]],
+] as const;
+const rollShades = ["#4a3f66", "#6b5a99", "#8f7bc7", "#c2a85a", "#f2c14e"];
+const rollLabels = [20, 40, 60, 80, 100];
+
+// Eye promotion chance per step, in percent (config weight / 10000).
+const eye = [
+  [1, "-", "-", [20, 10, 5, 0, 0, 0], 1],
+  [2, 50, 1, [50, 20, 10, 5, 0, 0], 1],
+  [3, 100, 1, [80, 50, 20, 10, 1, 0], 1],
+  [4, 200, 1, [100, 75, 30, 20, 2, 0], 1],
+  [5, 400, 1, [100, 100, 40, 25, 4, 0], 1],
+  [6, 600, 2, [100, 100, 50, 30, 7, 1], 2],
+  [7, 800, 2, [100, 100, 60, 35, 10, 2], 2],
+  [8, 1000, 3, [100, 100, 80, 40, 15, 5], 3],
+  [9, 1200, 3, [100, 100, 100, 60, 25, 10], 3],
+  [10, 1500, 4, [100, 100, 100, 80, 50, 30], 4],
+] as const;
+const steps = ["G→B", "B→P", "P→O", "O→R", "R→D", "D→Rb"];
+
+const items = [
+  { id: "410001", img: "coin-1", name: "Crystal", text: "Rare drop from crafting (10% rate). Pays for every Eye upgrade and for extra Energy." },
+  { id: "410002", img: "coin-2", name: "Gold Coin", text: "Earned from room matches. Pays for Workshop, Forge, Anvil and Rest." },
+  { id: "410003", img: "coin-3", name: "Gold Ingot", text: "Event shop currency." },
+  { id: "410005", img: "score-doubler", name: "Score Doubler", text: "Doubles the score of your best submitted artifact. The strongest boost in the event." },
+  { id: "410006", img: "score-eye", name: "Score Eye", text: "Shows the average score in the room you are in." },
+  { id: "410007", img: "quality-eye", name: "Quality Eye", text: "Shows the average quality in the room you are in." },
+  { id: "410004", img: "insight-lens", name: "Insight Lens", text: "For 15 minutes, shows quality and score of every Sword, Spear, Staff or Dagger artifact in all rooms. Four variants, one per weapon." },
+];
+
+const buildings = [
+  {
+    img: "workshop", name: "Workshop", cap: "Lv 1-5",
+    text: "Gates everything else. Every other building can only reach the Workshop's level, and each level raises how many artifacts you can submit per room.",
+    rows: [["Lv 1", "6 submits", "Free"], ["Lv 2", "8 submits", "1,000"], ["Lv 3", "12 submits", "3,000"], ["Lv 4", "16 submits", "10,000"], ["Lv 5", "20 submits", "20,000"]],
+    head: ["Level", "Per room", "Gold Coin"],
+  },
+  {
+    img: "rest", name: "Rest", cap: "Lv 1-5",
+    text: "More Energy in the bar and faster regeneration. Level 5 is worth about 6 extra crafts per day.",
+    rows: [["Lv 1", "100", "10 / h", "Free"], ["Lv 2", "120", "12 / h", "1,500"], ["Lv 3", "140", "14 / h", "4,500"], ["Lv 4", "160", "16 / h", "15,000"], ["Lv 5", "200", "20 / h", "50,000"]],
+    head: ["Level", "Energy cap", "Regen", "Gold Coin"],
+  },
+  {
+    img: "anvil", name: "Anvil", cap: "Lv 1-5",
+    text: "Raises the minimum score of every craft, so bad rolls hurt less.",
+    rows: [["Lv 1", "+0", "Free"], ["Lv 2", "+20", "1,000"], ["Lv 3", "+40", "5,000"], ["Lv 4", "+60", "25,000"], ["Lv 5", "+80", "150,000"]],
+    head: ["Level", "Minimum score", "Gold Coin"],
+  },
+  {
+    img: "hand", name: "Forge", cap: "Lv 1-5",
+    text: "Raises the chance of the type you want. Level 5 also unlocks targeted crafting.",
+    rows: [["Lv 1", "25%", "Free"], ["Lv 2", "35%", "500"], ["Lv 3", "50%", "1,000"], ["Lv 4", "65%", "1,500"], ["Lv 5", "85%", "2,000"]],
+    head: ["Level", "Wanted type", "Gold Coin"],
+  },
+];
+
+const strategy = [
+  ["Never let Energy overflow.", "Every craft costs 5. Spend the bar before it caps, because regeneration stops at the cap. Rest Lv 5 is worth about 6 more crafts a day."],
+  ["Build in level steps.", "Raise the Workshop one level, then fill that level in Rest, Anvil and Forge, in that order, then repeat. The other buildings cannot pass the Workshop."],
+  ["Put Crystals into the Eye.", "Crystals do not compete with Gold Coins, and Eye Lv 2-5 only need Workshop 1. Diamond and Rainbow never appear naturally, so the Eye is the only road to them. Buy Energy with leftover Crystals only."],
+  ["Pick one type and stay on it.", "Mastery is per type and grows from the final score of that type's artifacts. High mastery removes the 20-rolls and makes 100 the usual roll. Forge Lv 5 makes the type 85% reliable."],
+  ["Time your items.", "Use Score Doubler on your best artifact just before the 5-minute countdown ends. Use Score Eye and Quality Eye to judge whether you can win the room. Insight Lens only matters when you are fighting for first place."],
+  ["Choose rooms you can place in.", "Only the top 3 earn real points. A lower room you dominate pays more than a high room where you finish 20th. Spend your limited submits there."],
+  ["Finish the collection.", "All 28 artifacts give +20% score on everything after."],
+];
+
+const rankLabels = ["1st", "2nd", "3rd", "4th", "5th to 50th"];
+const shopOrder = [
+  "Buy every limited entry you want first.",
+  "Spend what is left on the unlimited entry.",
+];
+---
+
+<Base title="Goldeneye Event Guide - Artifacts, Rooms & Upgrades | Motto Immortal" description="Goldeneye (Gem Creation) event guide: how crafting and arena rooms work, all 28 artifacts, building upgrades, Eye promotion chances, mastery, items, shop and the best upgrade order.">
+  <div class="guide-banner guide-banner--goldeneye">
+    <div class="guide-banner-bg" style={`background-image: url('${IMG}/banner.webp'); --guide-banner-y: 30%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Goldeneye</h1>
+      <p class="guide-hero-subtitle">Craft artifacts, win arena rooms. Nov 2 to Nov 13, 2026.</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge guide-badge--legendary">Event Guide</span>
+        <span class="guide-badge">28 artifacts</span>
+        <span class="guide-badge">3 arena rooms</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket guide-body--goldeneye">
+    <GuideSectionNav />
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Goldeneye at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-verdict">
+        <div class="heket-verdict-main">
+          <div class="heket-verdict-icon" style={`background-image: url('${IMG}/score-doubler.webp');`} role="img" aria-label="Score Doubler"></div>
+          <div><h3>Craft, submit, outscore the room.</h3><p>You spend Energy to craft artifacts, then submit them into an arena room. Everyone in the room is ranked when the 5-minute countdown ends, and the top three take most of the points. Building upgrades, mastery and a growing collection make every craft score higher.</p></div>
+        </div>
+        <div class="heket-fact-strip"><div><span>Craft cost</span><strong>5 Energy, start with 100</strong></div><div><span>Countdown</span><strong>5 minutes per room</strong></div><div><span>Collection</span><strong>4 types x 7 qualities</strong></div></div>
+        <div class="heket-verdict-warning"><strong>Key fact</strong><span>Diamond and Rainbow artifacts never come from a plain craft. They only appear through Eye promotions, so the Eye decides your ceiling.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">How a Round Works</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="ge-flow">
+        <div class="ge-step"><img src={`${IMG}/type-potion.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Craft</strong><p>Spend 5 Energy. You get a Potion, Pill, Ore or Machine of some quality with a score inside that quality's range.</p></div>
+        <div class="ge-step"><img src={`${IMG}/quality-eye.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Promote</strong><p>The Eye can lift the finished artifact one quality step higher.</p></div>
+        <div class="ge-step"><img src={`${IMG}/workshop.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Submit</strong><p>Enter artifacts into a room. Your Workshop level caps how many you can submit per room.</p></div>
+        <div class="ge-step"><img src={`${IMG}/coin-2.webp`} alt="" width="72" height="72" loading="lazy" /><strong>Rank</strong><p>When the countdown ends, rank decides your points. Every match also pays Gold Coins.</p></div>
+      </div>
+      <div class="heket-engine-rule"><strong>Energy.</strong><span>You start with 100 and each craft costs 5. You can buy 10 Energy for 5 Crystals, up to 200 Energy per day. Rest raises the cap to 200 and regeneration to 20 per hour.</span></div>
+      <div class="heket-engine-rule"><strong>Leaderboard.</strong><span>The event has three leaderboard tabs. Points from rooms are what you climb with.</span></div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The 28 Artifacts</h2><div class="lt-flourish lt-flourish-center"></div>
+      <p class="ge-lead">Every type comes in seven qualities. Tap the ones you own: each 4 artifacts add a permanent score bonus, up to +20% at 28.</p>
+      <div class="ge-collection" data-ge-collection>
+        <div class="ge-grid-scroll">
+          <div class="ge-grid" role="group" aria-label="Artifact collection">
+            <div class="ge-grid-corner"></div>
+            {qualities.map((q) => <div class="ge-grid-head" style={`--q:${q.color}`}><strong>{q.name}</strong><span>{q.range}</span></div>)}
+            {types.map((t) => (
+              <>
+                <div class="ge-grid-type"><img src={`${IMG}/type-${t.id}.webp`} alt="" width="40" height="40" loading="lazy" /><strong>{t.name}</strong></div>
+                {qualities.map((q, i) => (
+                  <button type="button" class="ge-cell" aria-pressed="false" data-ge-cell style={`--q:${q.color}`} aria-label={`${t.name}, ${q.name}`}>
+                    <img src={`${IMG}/${t.id}-${i + 1}.webp`} alt="" width="64" height="64" loading="lazy" />
+                  </button>
+                ))}
+              </>
+            ))}
+          </div>
+        </div>
+        <div class="ge-readout" aria-live="polite">
+          <div><span>Collected</span><strong><b data-ge-count>0</b> / 28</strong></div>
+          <div><span>Score bonus</span><strong data-ge-bonus>+0%</strong></div>
+          <div><span>Next bonus</span><strong data-ge-next>at 4 artifacts</strong></div>
+          <button type="button" class="ge-reset" data-ge-reset>Reset</button>
+        </div>
+        <ol class="ge-tiers">
+          {collectionTiers.map(([n, b]) => <li data-ge-tier={n}><strong>+{b}%</strong><span>{n} artifacts</span></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Arena Rooms</h2><div class="lt-flourish lt-flourish-center"></div>
+      <p class="ge-lead">Your event level decides your room. Level 2 needs 10,000 EXP and Level 3 needs 80,000. Without spending, expect Room 2 after about 3 to 5 days and Room 3 after about 6.</p>
+      <div class="ge-rooms">
+        {rooms.map((room) => (
+          <article class="ge-room">
+            <header><h3>{room.name}</h3><span>{room.unlock}</span></header>
+            <div class="ge-table-wrap">
+              <table class="ge-table">
+                <thead><tr><th scope="col">Rank</th><th scope="col">Points</th></tr></thead>
+                <tbody>{room.ranks.map((p, i) => <tr><th scope="row">{rankLabels[i]}</th><td>{p}</td></tr>)}</tbody>
+              </table>
+            </div>
+            <p class="ge-room-mix-label">Craft quality chances</p>
+            <div class="ge-mix" role="img" aria-label={`Quality chances: ${room.mix.map((w, i) => `${qualities[i].name} ${w}%`).join(", ")}`}>
+              {room.mix.map((w, i) => <span style={`flex:${w};background:${qualities[i].color}`}>{w}%</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="guide-callout"><strong>Rank pays, depth does not.</strong> First place is worth 20 times a place from 5th down in Room 3. Plan your submits around the rooms where you can finish in the top three.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Buildings</h2><div class="lt-flourish lt-flourish-center"></div>
+      <p class="ge-lead">Four buildings use Gold Coins and are capped by the Workshop. Total to max all four: Workshop 34,000, Rest 71,000, Anvil 181,000, Forge 5,000.</p>
+      <div class="ge-buildings">
+        {buildings.map((b) => (
+          <article class="ge-building">
+            <header><img src={`${IMG}/${b.img}.webp`} alt="" width="72" height="72" loading="lazy" /><div><h3>{b.name}</h3><span>{b.cap}</span></div></header>
+            <p>{b.text}</p>
+            <div class="ge-table-wrap">
+              <table class="ge-table">
+                <thead><tr>{b.head.map((h) => <th scope="col">{h}</th>)}</tr></thead>
+                <tbody>{b.rows.map((r) => <tr><th scope="row">{r[0]}</th>{r.slice(1).map((c) => <td>{c}</td>)}</tr>)}</tbody>
+              </table>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The Eye</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="ge-eye-head">
+        <img src={`${IMG}/eye.webp`} alt="" width="120" height="120" loading="lazy" />
+        <p>The Eye gives each craft a chance to rise one quality step. It is paid in Crystals, not Gold Coins. Levels 1 to 5 only need Workshop 1, level 6 and 7 need Workshop 2, level 8 and 9 need Workshop 3, and level 10 needs Workshop 4. Total cost to level 10: 5,850 Crystals.</p>
+      </div>
+      <div class="ge-table-wrap">
+        <table class="ge-table ge-table--eye">
+          <thead><tr><th scope="col">Eye</th><th scope="col">Crystals</th><th scope="col">Workshop</th>{steps.map((s) => <th scope="col">{s}</th>)}</tr></thead>
+          <tbody>
+            {eye.map((r) => (
+              <tr>
+                <th scope="row">Lv {r[0]}</th><td>{r[1]}</td><td>{r[4]}</td>
+                {r[3].map((c) => <td class={c === 0 ? "is-zero" : ""}>{c === 0 ? "-" : `${c}%`}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="guide-callout"><strong>Reading it:</strong> each column is the chance to rise from one quality to the next. Eye Lv 5 gives 25% for Orange to Red and 4% for Red to Diamond. Rainbow only opens at Lv 6, at 1%, and reaches 30% at Lv 10.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Mastery</h2><div class="lt-flourish lt-flourish-center"></div>
+      <p class="ge-lead">Each type has its own mastery, Lv 0 to 10. It grows with the final score of that type's artifacts. Higher mastery shifts your score rolls toward 100 and removes the weakest ones: 20-rolls are gone from Lv 4, and at Lv 10 four rolls in five are a 100.</p>
+      <div class="ge-mastery">
+        <div class="ge-mastery-key">{rollLabels.map((l, i) => <span><i style={`background:${rollShades[i]}`}></i>{l}</span>)}</div>
+        {mastery.map(([lv, exp, w]) => (
+          <div class="ge-mastery-row">
+            <strong>Lv {lv}</strong>
+            <div class="ge-mix ge-mix--thin" role="img" aria-label={`Mastery ${lv}: ${w.map((x, i) => `roll ${rollLabels[i]} ${x}%`).join(", ")}`}>
+              {w.map((x, i) => x > 0 ? <span style={`flex:${x};background:${rollShades[i]}`}>{x >= 12 ? `${x}%` : ""}</span> : null)}
+            </div>
+            <small>{exp.toLocaleString("en-US")} total</small>
+          </div>
+        ))}
+      </div>
+      <div class="guide-callout"><strong>Specialize.</strong> Spreading crafts evenly across four types keeps every mastery low. Focus one type until it is high, then widen.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Items</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="ge-items">
+        {items.map((it) => (
+          <article class="ge-item"><img src={`${IMG}/${it.img}.webp`} alt="" width="64" height="64" loading="lazy" /><div><h3>{it.name}</h3><p>{it.text}</p><small>Item {it.id}</small></div></article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Event Shop</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="ge-shop">
+        <div class="ge-shop-main">
+          <img src={`${R2_BASE}/heroes/nezha.webp`} alt="Nezha" width="240" height="240" loading="lazy" />
+          <div>
+            <h3>Nezha bundles</h3>
+            <p>The main prize. Several bundles, each costing 300 Gold Ingots and giving 40, 60, 80 or 100 of item 400701. Each bundle can be bought twice.</p>
+          </div>
+        </div>
+        <div class="ge-shop-side">
+          <div><strong>Gacha item 410008</strong><span>250 or 150 Gold Ingots each, depending on the entry.</span></div>
+          <div><strong>Item range 1009 to 1115</strong><span>20 to 150 Gold Ingots each.</span></div>
+          <div><strong>Currency pack</strong><span>50 currency for 5 pieces, no purchase limit.</span></div>
+        </div>
+      </div>
+      <ol class="ge-order">{shopOrder.map((s) => <li>{s}</li>)}</ol>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Best Strategy</h2><div class="lt-flourish lt-flourish-center"></div>
+      <ol class="ge-strategy">
+        {strategy.map(([h, p]) => <li><div class="ge-strategy-body"><strong>{h}</strong><p>{p}</p></div></li>)}
+      </ol>
+      <div class="guide-callout"><strong>Common advice says to delay the Eye.</strong> That only applies to Gold Coins, which go into Rest, Anvil and Forge. Crystals are a separate currency, so the Eye can start early.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A ranking contest decided by prep and timing</h3><p class="guide-verdict-text">Spend all your Energy, build in Workshop steps, feed Crystals to the Eye and master one type. Then enter only rooms where a top-three finish is realistic and fire Score Doubler at the end of the countdown. Leaderboard rewards and the full craft odds will be added once confirmed.</p></div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+
+  <script>
+    const key = "goldeneye-collection";
+    const tiers: [number, number][] = [[4, 1], [8, 2], [12, 4], [16, 8], [20, 12], [24, 16], [28, 20]];
+    for (const root of document.querySelectorAll<HTMLElement>("[data-ge-collection]")) {
+      const cells = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-ge-cell]"));
+      const count = root.querySelector<HTMLElement>("[data-ge-count]")!;
+      const bonus = root.querySelector<HTMLElement>("[data-ge-bonus]")!;
+      const next = root.querySelector<HTMLElement>("[data-ge-next]")!;
+      const render = () => {
+        const n = cells.filter((c) => c.getAttribute("aria-pressed") === "true").length;
+        const current = [...tiers].reverse().find(([need]) => n >= need);
+        const upcoming = tiers.find(([need]) => n < need);
+        count.textContent = String(n);
+        bonus.textContent = `+${current ? current[1] : 0}%`;
+        next.textContent = upcoming ? `+${upcoming[1]}% in ${upcoming[0] - n} more` : "Maxed";
+        for (const li of root.querySelectorAll<HTMLElement>("[data-ge-tier]")) li.classList.toggle("is-done", n >= Number(li.dataset.geTier));
+        try { localStorage.setItem(key, JSON.stringify(cells.map((c) => c.getAttribute("aria-pressed") === "true"))); } catch {}
+      };
+      try {
+        const saved = JSON.parse(localStorage.getItem(key) || "[]");
+        if (Array.isArray(saved)) cells.forEach((c, i) => c.setAttribute("aria-pressed", String(saved[i] === true)));
+      } catch {}
+      for (const c of cells) c.addEventListener("click", () => { c.setAttribute("aria-pressed", String(c.getAttribute("aria-pressed") !== "true")); render(); });
+      root.querySelector("[data-ge-reset]")?.addEventListener("click", () => { cells.forEach((c) => c.setAttribute("aria-pressed", "false")); render(); });
+      render();
+    }
+  </script>
+</Base>
+
+<style is:global>
+  .guide-banner--goldeneye,
+  .guide-body--goldeneye {
+    --guide-accent: var(--accent-gold-light);
+    --guide-accent-dim: var(--accent-gold-dim);
+    --guide-accent-line: color-mix(in srgb, var(--accent-gold) 25%, transparent);
+  }
+  .ge-lead { margin: 0 0 var(--space-6); color: var(--text-primary); max-width: 68ch; line-height: 1.6; }
+  .ge-note { margin: var(--space-4) 0 0; color: var(--text-secondary); font-size: 0.9rem; }
+
+  .ge-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-4); }
+  .ge-step { background: var(--bg-surface); padding: var(--space-5); border-radius: var(--radius-md, 12px); display: flex; flex-direction: column; gap: var(--space-2); }
+  .ge-step img { width: 72px; height: 72px; object-fit: contain; }
+  .ge-step strong { color: var(--text-bright); font-size: 1.15rem; }
+  .ge-step p { margin: 0; color: var(--text-primary); line-height: 1.5; font-size: 0.95rem; }
+
+  .ge-grid-scroll { overflow-x: auto; }
+  .ge-grid { display: grid; grid-template-columns: 96px repeat(7, minmax(76px, 1fr)); gap: 6px; min-width: 660px; }
+  .ge-grid-head { display: flex; flex-direction: column; align-items: center; padding: var(--space-2) 0; color: var(--q); }
+  .ge-grid-head strong { font-size: 0.9rem; }
+  .ge-grid-head span { font-size: 0.75rem; color: var(--text-secondary); }
+  .ge-grid-type { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-bright); font-size: 0.85rem; }
+  .ge-grid-type img { width: 40px; height: 40px; object-fit: contain; }
+  .ge-cell { background: var(--bg-surface); border: 0; border-radius: 10px; padding: 8px; min-height: 84px; cursor: pointer; display: grid; place-items: center; transition: background 0.15s, transform 0.15s; }
+  .ge-cell img { width: 64px; height: 64px; object-fit: contain; opacity: 0.35; filter: grayscale(0.8); transition: opacity 0.15s, filter 0.15s; }
+  .ge-cell:hover { background: var(--bg-raised); }
+  .ge-cell:active { transform: scale(0.96); }
+  .ge-cell:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+  .ge-cell[aria-pressed="true"] { background: color-mix(in srgb, var(--q) 22%, var(--bg-surface)); }
+  .ge-cell[aria-pressed="true"] img { opacity: 1; filter: none; }
+
+  .ge-readout { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; background: var(--bg-raised); padding: var(--space-5); border-radius: 12px; margin-top: var(--space-4); }
+  .ge-readout > div { display: flex; flex-direction: column; gap: 2px; }
+  .ge-readout span { color: var(--text-secondary); font-size: 0.85rem; }
+  .ge-readout strong { color: var(--text-bright); font-size: 1.5rem; }
+  .ge-readout [data-ge-bonus] { color: var(--accent-gold-light); font-size: 2.25rem; line-height: 1; }
+  .ge-readout [data-ge-next] { font-size: 1.05rem; }
+  .ge-reset { margin-left: auto; background: var(--bg-overlay); color: var(--text-bright); border: 0; padding: 10px 18px; border-radius: 8px; cursor: pointer; min-height: 44px; }
+  .ge-reset:hover { background: var(--bg-surface); }
+  .ge-reset:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+  .ge-tiers { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .ge-tiers li { background: var(--bg-surface); border-radius: 10px; padding: var(--space-3); display: flex; flex-direction: column; color: var(--text-secondary); font-size: 0.8rem; }
+  .ge-tiers strong { color: var(--text-primary); font-size: 1.15rem; }
+  .ge-tiers li.is-done { background: var(--accent-gold-dim); }
+  .ge-tiers li.is-done strong { color: var(--accent-gold-light); }
+
+  .ge-rooms { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-4); }
+  .ge-room, .ge-building { background: var(--bg-surface); border-radius: 14px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+  .ge-room header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); }
+  .ge-room h3, .ge-building h3 { margin: 0; color: var(--text-bright); font-size: 1.35rem; }
+  .ge-room header span, .ge-building header span { color: var(--accent-gold-light); font-size: 0.9rem; }
+  .ge-room-mix-label { margin: var(--space-2) 0 0; color: var(--text-secondary); font-size: 0.85rem; }
+
+  .ge-table-wrap { overflow-x: auto; }
+  .ge-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+  .ge-table th, .ge-table td { padding: 8px 10px; text-align: left; color: var(--text-primary); }
+  .ge-table thead th { color: var(--text-secondary); font-weight: 500; font-size: 0.85rem; }
+  .ge-table tbody th { color: var(--text-bright); font-weight: 600; }
+  .ge-table tbody tr:nth-child(odd) { background: color-mix(in srgb, var(--bg-raised) 70%, transparent); }
+  .ge-table td.is-zero { color: var(--text-muted); }
+  .ge-table--eye { min-width: 640px; }
+
+  .ge-mix { display: flex; height: 34px; border-radius: 8px; overflow: hidden; }
+  .ge-mix span { display: grid; place-items: center; font-size: 0.8rem; font-weight: 700; color: #14101c; min-width: 0; }
+  .ge-mix--thin { height: 24px; flex: 1; }
+
+  .ge-buildings { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+  .ge-building header { display: flex; align-items: center; gap: var(--space-3); }
+  .ge-building header img { width: 72px; height: 72px; object-fit: contain; }
+  .ge-building p { margin: 0; color: var(--text-primary); line-height: 1.5; }
+
+  .ge-eye-head { display: flex; gap: var(--space-5); align-items: center; margin-bottom: var(--space-5); }
+  .ge-eye-head img { width: 120px; height: 120px; object-fit: contain; flex: none; }
+  .ge-eye-head p { margin: 0; color: var(--text-primary); line-height: 1.6; }
+
+  .ge-mastery { background: var(--bg-surface); border-radius: 14px; padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+  .ge-mastery-key { display: flex; gap: var(--space-4); color: var(--text-secondary); font-size: 0.85rem; margin-bottom: var(--space-2); }
+  .ge-mastery-key i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; }
+  .ge-mastery-row { display: flex; align-items: center; gap: var(--space-3); }
+  .ge-mastery-row strong { width: 48px; color: var(--text-bright); flex: none; }
+  .ge-mastery-row small { width: 90px; text-align: right; color: var(--text-secondary); flex: none; font-variant-numeric: tabular-nums; }
+
+  .ge-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+  .ge-item { display: flex; gap: var(--space-4); background: var(--bg-surface); border-radius: 14px; padding: var(--space-4); align-items: flex-start; }
+  .ge-item img { width: 64px; height: 64px; object-fit: contain; flex: none; }
+  .ge-item h3 { margin: 0 0 4px; color: var(--text-bright); font-size: 1.1rem; }
+  .ge-item p { margin: 0 0 4px; color: var(--text-primary); line-height: 1.5; font-size: 0.95rem; }
+  .ge-item small { color: var(--text-secondary); }
+
+  .ge-shop { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-4); }
+  .ge-shop-main { display: flex; gap: var(--space-5); align-items: center; background: var(--bg-surface); border-radius: 14px; padding: var(--space-5); }
+  .ge-shop-main img { width: 150px; height: 150px; object-fit: contain; flex: none; }
+  .ge-shop-main h3 { margin: 0 0 var(--space-2); color: var(--text-bright); font-size: 1.5rem; }
+  .ge-shop-main p { margin: 0; color: var(--text-primary); line-height: 1.55; }
+  .ge-shop-side { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ge-shop-side > div { background: var(--bg-surface); border-radius: 12px; padding: var(--space-4); display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .ge-shop-side strong { color: var(--text-bright); }
+  .ge-shop-side span { color: var(--text-primary); font-size: 0.95rem; }
+  .ge-order { margin: var(--space-4) 0 0; padding-left: 1.4rem; color: var(--text-primary); line-height: 1.7; }
+
+  .ge-strategy { list-style: none; counter-reset: ge; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .ge-strategy li { counter-increment: ge; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-4); align-items: start; background: var(--bg-surface); border-radius: 14px; padding: var(--space-5); }
+  .ge-strategy-body { min-width: 0; }
+  .ge-strategy li::before { content: counter(ge); font-size: 2.5rem; font-weight: 800; line-height: 1; color: var(--accent-gold-light); }
+  .ge-strategy strong { display: block; color: var(--text-bright); font-size: 1.2rem; margin-bottom: 4px; }
+  .ge-strategy p { margin: 0; color: var(--text-primary); line-height: 1.55; }
+
+  @media (max-width: 860px) {
+    .ge-flow { grid-template-columns: repeat(2, 1fr); }
+    .ge-rooms, .ge-buildings, .ge-items, .ge-shop { grid-template-columns: 1fr; }
+    .ge-tiers { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .ge-flow { grid-template-columns: 1fr; }
+    .ge-eye-head, .ge-shop-main { flex-direction: column; align-items: flex-start; }
+    .ge-strategy li { grid-template-columns: 36px minmax(0, 1fr); }
+    .ge-strategy li::before { font-size: 1.75rem; }
+    .ge-mastery-row small { display: none; }
+    .ge-reset { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ge-cell, .ge-cell img { transition: none; }
+  }
+</style>

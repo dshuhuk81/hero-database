@@ -80,6 +80,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
   },
   {
+    label: "Goldeneye Event",
+    href: "/guides/goldeneye",
+    group: "learn",
+    sidebar: false,
+    description: {
+      en: "Artifact crafting, arena rooms, building upgrades and the best event strategy",
+      de: "Artefakt-Crafting, Arena-Räume, Gebäude-Upgrades und die beste Event-Strategie",
+      es: "Creación de artefactos, salas de arena, mejoras de edificios y la mejor estrategia",
+      ru: "Создание артефактов, арены, улучшения построек и лучшая стратегия события",
+      zh: "宝具制作、竞技场房间、建筑升级与最佳活动策略",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-11-14" },
+    icon: `<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>`,
+  },
+  {
     label: "Divine Throne",
     href: "/guides/divine-throne",
     group: "learn",

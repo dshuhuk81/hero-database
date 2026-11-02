@@ -1,5 +1,5 @@
 {
-  "_comment": "Battle skill and buff ids are <heroId><slot><level>[<n>] (e.g. 401424 = hero 4014, slot 2, level 4; buff 40142301 = slot 2). Slots are the client's hero_detail skill keys (5 = basic attack, 6 = relic) and do not follow the site's skill_1..4 order, so each hero is mapped from battle evidence.",
+  "_comment": "Battle skill and buff ids are <heroId><slot><level>[<n>] (e.g. 401424 = hero 4014, slot 2, level 4; buff 40142301 = slot 2). Slots are the client's hero_detail skill keys (5 = basic attack, 6 = relic) and do not follow the site's skill_1..4 order, so each hero is mapped from battle evidence. 7-digit ids are <heroId><form><slot><level> for an alternate form.",
   "4014": {
     "hero": "charon",
     "slots": {
@@ -11,5 +11,23 @@
       "6": "Relic"
     },
     "evidence": "fights 2026-10-30 Odyssey 50-42: slot 2 fires once at ~3 s and buffs the back-line enemies; slot 1 starts only at full Energy and repeats; slot 3 hits the approaching melee enemy; slot 4 is a self buff refreshed on every slot-1 start."
+  },
+  "5011": {
+    "hero": "nidhogg",
+    "slots": {
+      "1": "Black Dragon Form",
+      "2": "Root-Scorching Dragon Flame",
+      "3": "Abyssal Dragon Surge",
+      "4": "End-Time Dragon Might",
+      "5": "Basic attack",
+      "6": "Relic"
+    },
+    "form_slots": {
+      "2": "Dragon Flame (dragon form)",
+      "3": "Abyssal Dragon Surge (dragon form)",
+      "4": "Dragon form slot 4",
+      "5": "Basic attack (dragon form)"
+    },
+    "evidence": "session 2026-11-02, 19 fights: slot 1 is the Energy skill (~13 s) that removes Nidhogg and spawns H_NiDeHuoGe_HL with the relic shield (slot 6); slot 2 debuffs enemies early (~2-3 s); slot 3 is cast in human form at fight start, so it is the active Abyssal Dragon Surge, not the dragon-form passive. Slot 4 never appears in human form (expected for the passive End-Time Dragon Might) - inferred, not observed. Dragon-form slot 4 (5011144) applies a 5 s silence and a 3 s Imprison once per transformation, which matches the Black Dragon Form entry silence rather than the passive's 2.5 s Terror; label left neutral."
   }
 }

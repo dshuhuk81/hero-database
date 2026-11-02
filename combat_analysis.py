@@ -89,8 +89,14 @@ def skill_label(value: Any) -> str:
     text = str(value)
     # Buff ids reuse other slots (Charon's relic applies 40142101), so only
     # 6-digit skill ids are named.
+    hero = SKILL_LABELS.get(text[:4]) or {}
+    if text.isdigit() and len(text) == 7:
+        # <heroId><form><slot><level>: skills of an alternate form (Nidhogg's dragon).
+        name = (hero.get("form_slots") or {}).get(text[5])
+        if name:
+            return f"{name} ({text})"
     if text.isdigit() and len(text) == 6:
-        name = ((SKILL_LABELS.get(text[:4]) or {}).get("slots") or {}).get(text[4])
+        name = (hero.get("slots") or {}).get(text[4])
         if name:
             return f"{name} ({text})"
     return text
@@ -978,10 +984,14 @@ def _fight_mechanics(folder: Path, runtime: str, camp: str) -> dict[str, Any] | 
     one = number(meta.get("fixed_point_one"))
     rows = descale(raw, one) if one else raw
     rows.sort(key=stamp)
-    hero_rows = [row for row in rows if row.get("kind") == "PLAYER_SKILL" and row.get("hero") == runtime and str(row.get("camp")) == camp]
+    # Forms and summons of the hero (e.g. Nidhogg's dragon H_NiDeHuoGe_HL) count as the hero.
+    def own(hero: Any) -> bool:
+        return hero == runtime or str(hero).startswith(runtime + "_")
+    hero_rows = [row for row in rows if row.get("kind") == "PLAYER_SKILL" and own(row.get("hero")) and str(row.get("camp")) == camp]
     if not hero_rows:
         return None
-    me = str(hero_rows[0].get("instance"))
+    me = str(next((row for row in hero_rows if row.get("hero") == runtime), hero_rows[0]).get("instance"))
+    mine = {str(row.get("instance")) for row in hero_rows}
     end_ms = next((stamp(row) for row in rows if row.get("kind") == "BATTLE_END"), max(stamp(row) for row in rows))
     deaths = {str(row.get("instance")): stamp(row) for row in rows if row.get("kind") == "PLAYER_DEAD"}
     enemies = set()
@@ -1003,7 +1013,7 @@ def _fight_mechanics(folder: Path, runtime: str, camp: str) -> dict[str, Any] | 
                     break
 
     applied = dedupe_events(
-        (row for row in rows if row.get("kind") == "BUFF_ADD" and row.get("src_instance") == me),
+        (row for row in rows if row.get("kind") == "BUFF_ADD" and row.get("src_instance") in mine),
         ("ms", "id", "dst_instance"),
     )
     removed = [row for row in rows if row.get("kind") == "BUFF_REMOVE" and "_isDestroyed:true" not in str(row.get("buff_state"))]
@@ -1052,7 +1062,7 @@ def _fight_mechanics(folder: Path, runtime: str, camp: str) -> dict[str, Any] | 
         "folder": folder.name, "result": battle.get("result") or (meta.get("experiment") or {}).get("result", "unknown"),
         "stage": battle.get("param") or (meta.get("experiment") or {}).get("stage", "?"),
         "seconds": end_ms / 1000, "death": death / 1000 if death is not None else None,
-        "damage_share": team_damage.get(me, 0.0) / total if total else None,
+        "damage_share": sum(team_damage.get(i, 0.0) for i in mine) / total if total else None,
         "casts": casts, "chains": _cast_chains(casts), "buffs": buffs, "energy_gained": gained, "energy_full": full_at / 1000 if full_at is not None else None,
         "last_hits": [(stamp(r) / 1000, r.get("src"), number(r.get("hp_lost"))) for r in taken if death is not None and death - 3000 <= stamp(r) <= death],
     }
@@ -1097,7 +1107,9 @@ def hero_report(folders: Iterable[str | Path], runtime: str, camp: str = "1") ->
               "| Fight | Skill | Started (s) | Lasted (s) | Casts merged | Ended by |", "|---|---|---:|---:|---:|---|"]
     for f in fights:
         for chain in f["chains"]:
-            if chain["casts"] < 2:
+            text = str(chain["skill"])
+            basic_attack = text.isdigit() and len(text) in (6, 7) and text[len(text) - 2] == "5"
+            if chain["casts"] < 2 or basic_attack:
                 continue
             end = chain["end"]
             if end is None:
