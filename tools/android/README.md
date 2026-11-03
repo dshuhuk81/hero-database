@@ -15,7 +15,16 @@ Python dependencies: `requirements.txt` (a Python 3.9 venv is what ran so far).
 tools/android/run.sh <script> [args]     # runs from $ANDROID_DATA_DIR so relative out/ paths work
 ```
 
-## Refresh the site data (full flow)
+## Refresh events and release dates (one command)
+With both clients running in the emulator (open Global once and visit the lobby):
+```bash
+tools/android/refresh-events.sh
+```
+It pulls into `out/emu_pull/<today>`, unpacks the config, exports, and runs `npm run import:game-data`. Events that are new
+in the committed file get `firstSeen`; the events page shows a "New" pill on them for 7 days. Then `npm run build` and commit `src/data/generated/`.
+Hero art still needs the manual steps below.
+
+## Refresh the site data (full flow, step by step)
 Needs the emulator with the Global client: `tools/android/run.sh restart_emulator.sh --launch global`, then open the game
 once and visit the lobby so it downloads its current resources.
 

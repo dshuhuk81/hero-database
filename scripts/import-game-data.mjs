@@ -39,6 +39,28 @@ if (errors.length) {
   process.exit(1);
 }
 
+// Events that are not in the committed file yet get "firstSeen"; the events page shows a "new" pill for a few days.
+// Known events keep their date. Without a committed file (first import) nothing is flagged.
+const previousFile = join(OUT, "events.global.json");
+if (existsSync(previousFile)) {
+  const previous = new Map(JSON.parse(readFileSync(previousFile, "utf-8")).events.map((event) => [event.id, event]));
+  const today = events.generatedAt.slice(0, 10);
+  const added = [];
+  for (const event of events.events) {
+    const known = previous.get(event.id);
+    if (known?.firstSeen) event.firstSeen = known.firstSeen;
+    else if (!known) {
+      event.firstSeen = today;
+      added.push(event);
+    }
+  }
+  for (const event of added) console.log(`new event: ${event.id} ${event.label} (${event.start} - ${event.end})`);
+  console.log(`${added.length} new event(s)`);
+}
+
 mkdirSync(OUT, { recursive: true });
-for (const file of FILES) writeFileSync(join(OUT, file), JSON.stringify(read(file), null, 2) + "\n");
+for (const file of FILES) {
+  const data = file === "events.global.json" ? events : read(file);
+  writeFileSync(join(OUT, file), JSON.stringify(data, null, 2) + "\n");
+}
 console.log(`Imported ${heroes.heroes.length} heroes and ${events.events.length} events from ${FROM}`);

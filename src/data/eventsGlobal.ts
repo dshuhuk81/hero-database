@@ -13,6 +13,8 @@ export interface GlobalEvent {
   start: string;
   end: string;
   category: GlobalEventCategory;
+  /** Date the import first saw this event; the page shows a "new" pill for a few days. */
+  firstSeen?: string;
   /** Game id of the featured hero, if any. */
   heroGameId?: number;
   /** Display name of the featured hero, resolved from heroGameId. */

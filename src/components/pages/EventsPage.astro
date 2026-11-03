@@ -45,6 +45,7 @@ const scriptCopy = {
   ends: L("Ends", "Ende", "Fin", "Конец", "结束"),
   duration: L("Duration", "Dauer", "Duración", "Длительность", "时长"),
   days: L("{n} days", "{n} Tage", "{n} días", "{n} дн.", "{n}天"),
+  isNew: L("New", "Neu", "Nuevo", "Новое", "新"),
   derived: L("Name derived from game data", "Name aus Spieldaten abgeleitet", "Nombre derivado de los datos del juego", "Название выведено из данных игры", "名称根据游戏数据推导"),
   viewTimeline: L("Timeline", "Zeitachse", "Cronología", "Шкала", "时间轴"),
   viewList: L("List", "Liste", "Lista", "Список", "列表"),
@@ -235,6 +236,9 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         const left = daysUntil(item.start, todayIso);
         return left === 1 ? copy.startsTomorrow : fill(copy.startsIn, left);
       };
+      const newDays = 7;
+      const isNew = (item) => Boolean(item.firstSeen) && daysUntil(todayIso, item.firstSeen) <= newDays && daysUntil(todayIso, item.firstSeen) >= 0;
+      const newPill = (item) => (isNew(item) ? `<em class="new-pill">${escapeHtml(copy.isNew)}</em>` : "");
       const heroImg = (item) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" />` : "");
       function watchBrokenHeroImages(scope) {
         scope.querySelectorAll("img.event-hero").forEach((img) => {
@@ -246,7 +250,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         if (!(dialog instanceof HTMLDialogElement)) return;
         dialog.dataset.category = item.category;
         dialog.querySelector("[data-dialog-category]").textContent = categoryLabel(item.category);
-        dialog.querySelector("[data-dialog-title]").textContent = item.label;
+        dialog.querySelector("[data-dialog-title]").innerHTML = `${escapeHtml(item.label)} ${newPill(item)}`;
         dialog.querySelector("[data-dialog-family]").textContent = item.hero || item.family;
         dialog.querySelector("[data-dialog-derived]").hidden = !item.derivedLabel;
         const long = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
@@ -298,7 +302,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       }
 
       function renderRightNow() {
-        const row = (item, meta) => `<li><button type="button" class="right-now-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(meta)}</small></button></li>`;
+        const row = (item, meta) => `<li><button type="button" class="right-now-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<strong>${escapeHtml(item.label)}</strong>${newPill(item)}<small>${escapeHtml(meta)}</small></button></li>`;
         const running = runningEvents(events, todayIso).slice(0, 6);
         const upcoming = upcomingEvents(events, todayIso, 4);
         runningList.innerHTML = running.length ? running.map((item) => row(item, endsText(item))).join("") : `<li class="right-now-empty">${escapeHtml(copy.nothingRunning)}</li>`;
@@ -342,7 +346,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
             const badge = !clippedEnd && left >= 0 && left <= 3 && durationDays(item) > 3 ? `<small class="calendar-event-badge">${escapeHtml(endsText(item))}</small>` : "";
             const narrow = span * dayWidth < 90;
             const classes = ["calendar-event", clippedStart && "is-clipped-start", clippedEnd && "is-clipped-end", item.series === "rerun_card_push" && "is-rerun", narrow && "is-narrow"].filter(Boolean).join(" ");
-            html += `<button type="button" class="${classes}" data-event-id="${item.id}" style="grid-column:${startOffset + 1} / span ${span};grid-row:${item.lane + 1}" aria-label="${escapeHtml(item.label)} · ${item.start} – ${item.end}">${heroImg(item)}<span>${escapeHtml(item.label)}</span>${badge}</button>`;
+            html += `<button type="button" class="${classes}" data-event-id="${item.id}" style="grid-column:${startOffset + 1} / span ${span};grid-row:${item.lane + 1}" aria-label="${escapeHtml(item.label)} · ${item.start} – ${item.end}">${heroImg(item)}<span>${escapeHtml(item.label)}</span>${newPill(item)}${badge}</button>`;
           });
           html += "</div></section>";
         });
@@ -359,7 +363,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         });
         agenda.innerHTML = [...groups.entries()].map(([key, items]) => {
           const title = key === "ongoing" ? copy.ongoing : formatDate(parseDate(key), { weekday: "short", day: "numeric", month: "short" });
-          const rows = items.map((item) => `<li><button type="button" class="agenda-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<span class="agenda-text"><strong>${escapeHtml(item.label)}</strong><small>${escapeHtml(formatDate(parseDate(item.start), { day: "numeric", month: "short" }))} – ${escapeHtml(formatDate(parseDate(item.end), { day: "numeric", month: "short" }))}</small></span></button></li>`).join("");
+          const rows = items.map((item) => `<li><button type="button" class="agenda-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<span class="agenda-text"><strong>${escapeHtml(item.label)}${newPill(item)}</strong><small>${escapeHtml(formatDate(parseDate(item.start), { day: "numeric", month: "short" }))} – ${escapeHtml(formatDate(parseDate(item.end), { day: "numeric", month: "short" }))}</small></span></button></li>`).join("");
           return `<section class="agenda-group"><h3>${escapeHtml(title)}</h3><ul>${rows}</ul></section>`;
         }).join("");
         bindEventButtons(agenda);
