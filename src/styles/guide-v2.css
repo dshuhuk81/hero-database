@@ -162,9 +162,6 @@
 .gx-sum { display: grid; gap: 2px; min-width: 0; }
 .gx-sum small { font-size: var(--text-sm); font-weight: var(--weight-normal); color: var(--gx-muted); line-height: var(--leading-snug); }
 .gx-acc--stack { margin-top: var(--space-4); }
-.gx-legend { margin-top: var(--space-3); }
-.gx-legend-list { list-style: none; margin: 0; padding: 0 var(--space-4) var(--space-4); display: grid; gap: var(--space-2); }
-.gx-legend-list li { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: var(--space-3); align-items: center; font-size: var(--text-sm); color: var(--text-secondary); }
 .gx-bottom-title { margin: var(--space-8) 0 var(--space-3); font-size: var(--text-xl); color: var(--text-bright); }
 .gx-badge-link { text-decoration: none; }
 
