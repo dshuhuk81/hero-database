@@ -1,0 +1,31 @@
+---
+import EvidenceBadge from "./EvidenceBadge.astro";
+
+interface Step {
+  title: string;
+  text: string;
+  icon?: string;
+  status?: "confirmed" | "observed" | "community" | "interpretation" | "untested";
+}
+interface Props {
+  steps: Step[];
+  exit?: string;
+}
+const { steps, exit } = Astro.props;
+---
+<ol class="gx-flow">
+  {steps.map((step, i) => (
+    <li class="gx-flow-step">
+      <div class="gx-flow-top">
+        {step.icon && <div class="gx-flow-icon" style={`background-image: url('${step.icon}');`} role="img" aria-label={step.title}></div>}
+        <div>
+          <span class="gx-flow-n">Step {i + 1}</span>
+          <span class="gx-flow-title">{step.title}</span>
+        </div>
+      </div>
+      <p class="gx-flow-text">{step.text}</p>
+      {step.status && <EvidenceBadge status={step.status} />}
+    </li>
+  ))}
+</ol>
+{exit && <p class="gx-flow-exit">{exit}</p>}

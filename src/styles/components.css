@@ -2631,11 +2631,11 @@ button.content-list-item:hover .content-list-item-action {
   /* Sits below the .guide-back pill (33.5px tall at top: space-4). */
   top: calc(var(--space-4) + 44px);
   left: var(--space-6);
-  font-size: 0.65rem;
+  font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   z-index: 2;
 }
 
@@ -6046,8 +6046,8 @@ button.content-list-item:hover .content-list-item-action {
 
 .guide-page-footer {
   text-align: center;
-  font-size: 0.78rem;
-  color: var(--text-disabled);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
   font-style: italic;
   padding: var(--space-8) 0 var(--space-16);
 }

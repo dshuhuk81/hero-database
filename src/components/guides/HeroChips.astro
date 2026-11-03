@@ -1,0 +1,16 @@
+---
+// Row of hero portraits with names (thumbnails from R2).
+interface Props {
+  heroes: Array<{ id: string; name: string }>;
+}
+const { heroes } = Astro.props;
+const R2 = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+---
+<ul class="gx-heroes">
+  {heroes.map((h) => (
+    <li class="gx-hero">
+      <img src={`${R2}/heroes/thumbs/${h.id}-96.webp`} alt="" width="48" height="48" loading="lazy" />
+      <span>{h.name}</span>
+    </li>
+  ))}
+</ul>

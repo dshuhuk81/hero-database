@@ -1,0 +1,431 @@
+---
+export const prerender = true;
+import "../../styles/tokens.css";
+import nidhogg from "../../data/heroes/nidhogg.json";
+import db from "../../data/all_heroes_db.json";
+
+// Wireframe only: real Nidhogg data, grey styling, tokens only. Not linked anywhere.
+
+type Evidence = "confirmed" | "observed" | "community" | "untested";
+const EVIDENCE_LABEL: Record<Evidence, string> = {
+  confirmed: "Confirmed",
+  observed: "Observed",
+  community: "Community",
+  untested: "Untested",
+};
+
+const skillById = Object.fromEntries(nidhogg.skills.map((s) => [s.id, s]));
+const relic = nidhogg.relic;
+
+// ---- 01 verdict (text is a starting draft, built only from guide/JSON claims)
+const verdict =
+  "Nidhogg builds Energy as a human, then becomes a separate Dark Dragon with AoE damage, armor shred and True DMG. " +
+  "Everything strong in his kit needs the dragon alive. In our fights the transform came about 13-16 s in, and the dragon lived from about 11 s to the whole fight. " +
+  "A widely read TapTap guide rates him lower mid-tier. Low priority if resources are tight.";
+const verdictWords = verdict.split(/\s+/).length;
+
+// ---- 02 modes (one sentence each or Not tested)
+const modes: Array<{ mode: string; text: string; evidence: Evidence | null }> = [
+  { mode: "PvE (longer fights)", text: "The dragon can carry: 87-97% of team damage in good fights.", evidence: "observed" },
+  { mode: "Boss", text: "Depends on the matchup: dragon lived about 44 s in World Boss, about 11-12 s in Tower 721.", evidence: "observed" },
+  { mode: "Campaign", text: "Not tested.", evidence: null },
+  { mode: "PvP", text: "Not tested. Silence, shield and Control immunity exist on paper, no match data.", evidence: null },
+];
+
+// ---- 03 relic breakpoints from relic.upgrades (unlock), recommendedRelicLevel (target)
+const breakpoints = [
+  { lvl: "Base", text: relic.description, ev: "confirmed" as Evidence },
+  { lvl: "Lv2", text: relic.upgrades.level2, ev: "confirmed" as Evidence },
+  { lvl: "Lv3", text: relic.upgrades.level3, ev: "confirmed" as Evidence },
+  { lvl: "Lv4", text: relic.upgrades.level4, ev: "confirmed" as Evidence },
+];
+
+// ---- 04 mechanic steps
+const steps = [
+  { n: "1", title: "Build Energy", text: "Human form. Armor and M-RES shred already works.", ev: "confirmed" as Evidence },
+  { n: "2", title: "Transform", text: "Energy full: 400% ATK to all enemies (up to 600% at Lv3) and 5 s Silence.", ev: "confirmed" as Evidence },
+  { n: "3", title: "Hold Dragon Form", text: "Energy drains. Ends when Energy is empty or the dragon dies.", ev: "confirmed" as Evidence },
+];
+
+// ---- 05 testing accordion
+const tests: Array<{ title: string; ev: Evidence; text: string }> = [
+  { title: "Transform timing", ev: "observed", text: "About 13-16 s into the fight. Fights under about 12 s sometimes ended without a transform." },
+  { title: "Dragon lifetime", ev: "observed", text: "Tower 721: about 11-12 s. World Boss: about 44 s. Some Odyssey and Alliance Boss fights: until the end." },
+  { title: "After the dragon dies", ev: "observed", text: "In every Tower 721 loss the human died 1.1-5.6 s after the last dragon fell." },
+  { title: "Team damage share", ev: "observed", text: "87-97% in good fights. Close to irrelevant without a transform or with an early dragon death." },
+  { title: "Community rating", ev: "community", text: "TapTap guide, updated 12 Aug 2026: lower mid-tier, few use cases, skip on tight resources." },
+  { title: "Open questions", ev: "untested", text: "PvP. Divine rank effects. Whether ally shields and heals reach the dragon. Whether Energy support moves the transform. Whether Dragon's Wrath and the +15% windows stack additively or multiplicatively." },
+];
+
+// ---- Hero Database side
+const prettyTag = (tag: string) =>
+  tag.replace(/^(TEAM|SELF|ENEMY|PLAYSTYLE)_/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+const brings = [...new Set(nidhogg.synergies.map(prettyTag))];
+
+const summaries: Record<string, string> = {
+  skill_1: "Becomes a separate dragon unit that drains Energy; the core of the kit.",
+  skill_2: "Armor and M-RES shred; in dragon form adds a burn.",
+  skill_3: "Dragon form only: hits and terrorizes anything within 3 m.",
+  skill_4: "Knockdown; at Lv3 enemies hit in dragon form take 15% more DMG.",
+};
+
+// Stat ranks within the comparable roster (same logic as heroes/[id].astro)
+const allHeroes: any[] = Array.isArray(db) ? db : ((db as any).heroes ?? Object.values(db as any));
+const roster = allHeroes.filter((h) => h && h.rarity !== "Common" && h.stats && h.stats.hp);
+const statLabels: Record<string, string> = { hp: "Health", atk: "Attack", armor: "Armor", magicRes: "Magic Res", might: "Might" };
+const ranked = Object.keys(statLabels)
+  .map((key) => {
+    const value = Number((nidhogg.stats as any)[key]) || 0;
+    const sorted = roster.map((h) => Number(h.stats?.[key]) || 0).filter((v) => v > 0).sort((a, b) => b - a);
+    const rank = sorted.findIndex((v) => v <= value) + 1;
+    return { key, label: statLabels[key], value, rank, total: sorted.length };
+  })
+  .sort((a, b) => a.rank - b.rank);
+const best = ranked[0];
+const worst = ranked[ranked.length - 1];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Guide Wireframe - Nidhogg</title>
+  </head>
+  <body>
+    <header class="wf-top">
+      <p class="wf-kicker">Wireframe - not final visual design</p>
+      <h1>Hero Guide + Hero Database, Nidhogg</h1>
+      <nav class="wf-jump"><a href="#guide">A. Hero Guide</a><a href="#database">B. Hero Database</a></nav>
+      <p class="wf-legend">
+        Evidence:
+        <span class="ev ev-confirmed">Confirmed</span>
+        <span class="ev ev-observed">Observed</span>
+        <span class="ev ev-community">Community</span>
+        <span class="ev ev-untested">Untested</span>
+      </p>
+    </header>
+
+    <!-- =============================================================== A. GUIDE -->
+    <main id="guide" class="frame">
+      <p class="frame-label">A. Hero Guide - guides/nidhogg</p>
+
+      <div class="page-head">
+        <a class="back" href="#guide">&larr; Guides</a>
+        <h2 class="h-name">Nidhogg</h2>
+        <p class="meta">{nidhogg.faction} &middot; {nidhogg.class} &middot; {nidhogg.rarity}</p>
+        <p class="link-row"><a href="#database">Full skill text and stats &rarr; Hero Database</a></p>
+      </div>
+
+      <nav class="sec-nav" aria-label="Sections">
+        <a href="#g1">01 Verdict</a><a href="#g2">02 Modes</a><a href="#g3">03 Build</a><a href="#g4">04 Mechanic</a><a href="#g5">05 Tests</a>
+      </nav>
+
+      <section id="g1" class="sec">
+        <p class="sec-kicker">01 - Should I build him?</p>
+        <h3>Verdict &amp; Investment</h3>
+        <div class="card card-strong">
+          <p class="verdict-line">Situational. Strong while the dragon lives.</p>
+          <p class="body">{verdict}</p>
+          <p class="wordcount">{verdictWords} words (target 60-100)</p>
+        </div>
+        <div class="quick">
+          <div><span>Role</span><strong>Physical AoE carry (transformation)</strong></div>
+          <div><span>Core resource</span><strong>Dragon uptime</strong></div>
+          <div><span>Investment</span><strong>Low on tight resources</strong><em class="ev ev-community">Community</em></div>
+          <div><span>Our rating</span><strong>No rating yet</strong></div>
+        </div>
+        <p class="confidence"><strong>Confidence:</strong> mechanics Confirmed, performance Observed in few fights, PvP and Campaign Not tested.</p>
+      </section>
+
+      <section id="g2" class="sec">
+        <p class="sec-kicker">02 - Which mode?</p>
+        <h3>Where he works</h3>
+        <ul class="rows">
+          {modes.map((m) => (
+            <li class="row">
+              <strong>{m.mode}</strong>
+              <p>{m.text}</p>
+              <span class={`ev ev-${m.evidence ?? "untested"}`}>{m.evidence ? EVIDENCE_LABEL[m.evidence] : "Not tested"}</span>
+              {m.evidence === "observed" && <em class="ng">not guaranteed</em>}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="g3" class="sec">
+        <p class="sec-kicker">03 - What do I invest?</p>
+        <h3>Build &amp; Investment</h3>
+
+        <div class="three">
+          <div class="card"><span class="lbl">Relic unlocks</span><strong>Lv3 stun, Lv4 60% True DMG</strong><em class="ev ev-confirmed">Confirmed</em></div>
+          <div class="card"><span class="lbl">Target level</span><strong>Relic {nidhogg.recommendedRelicLevel}</strong><em class="ev ev-untested">Data field, source not stated</em></div>
+          <div class="card"><span class="lbl">Priority</span><strong>Low</strong><em class="ev ev-community">Community</em></div>
+        </div>
+        <p class="note">Unlock, target and priority are three different facts. The data does not say at which Relic level Lv3 and Lv4 unlock.</p>
+
+        <h4>Relic breakpoints</h4>
+        <ul class="rows">
+          {breakpoints.map((b) => (
+            <li class="row">
+              <strong>{b.lvl}</strong>
+              <p>{b.text}</p>
+              <span class={`ev ev-${b.ev}`}>{EVIDENCE_LABEL[b.ev]}</span>
+            </li>
+          ))}
+        </ul>
+
+        <h4>Stats and position</h4>
+        <ul class="rows">
+          <li class="row"><strong>ATK</strong><p>Scales all four skills. ATK SPD, Max HP and Energy tie to Dragon's True Form.</p><span class="ev ev-confirmed">Confirmed</span></li>
+          <li class="row"><strong>Armor</strong><p>Matters less for dragon output: 40% of damage is True DMG, 60% with Relic Lv4.</p><span class="ev ev-confirmed">Confirmed</span></li>
+          <li class="row"><strong>Position</strong><p>Protected mid or backline while Energy builds. Derived from skill text.</p><span class="ev ev-untested">Untested</span></li>
+        </ul>
+
+        <h4>Team</h4>
+        <p class="notice">No confirmed teammates yet. Next test: Energy support combined with dragon survivability.</p>
+      </section>
+
+      <section id="g4" class="sec">
+        <p class="sec-kicker">04 - How does he work?</p>
+        <h3>How he works</h3>
+        <ol class="flow">
+          {steps.map((s, i) => (
+            <li class="flow-step">
+              <span class="flow-n">{s.n}</span>
+              <strong>{s.title}</strong>
+              <p>{s.text}</p>
+              <span class={`ev ev-${s.ev}`}>{EVIDENCE_LABEL[s.ev]}</span>
+              {i < steps.length - 1 && <span class="flow-arrow" aria-hidden="true">&rarr;</span>}
+            </li>
+          ))}
+        </ol>
+        <p class="flow-return">Energy empty or dragon dies: human form returns.</p>
+      </section>
+
+      <section id="g5" class="sec">
+        <p class="sec-kicker">05 - How sure is this?</p>
+        <h3>Testing &amp; Details</h3>
+        <div class="acc">
+          {tests.map((t, i) => (
+            <details open={i === 0}>
+              <summary><span>{t.title}</span><span class={`ev ev-${t.ev}`}>{EVIDENCE_LABEL[t.ev]}</span></summary>
+              <p>{t.text}{t.ev === "observed" && " Observed, not guaranteed."}</p>
+            </details>
+          ))}
+        </div>
+        <p class="link-row"><a href="#database">Skill texts and upgrade tables &rarr; Hero Database</a></p>
+      </section>
+    </main>
+
+    <!-- =========================================================== B. DATABASE -->
+    <main id="database" class="frame">
+      <p class="frame-label">B. Hero Database - heroes/nidhogg</p>
+
+      <div class="page-head">
+        <a class="back" href="#database">&larr; All Heroes</a>
+        <h2 class="h-name">Nidhogg</h2>
+        <p class="meta">{nidhogg.faction} &middot; {nidhogg.class} &middot; {nidhogg.role} &middot; {nidhogg.rarity} &middot; {nidhogg.evolution} &middot; Lv. {nidhogg.level}</p>
+        <p class="meta">Might {Number(nidhogg.stats.might).toLocaleString("en-US")}</p>
+        <p class="note">Rating badge hidden: no rating exists yet.</p>
+      </div>
+
+      <section class="sec">
+        <p class="sec-kicker">Verdict</p>
+        <div class="card card-strong">
+          <p class="verdict-line">Situational. Strong while the dragon lives.</p>
+          <p class="body">Transformation Archer. No rating yet. Low priority on tight resources (community).</p>
+          <p class="link-row"><a href="#guide">Read the full guide &rarr;</a></p>
+        </div>
+      </section>
+
+      <section class="sec">
+        <p class="sec-kicker">Core mechanic</p>
+        <div class="card"><p class="body">{nidhogg.coreMechanic.summary}</p></div>
+        <p class="brings"><strong>Brings:</strong> {brings.join(", ")}.</p>
+      </section>
+
+      <section class="sec">
+        <p class="sec-kicker">Skills</p>
+        <h3>Skills</h3>
+        <div class="acc">
+          {nidhogg.skills.map((s) => (
+            <details>
+              <summary>
+                <span class="sk-name"><strong>{s.name}</strong>{(s as any).isUltimate && <em class="tag">Ultimate</em>}<small>{summaries[s.id]}</small></span>
+              </summary>
+              <p>{s.description}</p>
+              <ul class="up">
+                {Object.entries(s.upgrades).map(([lvl, text]) => (<li><b>{lvl.replace("level", "Lv ")}</b> {text}</li>))}
+              </ul>
+            </details>
+          ))}
+          <details>
+            <summary><span class="sk-name"><strong>{relic.name}</strong><em class="tag">Relic</em><small>Shield on every Ultimate, Control immunity, then stun and True DMG.</small></span></summary>
+            <p>{relic.description}</p>
+            <ul class="up">
+              {Object.entries(relic.upgrades).map(([lvl, text]) => (<li><b>{lvl.replace("level", "Lv ")}</b> {text}</li>))}
+            </ul>
+          </details>
+        </div>
+      </section>
+
+      <section class="sec">
+        <p class="sec-kicker">Stats</p>
+        <h3>Stats</h3>
+        <div class="two">
+          <div class="card card-strong"><span class="lbl">Best</span><strong>{best.label}</strong><p>#{best.rank} of {best.total} - {best.value.toLocaleString("en-US")}</p></div>
+          <div class="card"><span class="lbl">Weakest</span><strong>{worst.label}</strong><p>#{worst.rank} of {worst.total} - {worst.value.toLocaleString("en-US")}</p></div>
+        </div>
+        <details class="all-stats">
+          <summary>All stats</summary>
+          <ul class="up">
+            {ranked.map((r) => (<li><b>{r.label}</b> {r.value.toLocaleString("en-US")} (#{r.rank}/{r.total})</li>))}
+          </ul>
+        </details>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-base);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+  a { color: var(--text-bright); text-underline-offset: 3px; }
+  h1, h2, h3, h4, p, ul, ol { margin: 0; }
+
+  .wf-top { max-width: 1100px; margin: 0 auto; padding: var(--space-6) var(--space-4) var(--space-2); }
+  .wf-top h1 { font-size: var(--text-xl); color: var(--text-bright); margin-top: var(--space-1); }
+  .wf-kicker, .sec-kicker, .frame-label, .lbl {
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    font-weight: var(--weight-bold);
+    color: var(--text-muted);
+  }
+  .wf-jump { display: flex; gap: var(--space-2); margin-top: var(--space-3); flex-wrap: wrap; }
+  .wf-jump a, .sec-nav a {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .wf-legend { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--text-muted); display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+
+  /* Evidence badges: differ by border style, not color */
+  .ev {
+    display: inline-block;
+    padding: 2px var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-2xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-style: normal;
+    white-space: nowrap;
+  }
+  .ev-confirmed { border-style: solid; background: var(--chip-bg-hover); color: var(--text-bright); }
+  .ev-observed { border-style: dashed; }
+  .ev-community { border-style: double; border-width: 3px; padding: 0 var(--space-2); }
+  .ev-untested { border-style: dotted; color: var(--text-muted); }
+  .ng { font-size: var(--text-xs); color: var(--text-muted); font-style: normal; }
+
+  .frame {
+    max-width: 760px;
+    margin: var(--space-6) auto;
+    padding: var(--space-4);
+    border: 1px dashed var(--border-medium);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+  }
+  .frame-label { margin-bottom: var(--space-4); }
+  .page-head { padding-bottom: var(--space-4); border-bottom: 1px solid var(--border-subtle); }
+  .back { font-size: var(--text-sm); color: var(--text-secondary); text-decoration: none; }
+  .h-name { font-size: var(--text-3xl); font-weight: var(--weight-black); text-transform: uppercase; letter-spacing: var(--tracking-tight); color: var(--text-bright); margin-top: var(--space-2); line-height: var(--leading-tight); }
+  .meta { color: var(--text-secondary); font-size: var(--text-sm); margin-top: var(--space-1); }
+  .link-row { margin-top: var(--space-3); font-size: var(--text-sm); }
+
+  .sec-nav { display: flex; gap: var(--space-2); overflow-x: auto; padding: var(--space-3) 0; position: sticky; top: 0; background: var(--bg-surface); z-index: var(--z-raised); scrollbar-width: none; }
+  .sec { padding: var(--space-6) 0 var(--space-2); border-bottom: 1px solid var(--border-faint); }
+  .sec:last-child { border-bottom: 0; }
+  .sec h3 { font-size: var(--text-xl); color: var(--text-bright); margin: var(--space-1) 0 var(--space-3); }
+  .sec h4 { font-size: var(--text-sm); color: var(--text-secondary); margin: var(--space-5) 0 var(--space-2); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+
+  .card { padding: var(--space-4); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); display: grid; gap: var(--space-1); align-content: start; }
+  .card-strong { border-color: var(--border-strong); background: var(--bg-raised); }
+  .card strong { color: var(--text-bright); }
+  .card p { color: var(--text-secondary); font-size: var(--text-sm); }
+  .verdict-line { font-size: var(--text-lg); font-weight: var(--weight-bold); color: var(--text-bright) !important; }
+  .body { color: var(--text-secondary); font-size: var(--text-base); line-height: var(--leading-loose); }
+  .wordcount { font-size: var(--text-xs); color: var(--text-muted) !important; }
+
+  .quick { display: grid; grid-template-columns: 1fr; gap: var(--space-2); margin-top: var(--space-3); }
+  .quick > div { padding: var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); display: grid; gap: 2px; justify-items: start; }
+  .quick span { font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: var(--tracking-widest); color: var(--text-muted); }
+  .quick strong { font-size: var(--text-sm); color: var(--text-bright); }
+  .confidence, .note { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--text-secondary); }
+  .note { color: var(--text-muted); }
+  .notice { padding: var(--space-3) var(--space-4); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); font-size: var(--text-sm); color: var(--text-secondary); }
+
+  .rows { list-style: none; padding: 0; display: grid; gap: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+  .row { display: grid; grid-template-columns: 1fr; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border-faint); justify-items: start; }
+  .row:last-child { border-bottom: 0; }
+  .row strong { color: var(--text-bright); font-size: var(--text-sm); }
+  .row p { color: var(--text-secondary); font-size: var(--text-sm); }
+
+  .three, .two { display: grid; grid-template-columns: 1fr; gap: var(--space-2); }
+  .three .card strong { font-size: var(--text-md); }
+
+  .flow { list-style: none; padding: 0; display: grid; gap: var(--space-2); }
+  .flow-step { position: relative; display: grid; gap: var(--space-1); justify-items: start; padding: var(--space-4); padding-left: var(--space-12); border: 1px solid var(--border-medium); border-radius: var(--radius-md); }
+  .flow-step strong { color: var(--text-bright); }
+  .flow-step p { font-size: var(--text-sm); color: var(--text-secondary); }
+  .flow-n { position: absolute; left: var(--space-4); top: var(--space-4); width: 24px; height: 24px; border: 1px solid var(--border-strong); border-radius: var(--radius-full); display: grid; place-items: center; font-size: var(--text-xs); font-weight: var(--weight-bold); }
+  .flow-arrow { display: none; }
+  .flow-return { margin-top: var(--space-2); padding: var(--space-2) var(--space-4); border: 1px dashed var(--border-medium); border-radius: var(--radius-md); font-size: var(--text-sm); color: var(--text-muted); }
+
+  .acc { display: grid; gap: var(--space-2); }
+  details { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-tint); }
+  summary { list-style: none; cursor: pointer; padding: var(--space-3) var(--space-4); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 44px; color: var(--text-bright); font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--text-muted); font-size: var(--text-lg); }
+  details[open] > summary::after { content: "-"; }
+  summary:has(.ev)::after { display: none; }
+  details > p { padding: 0 var(--space-4) var(--space-4); color: var(--text-secondary); font-size: var(--text-sm); }
+  .sk-name { display: grid; gap: 2px; }
+  .sk-name small { font-weight: var(--weight-normal); color: var(--text-muted); font-size: var(--text-xs); }
+  .tag { font-style: normal; font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--text-muted); }
+  .up { list-style: none; padding: 0 var(--space-4) var(--space-4); display: grid; gap: var(--space-1); font-size: var(--text-xs); color: var(--text-secondary); }
+  .up b { color: var(--text-bright); margin-right: var(--space-1); }
+  .all-stats { margin-top: var(--space-2); }
+  .brings { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--text-secondary); }
+
+  @media (min-width: 768px) {
+    .frame { padding: var(--space-8); }
+    .quick { grid-template-columns: repeat(2, 1fr); }
+    .three { grid-template-columns: repeat(3, 1fr); }
+    .two { grid-template-columns: repeat(2, 1fr); }
+    .row { grid-template-columns: 180px 1fr auto; align-items: start; gap: var(--space-4); }
+    .row .ng { grid-column: 3; }
+    .flow { grid-template-columns: repeat(3, 1fr); }
+    .flow-step { padding-left: var(--space-4); padding-top: var(--space-12); }
+    .flow-arrow { display: block; position: absolute; right: calc(-1 * var(--space-4) - 2px); top: 50%; z-index: var(--z-raised); color: var(--text-muted); background: var(--bg-surface); }
+  }
+  @media (min-width: 1024px) {
+    .frame { max-width: 960px; }
+  }
+</style>

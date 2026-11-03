@@ -1,0 +1,38 @@
+---
+// One square per recorded fight. Filled = he transformed, hollow = he never transformed.
+interface Fight {
+  result: "win" | "loss";
+  transformed: boolean;
+}
+interface Group {
+  label: string;
+  fights: Fight[];
+}
+interface Props {
+  groups: Group[];
+}
+const { groups } = Astro.props;
+const total = groups.reduce((n, g) => n + g.fights.length, 0);
+const wins = groups.reduce((n, g) => n + g.fights.filter((f) => f.result === "win").length, 0);
+---
+<div class="gx-record" role="group" aria-label={`${total} recorded fights, ${wins} wins`}>
+  {groups.map((g) => (
+    <div class="gx-rec-group">
+      <span class="gx-rec-label">{g.label}</span>
+      <span class="gx-rec-dots">
+        {g.fights.map((f) => (
+          <span
+            class={`gx-rec-dot gx-rec-dot--${f.result}${f.transformed ? "" : " gx-rec-dot--none"}`}
+            title={`${f.result === "win" ? "Win" : "Loss"}${f.transformed ? "" : ", no transform"}`}
+          ></span>
+        ))}
+      </span>
+      <span class="gx-rec-count">{g.fights.filter((f) => f.result === "win").length}/{g.fights.length}</span>
+    </div>
+  ))}
+  <p class="gx-rec-legend">
+    <span><i class="gx-rec-dot gx-rec-dot--win"></i>Win</span>
+    <span><i class="gx-rec-dot gx-rec-dot--loss"></i>Loss</span>
+    <span><i class="gx-rec-dot gx-rec-dot--loss gx-rec-dot--none"></i>Never transformed</span>
+  </p>
+</div>

@@ -595,6 +595,83 @@ def _zaojun_analysis(
     }
 
 
+def _owned_by(row: dict[str, Any], prefix: str, runtime: str, targets: set[str]) -> bool:
+    """True for the hero itself and for units it summoned or transformed into.
+
+    Summons and forms (Nidhogg's dragon, Zeus' clones) carry ``<runtime>#<instance>``
+    in their master field, so they count toward the hero even with another name.
+    """
+    if entity(row, prefix) in targets:
+        return True
+    master = str(row.get(f"{prefix}_master" if prefix else "master") or "")
+    return bool(runtime) and master.split("#", 1)[0] == runtime
+
+
+def _median(values: list[float]) -> float | None:
+    values = sorted(values)
+    if not values:
+        return None
+    mid = len(values) // 2
+    return values[mid] if len(values) % 2 else (values[mid - 1] + values[mid]) / 2
+
+
+def _read_config(config_root: Any, name: str) -> dict[str, Any] | None:
+    if not config_root:
+        return None
+    path = Path(config_root) / "battle" / f"{name}.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return {key: value for key, value in data.items() if str(key).isdigit()}
+
+
+def level_suppression(roster: dict[str, dict[str, Any]], camp: str, mode: Any, config_root: Any,
+                      fighting: set[str] | None = None) -> dict[str, Any]:
+    """Level suppression (DamageUtil.getLvPressingDamageCoef) for one fight.
+
+    Only modes with ``lv_pressing = 1`` in battle_mode.json use it (Odyssey, Tower), and
+    only against the player side: lower-level heroes deal less damage, take more damage,
+    and their control effects land less often. The gap uses median hero levels of the
+    units in ``fighting`` (session splits can carry lineups of the previous fight).
+    """
+    def levels(own: bool) -> list[float]:
+        found = []
+        for instance, item in roster.items():
+            level = number((item.get("loadout") or {}).get("level"))
+            if level is None or item.get("hero") == "H_MainPlayer" or level > 100000:
+                continue
+            if fighting is not None and instance not in fighting:
+                continue
+            if (str(item.get("camp")) == str(camp)) == own:
+                found.append(level)
+        return found
+    own_level, enemy_level = _median(levels(True)), _median(levels(False))
+    modes = _read_config(config_root, "battle_mode")
+    table = _read_config(config_root, "lv_pressing")
+    mode_row = (modes or {}).get(str(mode)) if mode not in UNKNOWN else None
+    result: dict[str, Any] = {
+        "mode": mode, "own_level": own_level, "enemy_level": enemy_level,
+        "gap": enemy_level - own_level if own_level is not None and enemy_level is not None else None,
+        "mode_uses_suppression": None if mode_row is None else mode_row.get("lv_pressing") == 1,
+        "active": False, "own_damage_multiplier": 1.0, "enemy_damage_multiplier": 1.0,
+        "enemy_control_resist_add": 0.0, "own_true_damage_multiplier": 1.0,
+    }
+    if not result["mode_uses_suppression"] or not table or not result["gap"] or result["gap"] <= 0:
+        return result
+    gap = int(result["gap"])
+    row = table.get(str(gap)) or max(table.values(), key=lambda item: int(item.get("id", 0)))
+    one = 1024.0
+    result.update({
+        "active": True,
+        "own_damage_multiplier": 1 - (number(row.get("reduce_damage_fix"), 0.0) or 0.0) / one,
+        "enemy_damage_multiplier": 1 + (number(row.get("increase_damage_fix"), 0.0) or 0.0) / one,
+        "enemy_control_resist_add": (number(row.get("increase_antiCtrlRotio_fix"), 0.0) or 0.0) / one,
+        "own_true_damage_multiplier": 1 - (number(row.get("real_reduce_damage_fix"), 0.0) or 0.0) / one,
+    })
+    return result
+
+
 def analyze(
     meta: dict[str, Any], rows: list[dict[str, Any]], camp: str = "1", config_root: Any = None
 ) -> dict[str, Any]:
@@ -621,6 +698,15 @@ def analyze(
     outgoing = [row for row in damage if entity(row, "src") in targets]
     incoming = [row for row in damage if entity(row, "dst") in targets]
     team_damage = [row for row in damage if str(row.get("src_camp")) == str(camp)]
+    owned = [row for row in team_damage if _owned_by(row, "src", runtime, targets)]
+    summon_damage: dict[str, float] = {}
+    for row in owned:
+        if entity(row, "src") not in targets:
+            summon_damage[str(row.get("src"))] = summon_damage.get(str(row.get("src")), 0.0) + (number(row.get("out"), 0.0) or 0.0)
+    # HIT_APPLIED carries the HP the target really lost (after shields and caps).
+    team_hits = [row for row in rows if row.get("kind") == "HIT_APPLIED" and str(row.get("src_camp")) == str(camp)
+                 and str(row.get("dst_camp")) != str(camp)]
+    owned_hits = [row for row in team_hits if _owned_by(row, "src", runtime, targets)]
     energy = [row for row in rows if row.get("kind") == "ENERGY_CHANGE" and entity(row) in targets]
     deaths = [row for row in rows if row.get("kind") == "PLAYER_DEAD" and entity(row) in targets]
     casts = _match_casts(rows, targets, end_ms)
@@ -685,10 +771,19 @@ def analyze(
             "incoming_calculator_damage": sumfield(incoming, "out"),
             "damage_events": len(outgoing),
             "team_damage_share": sumfield(outgoing, "out") / max(1.0, sumfield(team_damage, "out")),
+            "hero_damage_with_summons": sumfield(owned, "out"),
+            "hero_team_share_with_summons": sumfield(owned, "out") / max(1.0, sumfield(team_damage, "out")),
+            "summon_damage": summon_damage,
+            "enemy_hp_lost": sumfield(team_hits, "hp_lost"),
+            "hero_hp_share_with_summons": sumfield(owned_hits, "hp_lost") / sumfield(team_hits, "hp_lost") if team_hits else None,
             "energy_gained": sumfield(energy, "gained"),
             "energy_spent": sumfield(energy, "spent"),
             "deaths": len(deaths),
         },
+        "level_suppression": level_suppression(
+            roster, str(camp), (meta.get("battle") or {}).get("mode"), config_root,
+            # Lineup rows carry no instance, so their roster key is the hero name.
+            {value for row in damage for prefix in ("src", "dst") for value in (entity(row, prefix), str(row.get(prefix)))} or None),
         "skills": by_skill,
         "casts": casts,
         "timeline": _significant_timeline(rows, targets, str(camp)),
@@ -704,6 +799,24 @@ def analyze(
 
 def _cell(value: Any) -> str:
     return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def _share(value: Any) -> str:
+    return "—" if value is None else f"{value:.2%}"
+
+
+def _suppression_text(pressing: dict[str, Any] | None) -> str:
+    if pressing and pressing.get("mode_uses_suppression") is False:
+        return "none (mode has no level suppression)"
+    if not pressing or pressing.get("gap") is None:
+        return "unknown (levels not captured)"
+    levels = f"own {pressing['own_level']:.0f} vs enemy {pressing['enemy_level']:.0f}"
+    if pressing.get("mode_uses_suppression") is None:
+        return f"{levels}; mode config unavailable"
+    if not pressing["active"]:
+        return f"none ({levels}{'' if pressing['mode_uses_suppression'] else ', mode has no suppression'})"
+    return (f"{levels}: own damage ×{pressing['own_damage_multiplier']:.2f}, enemy damage ×{pressing['enemy_damage_multiplier']:.2f}, "
+            f"enemy control resist +{pressing['enemy_control_resist_add']:.0%}")
 
 
 def _format_time(value: Any) -> str:
@@ -732,6 +845,12 @@ def render_markdown(result: dict[str, Any]) -> str:
     lines += ["", "## What happened", "", "| Measure | Observed |", "|---|---:|",
               f"| Calculator damage | {metrics['calculator_damage']:,.0f} |",
               f"| Team damage share | {metrics['team_damage_share']:.2%} |",
+              f"| Calculator damage incl. summons/forms | {metrics['hero_damage_with_summons']:,.0f} |",
+              f"| Team damage share incl. summons/forms | {metrics['hero_team_share_with_summons']:.2%} |",
+              f"| Summon/form damage | {_cell(', '.join(f'{k} {v:,.0f}' for k, v in metrics['summon_damage'].items()) or '—')} |",
+              f"| Enemy HP lost to the team (applied hits) | {metrics['enemy_hp_lost']:,.0f} |",
+              f"| Share of enemy HP lost incl. summons/forms | {_share(metrics['hero_hp_share_with_summons'])} |",
+              f"| Level suppression | {_suppression_text(result.get('level_suppression'))} |",
               f"| Incoming calculator damage | {metrics['incoming_calculator_damage']:,.0f} |",
               f"| Energy gained / spent | {metrics['energy_gained']:,.0f} / {metrics['energy_spent']:,.0f} |",
               f"| Explicit death events | {metrics['deaths']} |", "",
@@ -909,15 +1028,19 @@ def compare(folders: Iterable[str | Path], output: str | Path, camp: str = "1", 
         results.append(rebuild(folder, destination / folder.name, camp, config_root, hero_repo))
     lines = ["# Controlled hero capture comparison", "",
              "Differences are descriptive unless manifests confirm identical stage, opponents, formation, investment, and controls.", "",
-             "| Capture | Variant | Repeat | Mode/stage | Result | Seconds | Damage | Team share | Skill starts | Deaths |",
-             "|---|---|---:|---|---|---:|---:|---:|---:|---:|"]
+             "Damage and shares include the hero's summons and forms; enemy HP lost comes from applied hits.", "",
+             "| Capture | Variant | Repeat | Mode/stage | Result | Seconds | Damage | Team share | Enemy HP lost | Level gap / own damage | Skill starts | Deaths |",
+             "|---|---|---:|---|---|---:|---:|---:|---:|---|---:|---:|"]
     for path, result in zip(paths, results):
         context = result.get("context") or {}
+        metrics = result["metrics"]
+        pressing = result.get("level_suppression") or {}
+        gap = "?" if pressing.get("gap") is None else f"{pressing['gap']:+.0f} / ×{pressing['own_damage_multiplier']:.2f}"
         lines.append(
             f"| {path.name} | {_cell(context.get('variant', 'single'))} | {_cell(context.get('repeat', 1))} | "
             f"{_cell(context.get('stage') or context.get('mode') or 'unspecified')} | {_cell(context.get('result') or 'unknown')} | {result['capture']['observed_seconds']:.3f} | "
-            f"{result['metrics']['calculator_damage']:,.0f} | {result['metrics']['team_damage_share']:.2%} | "
-            f"{sum(item['starts'] for item in result['skills'])} | {result['metrics']['deaths']} |"
+            f"{metrics['hero_damage_with_summons']:,.0f} | {metrics['hero_team_share_with_summons']:.2%} | {metrics['enemy_hp_lost']:,.0f} | {gap} | "
+            f"{sum(item['starts'] for item in result['skills'])} | {metrics['deaths']} |"
         )
     contexts = [result.get("context") or {} for result in results]
     controlled_fields = ("stage", "mode", "opponent", "lineup", "formation", "investment", "automation", "client_build")
@@ -984,14 +1107,19 @@ def _fight_mechanics(folder: Path, runtime: str, camp: str) -> dict[str, Any] | 
     one = number(meta.get("fixed_point_one"))
     rows = descale(raw, one) if one else raw
     rows.sort(key=stamp)
-    # Forms and summons of the hero (e.g. Nidhogg's dragon H_NiDeHuoGe_HL) count as the hero.
-    def own(hero: Any) -> bool:
-        return hero == runtime or str(hero).startswith(runtime + "_")
-    hero_rows = [row for row in rows if row.get("kind") == "PLAYER_SKILL" and own(row.get("hero")) and str(row.get("camp")) == camp]
+    # Forms and summons of the hero (Nidhogg's dragon H_NiDeHuoGe_HL, Zeus' clones
+    # H_ZhouSiFenShen) count as the hero; the master field links clones without a shared prefix.
+    def own(row: dict[str, Any]) -> bool:
+        hero = row.get("hero")
+        return hero == runtime or str(hero).startswith(runtime + "_") or str(row.get("master") or "").split("#", 1)[0] == runtime
+    hero_rows = [row for row in rows if row.get("kind") == "PLAYER_SKILL" and own(row) and str(row.get("camp")) == camp]
     if not hero_rows:
         return None
     me = str(next((row for row in hero_rows if row.get("hero") == runtime), hero_rows[0]).get("instance"))
     mine = {str(row.get("instance")) for row in hero_rows}
+    # Summons that never cast a player skill still deal damage under the hero's master.
+    mine |= {str(row.get("src_instance")) for row in rows if row.get("kind") in ("DAMAGE", "HIT_APPLIED")
+             and str(row.get("src_master") or "").split("#", 1)[0] == runtime}
     end_ms = next((stamp(row) for row in rows if row.get("kind") == "BATTLE_END"), max(stamp(row) for row in rows))
     deaths = {str(row.get("instance")): stamp(row) for row in rows if row.get("kind") == "PLAYER_DEAD"}
     enemies = set()

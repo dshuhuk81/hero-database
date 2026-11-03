@@ -1,0 +1,27 @@
+---
+import EvidenceBadge from "./EvidenceBadge.astro";
+
+interface Props {
+  mode: string;
+  verdict: "works" | "weak" | "depends" | "unknown";
+  text: string;
+  status?: "confirmed" | "observed" | "community" | "interpretation" | "untested";
+  sample?: string;
+}
+const { mode, verdict, text, status, sample } = Astro.props;
+const VERDICT_LABEL = { works: "Works", weak: "Weak", depends: "Depends", unknown: "Not tested" };
+---
+<div class={`gx-mode gx-mode--${verdict}`}>
+  <div class="gx-mode-body">
+    <div class="gx-mode-head">
+      <span class="gx-mode-name">{mode}</span>
+      <span class="gx-mode-verdict">{VERDICT_LABEL[verdict]}</span>
+    </div>
+    <p class="gx-mode-text">{text}</p>
+    <div class="gx-mode-meta">
+      {status && <EvidenceBadge status={status} />}
+      {status === "observed" && <span class="gx-ng">not guaranteed</span>}
+      {sample && <span class="gx-mode-sample">{sample}</span>}
+    </div>
+  </div>
+</div>

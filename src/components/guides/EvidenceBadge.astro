@@ -1,0 +1,10 @@
+---
+// Evidence status badge. See design-system/guide-redesign/EVIDENCE_MODEL.md.
+interface Props {
+  status: "confirmed" | "observed" | "community" | "interpretation" | "untested";
+  label?: string;
+}
+const { status, label } = Astro.props;
+const DEFAULT_LABEL = { confirmed: "Confirmed", observed: "Observed", community: "Community", interpretation: "Interpretation", untested: "Untested" };
+---
+<span class={`gx-ev gx-ev--${status}`}>{label ?? DEFAULT_LABEL[status]}</span>

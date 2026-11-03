@@ -1,0 +1,34 @@
+---
+import EvidenceBadge from "./EvidenceBadge.astro";
+
+interface Stat {
+  value: string;
+  unit?: string;
+  name: string;
+  status: "confirmed" | "observed" | "community" | "interpretation" | "untested";
+  statusLabel?: string;
+}
+interface Props {
+  verdict: string;
+  summary: string;
+  stats: Stat[];
+  confidence?: string;
+}
+const { verdict, summary, stats, confidence } = Astro.props;
+---
+<div class="gx-verdict">
+  <div class="gx-verdict-head">
+    <p class="gx-verdict-word">{verdict}</p>
+    <p class="gx-verdict-sub">{summary}</p>
+  </div>
+  <div class="gx-stats">
+    {stats.map((s) => (
+      <div class="gx-stat">
+        <span class="gx-stat-value">{s.value}{s.unit && <small> {s.unit}</small>}</span>
+        <span class="gx-stat-name">{s.name}</span>
+        <EvidenceBadge status={s.status} label={s.statusLabel} />
+      </div>
+    ))}
+  </div>
+  {confidence && <p class="gx-confidence"><span class="gx-label">Confidence</span>{confidence}</p>}
+</div>

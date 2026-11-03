@@ -113,6 +113,47 @@ class CombatAnalysisTests(unittest.TestCase):
         self.assertEqual(cycle["stored_at_start"], 0)
         self.assertEqual(cycle["committed_at_start"], 199.21875)
 
+    def test_summons_and_forms_count_toward_the_hero(self):
+        rows = self.rows + [
+            {"ms": "2100", "kind": "DAMAGE", "src": "H_ZaoJun_Clone", "src_instance": "@1-0", "src_master": "H_ZaoJun#@1", "src_camp": "1", "dst": "H_Enemy", "dst_instance": "@9", "dst_camp": "2", "out": "3000"},
+            {"ms": "2200", "kind": "DAMAGE", "src": "H_Ally", "src_instance": "@2", "src_master": "nil", "src_camp": "1", "dst": "H_Enemy", "dst_instance": "@9", "dst_camp": "2", "out": "2000"},
+            {"ms": "2100", "kind": "HIT_APPLIED", "src": "H_ZaoJun_Clone", "src_instance": "@1-0", "src_master": "H_ZaoJun#@1", "src_camp": "1", "dst": "H_Enemy", "dst_instance": "@9", "dst_camp": "2", "hp_lost": "2500"},
+            {"ms": "2200", "kind": "HIT_APPLIED", "src": "H_Ally", "src_instance": "@2", "src_master": "nil", "src_camp": "1", "dst": "H_Enemy", "dst_instance": "@9", "dst_camp": "2", "hp_lost": "500"},
+        ]
+        metrics = analyze(self.meta, rows)["metrics"]
+        self.assertEqual(metrics["calculator_damage"], 5000)
+        self.assertEqual(metrics["hero_damage_with_summons"], 8000)
+        self.assertAlmostEqual(metrics["hero_team_share_with_summons"], 0.8)
+        self.assertEqual(metrics["summon_damage"], {"H_ZaoJun_Clone": 3000})
+        self.assertEqual(metrics["enemy_hp_lost"], 3000)
+        self.assertAlmostEqual(metrics["hero_hp_share_with_summons"], 2500 / 3000)
+
+    def test_level_suppression_uses_mode_and_level_gap(self):
+        with tempfile.TemporaryDirectory() as temp:
+            battle = Path(temp) / "battle"
+            battle.mkdir()
+            (battle / "battle_mode.json").write_text(json.dumps({"2": {"id": 2, "lv_pressing": 1}, "64": {"id": 64, "lv_pressing": 0}}))
+            (battle / "lv_pressing.json").write_text(json.dumps({
+                "__m": {},
+                "1": {"id": 1, "reduce_damage_fix": 0, "increase_damage_fix": 0, "increase_antiCtrlRotio_fix": 0, "real_reduce_damage_fix": 0},
+                "30": {"id": 30, "reduce_damage_fix": 102.4, "increase_damage_fix": 51.2, "increase_antiCtrlRotio_fix": 51.2, "real_reduce_damage_fix": 20.48},
+                "40": {"id": 40, "reduce_damage_fix": 204.8, "increase_damage_fix": 102.4, "increase_antiCtrlRotio_fix": 102.4, "real_reduce_damage_fix": 61.44},
+            }))
+            rows = [dict(row) for row in self.rows]
+            for row in rows:
+                if row["kind"] == "PLAYER_LINEUP":
+                    row["level"] = "100" if row["camp"] == "1" else "150"
+            meta = dict(self.meta, fixed_point_one=1024, battle={"mode": "2"})
+            pressing = analyze(meta, rows, config_root=temp)["level_suppression"]
+            self.assertTrue(pressing["active"])
+            self.assertEqual((pressing["own_level"], pressing["enemy_level"], pressing["gap"]), (100, 150, 50))
+            # A gap above the table maximum uses the highest configured row.
+            self.assertAlmostEqual(pressing["own_damage_multiplier"], 0.8)
+            self.assertAlmostEqual(pressing["enemy_damage_multiplier"], 1.1)
+            boss = analyze(dict(meta, battle={"mode": "64"}), rows, config_root=temp)["level_suppression"]
+            self.assertFalse(boss["active"])
+            self.assertEqual(boss["own_damage_multiplier"], 1.0)
+
     def test_rebuild_and_compare_write_reports(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -177,6 +177,12 @@ const virtueSets = (hero.virtueSets ?? []).map((set: any) => ({
     .filter(Boolean),
 }));
 
+// Hero guide pages live in src/pages/guides/<hero-id>.astro; link only where one exists.
+const guideIds = new Set(
+  Object.keys(import.meta.glob("../guides/*.astro")).map((path) => path.split("/").pop()!.replace(".astro", "")),
+);
+const guideHref = guideIds.has(hero.id) && hero.id !== "index" ? `/guides/${hero.id}` : null;
+
 const tabs = [
   { id: "sec-overview", label: "Ratings" },
   { id: "sec-stats", label: "Stats" },
@@ -251,6 +257,12 @@ const tabs = [
             <div class="lt-chips">
               {tagChips.map((tag: string) => <span class="lt-chip">{tag}</span>)}
             </div>
+
+            {guideHref && (
+              <div class="lt-guide-cta">
+                <a class="lt-guide-link" href={guideHref}>Hero guide: verdict &amp; investment &rarr;</a>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -652,6 +664,24 @@ const tabs = [
         border: 1px solid color-mix(in srgb, var(--accent-blue) 28%, transparent);
       }
       .lt-chip-sm { font-size: 10px; padding: 3px 8px; }
+
+      .lt-guide-cta { margin-top: var(--space-4); display: flex; justify-content: flex-end; }
+      .lt-guide-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 var(--space-4);
+        border: 1px solid var(--accent-gold-dim);
+        border-radius: var(--radius-full);
+        background: color-mix(in srgb, var(--bg-base) 58%, transparent);
+        backdrop-filter: blur(10px);
+        color: var(--accent-gold-light);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        text-decoration: none;
+        transition: var(--transition-colors);
+      }
+      .lt-guide-link:hover { border-color: var(--accent-gold); color: var(--text-bright); }
 
       /* --------------------------------------------------------------- tabs */
       .lt-tabs {
