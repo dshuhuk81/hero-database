@@ -6,6 +6,202 @@
     "en": "Heqet",
     "zh": "海奎特"
   },
-  "relic": {},
-  "cardImgY": "0%"
+  "relic": {
+    "name": {
+      "de": "Entsiegelte Unterwelt-Kröte",
+      "en": "Nethertoad Unsealed",
+      "es": "Sapo del Inframundo liberado",
+      "ru": "Освобождённая жаба Подземного мира",
+      "zh": "冥蟾解封"
+    },
+    "description": {
+      "de": "Beschwört zu Kampfbeginn 1 Frosch, der 30% des eigenen ANG und 100% der max. LP erbt. Froschlimit +1.",
+      "en": "Summons 1 frog at the start of battle, inheriting 30% of own ATK and 100% of max HP. Frog Limit +1.",
+      "es": "Invoca 1 rana al inicio del combate, que hereda el 30 % del propio ATQ y el 100 % de la PS máx. Límite de ranas +1.",
+      "ru": "В начале боя призывает 1 лягушку, наследующую 30% собственного ATK и 100% макс. HP. Лимит лягушек +1.",
+      "zh": "战斗开始时召唤1只青蛙，继承自身30%的攻击力和100%的最大生命值。青蛙上限+1。"
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verringert die CD von Krötenpfad-Überquerung auf 15s.",
+        "en": "Reduces Toad Creed Crossing's CD to 15s.",
+        "es": "Reduce el enfriamiento de Cruce del credo del sapo a 15 s.",
+        "ru": "Сокращает перезарядку Переправы жабьего завета до 15с.",
+        "zh": "蟾诫渡厄的冷却降低至15秒。"
+      },
+      "level3": {
+        "de": "Verringert die CD von Krötenpfad-Überquerung auf 8s.",
+        "en": "Reduces Toad Creed Crossing's CD to 8s.",
+        "es": "Reduce el enfriamiento de Cruce del credo del sapo a 8 s.",
+        "ru": "Сокращает перезарядку Переправы жабьего завета до 8с.",
+        "zh": "蟾诫渡厄的冷却降低至8秒。"
+      },
+      "level4": {
+        "de": "Beschwört zu Kampfbeginn 2 Frösche, die 50% des eigenen ANG und 125% der max. LP erben. Froschlimit +2.",
+        "en": "Summons 2 frogs at the start of battle, inheriting 50% of own ATK and 125% of max HP. Frog Limit +2.",
+        "es": "Invoca 2 ranas al inicio del combate, que heredan el 50 % del propio ATQ y el 125 % de la PS máx. Límite de ranas +2.",
+        "ru": "В начале боя призывает 2 лягушек, наследующих 50% собственного ATK и 125% макс. HP. Лимит лягушек +2.",
+        "zh": "战斗开始时召唤2只青蛙，继承自身50%的攻击力和125%的最大生命值。青蛙上限+2。"
+      }
+    }
+  },
+  "cardImgY": "0%",
+  "skills": [
+    {
+      "name": {
+        "de": "Ruinen unzähliger Seuchen",
+        "en": "Ruins of Myriad Plagues",
+        "es": "Ruinas de mil plagas",
+        "ru": "Руины бесчисленных мор",
+        "zh": "万疫废墟"
+      },
+      "description": {
+        "de": "Passiv: Heqet gilt sowohl als Gottheit als auch als Diener. Aktiv: Beschwört 2 Frösche vor sich. Sie erben 50% ihres ANG und 125% ihrer max. LP und gewähren allen verbündeten Dienern einen Schild in Höhe von 200% ANG. Es können bis zu 3 Frösche gleichzeitig existieren. Ist die maximale Anzahl erreicht, wird der Frosch mit den wenigsten LP neu beschworen (der Frosch mit den wenigsten LP wird eliminiert und neu beschworen). Frosch: Führt keine Normalangriffe aus und bewegt sich auf den nächsten Feind zu. Aktiv: Stößt ein Quaken aus, das Feinden im Umkreis von 3 Metern 50% ANG als SCH zufügt und ihre Trefferchance 5s lang um 25% senkt. Bis zu 5 Stapel. Passiv: Quakt ein anderer Frosch, quakt er im Chor mit (Chorquaken lösen diesen Effekt nicht erneut aus). Anfangs-CD: 5s. Wiederhol-CD: 18s.",
+        "en": "Passive: Heqet is considered both a Deity unit and a Minion unit. Active: Summons 2 frogs in front of herself. They inherit 50% of her ATK and 125% of her max HP, and grant all allied minions a Shield equal to 200% of ATK. Up to 3 frogs can exist at once. When the maximum number of frogs is reached, resummons the frog with the lowest HP (eliminates the frog with the lowest HP and resummons it). Frog: Does not perform normal attacks and moves toward the nearest enemy. Active: Releases a croak, dealing DMG equal to 50% of ATK to enemies within 3 meters and reducing their Hit Rate by 25% for 5s. Up to 5 stacks. Passive: When another frog releases a croak, it also releases a coordinated croak (coordinated croaks do not trigger this effect again). Initial CD: 5s. Loop CD: 18s.",
+        "es": "Pasiva: Heqet se considera tanto una unidad Deidad como un Esbirro. Activa: Invoca 2 ranas frente a sí misma. Heredan el 50 % de su ATQ y el 125 % de su PS máx., y otorgan a todos los esbirros aliados un escudo equivalente al 200 % del ATQ. Pueden existir hasta 3 ranas a la vez. Al alcanzar el máximo de ranas, reinvoca a la rana con menos PS (elimina a la rana con menos PS y la reinvoca). Rana: no realiza ataques normales y se mueve hacia el enemigo más cercano. Activa: emite un croar que inflige un daño equivalente al 50 % del ATQ a los enemigos en un radio de 3 metros y reduce su Prob. de acierto un 25 % durante 5 s. Hasta 5 acumulaciones. Pasiva: cuando otra rana croa, también emite un croar coordinado (los croares coordinados no vuelven a activar este efecto). Enfriamiento inicial: 5 s. Enfriamiento cíclico: 18 s.",
+        "ru": "Пассивно: Хекет считается одновременно Божеством и Миньоном. Активно: Призывает 2 лягушек перед собой. Они наследуют 50% её ATK и 125% её макс. HP и дают всем союзным миньонам щит в размере 200% ATK. Одновременно может существовать до 3 лягушек. При достижении максимума призывает заново лягушку с наименьшим HP (устраняет лягушку с наименьшим HP и призывает её заново). Лягушка: не совершает обычных атак и движется к ближайшему врагу. Активно: издаёт кваканье, нанося врагам в радиусе 3 метров DMG в размере 50% ATK и снижая их Hit Rate на 25% на 5с. До 5 стаков. Пассивно: когда другая лягушка квакает, она тоже издаёт согласованное кваканье (согласованное кваканье не запускает этот эффект повторно). Начальная перезарядка: 5с. Циклическая перезарядка: 18с.",
+        "zh": "被动：赫奎特同时视为神明单位和仆从单位。主动：在自身前方召唤2只青蛙。它们继承其50%攻击力和125%最大生命值，并为所有友方仆从提供相当于攻击力200%的护盾。场上最多同时存在3只青蛙。达到上限时，重新召唤生命值最低的青蛙（消除生命值最低的青蛙并重新召唤）。青蛙：不进行普攻，向最近的敌人移动。主动：发出蛙鸣，对3米内的敌人造成相当于攻击力50%的伤害，并使其命中率降低25%，持续5秒，最多叠加5层。被动：其他青蛙发出蛙鸣时，该青蛙也会发出协同蛙鸣（协同蛙鸣不会再次触发此效果）。初始冷却：5秒。循环冷却：18秒。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gewährt allen verbündeten Dienern einen Schild in Höhe von 300% ANG.",
+          "en": "Grants all allied minions a Shield equal to 300% of ATK.",
+          "es": "Otorga a todos los esbirros aliados un escudo equivalente al 300 % del ATQ.",
+          "ru": "Даёт всем союзным миньонам щит в размере 300% ATK.",
+          "zh": "为所有友方仆从提供相当于攻击力300%的护盾。"
+        },
+        "level3": {
+          "de": "Gewährt allen verbündeten Dienern einen Schild in Höhe von 400% ANG.",
+          "en": "Grants all allied minions a Shield equal to 400% of ATK.",
+          "es": "Otorga a todos los esbirros aliados un escudo equivalente al 400 % del ATQ.",
+          "ru": "Даёт всем союзным миньонам щит в размере 400% ATK.",
+          "zh": "为所有友方仆从提供相当于攻击力400%的护盾。"
+        },
+        "level4": {
+          "de": "Beschwört 3 Frösche vor sich.",
+          "en": "Summons 3 frogs in front of herself.",
+          "es": "Invoca 3 ranas frente a sí misma.",
+          "ru": "Призывает 3 лягушек перед собой.",
+          "zh": "在自身前方召唤3只青蛙。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Unheilvolles Quaken",
+        "en": "Calamitous Croak",
+        "es": "Croar calamitoso",
+        "ru": "Роковое кваканье",
+        "zh": "灾厄蛙鸣"
+      },
+      "description": {
+        "de": "Beschwört einen Frosch vor sich, der 30% von Heqets ANG und 80% ihrer max. LP erbt.",
+        "en": "Summons a frog in front of herself, inheriting 30% of Heqet's ATK and 80% of her max HP.",
+        "es": "Invoca una rana frente a sí misma, que hereda el 30 % del ATQ de Heqet y el 80 % de su PS máx.",
+        "ru": "Призывает лягушку перед собой, наследующую 30% ATK Хекет и 80% её макс. HP.",
+        "zh": "在自身前方召唤一只青蛙，继承赫奎特30%的攻击力和80%的最大生命值。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erbt 50% von Heqets ANG.",
+          "en": "Inherits 50% of Heqet's ATK.",
+          "es": "Hereda el 50 % del ATQ de Heqet.",
+          "ru": "Наследует 50% ATK Хекет.",
+          "zh": "继承赫奎特50%的攻击力。"
+        },
+        "level3": {
+          "de": "Erbt 100% von Heqets max. LP.",
+          "en": "Inherits 100% of Heqet's max HP.",
+          "es": "Hereda el 100 % de la PS máx. de Heqet.",
+          "ru": "Наследует 100% макс. HP Хекет.",
+          "zh": "继承赫奎特100%的最大生命值。"
+        },
+        "level4": {
+          "de": "Erbt 125% von Heqets max. LP.",
+          "en": "Inherits 125% of Heqet's max HP.",
+          "es": "Hereda el 125 % de la PS máx. de Heqet.",
+          "ru": "Наследует 125% макс. HP Хекет.",
+          "zh": "继承赫奎特125%的最大生命值。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Symbiotischer Segen",
+        "en": "Symbiotic Blessing",
+        "es": "Bendición simbiótica",
+        "ru": "Симбиотическое благословение",
+        "zh": "共生祝福"
+      },
+      "description": {
+        "de": "Passiv: Für jeden vorhandenen Frosch erhalten alle verbündeten Diener 20% ANG und stellen alle 2s LP in Höhe von 15% ihres ANG wieder her.",
+        "en": "Passive: For each frog present, all allied minions gain 20% ATK, and restore HP equal to 15% of ATK every 2s.",
+        "es": "Pasiva: Por cada rana presente, todos los esbirros aliados obtienen un 20 % de ATQ y recuperan PS equivalentes al 15 % del ATQ cada 2 s.",
+        "ru": "Пассивно: За каждую лягушку все союзные миньоны получают 20% ATK и восстанавливают HP в размере 15% ATK каждые 2с.",
+        "zh": "被动：场上每有一只青蛙，所有友方仆从获得20%攻击力，并每2秒恢复相当于攻击力15%的生命值。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Alle verbündeten Diener erhalten 30% ANG.",
+          "en": "All allied minions gain 30% ATK.",
+          "es": "Todos los esbirros aliados obtienen un 30 % de ATQ.",
+          "ru": "Все союзные миньоны получают 30% ATK.",
+          "zh": "所有友方仆从获得30%攻击力。"
+        },
+        "level3": {
+          "de": "Alle verbündeten Diener erhalten 40% ANG.",
+          "en": "All allied minions gain 40% ATK.",
+          "es": "Todos los esbirros aliados obtienen un 40 % de ATQ.",
+          "ru": "Все союзные миньоны получают 40% ATK.",
+          "zh": "所有友方仆从获得40%攻击力。"
+        },
+        "level4": {
+          "de": "Stellt alle 2s LP in Höhe von 30% des ANG wieder her.",
+          "en": "Restore HP equal to 30% of ATK every 2s.",
+          "es": "Recupera PS equivalentes al 30 % del ATQ cada 2 s.",
+          "ru": "Восстанавливает HP в размере 30% ATK каждые 2с.",
+          "zh": "每2秒恢复相当于攻击力30%的生命值。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Krötenpfad-Überquerung",
+        "en": "Toad Creed Crossing",
+        "es": "Cruce del credo del sapo",
+        "ru": "Переправа жабьего завета",
+        "zh": "蟾诫渡厄"
+      },
+      "description": {
+        "de": "Passiv: Wenn Heqet fallen würde, opfert sie 1 Frosch, wird immun gegen diesen SCH und erhält einen Schild in Höhe von 500% ANG. Diese Fähigkeit hat 30s CD.",
+        "en": "Passive: When Heqet is about to fall, sacrifices 1 frog, becomes immune to this instance of DMG, and gains a Shield equal to 500% of ATK. This skill has a 30s CD.",
+        "es": "Pasiva: Cuando Heqet está a punto de caer, sacrifica 1 rana, se vuelve inmune a ese daño y obtiene un escudo equivalente al 500 % del ATQ. Esta habilidad tiene 30 s de enfriamiento.",
+        "ru": "Пассивно: Когда Хекет должна пасть, она жертвует 1 лягушку, получает иммунитет к этому DMG и щит в размере 500% ATK. Перезарядка этого навыка — 30с.",
+        "zh": "被动：赫奎特即将倒下时，牺牲1只青蛙，免疫该次伤害，并获得相当于攻击力500%的护盾。该技能冷却30秒。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Schild in Höhe von 600% ANG.",
+          "en": "Shield equal to 600% of ATK.",
+          "es": "Escudo equivalente al 600 % del ATQ.",
+          "ru": "Щит в размере 600% ATK.",
+          "zh": "护盾提高至相当于攻击力的600%。"
+        },
+        "level3": {
+          "de": "Schild in Höhe von 700% ANG.",
+          "en": "Shield equal to 700% of ATK.",
+          "es": "Escudo equivalente al 700 % del ATQ.",
+          "ru": "Щит в размере 700% ATK.",
+          "zh": "护盾提高至相当于攻击力的700%。"
+        },
+        "level4": {
+          "de": "Schild in Höhe von 800% ANG.",
+          "en": "Shield equal to 800% of ATK.",
+          "es": "Escudo equivalente al 800 % del ATQ.",
+          "ru": "Щит в размере 800% ATK.",
+          "zh": "护盾提高至相当于攻击力的800%。"
+        }
+      }
+    }
+  ]
 }

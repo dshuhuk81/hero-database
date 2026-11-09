@@ -6,6 +6,202 @@
     "en": "Hebo",
     "zh": "河伯"
   },
-  "relic": {},
-  "cardImgY": "0%"
+  "relic": {
+    "name": {
+      "de": "Gezeiten des Ursprungs",
+      "en": "Tides of Origin",
+      "es": "Mareas del origen",
+      "ru": "Приливы истока",
+      "zh": "本源潮汐"
+    },
+    "description": {
+      "de": "Jede vollständige Ausführung von Wellenjagender Hieb gewährt 200 Energie.",
+      "en": "Each full cast of Wave-Chasing Slash grants 200 Energy.",
+      "es": "Cada lanzamiento completo de Tajo cazaolas otorga 200 de energía.",
+      "ru": "Каждое полное применение Рассекающего волны удара даёт 200 Energy.",
+      "zh": "每次完整施放追浪斩，获得200能量。"
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Jede vollständige Ausführung von Wellenjagender Hieb erhöht Hebos ANG dauerhaft um 25%, bis zu 3 Stapel.",
+        "en": "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 25%, up to 3 stacks.",
+        "es": "Cada lanzamiento completo de Tajo cazaolas aumenta permanentemente el ATQ de Hebo un 25 %, hasta 3 acumulaciones.",
+        "ru": "Каждое полное применение Рассекающего волны удара навсегда увеличивает ATK Хэбо на 25%, до 3 стаков.",
+        "zh": "每次完整施放追浪斩，河伯的攻击力永久提高25%，最多叠加3层。"
+      },
+      "level3": {
+        "de": "Jede vollständige Ausführung von Wellenjagender Hieb gewährt 300 Energie.",
+        "en": "Each full cast of Wave-Chasing Slash grants 300 Energy.",
+        "es": "Cada lanzamiento completo de Tajo cazaolas otorga 300 de energía.",
+        "ru": "Каждое полное применение Рассекающего волны удара даёт 300 Energy.",
+        "zh": "每次完整施放追浪斩，获得300能量。"
+      },
+      "level4": {
+        "de": "Jede vollständige Ausführung von Wellenjagender Hieb erhöht Hebos ANG dauerhaft um 40%, bis zu 3 Stapel.",
+        "en": "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 40%, up to 3 stacks.",
+        "es": "Cada lanzamiento completo de Tajo cazaolas aumenta permanentemente el ATQ de Hebo un 40 %, hasta 3 acumulaciones.",
+        "ru": "Каждое полное применение Рассекающего волны удара навсегда увеличивает ATK Хэбо на 40%, до 3 стаков.",
+        "zh": "每次完整施放追浪斩，河伯的攻击力永久提高40%，最多叠加3层。"
+      }
+    }
+  },
+  "cardImgY": "0%",
+  "skills": [
+    {
+      "name": {
+        "de": "Sonnenschlag-Gezeitenbereich",
+        "en": "Sunstrike Tide Range",
+        "es": "Rango de marea de golpe solar",
+        "ru": "Зона прилива солнечного удара",
+        "zh": "烈阳潮涌"
+      },
+      "description": {
+        "de": "Verursacht 500% ANG als SCH an Feinden in einem dichten Bereich mit 3 Metern Radius. Der SCH gegen Feinde mit unter 50% LP steigt um 30%.",
+        "en": "Deals DMG equal to 500% of ATK to enemies in a dense area within a 3-meter radius. DMG to enemies with HP below 50% increases by 30%.",
+        "es": "Inflige un daño equivalente al 500 % del ATQ a los enemigos en una zona densa de 3 metros de radio. El daño a enemigos con menos del 50 % de PS aumenta un 30 %.",
+        "ru": "Наносит DMG в размере 500% ATK врагам на плотной площади радиусом 3 метра. DMG по врагам с HP ниже 50% увеличивается на 30%.",
+        "zh": "对半径3米内密集区域的敌人造成相当于攻击力500%的伤害。对生命值低于50%的敌人伤害提高30%。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den KRIT-SCH bei einem kritischen Treffer um 50%.",
+          "en": "Increases CRIT DMG by 50% when triggering CRIT.",
+          "es": "Aumenta el daño crítico un 50 % al asestar un golpe crítico.",
+          "ru": "Увеличивает CRIT DMG на 50% при критическом ударе.",
+          "zh": "触发暴击时，暴击伤害提高50%。"
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 600%.",
+          "en": "Increases DMG dealt to 600%.",
+          "es": "Aumenta el daño infligido al 600 %.",
+          "ru": "Увеличивает наносимый DMG до 600%.",
+          "zh": "伤害提高至600%。"
+        },
+        "level4": {
+          "de": "Der SCH gegen Feinde mit unter 50% LP steigt um 50%.",
+          "en": "DMG to enemies with HP below 50% increases by 50%.",
+          "es": "El daño a enemigos con menos del 50 % de PS aumenta un 50 %.",
+          "ru": "DMG по врагам с HP ниже 50% увеличивается на 50%.",
+          "zh": "对生命值低于50%的敌人伤害提高50%。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wellenjagender Hieb",
+        "en": "Wave-Chasing Slash",
+        "es": "Tajo cazaolas",
+        "ru": "Рассекающий волны удар",
+        "zh": "追浪斩"
+      },
+      "description": {
+        "de": "Schwimmt 4-mal hintereinander durch die Feinde. Die ersten 3 Treffer verursachen 120%, 150% und 180% ANG als SCH. Der letzte Treffer verursacht 250% ANG als SCH und wirft getroffene Feinde zu Boden.",
+        "en": "Swims through enemies 4 times consecutively. The first 3 times deal DMG equal to 120%, 150%, and 180% of ATK. The final hit deals DMG equal to 250% of ATK and knocks down enemies that are hit.",
+        "es": "Nada a través de los enemigos 4 veces consecutivas. Los primeros 3 golpes infligen un daño equivalente al 120 %, 150 % y 180 % del ATQ. El golpe final inflige un daño equivalente al 250 % del ATQ y derriba a los enemigos alcanzados.",
+        "ru": "Проплывает сквозь врагов 4 раза подряд. Первые 3 раза наносят DMG в размере 120%, 150% и 180% ATK. Последний удар наносит DMG в размере 250% ATK и сбивает поражённых врагов с ног.",
+        "zh": "连续4次游穿敌人。前3次分别造成相当于攻击力120%、150%、180%的伤害。最后一击造成相当于攻击力250%的伤害，并击倒被命中的敌人。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH auf 130%, 160%, 190% und 270% ANG.",
+          "en": "Increases DMG to 130%, 160%, 190%, and 270% of ATK.",
+          "es": "Aumenta el daño al 130 %, 160 %, 190 % y 270 % del ATQ.",
+          "ru": "Увеличивает DMG до 130%, 160%, 190% и 270% ATK.",
+          "zh": "伤害提高至攻击力的130%、160%、190%和270%。"
+        },
+        "level3": {
+          "de": "Jede vollständige Ausführung erhöht den ANG 6s lang um 25%.",
+          "en": "Each full cast increases ATK by 25% for 6s.",
+          "es": "Cada lanzamiento completo aumenta el ATQ un 25 % durante 6 s.",
+          "ru": "Каждое полное применение увеличивает ATK на 25% на 6с.",
+          "zh": "每次完整施放，攻击力提高25%，持续6秒。"
+        },
+        "level4": {
+          "de": "Erhöht den SCH auf 140%, 170%, 200% und 300% ANG.",
+          "en": "Increases DMG to 140%, 170%, 200%, and 300% of ATK.",
+          "es": "Aumenta el daño al 140 %, 170 %, 200 % y 300 % del ATQ.",
+          "ru": "Увеличивает DMG до 140%, 170%, 200% и 300% ATK.",
+          "zh": "伤害提高至攻击力的140%、170%、200%和300%。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wellenkamm-Klinge",
+        "en": "Wavecrest Blade",
+        "es": "Hoja de cresta de ola",
+        "ru": "Клинок гребня волны",
+        "zh": "浪尖之刃"
+      },
+      "description": {
+        "de": "Passiv: Jedes Mal, wenn Wellenjagender Hieb SCH verursacht, erhält er 1 Stapel Überlappende Wellen. Jeder Stapel Überlappende Wellen erhöht die KRIT-Chance 10s lang um 6%.",
+        "en": "Passive: Each time Wave-Chasing Slash deals DMG, gains 1 stack of Overlapping Waves. Each stack of Overlapping Waves increases CRIT Rate by 6% for 10s.",
+        "es": "Pasiva: Cada vez que Tajo cazaolas inflige daño, obtiene 1 acumulación de Olas superpuestas. Cada acumulación de Olas superpuestas aumenta la prob. de crítico un 6 % durante 10 s.",
+        "ru": "Пассивно: Каждый раз, когда Рассекающий волны удар наносит DMG, получает 1 стак Наложения волн. Каждый стак Наложения волн увеличивает CRIT Rate на 6% на 10с.",
+        "zh": "被动：每次追浪斩造成伤害时，获得1层叠浪。每层叠浪使暴击率提高6%，持续10秒。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Jeder Stapel Überlappende Wellen erhöht die KRIT-Chance um 8%.",
+          "en": "Each stack of Overlapping Waves increases CRIT Rate by 8%.",
+          "es": "Cada acumulación de Olas superpuestas aumenta la prob. de crítico un 8 %.",
+          "ru": "Каждый стак Наложения волн увеличивает CRIT Rate на 8%.",
+          "zh": "每层叠浪使暴击率提高8%。"
+        },
+        "level3": {
+          "de": "Die Dauer verlängert sich auf 12s.",
+          "en": "Duration extends to 12s.",
+          "es": "La duración se extiende a 12 s.",
+          "ru": "Длительность увеличивается до 12с.",
+          "zh": "持续时间延长至12秒。"
+        },
+        "level4": {
+          "de": "Jeder Stapel Überlappende Wellen erhöht die KRIT-Chance um 10%.",
+          "en": "Each stack of Overlapping Waves increases CRIT Rate by 10%.",
+          "es": "Cada acumulación de Olas superpuestas aumenta la prob. de crítico un 10 %.",
+          "ru": "Каждый стак Наложения волн увеличивает CRIT Rate на 10%.",
+          "zh": "每层叠浪使暴击率提高10%。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Atem des Wasserspiegels",
+        "en": "Breath of the Water Mirror",
+        "es": "Aliento del espejo de agua",
+        "ru": "Дыхание водного зеркала",
+        "zh": "水镜之息"
+      },
+      "description": {
+        "de": "Passiv: Hebo erleidet 40% weniger SCH, während er während Wellenjagender Hieb schwimmt. Dieser Effekt steigt alle 2s um 5% und bleibt nach Ende von Wellenjagender Hieb noch 3s bestehen.",
+        "en": "Passive: Hebo takes 40% less DMG while swimming during Wave-Chasing Slash. This effect increases by 5% every 2s, and remains for 3s after Wave-Chasing Slash ends.",
+        "es": "Pasiva: Hebo recibe un 40 % menos de daño mientras nada durante Tajo cazaolas. Este efecto aumenta un 5 % cada 2 s y permanece 3 s tras finalizar Tajo cazaolas.",
+        "ru": "Пассивно: Хэбо получает на 40% меньше DMG, пока плывёт во время Рассекающего волны удара. Этот эффект увеличивается на 5% каждые 2с и сохраняется 3с после окончания Рассекающего волны удара.",
+        "zh": "被动：河伯在追浪斩期间游动时受到的伤害降低40%。该效果每2秒提高5%，并在追浪斩结束后持续3秒。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erleidet während des Schwimmens bei Wellenjagender Hieb 60% weniger SCH.",
+          "en": "Takes 60% less DMG while swimming during Wave-Chasing Slash.",
+          "es": "Recibe un 60 % menos de daño mientras nada durante Tajo cazaolas.",
+          "ru": "Получает на 60% меньше DMG, пока плывёт во время Рассекающего волны удара.",
+          "zh": "追浪斩期间游动时受到的伤害降低60%。"
+        },
+        "level3": {
+          "de": "Erhält nach vollständiger Ausführung von Wellenjagender Hieb einen Schild in Höhe von 400% ANG.",
+          "en": "Gains a Shield equal to 400% of ATK after fully casting Wave-Chasing Slash.",
+          "es": "Obtiene un escudo equivalente al 400 % del ATQ tras lanzar por completo Tajo cazaolas.",
+          "ru": "Получает щит в размере 400% ATK после полного применения Рассекающего волны удара.",
+          "zh": "完整施放追浪斩后，获得相当于攻击力400%的护盾。"
+        },
+        "level4": {
+          "de": "Die SCH-Reduktion steigt alle 2s um 7%.",
+          "en": "Increases the DMG taken reduction effect by 7% every 2s.",
+          "es": "El efecto de reducción de daño recibido aumenta un 7 % cada 2 s.",
+          "ru": "Снижение получаемого DMG увеличивается на 7% каждые 2с.",
+          "zh": "减伤效果每2秒提高7%。"
+        }
+      }
+    }
+  ]
 }

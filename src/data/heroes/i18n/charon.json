@@ -5,20 +5,200 @@
   },
   "skills": [
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht pro Sekunde 120% des eigenen ANG als SCH am Ziel.",
+          "en": "Deals 120% self ATK as DMG per second to the target.",
+          "es": "Inflige un daño del 120 % del propio ATQ por segundo al objetivo.",
+          "ru": "Наносит цели DMG в размере 120% собственного ATK в секунду.",
+          "zh": "每秒对目标造成相当于自身攻击力120%的伤害。"
+        },
+        "level3": {
+          "de": "Verbraucht währenddessen pro Sekunde 100 Energie.",
+          "en": "Consumes 100 Energy per sec for the duration.",
+          "es": "Consume 100 de energía por segundo mientras dure.",
+          "ru": "Расходует 100 Energy в секунду на время действия.",
+          "zh": "持续期间每秒消耗100能量。"
+        },
+        "level4": {
+          "de": "Verursacht pro Sekunde 140% des eigenen ANG als SCH am Ziel.",
+          "en": "Deals 140% self ATK as DMG per second to the target.",
+          "es": "Inflige un daño del 140 % del propio ATQ por segundo al objetivo.",
+          "ru": "Наносит цели DMG в размере 140% собственного ATK в секунду.",
+          "zh": "每秒对目标造成相当于自身攻击力140%的伤害。"
+        }
+      },
+      "name": {
+        "de": "Laternenfeuer-Strom",
+        "en": "Lanternfire Torrent",
+        "es": "Torrente de fuego de linterna",
+        "ru": "Поток фонарного огня",
+        "zh": "灯火洪流"
+      },
+      "description": {
+        "de": "Kanalisiert dauerhaft einen Strahl auf das aktuelle Ziel und verursacht pro Sekunde 100% von Charons ANG als SCH. Pro 3 Sekunden Kanalisierung steigt dieser SCH-Multiplikator um 25%, insgesamt um bis zu 200%. Verbraucht währenddessen pro Sekunde 150 Energie. Fällt das Ziel / wird getarnt / unanvisierbar, endet die Kanalisierung und Charon erhält 600 Energie.",
+        "en": "Continuously channels a beam at the current target, dealing DMG equal to 100% of Charon's ATK per second. For every 3 seconds of channeling, this DMG multiplier increases by 25%, up to a total increase of 200%. Consumes 150 Energy per second during the duration. If the target Falls/enters Stealth/becomes Untargetable during channeling, ends the channeling and restores 600 Energy to self.",
+        "es": "Canaliza continuamente un rayo sobre el objetivo actual e inflige un daño equivalente al 100 % del ATQ de Caronte por segundo. Por cada 3 segundos de canalización, este multiplicador de daño aumenta un 25 %, hasta un aumento total del 200 %. Consume 150 de energía por segundo mientras dure. Si el objetivo cae, pasa a sigilo o no es seleccionable durante la canalización, esta termina y recupera 600 de energía.",
+        "ru": "Непрерывно направляет луч на текущую цель, нанося DMG в размере 100% ATK Харона в секунду. За каждые 3 секунды канала множитель DMG увеличивается на 25%, максимум на 200%. Расходует 150 Energy в секунду. Если цель падает / становится невидимой / недоступной для выбора, канал прерывается, и Харон восстанавливает 600 Energy.",
+        "zh": "对当前目标持续引导光束，每秒造成相当于卡戎攻击力100%的伤害。每引导3秒，该伤害倍率提升25%，最多共提升200%。持续期间每秒消耗150能量。若引导期间目标倒下/进入隐身/变为不可选中，则结束引导并为自身恢复600能量。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht 250% ANG als SCH am Ziel.",
+          "en": "Deals DMG equal to 250% of ATK to the target.",
+          "es": "Inflige un daño equivalente al 250 % del ATQ al objetivo.",
+          "ru": "Наносит цели DMG в размере 250% ATK.",
+          "zh": "对目标造成相当于攻击力250%的伤害。"
+        },
+        "level3": {
+          "de": "Betrifft eine weitere Einheit.",
+          "en": "Affects one more unit.",
+          "es": "Afecta a una unidad más.",
+          "ru": "Затрагивает ещё одного юнита.",
+          "zh": "额外影响一个单位。"
+        },
+        "level4": {
+          "de": "Verursacht 300% ANG als SCH am Ziel.",
+          "en": "Deals DMG equal to 300% of ATK to the target.",
+          "es": "Inflige un daño equivalente al 300 % del ATQ al objetivo.",
+          "ru": "Наносит цели DMG в размере 300% ATK.",
+          "zh": "对目标造成相当于攻击力300%的伤害。"
+        }
+      },
+      "name": {
+        "de": "Die Toten übersetzen",
+        "en": "Ferry the Dead",
+        "es": "Transportar a los muertos",
+        "ru": "Перевоз мёртвых",
+        "zh": "摆渡亡者"
+      },
+      "description": {
+        "de": "Beim Betreten des Schlachtfelds verursacht er 200% ANG als SCH an der am weitesten entfernten Einheit und verbannt sie 8 Sekunden lang in die Unterwelt. Verbannung: Das Ziel wird vom Schlachtfeld verbannt, kann nicht handeln und von keiner Seite anvisiert werden. Befinden sich alle Einheiten auf dem Schlachtfeld im Verbannungszustand, wird die Verbannung zwangsweise aufgehoben.",
+        "en": "Upon entering the battlefield, deals DMG equal to 200% ATK to the farthest unit and banishes them to the Underworld for 8 seconds. Banishment: The target is exiled from the battlefield, unable to act, and cannot be targeted by either side. When all units on the battlefield are in the Banishment state, Banishment is forcibly canceled.",
+        "es": "Al entrar en el campo de batalla, inflige un daño equivalente al 200 % del ATQ a la unidad más lejana y la destierra al Inframundo durante 8 segundos. Destierro: el objetivo es expulsado del campo de batalla, no puede actuar y ningún bando puede seleccionarlo. Cuando todas las unidades del campo de batalla están desterradas, el Destierro se cancela a la fuerza.",
+        "ru": "При выходе на поле боя наносит DMG в размере 200% ATK самому дальнему юниту и изгоняет его в Подземный мир на 8 секунд. Изгнание: цель удаляется с поля боя, не может действовать и не может быть выбрана целью ни одной из сторон. Когда все юниты на поле боя находятся в состоянии Изгнания, оно принудительно снимается.",
+        "zh": "进入战场时，对最远的单位造成相当于攻击力200%的伤害，并将其放逐至冥界8秒。放逐：目标被逐出战场，无法行动，且双方均无法将其选为目标。当战场上所有单位均处于放逐状态时，放逐被强制解除。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Die Verbannungsdauer erhöht sich auf 4s.",
+          "en": "Banishment duration extends to 4s.",
+          "es": "La duración del Destierro aumenta a 4 s.",
+          "ru": "Длительность Изгнания увеличивается до 4с.",
+          "zh": "放逐持续时间延长至4秒。"
+        },
+        "level3": {
+          "de": "Verringert die Fähigkeiten-CD auf 25s.",
+          "en": "Reduces the skill CD to 25s.",
+          "es": "Reduce el enfriamiento de la habilidad a 25 s.",
+          "ru": "Сокращает перезарядку навыка до 25с.",
+          "zh": "技能冷却降低至25秒。"
+        },
+        "level4": {
+          "de": "Beim Auslösen erhält er einen Schild in Höhe von 500% ANG.",
+          "en": "When triggered, grants a Shield equal to 500% of ATK.",
+          "es": "Al activarse, obtiene un escudo equivalente al 500 % del ATQ.",
+          "ru": "При срабатывании получает щит в размере 500% ATK.",
+          "zh": "触发时获得相当于攻击力500%的护盾。"
+        }
+      },
+      "name": {
+        "de": "Durchgang verwehrt",
+        "en": "Passage Denied",
+        "es": "Paso denegado",
+        "ru": "Проход закрыт",
+        "zh": "拒绝通行"
+      },
+      "description": {
+        "de": "Nähert sich eine feindliche Einheit Charon, verbannt er sie 3s lang. Fähigkeiten-CD: 30s.",
+        "en": "When any enemy unit approaches Charon, he inflicts Banishment on them for 3s. Skill CD: 30s.",
+        "es": "Cuando cualquier unidad enemiga se acerca a Caronte, la destierra durante 3 s. Enfriamiento de la habilidad: 30 s.",
+        "ru": "Когда любой вражеский юнит приближается к Харону, он накладывает на него Изгнание на 3с. Перезарядка навыка: 30с.",
+        "zh": "任何敌方单位靠近卡戎时，他会将其放逐3秒。技能冷却：30秒。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Im Styx-Zustand erhöht sich der verursachte SCH um 45%.",
+          "en": "In the River Styx state, increases DMG dealt by 45%.",
+          "es": "En el estado Río Estigia, aumenta el daño infligido un 45 %.",
+          "ru": "В состоянии Стикса наносимый DMG увеличивается на 45%.",
+          "zh": "冥河状态下，造成的伤害提高45%。"
+        },
+        "level3": {
+          "de": "Im Styx-Zustand erhöht sich der ANG um 50%.",
+          "en": "In the River Styx state, increases ATK by 50%.",
+          "es": "En el estado Río Estigia, aumenta el ATQ un 50 %.",
+          "ru": "В состоянии Стикса ATK увеличивается на 50%.",
+          "zh": "冥河状态下，攻击力提高50%。"
+        },
+        "level4": {
+          "de": "Im Styx-Zustand erhöht sich der verursachte SCH um 50%.",
+          "en": "In the River Styx state, increases DMG dealt by 50%.",
+          "es": "En el estado Río Estigia, aumenta el daño infligido un 50 %.",
+          "ru": "В состоянии Стикса наносимый DMG увеличивается на 50%.",
+          "zh": "冥河状态下，造成的伤害提高50%。"
+        }
+      },
+      "name": {
+        "de": "Der Styx steigt herab",
+        "en": "Styx Descends",
+        "es": "El Estigia desciende",
+        "ru": "Нисхождение Стикса",
+        "zh": "冥河降临"
+      },
+      "description": {
+        "de": "Charon beschwört langsam den Styx in die Sterblichenwelt. Hat sich Charon 8s lang nicht bewegt, erhält er den Zustand [Styx]. Der Zustand endet bei Bewegung. Styx-Zustand: Erhöht den verursachten SCH um 40% und den Lebensraub um 20%.",
+        "en": "Charon slowly summons the River Styx into the mortal realm. When Charon has not moved for 8s, he gains the [River Styx] state. This state is cleared upon moving. River Styx state: Increases DMG dealt by 40% and Lifesteal by 20%.",
+        "es": "Caronte invoca lentamente el río Estigia en el reino mortal. Cuando no se ha movido durante 8 s, obtiene el estado [Río Estigia]. Este estado se elimina al moverse. Estado Río Estigia: aumenta el daño infligido un 40 % y el Robo de vida un 20 %.",
+        "ru": "Харон медленно призывает Стикс в мир смертных. Если Харон не двигался 8с, он получает состояние [Стикс]. Состояние снимается при движении. Состояние Стикса: увеличивает наносимый DMG на 40% и Lifesteal на 20%.",
+        "zh": "卡戎缓缓将冥河引入凡界。当卡戎8秒内未移动时，获得【冥河】状态。移动时清除该状态。冥河状态：造成的伤害提高40%，吸血提高20%。"
+      }
     }
   ],
   "relic": {
-    "upgrades": {}
+    "upgrades": {
+      "level2": {
+        "de": "Wenn Charon fallen würde, wird er 3s lang immun gegen den SCH und unverwundbar und verbannt die feindliche Einheit, die den SCH verursacht hat.",
+        "en": "When Charon is about to fall, he becomes Immune to the DMG and Invincible for 3s, and inflicts Banishment on the enemy unit that dealt the DMG.",
+        "es": "Cuando Caronte está a punto de caer, se vuelve inmune a ese daño e Invencible durante 3 s y destierra a la unidad enemiga que lo infligió.",
+        "ru": "Когда Харон должен пасть, он получает иммунитет к этому DMG и Неуязвимость на 3с и накладывает Изгнание на вражеского юнита, нанёсшего этот DMG.",
+        "zh": "卡戎即将倒下时，免疫该次伤害并无敌3秒，同时放逐造成该伤害的敌方单位。"
+      },
+      "level3": {
+        "de": "Im Styx-Zustand ist er immun gegen 3 Kontrolleffekte.",
+        "en": "While in the River Styx state, is immune to 3 Crowd Control effects.",
+        "es": "En el estado Río Estigia, es inmune a 3 efectos de Control de masas.",
+        "ru": "В состоянии Стикса получает иммунитет к 3 эффектам Crowd Control.",
+        "zh": "冥河状态下，免疫3次控制效果。"
+      },
+      "level4": {
+        "de": "Pro 1s Kanalisierung steigt der SCH-Multiplikator von Laternenfeuer-Strom um 40%, insgesamt um bis zu 800%.",
+        "en": "For every 1s of channeling, Lanternfire Torrent's DMG multiplier increases by 40%, up to a total increase of 800%.",
+        "es": "Por cada 1 s de canalización, el multiplicador de daño de Torrente de fuego de linterna aumenta un 40 %, hasta un aumento total del 800 %.",
+        "ru": "За каждую 1с канала множитель DMG Потока фонарного огня увеличивается на 40%, максимум на 800%.",
+        "zh": "每引导1秒，灯火洪流的伤害倍率提升40%，最多共提升800%。"
+      }
+    },
+    "name": {
+      "de": "Haltung des Fährmanns",
+      "en": "Ferryman's Stance",
+      "es": "Postura del barquero",
+      "ru": "Стойка перевозчика",
+      "zh": "摆渡人之姿"
+    },
+    "description": {
+      "de": "Pro 1s Kanalisierung steigt der SCH-Multiplikator von Laternenfeuer-Strom um 25%, insgesamt um bis zu 250%.",
+      "en": "For every 1s of channeling, Lanternfire Torrent's DMG multiplier increases by 25%, up to a total increase of 250%.",
+      "es": "Por cada 1 s de canalización, el multiplicador de daño de Torrente de fuego de linterna aumenta un 25 %, hasta un aumento total del 250 %.",
+      "ru": "За каждую 1с канала множитель DMG Потока фонарного огня увеличивается на 25%, максимум на 250%.",
+      "zh": "每引导1秒，灯火洪流的伤害倍率提升25%，最多共提升250%。"
+    }
   },
   "cardImgY": "0%"
 }

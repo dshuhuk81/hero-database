@@ -8,10 +8,82 @@
   },
   "skills": [
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Jeder Normalangriff wird für die Dauer der Fähigkeit zu einem Allwissenden Pfeil.",
+          "en": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
+          "es": "Cada ataque normal se convierte en una Flecha omnisciente mientras dure la habilidad.",
+          "ru": "Каждая обычная атака превращается во Всеведущую стрелу на время действия навыка.",
+          "zh": "技能持续期间，每次普攻都会变为全知之箭。"
+        },
+        "level3": {
+          "de": "Erhöht den ANG-GES-Bonus auf 150%.",
+          "en": "Increases ATK SPD to 150%.",
+          "es": "Aumenta la VEL. de ATQ al 150 %.",
+          "ru": "Увеличивает ATK SPD до 150%.",
+          "zh": "攻速提高至150%。"
+        },
+        "level4": {
+          "de": "Verringert den Energieverlust auf 40.",
+          "en": "Reduces Energy lost to 40.",
+          "es": "Reduce la pérdida de energía a 40.",
+          "ru": "Снижает потерю Energy до 40.",
+          "zh": "能量损失降低至40。"
+        }
+      },
+      "name": {
+        "de": "Allwissender Pfeil",
+        "en": "Omniscient Arrow",
+        "es": "Flecha omnisciente",
+        "ru": "Всеведущая стрела",
+        "zh": "全知之箭"
+      },
+      "description": {
+        "de": "Isis kanalisiert ihre Macht und tritt kurz in den Zustand [Allwissend] ein. Ihr ANG-GES ist um 100% erhöht und ihre Angriffsreichweite wird unendlich, aber sie verliert in diesem Zustand alle 0,2s 45 Energie.",
+        "en": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+        "es": "Isis canaliza su poder y entra brevemente en el estado [Omnisciente]. Su VEL. de ATQ aumenta un 100 % y su alcance de ataque se vuelve infinito, pero pierde 45 de energía cada 0,2 s mientras está en ese estado.",
+        "ru": "Исида направляет свою силу и ненадолго входит в состояние [Всеведение]. Её ATK SPD увеличивается на 100%, а дальность атаки становится бесконечной, но в этом состоянии она теряет 45 Energy каждые 0,2с.",
+        "zh": "伊西斯汇聚力量，短暂进入【全知】状态。她的攻速提高100%，攻击范围变为无限，但处于该状态时每0.2秒损失45能量。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Der Allwissende Pfeil wird zu Kampfbeginn garantiert ausgelöst.",
+          "en": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
+          "es": "La Flecha omnisciente se activa con seguridad al comenzar el combate.",
+          "ru": "Всеведущая стрела гарантированно срабатывает в начале боя.",
+          "zh": "战斗开始时必定触发全知之箭。"
+        },
+        "level3": {
+          "de": "Der Bonus-SCH steigt auf 12% der max. LP des Ziels (höchstens 400% ihres ANG).",
+          "en": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
+          "es": "El daño adicional aumenta al 12 % de la PS máx. del objetivo (hasta un 400 % de su ATQ).",
+          "ru": "Дополнительный DMG увеличивается до 12% макс. HP цели (не более 400% её ATK).",
+          "zh": "额外伤害提高至目标最大生命值的12%（上限为其攻击力的400%）。"
+        },
+        "level4": {
+          "de": "Der Pfeil verursacht 200% ANG als SCH.",
+          "en": "The arrow will deal DMG equal to 200% of ATK.",
+          "es": "La flecha inflige un daño equivalente al 200 % del ATQ.",
+          "ru": "Стрела наносит DMG в размере 200% ATK.",
+          "zh": "箭矢造成相当于攻击力200%的伤害。"
+        }
+      },
+      "name": {
+        "de": "Allmacht",
+        "en": "Omnipotence",
+        "es": "Omnipotencia",
+        "ru": "Всемогущество",
+        "zh": "全能"
+      },
+      "description": {
+        "de": "Nach jeweils 2 Normalangriffen wird Isis' nächster Angriff zu einem Allwissenden Pfeil, der 160% ANG als SCH verursacht, plus zusätzlichen SCH in Höhe von 10% der max. LP des Ziels (höchstens 300% ihres ANG).",
+        "en": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+        "es": "Tras cada 2 ataques normales, el siguiente ataque de Isis se convierte en una Flecha omnisciente, que inflige un daño equivalente al 160 % del ATQ más daño adicional equivalente al 10 % de la PS máx. del objetivo (hasta un 300 % de su ATQ).",
+        "ru": "После каждых 2 обычных атак следующая атака Исиды становится Всеведущей стрелой, наносящей DMG в размере 160% ATK плюс дополнительный DMG в размере 10% макс. HP цели (не более 300% её ATK).",
+        "zh": "每进行2次普攻，伊西斯的下一次攻击变为全知之箭，造成相当于攻击力160%的伤害，并额外造成相当于目标最大生命值10%的伤害（上限为其攻击力的300%）。"
+      }
     },
     {
       "name": {

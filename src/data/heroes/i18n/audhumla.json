@@ -6,6 +6,202 @@
     "en": "Audhumla",
     "zh": "欧德姆布拉"
   },
-  "relic": {},
-  "cardImgY": "0%"
+  "relic": {
+    "name": {
+      "de": "Endbringer",
+      "en": "Endbringer",
+      "es": "Portador del fin",
+      "ru": "Несущая конец",
+      "zh": "终焉使者"
+    },
+    "description": {
+      "de": "Passiv: Wenn Audhumla fallen würde, tritt sie in den Überlastungszustand ein. In der Überlastung kann sie 10s lang nicht fallen und erhält währenddessen 100% ANG-GES. Nach Ablauf fällt sie garantiert. Das garantierte Fallen kann durch keinen Effekt verhindert werden, Audhumla kann aber weiterhin wiederbelebt werden. Solange sie nicht fallen kann, kann sie weiterhin SCH erleiden, anvisiert und von Kontrolleffekten betroffen werden.",
+      "en": "Passive: When Audhumla is about to fall, she enters Overload state. While in Overload, she cannot fall for 10s and gains 100% ATK SPD for the duration. When the duration ends, she is guaranteed to fall. Guaranteed Fall cannot be prevented by any effect, but Audhumla can still be revived. While she cannot fall, she can still take DMG, be targeted, and be affected by Crowd Control.",
+      "es": "Pasiva: Cuando Audhumla está a punto de caer, entra en estado de Sobrecarga. Durante la Sobrecarga no puede caer durante 10 s y obtiene un 100 % de VEL. de ATQ mientras dure. Al terminar, cae sin remedio. La caída garantizada no puede evitarse con ningún efecto, pero Audhumla aún puede ser revivida. Mientras no puede caer, sigue recibiendo daño, puede ser seleccionada y verse afectada por el Control de masas.",
+      "ru": "Пассивно: Когда Аудумла должна пасть, она входит в состояние Перегрузки. В Перегрузке она не может пасть в течение 10с и получает 100% ATK SPD на это время. По окончании она гарантированно падает. Гарантированное падение нельзя предотвратить никаким эффектом, но Аудумлу всё ещё можно воскресить. Пока она не может пасть, она всё равно получает DMG, может быть выбрана целью и подвержена Crowd Control.",
+      "zh": "被动：奥杜姆拉即将倒下时进入过载状态。过载期间10秒内不会倒下，并在持续期间获得100%攻速。持续结束后必定倒下。必定倒下无法被任何效果阻止，但奥杜姆拉仍可被复活。无法倒下期间，她仍会受到伤害、可被选为目标并受到控制效果影响。"
+    },
+    "upgrades": {
+      "level2": {
+        "de": "In der Überlastung erhält sie den maximalen ANG-GES-Wert von 300%.",
+        "en": "While in Overload, gains the maximum ATK SPD of 300%.",
+        "es": "Durante la Sobrecarga obtiene el máximo de VEL. de ATQ, un 300 %.",
+        "ru": "В Перегрузке получает максимальный ATK SPD — 300%.",
+        "zh": "过载期间获得最大攻速300%。"
+      },
+      "level3": {
+        "de": "In der Überlastung erhält sie Superrüstung.",
+        "en": "While in Overload, gains Super Armor.",
+        "es": "Durante la Sobrecarga obtiene Superarmadura.",
+        "ru": "В Перегрузке получает Суперброню.",
+        "zh": "过载期间获得霸体。"
+      },
+      "level4": {
+        "de": "Urteil der dreifachen Schicksale wird verstärkt und verursacht wahren SCH in Höhe von 25% der max. LP des Ziels, begrenzt auf 4000% von Audhumlas eigenem ANG.",
+        "en": "Triple-Fate Verdict is enhanced, dealing True DMG equal to 25% of the target's Max HP, up to 4000% of Audhumla's own ATK.",
+        "es": "Veredicto del triple destino se potencia e inflige daño verdadero equivalente al 25 % de la PS máx. del objetivo, hasta un 4000 % del propio ATQ de Audhumla.",
+        "ru": "Приговор трёх судеб усиливается и наносит истинный DMG в размере 25% от макс. HP цели, но не более 4000% собственного ATK Аудумлы.",
+        "zh": "三命裁决得到强化，造成相当于目标最大生命值25%的真实伤害，上限为奥杜姆拉自身攻击力的4000%。"
+      }
+    }
+  },
+  "cardImgY": "0%",
+  "skills": [
+    {
+      "name": {
+        "de": "Letzte Eidbindung",
+        "en": "Final Oathbinding",
+        "es": "Último juramento",
+        "ru": "Последняя клятва",
+        "zh": "终誓缚锁"
+      },
+      "description": {
+        "de": "Audhumla hat ein kürzeres ANG-Intervall. Audhumla überlädt ihre Waffe und fixiert das nächste Ziel. Währenddessen erhält sie 100% ANG-GES, kann aber 8s lang keine aktiven Fähigkeiten einsetzen. Befindet sich das Ziel außerhalb ihrer Angriffsreichweite, bewegt sie sich, bis sie es angreifen kann. Wird das Ziel getarnt, unanvisierbar oder fällt es, wechselt sie das Ziel.",
+        "en": "Audhumla has a shorter ATK interval. Audhumla overloads her weapon, locking herself onto the nearest target. During this time, she gains 100% ATK SPD but cannot use Active Skills for 8s. If the target is outside her ATK range, she moves until she can attack the target. If the target becomes stealthed, untargetable, or falls, she switches targets.",
+        "es": "Audhumla tiene un intervalo de ATQ más corto. Audhumla sobrecarga su arma y se fija en el objetivo más cercano. Durante este tiempo obtiene un 100 % de VEL. de ATQ, pero no puede usar habilidades activas durante 8 s. Si el objetivo está fuera de su alcance de ataque, se mueve hasta poder atacarlo. Si el objetivo pasa a estar sigiloso, no seleccionable o cae, cambia de objetivo.",
+        "ru": "У Аудумлы сокращён интервал ATK. Аудумла перегружает оружие и захватывает ближайшую цель. В это время она получает 100% ATK SPD, но не может использовать активные навыки в течение 8с. Если цель вне радиуса атаки, она двигается, пока не сможет атаковать. Если цель становится невидимой, недоступной для выбора или падает, она меняет цель.",
+        "zh": "奥杜姆拉的攻击间隔缩短。奥杜姆拉使武器过载，锁定最近的目标。期间她获得100%攻速，但8秒内无法使用主动技能。若目标不在其攻击范围内，她会移动至能够攻击目标为止。若目标进入隐身、不可选中状态或倒下，她会切换目标。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält für die Dauer 30% SCH-RED.",
+          "en": "Gains 30% DMG RED for the duration.",
+          "es": "Obtiene un 30 % de Reduc. de daño durante la duración.",
+          "ru": "Получает 30% DMG RED на время действия.",
+          "zh": "持续期间获得30%减伤。"
+        },
+        "level3": {
+          "de": "Erhält während des Ultimates 40% Lebensraub.",
+          "en": "Gains 40% Lifesteal during the Ultimate.",
+          "es": "Obtiene un 40 % de Robo de vida durante la definitiva.",
+          "ru": "Получает 40% Lifesteal во время ультимейта.",
+          "zh": "大招期间获得40%吸血。"
+        },
+        "level4": {
+          "de": "Erhält 30% SCH durch Normalangriffe und Basisfähigkeiten.",
+          "en": "Gains 30% Normal Attack and Basic Skill DMG.",
+          "es": "Obtiene un 30 % de daño de ataques normales y habilidades básicas.",
+          "ru": "Получает 30% DMG обычных атак и базовых навыков.",
+          "zh": "普攻与基础技能伤害提高30%。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Urabstoßung",
+        "en": "Primordial Repulsion",
+        "es": "Repulsión primordial",
+        "ru": "Изначальное отторжение",
+        "zh": "原初斥力"
+      },
+      "description": {
+        "de": "Sind Feinde in der Nähe, verursacht sie 300% ANG als SCH am nächsten Ziel und schleudert es an den Rand des Schlachtfelds. Sind keine Feinde in der Nähe, feuert sie einen Laser auf das am weitesten entfernte Ziel und verursacht 200% ANG als SCH an Einheiten auf dem Weg.",
+        "en": "When enemy units are nearby, deals DMG equal to 300% of ATK to the nearest target and knocks them back to the edge of the battlefield. When no enemy units are nearby, fires a laser at the farthest target, dealing DMG equal to 200% of ATK to units along the path.",
+        "es": "Cuando hay enemigos cerca, inflige un daño equivalente al 300 % del ATQ al objetivo más cercano y lo empuja al borde del campo de batalla. Cuando no hay enemigos cerca, dispara un láser al objetivo más lejano e inflige un daño equivalente al 200 % del ATQ a las unidades en su trayectoria.",
+        "ru": "Когда рядом есть враги, наносит DMG в размере 300% ATK ближайшей цели и отбрасывает её к краю поля боя. Когда рядом нет врагов, выпускает лазер в самую дальнюю цель, нанося DMG в размере 200% ATK юнитам на пути.",
+        "zh": "附近有敌人时，对最近的目标造成相当于攻击力300%的伤害，并将其击退至战场边缘。附近没有敌人时，向最远的目标发射激光，对路径上的单位造成相当于攻击力200%的伤害。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht 500% ANG als SCH am nächsten Ziel und schleudert es an den Rand des Schlachtfelds.",
+          "en": "Deals DMG equal to 500% of ATK to the nearest target and knocks them back to the edge of the battlefield.",
+          "es": "Inflige un daño equivalente al 500 % del ATQ al objetivo más cercano y lo empuja al borde del campo de batalla.",
+          "ru": "Наносит DMG в размере 500% ATK ближайшей цели и отбрасывает её к краю поля боя.",
+          "zh": "对最近的目标造成相当于攻击力500%的伤害，并将其击退至战场边缘。"
+        },
+        "level3": {
+          "de": "Der Laser verursacht 300% ANG als SCH an Einheiten auf dem Weg.",
+          "en": "The laser deals DMG equal to 300% of ATK to units along the path.",
+          "es": "El láser inflige un daño equivalente al 300 % del ATQ a las unidades en su trayectoria.",
+          "ru": "Лазер наносит DMG в размере 300% ATK юнитам на пути.",
+          "zh": "激光对路径上的单位造成相当于攻击力300%的伤害。"
+        },
+        "level4": {
+          "de": "Der Laser verursacht 400% ANG als SCH an Einheiten auf dem Weg.",
+          "en": "The laser deals DMG equal to 400% of ATK to units along the path.",
+          "es": "El láser inflige un daño equivalente al 400 % del ATQ a las unidades en su trayectoria.",
+          "ru": "Лазер наносит DMG в размере 400% ATK юнитам на пути.",
+          "zh": "激光对路径上的单位造成相当于攻击力400%的伤害。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Urteil der dreifachen Schicksale",
+        "en": "Triple-Fate Verdict",
+        "es": "Veredicto del triple destino",
+        "ru": "Приговор трёх судеб",
+        "zh": "三命裁决"
+      },
+      "description": {
+        "de": "Passiv: Jeder dritte aufeinanderfolgende Normalangriff auf denselben Feind verursacht wahren SCH in Höhe von 12% der max. LP des Ziels, begrenzt auf 1200% von Audhumlas eigenem ANG. Ein Zielwechsel entfernt den Effekt.",
+        "en": "Passive: Every third consecutive Normal Attack against the same enemy deals True DMG equal to 12% of the target's Max HP, up to 1200% of Audhumla's own ATK. Switching targets removes this effect.",
+        "es": "Pasiva: Cada tercer ataque normal consecutivo contra el mismo enemigo inflige daño verdadero equivalente al 12 % de la PS máx. del objetivo, hasta un 1200 % del propio ATQ de Audhumla. Cambiar de objetivo elimina este efecto.",
+        "ru": "Пассивно: Каждая третья подряд обычная атака по одному и тому же врагу наносит истинный DMG в размере 12% от макс. HP цели, но не более 1200% собственного ATK Аудумлы. Смена цели снимает эффект.",
+        "zh": "被动：对同一敌人连续进行的每第三次普攻，造成相当于目标最大生命值12%的真实伤害，上限为奥杜姆拉自身攻击力的1200%。切换目标会移除此效果。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht wahren SCH in Höhe von 14% der max. LP des Ziels, begrenzt auf 1400% von Audhumlas eigenem ANG.",
+          "en": "Deals True DMG equal to 14% of the target's Max HP, up to 1400% of Audhumla's own ATK.",
+          "es": "Inflige daño verdadero equivalente al 14 % de la PS máx. del objetivo, hasta un 1400 % del propio ATQ de Audhumla.",
+          "ru": "Наносит истинный DMG в размере 14% от макс. HP цели, но не более 1400% собственного ATK Аудумлы.",
+          "zh": "造成相当于目标最大生命值14%的真实伤害，上限为奥杜姆拉自身攻击力的1400%。"
+        },
+        "level3": {
+          "de": "Verursacht wahren SCH in Höhe von 16% der max. LP des Ziels, begrenzt auf 1600% von Audhumlas eigenem ANG.",
+          "en": "Deals True DMG equal to 16% of the target's Max HP, up to 1600% of Audhumla's own ATK.",
+          "es": "Inflige daño verdadero equivalente al 16 % de la PS máx. del objetivo, hasta un 1600 % del propio ATQ de Audhumla.",
+          "ru": "Наносит истинный DMG в размере 16% от макс. HP цели, но не более 1600% собственного ATK Аудумлы.",
+          "zh": "造成相当于目标最大生命值16%的真实伤害，上限为奥杜姆拉自身攻击力的1600%。"
+        },
+        "level4": {
+          "de": "Verursacht wahren SCH in Höhe von 18% der max. LP des Ziels, begrenzt auf 1800% von Audhumlas eigenem ANG.",
+          "en": "Deals True DMG equal to 18% of the target's Max HP, up to 1800% of Audhumla's own ATK.",
+          "es": "Inflige daño verdadero equivalente al 18 % de la PS máx. del objetivo, hasta un 1800 % del propio ATQ de Audhumla.",
+          "ru": "Наносит истинный DMG в размере 18% от макс. HP цели, но не более 1800% собственного ATK Аудумлы.",
+          "zh": "造成相当于目标最大生命值18%的真实伤害，上限为奥杜姆拉自身攻击力的1800%。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Ewiger Kettenschlag",
+        "en": "Eternal Chainstrike",
+        "es": "Golpe encadenado eterno",
+        "ru": "Вечный цепной удар",
+        "zh": "永恒连锁击"
+      },
+      "description": {
+        "de": "Passiv: Greift Audhumla dasselbe Ziel durchgehend an, erhitzt sich ihre Waffe und sie erhält mit jedem Angriff 30% ANG-GES, bis max. 300%. Ein Zielwechsel setzt den ANG-GES-Bonus zurück.",
+        "en": "Passive: When continuously attacking the same target, Audhumla heats up her weapon, gaining 30% ATK SPD with each attack, up to 300%. Switching targets resets the ATK SPD bonus.",
+        "es": "Pasiva: Al atacar continuamente al mismo objetivo, Audhumla calienta su arma y obtiene un 30 % de VEL. de ATQ con cada ataque, hasta un 300 %. Cambiar de objetivo reinicia la bonificación de VEL. de ATQ.",
+        "ru": "Пассивно: При непрерывной атаке одной цели Аудумла раскаляет оружие и получает 30% ATK SPD с каждой атакой, максимум 300%. Смена цели сбрасывает бонус ATK SPD.",
+        "zh": "被动：持续攻击同一目标时，奥杜姆拉的武器会逐渐升温，每次攻击获得30%攻速，最高300%。切换目标会重置攻速加成。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält mit jedem Angriff 40% ANG-GES.",
+          "en": "Gains 40% ATK SPD with each attack.",
+          "es": "Obtiene un 40 % de VEL. de ATQ con cada ataque.",
+          "ru": "Получает 40% ATK SPD с каждой атакой.",
+          "zh": "每次攻击获得40%攻速。"
+        },
+        "level3": {
+          "de": "Erhält mit jedem Angriff 50% ANG-GES.",
+          "en": "Gains 50% ATK SPD with each attack.",
+          "es": "Obtiene un 50 % de VEL. de ATQ con cada ataque.",
+          "ru": "Получает 50% ATK SPD с каждой атакой.",
+          "zh": "每次攻击获得50%攻速。"
+        },
+        "level4": {
+          "de": "Erhält mit jedem Angriff 60% ANG-GES.",
+          "en": "Gains 60% ATK SPD with each attack.",
+          "es": "Obtiene un 60 % de VEL. de ATQ con cada ataque.",
+          "ru": "Получает 60% ATK SPD с каждой атакой.",
+          "zh": "每次攻击获得60%攻速。"
+        }
+      }
+    }
+  ]
 }

@@ -8,20 +8,200 @@
   },
   "skills": [
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 40% von Gaiyas max. LP wieder her.",
+          "en": "Recovers HP equal to 40% of Gaiya's max HP.",
+          "es": "Recupera PS equivalentes al 40 % de la PS máx. de Gaiya.",
+          "ru": "Восстанавливает HP в размере 40% макс. HP Гайи.",
+          "zh": "恢复相当于盖娅最大生命值40%的生命值。"
+        },
+        "level3": {
+          "de": "Alle Verbündeten erleiden währenddessen 40% weniger SCH.",
+          "en": "All allies take 40% reduced DMG for the duration.",
+          "es": "Todos los aliados reciben un 40 % menos de daño durante la duración.",
+          "ru": "Все союзники получают на 40% меньше DMG на время действия.",
+          "zh": "持续期间所有友方受到的伤害降低40%。"
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 50% von Gaiyas max. LP wieder her.",
+          "en": "Recovers HP equal to 50% of Gaiya's max HP.",
+          "es": "Recupera PS equivalentes al 50 % de la PS máx. de Gaiya.",
+          "ru": "Восстанавливает HP в размере 50% макс. HP Гайи.",
+          "zh": "恢复相当于盖娅最大生命值50%的生命值。"
+        }
+      },
+      "name": {
+        "de": "Wiedergeburt der Natur",
+        "en": "Nature's Revival",
+        "es": "Renacimiento de la naturaleza",
+        "ru": "Возрождение природы",
+        "zh": "万物复苏"
+      },
+      "description": {
+        "de": "Stellt sofort allen Verbündeten LP in Höhe von 30% von Gaiyas max. LP wieder her. Für die nächsten 8s verdoppelt sich die Heilwirkung von Gnadenbereich und der erlittene SCH aller Verbündeten sinkt um 30%; sie selbst ist währenddessen immun gegen Kontrolleffekte.",
+        "en": "Immediately recovers HP equal to 30% of Gaiya's max HP for all allies. For the next 8s, the recovery effect of Grace Domain is doubled, and DMG taken by all allies is reduced by 30%; self is immune to Control effects for the duration.",
+        "es": "Recupera de inmediato PS equivalentes al 30 % de la PS máx. de Gaiya a todos los aliados. Durante los siguientes 8 s, el efecto de recuperación de Dominio de la gracia se duplica y el daño recibido por todos los aliados se reduce un 30 %; ella es inmune a los efectos de Control durante ese tiempo.",
+        "ru": "Мгновенно восстанавливает всем союзникам HP в размере 30% макс. HP Гайи. В течение следующих 8с лечение Области милости удваивается, а получаемый всеми союзниками DMG снижается на 30%; сама она иммунна к эффектам контроля на это время.",
+        "zh": "立即为所有友方恢复相当于盖娅最大生命值30%的生命值。接下来8秒内，恩泽领域的恢复效果翻倍，所有友方受到的伤害降低30%；期间自身免疫控制效果。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 220% ANG.",
+          "en": "Increases DMG dealt to 220% ATK.",
+          "es": "Aumenta el daño infligido al 220 % del ATQ.",
+          "ru": "Увеличивает наносимый DMG до 220% ATK.",
+          "zh": "伤害提高至攻击力的220%。"
+        },
+        "level3": {
+          "de": "Senkt den ANG getroffener Feinde um 30%.",
+          "en": "Reduces the ATK of hit enemies by 30%.",
+          "es": "Reduce el ATQ de los enemigos alcanzados un 30 %.",
+          "ru": "Снижает ATK пораженных врагов на 30%.",
+          "zh": "被命中敌人的攻击力降低30%。"
+        },
+        "level4": {
+          "de": "Für jeden getroffenen Feind erhält sie einen Schild, der SCH in Höhe von 12% der max. LP absorbiert.",
+          "en": "For each enemy hit, self gains a Shield that absorbs DMG equal to 12% of max HP.",
+          "es": "Por cada enemigo alcanzado, obtiene un escudo que absorbe un daño equivalente al 12 % de la PS máx.",
+          "ru": "За каждого пораженного врага получает щит, поглощающий DMG в размере 12% макс. HP.",
+          "zh": "每命中一名敌人，自身获得可吸收相当于最大生命值12%伤害的护盾。"
+        }
+      },
+      "name": {
+        "de": "Wuchernde Dornen",
+        "en": "Overgrown Thorns",
+        "es": "Espinas desbordantes",
+        "ru": "Разросшиеся шипы",
+        "zh": "疯长荆棘"
+      },
+      "description": {
+        "de": "Verursacht 200% ANG als SCH an umliegenden Feinden und senkt den ANG getroffener Feinde 5s lang um 20%. Für jeden getroffenen Feind erhält sie 8s lang einen Schild, der SCH in Höhe von 10% der max. LP absorbiert.",
+        "en": "Deals DMG equal to 200% of ATK to surrounding enemies and reduces the ATK of hit enemies by 20% for 5s. For each enemy hit, self gains a Shield that absorbs DMG equal to 10% of max HP for 8s.",
+        "es": "Inflige un daño equivalente al 200 % del ATQ a los enemigos cercanos y reduce el ATQ de los enemigos alcanzados un 20 % durante 5 s. Por cada enemigo alcanzado, obtiene un escudo que absorbe un daño equivalente al 10 % de la PS máx. durante 8 s.",
+        "ru": "Наносит окружающим врагам DMG в размере 200% ATK и снижает ATK пораженных врагов на 20% на 5с. За каждого пораженного врага получает щит, поглощающий DMG в размере 10% макс. HP, на 8с.",
+        "zh": "对周围敌人造成相当于攻击力200%的伤害，并使被命中敌人的攻击力降低20%，持续5秒。每命中一名敌人，自身获得可吸收相当于最大生命值10%伤害的护盾，持续8秒。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Alle Verbündeten stellen pro Sekunde LP in Höhe von 3% von Gaiyas max. LP wieder her.",
+          "en": "All allies recover HP equal to 3% of Gaiya's Max HP per second.",
+          "es": "Todos los aliados recuperan PS equivalentes al 3 % de la PS máx. de Gaiya por segundo.",
+          "ru": "Все союзники восстанавливают HP в размере 3% макс. HP Гайи в секунду.",
+          "zh": "所有友方每秒恢复相当于盖娅最大生命值3%的生命值。"
+        },
+        "level3": {
+          "de": "Erhaltene Heilung und Schilde sind um 20% erhöht.",
+          "en": "Heal and Shield effects received are increased by 20%.",
+          "es": "La Curación y los escudos recibidos aumentan un 20 %.",
+          "ru": "Получаемые лечение и щиты увеличиваются на 20%.",
+          "zh": "所受治疗与护盾效果提高20%。"
+        },
+        "level4": {
+          "de": "Gaiya stellt im Gnadenbereich pro Sekunde 5% ihrer max. LP wieder her.",
+          "en": "Gaiya recovers HP equal to 5% of her Max HP per second while in Grace Domain.",
+          "es": "Gaiya recupera un 5 % de su PS máx. por segundo mientras está en Dominio de la gracia.",
+          "ru": "Гайя восстанавливает 5% своего макс. HP в секунду, находясь в Области милости.",
+          "zh": "盖娅处于恩泽领域内时，每秒恢复5%的最大生命值。"
+        }
+      },
+      "name": {
+        "de": "Gnadenbereich",
+        "en": "Grace Domain",
+        "es": "Dominio de la gracia",
+        "ru": "Область милости",
+        "zh": "恩泽领域"
+      },
+      "description": {
+        "de": "Gaiya errichtet zu Kampfbeginn einen Gnadenbereich. Alle Verbündeten stellen pro Sekunde LP in Höhe von 2% von Gaiyas max. LP wieder her, und erhaltene Heilung und Schilde sind um 15% erhöht.",
+        "en": "Gaiya deploys Grace Domain at the start of the battle. All allies recover HP equal to 2% of Gaiya's Max HP per second, and the Heal and Shield effects they receive are increased by 15%.",
+        "es": "Gaiya despliega Dominio de la gracia al inicio del combate. Todos los aliados recuperan PS equivalentes al 2 % de la PS máx. de Gaiya por segundo, y la Curación y los escudos que reciben aumentan un 15 %.",
+        "ru": "Гайя разворачивает Область милости в начале боя. Все союзники восстанавливают HP в размере 2% макс. HP Гайи в секунду, а получаемые ими лечение и щиты увеличиваются на 15%.",
+        "zh": "战斗开始时，盖娅展开恩泽领域。所有友方每秒恢复相当于盖娅最大生命值2%的生命值，所受治疗与护盾效果提高15%。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Gaiya erhöht ihre max. LP im Kampf um 15%.",
+          "en": "Gaiya increases max HP by 15% in battle.",
+          "es": "Gaiya aumenta su PS máx. un 15 % en combate.",
+          "ru": "Гайя увеличивает макс. HP на 15% в бою.",
+          "zh": "盖娅在战斗中最大生命值提高15%。"
+        },
+        "level3": {
+          "de": "Jedes Mal, wenn ein Ultimate gewirkt wird, erhöhen sich die max. LP zusätzlich um 6%.",
+          "en": "Each time an Ultimate is cast, max HP is additionally increased by 6%.",
+          "es": "Cada vez que se lanza una definitiva, la PS máx. aumenta un 6 % adicional.",
+          "ru": "Каждый раз при использовании ультимейта макс. HP дополнительно увеличивается на 6%.",
+          "zh": "每次施放大招，最大生命值额外提高6%。"
+        },
+        "level4": {
+          "de": "Gaiya erhöht ihre max. LP im Kampf um 20%.",
+          "en": "Gaiya increases max HP by 20% in battle.",
+          "es": "Gaiya aumenta su PS máx. un 20 % en combate.",
+          "ru": "Гайя увеличивает макс. HP на 20% в бою.",
+          "zh": "盖娅在战斗中最大生命值提高20%。"
+        }
+      },
+      "name": {
+        "de": "Rüstung der Natur",
+        "en": "Nature's Armor",
+        "es": "Armadura de la naturaleza",
+        "ru": "Броня природы",
+        "zh": "自然之甲"
+      },
+      "description": {
+        "de": "Gaiya erhöht ihre max. LP im Kampf um 10%. Jedes Mal, wenn ein Ultimate gewirkt wird, erhöhen sich die max. LP zusätzlich um 5%, bis zu 5 Stapel.",
+        "en": "Gaiya increases max HP by 10% in battle. Each time an Ultimate is cast, max HP is additionally increased by 5%, up to 5 stacks.",
+        "es": "Gaiya aumenta su PS máx. un 10 % en combate. Cada vez que se lanza una definitiva, la PS máx. aumenta un 5 % adicional, hasta 5 acumulaciones.",
+        "ru": "Гайя увеличивает макс. HP на 10% в бою. Каждый раз при использовании ультимейта макс. HP дополнительно увеличивается на 5%, до 5 стаков.",
+        "zh": "盖娅在战斗中最大生命值提高10%。每次施放大招，最大生命值额外提高5%，最多叠加5层。"
+      }
     }
   ],
   "relic": {
-    "upgrades": {}
+    "upgrades": {
+      "level2": {
+        "de": "Für jeden vom Gnadenbereich geschützten Verbündeten auf dem Feld sinkt der von Gaia erlittene SCH um 6%, bis zu 5 Stapel.",
+        "en": "For every ally protected by Grace Domain on the field, DMG taken by Gaia is reduced by 6%, up to 5 stacks.",
+        "es": "Por cada aliado protegido por Dominio de la gracia en el campo, el daño recibido por Gaia se reduce un 6 %, hasta 5 acumulaciones.",
+        "ru": "За каждого союзника на поле, защищённого Областью милости, получаемый Гайей DMG снижается на 6%, до 5 стаков.",
+        "zh": "场上每有一名受恩泽领域保护的友方，盖娅受到的伤害降低6%，最多叠加5层。"
+      },
+      "level3": {
+        "de": "Für jeden vom Gnadenbereich geschützten Verbündeten auf dem Feld sinkt der von Gaia erlittene SCH um 9%, bis zu 5 Stapel.",
+        "en": "For every ally protected by Grace Domain on the field, DMG taken by Gaia is reduced by 9%, up to 5 stacks.",
+        "es": "Por cada aliado protegido por Dominio de la gracia en el campo, el daño recibido por Gaia se reduce un 9 %, hasta 5 acumulaciones.",
+        "ru": "За каждого союзника на поле, защищённого Областью милости, получаемый Гайей DMG снижается на 9%, до 5 стаков.",
+        "zh": "场上每有一名受恩泽领域保护的友方，盖娅受到的伤害降低9%，最多叠加5层。"
+      },
+      "level4": {
+        "de": "Pro 3 erzeugte „Lebensblumen“ erzeugt die nächste Heilung, die Überheilung in Höhe von 50% der max. LP verursacht, eine „Energieblume“, die dem Verbündeten mit dem höchsten ANG 400 Energie wiederherstellt und seinen ANG 6s lang um 40% erhöht.",
+        "en": "For every 3 \"Flowers of Life\" generated, the next Heal causing Overhealing equal to 50% of Max HP generates a \"Flower of Energy\", recovering 400 Energy to the ally with the highest ATK and increasing their ATK by 40% for 6s.",
+        "es": "Por cada 3 «Flores de vida» generadas, la siguiente Curación que cause sobrecuración equivalente al 50 % de la PS máx. genera una «Flor de energía», que recupera 400 de energía al aliado con mayor ATQ y aumenta su ATQ un 40 % durante 6 s.",
+        "ru": "За каждые 3 созданных «Цветка жизни» следующее лечение с избытком в размере 50% макс. HP создаёт «Цветок энергии», восстанавливающий 400 Energy союзнику с наибольшим ATK и увеличивающий его ATK на 40% на 6с.",
+        "zh": "每生成3朵“生命之花”，下一次造成相当于最大生命值50%溢出治疗的治疗会生成一朵“能量之花”，为攻击力最高的友方恢复400能量，并使其攻击力提高40%，持续6秒。"
+      }
+    },
+    "name": {
+      "de": "Lebensflora",
+      "en": "Life Flora",
+      "es": "Flora de vida",
+      "ru": "Цветок жизни",
+      "zh": "生命之花"
+    },
+    "description": {
+      "de": "Überheilung durch erhaltene Heilung wird bei Gaia automatisch gespeichert. Pro 50% der max. LP an Überheilung entsteht eine „Lebensblume“. Ist ein Verbündeter kurz vor dem Fallen, wird eine „Lebensblume“ verbraucht und die darin gespeicherten LP werden ihm wiederhergestellt.",
+      "en": "Overhealing from Heal received by Gaia is auto-stored. Generates a \"Flower of Life\" for every 50% of Max HP overhealed. When any ally is near death, consumes a \"Flower of Life\" to recover HP stored in the \"Flower of Life\" to them.",
+      "es": "La sobrecuración de la Curación recibida por Gaia se almacena automáticamente. Genera una «Flor de vida» por cada 50 % de PS máx. sobrecurada. Cuando un aliado está a punto de morir, consume una «Flor de vida» para recuperarle las PS almacenadas en ella.",
+      "ru": "Избыточное лечение, полученное Гайей, автоматически накапливается. За каждые 50% макс. HP избыточного лечения создаётся «Цветок жизни». Когда любой союзник близок к гибели, расходуется «Цветок жизни», и ему восстанавливается накопленное в нём HP.",
+      "zh": "盖娅受到的治疗溢出部分会自动储存。每溢出50%最大生命值，生成一朵“生命之花”。当任一友方濒死时，消耗一朵“生命之花”，为其恢复花中储存的生命值。"
+    }
   },
   "cardImgY": "0%"
 }

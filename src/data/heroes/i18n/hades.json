@@ -6,6 +6,202 @@
     "en": "Hades",
     "zh": "哈迪斯"
   },
-  "relic": {},
-  "cardImgY": "0%"
+  "relic": {
+    "name": {
+      "de": "Thron der Unterwelt",
+      "en": "Underworld Throne",
+      "es": "Trono del Inframundo",
+      "ru": "Трон Подземного мира",
+      "zh": "冥界王座"
+    },
+    "description": {
+      "de": "Hades betritt den Kampf mit 5 Seelen.",
+      "en": "Hades carries 5 souls upon entering the battle.",
+      "es": "Hades entra en el combate con 5 almas.",
+      "ru": "Аид входит в бой с 5 душами.",
+      "zh": "哈迪斯入场时携带5个灵魂。"
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Die Unterwelt-Gottheit wirkt keine aktiven Fähigkeiten mehr, erhält aber einen permanenten Seelensturm-Effekt.",
+        "en": "Underworld Divinity no longer casts any active skills, but gains a permanent Soul Storm effect.",
+        "es": "La Divinidad del Inframundo ya no lanza habilidades activas, pero obtiene un efecto permanente de Tormenta de almas.",
+        "ru": "Божество Подземного мира больше не использует активные навыки, но получает постоянный эффект Бури душ.",
+        "zh": "冥界神性不再施放任何主动技能，但获得永久的灵魂风暴效果。"
+      },
+      "level3": {
+        "de": "Bei 20 Seelen und aktivem Seelensturm wird der erlittene SCH um einen festen Wert von 60% ANG verringert.",
+        "en": "When reaching 20 souls and Soul Storm is active, his DMG taken is reduced by a fixed amount equal to 60% ATK.",
+        "es": "Al alcanzar 20 almas con Tormenta de almas activa, el daño recibido se reduce en una cantidad fija equivalente al 60 % del ATQ.",
+        "ru": "При достижении 20 душ и активной Буре душ получаемый DMG снижается на фиксированное значение, равное 60% ATK.",
+        "zh": "达到20个灵魂且灵魂风暴生效时，受到的伤害固定降低相当于60%攻击力的数值。"
+      },
+      "level4": {
+        "de": "Fällt bei aktivem Seelensturm eine Einheit: Von der gefallenen Einheit geht eine Seelen-Schockwelle aus, die Feinden in einem großen Bereich SCH in Höhe von 100% ANG + 10% der max. LP der gefallenen Einheit zufügt (höchstens 800% seines eigenen ANG).",
+        "en": "When any unit falls while Soul Storm is active: Emits a soul shockwave outward from the fallen unit, dealing DMG equal to 100% ATK + 10% of the fallen unit's Max HP to enemy units in a large area (not exceeding 800% of his own ATK).",
+        "es": "Cuando cae cualquier unidad con Tormenta de almas activa: emite una onda de choque de almas desde la unidad caída, infligiendo un daño equivalente al 100 % del ATQ + 10 % de la PS máx. de la unidad caída a las unidades enemigas en una zona amplia (sin superar el 800 % de su propio ATQ).",
+        "ru": "Когда любой юнит падает при активной Буре душ: от павшего юнита расходится ударная волна душ, наносящая вражеским юнитам на большой площади DMG в размере 100% ATK + 10% макс. HP павшего юнита (не более 800% собственного ATK).",
+        "zh": "灵魂风暴生效期间任意单位倒下时：从倒下的单位处向外释放灵魂冲击波，对大范围内的敌方单位造成相当于100%攻击力+倒下单位10%最大生命值的伤害（不超过自身攻击力的800%）。"
+      }
+    }
+  },
+  "cardImgY": "0%",
+  "skills": [
+    {
+      "name": {
+        "de": "Unterwelt-Raserei",
+        "en": "Underworld Frenzy",
+        "es": "Frenesí del Inframundo",
+        "ru": "Неистовство Подземного мира",
+        "zh": "冥界狂乱"
+      },
+      "description": {
+        "de": "Passiv: Fällt eine Einheit auf dem Feld, erhält Hades Seelen. Gottheiten geben Hades 3 Seelen, Diener 1 Seele. Hades kann bis zu 25 Seelen haben. Aktiv: Hades springt in ein Gebiet dichter Feinde und beschwört im Umkreis von 5 Metern den Seelensturm, wodurch er 8 Sekunden lang in einen Dauerwirkzustand eintritt. Währenddessen bewegt er sich ständig zu Feindansammlungen, erhält 30% Ausweichchance und verursacht pro Sekunde 50% ANG als SCH an umliegenden Einheiten. 50% des verursachten SCH werden in einen Schild für ihn umgewandelt. Für jede Seele steigt der SCH-Multiplikator des Seelensturms um 7,5% ANG.",
+        "en": "Passive: When any unit on the field falls, grants Hades souls. Deity units grant Hades 3 souls, and Minions grant Hades 1 soul. Hades can have up to 25 souls. Active: Hades leaps into a dense enemy area and summons Soul Storm within 5 meters around himself, entering a continuous casting state for 8 seconds. During this time, he continually moves toward dense enemy areas, gaining a 30% dodge rate, and deals DMG equal to 50% of ATK per second to surrounding units. 50% of the DMG dealt is converted into a Shield for himself. For every 1 soul he has, the DMG multiplier of Soul Storm increases by 7.5% of ATK.",
+        "es": "Pasiva: Cuando cae cualquier unidad en el campo, Hades obtiene almas. Las unidades Deidad le dan 3 almas y los Esbirros 1 alma. Hades puede tener hasta 25 almas. Activa: Hades salta a una zona densa de enemigos e invoca la Tormenta de almas en un radio de 5 metros, entrando en un estado de lanzamiento continuo durante 8 segundos. Durante este tiempo se desplaza continuamente hacia zonas densas de enemigos, obtiene un 30 % de probabilidad de esquivar e inflige un daño equivalente al 50 % del ATQ por segundo a las unidades cercanas. El 50 % del daño infligido se convierte en un escudo para sí mismo. Por cada alma que tiene, el multiplicador de daño de Tormenta de almas aumenta un 7,5 % del ATQ.",
+        "ru": "Пассивно: Когда любой юнит на поле падает, Аид получает души. Божества дают Аиду 3 души, Миньоны — 1 душу. У Аида может быть до 25 душ. Активно: Аид прыгает в плотную группу врагов и призывает Бурю душ в радиусе 5 метров, входя в состояние непрерывного применения на 8 секунд. В это время он постоянно двигается к плотным скоплениям врагов, получает 30% шанс уклонения и наносит окружающим юнитам DMG в размере 50% ATK в секунду. 50% нанесённого DMG преобразуется в щит для него самого. За каждую его душу множитель DMG Бури душ увеличивается на 7,5% ATK.",
+        "zh": "被动：场上任意单位倒下时，哈迪斯获得灵魂。神明单位提供3个灵魂，仆从提供1个灵魂。哈迪斯最多拥有25个灵魂。主动：哈迪斯跃入敌人密集区域，在自身周围5米内召唤灵魂风暴，进入持续施法状态8秒。期间他不断向敌人密集区域移动，获得30%闪避率，每秒对周围单位造成相当于攻击力50%的伤害，并将所造成伤害的50%转化为自身护盾。每拥有1个灵魂，灵魂风暴的伤害倍率提高7.5%攻击力。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht pro Sekunde 80% ANG als SCH an umliegenden Einheiten.",
+          "en": "Deals DMG equal to 80% of ATK per second to surrounding units.",
+          "es": "Inflige un daño equivalente al 80 % del ATQ por segundo a las unidades cercanas.",
+          "ru": "Наносит окружающим юнитам DMG в размере 80% ATK в секунду.",
+          "zh": "每秒对周围单位造成相当于攻击力80%的伤害。"
+        },
+        "level3": {
+          "de": "30% des vom Seelensturm verursachten SCH werden in Heilung umgewandelt.",
+          "en": "30% of the DMG dealt by Soul Storm is converted into Healing.",
+          "es": "El 30 % del daño infligido por Tormenta de almas se convierte en Curación.",
+          "ru": "30% DMG, нанесённого Бурей душ, преобразуется в лечение.",
+          "zh": "灵魂风暴所造成伤害的30%转化为治疗。"
+        },
+        "level4": {
+          "de": "Für jede Seele steigt der SCH-Multiplikator des Seelensturms um 15% ANG.",
+          "en": "For every 1 soul he has, the DMG multiplier of Soul Storm increases by 15% of ATK.",
+          "es": "Por cada alma que tiene, el multiplicador de daño de Tormenta de almas aumenta un 15 % del ATQ.",
+          "ru": "За каждую душу множитель DMG Бури душ увеличивается на 15% ATK.",
+          "zh": "每拥有1个灵魂，灵魂风暴的伤害倍率提高15%攻击力。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Abgrundklauen",
+        "en": "Abyssal Claws",
+        "es": "Garras abisales",
+        "ru": "Когти бездны",
+        "zh": "深渊之爪"
+      },
+      "description": {
+        "de": "Schleudert die Seelenklaue nach vorn, verursacht 300% ANG als SCH an der am weitesten entfernten feindlichen Einheit und hält sie fest. Nach kurzer Verzögerung wird die Seelenklaue zurückgezogen und zieht die Einheit vor Hades.",
+        "en": "Swings the Soul Claw forward, dealing DMG equal to 300% of ATK to the farthest enemy unit and rooting them. After a short delay, retracts the Soul Claw, pulling the unit to the front of Hades.",
+        "es": "Lanza la Garra de almas hacia delante, infligiendo un daño equivalente al 300 % del ATQ a la unidad enemiga más lejana e inmovilizándola. Tras un breve retraso, retrae la Garra de almas y arrastra a la unidad hasta situarla frente a Hades.",
+        "ru": "Бросает Коготь душ вперёд, нанося DMG в размере 300% ATK самому дальнему вражескому юниту и обездвиживая его. После короткой задержки втягивает Коготь душ, подтягивая юнита к Аиду.",
+        "zh": "向前挥出灵魂之爪，对最远的敌方单位造成相当于攻击力300%的伤害并将其禁锢。短暂延迟后收回灵魂之爪，将该单位拉至哈迪斯身前。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht 400% ANG als SCH an der am weitesten entfernten feindlichen Einheit.",
+          "en": "Deals DMG equal to 400% of ATK to the farthest enemy unit.",
+          "es": "Inflige un daño equivalente al 400 % del ATQ a la unidad enemiga más lejana.",
+          "ru": "Наносит самому дальнему вражескому юниту DMG в размере 400% ATK.",
+          "zh": "对最远的敌方单位造成相当于攻击力400%的伤害。"
+        },
+        "level3": {
+          "de": "Die getroffene Einheit gibt Hades zusätzlich 1 Seele.",
+          "en": "The hit unit will also grant Hades 1 soul.",
+          "es": "La unidad alcanzada también otorga 1 alma a Hades.",
+          "ru": "Пораженный юнит также даёт Аиду 1 душу.",
+          "zh": "被命中的单位同时为哈迪斯提供1个灵魂。"
+        },
+        "level4": {
+          "de": "Die getroffene Einheit gibt Hades zusätzlich 3 Seelen.",
+          "en": "The hit unit will also grant Hades 3 souls.",
+          "es": "La unidad alcanzada también otorga 3 almas a Hades.",
+          "ru": "Пораженный юнит также даёт Аиду 3 души.",
+          "zh": "被命中的单位同时为哈迪斯提供3个灵魂。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wahre Gestalt enthüllt",
+        "en": "True Form Revealed",
+        "es": "Forma verdadera revelada",
+        "ru": "Истинный облик раскрыт",
+        "zh": "真身显现"
+      },
+      "description": {
+        "de": "Nachdem Hades gefallen ist, verwandelt er sich bis zum Kampfende in die [Unterwelt-Gottheit]. Die [Unterwelt-Gottheit] gilt als Gottheit (1. Kann nicht von Mengpo wiederbelebt werden; 2. Der Kampf endet nicht, wenn nur die Unterwelt-Gottheit übrig ist). Unterwelt-Gottheit: Erbt alle Werte und erhält zusätzlich 100% max. LP sowie 50% physischen & magischen Widerstand, kann aber keine Ultimates einsetzen.",
+        "en": "After Hades falls, he transforms into [Underworld Divinity] until the end of the battle. [Underworld Divinity] is considered a Deity unit (1. Cannot be revived by Mengpo; 2. The battle will not end if only Underworld Divinity remains). Underworld Divinity: Inherits all stats and gains an additional 100% Max HP and 50% Physical & Magical Resistance, but cannot use Ultimate Skills.",
+        "es": "Después de que Hades cae, se transforma en [Divinidad del Inframundo] hasta el final del combate. La [Divinidad del Inframundo] se considera una unidad Deidad (1. No puede ser revivida por Mengpo; 2. El combate no termina si solo queda la Divinidad del Inframundo). Divinidad del Inframundo: hereda todas las estadísticas y obtiene un 100 % adicional de PS máx. y un 50 % de Resistencia física y mágica, pero no puede usar habilidades definitivas.",
+        "ru": "После падения Аид превращается в [Божество Подземного мира] до конца боя. [Божество Подземного мира] считается Божеством (1. Не может быть воскрешено Мэнпо; 2. Бой не заканчивается, если остаётся только Божество Подземного мира). Божество Подземного мира: наследует все характеристики и получает дополнительно 100% макс. HP и 50% физ. и маг. сопротивления, но не может использовать ультимативные навыки.",
+        "zh": "哈迪斯倒下后，将化身为【冥界神性】直至战斗结束。【冥界神性】视为神明单位（1. 无法被孟婆复活；2. 若仅剩冥界神性，战斗不会结束）。冥界神性：继承所有属性，并额外获得100%最大生命值与50%物理和魔法抗性，但无法使用大招。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erbt alle Werte und erhält zusätzlich 120% max. LP.",
+          "en": "Inherits all stats and gains an additional 120% Max HP.",
+          "es": "Hereda todas las estadísticas y obtiene un 120 % adicional de PS máx.",
+          "ru": "Наследует все характеристики и получает дополнительно 120% макс. HP.",
+          "zh": "继承所有属性，并额外获得120%最大生命值。"
+        },
+        "level3": {
+          "de": "Erbt alle Werte und erhält zusätzlich 140% max. LP.",
+          "en": "Inherits all stats and gains an additional 140% Max HP.",
+          "es": "Hereda todas las estadísticas y obtiene un 140 % adicional de PS máx.",
+          "ru": "Наследует все характеристики и получает дополнительно 140% макс. HP.",
+          "zh": "继承所有属性，并额外获得140%最大生命值。"
+        },
+        "level4": {
+          "de": "Erbt alle Werte und erhält zusätzlich 160% max. LP.",
+          "en": "Inherits all stats and gains an additional 160% Max HP.",
+          "es": "Hereda todas las estadísticas y obtiene un 160 % adicional de PS máx.",
+          "ru": "Наследует все характеристики и получает дополнительно 160% макс. HP.",
+          "zh": "继承所有属性，并额外获得160%最大生命值。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wirklich köstlich",
+        "en": "Truly Delectable",
+        "es": "Realmente delicioso",
+        "ru": "Поистине лакомо",
+        "zh": "着实美味"
+      },
+      "description": {
+        "de": "Passiv: Absorbiert Hades eine Seele, stellt er LP in Höhe von 8% seines ANG wieder her.",
+        "en": "Passive: When Hades absorbs a soul, he restores HP equal to 8% of ATK.",
+        "es": "Pasiva: Cuando Hades absorbe un alma, recupera PS equivalentes al 8 % del ATQ.",
+        "ru": "Пассивно: Когда Аид поглощает душу, он восстанавливает HP в размере 8% ATK.",
+        "zh": "被动：哈迪斯吸收灵魂时，恢复相当于攻击力8%的生命值。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Jede Seele gewährt ihm zusätzlich 5% ANG.",
+          "en": "Each soul also grants him 5% ATK.",
+          "es": "Cada alma le otorga además un 5 % de ATQ.",
+          "ru": "Каждая душа также даёт ему 5% ATK.",
+          "zh": "每个灵魂同时为其提供5%攻击力。"
+        },
+        "level3": {
+          "de": "Absorbiert Hades eine Seele, stellt er LP in Höhe von 15% seines ANG wieder her.",
+          "en": "When Hades absorbs a soul, he restores HP equal to 15% of ATK.",
+          "es": "Cuando Hades absorbe un alma, recupera PS equivalentes al 15 % del ATQ.",
+          "ru": "Когда Аид поглощает душу, он восстанавливает HP в размере 15% ATK.",
+          "zh": "哈迪斯吸收灵魂时，恢复相当于攻击力15%的生命值。"
+        },
+        "level4": {
+          "de": "Jede Seele gewährt ihm zusätzlich 10% ANG.",
+          "en": "Each soul also grants him 10% ATK.",
+          "es": "Cada alma le otorga además un 10 % de ATQ.",
+          "ru": "Каждая душа также даёт ему 10% ATK.",
+          "zh": "每个灵魂同时为其提供10%攻击力。"
+        }
+      }
+    }
+  ]
 }

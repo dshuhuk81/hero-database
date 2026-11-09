@@ -8,20 +8,200 @@
   },
   "skills": [
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Sekunde von Blüte & Fäule auf 40%.",
+          "en": "Increases DMG per second of Blossom & Blight to 40%.",
+          "es": "Aumenta el daño por segundo de Flor y Podredumbre al 40 %.",
+          "ru": "Увеличивает DMG в секунду от Цветения и Порчи до 40%.",
+          "zh": "花败每秒伤害提高至40%。"
+        },
+        "level3": {
+          "de": "Die Dauer verlängert sich auf 10s.",
+          "en": "Duration extends to 10s.",
+          "es": "La duración se extiende a 10 s.",
+          "ru": "Длительность увеличивается до 10с.",
+          "zh": "持续时间延长至10秒。"
+        },
+        "level4": {
+          "de": "Jeder Stapel Blüte & Fäule erhöht den von Feinden erlittenen SCH um 5%.",
+          "en": "Each stack of Blossom & Blight increases DMG taken by enemies by 5%.",
+          "es": "Cada acumulación de Flor y Podredumbre aumenta el daño recibido por los enemigos un 5 %.",
+          "ru": "Каждый стак Цветения и Порчи увеличивает получаемый врагами DMG на 5%.",
+          "zh": "每层花败使敌人受到的伤害提高5%。"
+        }
+      },
+      "name": {
+        "de": "Wolken und Regen von Wushan",
+        "en": "Clouds and Rain of Wushan",
+        "es": "Nubes y lluvia de Wushan",
+        "ru": "Облака и дожди Ушаня",
+        "zh": "巫山云雨"
+      },
+      "description": {
+        "de": "Yaoji wirbelt die Wolken und den Regen von Wushan auf und weitet den Wirkungsbereich des Miasmafelds 8s lang auf das gesamte Schlachtfeld aus. Beim Wirken verursacht sie sofort 1 Stapel Blüte & Fäule bei Feinden im Wirkungsbereich des Feldes und danach alle 2s 1 Stapel bei Feinden im Feld. (Blüte & Fäule: Jeder Stapel erhöht den erlittenen SCH des Ziels um 3% und verursacht pro Sekunde SCH in Höhe von 25% von Yaojis ANG. Stapelt sich bis zu 10-mal und hält 30s.) Dieses Ultimate kann nur gewirkt werden, solange sie einen Wirt besitzt. Besitzt Yaoji beim Wirken keinen Wirt, besessen sie sofort den vordersten Verbündeten und wirkt dann das Ultimate.",
+        "en": "Yaoji stirs up the clouds and rain of Wushan, expanding the AoE of Miasmic Field to the entire battlefield for 8s. When cast, immediately inflicts 1 stack of Blossom & Blight to enemies within the field's AoE, and then inflicts 1 stack of Blossom & Blight to enemies within the field every 2s. (Blossom & Blight: Each stack increases DMG taken by the target by 3% and deals DMG equal to 25% of Yaoji's ATK per second. Stacks up to 10 times and lasts 30s.) This Ultimate can only be cast while possessing a host. If Yaoji is not possessing a host when cast, she immediately possesses the frontmost ally, then casts the Ultimate.",
+        "es": "Yaoji agita las nubes y la lluvia de Wushan, expandiendo el área de efecto de Campo miasmático a todo el campo de batalla durante 8 s. Al lanzarla, inflige de inmediato 1 acumulación de Flor y Podredumbre a los enemigos dentro del área del campo y, después, 1 acumulación cada 2 s a los enemigos dentro del campo. (Flor y Podredumbre: cada acumulación aumenta el daño recibido por el objetivo un 3 % e inflige un daño equivalente al 25 % del ATQ de Yaoji por segundo. Se acumula hasta 10 veces y dura 30 s.) Esta definitiva solo puede lanzarse mientras posee un huésped. Si Yaoji no posee un huésped al lanzarla, posee de inmediato al aliado más adelantado y luego lanza la definitiva.",
+        "ru": "Яоцзи поднимает облака и дожди Ушаня, расширяя область действия Миазматического поля на всё поле боя на 8с. При применении сразу накладывает 1 стак Цветения и Порчи на врагов в области поля, а затем накладывает 1 стак каждые 2с на врагов внутри поля. (Цветение и Порча: каждый стак увеличивает получаемый целью DMG на 3% и наносит DMG в размере 25% ATK Яоцзи в секунду. Складывается до 10 раз и длится 30с.) Этот ультимейт можно применить только при наличии носителя. Если при применении у Яоцзи нет носителя, она сразу вселяется в самого переднего союзника, а затем применяет ультимейт.",
+        "zh": "瑶姬搅动巫山云雨，使瘴气领域的作用范围扩大至整个战场，持续8秒。施放时，立即对领域范围内的敌人施加1层“花败”，之后每2秒对领域内敌人施加1层“花败”。（花败：每层使目标受到的伤害提高3%，并每秒造成相当于瑶姬攻击力25%的伤害。最多叠加10层，持续30秒。）该大招只能在附身宿主时施放。若施放时瑶姬未附身宿主，则立即附身最前方的友方，然后施放大招。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Beim aktiven Wirken werden 180% ANG als SCH verursacht.",
+          "en": "When actively cast, deals DMG equal to 180% of ATK.",
+          "es": "Al lanzarla activamente, inflige un daño equivalente al 180 % del ATQ.",
+          "ru": "При активном применении наносит DMG в размере 180% ATK.",
+          "zh": "主动施放时，造成相当于攻击力180%的伤害。"
+        },
+        "level3": {
+          "de": "Beim aktiven Wirken werden 210% ANG als SCH verursacht.",
+          "en": "When actively cast, deals DMG equal to 210% of ATK.",
+          "es": "Al lanzarla activamente, inflige un daño equivalente al 210 % del ATQ.",
+          "ru": "При активном применении наносит DMG в размере 210% ATK.",
+          "zh": "主动施放时，造成相当于攻击力210%的伤害。"
+        },
+        "level4": {
+          "de": "Die CD beim aktiven Wirken wird um 30% verringert.",
+          "en": "Active cast CD is reduced by 30%.",
+          "es": "El enfriamiento al lanzarla activamente se reduce un 30 %.",
+          "ru": "Перезарядка при активном применении сокращается на 30%.",
+          "zh": "主动施放的冷却时间降低30%。"
+        }
+      },
+      "name": {
+        "de": "Verschlungene Wolken",
+        "en": "Twining Clouds",
+        "es": "Nubes entrelazadas",
+        "ru": "Сплетающиеся облака",
+        "zh": "缠云"
+      },
+      "description": {
+        "de": "Passiv: Zu Kampfbeginn besessen Yaoji den vordersten Verbündeten und wird unanvisierbar. Während sie einen Wirt besitzt, erzeugt sie um den Wirt ein Miasmafeld mit 4 Metern Radius. Die Besessenheit hält 12s. Nach dem Verlassen des Wirts erleidet sie 5s lang 50% weniger SCH. Beim aktiven Wirken verursacht sie 150% ANG als SCH an allen Feinden im Miasmafeld und verursacht 1 Stapel Blüte & Fäule.",
+        "en": "Passive: At the start of battle, Yaoji possesses the frontmost ally and becomes Untargetable. While possessing a host, she creates a Miasmic Field in a 4-meter radius around the host. Possession lasts 12s. After leaving the host, she takes 50% less DMG for 5s. When actively cast, deals DMG equal to 150% of ATK to all enemies within the Miasmic Field and inflicts 1 stack of Blossom & Blight.",
+        "es": "Pasiva: Al inicio del combate, Yaoji posee al aliado más adelantado y pasa a ser no seleccionable. Mientras posee un huésped, crea un Campo miasmático de 4 metros de radio alrededor del huésped. La posesión dura 12 s. Tras abandonar al huésped, recibe un 50 % menos de daño durante 5 s. Al lanzarla activamente, inflige un daño equivalente al 150 % del ATQ a todos los enemigos dentro del Campo miasmático e inflige 1 acumulación de Flor y Podredumbre.",
+        "ru": "Пассивно: В начале боя Яоцзи вселяется в самого переднего союзника и становится недоступной для выбора. Пока у неё есть носитель, она создаёт вокруг него Миазматическое поле радиусом 4 метра. Вселение длится 12с. После выхода из носителя она получает на 50% меньше DMG в течение 5с. При активном применении наносит DMG в размере 150% ATK всем врагам в Миазматическом поле и накладывает 1 стак Цветения и Порчи.",
+        "zh": "被动：战斗开始时，瑶姬附身最前方的友方并变为不可选中。附身期间，她在宿主周围4米半径内生成瘴气领域。附身持续12秒。离开宿主后，5秒内受到的伤害降低50%。主动施放时，对瘴气领域内所有敌人造成相当于攻击力150%的伤害，并施加1层花败。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Senkt den ANG von Feinden im Miasmafeld um 20%.",
+          "en": "Reduces ATK of enemies within the Miasmic Field by 20%.",
+          "es": "Reduce el ATQ de los enemigos dentro del Campo miasmático un 20 %.",
+          "ru": "Снижает ATK врагов в Миазматическом поле на 20%.",
+          "zh": "使瘴气领域内敌人的攻击力降低20%。"
+        },
+        "level3": {
+          "de": "Senkt die von Feinden im Miasmafeld erhaltene Heilung um 60%.",
+          "en": "Reduces healing effects received by enemies within the Miasmic Field by 60%.",
+          "es": "Reduce la Curación que reciben los enemigos dentro del Campo miasmático un 60 %.",
+          "ru": "Снижает получаемое врагами в Миазматическом поле лечение на 60%.",
+          "zh": "使瘴气领域内敌人所受治疗效果降低60%。"
+        },
+        "level4": {
+          "de": "Senkt den ANG von Feinden im Miasmafeld um 25%.",
+          "en": "Reduces ATK of enemies within the Miasmic Field by 25%.",
+          "es": "Reduce el ATQ de los enemigos dentro del Campo miasmático un 25 %.",
+          "ru": "Снижает ATK врагов в Миазматическом поле на 25%.",
+          "zh": "使瘴气领域内敌人的攻击力降低25%。"
+        }
+      },
+      "name": {
+        "de": "Nebelgeborene Zersetzung",
+        "en": "Mistborne Erosion",
+        "es": "Erosión nacida de la niebla",
+        "ru": "Эрозия туманов",
+        "zh": "雾蚀"
+      },
+      "description": {
+        "de": "Passiv: Senkt den ANG von Feinden im Miasmafeld um 15% und die von ihnen erhaltene Heilung um 30%.",
+        "en": "Passive: Reduces ATK of enemies within the Miasmic Field by 15% and their healing effects received by 30%.",
+        "es": "Pasiva: Reduce el ATQ de los enemigos dentro del Campo miasmático un 15 % y la Curación que reciben un 30 %.",
+        "ru": "Пассивно: Снижает ATK врагов в Миазматическом поле на 15%, а получаемое ими лечение — на 30%.",
+        "zh": "被动：使瘴气领域内敌人的攻击力降低15%，所受治疗效果降低30%。"
+      }
     },
     {
-      "upgrades": {}
+      "upgrades": {
+        "level2": {
+          "de": "Erleidet die nächsten 5s 40% weniger SCH.",
+          "en": "Takes 40% less DMG for the next 5s.",
+          "es": "Recibe un 40 % menos de daño durante los siguientes 5 s.",
+          "ru": "Получает на 40% меньше DMG в течение следующих 5с.",
+          "zh": "接下来5秒内受到的伤害降低40%。"
+        },
+        "level3": {
+          "de": "Stellt pro Sekunde 5% der max. LP wieder her.",
+          "en": "Restores 5% of max HP per second.",
+          "es": "Recupera un 5 % de la PS máx. por segundo.",
+          "ru": "Восстанавливает 5% макс. HP в секунду.",
+          "zh": "每秒恢复5%最大生命值。"
+        },
+        "level4": {
+          "de": "Die Dauer verlängert sich auf 6s.",
+          "en": "Duration extends to 6s.",
+          "es": "La duración se extiende a 6 s.",
+          "ru": "Длительность увеличивается до 6с.",
+          "zh": "持续时间延长至6秒。"
+        }
+      },
+      "name": {
+        "de": "Wolkenschleier-Zuflucht",
+        "en": "Cloudveil Shelter",
+        "es": "Refugio del velo de nubes",
+        "ru": "Укрытие облачной вуали",
+        "zh": "云幕庇护"
+      },
+      "description": {
+        "de": "Der Wirt erleidet die nächsten 5s 30% weniger SCH und stellt pro Sekunde 3% seiner max. LP wieder her. Diese Fähigkeit kann nur gewirkt werden, solange sie einen Wirt besitzt.",
+        "en": "The host takes 30% less DMG for the next 5s and restores 3% of max HP per second. This skill can only be cast while possessing a host.",
+        "es": "El huésped recibe un 30 % menos de daño durante los siguientes 5 s y recupera un 3 % de su PS máx. por segundo. Esta habilidad solo puede lanzarse mientras posee un huésped.",
+        "ru": "Носитель получает на 30% меньше DMG в течение следующих 5с и восстанавливает 3% макс. HP в секунду. Этот навык можно применить только при наличии носителя.",
+        "zh": "宿主在接下来5秒内受到的伤害降低30%，并每秒恢复3%最大生命值。该技能只能在附身宿主时施放。"
+      }
     }
   ],
   "relic": {
-    "upgrades": {}
+    "upgrades": {
+      "level2": {
+        "de": "Jedes Mal, wenn der Wirt 40% seiner max. LP verliert, wirkt sofort zusätzlich Verschlungene Wolken auf Feinde im Miasmafeld.",
+        "en": "Each time the host loses 40% of max HP, immediately casts an additional Twining Clouds on enemies within the Miasmic Field.",
+        "es": "Cada vez que el huésped pierde un 40 % de su PS máx., lanza de inmediato Nubes entrelazadas adicionales sobre los enemigos dentro del Campo miasmático.",
+        "ru": "Каждый раз, когда носитель теряет 40% макс. HP, немедленно применяется дополнительное Сплетающиеся облака по врагам в Миазматическом поле.",
+        "zh": "宿主每损失40%最大生命值，立即对瘴气领域内的敌人额外施放一次缠云。"
+      },
+      "level3": {
+        "de": "Erreicht Blüte & Fäule bei einem Feind erstmals 10 Stapel, wird das Ziel mit Fäulnis belegt. (Fäulnis: Verliert pro Sekunde 5% der max. LP, ANG-GES um 50% und ANG um 50% verringert für 5s.)",
+        "en": "When Blossom & Blight on each enemy first reaches 10 stacks, inflicts Blight on the target. (Blight: Loses 5% of max HP per second, ATK SPD reduced by 50%, and ATK reduced by 50% for 5s.)",
+        "es": "Cuando Flor y Podredumbre de cada enemigo alcanza por primera vez 10 acumulaciones, inflige Podredumbre al objetivo. (Podredumbre: pierde un 5 % de la PS máx. por segundo, VEL. de ATQ reducida un 50 % y ATQ reducido un 50 % durante 5 s.)",
+        "ru": "Когда Цветение и Порча на каждом враге впервые достигает 10 стаков, на цель накладывается Порча. (Порча: теряет 5% макс. HP в секунду, ATK SPD снижается на 50% и ATK снижается на 50% на 5с.)",
+        "zh": "每名敌人身上的花败首次叠加至10层时，对目标施加凋零。（凋零：每秒损失5%最大生命值，攻速降低50%，攻击力降低50%，持续5秒。）"
+      },
+      "level4": {
+        "de": "Jedes Mal, wenn der Wirt 30% seiner max. LP verliert, wirkt sofort zusätzlich Verschlungene Wolken auf Feinde im Miasmafeld.",
+        "en": "Each time the host loses 30% of max HP, immediately casts an additional Twining Clouds on enemies within the Miasmic Field.",
+        "es": "Cada vez que el huésped pierde un 30 % de su PS máx., lanza de inmediato Nubes entrelazadas adicionales sobre los enemigos dentro del Campo miasmático.",
+        "ru": "Каждый раз, когда носитель теряет 30% макс. HP, немедленно применяется дополнительное Сплетающиеся облака по врагам в Миазматическом поле.",
+        "zh": "宿主每损失30%最大生命值，立即对瘴气领域内的敌人额外施放一次缠云。"
+      }
+    },
+    "name": {
+      "de": "Die letzten Blütenblätter fallen",
+      "en": "Last Petals Fallen",
+      "es": "Caen los últimos pétalos",
+      "ru": "Падают последние лепестки",
+      "zh": "落尽残红"
+    },
+    "description": {
+      "de": "Erreicht Blüte & Fäule bei einem Feind erstmals 10 Stapel, wird das Ziel mit Fäulnis belegt. (Fäulnis: Verliert pro Sekunde 3% der max. LP, ANG-GES um 30% und ANG um 30% verringert für 5s.)",
+      "en": "When Blossom & Blight on each enemy first reaches 10 stacks, inflicts Blight on the target. (Blight: Loses 3% of max HP per second, ATK SPD reduced by 30%, and ATK reduced by 30% for 5s.)",
+      "es": "Cuando Flor y Podredumbre de cada enemigo alcanza por primera vez 10 acumulaciones, inflige Podredumbre al objetivo. (Podredumbre: pierde un 3 % de la PS máx. por segundo, VEL. de ATQ reducida un 30 % y ATQ reducido un 30 % durante 5 s.)",
+      "ru": "Когда Цветение и Порча на каждом враге впервые достигает 10 стаков, на цель накладывается Порча. (Порча: теряет 3% макс. HP в секунду, ATK SPD снижается на 30% и ATK снижается на 30% на 5с.)",
+      "zh": "每名敌人身上的花败首次叠加至10层时，对目标施加凋零。（凋零：每秒损失3%最大生命值，攻速降低30%，攻击力降低30%，持续5秒。）"
+    }
   },
   "cardImgY": "0%"
 }
