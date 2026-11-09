@@ -48,18 +48,6 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Raging Tide",
-      "description": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
-      "upgrades": {
-        "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
-        "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
-        "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
-      },
-      "damageType": "Magical",
-      "isUltimate": true
-    },
-    {
-      "id": "skill_2",
       "name": "Rogue Wave",
       "description": "Poseidon raises his trident, summoning two tidal waves on both sides of the battlefield. Enemies within range are pushed 2 meters and take DMG equal to 200% of his ATK.",
       "upgrades": {
@@ -67,21 +55,22 @@
         "level3": "Increases DMG dealt to 220%.",
         "level4": "Increases DMG dealt to 250%."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
-      "id": "skill_3",
+      "id": "skill_2",
       "name": "Waterspout",
       "description": "Poseidon drives his trident into the ground under the current target, triggering a tidal wave that deals DMG equal to 200% of ATK to enemies in a small area and knocking them down.",
       "upgrades": {
         "level2": "Increases DMG dealt to 220%.",
         "level3": "Also reduces the target's M-RES by 20%.",
         "level4": "Increases DMG dealt to 240%."
-      },
+        },
       "damageType": "Magical"
     },
     {
-      "id": "skill_4",
+      "id": "skill_3",
       "name": "Tidal Trident",
       "description": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself.",
       "upgrades": {
@@ -89,10 +78,10 @@
         "level3": "Increases Energy restored to 150.",
         "level4": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
       },
-      "damageType": ""
-    }
-  ],
-  "relic": {
+      "damageType": "Magical"
+    },
+    {
+    "id": "skill_4",
     "name": "Tidal Aegis",
     "description": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
     "damageType": "Magical",
@@ -100,7 +89,18 @@
       "level2": "Shield Strength increases to 300%.",
       "level3": "Increases ATK by 10% while the shield is active.",
       "level4": "Shield Strength increases to 330%. (Unlocks at Lv.281)"
+    },
+      "damageType": ""
     }
+  ],
+  "relic": {      
+      "name": "Raging Tide",
+      "description": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
+      "upgrades": {
+        "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
+        "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
+        "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
+      }
   },
   "synergies": [
     "ENEMY_CROWD_CONTROL",

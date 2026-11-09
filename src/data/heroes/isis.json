@@ -49,11 +49,11 @@
     {
       "id": "skill_1",
       "name": "Omniscient Arrow",
-      "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+      "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
       "upgrades": {
-        "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-        "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-        "level4": "The arrow will deal DMG equal to 200% of ATK."
+        "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
+        "level3": "Increases ATK SPD to 150%.",
+        "level4": "Reduces Energy lost to 40."
       },
       "damageType": "",
       "isUltimate": true
@@ -61,11 +61,11 @@
     {
       "id": "skill_2",
       "name": "Omnipotence",
-      "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+      "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
       "upgrades": {
-        "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-        "level3": "Increases ATK SPD to 150%.",
-        "level4": "Reduces Energy lost to 40."
+        "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
+        "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
+        "level4": "The arrow will deal DMG equal to 200% of ATK."
       },
       "damageType": "Physical"
     },
