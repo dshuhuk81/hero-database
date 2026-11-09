@@ -9,30 +9,6 @@
   "skills": [
     {
       "name": {
-        "en": "Fall to Shadow!",
-        "zh": "堕入暗影！"
-      },
-      "description": {
-        "en": "Gains 200 Energy upon entering battle.",
-        "zh": "进入战斗时获得200点能量。"
-      },
-      "upgrades": {
-        "level2": {
-          "en": "She steals 2% max HP and 2% ATK from all enemies when casting her Ultimate, up to 100% of her ATK and HP. She grows in size with each steal. (Unlock at Relic Lv.10)",
-          "zh": "施放大招时，从所有敌人处各窃取2%最大生命值与2%攻击力，上限为她攻击力与生命值的100%。每次窃取都会使她的体型变大。（圣物10级解锁）"
-        },
-        "level3": {
-          "en": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
-          "zh": "掠夺3%的最大生命值与攻击力。（圣物20级解锁）"
-        },
-        "level4": {
-          "en": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)",
-          "zh": "掠夺4%的最大生命值与攻击力。（圣物30级解锁）"
-        }
-      }
-    },
-    {
-      "name": {
         "de": "Die dunkle Hälfte der Welt",
         "en": "The World's Dark Half",
         "es": "Oscuridad del mundo",
@@ -99,6 +75,7 @@
         }
       }
     },
+    {},
     {
       "name": {
         "de": "Trivias Klinge",
