@@ -15,6 +15,53 @@ Python dependencies: `requirements.txt` (a Python 3.9 venv is what ran so far).
 tools/android/run.sh <script> [args]     # runs from $ANDROID_DATA_DIR so relative out/ paths work
 ```
 
+## Separate CN and Global hero-release Markdown exports
+
+From the Android data directory (`~/Downloads/Sites/android`), export an existing pull:
+
+```bash
+.venv-arm/bin/python -I scripts/export_hero_releases_cn.py out/emu_pull/20261111/cn
+.venv-arm/bin/python -I scripts/export_hero_releases_global.py out/emu_pull/20261111/global
+```
+
+Each command decrypts and unpacks only its own client, then writes
+`out/site_data/HERO_RELEASES_CN.md` or `out/site_data/HERO_RELEASES_GLOBAL.md`.
+Both flattened pulls (`cn/data/packages`) and fresh ADB pulls (`cn/files/data/packages`) are accepted.
+For a fresh snapshot, start the emulator yourself, open each client and let its resources finish downloading,
+then run `.venv-arm/bin/python -I scripts/emu_status.py --pull --out out/emu_pull/20261112`
+and pass the corresponding `20261112/cn` or `20261112/global` directory to the commands above.
+No Frida hook or RAM scan is needed for these exports; the stored client configuration and language packages suffice.
+
+Already unpacked configs work too (Python standard library only):
+
+```bash
+python3 -I scripts/export_hero_releases_cn.py out/emu_pull/20261111_plain/x_cn
+python3 -I scripts/export_hero_releases_global.py out/emu_pull/20261111_plain/x_global
+```
+
+Options: `--out <file.md>`, `--today YYYY-MM-DD` (classification date, not the snapshot date),
+`--language-dir <folder-or-json>` (override the matching language source).
+From the website repository, `tools/android/run.sh <script.py> ...` works as usual.
+
+The reports keep **every `hero_detail` record**, including heroes without dates, invisible entries and
+placeholder dates. IDs 1000–5999 appear in the main table; other entries (NPCs/tests/variants) appear separately.
+`enable_time` is preserved with its time component. Missing dates do not imply a launch release;
+`2099-*` and `2027-12-12*` are marked using the existing project placeholder rule.
+The report contains release-related fields, not a full hero stats/skills dump.
+
+CN names are referenced by keys such as `tid#HeroName_4016` and resolved through the client's raw-Deflate
+`ZH_CN` language chunks (e.g. `贞德`). Global uses its own `EN_US` chunks. The original key, resolved name,
+presence of Han characters and internal portrait name (e.g. `ZhenDe`) are separate columns.
+Missing translations stay visibly unresolved; no English mapping or other client's names are substituted.
+The CN monolithic `deflate_config.zip` is unpacked alongside `config.zip`; Global has split
+`deflate_config_*.zip` files. Exports do not update website JSON or import anything.
+
+Offline regression tests (run from the data directory with the existing dependency venv):
+
+```bash
+.venv-arm/bin/python -m unittest discover -s scripts -p 'test_hero_release_md.py'
+```
+
 ## Refresh events and release dates (one command)
 With both clients running in the emulator (open Global once and visit the lobby):
 ```bash
@@ -63,6 +110,7 @@ Without `--write`, `build_site_assets.py` is a dry run that prints what it would
 | Script | Purpose |
 |---|---|
 | `export_hero_releases.py` | `hero_releases.json`: game id, Global/CN release dates, portrait name |
+| `export_hero_releases_cn.py`, `export_hero_releases_global.py` | independent complete client release reports in Markdown, including localized names and undated entries |
 | `export_events.py` | `events.global.json` (+ report): every dated Global event, banners with `heroGameId` (also reruns) |
 | `export_release_schedule_md.py` | human-readable release overview |
 | `unpack_config.py` | decrypts and unpacks the config zips of a pull into `x_<label>/` |

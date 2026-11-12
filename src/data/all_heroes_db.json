@@ -498,6 +498,53 @@
     ],
     "cardImgY": "0%"
   },
+  "apollo": {
+    "id": "apollo",
+    "heroID": 2015,
+    "name": "Apollo",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/apollo.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Diamonds",
+    "role": "Arcane",
+    "class": "Mage",
+    "rarity": "Legendary",
+    "description": "",
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [],
+    "relic": null,
+    "synergies": [],
+    "cardImgY": "0%"
+  },
   "aquarius": {
     "id": "aquarius",
     "heroID": 101,
@@ -2825,6 +2872,53 @@
     ],
     "cardImgY": "0%"
   },
+  "cthulhu": {
+    "id": "cthulhu",
+    "heroID": 5014,
+    "name": "Cthulhu",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/cthulhu.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Starglint",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [],
+    "relic": null,
+    "synergies": [],
+    "cardImgY": "0%"
+  },
   "demeter": {
     "id": "demeter",
     "heroID": 3003,
@@ -4126,7 +4220,7 @@
     "role": "Hefty",
     "class": "Tank",
     "tierClass": "Tanks",
-    "rarity": "Epic",
+    "rarity": "Legendary",
     "description": "Geb is the guardian of earth and nature. His rocky form is draped in lush vegetation, a microcosm of the natural world.",
     "evolution": "Divine V",
     "level": 300,
@@ -6868,11 +6962,11 @@
       {
         "id": "skill_1",
         "name": "Omniscient Arrow",
-        "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+        "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
         "upgrades": {
-          "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-          "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-          "level4": "The arrow will deal DMG equal to 200% of ATK."
+          "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
+          "level3": "Increases ATK SPD to 150%.",
+          "level4": "Reduces Energy lost to 40."
         },
         "damageType": "",
         "isUltimate": true
@@ -6880,11 +6974,11 @@
       {
         "id": "skill_2",
         "name": "Omnipotence",
-        "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+        "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
         "upgrades": {
-          "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-          "level3": "Increases ATK SPD to 150%.",
-          "level4": "Reduces Energy lost to 40."
+          "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
+          "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
+          "level4": "The arrow will deal DMG equal to 200% of ATK."
         },
         "damageType": "Physical"
       },
@@ -7358,6 +7452,7 @@
   },
   "joanneofarc": {
     "id": "joanneofarc",
+    "heroID": 4016,
     "name": "Joanne of Arc",
     "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/joanneofarc.webp",
     "release": false,
@@ -9793,7 +9888,7 @@
     "imgY": "-30%",
     "cardImgY": "0%",
     "release": true,
-    "newHero": false,
+    "newHero": true,
     "faction": "Starglint",
     "role": "Nimble",
     "class": "Archer",
@@ -10984,6 +11079,53 @@
       }
     ]
   },
+  "pandora": {
+    "id": "pandora",
+    "heroID": 5013,
+    "name": "Pandora",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/pandora.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Starglint",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [],
+    "relic": null,
+    "synergies": [],
+    "cardImgY": "0%"
+  },
   "phoenix": {
     "id": "phoenix",
     "heroID": 2008,
@@ -11384,18 +11526,6 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Raging Tide",
-        "description": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
-        "upgrades": {
-          "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
-          "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
-          "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
-        },
-        "damageType": "Magical",
-        "isUltimate": true
-      },
-      {
-        "id": "skill_2",
         "name": "Rogue Wave",
         "description": "Poseidon raises his trident, summoning two tidal waves on both sides of the battlefield. Enemies within range are pushed 2 meters and take DMG equal to 200% of his ATK.",
         "upgrades": {
@@ -11403,10 +11533,11 @@
           "level3": "Increases DMG dealt to 220%.",
           "level4": "Increases DMG dealt to 250%."
         },
-        "damageType": "Magical"
+        "damageType": "Magical",
+        "isUltimate": true
       },
       {
-        "id": "skill_3",
+        "id": "skill_2",
         "name": "Waterspout",
         "description": "Poseidon drives his trident into the ground under the current target, triggering a tidal wave that deals DMG equal to 200% of ATK to enemies in a small area and knocking them down.",
         "upgrades": {
@@ -11417,7 +11548,7 @@
         "damageType": "Magical"
       },
       {
-        "id": "skill_4",
+        "id": "skill_3",
         "name": "Tidal Trident",
         "description": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself.",
         "upgrades": {
@@ -11425,17 +11556,27 @@
           "level3": "Increases Energy restored to 150.",
           "level4": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
         },
-        "damageType": ""
+        "damageType": "Magical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Tidal Aegis",
+        "description": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
+        "damageType": "",
+        "upgrades": {
+          "level2": "Shield Strength increases to 300%.",
+          "level3": "Increases ATK by 10% while the shield is active.",
+          "level4": "Shield Strength increases to 330%. (Unlocks at Lv.281)"
+        }
       }
     ],
     "relic": {
-      "name": "Tidal Aegis",
-      "description": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
-      "damageType": "Magical",
+      "name": "Raging Tide",
+      "description": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
       "upgrades": {
-        "level2": "Shield Strength increases to 300%.",
-        "level3": "Increases ATK by 10% while the shield is active.",
-        "level4": "Shield Strength increases to 330%. (Unlocks at Lv.281)"
+        "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
+        "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
+        "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
       }
     },
     "synergies": [
@@ -12939,6 +13080,53 @@
         ]
       }
     ]
+  },
+  "sunwukong": {
+    "id": "sunwukong",
+    "heroID": 5015,
+    "name": "Sun Wukong",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/sunwukong.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Starglint",
+    "role": "Nimble",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "",
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [],
+    "relic": null,
+    "synergies": [],
+    "cardImgY": "0%"
   },
   "surtr": {
     "id": "surtr",
@@ -15074,6 +15262,53 @@
       }
     ],
     "imgY": "-30%",
+    "cardImgY": "0%"
+  },
+  "ymir": {
+    "id": "ymir",
+    "heroID": 1014,
+    "name": "Ymir",
+    "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/ymir.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Spades",
+    "role": "Hefty",
+    "class": "Tank",
+    "rarity": "Legendary",
+    "description": "",
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [],
+    "relic": null,
+    "synergies": [],
     "cardImgY": "0%"
   },
   "yuelao": {

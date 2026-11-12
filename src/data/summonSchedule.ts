@@ -192,4 +192,11 @@ export const summonSchedule: ScheduleEntry[] = [
     order: 31,
     pullQuality: "whales-only",
   },
+  // Order follows the CN client; dates are guesses: about two weeks per banner, regular heroes on Wednesdays, Starglint heroes on Mondays, replaced by game data once it exists.
+  { id: "ymir", displayName: "Ymir", order: 32, estimatedDate: "2026-12-23" },
+  { id: "pandora", displayName: "Pandora", order: 33, estimatedDate: "2027-01-04" },
+  { id: "cthulhu", displayName: "Cthulhu", order: 34, estimatedDate: "2027-01-18" },
+  { id: "joanneofarc", order: 35, estimatedDate: "2027-02-03" },
+  { id: "sunwukong", displayName: "Sun Wukong", order: 36, estimatedDate: "2027-02-15" },
+  { id: "apollo", displayName: "Apollo", order: 37, estimatedDate: "2027-03-03" },
 ];

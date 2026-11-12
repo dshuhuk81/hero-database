@@ -1291,5 +1291,60 @@
     "assets": {
       "internal_name": "ZhenDe"
     }
+  },
+  "ymir": {
+    "game_hero_id": 1014,
+    "all_game_hero_ids": null,
+    "match_confidence": "medium",
+    "match_method": "cn_client_2026-11-12",
+    "status": "ok",
+    "notes": "Youmier (CN name 尤弥尔). Global name not known yet; CN release 2026-09-18, no Global date.",
+    "assets": {
+      "internal_name": "Youmier"
+    }
+  },
+  "pandora": {
+    "game_hero_id": 5013,
+    "all_game_hero_ids": null,
+    "match_confidence": "medium",
+    "match_method": "cn_client_2026-11-12",
+    "status": "ok",
+    "notes": "Pandora (CN name 潘多拉). Global name not known yet; CN release 2026-09-30, no Global date.",
+    "assets": {
+      "internal_name": "Pandora"
+    }
+  },
+  "cthulhu": {
+    "game_hero_id": 5014,
+    "all_game_hero_ids": null,
+    "match_confidence": "medium",
+    "match_method": "cn_client_2026-11-12",
+    "status": "ok",
+    "notes": "Cthulhu (CN name 克苏鲁). Global name not known yet; CN release 2026-09-30, no Global date.",
+    "assets": {
+      "internal_name": "Cthulhu"
+    }
+  },
+  "sunwukong": {
+    "game_hero_id": 5015,
+    "all_game_hero_ids": null,
+    "match_confidence": "medium",
+    "match_method": "cn_client_2026-11-12",
+    "status": "ok",
+    "notes": "SunWuKong (CN name 孙悟空). Global name not known yet; CN release 2026-10-28, no Global date.",
+    "assets": {
+      "internal_name": "SunWuKong"
+    }
+  },
+  "apollo": {
+    "game_hero_id": 2015,
+    "all_game_hero_ids": null,
+    "match_confidence": "low",
+    "match_method": "cn_client_2026-11-12",
+    "status": "ok",
+    "notes": "ABoLuo (CN name 阿波罗), CN release 2026-11-13. Not yet in the imported hero_releases.json.",
+    "assets": {
+      "internal_name": "ABoLuo"
+    }
   }
 }

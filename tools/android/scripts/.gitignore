@@ -1,0 +1,8 @@
+# Keep the standalone hero-release exporters and their local dependencies in Git.
+!export_hero_releases_cn.py
+!export_hero_releases_global.py
+!export_hero_releases_md.py
+!test_hero_release_md.py
+!cn_hero_dates.py
+!unpack_config.py
+!motto_crypt.py
