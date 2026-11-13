@@ -1,6 +1,58 @@
 {
   "campaigns": [
     {
+      "id": "ananke-event",
+      "name": {
+        "en": "Timed Challenge",
+        "de": "Zeit-Herausforderung",
+        "es": "Desafío temporal",
+        "ru": "Временное испытание",
+        "zh": "限时挑战"
+      },
+      "hero": "ananke",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-26",
+      "description": {
+        "en": "Recommended team compositions for timed challenge stages.",
+        "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
+        "es": "Composiciones de equipo recomendadas para las etapas del desafío temporal.",
+        "ru": "Рекомендуемые составы команд для этапов временного испытания.",
+        "zh": "限时挑战关卡的推荐阵容。"
+      },
+      "stages": [
+        {
+          "id": 1,
+          "name": {
+            "en": "Echoes of the Spinning Wheel"
+          },
+          "composition": {
+            "front": ["Leo", "Cancer"],
+            "back": ["Sagittarius", "Ananke", "Libra"]
+          }
+        },
+        {
+          "id": 2,
+          "name": {
+            "en": "Unanswered Threads"
+          },
+          "composition": {
+            "front": ["Taurus", "Aries"],
+            "back": ["Ananke"]
+          }
+        },
+        {
+          "id": 3,
+          "name": {
+            "en": "Where Warp and Weft Intersect"
+          },
+          "composition": {
+            "front": ["Phoenix", "Ananke"],
+            "back": ["Poseidon", "Meret", "Aries"]
+          }
+        }
+      ]
+    },
+    {
       "id": "charon-event",
       "name": {
         "en": "Timed Challenge",

@@ -775,7 +775,8 @@ def analyze(
             "hero_team_share_with_summons": sumfield(owned, "out") / max(1.0, sumfield(team_damage, "out")),
             "summon_damage": summon_damage,
             "enemy_hp_lost": sumfield(team_hits, "hp_lost"),
-            "hero_hp_share_with_summons": sumfield(owned_hits, "hp_lost") / sumfield(team_hits, "hp_lost") if team_hits else None,
+            # team_hits can exist while every hit lost 0 HP (a team wiped before any damage landed).
+            "hero_hp_share_with_summons": sumfield(owned_hits, "hp_lost") / sumfield(team_hits, "hp_lost") if team_hits and sumfield(team_hits, "hp_lost") else None,
             "energy_gained": sumfield(energy, "gained"),
             "energy_spent": sumfield(energy, "spent"),
             "deaths": len(deaths),
