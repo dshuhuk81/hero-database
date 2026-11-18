@@ -29,5 +29,17 @@
       "5": "Basic attack (dragon form)"
     },
     "evidence": "session 2026-11-02, 19 fights: slot 1 is the Energy skill (~13 s) that removes Nidhogg and spawns H_NiDeHuoGe_HL with the relic shield (slot 6); slot 2 debuffs enemies early (~2-3 s); slot 3 is cast in human form at fight start, so it is the active Abyssal Dragon Surge, not the dragon-form passive. Slot 4 never appears in human form (expected for the passive End-Time Dragon Might) - inferred, not observed. Dragon-form slot 4 (5011144) applies a 5 s silence and a 3 s Imprison once per transformation, which matches the Black Dragon Form entry silence rather than the passive's 2.5 s Terror; label left neutral."
+  },
+  "2014": {
+    "hero": "ananke",
+    "slots": {
+      "1": "Destined Demise",
+      "2": "Fateweaving",
+      "3": "Threads of Fate",
+      "4": "Unseen Destiny",
+      "5": "Basic attack",
+      "6": "Relic"
+    },
+    "evidence": "fights 2026-11-13 (Tower 331-351, 724/725, Odyssey 5109-5122, alliance boss, friend battle): slot 2 is cast at ~0.3 s (Weaving) and dashes later; slot 1 (ultimate) starts only after full Energy at ~10-18 s; slot 3 is the area hit; slot 4 applies the Disappear/untargetable effects (20144101/20144102). Names are the current Global client names (EN_US 2026-11-12); the site slot order is skill_3 = Unseen Destiny, skill_4 = Threads of Fate."
   }
 }
