@@ -20,6 +20,12 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "ananke",
+    href: "/guides/ananke",
+    title: "Ananke",
+    updated: "2026-11-17",
+  },
+  {
     href: "/guides/goldeneye",
     image: "/images/guides/goldeneye/banner.webp",
     title: "Goldeneye - Event Guide",
