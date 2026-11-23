@@ -10,6 +10,7 @@ type TranslationTree = {
   tips: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
   support: Record<string, LocalizedString>;
+  giftCodes: Record<string, LocalizedString>;
   language: Record<string, LocalizedString>;
   nav: Record<string, LocalizedString>;
 };
@@ -336,6 +337,21 @@ const translations: TranslationTree = {
     toastCta: { en: "Support too", de: "Auch unterstützen", es: "Apoyar también", ru: "Поддержать тоже", zh: "我也支持" },
     tickerLabel: { en: "Thanks to", de: "Danke an", es: "Gracias a", ru: "Спасибо", zh: "感谢" },
   },
+  giftCodes: {
+    title: { en: "Gift codes", de: "Geschenk-Codes", es: "Códigos de regalo", ru: "Подарочные коды", zh: "礼包码" },
+    hint: { en: "Redeem in game", de: "Im Spiel einlösen", es: "Canjear en el juego", ru: "Активировать в игре", zh: "在游戏内兑换" },
+    all: { en: "All", de: "Alle", es: "Todos", ru: "Все", zh: "全部" },
+    copy: { en: "Copy", de: "Kopieren", es: "Copiar", ru: "Копировать", zh: "复制" },
+    copied: { en: "Copied", de: "Kopiert", es: "Copiado", ru: "Скопировано", zh: "已复制" },
+    validUntil: { en: "Valid until", de: "Gültig bis", es: "Válido hasta", ru: "Действует до", zh: "有效期至" },
+    empty: { en: "No active codes right now. Check back after the next announcement.", de: "Gerade keine aktiven Codes. Schau nach der nächsten Ankündigung wieder vorbei.", es: "No hay códigos activos ahora. Vuelve tras el próximo anuncio.", ru: "Сейчас нет активных кодов. Загляните после следующего анонса.", zh: "目前没有可用的礼包码，请在下次公告后再来看看。" },
+    teaserText: { en: "Active in-game codes, one click to copy.", de: "Aktive Codes fürs Spiel, mit einem Klick kopiert.", es: "Códigos activos del juego, copia con un clic.", ru: "Актуальные коды для игры, копирование в один клик.", zh: "当前可用的游戏礼包码，一键复制。" },
+    allCodes: { en: "All codes", de: "Alle Codes", es: "Todos los códigos", ru: "Все коды", zh: "全部礼包码" },
+    metaTitle: { en: "Gift Codes | Motto Immortal", de: "Geschenk-Codes | Motto Immortal", es: "Códigos de regalo | Motto Immortal", ru: "Подарочные коды | Motto Immortal", zh: "礼包码｜Motto Immortal" },
+    metaDescription: { en: "Active in-game gift codes for Motto Immortal with a one-click copy button.", de: "Aktive Geschenk-Codes für Motto Immortal mit Ein-Klick-Kopieren.", es: "Códigos de regalo activos de Motto Immortal con copia en un clic.", ru: "Актуальные подарочные коды Motto Immortal с копированием в один клик.", zh: "Motto Immortal 当前可用的礼包码，一键复制。" },
+    subtitle: { en: "Active codes to redeem in game", de: "Aktive Codes zum Einlösen im Spiel", es: "Códigos activos para canjear en el juego", ru: "Актуальные коды для активации в игре", zh: "当前可在游戏内兑换的礼包码" },
+    tag: { en: "What's on", de: "Aktuelles", es: "Novedades", ru: "Актуальное", zh: "当前动态" },
+  },
   language: {
     label: { en: "Language", de: "Sprache", es: "Idioma", ru: "Язык", zh: "语言" },
   },
@@ -349,6 +365,7 @@ const translations: TranslationTree = {
     "/guides": { en: "Guides", de: "Guides", es: "Guías", ru: "Гайды", zh: "攻略" },
     "/tips": { en: "Tips", de: "Tipps", es: "Consejos", ru: "Советы", zh: "攻略技巧" },
     "/bosses": { en: "Boss Encounters", de: "Bosskämpfe", es: "Encuentros con jefes", ru: "Бои с боссами", zh: "Boss 战" },
+    "/gift-codes": { en: "Gift Codes", de: "Geschenk-Codes", es: "Códigos de regalo", ru: "Подарочные коды", zh: "礼包码" },
     "/events": { en: "Events", de: "Events", es: "Eventos", ru: "События", zh: "活动" },
     "/totems": { en: "Totems", de: "Totems", es: "Tótems", ru: "Тотемы", zh: "图腾" },
     "/banners": { en: "Banners", de: "Banner", es: "Banners", ru: "Баннеры", zh: "卡池" },

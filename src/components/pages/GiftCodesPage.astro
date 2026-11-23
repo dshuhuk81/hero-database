@@ -1,0 +1,30 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import GiftCodes from "../GiftCodes.astro";
+import SupportStrip from "../SupportStrip.astro";
+import "../../styles/components.css";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { t } from "../../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+---
+
+<Base title={t(locale, "giftCodes", "metaTitle")} description={t(locale, "giftCodes", "metaDescription")} locale={locale}>
+  <PageHero
+    tag={t(locale, "giftCodes", "tag")}
+    headline={t(locale, "giftCodes", "title")}
+    subtitle={t(locale, "giftCodes", "subtitle")}
+    locale={locale}
+  />
+  <main class="page-wrapper gift-codes-page page-content">
+    <GiftCodes locale={locale} />
+    <SupportStrip />
+  </main>
+</Base>

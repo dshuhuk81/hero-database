@@ -8,6 +8,7 @@ import { navLabel, t } from "../../i18n/ui";
 import HeroCard from "../HeroCard.astro";
 import { supportLinks } from "../../data/support";
 import SupporterTicker from "../SupporterTicker.astro";
+import GiftCodes from "../GiftCodes.astro";
 import { getHeroById } from "../../data/heroes/withRatings";
 import "../../styles/home-live.css";
 import { globalEvents } from "../../data/eventsGlobal";
@@ -252,50 +253,51 @@ const featuredImageFor = (href: string) => href === "/heroes"
       </section>
 
       <div class="home-promo">
-        <section class="launch-section" aria-label="Tower Defense">
-          <a class="game-card" href="https://tower.motto-immortal-db.com/">
+        <a class="featured-card featured-card-image promo-card" href="https://tower.motto-immortal-db.com/">
+          <div class="featured-image-wrap">
             <img
-              class="game-card-art"
+              class="featured-image featured-image-centered"
               src="https://tower-assets.motto-immortal-db.com/td/ui/camp-home.webp"
               alt=""
               loading="lazy"
               decoding="async"
             />
-            <div class="game-card-content">
-              <span class="entry-badge" style="--badge-color: var(--accent-gold)">Alpha</span>
+          </div>
+          <div class="featured-copy">
+            <div class="featured-title-row">
               <h3>The Last Crossing</h3>
-              <p>Hold the line with gods of Greek and Norse myth. A free tower defense game, right in your browser.</p>
-              <span class="game-card-cta">
-                Play now
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </span>
+              <span class="entry-badge" style="--badge-color: var(--accent-gold)">Alpha</span>
             </div>
+            <p>Hold the line with gods of Greek and Norse myth. A free tower defense game, right in your browser.</p>
+          </div>
+          <span class="game-card-cta promo-action">
+            Play now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+          <svg class="featured-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+
+        <article class="featured-card featured-card-image promo-card gift-teaser">
+          <div class="featured-image-wrap promo-visual">
+            <GiftCodes locale={locale} limit={2} bare />
+          </div>
+          <div class="featured-copy">
+            <div class="featured-title-row">
+              <h3>{t(locale, "giftCodes", "title")}</h3>
+            </div>
+            <p>{t(locale, "giftCodes", "teaserText")}</p>
+          </div>
+          <a href={localizePath("/gift-codes", locale)} class="game-card-cta promo-action">
+            {t(locale, "giftCodes", "allCodes")}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
           </a>
-        </section>
-      <aside id="support" class="support-card" aria-labelledby="supportTitle">
-        <div>
-          <p class="section-kicker">{t(locale, "home", "communityEyebrow")}</p>
-          <h2 id="supportTitle">{t(locale, "home", "keepFreeHeadline")}</h2>
-          <p>{t(locale, "home", "supportCompactBody")}</p>
-          <p class="support-card-intro">{t(locale, "support", "cardIntro")}</p>
-          <ul class="support-card-list">
-            <li>{t(locale, "support", "cardItem1")}</li>
-            <li>{t(locale, "support", "cardItem2")}</li>
-            <li>{t(locale, "support", "cardItem3")}</li>
-          </ul>
-          <SupporterTicker />
-        </div>
-        <div class="support-actions">
-          {supportLinks.map((link) => (
-            <a href={link.href} target="_blank" rel="noopener noreferrer" class={link.primary ? "support-primary" : "support-secondary"} data-support-src="home">
-              {t(locale, "home", link.labelKey)}
-            </a>
-          ))}
-          <a href={localizePath("/support", locale)} class="support-card-more">{t(locale, "support", "learnMore")}</a>
-        </div>
-      </aside>
+        </article>
       </div>
 
       <section class="home-section home-directory" aria-labelledby="directoryTitle">
@@ -351,6 +353,28 @@ const featuredImageFor = (href: string) => href === "/heroes"
           ))}
         </div>
       </section>
+
+      <aside id="support" class="support-band" aria-labelledby="supportTitle">
+        <div class="support-band-copy">
+          <p class="section-kicker">{t(locale, "home", "communityEyebrow")}</p>
+          <h2 id="supportTitle">{t(locale, "home", "keepFreeHeadline")}</h2>
+          <p>{t(locale, "home", "supportCompactBody")}</p>
+          <ul class="support-card-list support-band-list">
+            <li>{t(locale, "support", "cardItem1")}</li>
+            <li>{t(locale, "support", "cardItem2")}</li>
+            <li>{t(locale, "support", "cardItem3")}</li>
+          </ul>
+          <SupporterTicker />
+        </div>
+        <div class="support-actions">
+          {supportLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" class={link.primary ? "support-primary" : "support-secondary"} data-support-src="home">
+              {t(locale, "home", link.labelKey)}
+            </a>
+          ))}
+          <a href={localizePath("/support", locale)} class="support-card-more">{t(locale, "support", "learnMore")}</a>
+        </div>
+      </aside>
     </main>
   </div>
 </Base>
@@ -493,141 +517,22 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-top: var(--space-20);
   }
 
-  .launch-section + .home-section {
-    margin-top: var(--space-16);
-  }
-
-  .support-card + .home-section,
   .home-promo + .home-section {
     margin-top: var(--space-20);
   }
 
   .home-promo {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: var(--space-6);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
     margin-top: var(--space-20);
-  }
-
-  .home-promo .launch-section {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .home-promo .game-card {
-    flex: 1;
-  }
-
-  .home-promo .support-card {
-    margin-top: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  .game-card {
-    position: relative;
-    min-height: 390px;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    background: var(--bg-raised);
-    color: inherit;
-    text-decoration: none;
-    isolation: isolate;
-    transition: var(--transition-colors);
-  }
-
-  .game-card::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    background: linear-gradient(0deg, rgba(7, 6, 12, .94) 8%, rgba(7, 6, 12, .55) 42%, transparent 72%);
-    pointer-events: none;
-  }
-
-  .game-card-art {
-    position: absolute;
-    z-index: -2;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 45%;
-    transition: transform 280ms ease;
-  }
-
-  .game-card:hover {
-    border-color: var(--border-medium);
-  }
-
-  .game-card:hover .game-card-art {
-    transform: scale(1.025);
-  }
-
-  .game-card:focus-visible {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 2px;
-  }
-
-  .game-card-content {
-    max-width: 440px;
-    padding: clamp(var(--space-5), 3vw, var(--space-8));
-  }
-
-  .game-card-content h3 {
-    margin: var(--space-3) 0 0;
-    color: var(--text-bright);
-    font-size: var(--text-2xl);
-    font-weight: var(--weight-black);
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .game-card-content p {
-    margin: var(--space-2) 0 0;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
-  }
-
-  .game-card-cta {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-top: var(--space-4);
-    padding: 0 var(--space-5);
-    border-radius: var(--radius-md);
-    background: var(--accent-gold);
-    color: var(--bg-base);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    transition: var(--transition-colors);
-  }
-
-  .game-card-cta svg {
-    width: 18px;
-    height: 18px;
-    transition: var(--transition-transform);
-  }
-
-  .game-card:hover .game-card-cta {
-    background: var(--accent-gold-light);
-  }
-
-  .game-card:hover .game-card-cta svg {
-    transform: translateX(var(--space-1));
   }
 
   .section-heading {
     margin-bottom: var(--space-8);
   }
 
-  .section-heading h2,
-  .support-card h2 {
+  .section-heading h2 {
     margin: 0;
     color: var(--text-bright);
     font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
@@ -638,7 +543,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   .featured-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
   }
 
@@ -671,7 +576,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     pointer-events: none;
   }
 
-  .featured-card-1::after {
+  .promo-card::after {
     background: var(--accent-gold-dim);
   }
 
@@ -782,6 +687,114 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   .featured-card:hover .featured-arrow {
     color: var(--accent-gold);
+    transform: translateX(var(--space-1));
+  }
+
+  .promo-card {
+    justify-content: flex-start;
+  }
+
+  .promo-card .featured-copy {
+    max-width: none;
+    margin-bottom: var(--space-5);
+  }
+
+  .promo-card .promo-action {
+    margin-top: auto;
+  }
+
+  .promo-card .game-card-cta {
+    align-self: flex-start;
+  }
+
+  .promo-visual {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-5);
+    background:
+      radial-gradient(circle at 80% 15%, var(--accent-gold-dim), transparent 60%),
+      linear-gradient(160deg, var(--bg-overlay), var(--bg-surface));
+  }
+
+  .home-directory + .support-band {
+    margin-top: var(--space-20);
+  }
+
+  .support-band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding: var(--space-6) var(--space-8);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(120deg, var(--accent-gold-dim), transparent 45%),
+      var(--bg-raised);
+  }
+
+  .support-band-copy {
+    max-width: 760px;
+  }
+
+  .support-band h2 {
+    margin: var(--space-1) 0 0;
+    color: var(--text-bright);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .support-band-copy > p:not(.section-kicker) {
+    margin: var(--space-2) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .support-band-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px var(--space-4);
+    margin-top: var(--space-3);
+  }
+
+  @media (max-width: 900px) {
+    .support-band {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--space-5);
+    }
+  }
+
+  .game-card-cta {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--accent-gold);
+    color: var(--bg-base);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    transition: var(--transition-colors);
+  }
+
+  .game-card-cta svg {
+    width: 18px;
+    height: 18px;
+    transition: var(--transition-transform);
+  }
+
+  .featured-card:hover .game-card-cta {
+    background: var(--accent-gold-light);
+  }
+
+  .featured-card:hover .game-card-cta svg {
     transform: translateX(var(--space-1));
   }
 
@@ -898,31 +911,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
     transform: translateX(var(--space-1));
   }
 
-  .support-card {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--space-8);
-    margin-top: var(--space-20);
-    padding: var(--space-8);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    background:
-      linear-gradient(120deg, var(--accent-gold-dim), transparent 45%),
-      var(--bg-raised);
-  }
-
-  .support-card > div:first-child {
-    max-width: 680px;
-  }
-
-  .support-card p:not(.section-kicker) {
-    margin: var(--space-3) 0 0;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
-  }
-
   .support-actions {
     display: flex;
     align-items: center;
@@ -983,18 +971,9 @@ const featuredImageFor = (href: string) => href === "/heroes"
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .featured-card-1 {
-      grid-column: 1 / -1;
-    }
-
     .directory-layout {
       grid-template-columns: 1fr;
       gap: var(--space-12);
-    }
-
-    .support-card {
-      align-items: flex-start;
-      flex-direction: column;
     }
 
   }
@@ -1033,9 +1012,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     }
 
     .home-section + .home-section,
-    .launch-section + .home-section,
-    .support-card + .home-section,
-    .support-card {
+    .home-promo + .home-section {
       margin-top: var(--space-16);
     }
 
@@ -1054,16 +1031,8 @@ const featuredImageFor = (href: string) => href === "/heroes"
       grid-template-columns: 1fr 1fr;
     }
 
-    .game-card {
-      min-height: 360px;
-    }
-
     .featured-grid {
       grid-template-columns: 1fr;
-    }
-
-    .featured-card-1 {
-      grid-column: auto;
     }
 
     .featured-card {
@@ -1103,10 +1072,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
       -webkit-line-clamp: 2;
     }
 
-    .support-card {
-      padding: var(--space-5);
-    }
-
     .support-actions {
       width: 100%;
       align-items: stretch;
@@ -1123,8 +1088,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
     .home-action,
     .featured-card,
     .featured-image,
-    .game-card,
-    .game-card-art,
     .game-card-cta,
     .game-card-cta svg,
     .featured-arrow,

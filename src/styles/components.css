@@ -8370,8 +8370,8 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 /* ===== Home support card additions ===== */
-.support-card .support-card-intro {
-  margin: var(--space-4) 0 6px;
+.support-card-intro {
+  margin: 0 0 var(--space-2, 8px);
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--accent-gold);
@@ -8416,4 +8416,155 @@ button.content-list-item:hover .content-list-item-action {
 
 .support-card-more:hover {
   color: var(--accent-gold);
+}
+
+/* ===== Gift codes module ===== */
+.gift-codes {
+  max-width: 520px;
+  margin-bottom: var(--space-8, 32px);
+  padding: var(--space-4);
+  background: linear-gradient(160deg, rgba(250, 204, 21, 0.05), transparent 60%), var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.gift-codes-page .gift-codes {
+  max-width: 640px;
+}
+
+.gift-codes-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: var(--space-3, 12px);
+}
+
+.gift-codes-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 230, 235, 0.7);
+}
+
+.gift-codes-hint {
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  opacity: 0.8;
+}
+
+.gift-codes-all {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  color: rgba(230, 230, 235, 0.75);
+  text-decoration: none;
+}
+
+.gift-codes-all:hover {
+  color: var(--accent-gold);
+}
+
+.gift-codes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gift-code-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 12px);
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+}
+
+.gift-code-row[hidden] {
+  display: none;
+}
+
+.gift-code-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.gift-code-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #fff;
+}
+
+.gift-code-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.95rem;
+  color: #67e8f9;
+  overflow-wrap: anywhere;
+}
+
+.gift-code-meta {
+  font-size: 0.72rem;
+  color: rgba(230, 230, 235, 0.55);
+}
+
+.gift-code-copy {
+  flex: 0 0 auto;
+  min-width: 84px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.gift-code-copy:hover {
+  background: rgba(250, 204, 21, 0.14);
+  border-color: rgba(250, 204, 21, 0.45);
+}
+
+.gift-code-copy.is-copied {
+  background: rgba(250, 204, 21, 0.2);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.gift-codes-empty {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: rgba(230, 230, 235, 0.6);
+}
+
+.gift-codes-empty[hidden] {
+  display: none;
+}
+
+.clipboard-shim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Gift codes without own card chrome (inside another card's visual area) */
+.gift-codes-bare {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.gift-codes-bare .gift-codes-head {
+  display: none;
 }

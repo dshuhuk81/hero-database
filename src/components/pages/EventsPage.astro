@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
 import PageHero from "../PageHero.astro";
+import GiftCodes from "../GiftCodes.astro";
 import "../../styles/events.css";
 import { globalEvents, globalEventsMeta } from "../../data/eventsGlobal";
 import gameIdMapping from "../../data/game_id_mapping.json";
@@ -88,6 +89,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
   />
 
   <main class="page-wrapper events-page page-content">
+    <GiftCodes locale={locale} limit={3} showAllLink />
     <section class="events-overview" aria-labelledby="events-title">
       <div class="events-overview-copy">
         <p class="content-heading-kicker">{pickLang(copy.source, locale)}</p>

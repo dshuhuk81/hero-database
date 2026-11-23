@@ -1,0 +1,83 @@
+---
+// Gift code module: list of in-game codes with a copy button.
+// Expired entries are also hidden in the browser, because the static build
+// may be older than a code's last valid day.
+import { defaultLocale, localizePath, type Locale } from "../i18n/config";
+import { t } from "../i18n/ui";
+import { activeGiftCodes } from "../data/giftCodes";
+
+interface Props {
+  locale?: Locale;
+  limit?: number;
+  showAllLink?: boolean;
+  bare?: boolean;
+}
+
+const { locale = defaultLocale, limit, showAllLink = false, bare = false } = Astro.props;
+const codes = activeGiftCodes();
+const shown = limit ? codes.slice(0, limit) : codes;
+const validUntil = t(locale, "giftCodes", "validUntil");
+---
+<section class={bare ? "gift-codes gift-codes-bare" : "gift-codes"} aria-labelledby="giftCodesTitle" data-gift-codes data-copied={t(locale, "giftCodes", "copied")} data-copy={t(locale, "giftCodes", "copy")}>
+  <header class="gift-codes-head">
+    <h2 id="giftCodesTitle" class="gift-codes-title">{t(locale, "giftCodes", "title")}</h2>
+    <span class="gift-codes-hint">{t(locale, "giftCodes", "hint")}</span>
+    {showAllLink && <a href={localizePath("/gift-codes", locale)} class="gift-codes-all">{t(locale, "giftCodes", "all")}</a>}
+  </header>
+  <ul class="gift-codes-list">
+    {shown.map((c) => (
+      <li class="gift-code-row" data-expires={c.expires ?? ""}>
+        <div class="gift-code-info">
+          <span class="gift-code-label">{c.label}</span>
+          <code class="gift-code-value">{c.code}</code>
+          {(c.expires || c.note) && (
+            <span class="gift-code-meta">{c.expires ? `${validUntil} ${c.expires}` : c.note}</span>
+          )}
+        </div>
+        <button type="button" class="gift-code-copy" data-code={c.code}>{t(locale, "giftCodes", "copy")}</button>
+      </li>
+    ))}
+  </ul>
+  <p class="gift-codes-empty" hidden={shown.length > 0}>{t(locale, "giftCodes", "empty")}</p>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-gift-codes]").forEach((root) => {
+    const today = new Date().toISOString().slice(0, 10);
+    const rows = Array.from(root.querySelectorAll<HTMLElement>(".gift-code-row"));
+    let visible = 0;
+    rows.forEach((row) => {
+      const expires = row.dataset.expires;
+      if (expires && expires < today) row.hidden = true;
+      else visible += 1;
+    });
+    const empty = root.querySelector<HTMLElement>(".gift-codes-empty");
+    if (empty) empty.hidden = visible > 0;
+
+    const copyLabel = root.dataset.copy || "Copy";
+    const copiedLabel = root.dataset.copied || "Copied";
+    root.querySelectorAll<HTMLButtonElement>(".gift-code-copy").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = btn.dataset.code || "";
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch {
+          const area = document.createElement("textarea");
+          area.value = code;
+          area.setAttribute("readonly", "");
+          area.className = "clipboard-shim";
+          document.body.appendChild(area);
+          area.select();
+          try { document.execCommand("copy"); } catch { /* clipboard unavailable */ }
+          area.remove();
+        }
+        btn.textContent = copiedLabel;
+        btn.classList.add("is-copied");
+        window.setTimeout(() => {
+          btn.textContent = copyLabel;
+          btn.classList.remove("is-copied");
+        }, 1800);
+      });
+    });
+  });
+</script>
