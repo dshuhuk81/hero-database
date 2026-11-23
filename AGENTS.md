@@ -54,6 +54,8 @@ The rule: after changing hero source data, regenerate the derived files and vali
 - Edit `src/data/tags.json` (e.g. after a tag-manager session) → `npm run after:tags`.
 - Import boss data (`npm run import-attack-rates`) → `npm run after:boss-import`.
 - Broader checks: `npm run validate:all`.
+- Gift codes: edit `src/data/giftCodes.json` by hand (no regeneration step). Template and field rules are in the header comment of `src/data/giftCodes.ts`. Codes disappear from the site on their own after `expires`.
+- Supporters: `src/data/supporters.json`, only with the donor's consent (display name of their choice). See the header comment of `src/data/supporters.ts`.
 
 The pre-commit hook (`.githooks/pre-commit`) rejects commits where hero JSON or `tags.json` changed but `src/data/all_heroes_db.json` was not regenerated and staged. Fix by running the workflow above, `git add` the generated file, and commit again. Emergency escape: `git commit --no-verify`.
 
