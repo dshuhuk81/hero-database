@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T11:06:47Z",
+  "generatedAt": "2026-11-23T07:32:24Z",
   "client": "GLOBAL",
   "events": [
     {
@@ -1099,15 +1099,6 @@
       "heroGameId": 3007
     },
     {
-      "id": 200810007,
-      "label": "Mystery Shop · Phase 7",
-      "family": "Mystery Shop",
-      "series": "mystery_shop",
-      "start": "2026-11-22",
-      "end": "2026-11-28",
-      "category": "offers"
-    },
-    {
       "id": 200560032,
       "label": "Treasure Hunt · Phase 32",
       "family": "Treasure Hunt",
@@ -1127,6 +1118,29 @@
       "derivedLabel": true
     },
     {
+      "id": 201390006,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2026-11-27",
+      "end": "2026-12-10",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 4009,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201160003,
+      "label": "Sea War · Chaos",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2026-11-30",
+      "end": "2026-12-11",
+      "category": "events",
+      "derivedLabel": true,
+      "heroGameId": 5012
+    },
+    {
       "id": 200560033,
       "label": "Treasure Hunt · Phase 33",
       "family": "Treasure Hunt",
@@ -1136,15 +1150,16 @@
       "category": "recurring"
     },
     {
-      "id": 201160003,
-      "label": "Sea War · Chaos",
-      "family": "Featured Event",
-      "series": "seawar",
-      "start": "2026-12-07",
-      "end": "2026-12-18",
-      "category": "events",
+      "id": 200390028,
+      "label": "New Card Push · Venus",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2026-12-11",
+      "end": "2026-12-24",
+      "category": "banners",
       "derivedLabel": true,
-      "heroGameId": 5012
+      "heroGameId": 3015,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 200560034,
@@ -1175,6 +1190,27 @@
       "category": "recurring"
     },
     {
+      "id": 201310003,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2026-12-18",
+      "end": "2026-12-24",
+      "category": "offers",
+      "derivedLabel": true
+    },
+    {
+      "id": 201390003,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2026-12-18",
+      "end": "2026-12-24",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 4005
+    },
+    {
       "id": 200560036,
       "label": "Treasure Hunt · Phase 36",
       "family": "Treasure Hunt",
@@ -1194,25 +1230,27 @@
       "derivedLabel": true
     },
     {
-      "id": 201310003,
-      "label": "Lucky Pin",
-      "family": "Lucky Pin",
-      "series": "lucky_pin",
-      "start": "2026-12-25",
-      "end": "2026-12-31",
-      "category": "offers",
-      "derivedLabel": true
-    },
-    {
-      "id": 201390003,
+      "id": 201390007,
       "label": "Rerun Card Push",
       "family": "Hero Banner",
       "series": "rerun_card_push",
       "start": "2026-12-25",
-      "end": "2026-12-31",
+      "end": "2027-01-07",
       "category": "banners",
       "derivedLabel": true,
-      "heroGameId": 4005
+      "heroGameId": 2009,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201400002,
+      "label": "Gem Creation",
+      "family": "Featured Event",
+      "series": "active_gem_creation",
+      "start": "2026-12-28",
+      "end": "2027-01-08",
+      "category": "events",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 200560037,
@@ -1222,6 +1260,18 @@
       "start": "2027-01-01",
       "end": "2027-01-05",
       "category": "recurring"
+    },
+    {
+      "id": 200390029,
+      "label": "New Card Push · Hero 1014",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2027-01-08",
+      "end": "2027-01-21",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 1014,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 200560038,
@@ -1292,6 +1342,30 @@
       "derivedLabel": true
     },
     {
+      "id": 201390008,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-01-22",
+      "end": "2027-02-04",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 1012,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201160004,
+      "label": "Sea War · Hero 5015",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2027-01-25",
+      "end": "2027-02-05",
+      "category": "events",
+      "derivedLabel": true,
+      "heroGameId": 5015,
+      "firstSeen": "2026-11-23"
+    },
+    {
       "id": 200560041,
       "label": "Treasure Hunt · Phase 41",
       "family": "Treasure Hunt",
@@ -1299,6 +1373,18 @@
       "start": "2027-01-29",
       "end": "2027-02-02",
       "category": "recurring"
+    },
+    {
+      "id": 200390030,
+      "label": "New Card Push · Hero 4016",
+      "family": "Hero Banner",
+      "series": "new_card_push",
+      "start": "2027-02-05",
+      "end": "2027-02-18",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 4016,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 200560042,
@@ -1329,6 +1415,29 @@
       "category": "recurring"
     },
     {
+      "id": 201310005,
+      "label": "Lucky Pin",
+      "family": "Lucky Pin",
+      "series": "lucky_pin",
+      "start": "2027-02-12",
+      "end": "2027-02-18",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201390005,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-02-12",
+      "end": "2027-02-18",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 2008,
+      "firstSeen": "2026-11-23"
+    },
+    {
       "id": 200560044,
       "label": "Treasure Hunt · Phase 44",
       "family": "Treasure Hunt",
@@ -1346,6 +1455,29 @@
       "end": "2027-02-23",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201390009,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-02-19",
+      "end": "2027-03-04",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 1010,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201400003,
+      "label": "Gem Creation",
+      "family": "Featured Event",
+      "series": "active_gem_creation",
+      "start": "2027-02-22",
+      "end": "2027-03-05",
+      "category": "events",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 200560045,
@@ -1404,6 +1536,30 @@
       "derivedLabel": true
     },
     {
+      "id": 201390010,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-03-19",
+      "end": "2027-04-01",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 4010,
+      "firstSeen": "2026-11-23"
+    },
+    {
+      "id": 201160005,
+      "label": "Sea War · Hero 5016",
+      "family": "Featured Event",
+      "series": "seawar",
+      "start": "2027-03-22",
+      "end": "2027-04-02",
+      "category": "events",
+      "derivedLabel": true,
+      "heroGameId": 5016,
+      "firstSeen": "2026-11-23"
+    },
+    {
       "id": 201300012,
       "label": "Team Boss · Phase 12",
       "family": "Team Boss",
@@ -1422,6 +1578,18 @@
       "end": "2027-04-20",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201390011,
+      "label": "Rerun Card Push",
+      "family": "Hero Banner",
+      "series": "rerun_card_push",
+      "start": "2027-04-16",
+      "end": "2027-04-29",
+      "category": "banners",
+      "derivedLabel": true,
+      "heroGameId": 4002,
+      "firstSeen": "2026-11-23"
     },
     {
       "id": 201300014,
