@@ -4,6 +4,7 @@ export const prerender = true;
 import HeroCard from "../components/HeroCard.astro";
 import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import Filter from "../components/filter.astro";
 import { heroes } from "../data/heroes/withRatings";
 
@@ -194,6 +195,7 @@ const jsonLd = {
         ))}
       </div>
        </div>
+    <SupportStrip />
   </div>
 </Base>
 

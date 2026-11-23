@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import zaojunData from "../../data/heroes/zaojun.json";
@@ -187,6 +188,7 @@ const weaknesses = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A damage dealer whose Fire Pact partner also powers and protects her</h3><p class="guide-verdict-text">Zaojun rewards a team built to keep both her and her Fire Pact partner active. Regular allied Energy spending builds Hearthfire, while her passive gradually increases her ATK. Fire Pact gives the partner DMG RED, while that partner sacrifices HP to keep Zaojun's HP from falling below their own. Her Relic turns Zaojun's damage into focused healing for the partner, helping sustain this exchange.<br><br>She is at her best in sustained Hearts Spire and Odyssey battles. Choose a durable partner who uses Energy regularly and has enough sustain for the pact's HP cost, and check whether a summon receives the pact instead. Zaojun can cover a full formation or repeatedly attack one boss, and a partial opening charge can still be useful. Prioritize survival for follow-up casts over chasing one perfect Ultimate. If she already supplies most of the damage but the team keeps losing, strengthen the protection around both pact members before adding another damage dealer.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

@@ -6,6 +6,8 @@ import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
 import HeroCard from "../HeroCard.astro";
+import { supportLinks } from "../../data/support";
+import SupporterTicker from "../SupporterTicker.astro";
 import { getHeroById } from "../../data/heroes/withRatings";
 import "../../styles/home-live.css";
 import { globalEvents } from "../../data/eventsGlobal";
@@ -277,17 +279,21 @@ const featuredImageFor = (href: string) => href === "/heroes"
           <p class="section-kicker">{t(locale, "home", "communityEyebrow")}</p>
           <h2 id="supportTitle">{t(locale, "home", "keepFreeHeadline")}</h2>
           <p>{t(locale, "home", "supportCompactBody")}</p>
+          <p class="support-card-intro">{t(locale, "support", "cardIntro")}</p>
+          <ul class="support-card-list">
+            <li>{t(locale, "support", "cardItem1")}</li>
+            <li>{t(locale, "support", "cardItem2")}</li>
+            <li>{t(locale, "support", "cardItem3")}</li>
+          </ul>
+          <SupporterTicker />
         </div>
         <div class="support-actions">
-          <a href="https://buymeacoffee.com/dshuhuk1" target="_blank" rel="noopener noreferrer" class="support-primary">
-            {t(locale, "home", "supportBuyMeCoffee")}
-          </a>
-          <a href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A" target="_blank" rel="noopener noreferrer" class="support-secondary">
-            {t(locale, "home", "supportPaypal")}
-          </a>
-          <a href="https://ko-fi.com/dsfrieren" target="_blank" rel="noopener noreferrer" class="support-secondary">
-            {t(locale, "home", "supportKofi")}
-          </a>
+          {supportLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" class={link.primary ? "support-primary" : "support-secondary"} data-support-src="home">
+              {t(locale, "home", link.labelKey)}
+            </a>
+          ))}
+          <a href={localizePath("/support", locale)} class="support-card-more">{t(locale, "support", "learnMore")}</a>
         </div>
       </aside>
       </div>

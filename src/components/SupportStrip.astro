@@ -1,0 +1,25 @@
+---
+// Slim, inline donation hint. Place at most one per page, at the end of the
+// content, where the visitor has just received value.
+import { getLocaleFromPathname } from "../i18n/config";
+import { t } from "../i18n/ui";
+import { supportLinks } from "../data/support";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+---
+<aside class="support-strip" aria-label={t(locale, "support", "popoverTitle")}>
+  <p class="support-strip-text">{t(locale, "support", "stripText")}</p>
+  <div class="support-strip-actions">
+    {supportLinks.map((link) => (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={link.primary ? "support-strip-btn support-strip-btn-primary" : "support-strip-btn"}
+        data-support-src="strip"
+      >
+        {t(locale, "home", link.labelKey)}
+      </a>
+    ))}
+  </div>
+</aside>

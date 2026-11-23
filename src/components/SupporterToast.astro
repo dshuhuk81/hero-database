@@ -1,0 +1,115 @@
+---
+// Occasional "X supported this site" celebration. Renders nothing when there
+// are no supporters. Frequency and name rotation are handled per visitor in
+// localStorage so the same name does not keep reappearing.
+import { getLocaleFromPathname } from "../i18n/config";
+import { t } from "../i18n/ui";
+import { supporters } from "../data/supporters";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const payload = JSON.stringify(supporters.map((s) => ({ name: s.name, since: s.since, tier: s.tier ?? "standard" })));
+---
+{supporters.length > 0 && (
+  <div
+    class="supporter-toast"
+    id="supporterToast"
+    role="status"
+    aria-live="polite"
+    hidden
+    data-supporters={payload}
+    data-text={t(locale, "support", "toastText")}
+  >
+    <span class="supporter-toast-spark" aria-hidden="true"></span>
+    <p class="supporter-toast-text" id="supporterToastText"></p>
+    <button type="button" class="supporter-toast-cta" id="supporterToastCta">{t(locale, "support", "toastCta")}</button>
+    <button type="button" class="supporter-toast-close" id="supporterToastClose" aria-label={t(locale, "common", "dismiss")}>
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+)}
+
+<script>
+  type ToastSupporter = { name: string; since: string; tier: "standard" | "gold" };
+
+  const toast = document.getElementById("supporterToast");
+  const textEl = document.getElementById("supporterToastText");
+  const ctaEl = document.getElementById("supporterToastCta");
+  const closeEl = document.getElementById("supporterToastClose");
+
+  if (toast && textEl && ctaEl && closeEl) {
+    const LAST_KEY = "supporterToastLast";
+    const SEEN_KEY = "supporterToastSeen";
+    const PAGES_KEY = "supporterToastPages";
+    const RECENT_DAYS = 30;
+    const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+    const DWELL_MS = 20000;
+    const VISIBLE_MS = 7000;
+
+    const read = (store: () => Storage, key: string): string | null => {
+      try { return store().getItem(key); } catch { return null; }
+    };
+    const write = (store: () => Storage, key: string, value: string) => {
+      try { store().setItem(key, value); } catch { /* storage unavailable */ }
+    };
+    const local = () => window.localStorage;
+    const session = () => window.sessionStorage;
+
+    const pages = Number(read(session, PAGES_KEY) || 0) + 1;
+    write(session, PAGES_KEY, String(pages));
+
+    let all: ToastSupporter[] = [];
+    try { all = JSON.parse(toast.dataset.supporters || "[]"); } catch { all = []; }
+    const template = toast.dataset.text || "{name}";
+
+    const cutoff = Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000;
+    const recent = all
+      .filter((s) => Date.parse(s.since) >= cutoff)
+      .sort((a, b) => Date.parse(b.since) - Date.parse(a.since));
+
+    const lastShown = Number(read(local, LAST_KEY) || 0);
+    const eligible = recent.length > 0 && pages >= 2 && Date.now() - lastShown >= COOLDOWN_MS;
+
+    const pickNext = (): ToastSupporter | null => {
+      let seen: string[] = [];
+      try { seen = JSON.parse(read(local, SEEN_KEY) || "[]"); } catch { seen = []; }
+      let next = recent.find((s) => !seen.includes(s.name));
+      if (!next) {
+        seen = [];
+        next = recent[0];
+      }
+      if (!next) return null;
+      write(local, SEEN_KEY, JSON.stringify([...seen, next.name]));
+      return next;
+    };
+
+    let hideTimer: number | undefined;
+    const hide = () => {
+      toast.classList.remove("is-visible");
+      window.clearTimeout(hideTimer);
+      window.setTimeout(() => { toast.hidden = true; }, 400);
+    };
+
+    const show = () => {
+      const pop = document.getElementById("supportPop");
+      if (pop && pop.classList.contains("open")) return;
+      const supporter = pickNext();
+      if (!supporter) return;
+      write(local, LAST_KEY, String(Date.now()));
+      textEl.textContent = template.replace("{name}", supporter.name);
+      toast.classList.toggle("is-gold", supporter.tier === "gold");
+      toast.hidden = false;
+      requestAnimationFrame(() => toast.classList.add("is-visible"));
+      hideTimer = window.setTimeout(hide, VISIBLE_MS);
+    };
+
+    if (eligible) window.setTimeout(show, DWELL_MS);
+
+    closeEl.addEventListener("click", hide);
+    ctaEl.addEventListener("click", () => {
+      hide();
+      window.dispatchEvent(new CustomEvent("support:open"));
+    });
+  }
+</script>

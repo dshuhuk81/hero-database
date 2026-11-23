@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import charonData from "../../data/heroes/charon.json";
@@ -228,6 +229,7 @@ const weaknesses = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A stationary channeler whose output depends on Energy and survival</h3><p class="guide-verdict-text">Charon banishes enemies, gains damage and lifesteal while standing still, and deals growing damage through Lanternfire Torrent. Protect him through the opening and keep the beam running with falling targets or Energy support, and he uses his whole kit. The Energy cost, standing still and the wait for the first beam are his limits. Open questions: PvP and boss performance, forced movement, and what each Relic level changes.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

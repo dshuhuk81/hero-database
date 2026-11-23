@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 import { heroes } from "../data/heroes/index.js";
 import virtueGrids from "../data/virtueGrids.json";
@@ -127,6 +128,7 @@ const heroOptions = (heroes as any[])
 </div>
 
 <script is:inline type="application/json" id="vwz-hero-data" set:html={JSON.stringify(heroOptions)}></script>
+  <SupportStrip />
 </Base>
 
 <script>

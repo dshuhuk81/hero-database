@@ -1,0 +1,22 @@
+---
+// Slow marquee of supporters who agreed to be named. Hidden when the list is
+// empty. With fewer than 4 names it is a static line instead of a marquee.
+import { getLocaleFromPathname } from "../i18n/config";
+import { t } from "../i18n/ui";
+import { supporters } from "../data/supporters";
+
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const names = supporters.map((s) => s.name);
+const scrolling = names.length >= 4;
+---
+{names.length > 0 && (
+  <div class={scrolling ? "supporter-ticker is-scrolling" : "supporter-ticker"}>
+    <span class="supporter-ticker-label">{t(locale, "support", "tickerLabel")}</span>
+    <div class="supporter-ticker-viewport">
+      <ul class="supporter-ticker-track">
+        {names.map((name) => <li>{name}</li>)}
+        {scrolling && names.map((name) => <li aria-hidden="true">{name}</li>)}
+      </ul>
+    </div>
+  </div>
+)}

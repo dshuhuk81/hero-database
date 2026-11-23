@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import gaiyaData from "../../data/heroes/gaiya.json";
@@ -208,6 +209,7 @@ const weaknesses = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">Gaiya protects your win condition; she is not the win condition.</h3><p class="guide-verdict-text">Gaiya turns healing received beyond her own missing HP into preparation for future damage. Grace Domain supports the formation from the beginning of battle, stored overhealing creates Flowers of Life for allies in danger, and her Ultimate supplies a stabilization window through healing, team Damage Reduction, and personal Control Immunity. Nature's Armor lets her become increasingly durable over longer fights.<br><br>She is most valuable when survival is the reason the team is losing. Give her a real damage dealer to protect, keep the defensive engine active, and let her create the time that win condition needs. When everyone already survives, solve the remaining offensive problem instead of adding more sustain.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import HeroDivineThrone from "../../components/HeroDivineThrone.astro";
 import { heroes, getHeroById } from "../../data/heroes/withRatings";
 import { localizeHeroData } from "../../data/heroes/localize";
@@ -487,6 +488,7 @@ const tabs = [
           </section>
         )}
 
+        <SupportStrip />
       </main>
     </div>
 

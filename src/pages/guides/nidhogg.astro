@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import VerdictCard from "../../components/guides/VerdictCard.astro";
 import ModeRow from "../../components/guides/ModeRow.astro";
@@ -231,5 +232,6 @@ const relicSteps = [
       </div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
 </Base>

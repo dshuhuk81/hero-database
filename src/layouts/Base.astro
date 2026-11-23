@@ -1,6 +1,7 @@
 ---
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
+import SupporterToast from '../components/SupporterToast.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import UnderConstructionPage from '../components/pages/UnderConstructionPage.astro';
 import { getAlternateLinks, getLocaleFromPathname, type Locale } from '../i18n/config';
@@ -95,6 +96,7 @@ const documentDescription = isUnderConstruction
     <slot />
   )}
   <Footer />
+  <SupporterToast />
 </body>
 </html>
 

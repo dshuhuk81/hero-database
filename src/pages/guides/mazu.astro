@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import mazuData from "../../data/heroes/mazu.json";
@@ -218,6 +219,7 @@ const weaknesses = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">Mazu does not erase burst damage; she gives your team time to answer it.</h3><p class="guide-verdict-text">Mazu is built around controlling the timing of incoming damage. Mercy's Wake shields the entire formation and delays part of the damage that would otherwise arrive immediately, while Thousand-Mile Tailwind restores heavily injured allies and Moon Blocks Divination adds opening Energy and ATK utility. Her Relic extends this identity by adding temporary team ATK support and strengthening the Mercy's Wake cycle.<br><br>Her performance depends on what the team does with the extra time she creates. Healing and Shields can repair delayed damage, Energy generation can create more Mercy's Wake windows, and a strong carry can use the resulting ATK support to keep pressure on the enemy.<br><br>She is most valuable when survival is preventing an otherwise capable team from winning. If the team already survives comfortably, the remaining problem is probably offense rather than protection.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 import allVirtues from "../data/virtues.json";
 
@@ -158,6 +159,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
 
   </div>
 </div>
+  <SupportStrip />
 </Base>
 
 <style>

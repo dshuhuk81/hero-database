@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/artifact-enhancement.css";
 
@@ -101,6 +102,7 @@ const attributes = [
         <p><strong>Efficient target</strong><span>The research-backed strategy generally aims for about 75–80% success at higher levels.</span></p>
       </div>
     </section>
+  <SupportStrip />
   </main>
 
   <script is:inline type="application/json" id="ae-attribute-data" set:html={JSON.stringify(attributes)}></script>

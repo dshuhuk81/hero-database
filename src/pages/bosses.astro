@@ -3,6 +3,7 @@ export const prerender = true;
 import bosses from "../data/bosses.json";
 import { heroes, getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/components.css";
 
@@ -339,6 +340,7 @@ const bossViews = bosses.bosses.filter((boss) => boss.id !== "nian_beast").map((
 
         </article>
       ))}
+  <SupportStrip />
     </main>
 
   </div>

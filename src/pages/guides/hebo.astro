@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import heboData from "../../data/heroes/hebo.json";
@@ -160,6 +161,7 @@ const weaknesses = [
 
     <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div><div class="guide-verdict-box"><h3 class="guide-verdict-heading">A capable PvE carry with demanding support needs</h3><p class="guide-verdict-text">Hebo combines repeated area damage, personal Shields, and growing offensive power. He can handle large level gaps when his team protects his rotations and gives his Ultimate valuable targets. Concentrated burst, disruption, and the loss of key supports make his output less reliable, even after his Shields are active.<br><br>Prioritize protection and recovery that keep successive rotations productive, then improve ATK, Crit Damage, and target coverage. Extra Energy helps when he needs to refill the bar, but cannot ensure an immediate cast or rescue a collapsing formation. He is a situational investment for rosters that can support his playstyle, with lower priority when resources are limited or more flexible carries still need development.</p></div></section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

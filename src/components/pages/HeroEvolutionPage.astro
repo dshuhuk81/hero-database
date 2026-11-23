@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../SupportStrip.astro";
 import PageHero from "../PageHero.astro";
 import type { Locale } from "../../i18n/config";
 
@@ -126,6 +127,7 @@ const starglint: Recipe[] = [
         <div class="max-rank"><span aria-hidden="true">✦</span>{c.max}<span aria-hidden="true">✦</span></div>
       </section>
     ))}
+  <SupportStrip />
   </main>
 </Base>
 

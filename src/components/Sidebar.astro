@@ -6,6 +6,7 @@ import { navEntries, entriesByGroup, navGroupLabels, defaultMaintenanceTooltip, 
 import { pickLang } from "../i18n/helpers";
 import { getLocaleFromPathname, localizePath, stripLocaleFromPathname } from "../i18n/config";
 import { navLabel, t } from "../i18n/ui";
+import { supportLinks } from "../data/support";
 
 // Entries reachable from another hub page (e.g. /guides game-mode section) are
 // hidden from the sidebar entirely via `sidebar: false`.
@@ -49,6 +50,8 @@ function getHref(item: NavEntry) {
 function getLabel(item: NavEntry) {
   return navLabel(item.href, item.label, locale);
 }
+
+const supportHomeHref = localizePath("/support", locale);
 
 function groupLabel(group: string) {
   const label = navGroupLabels[group as NavGroup];
@@ -96,7 +99,7 @@ function groupLabel(group: string) {
 
   <div class="rail-support-wrap">
     <div class="rail-divider" />
-    <a href="/#support" class="rail-item rail-support" data-tooltip={t(locale, "common", "support")}>
+    <a href={supportHomeHref} class="rail-item rail-support" data-tooltip={t(locale, "common", "support")}>
       <div class="rail-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -145,17 +148,36 @@ function groupLabel(group: string) {
 
 <!-- Floating Donate Button -->
 <div class="float-donate" id="floatDonate" aria-hidden="true">
-  <a href="/#support" class="float-donate-btn" tabindex="-1" id="floatDonateLink">
+  <button type="button" class="float-donate-btn" tabindex="-1" id="floatDonateLink" aria-expanded="false" aria-controls="supportPop">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
     </svg>
-    <span>{t(locale, "common", "support")}</span>
-  </a>
+    <span>{t(locale, "support", "floatLabel")}</span>
+  </button>
   <button class="float-donate-close" id="floatDonateClose" aria-label={t(locale, "common", "dismiss")} tabindex="-1">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
+</div>
+
+<div class="support-pop" id="supportPop" role="dialog" aria-label={t(locale, "support", "popoverTitle")}>
+  <p class="support-pop-title">{t(locale, "support", "popoverTitle")}</p>
+  <p class="support-pop-body">{t(locale, "support", "popoverBody")}</p>
+  <div class="support-pop-actions">
+    {supportLinks.map((link) => (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={link.primary ? "support-strip-btn support-strip-btn-primary" : "support-strip-btn"}
+        data-support-src="popover"
+      >
+        {t(locale, "home", link.labelKey)}
+      </a>
+    ))}
+  </div>
+  <a href={supportHomeHref} class="support-pop-more">{t(locale, "support", "learnMore")}</a>
 </div>
 
 <!-- Mobile "More" Sheet -->
@@ -192,7 +214,7 @@ function groupLabel(group: string) {
       </>
     ))}
     <div class="more-sheet-divider" />
-    <a href="/#support" class="more-sheet-item more-sheet-support">
+    <a href={supportHomeHref} class="more-sheet-item more-sheet-support">
       <div class="more-sheet-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -222,33 +244,76 @@ function groupLabel(group: string) {
     });
   }
 
-  // Floating donate button
+  // Floating donate button: appears only after some engagement, opens a
+  // popover on the current page, and stays dismissed for 30 days.
   const floatDonate = document.getElementById('floatDonate');
   const floatDonateClose = document.getElementById('floatDonateClose');
   const floatDonateLink = document.getElementById('floatDonateLink');
+  const supportPop = document.getElementById('supportPop');
 
-  if (floatDonate && floatDonateClose && floatDonateLink) {
-    const DISMISSED_KEY = 'floatDonateDismissed';
+  if (floatDonate && floatDonateClose && floatDonateLink && supportPop) {
+    const SNOOZE_KEY = 'floatDonateSnoozeUntil';
+    const PAGES_KEY = 'floatDonatePages';
+    const SNOOZE_MS = 30 * 24 * 60 * 60 * 1000;
+    const DWELL_MS = 45000;
 
-    if (!sessionStorage.getItem(DISMISSED_KEY)) {
+    const readStore = (store: Storage | undefined, key: string): string | null => {
+      try { return store ? store.getItem(key) : null; } catch { return null; }
+    };
+    const writeStore = (store: Storage | undefined, key: string, value: string) => {
+      try { store?.setItem(key, value); } catch { /* storage unavailable */ }
+    };
+    const safeLocal = (() => { try { return window.localStorage; } catch { return undefined; } })();
+    const safeSession = (() => { try { return window.sessionStorage; } catch { return undefined; } })();
+
+    const snoozeUntil = Number(readStore(safeLocal, SNOOZE_KEY) || 0);
+    const pages = Number(readStore(safeSession, PAGES_KEY) || 0) + 1;
+    writeStore(safeSession, PAGES_KEY, String(pages));
+
+    const setOpen = (open: boolean) => {
+      supportPop.classList.toggle('open', open);
+      floatDonateLink.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
+    if (Date.now() >= snoozeUntil) {
+      const startedAt = Date.now();
+      let engaged = pages >= 2;
+      const reveal = () => {
+        floatDonate.classList.add('visible');
+        floatDonate.removeAttribute('aria-hidden');
+        floatDonateLink.removeAttribute('tabindex');
+        floatDonateClose.removeAttribute('tabindex');
+      };
       const onScroll = () => {
-        if (window.scrollY > 300) {
-          floatDonate.classList.add('visible');
-          floatDonate.removeAttribute('aria-hidden');
-          floatDonateLink.removeAttribute('tabindex');
-          floatDonateClose.removeAttribute('tabindex');
+        if (!engaged && Date.now() - startedAt >= DWELL_MS) engaged = true;
+        if (engaged && window.scrollY > 300) {
+          reveal();
         } else {
           floatDonate.classList.remove('visible');
           floatDonate.setAttribute('aria-hidden', 'true');
+          setOpen(false);
         }
       };
       window.addEventListener('scroll', onScroll, { passive: true });
     }
 
+    floatDonateLink.addEventListener('click', () => {
+      setOpen(!supportPop.classList.contains('open'));
+    });
+    window.addEventListener('support:open', () => setOpen(true));
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (!supportPop.contains(target) && !floatDonate.contains(target)) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
     floatDonateClose.addEventListener('click', () => {
+      setOpen(false);
       floatDonate.classList.remove('visible');
       floatDonate.setAttribute('aria-hidden', 'true');
-      sessionStorage.setItem('floatDonateDismissed', '1');
+      writeStore(safeLocal, SNOOZE_KEY, String(Date.now() + SNOOZE_MS));
     });
   }
 </script>

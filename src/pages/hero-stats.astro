@@ -3,6 +3,7 @@ export const prerender = true;
 
 import { heroes } from "../data/heroes/withRatings";
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 
 const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
@@ -227,6 +228,7 @@ function fmt(value: number, percent: boolean): string {
       }
     })();
   </script>
+  <SupportStrip />
 </Base>
 
 <style>

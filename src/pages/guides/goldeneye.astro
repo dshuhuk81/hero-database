@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 
 const IMG = "/images/guides/goldeneye";
@@ -341,6 +342,7 @@ const shopOrder = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">A race decided by timing and entry count</h3><p class="guide-verdict-text">Build Workshop, Rest Area and Anvil in that order, craft right after the reset and never waste Energy. Submit one strong artifact with weak fillers into a room that is well filled but not full, and fire Score Doubler at the end of the countdown. Crystals go into Energy, not past Compendium level 4.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
 
   <script>

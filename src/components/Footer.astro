@@ -1,6 +1,6 @@
 ---
 // src/components/Footer.astro
-import { getLocaleFromPathname } from "../i18n/config";
+import { getLocaleFromPathname, localizePath } from "../i18n/config";
 import { interpolate } from "../i18n/helpers";
 import { navLabel, t } from "../i18n/ui";
 
@@ -24,6 +24,7 @@ const copyright = interpolate(t(locale, "footer", "copyright"), {
     <div class="footer-links">
       <a href="/about" class="footer-link">{navLabel("/about", "About", locale)}</a>
       <a href="/privacy" class="footer-link">{t(locale, "footer", "privacyPolicy")}</a>
+      <a href={localizePath("/support", locale)} class="footer-link">{t(locale, "footer", "supportProject")}</a>
     </div>
 
     <!-- COPYRIGHT -->

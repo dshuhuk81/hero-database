@@ -1,0 +1,152 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import "../../styles/components.css";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang } from "../../i18n/helpers";
+import { t } from "../../i18n/ui";
+import { supportLinks } from "../../data/support";
+import { supporters } from "../../data/supporters";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+
+const copy = {
+  metaTitle: { en: "Support the project | Motto Immortal", de: "Projekt unterstützen | Motto Immortal", es: "Apoyar el proyecto | Motto Immortal", ru: "Поддержать проект | Motto Immortal", zh: "支持本项目 | Motto Immortal" },
+  metaDescription: {
+    en: "Motto Immortal Database is free, ad-free and built by one person. See how you can help keep it going.",
+    de: "Die Motto Immortal Database ist kostenlos, werbefrei und wird von einer Person gebaut. So kannst du helfen, sie am Laufen zu halten.",
+    es: "Motto Immortal Database es gratuita, sin anuncios y la hace una sola persona. Mira cómo puedes ayudar a mantenerla.",
+    ru: "Motto Immortal Database бесплатна, без рекламы, и её делает один человек. Узнайте, как помочь сайту жить дальше.",
+    zh: "Motto Immortal Database 完全免费、无广告，由一个人独立制作。了解如何帮助它继续运营。",
+  },
+  tag: { en: "Community supported", de: "Von der Community getragen", es: "Apoyado por la comunidad", ru: "При поддержке сообщества", zh: "社区支持" },
+  subtitle: {
+    en: "Free, ad-free and built by one person. Here is how you can help keep it going.",
+    de: "Kostenlos, werbefrei und von einer Person gebaut. So kannst du helfen, es am Laufen zu halten.",
+    es: "Gratis, sin anuncios y hecha por una sola persona. Así puedes ayudar a mantenerla.",
+    ru: "Бесплатно, без рекламы, и всё делает один человек. Вот как можно помочь проекту.",
+    zh: "免费、无广告，由一个人独立制作。以下是你可以提供帮助的方式。",
+  },
+  whyTitle: { en: "Why this site exists", de: "Warum es diese Seite gibt", es: "Por qué existe este sitio", ru: "Зачем нужен этот сайт", zh: "为什么有这个网站" },
+  whyBody: {
+    en: "I build Motto Immortal DB alone, in my free time. I want every player to be able to make better decisions without paying for it, so there are no ads and no paywalls, and that will not change. Donations are voluntary, and they are what keeps the project independent.",
+    de: "Ich baue die Motto Immortal DB allein in meiner Freizeit. Jeder Spieler soll bessere Entscheidungen treffen können, ohne dafür zu bezahlen. Deshalb gibt es keine Werbung und keine Paywall, und das bleibt so. Spenden sind freiwillig und halten das Projekt unabhängig.",
+    es: "Hago Motto Immortal DB yo solo, en mi tiempo libre. Quiero que todos los jugadores puedan decidir mejor sin pagar, por eso no hay anuncios ni muros de pago, y eso no va a cambiar. Las donaciones son voluntarias y mantienen el proyecto independiente.",
+    ru: "Я делаю Motto Immortal DB один, в свободное время. Хочу, чтобы каждый игрок мог принимать лучшие решения бесплатно, поэтому здесь нет рекламы и платных стен, и так будет всегда. Пожертвования добровольны и сохраняют независимость проекта.",
+    zh: "我在业余时间独自制作 Motto Immortal DB。我希望每位玩家都能免费做出更好的决定，所以这里没有广告，也没有付费墙，以后也不会有。捐助完全自愿，它让这个项目保持独立。",
+  },
+  coversTitle: { en: "What your support makes possible", de: "Was deine Unterstützung möglich macht", es: "Qué hace posible tu apoyo", ru: "Что делает возможным ваша поддержка", zh: "你的支持能做什么" },
+  covers: [
+    { title: { en: "Hosting and images", de: "Hosting und Bilder", es: "Alojamiento e imágenes", ru: "Хостинг и изображения", zh: "托管与图片" }, text: { en: "Fast pages and sharp hero art for everyone.", de: "Schnelle Seiten und scharfe Heldenbilder für alle.", es: "Páginas rápidas e imágenes nítidas para todos.", ru: "Быстрые страницы и чёткие изображения героев для всех.", zh: "让所有人都能快速加载页面、看到清晰的英雄立绘。" } },
+    { title: { en: "Data updates", de: "Daten-Updates", es: "Actualizaciones de datos", ru: "Обновления данных", zh: "数据更新" }, text: { en: "New heroes, events and banners after every patch.", de: "Neue Helden, Events und Banner nach jedem Patch.", es: "Nuevos héroes, eventos y banners tras cada parche.", ru: "Новые герои, события и баннеры после каждого патча.", zh: "每次版本更新后同步新英雄、活动和卡池。" } },
+    { title: { en: "New tools and guides", de: "Neue Tools und Guides", es: "Nuevas herramientas y guías", ru: "Новые инструменты и гайды", zh: "新工具与攻略" }, text: { en: "Tested with real fights, not guesses.", de: "Mit echten Kämpfen getestet, nicht geraten.", es: "Probadas con combates reales, no con suposiciones.", ru: "Проверено в реальных боях, а не догадками.", zh: "用真实战斗验证，而不是凭猜测。" } },
+    { title: { en: "Time", de: "Zeit", es: "Tiempo", ru: "Время", zh: "时间" }, text: { en: "Every hour spent here is one less spent elsewhere. Thank you for valuing it.", de: "Jede Stunde hier fehlt an anderer Stelle. Danke, dass du sie wertschätzt.", es: "Cada hora dedicada aquí es una menos en otro sitio. Gracias por valorarla.", ru: "Каждый час здесь - это час, не потраченный на что-то другое. Спасибо, что цените его.", zh: "在这里花的每一个小时，都是从别处省下来的。感谢你的认可。" } },
+  ],
+  waysTitle: { en: "Ways to support", de: "Möglichkeiten zu unterstützen", es: "Formas de apoyar", ru: "Способы поддержки", zh: "支持方式" },
+  qr: { en: "Show QR code", de: "QR-Code anzeigen", es: "Mostrar código QR", ru: "Показать QR-код", zh: "显示二维码" },
+  wallTitle: { en: "Thank you to the supporters", de: "Danke an die Supporter", es: "Gracias a los colaboradores", ru: "Спасибо участникам поддержки", zh: "感谢每一位支持者" },
+  wallEmpty: {
+    en: "Supporters who agree to be named will appear here.",
+    de: "Hier erscheinen Supporter, die einer Nennung zugestimmt haben.",
+    es: "Aquí aparecerán los colaboradores que acepten ser nombrados.",
+    ru: "Здесь появятся имена тех, кто согласился на упоминание.",
+    zh: "同意公开署名的支持者将显示在这里。",
+  },
+  wallHow: {
+    en: "Want to be named? Enter a name on Ko-fi or Buy Me a Coffee, or reply to my thank-you mail after a PayPal donation. It is always optional, and I can remove you anytime.",
+    de: "Du möchtest genannt werden? Gib bei Ko-fi oder Buy Me a Coffee einen Namen an oder antworte nach einer PayPal-Spende auf meine Dankesmail. Das ist immer freiwillig, und ich nehme dich jederzeit wieder heraus.",
+    es: "¿Quieres aparecer? Indica un nombre en Ko-fi o Buy Me a Coffee, o responde a mi correo de agradecimiento tras una donación por PayPal. Siempre es opcional y puedo quitarte cuando quieras.",
+    ru: "Хотите, чтобы вас упомянули? Укажите имя на Ko-fi или Buy Me a Coffee либо ответьте на моё письмо с благодарностью после платежа через PayPal. Это всегда по желанию, и я могу убрать имя в любой момент.",
+    zh: "想被署名吗？请在 Ko-fi 或 Buy Me a Coffee 填写名字，或在 PayPal 捐助后回复我的感谢邮件。署名完全自愿，也可以随时撤销。",
+  },
+  freeTitle: { en: "Cannot donate? You still help", de: "Kein Geld übrig? Du hilfst trotzdem", es: "¿No puedes donar? Igual ayudas", ru: "Не можете пожертвовать? Вы всё равно помогаете", zh: "不方便捐助？你同样在帮忙" },
+  freeBody: {
+    en: "Sharing the site with your guild, pointing out an error, or telling me which guide you want next is worth a lot. Thank you for being here.",
+    de: "Die Seite in deiner Gilde teilen, einen Fehler melden oder mir sagen, welcher Guide als Nächstes kommen soll: Das hilft enorm. Danke, dass du da bist.",
+    es: "Compartir el sitio con tu gremio, avisar de un error o decirme qué guía quieres a continuación vale mucho. Gracias por estar aquí.",
+    ru: "Поделиться сайтом с гильдией, сообщить об ошибке или подсказать, какой гайд нужен дальше - это очень ценно. Спасибо, что вы здесь.",
+    zh: "把网站分享给公会、指出错误，或告诉我下一篇想看什么攻略，都是很大的帮助。谢谢你的到来。",
+  },
+};
+
+const qr: Record<string, { src: string; alt: string }> = {
+  bmc: { src: "/donate/bmc_qr.png", alt: "Buy Me a Coffee QR code" },
+  paypal: { src: "/donate/pp_my_qrcode_tip_only_1785823104059.jpg", alt: "PayPal QR code" },
+};
+---
+
+<Base title={pickLang(copy.metaTitle, locale)} description={pickLang(copy.metaDescription, locale)} locale={locale}>
+  <PageHero
+    tag={pickLang(copy.tag, locale)}
+    headline={t(locale, "support", "popoverTitle")}
+    subtitle={pickLang(copy.subtitle, locale)}
+    locale={locale}
+  />
+
+  <main class="support-page page-content">
+    <section class="support-page-section" aria-labelledby="whyTitle">
+      <h2 id="whyTitle">{pickLang(copy.whyTitle, locale)}</h2>
+      <p class="support-page-lead">{pickLang(copy.whyBody, locale)}</p>
+    </section>
+
+    <section class="support-page-section" aria-labelledby="coversTitle">
+      <h2 id="coversTitle">{pickLang(copy.coversTitle, locale)}</h2>
+      <ul class="support-page-covers">
+        {copy.covers.map((item) => (
+          <li>
+            <strong>{pickLang(item.title, locale)}</strong>
+            <span>{pickLang(item.text, locale)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="support-page-section" aria-labelledby="waysTitle">
+      <h2 id="waysTitle">{pickLang(copy.waysTitle, locale)}</h2>
+      <div class="support-page-ways">
+        {supportLinks.map((link) => (
+          <div class="support-page-way">
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={link.primary ? "support-strip-btn support-strip-btn-primary" : "support-strip-btn"}
+              data-support-src="support-page"
+            >
+              {t(locale, "home", link.labelKey)}
+            </a>
+            {qr[link.id] && (
+              <details class="support-page-qr">
+                <summary>{pickLang(copy.qr, locale)}</summary>
+                <img src={qr[link.id].src} alt={qr[link.id].alt} width="160" height="160" loading="lazy" decoding="async" />
+              </details>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="support-page-section" aria-labelledby="wallTitle">
+      <h2 id="wallTitle">{pickLang(copy.wallTitle, locale)}</h2>
+      {supporters.length > 0 ? (
+        <ul class="support-page-wall">
+          {supporters.map((s) => <li class={s.tier === "gold" ? "is-gold" : undefined}>{s.name}</li>)}
+        </ul>
+      ) : (
+        <p class="support-page-muted">{pickLang(copy.wallEmpty, locale)}</p>
+      )}
+      <p class="support-page-muted">{pickLang(copy.wallHow, locale)}</p>
+    </section>
+
+    <section class="support-page-section" aria-labelledby="freeTitle">
+      <h2 id="freeTitle">{pickLang(copy.freeTitle, locale)}</h2>
+      <p class="support-page-lead">{pickLang(copy.freeBody, locale)}</p>
+    </section>
+  </main>
+</Base>

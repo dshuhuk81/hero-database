@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import ananke from "../../data/heroes/ananke.json";
@@ -277,6 +278,7 @@ const weaknesses = [
       <div class="guide-chip-row"><a class="guide-skillchip" href="/heroes/ananke">Ananke in the Hero Database &rarr;</a><a class="guide-skillchip" href="/guides">All guides &rarr;</a></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {

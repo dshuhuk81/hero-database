@@ -9,6 +9,7 @@ type TranslationTree = {
   timedChallenge: Record<string, LocalizedString>;
   tips: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
+  support: Record<string, LocalizedString>;
   language: Record<string, LocalizedString>;
   nav: Record<string, LocalizedString>;
 };
@@ -302,6 +303,38 @@ const translations: TranslationTree = {
     privacyPolicy: { en: "Privacy Policy", de: "Datenschutzhinweise", es: "Política de privacidad", ru: "Политика конфиденциальности", zh: "隐私政策" },
     copyright: { en: "{year} Motto Immortal @GOAT Games. All rights reserved.", de: "{year} Motto Immortal @GOAT Games. Alle Rechte vorbehalten.", es: "{year} Motto Immortal @GOAT Games. Todos los derechos reservados.", ru: "{year} Motto Immortal @GOAT Games. Все права защищены.", zh: "{year} Motto Immortal @GOAT Games。保留所有权利。" },
     supportProject: { en: "Support the project", de: "Projekt unterstützen", es: "Apoyar el proyecto", ru: "Поддержать проект", zh: "支持本项目" },
+  },
+  support: {
+    popoverTitle: { en: "Keep this free", de: "Diese Seite kostenlos halten", es: "Mantener esto gratis", ru: "Сохранить это бесплатным", zh: "让网站保持免费" },
+    popoverBody: {
+      en: "Motto Immortal DB is built and paid for by one person. If it helps you, a small tip keeps hosting and data updates going.",
+      de: "Motto Immortal DB wird von einer Person gebaut und bezahlt. Wenn sie dir hilft, hält ein kleines Trinkgeld Hosting und Daten-Updates am Laufen.",
+      es: "Motto Immortal DB está hecha y financiada por una sola persona. Si te ayuda, una pequeña propina mantiene el alojamiento y las actualizaciones de datos.",
+      ru: "Motto Immortal DB создаёт и оплачивает один человек. Если сайт вам помогает, небольшая поддержка помогает оплачивать хостинг и обновления данных.",
+      zh: "Motto Immortal DB 由一个人独立制作并自费运营。如果它对你有帮助，一点小小的支持能让托管和数据更新继续下去。",
+    },
+    stripText: {
+      en: "Did this help you? This site is free and built by one person.",
+      de: "Hat dir das geholfen? Diese Seite ist kostenlos und wird von einer Person gebaut.",
+      es: "¿Te ha ayudado? Este sitio es gratuito y lo hace una sola persona.",
+      ru: "Было полезно? Этот сайт бесплатный, его делает один человек.",
+      zh: "有帮助吗？本站完全免费，由一个人独立制作。",
+    },
+    toastText: {
+      en: "{name} just supported this site. Thank you!",
+      de: "{name} hat diese Seite unterstützt. Danke!",
+      es: "{name} acaba de apoyar este sitio. ¡Gracias!",
+      ru: "{name} только что поддержал(а) этот сайт. Спасибо!",
+      zh: "{name} 刚刚支持了本站。谢谢！",
+    },
+    floatLabel: { en: "Keep it free", de: "Kostenlos halten", es: "Mantener gratis", ru: "Оставить бесплатным", zh: "保持免费" },
+    cardIntro: { en: "Your support goes into:", de: "Dein Beitrag fließt in:", es: "Tu apoyo se destina a:", ru: "Ваша поддержка идёт на:", zh: "你的支持将用于：" },
+    cardItem1: { en: "Hosting and hero images", de: "Hosting und Heldenbilder", es: "Alojamiento e imágenes de héroes", ru: "Хостинг и изображения героев", zh: "托管与英雄图片" },
+    cardItem2: { en: "Data updates after every patch", de: "Daten-Updates nach jedem Patch", es: "Actualizaciones de datos tras cada parche", ru: "Обновления данных после каждого патча", zh: "每次版本更新后的数据同步" },
+    cardItem3: { en: "New tools and guides, tested with real fights", de: "Neue Tools und Guides, mit echten Kämpfen getestet", es: "Nuevas herramientas y guías probadas con combates reales", ru: "Новые инструменты и гайды, проверенные в реальных боях", zh: "用真实战斗验证的新工具与攻略" },
+    learnMore: { en: "Learn more", de: "Mehr erfahren", es: "Más información", ru: "Подробнее", zh: "了解更多" },
+    toastCta: { en: "Support too", de: "Auch unterstützen", es: "Apoyar también", ru: "Поддержать тоже", zh: "我也支持" },
+    tickerLabel: { en: "Thanks to", de: "Danke an", es: "Gracias a", ru: "Спасибо", zh: "感谢" },
   },
   language: {
     label: { en: "Language", de: "Sprache", es: "Idioma", ru: "Язык", zh: "语言" },

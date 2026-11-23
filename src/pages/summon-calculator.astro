@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Base from "../layouts/Base.astro";
+import SupportStrip from "../components/SupportStrip.astro";
 import PageHero from "../components/PageHero.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import { FACTION_META } from "../components/tips/tipsData";
@@ -413,6 +414,7 @@ const heroCardSrcset = (id: string) =>
         </details>
       </section>
     </div>
+    <SupportStrip />
   </main>
 
   <dialog class="sc-dialog" id="heroDialog" aria-labelledby="heroDialogTitle">

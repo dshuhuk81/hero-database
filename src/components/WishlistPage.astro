@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import SupportStrip from "./SupportStrip.astro";
 import PageHero from "./PageHero.astro";
 import { WISHLIST_DATA, FACTION_META } from "./tips/tipsData";
 import allHeroes from "../data/all_heroes_db.json";
@@ -74,5 +75,6 @@ const heroNames = Object.fromEntries(
         })}
       </div>
     </section>
+  <SupportStrip />
   </main>
 </Base>

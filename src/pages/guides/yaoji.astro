@@ -2,6 +2,7 @@
 export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
+import SupportStrip from "../../components/SupportStrip.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import yaojiData from "../../data/heroes/yaoji.json";
@@ -272,6 +273,7 @@ const weaknesses = [
       <div class="guide-verdict-box"><h3 class="guide-verdict-heading">Yaoji turns a long fight into a damage amplifier for your whole team.</h3><p class="guide-verdict-text">Yaoji protects her host while weakening the whole enemy side. Blossom &amp; Blight increases damage taken by up to 50% at ten stacks, Mistborne Erosion cuts enemy ATK and healing, and the Relic finishes fully stacked enemies with Blight.<br><br>Her main practical question is how reliably she reaches ten stacks and how long the host survives. Reaching it quickly depends on Twining Clouds, the Relic's extra casts, and a front line that can take hits.<br><br>She is a heavy-investment support. Players recommend Mythic with Relic 30 at minimum and Divine V as the long-term goal, which makes her a strong pick for players ready to commit resources to a support hero.</p></div>
     </section>
   </div>
+  <SupportStrip />
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
     for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {
