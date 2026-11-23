@@ -8,6 +8,7 @@ import VerdictCard from "../../components/guides/VerdictCard.astro";
 import ModeRow from "../../components/guides/ModeRow.astro";
 import MechanicFlow from "../../components/guides/MechanicFlow.astro";
 import HeroChips from "../../components/guides/HeroChips.astro";
+import FightRecord from "../../components/guides/FightRecord.astro";
 import ananke from "../../data/heroes/ananke.json";
 import "../../styles/guide-v2.css";
 
@@ -60,6 +61,15 @@ const duels = [
   { n: 6, death: 23.7, ult: true, win: true },
 ];
 
+// Owner-approved counts (2026-11-23): Odyssey 15 sub-fights, 14 won; Tower 724 won once, 725 lost ten times.
+// Order inside Odyssey is not recorded, so the single loss is shown last.
+const fight = (result: "win" | "loss") => ({ result, transformed: true });
+const fightRecord = [
+  { label: "Odyssey", fights: [...Array.from({ length: 14 }, () => fight("win")), fight("loss")] },
+  { label: "Tower", fights: [fight("win"), ...Array.from({ length: 10 }, () => fight("loss"))] },
+  { label: "Friendly Duel", fights: duels.map((d) => fight(d.win ? "win" : "loss")) },
+];
+
 const lineups = [
   { mode: "Odyssey", result: "High damage share for Ananke", heroes: [{ id: "cronus", name: "Cronus" }, { id: "set", name: "Set" }, { id: "athena", name: "Athena" }, { id: "idunn", name: "Idunn" }] },
   { mode: "Odyssey", result: "Ananke dealt 50-61% of team damage", heroes: [{ id: "phoenix", name: "Phoenix" }, { id: "mazu", name: "Mazu" }, { id: "meret", name: "Meret" }, { id: "zaojun", name: "Zaojun" }] },
@@ -95,8 +105,8 @@ const weaknesses = [
       <h1 class="guide-hero-name">Ananke</h1>
       <p class="guide-hero-subtitle">Mark Assassin &middot; Charged Dash</p>
       <div class="guide-badge-row">
-        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/diamonds.webp`} alt="Diamonds" />Diamonds</span>
-        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/assassin.webp`} alt="Assassin" />Assassin</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/diamonds.webp`} alt="" />Diamonds</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/assassin.webp`} alt="" />Assassin</span>
         <span class="guide-badge guide-badge--legendary">Legendary</span>
         <a class="guide-badge gx-badge-link" href="/heroes/ananke">Hero Database &rarr;</a>
       </div>
@@ -122,7 +132,7 @@ const weaknesses = [
       />
 
       <div class="gx-subhead">Who should invest</div>
-      <div class="guide-diagnose">
+      <div class="guide-diagnose guide-diagnose--flush">
         <div class="guide-diagnose-row"><strong>F2P</strong><span aria-hidden="true">&rarr;</span><p>No high priority</p></div>
         <div class="guide-diagnose-row"><strong>Low spender</strong><span aria-hidden="true">&rarr;</span><p>Compare with your current damage sources first</p></div>
         <div class="guide-diagnose-row"><strong>Mid spender</strong><span aria-hidden="true">&rarr;</span><p>Wait for a confirmed benefit</p></div>
@@ -134,6 +144,7 @@ const weaknesses = [
     <section class="guide-section guide-section--detail-heading" data-nav-label="Modes">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Where She Works</h2><div class="lt-flourish lt-flourish-center"></div>
       <p class="gx-question">Which modes did she work in?</p>
+      <FightRecord groups={fightRecord} />
       <div class="gx-modes">
         <ModeRow mode="Odyssey" verdict="works" text="Main damage source in some teams: a high share with Cronus, 50-61% with Phoenix. On stage 5115, Zaojun still out-damaged her (47% against 30%)." sample="15 sub-fights, 14 won" />
         <ModeRow mode="Tower" verdict="weak" text="Won once on Tower 724, then lost all ten tries on Tower 725. About 269 levels behind, her True DMG did not beat the level suppression." sample="11 fights" />
@@ -265,8 +276,8 @@ const weaknesses = [
           </article>
         </div>
         <ol class="guide-skill-selector">
-          {skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><small>{skill.badge}</small></span></button></li>)}
-          <li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><small>Relic</small></span></button></li>
+          {skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><span class="sr-only">, </span><small>{skill.badge}</small></span></button></li>)}
+          <li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><span class="sr-only">, </span><small>Relic</small></span></button></li>
         </ol>
       </div>
     </section>

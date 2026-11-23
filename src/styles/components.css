@@ -2418,8 +2418,8 @@ button.content-list-item:hover .content-list-item-action {
 
 .guide-meta-label {
   position: absolute;
-  /* Sits below the .guide-back pill (33.5px tall at top: space-4). */
-  top: calc(var(--space-4) + 44px);
+  /* Sits below the .guide-back pill (44px tall at top: space-4). */
+  top: calc(var(--space-4) + 44px + var(--space-2));
   left: var(--space-6);
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
@@ -2434,6 +2434,12 @@ button.content-list-item:hover .content-list-item-action {
   z-index: 2;
   padding: var(--space-12) var(--space-8) var(--space-8);
   max-width: 900px;
+}
+
+/* Phones: a shorter stage so the guide's verdict reaches the first screen. */
+@media (max-width: 720px) {
+  .guide-banner { min-height: 440px; }
+  .guide-banner-content { padding: var(--space-8) var(--space-5) var(--space-6); }
 }
 
 .guide-hero-name {
@@ -2552,7 +2558,8 @@ button.content-list-item:hover .content-list-item-action {
   margin-top: var(--space-12);
 }
 
-.guide-section-nav + .guide-section {
+/* "~" not "+": the nav component renders a <script> between nav and first section. */
+.guide-section-nav ~ .guide-section:first-of-type {
   margin-top: 0;
 }
 
@@ -4107,10 +4114,11 @@ button.content-list-item:hover .content-list-item-action {
   width: fit-content;
 }
 
+/* Ultimate takes the faction accent; green stays reserved for positive outcomes. */
 .guide-skill-badge--ult {
-  border-color: var(--rarity-common-border);
-  color: var(--guide-success);
-  background: var(--guide-success-dim);
+  border-color: var(--guide-accent-line);
+  color: var(--guide-accent);
+  background: var(--guide-accent-dim);
 }
 
 .guide-skill-badge--relic {
@@ -4200,7 +4208,7 @@ button.content-list-item:hover .content-list-item-action {
   margin: 0 0 var(--space-2);
   color: var(--text-bright);
   font-size: var(--text-2xl);
-  font-weight: var(--weight-normal);
+  font-weight: var(--weight-semibold);
 }
 
 .guide-skill-panel-head > img {
@@ -5172,6 +5180,9 @@ button.content-list-item:hover .content-list-item-action {
   gap: var(--space-2);
   padding: 0 var(--space-8);
 }
+
+/* Decision-first guides place the block on the page grid, not inside a card. */
+.guide-diagnose.guide-diagnose--flush { padding: 0; }
 
 .guide-diagnose-row {
   display: grid;
