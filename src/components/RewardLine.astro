@@ -1,0 +1,22 @@
+---
+// One reward: icon, name, amount (e.g. "Elysian Gem x200"). Icons are 96px WebP in public/items/odyssey/.
+interface Props {
+  name: string | null;
+  icon?: string | null;
+  /** Preformatted amount, e.g. "x200" or "6 pc"; omitted when empty. */
+  amount?: string;
+  /** "row" = one reward per line (quest lists), "chip" = compact inline (chapter summaries). */
+  variant?: "row" | "chip";
+  title?: string;
+}
+
+const { name, icon, amount, variant = "row", title } = Astro.props;
+const src = icon ? `/items/odyssey/${icon}.webp` : null;
+---
+
+<span class={`reward-line reward-line-${variant}`} title={title}>
+  {src ? <img class="reward-line-icon" src={src} alt="" width="96" height="96" loading="lazy" decoding="async" /> : <span class="reward-line-icon reward-line-icon-empty" aria-hidden="true"></span>}
+  {variant === "row" && <span class="reward-line-name">{name ?? <span class="odyssey-flag">?</span>}</span>}
+  {amount && <span class="reward-line-amount">{amount}</span>}
+  {variant === "chip" && <span class="sr-only">{name}</span>}
+</span>

@@ -46,3 +46,42 @@ export function validateEvents(data, knownGameIds) {
   }
   return { errors, warnings };
 }
+
+const CHAIN_KEYS = new Set(["odyssey", "chapters", "spire"]);
+const REWARD_KINDS = new Set(["currency", "item", "equipment"]);
+
+/**
+ * odyssey.global.json: quest chains with rewards, plus feature unlocks.
+ * Unresolved names are allowed (they are listed in data.unresolved and flagged on the page).
+ * @returns {{ errors: string[], warnings: string[] }}
+ */
+export function validateOdyssey(data) {
+  const errors = [];
+  const warnings = [];
+  if (!Array.isArray(data?.chains) || !Array.isArray(data?.unlocks)) {
+    return { errors: ["odyssey: chains and unlocks must be arrays"], warnings };
+  }
+  const seen = new Set();
+  for (const chain of data.chains) {
+    if (!CHAIN_KEYS.has(chain.key)) errors.push(`odyssey: unknown chain "${chain.key}"`);
+    if (!chain.quests?.length) errors.push(`odyssey: chain ${chain.key} has no quests`);
+    for (const quest of chain.quests ?? []) {
+      const where = `quest ${quest.id}`;
+      if (seen.has(quest.id)) errors.push(`${where}: duplicate id`);
+      seen.add(quest.id);
+      if (!quest.text) warnings.push(`${where}: no English text`);
+      for (const reward of quest.rewards ?? []) {
+        if (!REWARD_KINDS.has(reward.kind)) errors.push(`${where}: unknown reward kind "${reward.kind}"`);
+        if (!reward.name) warnings.push(`${where}: unresolved reward ${reward.kind} ${reward.id}`);
+      }
+    }
+  }
+  const unlockIds = new Set();
+  for (const unlock of data.unlocks) {
+    if (unlockIds.has(unlock.id)) errors.push(`unlock ${unlock.id}: duplicate id`);
+    unlockIds.add(unlock.id);
+    if (!unlock.conditions || !Object.keys(unlock.conditions).length) errors.push(`unlock ${unlock.id}: no conditions`);
+  }
+  if (data.unresolved?.length) warnings.push(`odyssey: ${data.unresolved.length} text key(s) without English text`);
+  return { errors, warnings };
+}

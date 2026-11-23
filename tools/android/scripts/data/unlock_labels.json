@@ -1,0 +1,25 @@
+{
+  "_comment": "Names for open_condition entries that have no English name in the client, keyed by open_condition key. 'labels' are shown on the site (from client UI texts or confirmed by the site owner on 2026-11-23); 'hidden' keys are event/shop/technical gates left off the site. Client names always win over this file.",
+  "labels": {
+    "cd_key": { "name": "Gift Code", "source": "client text OPTIONS_CDKEY" },
+    "threedays_gift": { "name": "3-Day Gift", "source": "client text threedays_gift_1001" },
+    "vip": { "name": "VIP", "source": "client text VIP_gaotu_entrance" },
+    "recharge_first_shop": { "name": "First Top-up", "source": "client text CHARGE_FIRST_CHARGE" },
+    "battle_speed_3": { "name": "Battle Speed x3", "source": "confirmed by site owner" },
+    "battle_speed_4": { "name": "Battle Speed x4", "source": "confirmed by site owner" },
+    "gve_battle_skip": { "name": "Skip Battle (PvE)", "source": "confirmed by site owner" },
+    "normal_arena_skip": { "name": "Skip Battle (Arena)", "source": "confirmed by site owner" },
+    "throne_equip": { "name": "Divine Throne Equipment", "source": "confirmed by site owner" },
+    "shop_treasure_hunt": { "name": "Treasure Hunt Shop", "source": "confirmed by site owner" },
+    "active_collection": { "name": "Collection", "source": "confirmed by site owner" },
+    "recover_reward": { "name": "Reward Recovery", "source": "confirmed by site owner" },
+    "player_return": { "name": "Returning Player Event", "source": "confirmed by site owner" },
+    "shop_player_return": { "name": "Returning Player Shop", "source": "confirmed by site owner" },
+    "active_rank2": { "name": "Event Leaderboard 2", "source": "confirmed by site owner" },
+    "active_rank3": { "name": "Event Leaderboard 3", "source": "confirmed by site owner" },
+    "active_rank4": { "name": "Event Leaderboard 4", "source": "confirmed by site owner" },
+    "active_rank5": { "name": "Event Leaderboard 5", "source": "confirmed by site owner" },
+    "question": { "name": "Survey", "source": "confirmed by site owner" }
+  },
+  "hideUnnamed": true
+}

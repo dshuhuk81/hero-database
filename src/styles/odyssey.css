@@ -1,0 +1,284 @@
+/* Odyssey quests, rewards and unlocks. Surfaces separate content; no borders. */
+
+.odyssey-page { padding-bottom: var(--space-20); }
+
+.ody-section,
+.ody-summary { margin-bottom: var(--space-16); scroll-margin-top: 5rem; }
+
+.ody-summary h2,
+.ody-section h2 {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+  text-wrap: balance;
+}
+
+.ody-lead {
+  max-width: 65ch;
+  margin: var(--space-2) 0 var(--space-6);
+  color: var(--text-secondary);
+  line-height: var(--leading-loose);
+}
+
+.ody-note { max-width: 65ch; margin: var(--space-5) 0 0; color: var(--text-secondary); line-height: var(--leading-loose); }
+.ody-note a { color: var(--accent-gold-light); text-underline-offset: 3px; }
+
+/* Totals: one card per reward */
+.ody-totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ody-total {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+}
+
+.ody-total img { width: 3.5rem; height: 3.5rem; margin-bottom: var(--space-2); object-fit: contain; }
+.ody-total-amount { color: var(--accent-gold-light); font-size: var(--text-2xl); font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; }
+.ody-total-name { color: var(--text-secondary); font-size: var(--text-sm); }
+
+/* Sticky toolbar */
+.ody-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-12);
+  padding: var(--space-2);
+  border-radius: var(--radius-xl);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-md);
+}
+
+.ody-tabs { display: flex; gap: var(--space-1); }
+
+.ody-tabs a,
+.ody-expand,
+.ody-jump select {
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+.ody-tabs a:hover,
+.ody-expand:hover,
+.ody-jump select:hover { background: var(--bg-overlay); color: var(--text-bright); }
+
+.ody-jump { margin-left: auto; }
+.ody-jump select { background: var(--bg-surface); }
+
+.ody-tabs a:focus-visible,
+.ody-expand:focus-visible,
+.ody-jump select:focus-visible,
+.ody-chapter summary:focus-visible,
+.ody-row-text:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+/* Chapters */
+.ody-chapters { display: grid; gap: var(--space-3); }
+
+.ody-chapter {
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  scroll-margin-top: 5rem;
+}
+
+.ody-chapter summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  list-style: none;
+  cursor: pointer;
+  transition: background-color 160ms ease-out;
+}
+
+.ody-chapter summary::-webkit-details-marker { display: none; }
+.ody-chapter summary:hover { background: var(--bg-raised); }
+
+.ody-chapter-head { display: grid; gap: 2px; }
+.ody-chapter-name { color: var(--text-bright); font-size: var(--text-lg); font-weight: var(--weight-bold); }
+.ody-chapter-meta { color: var(--text-muted); font-size: var(--text-xs); }
+
+.ody-chapter-totals { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-left: auto; }
+
+.ody-chevron { flex: 0 0 auto; width: 1.25rem; height: 1.25rem; color: var(--text-muted); transition: transform 200ms ease-out; }
+.ody-chapter[open] .ody-chevron { transform: rotate(180deg); }
+
+/* Rows inside a chapter: spacing and hover surface instead of rules */
+.ody-rows {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0 var(--space-3) var(--space-3);
+  list-style: none;
+}
+
+.ody-row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr);
+  align-items: center;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  scroll-margin-top: 6rem;
+  transition: background-color 160ms ease-out;
+}
+
+.ody-row:hover { background: var(--bg-raised); }
+.ody-row:target { background: var(--accent-gold-dim); }
+
+.ody-row-text { color: var(--text-primary); font-size: var(--text-sm); text-decoration: none; }
+a.ody-row-text:hover { color: var(--accent-gold-light); }
+
+.ody-row-rewards { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+
+/* Unlock rows: one per stage, feature names as chips */
+.ody-row-unlock .ody-row-text { display: flex; align-items: center; gap: var(--space-2); color: var(--text-secondary); font-size: var(--text-xs); font-weight: var(--weight-semibold); }
+.ody-unlock-icon { flex: 0 0 auto; width: 1rem; height: 1rem; color: var(--text-muted); }
+.ody-unlock-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.ody-unlock-chip {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--bg-raised);
+  color: var(--text-bright);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: background-color 160ms ease-out;
+}
+
+.ody-unlock-chip:hover { background: var(--bg-overlay); }
+.ody-unlock-chip:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 2px; }
+
+.ody-unlock-name { display: block; color: var(--text-bright); font-weight: var(--weight-semibold); }
+.ody-unlock-desc { display: block; color: var(--text-secondary); font-size: var(--text-xs); line-height: var(--leading-normal); }
+
+/* Chapter clear reward: closing band of the chapter card */
+.ody-clear {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) minmax(0, 2fr);
+  align-items: center;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  background: var(--accent-gold-dim);
+  scroll-margin-top: 6rem;
+}
+
+.ody-clear-title { color: var(--accent-gold-light); font-weight: var(--weight-bold); }
+
+/* Card grids: Celestial Spire and unlocks */
+.ody-grid {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ody-spire { grid-template-columns: repeat(auto-fill, minmax(116px, 1fr)); }
+.ody-spire-card { gap: var(--space-3); padding: var(--space-4); }
+.ody-spire-rewards { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+
+.ody-card {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  scroll-margin-top: 6rem;
+}
+
+.ody-card:target { background: var(--accent-gold-dim); }
+
+.ody-floor { margin-bottom: var(--space-1); color: var(--text-bright); font-size: var(--text-3xl); font-weight: var(--weight-bold); line-height: 1; font-variant-numeric: tabular-nums; }
+.ody-floor small { margin-left: 2px; color: var(--text-muted); font-size: var(--text-base); }
+
+/* Unlocks section: stage once on the left, content-sized cards on the right */
+.ody-unlock-stages { display: grid; gap: var(--space-6); }
+
+.ody-unlock-stage {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3) var(--space-6);
+}
+
+.ody-unlock-stage-label {
+  padding-top: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.ody-unlock-cards { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+
+.ody-unlock-card {
+  display: grid;
+  gap: 2px;
+  max-width: 22rem;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  scroll-margin-top: 6rem;
+}
+
+.ody-unlock-card:target { background: var(--accent-gold-dim); }
+
+/* Reward line: icon, name, amount */
+.reward-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+
+.reward-line-icon { flex: 0 0 auto; width: 2rem; height: 2rem; object-fit: contain; }
+.reward-line-icon-empty { border-radius: var(--radius-md); background: var(--bg-raised); }
+.reward-line-amount { color: var(--accent-gold-light); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+
+.reward-line-chip { gap: var(--space-1); font-size: var(--text-xs); }
+.reward-line-chip .reward-line-icon { width: 1.75rem; height: 1.75rem; }
+
+@media (max-width: 720px) {
+  .ody-row,
+  .ody-clear { grid-template-columns: 1fr; }
+  .ody-clear { padding: var(--space-4) var(--space-5); }
+  .ody-chapter-totals { margin-left: 0; order: 3; width: 100%; }
+  .ody-chevron { margin-left: auto; }
+  .ody-jump { margin-left: 0; }
+  .ody-toolbar { border-radius: var(--radius-lg); }
+  .ody-unlock-stage { grid-template-columns: 1fr; gap: var(--space-2); }
+  .ody-unlock-stage-label { padding-top: 0; }
+}

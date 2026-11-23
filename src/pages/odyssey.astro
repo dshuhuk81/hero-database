@@ -1,0 +1,264 @@
+---
+export const prerender = true;
+
+// Prototype (EN only): Odyssey quests, rewards and feature unlocks from the Global client.
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import RewardLine from "../components/RewardLine.astro";
+import "../styles/odyssey.css";
+import {
+  PRIMARY_VARIANT,
+  allUnlocks,
+  chapterGroups,
+  equipmentSummary,
+  odysseyTotals,
+  questCounts,
+  spireQuests,
+  stageLabel,
+  unlockState,
+  type Quest,
+  type Reward,
+  type RewardTotal,
+  type Unlock,
+  type UnlockCondition,
+} from "../data/odysseyGlobal";
+
+const number = new Intl.NumberFormat("en");
+
+// "×" is the multiplication sign; kept as an escape so the source stays ASCII.
+const TIMES = "×";
+const rewardAmount = (reward: Reward) => (reward.amount > 0 ? `${TIMES}${number.format(reward.amount)}` : "");
+const totalAmount = (total: RewardTotal) => `${TIMES}${number.format(total.amount)}`;
+const equipTitle = (reward: Reward) => (reward.kind === "equipment" ? "Equipment piece (amount -1 in the client)" : undefined);
+
+const conditionText = (condition: UnlockCondition | undefined): string => {
+  const state = unlockState(condition);
+  if (!condition || state === "missing") return "Not in this variant";
+  if (state === "disabled") return "Not unlocked by progress";
+  const parts: string[] = [];
+  if (condition.stageId !== undefined) parts.push(condition.stageId === 0 ? "From the start" : `After ${stageLabel(condition.stageId)}`);
+  if (condition.vip) parts.push(`VIP ${condition.vip}`);
+  for (const other of condition.other ?? []) parts.push(`${other.kind} ${other.param}`);
+  return parts.join(" + ");
+};
+
+// Rows inside a chapter: stage quests, plus one compact row per stage that opens features.
+type Row =
+  | { type: "quest"; quest: Quest; sort: number }
+  | { type: "unlocks"; stageId: number; unlocks: Unlock[]; sort: number };
+const chapterRows = (group: (typeof chapterGroups)[number]): Row[] => {
+  const byStageId = new Map<number, Unlock[]>();
+  for (const unlock of group.unlocks) {
+    const stageId = unlock.conditions[PRIMARY_VARIANT].stageId ?? 0;
+    byStageId.set(stageId, [...(byStageId.get(stageId) ?? []), unlock]);
+  }
+  const rows: Row[] = [
+    ...group.stageQuests.map((quest) => ({ type: "quest" as const, quest, sort: quest.target })),
+    ...[...byStageId].map(([stageId, unlocks]) => ({ type: "unlocks" as const, stageId, unlocks, sort: stageId + 0.5 })),
+  ];
+  return rows.sort((a, b) => a.sort - b.sort);
+};
+
+const byStage = (a: Unlock, b: Unlock) =>
+  (a.conditions[PRIMARY_VARIANT]?.stageId ?? 0) - (b.conditions[PRIMARY_VARIANT]?.stageId ?? 0) || a.id - b.id;
+const progressUnlocks = allUnlocks.filter((u) => unlockState(u.conditions[PRIMARY_VARIANT]) === "stage").sort(byStage);
+const otherUnlocks = allUnlocks.filter((u) => unlockState(u.conditions[PRIMARY_VARIANT]) === "other").sort(byStage);
+const progressByStage = [
+  ...progressUnlocks.reduce((groups, unlock) => {
+    const stageId = unlock.conditions[PRIMARY_VARIANT].stageId ?? 0;
+    return groups.set(stageId, [...(groups.get(stageId) ?? []), unlock]);
+  }, new Map<number, Unlock[]>()),
+];
+const spireRewardNames = [...new Set(spireQuests.flatMap((quest) => quest.rewards.map((reward) => reward.name ?? "")))].filter(Boolean);
+---
+
+<Base
+  title="Odyssey Quests, Rewards and Unlocks | Motto Immortal Database"
+  description="Every Odyssey stage quest, chapter reward, Celestial Spire milestone and feature unlock in Motto Immortal, taken from the Global client."
+>
+  <PageHero
+    tag="Game data"
+    headline="Odyssey"
+    subtitle={`${number.format(questCounts.stages)} stage quests, ${questCounts.chapters} chapter rewards, ${questCounts.spire} Celestial Spire milestones and ${progressUnlocks.length + otherUnlocks.length} feature unlocks.`}
+  />
+
+  <main class="page-wrapper odyssey-page page-content">
+    <section class="ody-summary" aria-labelledby="ody-summary-title">
+      <h2 id="ody-summary-title">What the Odyssey pays out</h2>
+      <p class="ody-lead">All stage quests and chapter rewards combined, from the Prologue to the last chapter in the client.</p>
+      <ul class="ody-totals">
+        {odysseyTotals.map((total) => (
+          <li class="ody-total">
+            {total.icon && <img src={`/items/odyssey/${total.icon}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />}
+            <span class="ody-total-amount">{totalAmount(total)}</span>
+            <span class="ody-total-name">{total.name}</span>
+          </li>
+        ))}
+      </ul>
+      {equipmentSummary.pieces > 0 && (
+        <p class="ody-note">
+          {`Plus ${equipmentSummary.pieces} starter equipment pieces between ${equipmentSummary.from} and ${equipmentSummary.to} (${equipmentSummary.tiers.map((t) => `${t.count} ${t.tier}`).join(", ")}), two per quest. `}
+          <a href={`#quest-${equipmentSummary.firstQuestId}`}>See the quests</a>
+        </p>
+      )}
+    </section>
+
+    <nav class="ody-toolbar" aria-label="Odyssey sections">
+      <div class="ody-tabs">
+        <a href="#chapters">Chapters</a>
+        <a href="#spire">Celestial Spire</a>
+        <a href="#unlocks">Unlocks</a>
+      </div>
+      <label class="ody-jump">
+        <span class="sr-only">Jump to chapter</span>
+        <select data-chapter-jump>
+          <option value="">Jump to chapter</option>
+          {chapterGroups.map((group) => <option value={`chapter-${group.chapter}`}>{group.label}</option>)}
+        </select>
+      </label>
+      <button type="button" class="ody-expand" data-expand aria-pressed="false">Expand all</button>
+    </nav>
+
+    <section id="chapters" class="ody-section" aria-labelledby="chapters-title">
+      <h2 id="chapters-title">Chapters</h2>
+      <p class="ody-lead">Stage quests in order, the features that open on the way, and the reward for clearing the chapter.</p>
+      <div class="ody-chapters">
+        {chapterGroups.map((group, index) => (
+          <details id={`chapter-${group.chapter}`} class="ody-chapter" open={index === 0}>
+            <summary>
+              <span class="ody-chapter-head">
+                <span class="ody-chapter-name">{group.label}</span>
+                <span class="ody-chapter-meta">
+                  {group.stageQuests.length} quests{group.unlocks.length > 0 && <> · {group.unlocks.length} unlocks</>}
+                </span>
+              </span>
+              <span class="ody-chapter-totals">
+                {group.totals.map((total) => (
+                  <RewardLine variant="chip" name={total.name} icon={total.icon} amount={totalAmount(total)} title={`${total.name ?? ""} ${totalAmount(total)}`} />
+                ))}
+              </span>
+              <svg class="ody-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+
+            <ol class="ody-rows">
+              {chapterRows(group).map((row) =>
+                row.type === "quest" ? (
+                  <li id={`quest-${row.quest.id}`} class="ody-row">
+                    <a class="ody-row-text" href={`#quest-${row.quest.id}`}>{row.quest.text}</a>
+                    <span class="ody-row-rewards">
+                      {row.quest.rewards.map((reward) => (
+                        <RewardLine name={reward.name} icon={reward.icon} amount={rewardAmount(reward)} title={equipTitle(reward)} />
+                      ))}
+                    </span>
+                  </li>
+                ) : (
+                  <li class="ody-row ody-row-unlock">
+                    <span class="ody-row-text">
+                      <svg class="ody-unlock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 7.9-1" /></svg>
+                      {row.stageId === 0 ? "Open from the start" : `Opens after ${stageLabel(row.stageId)}`}
+                    </span>
+                    <span class="ody-unlock-chips">
+                      {row.unlocks.map((unlock) => (
+                        <a id={`unlock-${unlock.id}`} class="ody-unlock-chip" href={`#unlock-card-${unlock.id}`} title={unlock.description ?? undefined}>{unlock.name}</a>
+                      ))}
+                    </span>
+                  </li>
+                ),
+              )}
+            </ol>
+
+            {group.clearQuest && (
+              <div id={`quest-${group.clearQuest.id}`} class="ody-clear">
+                <span class="ody-clear-title">{group.label} cleared</span>
+                <span class="ody-row-rewards">
+                  {group.clearQuest.rewards.map((reward) => (
+                    <RewardLine name={reward.name} icon={reward.icon} amount={rewardAmount(reward)} />
+                  ))}
+                </span>
+              </div>
+            )}
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section id="spire" class="ody-section" aria-labelledby="spire-title">
+      <h2 id="spire-title">Celestial Spire</h2>
+      <p class="ody-lead">Milestone rewards for clearing floors of the main spire: {spireRewardNames.join(", ")}.</p>
+      <ol class="ody-grid ody-spire">
+        {spireQuests.map((quest) => (
+          <li id={`quest-${quest.id}`} class="ody-card ody-spire-card">
+            <span class="ody-floor">{quest.target}<small>F</small></span>
+            <span class="ody-spire-rewards">
+              {quest.rewards.map((reward) => (
+                <RewardLine variant="chip" name={reward.name} icon={reward.icon} amount={rewardAmount(reward)} title={`${reward.name ?? ""} ${rewardAmount(reward)}`} />
+              ))}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="unlocks" class="ody-section" aria-labelledby="unlocks-title">
+      <h2 id="unlocks-title">Unlocks</h2>
+      <p class="ody-lead">Every feature that opens through Odyssey progress, in the order you reach it.</p>
+      <div class="ody-unlock-stages">
+        {progressByStage.map(([stageId, unlocks]) => (
+          <div class="ody-unlock-stage">
+            <span class="ody-unlock-stage-label">{stageId === 0 ? "From the start" : `After ${stageLabel(stageId)}`}</span>
+            <ul class="ody-unlock-cards">
+              {unlocks.map((unlock) => (
+                <li id={`unlock-card-${unlock.id}`} class="ody-unlock-card">
+                  <span class="ody-unlock-name">{unlock.name}</span>
+                  {unlock.description && <span class="ody-unlock-desc">{unlock.description}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {otherUnlocks.length > 0 && (
+          <div class="ody-unlock-stage">
+            <span class="ody-unlock-stage-label">Other conditions</span>
+            <ul class="ody-unlock-cards">
+              {otherUnlocks.map((unlock) => (
+                <li id={`unlock-card-${unlock.id}`} class="ody-unlock-card">
+                  <span class="ody-unlock-name">{unlock.name}</span>
+                  <span class="ody-unlock-desc">{conditionText(unlock.conditions[PRIMARY_VARIANT])}</span>
+                  {unlock.description && <span class="ody-unlock-desc">{unlock.description}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  const chapters = () => document.querySelectorAll<HTMLDetailsElement>(".ody-chapter");
+
+  const openTarget = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const target = id ? document.getElementById(id) : null;
+    const chapter = target?.closest("details");
+    if (chapter) chapter.open = true;
+    if (target) target.scrollIntoView({ block: "center" });
+  };
+  window.addEventListener("hashchange", openTarget);
+  openTarget();
+
+  document.querySelector<HTMLSelectElement>("[data-chapter-jump]")?.addEventListener("change", (event) => {
+    const select = event.target as HTMLSelectElement;
+    if (select.value) location.hash = select.value;
+    select.value = "";
+  });
+
+  const expand = document.querySelector<HTMLButtonElement>("[data-expand]");
+  expand?.addEventListener("click", () => {
+    const open = expand.getAttribute("aria-pressed") !== "true";
+    chapters().forEach((chapter) => (chapter.open = open));
+    expand.setAttribute("aria-pressed", String(open));
+    expand.textContent = open ? "Collapse all" : "Expand all";
+  });
+</script>
