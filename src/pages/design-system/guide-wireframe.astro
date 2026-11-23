@@ -3,6 +3,7 @@ export const prerender = true;
 import "../../styles/tokens.css";
 import nidhogg from "../../data/heroes/nidhogg.json";
 import db from "../../data/all_heroes_db.json";
+import invest from "../../data/ratings/invest.json";
 
 // Wireframe only: real Nidhogg data, grey styling, tokens only. Not linked anywhere.
 
@@ -32,7 +33,7 @@ const modes: Array<{ mode: string; text: string; evidence: Evidence | null }> = 
   { mode: "PvP", text: "Not tested. Silence, shield and Control immunity exist on paper, no match data.", evidence: null },
 ];
 
-// ---- 03 relic breakpoints from relic.upgrades (unlock), recommendedRelicLevel (target)
+// ---- 03 relic breakpoints from relic.upgrades (unlock), invest.json relicRec (target)
 const breakpoints = [
   { lvl: "Base", text: relic.description, ev: "confirmed" as Evidence },
   { lvl: "Lv2", text: relic.upgrades.level2, ev: "confirmed" as Evidence },
@@ -160,7 +161,7 @@ const worst = ranked[ranked.length - 1];
 
         <div class="three">
           <div class="card"><span class="lbl">Relic unlocks</span><strong>Lv3 stun, Lv4 60% True DMG</strong><em class="ev ev-confirmed">Confirmed</em></div>
-          <div class="card"><span class="lbl">Target level</span><strong>Relic {nidhogg.recommendedRelicLevel}</strong><em class="ev ev-untested">Data field, source not stated</em></div>
+          <div class="card"><span class="lbl">Target level</span><strong>Relic {invest.nidhogg.relicRec}</strong><em class="ev ev-untested">Data field, source not stated</em></div>
           <div class="card"><span class="lbl">Priority</span><strong>Low</strong><em class="ev ev-community">Community</em></div>
         </div>
         <p class="note">Unlock, target and priority are three different facts. The data does not say at which Relic level Lv3 and Lv4 unlock.</p>

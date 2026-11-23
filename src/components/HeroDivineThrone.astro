@@ -26,7 +26,8 @@ interface Props {
 const { entry, heroName, locale } = Astro.props as Props;
 const seatName = pickLang(entry.seatName, locale);
 const subtitle = pickLang(entry.subtitle, locale);
-const throneAssetSrc = `/features/divine-throne/thrones/${entry.throneAssetId}.png`;
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const throneAssetSrc = `${R2_BASE}/features/divine-throne/thrones/${entry.throneAssetId}.png`;
 const guideLabel = t(locale, "hero", "divineThroneGuide");
 ---
 

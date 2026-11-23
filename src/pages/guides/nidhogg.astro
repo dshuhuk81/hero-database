@@ -9,7 +9,7 @@ import UptimeBars from "../../components/guides/UptimeBars.astro";
 import FightRecord from "../../components/guides/FightRecord.astro";
 import HeroChips from "../../components/guides/HeroChips.astro";
 import EvidenceBadge from "../../components/guides/EvidenceBadge.astro";
-import nidhoggData from "../../data/heroes/nidhogg.json";
+import invest from "../../data/ratings/invest.json";
 import "../../styles/guide-v2.css";
 
 const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
@@ -118,7 +118,7 @@ const relicSteps = [
 
       <div class="gx-facts">
         <div class="gx-fact"><span class="gx-label">Relic unlocks</span><strong>Lv3 stun, Lv4 60% True DMG</strong><EvidenceBadge status="confirmed" /></div>
-        <div class="gx-fact"><span class="gx-label">Target level</span><strong>Relic {nidhoggData.recommendedRelicLevel}</strong><EvidenceBadge status="untested" label="Source not stated" /></div>
+        <div class="gx-fact"><span class="gx-label">Target level</span><strong>Relic {invest.nidhogg.relicRec}</strong><EvidenceBadge status="untested" label="Source not stated" /></div>
         <div class="gx-fact"><span class="gx-label">Priority</span><strong>Low on tight resources</strong><EvidenceBadge status="community" /></div>
       </div>
       <p class="gx-fact-note">Three different facts. We do not know at which Relic level Lv3 and Lv4 unlock.</p>
