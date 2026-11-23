@@ -13,8 +13,6 @@ async function analyzeBossDPS() {
   console.log('BOSS DPS HERO ANALYSIS - % Max HP Damage & Single-Target Specialists');
   console.log('='.repeat(90));
   
-  const heroes = Object.values(allHeroesDb);
-  
   // Analyze specific DPS heroes known for boss fights
   const bossSpecialists = ['isis', 'anubis', 'nezha', 'set', 'diana', 'horus', 'nyx', 'phoenix', 'yanluo'];
   

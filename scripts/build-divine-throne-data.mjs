@@ -1056,7 +1056,7 @@ const compactTranslationDrafts = {
   },
 };
 
-function localizeCompact(heroId, en, locale, fieldLabel) {
+function localizeCompact(heroId, locale, fieldLabel) {
   const draft = compactTranslationDrafts[heroId]?.[locale];
   if (!draft) throw new Error(`Missing compact ${locale} translations for ${heroId}`);
 
@@ -1078,22 +1078,22 @@ function expandCompactMetadata() {
     metadata[heroId] = {
       seatName: {
         en: seatNameEn,
-        de: localizeCompact(heroId, seatNameEn, "de", "seatName"),
-        es: localizeCompact(heroId, seatNameEn, "es", "seatName"),
-        ru: localizeCompact(heroId, seatNameEn, "ru", "seatName"),
+        de: localizeCompact(heroId, "de", "seatName"),
+        es: localizeCompact(heroId, "es", "seatName"),
+        ru: localizeCompact(heroId, "ru", "seatName"),
       },
       subtitle: {
         en: subtitleEn,
-        de: localizeCompact(heroId, subtitleEn, "de", "subtitle"),
-        es: localizeCompact(heroId, subtitleEn, "es", "subtitle"),
-        ru: localizeCompact(heroId, subtitleEn, "ru", "subtitle"),
+        de: localizeCompact(heroId, "de", "subtitle"),
+        es: localizeCompact(heroId, "es", "subtitle"),
+        ru: localizeCompact(heroId, "ru", "subtitle"),
       },
       milestones: Object.fromEntries(
         milestoneLevels.map((level, index) => [level, {
           en: skillTexts[index],
-          de: localizeCompact(heroId, skillTexts[index], "de", level),
-          es: localizeCompact(heroId, skillTexts[index], "es", level),
-          ru: localizeCompact(heroId, skillTexts[index], "ru", level),
+          de: localizeCompact(heroId, "de", level),
+          es: localizeCompact(heroId, "es", level),
+          ru: localizeCompact(heroId, "ru", level),
         }]),
       ),
     };

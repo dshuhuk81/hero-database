@@ -39,11 +39,11 @@ app.use((req, res, next) => {
 });
 
 // Health Check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.get('/api/health/auth', async (req, res) => {
+app.get('/api/health/auth', async (_req, res) => {
   try {
     const { error } = await supabaseAdmin
       .from('user_profiles')
@@ -61,7 +61,7 @@ app.get('/api/health/auth', async (req, res) => {
 });
 
 // Debug endpoint to verify API is reachable
-app.post('/api/debug/ping', (req, res) => {
+app.post('/api/debug/ping', (_req, res) => {
   res.json({ message: 'pong', timestamp: new Date().toISOString() });
 });
 
@@ -167,7 +167,7 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // Logout Endpoint
-app.post('/api/auth/logout', (req, res) => {
+app.post('/api/auth/logout', (_req, res) => {
   res.json({ message: 'Logout erfolgreich' });
 });
 
@@ -383,7 +383,7 @@ app.post('/api/user/heroes/share', authenticateToken, async (req, res) => {
     console.log('Generated share ID:', shareId);
 
     // Create shared config
-    const { data, error } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from('shared_hero_configs')
       .insert({
         share_id: shareId,
@@ -450,7 +450,7 @@ app.get('/api/shared-heroes/:shareId', async (req, res) => {
 });
 
 // Error Handler
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
   console.error('Error:', err);
   res.status(500).json({ error: 'Interner Fehler' });
 });

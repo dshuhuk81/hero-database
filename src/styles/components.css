@@ -8369,14 +8369,6 @@ button.content-list-item:hover .content-list-item-action {
   display: none;
 }
 
-.clipboard-shim {
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
 /* Gift codes without own card chrome (inside another card's visual area) */
 .gift-codes-bare {
   max-width: none;

@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'node:fs';
 const lua = fs.readFileSync('/Users/daschultheiss/hero-database/leak/game_extracted/region_754c000000/NewConfig/hero_skin.lua', 'utf8');
 
 const names = [

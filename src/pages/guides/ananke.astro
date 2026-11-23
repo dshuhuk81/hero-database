@@ -44,13 +44,6 @@ const relicSteps = [
   { lvl: "Lv4", title: "Kill chain: instant dash", text: "A kill she takes part in triggers a Fateweaving dash at the next mark.", peak: true },
 ];
 
-const suppression = [
-  { gap: "Gap 85", normal: 35, true: 62 },
-  { gap: "Gap 94", normal: 26, true: 58 },
-  { gap: "Gap 105", normal: 20, true: 46 },
-  { gap: "Gap 269", normal: 20, true: 10 },
-];
-
 const DUEL_MAX = 25;
 const duels = [
   { n: 1, death: 12.7, ult: false, win: false },
@@ -153,6 +146,13 @@ const weaknesses = [
       </div>
 
       {/* Hidden until publication is approved: level suppression panel.
+      To publish: move this data back into the frontmatter and uncomment the panel.
+const suppression = [
+  { gap: "Gap 85", normal: 35, true: 62 },
+  { gap: "Gap 94", normal: 26, true: 58 },
+  { gap: "Gap 105", normal: 20, true: 46 },
+  { gap: "Gap 269", normal: 20, true: 10 },
+];
       <div class="ananke-panel">
         <div class="ananke-panel-head"><span>Level suppression</span><h3>True DMG is not a fix for big level gaps.</h3></div>
         <div class="ananke-bars">

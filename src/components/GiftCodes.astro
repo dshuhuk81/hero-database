@@ -62,14 +62,7 @@ const validUntil = t(locale, "giftCodes", "validUntil");
         try {
           await navigator.clipboard.writeText(code);
         } catch {
-          const area = document.createElement("textarea");
-          area.value = code;
-          area.setAttribute("readonly", "");
-          area.className = "clipboard-shim";
-          document.body.appendChild(area);
-          area.select();
-          try { document.execCommand("copy"); } catch { /* clipboard unavailable */ }
-          area.remove();
+          return; // clipboard unavailable or permission denied: no false "copied" feedback
         }
         btn.textContent = copiedLabel;
         btn.classList.add("is-copied");

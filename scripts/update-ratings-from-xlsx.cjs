@@ -53,7 +53,7 @@ function cleanInvestmentLevel(value) {
 function cleanProse(v) {
   if (v === null || v === undefined) return '';
   return v.toString()
-    .replace(/\s*(?:\r\n|\r|\n)+\s*/g, (m, off, str) => {
+    .replace(/\s*(?:\r\n|\r|\n)+\s*/g, (_m, off, str) => {
       const prev = str.slice(0, off).replace(/\s+$/, '').slice(-1);
       return /[.!?:]/.test(prev) || prev === '' ? ' ' : '. ';
     })

@@ -3,9 +3,6 @@ import { fullSkillText } from "./heroTags.js";
 import fs from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Load tags dynamically
 let SYNERGY_TAGS_CACHE = null;
@@ -34,16 +31,6 @@ export async function getSYNERGY_TAGS() {
 export async function getALL_SYNERGY_TAG_LIST() {
   await loadTagsOnce();
   return ALL_SYNERGY_TAG_LIST_CACHE;
-}
-
-// --- Snippet helper ---
-function snippetAround(text, matchIndex, maxLen = 180) {
-  const raw = String(text || "");
-  const idx = Math.max(0, Number(matchIndex || 0));
-  const start = Math.max(0, idx - Math.floor(maxLen / 2));
-  const end = Math.min(raw.length, start + maxLen);
-  const s = raw.slice(start, end).replace(/\s+/g, " ").trim();
-  return (start > 0 ? "…" : "") + s + (end < raw.length ? "…" : "");
 }
 
 // Evidence patterns - removed (using manual tags instead)
