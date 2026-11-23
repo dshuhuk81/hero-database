@@ -357,6 +357,41 @@
           "#bba5ff",
           "#e6deff"
         ]
+      },
+      "leaf-green": {
+        "role": "semantic",
+        "displayName": "Leaf Green",
+        "canonical": "#4ade80",
+        "tonalRamp": [
+          "#052e16",
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#22c55e",
+          "#4ade80",
+          "#86efac",
+          "#dcfce7"
+        ]
+      },
+      "sky-blue": {
+        "role": "semantic",
+        "displayName": "Sky Blue",
+        "canonical": "#60a5fa",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#2563eb",
+          "#3b82f6",
+          "#60a5fa",
+          "#93c5fd",
+          "#dbeafe"
+        ]
+      },
+      "scrim": {
+        "role": "neutral",
+        "displayName": "Scrim",
+        "canonical": "rgba(0, 0, 0, 0.65)"
       }
     },
     "typographyMeta": {

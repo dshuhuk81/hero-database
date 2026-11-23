@@ -45,6 +45,16 @@
   --accent-red-strong: #ef4444;
   --accent-red-dim:    rgba(239, 68, 68, 0.15);
   --accent-red-line:   color-mix(in srgb, var(--accent-red) 24%, transparent);
+  /* Positive outcome: strengths, must-pull, upgrades */
+  --accent-green:      #4ade80;
+  --accent-green-dim:  rgba(74, 222, 128, 0.12);
+  --accent-green-line: rgba(74, 222, 128, 0.30);
+  /* Neutral information: optional pulls, defense stat */
+  --accent-sky:        #60a5fa;
+  --accent-sky-dim:    rgba(96, 165, 250, 0.12);
+  --accent-sky-line:   rgba(96, 165, 250, 0.30);
+  /* Backdrop behind overlays and sheets */
+  --scrim:             rgba(0, 0, 0, 0.65);
 
   /* Guide faction accents: bright enough for AAA text contrast on guide surfaces. */
   --guide-accent-hearts:    #ff8f9c;

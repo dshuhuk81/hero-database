@@ -4,7 +4,6 @@
    Import order: tokens -> reset -> base -> components
    ============================================================ */
 
-
 /* ============================================================
    LAYOUT UTILITIES
    .page-wrapper is defined in base.css (global, with padding + responsive)
@@ -496,14 +495,14 @@ button.content-list-item:hover .content-list-item-action {
 /* Homepage intro paragraph, top of main-content above the support strip */
 .hero-intro {
   margin: 0 0 var(--space-12);
-  font-size: 1.05rem;
+  font-size: var(--text-md);
   line-height: 1.6;
   color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {
   .hero-intro {
-    font-size: 0.95rem;
+    font-size: var(--text-base);
     margin-bottom: var(--space-8);
   }
 }
@@ -534,7 +533,6 @@ button.content-list-item:hover .content-list-item-action {
   opacity: 0.4;
   margin: var(--space-3) 0 var(--space-5);
 }
-
 
 /* ============================================================
    SECTION LABEL
@@ -577,7 +575,6 @@ button.content-list-item:hover .content-list-item-action {
 .section-title::before {
   max-width: 24px;
 }
-
 
 /* ============================================================
    RATING BADGE
@@ -674,7 +671,7 @@ button.content-list-item:hover .content-list-item-action {
   --rating-badge-min-height: 32px;
   --rating-badge-padding: 0 8px;
   --rating-badge-radius: 999px;
-  --rating-badge-font-size: 0.85rem;
+  --rating-badge-font-size: var(--text-sm);
   --rating-badge-font-weight: 700;
   --rating-badge-tracking: 0.5px;
   --rating-badge-backdrop-filter: blur(6px);
@@ -751,7 +748,6 @@ button.content-list-item:hover .content-list-item-action {
   color: #ef4444;
 }
 
-
 /* ============================================================
    STAT BAR
    Labeled stat row with colored progress bar.
@@ -787,7 +783,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .stat-entry[data-category="defense"] .stat-bar-fill {
-  background: #60a5fa;
+  background: var(--accent-sky);
 }
 
 .stat-entry[data-category="utility"] .stat-bar-fill {
@@ -801,7 +797,6 @@ button.content-list-item:hover .content-list-item-action {
   text-align: right;
   white-space: nowrap;
 }
-
 
 /* ============================================================
    STICKY PAGE HEADER
@@ -823,7 +818,6 @@ button.content-list-item:hover .content-list-item-action {
   opacity: 0.82;
   border-bottom: 1px solid var(--border-subtle);
 }
-
 
 /* ============================================================
    PILL TAB BAR
@@ -1010,7 +1004,6 @@ button.content-list-item:hover .content-list-item-action {
   }
 }
 
-
 /* ============================================================
    TIPS SUB-TAB NAVIGATION
    Pill-style sub-tabs within the Beginner tab.
@@ -1078,7 +1071,6 @@ button.content-list-item:hover .content-list-item-action {
   }
 }
 
-
 /* ============================================================
    TIPS PAGE VISUAL COMPONENTS
    Styles for Early Game panel restructure.
@@ -1104,22 +1096,6 @@ button.content-list-item:hover .content-list-item-action {
 
 .tips-callout p + p {
   margin-top: var(--space-2);
-}
-
-/* F2P note — prominent banner at top */
-.tips-f2p-note {
-  margin-bottom: var(--space-6);
-  padding: var(--space-4) var(--space-5);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-}
-
-.tips-f2p-note p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
 }
 
 /* Tips panel content containers (.tips-main-content / .eg-main-content)
@@ -1327,7 +1303,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .comp-note {
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   color: var(--text-muted);
   line-height: 1.65;
   margin: var(--space-3) 0 0;
@@ -1396,36 +1372,6 @@ button.content-list-item:hover .content-list-item-action {
   margin-top: -10px;
 }
 
-.chip-flex-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  width: 64px;
-  flex-shrink: 0;
-}
-
-.chip-flex-img {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-md);
-  border: 1px dashed rgba(250, 204, 21, 0.4);
-  background: rgba(250, 204, 21, 0.04);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(250, 204, 21, 0.4);
-  font-size: 1.2rem;
-}
-
-.chip-flex-label {
-  font-size: 0.67rem;
-  text-align: center;
-  color: var(--accent-gold);
-  font-weight: var(--weight-semibold);
-}
-
-
 /* ============================================================
    UNDERLINE TAB BAR
    Standard page-level nav tabs with gold underline indicator.
@@ -1471,7 +1417,6 @@ button.content-list-item:hover .content-list-item-action {
   color: var(--tab-text-active);
   border-bottom-color: var(--tab-indicator);
 }
-
 
 /* ============================================================
    SUPPORT SECTION
@@ -1588,20 +1533,6 @@ button.content-list-item:hover .content-list-item-action {
   color: var(--text-bright);
 }
 
-.donate-btn-kofi {
-  border-color: rgba(255, 94, 91, 0.6);
-  color: #ff5e5b;
-  width: 100%;
-  justify-content: center;
-}
-
-.donate-btn-kofi:hover {
-  background: rgba(255, 94, 91, 0.1);
-  border-color: rgba(255, 94, 91, 0.9);
-  box-shadow: 0 4px 16px rgba(255, 94, 91, 0.2);
-  color: #ff7875;
-}
-
 .donate-btn-paypal {
   width: 100%;
   justify-content: center;
@@ -1673,17 +1604,6 @@ button.content-list-item:hover .content-list-item-action {
   padding: 0;
 }
 
-.supporter-pill {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--accent-gold);
-  background: rgba(250, 204, 21, 0.08);
-  border: 1px solid rgba(250, 204, 21, 0.2);
-  border-radius: 999px;
-  padding: 3px 10px;
-  white-space: nowrap;
-}
-
 @media (max-width: 768px) {
   .supporters-row {
     padding: 12px 28px 16px;
@@ -1695,7 +1615,6 @@ button.content-list-item:hover .content-list-item-action {
     padding: 10px 20px 14px;
   }
 }
-
 
 /* ============================================================
    UPGRADE ROW
@@ -1714,12 +1633,12 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .upgrade-lv {
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   padding: 2px var(--space-2);
-  background: rgba(76, 175, 80, 0.2);
-  border: 1px solid rgba(76, 175, 80, 0.35);
-  color: #86efac;
+  background: color-mix(in srgb, var(--accent-green) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-green) 35%, transparent);
+  color: var(--accent-green);
   border-radius: var(--radius-sm);
   white-space: nowrap;
   align-self: flex-start;
@@ -1728,7 +1647,7 @@ button.content-list-item:hover .content-list-item-action {
 .upgrade-text {
   font-size: var(--text-sm);
   line-height: 1.45;
-  color: rgba(134, 239, 172, 0.9);
+  color: color-mix(in srgb, var(--accent-green) 55%, var(--text-bright));
 }
 
 /* ============================================================
@@ -1743,7 +1662,7 @@ button.content-list-item:hover .content-list-item-action {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--scrim);
   z-index: 200;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -1768,7 +1687,7 @@ button.content-list-item:hover .content-list-item-action {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-bright);
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1817,7 +1736,7 @@ button.content-list-item:hover .content-list-item-action {
     border-radius: 999px;
     background: #0d0c12;
     color: var(--accent-gold);
-    font-size: 0.65rem;
+    font-size: var(--text-2xs);
     font-weight: var(--weight-bold);
   }
 
@@ -1852,7 +1771,7 @@ button.content-list-item:hover .content-list-item-action {
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  background: linear-gradient(160deg, #1a1730 0%, #0f0e1a 50%, #12101f 100%);
+  background: linear-gradient(160deg, var(--bg-overlay) 0%, var(--bg-surface) 50%, var(--bg-raised) 100%);
   border: 1px solid rgba(250, 204, 21, 0.45);
   border-radius: var(--radius-xl);
   padding: 0 0 var(--space-5);
@@ -1897,7 +1816,7 @@ button.content-list-item:hover .content-list-item-action {
 .wl-title {
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
-  color: #f4e8b0;
+  color: var(--accent-gold-light);
   letter-spacing: 0.08em;
   margin: 0 0 var(--space-3);
   text-shadow:
@@ -1908,13 +1827,13 @@ button.content-list-item:hover .content-list-item-action {
 
 .wl-subtitle {
   font-size: var(--text-sm);
-  color: #e8a840;
+  color: var(--gold);
   line-height: 1.55;
   margin: 0;
 }
 
 .wl-subtitle-note {
-  color: rgba(232, 168, 64, 0.75);
+  color: color-mix(in srgb, var(--gold) 75%, transparent);
   font-size: var(--text-xs);
 }
 
@@ -2042,27 +1961,6 @@ button.content-list-item:hover .content-list-item-action {
   pointer-events: none;
 }
 
-.wl-card-badge {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  z-index: 5;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  border-radius: var(--radius-sm);
-  color: var(--faction-color);
-  filter: drop-shadow(0 0 3px var(--faction-glow));
-}
-
-.wl-card-badge .wl-faction-icon {
-  width: 13px;
-  height: 13px;
-}
-
 .wl-card:hover {
   transform: translateY(-2px) scale(1.02);
   box-shadow:
@@ -2075,30 +1973,6 @@ button.content-list-item:hover .content-list-item-action {
   display: flex;
   justify-content: flex-end;
   padding: var(--space-4) var(--space-4) 0;
-}
-
-.wl-popularity-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: linear-gradient(135deg, #7c3aed, #5b21b6);
-  border: 1px solid rgba(167, 139, 250, 0.5);
-  border-radius: var(--radius-full);
-  color: #f4f1ff;
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  font-family: inherit;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: var(--transition-all);
-  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.4);
-}
-
-.wl-popularity-btn:hover {
-  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.6);
-  transform: translateY(-1px);
 }
 
 @media (max-width: 520px) {
@@ -2182,9 +2056,9 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .sw-header--strengths {
-  background: rgba(34, 197, 94, 0.08);
-  border-bottom: 1px solid rgba(34, 197, 94, 0.18);
-  color: #4ade80;
+  background: color-mix(in srgb, var(--accent-green) 8%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-green) 18%, transparent);
+  color: var(--accent-green);
 }
 
 .sw-header--weaknesses {
@@ -2232,7 +2106,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .sw-item--strength::before {
-  background: #4ade80;
+  background: var(--accent-green);
 }
 
 .sw-item--weakness::before {
@@ -2244,90 +2118,6 @@ button.content-list-item:hover .content-list-item-action {
   font-size: var(--text-sm);
   color: var(--text-disabled);
   font-style: italic;
-}
-
-/* ===== HERO DETAIL COMPS ===== */
-
-.hdc-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.hdc-empty {
-  margin: 0;
-  font-size: var(--text-sm);
-  color: var(--text-disabled);
-  font-style: italic;
-}
-
-.hdc-card {
-  overflow: hidden;
-}
-
-.hdc-hero-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  
-}
-
-.hdc-hero-slot {
-  display: block;
-  position: relative;
-  text-decoration: none;
-  color: inherit;
-  width: 128px;
-  height: 160px;
-  flex-shrink: 0;
-  border-radius: var(--radius-md);
-  background-color: #0d1624;
-  background-image: url(https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/hall.webp);
-  background-size: cover;
-  background-position: center top;
-  transition: transform var(--duration-fast) var(--ease-out);
-  overflow: hidden;
-}
-
-.hdc-hero-slot:hover {
-  transform: translateY(-2px);
-}
-
-.hdc-hero-slot--current {
-  border: 2px solid rgba(250, 204, 21, 0.35);
-}
-
-.hdc-hero-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  z-index: 0;
-}
-
-.hdc-name-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  padding: 8px 6px;
-  text-align: center;
-  background: linear-gradient(to top, rgba(10, 10, 16, 0.92), rgba(10, 10, 16, 0.58), rgba(10, 10, 16, 0.12));
-}
-
-.hdc-hero-name {
-  font-size: 0.75rem;
-  font-weight: var(--weight-medium);
-  color: var(--text-bright);
-  text-align: center;
-  line-height: 1.2;
-  max-width: 112px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* ============================================================
@@ -2474,7 +2264,6 @@ button.content-list-item:hover .content-list-item-action {
 .hstats-hero:hover .hstats-name {
   color: var(--accent-gold);
 }
-
 
 /* ============================================================
    HERO DETAIL -> GUIDE CROSS-LINK
@@ -7144,21 +6933,6 @@ button.content-list-item:hover .content-list-item-action {
   padding-top: calc(var(--space-4) + 10px);
 }
 
-.guides-mode-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 3px 6px;
-  border-radius: var(--radius-sm);
-  color: var(--text-bright);
-  font-size: 10px;
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
 .guides-mode-card--hero {
   align-items: center;
 }
@@ -7236,7 +7010,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .privacy-header h1 {
-  font-size: 3rem;
+  font-size: var(--text-5xl);
   font-weight: 600;
   margin: 0;
 }
@@ -7253,7 +7027,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .privacy-content h2 {
-  font-size: 1.75rem;
+  font-size: var(--text-3xl);
   font-weight: 600;
   margin: 0 0 16px;
   color: #fff;
@@ -7270,7 +7044,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .privacy-content h3 {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   font-weight: 600;
   margin: 24px 0 8px;
   color: rgba(255, 255, 255, 0.9);
@@ -7290,7 +7064,7 @@ button.content-list-item:hover .content-list-item-action {
 .privacy-content .last-updated {
   text-align: center;
   color: rgba(230, 230, 235, 0.5);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   margin-bottom: 48px;
 }
 
@@ -7314,7 +7088,7 @@ button.content-list-item:hover .content-list-item-action {
 
 @media (max-width: 768px) {
   .privacy-header h1 {
-    font-size: 2rem;
+    font-size: var(--text-3xl);
   }
 
   .privacy-content h2 {
@@ -7500,7 +7274,7 @@ button.content-list-item:hover .content-list-item-action {
 .vwz-panel {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: var(--space-5);
   display: flex;
   flex-direction: column;
@@ -7591,9 +7365,9 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .vwz-chip-btn.is-active {
-  background: rgba(167,139,250,0.15);
-  border-color: rgba(167,139,250,0.5);
-  color: #a78bfa;
+  background: var(--chip-bg-active);
+  border-color: var(--chip-border-active);
+  color: var(--chip-text-active);
 }
 
 .vwz-chip-btn:disabled {
@@ -7657,7 +7431,7 @@ button.content-list-item:hover .content-list-item-action {
   --vwz-piece-color: transparent;
   --vwz-piece-border: transparent;
   aspect-ratio: 1;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(255,255,255,0.07);
   background: rgba(255,255,255,0.02);
   cursor: pointer;
@@ -7667,7 +7441,7 @@ button.content-list-item:hover .content-list-item-action {
   justify-content: center;
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
-  color: rgba(0,0,0,0.6);
+  color: color-mix(in srgb, var(--bg-base) 60%, transparent);
   position: relative;
 }
 
@@ -7676,18 +7450,20 @@ button.content-list-item:hover .content-list-item-action {
   border-color: rgba(255,255,255,0.3);
 }
 
-.vwz-cell.vwz-pc0 { --vwz-piece-color: #60a5fa; --vwz-piece-border: #bfdbfe; }
-.vwz-cell.vwz-pc1 { --vwz-piece-color: #f87171; --vwz-piece-border: #fecaca; }
-.vwz-cell.vwz-pc2 { --vwz-piece-color: #a78bfa; --vwz-piece-border: #ddd6fe; }
-.vwz-cell.vwz-pc3 { --vwz-piece-color: #eab308; --vwz-piece-border: #fef08a; }
-.vwz-cell.vwz-pc4 { --vwz-piece-color: #2dd4bf; --vwz-piece-border: #99f6e4; }
-.vwz-cell.vwz-pc5 { --vwz-piece-color: #fb923c; --vwz-piece-border: #fed7aa; }
-.vwz-cell.vwz-pc6 { --vwz-piece-color: #f472b6; --vwz-piece-border: #fbcfe8; }
-.vwz-cell.vwz-pc7 { --vwz-piece-color: #a3e635; --vwz-piece-border: #d9f99d; }
-.vwz-cell.vwz-pc8 { --vwz-piece-color: #38bdf8; --vwz-piece-border: #bae6fd; }
-.vwz-cell.vwz-pc9 { --vwz-piece-color: #e879f9; --vwz-piece-border: #f5d0fe; }
-.vwz-cell.vwz-pc10 { --vwz-piece-color: #94a3b8; --vwz-piece-border: #e2e8f0; }
-.vwz-cell.vwz-pc11 { --vwz-piece-color: #4ade80; --vwz-piece-border: #bbf7d0; }
+/* Piece palette: categorical data colours (12 hues that must stay distinct),
+   intentionally not site accents. Single source for grid cells and legend chips. */
+.vwz-pc0 { --vwz-piece-color: #60a5fa; --vwz-piece-border: #bfdbfe; }
+.vwz-pc1 { --vwz-piece-color: #f87171; --vwz-piece-border: #fecaca; }
+.vwz-pc2 { --vwz-piece-color: #a78bfa; --vwz-piece-border: #ddd6fe; }
+.vwz-pc3 { --vwz-piece-color: #eab308; --vwz-piece-border: #fef08a; }
+.vwz-pc4 { --vwz-piece-color: #2dd4bf; --vwz-piece-border: #99f6e4; }
+.vwz-pc5 { --vwz-piece-color: #fb923c; --vwz-piece-border: #fed7aa; }
+.vwz-pc6 { --vwz-piece-color: #f472b6; --vwz-piece-border: #fbcfe8; }
+.vwz-pc7 { --vwz-piece-color: #a3e635; --vwz-piece-border: #d9f99d; }
+.vwz-pc8 { --vwz-piece-color: #38bdf8; --vwz-piece-border: #bae6fd; }
+.vwz-pc9 { --vwz-piece-color: #e879f9; --vwz-piece-border: #f5d0fe; }
+.vwz-pc10 { --vwz-piece-color: #94a3b8; --vwz-piece-border: #e2e8f0; }
+.vwz-pc11 { --vwz-piece-color: #4ade80; --vwz-piece-border: #bbf7d0; }
 
 .vwz-cell[class*="vwz-pc"] {
   background: var(--vwz-piece-color);
@@ -7738,16 +7514,16 @@ button.content-list-item:hover .content-list-item-action {
   padding: 3px 6px;
   transform: translate(-50%, -50%);
   border: 1px solid rgba(255,255,255,0.42);
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   background: rgba(18,16,25,0.82);
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   color: #fff;
-  font-size: 9px;
+  font-size: var(--text-2xs);
   font-weight: var(--weight-bold);
   letter-spacing: 0.02em;
   line-height: 1.05;
   pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--bg-base) 75%, transparent);
 }
 
 .vwz-piece-label-set {
@@ -7757,7 +7533,7 @@ button.content-list-item:hover .content-list-item-action {
 .vwz-piece-label-tier {
   margin-top: 2px;
   color: rgba(255,255,255,0.78);
-  font-size: 8px;
+  font-size: var(--text-2xs);
 }
 
 .vwz-status {
@@ -7807,22 +7583,11 @@ button.content-list-item:hover .content-list-item-action {
 .vwz-chip {
   width: 12px;
   height: 12px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--vwz-piece-color);
   flex-shrink: 0;
 }
 
-.vwz-chip.vwz-pc0 { background: #60a5fa; }
-.vwz-chip.vwz-pc1 { background: #f87171; }
-.vwz-chip.vwz-pc2 { background: #a78bfa; }
-.vwz-chip.vwz-pc3 { background: #eab308; }
-.vwz-chip.vwz-pc4 { background: #2dd4bf; }
-.vwz-chip.vwz-pc5 { background: #fb923c; }
-.vwz-chip.vwz-pc6 { background: #f472b6; }
-.vwz-chip.vwz-pc7 { background: #a3e635; }
-.vwz-chip.vwz-pc8 { background: #38bdf8; }
-.vwz-chip.vwz-pc9 { background: #e879f9; }
-.vwz-chip.vwz-pc10 { background: #94a3b8; }
-.vwz-chip.vwz-pc11 { background: #4ade80; }
 
 .vwz-bonuses {
   display: flex;
@@ -7842,12 +7607,12 @@ button.content-list-item:hover .content-list-item-action {
 .pull-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 0.6rem;
+  font-size: var(--text-2xs);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 3px 7px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   white-space: nowrap;
   line-height: 1;
 }
@@ -7860,20 +7625,20 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .pull-badge.pull-must {
-  background: rgba(74, 222, 128, 0.12);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.3);
+  background: var(--accent-green-dim);
+  color: var(--accent-green);
+  border: 1px solid var(--accent-green-line);
 }
 
 .pull-badge.pull-optional {
-  background: rgba(96, 165, 250, 0.12);
-  color: #60a5fa;
-  border: 1px solid rgba(96, 165, 250, 0.3);
+  background: var(--accent-sky-dim);
+  color: var(--accent-sky);
+  border: 1px solid var(--accent-sky-line);
 }
 
 .pull-badge.pull-whales {
   background: rgba(168, 85, 247, 0.12);
-  color: #c084fc;
+  color: color-mix(in srgb, var(--accent-purple) 75%, var(--text-bright));
   border: 1px solid rgba(168, 85, 247, 0.3);
 }
 
@@ -7930,12 +7695,12 @@ button.content-list-item:hover .content-list-item-action {
 .support-strip-btn-primary {
   background: var(--accent-gold);
   border-color: var(--accent-gold);
-  color: #1a1400;
+  color: var(--bg-base);
 }
 
 .support-strip-btn-primary:hover {
   background: var(--accent-gold-light);
-  color: #1a1400;
+  color: var(--bg-base);
 }
 
 @media (max-width: 768px) {
@@ -8057,9 +7822,9 @@ button.content-list-item:hover .content-list-item-action {
   padding: 5px 10px;
   background: transparent;
   border: 1px solid rgba(250, 204, 21, 0.45);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--accent-gold);
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -8207,7 +7972,7 @@ button.content-list-item:hover .content-list-item-action {
 .support-pop-more {
   display: inline-block;
   margin-top: var(--space-3, 12px);
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   color: rgba(230, 230, 235, 0.6);
   text-decoration: underline;
 }
@@ -8294,7 +8059,7 @@ button.content-list-item:hover .content-list-item-action {
 
 .support-page-qr summary {
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   color: rgba(230, 230, 235, 0.6);
 }
 
@@ -8400,7 +8165,7 @@ button.content-list-item:hover .content-list-item-action {
 
 .gift-codes-title {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -8408,7 +8173,7 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .gift-codes-hint {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--accent-gold);
   opacity: 0.8;
 }
@@ -8440,7 +8205,7 @@ button.content-list-item:hover .content-list-item-action {
   gap: var(--space-3, 12px);
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 }
 
 .gift-code-row[hidden] {
@@ -8461,14 +8226,14 @@ button.content-list-item:hover .content-list-item-action {
 }
 
 .gift-code-value {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.95rem;
-  color: #67e8f9;
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  color: var(--accent-blue);
   overflow-wrap: anywhere;
 }
 
 .gift-code-meta {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   color: rgba(230, 230, 235, 0.55);
 }
 

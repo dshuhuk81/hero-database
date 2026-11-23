@@ -14,6 +14,11 @@ colors:
   ember-red: "#f87171"
   ember-red-strong: "#ef4444"
   ember-red-dim: "rgba(239, 68, 68, 0.15)"
+  leaf-green: "#4ade80"
+  leaf-green-dim: "rgba(74, 222, 128, 0.12)"
+  sky-blue: "#60a5fa"
+  sky-blue-dim: "rgba(96, 165, 250, 0.12)"
+  scrim: "rgba(0, 0, 0, 0.65)"
   hall-black: "#07060c"
   vault-surface: "#0d0b14"
   lantern-raised: "#13111c"
@@ -196,6 +201,11 @@ A near-black violet-tinted ground with one warm voice (gold), one cool helper (v
 - **Frost Blue** (`frost-blue`): Community-sourced evidence and cool informational highlights.
 - **Jade Teal** (`jade-teal`): Mechanic boxes and boss phase tags; a muted, low-chroma green that reads as "how the game works", not as status.
 - **Ember Red** (`ember-red`, with `ember-red-strong` and `ember-red-dim`; CSS `--accent-red*`): Negative outcomes only: weaknesses, bad matchups, lost damage. Also the red virtue rarity (`--rarity-red-border`).
+- **Leaf Green** (`leaf-green`, `leaf-green-dim`; CSS `--accent-green*`): Positive outcomes: strengths, must-pull, upgrade levels. For running text, mix it toward Ivory Bright so paragraphs stay readable.
+- **Sky Blue** (`sky-blue`, `sky-blue-dim`; CSS `--accent-sky*`): Neutral information such as optional pulls and the defense stat.
+- **Scrim** (`scrim`): The backdrop behind overlays and sheets.
+
+Two local exceptions are deliberate: the virtue wizard's 12-hue piece palette is categorical data and stays distinct from site accents (one source, `.vwz-pcN`), and black in mask gradients is an alpha value, not a colour.
 
 ### Neutral
 - **Hall Black** (`hall-black`): Page background; the bottom of the stack.
