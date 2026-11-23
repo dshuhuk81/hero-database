@@ -373,13 +373,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><rect x="3" y="3" width="6" height="6" rx="1" fill="currentColor" stroke="none" opacity="0.35"/>`,
   },
   {
-    label: "Status",
-    href: "/status",
-    group: "meta",
-    localOnly: true,
-    icon: `<path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="7" width="3" height="9" rx="1"/><rect x="17" y="3" width="3" height="13" rx="1"/>`,
-  },
-  {
     label: "About",
     href: "/about",
     group: "meta",

@@ -9,7 +9,6 @@
     "build": "node scripts/build-with-supported-node.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "tag-manager": "node scripts/tag-manager-server.js",
     "mergeHeroes": "node scripts/merge-heroes-db.js",
     "import-attack-rates": "node scripts/import-attack-rates.cjs",
     "import-investment": "node scripts/import-investment.cjs",

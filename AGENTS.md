@@ -10,13 +10,13 @@ The project is built with **Astro 7** (`output: 'static'`) and plain TypeScript/
 
 Game knowledge matters as much as code knowledge here. Do not invent game facts. Prefer existing JSON data, markdown guides in `docs/`, `data-mine/`, or clearly marked community data.
 
-Several root-level markdown files are design docs and working memory, not code: `PROJECT_MEMORY.md` (agent working memory, notes documentation drift), `STATUS_DASHBOARD.md`, `WORKFLOWS.md` (German, operational workflows — helpful background but cross-check against `package.json` and the actual scripts before acting).
+Several root-level markdown files are design docs and working memory, not code: `PROJECT_MEMORY.md` (agent working memory, notes documentation drift), `WORKFLOWS.md` (German, operational workflows — helpful background but cross-check against `package.json` and the actual scripts before acting).
 
 ## Technology stack
 
 - Astro 7, static output, sitemap integration, strict TypeScript (`tsconfig.json` extends `astro/tsconfigs/strict`).
 - Node >= 22.12 (see `package.json` engines and `.nvmrc`). The repo is ESM (`"type": "module"`); most scripts are `.mjs`/`.js`, a few are `.cjs` or Python (3.14).
-- Runtime dependencies are intentionally small: `astro`, `express`, `cookie`, `dotenv`. Express powers local utility servers (`api-server.js`, `scripts/tag-manager-server.js`) — it is not part of the deployed site.
+- Runtime dependencies are intentionally small: `astro`, `express`, `cookie`, `dotenv`. Express powers the local utility server `api-server.js` — it is not part of the deployed site.
 - One **Cloudflare Pages Function** lives in `functions/api/hero-submission.js` (POST endpoint forwarding a community hero form to a Discord webhook via the `DISCORD_HERO_WEBHOOK` secret).
 - `api-server.js` uses Supabase (`@supabase/supabase-js`), but that package is not declared in `package.json` — it resolves from `node_modules`. Treat this as technical debt; do not extend it without flagging it.
 - i18n: locales `en`, `de`, `es`, `ru`, `zh` (`src/i18n/config.ts`). Only a subset of routes is localized under `src/pages/[locale]/` (note the existing typo: the wishlist page and its route are spelled `wishlisht` — keep URLs stable, do not "fix" the public path).
@@ -28,9 +28,9 @@ Several root-level markdown files are design docs and working memory, not code: 
 - `src/layouts/` — `Base.astro` and `GameLayout.astro`.
 - `src/data/` — the content core. `heroes/*.json` (one file per hero, ~90 heroes — this is the source of truth for hero data), `all_heroes_db.json` (generated merge of all hero files), `tags.json` + `tagRules.json`, `virtues.json` + `virtueRules.json`, `compRules.json`, `ratings/` (rating system code + data), `bosses.json`, `guides.ts`, `nav.ts`, `eventsGlobal.ts`, `game_id_mapping.json` (maps project hero ids to internal game data ids).
 - `src/game/media/`, `src/game/moodboards/` hold art direction assets.
-- `src/i18n/`, `src/utils/` (`heroTags.js`, `synergyTags.js`, `ratingScale.ts`, `projectStatus.js`), `src/styles/`.
+- `src/i18n/`, `src/utils/` (`heroTags.js`, `synergyTags.js`, `ratingScale.ts`), `src/styles/`.
 - `public/` — static assets served as-is (`heroes/`, `skills/`, banners, ...).
-- `scripts/` — ~80 Node/Python tools: data merge and validation, imports, R2 upload/download, image variant generation, and the tag-manager server.
+- `scripts/` — ~80 Node/Python tools: data merge and validation, imports, R2 upload/download, and image variant generation.
 - `tests/` — `rating-system.test.mjs` (node:test) and `test_combat_analysis.py` (unittest; imports `combat_analysis.py` from the repo root).
 - `functions/api/` — the Cloudflare Pages Function.
 - `extracted/`, `artifacts/`, `assets/`, `data-mine/`, `outputs/`, `design-system/` — extracted game assets, generated art, research notes, and design-system docs. Mostly inputs/outputs of asset pipelines, not application code.
@@ -39,7 +39,6 @@ Several root-level markdown files are design docs and working memory, not code: 
 
 - `npm run dev` — Astro dev server.
 - `npm run dev:all` — dev server plus the local Express API server (`api-server.js`, port 3001, requires `.env.local` with Supabase keys).
-- `npm run tag-manager` — local admin/tag-manager server on port 3000. The `/status` dashboard (dev-only) uses it to write hero data, ratings, investment, and synergy tags. See `STATUS_DASHBOARD.md`.
 - `npm run build` — production build into `dist/`.
 - `npm run preview` — preview the built site.
 - `npm run check` — `astro check` (TypeScript).
@@ -51,7 +50,7 @@ Several root-level markdown files are design docs and working memory, not code: 
 The rule: after changing hero source data, regenerate the derived files and validate, or the pre-commit hook will block the commit.
 
 - Edit `src/data/heroes/*.json` → `npm run after:hero-edit` (merges `all_heroes_db.json`, validates tags).
-- Edit `src/data/tags.json` (e.g. after a tag-manager session) → `npm run after:tags`.
+- Edit `src/data/tags.json` → `npm run after:tags`.
 - Import boss data (`npm run import-attack-rates`) → `npm run after:boss-import`.
 - Broader checks: `npm run validate:all`.
 - Gift codes: edit `src/data/giftCodes.json` by hand (no regeneration step). Template and field rules are in the header comment of `src/data/giftCodes.ts`. Codes disappear from the site on their own after `expires`.
@@ -81,5 +80,4 @@ Run the tests that cover what you changed; do not re-run the full suite after un
 
 - Never commit secrets. Cloudflare secrets (e.g. `DISCORD_HERO_WEBHOOK`) live in the Cloudflare dashboard; local equivalents go in `.env.local` / `.dev.vars`, which are gitignored.
 - `.env.r2` holds R2 credentials for the upload/download scripts.
-- The `/status` dashboard and tag manager are local-only: the production build deletes `/status` via the `localOnlyRoutes` integration in `astro.config.mjs`, which also strips local-only routes from the sitemap.
 - The GitHub workflow `.github/workflows/supabase-keepalive.yml` pings Supabase on a schedule and uses repository secrets only.

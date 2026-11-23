@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-- `npm run dev` — Astro dev server. `npm run dev:all` also starts `api-server.js` (port 3001, needs `.env.local`). `npm run tag-manager` — local admin server (port 3000) behind the dev-only `/status` dashboard.
+- `npm run dev` — Astro dev server. `npm run dev:all` also starts `api-server.js` (port 3001, needs `.env.local`).
 - `npm run check` — `astro check` (strict TS).
 - **Never run `npm run build` on your own initiative** (the user builds and reports failures). `npm run build` goes through `scripts/build-with-supported-node.mjs`.
 - After editing `src/data/heroes/*.json`: `npm run after:hero-edit`. After editing `src/data/tags.json`: `npm run after:tags`. After a boss import: `npm run after:boss-import`. Then stage the regenerated `src/data/all_heroes_db.json`, or `.githooks/pre-commit` rejects the commit.
@@ -22,7 +22,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Ratings.** `src/data/ratings/` (`ratingSystem.js`, `heroRatingFields.js`, `hero-ratings.json`, `invest.json`, see its `README.md`) plus `src/utils/ratingScale.ts` drive tier lists and scores. `import-ratings` / `import-investment` populate them; `tests/rating-system.test.mjs` covers the logic.
 
-**Local-only tooling vs. deployed site.** `/status`, `api-server.js` and `scripts/tag-manager-server.js` are local Express utilities that write data files; `astro.config.mjs` (`localOnlyRoutes`) strips `/status` from the production build and sitemap. Only the Cloudflare Pages Function `functions/api/hero-submission.js` runs server-side in production.
+**Local-only tooling vs. deployed site.** `api-server.js` is a local Express utility. Only the Cloudflare Pages Function `functions/api/hero-submission.js` runs server-side in production.
 
 **i18n.** Locales `en/de/es/ru/zh` (`src/i18n/`). Only some routes are duplicated under `src/pages/[locale]/`; UI strings in `src/i18n/ui.ts`, tag labels in `tags.ts`. Keep public URLs stable, including the `wishlisht` typo.
 

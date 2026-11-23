@@ -371,7 +371,6 @@ const translations: TranslationTree = {
     "/banners": { en: "Banners", de: "Banner", es: "Banners", ru: "Баннеры", zh: "卡池" },
     "/summon-calculator": { en: "Summon Calculator", de: "Beschwörungsrechner", es: "Calculadora de invocaciones", ru: "Калькулятор призывов", zh: "召唤计算器" },
     "/wishlisht": { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List", zh: "心愿单" },
-    "/status": { en: "Status", de: "Status", es: "Estado", ru: "Статус", zh: "状态" },
     "/about": { en: "About", de: "Über diese Seite", es: "Acerca de esta página", ru: "О сайте", zh: "关于" },
   },
 };

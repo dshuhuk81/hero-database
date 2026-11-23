@@ -37,9 +37,7 @@ const SCAN_DIRS = [
 ];
 
 // Also scan root-level scripts and config files
-const SCAN_FILES_EXTRA = [
-  join(ROOT, "tag-manager-server.js"),
-];
+const SCAN_FILES_EXTRA = [];
 
 function getAllFiles(dir, files = []) {
   for (const entry of readdirSync(dir)) {

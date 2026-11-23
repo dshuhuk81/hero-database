@@ -11,7 +11,7 @@ This file answers the question: "I changed X, what scripts do I need to run?"
 | Hero-Stats, Skills, Ratings, Synergies in `src/data/heroes/*.json` | `npm run after:hero-edit` |
 | Team Compositions in `src/data/heroes/*.json` | `npm run after:hero-edit` (gleicher Befehl) |
 | Divine-V Stats gegen Game-Extract querpruefen | `npm run validate:hero-detail-stats` |
-| Synergy-Tags via Tag-Manager (veraendert `tags.json`) | `npm run after:tags` |
+| Synergy-Tags geaendert (`tags.json`) | `npm run after:tags` |
 | Boss-Daten aus Google Sheet importiert | `npm run after:boss-import` |
 | Alles neu bauen (sicherer Zustand) | `npm run rebuild` |
 | Nur validieren ohne Build | `npm run validate:all` |
@@ -34,7 +34,7 @@ Danach noch `npm run build` wenn du deployen moechtest.
 ---
 
 ### `npm run after:tags`
-Fuer: Aenderungen an `src/data/tags.json` (z.B. nach Tag-Manager-Session)
+Fuer: Aenderungen an `src/data/tags.json`
 
 ```
 test-hero-tags.js        --> pruefen ob alle Tags gueltig definiert sind
@@ -101,9 +101,6 @@ Der Hook ist unter `.githooks/pre-commit` im Repo gespeichert und wird via `npm 
 |---|---|
 | `npm run dev` | Astro Dev-Server starten |
 | `npm run dev:all` | Dev-Server + API-Server zusammen |
-| `npm run tag-manager` | Lokaler Admin-/Tag-Manager-Server auf http://localhost:3000; wird auch vom nur lokal sichtbaren `/status` Dashboard zum Schreiben von Hero-Daten, Ratings, Investment und Synergy-Tags genutzt |
-
-Siehe auch: `STATUS_DASHBOARD.md`
 
 ### Build & Deploy
 | Script | Beschreibung |
@@ -116,7 +113,7 @@ Siehe auch: `STATUS_DASHBOARD.md`
 | Script | Beschreibung |
 |---|---|
 | `npm run after:hero-edit` | Nach Hero-JSON-Aenderungen |
-| `npm run after:tags` | Nach Tag-Manager-Session |
+| `npm run after:tags` | Nach Aenderungen an `tags.json` |
 | `npm run after:boss-import` | Nach Boss-Daten-Import |
 | `npm run import-attack-rates` | Boss-Daten aus Google Sheet laden |
 
@@ -232,7 +229,7 @@ src/data/heroes/*.json          (Quelle - manuell bearbeitet)
        |
        +--> derived/teamCompsByHeroId.json (via generator.js)
 
-src/data/tags.json              (Quelle - via Tag-Manager oder direkt)
+src/data/tags.json              (Quelle)
        |
        +--> all_heroes_db.json             (via merge-heroes-db.js)
 

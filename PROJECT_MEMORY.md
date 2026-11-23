@@ -17,7 +17,7 @@ The project is content-heavy. Game knowledge matters as much as code knowledge. 
 - Cloudflare hosting with Astro output directory `dist`.
 - Node 20 per `package.json`.
 - Runtime dependencies are small: Astro and Express.
-- Express is used for local utility servers such as the tag manager and API server.
+- Express is used for the local API server (`api-server.js`).
 - No current Supabase dependency is present in `package.json`, even though older docs mention Supabase.
 - No frontend framework dependency like React or Vue is currently used.
 - Styling is mostly plain Astro, CSS, and global CSS token files.
@@ -145,8 +145,6 @@ Important files:
 - `src/data/tagCategories.json`: shared category, order, and grouping metadata for tags.
 - `src/utils/synergyTags.js`: reads shared category metadata and computes synergy potential.
 - `src/components/filter.astro`: renders public tag filters from the shared category ordering.
-- `scripts/tag-manager-server.js`: local tag manager server; serves `/api/tags` and `/api/tag-categories`.
-- `tag-manager-frontend/index.html`: tag manager UI; loads tag/category data from the backend instead of hard-coded tag lists.
 
 Current synergy tags are manually assigned in each hero's `synergies` array. `synergyTags.js` no longer auto-detects tags from skill text for the frontend profile; it reads the manual array and generates display/evidence from that.
 
@@ -158,7 +156,7 @@ Current categories in `src/data/tagCategories.json`:
 - `PLAYSTYLE`: `AREA_DAMAGE_DEALER`, `BASIC_ATTACK_SCALER`.
 - `UTILITY`: `REVIVE`, `SUMMON`, `SELF_SUSTAIN`.
 
-When adding, renaming, deleting, or reordering tags, keep `tags.json` and `tagCategories.json` in sync. The tag-manager backend updates category metadata on rename/delete, and uncategorized tags fall back to `Custom Tags` in the manager response.
+When adding, renaming, deleting, or reordering tags, keep `tags.json` and `tagCategories.json` in sync.
 
 The synergy potential score currently only rewards team support tags, with especially high value for team energy restore and cooldown reduction.
 
@@ -339,7 +337,6 @@ Scripts from `package.json`:
 - `npm run dev:all`: runs Astro and API server together.
 - `npm run build`: Astro production build.
 - `npm run preview`: Astro preview.
-- `npm run tag-manager`: Express tag manager at local port 3000.
 - `npm run db:merge` or `npm run mergeHeroes`: regenerate `src/data/all_heroes_db.json`.
 - `npm run after:hero-edit`: merge heroes and run `scripts/test-hero-tags.js`.
 - `npm run after:tags`: run tag script and merge heroes.
@@ -358,7 +355,6 @@ For code or content changes:
 - Run `npm run build` for page/build validation when practical.
 - Run `npm run db:merge` after editing `src/data/heroes/*.json` if `all_heroes_db.json` needs to stay in sync.
 - Run `npm run validate:hero-detail-stats` when changing Divine V stats.
-- Run `npm run tag-manager` for manual tag editing.
 
 Known caveat: `npm run validate:all` currently references a missing `validate-pvp-ratings.js`, so it may fail unless that file is restored or the script is updated.
 

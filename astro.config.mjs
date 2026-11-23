@@ -1,43 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
-const LOCAL_ONLY_ROUTES = ['/status'];
 const SITE = 'https://motto-immortal-db.com';
-
-function localOnlyRoutes() {
-  return {
-    name: 'local-only-routes',
-    hooks: {
-      'astro:build:done': async ({ dir }) => {
-        for (const route of LOCAL_ONLY_ROUTES) {
-          await rm(new URL(`.${route}/`, dir), { recursive: true, force: true });
-        }
-
-        const assetDir = new URL('./_astro/', dir);
-        const assets = await readdir(assetDir).catch(() => []);
-        const assetPrefixes = LOCAL_ONLY_ROUTES.map((route) => `${route.split('/').filter(Boolean).pop()}.`);
-        await Promise.all(
-          assets
-            .filter((name) => assetPrefixes.some((prefix) => name.startsWith(prefix)))
-            .map((name) => rm(new URL(name, assetDir), { force: true }))
-        );
-
-        const sitemapFiles = (await readdir(dir)).filter((name) => /^sitemap.*\.xml$/.test(name));
-        for (const file of sitemapFiles) {
-          const sitemapPath = new URL(file, dir);
-          let content = await readFile(sitemapPath, 'utf8');
-          for (const route of LOCAL_ONLY_ROUTES) {
-            const url = new URL(`${route.replace(/^\/|\/$/g, '')}/`, SITE).href;
-            content = content.replace(`<url><loc>${url}</loc></url>`, '');
-          }
-          await writeFile(sitemapPath, content, 'utf8');
-        }
-      },
-    },
-  };
-}
-
 const R2_BASE = 'https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev';
 
 export default defineConfig({
@@ -46,7 +10,7 @@ export default defineConfig({
 
   output: 'static',
 
-  integrations: [sitemap(), localOnlyRoutes()],
+  integrations: [sitemap()],
 
   vite: {
     server: {

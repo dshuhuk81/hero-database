@@ -24,7 +24,6 @@ The initial audit also found substantial CSS consolidation work:
 - `src/styles/tips.css`: 889 lines and 70 raw color declarations
 - `src/pages/virtues.astro`: 140 raw color declarations
 - `src/pages/delusions-den.astro`: 135 raw color declarations
-- `src/pages/status.astro`: 76 raw color declarations
 
 This does not mean every page needs to be rewritten. Several pages are already
 structurally sound and primarily need stronger hierarchy, mobile refinement,
@@ -302,10 +301,6 @@ Recommended changes:
 
 About and Privacy should use the same typography, page width, and
 surface styling, but they are lower priority than player-facing content.
-
-`src/pages/status.astro` is extremely large and appears closer to internal
-tooling. It should be treated separately and should not delay public-facing
-improvements.
 
 ## Recommended execution order
 

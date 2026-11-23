@@ -65,7 +65,6 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - **PERSONAL_UTILITY** (DODGE_SELF, SHIELD_SELF, SUSTAIN, etc.)
   - **POSITIONING** (BACKLINE, FRONTLINE, etc.)
 - **tags.json is array, not object**: All tags in single array format
-- **Tag Manager CMS**: Run `npm run tag-manager` to start Express UI for assigning tags to heroes
 - **Hero-to-Tag Mapping**: Each hero has `.synergies` array in their JSON file
 
 #### Virtue System (`src/data/virtues.json`)
@@ -194,7 +193,6 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 
 ### Synergy Tags (`src/data/tags.json`)
 - Simple JSON array: `["ATK_SPD_UP", "HEAL_TEAM", "CROWD_CONTROL", ...]`
-- Used by tag-manager-server.js as the authoritative source
 - When adding tags, ensure they're defined in `TAG_CATEGORIES` object in synergyTags.js
 
 ## Common Workflows
@@ -220,12 +218,6 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 1. Open `src/utils/rankingScore.js`
 2. Adjust `CLASS_WEIGHTS`, `PERCENT_STATS_FOR_SCORE`, or weight constants
 3. Run `npm run build` or `npm run dev` to regenerate rankings
-
-### Manage Synergy Tags (CMS)
-1. Start server: `npm run tag-manager`
-2. Open http://localhost:3000 in browser
-3. Assign tags to heroes via UI
-4. Tags persist to `src/data/tags.json` and per-hero JSON files
 
 ### Import Boss Damage Tracking Data
 1. Export Google Sheet to CSV (Publish to web)
