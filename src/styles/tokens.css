@@ -40,6 +40,11 @@
   --accent-teal-dim:   rgba(64, 106, 95, 0.15);
   --gold:              #d4af37;
   --accent-new:        #15b109;
+  /* Negative outcome: weaknesses, bad matchups, lost damage */
+  --accent-red:        #f87171;
+  --accent-red-strong: #ef4444;
+  --accent-red-dim:    rgba(239, 68, 68, 0.15);
+  --accent-red-line:   color-mix(in srgb, var(--accent-red) 24%, transparent);
 
   /* Guide faction accents: bright enough for AAA text contrast on guide surfaces. */
   --guide-accent-hearts:    #ff8f9c;
@@ -47,6 +52,7 @@
   --guide-accent-clubs:     #82e89a;
   --guide-accent-spades:    #91baff;
   --guide-accent-starglint: #ffe28a;
+  --guide-accent-hades:     #bba5ff;   /* per-hero override, not a faction */
 
   /* Borders (prefer these over box-shadow for separation) */
   --border-faint:  rgba(255, 255, 255, 0.05);
@@ -63,6 +69,7 @@
   --rarity-epic-glow:        rgba(168, 85, 247, 0.15);
   --rarity-legendary-border: rgba(250, 204, 21, 0.75);
   --rarity-legendary-glow:   rgba(250, 204, 21, 0.18);
+  --rarity-red-border:       rgba(239, 68, 68, 0.60);   /* red virtue rarity */
 
   /* Rarity portrait backgrounds (behind hero portrait images) */
   --rarity-common-bg:    radial-gradient(circle at 50% 35%, #3f9e5f 0%, #1f5c37 70%, #153d27 100%);
@@ -160,6 +167,10 @@
   --text-2xl:  24px;
   --text-3xl:  30px;
   --text-4xl:  38px;
+  /* Display steps: guide hero names, headline numbers, feature titles only */
+  --text-5xl:  48px;
+  --text-6xl:  60px;
+  --text-7xl:  72px;
 
   /* Weight */
   --weight-normal:    400;

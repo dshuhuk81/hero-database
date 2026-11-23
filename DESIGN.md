@@ -11,6 +11,9 @@ colors:
   arcane-violet-dim: "rgba(168, 85, 247, 0.15)"
   frost-blue: "#C8E3FF"
   jade-teal: "#406a5f"
+  ember-red: "#f87171"
+  ember-red-strong: "#ef4444"
+  ember-red-dim: "rgba(239, 68, 68, 0.15)"
   hall-black: "#07060c"
   vault-surface: "#0d0b14"
   lantern-raised: "#13111c"
@@ -27,6 +30,7 @@ colors:
   faction-clubs: "#82e89a"
   faction-spades: "#91baff"
   faction-starglint: "#ffe28a"
+  guide-hades: "#bba5ff"
   tier-splus: "#ff4d4d"
   tier-s: "#facc15"
   tier-aplus: "#8b5cf6"
@@ -191,6 +195,7 @@ A near-black violet-tinted ground with one warm voice (gold), one cool helper (v
 ### Tertiary
 - **Frost Blue** (`frost-blue`): Community-sourced evidence and cool informational highlights.
 - **Jade Teal** (`jade-teal`): Mechanic boxes and boss phase tags; a muted, low-chroma green that reads as "how the game works", not as status.
+- **Ember Red** (`ember-red`, with `ember-red-strong` and `ember-red-dim`; CSS `--accent-red*`): Negative outcomes only: weaknesses, bad matchups, lost damage. Also the red virtue rarity (`--rarity-red-border`).
 
 ### Neutral
 - **Hall Black** (`hall-black`): Page background; the bottom of the stack.
@@ -203,7 +208,7 @@ A near-black violet-tinted ground with one warm voice (gold), one cool helper (v
 
 ### Semantic rings (data colours)
 - **Tier colours** (`tier-splus` through `tier-c`): Each tier is a 135deg two-stop gradient with its own dark text colour, applied only through `data-tier`. S+ and S carry a soft glow. The tokens here are the anchor stop; the full from/to/text set lives in `src/styles/tokens.css`.
-- **Faction accents** (`faction-hearts`, `faction-diamonds`, `faction-clubs`, `faction-spades`, `faction-starglint`): Bright enough for AAA text on guide surfaces. A guide page sets `--guide-accent` from its hero's faction; the faction colours headings and lines, never the whole interface.
+- **Faction accents** (`faction-hearts`, `faction-diamonds`, `faction-clubs`, `faction-spades`, `faction-starglint`): Bright enough for AAA text on guide surfaces. A guide page sets `--guide-accent` from its hero's faction; the faction colours headings and lines, never the whole interface. A per-hero override (`guide-hades`) is a token too, and derives its dim (15%) and line (34%) the same way.
 - **Rarity** (common green, rare blue, epic violet, legendary gold): Translucent borders and radial portrait backgrounds behind hero art.
 
 ### Named Rules
@@ -227,10 +232,10 @@ A near-black violet-tinted ground with one warm voice (gold), one cool helper (v
 - **Body small** (500 to 700, 13px): Buttons, chips, tabs, inputs, toolbar meta.
 - **Label** (700, 11px to 12px, 0.10em to 0.2em, uppercase): Kickers, evidence and rating badges, grouping labels. Metadata only, never sentences.
 
-The scale runs 10 / 11 / 13 / 15 / 16 / 18 / 20 / 24 / 30 / 38px.
+The scale runs 10 / 11 / 13 / 15 / 16 / 18 / 20 / 24 / 30 / 38px, with display steps at 48 / 60 / 72px (`--text-5xl` to `--text-7xl`) reserved for guide hero names, headline numbers and feature titles. Fluid sizes clamp between two scale steps, never raw rem values.
 
 ### Named Rules
-**The One Family Rule.** Inter only. No display or serif faces unless a global brand decision adds one; existing outliers (a Georgia wishlist title, a Space Mono rating tile) are debt, not precedent.
+**The One Family Rule.** Inter only. No display or serif faces unless a global brand decision adds one; the Georgia wishlist title is an outlier (debt, not precedent).
 
 **The Kicker Rule.** Small uppercase gold text names a group; it never carries a sentence or an instruction.
 

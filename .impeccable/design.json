@@ -327,6 +327,36 @@
           "#bfede8",
           "#ecf8f7"
         ]
+      },
+      "ember-red": {
+        "role": "semantic",
+        "displayName": "Ember Red",
+        "canonical": "#f87171",
+        "tonalRamp": [
+          "#3d0a0a",
+          "#5c1010",
+          "#7f1d1d",
+          "#b91c1c",
+          "#ef4444",
+          "#f87171",
+          "#fca5a5",
+          "#fee2e2"
+        ]
+      },
+      "guide-hades": {
+        "role": "semantic",
+        "displayName": "Hades Accent",
+        "canonical": "#bba5ff",
+        "tonalRamp": [
+          "#1e1440",
+          "#2e1f63",
+          "#45308f",
+          "#5f45bd",
+          "#7d63dd",
+          "#9a84ef",
+          "#bba5ff",
+          "#e6deff"
+        ]
       }
     },
     "typographyMeta": {
@@ -554,7 +584,7 @@
       },
       {
         "name": "The One Family Rule",
-        "body": "Inter only. No display or serif faces unless a global brand decision adds one; existing outliers (a Georgia wishlist title, a Space Mono rating tile) are debt, not precedent.",
+        "body": "Inter only. No display or serif faces unless a global brand decision adds one; the Georgia wishlist title is an outlier (debt, not precedent).",
         "section": "typography"
       },
       {
