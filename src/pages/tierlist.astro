@@ -8,7 +8,7 @@ import SupportStrip from "../components/SupportStrip.astro";
 import Filter from "../components/filter.astro";
 import { heroes } from "../data/heroes/withRatings";
 
-const compareNewFirst = (a, b) => {
+const compareNewFirst = (a: { newHero?: boolean }, b: { newHero?: boolean }) => {
   if (a.newHero === b.newHero) return 0;
   return a.newHero ? -1 : 1;
 };

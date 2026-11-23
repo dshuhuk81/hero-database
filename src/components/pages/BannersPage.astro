@@ -87,14 +87,18 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
 
   <script>
     import { filterBanners, groupByMonth, splitBanners, bannerStatus } from "../../data/bannerList.js";
+    import type { BannerEntry } from "../../data/banners";
 
-    const readJson = (id) => JSON.parse(document.getElementById(id)?.textContent || "null");
-    const banners = readJson("banner-data");
+    type ClientBanner = BannerEntry & { image: string | null; srcset: string | null; href: string | null; icons: string[] };
+    type MonthGroup = { month: string | null; items: ClientBanner[] };
+
+    const readJson = (id: string) => JSON.parse(document.getElementById(id)?.textContent || "null");
+    const banners: ClientBanner[] | null = readJson("banner-data");
     const copy = readJson("banner-copy");
-    const list = document.querySelector("[data-banner-list]");
-    const search = document.querySelector("[data-banner-search]");
-    const chips = document.querySelectorAll("[data-chip]");
-    const root = document.querySelector(".banners-page");
+    const list = document.querySelector<HTMLElement>("[data-banner-list]");
+    const search = document.querySelector<HTMLInputElement>("[data-banner-search]");
+    const chips = document.querySelectorAll<HTMLElement>("[data-chip]");
+    const root = document.querySelector<HTMLElement>(".banners-page");
 
     if (banners && copy && list && search && root) {
       const locale = root.dataset.locale || "en";
@@ -104,21 +108,22 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
       let query = params.get("q") || "";
       search.value = query;
 
-      const esc = (value) => String(value ?? "").replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
-      const fmt = (iso, options) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(new Date(`${iso}T00:00:00Z`));
-      const period = (b) => {
+      const entities: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" };
+      const esc = (value: unknown) => String(value ?? "").replace(/[&<>'"]/g, (c) => entities[c]);
+      const fmt = (iso: string, options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(new Date(`${iso}T00:00:00Z`));
+      const period = (b: ClientBanner) => {
         if (!b.start) return "";
-        const short = { day: "numeric", month: "short" };
+        const short: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
         return b.end ? `${fmt(b.start, short)} – ${fmt(b.end, short)}` : fmt(b.start, short);
       };
 
-      function card(b) {
+      const card = (b: ClientBanner) => {
         const status = bannerStatus(b.start, b.end, today);
         const name = b.heroName || copy.rerunName;
         const art = b.image
           ? `<img class="spotlight-img" src="${esc(b.image)}" srcset="${esc(b.srcset)}" sizes="(max-width: 400px) calc(100vw - 40px), (max-width: 600px) calc((100vw - 56px) / 2), 220px" alt="${esc(name)}" width="360" height="360" loading="lazy" decoding="async" />`
           : `<span class="spotlight-empty">${esc(copy.rerun)}</span>`;
-        const icons = (b.icons || []).map((src) => `<img class="meta-icon" src="${esc(src)}" alt="" width="22" height="22" loading="lazy" />`).join("");
+        const icons = (b.icons || []).map((src: string) => `<img class="meta-icon" src="${esc(src)}" alt="" width="22" height="22" loading="lazy" />`).join("");
         const pull = b.pullQuality ? `<div class="pull-badge pull-${esc(b.pullQuality)}">${esc(copy.pull[b.pullQuality])}</div>` : "";
         const order = b.order ? `<div class="spotlight-order">${esc(b.order)}</div>` : "";
         const chips = [`<span class="banner-chip banner-chip--${status}">${esc(copy[status])}</span>`, b.kind === "rerun" ? `<span class="banner-chip">${esc(copy.rerun)}</span>` : "", b.estimated ? `<span class="banner-chip banner-chip--estimated">${esc(copy.estimated)}</span>` : ""].join("");
@@ -126,14 +131,14 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
         const inner = `${order}${pull}<div class="spotlight-img-wrap">${art}<div class="spotlight-img-fade"></div><div class="banner-chip-row">${chips}</div></div><div class="spotlight-body"><div class="hero-meta-row">${icons}${rating}</div><h3 class="spotlight-name">${esc(name)}</h3><div class="hero-detail-row"><p class="hero-role">${esc(b.role || "")}</p><time class="hero-release-date">${esc(period(b))}</time></div>${b.estimated ? `<small class="banner-guess">${esc(copy.guessNote)}</small>` : ""}</div>`;
         const tag = b.href ? "a" : "div";
         return `<${tag} class="spotlight-card banner-card--${status}${b.href ? "" : " is-static"}"${b.href ? ` href="${esc(b.href)}"` : ""}>${inner}</${tag}>`;
-      }
+      };
 
-      function section(title, groups) {
+      const section = (title: string, groups: MonthGroup[]) => {
         const body = groups.map((g) => `<div class="banner-month"><h3 class="banner-month-title">${esc(g.month ? fmt(`${g.month}-01`, { month: "long", year: "numeric" }) : "")}</h3><div class="spotlight-grid">${g.items.map(card).join("")}</div></div>`).join("");
         return `<section class="banner-section"><h2>${esc(title)}</h2>${body}</section>`;
-      }
+      };
 
-      function render() {
+      const render = () => {
         const filters = { kind: chip === "new" || chip === "rerun" ? chip : undefined, status: chip === "running" || chip === "upcoming" ? chip : undefined, query };
         const { current, history: past } = splitBanners(filterBanners(banners, filters, today), today);
         const parts = [];
@@ -146,12 +151,12 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
         if (chip !== "all") next.set("f", chip);
         if (query) next.set("q", query);
         history.replaceState(null, "", `${location.pathname}${next.size ? `?${next}` : ""}`);
-      }
+      };
 
       chips.forEach((button) => {
         button.classList.toggle("active", button.dataset.chip === chip);
         button.addEventListener("click", () => {
-          chip = button.dataset.chip;
+          chip = button.dataset.chip ?? "all";
           chips.forEach((entry) => entry.classList.toggle("active", entry === button));
           render();
         });

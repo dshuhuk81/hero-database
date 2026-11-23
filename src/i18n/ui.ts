@@ -8,6 +8,7 @@ type TranslationTree = {
   events: Record<string, LocalizedString>;
   timedChallenge: Record<string, LocalizedString>;
   tips: Record<string, LocalizedString>;
+  totems: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
   support: Record<string, LocalizedString>;
   giftCodes: Record<string, LocalizedString>;

@@ -39,7 +39,14 @@ export function pickRightNow(items, banners, today, { runningLimit = 5, comingLi
   return { featured, nextBanner, running: running.slice(0, runningLimit), moreRunning: Math.max(0, running.length - runningLimit), coming };
 }
 
-/** The latest releases up to `today` from [{ id, date }]; undated and future entries are skipped. */
+/**
+ * The latest releases up to `today` from [{ id, date }]; undated and future entries are skipped.
+ * @template {{ id: string, date: string | null }} T
+ * @param {T[]} entries
+ * @param {string} today
+ * @param {number} limit
+ * @returns {T[]}
+ */
 export function recentReleases(entries, today, limit) {
   return entries
     .filter((e) => e.date && e.date <= today)

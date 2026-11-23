@@ -186,83 +186,95 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
 
   <script>
     import { assignLanes, daysUntil, runningEvents, upcomingEvents } from "../../data/eventTimeline.js";
+    import type { GlobalEvent } from "../../data/eventsGlobal";
 
-    const root = document.querySelector(".calendar-shell");
-    const canvas = root?.querySelector("[data-calendar-canvas]");
-    const agenda = root?.querySelector("[data-calendar-agenda]");
-    const scroll = root?.querySelector("[data-calendar-scroll]");
-    const rangeLabel = root?.querySelector("[data-calendar-range]");
-    const empty = root?.querySelector("[data-calendar-empty]");
-    const runningList = document.querySelector("[data-running]");
-    const upcomingList = document.querySelector("[data-upcoming]");
-    const readJson = (id) => JSON.parse(document.getElementById(id)?.textContent || "null");
-    const events = readJson("global-event-data");
-    const categories = readJson("event-category-data");
-    const copy = readJson("event-copy-data");
+    type CalendarEvent = GlobalEvent & { heroImage?: string; derivedLabel?: string };
+    type LanedEvent = CalendarEvent & { lane: number };
+    type Category = { id: string; label: string };
+
+    const root = document.querySelector<HTMLElement>(".calendar-shell");
+    const canvas = root?.querySelector<HTMLElement>("[data-calendar-canvas]");
+    const agenda = root?.querySelector<HTMLElement>("[data-calendar-agenda]");
+    const scroll = root?.querySelector<HTMLElement>("[data-calendar-scroll]");
+    const rangeLabel = root?.querySelector<HTMLElement>("[data-calendar-range]");
+    const empty = root?.querySelector<HTMLElement>("[data-calendar-empty]");
+    const runningList = document.querySelector<HTMLElement>("[data-running]");
+    const upcomingList = document.querySelector<HTMLElement>("[data-upcoming]");
+    const readJson = (id: string) => JSON.parse(document.getElementById(id)?.textContent || "null");
+    const events: CalendarEvent[] | null = readJson("global-event-data");
+    const categories: Category[] | null = readJson("event-category-data");
+    const copy: Record<string, string> | null = readJson("event-copy-data");
 
     if (root && canvas && agenda && scroll && rangeLabel && empty && runningList && upcomingList && events && categories && copy) {
       const locale = root.dataset.locale || "en";
-      const dialog = document.querySelector("[data-event-dialog]");
-      const tooltip = document.querySelector("[data-event-tooltip]");
+      const dialog = document.querySelector<HTMLDialogElement>("[data-event-dialog]");
+      const tooltip = document.querySelector<HTMLElement>("[data-event-tooltip]");
+      const setText = (scope: ParentNode, selector: string, text: string) => {
+        const node = scope.querySelector(selector);
+        if (node) node.textContent = text;
+      };
       const dayMs = 86400000;
       const todayIso = new Date().toISOString().slice(0, 10);
       const isMobile = () => window.matchMedia("(max-width: 720px)").matches;
       const labelWidth = () => (isMobile() ? 36 : 156);
-      const fill = (template, n) => template.replace("{n}", String(n));
+      const fill = (template: string, n: number) => template.replace("{n}", String(n));
       let zoom = isMobile() ? 7 : 30;
       let activeFilter = "all";
       let anchor = addDays(parseDate(todayIso), -2);
 
-      function parseDate(value) {
+      function parseDate(value: string) {
         return new Date(`${value}T00:00:00Z`);
       }
-      function addDays(date, amount) {
+      function addDays(date: Date, amount: number) {
         return new Date(date.getTime() + amount * dayMs);
       }
-      function iso(date) {
+      function iso(date: Date) {
         return date.toISOString().slice(0, 10);
       }
-      function formatDate(date, options) {
+      function formatDate(date: Date, options: Intl.DateTimeFormatOptions) {
         return new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(date);
       }
-      function escapeHtml(value) {
-        return String(value).replace(/[&<>'"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[c]);
+      const entities: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" };
+      function escapeHtml(value: unknown) {
+        return String(value).replace(/[&<>'"]/g, (c) => entities[c]);
       }
-      const durationDays = (item) => daysUntil(item.end, item.start) + 1;
-      const categoryLabel = (id) => categories.find((entry) => entry.id === id)?.label || id;
-      const endsText = (item) => {
+      const durationDays = (item: CalendarEvent) => daysUntil(item.end, item.start) + 1;
+      const categoryLabel = (id: string) => categories.find((entry) => entry.id === id)?.label || id;
+      const endsText = (item: CalendarEvent) => {
         const left = daysUntil(item.end, todayIso);
         return left === 0 ? copy.endsToday : fill(copy.endsIn, left);
       };
-      const startsText = (item) => {
+      const startsText = (item: CalendarEvent) => {
         const left = daysUntil(item.start, todayIso);
         return left === 1 ? copy.startsTomorrow : fill(copy.startsIn, left);
       };
       const newDays = 7;
-      const isNew = (item) => Boolean(item.firstSeen) && daysUntil(todayIso, item.firstSeen) <= newDays && daysUntil(todayIso, item.firstSeen) >= 0;
-      const newPill = (item) => (isNew(item) ? `<em class="new-pill">${escapeHtml(copy.isNew)}</em>` : "");
-      const heroImg = (item) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.remove()" />` : "");
-      function watchBrokenHeroImages(scope) {
+      const isNew = (item: CalendarEvent) => Boolean(item.firstSeen) && daysUntil(todayIso, item.firstSeen!) <= newDays && daysUntil(todayIso, item.firstSeen!) >= 0;
+      const newPill = (item: CalendarEvent) => (isNew(item) ? `<em class="new-pill">${escapeHtml(copy.isNew)}</em>` : "");
+      const heroImg = (item: CalendarEvent) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.remove()" />` : "");
+      function watchBrokenHeroImages(scope: ParentNode) {
         scope.querySelectorAll("img.event-hero").forEach((img) => {
           img.addEventListener("error", () => img.replaceWith(Object.assign(document.createElement("span"), { className: "event-hero event-hero--missing" })), { once: true });
         });
       }
 
-      function openDialog(item) {
+      const openDialog = (item: CalendarEvent) => {
         if (!(dialog instanceof HTMLDialogElement)) return;
         dialog.dataset.category = item.category;
-        dialog.querySelector("[data-dialog-category]").textContent = categoryLabel(item.category);
-        dialog.querySelector("[data-dialog-title]").innerHTML = `${escapeHtml(item.label)} ${newPill(item)}`;
-        dialog.querySelector("[data-dialog-family]").textContent = item.hero || item.family;
-        dialog.querySelector("[data-dialog-derived]").hidden = !item.derivedLabel;
-        const long = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
-        dialog.querySelector("[data-dialog-start]").textContent = formatDate(parseDate(item.start), long);
-        dialog.querySelector("[data-dialog-end]").textContent = formatDate(parseDate(item.end), long);
-        dialog.querySelector("[data-dialog-duration]").textContent = fill(copy.days, durationDays(item));
+        setText(dialog, "[data-dialog-category]", categoryLabel(item.category));
+        const title = dialog.querySelector("[data-dialog-title]");
+        if (title) title.innerHTML = `${escapeHtml(item.label)} ${newPill(item)}`;
+        setText(dialog, "[data-dialog-family]", item.hero || item.family);
+        const derived = dialog.querySelector<HTMLElement>("[data-dialog-derived]");
+        if (derived) derived.hidden = !item.derivedLabel;
+        const long: Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
+        setText(dialog, "[data-dialog-start]", formatDate(parseDate(item.start), long));
+        setText(dialog, "[data-dialog-end]", formatDate(parseDate(item.end), long));
+        setText(dialog, "[data-dialog-duration]", fill(copy.days, durationDays(item)));
         dialog.showModal();
-      }
+      };
 
-      function positionTooltip(target, pointerEvent) {
+      function positionTooltip(target: Element, pointerEvent?: PointerEvent) {
         if (!(tooltip instanceof HTMLElement)) return;
         const rect = target.getBoundingClientRect();
         const gap = 14;
@@ -276,22 +288,22 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         tooltip.style.left = `${Math.max(12, left)}px`;
         tooltip.style.top = `${Math.max(12, top)}px`;
       }
-      function showTooltip(item, target, pointerEvent) {
+      const showTooltip = (item: CalendarEvent, target: Element, pointerEvent?: PointerEvent) => {
         if (!(tooltip instanceof HTMLElement)) return;
         tooltip.dataset.category = item.category;
-        tooltip.querySelector("[data-tooltip-category]").textContent = `${categoryLabel(item.category)} · ${fill(copy.days, durationDays(item))}`;
-        tooltip.querySelector("[data-tooltip-title]").textContent = item.label;
-        tooltip.querySelector("[data-tooltip-family]").textContent = item.hero || item.family;
-        const short = { day: "numeric", month: "short", year: "numeric" };
-        tooltip.querySelector("[data-tooltip-dates]").textContent = `${formatDate(parseDate(item.start), short)} – ${formatDate(parseDate(item.end), short)}`;
+        setText(tooltip, "[data-tooltip-category]", `${categoryLabel(item.category)} · ${fill(copy.days, durationDays(item))}`);
+        setText(tooltip, "[data-tooltip-title]", item.label);
+        setText(tooltip, "[data-tooltip-family]", item.hero || item.family);
+        const short: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", year: "numeric" };
+        setText(tooltip, "[data-tooltip-dates]", `${formatDate(parseDate(item.start), short)} – ${formatDate(parseDate(item.end), short)}`);
         tooltip.hidden = false;
         positionTooltip(target, pointerEvent);
-      }
+      };
       function hideTooltip() {
         if (tooltip instanceof HTMLElement) tooltip.hidden = true;
       }
-      function bindEventButtons(scope) {
-        scope.querySelectorAll("[data-event-id]").forEach((button) => {
+      const bindEventButtons = (scope: ParentNode) => {
+        scope.querySelectorAll<HTMLElement>("[data-event-id]").forEach((button) => {
           const item = events.find((entry) => String(entry.id) === button.dataset.eventId);
           if (!item) return;
           button.addEventListener("pointerenter", (event) => showTooltip(item, button, event));
@@ -301,24 +313,24 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
           button.addEventListener("blur", hideTooltip);
           button.addEventListener("click", () => { hideTooltip(); openDialog(item); });
         });
-      }
+      };
 
-      function renderRightNow() {
-        const row = (item, meta) => `<li><button type="button" class="right-now-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<strong>${escapeHtml(item.label)}</strong>${newPill(item)}<small>${escapeHtml(meta)}</small></button></li>`;
-        const running = runningEvents(events, todayIso).slice(0, 6);
-        const upcoming = upcomingEvents(events, todayIso, 4);
+      const renderRightNow = () => {
+        const row = (item: CalendarEvent, meta: string) => `<li><button type="button" class="right-now-item" data-event-id="${item.id}" data-category="${item.category}"><span class="category-mark category-mark--${item.category}"></span>${heroImg(item)}<strong>${escapeHtml(item.label)}</strong>${newPill(item)}<small>${escapeHtml(meta)}</small></button></li>`;
+        const running: CalendarEvent[] = runningEvents(events, todayIso).slice(0, 6);
+        const upcoming: CalendarEvent[] = upcomingEvents(events, todayIso, 4);
         runningList.innerHTML = running.length ? running.map((item) => row(item, endsText(item))).join("") : `<li class="right-now-empty">${escapeHtml(copy.nothingRunning)}</li>`;
         upcomingList.innerHTML = upcoming.length ? upcoming.map((item) => row(item, startsText(item))).join("") : `<li class="right-now-empty">${escapeHtml(copy.nothingUpcoming)}</li>`;
         for (const list of [runningList, upcomingList]) { bindEventButtons(list); watchBrokenHeroImages(list); }
-      }
+      };
 
-      function renderGantt(rangeStart, rangeEnd, visible) {
+      const renderGantt = (rangeStart: Date, rangeEnd: Date, visible: CalendarEvent[]) => {
         const dayWidth = Math.max(14, Math.floor((scroll.clientWidth - labelWidth()) / zoom));
         const dense = dayWidth < 28;
         canvas.classList.toggle("is-dense", dense);
-        canvas.style.setProperty("--calendar-days", zoom);
+        canvas.style.setProperty("--calendar-days", String(zoom));
         canvas.style.setProperty("--calendar-day-width", `${dayWidth}px`);
-        const dayInfo = (index) => {
+        const dayInfo = (index: number) => {
           const date = addDays(rangeStart, index);
           return { date, today: iso(date) === todayIso, weekend: date.getUTCDay() === 0 || date.getUTCDay() === 6 };
         };
@@ -331,7 +343,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         html += "</div></div>";
 
         categories.filter((category) => activeFilter === "all" || category.id === activeFilter).forEach((category) => {
-          const items = assignLanes(visible.filter((item) => item.category === category.id));
+          const items: LanedEvent[] = assignLanes(visible.filter((item) => item.category === category.id));
           const laneCount = Math.max(1, ...items.map((item) => item.lane + 1));
           html += `<section class="calendar-group" data-category="${category.id}"><div class="calendar-group-label"><span class="category-mark category-mark--${category.id}"></span><strong>${escapeHtml(category.label)}</strong><small>${items.length}</small></div><div class="calendar-track" style="--lane-count:${laneCount}">`;
           for (let index = 0; index < zoom; index += 1) {
@@ -355,10 +367,10 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         canvas.innerHTML = html;
         bindEventButtons(canvas);
         watchBrokenHeroImages(canvas);
-      }
+      };
 
-      function renderAgenda(rangeStartIso, visible) {
-        const groups = new Map();
+      const renderAgenda = (rangeStartIso: string, visible: CalendarEvent[]) => {
+        const groups = new Map<string, CalendarEvent[]>();
         [...visible].sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end)).forEach((item) => {
           const key = item.start < rangeStartIso ? "ongoing" : item.start;
           groups.set(key, [...(groups.get(key) || []), item]);
@@ -370,9 +382,9 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         }).join("");
         bindEventButtons(agenda);
         watchBrokenHeroImages(agenda);
-      }
+      };
 
-      function render() {
+      const render = () => {
         hideTooltip();
         const rangeStart = anchor;
         const rangeEnd = addDays(rangeStart, zoom - 1);
@@ -381,25 +393,25 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         renderGantt(rangeStart, rangeEnd, visible);
         renderAgenda(iso(rangeStart), visible);
         empty.hidden = visible.length > 0;
-      }
+      };
 
-      root.querySelectorAll("[data-filter]").forEach((button) => button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter;
+      root.querySelectorAll<HTMLElement>("[data-filter]").forEach((button) => button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter ?? "all";
         root.querySelectorAll("[data-filter]").forEach((entry) => entry.classList.toggle("active", entry === button));
         render();
       }));
-      root.querySelectorAll("[data-zoom]").forEach((entry) => entry.classList.toggle("active", Number(entry.dataset.zoom) === zoom));
-      root.querySelectorAll("[data-view-switch]").forEach((button) => button.addEventListener("click", () => {
+      root.querySelectorAll<HTMLElement>("[data-zoom]").forEach((entry) => entry.classList.toggle("active", Number(entry.dataset.zoom) === zoom));
+      root.querySelectorAll<HTMLElement>("[data-view-switch]").forEach((button) => button.addEventListener("click", () => {
         root.dataset.view = button.dataset.viewSwitch;
         root.querySelectorAll("[data-view-switch]").forEach((entry) => entry.classList.toggle("active", entry === button));
       }));
-      root.querySelectorAll("[data-zoom]").forEach((button) => button.addEventListener("click", () => {
+      root.querySelectorAll<HTMLElement>("[data-zoom]").forEach((button) => button.addEventListener("click", () => {
         zoom = Number(button.dataset.zoom);
         root.querySelectorAll("[data-zoom]").forEach((entry) => entry.classList.toggle("active", entry === button));
         render();
       }));
       root.querySelector("[data-today]")?.addEventListener("click", () => { anchor = addDays(parseDate(todayIso), -2); render(); scroll.scrollLeft = 0; });
-      root.querySelectorAll("[data-shift]").forEach((button) => button.addEventListener("click", () => {
+      root.querySelectorAll<HTMLElement>("[data-shift]").forEach((button) => button.addEventListener("click", () => {
         anchor = addDays(anchor, (button.dataset.shift === "next" ? 1 : -1) * zoom);
         render();
         scroll.scrollLeft = 0;
@@ -407,8 +419,8 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       dialog?.querySelector("[data-dialog-close]")?.addEventListener("click", () => dialog.close());
       dialog?.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
       scroll.addEventListener("scroll", hideTooltip, { passive: true });
-      let resizeTimer;
-      window.addEventListener("resize", () => { hideTooltip(); clearTimeout(resizeTimer); resizeTimer = setTimeout(render, 150); });
+      let resizeTimer: number | undefined;
+      window.addEventListener("resize", () => { hideTooltip(); clearTimeout(resizeTimer); resizeTimer = window.setTimeout(render, 150); });
       renderRightNow();
       render();
     }

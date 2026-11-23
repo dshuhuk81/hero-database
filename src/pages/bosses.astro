@@ -71,11 +71,14 @@ function bossSkillIcon(bossId: string, index: number) {
   return `${R2_BASE}/bosses/${key}_skill_${index + 1}.png`;
 }
 
-function compHeroes(comp: Record<string, any>) {
-  return compHeroIds(comp).map((id: string) => getHeroById(id)).filter(Boolean);
+type Hero = (typeof heroes)[number];
+const isHero = (hero: Hero | undefined): hero is Hero => Boolean(hero);
+
+function compHeroes(comp: Record<string, any>): Hero[] {
+  return compHeroIds(comp).map((id) => getHeroById(id)).filter(isHero);
 }
 
-function compHeroIds(comp: Record<string, any>) {
+function compHeroIds(comp: Record<string, any>): string[] {
   const ids = String(comp["hero-comp"] || "")
     .split(",")
     .map((entry: string) => entry.trim())
@@ -102,9 +105,9 @@ function resolveHeroReference(value: string) {
 const bossViews = bosses.bosses.filter((boss) => boss.id !== "nian_beast").map((boss) => {
   const comps = boss.recommendedComps || [];
   const [main] = comps;
-  const beginnerHeroes = ((boss as any).beginnerComp || [])
-    .map((reference: string) => resolveHeroReference(reference))
-    .filter(Boolean);
+  const beginnerHeroes = ((boss as { beginnerComp?: string[] }).beginnerComp ?? [])
+    .map((reference) => resolveHeroReference(reference))
+    .filter(isHero);
   return {
     ...boss,
     mainComp: main
