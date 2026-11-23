@@ -239,7 +239,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       const newDays = 7;
       const isNew = (item) => Boolean(item.firstSeen) && daysUntil(todayIso, item.firstSeen) <= newDays && daysUntil(todayIso, item.firstSeen) >= 0;
       const newPill = (item) => (isNew(item) ? `<em class="new-pill">${escapeHtml(copy.isNew)}</em>` : "");
-      const heroImg = (item) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" />` : "");
+      const heroImg = (item) => (item.heroImage ? `<img class="event-hero" src="${escapeHtml(item.heroImage)}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="this.remove()" />` : "");
       function watchBrokenHeroImages(scope) {
         scope.querySelectorAll("img.event-hero").forEach((img) => {
           img.addEventListener("error", () => img.replaceWith(Object.assign(document.createElement("span"), { className: "event-hero event-hero--missing" })), { once: true });
