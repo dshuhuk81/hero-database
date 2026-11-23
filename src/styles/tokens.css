@@ -30,6 +30,7 @@
   /* Accents */
   --accent-gold:       #facc15;
   --accent-gold-dim:   rgba(250, 204, 21, 0.15);
+  --accent-gold-line:  color-mix(in srgb, var(--accent-gold) 34%, transparent);  /* hairline for gold-tinted callouts */
   --accent-gold-light: rgba(250, 234, 121, 0.95);  /* brightened gold for guide headers */
   --accent-purple:     #a855f7;
   --accent-blue:       #C8E3FF;

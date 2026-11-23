@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T12:12:53.322429+00:00",
+  "title": "Design System: Motto Immortal Database",
+  "extensions": {
+    "colorMeta": {
+      "immortal-gold": {
+        "role": "primary",
+        "displayName": "Immortal Gold",
+        "canonical": "#facc15",
+        "tonalRamp": [
+          "#3f350d",
+          "#6f5c10",
+          "#a98a0f",
+          "#eebf07",
+          "#f2ce40",
+          "#eed881",
+          "#f1e6bb",
+          "#faf7eb"
+        ]
+      },
+      "arcane-violet": {
+        "role": "secondary",
+        "displayName": "Arcane Violet",
+        "canonical": "#a855f7",
+        "tonalRamp": [
+          "#270e3e",
+          "#41136d",
+          "#5e13a5",
+          "#7d0de8",
+          "#9b45ed",
+          "#b983ec",
+          "#d7bcf0",
+          "#f2ebf9"
+        ]
+      },
+      "frost-blue": {
+        "role": "tertiary",
+        "displayName": "Frost Blue",
+        "canonical": "#C8E3FF",
+        "tonalRamp": [
+          "#0c2640",
+          "#0e3f71",
+          "#0c5aac",
+          "#0278f3",
+          "#3c97f6",
+          "#7eb7f1",
+          "#bad6f3",
+          "#ebf2fa"
+        ]
+      },
+      "jade-teal": {
+        "role": "tertiary",
+        "displayName": "Jade Teal",
+        "canonical": "#406a5f",
+        "tonalRamp": [
+          "#202d29",
+          "#344c46",
+          "#487065",
+          "#5d9889",
+          "#82b0a4",
+          "#a9c6be",
+          "#cfddda",
+          "#f0f4f3"
+        ]
+      },
+      "faction-hearts": {
+        "role": "semantic",
+        "displayName": "Faction Hearts",
+        "canonical": "#ff8f9c",
+        "tonalRamp": [
+          "#400c12",
+          "#710e1a",
+          "#ac0c1e",
+          "#f3021e",
+          "#f63c52",
+          "#f17e8c",
+          "#f3bac0",
+          "#faebec"
+        ]
+      },
+      "faction-diamonds": {
+        "role": "semantic",
+        "displayName": "Faction Diamonds",
+        "canonical": "#78ddff",
+        "tonalRamp": [
+          "#0c3340",
+          "#0e5871",
+          "#0c84ac",
+          "#02b6f3",
+          "#3cc7f6",
+          "#7ed4f1",
+          "#bae4f3",
+          "#ebf6fa"
+        ]
+      },
+      "faction-clubs": {
+        "role": "semantic",
+        "displayName": "Faction Clubs",
+        "canonical": "#82e89a",
+        "tonalRamp": [
+          "#14381d",
+          "#1e622e",
+          "#25933f",
+          "#28cd4f",
+          "#59d977",
+          "#90dfa3",
+          "#c3eacc",
+          "#edf7ef"
+        ]
+      },
+      "faction-spades": {
+        "role": "semantic",
+        "displayName": "Faction Spades",
+        "canonical": "#91baff",
+        "tonalRamp": [
+          "#0c2040",
+          "#0e3371",
+          "#0c47ac",
+          "#025cf3",
+          "#3c81f6",
+          "#7ea9f1",
+          "#bacff3",
+          "#ebf0fa"
+        ]
+      },
+      "faction-starglint": {
+        "role": "semantic",
+        "displayName": "Faction Starglint",
+        "canonical": "#ffe28a",
+        "tonalRamp": [
+          "#40330c",
+          "#71590e",
+          "#ac840c",
+          "#f3b702",
+          "#f6c83c",
+          "#f1d47e",
+          "#f3e4ba",
+          "#faf6eb"
+        ]
+      },
+      "hall-black": {
+        "role": "neutral",
+        "displayName": "Hall Black",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "vault-surface": {
+        "role": "neutral",
+        "displayName": "Vault Surface",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "lantern-raised": {
+        "role": "neutral",
+        "displayName": "Lantern Raised",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "veil-overlay": {
+        "role": "neutral",
+        "displayName": "Veil Overlay",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "ivory-bright": {
+        "role": "neutral",
+        "displayName": "Ivory Bright",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "moon-text": {
+        "role": "neutral",
+        "displayName": "Moon Text",
+        "tonalRamp": [
+          "#07060c",
+          "#0d0b14",
+          "#13111c",
+          "#1a1726",
+          "#2a2638",
+          "#6b6878",
+          "#e6e6eb",
+          "#f4f1ff"
+        ]
+      },
+      "tier-splus": {
+        "role": "semantic",
+        "displayName": "Tier S+",
+        "canonical": "linear-gradient(135deg, #ff4d4d, #b91c1c)",
+        "tonalRamp": [
+          "#3a1313",
+          "#641b1b",
+          "#972121",
+          "#d32222",
+          "#dd5555",
+          "#e28d8d",
+          "#ebc1c1",
+          "#f8eded"
+        ]
+      },
+      "tier-s": {
+        "role": "semantic",
+        "displayName": "Tier S",
+        "canonical": "linear-gradient(135deg, #ffe066, #facc15)",
+        "tonalRamp": [
+          "#3f350d",
+          "#6f5c10",
+          "#a98a0f",
+          "#eebf07",
+          "#f2ce40",
+          "#eed881",
+          "#f1e6bb",
+          "#faf7eb"
+        ]
+      },
+      "tier-aplus": {
+        "role": "semantic",
+        "displayName": "Tier A+",
+        "canonical": "linear-gradient(135deg, #c4b5fd, #8b5cf6)",
+        "tonalRamp": [
+          "#1d0f3e",
+          "#2f146c",
+          "#4014a4",
+          "#500fe6",
+          "#7946ec",
+          "#a484eb",
+          "#ccbdf0",
+          "#f0ebf9"
+        ]
+      },
+      "tier-a": {
+        "role": "semantic",
+        "displayName": "Tier A",
+        "canonical": "linear-gradient(135deg, #fdba74, #fb923c)",
+        "tonalRamp": [
+          "#3f240d",
+          "#6f3b10",
+          "#a9540f",
+          "#ee6f07",
+          "#f29040",
+          "#efb281",
+          "#f1d3bb",
+          "#faf2eb"
+        ]
+      },
+      "tier-bplus": {
+        "role": "semantic",
+        "displayName": "Tier B+",
+        "canonical": "linear-gradient(135deg, #67e8f9, #06b6d4)",
+        "tonalRamp": [
+          "#0d383f",
+          "#11616e",
+          "#1092a8",
+          "#09cbec",
+          "#41d7f1",
+          "#81deee",
+          "#bbe9f1",
+          "#ebf7f9"
+        ]
+      },
+      "tier-b": {
+        "role": "semantic",
+        "displayName": "Tier B",
+        "canonical": "linear-gradient(135deg, #93c5fd, #3b82f6)",
+        "tonalRamp": [
+          "#0e203e",
+          "#13356d",
+          "#134aa5",
+          "#0d60e8",
+          "#4485ee",
+          "#83abec",
+          "#bcd0f0",
+          "#ebf1f9"
+        ]
+      },
+      "tier-c": {
+        "role": "semantic",
+        "displayName": "Tier C",
+        "canonical": "linear-gradient(135deg, #5eead4, #14b8a6)",
+        "tonalRamp": [
+          "#113b37",
+          "#18675f",
+          "#1b9c8e",
+          "#1adbc6",
+          "#4ee4d3",
+          "#8ae6dc",
+          "#bfede8",
+          "#ecf8f7"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page and section titles in content headings; guide verdict words."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Large stat values, empty-state and sub-page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles and card headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, capped at 64ch."
+      },
+      "body-small": {
+        "displayName": "Body small",
+        "purpose": "Buttons, chips, tabs, inputs, toolbar meta."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase kickers and badges; metadata only."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Inline code only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.4)",
+        "purpose": "Small floating chips and tooltips."
+      },
+      {
+        "name": "shadow-md",
+        "value": "0 4px 12px rgba(0, 0, 0, 0.5)",
+        "purpose": "Dropdowns and popovers."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 8px 32px rgba(0, 0, 0, 0.6)",
+        "purpose": "Sheets and the support popover."
+      },
+      {
+        "name": "shadow-xl",
+        "value": "0 16px 48px rgba(0, 0, 0, 0.7)",
+        "purpose": "Modals."
+      },
+      {
+        "name": "rail-spill",
+        "value": "18px 0 36px rgba(0, 0, 0, 0.28)",
+        "purpose": "Navigation rail expanded over content."
+      },
+      {
+        "name": "badge-lift",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25)",
+        "purpose": "Badges floating over hero art."
+      },
+      {
+        "name": "tier-glow",
+        "value": "0 0 8px var(--tier-*-glow)",
+        "purpose": "S+, S and A+ rating badges only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+        "purpose": "Default easing for state transitions."
+      },
+      {
+        "name": "ease-in",
+        "value": "cubic-bezier(0.4, 0.0, 1, 1)",
+        "purpose": "Exits."
+      },
+      {
+        "name": "ease-inout",
+        "value": "cubic-bezier(0.4, 0.0, 0.2, 1)",
+        "purpose": "Two-way movement."
+      },
+      {
+        "name": "duration-fast",
+        "value": "120ms",
+        "purpose": "Label fades, icon filters."
+      },
+      {
+        "name": "duration-normal",
+        "value": "200ms",
+        "purpose": "Colour, transform and rail width transitions."
+      },
+      {
+        "name": "duration-slow",
+        "value": "350ms",
+        "purpose": "Larger reveals."
+      },
+      {
+        "name": "hero-zoom",
+        "value": "transform 0.45s cubic-bezier(.2,.8,.2,1)",
+        "purpose": "Hero card art zoom on hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-sm",
+        "value": "480px"
+      },
+      {
+        "name": "mobile-lg",
+        "value": "600px"
+      },
+      {
+        "name": "tablet",
+        "value": "768px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "wide",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single gold action per view.",
+      "html": "<button class=\"ds-btn-primary\">Open guide</button>",
+      "css": ".ds-btn-primary{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;min-height:44px;display:inline-flex;align-items:center;gap:8px;padding:0 20px;border:1px solid var(--accent-gold,#facc15);border-radius:8px;background:var(--accent-gold,#facc15);color:var(--bg-base,#07060c);font-size:13px;font-weight:700;line-height:1;cursor:pointer;transition:background-color 200ms cubic-bezier(0,0,.2,1),border-color 200ms cubic-bezier(0,0,.2,1),transform 200ms cubic-bezier(0,0,.2,1)}.ds-btn-primary:hover{background:rgba(250,234,121,.95);border-color:rgba(250,234,121,.95);transform:translateY(-1px)}.ds-btn-primary:focus-visible{outline:2px solid var(--accent-purple,#a855f7);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Default secondary action: transparent frame with a medium hairline.",
+      "html": "<button class=\"ds-btn-ghost\">Compare</button>",
+      "css": ".ds-btn-ghost{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;min-height:44px;display:inline-flex;align-items:center;gap:8px;padding:0 20px;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:transparent;color:#e6e6eb;font-size:13px;font-weight:700;line-height:1;cursor:pointer;transition:color 200ms cubic-bezier(0,0,.2,1),border-color 200ms cubic-bezier(0,0,.2,1),transform 200ms cubic-bezier(0,0,.2,1)}.ds-btn-ghost:hover{border-color:rgba(255,255,255,.28);color:#f4f1ff;transform:translateY(-1px)}.ds-btn-ghost:focus-visible{outline:2px solid #a855f7;outline-offset:2px}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Round filter tag; violet when active.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\">Tank</button><button class=\"ds-chip ds-chip--active\" aria-pressed=\"true\">Damage</button><button class=\"ds-chip\">Support</button></div>",
+      "css": ".ds-chips{display:flex;gap:8px;flex-wrap:wrap}.ds-chip{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;height:32px;padding:0 12px;border:1px solid rgba(255,255,255,.08);border-radius:9999px;background:rgba(255,255,255,.06);color:rgba(230,230,235,.7);font-size:13px;font-weight:500;cursor:pointer;transition:background-color 200ms cubic-bezier(0,0,.2,1),color 200ms,border-color 200ms}.ds-chip:hover{background:rgba(255,255,255,.10)}.ds-chip--active{background:rgba(168,85,247,.15);border-color:#a855f7;color:#a855f7}.ds-chip:focus-visible{outline:2px solid #a855f7;outline-offset:2px}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Quiet field; violet border on focus.",
+      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Search heroes\" />",
+      "css": ".ds-input{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;height:36px;width:240px;padding:0 12px;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(255,255,255,.05);color:#e6e6eb;font-size:13px;transition:background-color 200ms,border-color 200ms}.ds-input::placeholder{color:rgba(230,230,235,.45)}.ds-input:focus{outline:none;background:rgba(255,255,255,.08);border-color:#a855f7}"
+    },
+    {
+      "name": "Tab Strip",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Underlined content tabs with a gold indicator.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab is-active\" href=\"#\" aria-current=\"page\">Overview</a><a class=\"ds-tab\" href=\"#\">Skills</a><a class=\"ds-tab\" href=\"#\">Builds</a></nav>",
+      "css": ".ds-tabs{display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,.08)}.ds-tab{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;position:relative;min-height:48px;display:inline-flex;align-items:center;padding:0 16px;color:rgba(230,230,235,.45);font-size:13px;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:color 200ms cubic-bezier(0,0,.2,1)}.ds-tab::after{content:\"\";position:absolute;left:16px;right:16px;bottom:-1px;height:2px;background:#facc15;transform:scaleX(0);transition:transform 200ms cubic-bezier(0,0,.2,1)}.ds-tab:hover{color:#f4f1ff}.ds-tab.is-active{color:#f4f1ff}.ds-tab.is-active::after{transform:scaleX(1)}.ds-tab:focus-visible{outline:2px solid #a855f7;outline-offset:2px}"
+    },
+    {
+      "name": "Surface Panel",
+      "kind": "card",
+      "refersTo": "surface-panel",
+      "description": "Grouping card: raised tone plus hairline, no shadow.",
+      "html": "<div class=\"ds-panel\"><p class=\"ds-kicker\">Investment</p><h3 class=\"ds-panel-title\">Worth building early</h3><p class=\"ds-panel-body\">Supporting copy stays quiet and secondary.</p></div>",
+      "css": ".ds-panel{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;max-width:360px;padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:#13111c}.ds-kicker{margin:0 0 8px;color:#facc15;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.ds-panel-title{margin:0;color:#f4f1ff;font-size:18px;font-weight:600;line-height:1.35}.ds-panel-body{margin:8px 0 0;color:rgba(230,230,235,.7);font-size:15px;line-height:1.5}"
+    },
+    {
+      "name": "Rating Badge",
+      "kind": "chip",
+      "refersTo": "rating-badge",
+      "description": "Tier-coloured tag driven by data-tier.",
+      "html": "<div class=\"ds-tiers\"><span class=\"ds-tier ds-tier--splus\">S+</span><span class=\"ds-tier ds-tier--s\">S</span><span class=\"ds-tier ds-tier--aplus\">A+</span><span class=\"ds-tier ds-tier--a\">A</span><span class=\"ds-tier ds-tier--b\">B</span></div>",
+      "css": ".ds-tiers{display:flex;gap:8px}.ds-tier{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}.ds-tier--splus{background:linear-gradient(135deg,#ff4d4d,#b91c1c);color:#fff5f5;box-shadow:0 0 8px rgba(255,60,60,.55)}.ds-tier--s{background:linear-gradient(135deg,#ffe066,#facc15);color:#3a2a00;box-shadow:0 0 8px rgba(255,224,102,.35)}.ds-tier--aplus{background:linear-gradient(135deg,#c4b5fd,#8b5cf6);color:#1e103a;box-shadow:0 0 8px rgba(139,92,246,.35)}.ds-tier--a{background:linear-gradient(135deg,#fdba74,#fb923c);color:#3b1d00}.ds-tier--b{background:linear-gradient(135deg,#93c5fd,#3b82f6);color:#001a33}"
+    },
+    {
+      "name": "Evidence Badges",
+      "kind": "custom",
+      "refersTo": "evidence-badge",
+      "description": "The ledger's stamp: status by colour and glyph shape.",
+      "html": "<div class=\"ds-evs\"><span class=\"ds-ev ds-ev--confirmed\">Confirmed</span><span class=\"ds-ev ds-ev--observed\">Observed</span><span class=\"ds-ev ds-ev--community\">Community</span><span class=\"ds-ev ds-ev--untested\">Untested</span></div>",
+      "css": ".ds-evs{display:flex;gap:8px;flex-wrap:wrap}.ds-ev{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;--ev:rgba(230,230,235,.62);display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border:1px solid color-mix(in srgb,var(--ev) 45%,transparent);border-radius:9999px;background:color-mix(in srgb,var(--ev) 10%,transparent);color:var(--ev);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.6}.ds-ev::before{content:\"\";width:8px;height:8px;border:1.5px solid var(--ev);border-radius:9999px}.ds-ev--confirmed{--ev:#82e89a}.ds-ev--confirmed::before{background:var(--ev)}.ds-ev--observed{--ev:rgba(250,234,121,.95)}.ds-ev--observed::before{background:linear-gradient(90deg,var(--ev) 50%,transparent 50%)}.ds-ev--community{--ev:#C8E3FF}.ds-ev--community::before{border-radius:1px;transform:rotate(45deg) scale(.85);background:var(--ev)}.ds-ev--untested{border-style:dashed}"
+    },
+    {
+      "name": "Content State",
+      "kind": "card",
+      "refersTo": "surface-panel-quiet",
+      "description": "Deliberate empty or missing-data state.",
+      "html": "<div class=\"ds-state\"><div class=\"ds-state-icon\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 8v5M12 16h.01\"/></svg></div><p class=\"ds-state-title\">Not tested</p><p class=\"ds-state-desc\">No recorded fights for this mode yet.</p></div>",
+      "css": ".ds-state{font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;max-width:360px;padding:32px;border:1px dashed rgba(255,255,255,.15);border-radius:12px;background:#0d0b14;text-align:center}.ds-state-icon{width:48px;height:48px;display:grid;place-items:center;margin:0 auto 16px;border-radius:9999px;background:#13111c;color:rgba(230,230,235,.45)}.ds-state-title{margin:0;color:#f4f1ff;font-size:20px;font-weight:700}.ds-state-desc{margin:8px 0 0;color:rgba(230,230,235,.45);font-size:13px;line-height:1.5}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Hall Ledger",
+    "overview": "The site is a dark hall with two kinds of furniture. The first is the stage: hero art lit against the hall backdrop, fixed in size, anchored bottom-centre, faded into the page by gradients. The second is the ledger: rows, tiles and verdicts where every value says how we know it. The hall supplies the atmosphere and the ledger supplies the trust. When they compete, the ledger wins.\n\nNocturnal, precise, earned. The page is near-black, with a faint violet and gold haze fixed behind it. Text is cool off-white, and bright colour is rationed. Gold marks what matters most on the page, and tier, rarity and faction colours appear only on the values they describe. Density is moderate: generous space between sections (80px between content blocks), tight and consistent spacing inside them. Inter carries the hierarchy through scale and weight; there is no ornament type.\n\nConfirmed rejections: guides that read as walls of text, decorative typefaces, coloured stripe accents on cards, and any chrome that could pass for the publisher's official game UI. This is a fan project and must look like one we made, not one they made.",
+    "keyCharacteristics": [
+      "Near-black tonal stack of four surfaces; depth from tone and hairlines, not shadow.",
+      "Gold is the primary voice (actions, kickers, active navigation, tab indicator); violet assists (focus, selection, form controls).",
+      "Bright colour is earned by data: tier, rarity, faction, evidence status.",
+      "Hero art lives in fixed-height, overflow-hidden stages with gradient fades.",
+      "One dominant idea per screen: a name, a verdict or a rating outweighs everything around it.",
+      "Every claim carries an evidence badge that differs by shape as well as colour."
+    ],
+    "rules": [
+      {
+        "name": "The Earned Colour Rule",
+        "body": "A saturated colour appears only when a value has earned it: a tier, a rarity, a faction, an evidence status, or the single primary action. Chrome stays in the neutral stack.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gold Leads Rule",
+        "body": "Gold is the one warm voice. Violet never competes with it for the primary action; violet marks where the user is (focus, selection, input), gold marks what matters.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Inter only. No display or serif faces unless a global brand decision adds one; existing outliers (a Georgia wishlist title, a Space Mono rating tile) are debt, not precedent.",
+        "section": "typography"
+      },
+      {
+        "name": "The Kicker Rule",
+        "body": "Small uppercase gold text names a group; it never carries a sentence or an instruction.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Dominant Idea Rule",
+        "body": "Each screen has one entry point (a hero name, a verdict, a rating) with the greatest visual weight; supporting metadata is visibly secondary.",
+        "section": "layout"
+      },
+      {
+        "name": "The Tone Before Shadow Rule",
+        "body": "To raise a surface, step it up the tonal stack and give it a hairline. Reach for a shadow only when the element actually floats over other content.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do take every colour, size, space and radius from `src/styles/tokens.css`; add a semantic token rather than copying a raw value.",
+      "Do separate with tone and 1px hairlines; reserve shadows for floating elements.",
+      "Do keep one gold primary action per view and use violet only for focus, selection and inputs.",
+      "Do apply tier colours only through `data-tier` and faction colour only through `--guide-accent`.",
+      "Do put an evidence badge on every guide claim, distinct by glyph shape as well as colour.",
+      "Do stage hero art in fixed-height, overflow-hidden frames with transparent-background portraits and gradient fades.",
+      "Do show missing data as a deliberate state (\"N/A\", \"Not tested\", \"No data\") using the content-state or dashed treatment.",
+      "Do design at 375px first, with 44px tap targets and no horizontal page scroll.",
+      "Do lead guides with a verdict and stat tiles; details on demand."
+    ],
+    "donts": [
+      "Don't add coloured top or side stripes to cards or callouts as decoration; express category through content, labels, imagery or status colour. A callout is a tinted box (`--guide-accent-dim` or `--guide-legendary-dim`) with a full 1px accent-line border and an 8px radius.",
+      "Don't introduce decorative, display or serif typefaces; Inter carries all hierarchy.",
+      "Don't let a guide read as a wall of text; replace paragraphs with verdicts, tiles, flows and comparisons wherever a visual says the same thing.",
+      "Don't imitate the publisher's official game UI, logo or chrome; the site must never look official.",
+      "Don't use saturated colour on chrome that carries no data.",
+      "Don't let hero art, transparent padding or tall weapons set the height of a header.",
+      "Don't put a card inside a card without a clear hierarchy."
+    ]
+  }
+}
