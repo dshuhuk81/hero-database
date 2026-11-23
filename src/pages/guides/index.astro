@@ -14,7 +14,6 @@ const MODE_GUIDE_HREFS = ["/guides/timed-challenge", "/guides/goldeneye", "/guid
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
-  .filter((entry) => import.meta.env.DEV || !entry.localOnly)
   .map((entry) => ({
     ...entry,
     displayLabel: entry.label,

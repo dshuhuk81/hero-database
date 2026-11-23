@@ -8,7 +8,7 @@ export interface GuideEntry {
   heroId?: string;
   /** Card image path for system guides (used when heroId is not set). */
   image?: string;
-  /** Hide from the production guide index (mirrors nav.ts localOnly). */
+  /** Hide from the production guide index. */
   localOnly?: boolean;
   href: string;
   /** Card headline, e.g. "Nut - Goddess of the Sky". */

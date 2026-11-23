@@ -51,13 +51,11 @@ export interface NavEntry {
   badge?: { text: LocalizedString; color?: string; until?: string };
   /** Marks the destination as under maintenance (disables the link). */
   status?: { type: "maintenance"; tooltip?: string };
-  /** Keep internal tooling visible during local development only. */
-  localOnly?: boolean;
 }
 
 export const defaultMaintenanceTooltip = "currently under maintenance";
 
-const allNavEntries: NavEntry[] = [
+export const navEntries: NavEntry[] = [
   {
     label: "Home",
     href: "/",
@@ -379,8 +377,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>`,
   },
 ];
-
-export const navEntries = allNavEntries.filter((entry) => !entry.localOnly || import.meta.env.DEV);
 
 /** Badge for an entry, or undefined once its `until` date has passed (evaluated at build time). */
 export function activeBadge(entry: NavEntry): NavEntry["badge"] {
