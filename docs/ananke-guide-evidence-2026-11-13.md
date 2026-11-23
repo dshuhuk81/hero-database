@@ -2,6 +2,8 @@
 
 Scope: Ananke in Motto Immortal / 不朽箴言. The Hades section of the supplied template was accidental, as confirmed by the owner. Public copy uses neutral source labels.
 
+Publication update 2026-11-23: the owner approved publishing three more results in the guide: Tower 724/725 = 11 fights (1 win), Odyssey = 15 Ananke sub-fights (14 won), and Zeus at about 3.8x Ananke's mean relative boss HP loss (one Zeus run). Everything else below keeps the original decision.
+
 Publication decision: the owner requested a general informational guide. Battle results, counts, timings and comparisons below remain research material and are not included on the page. Potentially valuable additions require a separate owner decision. The current account-specific results do not justify a universal performance claim.
 
 ## Local primary sources

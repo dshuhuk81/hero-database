@@ -5,7 +5,7 @@ interface Stat {
   value: string;
   unit?: string;
   name: string;
-  status: "confirmed" | "observed" | "community" | "interpretation" | "untested";
+  status?: "confirmed" | "observed" | "community" | "interpretation" | "untested";
   statusLabel?: string;
 }
 interface Props {
@@ -26,7 +26,7 @@ const { verdict, summary, stats, confidence } = Astro.props;
       <div class="gx-stat">
         <span class="gx-stat-value">{s.value}{s.unit && <small> {s.unit}</small>}</span>
         <span class="gx-stat-name">{s.name}</span>
-        <EvidenceBadge status={s.status} label={s.statusLabel} />
+        {s.status && <EvidenceBadge status={s.status} label={s.statusLabel} />}
       </div>
     ))}
   </div>
