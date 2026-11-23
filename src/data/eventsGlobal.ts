@@ -19,6 +19,8 @@ export interface GlobalEvent {
   heroGameId?: number;
   /** Display name of the featured hero, resolved from heroGameId. */
   hero?: string;
+  /** The label was derived from game data rather than taken from the Global UI. */
+  derivedLabel?: boolean;
 }
 
 export const globalEventsMeta = {

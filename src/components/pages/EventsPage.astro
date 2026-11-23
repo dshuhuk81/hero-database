@@ -188,7 +188,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
     import { assignLanes, daysUntil, runningEvents, upcomingEvents } from "../../data/eventTimeline.js";
     import type { GlobalEvent } from "../../data/eventsGlobal";
 
-    type CalendarEvent = GlobalEvent & { heroImage?: string; derivedLabel?: string };
+    type CalendarEvent = GlobalEvent & { heroImage?: string };
     type LanedEvent = CalendarEvent & { lane: number };
     type Category = { id: string; label: string };
 
