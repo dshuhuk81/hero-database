@@ -1,18 +1,11 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "autoRules": {
     "goal": "safe"
   },
   "bosses": [
     {
       "id": "baphomet",
-      "beginnerComp": [
-        "hladgunnr",
-        "isis",
-        "yuelao",
-        "caishen",
-        "dionysus"
-      ],
       "name": "Baphomet",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -21,6 +14,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/baphomet.webp",
       "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
       "strategyNotes": "Prioritize Energy Regen on supports to counter pentacle drain. During defensive stance, save ultimates and focus on non-ult damage to drain boss energy faster. Dionysus ultimate can cleanse the silence debuff, but the 2s immunity window is short - effectiveness is RNG-dependent in auto mode. More reliable when played manually.",
+      "team": ["dionysus", "meret", "cronus", "idunn", "zeus"],
       "fightPlan": [
         { "title": "Energy Regen on supports", "text": "Counters the energy drain of the pentacle." },
         { "title": "Hold ultimates during the stance", "text": "Non-ultimate damage drains his energy faster and ends the defensive stance sooner." },
@@ -88,31 +82,10 @@
             "ATK_SPEED_BUFF_TO_TARGET"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "baphomet_meta_1",
-          "label": "Meta Comp",
-          "hero-comp": "dionysus, meret, cronus, idunn, zeus",
-          "heroes": [
-            "dionysus",
-            "meret",
-            "cronus",
-            "idunn",
-            "zeus"
-          ]
-        }
       ]
     },
     {
       "id": "spirit_of_night_hag",
-      "beginnerComp": [
-        "Isis",
-        "Yuelao",
-        "Caishen",
-        "Dionysus",
-        "Hladgunnr"
-      ],
       "name": "Spirit of Night Hag",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -121,6 +94,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/demonic_horse.webp",
       "summary": "Burst-damage boss with charge + frontal pressure, scaling via Berserk on HP loss.",
       "strategyNotes": "Position tank to absorb charge attacks. Spread formation to minimize frontal flame damage. Burst DPS early before Berserk scaling ramps up. Control/stun during charge windup to interrupt.",
+      "team": ["zeus", "heket", "caishen", "dionysus", "idunn"],
       "mechanics": [
         "Charge through enemies (high burst)",
         "Frontal flames (pressure on front)",
@@ -158,31 +132,10 @@
             "FRONTAL_DAMAGE"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "demonic_horse_meta",
-          "label": "Recommended",
-          "hero-comp": "zeus, cronus, caishen, dionysus, idunn",
-          "heroes": [
-            "zeus",
-            "idunn",
-            "caishen",
-            "dionysus",
-            "cronus"
-          ]
-        }
       ]
     },
     {
       "id": "epica",
-      "beginnerComp": [
-        "Caishen",
-        "Isis",
-        "Dionysus",
-        "Yuelao",
-        "Idunn"
-      ],
       "name": "Epica",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -191,6 +144,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/epica.webp",
       "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
       "strategyNotes": "Shield/heal random targets during channel windows. The root from Resentment Cage cannot be removed (it is a cage, not a standard debuff). Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
+      "team": ["idunn", "nut", "hephaestus", "caishen", "dionysus"],
       "mechanics": [
         "Repeated random-target damage over time (8s channel)",
         "Roots a random enemy for 10s + knocks back nearby units",
@@ -231,31 +185,10 @@
             "RANDOM_TARGET"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "epica",
-          "label": "Recommended",
-          "hero-comp": "idunn, cronus, zeus, caishen, dionysus",
-          "heroes": [
-            "zeus",
-            "cronus",
-            "idunn",
-            "caishen",
-            "dionysus"
-          ]
-        }
       ]
     },
     {
       "id": "lilith",
-      "beginnerComp": [
-        "Caishen",
-        "Fengyi",
-        "Hladgunnr",
-        "Dionysus",
-        "Cancer"
-      ],
       "name": "Lilith",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -264,6 +197,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/lilith.webp",
       "summary": "Summoner boss that delegates damage through spawned children. Main threat is sustained ATK SPD scaling and repeated summons; primary target is untargetable but takes shared damage.",
       "strategyNotes": "Focus damage on children first they scale with Lilith's stats but are temporary. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
+      "team": ["dionysus", "hephaestus", "caishen", "cronus", "nut"],
       "mechanics": [
         "Summoned children inherit % of Lilith's base/current ATK and scale HP as 600% ATK",
         "Lilith is untargetable but takes all damage children take",
@@ -327,43 +261,10 @@
             "RAMPING_AURA"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "lilith_meta_1",
-          "label": "Meta - Cronus Core",
-          "hero-comp": "dionysus, hephaestus, caishen, cronus, nut",
-          "heroes": [
-            "dionysus",
-            "hephaestus",
-            "caishen",
-            "cronus",
-            "nut"
-          ]
-        },
-        {
-          "id": "lilith_beginner",
-          "label": "Beginner",
-          "hero-comp": "dionysus, hephaestus, caishen, idunn, nut",
-          "heroes": [
-            "dionysus",
-            "hephaestus",
-            "caishen",
-            "idunn",
-            "nut"
-          ]
-        }
       ]
     },
     {
       "id": "isthar_vi",
-      "beginnerComp": [
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
       "name": "Ishtar VI",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -372,6 +273,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/isthar_vi.webp",
       "summary": "Barrier-based boss that punishes teams outside the umbrella and swings fights with knockback and large battlefield-wide bursts.",
       "strategyNotes": "Stay inside umbrella barrier for full damage output. Shield heroes critical to block knockback and AoE bursts. Use Dionysus ultimate to cleanse the ATK SPD and Move SPD slow from Sacred Ablution. Time ultimates during burst windows when umbrella protection is active. Single-target DPS vastly preferred over AoE heroes.",
+      "team": ["nuba", "nezha", "caishen", "isis", "dionysus"],
       "mechanics": [
         "Umbrella barrier: units outside deal 80% less damage",
         "Knockback pulse; shielded units are immune",
@@ -438,43 +340,10 @@
             "DAMAGE_REDUCTION_PHASE"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "isthar_vi_1",
-          "label": "",
-          "hero-comp": "nuba, nezha, caishen, isis, dionysus",
-          "heroes": [
-            "nuba",
-            "nezha",
-            "caishen",
-            "isis",
-            "dionysus"
-          ]
-        },
-        {
-          "id": "isthar_vi_2",
-          "label": "",
-          "hero-comp": "nuba, zeus, caishen, nuwa, dionysus",
-          "heroes": [
-            "nuba",
-            "zeus",
-            "caishen",
-            "nuwa",
-            "dionysus"
-          ]
-        }
       ]
     },
     {
       "id": "jackfrost",
-      "beginnerComp": [
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
       "name": "Jack Frost",
       "mode": "Old God's Return",
       "battlepower": "33932",
@@ -483,6 +352,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/jackfrost.webp",
       "summary": "Zero-damage boss that progressively freezes your team and ends the battle if all units are frozen — survival and freeze immunity are the only win conditions.",
       "strategyNotes": "Jack Frost deals no damage, so healers are unnecessary. The freeze cannot be blocked or removed by any means, so prevention is critical over reaction. Until there is no other mechanic or change use best burst DPS heroes you have.",
+      "team": ["zeus", "diana", "athena", "set", "cronus"],
       "mechanics": [
         "Jack Frost deals no damage passively at any point",
         "Targets a disliked unit and permanently freezes them as a snowman — unremovable",
@@ -532,31 +402,10 @@
             "WIPE_CONDITION"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "jackfrost_auto",
-          "label": "Recommended",
-          "hero-comp": "zeus, diana, athena, set, cronus",
-          "heroes": [
-            "zeus",
-            "diana",
-            "athena",
-            "set",
-            "cronus"
-          ]
-        }
       ]
     },
     {
       "id": "typhoon",
-      "beginnerComp": [
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
       "name": "Typhon",
       "mode": "Old God's Return",
       "battlepower": "4500M",
@@ -565,6 +414,7 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/typhoon.webp",
       "summary": "Multi-part physical boss with fixed backline targeting, petrify mechanics, and opposing damage vulnerabilities. Splits damage across 3 independent heads (center, left, right) with the left head vulnerable to ranged attacks and the right vulnerable to melee, forcing mixed team compositions. Applies healing reduction to frontline units and threatens center backline with guaranteed petrification after repeated attacks.",
       "strategyNotes": "Position your strongest hero away from center backline to avoid focused petrification. Build a balanced team with both melee and ranged damage dealers to exploit head vulnerabilities. Tanks should absorb the AoE knockback and ultimate. Healing is less effective on frontline due to 50% heal reduction - use Dionysus ultimate to cleanse the heal reduction debuff. Focus fire on one head at a time or spread damage based on your team's melee/ranged ratio.",
+      "team": ["zeus", "cronus", "idunn", "caishen", "nemesis"],
       "mechanics": [
         "Always targets center backline unit with normal attacks",
         "Petrifies targeted unit for 2s after 5 consecutive attacks",
@@ -646,31 +496,10 @@
             "KNOCKDOWN"
           ]
         }
-      ],
-      "recommendedComps": [
-        {
-          "id": "typhoon_balanced",
-          "label": "Balanced Mixed Damage",
-          "hero-comp": "zeus, cronus, idunn, caishen, nemesis",
-          "heroes": [
-            "zeus",
-            "nemesis",
-            "idunn",
-            "caishen",
-            "cronus"
-          ]
-        }
       ]
     },
     {
       "id": "nian_beast",
-      "beginnerComp": [
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
       "name": "Nian Beast",
       "mode": "Old God's Return",
       "battlepower": "33932",
@@ -679,6 +508,7 @@
       "image": "",
       "summary": "A ferocious beast lurks on the last night of the year, spreading terror wherever it goes. Its form is like a snow-cloaked mountain, its eyes burning with the dying embers of the year's end. Repeatedly cast Ultimates to startle it and cause it to retreat. Only Eastern Deities, with their divine power, can force",
       "strategyNotes": "Spam Ultimates to light fireworks - 30 fireworks ends the battle. The Nian Beast takes 10% increased DMG for every 5s in battle, so sustained fights favor you over time. Only Eastern Deities can be used.",
+      "team": ["zeus", "meret", "yuelao", "caishen", "dionysus"],
       "mechanics": [
         "Cast Ultimates to light fireworks; 30 fireworks ends the battle (win condition)",
         "Takes 10% increased DMG for every 5s in battle (ramps in your favor)",
@@ -732,32 +562,6 @@
           ],
           "mechanicTags": [
             "RAMPING_VULNERABILITY"
-          ]
-        }
-      ],
-      "recommendedComps": [
-        {
-          "id": "nian_beast_1",
-          "label": "Team A",
-          "hero-comp": "zeus, meret, yuelao, caishen, dionysus",
-          "heroes": [
-            "zeus",
-            "meret",
-            "yuelao",
-            "caishen",
-            "dionysus"
-          ]
-        },
-        {
-          "id": "nian_beast_2",
-          "label": "Team B",
-          "hero-comp": "yuelao, caishen, isis, meret, cronus",
-          "heroes": [
-            "yuelao",
-            "caishen",
-            "isis",
-            "meret",
-            "cronus"
           ]
         }
       ]

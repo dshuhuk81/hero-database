@@ -222,7 +222,7 @@ Boss entries include:
 - `summary`, `strategyNotes`.
 - `mechanics` and `mechanicTags`.
 - `skills`.
-- `recommendedComps`.
+- `team`: one recommended team per boss, 5 hero ids in formation order (front-left, front-right, back-left, back-center, back-right).
 
 `bosses.astro` turns mechanic tags into player-friendly labels and tips. Boss guide content currently combines authored strategy with community comp data.
 

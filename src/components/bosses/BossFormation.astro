@@ -1,15 +1,15 @@
 ---
-// Recommended teams as an in-game formation: slots 1-2 are the front row (left, right),
-// slots 3-5 the back row (left, center, right). Boards sit side by side when there is room.
+// The recommended team as an in-game formation: slots 1-2 are the front row (left, right),
+// slots 3-5 the back row (left, center, right).
 import { heroes } from '../../data/heroes/withRatings.js';
 import HeroFrameCard from '../HeroFrameCard.astro';
-import type { BossTeam } from '../../utils/bossTeams.js';
+import type { BossTeamMember } from '../../utils/bossTeams.js';
 
 interface Props {
-  teams: BossTeam[];
+  team: BossTeamMember[];
 }
 
-const { teams } = Astro.props;
+const { team } = Astro.props;
 const SLOTS = [
   { id: 'front-left', label: 'Front left' },
   { id: 'front-right', label: 'Front right' },
@@ -20,49 +20,38 @@ const SLOTS = [
 type HeroLook = { faction?: string };
 const byId = new Map<string, HeroLook>(heroes.map((hero: HeroLook & { id: string }) => [hero.id, hero]));
 
-const boards = teams.map(team => {
-  const members = team.members.slice(0, SLOTS.length).map((member, slotIndex) => ({
-    ...member,
-    slot: SLOTS[slotIndex],
-    faction: member.id ? byId.get(member.id)?.faction?.toLowerCase() ?? '' : '',
-  }));
-  const row = (from: number, to: number) => members.slice(from, to).map(member => member.name).join(', ');
-  return {
-    team,
-    summary: `${team.label}. Front row: ${row(0, 2)}.${members.length > 2 ? ` Back row: ${row(2, 5)}.` : ''}`,
-    members,
-  };
-});
+const members = team.slice(0, SLOTS.length).map((member, slotIndex) => ({
+  ...member,
+  slot: SLOTS[slotIndex],
+  faction: member.id ? byId.get(member.id)?.faction?.toLowerCase() ?? '' : '',
+}));
+const row = (from: number, to: number) => members.slice(from, to).map(member => member.name).join(', ');
+const summary = `Recommended team. Front row: ${row(0, 2)}.${members.length > 2 ? ` Back row: ${row(2, 5)}.` : ''}`;
 ---
 
 <div class="boss-formations">
-  {boards.map((board, index) => (
-    <div class="boss-formation-panel">
-      <p class="boss-formation-label">{board.team.label}</p>
-      <div class="boss-formation" role="group" aria-label={board.summary}>
-        <ol class="boss-formation-slots">
-          {board.members.map(member => (
-            <li class="boss-slot" data-slot={member.slot.id}>
-              {member.id ? (
-                <>
-                  <HeroFrameCard
-                    hero={{ id: member.id, name: member.name, faction: member.faction }}
-                    href={`/heroes/${member.id}`}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                  />
-                  <span class="boss-slot-name">{member.name}</span>
-                </>
-              ) : (
-                <>
-                  <span class="boss-slot-placeholder" aria-hidden="true">{member.name.slice(0, 1)}</span>
-                  <span class="boss-slot-name boss-slot-name--unavailable">{member.name}</span>
-                  <span class="sr-only">Not in database</span>
-                </>
-              )}
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
-  ))}
+  <div class="boss-formation" role="group" aria-label={summary}>
+    <ol class="boss-formation-slots">
+      {members.map((member, index) => (
+        <li class="boss-slot" data-slot={member.slot.id}>
+          {member.id ? (
+            <>
+              <HeroFrameCard
+                hero={{ id: member.id, name: member.name, faction: member.faction }}
+                href={`/heroes/${member.id}`}
+                loading={index < 2 ? 'eager' : 'lazy'}
+              />
+              <span class="boss-slot-name">{member.name}</span>
+            </>
+          ) : (
+            <>
+              <span class="boss-slot-placeholder" aria-hidden="true">{member.name.slice(0, 1)}</span>
+              <span class="boss-slot-name boss-slot-name--unavailable">{member.name}</span>
+              <span class="sr-only">Not in database</span>
+            </>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
 </div>

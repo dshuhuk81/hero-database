@@ -12,7 +12,7 @@ const tiles = visibleBosses.map(boss => {
   return {
     boss,
     kicker: [modes.length ? modes.join(' · ') : boss.mode, `${boss.skills.length} skills`].join(' · '),
-    lead: boss.teams[0],
+    team: boss.team,
     // Faction and class icons first, then up to two mode facts.
     facts: [...identityFacts(boss), ...boss.facts].slice(0, 4) as BossFact[],
   };
@@ -27,17 +27,17 @@ const tiles = visibleBosses.map(boss => {
       <span>{visibleBosses.length} boss guides</span>
     </div>
     <div class="encounter-list">
-      {tiles.map(({ boss, kicker, facts, lead }, index) => (
+      {tiles.map(({ boss, kicker, facts, team }, index) => (
         <a class="encounter-tile" id={boss.id} href={`/bosses/${boss.id}`}>
           <BossArtwork boss={boss} eager={index === 0} />
           <div class="encounter-tile-copy">
             <span class="section-label">{kicker}</span>
             <h2>{boss.name}</h2>
             <p class="encounter-summary">{boss.summary.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || boss.summary}</p>
-            {lead && (
+            {team.length > 0 && (
               <p class="encounter-team-line">
-                <span>{lead.label}</span>
-                {lead.members.map(member => member.name).join(', ')}
+                <span>Team</span>
+                {team.map(member => member.name).join(', ')}
               </p>
             )}
             <dl class="encounter-facts-strip">

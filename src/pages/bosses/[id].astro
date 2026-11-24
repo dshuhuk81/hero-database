@@ -37,7 +37,7 @@ const mechanicGroups = Object.entries(MECHANIC_CATEGORIES)
   }))
   .filter(group => group.lines.length);
 const sections = [
-  ...(boss.teams.length ? [{ id: 'teams', label: 'Teams' }] : []),
+  ...(boss.team.length ? [{ id: 'teams', label: 'Teams' }] : []),
   ...(mechanicGroups.length ? [{ id: 'mechanics', label: 'Mechanics' }] : []),
   { id: 'skills', label: 'Skills' },
   ...(boss.rewards.length ? [{ id: 'rewards', label: 'Rewards' }] : []),
@@ -75,19 +75,18 @@ const sections = [
   <SectionTabs tabs={sections} />
   <main class="encounter-detail">
 
-    {boss.teams.length > 0 && (
+    {boss.team.length > 0 && (
       <section class="encounter-section encounter-section--first" id="teams" aria-labelledby="teams-title">
         <div class="encounter-section-heading">
           <span class="section-label">Teams</span>
           <h2 id="teams-title">Bring the right team</h2>
         </div>
-        {/* One team per boss for now: the first recommendation. The other comps stay in the data. */}
-        <BossFormation teams={boss.teams.slice(0, 1)} />
+        <BossFormation team={boss.team} />
       </section>
     )}
 
     {mechanicGroups.length > 0 && (
-      <section class={boss.teams.length ? 'encounter-section' : 'encounter-section encounter-section--first'} id="mechanics" aria-labelledby="mechanics-title">
+      <section class={boss.team.length ? 'encounter-section' : 'encounter-section encounter-section--first'} id="mechanics" aria-labelledby="mechanics-title">
         <div class="encounter-section-heading">
           <span class="section-label">Mechanics</span>
           <h2 id="mechanics-title">What to watch for</h2>

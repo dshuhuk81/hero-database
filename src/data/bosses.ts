@@ -2,7 +2,7 @@ import data from './bosses.json';
 import rewardData from './generated/bosses.global.json';
 import { heroes } from './heroes/withRatings.js';
 import { rankHeroesForBoss } from './ratings/ratingSystem.js';
-import { getBossTeams } from '../utils/bossTeams.js';
+import { getBossTeam } from '../utils/bossTeams.js';
 
 export type Reward = [number, number, number];
 export interface RewardItem {
@@ -79,7 +79,7 @@ export const visibleBosses = data.bosses
     return {
       ...boss,
       fightPlan: (boss as { fightPlan?: { title: string; text: string }[] }).fightPlan ?? [],
-      teams: getBossTeams(boss, heroes),
+      team: getBossTeam(boss, heroes),
       artworkFocus: artworkFocus[boss.id] ?? '50% 50%',
       rewards,
       facts: modeFacts(rewards),
