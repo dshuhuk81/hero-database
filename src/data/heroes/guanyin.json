@@ -1,0 +1,101 @@
+{
+  "id": "guanyin",
+  "heroID": 5016,
+  "name": "Guanyin",
+  "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/heroes/guanyin.webp",
+  "release": false,
+  "newHero": false,
+  "faction": "Starglint",
+  "role": "Arcane",
+  "class": "Support",
+  "rarity": "Legendary",
+  "description": "",
+  "stats": {
+    "might": 0,
+    "hp": 0,
+    "atk": 0,
+    "armor": 0,
+    "magicRes": 0,
+    "dodgeRate": 0,
+    "hitBonus": 0,
+    "critRate": 0,
+    "critRes": 0,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Lotus Pure Realm",
+      "description": "Guanyin summons the Lotus Pure Realm, which envelops the entire field. Enemies within the realm have reduced critical hit rate and critical hit damage. Every certain interval, purifying spring water is released, restoring health to all allies based on Guanyin's attack power. The Lotus Pure Realm lasts for a certain duration.",
+      "upgrades": {
+        "level2": "Increases the enemy critical hit rate reduction effect.",
+        "level3": "Increases the enemy critical hit damage reduction effect.",
+        "level4": "Further increases the health restored to all allies by the purifying spring water."
+      },
+      "damageType": "",
+      "isUltimate": true
+    },
+    {
+      "id": "skill_2",
+      "name": "Willow Dew",
+      "description": "Unleashes [Willow Dew] on the enemy with the highest current critical hit rate, dealing damage based on attack power and reducing their critical hit rate and attack power for a certain duration; if the target is within [Lotus Pure Realm], the effect of reducing critical hit rate and attack power is enhanced.",
+      "upgrades": {
+        "level2": "Damage dealt is increased.",
+        "level3": "The effect of reducing the target's critical hit rate and attack power is enhanced.",
+        "level4": "If the target is within [Lotus Pure Realm], the effect of reducing critical hit rate and attack power is further enhanced."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_3",
+      "name": "Lotus Seal",
+      "description": "Guanyin applies one stack of [Lotus Mark] to all allies: increases attack power for a certain period and can block one critical hit.",
+      "upgrades": {
+        "level2": "Attack power increase effect is enhanced.",
+        "level3": "Duration is extended and critical hit resistance is further increased.",
+        "level4": "Attack power increase effect is further enhanced."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_4",
+      "name": "Lotus Platform",
+      "description": "At the start of battle, Guanyin gains a shield that can absorb damage up to a percentage of her maximum health. While the shield is active, Guanyin is in a state of invulnerability and regenerates the shield every second based on her maximum health. The energy recovery speed and effect of all allies are increased. After the shield is broken, Guanyin receives reduced damage for a certain period and regenerates after a short time.",
+      "upgrades": {
+        "level2": "Shield cap increased.",
+        "level3": "Shield regeneration per second increased.",
+        "level4": "Energy recovery speed and effect of all allies further increased."
+      },
+      "damageType": ""
+    }
+  ],
+  "relic": {
+    "name": "Compassionate Blessing Seal",
+    "description": "When [Lotus Platform Purification] is cast, it adds an additional layer of [Lotus Mark] to all friendly units.",
+    "upgrades": {
+      "level2": "When [Lotus Platform Purification] is cast, it restores additional energy to all friendly units.",
+      "level3": "During [Lotus Platform Purification], all friendly units receive additional reduced damage.",
+      "level4": "When [Lotus Platform Purification] releases purifying water, it cleanses all buffs from enemies."
+    }
+  },
+  "synergies": [],
+  "cardImgY": "0%"
+}

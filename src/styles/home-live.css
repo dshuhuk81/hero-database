@@ -62,9 +62,19 @@
 .hl-feature-next em { color: var(--accent-gold); font-style: normal; }
 
 /* Progress bar (share of the event already gone) */
-.hl-bar { display: block; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.09); }
-.hl-bar i { display: block; height: 100%; border-radius: inherit; background: var(--cat, var(--accent-gold)); opacity: 0.9; }
-.hl-bar--gold i { background: var(--accent-gold); }
+.hl-bar { display: block; height: 4px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.09); }
+.hl-bar i { position: relative; display: block; height: 100%; border-radius: inherit; background-color: var(--cat, var(--accent-gold)); background-repeat: no-repeat; opacity: 0.9; }
+.hl-bar--gold i { background-color: var(--accent-gold); }
+
+/* White dot marking the end of the filled part (all bars) */
+.hl-bar i::after { content: ""; position: absolute; top: 50%; right: 0; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); transform: translate(50%, -50%); }
+
+/* Slow shine sweeping across the fill (topmost running event and the gold feature bar) */
+.hl-row:first-child .hl-bar i, .hl-bar--gold i { background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent); background-size: 40% 100%; background-position: -67% 0; animation: hl-bar-shine 3.2s ease-in-out infinite; }
+@keyframes hl-bar-shine {
+  0% { background-position: -67% 0; }
+  70%, 100% { background-position: 167% 0; }
+}
 
 /* Running list */
 .hl-list { display: grid; flex: 1; align-content: space-between; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
@@ -132,4 +142,5 @@
 @media (prefers-reduced-motion: reduce) {
   .hl-feature, .hl-row a { transition: none; }
   .hl-feature:hover { transform: none; }
+  .hl-row:first-child .hl-bar i, .hl-bar--gold i { animation: none; background-image: none; }
 }

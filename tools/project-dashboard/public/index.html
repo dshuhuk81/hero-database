@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Motto Immortal · Command Center</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside id="sidebar">
+        <a class="brand" href="#overview"
+          ><span class="brand-mark">M</span
+          ><span>Motto Immortal<small>Project Command Center</small></span></a
+        >
+        <div class="nav-label">WORKSPACE <span>LOCAL</span></div>
+        <nav aria-label="Hauptnavigation" id="nav"></nav>
+        <div class="sidebar-note">
+          <span class="dot"></span> Lokaler Entwicklerbereich<small
+            >Repository als Wissensbasis</small
+          >
+        </div>
+      </aside>
+      <div class="workspace">
+        <header>
+          <button
+            id="menu"
+            class="icon-button"
+            aria-label="Navigation öffnen"
+            aria-expanded="false"
+          >
+            ☰</button
+          ><span id="breadcrumb">Workspace / Übersicht</span>
+          <div class="header-actions">
+            <label class="search-wrap"
+              ><span aria-hidden="true">⌕</span
+              ><input
+                id="search"
+                type="search"
+                aria-label="Projekt durchsuchen"
+                placeholder="Projekt durchsuchen …"
+              /><kbd>/</kbd></label
+            ><button id="refresh">↻ <span>Aktualisieren</span></button>
+          </div>
+        </header>
+        <div id="sync-alert" class="info warning" role="alert" hidden></div>
+        <main id="main">
+          <div class="loading">Projektwissen wird eingelesen …</div>
+        </main>
+        <footer>
+          <span id="stamp">Daten werden geladen</span
+          ><span>INTERNAL · MOTTO IMMORTAL</span>
+        </footer>
+      </div>
+    </div>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <dialog id="source-dialog">
+      <div class="dialog-bar">
+        <h2 id="source-title">Quelldatei</h2>
+        <button id="close-source" aria-label="Schließen">Schließen ×</button>
+      </div>
+      <a id="github-source" target="_blank" rel="noreferrer"
+        >Auf GitHub öffnen ↗</a
+      >
+      <pre id="source-content"></pre>
+    </dialog>
+    <noscript
+      >JavaScript ist für das lokale Command Center erforderlich.</noscript
+    >
+  </body>
+</html>

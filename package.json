@@ -39,7 +39,10 @@
     "build:hero-variants": "node scripts/create-hero-image-variants.mjs",
     "prepare-hero-variants": "npm run sync:r2-heroes-down && npm run build:hero-variants",
     "r2:cors": "node scripts/r2-cors.mjs",
-    "check": "astro check"
+    "check": "astro check",
+    "dashboard": "node tools/project-dashboard/server.mjs",
+    "dashboard:generate": "node tools/project-dashboard/generate.mjs",
+    "test:dashboard": "node --test tools/project-dashboard/tests/*.test.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

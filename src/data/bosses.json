@@ -9,7 +9,7 @@
       "class": "Tank",
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/baphomet.webp",
       "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
-      "team": ["dionysus", "meret", "cronus", "idunn", "zeus"],
+      "team": ["zeus", "dionysus", "idunn", "caishen", "jingwei"],
       "mechanics": [
         "Energy drain zones (pentacle) every 3s",
         "Defensive stance reduces damage heavily",
@@ -56,7 +56,7 @@
       "class": "Tank",
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/demonic_horse.webp",
       "summary": "Burst-damage boss with charge + frontal pressure, scaling via Berserk on HP loss.",
-      "team": ["zeus", "heket", "caishen", "dionysus", "idunn"],
+      "team": ["zeus", "dionysus", "gaiya", "idunn", "caishen"],
       "mechanics": [
         "Charge through enemies (high burst)",
         "Frontal flames (pressure on front)",
