@@ -48,8 +48,8 @@
       ]
     },
     {
-      "id": "spirit_of_night_hag",
-      "name": "Spirit of Night Hag",
+      "id": "night_mare",
+      "name": "Night Mare",
       "mode": "Grim Surge",
       "battlepower": "4500M",
       "faction": "Spades",
@@ -91,7 +91,7 @@
       "class": "Tank",
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/epica.webp",
       "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
-      "team": ["idunn", "nut", "hephaestus", "caishen", "dionysus"],
+      "team": ["zeus", "dionysus", "gaiya", "caishen", "jingwei"],
       "mechanics": [
         "Repeated random-target damage over time (8s channel)",
         "Roots a random enemy for 10s + knocks back nearby units",
@@ -126,7 +126,7 @@
       "class": "Tank",
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/lilith.webp",
       "summary": "Summoner boss that delegates damage through spawned children. Main threat is sustained ATK SPD scaling and repeated summons; primary target is untargetable but takes shared damage.",
-      "team": ["dionysus", "hephaestus", "caishen", "cronus", "nut"],
+      "team": ["nut", "dionysus", "idunn", "caishen", "jingwei"],
       "mechanics": [
         "Summoned children inherit % of Lilith's base/current ATK and scale HP as 600% ATK",
         "Lilith is untargetable but takes all damage children take",
@@ -175,7 +175,7 @@
       "class": "Tank",
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/isthar_vi.webp",
       "summary": "Barrier-based boss that punishes teams outside the umbrella and swings fights with knockback and large battlefield-wide bursts.",
-      "team": ["nuba", "nezha", "caishen", "isis", "dionysus"],
+      "team": ["zeus", "jingwei", "idunn", "caishen", "dionysus"],
       "mechanics": [
         "Umbrella barrier: units outside deal 80% less damage",
         "Knockback pulse; shielded units are immune",

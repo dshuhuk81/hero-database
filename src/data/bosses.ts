@@ -41,7 +41,7 @@ const MODE_ORDER: BossRewardEntry['mode'][] = ['torment_rift', 'grim_surge', 'ol
 // Portrait artwork needs individual crops in the wide directory/header stages.
 const artworkFocus: Record<string, string> = {
   baphomet: '50% 49%',
-  spirit_of_night_hag: '50% 38%',
+  night_mare: '50% 38%',
   epica: '50% 18%',
   lilith: '50% 18%',
   isthar_vi: '50% 32%',
@@ -101,6 +101,6 @@ export function identityFacts(boss: { faction?: string; class?: string }): BossF
 }
 
 export function bossSkillIcon(bossId: string, index: number) {
-  const aliases: Record<string, string> = { isthar_vi: 'ishtar', typhoon: 'typhon' };
+  const aliases: Record<string, string> = { isthar_vi: 'ishtar', typhoon: 'typhon', night_mare: 'spirit_of_night_hag' };
   return `https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/${aliases[bossId] ?? bossId}_skill_${index + 1}.png`;
 }
