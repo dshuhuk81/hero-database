@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
-import { teaserEntries as teasers, entriesByGroup, navGroupLabels, defaultMaintenanceTooltip, activeBadge, type NavEntry, type NavGroup } from "../../data/nav";
+import { navEntries, teaserEntries as teasers, entriesByGroup, navGroupLabels, defaultMaintenanceTooltip, activeBadge, type NavEntry, type NavGroup } from "../../data/nav";
 import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
@@ -24,6 +24,7 @@ interface Props {
 
 const { locale = defaultLocale } = Astro.props as Props;
 
+const bossEntry = teasers.find((entry) => entry.href === "/bosses") ?? navEntries.find((entry) => entry.href === "/bosses");
 const FEATURED_HREFS = ["/heroes", "/tierlist", "/guides"];
 const featured = FEATURED_HREFS
   .map((href) => teasers.find((entry) => entry.href === href))
@@ -298,6 +299,32 @@ const featuredImageFor = (href: string) => href === "/heroes"
             </svg>
           </a>
         </article>
+
+        {bossEntry && (
+          <a class="featured-card featured-card-image promo-card" href={hrefFor(bossEntry.href)}>
+            <div class="featured-image-wrap">
+              <img
+                class="featured-image featured-image-centered"
+                src="/teaser/boss-encounters.webp"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="featured-copy">
+              <div class="featured-title-row">
+                <h3>{navLabel(bossEntry.href, bossEntry.label, locale)}</h3>
+              </div>
+              <p>{pickLang(bossEntry.description!, locale)}</p>
+            </div>
+            <span class="game-card-cta promo-action">
+              {navLabel(bossEntry.href, bossEntry.label, locale)}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </a>
+        )}
       </div>
 
       <section class="home-section home-directory" aria-labelledby="directoryTitle">
@@ -523,7 +550,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   .home-promo {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
     margin-top: var(--space-20);
   }

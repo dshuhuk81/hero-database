@@ -10,7 +10,7 @@ import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
 // Newest mode guide first: the first entry is the featured card.
-const MODE_GUIDE_HREFS = ["/guides/timed-challenge", "/guides/goldeneye", "/guides/infinite-labyrinth", "/guides/divine-throne", "/bosses"];
+const MODE_GUIDE_HREFS = ["/guides/timed-challenge", "/guides/goldeneye", "/guides/infinite-labyrinth", "/guides/divine-throne"];
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
