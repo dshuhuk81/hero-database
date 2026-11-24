@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
 import SupportStrip from "../../components/SupportStrip.astro";
+import SectionTabs from "../../components/SectionTabs.astro";
 import HeroDivineThrone from "../../components/HeroDivineThrone.astro";
 import { heroes, getHeroById } from "../../data/heroes/withRatings";
 import { localizeHeroData } from "../../data/heroes/localize";
@@ -268,15 +269,7 @@ const tabs = [
       </header>
 
       <!-- ============================================================== TABS -->
-      <nav class="lt-tabs" id="lt-tabs">
-        <div class="lt-tabs-inner">
-          {tabs.map((tab, i) => (
-            <a class={`lt-tab${i === 0 ? " is-active" : ""}`} href={`#${tab.id}`} data-target={tab.id}>
-              {tab.label}
-            </a>
-          ))}
-        </div>
-      </nav>
+      <SectionTabs tabs={tabs} />
 
       <main class="lt-main">
         <!-- =============================================== RATINGS + STATS -->
@@ -683,45 +676,6 @@ const tabs = [
         transition: var(--transition-colors);
       }
       .lt-guide-link:hover { border-color: var(--accent-gold); color: var(--text-bright); }
-
-      /* --------------------------------------------------------------- tabs */
-      .lt-tabs {
-        position: sticky;
-        top: 0;
-        z-index: var(--z-sticky);
-        background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
-        border-top: 1px solid var(--border-faint);
-        border-bottom: 1px solid var(--border-subtle);
-        backdrop-filter: blur(20px);
-      }
-      .lt-tabs-inner {
-        max-width: var(--page-max-width);
-        margin: 0 auto;
-        display: flex;
-        justify-content: center;
-        gap: 6px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        padding: 0 12px;
-      }
-      .lt-tabs-inner::-webkit-scrollbar { display: none; }
-      .lt-tab {
-        flex: 0 0 auto;
-        padding: 16px 20px 14px;
-        font-family: var(--font-base);
-        font-size: 15px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        text-decoration: none;
-        color: var(--text-secondary);
-        border-bottom: 2px solid transparent;
-        white-space: nowrap;
-      }
-      .lt-tab:hover { color: var(--text-bright); }
-      .lt-tab.is-active {
-        color: var(--accent-gold);
-        border-bottom-color: var(--accent-gold);
-      }
 
       /* --------------------------------------------------------------- main */
       .lt-main { max-width: var(--page-max-width); margin: 0 auto; padding: var(--space-12) var(--space-8) var(--space-24); }
@@ -1198,8 +1152,6 @@ const tabs = [
         .lt-ident { text-align: center; padding-bottom: 4px; }
         .lt-headline, .lt-hero-meta, .lt-chips { justify-content: center; }
         .lt-main { padding: 32px 18px 70px; }
-        .lt-tabs-inner { justify-content: flex-start; }
-        .lt-tab { padding: 13px 14px 11px; font-size: 13px; }
         .lt-h2 { font-size: 27px; }
         .lt-stat-row { grid-template-columns: minmax(0, 1fr) auto; gap: 9px; }
         .lt-rank { display: none; }
@@ -1225,41 +1177,6 @@ const tabs = [
             panel.classList.toggle("is-active", panel.getAttribute("data-skill") === id);
           }
         });
-      }
-
-      // Tab scrollspy. Highlights whichever section is nearest the sticky bar.
-      const tabs = Array.from(document.querySelectorAll(".lt-tab"));
-      const targets = tabs
-        .map((tab) => {
-          const id = tab.getAttribute("data-target");
-          const el = id ? document.getElementById(id) : null;
-          return el ? { tab, el } : null;
-        })
-        .filter((entry) => entry !== null);
-
-      if (targets.length > 0) {
-        let queued = false;
-        const sync = () => {
-          queued = false;
-          const line = window.scrollY + 140;
-          let current = targets[0];
-          for (const entry of targets) {
-            if (entry.el.offsetTop <= line) current = entry;
-          }
-          for (const entry of targets) {
-            entry.tab.classList.toggle("is-active", entry === current);
-          }
-        };
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (queued) return;
-            queued = true;
-            requestAnimationFrame(sync);
-          },
-          { passive: true }
-        );
-        sync();
       }
     </script>
 </Base>

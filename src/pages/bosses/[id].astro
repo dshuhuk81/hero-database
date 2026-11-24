@@ -1,0 +1,177 @@
+---
+export const prerender = true;
+import Base from '../../layouts/Base.astro';
+import SupportStrip from '../../components/SupportStrip.astro';
+import SectionTabs from '../../components/SectionTabs.astro';
+import HeroCard from '../../components/HeroCard.astro';
+import BossArtwork from '../../components/bosses/BossArtwork.astro';
+import BossFormation from '../../components/bosses/BossFormation.astro';
+import BossRewards from '../../components/bosses/BossRewards.astro';
+import BossMechanicIcon from '../../components/bosses/BossMechanicIcon.astro';
+import { visibleBosses, bossSkillIcon, identityFacts, rewardModes, type BossFact, type BossView } from '../../data/bosses';
+import { MECHANIC_CATEGORIES, mechanicCategory } from '../../utils/bossRewards.js';
+import '../../styles/bosses.css';
+
+export function getStaticPaths() {
+  return visibleBosses.map(boss => ({ params: { id: boss.id }, props: { boss } }));
+}
+interface Props { boss: BossView }
+const { boss } = Astro.props;
+
+const modeNames = boss.rewards.map(entry => rewardModes[entry.mode]?.name).filter(Boolean);
+const kicker = [modeNames.length ? modeNames.join(' · ') : boss.mode, `${boss.skills.length} skills`].join(' · ');
+const facts: BossFact[] = [
+  ...identityFacts(boss),
+  { label: 'Might', value: boss.battlepower },
+  ...boss.facts,
+].filter(fact => fact.value);
+// The header keeps four facts; the rest (entry, unlock, rotation) sit with the rewards they belong to.
+const headerFacts = facts.slice(0, 4);
+const modeFacts = facts.slice(4);
+// Lines grouped by category, in the category order of MECHANIC_CATEGORIES (the data has no severity).
+const mechanicGroups = Object.entries(MECHANIC_CATEGORIES)
+  .map(([id, category]) => ({
+    id,
+    label: category.label,
+    lines: boss.mechanics.filter(text => mechanicCategory({ text }) === id),
+  }))
+  .filter(group => group.lines.length);
+const sections = [
+  ...(boss.teams.length ? [{ id: 'teams', label: 'Teams' }] : []),
+  ...(mechanicGroups.length ? [{ id: 'mechanics', label: 'Mechanics' }] : []),
+  { id: 'skills', label: 'Skills' },
+  ...(boss.rewards.length ? [{ id: 'rewards', label: 'Rewards' }] : []),
+  ...(boss.bestRated.length ? [{ id: 'best-rated', label: 'Best rated' }] : []),
+];
+---
+
+<Base title={`${boss.name} Boss Guide | Motto Immortal`} description={`${boss.name}: ${boss.summary} Fight strategy, teams, skills and rewards.`} image={boss.image}>
+  <header class="encounter-header">
+    <BossArtwork boss={boss} eager />
+    <div class="encounter-header-inner">
+      <a class="encounter-back" href={`/bosses#${boss.id}`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
+        All boss encounters
+      </a>
+      <div class="encounter-header-copy">
+        <span class="section-label">{kicker}</span>
+        <h1>{boss.name}</h1>
+        <p class="encounter-summary">{boss.summary}</p>
+        <dl class="encounter-facts-strip">
+          {headerFacts.map(fact => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>
+                {fact.badge && <img class="encounter-fact-badge" src={fact.badge} alt="" width="32" height="32" loading="lazy" decoding="async" />}
+                {fact.icon && <img src={`/items/bosses/${fact.icon}.webp`} alt="" width="24" height="24" />}
+                {fact.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </header>
+  <SectionTabs tabs={sections} />
+  <main class="encounter-detail">
+
+    {boss.teams.length > 0 && (
+      <section class="encounter-section encounter-section--first" id="teams" aria-labelledby="teams-title">
+        <div class="encounter-section-heading">
+          <span class="section-label">Teams</span>
+          <h2 id="teams-title">Bring the right team</h2>
+        </div>
+        {/* One team per boss for now: the first recommendation. The other comps stay in the data. */}
+        <BossFormation teams={boss.teams.slice(0, 1)} />
+      </section>
+    )}
+
+    {mechanicGroups.length > 0 && (
+      <section class={boss.teams.length ? 'encounter-section' : 'encounter-section encounter-section--first'} id="mechanics" aria-labelledby="mechanics-title">
+        <div class="encounter-section-heading">
+          <span class="section-label">Mechanics</span>
+          <h2 id="mechanics-title">What to watch for</h2>
+        </div>
+        <dl class="encounter-ledger">
+          {mechanicGroups.map(group => (
+            <div class="encounter-ledger-row" data-mechanic={group.id}>
+              <dt><BossMechanicIcon category={group.id} />{group.label}</dt>
+              <dd><ul>{group.lines.map(text => <li>{text}</li>)}</ul></dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    <section class="encounter-section" id="skills" aria-labelledby="skills-title">
+      <div class="encounter-section-heading">
+        <span class="section-label">{boss.skills.length} skills</span>
+        <h2 id="skills-title">Know the skills</h2>
+      </div>
+      <div class="encounter-skill-list">
+        {boss.skills.map((skill, index) => (
+          <article class="encounter-skill">
+            <div class="encounter-skill-heading">
+              <span class="encounter-skill-icon"><img src={bossSkillIcon(boss.id, index)} alt="" width="56" height="56" loading="lazy" decoding="async" onerror="this.setAttribute('hidden', '')" /></span>
+              <div><h3>{skill.name}</h3><p class="encounter-skill-type">{skill.type}</p></div>
+            </div>
+            {skill.mechanics?.length > 0 && (
+              <ul class="encounter-skill-chips">
+                {skill.mechanics.map(text => {
+                  const category = mechanicCategory({ text, tags: [] });
+                  return <li data-mechanic={category}><BossMechanicIcon category={category} />{text}</li>;
+                })}
+              </ul>
+            )}
+            <details class="encounter-skill-text">
+              <summary>Full description</summary>
+              <p>{skill.description}</p>
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    {boss.rewards.length > 0 && (
+      <section class="encounter-section" id="rewards" aria-labelledby="rewards-title">
+        <div class="encounter-section-heading">
+          <span class="section-label">Rewards</span>
+          <h2 id="rewards-title">What the fight pays</h2>
+        </div>
+        {modeFacts.length > 0 && (
+          <dl class="encounter-facts-strip encounter-facts-strip--section">
+            {modeFacts.map(fact => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd>
+                  {fact.icon && <img src={`/items/bosses/${fact.icon}.webp`} alt="" width="24" height="24" />}
+                  {fact.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        <BossRewards entries={boss.rewards} />
+      </section>
+    )}
+
+    {boss.bestRated.length > 0 && (
+      <section class="encounter-section" id="best-rated" aria-labelledby="best-rated-title">
+        <div class="encounter-section-heading">
+          <span class="section-label">Heroes</span>
+          <h2 id="best-rated-title">Best rated for {boss.name}</h2>
+        </div>
+        <div class="encounter-best-rated">
+          {boss.bestRated.map(({ hero, tier }) => <HeroCard hero={hero} rating={tier} showFactionIcon />)}
+        </div>
+        <a class="encounter-more" href="/tierlist">Full tier list <span aria-hidden="true">&rarr;</span></a>
+      </section>
+    )}
+
+    <a class="encounter-back encounter-back-bottom" href={`/bosses#${boss.id}`}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
+      Back to boss encounters
+    </a>
+    <SupportStrip />
+  </main>
+</Base>

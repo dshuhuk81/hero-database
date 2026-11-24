@@ -21,6 +21,11 @@
       "image": "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev/bosses/baphomet.webp",
       "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
       "strategyNotes": "Prioritize Energy Regen on supports to counter pentacle drain. During defensive stance, save ultimates and focus on non-ult damage to drain boss energy faster. Dionysus ultimate can cleanse the silence debuff, but the 2s immunity window is short - effectiveness is RNG-dependent in auto mode. More reliable when played manually.",
+      "fightPlan": [
+        { "title": "Energy Regen on supports", "text": "Counters the energy drain of the pentacle." },
+        { "title": "Hold ultimates during the stance", "text": "Non-ultimate damage drains his energy faster and ends the defensive stance sooner." },
+        { "title": "Dionysus cleanses Silence", "text": "His ultimate removes it, but the 2s immunity window is short: reliable when played manually, RNG on auto." }
+      ],
       "mechanics": [
         "Energy drain zones (pentacle) every 3s",
         "Defensive stance reduces damage heavily",
@@ -359,7 +364,7 @@
         "",
         ""
       ],
-      "name": "Isthar VI",
+      "name": "Ishtar VI",
       "mode": "Torment Rift",
       "battlepower": "4500M",
       "faction": "Spades",
@@ -471,7 +476,7 @@
         ""
       ],
       "name": "Jack Frost",
-      "mode": "Olds God's Return",
+      "mode": "Old God's Return",
       "battlepower": "33932",
       "faction": "Spades",
       "class": "Tank",
@@ -552,8 +557,8 @@
         "",
         ""
       ],
-      "name": "Typhoon",
-      "mode": "Olds God's Return",
+      "name": "Typhon",
+      "mode": "Old God's Return",
       "battlepower": "4500M",
       "faction": "Spades",
       "class": "Tank",
@@ -667,7 +672,7 @@
         ""
       ],
       "name": "Nian Beast",
-      "mode": "Olds God's Return",
+      "mode": "Old God's Return",
       "battlepower": "33932",
       "faction": "Spades",
       "class": "Tank",

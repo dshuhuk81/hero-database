@@ -1,0 +1,79 @@
+---
+// All reward panels for one boss, one block per game mode (Typhon has two). Data and wording
+// come from the Global client (export_bosses.py); labels follow the in-game UI texts.
+import BossReward from './BossReward.astro';
+import BossMilestones from './BossMilestones.astro';
+import BossRanks from './BossRanks.astro';
+import { rewardItems, rewardModes, type BossRewardEntry, type RewardItem } from '../../data/bosses';
+import { chooseChests } from '../../utils/bossRewards.js';
+
+interface Props {
+  entries: BossRewardEntry[];
+}
+
+const { entries } = Astro.props;
+const many = entries.length > 1;
+---
+
+{entries.map(entry => {
+  const mode = rewardModes[entry.mode];
+  const lists = [
+    ...(entry.damageMilestones ?? []), ...(entry.recordMilestones ?? []), ...(entry.serverMilestones ?? []),
+  ].map(m => m.rewards);
+  const chests = chooseChests([...lists, ...(entry.dailyRanks ?? []).map(r => r.rewards)], rewardItems) as { key: string; item: RewardItem }[];
+  return (
+    <div class="boss-rewards-mode">
+      {many && <h3 class="boss-rewards-mode-title">{mode?.name}</h3>}
+
+      {entry.showRewards?.length ? (
+        <div class="boss-reward-preview">
+          <span class="section-label">Reward preview</span>
+          <span class="boss-reward-row">{entry.showRewards.map(reward => <BossReward reward={reward} />)}</span>
+        </div>
+      ) : null}
+
+      {chests.map(({ item }) => (
+        <div class="boss-chest">
+          {item.icon && <img class="boss-chest-icon" src={`/items/bosses/${item.icon}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />}
+          <div class="boss-chest-copy">
+            <span class="section-label">Choose {item.choose!.count}</span>
+            <h3>{item.name}</h3>
+          </div>
+          <span class="boss-reward-row">{item.choose!.options.map(reward => <BossReward reward={reward} />)}</span>
+        </div>
+      ))}
+
+      {entry.mode === 'torment_rift' && (
+        <>
+          {entry.damageMilestones?.length ? <BossMilestones milestones={entry.damageMilestones} kicker="Damage" title="Rewards along the damage bar" /> : null}
+          {entry.dailyRanks?.length ? <BossRanks ranks={entry.dailyRanks} kicker="Daily ranking" title="Rank rewards" note="The ranking resets daily. Higher damage means a better rank." /> : null}
+        </>
+      )}
+
+      {entry.mode === 'grim_surge' && (
+        <>
+          {entry.damageMilestones?.length ? <BossMilestones milestones={entry.damageMilestones} kicker="Daily DMG" title="Daily damage rewards" /> : null}
+          {entry.recordMilestones?.length ? <BossMilestones milestones={entry.recordMilestones} kicker="DMG limit" title="Top damage rewards" inputLabel="Your top damage" /> : null}
+        </>
+      )}
+
+      {entry.mode === 'old_gods_return' && (
+        <>
+          {entry.serverMilestones?.length ? <BossMilestones milestones={entry.serverMilestones} kicker="Server rewards" title="Unlocked by the whole server" note="When enough total damage is dealt to the boss, the rewards are available to all players." inputLabel="Server damage" /> : null}
+          {entry.finalRanks?.length ? <BossRanks ranks={entry.finalRanks} kicker="Leaderboard" title="Final rank rewards" note="Ranked by total damage during the event, sent by mail afterwards." /> : null}
+        </>
+      )}
+
+      {entry.mode === 'old_gods_calamity' && entry.awakenings?.map((awakening, index) => (
+        <details class="boss-disclosure boss-awakening" open={index === 0}>
+          <summary>Awakening {awakening.index}{awakening.afterChapter ? ` · after Chapter ${awakening.afterChapter}` : ''}</summary>
+          <div class="boss-reward-preview">
+            <span class="section-label">Reward preview</span>
+            <span class="boss-reward-row">{awakening.showRewards.map(reward => <BossReward reward={reward} />)}</span>
+          </div>
+          <BossRanks ranks={awakening.ranks} kicker="Damage ranking" title="Rank rewards" note="Issued after Typhon is killed, based on damage dealt." />
+        </details>
+      ))}
+    </div>
+  );
+})}

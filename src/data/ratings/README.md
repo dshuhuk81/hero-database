@@ -100,3 +100,23 @@ preference.
 - Would another reviewer understand the difference between adjacent tiers?
 - Is an Overall adjustment truly exceptional and clearly explained?
 - Are uncertain values left empty rather than guessed?
+
+## Boss ratings
+
+A hero can also be rated per boss encounter. These ratings appear on the boss
+pages ("Best rated for ...") and never change Overall.
+
+```json
+{
+  "name": "Example Hero",
+  "pveearly": "A",
+  "bosses": { "baphomet": "S+", "lilith": "A" }
+}
+```
+
+- Keys are the boss ids from `src/data/bosses.json` (e.g. `baphomet`, `isthar_vi`).
+- Values use the same tiers (`S+` to `D`). Leave a boss out instead of guessing.
+- In the Google Sheet, add one column per boss named `boss_<bossId>`
+  (e.g. `boss_baphomet`). If the sheet has any `boss_` column, `import-ratings`
+  takes all boss ratings from the sheet; without such columns it keeps the JSON.
+- `npm run validate:ratings` rejects unknown boss ids and invalid tiers.

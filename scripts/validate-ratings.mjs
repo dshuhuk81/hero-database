@@ -1,4 +1,5 @@
 import heroRatings from "../src/data/ratings/hero-ratings.json" with { type: "json" };
+import bossData from "../src/data/bosses.json" with { type: "json" };
 import {
   HERO_MANUAL_RATING_KEYS,
   MAX_OVERALL_ADJUSTMENT,
@@ -12,7 +13,9 @@ const allowedKeys = new Set([
   ...HERO_MANUAL_RATING_KEYS,
   "overallAdjustment",
   "overallReason",
+  "bosses",
 ]);
+const bossIds = new Set(bossData.bosses.map((boss) => boss.id));
 const errors = [];
 const warnings = [];
 const provisional = [];
@@ -31,6 +34,17 @@ for (const [id, ratings] of Object.entries(heroRatings)) {
     const value = ratings[key];
     if (value && !RATING_TIERS.includes(value)) {
       errors.push(`${id}.${key}: "${value}" is not a valid tier.`);
+    }
+  }
+
+  if (ratings.bosses !== undefined) {
+    if (!ratings.bosses || typeof ratings.bosses !== "object" || Array.isArray(ratings.bosses)) {
+      errors.push(`${id}.bosses: must be an object like { "baphomet": "S" }.`);
+    } else {
+      for (const [bossId, tier] of Object.entries(ratings.bosses)) {
+        if (!bossIds.has(bossId)) errors.push(`${id}.bosses.${bossId}: unknown boss id (see src/data/bosses.json).`);
+        if (!RATING_TIERS.includes(tier)) errors.push(`${id}.bosses.${bossId}: "${tier}" is not a valid tier.`);
+      }
     }
   }
 

@@ -1,0 +1,79 @@
+---
+// Recommended teams as an in-game formation: slots 1-2 are the front row (left, right),
+// slots 3-5 the back row (left, center, right). Boards sit side by side when there is room.
+import { heroes } from '../../data/heroes/withRatings.js';
+import type { BossTeam } from '../../utils/bossTeams.js';
+
+interface Props {
+  teams: BossTeam[];
+}
+
+const { teams } = Astro.props;
+const R2 = 'https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev';
+const IMAGE_VERSION = '2026-10-28-cutouts';
+const cardSrc = (id: string, width: number) => `${R2}/heroes/cards/${id}-${width}.webp?v=${IMAGE_VERSION}`;
+const SLOTS = [
+  { id: 'front-left', label: 'Front left' },
+  { id: 'front-right', label: 'Front right' },
+  { id: 'back-left', label: 'Back left' },
+  { id: 'back-center', label: 'Back center' },
+  { id: 'back-right', label: 'Back right' },
+];
+type HeroLook = { faction?: string; rarity?: string; cardImgY?: string; imgY?: string };
+const byId = new Map<string, HeroLook>(heroes.map((hero: HeroLook & { id: string }) => [hero.id, hero]));
+
+const boards = teams.map(team => {
+  const members = team.members.slice(0, SLOTS.length).map((member, slotIndex) => ({
+    ...member,
+    slot: SLOTS[slotIndex],
+    faction: member.id ? byId.get(member.id)?.faction?.toLowerCase() ?? '' : '',
+    rarity: member.id ? byId.get(member.id)?.rarity?.toLowerCase() : undefined,
+    focus: member.id ? byId.get(member.id)?.cardImgY ?? byId.get(member.id)?.imgY : undefined,
+  }));
+  const row = (from: number, to: number) => members.slice(from, to).map(member => member.name).join(', ');
+  return {
+    team,
+    summary: `${team.label}. Front row: ${row(0, 2)}.${members.length > 2 ? ` Back row: ${row(2, 5)}.` : ''}`,
+    members,
+  };
+});
+---
+
+<div class="boss-formations">
+  {boards.map((board, index) => (
+    <div class="boss-formation-panel">
+      <p class="boss-formation-label">{board.team.label}</p>
+      <div class="boss-formation" role="group" aria-label={board.summary}>
+        <ol class="boss-formation-slots">
+          {board.members.map(member => (
+            <li class="boss-slot" data-slot={member.slot.id} data-rarity={member.rarity}>
+              {member.id ? (
+                <a class="boss-slot-link" href={`/heroes/${member.id}`} style={member.focus ? `--hero-img-y:${member.focus};` : undefined}>
+                  <img
+                    class="boss-slot-art"
+                    src={cardSrc(member.id, 240)}
+                    srcset={`${cardSrc(member.id, 240)} 240w, ${cardSrc(member.id, 360)} 360w`}
+                    sizes="(max-width: 760px) 30vw, 120px"
+                    alt=""
+                    width="360"
+                    height="880"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                  {member.faction && <img class="boss-slot-faction" src={`${R2}/icons/factions/${member.faction}.webp`} alt="" width="20" height="20" loading="lazy" decoding="async" />}
+                  <span class="boss-slot-name">{member.name}</span>
+                </a>
+              ) : (
+                <span class="boss-slot-link boss-slot-link--unavailable">
+                  <span class="boss-slot-placeholder" aria-hidden="true">{member.name.slice(0, 1)}</span>
+                  <span class="boss-slot-name">{member.name}</span>
+                  <span class="sr-only">Not in database</span>
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  ))}
+</div>

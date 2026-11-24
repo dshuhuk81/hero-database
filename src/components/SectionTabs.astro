@@ -1,0 +1,56 @@
+---
+// Sticky "jump to section" bar with a scroll spy, built on the design system's .tab-strip.
+// One component for every detail page (heroes, bosses). Each tab links to the element whose id
+// is `tab.id`. The tab look itself lives in components.css (.tab-strip, .tab-strip-item).
+interface Props {
+  tabs: { id: string; label: string }[];
+  /** Accessible name of the navigation landmark. */
+  label?: string;
+}
+
+const { tabs, label = 'On this page' } = Astro.props;
+---
+
+<nav class="section-tabs" aria-label={label} data-section-tabs>
+  <div class="section-tabs-inner tab-strip">
+    {tabs.map((tab, index) => (
+      <a class={`tab-strip-item${index === 0 ? ' is-active' : ''}`} href={`#${tab.id}`} data-target={tab.id} aria-current={index === 0 ? 'location' : undefined}>
+        {tab.label}
+      </a>
+    ))}
+  </div>
+</nav>
+
+<script>
+  // Highlight the section nearest the sticky bar and keep its tab in view on narrow screens.
+  document.querySelectorAll<HTMLElement>('[data-section-tabs]').forEach(nav => {
+    const inner = nav.querySelector<HTMLElement>('.tab-strip');
+    const entries = [...nav.querySelectorAll<HTMLAnchorElement>('.tab-strip-item')]
+      .map(tab => ({ tab, el: document.getElementById(tab.dataset.target ?? '') }))
+      .filter((entry): entry is { tab: HTMLAnchorElement; el: HTMLElement } => entry.el !== null);
+    if (!entries.length || !inner) return;
+    let current: HTMLAnchorElement | null = null;
+    let queued = false;
+    const sync = () => {
+      queued = false;
+      const line = nav.offsetHeight + 80;
+      let active = entries[0];
+      for (const entry of entries) if (entry.el.getBoundingClientRect().top <= line) active = entry;
+      if (active.tab === current) return;
+      current = active.tab;
+      for (const entry of entries) {
+        const on = entry.tab === active.tab;
+        entry.tab.classList.toggle('is-active', on);
+        if (on) entry.tab.setAttribute('aria-current', 'location');
+        else entry.tab.removeAttribute('aria-current');
+      }
+      if (inner.scrollWidth > inner.clientWidth) inner.scrollTo({ left: active.tab.offsetLeft - 24, behavior: 'smooth' });
+    };
+    window.addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(sync);
+    }, { passive: true });
+    sync();
+  });
+</script>

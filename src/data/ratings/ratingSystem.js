@@ -70,6 +70,25 @@ export const HERO_RATING_DATA_KEYS = [
   "overallReason",
 ];
 
+// Boss ratings: optional { [bossId]: tier } per hero, keyed by the ids in src/data/bosses.json.
+// They describe one encounter only and never feed into Overall.
+export const BOSS_RATING_COLUMN_PREFIX = "boss_";
+
+export function resolveBossRatings(rawBosses = {}) {
+  return Object.fromEntries(
+    Object.entries(rawBosses ?? {}).filter(([, tier]) => RATING_TIERS.includes(tier)),
+  );
+}
+
+// Heroes rated for one boss, best tier first, then by name.
+export function rankHeroesForBoss(heroes, bossId) {
+  return heroes
+    .map((hero) => ({ hero, tier: hero?.ratings?.bosses?.[bossId] ?? null }))
+    .filter(({ tier }) => tier)
+    .sort((a, b) => RATING_SCORES[b.tier] - RATING_SCORES[a.tier]
+      || String(a.hero.name).localeCompare(String(b.hero.name)));
+}
+
 function tierForScore(score) {
   return OVERALL_THRESHOLDS.find(({ min }) => score >= min)?.tier ?? "D";
 }
@@ -133,5 +152,6 @@ export function resolveHeroRatings(rawRatings = {}) {
     overallAdjustment: overallMeta.adjustment,
     overallReason: overallMeta.reason,
     overallMeta,
+    bosses: resolveBossRatings(rawRatings.bosses),
   };
 }

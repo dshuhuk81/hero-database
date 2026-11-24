@@ -85,3 +85,49 @@ export function validateOdyssey(data) {
   if (data.unresolved?.length) warnings.push(`odyssey: ${data.unresolved.length} text key(s) without English text`);
   return { errors, warnings };
 }
+
+const BOSS_MODES = new Set(["torment_rift", "grim_surge", "old_gods_calamity", "old_gods_return"]);
+
+// bosses.global.json from export_bosses.py: rewards are [type, id, amount] triples that must
+// resolve to an entry in data.items ("type/id").
+export function validateBosses(data) {
+  const errors = [];
+  const warnings = [];
+  if (!Array.isArray(data?.bosses) || typeof data?.items !== "object" || !data.items) {
+    return { errors: ["bosses: bosses must be an array and items an object"], warnings };
+  }
+  const checkRewards = (list, where) => {
+    for (const reward of list ?? []) {
+      if (!Array.isArray(reward) || reward.length !== 3) {
+        errors.push(`${where}: reward is not a [type, id, amount] triple`);
+        continue;
+      }
+      const item = data.items[`${reward[0]}/${reward[1]}`];
+      if (!item) errors.push(`${where}: reward ${reward[0]}/${reward[1]} missing from items`);
+      else if (!item.name) warnings.push(`${where}: reward ${reward[0]}/${reward[1]} has no English name`);
+    }
+  };
+  for (const boss of data.bosses) {
+    const where = `boss ${boss.siteId ?? boss.clientName} (${boss.mode})`;
+    if (!BOSS_MODES.has(boss.mode)) errors.push(`${where}: unknown mode`);
+    if (!boss.siteId) warnings.push(`${where}: no site boss id`);
+    const lists = [
+      ...(boss.damageMilestones ?? []), ...(boss.recordMilestones ?? []), ...(boss.serverMilestones ?? []),
+      ...(boss.dailyRanks ?? []), ...(boss.finalRanks ?? []),
+      ...(boss.awakenings ?? []).flatMap((a) => [{ rewards: a.showRewards }, ...a.ranks]),
+    ];
+    if (!lists.length) errors.push(`${where}: no rewards`);
+    for (const entry of lists) {
+      checkRewards(entry.rewards, where);
+      checkRewards(entry.topTeamExtra, where);
+    }
+    checkRewards(boss.showRewards, where);
+  }
+  for (const [key, item] of Object.entries(data.items)) {
+    for (const option of item.choose?.options ?? []) {
+      if (!data.items[`${option[0]}/${option[1]}`]) errors.push(`item ${key}: chest option ${option[0]}/${option[1]} missing from items`);
+    }
+  }
+  if (data.unresolved?.length) warnings.push(`bosses: ${data.unresolved.length} text key(s) without English text`);
+  return { errors, warnings };
+}

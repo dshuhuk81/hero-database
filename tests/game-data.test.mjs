@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateEvents, validateHeroReleases } from "../scripts/lib/game-data.mjs";
+import { validateBosses, validateEvents, validateHeroReleases } from "../scripts/lib/game-data.mjs";
 
 const event = (over = {}) => ({
   id: 1,
@@ -60,4 +60,27 @@ test("venus and chaos are mapped to their game ids", () => {
 
 test("joanneofarc is ZhenDe (4016); the Global name is not confirmed yet", () => {
   assert.equal(mapping.joanneofarc?.game_hero_id, 4016);
+});
+
+const bossItems = {
+  "103/1603": { name: "Rift Chest", icon: "A", choose: { count: 1, options: [[103, 1009, 3]] } },
+  "103/1009": { name: "Godcall Plume", icon: "B" },
+};
+const rift = { siteId: "baphomet", mode: "torment_rift", damageMilestones: [{ damage: 1, rewards: [[103, 1603, 1]] }] };
+
+test("validateBosses accepts rewards that resolve to items", () => {
+  assert.deepEqual(validateBosses({ bosses: [rift], items: bossItems }).errors, []);
+});
+
+test("validateBosses rejects unknown modes, missing items and dangling chest options", () => {
+  const { errors } = validateBosses({
+    bosses: [{ ...rift, mode: "arena", damageMilestones: [{ damage: 1, rewards: [[103, 9999, 1]] }] }],
+    items: { "103/1603": { name: "Rift Chest", choose: { count: 1, options: [[103, 1, 1]] } } },
+  });
+  assert.equal(errors.length, 3);
+});
+
+test("validateBosses rejects a boss without rewards", () => {
+  const { errors } = validateBosses({ bosses: [{ siteId: "x", mode: "grim_surge" }], items: bossItems });
+  assert.match(errors[0], /no rewards/);
 });

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { calculateOverall } from "../src/data/ratings/ratingSystem.js";
+import { calculateOverall, rankHeroesForBoss, resolveHeroRatings } from "../src/data/ratings/ratingSystem.js";
 
 test("calculates a complete weighted Overall", () => {
   const result = calculateOverall({
@@ -40,4 +40,18 @@ test("applies and caps editorial adjustments to one tier", () => {
 
 test("returns no Overall without contextual ratings", () => {
   assert.equal(calculateOverall({}).tier, null);
+});
+
+test("boss ratings pass through but never change Overall", () => {
+  const base = { pveearly: "A", pvemidgame: "A", pveendgame: "A", pvpearly: "A", pvpmidgame: "A", pvpendgame: "A" };
+  const withBoss = resolveHeroRatings({ ...base, bosses: { baphomet: "S+", lilith: "X" } });
+  assert.equal(withBoss.overall, resolveHeroRatings(base).overall);
+  assert.deepEqual(withBoss.bosses, { baphomet: "S+" });
+  assert.deepEqual(resolveHeroRatings(base).bosses, {});
+});
+
+test("rankHeroesForBoss sorts by tier, then name, and skips unrated heroes", () => {
+  const hero = (name, tier) => ({ name, ratings: { bosses: tier ? { baphomet: tier } : {} } });
+  const ranked = rankHeroesForBoss([hero("Zeus", "A"), hero("Isis", "S+"), hero("Anubis", "A"), hero("Ares")], "baphomet");
+  assert.deepEqual(ranked.map(({ hero: h, tier }) => `${h.name}:${tier}`), ["Isis:S+", "Anubis:A", "Zeus:A"]);
 });

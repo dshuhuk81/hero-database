@@ -85,6 +85,7 @@ X=${D}_plain
 tools/android/run.sh export_hero_releases.py --global $X/x_global --cn $X/x_cn --client-global vNNNNNN --client-cn 1.0.13
 tools/android/run.sh export_events.py        --global $X/x_global --heroes out/site_data/hero_releases.json
 tools/android/run.sh export_release_schedule_md.py       # optional overview in out/site_data/RELEASE_SCHEDULE.md
+tools/android/run.sh export_bosses.py --global $X/x_global --icons <repo>/public/items/bosses   # boss rewards + 96px icons (needs Pillow)
 npm run import:game-data                                 # validates and copies into src/data/generated/ (commit those)
 
 # c) hero art

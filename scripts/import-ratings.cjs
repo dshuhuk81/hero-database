@@ -96,9 +96,27 @@ function cleanTierClass(value, context) {
   return tierClass;
 }
 
+// Optional sheet columns "boss_<bossId>" (e.g. boss_baphomet). When the sheet has any of them,
+// it is the source for every boss rating; without them existing boss ratings are kept.
+const BOSS_COLUMN_PREFIX = 'boss_';
+const BOSS_IDS = new Set(
+  JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/bosses.json'), 'utf8')).bosses.map((boss) => boss.id),
+);
+
+function bossRatings(source, bossColumns, id) {
+  const out = {};
+  for (const column of bossColumns) {
+    const tier = cleanTier(source[column], `${id}.${column}`);
+    if (tier) out[column.slice(BOSS_COLUMN_PREFIX.length)] = tier;
+  }
+  return out;
+}
+
 function changedFields(before, after) {
-  return [...RATING_FIELDS, 'overallAdjustment', 'overallReason']
+  const fields = [...RATING_FIELDS, 'overallAdjustment', 'overallReason']
     .filter((field) => before[field] !== after[field]);
+  if (JSON.stringify(before.bosses ?? {}) !== JSON.stringify(after.bosses ?? {})) fields.push('bosses');
+  return fields;
 }
 
 async function fetchSheet() {
@@ -127,6 +145,10 @@ async function run() {
   const headers = rows[headerIndex].map((header) => header.trim());
   const missingColumns = REQUIRED_COLUMNS.filter((column) => !headers.includes(column));
   if (missingColumns.length) throw new Error(`Missing required column(s): ${missingColumns.join(', ')}.`);
+
+  const bossColumns = headers.filter((header) => header.startsWith(BOSS_COLUMN_PREFIX));
+  const unknownBossColumns = bossColumns.filter((column) => !BOSS_IDS.has(column.slice(BOSS_COLUMN_PREFIX.length)));
+  if (unknownBossColumns.length) throw new Error(`Unknown boss column(s): ${unknownBossColumns.join(', ')}.`);
 
   const ratings = JSON.parse(fs.readFileSync(RATINGS_PATH, 'utf8'));
   const heroes = new Map(
@@ -158,6 +180,11 @@ async function run() {
     }
     next.overallAdjustment = cleanAdjustment(source.overallAdjustment, id);
     next.overallReason = String(source.overallReason ?? '').trim();
+    if (bossColumns.length) {
+      const bosses = bossRatings(source, bossColumns, id);
+      if (Object.keys(bosses).length) next.bosses = bosses;
+      else delete next.bosses;
+    }
     if (next.overallAdjustment !== 0 && !next.overallReason) {
       throw new Error(`${id}: an Overall adjustment requires overallReason.`);
     }

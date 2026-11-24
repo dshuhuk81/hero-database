@@ -5,7 +5,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { validateEvents, validateHeroReleases, validateOdyssey } from "./lib/game-data.mjs";
+import { validateBosses, validateEvents, validateHeroReleases, validateOdyssey } from "./lib/game-data.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fromIndex = process.argv.indexOf("--from");
@@ -31,12 +31,17 @@ const events = read("events.global.json");
 // Optional: odyssey.global.json (quests, rewards, unlocks) from export_odyssey.py.
 const ODYSSEY = "odyssey.global.json";
 const odyssey = existsSync(join(FROM, ODYSSEY)) ? read(ODYSSEY) : null;
+// Optional: bosses.global.json (boss rewards) from export_bosses.py.
+const BOSSES = "bosses.global.json";
+const bosses = existsSync(join(FROM, BOSSES)) ? read(BOSSES) : null;
 const heroErrors = validateHeroReleases(heroes);
 const { errors: eventErrors, warnings } = validateEvents(events, knownGameIds);
 const odysseyResult = odyssey ? validateOdyssey(odyssey) : { errors: [], warnings: [] };
-const errors = [...heroErrors, ...eventErrors, ...odysseyResult.errors];
+const bossResult = bosses ? validateBosses(bosses) : { errors: [], warnings: [] };
+const errors = [...heroErrors, ...eventErrors, ...odysseyResult.errors, ...bossResult.errors];
 // Per-quest/per-reward warnings would flood the log; the summary line from the validator is enough.
 warnings.push(...odysseyResult.warnings.filter((warning) => warning.startsWith("odyssey:")));
+warnings.push(...bossResult.warnings);
 
 for (const warning of warnings) console.warn(`warning: ${warning}`);
 if (errors.length) {
@@ -73,5 +78,9 @@ if (odyssey) {
   writeFileSync(join(OUT, ODYSSEY), JSON.stringify(odyssey, null, 2) + "\n");
   const quests = odyssey.chains.reduce((sum, chain) => sum + chain.quests.length, 0);
   console.log(`Imported ${quests} odyssey quests and ${odyssey.unlocks.length} unlocks`);
+}
+if (bosses) {
+  writeFileSync(join(OUT, BOSSES), JSON.stringify(bosses, null, 2) + "\n");
+  console.log(`Imported rewards for ${bosses.bosses.length} boss entries and ${Object.keys(bosses.items).length} items`);
 }
 console.log(`Imported ${heroes.heroes.length} heroes and ${events.events.length} events from ${FROM}`);

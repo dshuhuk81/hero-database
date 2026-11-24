@@ -1,0 +1,61 @@
+---
+// Rank rewards. Rows with a `category` (Torment Rift: Bronze to Mythic) are grouped into
+// disclosures, best group first; plain rank lists render as one table.
+import BossReward from './BossReward.astro';
+import type { RankRow } from '../../data/bosses';
+
+interface Props {
+  ranks: RankRow[];
+  kicker: string;
+  title: string;
+  note?: string;
+}
+
+const { ranks, kicker, title, note } = Astro.props;
+const label = (row: RankRow) => (row.from === row.to ? `#${row.from}` : row.to >= 99999 ? `#${row.from}+` : `#${row.from}-${row.to}`);
+const sorted = [...ranks].sort((a, b) => a.from - b.from);
+const grouped = sorted.some(row => row.category);
+const groups = grouped
+  ? [...new Set(sorted.map(row => row.category))].map(category => {
+      const rows = sorted.filter(row => row.category === category);
+      return { category, name: rows[0].title?.split(' ')[0] ?? `Tier ${category}`, rows };
+    })
+  : [{ category: 0, name: '', rows: sorted }];
+---
+
+<div class="boss-ranks">
+  <span class="section-label">{kicker}</span>
+  <h3>{title}</h3>
+  {note && <p class="boss-ranks-note">{note}</p>}
+  {grouped ? (
+    <div class="boss-rank-groups">
+      {groups.map((group, index) => (
+        <details class="boss-rank-group" data-rank-tier={group.name.toLowerCase()} open={index === 0}>
+          <summary>
+            <span class="boss-rank-group-name">{group.name}</span>
+            <span class="boss-rank-group-range">#{group.rows[0].from}-{group.rows[group.rows.length - 1].to}</span>
+            <span class="boss-reward-row">{group.rows[0].rewards.map(reward => <BossReward reward={reward} size="sm" />)}</span>
+          </summary>
+          <ol class="boss-rank-list">
+            {group.rows.map(row => (
+              <li>
+                <span class="boss-rank-label">{label(row)}</span>
+                <span class="boss-rank-title">{row.title}</span>
+                <span class="boss-reward-row">{row.rewards.map(reward => <BossReward reward={reward} size="sm" />)}</span>
+              </li>
+            ))}
+          </ol>
+        </details>
+      ))}
+    </div>
+  ) : (
+    <ol class="boss-rank-list boss-rank-list--plain">
+      {sorted.map(row => (
+        <li>
+          <span class="boss-rank-label">{label(row)}</span>
+          <span class="boss-reward-row">{row.rewards.map(reward => <BossReward reward={reward} size="sm" />)}</span>
+        </li>
+      ))}
+    </ol>
+  )}
+</div>

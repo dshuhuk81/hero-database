@@ -1,0 +1,28 @@
+---
+// One reward as an icon tile with the amount in the corner. Icons: public/items/bosses/<icon>.webp
+// (written by tools/android/scripts/export_bosses.py --icons).
+import { rewardItems, type Reward } from '../../data/bosses';
+import { formatCompact, rewardRarity } from '../../utils/bossRewards.js';
+
+interface Props {
+  reward: Reward;
+  /** Client-side haul grids update the amount; the key lets the script find the tile. */
+  live?: boolean;
+  size?: 'md' | 'sm';
+}
+
+const { reward, live = false, size = 'md' } = Astro.props;
+const key = `${reward[0]}/${reward[1]}`;
+const item = rewardItems[key];
+const rarity = rewardRarity(item?.quality);
+const name = item?.name ?? 'Unknown reward';
+const amount = reward[2] > 1 || live ? formatCompact(reward[2], 10000) : '';
+---
+
+<span class={`boss-reward boss-reward--${size}`} title={`${name}${reward[2] > 1 ? ` x${reward[2].toLocaleString('en-US')}` : ''}`} data-rarity={rarity} data-reward-key={live ? key : undefined}>
+  {item?.icon
+    ? <img src={`/items/bosses/${item.icon}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />
+    : <span class="boss-reward-empty" aria-hidden="true">?</span>}
+  {amount && <span class="boss-reward-amount" data-reward-amount={live ? '' : undefined}>{amount}</span>}
+  <span class="sr-only">{name}{reward[2] > 1 ? ` x${reward[2]}` : ''}</span>
+</span>

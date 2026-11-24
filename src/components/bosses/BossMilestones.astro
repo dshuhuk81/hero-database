@@ -1,0 +1,119 @@
+---
+// Damage milestones as a track: a slider (or typed damage) marks how far you get, the haul grid
+// sums every reward up to that point, and the full list sits in a disclosure.
+import BossReward from './BossReward.astro';
+import type { Milestone } from '../../data/bosses';
+import { formatCompact, rewardKeys, rewardsUpTo } from '../../utils/bossRewards.js';
+
+interface Props {
+  milestones: Milestone[];
+  /** Eyebrow and title above the track. */
+  kicker: string;
+  title: string;
+  note?: string;
+  inputLabel?: string;
+}
+
+const { milestones, kicker, title, note, inputLabel = 'Your damage' } = Astro.props;
+const total = milestones.length;
+const start = Math.max(1, Math.round(total * 0.35));
+const startDamage = milestones[start - 1]?.damage ?? 0;
+const haul = new Map(rewardsUpTo(milestones, startDamage).map(({ key, reward }) => [key, reward]));
+const keys = rewardKeys(milestones);
+const allRewards = new Map(milestones.flatMap(m => m.rewards).map(r => [`${r[0]}/${r[1]}`, r] as const));
+// Six labelled markers along the track, the last one on the final milestone.
+const markerEvery = Math.max(1, Math.ceil(total / 6));
+const isMarker = (index: number) => index === total - 1 || (index + 1) % markerEvery === 0;
+---
+
+<div class="boss-track" data-boss-track data-milestones={JSON.stringify(milestones.map(m => [m.damage, m.rewards]))}>
+  <div class="boss-track-heading">
+    <div>
+      <span class="section-label">{kicker}</span>
+      <h3>{title}</h3>
+      {note && <p>{note}</p>}
+    </div>
+    <label class="boss-track-input">
+      <span>{inputLabel}</span>
+      <input type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value={formatCompact(startDamage)} data-track-input aria-describedby={`${kicker}-status`.replace(/\W+/g, '-')} />
+    </label>
+  </div>
+
+  <div class="boss-track-bar">
+    <ol class="boss-track-ticks" aria-hidden="true">
+      {milestones.map((milestone, index) => (
+        <li class:list={[{ 'is-reached': index < start, 'is-marker': isMarker(index) }]} data-track-tick>
+          {isMarker(index) && <span class="boss-track-marker">{formatCompact(milestone.damage)}</span>}
+        </li>
+      ))}
+    </ol>
+    <input class="boss-track-range" type="range" min="0" max={total} step="1" value={start} data-track-range aria-label={`${title}: milestones reached`} />
+  </div>
+
+  <p class="boss-track-status" id={`${kicker}-status`.replace(/\W+/g, '-')} aria-live="polite">
+    <strong data-track-count>{start}</strong> of {total} milestones
+    <span data-track-next>{milestones[start] ? <>· next at <strong>{formatCompact(milestones[start].damage)}</strong></> : '· all reached'}</span>
+  </p>
+
+  <div class="boss-track-haul">
+    {keys.map(key => {
+      const reward = haul.get(key) ?? [...allRewards.get(key)!.slice(0, 2), 0] as [number, number, number];
+      return <span class="boss-track-haul-item" hidden={!haul.has(key)} data-haul-key={key}><BossReward reward={reward} live /></span>;
+    })}
+  </div>
+
+  <details class="boss-disclosure">
+    <summary>All {total} milestones</summary>
+    <ol class="boss-milestone-list">
+      {milestones.map((milestone, index) => (
+        <li class:list={[{ 'is-reached': index < start }]} data-track-row>
+          <span class="boss-milestone-damage">{formatCompact(milestone.damage)}</span>
+          <span class="boss-reward-row">{milestone.rewards.map(reward => <BossReward reward={reward} size="sm" />)}</span>
+        </li>
+      ))}
+    </ol>
+  </details>
+</div>
+
+<script>
+  import { formatCompact, parseCompact, rewardsUpTo } from '../../utils/bossRewards.js';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-boss-track]')) {
+    const milestones = JSON.parse(root.dataset.milestones ?? '[]').map(([damage, rewards]: [number, [number, number, number][]]) => ({ damage, rewards }));
+    const range = root.querySelector<HTMLInputElement>('[data-track-range]')!;
+    const input = root.querySelector<HTMLInputElement>('[data-track-input]')!;
+    const count = root.querySelector('[data-track-count]')!;
+    const next = root.querySelector('[data-track-next]')!;
+    const ticks = root.querySelectorAll('[data-track-tick]');
+    const rows = root.querySelectorAll('[data-track-row]');
+    const haul = new Map([...root.querySelectorAll<HTMLElement>('[data-haul-key]')].map(el => [el.dataset.haulKey!, el]));
+
+    const render = (reached: number, damage: number, fromInput = false) => {
+      range.value = String(reached);
+      if (!fromInput) input.value = formatCompact(damage);
+      count.textContent = String(reached);
+      const upcoming = milestones[reached];
+      next.innerHTML = upcoming ? `· next at <strong>${formatCompact(upcoming.damage)}</strong>` : '· all reached';
+      ticks.forEach((tick, index) => tick.classList.toggle('is-reached', index < reached));
+      rows.forEach((row, index) => row.classList.toggle('is-reached', index < reached));
+      const totals = new Map(rewardsUpTo(milestones, damage).map(({ key, reward }) => [key, reward[2]]));
+      for (const [key, el] of haul) {
+        const amount = totals.get(key) ?? 0;
+        el.hidden = amount === 0;
+        const label = el.querySelector('[data-reward-amount]');
+        if (label) label.textContent = formatCompact(amount, 10000);
+      }
+    };
+
+    range.addEventListener('input', () => {
+      const reached = Number(range.value);
+      render(reached, reached ? milestones[reached - 1].damage : 0);
+    });
+    input.addEventListener('input', () => {
+      const damage = parseCompact(input.value);
+      if (damage === null) return;
+      const reached = milestones.filter((m: { damage: number }) => m.damage <= damage).length;
+      render(reached, damage, true);
+    });
+  }
+</script>

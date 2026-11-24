@@ -1,0 +1,23 @@
+---
+import type { BossView } from '../../data/bosses';
+
+interface Props {
+  boss: BossView;
+  eager?: boolean;
+}
+
+const { boss, eager = false } = Astro.props;
+---
+
+<div class="encounter-art" style={`--boss-focus: ${boss.artworkFocus}`} aria-hidden="true">
+  <img
+    src={boss.image}
+    alt=""
+    width="1080"
+    height="1647"
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : 'auto'}
+    decoding="async"
+    onerror="this.setAttribute('hidden', '')"
+  />
+</div>
