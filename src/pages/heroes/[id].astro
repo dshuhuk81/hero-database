@@ -562,7 +562,20 @@ const tabs = [
         gap: var(--space-3);
       }
       .lt-portrait { display: flex; justify-content: center; }
+      /* Fade the actual asset edges, including wings and effects that were
+         already cropped in the source. Keep the central silhouette opaque. */
+      .lt-portrait::after {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        inset: auto auto 0 0;
+        width: 52%;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, var(--bg-base));
+        pointer-events: none;
+      }
       .lt-portrait img {
+        --portrait-edge-fade: 10%;
         width: auto;
         max-width: 640px;
         height: auto;
@@ -571,6 +584,8 @@ const tabs = [
         filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.72));
         position: absolute;
         top: var(--hero-img-y, 0%);
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--portrait-edge-fade), #000 calc(100% - var(--portrait-edge-fade)), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 var(--portrait-edge-fade), #000 calc(100% - var(--portrait-edge-fade)), transparent);
       }
 
       .lt-ident { text-align: right; padding-bottom: var(--space-10); }
@@ -1128,15 +1143,11 @@ const tabs = [
           height: clamp(280px, 76vw, 330px);
           overflow: hidden;
           isolation: isolate;
+          -webkit-mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 75%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 75%, transparent);
         }
         .lt-portrait::after {
-          content: "";
-          position: absolute;
-          z-index: 2;
-          inset: auto 0 0;
-          height: 25%;
-          background: linear-gradient(to bottom, transparent, var(--bg-base));
-          pointer-events: none;
+          display: none;
         }
         .lt-portrait img {
           position: absolute;
