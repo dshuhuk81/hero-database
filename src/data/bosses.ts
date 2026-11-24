@@ -78,7 +78,6 @@ export const visibleBosses = data.bosses
       .sort((a, b) => MODE_ORDER.indexOf(a.mode) - MODE_ORDER.indexOf(b.mode));
     return {
       ...boss,
-      fightPlan: (boss as { fightPlan?: { title: string; text: string }[] }).fightPlan ?? [],
       team: getBossTeam(boss, heroes),
       artworkFocus: artworkFocus[boss.id] ?? '50% 50%',
       rewards,

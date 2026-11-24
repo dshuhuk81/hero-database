@@ -82,27 +82,24 @@ export function rewardRarity(quality) {
   return "mythic";
 }
 
-// Mechanic categories for the mechanics ledger and skill chips. Tags come from bosses.json; free
-// text is matched by keyword when a line has no tags. Keywords are whole words or stems that start
-// a word, so "partial" is not "part" and "added" is not "add".
+// Mechanic categories for the mechanics ledger and skill chips. Lines are matched by keyword.
+// Keywords are whole words or stems that start a word, so "partial" is not "part" and "added" is
+// not "add".
 export const MECHANIC_CATEGORIES = {
-  energy: { label: "Energy", tags: ["ENERGY_DRAIN", "ENERGY_INTERACTION_NON_ULT_DAMAGE", "RESOURCE_SCALING"], words: /\benergy|\bdrain|\brage\b/i },
-  defense: { label: "Defense", tags: ["DAMAGE_REDUCTION_PHASE", "DMG_RESISTANCE", "MAIN_UNTARGETABLE", "UNDISPELLABLE", "NO_DAMAGE"], words: /\bstance\b|\breduc|\bresist|\bimmun|\buntargetable|\bshield|\binvulnerab|\bbarrier/i },
-  control: { label: "Control", tags: ["SILENCE", "ROOT", "PETRIFY", "KNOCKBACK", "KNOCKDOWN", "PERMANENT_FREEZE"], words: /\bsilenc|\bstun|\bfreez|\broots?\b|\bpetrif|\bknock|\bcontrol|\bfrozen/i },
-  targeting: { label: "Targeting", tags: ["TARGETS_TOP_DPS", "FIXED_TARGET", "FIXED_TARGET_BACKLINE", "RANDOM_TARGET", "INDEPENDENT_TARGETING"], words: /\btarget|\btop dps\b|\bbackline\b|\brandom\b/i },
-  ramp: { label: "Scaling", tags: ["RAMPING_AURA", "RAMPING_VULNERABILITY", "BERSERK_SCALING", "ATK_SPEED_BUFF", "ATK_SPEED_BUFF_TO_TARGET", "ATK_SPEED_GLOBAL", "GLOBAL_BUFF", "DMG_VULNERABILITY", "HEAL_REDUCTION"], words: /\bramp|\bstack|\bincreas|\bberserk|\benrag|\bover time\b|\batk spd\b|\bvulnerab|\bheal/i },
-  adds: { label: "Summons & parts", tags: ["SUMMONS", "MULTI_PART", "MULTI_PART_BOSS"], words: /\bsummon|\bparts?\b|\bclones?\b|\bminions?\b|\badds?\b|\bchild|\bheads?\b|\brespawn/i },
-  other: { label: "Other", tags: [], words: /(?!)/ },
+  energy: { label: "Energy", words: /\benergy|\bdrain|\brage\b/i },
+  defense: { label: "Defense", words: /\bstance\b|\breduc|\bresist|\bimmun|\buntargetable|\bshield|\binvulnerab|\bbarrier/i },
+  control: { label: "Control", words: /\bsilenc|\bstun|\bfreez|\broots?\b|\bpetrif|\bknock|\bcontrol|\bfrozen/i },
+  targeting: { label: "Targeting", words: /\btarget|\btop dps\b|\bbackline\b|\brandom\b/i },
+  ramp: { label: "Scaling", words: /\bramp|\bstack|\bincreas|\bberserk|\benrag|\bover time\b|\batk spd\b|\bvulnerab|\bheal/i },
+  adds: { label: "Summons & parts", words: /\bsummon|\bparts?\b|\bclones?\b|\bminions?\b|\badds?\b|\bchild|\bheads?\b|\brespawn/i },
+  other: { label: "Other", words: /(?!)/ },
 };
 
 /**
- * Category id for a mechanic: by tag first; otherwise the category whose keyword appears earliest
- * in the text (the lead clause is the point of the line); "other" when nothing matches.
+ * Category id for a mechanic: the category whose keyword appears earliest in the text (the lead
+ * clause is the point of the line); "other" when nothing matches.
  */
-export function mechanicCategory({ tags = [], text = "" } = {}) {
-  for (const [id, category] of Object.entries(MECHANIC_CATEGORIES)) {
-    if (tags.some((tag) => category.tags.includes(tag))) return id;
-  }
+export function mechanicCategory({ text = "" } = {}) {
   let best = "other";
   let bestIndex = Infinity;
   for (const [id, category] of Object.entries(MECHANIC_CATEGORIES)) {

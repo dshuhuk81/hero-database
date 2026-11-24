@@ -46,8 +46,7 @@ test("rewardKeys and chooseChests list distinct keys", () => {
   assert.deepEqual(chooseChests([milestones[0].rewards, milestones[2].rewards], items).map((c) => c.key), ["103/1009"]);
 });
 
-test("mechanicCategory prefers tags, then keywords", () => {
-  assert.equal(mechanicCategory({ tags: ["SILENCE"], text: "energy" }), "control");
+test("mechanicCategory matches by keyword", () => {
   assert.equal(mechanicCategory({ text: "Energy drain zones (pentacle) every 3s" }), "energy");
   assert.equal(mechanicCategory({ text: "Defensive stance reduces damage heavily" }), "defense");
   assert.equal(mechanicCategory({ text: "Big hit" }), "other");

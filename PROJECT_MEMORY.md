@@ -210,21 +210,21 @@ Older docs mention `Wildfire` and `Deepwater`; current hero data does not use th
 Important files:
 
 - `src/data/bosses.json`
-- `src/pages/bosses.astro`
-- `src/utils/bossAutoComp.js`
-- `src/data/communityComps.json`
+- `src/pages/bosses.astro` and `src/pages/bosses/[id].astro`
+- `src/utils/bossTeams.js`, `src/utils/bossRewards.js`
+- `scripts/validate-bosses.js` (checks the schema, teams and hero ids)
 
 Current boss count: 8.
 
 Boss entries include:
 
 - `id`, `name`, `mode`, `battlepower`, `faction`, `class`, `image`.
-- `summary`, `strategyNotes`.
-- `mechanics` and `mechanicTags`.
-- `skills`.
+- `summary`.
+- `mechanics` (plain text lines; the page groups them by keyword).
+- `skills` (`type`, `name`, `description`, `mechanics`).
 - `team`: one recommended team per boss, 5 hero ids in formation order (front-left, front-right, back-left, back-center, back-right).
 
-`bosses.astro` turns mechanic tags into player-friendly labels and tips. Boss guide content currently combines authored strategy with community comp data.
+Only fields the boss pages display live in `bosses.json`; unused ones (fight plan, strategy notes, mechanic tags, skill ids, auto rules) were removed.
 
 Notable boss mechanic tags include energy drain, silence, damage reduction phases, target top DPS, percent HP damage, ramping aura, charge attack, frontal damage, berserk scaling, summons, untargetable main boss, freeze/petrify/root, heal reduction, and multi-part boss logic.
 
