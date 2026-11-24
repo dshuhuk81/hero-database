@@ -233,7 +233,7 @@ const tabs = [
               </span>
               <span class="lt-might">
                 {Number(hero.stats?.might ?? 0).toLocaleString("en-US")}
-                <em>Might</em>
+                <img class="lt-might-icon" src="/icons/stats/might.png" alt="Might" title="Might" width="57" height="39" loading="eager" />
               </span>
             </div>
 
@@ -598,13 +598,15 @@ const tabs = [
         letter-spacing: 0.08em;
         color: var(--accent-gold-light);
       }
-      .lt-might em {
-        font-style: normal;
-        font-size: 11px;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-left: 8px;
+      .lt-might {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .lt-might-icon {
+        width: 57px;
+        height: 39px;
+        object-fit: contain;
       }
 
       .lt-grade {
