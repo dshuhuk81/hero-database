@@ -13,8 +13,8 @@ const heroIds = new Set(
 const BOSS_KEYS = ['id', 'name', 'mode', 'battlepower', 'faction', 'class', 'image', 'summary', 'team', 'mechanics', 'skills'];
 const SKILL_KEYS = ['type', 'name', 'description', 'mechanics'];
 const TEAM_SIZE = 5;
-// Bosses src/data/bosses.ts keeps off the site; they may still lack artwork.
-const HIDDEN = ['nian_beast'];
+// Bosses still waiting for full-body artwork (the page hides a missing image).
+const NO_ARTWORK = ['nian_beast'];
 const errors = [];
 
 const isText = value => typeof value === 'string' && value.trim() !== '';
@@ -39,9 +39,9 @@ for (const boss of data.bosses ?? []) {
   for (const key of ['name', 'mode', 'battlepower', 'faction', 'class', 'summary']) {
     if (!isText(boss[key])) errors.push(`${at}: ${key} is required.`);
   }
-  if (!HIDDEN.includes(boss.id) || boss.image) {
+  if (!NO_ARTWORK.includes(boss.id) || boss.image) {
     if (!isText(boss.image)) errors.push(`${at}: image is required.`);
-    else if (!/^https:\/\//.test(boss.image)) errors.push(`${at}: image must be an https URL.`);
+    else if (!/^https:\/\//.test(boss.image) && !/^\/bosses\/[a-z0-9_-]+\.webp$/.test(boss.image)) errors.push(`${at}: image must be an https URL or a local /bosses/*.webp path.`);
   }
 
   if (!Array.isArray(boss.team) || boss.team.length !== TEAM_SIZE) {

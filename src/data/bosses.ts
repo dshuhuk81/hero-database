@@ -46,6 +46,7 @@ const artworkFocus: Record<string, string> = {
   lilith: '50% 18%',
   isthar_vi: '50% 32%',
   jackfrost: '50% 28%',
+  nian_beast: '50% 33%',
   typhoon: '50% 40%',
 };
 
@@ -71,7 +72,6 @@ function modeFacts(rewards: BossRewardEntry[]) {
 }
 
 export const visibleBosses = data.bosses
-  .filter(boss => boss.id !== 'nian_beast')
   .map(boss => {
     const rewards = rewardEntries
       .filter(entry => entry.siteId === boss.id)
