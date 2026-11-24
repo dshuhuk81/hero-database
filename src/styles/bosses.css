@@ -295,21 +295,6 @@
   height: 32px;
   margin-block: -4px;
 }
-.encounter-team-line {
-  max-width: 58ch;
-  margin: var(--space-5) 0 0;
-  color: var(--text-primary);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
-}
-.encounter-team-line span {
-  margin-right: var(--space-2);
-  color: var(--accent-gold-light);
-  font-weight: var(--weight-semibold);
-}
-.encounter-team-line span::after {
-  content: ':';
-}
 .encounter-tile-copy .section-label,
 .encounter-header-copy .section-label,
 .encounter-section-heading .section-label {
