@@ -1,0 +1,23 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import HeroFrameCard from "../../components/HeroFrameCard.astro";
+import { heroes } from "../../data/heroes/withRatings";
+
+// Lab page for the in-game card rebuild. Not linked anywhere, not indexed.
+const picks = ["amunra", "nidhogg", "athena", "hades", "anubis"]
+  .map(id => heroes.find(h => h.id === id))
+  .filter(Boolean);
+---
+<Base title="Hero Frame Card Lab" description="Lab page" noindex={true}>
+  <main>
+    <h1 class="sr-only">Hero frame card lab</h1>
+    <div class="hero-frame-card-lab">
+      {picks.map(h => <HeroFrameCard hero={h} href={`/heroes/${h.id}`} />)}
+    </div>
+    <div class="hero-frame-card-lab hero-frame-card-lab--paper">
+      {picks.map(h => <HeroFrameCard hero={h} surface="paper" />)}
+      {picks.slice(0, 2).map(h => <HeroFrameCard hero={h} zoom="full" surface="paper" />)}
+    </div>
+  </main>
+</Base>

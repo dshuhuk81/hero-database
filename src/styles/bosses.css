@@ -228,53 +228,17 @@
   padding: 0;
   list-style: none;
 }
-/* Every hero gets the same square frame, so differences in the art never change the layout. */
+/* Each slot is a tall in-game hero card with the name underneath. */
 .boss-slot {
   grid-column: span 2;
-  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 .boss-slot[data-slot="front-left"] { grid-column: 2 / span 2; grid-row: 1; }
 .boss-slot[data-slot="front-right"] { grid-column: 4 / span 2; grid-row: 1; }
 .boss-slot[data-slot^="back"] { grid-row: 2; }
-/* The frame colour is the hero's rarity, so the team reads at a glance. */
-.boss-slot[data-rarity="common"] { --edge: var(--accent-green); }
-.boss-slot[data-rarity="rare"] { --edge: var(--accent-sky); }
-.boss-slot[data-rarity="epic"] { --edge: var(--accent-purple); }
-.boss-slot[data-rarity="legendary"] { --edge: var(--accent-gold); }
-.boss-slot-link {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border: 2px solid var(--edge, var(--border-strong));
-  border-radius: var(--radius-md);
-  background: var(--bg-raised);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
-  color: var(--text-bright);
-  text-decoration: none;
-  transition: transform 0.25s var(--ease-out);
-}
-.boss-slot-art {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center var(--hero-img-y, top);
-}
-.boss-slot-faction {
-  position: absolute;
-  top: var(--space-1);
-  left: var(--space-1);
-  width: 20px;
-  height: 20px;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-}
 .boss-slot-name {
-  position: absolute;
-  inset: auto 0 0;
-  padding: var(--space-5) var(--space-1) var(--space-1);
-  background: linear-gradient(0deg, color-mix(in srgb, var(--bg-base) 92%, transparent) 40%, transparent);
   color: var(--text-bright);
   font-size: var(--text-label);
   font-weight: var(--weight-semibold);
@@ -284,24 +248,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.boss-slot-name--unavailable {
+  color: var(--text-secondary);
+}
 .boss-slot-placeholder {
   display: grid;
   place-items: center;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 212 / 450;
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
   color: var(--text-muted);
   font-size: var(--text-3xl);
-}
-.boss-slot-link:hover,
-.boss-slot-link:focus-visible {
-  transform: translateY(-3px);
-}
-.boss-slot-link:focus-visible {
-  outline: 2px solid var(--accent-purple);
-  outline-offset: 3px;
-}
-.boss-slot-link--unavailable .boss-slot-name {
-  color: var(--text-secondary);
 }
 /* Header and directory: fact strip under the summary */
 .encounter-facts-strip {
@@ -978,11 +937,10 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .boss-slot-link {
+  a.hero-frame-card {
     transition: none;
   }
-  .boss-slot-link:hover,
-  .boss-slot-link:focus-visible {
+  a.hero-frame-card:hover {
     transform: none;
   }
   .encounter-art img {

@@ -1,0 +1,68 @@
+---
+// Rebuild of the in-game hero card: rounded art window with a holographic rim,
+// sparkle backdrop, ornate outline, gem ornament on top and a faction hexagon
+// at the bottom tip. Not wired into any page yet. Class icon is intentionally
+// left out until it has a placement.
+//
+// zoom:    "bust" (default, face and shoulders like the game) or "full" (whole art).
+// surface: "dark" (default, light outline for the dark site) or "paper" (original
+//          brown-grey outline, for light backgrounds like the game's).
+// focusY:  optional CSS length that shifts the art vertically inside the window
+//          (negative moves it up), for heroes whose face sits lower or higher.
+const { hero, href = null, showFaction = true, zoom = "bust", focusY = null, loading = "lazy", surface = "dark" } = Astro.props;
+const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+const faction = hero?.faction ? String(hero.faction).toLowerCase() : "";
+const Tag = href ? "a" : "div";
+---
+
+<Tag
+  class={`hero-frame-card hero-frame-card--${zoom}`}
+  href={href ?? undefined}
+  data-faction={faction}
+  style={focusY ? `--hfc-focus-y:${focusY};` : undefined}
+>
+  <div class="hero-frame-card__rim">
+    <div class="hero-frame-card__art">
+      <img
+        class="hero-frame-card__img"
+        src={`${R2_BASE}/heroes/${hero.id}.webp`}
+        alt={`${hero.name} portrait`}
+        width="838"
+        height="2048"
+        loading={loading}
+        decoding="async"
+      />
+    </div>
+  </div>
+  <img class="hero-frame-card__outline" src={surface === "paper" ? "/images/hero-frame/arch-outline.webp" : "/images/hero-frame/arch-outline-light.webp"} alt="" aria-hidden="true" width="424" height="900" />
+  <svg class="hero-frame-card__gem" viewBox="0 0 120 100" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="hfc-gem-core" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffffff" />
+        <stop offset="0.55" stop-color="#f6dfe9" />
+        <stop offset="1" stop-color="#cfa9c4" />
+      </linearGradient>
+      <linearGradient id="hfc-gem-wing" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#b9b0b8" />
+        <stop offset="0.5" stop-color="#f4eef2" />
+        <stop offset="1" stop-color="#cfc6cc" />
+      </linearGradient>
+    </defs>
+    <path d="M60 14 L74 52 L60 88 L46 52 Z" fill="url(#hfc-gem-core)" stroke="#8d8189" stroke-width="1.4" stroke-linejoin="round" />
+    <path d="M60 14 L74 52 L60 52 Z" fill="#ffffff" fill-opacity="0.55" />
+    <path d="M60 52 L46 52 L60 88 Z" fill="#a98aa0" fill-opacity="0.35" />
+    <path d="M44 52 C30 48 14 56 4 72 C22 70 34 64 44 60 Z" fill="url(#hfc-gem-wing)" stroke="#8d8189" stroke-width="1.2" stroke-linejoin="round" />
+    <path d="M76 52 C90 48 106 56 116 72 C98 70 86 64 76 60 Z" fill="url(#hfc-gem-wing)" stroke="#8d8189" stroke-width="1.2" stroke-linejoin="round" />
+  </svg>
+  {showFaction && faction && (
+    <img
+      class="hero-frame-card__faction"
+      src={`/icons/factions/${faction}.webp`}
+      alt={`${hero.faction} faction`}
+      width="74"
+      height="85"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+</Tag>
