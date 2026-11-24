@@ -316,11 +316,11 @@ const translations: TranslationTree = {
       zh: "Motto Immortal DB 由一个人独立制作并自费运营。如果它对你有帮助，一点小小的支持能让托管和数据更新继续下去。",
     },
     stripText: {
-      en: "Did this help you? This site is free and built by one person.",
-      de: "Hat dir das geholfen? Diese Seite ist kostenlos und wird von einer Person gebaut.",
-      es: "¿Te ha ayudado? Este sitio es gratuito y lo hace una sola persona.",
-      ru: "Было полезно? Этот сайт бесплатный, его делает один человек.",
-      zh: "有帮助吗？本站完全免费，由一个人独立制作。",
+      en: "Found this useful? This site is free, ad-free and built only by me. A small tip keeps it growing.",
+      de: "Hat dir das weitergeholfen? Diese Seite ist kostenlos, werbefrei und wird nur von mir gebaut. Ein kleines Trinkgeld hilft, sie weiterzuentwickeln.",
+      es: "¿Te ha sido útil? Este sitio es gratuito, sin anuncios y lo hago yo solo. Una pequeña propina ayuda a que siga creciendo.",
+      ru: "Было полезно? Сайт бесплатный, без рекламы, и я делаю его один. Небольшая поддержка помогает ему развиваться.",
+      zh: "觉得有用吗？本站免费、无广告，全部由我一个人制作。一点小小的支持能让它继续成长。",
     },
     toastText: {
       en: "{name} just supported this site. Thank you!",

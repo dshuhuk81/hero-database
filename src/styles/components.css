@@ -6927,8 +6927,7 @@ button.content-list-item:hover .content-list-item-action {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-4);
-  max-width: 1200px;
-  margin: var(--space-12, 48px) auto 0;
+  margin: var(--space-12, 48px) 0 0;
   padding: var(--space-4) var(--space-5, 20px);
   background: rgba(250, 204, 21, 0.05);
   border: 1px solid rgba(250, 204, 21, 0.18);
