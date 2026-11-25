@@ -1,8 +1,43 @@
 {
-  "generatedAt": "2026-11-25T12:35:57+00:00",
+  "generatedAt": "2026-11-25T13:18:38+00:00",
   "client": "global",
   "source": "out/emu_pull/20261126_plain/x_global",
   "events": {
+    "200030001": {
+      "kind": "daily",
+      "days": [
+        {
+          "day": 1,
+          "rewards": [
+            [
+              107,
+              0,
+              500
+            ]
+          ]
+        },
+        {
+          "day": 2,
+          "rewards": [
+            [
+              103,
+              1010,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 3,
+          "rewards": [
+            [
+              103,
+              1009,
+              10
+            ]
+          ]
+        }
+      ]
+    },
     "200810001": {
       "kind": "wishlist",
       "rewards": [
@@ -6756,9 +6791,287 @@
           ]
         }
       ]
+    },
+    "201500004": {
+      "kind": "daily",
+      "days": [
+        {
+          "day": 1,
+          "rewards": [
+            [
+              103,
+              40036,
+              1
+            ]
+          ]
+        },
+        {
+          "day": 2,
+          "rewards": [
+            [
+              103,
+              1009,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 3,
+          "rewards": [
+            [
+              103,
+              1010,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 4,
+          "rewards": [
+            [
+              103,
+              1111,
+              100
+            ]
+          ]
+        },
+        {
+          "day": 5,
+          "rewards": [
+            [
+              103,
+              1112,
+              50
+            ]
+          ]
+        },
+        {
+          "day": 6,
+          "rewards": [
+            [
+              103,
+              1013,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 7,
+          "rewards": [
+            [
+              103,
+              1601,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    "201501001": {
+      "kind": "daily",
+      "days": [
+        {
+          "day": 1,
+          "rewards": [
+            [
+              107,
+              0,
+              1000
+            ]
+          ]
+        },
+        {
+          "day": 2,
+          "rewards": [
+            [
+              103,
+              1009,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 3,
+          "rewards": [
+            [
+              103,
+              1010,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 4,
+          "rewards": [
+            [
+              103,
+              1112,
+              50
+            ]
+          ]
+        },
+        {
+          "day": 5,
+          "rewards": [
+            [
+              103,
+              1013,
+              10
+            ]
+          ]
+        },
+        {
+          "day": 6,
+          "rewards": [
+            [
+              103,
+              1114,
+              20
+            ]
+          ]
+        },
+        {
+          "day": 7,
+          "rewards": [
+            [
+              103,
+              1601,
+              1
+            ]
+          ]
+        }
+      ]
     }
   },
   "items": {
+    "101/1001": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1002": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1003": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1004": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1005": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1006": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1007": {
+      "name": null,
+      "icon": ""
+    },
+    "101/1008": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2001": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2002": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2003": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2004": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2005": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2006": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2007": {
+      "name": null,
+      "icon": ""
+    },
+    "101/2008": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3001": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3002": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3003": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3004": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3005": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3006": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3007": {
+      "name": null,
+      "icon": ""
+    },
+    "101/3008": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4001": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4002": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4003": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4004": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4005": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4006": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4007": {
+      "name": null,
+      "icon": ""
+    },
+    "101/4008": {
+      "name": null,
+      "icon": ""
+    },
     "102/130101": {
       "name": null,
       "icon": ""
@@ -6903,6 +7216,12 @@
       "quality": 10,
       "description": "Used to upgrade Lv.30+ Relic.\n<i>Pure, immortal, smooth as honey and wine, infused with the ancient power of everglow.</i>"
     },
+    "103/1114": {
+      "name": "Pristine Aether",
+      "icon": "A_UI_Props_ThroneEquip_LevelMaterial_Rare1",
+      "quality": 10,
+      "description": "Used to upgrade the Throne from Lv.0 to Lv.20.\n<i>The lingering breath of a deity, a miracle found everywhere.</i>"
+    },
     "103/1200": {
       "name": "Artifact Enhancement Stone",
       "icon": "A_UI_Props_StrengthenStone",
@@ -6980,6 +7299,177 @@
       "icon": "A_UI_Props_AwakeMystery04",
       "quality": 12,
       "description": "Used to boost Arcane Artifacts from Awakening T3 to T4."
+    },
+    "103/1601": {
+      "name": "Deity Selector",
+      "icon": "A_UI_Props_ChooseHero",
+      "quality": 6,
+      "description": "Select one Deity from the options below.",
+      "choose": {
+        "count": 1,
+        "options": [
+          [
+            101,
+            1001,
+            1
+          ],
+          [
+            101,
+            2003,
+            1
+          ],
+          [
+            101,
+            3006,
+            1
+          ],
+          [
+            101,
+            4004,
+            1
+          ],
+          [
+            101,
+            1002,
+            1
+          ],
+          [
+            101,
+            2001,
+            1
+          ],
+          [
+            101,
+            3001,
+            1
+          ],
+          [
+            101,
+            4001,
+            1
+          ],
+          [
+            101,
+            1003,
+            1
+          ],
+          [
+            101,
+            2002,
+            1
+          ],
+          [
+            101,
+            3002,
+            1
+          ],
+          [
+            101,
+            4002,
+            1
+          ],
+          [
+            101,
+            1004,
+            1
+          ],
+          [
+            101,
+            2004,
+            1
+          ],
+          [
+            101,
+            3003,
+            1
+          ],
+          [
+            101,
+            4003,
+            1
+          ],
+          [
+            101,
+            1005,
+            1
+          ],
+          [
+            101,
+            2005,
+            1
+          ],
+          [
+            101,
+            3004,
+            1
+          ],
+          [
+            101,
+            4005,
+            1
+          ],
+          [
+            101,
+            1006,
+            1
+          ],
+          [
+            101,
+            2006,
+            1
+          ],
+          [
+            101,
+            3005,
+            1
+          ],
+          [
+            101,
+            4006,
+            1
+          ],
+          [
+            101,
+            1007,
+            1
+          ],
+          [
+            101,
+            2007,
+            1
+          ],
+          [
+            101,
+            3007,
+            1
+          ],
+          [
+            101,
+            4007,
+            1
+          ],
+          [
+            101,
+            1008,
+            1
+          ],
+          [
+            101,
+            2008,
+            1
+          ],
+          [
+            101,
+            3008,
+            1
+          ],
+          [
+            101,
+            4008,
+            1
+          ]
+        ]
+      }
     },
     "103/1813": {
       "name": "Divine Artifact Selection Chest",
@@ -7329,6 +7819,12 @@
       "quality": 4,
       "description": "Elite Totem Shard - Moonglow Tear, can be used to upgrade the totem."
     },
+    "103/40036": {
+      "name": "Avatar Frame - Requiem of Souls",
+      "icon": "A_UI_AvatarFrame_Rogue03_Img",
+      "quality": 4,
+      "description": "Unlocks Avatar Frame - Requiem of Souls upon obtaining"
+    },
     "106/0": {
       "name": "Evolution Mandate",
       "icon": "A_UI_Props_HeroBreakthrough"
@@ -7347,6 +7843,134 @@
     }
   },
   "unresolved": [
+    {
+      "key": "drop 101/1001",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1002",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1003",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1004",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1005",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1006",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1007",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/1008",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2001",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2002",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2003",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2004",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2005",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2006",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2007",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/2008",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3001",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3002",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3003",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3004",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3005",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3006",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3007",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/3008",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4001",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4002",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4003",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4004",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4005",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4006",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4007",
+      "where": "login 201500004 / chest 1601"
+    },
+    {
+      "key": "drop 101/4008",
+      "where": "login 201500004 / chest 1601"
+    },
     {
       "key": "drop 102/130101",
       "where": "mystery shop 200810001 / chest 1813"

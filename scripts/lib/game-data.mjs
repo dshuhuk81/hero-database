@@ -163,6 +163,12 @@ export function validateEventRewards(data, eventIds = null) {
     } else if (entry.kind === "wishlist") {
       if (!Array.isArray(entry.rewards) || !entry.rewards.length) errors.push(`${where}: empty wish list`);
       checkRewards(entry.rewards);
+    } else if (entry.kind === "daily") {
+      if (!Array.isArray(entry.days) || !entry.days.length) errors.push(`${where}: no days`);
+      for (const day of entry.days ?? []) {
+        if (!Number.isInteger(day.day) || day.day < 1) errors.push(`${where}: bad day ${day.day}`);
+        checkRewards(day.rewards);
+      }
     } else {
       errors.push(`${where}: unknown kind ${entry.kind}`);
     }

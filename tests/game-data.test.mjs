@@ -113,3 +113,10 @@ test("event rewards: a wish list needs rewards that exist in items", () => {
   const bad = rewardData({ events: { 7: { kind: "wishlist", rewards: [] }, 8: { kind: "wishlist", rewards: [[103, 5, 1]] } } });
   assert.equal(validateEventRewards(bad).errors.length, 2);
 });
+
+test("event rewards: a daily list needs valid days and known rewards", () => {
+  const ok = rewardData({ events: { 9: { kind: "daily", days: [{ day: 1, rewards: [[103, 1013, 2]] }] } } });
+  assert.deepEqual(validateEventRewards(ok), { errors: [], warnings: [] });
+  const bad = rewardData({ events: { 9: { kind: "daily", days: [{ day: 0, rewards: [[103, 77, 1]] }] } } });
+  assert.equal(validateEventRewards(bad).errors.length, 2);
+});

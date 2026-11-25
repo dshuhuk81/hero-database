@@ -53,6 +53,8 @@ const scriptCopy = {
   viewList: L("List", "Liste", "Lista", "Список", "列表"),
   rewardsTitle: L("Rank rewards", "Rang-Belohnungen", "Recompensas por rango", "Награды за место", "排名奖励"),
   wishTitle: L("Wishable items", "Wählbare Wunsch-Items", "Objetos deseables", "Предметы для желаний", "可选心愿物品"),
+  dailyTitle: L("Daily rewards", "Tägliche Belohnungen", "Recompensas diarias", "Ежедневные награды", "每日奖励"),
+  dayLabel: L("Day {n}", "Tag {n}", "Día {n}", "День {n}", "第{n}天"),
   rankSingle: L("Rank {n}", "Rang {n}", "Puesto {n}", "{n} место", "第{n}名"),
   rankRange: L("Ranks {a}-{b}", "Rang {a}-{b}", "Puestos {a}-{b}", "{a}-{b} места", "第{a}-{b}名"),
   range: L("Range", "Zeitraum", "Rango", "Период", "范围"),
@@ -84,7 +86,7 @@ const clientData = JSON.stringify(globalEvents.map((event) => ({ ...event, heroI
 // leaderboards list rank tiers, the Mystery Shop lists the items a player can put on the wish list.
 type RewardItem = { name?: string | null; icon?: string | null; quality?: number | null };
 type RewardTriple = [number, number, number];
-type RewardEntry = { kind: "leaderboard" | "wishlist"; ranks?: { from: number; to: number; rewards: RewardTriple[] }[]; rewards?: RewardTriple[] };
+type RewardEntry = { kind: "leaderboard" | "wishlist" | "daily"; ranks?: { from: number; to: number; rewards: RewardTriple[] }[]; rewards?: RewardTriple[]; days?: { day: number; rewards: RewardTriple[] }[] };
 const rewardItems = eventRewardData.items as unknown as Record<string, RewardItem>;
 const rewardTile = ([kind, itemId, amount]: RewardTriple) => {
   const item = rewardItems[`${kind}/${itemId}`];
@@ -95,6 +97,8 @@ const rewardsByEvent = Object.fromEntries(
     id,
     entry.kind === "wishlist"
       ? { kind: "wishlist", tiles: (entry.rewards ?? []).map(rewardTile) }
+      : entry.kind === "daily"
+      ? { kind: "daily", days: (entry.days ?? []).map((day) => ({ day: day.day, rewards: day.rewards.map(rewardTile) })) }
       : { kind: "leaderboard", ranks: (entry.ranks ?? []).map((tier) => ({ from: tier.from, to: tier.to, rewards: tier.rewards.map(rewardTile) })) },
   ]),
 );
@@ -235,7 +239,7 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
     const copy: Record<string, string> | null = readJson("event-copy-data");
     type RewardTile = { name: string; icon: string; rarity: string; amount: number; short: string };
     type RewardTier = { from: number; to: number; rewards: RewardTile[] };
-    type EventRewards = { kind: "leaderboard"; ranks: RewardTier[] } | { kind: "wishlist"; tiles: RewardTile[] };
+    type EventRewards = { kind: "leaderboard"; ranks: RewardTier[] } | { kind: "wishlist"; tiles: RewardTile[] } | { kind: "daily"; days: { day: number; rewards: RewardTile[] }[] };
     const rewardsByEvent: Record<string, EventRewards> = readJson("event-reward-data") || {};
 
     if (root && canvas && agenda && scroll && rangeLabel && empty && runningList && upcomingList && events && categories && copy) {
@@ -330,6 +334,14 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
           heading.textContent = copy.wishTitle;
           pool.innerHTML = entry.tiles.map(tile).join("");
           pool.hidden = false;
+          return;
+        }
+        if (entry.kind === "daily") {
+          heading.textContent = copy.dailyTitle;
+          list.innerHTML = entry.days
+            .map((day) => `<li><span class="event-reward-rank">${escapeHtml(copy.dayLabel.replace("{n}", String(day.day)))}</span><span class="event-reward-tiles">${day.rewards.map(tile).join("")}</span></li>`)
+            .join("");
+          list.hidden = false;
           return;
         }
         heading.textContent = copy.rewardsTitle;
