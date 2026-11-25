@@ -317,3 +317,4 @@
 .event-reward[data-rarity="mythic"] { --tile-edge: var(--rarity-red-border); --tile-glow: rgba(239, 68, 68, 0.15); }
 .event-reward img { position: absolute; inset: 8%; width: 84%; height: 84%; max-width: none; object-fit: contain; }
 .event-reward-amount { position: absolute; right: 3px; bottom: 2px; color: var(--text-bright); font-size: var(--text-2xs); line-height: 1; font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; text-shadow: 0 1px 2px var(--bg-base), 0 0 4px var(--bg-base); }
+.event-reward-ranks[hidden], .event-reward-pool[hidden] { display: none; }

@@ -141,13 +141,8 @@ export function validateEventRewards(data, eventIds = null) {
   }
   for (const [id, entry] of Object.entries(data.events)) {
     const where = `event rewards ${id}`;
-    if (entry.kind !== "leaderboard") errors.push(`${where}: unknown kind ${entry.kind}`);
-    if (!Array.isArray(entry.ranks) || !entry.ranks.length) errors.push(`${where}: no rank tiers`);
-    for (const tier of entry.ranks ?? []) {
-      if (!Number.isInteger(tier.from) || !Number.isInteger(tier.to) || tier.from > tier.to) {
-        errors.push(`${where}: bad rank range ${tier.from}-${tier.to}`);
-      }
-      for (const reward of tier.rewards ?? []) {
+    const checkRewards = (list) => {
+      for (const reward of list ?? []) {
         if (!Array.isArray(reward) || reward.length !== 3) {
           errors.push(`${where}: reward is not a [type, id, amount] triple`);
           continue;
@@ -156,6 +151,20 @@ export function validateEventRewards(data, eventIds = null) {
         if (!item) errors.push(`${where}: reward ${reward[0]}/${reward[1]} missing from items`);
         else if (!item.name) warnings.push(`${where}: reward ${reward[0]}/${reward[1]} has no English name`);
       }
+    };
+    if (entry.kind === "leaderboard") {
+      if (!Array.isArray(entry.ranks) || !entry.ranks.length) errors.push(`${where}: no rank tiers`);
+      for (const tier of entry.ranks ?? []) {
+        if (!Number.isInteger(tier.from) || !Number.isInteger(tier.to) || tier.from > tier.to) {
+          errors.push(`${where}: bad rank range ${tier.from}-${tier.to}`);
+        }
+        checkRewards(tier.rewards);
+      }
+    } else if (entry.kind === "wishlist") {
+      if (!Array.isArray(entry.rewards) || !entry.rewards.length) errors.push(`${where}: empty wish list`);
+      checkRewards(entry.rewards);
+    } else {
+      errors.push(`${where}: unknown kind ${entry.kind}`);
     }
     if (eventIds && !eventIds.has(Number(id))) warnings.push(`${where}: no matching event`);
   }

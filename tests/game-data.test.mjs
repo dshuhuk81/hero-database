@@ -106,3 +106,10 @@ test("event rewards: a reward missing from items and a bad rank range are errors
   assert.match(errors.join("\n"), /bad rank range/);
   assert.match(errors.join("\n"), /103\/999 missing from items/);
 });
+
+test("event rewards: a wish list needs rewards that exist in items", () => {
+  const ok = rewardData({ events: { 7: { kind: "wishlist", rewards: [[103, 1013, 1]] } } });
+  assert.deepEqual(validateEventRewards(ok), { errors: [], warnings: [] });
+  const bad = rewardData({ events: { 7: { kind: "wishlist", rewards: [] }, 8: { kind: "wishlist", rewards: [[103, 5, 1]] } } });
+  assert.equal(validateEventRewards(bad).errors.length, 2);
+});

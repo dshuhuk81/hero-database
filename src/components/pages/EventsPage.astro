@@ -53,6 +53,7 @@ const scriptCopy = {
   viewTimeline: L("Timeline", "Zeitachse", "Cronología", "Шкала", "时间轴"),
   viewList: L("List", "Liste", "Lista", "Список", "列表"),
   rewardsTitle: L("Rank rewards", "Rang-Belohnungen", "Recompensas por rango", "Награды за место", "排名奖励"),
+  wishTitle: L("Wishable items", "Wählbare Wunsch-Items", "Objetos deseables", "Предметы для желаний", "可选心愿物品"),
   rankSingle: L("Rank {n}", "Rang {n}", "Puesto {n}", "{n} место", "第{n}名"),
   rankRange: L("Ranks {a}-{b}", "Rang {a}-{b}", "Puestos {a}-{b}", "{a}-{b} места", "第{a}-{b}名"),
   range: L("Range", "Zeitraum", "Rango", "Период", "范围"),
@@ -80,20 +81,22 @@ const categories = [
 ];
 
 const clientData = JSON.stringify(globalEvents.map((event) => ({ ...event, heroImage: heroImage(event.heroGameId) }))).replace(/</g, "\\u003c");
-// Rank rewards per event id (event_rewards.global.json, export_event_rewards.py), flattened for the dialog.
+// Rewards per event id (event_rewards.global.json, export_event_rewards.py), flattened for the dialog:
+// leaderboards list rank tiers, the Mystery Shop lists the items a player can put on the wish list.
 type RewardItem = { name?: string | null; icon?: string | null; quality?: number | null };
+type RewardTriple = [number, number, number];
+type RewardEntry = { kind: "leaderboard" | "wishlist"; ranks?: { from: number; to: number; rewards: RewardTriple[] }[]; rewards?: RewardTriple[] };
 const rewardItems = eventRewardData.items as unknown as Record<string, RewardItem>;
+const rewardTile = ([kind, itemId, amount]: RewardTriple) => {
+  const item = rewardItems[`${kind}/${itemId}`];
+  return { name: item?.name ?? "", icon: item?.icon ?? "", rarity: rewardRarity(item?.quality), amount, short: amount > 1 ? formatCompact(amount, 10000) : "" };
+};
 const rewardsByEvent = Object.fromEntries(
-  Object.entries(eventRewardData.events as unknown as Record<string, { ranks: { from: number; to: number; rewards: [number, number, number][] }[] }>).map(([id, entry]) => [
+  Object.entries(eventRewardData.events as unknown as Record<string, RewardEntry>).map(([id, entry]) => [
     id,
-    entry.ranks.map((tier) => ({
-      from: tier.from,
-      to: tier.to,
-      rewards: tier.rewards.map(([kind, itemId, amount]) => {
-        const item = rewardItems[`${kind}/${itemId}`];
-        return { name: item?.name ?? "", icon: item?.icon ?? "", rarity: rewardRarity(item?.quality), amount, short: amount > 1 ? formatCompact(amount, 10000) : "" };
-      }),
-    })),
+    entry.kind === "wishlist"
+      ? { kind: "wishlist", tiles: (entry.rewards ?? []).map(rewardTile) }
+      : { kind: "leaderboard", ranks: (entry.ranks ?? []).map((tier) => ({ from: tier.from, to: tier.to, rewards: tier.rewards.map(rewardTile) })) },
   ]),
 );
 const rewardData = JSON.stringify(rewardsByEvent).replace(/</g, "\\u003c");
@@ -193,8 +196,9 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
       <div><dt>{pickLang(scriptCopy.duration, locale)}</dt><dd data-dialog-duration></dd></div>
     </dl>
     <section class="event-dialog-rewards" data-dialog-rewards hidden>
-      <h3>{pickLang(scriptCopy.rewardsTitle, locale)}</h3>
+      <h3 data-dialog-rewards-title>{pickLang(scriptCopy.rewardsTitle, locale)}</h3>
       <ol class="event-reward-ranks" data-dialog-reward-list></ol>
+      <div class="event-reward-tiles event-reward-pool" data-dialog-reward-pool hidden></div>
     </section>
   </dialog>
 
@@ -233,7 +237,8 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
     const copy: Record<string, string> | null = readJson("event-copy-data");
     type RewardTile = { name: string; icon: string; rarity: string; amount: number; short: string };
     type RewardTier = { from: number; to: number; rewards: RewardTile[] };
-    const rewardsByEvent: Record<string, RewardTier[]> = readJson("event-reward-data") || {};
+    type EventRewards = { kind: "leaderboard"; ranks: RewardTier[] } | { kind: "wishlist"; tiles: RewardTile[] };
+    const rewardsByEvent: Record<string, EventRewards> = readJson("event-reward-data") || {};
 
     if (root && canvas && agenda && scroll && rangeLabel && empty && runningList && upcomingList && events && categories && copy) {
       const locale = root.dataset.locale || "en";
@@ -309,26 +314,37 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         if (!(dialog instanceof HTMLDialogElement)) return;
         const section = dialog.querySelector<HTMLElement>("[data-dialog-rewards]");
         const list = dialog.querySelector<HTMLElement>("[data-dialog-reward-list]");
-        const tiers = rewardsByEvent[String(item.id)];
-        if (!section || !list) return;
-        section.hidden = !tiers?.length;
-        if (!tiers?.length) {
-          list.innerHTML = "";
-          return;
-        }
-        const rankLabel = (tier: RewardTier) =>
-          tier.from === tier.to
-            ? copy.rankSingle.replace("{n}", String(tier.from))
-            : copy.rankRange.replace("{a}", String(tier.from)).replace("{b}", String(tier.to));
+        const pool = dialog.querySelector<HTMLElement>("[data-dialog-reward-pool]");
+        const heading = dialog.querySelector<HTMLElement>("[data-dialog-rewards-title]");
+        if (!section || !list || !pool || !heading) return;
+        const entry = rewardsByEvent[String(item.id)];
+        section.hidden = !entry;
+        list.innerHTML = "";
+        list.hidden = true;
+        pool.innerHTML = "";
+        pool.hidden = true;
+        if (!entry) return;
         const tile = (reward: RewardTile) => {
           const title = `${reward.name}${reward.amount > 1 ? ` x${reward.amount.toLocaleString("en-US")}` : ""}`;
           const icon = reward.icon ? `<img src="/items/bosses/${escapeHtml(reward.icon)}.webp" alt="" width="96" height="96" loading="lazy" decoding="async">` : "";
           const amount = reward.short ? `<span class="event-reward-amount">${escapeHtml(reward.short)}</span>` : "";
           return `<span class="event-reward" data-rarity="${escapeHtml(reward.rarity)}" title="${escapeHtml(title)}">${icon}${amount}<span class="sr-only">${escapeHtml(title)}</span></span>`;
         };
-        list.innerHTML = tiers
+        if (entry.kind === "wishlist") {
+          heading.textContent = copy.wishTitle;
+          pool.innerHTML = entry.tiles.map(tile).join("");
+          pool.hidden = false;
+          return;
+        }
+        heading.textContent = copy.rewardsTitle;
+        const rankLabel = (tier: RewardTier) =>
+          tier.from === tier.to
+            ? copy.rankSingle.replace("{n}", String(tier.from))
+            : copy.rankRange.replace("{a}", String(tier.from)).replace("{b}", String(tier.to));
+        list.innerHTML = entry.ranks
           .map((tier) => `<li><span class="event-reward-rank">${escapeHtml(rankLabel(tier))}</span><span class="event-reward-tiles">${tier.rewards.map(tile).join("")}</span></li>`)
           .join("");
+        list.hidden = false;
       };
 
       function positionTooltip(target: Element, pointerEvent?: PointerEvent) {

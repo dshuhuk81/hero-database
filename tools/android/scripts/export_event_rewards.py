@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Export event rewards (currently: leaderboards) for the site.
+"""Export event rewards (leaderboards, Mystery Shop wish pool) for the site.
 
 Usage: python3 -I scripts/export_event_rewards.py --global X_GLOBAL [--out out/site_data] [--icons DIR] [--art DIR]
 
 Sources (client/config/active/active-rank/): active_rank.json (type per event), active_rank_reward.json
 (rank tiers per event id). Reward names and icons come from item.json / money_guide.json, as in export_bosses.py.
+and active/active_mystery_shop/active_gacha_mystery.json (items a player can put on the wish list, per event id).
 Output: event_rewards.global.json with
   events["<event id>"] = {"kind": "leaderboard", "rankType": 3, "ranks": [{"from": 1, "to": 1, "rewards": [[type, id, num]]}]}
+  events["<event id>"] = {"kind": "wishlist", "rewards": [[type, id, num]]}      (Mystery Shop, ordered by "sort")
   items["type/id"]     = {name, icon, quality, ...}   (shared by all events)
 """
 import argparse
@@ -37,6 +39,19 @@ def leaderboards(ex):
     return out
 
 
+def mystery_shops(ex):
+    pools = rows(load(ex.cfg / "active/active_mystery_shop/active_gacha_mystery.json"))
+    out = {}
+    for event_id, pool in sorted(pools.items()):
+        entries = sorted(rows(pool).values(), key=lambda r: r["sort"])
+        rewards = []
+        for entry in entries:
+            rewards.extend(ex.rewards(entry["reward"], f"mystery shop {event_id}"))
+        if rewards:
+            out[event_id] = {"kind": "wishlist", "rewards": rewards}
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--global", dest="glob", type=Path, required=True)
@@ -45,7 +60,7 @@ def main():
     ap.add_argument("--art", type=Path, default=DEFAULT_ART, help="extracted ui_item PNGs")
     args = ap.parse_args()
     ex = Exporter(args.glob)
-    events = leaderboards(ex)
+    events = {**leaderboards(ex), **mystery_shops(ex)}
     data = {
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "client": "global",
