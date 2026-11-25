@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateBosses, validateEvents, validateHeroReleases } from "../scripts/lib/game-data.mjs";
+import { validateBosses, validateEventRewards, validateEvents, validateHeroReleases } from "../scripts/lib/game-data.mjs";
 
 const event = (over = {}) => ({
   id: 1,
@@ -83,4 +83,26 @@ test("validateBosses rejects unknown modes, missing items and dangling chest opt
 test("validateBosses rejects a boss without rewards", () => {
   const { errors } = validateBosses({ bosses: [{ siteId: "x", mode: "grim_surge" }], items: bossItems });
   assert.match(errors[0], /no rewards/);
+});
+
+const rewardData = (over = {}) => ({
+  events: {
+    201110003: { kind: "leaderboard", rankType: 3, ranks: [{ from: 1, to: 1, rewards: [[103, 1013, 50]] }] },
+  },
+  items: { "103/1013": { name: "Luminous Key", icon: "A_UI_Props_Totem_Gacha" } },
+  ...over,
+});
+
+test("valid event rewards produce no errors", () => {
+  assert.deepEqual(validateEventRewards(rewardData(), new Set([201110003])), { errors: [], warnings: [] });
+});
+
+test("event rewards: a reward missing from items and a bad rank range are errors", () => {
+  const data = rewardData({
+    events: { 5: { kind: "leaderboard", ranks: [{ from: 3, to: 1, rewards: [[103, 999, 1]] }] } },
+  });
+  const { errors } = validateEventRewards(data);
+  assert.equal(errors.length, 2);
+  assert.match(errors.join("\n"), /bad rank range/);
+  assert.match(errors.join("\n"), /103\/999 missing from items/);
 });
