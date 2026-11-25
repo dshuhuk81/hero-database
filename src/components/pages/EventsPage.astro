@@ -49,7 +49,6 @@ const scriptCopy = {
   duration: L("Duration", "Dauer", "Duración", "Длительность", "时长"),
   days: L("{n} days", "{n} Tage", "{n} días", "{n} дн.", "{n}天"),
   isNew: L("New", "Neu", "Nuevo", "Новое", "新"),
-  derived: L("Name derived from game data", "Name aus Spieldaten abgeleitet", "Nombre derivado de los datos del juego", "Название выведено из данных игры", "名称根据游戏数据推导"),
   viewTimeline: L("Timeline", "Zeitachse", "Cronología", "Шкала", "时间轴"),
   viewList: L("List", "Liste", "Lista", "Список", "列表"),
   rewardsTitle: L("Rank rewards", "Rang-Belohnungen", "Recompensas por rango", "Награды за место", "排名奖励"),
@@ -189,7 +188,6 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
     <span class="event-dialog-category" data-dialog-category></span>
     <h2 data-dialog-title></h2>
     <p class="event-dialog-family" data-dialog-family></p>
-    <p class="event-dialog-derived" data-dialog-derived hidden>{pickLang(scriptCopy.derived, locale)}</p>
     <dl>
       <div><dt>{pickLang(scriptCopy.starts, locale)}</dt><dd data-dialog-start></dd></div>
       <div><dt>{pickLang(scriptCopy.ends, locale)}</dt><dd data-dialog-end></dd></div>
@@ -300,8 +298,6 @@ const generatedDate = new Intl.DateTimeFormat(locale, { day: "numeric", month: "
         const title = dialog.querySelector("[data-dialog-title]");
         if (title) title.innerHTML = `${escapeHtml(item.label)} ${newPill(item)}`;
         setText(dialog, "[data-dialog-family]", item.hero || item.family);
-        const derived = dialog.querySelector<HTMLElement>("[data-dialog-derived]");
-        if (derived) derived.hidden = !item.derivedLabel;
         const long: Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long", year: "numeric" };
         setText(dialog, "[data-dialog-start]", formatDate(parseDate(item.start), long));
         setText(dialog, "[data-dialog-end]", formatDate(parseDate(item.end), long));
