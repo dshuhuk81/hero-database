@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T07:52:11Z",
+  "generatedAt": "2026-11-25T11:08:56Z",
   "client": "GLOBAL",
   "events": [
     {
@@ -985,6 +985,17 @@
       "category": "leaderboards"
     },
     {
+      "id": 201110003,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2026-11-04",
+      "end": "2026-11-10",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201250002,
       "label": "Choice Gift Pack · Phase 2",
       "family": "Gift",
@@ -1099,6 +1110,17 @@
       "heroGameId": 3007
     },
     {
+      "id": 201250003,
+      "label": "Choice Gift Pack",
+      "family": "Gift",
+      "series": "choose_gift",
+      "start": "2026-11-25",
+      "end": "2026-11-28",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560032,
       "label": "Treasure Hunt · Phase 32",
       "family": "Treasure Hunt",
@@ -1106,6 +1128,36 @@
       "start": "2026-11-27",
       "end": "2026-12-01",
       "category": "recurring"
+    },
+    {
+      "id": 200790001,
+      "label": "Obsidian Festival",
+      "family": "Featured Event",
+      "series": "black_friday",
+      "start": "2026-11-27",
+      "end": "2026-12-03",
+      "category": "events",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 200811001,
+      "label": "Boon of Obsidian",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-11-27",
+      "end": "2026-12-03",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 200891002,
+      "label": "Ritual Echoes",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-11-27",
+      "end": "2026-12-03",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300003,
@@ -1130,6 +1182,58 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201501001,
+      "label": "7-Day Radiance",
+      "family": "Login",
+      "series": "carnival_sign",
+      "start": "2026-11-27",
+      "end": "2026-12-03",
+      "category": "events",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541001,
+      "label": "Covenant Chronicles · Day 1",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-11-27",
+      "end": "2026-11-27",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541002,
+      "label": "Covenant Chronicles · Day 2",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-11-28",
+      "end": "2026-11-28",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201040006,
+      "label": "God Direct Purchase · Idunn",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-11-29",
+      "end": "2026-12-01",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 4012,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541003,
+      "label": "Covenant Chronicles · Day 3",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-11-29",
+      "end": "2026-11-29",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201160003,
       "label": "Sea War · Chaos",
       "family": "Featured Event",
@@ -1141,6 +1245,46 @@
       "heroGameId": 5012
     },
     {
+      "id": 201541004,
+      "label": "Covenant Chronicles · Day 4",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-11-30",
+      "end": "2026-11-30",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541005,
+      "label": "Covenant Chronicles · Day 5",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-12-01",
+      "end": "2026-12-01",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541006,
+      "label": "Covenant Chronicles · Day 6",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-12-02",
+      "end": "2026-12-02",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201541007,
+      "label": "Covenant Chronicles · Day 7",
+      "family": "Gift",
+      "series": "black_friday_chain_gift",
+      "start": "2026-12-03",
+      "end": "2026-12-03",
+      "category": "offers",
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560033,
       "label": "Treasure Hunt · Phase 33",
       "family": "Treasure Hunt",
@@ -1148,6 +1292,29 @@
       "start": "2026-12-04",
       "end": "2026-12-08",
       "category": "recurring"
+    },
+    {
+      "id": 201040007,
+      "label": "God Direct Purchase · Nut",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-12-06",
+      "end": "2026-12-08",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 1012,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201120005,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-12-09",
+      "end": "2026-12-15",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 200390028,
@@ -1181,6 +1348,40 @@
       "derivedLabel": true
     },
     {
+      "id": 200900005,
+      "label": "God Direct Purchase · Gaiya",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-12-13",
+      "end": "2026-12-15",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 5010,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 200810008,
+      "label": "Mystery Shop · Phase 6",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2026-12-16",
+      "end": "2026-12-22",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110004,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2026-12-16",
+      "end": "2026-12-22",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560035,
       "label": "Treasure Hunt · Phase 35",
       "family": "Treasure Hunt",
@@ -1211,6 +1412,18 @@
       "heroGameId": 4005
     },
     {
+      "id": 201040008,
+      "label": "God Direct Purchase · Yaoji",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-12-20",
+      "end": "2026-12-22",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 3014,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560036,
       "label": "Treasure Hunt · Phase 36",
       "family": "Treasure Hunt",
@@ -1218,6 +1431,17 @@
       "start": "2026-12-25",
       "end": "2026-12-29",
       "category": "recurring"
+    },
+    {
+      "id": 200890008,
+      "label": "Recharge Event · Phase 8",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2026-12-25",
+      "end": "2027-01-02",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300005,
@@ -1242,6 +1466,18 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201040009,
+      "label": "God Direct Purchase · Serket",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2026-12-27",
+      "end": "2026-12-29",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 2011,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201400002,
       "label": "Golden Eye",
       "family": "Featured Event",
@@ -1253,6 +1489,17 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201120006,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2026-12-30",
+      "end": "2027-01-05",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560037,
       "label": "Treasure Hunt · Phase 37",
       "family": "Treasure Hunt",
@@ -1260,6 +1507,29 @@
       "start": "2027-01-01",
       "end": "2027-01-05",
       "category": "recurring"
+    },
+    {
+      "id": 200900006,
+      "label": "God Direct Purchase · Nidhogg",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2027-01-03",
+      "end": "2027-01-05",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 5011,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110005,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-01-06",
+      "end": "2027-01-12",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 200390029,
@@ -1293,6 +1563,18 @@
       "derivedLabel": true
     },
     {
+      "id": 201040010,
+      "label": "God Direct Purchase · Hebo",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2027-01-10",
+      "end": "2027-01-12",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 1013,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560039,
       "label": "Treasure Hunt · Phase 39",
       "family": "Treasure Hunt",
@@ -1323,6 +1605,29 @@
       "heroGameId": 1005
     },
     {
+      "id": 201040011,
+      "label": "God Direct Purchase · Charon",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2027-01-17",
+      "end": "2027-01-19",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 4014,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201120007,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-01-20",
+      "end": "2027-01-26",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560040,
       "label": "Treasure Hunt · Phase 40",
       "family": "Treasure Hunt",
@@ -1330,6 +1635,17 @@
       "start": "2027-01-22",
       "end": "2027-01-26",
       "category": "recurring"
+    },
+    {
+      "id": 200890009,
+      "label": "Recharge Event · Phase 9",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2027-01-22",
+      "end": "2027-01-30",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300007,
@@ -1354,6 +1670,18 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201040012,
+      "label": "God Direct Purchase · Heqet",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2027-01-24",
+      "end": "2027-01-26",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 3012,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201160004,
       "label": "Sea War · Hero 5015",
       "family": "Featured Event",
@@ -1366,6 +1694,17 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201110006,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-01-27",
+      "end": "2027-02-02",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560041,
       "label": "Treasure Hunt · Phase 41",
       "family": "Treasure Hunt",
@@ -1373,6 +1712,18 @@
       "start": "2027-01-29",
       "end": "2027-02-02",
       "category": "recurring"
+    },
+    {
+      "id": 200900007,
+      "label": "God Direct Purchase · Chaos",
+      "family": "Hero Direct Purchase",
+      "series": "hero_shop",
+      "start": "2027-01-31",
+      "end": "2027-02-02",
+      "category": "offers",
+      "derivedLabel": true,
+      "heroGameId": 5012,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 200390030,
@@ -1404,6 +1755,17 @@
       "end": "2027-02-09",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201120008,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-02-10",
+      "end": "2027-02-16",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 200560043,
@@ -1438,6 +1800,17 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201110007,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-02-17",
+      "end": "2027-02-23",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560044,
       "label": "Treasure Hunt · Phase 44",
       "family": "Treasure Hunt",
@@ -1445,6 +1818,17 @@
       "start": "2027-02-19",
       "end": "2027-02-23",
       "category": "recurring"
+    },
+    {
+      "id": 200890010,
+      "label": "Recharge Event · Phase 10",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2027-02-19",
+      "end": "2027-02-27",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300009,
@@ -1489,6 +1873,28 @@
       "category": "recurring"
     },
     {
+      "id": 200810009,
+      "label": "Mystery Shop · Phase 7",
+      "family": "Mystery Shop",
+      "series": "mystery_shop",
+      "start": "2027-03-02",
+      "end": "2027-03-08",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201120009,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-03-03",
+      "end": "2027-03-09",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 200560046,
       "label": "Treasure Hunt · Phase 46",
       "family": "Treasure Hunt",
@@ -1506,6 +1912,28 @@
       "end": "2027-03-09",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 200890011,
+      "label": "Recharge Event · Phase 11",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2027-03-10",
+      "end": "2027-03-18",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110008,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-03-10",
+      "end": "2027-03-16",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 200560047,
@@ -1560,6 +1988,39 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201120010,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-03-24",
+      "end": "2027-03-30",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110009,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-03-31",
+      "end": "2027-04-06",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 200890012,
+      "label": "Recharge Event · Phase 12",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2027-04-02",
+      "end": "2027-04-10",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201300012,
       "label": "Team Boss · Phase 12",
       "family": "Team Boss",
@@ -1568,6 +2029,17 @@
       "end": "2027-04-06",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201120011,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-04-14",
+      "end": "2027-04-20",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300013,
@@ -1592,6 +2064,28 @@
       "firstSeen": "2026-11-23"
     },
     {
+      "id": 201110010,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-04-21",
+      "end": "2027-04-27",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 200890013,
+      "label": "Recharge Event · Phase 13",
+      "family": "Recharge",
+      "series": "charge_activity",
+      "start": "2027-04-28",
+      "end": "2027-05-06",
+      "category": "offers",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201300014,
       "label": "Team Boss · Phase 14",
       "family": "Team Boss",
@@ -1600,6 +2094,28 @@
       "end": "2027-05-04",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201120012,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-05-05",
+      "end": "2027-05-11",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110011,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-05-12",
+      "end": "2027-05-18",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300015,
@@ -1612,6 +2128,17 @@
       "derivedLabel": true
     },
     {
+      "id": 201120013,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-05-26",
+      "end": "2027-06-01",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201300016,
       "label": "Team Boss · Phase 16",
       "family": "Team Boss",
@@ -1622,6 +2149,17 @@
       "derivedLabel": true
     },
     {
+      "id": 201110012,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-06-02",
+      "end": "2027-06-08",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
       "id": 201300017,
       "label": "Team Boss · Phase 17",
       "family": "Team Boss",
@@ -1630,6 +2168,28 @@
       "end": "2027-06-15",
       "category": "events",
       "derivedLabel": true
+    },
+    {
+      "id": 201120014,
+      "label": "Leaderboard · Rank 4",
+      "family": "Leaderboard",
+      "series": "active_rank4",
+      "start": "2027-06-16",
+      "end": "2027-06-22",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
+    },
+    {
+      "id": 201110013,
+      "label": "Leaderboard · Rank 3",
+      "family": "Leaderboard",
+      "series": "active_rank3",
+      "start": "2027-06-23",
+      "end": "2027-06-29",
+      "category": "leaderboards",
+      "derivedLabel": true,
+      "firstSeen": "2026-11-25"
     },
     {
       "id": 201300018,
