@@ -4,6 +4,7 @@
 import Base from "../../layouts/Base.astro";
 import SupportStrip from "../SupportStrip.astro";
 import PageHero from "../PageHero.astro";
+import HeroFrameCard from "../HeroFrameCard.astro";
 import "../../styles/timed-challenge.css";
 import "../../styles/components.css";
 import allHeroes from "../../data/all_heroes_db.json";
@@ -128,50 +129,28 @@ const copy = {
                   <span class="formation-label">{frontLabel}</span>
                   <div class="formation-slots formation-slots--front">
                     {stage.frontHeroes.map((hero) => (
-                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
-                        <div class="event-hero-image">
-                          <img
-                            src={heroCardSrc(hero.id, 240)}
-                            srcset={heroCardSrcset(hero.id)}
-                            sizes="(max-width: 480px) 42vw, (max-width: 900px) 30vw, 180px"
-                            alt={hero.name}
-                            loading="lazy"
-                            decoding="async"
-                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                          />
-                        </div>
-                        <strong>{hero.name}</strong>
-                      </a>
+                      <div class="tc-slot">
+                        <HeroFrameCard hero={hero} href={localizePath(`/heroes/${hero.id}`, locale)} />
+                        <span class="tc-slot-name">{hero.name}</span>
+                      </div>
                     ))}
                     {Array.from({ length: Math.max(0, 2 - stage.frontHeroes.length) }).map(() => (
-                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
+                      <div class="tc-slot tc-slot--empty"><span class="tc-slot-open">{pickLang(copy.openSlot, locale)}</span></div>
                     ))}
                   </div>
                 </div>
-
-                <div class="formation-divider" aria-hidden="true"></div>
 
                 <div class="formation-group formation-group--back">
                   <span class="formation-label">{backLabel}</span>
                   <div class="formation-slots formation-slots--back">
                     {stage.backHeroes.map((hero) => (
-                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
-                        <div class="event-hero-image">
-                          <img
-                            src={heroCardSrc(hero.id, 240)}
-                            srcset={heroCardSrcset(hero.id)}
-                            sizes="(max-width: 480px) 28vw, (max-width: 900px) 20vw, 180px"
-                            alt={hero.name}
-                            loading="lazy"
-                            decoding="async"
-                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                          />
-                        </div>
-                        <strong>{hero.name}</strong>
-                      </a>
+                      <div class="tc-slot">
+                        <HeroFrameCard hero={hero} href={localizePath(`/heroes/${hero.id}`, locale)} />
+                        <span class="tc-slot-name">{hero.name}</span>
+                      </div>
                     ))}
                     {Array.from({ length: Math.max(0, 3 - stage.backHeroes.length) }).map(() => (
-                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
+                      <div class="tc-slot tc-slot--empty"><span class="tc-slot-open">{pickLang(copy.openSlot, locale)}</span></div>
                     ))}
                   </div>
                 </div>

@@ -154,11 +154,14 @@
   line-height: var(--leading-snug);
 }
 
+/* The formation is drawn like the boss pages: two cards in front (offset by one column), three
+   behind, each a tall in-game hero card with the name underneath. */
 .formation-board {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) 1px minmax(0, 3fr);
-  align-items: stretch;
-  gap: var(--space-5);
+  width: 100%;
+  max-width: 380px;
+  justify-self: center;
+  gap: var(--space-4);
   min-width: 0;
 }
 
@@ -166,7 +169,7 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .formation-label {
@@ -179,80 +182,42 @@
 
 .formation-slots {
   display: grid;
-  align-items: stretch;
-  gap: var(--space-3);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-2);
 }
 
-.formation-slots--front {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
+.formation-slots--front .tc-slot:nth-child(1) { grid-column: 2 / span 2; }
+.formation-slots--front .tc-slot:nth-child(2) { grid-column: 4 / span 2; }
+.formation-slots--back .tc-slot { grid-column: span 2; }
 
-.formation-slots--back {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.formation-divider {
-  background: var(--border-faint);
-}
-
-.event-hero {
+.tc-slot {
   display: flex;
   min-width: 0;
-  overflow: hidden;
   flex-direction: column;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  background: var(--bg-raised);
-  color: inherit;
-  text-decoration: none;
-  transition:
-    border-color var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
+  gap: var(--space-1);
 }
 
-.event-hero:hover {
-  border-color: var(--accent-purple);
-  transform: translateY(-2px);
-}
-
-.event-hero:focus-visible {
-  outline: 2px solid var(--accent-purple);
-  outline-offset: 2px;
-}
-
-.event-hero-image {
-  aspect-ratio: 4 / 5;
+.tc-slot-name {
   overflow: hidden;
-  background: var(--bg-overlay);
-}
-
-.event-hero-image img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.event-hero strong {
-  display: block;
-  min-height: 48px;
-  padding: var(--space-3) var(--space-2);
-  overflow-wrap: anywhere;
-  color: var(--text-primary);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
+  color: var(--text-bright);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.event-hero--empty {
+.tc-slot--empty {
+  aspect-ratio: 212 / 450;
   align-items: center;
   justify-content: center;
-  min-height: 150px;
-  border-style: dashed;
-  background: transparent;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-lg);
   color: var(--text-disabled);
   font-size: var(--text-xs);
+  text-align: center;
 }
 
 @media (max-width: 1000px) {
@@ -310,19 +275,6 @@
     padding: var(--space-5);
   }
 
-  .formation-board {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-  }
-
-  .formation-divider {
-    width: 100%;
-    height: 1px;
-  }
-
-  .event-hero--empty {
-    min-height: 130px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -374,12 +326,7 @@
     font-size: var(--text-lg);
   }
 
-  .formation-slots {
-    gap: var(--space-2);
-  }
-
-  .event-hero strong {
-    min-height: 44px;
+  .tc-slot-name {
     font-size: var(--text-xs);
   }
 }
