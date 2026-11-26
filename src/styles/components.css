@@ -7772,7 +7772,8 @@ a.hero-frame-card:focus-visible .hero-frame-card__img {
     linear-gradient(to top, rgba(7, 6, 12, 0.95) 8%, rgba(7, 6, 12, 0.35) 34%, transparent 52%);
 }
 .uh-figure { position: absolute; inset: 0; z-index: -1; transform: translate3d(calc(var(--px, 0) * 12px), calc(var(--py, 0) * 6px), 0); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); display: flex; justify-content: center; align-items: flex-end; pointer-events: none; }
-.uh-portrait { width: auto; height: 92svh; max-width: 100%; object-fit: contain; object-position: center bottom; 
+/* keep the height and let wide (full) art overflow the sides; the stage clips it, the mask fades the edges */
+.uh-portrait { flex: none; width: auto; height: 92svh; max-width: none; object-fit: contain; object-position: center bottom; 
   /* the art is cut at the image edges; fade them so no hard line shows over the backdrop */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);

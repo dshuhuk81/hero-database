@@ -32,10 +32,10 @@ const backdropName = preview.art?.detailBackground && EXTRACTED_BACKDROPS.has(pr
   : DEFAULT_BACKDROP;
 const backdrop = `${R2}/backgrounds/heroes/${backdropName}.webp`;
 // R2 serves images with a one-year cache; bump this when hero art or skill icons are replaced.
-const IMG_VERSION = "2026-11-26b";
+const IMG_VERSION = "2026-11-26d";
 // Uncropped hero art (extended edges) lives under heroes/full/ and is used only here; cards, thumbs and the
 // hero page keep using the cropped heroes/<id>.webp. Add a hero id once its full art is uploaded to R2.
-const FULL_ART = new Set(["sunwukong"]);
+const FULL_ART = new Set(["apollo", "chaos", "cthulhu", "guanyin", "joanneofarc", "pandora", "sunwukong", "venus", "ymir"]);
 const portrait = FULL_ART.has(hero.id)
   ? `${R2}/heroes/full/${encodeURIComponent(hero.id)}.webp?v=${IMG_VERSION}`
   : `${R2}/heroes/${encodeURIComponent(hero.id)}.webp?v=${IMG_VERSION}`;
