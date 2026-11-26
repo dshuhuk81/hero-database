@@ -1,0 +1,204 @@
+{
+  "id": "guanyin",
+  "gameId": 5016,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "观音",
+  "attrBase": {
+    "901": 130.6,
+    "902": 1425,
+    "904": 0.06,
+    "905": 0,
+    "906": 0.04,
+    "907": 0.06,
+    "914": 200,
+    "921": 0,
+    "928": 0,
+    "941": 31,
+    "942": 35
+  },
+  "stats": {
+    "atk": 251241,
+    "hp": 2741338,
+    "armor": 59636,
+    "magicRes": 67331,
+    "dodgeRate": 6.0,
+    "hitBonus": 0,
+    "critRate": 4.0,
+    "critRes": 6.0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "莲台净界",
+        "description": "观音召唤【莲台净界】笼罩全场，范围内敌人会心率，会心伤害降低<color=#02ff00>30%</color>，每<color=#02ff00>2</color>秒释放净化泉水，为全体友军恢复<color=#02ff00>200%</color>攻击力的生命值，【莲台净界】持续<color=#02ff00>8</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：敌人会心率降低提升至<color=#02ff00>40%</color>",
+          "en": "Enemy Crit Rate reduction increased to 40%."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：敌人会心伤害降低提升至<color=#02ff00>40%</color>",
+          "en": "Enemy Crit DMG reduction increased to 40%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：净化泉水为全体友军恢复生命值提升至<color=#02ff00>250%</color>攻击力",
+          "en": "HP restored to all allies by the purifying spring water increased to 250% ATK."
+        }
+      ],
+      "en": {
+        "name": "Lotus Pure Realm",
+        "description": "Guanyin summons the [Lotus Pure Realm], covering the whole field. Enemies within it have their Crit Rate and Crit DMG reduced by 30%. Every 2s, purifying spring water restores HP equal to 200% ATK to all allies. The [Lotus Pure Realm] lasts 8s."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "杨柳净露",
+        "description": "对当前会心率最高的敌人释放【杨柳净露】造成<color=#02ff00>250%</color>攻击力的伤害并降低目标<color=#02ff00>30%</color>会心率和攻击力，持续<color=#02ff00>6</color>秒，若目标处于【莲台净界】内，降低会心率和攻击力效果提升至<color=#02ff00>50%</color>"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>300%</color>攻击力",
+          "en": "Damage increased to 300% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：降低目标<color=#02ff00>35%</color>会心率和攻击力",
+          "en": "Reduces the target's Crit Rate and ATK by 35%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：若目标处于【莲台净界】内，降低会心率和攻击力效果提升至<color=#02ff00>60%</color>",
+          "en": "If the target is within the [Lotus Pure Realm], the reduction to Crit Rate and ATK is increased to 60%."
+        }
+      ],
+      "en": {
+        "name": "Willow Dew",
+        "description": "Unleashes [Willow Dew] on the enemy with the highest current Crit Rate, dealing 250% ATK as DMG and reducing the target's Crit Rate and ATK by 30% for 6s. If the target is within the [Lotus Pure Realm], the reduction to Crit Rate and ATK is increased to 50%."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "本命莲台",
+        "description": "战斗开始时，观音获得最多可抵挡自身最大生命值<color=#02ff00>80%</color>伤害的护盾，护盾存在期间自身处于霸体状态，每秒恢复<color=#02ff00>9%</color>最大生命值的护盾，全体友军能量恢复速度提升<color=#02ff00>15%</color>，恢复效果提升<color=#02ff00>15%</color>，该护盾被打破后，观音<color=#02ff00>5</color>秒内受到伤害降低<color=#02ff00>50%</color>，<color=#02ff00>15</color>秒后重新生成"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：护盾上限提升至<color=#02ff00>100%</color>最大生命值",
+          "en": "Shield cap increased to 100% of Max HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：该护盾每秒恢复<color=#02ff00>11%</color>最大生命值的护盾",
+          "en": "The shield regenerates 11% of Max HP per second."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：全体友军能量恢复速度提升<color=#02ff00>25%</color>，恢复效果提升<color=#02ff00>25%</color>",
+          "en": "All allies' Energy regeneration speed and healing effect increased to 25%."
+        }
+      ],
+      "en": {
+        "name": "Lotus Platform",
+        "description": "At the start of battle, Guanyin gains a shield that absorbs damage up to 80% of her Max HP. While the shield is active, she has Super Armor and regenerates 9% of her Max HP as shield every second. All allies gain 15% Energy regeneration speed and 15% healing effect. When the shield is broken, Guanyin takes 50% less damage for 5s, and the shield regenerates after 15s."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "莲花印",
+        "description": "观音为全体友方施加一层【莲花印记】（莲花印记：<color=#02ff00>8</color>秒内攻击力提升<color=#02ff00>30%</color>，可抵挡一次会心伤害）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：攻击力增加提升至<color=#02ff00>35%</color>",
+          "en": "ATK bonus increased to 35%."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：持续时间提升至<color=#02ff00>10</color>秒，并额外提高<color=#02ff00>10%</color>会心抵抗率",
+          "en": "Duration increased to 10s, and Crit Resistance is additionally increased by 10%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：攻击力增加提升至<color=#02ff00>45%</color>",
+          "en": "ATK bonus increased to 45%."
+        }
+      ],
+      "en": {
+        "name": "Lotus Seal",
+        "description": "Guanyin applies 1 stack of [Lotus Mark] to all allies (Lotus Mark: increases ATK by 30% for 8s and blocks one instance of Crit damage)."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "观音普攻",
+        "description": "观音普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_GuanYin_Skill03",
+      "2": "A_UI_Hero_GuanYin_Skill01",
+      "3": "A_UI_Hero_GuanYin_Skill02",
+      "4": "A_UI_Hero_GuanYin_Skill04"
+    },
+    "detailBackground": "A_UI_WorldMain_SpecialCamp_GuanYin_Bg",
+    "relicIcon": "A_UI_Hero_GuanYin_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "甘露净瓶",
+      "skillName": "慈航福印"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "【莲台净界】释放时，对全体友军额外添加一层【莲花印记】",
+        "en": "When [Lotus Pure Realm] is cast, all allies gain an additional stack of [Lotus Mark]."
+      },
+      {
+        "level": 2,
+        "zh": "【莲台净界】释放时，为全体友军额外恢复<color=#02ff00>50</color>点能量",
+        "en": "When [Lotus Pure Realm] is cast, all allies additionally restore 50 Energy."
+      },
+      {
+        "level": 3,
+        "zh": "【莲台净界】期间全体友军受到伤害额外降低<color=#02ff00>20%</color>",
+        "en": "While [Lotus Pure Realm] is active, all allies take an additional 20% less damage."
+      },
+      {
+        "level": 4,
+        "zh": "【莲台净界】释放净化泉水时，会净化敌人身上所有的增益效果",
+        "en": "When [Lotus Pure Realm] releases purifying spring water, it also removes all buffs from enemies."
+      }
+    ],
+    "en": {
+      "name": "Vase of Pure Nectar",
+      "skillName": "Seal of Compassion"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

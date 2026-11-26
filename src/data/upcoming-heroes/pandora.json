@@ -1,0 +1,204 @@
+{
+  "id": "pandora",
+  "gameId": 5013,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "潘多拉",
+  "attrBase": {
+    "901": 135.4,
+    "902": 1448.8,
+    "904": 0.06,
+    "905": 0,
+    "906": 0.04,
+    "907": 0.06,
+    "914": 200,
+    "921": 0,
+    "928": 0,
+    "941": 29,
+    "942": 33
+  },
+  "stats": {
+    "atk": 260475,
+    "hp": 2787123,
+    "armor": 55789,
+    "magicRes": 63484,
+    "dodgeRate": 6.0,
+    "hitBonus": 0,
+    "critRate": 4.0,
+    "critRes": 6.0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "灾厄开匣",
+        "description": "被动的，潘多拉魔盒携带灾厄，释放技能时会给目标释放不同的灾厄效果\n诅咒：目标受到自身造成伤害的<color=#02ff00>10%</color>伤害（每次伤害不超过自身攻击力<color=#02ff00>2000%</color>），持续<color=#02ff00>5</color>秒\n脆弱：目标的护甲和魔抗降低<color=#02ff00>50%</color>，持续<color=#02ff00>8</color>秒\n逆流：目标受到最大生命值<color=#02ff00>10%</color>的真实伤害（最多不超过自身攻击力的<color=#02ff00>1000%</color>）\n恐惧：目标被恐惧<color=#02ff00>3</color>秒\n主动释放时，对全场敌人造成<color=#02ff00>2</color>次<color=#02ff00>200%</color>攻击力的伤害，并每次随机对敌人添加<color=#02ff00>1</color>种灾厄"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：对全场敌人造成<color=#02ff00>2</color>次<color=#02ff00>220%</color>攻击力的伤害",
+          "en": "Deals 220% ATK as DMG to all enemies twice."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：对全场敌人造成<color=#02ff00>2</color>次<color=#02ff00>240%</color>攻击力的伤害",
+          "en": "Deals 240% ATK as DMG to all enemies twice."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：对全场敌人造成<color=#02ff00>2</color>次<color=#02ff00>260%</color>攻击力的伤害",
+          "en": "Deals 260% ATK as DMG to all enemies twice."
+        }
+      ],
+      "en": {
+        "name": "Calamity Unsealed",
+        "description": "Passive: Pandora's Box carries calamity. Whenever Pandora casts a skill, she inflicts a different Calamity effect on the target.\nCurse: the target takes 10% of the damage it deals as damage (each instance capped at 2000% of Pandora's ATK) for 5s.\nFragile: the target's Armor and Magic Resistance are reduced by 50% for 8s.\nBackflow: the target takes true damage equal to 10% of its Max HP (capped at 1000% of Pandora's ATK).\nFear: the target is Feared for 3s.\nWhen actively cast, deals 200% ATK as DMG to all enemies twice, and each hit applies 1 random Calamity to the enemy."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "魔盒封存",
+        "description": "锁定敌方攻击力最高的敌人，将其关进潘多拉魔盒，持续<color=#02ff00>6</color>秒，持续期间目标无法行动，无法攻击，也无法被其他单位选中，封存结束时对目标随机添加<color=#02ff00>2</color>种灾厄效果"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：持续时间提升至<color=#02ff00>7</color>秒",
+          "en": "Duration increased to 7s."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：持续时间内每秒对其造成<color=#02ff00>100%</color>攻击力的伤害",
+          "en": "Deals 100% ATK as DMG to the target every second while sealed."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：持续时间提升至<color=#02ff00>8</color>秒",
+          "en": "Duration increased to 8s."
+        }
+      ],
+      "en": {
+        "name": "Box Seal",
+        "description": "Locks onto the enemy with the highest ATK and seals them in Pandora's Box for 6s. While sealed, the target cannot act, cannot attack, and cannot be targeted by other units. When the seal ends, 2 random Calamity effects are applied to the target."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "灾厄共鸣",
+        "description": "被动的，敌方单位每携带<color=#02ff00>1</color>种灾厄，受到伤害提升<color=#02ff00>10%</color>，并且潘多拉每<color=#02ff00>3</color>次普攻对目标随机添加<color=#02ff00>1</color>种灾厄"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：敌方单位每携带<color=#02ff00>1</color>种灾厄，受到伤害提升<color=#02ff00>15%</color>",
+          "en": "For each Calamity an enemy carries, it takes 15% more damage."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：敌方单位每携带一种灾厄，受到伤害提升<color=#02ff00>20%</color>",
+          "en": "For each Calamity an enemy carries, it takes 20% more damage."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：潘多拉每<color=#02ff00>2</color>次普攻对目标随机添加<color=#02ff00>1</color>种灾厄",
+          "en": "Pandora applies 1 random Calamity to the target every 2 basic attacks."
+        }
+      ],
+      "en": {
+        "name": "Calamity Resonance",
+        "description": "Passive: for each Calamity an enemy carries, it takes 10% more damage. Every 3 basic attacks, Pandora applies 1 random Calamity to the target."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "passive",
+      "zh": {
+        "name": "盒中重生",
+        "description": "被动的，潘多拉战败后被收进魔盒中，一段时间后潘多拉从魔盒中重生，恢复<color=#02ff00>50%</color>最大生命值和<color=#02ff00>200</color>点能量"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：重生时恢复<color=#02ff00>75%</color>最大生命值",
+          "en": "Restores 75% Max HP on rebirth."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：重生时恢复<color=#02ff00>400</color>点能量",
+          "en": "Restores 400 Energy on rebirth."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：重生时恢复<color=#02ff00>100%</color>最大生命值",
+          "en": "Restores 100% Max HP on rebirth."
+        }
+      ],
+      "en": {
+        "name": "Rebirth in the Box",
+        "description": "Passive: when Pandora is defeated, she is drawn into the box. After a short time she is reborn from it, restoring 50% of her Max HP and 200 Energy."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "潘多拉普攻",
+        "description": "潘多拉普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_PanDuoLa_Skill03",
+      "2": "A_UI_Hero_PanDuoLa_Skill01",
+      "3": "A_UI_Hero_PanDuoLa_Skill02",
+      "4": "A_UI_Hero_PanDuoLa_Skill04"
+    },
+    "detailBackground": "A_UI_WorldMain_SpecialCamp_Panduola_Bg",
+    "relicIcon": "A_UI_Hero_PanDuoLa_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "不要打开盒子！",
+      "skillName": "魔盒契约"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "【魔盒封存】持续时间提升至<color=#02ff00>10</color>秒",
+        "en": "[Box Seal] duration increased to 10s."
+      },
+      {
+        "level": 2,
+        "zh": "被【魔盒封存】锁定的敌人出来后<color=#02ff00>8</color>秒内攻击力降低<color=#02ff00>30%</color>",
+        "en": "Enemies released from [Box Seal] have their ATK reduced by 30% for 8s."
+      },
+      {
+        "level": 3,
+        "zh": "【魔盒封存】无视目标霸体状态",
+        "en": "[Box Seal] ignores the target's Super Armor."
+      },
+      {
+        "level": 4,
+        "zh": "被【魔盒封存】锁定的敌人，本场战斗造成伤害永久降低<color=#02ff00>30%</color>",
+        "en": "Enemies locked by [Box Seal] deal 30% less damage for the rest of the battle."
+      }
+    ],
+    "en": {
+      "name": "Don't Open the Box!",
+      "skillName": "Box Pact"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

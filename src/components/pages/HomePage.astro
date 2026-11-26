@@ -14,6 +14,7 @@ import "../../styles/home-live.css";
 import { globalEvents } from "../../data/eventsGlobal";
 import { buildBanners } from "../../data/banners";
 import { siteIdForGameId, getHeroRelease } from "../../data/heroReleases";
+import { upcomingHeroes } from "../../data/upcomingHeroes";
 import { summonSchedule } from "../../data/summonSchedule";
 import { pickRightNow, recentReleases } from "../../data/homeRightNow.js";
 import { renderRightNow } from "../../data/homeRightNowView.js";
@@ -105,10 +106,10 @@ const liveItems = [
 ];
 const rightNowCtx = {
   locale, copy: copyForScript, today: buildDate,
-  eventsHref: localizePath("/events", locale), bannersHref: localizePath("/banners", locale), heroPrefix: `${localizePath("/heroes", locale)}/`,
+  eventsHref: localizePath("/events", locale), bannersHref: localizePath("/banners", locale), heroPrefix: `${localizePath("/heroes", locale)}/`, upcomingIds: upcomingHeroes.map((preview) => preview.id),
 };
 const rightNow = pickRightNow(liveItems, banners, buildDate);
-const rightNowHtml = renderRightNow(rightNow, { ...rightNowCtx, heroHref: (id: string) => `${rightNowCtx.heroPrefix}${id}` });
+const rightNowHtml = renderRightNow(rightNow, { ...rightNowCtx, heroHref: (id: string) => (rightNowCtx.upcomingIds.includes(id) ? `/heroes/upcoming/${id}` : `${rightNowCtx.heroPrefix}${id}`) });
 const liveData = JSON.stringify({ items: liveItems, banners }).replace(/</g, "\\u003c");
 const liveCopy = JSON.stringify({ ...rightNowCtx, today: undefined }).replace(/</g, "\\u003c");
 
@@ -1148,7 +1149,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     const html = renderRightNow(pickRightNow(data.items, data.banners, today), {
       ...ctx,
       today,
-      heroHref: (id: string) => `${ctx.heroPrefix}${id}`,
+      heroHref: (id: string) => (ctx.upcomingIds.includes(id) ? `/heroes/upcoming/${id}` : `${ctx.heroPrefix}${id}`),
     });
     slots.feature.innerHTML = html.feature;
     slots.running.innerHTML = html.running;

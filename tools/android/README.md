@@ -132,3 +132,16 @@ Treant, Ushabti and Cancer all at `Juxiezuo`); those are reported as `portrait_s
 
 ## Editing
 Edit the scripts in this repository only. If the data directory has a `scripts` entry, it is a symlink to `tools/android/scripts`.
+
+## Upcoming-hero previews (`/heroes/upcoming/<id>`)
+For every `src/data/heroes/*.json` with `"release": false`, export the CN attributes and Chinese skill texts:
+```bash
+tools/android/run.sh export_upcoming_heroes.py --cn out/emu_pull/<date>_plain/x_cn
+```
+It writes `src/data/upcoming-heroes/<id>.json` (stats at level 300, raw Chinese text, skill-icon names and the
+hero-screen backdrop from `hero_skin.json`). The `en` fields are filled in by hand (official Global text where it
+exists, otherwise a translation of the Chinese) and survive re-runs while the Chinese text is unchanged.
+Assets the page needs on R2: `skills/<id>_skill_<slot>.webp` (slot order = `skill_icon_<slot>` in `hero_skin.json`,
+not the number in the icon file name) and `backgrounds/heroes/<detail_background>.webp`; the page falls back to
+`A_UI_HeroDevelop_CharacterBase_Bg` when a hero's own backdrop is not extracted. When a hero is released, its preview
+page disappears; add a redirect from `/heroes/upcoming/<id>` to `/heroes/<id>` in `public/_redirects`.

@@ -1,0 +1,204 @@
+{
+  "id": "sunwukong",
+  "gameId": 5015,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "孙悟空",
+  "attrBase": {
+    "901": 143,
+    "902": 1557.1,
+    "904": 0,
+    "905": 0.1,
+    "906": 0.06,
+    "907": 0,
+    "914": 200,
+    "921": 0,
+    "928": 0,
+    "941": 24.3,
+    "942": 24.3
+  },
+  "stats": {
+    "atk": 275096,
+    "hp": 2995465,
+    "armor": 46747,
+    "magicRes": 46747,
+    "dodgeRate": 0,
+    "hitBonus": 10.0,
+    "critRate": 6.0,
+    "critRes": 0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "大闹天宫·擎天",
+        "description": "孙悟空在距离最远的<color=#02ff00>2</color>名敌人身后各召唤一个分身，继承本体<color=#02ff00>80%</color>的属性，持续<color=#02ff00>10</color>秒，然后本体和分身同时蓄力金箍棒对最近目标及周围单位造成<color=#02ff00>600%</color>攻击力的伤害，并击倒敌人（场上最多存在<color=#02ff00>10</color>个分身）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：蓄力金箍棒对最近目标及周围单位造成<color=#02ff00>650%</color>攻击力的伤害",
+          "en": "Charged Golden Cudgel deals 650% ATK as DMG to the nearest target and surrounding units."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：分身继承本体属性提升至<color=#02ff00>100%</color>",
+          "en": "Clones inherit 100% of his attributes."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：蓄力金箍棒对最近目标及周围单位造成<color=#02ff00>700%</color>攻击力的伤害",
+          "en": "Charged Golden Cudgel deals 700% ATK as DMG to the nearest target and surrounding units."
+        }
+      ],
+      "en": {
+        "name": "Havoc in Heaven: Pillar of the Sky",
+        "description": "Sun Wukong summons a clone behind each of the 2 farthest enemies. Clones inherit 80% of his attributes and last 10s. Then Sun Wukong and his clones charge the Golden Cudgel at the same time, dealing 600% ATK as DMG to the nearest target and surrounding units and knocking enemies down (up to 10 clones can exist on the field)."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "腾云突击",
+        "description": "在自身周围召唤一个分身，继承本体<color=#02ff00>60%</color>的属性，持续<color=#02ff00>8</color>秒，随后孙悟空和该分身突进至敌方攻击力最高的敌人身边，对其造成<color=#02ff00>200%</color>攻击力的伤害，并对目标附加\"破绽\"（破绽：目标受到孙悟空及分身的伤害提升<color=#02ff00>20%</color>）命中目标后孙悟空获得自身<color=#02ff00>20%</color>最大生命值的护盾，持续<color=#02ff00>6</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：分身继承本体属性提升至<color=#02ff00>80%</color>",
+          "en": "The clone inherits 80% of his attributes."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：造成伤害提升至<color=#02ff00>250%</color>攻击力",
+          "en": "Damage increased to 250% ATK."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：破绽：目标受到孙悟空及分身的伤害提升至<color=#02ff00>30%</color>",
+          "en": "Opening: the target takes 30% more damage from Sun Wukong and his clones."
+        }
+      ],
+      "en": {
+        "name": "Cloud-Riding Strike",
+        "description": "Summons a clone around himself that inherits 60% of his attributes and lasts 8s. Then Sun Wukong and the clone dash to the enemy with the highest ATK, dealing 200% ATK as DMG and applying \"Opening\" to the target (Opening: the target takes 20% more damage from Sun Wukong and his clones). After hitting the target, Sun Wukong gains a shield equal to 20% of his Max HP for 6s."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "金刚不坏",
+        "description": "被动的，场上每存在<color=#02ff00>1</color>个分身，孙悟空提升<color=#02ff00>25%</color>攻击力，受到伤害降低<color=#02ff00>5%</color>，分身消失时，本体获得<color=#02ff00>200%</color>攻击力的护盾"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：场上每存在<color=#02ff00>1</color>个分身，孙悟空提升<color=#02ff00>30%</color>攻击力",
+          "en": "For each clone on the field, Sun Wukong gains 30% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：场上每存在<color=#02ff00>1</color>个分身，受到伤害降低<color=#02ff00>10%</color>",
+          "en": "For each clone on the field, damage taken is reduced by 10%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：分身消失时，为孙悟空提供<color=#02ff00>300%</color>攻击力的的护盾",
+          "en": "When a clone disappears, Sun Wukong gains a shield equal to 300% ATK."
+        }
+      ],
+      "en": {
+        "name": "Diamond Body",
+        "description": "Passive: for each clone on the field, Sun Wukong gains 25% ATK and takes 5% less damage. When a clone disappears, Sun Wukong gains a shield equal to 200% ATK."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "当头一棒",
+        "description": "孙悟空与所有分身同时释放\"当头一棒\"，对最近敌人造成<color=#02ff00>200%</color>攻击力的伤害，并眩晕目标2秒，本次伤害额外造成目标<color=#02ff00>5%</color>最大生命值的伤害，场上每存在<color=#02ff00>1</color>个分身，额外叠加<color=#02ff00>1</color>次，额外伤害最高不超过（<color=#02ff00>1</color>+分身数量）*<color=#02ff00>400%</color>攻击力的伤害"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>250%</color>攻击力",
+          "en": "Damage increased to 250% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：额外造成目标<color=#02ff00>7%</color>最大生命值的伤害,场上每存在<color=#02ff00>1</color>个分身，额外叠加<color=#02ff00>1</color>次（额外伤害最高不超过<color=#02ff00>1</color>+分身数量*<color=#02ff00>500%</color>攻击力的伤害）",
+          "en": "Bonus damage increased to 7% of the target's Max HP, applied one additional time for each clone on the field (bonus damage capped at (1 + number of clones) x 500% ATK)."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：造成伤害提升至<color=#02ff00>300%</color>攻击力",
+          "en": "Damage increased to 300% ATK."
+        }
+      ],
+      "en": {
+        "name": "Blow to the Head",
+        "description": "Sun Wukong and all clones cast \"Blow to the Head\" at the same time, dealing 200% ATK as DMG to the nearest enemy and stunning the target for 2s. This hit also deals bonus damage equal to 5% of the target's Max HP, and for each clone on the field this bonus is applied one additional time. Bonus damage is capped at (1 + number of clones) x 400% ATK."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "孙悟空普攻",
+        "description": "孙悟空普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_SunWuKong_Skill03",
+      "2": "A_UI_Hero_SunWuKong_Skill01",
+      "3": "A_UI_Hero_SunWuKong_Skill02",
+      "4": "A_UI_Hero_SunWuKong_Skill04"
+    },
+    "detailBackground": "A_UI_WorldMain_SpecialCamp_SunWuKong_Bg",
+    "relicIcon": "A_UI_Hero_SunWuKong_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "如意金箍棒",
+      "skillName": "齐天余威"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "释放终结技时，额外召唤<color=#02ff00>1</color>个分身，同时每损失<color=#02ff00>50%</color>最大生命值，在孙悟空周围额外召唤<color=#02ff00>1</color>个分身",
+        "en": "When casting his ultimate, summons 1 additional clone. In addition, for every 50% of Max HP lost, summons 1 additional clone around Sun Wukong."
+      },
+      {
+        "level": 2,
+        "zh": "孙悟空本体和分身每释放<color=#02ff00>1</color>次【当头一棒】，使该技能的冷却降低<color=#02ff00>2</color>秒（每次最多可降低<color=#02ff00>10</color>秒）",
+        "en": "Each time Sun Wukong or a clone casts [Blow to the Head], that skill's cooldown is reduced by 2s (up to 10s per cast)."
+      },
+      {
+        "level": 3,
+        "zh": "场上每存在<color=#02ff00>1</color>个分身，本体与分身均增加<color=#02ff00>20%</color>攻击速度",
+        "en": "For each clone on the field, Sun Wukong and his clones gain 20% ATK Speed."
+      },
+      {
+        "level": 4,
+        "zh": "场上有分身存在时，孙悟空即将阵亡时将位移至当前生命值最高的分身身上，恢复<color=#02ff00>100%</color>的生命值，分身代替死亡，一场战斗只能触发一次",
+        "en": "While a clone exists, when Sun Wukong is about to fall he moves to the clone with the highest current HP and restores 100% of his HP; the clone dies in his place. Can trigger only once per battle."
+      }
+    ],
+    "en": {
+      "name": "Ruyi Golden Cudgel",
+      "skillName": "Lingering Might of the Great Sage"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

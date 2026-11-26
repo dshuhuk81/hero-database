@@ -1,0 +1,204 @@
+{
+  "id": "joanneofarc",
+  "gameId": 4016,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "贞德",
+  "attrBase": {
+    "901": 84.8,
+    "902": 1599.5,
+    "904": 0,
+    "905": 0.04,
+    "906": 0,
+    "907": 0.1,
+    "914": 200,
+    "921": -0.1,
+    "928": 0.04,
+    "941": 26.5,
+    "942": 31.5
+  },
+  "stats": {
+    "atk": 163134,
+    "hp": 3077032,
+    "armor": 50979,
+    "magicRes": 60598,
+    "dodgeRate": 0,
+    "hitBonus": 4.0,
+    "critRate": 0,
+    "critRes": 10.0,
+    "healEff": 4.0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "圣临庇世",
+        "description": "贞德召唤圣光降临，使自身与【圣旗】周围的单位获得<color=#02ff00>2</color>秒无敌效果，无敌效果消失时获得贞德<color=#02ff00>20%</color>最大生命值的护盾"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：无敌效果消失时获得贞德<color=#02ff00>25%</color>最大生命值的护盾",
+          "en": "When the invincibility ends, they gain a shield equal to 25% of Joanne's Max HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：无敌效果消失时<color=#02ff00>6</color>秒内受到伤害降低<color=#02ff00>30%</color>",
+          "en": "When the invincibility ends, damage taken is reduced by 30% for 6s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：无敌效果消失时获得贞德<color=#02ff00>30%</color>最大生命值的护盾",
+          "en": "When the invincibility ends, they gain a shield equal to 30% of Joanne's Max HP."
+        }
+      ],
+      "en": {
+        "name": "Holy Descent",
+        "description": "Joanne calls down holy light, granting herself and units around the [Holy Banner] invincibility for 2s. When the invincibility ends, they gain a shield equal to 20% of Joanne's Max HP."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "圣旗守望",
+        "description": "战斗开始时，贞德在友方战场中心召唤【圣旗】，【圣旗】存在时为周围<color=#02ff00>4</color>米范围友军提升<color=#02ff00>10%</color>伤害减免和<color=#02ff00>10%</color>能量恢复速度\n主动释放时，贞德对周围敌人造成<color=#02ff00>200%</color>攻击力伤害，同时使【圣旗】范围内友军提升<color=#02ff00>30%</color>攻击力，持续<color=#02ff00>8</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>250%</color>攻击力",
+          "en": "Damage increased to 250% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：【圣旗】存在时为周围<color=#02ff00>4</color>米范围友军提升<color=#02ff00>15%</color>伤害减免和<color=#02ff00>15%</color>能量恢复速度",
+          "en": "While the [Holy Banner] stands, allies within 4m gain 15% damage reduction and 15% Energy regeneration speed."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：主动释放时使【圣旗】范围内友军提升<color=#02ff00>40%</color>攻击力，持续<color=#02ff00>8</color>秒",
+          "en": "When actively cast, allies within the [Holy Banner]'s range gain 40% ATK for 8s."
+        }
+      ],
+      "en": {
+        "name": "Banner Watch",
+        "description": "At the start of battle, Joanne summons the [Holy Banner] at the center of the allied battlefield. While it stands, allies within 4m gain 10% damage reduction and 10% Energy regeneration speed.\nWhen actively cast, Joanne deals 200% ATK as DMG to surrounding enemies, and allies within the [Holy Banner]'s range gain 30% ATK for 8s."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "信仰共鸣",
+        "description": "【圣旗】范围内每有一名友军，贞德获得一层\"信仰\"（信仰：每层信仰使贞德受到伤害降低<color=#02ff00>9%</color>，造成的治疗和护盾效果提升<color=#02ff00>10%</color>）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：每层\"信仰\"使贞德受到伤害降低<color=#02ff00>13%</color>",
+          "en": "Each stack of \"Faith\" reduces damage Joanne takes by 13%."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：每层\"信仰\"使贞德造成的治疗和护盾效果提升<color=#02ff00>15%</color>",
+          "en": "Each stack of \"Faith\" increases the healing and shields Joanne provides by 15%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：每层\"信仰\"使贞德受到伤害降低<color=#02ff00>17%</color>",
+          "en": "Each stack of \"Faith\" reduces damage Joanne takes by 17%."
+        }
+      ],
+      "en": {
+        "name": "Resonance of Faith",
+        "description": "For each ally within the [Holy Banner]'s range, Joanne gains 1 stack of \"Faith\" (Faith: each stack reduces damage Joanne takes by 9% and increases the healing and shields she provides by 10%)."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "圣光祷愈",
+        "description": "为自身恢复<color=#02ff00>10%</color>最大生命值，【圣旗】范围内每有一名友军额外触发一次，【圣旗】范围内队友获得自身受到的治疗量的<color=#02ff00>50%</color>"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：为自身恢复<color=#02ff00>15%</color>最大生命值",
+          "en": "Restores 15% of her own Max HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：【圣旗】范围内队友获得自身受到的治疗量的<color=#02ff00>70%</color>",
+          "en": "Allies within the [Holy Banner]'s range receive 70% of the healing Joanne receives."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：为自身恢复<color=#02ff00>20%</color>最大生命值",
+          "en": "Restores 20% of her own Max HP."
+        }
+      ],
+      "en": {
+        "name": "Prayer of Radiant Healing",
+        "description": "Restores 10% of her own Max HP. For each ally within the [Holy Banner]'s range, this triggers once more, and allies within the [Holy Banner]'s range receive 50% of the healing Joanne receives."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "贞德普攻",
+        "description": "贞德普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_ZhenDe_Skill03",
+      "2": "A_UI_Hero_ZhenDe_Skill01",
+      "3": "A_UI_Hero_ZhenDe_Skill02",
+      "4": "A_UI_Hero_ZhenDe_Skill04"
+    },
+    "detailBackground": "A_UI_HeroDevelop_CharacterBase_Bg",
+    "relicIcon": "A_UI_Hero_ZhenDe_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "虔信者之剑",
+      "skillName": "圣旗荣光"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "贞德释放终结技时将强化【圣旗】，使【圣旗】范围内的友方单位获得<color=#02ff00>20%</color>会心率和会心伤害，持续<color=#02ff00>8</color>秒",
+        "en": "When Joanne casts her ultimate, she empowers the [Holy Banner]: allies within its range gain 20% Crit Rate and Crit DMG for 8s."
+      },
+      {
+        "level": 2,
+        "zh": "【圣旗】范围内的友方单位额外获得<color=#02ff00>10%</color>伤害减免",
+        "en": "Allies within the [Holy Banner]'s range gain an additional 10% damage reduction."
+      },
+      {
+        "level": 3,
+        "zh": "贞德释放终结技时将强化【圣旗】，使【圣旗】范围内的友方单位获得<color=#02ff00>30%</color>会心率和会心伤害，持续<color=#02ff00>8</color>秒",
+        "en": "When Joanne casts her ultimate, she empowers the [Holy Banner]: allies within its range gain 30% Crit Rate and Crit DMG for 8s."
+      },
+      {
+        "level": 4,
+        "zh": "终结技无敌效果时间额外提升<color=#02ff00>1</color>秒",
+        "en": "The invincibility from her ultimate lasts 1s longer."
+      }
+    ],
+    "en": {
+      "name": "Sword of the Devout",
+      "skillName": "Glory of the Holy Banner"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

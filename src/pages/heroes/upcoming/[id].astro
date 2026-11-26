@@ -1,0 +1,270 @@
+---
+export const prerender = true;
+
+// Fullscreen preview of an unreleased hero, laid out like the in-game hero screen:
+// backdrop and hero in the middle, name on top, skill ring and stat bar at the bottom.
+import Base from "../../../layouts/Base.astro";
+import { getHeroById } from "../../../data/heroes/withRatings";
+import { upcomingHeroes, getUpcomingHero, type PreviewSkill } from "../../../data/upcomingHeroes";
+
+const R2 = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
+// The game's default hero-screen backdrop; used when the hero's own one is not extracted.
+const DEFAULT_BACKDROP = "A_UI_HeroDevelop_CharacterBase_Bg";
+const EXTRACTED_BACKDROPS = new Set([
+  DEFAULT_BACKDROP,
+  "A_UI_WorldMain_SpecialCamp_Kaesi_Bg",
+  "A_UI_WorldMain_SpecialCamp_Kesulu_Bg",
+  "A_UI_WorldMain_SpecialCamp_Panduola_Bg",
+  "A_UI_WorldMain_SpecialCamp_SunWuKong_Bg",
+]);
+
+export function getStaticPaths() {
+  return upcomingHeroes.map((preview) => ({ params: { id: preview.id } }));
+}
+
+const { id } = Astro.params;
+const preview = getUpcomingHero(id as string);
+const hero = getHeroById(id) as any;
+if (!preview || !hero) throw new Error(`No upcoming-hero data for "${id}"`);
+
+const backdropName = preview.art?.detailBackground && EXTRACTED_BACKDROPS.has(preview.art.detailBackground)
+  ? preview.art.detailBackground
+  : DEFAULT_BACKDROP;
+const backdrop = `${R2}/backgrounds/heroes/${backdropName}.webp`;
+// R2 serves images with a one-year cache; bump this when hero art or skill icons are replaced.
+const IMG_VERSION = "2026-11-26";
+const portrait = `${R2}/heroes/${encodeURIComponent(hero.id)}.webp?v=${IMG_VERSION}`;
+const icon = (type: string, value?: string) => (value ? `${R2}/icons/${type}/${value.toLowerCase()}.webp` : null);
+
+// The stats equal the in-game values at level 300 (checked against the CN client hero screen).
+const STATS = [
+  ["hp", "Health"], ["atk", "Attack"], ["armor", "Armor"], ["magicRes", "Magic Res"],
+  ["dodgeRate", "Dodge Rate"], ["hitBonus", "Hit Bonus"], ["critRate", "Crit Rate"], ["critRes", "Crit Res"],
+  ["critDmgBonus", "Crit DMG Bonus"], ["atkSpdBonus", "ATK Speed Bonus"], ["healEff", "Healing Effect"],
+  ["pDmgBonus", "P.DMG Bonus"], ["controlRes", "Control Res"], ["ultimatePWR", "Ultimate PWR"],
+] as const;
+const ABSOLUTE = new Set(["hp", "atk", "armor", "magicRes"]);
+const formatStat = (key: string, value: number) => (ABSOLUTE.has(key) ? value.toLocaleString("en-US") : `${value}%`);
+const compact = (value: number) =>
+  value >= 1_000_000 ? `${(value / 1_000_000).toFixed(2)}M` : value >= 10_000 ? `${(value / 1000).toFixed(1)}K` : value.toLocaleString("en-US");
+const statRows = STATS
+  .filter(([key]) => key in preview.stats)
+  .map(([key, label]) => ({ key, label, display: formatStat(key, Number(preview.stats[key]) || 0) }));
+const barStat = (key: string) => compact(Number(preview.stats[key]) || 0);
+
+// Ring order as in the game: two skills left, ultimate in the middle, one skill and the artifact right.
+const active = preview.skills.filter((skill) => skill.kind !== "basic" && skill.en);
+const ultimate = active.find((skill) => skill.kind === "ultimate");
+const others = active.filter((skill) => skill !== ultimate).sort((a, b) => a.slot - b.slot);
+type RingItem = { skill: PreviewSkill; position: string };
+const ring: RingItem[] = [
+  ...(others[0] ? [{ skill: others[0], position: "far-left" }] : []),
+  ...(others[1] ? [{ skill: others[1], position: "left" }] : []),
+  ...(ultimate ? [{ skill: ultimate, position: "center" }] : []),
+  ...(others[2] ? [{ skill: others[2], position: "right" }] : []),
+];
+const KIND_LABEL: Record<string, string> = { ultimate: "Ultimate", skill: "Skill", passive: "Passive" };
+const skillIcon = (slot: number) => `${R2}/skills/${encodeURIComponent(hero.id)}_skill_${slot}.webp?v=${IMG_VERSION}`;
+
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const highlight = (text: string) => escapeHtml(text).replace(/(\d+(?:[.,]\d+)?%?)/g, '<span class="num">$1</span>');
+const plainZh = (text: string) => text.replace(/<\/?color[^>]*>/g, "");
+
+const relic = preview.relic?.en ? preview.relic : null;
+const relicIcon = `${R2}/skills/${encodeURIComponent(hero.id)}_relic.webp?v=${IMG_VERSION}`;
+
+const sourceNote = preview.enSource === "global-client"
+  ? "English text from the Global client."
+  : "English text translated from the CN original.";
+---
+
+<Base
+  title={`${hero.name} (Preview) | Motto Immortal Hero Database`}
+  description={`Preview of ${hero.name}: attributes and skills from the Chinese client. Not final, Global values can differ.`}
+  image={portrait}
+>
+  <main class="uh-stage" data-uh-stage>
+    <!-- Depth layers: backdrop (slow drift), two mist bands, the hero; the pointer shifts them by different amounts. -->
+    <div class="uh-layer uh-layer-back" aria-hidden="true">
+      <img class="uh-backdrop" src={backdrop} alt="" width="838" height="2048" fetchpriority="high" />
+    </div>
+    <div class="uh-layer uh-layer-mist" aria-hidden="true">
+      <div class="uh-mist uh-mist-a"></div>
+      <div class="uh-mist uh-mist-b"></div>
+    </div>
+    <div class="uh-veil" aria-hidden="true"></div>
+
+    <header class="uh-top">
+      <a class="uh-back" href="/banners" aria-label="Back to banners"><span aria-hidden="true">&larr;</span><span class="uh-back-text">Banners</span></a>
+      <div class="uh-title">
+        <p class="uh-cn-name" lang="zh-CN">{preview.cnName}</p>
+        <h1 class="uh-name">{hero.name}</h1>
+        <div class="uh-badges">
+          {[["factions", hero.faction], ["classes", hero.class], ["roles", hero.role]].filter(([, value]) => value).map(([type, value]) => (
+            <span class="uh-hex"><img src={icon(type, value)!} alt={value} title={value} width="26" height="26" /></span>
+          ))}
+          <span class="uh-preview-pill">Preview</span>
+        </div>
+        <p class="uh-meta">{[hero.faction, hero.class, hero.role].filter(Boolean).join(" · ")}</p>
+      </div>
+    </header>
+
+    <div class="uh-figure uh-layer-front" aria-hidden="true">
+      <img class="uh-portrait" src={portrait} alt="" width="838" height="2048" />
+    </div>
+
+    <section class="uh-bottom" aria-label="Skills and attributes">
+      <div class="uh-panels">
+        {ring.map(({ skill }) => (
+          <article class="uh-panel" id={`uh-skill-${skill.slot}`} hidden>
+            <header class="uh-panel-head">
+              <h2 class="uh-panel-name">{skill.en!.name}</h2>
+              <span class={`uh-tag uh-tag-${skill.kind}`}>{KIND_LABEL[skill.kind] ?? "Skill"}</span>
+              <button class="uh-close" type="button" data-uh-close aria-label="Close">&times;</button>
+            </header>
+            <p class="uh-panel-text" set:html={highlight(skill.en!.description)}></p>
+            <ul class="uh-upgrades">
+              {skill.upgrades.filter((upgrade) => upgrade.en).map((upgrade) => (
+                <li><span class="uh-lvl">Lv {upgrade.level}</span><span set:html={highlight(upgrade.en!)}></span></li>
+              ))}
+            </ul>
+            <details class="uh-original">
+              <summary>Chinese original</summary>
+              <p lang="zh-CN"><strong>{skill.zh.name}</strong></p>
+              <p lang="zh-CN">{plainZh(skill.zh.description)}</p>
+              {skill.upgrades.map((upgrade) => <p lang="zh-CN">{plainZh(upgrade.zh)}</p>)}
+            </details>
+            <p class="uh-panel-note">{sourceNote} Preview, not final.</p>
+          </article>
+        ))}
+        {relic && (
+          <article class="uh-panel" id="uh-relic" hidden>
+            <header class="uh-panel-head">
+              <h2 class="uh-panel-name">{relic.en!.name}</h2>
+              <span class="uh-tag uh-tag-relic">Artifact</span>
+              <button class="uh-close" type="button" data-uh-close aria-label="Close">&times;</button>
+            </header>
+            <p class="uh-panel-sub">{relic.en!.skillName}</p>
+            <ul class="uh-upgrades">
+              {relic.levels.filter((level) => level.en).map((level) => (
+                <li><span class="uh-lvl">Lv {level.level}</span><span set:html={highlight(level.en!)}></span></li>
+              ))}
+            </ul>
+            <details class="uh-original">
+              <summary>Chinese original</summary>
+              <p lang="zh-CN"><strong>{relic.zh.name}</strong> · {relic.zh.skillName}</p>
+              {relic.levels.map((level) => <p lang="zh-CN">{level.level}: {plainZh(level.zh)}</p>)}
+            </details>
+            <p class="uh-panel-note">{sourceNote} Each level unlocks its own effect. Preview, not final.</p>
+          </article>
+        )}
+      </div>
+
+      <ol class="uh-ring">
+        {ring.map(({ skill, position }) => (
+          <li class={`uh-ring-item uh-pos-${position}`}>
+            <button
+              class={`uh-skill${skill.kind === "ultimate" ? " is-ultimate" : ""}`}
+              type="button"
+              data-uh-skill={`uh-skill-${skill.slot}`}
+              aria-controls={`uh-skill-${skill.slot}`}
+              aria-expanded="false"
+            >
+              <img src={skillIcon(skill.slot)} alt="" width="144" height="144" loading="lazy" />
+              <span class="uh-visually-hidden">{skill.en!.name}</span>
+            </button>
+            {skill.kind === "ultimate" && <span class="uh-ring-label">Ultimate</span>}
+          </li>
+        ))}
+        {relic && (
+          <li class="uh-ring-item uh-pos-far-right">
+            <button class="uh-skill is-relic" type="button" data-uh-skill="uh-relic" aria-controls="uh-relic" aria-expanded="false">
+              <img src={relicIcon} alt="" width="144" height="144" loading="lazy" />
+              <span class="uh-visually-hidden">{relic.en!.name}</span>
+            </button>
+            <span class="uh-ring-label">Artifact</span>
+          </li>
+        )}
+      </ol>
+
+      <button class="uh-statbar" type="button" data-uh-stats aria-haspopup="dialog">
+        <span class="uh-stat"><small>Health</small><b>{barStat("hp")}</b></span>
+        <span class="uh-stat"><small>Attack</small><b>{barStat("atk")}</b></span>
+        <span class="uh-level"><small>Level</small><b>300</b></span>
+        <span class="uh-stat"><small>Armor</small><b>{barStat("armor")}</b></span>
+        <span class="uh-stat"><small>Magic Res</small><b>{barStat("magicRes")}</b></span>
+      </button>
+      <p class="uh-hint">Preview from the Chinese (CN) client, not final. Tap a skill or the stats for details.</p>
+    </section>
+
+    <dialog class="uh-dialog" data-uh-dialog aria-labelledby="uhStatsTitle">
+      <header class="uh-dialog-head">
+        <h2 id="uhStatsTitle">Attributes</h2>
+        <button class="uh-close" type="button" data-uh-dialog-close aria-label="Close">&times;</button>
+      </header>
+      <dl class="uh-stat-list">
+        {statRows.map((row) => (
+          <div><dt>{row.label}</dt><dd>{row.display}</dd></div>
+        ))}
+      </dl>
+      <p class="uh-panel-note">Level 300 values from the CN client. They can change before the Global release.</p>
+    </dialog>
+  </main>
+</Base>
+
+<script>
+  const stage = document.querySelector<HTMLElement>("[data-uh-stage]");
+  if (stage) {
+    const buttons = [...stage.querySelectorAll<HTMLButtonElement>("[data-uh-skill]")];
+    const panels = [...stage.querySelectorAll<HTMLElement>(".uh-panel")];
+    const close = () => {
+      panels.forEach((panel) => (panel.hidden = true));
+      buttons.forEach((button) => { button.setAttribute("aria-expanded", "false"); button.classList.remove("is-active"); });
+    };
+    buttons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const target = stage.querySelector<HTMLElement>(`#${button.dataset.uhSkill}`);
+        const wasOpen = target && !target.hidden;
+        close();
+        if (target && !wasOpen) {
+          target.hidden = false;
+          button.setAttribute("aria-expanded", "true");
+          button.classList.add("is-active");
+        }
+      });
+    });
+    stage.querySelectorAll("[data-uh-close]").forEach((el) => el.addEventListener("click", close));
+    panels.forEach((panel) => panel.addEventListener("click", (event) => event.stopPropagation()));
+    // As in the game: tapping anywhere else closes the skill panel.
+    stage.addEventListener("click", close);
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
+
+    const dialog = stage.querySelector<HTMLDialogElement>("[data-uh-dialog]");
+    stage.querySelector("[data-uh-stats]")?.addEventListener("click", (event) => { event.stopPropagation(); close(); dialog?.showModal(); });
+    stage.querySelector("[data-uh-dialog-close]")?.addEventListener("click", () => dialog?.close());
+    // Click on the backdrop (outside the dialog box) closes it.
+    dialog?.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+
+    // Parallax: the pointer position (-1..1) goes into CSS variables; the layers move by different
+    // amounts in CSS. Only for a fine pointer and without reduced motion; touch screens keep the drift.
+    const motionOk = window.matchMedia("(prefers-reduced-motion: no-preference) and (pointer: fine)").matches;
+    if (motionOk) {
+      let frame = 0;
+      let x = 0;
+      let y = 0;
+      stage.addEventListener("pointermove", (event) => {
+        const rect = stage.getBoundingClientRect();
+        x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+        if (!frame) frame = requestAnimationFrame(() => {
+          stage.style.setProperty("--px", x.toFixed(3));
+          stage.style.setProperty("--py", y.toFixed(3));
+          frame = 0;
+        });
+      });
+      stage.addEventListener("pointerleave", () => { stage.style.setProperty("--px", "0"); stage.style.setProperty("--py", "0"); });
+    }
+  }
+</script>

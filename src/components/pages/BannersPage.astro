@@ -8,6 +8,7 @@ import { buildBanners } from "../../data/banners";
 import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { heroes as ratedHeroes } from "../../data/heroes/withRatings";
+import { hasUpcomingHero, upcomingHref } from "../../data/upcomingHeroes";
 
 interface Props {
   locale?: Locale;
@@ -47,7 +48,8 @@ const copy = {
 
 const R2_BASE = "https://pub-e35e94828bf347ca93c3d2c6a50d06f6.r2.dev";
 const VERSION = "2026-10-28-cutouts";
-const detailPages = new Set((ratedHeroes as any[]).map((hero) => hero.id));
+// Unreleased heroes have no regular detail page in production; their preview page is the target.
+const detailPages = new Set((ratedHeroes as any[]).filter((hero) => hero.release !== false).map((hero) => hero.id));
 const icon = (type: string, value?: string) => (value ? `${R2_BASE}/icons/${type}/${value.toLowerCase()}.webp` : null);
 
 const banners = buildBanners().map((banner) => ({
@@ -56,7 +58,10 @@ const banners = buildBanners().map((banner) => ({
   srcset: banner.heroSiteId
     ? [240, 360, 480].map((width) => `${R2_BASE}/heroes/cards/${encodeURIComponent(banner.heroSiteId!)}-${width}.webp?v=${VERSION} ${width}w`).join(", ")
     : null,
-  href: banner.heroSiteId && detailPages.has(banner.heroSiteId) ? localizePath(`/heroes/${banner.heroSiteId}`, locale) : null,
+  href: !banner.heroSiteId ? null
+    : hasUpcomingHero(banner.heroSiteId) ? upcomingHref(banner.heroSiteId)
+    : detailPages.has(banner.heroSiteId) ? localizePath(`/heroes/${banner.heroSiteId}`, locale)
+    : null,
   icons: [icon("factions", banner.faction), icon("classes", banner.heroClass), icon("roles", banner.role)].filter(Boolean),
 }));
 

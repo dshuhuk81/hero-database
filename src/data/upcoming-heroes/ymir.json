@@ -1,0 +1,204 @@
+{
+  "id": "ymir",
+  "gameId": 1014,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "尤弥尔",
+  "attrBase": {
+    "901": 88.3,
+    "902": 1533,
+    "904": 0,
+    "905": 0.04,
+    "906": 0,
+    "907": 0.1,
+    "914": 200,
+    "921": -0.1,
+    "928": 0.04,
+    "941": 25.1,
+    "942": 30.2
+  },
+  "stats": {
+    "atk": 169867,
+    "hp": 2949103,
+    "armor": 48286,
+    "magicRes": 58097,
+    "dodgeRate": 0,
+    "hitBonus": 4.0,
+    "critRate": 0,
+    "critRes": 10.0,
+    "healEff": 4.0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "冰川合葬",
+        "description": "被动的，尤弥尔的技能会对命中的敌人添加\"寒意\"效果（寒意：降低目标<color=#02ff00>5%</color>的攻击速度和移动速度）\n主动释放时，发动冰霜之力，在自身前后召唤<color=#02ff00>2</color>座冰川向中间推进，对范围内敌人造成<color=#02ff00>400%</color>攻击力的伤害，并将沿途敌人推进<color=#02ff00>2</color>米距离，冰川汇合时额外对碰撞范围内敌人额外造成<color=#02ff00>150%</color>攻击力的伤害"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>500%</color>攻击力",
+          "en": "Damage increased to 500% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：冰川汇合时额外对碰撞范围内敌人额外造成<color=#02ff00>200%</color>攻击力的伤害",
+          "en": "When the glaciers meet, enemies in the collision area take an additional 200% ATK as DMG."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：冰川汇合时对范围内敌人附加<color=#02ff00>3</color>层\"寒意\"",
+          "en": "When the glaciers meet, applies 3 stacks of \"Chill\" to enemies in range."
+        }
+      ],
+      "en": {
+        "name": "Glacial Entombment",
+        "description": "Passive: Ymir's skills inflict \"Chill\" on enemies they hit (Chill: reduces the target's ATK Speed and Movement Speed by 5%).\nWhen actively cast, unleashes the power of frost and summons 2 glaciers in front of and behind himself that advance toward the middle, dealing 400% ATK as DMG to enemies in range and pushing enemies along the way back 2m. When the glaciers meet, enemies in the collision area take an additional 150% ATK as DMG."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "冻土震击",
+        "description": "对周围<color=#02ff00>3</color>米范围敌人造成<color=#02ff00>200%</color>攻击力的伤害为其附加<color=#02ff00>2</color>层\"寒意\"，并降低命中敌人<color=#02ff00>30%</color>的攻击力，持续<color=#02ff00>5</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>250%</color>攻击力",
+          "en": "Damage increased to 250% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：降低命中敌人<color=#02ff00>40%</color>攻击力，持续<color=#02ff00>5</color>秒",
+          "en": "Reduces the ATK of enemies hit by 40% for 5s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：造成伤害提升至<color=#02ff00>300%</color>攻击力",
+          "en": "Damage increased to 300% ATK."
+        }
+      ],
+      "en": {
+        "name": "Frozen Ground Quake",
+        "description": "Deals 200% ATK as DMG to enemies within 3m, applies 2 stacks of \"Chill\" and reduces the ATK of enemies hit by 30% for 5s."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "寒狱凝霜",
+        "description": "场上敌方单位每次被控制时，对其附加<color=#02ff00>1</color>层\"寒意\"，每当敌人拥有<color=#02ff00>5</color>层\"寒意\"时，消耗全部层数并冻结其<color=#02ff00>2</color>秒，同一敌人<color=#02ff00>10</color>秒内最多触发一次\n每冻结一名敌人，尤弥尔获得自身<color=#02ff00>10%</color>最大生命值的护盾，持续<color=#02ff00>8</color>秒，最多叠加<color=#02ff00>5</color>层"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：每冻结一名敌人，尤弥尔获得自身<color=#02ff00>15%</color>最大生命值的护盾",
+          "en": "For each enemy frozen, Ymir gains a shield equal to 15% of his Max HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：同一敌人<color=#02ff00>8</color>秒内最多触发一次",
+          "en": "Can trigger on the same enemy at most once every 8s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：冻结时间提升至<color=#02ff00>3</color>秒",
+          "en": "Freeze duration increased to 3s."
+        }
+      ],
+      "en": {
+        "name": "Frostbound Prison",
+        "description": "Each time an enemy unit is controlled, applies 1 stack of \"Chill\" to it. Whenever an enemy has 5 stacks of \"Chill\", all stacks are consumed and the enemy is frozen for 2s. This can trigger on the same enemy at most once every 10s.\nFor each enemy frozen, Ymir gains a shield equal to 10% of his Max HP for 8s, stacking up to 5 times."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "霜棘连陨",
+        "description": "在身前范围召唤<color=#02ff00>6</color>波冰刺落下，每波冰刺造成<color=#02ff00>60%</color>攻击力的伤害并附加<color=#02ff00>1</color>层\"寒意\""
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：每波伤害提升至<color=#02ff00>65%</color>攻击力",
+          "en": "Each wave's damage increased to 65% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：每波伤害提升至<color=#02ff00>70%</color>攻击力",
+          "en": "Each wave's damage increased to 70% ATK."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：每波伤害提升至<color=#02ff00>75%</color>攻击力",
+          "en": "Each wave's damage increased to 75% ATK."
+        }
+      ],
+      "en": {
+        "name": "Rime Thorn Barrage",
+        "description": "Summons 6 waves of ice spikes in the area in front of him. Each wave deals 60% ATK as DMG and applies 1 stack of \"Chill\"."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "尤弥尔普攻",
+        "description": "普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_Youmier_Skill03",
+      "2": "A_UI_Hero_Youmier_Skill01",
+      "3": "A_UI_Hero_Youmier_Skill02",
+      "4": "A_UI_Hero_Youmier_Skill04"
+    },
+    "detailBackground": "A_UI_HeroDevelop_CharacterBase_Bg",
+    "relicIcon": "A_UI_Hero_Youmier_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "世界之脉",
+      "skillName": "始祖寒铠"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "尤弥尔登场时拥有<color=#02ff00>5</color>层寒冰护甲，每层寒冰护甲减少<color=#02ff00>15%</color>受到的伤害，当拥有<color=#02ff00>5</color>层寒冰护甲时，尤弥尔免疫控制状态，每损失<color=#02ff00>20%</color>最大生命值，尤弥尔会损失<color=#02ff00>1</color>层寒冰护甲",
+        "en": "Ymir enters battle with 5 stacks of Frost Armor. Each stack reduces damage taken by 15%. While he has 5 stacks, Ymir is immune to control effects. Ymir loses 1 stack for every 20% of Max HP lost."
+      },
+      {
+        "level": 2,
+        "zh": "【寒狱凝霜】每冻结一名敌人，恢复尤弥尔<color=#02ff00>10%</color>最大生命值",
+        "en": "Each enemy frozen by [Frostbound Prison] restores 10% of Ymir's Max HP."
+      },
+      {
+        "level": 3,
+        "zh": "【寒狱凝霜】冻结的敌人，在<color=#02ff00>6</color>秒内受到伤害提升<color=#02ff00>30%</color>",
+        "en": "Enemies frozen by [Frostbound Prison] take 30% more damage for 6s."
+      },
+      {
+        "level": 4,
+        "zh": "当尤弥尔生命值恢复至对应比例时，同时也会恢复对应的寒冰护甲层数",
+        "en": "When Ymir's HP recovers to the matching threshold, the corresponding Frost Armor stacks are restored as well."
+      }
+    ],
+    "en": {
+      "name": "Vein of the World",
+      "skillName": "Primordial Frost Armor"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

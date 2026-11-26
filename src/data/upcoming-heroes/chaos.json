@@ -1,0 +1,204 @@
+{
+  "id": "chaos",
+  "gameId": 5012,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "卡俄斯",
+  "attrBase": {
+    "901": 139.7,
+    "902": 1377.5,
+    "904": 0.06,
+    "905": 0,
+    "906": 0.04,
+    "907": 0.06,
+    "914": 200,
+    "921": 0,
+    "928": 0,
+    "941": 27.2,
+    "942": 31.2
+  },
+  "stats": {
+    "atk": 268747,
+    "hp": 2649960,
+    "armor": 52326,
+    "magicRes": 60021,
+    "dodgeRate": 6.0,
+    "hitBonus": 0,
+    "critRate": 4.0,
+    "critRes": 6.0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "万象归墟",
+        "description": "卡俄斯在战场中心召唤“奇点”，每<color=#02ff00>5</color>秒对范围内敌人造成<color=#02ff00>600%</color>攻击力的伤害，如果释放时已经有“奇点”时“奇点”范围扩大并立即造成一次伤害，“奇点”最多扩大<color=#02ff00>3</color>次，之后每次释放不再扩大范围转而增加“奇点”<color=#02ff00>200%</color>攻击力的伤害（最多增加<color=#02ff00>10</color>次）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：每5秒对范围内敌人造成<color=#02ff00>650%</color>攻击力的伤害",
+          "en": "Deals 650% ATK as DMG to enemies within the AoE every 5 seconds."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：范围达到最大时，之后每次释放不再扩大范围转而增加“奇点”<color=#02ff00>300%</color>攻击力的伤害",
+          "en": "When the AoE reaches its maximum, subsequent casts will no longer expand the AoE, but will instead increase the \"Singularity\" DMG by 300% ATK."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：每5秒对范围内敌人造成<color=#02ff00>700%</color>攻击力的伤害",
+          "en": "Deals 700% ATK as DMG to enemies within the AoE every 5 seconds."
+        }
+      ],
+      "en": {
+        "name": "Universal Ruin",
+        "description": "Khaos summons a \"Singularity\" in the center of the battlefield, dealing 600% ATK as DMG to enemies within the AoE every 5 seconds. If a \"Singularity\" already exists when cast, its AoE expands and immediately deals DMG once. The \"Singularity\" can expand up to 3 times. Subsequent casts will no longer expand the AoE, but will instead increase the \"Singularity\" DMG by 200% ATK (up to 10 times)."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "维度坠临",
+        "description": "战斗开始时，给距离自身最近的友方前排单位恢复<color=#02ff00>200</color>点能量并将其传送至敌方战场中心，落地时对周围敌人造成<color=#02ff00>500%</color>攻击力的伤害"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：落地时对周围敌人造成<color=#02ff00>550%</color>攻击力的伤害",
+          "en": "Upon landing, deals 550% ATK as DMG to surrounding enemies."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：落地时对周围敌人造成<color=#02ff00>600%</color>攻击力的伤害",
+          "en": "Upon landing, deals 600% ATK as DMG to surrounding enemies."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：落地时对周围敌人造成<color=#02ff00>650%</color>攻击力的伤害",
+          "en": "Upon landing, deals 650% ATK as DMG to surrounding enemies."
+        }
+      ],
+      "en": {
+        "name": "Dimensional Descent",
+        "description": "At the start of battle, restores 200 Energy to the nearest allied front-row unit and teleports them to the center of the enemy battlefield. Upon landing, deals 500% ATK as DMG to surrounding enemies."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "虚空放逐",
+        "description": "被动的，当敌方神明单位生命值降低至<color=#02ff00>10%</color>时，卡俄斯紊乱其周围的空间，<color=#02ff00>2</color>秒后若目标仍然存活则将其放逐，一场战斗只能触发一次，若目标在持续期间死亡则不消耗放逐次数（放逐：被放逐的单位直接被移出战场，无法触发阵亡或击杀反应，无法被复活）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：放逐阈值提升至<color=#02ff00>14%</color>生命值",
+          "en": "Banishment threshold increases to 14% of HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：放逐阈值提升至<color=#02ff00>18%</color>生命值",
+          "en": "Banishment threshold increases to 18% of HP."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：放逐阈值提升至<color=#02ff00>22%</color>生命值",
+          "en": "Banishment threshold increases to 22% of HP."
+        }
+      ],
+      "en": {
+        "name": "Void Banishment",
+        "description": "Passive: When an enemy Deity unit's HP drops to 10%, Khaos disrupts the space around them. If the target is still alive after 2 sec, they are banished. This can only be triggered once per battle. If the target dies during the duration, the banishment count is not consumed. (Banish: Banished units are directly removed from the battlefield, cannot trigger Fall or kill reactions, and cannot be revived.)"
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "passive",
+      "zh": {
+        "name": "虚界回返",
+        "description": "被动的，卡俄斯受到致命伤害时，自身进入异界<color=#02ff00>5</color>秒，不再被攻击，卡俄斯位于异界时自身每秒恢复<color=#02ff00>200%</color>攻击力的生命值，从异界返回时，对周围敌人造成<color=#02ff00>300%</color>攻击力的伤害和击退效果"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：卡俄斯位于异界时自身每秒回复自身攻击力<color=#02ff00>250%</color>生命",
+          "en": "Restores HP equal to 250% of ATK per sec while Khaos is in the Rift."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：从异界返回时，卡俄斯对周围单位造成<color=#02ff00>400%</color>攻击力的伤害和击退效果",
+          "en": "When returning from the Rift, Khaos deals DMG equal to 400% of ATK and Knocks back surrounding units."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：卡俄斯位于异界时自身每秒回复自身攻击力<color=#02ff00>300%</color>生命",
+          "en": "Restores HP equal to 300% of ATK per sec while Khaos is in the Rift."
+        }
+      ],
+      "en": {
+        "name": "Return from the Void",
+        "description": "Passive: When Khaos takes Lethal DMG, she enters The Rift for 5 seconds and can no longer be attacked. While in The Rift, Khaos Restores HP equal to 200% ATK per second. Upon returning from The Rift, she deals 300% ATK as DMG and applies a knockback effect to surrounding enemies."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "卡俄斯普攻",
+        "description": "卡俄斯普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_KaESi_Skill03",
+      "2": "A_UI_Hero_KaESi_Skill01",
+      "3": "A_UI_Hero_KaESi_Skill02",
+      "4": "A_UI_Hero_KaESi_Skill04"
+    },
+    "detailBackground": "A_UI_WorldMain_SpecialCamp_Kaesi_Bg",
+    "relicIcon": "A_UI_Hero_KaESi_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "混沌",
+      "skillName": "创世前夜"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "【虚空放逐】不再有次数限制，每次触发间隔<color=#02ff00>50</color>秒",
+        "en": "[Void Banishment] no longer has a usage limit, with a trigger interval of 50 sec."
+      },
+      {
+        "level": 2,
+        "zh": "当有敌方神明被放逐时，触发一次【万象归墟】效果",
+        "en": "When an enemy Deity is banished, triggers the effect of [Universal Ruin] once."
+      },
+      {
+        "level": 3,
+        "zh": "【虚空放逐】不再有次数限制，每次触发间隔降低至<color=#02ff00>25</color>秒",
+        "en": "[Void Banishment] no longer has a usage limit, and the trigger interval is reduced to 25 sec."
+      },
+      {
+        "level": 4,
+        "zh": "战斗开始时，立即触发一次【万象归墟】效果",
+        "en": "At the start of the battle, immediately triggers the effect of [Universal Ruin] once."
+      }
+    ],
+    "en": {
+      "name": "Chaos",
+      "skillName": "Eve of Creation"
+    }
+  },
+  "enSource": "global-client"
+}

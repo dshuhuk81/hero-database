@@ -1,0 +1,204 @@
+{
+  "id": "venus",
+  "gameId": 3015,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "维纳斯",
+  "attrBase": {
+    "901": 82.7,
+    "902": 1680,
+    "904": 0,
+    "905": 0.04,
+    "906": 0,
+    "907": 0.1,
+    "914": 200,
+    "921": -0.1,
+    "928": 0.04,
+    "941": 29.1,
+    "942": 29.1
+  },
+  "stats": {
+    "atk": 159094,
+    "hp": 3231893,
+    "armor": 55981,
+    "magicRes": 55981,
+    "dodgeRate": 0,
+    "hitBonus": 4.0,
+    "critRate": 0,
+    "critRes": 10.0,
+    "healEff": 4.0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "美神圣域",
+        "description": "维纳斯展开美神圣域，嘲讽敌方全体，并施加【倾慕】，持续<color=#02ff00>5</color>秒，若目标已拥有【倾慕】，则额外使其攻击力降低<color=#02ff00>50%</color>，持续<color=#02ff00>5</color>秒。持续期间维纳斯每秒获得自身最大生命值<color=#02ff00>8%</color>的护盾。"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：持续期间维纳斯每秒获得自身最大生命值<color=#02ff00>9%</color>的护盾。",
+          "en": "During this period, Venus gains a Shield equal to 9% of her max HP every second."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：持续期间维纳斯每秒获得自身最大生命值<color=#02ff00>10%</color>的护盾。",
+          "en": "During this period, Venus gains a Shield equal to 10% of her max HP every second."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：持续期间维纳斯每秒获得自身最大生命值<color=#02ff00>11%</color>的护盾。",
+          "en": "During this period, Venus gains a Shield equal to 11% of her max HP every second."
+        }
+      ],
+      "en": {
+        "name": "Sanctuary of Beauty",
+        "description": "Venus deploys [Sanctuary of Beauty], Taunting all enemies and inflicting [Adoration] for 5s. If the target already has [Adoration], additionally reduces their ATK by 50% for 5s. During this period, Venus gains a Shield equal to 8% of her max HP every second."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "晨星护幕",
+        "description": "获得自身最大生命值<color=#02ff00>20%</color>的护盾并在接下来8秒内每秒恢复自身<color=#02ff00>8%</color>最大生命值"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：获得自身最大生命值<color=#02ff00>25%</color>的护盾",
+          "en": "Gains a Shield equal to 25% of max HP."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：接下来8秒内每秒恢复自身<color=#02ff00>12%</color>最大生命值",
+          "en": "Restores 12% of max HP every second for the next 8s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：获得自身最大生命值<color=#02ff00>30%</color>的护盾",
+          "en": "Gains a Shield equal to 30% of max HP."
+        }
+      ],
+      "en": {
+        "name": "Morning Star Veil",
+        "description": "Gains a Shield equal to 20% of max HP and restores 8% of max HP every second for the next 8s."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "不可亵渎",
+        "description": "被动的，维纳斯累计受到相当于自身最大生命值<color=#02ff00>25%</color>的伤害时，进入<color=#02ff00>3</color>秒免疫伤害状态，该效果每<color=#02ff00>20</color>秒最多触发<color=#02ff00>1</color>次"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：该效果每<color=#02ff00>18</color>秒最多触发<color=#02ff00>1</color>次",
+          "en": "This effect can trigger at most 1 time every 18s."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：触发所需累计伤害降低至自身最大生命值<color=#02ff00>20%</color>",
+          "en": "The cumulative DMG required to trigger this effect is reduced to 20% of max HP."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：该效果每<color=#02ff00>16</color>秒最多触发<color=#02ff00>1</color>次",
+          "en": "This effect can trigger at most 1 time every 16s."
+        }
+      ],
+      "en": {
+        "name": "Inviolable",
+        "description": "Passive: When Venus takes cumulative DMG equal to 25% of her max HP, she becomes Immune to DMG for 3s. This effect can trigger at most 1 time every 20s."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "passive",
+      "zh": {
+        "name": "一见倾心",
+        "description": "被动的，战斗开始时，维纳斯对敌方攻击力最高的单位施加【倾慕】（倾慕：目标对维纳斯造成的伤害降低<color=#02ff00>20%</color>）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：倾慕：目标对维纳斯造成的伤害降低<color=#02ff00>23%</color>",
+          "en": "[Adoration]: DMG dealt by the target to Venus is reduced by 23%."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：倾慕：目标对维纳斯造成的伤害降低<color=#02ff00>26%</color>",
+          "en": "[Adoration]: DMG dealt by the target to Venus is reduced by 26%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：倾慕：目标对维纳斯造成的伤害降低<color=#02ff00>30%</color>",
+          "en": "[Adoration]: DMG dealt by the target to Venus is reduced by 30%."
+        }
+      ],
+      "en": {
+        "name": "Love at First Sight",
+        "description": "Passive: At the start of battle, Venus inflicts [Adoration] on the enemy unit with the highest ATK ([Adoration]: DMG dealt by the target to Venus is reduced by 20%)."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "维纳斯普攻",
+        "description": "普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_WeiNaSi_Skill03",
+      "2": "A_UI_Hero_WeiNaSi_Skill01",
+      "3": "A_UI_Hero_WeiNaSi_Skill02",
+      "4": "A_UI_Hero_WeiNaSi_Skill04"
+    },
+    "detailBackground": "A_UI_HeroDevelop_CharacterBase_Bg",
+    "relicIcon": "A_UI_Hero_WeiNaSi_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "爱之珠",
+      "skillName": "帕里斯的献礼"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "强化【不可亵渎】，使其免疫伤害时间提升至<color=#02ff00>4</color>秒",
+        "en": "Enhances [Inviolable], increasing the duration for which it grants immunity to DMG to 4s."
+      },
+      {
+        "level": 2,
+        "zh": "若维纳斯生命值首次低于<color=#02ff00>40%</color>，额外触发一次【不可亵渎】",
+        "en": "If Venus's HP drops below 40% for the first time, triggers [Inviolable] an additional time."
+      },
+      {
+        "level": 3,
+        "zh": "强化【一见倾心】，倾慕：目标对所有友方单位造成的伤害降低<color=#02ff00>30%</color>",
+        "en": "Enhances [Love at First Sight]. [Adoration]: DMG dealt by the target to all allied units is reduced by 30%."
+      },
+      {
+        "level": 4,
+        "zh": "【不可亵渎】触发时，维纳斯嘲讽自身周围<color=#02ff00>3</color>米的敌人，持续<color=#02ff00>3</color>秒，场上每有<color=#02ff00>1</color>名正被维纳斯嘲讽的敌人，维纳斯每<color=#02ff00>2</color>秒恢复自身<color=#02ff00>5%</color>最大生命值（最多对<color=#02ff00>5</color>名敌人触发该效果）",
+        "en": "When [Inviolable] is triggered, Venus Taunts enemies within 3m of herself for 3s. For every 1 enemy currently taunted by Venus on the field, Venus restores 5% of her max HP every 2s (this effect can trigger for up to 5 enemies)."
+      }
+    ],
+    "en": {
+      "name": "Pearl of Love",
+      "skillName": "Paris's Offering"
+    }
+  },
+  "enSource": "global-client"
+}

@@ -1,0 +1,204 @@
+{
+  "id": "apollo",
+  "gameId": 2015,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "阿波罗",
+  "attrBase": {
+    "901": 118.9,
+    "902": 885.8,
+    "904": 0,
+    "905": 0,
+    "906": 0.1,
+    "907": 0.06,
+    "914": 200,
+    "921": -0.2,
+    "928": 0,
+    "941": 13.8,
+    "942": 20.2
+  },
+  "stats": {
+    "atk": 228733,
+    "hp": 1704054,
+    "armor": 26548,
+    "magicRes": 38860,
+    "dodgeRate": 0,
+    "hitBonus": 0,
+    "critRate": 10.0,
+    "critRes": 6.0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "日晷天降",
+        "description": "在敌方密集区召唤太阳日冕，对<color=#02ff00>5</color>米范围敌人每秒造成<color=#02ff00>120%</color>攻击力的伤害，持续<color=#02ff00>5</color>秒，持续时间内敌人受到伤害增加<color=#02ff00>20%</color>，最后日冕爆炸造成<color=#02ff00>400%</color>攻击力的伤害并眩晕<color=#02ff00>2</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：每秒伤害提升至<color=#02ff00>150%</color>攻击力",
+          "en": "Damage per second increased to 150% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：最后日冕爆炸造成<color=#02ff00>500%</color>攻击力的伤害并眩晕<color=#02ff00>3</color>秒",
+          "en": "The final explosion deals 500% ATK as DMG and stuns for 3s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：持续时间内敌人受到伤害增加<color=#02ff00>40%</color>",
+          "en": "Enemies take 40% more damage while it lasts."
+        }
+      ],
+      "en": {
+        "name": "Sundial Descent",
+        "description": "Summons a solar corona over a dense group of enemies, dealing 120% ATK as DMG per second to enemies within 5m for 5s. While it lasts, enemies take 20% more damage. At the end, the corona explodes for 400% ATK as DMG and stuns enemies for 2s."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "日冕归心",
+        "description": "战斗开始时将敌方半场敌人牵引至敌方半场中心点，并对范围内敌人造成<color=#02ff00>200%</color>攻击力的伤害"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：造成伤害提升至<color=#02ff00>240%</color>攻击力",
+          "en": "Damage increased to 240% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：牵引结束额外眩晕范围内敌人<color=#02ff00>1</color>秒",
+          "en": "When the pull ends, additionally stuns enemies in range for 1s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：造成伤害提升至<color=#02ff00>280%</color>攻击力",
+          "en": "Damage increased to 280% ATK."
+        }
+      ],
+      "en": {
+        "name": "Corona Pull",
+        "description": "At the start of battle, pulls enemies in the enemy half of the field to its center point and deals 200% ATK as DMG to enemies in range."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "不灭日轮",
+        "description": "被动的，战斗开始时阿波罗背后生成一个\"日轮\"，阿波罗能量恢复速度提升<color=#02ff00>20%</color>，每<color=#02ff00>5</color>秒提升<color=#02ff00>10%</color>攻击力，攻击力提升最多叠加<color=#02ff00>10</color>层\n当阿波罗受到致命伤害时消耗\"日轮\"免疫本次伤害，恢复<color=#02ff00>100</color>点能量并<color=#02ff00>2</color>秒内免疫任何伤害，<color=#02ff00>2</color>秒后恢复<color=#02ff00>35%</color>最大生命值\n\"日轮\"消耗后属性提升效果消失，<color=#02ff00>20</color>秒后重新生成\"日轮\""
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：阿波罗能量恢复速度提升<color=#02ff00>25%</color>，每<color=#02ff00>5</color>秒提升<color=#02ff00>15%</color>攻击力，攻击力提升最多叠加<color=#02ff00>10</color>层",
+          "en": "Energy regeneration speed increased to 25%, and +15% ATK every 5s, stacking up to 10 times."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：恢复生命值提升至<color=#02ff00>50%</color>",
+          "en": "HP restored increased to 50%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：\"日轮\"消耗后<color=#02ff00>15</color>秒重新生成",
+          "en": "The \"Sun Disc\" regenerates 15s after being consumed."
+        }
+      ],
+      "en": {
+        "name": "Undying Sun Disc",
+        "description": "Passive: at the start of battle, a \"Sun Disc\" appears behind Apollo. Apollo gains 20% Energy regeneration speed and 10% ATK every 5s, stacking up to 10 times.\nWhen Apollo takes fatal damage, the \"Sun Disc\" is consumed to negate that damage, restoring 100 Energy and granting immunity to all damage for 2s; after 2s, Apollo restores 35% of his Max HP.\nOnce the \"Sun Disc\" is consumed, its attribute bonuses disappear, and it regenerates after 20s."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "曜日穹罩",
+        "description": "召唤曜日笼罩全场，使全场敌人命中率降低<color=#02ff00>20%</color>，移速降低<color=#02ff00>20%</color>，范围内敌人受到阿波罗伤害提升<color=#02ff00>20%</color>，全场友军提升<color=#02ff00>30%</color>会心率，持续<color=#02ff00>10</color>秒"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：使全场敌人命中率降低<color=#02ff00>30%</color>，移速降低<color=#02ff00>30%</color>",
+          "en": "All enemies' Hit Rate and Movement Speed are reduced by 30%."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：持续时间提升至<color=#02ff00>12</color>秒",
+          "en": "Duration increased to 12s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：范围内敌人受到阿波罗伤害提升<color=#02ff00>40%</color>",
+          "en": "Enemies in range take 40% more damage from Apollo."
+        }
+      ],
+      "en": {
+        "name": "Radiant Dome",
+        "description": "Summons the radiant sun over the whole field. All enemies have their Hit Rate reduced by 20% and Movement Speed reduced by 20%, enemies in range take 20% more damage from Apollo, and all allies gain 30% Crit Rate for 10s."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "阿波罗普攻",
+        "description": "阿波罗普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_ABoLuo_Skill03",
+      "2": "A_UI_Hero_ABoLuo_Skill01",
+      "3": "A_UI_Hero_ABoLuo_Skill04",
+      "4": "A_UI_Hero_ABoLuo_Skill02"
+    },
+    "detailBackground": "A_UI_HeroDevelop_CharacterBase_Bg",
+    "relicIcon": "A_UI_Hero_ABoLuo_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "光之旋律",
+      "skillName": "太阳圣刃"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "阿波罗造成会心时，会召唤一柄太阳光剑对目标及周围造成<color=#02ff00>100%</color>攻击力的伤害，该伤害本身产生的会心不计算在内，每个敌人每秒只能触发一次",
+        "en": "When Apollo lands a critical hit, he summons a sun blade that deals 100% ATK as DMG to the target and nearby enemies. Crits from this damage do not trigger it again. Triggers at most once per second per enemy."
+      },
+      {
+        "level": 2,
+        "zh": "阿波罗造成会心时，会召唤一柄太阳光剑对目标及周围造成<color=#02ff00>150%</color>攻击力的伤害，该伤害本身产生的会心不计算在内，每个敌人每秒只能触发一次",
+        "en": "When Apollo lands a critical hit, he summons a sun blade that deals 150% ATK as DMG to the target and nearby enemies. Crits from this damage do not trigger it again. Triggers at most once per second per enemy."
+      },
+      {
+        "level": 3,
+        "zh": "【曜日穹罩】影响的敌人每秒受到目标<color=#02ff00>2%</color>最大生命值的伤害，每次最多不超过阿波罗<color=#02ff00>150%</color>攻击力",
+        "en": "Enemies affected by [Radiant Dome] take damage equal to 2% of their Max HP every second, up to 150% of Apollo's ATK per hit."
+      },
+      {
+        "level": 4,
+        "zh": "【曜日穹罩】影响的敌人每秒受到目标<color=#02ff00>4%</color>最大生命值的伤害，每次最多不超过阿波罗<color=#02ff00>300%</color>攻击力",
+        "en": "Enemies affected by [Radiant Dome] take damage equal to 4% of their Max HP every second, up to 300% of Apollo's ATK per hit."
+      }
+    ],
+    "en": {
+      "name": "Melody of Light",
+      "skillName": "Holy Sun Blade"
+    }
+  },
+  "enSource": "translated-from-cn"
+}

@@ -1,0 +1,204 @@
+{
+  "id": "cthulhu",
+  "gameId": 5014,
+  "source": {
+    "client": "cn",
+    "pull": "20261125b_plain"
+  },
+  "cnName": "克苏鲁",
+  "attrBase": {
+    "901": 135.4,
+    "902": 1448.8,
+    "904": 0.06,
+    "905": 0,
+    "906": 0.04,
+    "907": 0.06,
+    "914": 200,
+    "921": 0,
+    "928": 0,
+    "941": 29,
+    "942": 33
+  },
+  "stats": {
+    "atk": 260475,
+    "hp": 2787123,
+    "armor": 55789,
+    "magicRes": 63484,
+    "dodgeRate": 6.0,
+    "hitBonus": 0,
+    "critRate": 4.0,
+    "critRes": 6.0,
+    "healEff": 0
+  },
+  "skills": [
+    {
+      "slot": 1,
+      "kind": "ultimate",
+      "zh": {
+        "name": "深渊禁潮",
+        "description": "对全体敌人造成<color=#02ff00>400%</color>攻击力的伤害，并施加\"深渊禁咒\"，持续<color=#02ff00>6</color>秒（深渊禁咒：持续期间无法释放终结技，并每秒损失<color=#02ff00>50</color>点能量）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：\"深渊禁咒\"持续时间提升至<color=#02ff00>7</color>秒",
+          "en": "\"Abyssal Interdict\" duration increased to 7s."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：每秒损失能量提高至<color=#02ff00>60</color>点",
+          "en": "Energy lost per second increased to 60."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：造成伤害提升至<color=#02ff00>450%</color>攻击力",
+          "en": "Damage increased to 450% ATK."
+        }
+      ],
+      "en": {
+        "name": "Abyssal Tide Ban",
+        "description": "Deals 400% ATK as DMG to all enemies and inflicts \"Abyssal Interdict\" for 6s (Abyssal Interdict: the target cannot cast its ultimate and loses 50 Energy per second)."
+      }
+    },
+    {
+      "slot": 2,
+      "kind": "skill",
+      "zh": {
+        "name": "触须缄默",
+        "description": "在能量最高的敌人脚下召唤触手，对其造成<color=#02ff00>150%</color>攻击力的伤害并将其\"深渊禁默\"<color=#02ff00>3</color>秒（深渊禁默：持续期间无法释放终结技）"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：伤害提升至<color=#02ff00>200%</color>攻击力",
+          "en": "Damage increased to 200% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：\"深渊禁默\"时间提升至<color=#02ff00>5</color>秒",
+          "en": "\"Abyssal Silence\" duration increased to 5s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：伤害提升至<color=#02ff00>250%</color>攻击力",
+          "en": "Damage increased to 250% ATK."
+        }
+      ],
+      "en": {
+        "name": "Tentacle Silence",
+        "description": "Summons tentacles beneath the enemy with the most Energy, dealing 150% ATK as DMG and inflicting \"Abyssal Silence\" for 3s (Abyssal Silence: the target cannot cast its ultimate)."
+      }
+    },
+    {
+      "slot": 3,
+      "kind": "passive",
+      "zh": {
+        "name": "古神逆视",
+        "description": "被动的，敌方单位释放终结技时，克苏鲁进入不可选中状态<color=#02ff00>2</color>秒，并在该状态结束时获得<color=#02ff00>150%</color>攻击力的护盾，该效果<color=#02ff00>8</color>秒内只能触发一次"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：在该状态结束时获得<color=#02ff00>200%</color>攻击力的护盾",
+          "en": "Gains a shield equal to 200% ATK when this state ends."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：不可选中状态时间提升至<color=#02ff00>3</color>秒",
+          "en": "Untargetable duration increased to 3s."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：克苏鲁即将阵亡时会额外触发一次该效果，一场战斗只能触发一次",
+          "en": "When Cthulhu is about to fall, this effect triggers one additional time. Can trigger only once per battle."
+        }
+      ],
+      "en": {
+        "name": "Elder Gaze Reversed",
+        "description": "Passive: when an enemy unit casts its ultimate, Cthulhu becomes untargetable for 2s and gains a shield equal to 150% ATK when this state ends. This effect can trigger only once every 8s."
+      }
+    },
+    {
+      "slot": 4,
+      "kind": "skill",
+      "zh": {
+        "name": "古神压制",
+        "description": "对全体敌人造成<color=#02ff00>150%</color>攻击力的伤害，同时降低命中敌人<color=#02ff00>20%</color>的攻击力，持续<color=#02ff00>8</color>秒，目标若处于\"深渊禁咒\"状态，改为<color=#02ff00>300%</color>攻击力的伤害并降低命中敌人<color=#02ff00>40%</color>攻击力"
+      },
+      "upgrades": [
+        {
+          "level": 2,
+          "zh": "等级2：伤害提升至<color=#02ff00>200%</color>攻击力，目标若处于\"深渊禁咒\"状态伤害提升至<color=#02ff00>400%</color>攻击力",
+          "en": "Damage increased to 200% ATK; if the target is under \"Abyssal Interdict\", damage increased to 400% ATK."
+        },
+        {
+          "level": 3,
+          "zh": "等级3：攻击力降低效果提升至<color=#02ff00>25%</color>，目标若处于\"深渊禁咒\"状态攻击力降低效果提升至<color=#02ff00>50%</color>",
+          "en": "ATK reduction increased to 25%; if the target is under \"Abyssal Interdict\", ATK reduction increased to 50%."
+        },
+        {
+          "level": 4,
+          "zh": "等级4：伤害提升至<color=#02ff00>250%</color>攻击力，目标若处于\"深渊禁咒\"状态伤害提升至<color=#02ff00>500%</color>攻击力",
+          "en": "Damage increased to 250% ATK; if the target is under \"Abyssal Interdict\", damage increased to 500% ATK."
+        }
+      ],
+      "en": {
+        "name": "Elder Suppression",
+        "description": "Deals 150% ATK as DMG to all enemies and reduces the ATK of enemies hit by 20% for 8s. If the target is under \"Abyssal Interdict\", it instead takes 300% ATK as DMG and its ATK is reduced by 40%."
+      }
+    },
+    {
+      "slot": 5,
+      "kind": "basic",
+      "zh": {
+        "name": "克苏鲁普攻",
+        "description": "克苏鲁普攻"
+      },
+      "upgrades": [],
+      "en": null
+    }
+  ],
+  "art": {
+    "skillIcons": {
+      "1": "A_UI_Hero_KeSuLu_Skill03",
+      "2": "A_UI_Hero_KeSuLu_Skill01",
+      "3": "A_UI_Hero_KeSuLu_Skill02",
+      "4": "A_UI_Hero_KeSuLu_Skill04"
+    },
+    "detailBackground": "A_UI_WorldMain_SpecialCamp_Kesulu_Bg",
+    "relicIcon": "A_UI_Hero_KeSuLu_Skill06"
+  },
+  "relic": {
+    "zh": {
+      "name": "古老者的注视",
+      "skillName": "拉莱耶之心"
+    },
+    "levels": [
+      {
+        "level": 1,
+        "zh": "\"深渊禁咒\"期间敌人所有能量恢复效果降低<color=#02ff00>30%</color>",
+        "en": "While under \"Abyssal Interdict\", all Energy regeneration effects of enemies are reduced by 30%."
+      },
+      {
+        "level": 2,
+        "zh": "每名敌人首次进入\"深渊禁咒\"时，立即损失<color=#02ff00>100</color>点能量",
+        "en": "The first time each enemy is afflicted by \"Abyssal Interdict\", it immediately loses 100 Energy."
+      },
+      {
+        "level": 3,
+        "zh": "每名敌人首次进入\"深渊禁咒\"时，立即损失<color=#02ff00>200</color>点能量",
+        "en": "The first time each enemy is afflicted by \"Abyssal Interdict\", it immediately loses 200 Energy."
+      },
+      {
+        "level": 4,
+        "zh": "每名敌人首次即将释放终结技时，对其造成<color=#02ff00>300%</color>攻击力的伤害，并使其\"深渊禁默\"<color=#02ff00>3</color>秒",
+        "en": "The first time each enemy is about to cast its ultimate, it takes 300% ATK as DMG and is inflicted with \"Abyssal Silence\" for 3s."
+      }
+    ],
+    "en": {
+      "name": "Gaze of the Old Ones",
+      "skillName": "Heart of R'lyeh"
+    }
+  },
+  "enSource": "translated-from-cn"
+}
