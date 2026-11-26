@@ -182,44 +182,41 @@ export const summonSchedule: ScheduleEntry[] = [
     pullQuality: "skip",
   },
   {
-    id: "venus",
-    estimatedDate: "2026-11-25",
-    order: 30,
-    pullQuality: "pull",
-  },
-  {
     id: "chaos",
-    order: 31,
+    order: 30,
     pullQuality: "whales-only",
   },
-  // Order follows the CN client; dates are guesses: about two weeks per banner, regular heroes on Wednesdays, Starglint heroes on Mondays, replaced by game data once it exists.
-  { id: "ymir", displayName: "Ymir", order: 32, estimatedDate: "2026-12-23",pullQuality: "skip", },
+  {
+    id: "venus",
+    order: 31,
+    pullQuality: "pull",
+  },
+  // Order follows the release dates from the game data (CN client order was used before Global dates existed); only Apollo still has a guessed date.
   {
     id: "pandora",
     displayName: "Pandora",
-    order: 33,
-    estimatedDate: "2027-01-04",
+    order: 32,
     pullQuality: "pull",
   },
-  {
-    id: "cthulhu",
-    displayName: "Cthulhu",
-    order: 34,
-    estimatedDate: "2027-01-18",
-    pullQuality: "skip",
-  },
-  { id: "joanneofarc", order: 35, estimatedDate: "2027-02-03",pullQuality: "pull", },
+  { id: "ymir", displayName: "Ymir", order: 33, pullQuality: "skip" },
   {
     id: "sunwukong",
     displayName: "Sun Wukong",
-    order: 36,
-    estimatedDate: "2027-02-15",
+    order: 34,
     pullQuality: "whales-only",
+  },
+  { id: "joanneofarc", order: 35, pullQuality: "pull" },
+  {
+    id: "cthulhu",
+    displayName: "Cthulhu",
+    order: 36,
+    pullQuality: "skip",
   },
   {
     id: "apollo",
     displayName: "Apollo",
     order: 37,
-    estimatedDate: "2027-03-03",pullQuality: "pull",
+    estimatedDate: "2027-03-03",
+    pullQuality: "pull",
   },
 ];
