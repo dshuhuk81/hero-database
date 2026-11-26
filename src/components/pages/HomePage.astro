@@ -105,7 +105,7 @@ const liveItems = [
 ];
 const rightNowCtx = {
   locale, copy: copyForScript, today: buildDate,
-  eventsHref: localizePath("/events", locale), bannersHref: localizePath("/banners", locale), heroPrefix: localizePath("/heroes/", locale),
+  eventsHref: localizePath("/events", locale), bannersHref: localizePath("/banners", locale), heroPrefix: `${localizePath("/heroes", locale)}/`,
 };
 const rightNow = pickRightNow(liveItems, banners, buildDate);
 const rightNowHtml = renderRightNow(rightNow, { ...rightNowCtx, heroHref: (id: string) => `${rightNowCtx.heroPrefix}${id}` });
