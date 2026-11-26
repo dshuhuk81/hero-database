@@ -36,6 +36,10 @@ const IMG_VERSION = "2026-11-26d";
 // Uncropped hero art (extended edges) lives under heroes/full/ and is used only here; cards, thumbs and the
 // hero page keep using the cropped heroes/<id>.webp. Add a hero id once its full art is uploaded to R2.
 const FULL_ART = new Set(["apollo", "chaos", "cthulhu", "guanyin", "joanneofarc", "pandora", "sunwukong", "venus", "ymir"]);
+// Per-hero portrait height factor (bottom-anchored, so a smaller value moves the head down and clear of the
+// title). Only for art whose head is the topmost element; tune with desktop and mobile screenshots.
+const PORTRAIT_SCALE: Record<string, number> = { joanneofarc: 0.9, pandora: 0.9 };
+const portraitScale = PORTRAIT_SCALE[hero.id];
 const portrait = FULL_ART.has(hero.id)
   ? `${R2}/heroes/full/${encodeURIComponent(hero.id)}.webp?v=${IMG_VERSION}`
   : `${R2}/heroes/${encodeURIComponent(hero.id)}.webp?v=${IMG_VERSION}`;
@@ -103,7 +107,6 @@ const sourceNote = preview.enSource === "global-client"
     <header class="uh-top">
       <a class="uh-back" href="/banners" aria-label="Back to banners"><span aria-hidden="true">&larr;</span><span class="uh-back-text">Banners</span></a>
       <div class="uh-title">
-        <p class="uh-cn-name" lang="zh-CN">{preview.cnName}</p>
         <h1 class="uh-name">{hero.name}</h1>
         <div class="uh-badges">
           {[["factions", hero.faction], ["classes", hero.class], ["roles", hero.role]].filter(([, value]) => value).map(([type, value]) => (
@@ -111,12 +114,11 @@ const sourceNote = preview.enSource === "global-client"
           ))}
           <span class="uh-preview-pill">Preview</span>
         </div>
-        <p class="uh-meta">{[hero.faction, hero.class, hero.role].filter(Boolean).join(" · ")}</p>
       </div>
     </header>
 
     <div class="uh-figure uh-layer-front" aria-hidden="true">
-      <img class="uh-portrait" src={portrait} alt="" width="838" height="2048" />
+      <img class="uh-portrait" src={portrait} alt="" width="838" height="2048" style={portraitScale ? `--uh-portrait-scale:${portraitScale};` : undefined} />
     </div>
 
     <section class="uh-bottom" aria-label="Skills and attributes">
