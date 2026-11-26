@@ -218,4 +218,5 @@ export const summonSchedule: ScheduleEntry[] = [
     order: 37,
     pullQuality: "pull",
   },
+  { id: "guanyin", displayName: "Guanyin", order: 38 },
 ];
