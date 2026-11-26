@@ -145,3 +145,10 @@ Assets the page needs on R2: `skills/<id>_skill_<slot>.webp` (slot order = `skil
 not the number in the icon file name) and `backgrounds/heroes/<detail_background>.webp`; the page falls back to
 `A_UI_HeroDevelop_CharacterBase_Bg` when a hero's own backdrop is not extracted. When a hero is released, its preview
 page disappears; add a redirect from `/heroes/upcoming/<id>` to `/heroes/<id>` in `public/_redirects`.
+
+### Hero art: cropped vs. full
+`public/heroes/<id>.webp` is the cropped portrait; cards and thumbs (`npm run build:hero-variants`) and the hero page
+use it, and per-hero `imgY`/`cardImgY` are tuned to it. Art with extended, uncropped edges goes to
+`public/heroes/full/<id>.webp` (the variant script ignores that folder) and is used only by the fullscreen
+`/heroes/upcoming/<id>` page: upload it with `node scripts/upload-to-r2.mjs --force --exact heroes/full/<id>.webp`,
+add the id to `FULL_ART` in `src/pages/heroes/upcoming/[id].astro` and bump `IMG_VERSION` there.
