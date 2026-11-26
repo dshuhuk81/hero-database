@@ -20,7 +20,7 @@ export interface BannerEntry {
   overall?: string;
   pullQuality?: PullQuality;
   order?: number;
-  /** No banner in the game data yet; the date is a guess or comes from another event. */
+  /** No banner in the game data yet; upcoming heroes without a client date have start null and show as unknown. */
   estimated: boolean;
 }
 
@@ -70,10 +70,11 @@ export function buildBanners(today = new Date().toISOString().slice(0, 10)): Ban
     banners.push({
       id: `upcoming-${entry.id}`,
       kind: "new",
-      start: resolved.date,
+      // Only a client date is shown. Guesses and event-derived dates leave the banner undated ("unknown"), which sorts last.
+      start: resolved.dateSource === "client" ? resolved.date : null,
       end: null,
       label: entry.displayName ?? (heroById.get(entry.id)?.name ?? entry.id),
-      estimated: resolved.dateSource !== "client",
+      estimated: false,
       ...heroFields(entry.id),
     });
   }

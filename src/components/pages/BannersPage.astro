@@ -33,6 +33,7 @@ const copy = {
   historyTitle: L("History", "Verlauf", "Historial", "История", "历史"),
   nothing: L("No banners match.", "Keine passenden Banner.", "No hay banners.", "Баннеров нет.", "没有匹配的卡池。"),
   rerunName: L("Rerun banner", "Wiederholungs-Banner", "Banner repetido", "Повторный баннер", "复刻卡池"),
+  unknown: L("Unknown", "Unbekannt", "Desconocido", "Неизвестно", "未知"),
   guessNote: L("Date is a guess.", "Datum ist geschätzt.", "Fecha estimada.", "Дата ориентировочная.", "日期为推测。"),
   rating: L("Overall", "Gesamt", "General", "Общий", "综合"),
   pull: {
@@ -112,7 +113,7 @@ const json = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
       const esc = (value: unknown) => String(value ?? "").replace(/[&<>'"]/g, (c) => entities[c]);
       const fmt = (iso: string, options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", ...options }).format(new Date(`${iso}T00:00:00Z`));
       const period = (b: ClientBanner) => {
-        if (!b.start) return "";
+        if (!b.start) return copy.unknown;
         const short: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
         return b.end ? `${fmt(b.start, short)} – ${fmt(b.end, short)}` : fmt(b.start, short);
       };

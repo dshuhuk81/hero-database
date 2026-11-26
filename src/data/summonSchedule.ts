@@ -191,7 +191,7 @@ export const summonSchedule: ScheduleEntry[] = [
     order: 31,
     pullQuality: "pull",
   },
-  // Order follows the release dates from the game data (CN client order was used before Global dates existed); only Apollo still has a guessed date.
+  // Order follows the release dates from the game data (CN client order was used before Global dates existed); Sun Wukong and Apollo have no Global date yet and are shown as unknown, at the end.
   {
     id: "pandora",
     displayName: "Pandora",
@@ -199,24 +199,23 @@ export const summonSchedule: ScheduleEntry[] = [
     pullQuality: "pull",
   },
   { id: "ymir", displayName: "Ymir", order: 33, pullQuality: "skip" },
-  {
-    id: "sunwukong",
-    displayName: "Sun Wukong",
-    order: 34,
-    pullQuality: "whales-only",
-  },
-  { id: "joanneofarc", order: 35, pullQuality: "pull" },
+  { id: "joanneofarc", order: 34, pullQuality: "pull" },
   {
     id: "cthulhu",
     displayName: "Cthulhu",
-    order: 36,
+    order: 35,
     pullQuality: "skip",
+  },
+  {
+    id: "sunwukong",
+    displayName: "Sun Wukong",
+    order: 36,
+    pullQuality: "whales-only",
   },
   {
     id: "apollo",
     displayName: "Apollo",
     order: 37,
-    estimatedDate: "2027-03-03",
     pullQuality: "pull",
   },
 ];
