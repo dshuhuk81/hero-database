@@ -171,7 +171,7 @@ export const summonSchedule: ScheduleEntry[] = [
     order: 27,
     pullQuality: "optional",
   },
-    {
+  {
     id: "nidhogg",
     order: 28,
     pullQuality: "whales-only",
@@ -193,10 +193,33 @@ export const summonSchedule: ScheduleEntry[] = [
     pullQuality: "whales-only",
   },
   // Order follows the CN client; dates are guesses: about two weeks per banner, regular heroes on Wednesdays, Starglint heroes on Mondays, replaced by game data once it exists.
-  { id: "ymir", displayName: "Ymir", order: 32, estimatedDate: "2026-12-23" },
-  { id: "pandora", displayName: "Pandora", order: 33, estimatedDate: "2027-01-04" },
-  { id: "cthulhu", displayName: "Cthulhu", order: 34, estimatedDate: "2027-01-18" },
-  { id: "joanneofarc", order: 35, estimatedDate: "2027-02-03" },
-  { id: "sunwukong", displayName: "Sun Wukong", order: 36, estimatedDate: "2027-02-15" },
-  { id: "apollo", displayName: "Apollo", order: 37, estimatedDate: "2027-03-03" },
+  { id: "ymir", displayName: "Ymir", order: 32, estimatedDate: "2026-12-23",pullQuality: "skip", },
+  {
+    id: "pandora",
+    displayName: "Pandora",
+    order: 33,
+    estimatedDate: "2027-01-04",
+    pullQuality: "pull",
+  },
+  {
+    id: "cthulhu",
+    displayName: "Cthulhu",
+    order: 34,
+    estimatedDate: "2027-01-18",
+    pullQuality: "skip",
+  },
+  { id: "joanneofarc", order: 35, estimatedDate: "2027-02-03",pullQuality: "pull", },
+  {
+    id: "sunwukong",
+    displayName: "Sun Wukong",
+    order: 36,
+    estimatedDate: "2027-02-15",
+    pullQuality: "whales-only",
+  },
+  {
+    id: "apollo",
+    displayName: "Apollo",
+    order: 37,
+    estimatedDate: "2027-03-03",pullQuality: "pull",
+  },
 ];
