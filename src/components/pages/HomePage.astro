@@ -115,11 +115,23 @@ const liveCopy = JSON.stringify({ ...rightNowCtx, today: undefined }).replace(/<
 
 const scheduleById = new Map(summonSchedule.map((entry) => [entry.id, entry]));
 const releaseDate = (iso: string) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", day: "numeric", month: "short" }).format(new Date(`${iso}T00:00:00Z`));
-const arrivals = recentReleases(
-  summonSchedule.map((entry) => ({ id: entry.id, date: getHeroRelease(entry.id)?.globalRelease ?? null })).filter((entry) => getHeroById(entry.id) && entry.id !== rightNow.featured?.heroSiteId), // the featured hero is already shown above
-  buildDate,
-  6,
-).map((entry) => ({ hero: getHeroById(entry.id)!, date: entry.date!, pull: scheduleById.get(entry.id)?.pullQuality }));
+// The page is built once and deployed later, so the browser re-picks the arrivals for its own "today".
+// Candidates: everything released up to the build plus heroes releasing within the next 30 days.
+const ARRIVALS_LIMIT = 6;
+const arrivalHorizon = new Date(`${buildDate}T00:00:00Z`);
+arrivalHorizon.setUTCDate(arrivalHorizon.getUTCDate() + 30);
+const arrivalHorizonIso = arrivalHorizon.toISOString().slice(0, 10);
+const arrivalEntries = summonSchedule
+  .map((entry) => ({ id: entry.id, date: getHeroRelease(entry.id)?.globalRelease ?? null }))
+  .filter((entry) => entry.date && getHeroById(entry.id));
+const builtArrivals = recentReleases(arrivalEntries.filter((entry) => entry.id !== rightNow.featured?.heroSiteId), buildDate, ARRIVALS_LIMIT); // the featured hero is already shown above
+const builtArrivalIds = new Set(builtArrivals.map((entry) => entry.id));
+const arrivalCandidates = [
+  ...recentReleases(arrivalEntries, buildDate, ARRIVALS_LIMIT + 1),
+  ...arrivalEntries.filter((entry) => entry.date! > buildDate && entry.date! <= arrivalHorizonIso),
+]
+  .sort((a, b) => b.date!.localeCompare(a.date!) || a.id.localeCompare(b.id))
+  .map((entry) => ({ hero: getHeroById(entry.id)!, id: entry.id, date: entry.date!, pull: scheduleById.get(entry.id)?.pullQuality, shown: builtArrivalIds.has(entry.id) }));
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -183,15 +195,15 @@ const featuredImageFor = (href: string) => href === "/heroes"
         </div>
       </section>
 
-      {arrivals.length > 0 && (
-        <section class="home-section hl-section" aria-labelledby="arrivalsTitle">
+      {arrivalCandidates.length > 0 && (
+        <section class="home-section hl-section" aria-labelledby="arrivalsTitle" data-arrivals data-arrivals-limit={ARRIVALS_LIMIT}>
           <header class="hl-head">
             <h2 id="arrivalsTitle">{pickLang(copy.newArrivals, locale)}</h2>
             <nav class="hl-links"><a href={hrefFor("/heroes")}>{pickLang(copy.allHeroes, locale)}</a></nav>
           </header>
           <ul class="hl-arrivals">
-            {arrivals.map(({ hero, date, pull }) => (
-              <li class="hl-arrival">
+            {arrivalCandidates.map(({ hero, id, date, pull, shown }) => (
+              <li class="hl-arrival" data-arrival-id={id} data-arrival-date={date} hidden={!shown}>
                 <HeroCard hero={hero} showNewBadge={false} />
                 <div class="hl-arrival-meta">
                   <strong>{hero.name}</strong>
@@ -1154,5 +1166,19 @@ const featuredImageFor = (href: string) => href === "/heroes"
     slots.feature.innerHTML = html.feature;
     slots.running.innerHTML = html.running;
     slots.coming.innerHTML = html.coming;
+
+    // New arrivals: released by today, minus the hero already featured above, newest first.
+    const arrivals = document.querySelector<HTMLElement>("[data-arrivals]");
+    if (arrivals) {
+      const featuredId = pickRightNow(data.items, data.banners, today).featured?.heroSiteId;
+      const limit = Number(arrivals.dataset.arrivalsLimit) || 6;
+      let count = 0;
+      arrivals.querySelectorAll<HTMLElement>("[data-arrival-id]").forEach((item) => {
+        const show = count < limit && (item.dataset.arrivalDate ?? "9999") <= today && item.dataset.arrivalId !== featuredId;
+        item.hidden = !show;
+        if (show) count += 1;
+      });
+      arrivals.hidden = count === 0;
+    }
   }
 </script>

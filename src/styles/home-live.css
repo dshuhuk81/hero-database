@@ -109,6 +109,7 @@
 
 /* New arrivals */
 .hl-arrivals { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-5); margin: 0; padding: 0; list-style: none; }
+.hl-arrival[hidden], .hl-section[hidden] { display: none; }
 .hl-arrival { display: grid; align-content: start; gap: var(--space-3); min-width: 0; }
 .hl-arrival-meta { display: grid; gap: 2px; padding: 0 var(--space-1); }
 .hl-arrival-meta strong { color: var(--text-bright); font-size: var(--text-base); font-weight: var(--weight-bold); }
